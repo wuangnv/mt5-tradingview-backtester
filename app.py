@@ -109,12 +109,8 @@ def get_status():
             'message': msg
         })
 
-
-@app.teardown_appcontext
-def shutdown_mt5(exception=None):
-    """Đóng kết nối MT5 khi tắt app"""
-    mt5_fetcher.shutdown()
-
+import atexit
+atexit.register(mt5_fetcher.shutdown)
 
 if __name__ == '__main__':
     print("=" * 60)
