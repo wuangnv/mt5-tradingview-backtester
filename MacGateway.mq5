@@ -141,7 +141,8 @@ void CheckSocketData()
             string command = StringSubstr(g_recv_buffer, 0, newline_pos);
             g_recv_buffer = StringSubstr(g_recv_buffer, newline_pos + 1);
             
-            command = StringTrimLeft(StringTrimRight(command));
+            StringTrimRight(command);
+            StringTrimLeft(command);
             if(StringLen(command) > 0)
             {
                ProcessCommand(command);
@@ -154,27 +155,6 @@ void CheckSocketData()
          CloseConnection();
       }
    }
-}
-
-//+------------------------------------------------------------------+
-//| String helper functions for trimming                             |
-//+------------------------------------------------------------------+
-string StringTrimLeft(string str)
-{
-   int i = 0;
-   int len = StringLen(str);
-   while(i < len && (StringGetCharacter(str, i) == ' ' || StringGetCharacter(str, i) == '\t' || StringGetCharacter(str, i) == '\r'))
-      i++;
-   return StringSubstr(str, i);
-}
-
-string StringTrimRight(string str)
-{
-   int len = StringLen(str);
-   int i = len - 1;
-   while(i >= 0 && (StringGetCharacter(str, i) == ' ' || StringGetCharacter(str, i) == '\t' || StringGetCharacter(str, i) == '\r'))
-      i--;
-   return StringSubstr(str, 0, i + 1);
 }
 
 //+------------------------------------------------------------------+
