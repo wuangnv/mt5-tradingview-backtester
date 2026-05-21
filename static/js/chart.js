@@ -1115,9 +1115,40 @@ class ChartManager {
         document.getElementById('symbol-select').addEventListener('change', async (e) => {
             if (!this.activePanel) return;
             this.activePanel.saveDrawings();
-            this.activePanel.symbol = e.target.value;
-            if (this.activePanel.isReplayMode) this.activePanel.exitReplayMode();
+            
+            const oldSymbol = this.activePanel.symbol;
+            const newSymbol = e.target.value;
+            if (oldSymbol === newSymbol) return;
+
+            let savedReplayTimestamp = null;
+            const wasReplay = this.activePanel.isReplayMode;
+
+            if (wasReplay && this.activePanel.replayIndex !== null && this.activePanel.fullData) {
+                const currentBar = this.activePanel.fullData[this.activePanel.replayIndex];
+                if (currentBar) {
+                    savedReplayTimestamp = currentBar.time;
+                }
+            }
+
+            this.activePanel.symbol = newSymbol;
             await this.activePanel.loadData();
+
+            if (wasReplay && savedReplayTimestamp && this.activePanel.fullData.length > 0) {
+                let bestIndex = 0;
+                let minDiff = Infinity;
+                for (let i = 0; i < this.activePanel.fullData.length; i++) {
+                    const diff = Math.abs(this.activePanel.fullData[i].time - savedReplayTimestamp);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        bestIndex = i;
+                    }
+                }
+                
+                this.activePanel.replayIndex = bestIndex;
+                if (window.replayManager) {
+                    window.replayManager.startFromIndex(this.activePanel.fullData, bestIndex);
+                }
+            }
         });
 
         // Timezone selection
@@ -1135,9 +1166,39 @@ class ChartManager {
                 document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
                 
-                this.activePanel.timeframe = e.target.dataset.tf;
-                if (this.activePanel.isReplayMode) this.activePanel.exitReplayMode();
+                const oldTimeframe = this.activePanel.timeframe;
+                const newTimeframe = e.target.dataset.tf;
+                if (oldTimeframe === newTimeframe) return;
+
+                let savedReplayTimestamp = null;
+                const wasReplay = this.activePanel.isReplayMode;
+
+                if (wasReplay && this.activePanel.replayIndex !== null && this.activePanel.fullData) {
+                    const currentBar = this.activePanel.fullData[this.activePanel.replayIndex];
+                    if (currentBar) {
+                        savedReplayTimestamp = currentBar.time;
+                    }
+                }
+
+                this.activePanel.timeframe = newTimeframe;
                 await this.activePanel.loadData();
+
+                if (wasReplay && savedReplayTimestamp && this.activePanel.fullData.length > 0) {
+                    let bestIndex = 0;
+                    let minDiff = Infinity;
+                    for (let i = 0; i < this.activePanel.fullData.length; i++) {
+                        const diff = Math.abs(this.activePanel.fullData[i].time - savedReplayTimestamp);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            bestIndex = i;
+                        }
+                    }
+                    
+                    this.activePanel.replayIndex = bestIndex;
+                    if (window.replayManager) {
+                        window.replayManager.startFromIndex(this.activePanel.fullData, bestIndex);
+                    }
+                }
             });
         });
 
