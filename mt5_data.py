@@ -81,6 +81,13 @@ class MT5DataFetcher:
             
     def _send_request(self, command_str, timeout=15.0):
         """Gửi lệnh đến MT5 EA qua Socket và nhận phản hồi JSON (Thread-safe)"""
+        
+        # Tự động chờ kết nối socket từ MT5 EA thiết lập (tối đa 3 giây) khi khởi động ứng dụng
+        for _ in range(6):
+            if self.client_socket:
+                break
+            time.sleep(0.5)
+            
         with self.lock:
             if not self.client_socket:
                 return {'success': False, 'message': 'No active connection from MT5 Expert Advisor.'}
