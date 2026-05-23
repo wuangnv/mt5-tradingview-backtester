@@ -120,7 +120,7 @@ class ReplayManager {
         const bar = data[this.currentIndex];
         if (bar) this._setDateInput(bar.time);
 
-        console.log(`🎬 Replay: bar ${this.currentIndex + 1} / ${data.length} | ${this._formatBarTime(this.currentIndex)}`);
+        console.log(`Replay: bar ${this.currentIndex + 1} / ${data.length} | ${this._formatBarTime(this.currentIndex)}`);
     }
 
     stop() {
@@ -142,30 +142,29 @@ class ReplayManager {
      */
     _applyToChart() {
         const cm = window.chartManager;
-        if (!cm?.candlestickSeries) return;
+        if (!cm?.activePanel?.chartReady) return;
 
         const isForward =
             this._lastDisplayedIndex >= 0 &&
             this.currentIndex >= this._lastDisplayedIndex;
 
         if (isForward) {
-            // Efficient: add bars one by one (no array slice)
+            // Efficient: add bars one by one
             for (let i = this._lastDisplayedIndex + 1; i <= this.currentIndex; i++) {
-                cm.candlestickSeries.update(this.fullData[i]);
+                window.MT5Datafeed.updateRealtime(cm.activePanel.symbol, cm.activePanel.timeframe, this.fullData[i]);
             }
         } else {
-            // Backward seek or initial load
-            cm.candlestickSeries.setData(this.fullData.slice(0, this.currentIndex + 1));
+            // Backward seek or initial load – reset datafeed cache & force redraw
+            window.MT5Datafeed.resetReplayCache(cm.activePanel.symbol, cm.activePanel.timeframe);
+            if (cm.activePanel.chart) {
+                try {
+                    cm.activePanel.chart.resetData();
+                } catch (e) {
+                    console.error("Error calling resetData on backward seek:", e);
+                }
+            }
         }
         this._lastDisplayedIndex = this.currentIndex;
-
-        // Scroll to show current (last) bar with padding on the right
-        // No setTimeout needed — lightweight-charts updates synchronously
-        try {
-            const ts = cm.chart.timeScale();
-            ts.scrollToRealTime();
-            ts.scrollToPosition(20, false); // 20 empty bar slots on the right
-        } catch (_) {}
     }
 
     // ─── Playback ─────────────────────────────────────────────────────────
@@ -189,7 +188,7 @@ class ReplayManager {
             } else {
                 this.pause();
                 document.getElementById('replay-progress').textContent =
-                    `✅ Finished (${this.fullData.length} bars)`;
+                    `Finished (${this.fullData.length} bars)`;
             }
         }, this.speed);
     }
@@ -236,6 +235,17 @@ class ReplayManager {
             this._applyToChart();
             this._updateUI();
         }
+    }
+
+    seekToTime(timestamp) {
+        if (!this.fullData || !this.fullData.length) return;
+        let lo = 0, hi = this.fullData.length - 1;
+        while (lo < hi) {
+            const mid = (lo + hi) >> 1;
+            if (this.fullData[mid].time < timestamp) lo = mid + 1;
+            else hi = mid;
+        }
+        this.seekTo(lo);
     }
 
     // ─── Jump to Date ─────────────────────────────────────────────────────
@@ -329,10 +339,29 @@ class ReplayManager {
 
         document.getElementById('replay-current-date').textContent =
             this._formatBarTime(idx);
+
+        // Sync active panel replayIndex
+        if (window.chartManager && window.chartManager.activePanel) {
+            window.chartManager.activePanel.replayIndex = idx;
+        }
+
+        // Trigger simulator trading ticks
+        if (window.tradeManager && this.fullData[idx]) {
+            window.tradeManager.onReplayTick(this.fullData[idx]);
+        }
+
+        if (window.chartManager) {
+            window.chartManager.updateOHLCInfo(this.fullData[idx]);
+        }
     }
 
     _updatePlayPauseBtn() {
-        document.getElementById('play-icon').textContent = this.isPlaying ? '⏸' : '▶';
+        const playSvg = document.getElementById('svg-play');
+        const pauseSvg = document.getElementById('svg-pause');
+        if (playSvg && pauseSvg) {
+            playSvg.style.display = this.isPlaying ? 'none' : 'block';
+            pauseSvg.style.display = this.isPlaying ? 'block' : 'none';
+        }
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────────

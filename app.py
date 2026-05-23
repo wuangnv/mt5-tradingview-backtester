@@ -6,8 +6,13 @@ from mt5_data import mt5_fetcher
 from datetime import datetime, timedelta
 import json
 import threading
+import logging
 
 app = Flask(__name__)
+
+# Tắt log spam của Werkzeug/Flask
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
+
 
 # Đảm bảo MT5 chỉ init một lần duy nhất (thread-safe)
 _mt5_init_lock = threading.Lock()
@@ -109,6 +114,70 @@ def get_status():
             'message': msg
         })
 
+@app.route('/api/trade/place', methods=['POST'])
+def place_trade():
+    """API đặt lệnh mua/bán lên MT5"""
+    data = request.get_json()
+    symbol = data.get('symbol')
+    order_type = data.get('type')
+    lots = data.get('lots', 0.01)
+    sl = data.get('sl', 0.0)
+    tp = data.get('tp', 0.0)
+    
+    if not symbol or not order_type:
+        return jsonify({'success': False, 'message': 'Missing symbol or order type'}), 400
+        
+    res = mt5_fetcher.place_order(symbol, order_type, lots, sl, tp)
+    return jsonify(res)
+
+@app.route('/api/trade/close', methods=['POST'])
+def close_trade():
+    """API đóng vị thế theo ticket"""
+    data = request.get_json()
+    ticket = data.get('ticket')
+    
+    if not ticket:
+        return jsonify({'success': False, 'message': 'Missing ticket ID'}), 400
+        
+    res = mt5_fetcher.close_position(ticket)
+    return jsonify(res)
+
+@app.route('/api/trade/positions', methods=['GET'])
+def get_positions():
+    """API lấy danh sách các vị thế đang chạy"""
+    positions = mt5_fetcher.get_positions()
+    return jsonify({'success': True, 'positions': positions})
+
+@app.route('/api/trade/account', methods=['GET'])
+def get_account():
+    """API lấy thông tin số dư tài khoản"""
+    account = mt5_fetcher.get_account_info()
+    return jsonify({'success': True, 'account': account})
+
+@app.route('/api/shutdown', methods=['POST'])
+def shutdown():
+    """API tắt server Flask và đóng kết nối an toàn"""
+    import os
+    import threading
+    import time
+    
+    print("\n" + "="*60)
+    print("SHUTDOWN REQUEST: Terminating background server gracefully...")
+    print("="*60 + "\n")
+    
+    def kill_process():
+        time.sleep(0.2)  # Delay to ensure response is fully sent
+        try:
+            mt5_fetcher.shutdown()
+            print("MT5 socket gateway shutdown complete.")
+        except Exception as e:
+            print(f"Error during MT5 shutdown: {e}")
+        print("Halting process via os._exit(0)...")
+        os._exit(0)
+        
+    threading.Thread(target=kill_process).start()
+    return jsonify({'success': True, 'message': 'Server is shutting down.'})
+
 import atexit
 atexit.register(mt5_fetcher.shutdown)
 
@@ -129,4 +198,4 @@ if __name__ == '__main__':
     print("   Open browser at: http://localhost:5000")
     print("\n" + "=" * 60 + "\n")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)

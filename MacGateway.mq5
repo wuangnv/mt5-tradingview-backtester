@@ -19,6 +19,10 @@ input int      InpTimerMs        = 50;          // Timer Interval (ms)
 // Global variables
 int            g_socket          = INVALID_HANDLE;
 string         g_recv_buffer     = "";
+uint           g_last_connect_time = 0; // Throttles reconnection to avoid freezing MT5
+
+#include <Trade\Trade.mqh>
+CTrade         g_trade;
 
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
@@ -32,6 +36,7 @@ int OnInit()
    EventSetMillisecondTimer(InpTimerMs);
    
    // Attempt initial connection
+   g_last_connect_time = GetTickCount();
    ConnectToServer();
    
    return(INIT_SUCCEEDED);
@@ -61,10 +66,15 @@ void OnTick()
 //+------------------------------------------------------------------+
 void OnTimer()
 {
-   // Check connection status and reconnect if lost
-   if(g_socket == INVALID_HANDLE || !SocketIsConnected(g_socket))
+   // Check connection status and reconnect if lost (throttled to every 5000ms)
+   if(g_socket == INVALID_HANDLE)
    {
-      ConnectToServer();
+      uint current_time = GetTickCount();
+      if(current_time - g_last_connect_time >= 5000)
+      {
+         g_last_connect_time = current_time;
+         ConnectToServer();
+      }
    }
    else
    {
@@ -92,8 +102,16 @@ bool ConnectToServer()
    // Connect with 1000ms timeout
    if(!SocketConnect(g_socket, InpServerHost, InpServerPort, 1000))
    {
-      // Quietly log, since connection might not be up yet
-      // Print("[MacGateway] Connect failed. Error: ", GetLastError());
+      int error_code = GetLastError();
+      Print("[MacGateway] Connection to Python Server failed. Error code: ", error_code);
+      if(error_code == 4014)
+      {
+         Print("[MacGateway] ERROR 4014: Function not allowed. Check if 'Allow Algo Trading' is checked in the EA Common settings and globally.");
+      }
+      else if(error_code == 5272)
+      {
+         Print("[MacGateway] ERROR 5272: Cannot connect. Make sure Python app.py is running and '127.0.0.1' is in the Tools > Options > Expert Advisors > Allow WebRequest list.");
+      }
       SocketClose(g_socket);
       g_socket = INVALID_HANDLE;
       return false;
@@ -121,7 +139,7 @@ void CloseConnection()
 //+------------------------------------------------------------------+
 void CheckSocketData()
 {
-   if(g_socket == INVALID_HANDLE || !SocketIsConnected(g_socket))
+   if(g_socket == INVALID_HANDLE)
       return;
       
    uint bytes_available = SocketIsReadable(g_socket);
@@ -196,6 +214,37 @@ void ProcessCommand(string command)
       string symbol = parts[1];
       HandleGetPrice(symbol);
    }
+   else if(cmd_type == "TRADE_BUY" || cmd_type == "TRADE_SELL")
+   {
+      if(total_parts < 5)
+      {
+         SendResponse("{\"success\":false,\"message\":\"Invalid TRADE parameters\"}");
+         return;
+      }
+      string symbol = parts[1];
+      double lots = StringToDouble(parts[2]);
+      double sl = StringToDouble(parts[3]);
+      double tp = StringToDouble(parts[4]);
+      HandleTradeOrder(cmd_type == "TRADE_BUY" ? "BUY" : "SELL", symbol, lots, sl, tp);
+   }
+   else if(cmd_type == "TRADE_CLOSE")
+   {
+      if(total_parts < 2)
+      {
+         SendResponse("{\"success\":false,\"message\":\"Invalid TRADE_CLOSE parameters\"}");
+         return;
+      }
+      ulong ticket = (ulong)StringToInteger(parts[1]);
+      HandleTradeClose(ticket);
+   }
+   else if(cmd_type == "GET_POSITIONS")
+   {
+      HandleGetPositions();
+   }
+   else if(cmd_type == "GET_ACCOUNT")
+   {
+      HandleGetAccount();
+   }
    else
    {
       SendResponse("{\"success\":false,\"message\":\"Unknown command: " + cmd_type + "\"}");
@@ -208,13 +257,13 @@ void ProcessCommand(string command)
 void HandleGetSymbols()
 {
    // Collect selected symbols from Market Watch
-   int total = SymbolsTotal(false);
+   int total = SymbolsTotal(true);
    string symbols_json = "[";
    int count = 0;
    
    for(int i = 0; i < total; i++)
    {
-      string name = SymbolName(i, false);
+      string name = SymbolName(i, true);
       if(count > 0)
          symbols_json += ",";
       symbols_json += "\"" + name + "\"";
@@ -266,9 +315,23 @@ void HandleGetData(string symbol, string timeframe, int bars)
       SendResponse("{\"success\":false,\"message\":\"No data returned for " + symbol + " " + timeframe + ". Error code: " + IntegerToString(GetLastError()) + "\",\"data\":[]}");
       return;
    }
+
+   // Perfect real-time synchronization: Override the last bar close/high/low with the current bid price
+   MqlTick tick;
+   if(SymbolInfoTick(symbol, tick))
+   {
+      if(copied > 0)
+      {
+         rates[copied-1].close = tick.bid;
+         if(tick.bid > rates[copied-1].high) rates[copied-1].high = tick.bid;
+         if(tick.bid < rates[copied-1].low)  rates[copied-1].low = tick.bid;
+      }
+   }
    
    // Fast inline JSON construction
-   string json = "{\"success\":true,\"symbol\":\"" + symbol + "\",\"timeframe\":\"" + timeframe + "\",\"data\":[";
+   string json = "";
+   StringReserve(json, copied * 110 + 256);
+   json = "{\"success\":true,\"symbol\":\"" + symbol + "\",\"timeframe\":\"" + timeframe + "\",\"data\":[";
    for(int i = 0; i < copied; i++)
    {
       if(i > 0)
@@ -317,7 +380,7 @@ void HandleGetPrice(string symbol)
 //+------------------------------------------------------------------+
 void SendResponse(string response)
 {
-   if(g_socket == INVALID_HANDLE || !SocketIsConnected(g_socket))
+   if(g_socket == INVALID_HANDLE)
       return;
       
    string data = response + "\n";
@@ -342,4 +405,134 @@ void SendResponse(string response)
       }
       total_sent += sent;
    }
+}
+
+//+------------------------------------------------------------------+
+//| Handle placing Buy or Sell orders                                |
+//+------------------------------------------------------------------+
+void HandleTradeOrder(string type, string symbol, double lots, double sl, double tp)
+{
+   g_trade.SetDeviationInPoints(10);
+   
+   bool res = false;
+   if(type == "BUY")
+   {
+      res = g_trade.Buy(lots, symbol, 0, sl, tp);
+   }
+   else if(type == "SELL")
+   {
+      res = g_trade.Sell(lots, symbol, 0, sl, tp);
+   }
+   
+   if(res)
+   {
+      ulong ticket = g_trade.ResultOrder();
+      double price = g_trade.ResultPrice();
+      string resp = "{\"success\":true,\"message\":\"Order placed successfully\",\"ticket\":" + IntegerToString(ticket) + ",\"price\":" + DoubleToString(price, 5) + "}";
+      SendResponse(resp);
+   }
+   else
+   {
+      uint error_code = GetLastError();
+      uint ret_code = g_trade.ResultRetcode();
+      string resp = "{\"success\":false,\"message\":\"Trade failed. RetCode: " + IntegerToString(ret_code) + ", Error: " + IntegerToString(error_code) + "\"}";
+      SendResponse(resp);
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Handle closing position by ticket                                |
+//+------------------------------------------------------------------+
+void HandleTradeClose(ulong ticket)
+{
+   bool res = g_trade.PositionClose(ticket);
+   if(res)
+   {
+      SendResponse("{\"success\":true,\"message\":\"Position closed successfully\"}");
+   }
+   else
+   {
+      uint error_code = GetLastError();
+      uint ret_code = g_trade.ResultRetcode();
+      SendResponse("{\"success\":false,\"message\":\"Close failed. RetCode: " + IntegerToString(ret_code) + ", Error: " + IntegerToString(error_code) + "\"}");
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Handle GET_POSITIONS request                                     |
+//+------------------------------------------------------------------+
+void HandleGetPositions()
+{
+   int total = PositionsTotal();
+   string json = "{\"success\":true,\"positions\":[";
+   int count = 0;
+   
+   for(int i = 0; i < total; i++)
+   {
+      ulong ticket = PositionGetTicket(i);
+      if(ticket > 0)
+      {
+         string symbol = PositionGetString(POSITION_SYMBOL);
+         ENUM_POSITION_TYPE type = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+         double volume = PositionGetDouble(POSITION_VOLUME);
+         double price_open = PositionGetDouble(POSITION_PRICE_OPEN);
+         double price_current = PositionGetDouble(POSITION_PRICE_CURRENT);
+         double sl = PositionGetDouble(POSITION_SL);
+         double tp = PositionGetDouble(POSITION_TP);
+         double profit = PositionGetDouble(POSITION_PROFIT);
+         double swap = PositionGetDouble(POSITION_SWAP);
+         double commission = 0.0; // POSITION_COMMISSION is deprecated in MQL5
+         long time_val = PositionGetInteger(POSITION_TIME);
+         
+         string pos_type = (type == POSITION_TYPE_BUY) ? "BUY" : "SELL";
+         
+         if(count > 0)
+            json += ",";
+            
+         json += "{\"ticket\":" + IntegerToString(ticket) + 
+                 ",\"symbol\":\"" + symbol + "\"" + 
+                 ",\"type\":\"" + pos_type + "\"" + 
+                 ",\"volume\":" + DoubleToString(volume, 2) + 
+                 ",\"price_open\":" + DoubleToString(price_open, 5) + 
+                 ",\"price_current\":" + DoubleToString(price_current, 5) + 
+                 ",\"sl\":" + DoubleToString(sl, 5) + 
+                 ",\"tp\":" + DoubleToString(tp, 5) + 
+                 ",\"profit\":" + DoubleToString(profit, 2) + 
+                 ",\"swap\":" + DoubleToString(swap, 2) + 
+                 ",\"commission\":" + DoubleToString(commission, 2) + 
+                 ",\"time\":" + IntegerToString(time_val) + "}";
+         count++;
+      }
+   }
+   json += "]}";
+   SendResponse(json);
+}
+
+//+------------------------------------------------------------------+
+//| Handle GET_ACCOUNT request                                       |
+//+------------------------------------------------------------------+
+void HandleGetAccount()
+{
+   double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+   double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+   double margin = AccountInfoDouble(ACCOUNT_MARGIN);
+   double free_margin = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
+   double margin_level = AccountInfoDouble(ACCOUNT_MARGIN_LEVEL);
+   double profit = AccountInfoDouble(ACCOUNT_PROFIT);
+   string currency = AccountInfoString(ACCOUNT_CURRENCY);
+   string company = AccountInfoString(ACCOUNT_COMPANY);
+   long login = AccountInfoInteger(ACCOUNT_LOGIN);
+   
+   string json = "{\"success\":true,\"account\":{" + 
+                 "\"balance\":" + DoubleToString(balance, 2) + 
+                 ",\"equity\":" + DoubleToString(equity, 2) + 
+                 ",\"margin\":" + DoubleToString(margin, 2) + 
+                 ",\"free_margin\":" + DoubleToString(free_margin, 2) + 
+                 ",\"margin_level\":" + DoubleToString(margin_level, 2) + 
+                 ",\"profit\":" + DoubleToString(profit, 2) + 
+                 ",\"currency\":\"" + currency + "\"" + 
+                 ",\"company\":\"" + company + "\"" + 
+                 ",\"login\":" + IntegerToString(login) + "}}";
+                 
+   SendResponse(json);
 }

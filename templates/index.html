@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Chart Tool - Bar Replay</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://unpkg.com/lightweight-charts@5.2.0/dist/lightweight-charts.standalone.production.js"></script>
-    <script src="https://unpkg.com/lightweight-charts-drawing/dist/lightweight-charts-drawing.umd.js"></script>
+    <script src="{{ url_for('static', filename='charting_library/charting_library.standalone.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/datafeed.js') }}"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Toolbar -->
+        <!-- Top Toolbar (TradingView Web Style) -->
         <div class="top-toolbar">
-            <div class="toolbar-section">
+            <div class="toolbar-group brand-group">
+                <div class="brand-container" style="display: flex; align-items: center; margin-right: 12px; user-select: none;">
+                    <span class="brand-name" style="font-size: 15px; font-weight: 800; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 50%, #2962ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.8px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', sans-serif; filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.25));">WuangVibeTrading</span>
+                </div>
+            </div>
+            
+            <div class="toolbar-separator-v"></div>
+
+            <!-- Hidden DOM elements for legacy script compatibility -->
+            <div style="display: none;">
                 <select id="symbol-select" class="symbol-select">
                     <option value="EURUSD">EURUSD</option>
                     <option value="GBPUSD">GBPUSD</option>
@@ -21,29 +30,38 @@
                     <option value="USDCAD">USDCAD</option>
                     <option value="XAUUSD">XAUUSD</option>
                 </select>
+                
+                <div class="timeframe-buttons">
+                    <button class="tf-btn" data-tf="M1">1m</button>
+                    <button class="tf-btn" data-tf="M5">5m</button>
+                    <button class="tf-btn" data-tf="M15">15m</button>
+                    <button class="tf-btn" data-tf="M30">30m</button>
+                    <button class="tf-btn active" data-tf="H1">1h</button>
+                    <button class="tf-btn" data-tf="H4">4h</button>
+                    <button class="tf-btn" data-tf="D1">1D</button>
+                    <button class="tf-btn" data-tf="W1">1W</button>
+                </div>
             </div>
+
+            <div class="toolbar-separator-v"></div>
             
-            <div class="toolbar-section timeframe-buttons">
-                <button class="tf-btn" data-tf="M1">1m</button>
-                <button class="tf-btn" data-tf="M5">5m</button>
-                <button class="tf-btn" data-tf="M15">15m</button>
-                <button class="tf-btn" data-tf="M30">30m</button>
-                <button class="tf-btn active" data-tf="H1">1h</button>
-                <button class="tf-btn" data-tf="H4">4h</button>
-                <button class="tf-btn" data-tf="D1">1D</button>
-                <button class="tf-btn" data-tf="W1">1W</button>
-            </div>
-            
-            <div class="toolbar-section">
+            <!-- Replay / Trade buttons -->
+            <div class="toolbar-group actions-group">
                 <button id="replay-btn" class="toolbar-btn">
-                    <span>▶</span> Replay
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M8 5v14l11-7z"/></svg> Replay
+                </button>
+                <button id="trade-panel-toggle-btn" class="toolbar-btn">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg> Order Panel
                 </button>
             </div>
             
-            <div class="toolbar-section layout-controls">
+            <div class="toolbar-separator-v"></div>
+            
+            <!-- Layout & Sync Buttons -->
+            <div class="toolbar-group layout-group">
                 <div class="layout-select-wrapper">
-                    <button id="layout-btn" class="toolbar-btn" title="Select Layout">
-                        <span>⊞</span> Layout
+                    <button id="layout-btn" class="toolbar-btn" title="Choose Grid Layout">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Layout
                     </button>
                     <div id="layout-dropdown" class="layout-dropdown">
                         <div class="layout-option active" data-layout="1" title="Single Chart">
@@ -60,204 +78,329 @@
                         </div>
                     </div>
                 </div>
-                
-                <button id="sync-scroll-btn" class="sync-btn active" title="Sync Time/Scroll: ON">
-                    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M1 8a7 7 0 1 1 7 7c-.5 0-.9 0-1.4-.1a1 1 0 1 1 .2-2 5 5 0 1 0-3.8-5h1.5a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1V5a1 1 0 1 1 2 0v1.5A7 7 0 0 1 1 8z" fill="currentColor"/></svg>
-                </button>
-                <button id="sync-crosshair-btn" class="sync-btn active" title="Sync Crosshair: ON">
-                    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 1 1 0-2h6V1a1 1 0 0 1 1-1z" fill="currentColor"/></svg>
-                </button>
             </div>
             
-            <div class="toolbar-section">
-                <select id="timezone-select" class="timezone-select">
-                    <option value="0">UTC+0</option>
-                    <option value="1">UTC+1</option>
-                    <option value="2">UTC+2</option>
-                    <option value="3">UTC+3</option>
-                    <option value="7" selected>UTC+7 (Vietnam)</option>
-                    <option value="8">UTC+8</option>
-                    <option value="9">UTC+9</option>
-                    <option value="-5">UTC-5 (EST)</option>
-                    <option value="-4">UTC-4 (EDT)</option>
-                </select>
+            <div class="toolbar-group right-aligned">
                 <div class="status-indicator" id="mt5-status">
                     <span class="status-dot"></span>
                     <span class="status-text">MT5</span>
                 </div>
+                <button id="quit-app-btn" class="toolbar-btn quit-btn" title="Quit & Shutdown Application">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        <line x1="12" y1="2" x2="12" y2="12"></line>
+                    </svg>
+                </button>
             </div>
         </div>
         
         <!-- Main Layout -->
         <div class="main-layout">
-            <!-- Left Sidebar - Drawing Tools -->
-            <div class="left-sidebar">
-                <div class="tool-item active" data-tool="cursor" title="Cursor (Esc)">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <path d="M3 3 L3 17 L8 12 L11 17 L13 16 L10 11 L17 11 Z" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-separator"></div>
-                
-                <div class="tool-item" data-tool="trend-line" title="Trend Line">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <line x1="2" y1="18" x2="18" y2="2" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="2" cy="18" r="2" fill="currentColor"/>
-                        <circle cx="18" cy="2" r="2" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="horizontal-line" title="Horizontal Line">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <line x1="0" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="10" cy="10" r="2" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="ray" title="Ray">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <line x1="5" y1="15" x2="18" y2="5" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="5" cy="15" r="2.5" fill="currentColor"/>
-                        <polygon points="18,5 15,9 13,7" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="arrow" title="Arrow">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <line x1="3" y1="17" x2="17" y2="3" stroke="currentColor" stroke-width="2"/>
-                        <polygon points="17,3 11,5 15,9" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="extended-line" title="Extended Line">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <line x1="0" y1="20" x2="20" y2="0" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="7" cy="13" r="2" fill="currentColor"/>
-                        <circle cx="13" cy="7" r="2" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="horizontal-ray" title="Horizontal Ray">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <line x1="6" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="6" cy="10" r="2.5" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="rectangle" title="Rectangle">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <rect x="3" y="5" width="14" height="10" stroke="currentColor" stroke-width="2" fill="none"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="text" title="Text (T)">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 5V3H16V5M10 3V17M7 17H13" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+            
+            <!-- Middle Section: Charts & Positions Dashboard -->
+            <div class="middle-section">
+                <!-- Chart Area -->
+                <div class="chart-area">
+                    <div id="charts-grid" class="charts-grid layout-1">
+                        <!-- Dynamic chart panels will be injected here by ChartManager -->
+                    </div>
                 </div>
 
-                <div class="tool-item" data-tool="long-position" title="Long Position">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="14" height="7" fill="#089981" fill-opacity="0.3" stroke="#089981" stroke-width="1.5"/>
-                        <rect x="3" y="10" width="14" height="7" fill="#f23645" fill-opacity="0.3" stroke="#f23645" stroke-width="1.5"/>
-                        <circle cx="10" cy="10" r="2" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <div class="tool-item" data-tool="short-position" title="Short Position">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="14" height="7" fill="#f23645" fill-opacity="0.3" stroke="#f23645" stroke-width="1.5"/>
-                        <rect x="3" y="10" width="14" height="7" fill="#089981" fill-opacity="0.3" stroke="#089981" stroke-width="1.5"/>
-                        <circle cx="10" cy="10" r="2" fill="currentColor"/>
-                    </svg>
-                </div>
-                
+                <!-- Bottom Positions & History Dashboard -->
+                <div class="bottom-dashboard" id="bottom-dashboard">
+                    <div class="dashboard-tabs">
+                        <div class="tab-btn-group">
+                            <button class="tab-btn active" data-tab="positions">Open Positions (<span id="open-positions-count">0</span>)</button>
+                            <button class="tab-btn" data-tab="pending">Pending Orders (<span id="pending-positions-count">0</span>)</button>
+                            <button class="tab-btn" data-tab="history">Trading History</button>
+                        </div>
+                        
+                        <div class="account-summary-bar">
+                            <span class="account-summary-item">Balance: <strong id="acc-balance">$10,000.00</strong></span>
+                            <span class="account-summary-item">Equity: <strong id="acc-equity">$10,000.00</strong></span>
+                            <span class="account-summary-item">Margin: <strong id="acc-margin">$0.00</strong></span>
+                            <span class="account-summary-item">Free Margin: <strong id="acc-free-margin">$10,000.00</strong></span>
+                            <span class="account-summary-item">Margin Level: <strong id="acc-margin-level">0.00%</strong></span>
+                            <div class="toolbar-separator-v" style="height: 14px; margin: 0 4px; background: #2a2e39;"></div>
+                            <button id="dashboard-toggle-btn" class="dashboard-toggle-btn" title="Collapse / Expand">
+                                <svg width="12" height="12" viewBox="0 0 24 24" style="transition: transform 0.3s ease; display: block;"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-tab-content active" id="tab-positions">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket</th>
+                                    <th>Symbol</th>
+                                    <th>Type</th>
+                                    <th>Volume</th>
+                                    <th>Open Price</th>
+                                    <th>Current Price</th>
+                                    <th>Stop Loss (SL)</th>
+                                    <th>Take Profit (TP)</th>
+                                    <th>Profit/Loss ($)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="positions-list">
+                                <tr>
+                                    <td colspan="10" class="empty-row">No open trading positions.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="dashboard-tab-content" id="tab-pending">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket</th>
+                                    <th>Symbol</th>
+                                    <th>Type</th>
+                                    <th>Volume</th>
+                                    <th>Order Price</th>
+                                    <th>Current Price</th>
+                                    <th>Stop Loss</th>
+                                    <th>Take Profit</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-list">
+                                <tr>
+                                    <td colspan="9" class="empty-row">No pending orders.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                
-                <div class="tool-item" data-tool="clear" title="Clear All Drawings">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                        <path d="M5 7 L7 5 L10 8 L13 5 L15 7 L12 10 L15 13 L13 15 L10 12 L7 15 L5 13 L8 10 Z" fill="currentColor"/>
-                    </svg>
+                    <div class="dashboard-tab-content" id="tab-history">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Ticket</th>
+                                    <th>Symbol</th>
+                                    <th>Type</th>
+                                    <th>Volume</th>
+                                    <th>Open Price</th>
+                                    <th>Close Price</th>
+                                    <th>Profit/Loss ($)</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-list">
+                                <tr>
+                                    <td colspan="9" class="empty-row">No trading history.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Chart Area -->
-            <div class="chart-area">
-                <div id="charts-grid" class="charts-grid layout-1">
-                    <!-- Dynamic chart panels will be injected here by ChartManager -->
+
+            <!-- Right Sidebar: Exness-Style Trading Panel -->
+            <div class="right-sidebar trading-panel sell-active collapsed" id="trading-panel">
+                <div class="panel-section-title">
+                    <span>PLACE TRADE ORDER</span>
+                    <span class="trade-mode-badge" id="trade-mode-badge">BACKTEST</span>
+                    <button id="close-trading-panel-btn" class="panel-close-btn" title="Close" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: transparent; border: none; color: #787b86; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
                 
-                <!-- Chart Info Overlay -->
-                <div class="chart-info-overlay" id="chart-info">
-                    <span id="ohlc-info"></span>
+                <!-- Quick Trade Tabs (Exness Style Buy/Sell selectors) -->
+                <div class="exness-side-tabs">
+                    <button class="side-tab sell active" id="btn-quick-sell">
+                        <span class="label">SELL</span>
+                        <span class="price" id="quick-sell-price">0.00000</span>
+                    </button>
+                    <button class="side-tab buy" id="btn-quick-buy">
+                        <span class="label">BUY</span>
+                        <span class="price" id="quick-buy-price">0.00000</span>
+                    </button>
                 </div>
+                
+                <div class="order-settings-container">
+                    <!-- Order Type Tab buttons (Exness Style) -->
+                    <div class="trade-input-group">
+                        <label>Order Type</label>
+                        <div class="exness-order-type-tabs">
+                            <button type="button" class="order-type-tab active" data-type="market">Market</button>
+                            <button type="button" class="order-type-tab" data-type="limit">Pending Limit/Stop</button>
+                        </div>
+                        <!-- Hidden select to keep existing JS logic synced without breaks -->
+                        <select id="trade-order-type" class="trade-select" style="display: none;">
+                            <option value="market" selected>Market</option>
+                            <option value="limit">Pending Limit/Stop</option>
+                        </select>
+                    </div>
+
+                    <!-- Pending Order Price Input -->
+                    <div class="trade-input-group" id="pending-price-group" style="display: none;">
+                        <label>Order Price</label>
+                        <div class="volume-control">
+                            <button type="button" class="vol-btn" id="btn-price-minus">-</button>
+                            <input type="number" id="trade-price" class="trade-number-input" step="0.00001" value="0.00000">
+                            <button type="button" class="vol-btn" id="btn-price-plus">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Volume Lots Control -->
+                    <div class="trade-input-group">
+                        <label>Volume (Lots)</label>
+                        <div class="volume-control">
+                            <button type="button" class="vol-btn" id="btn-vol-minus">-</button>
+                            <input type="number" id="trade-volume" class="trade-number-input" step="0.01" min="0.01" value="0.10">
+                            <button type="button" class="vol-btn" id="btn-vol-plus">+</button>
+                        </div>
+                        <div class="lot-quick-select">
+                            <button type="button" class="lot-q-btn">0.01</button>
+                            <button type="button" class="lot-q-btn">0.05</button>
+                            <button type="button" class="lot-q-btn">0.10</button>
+                            <button type="button" class="lot-q-btn">0.50</button>
+                            <button type="button" class="lot-q-btn">1.00</button>
+                        </div>
+                    </div>
+
+                    <!-- Stop Loss Control with multi-unit switcher -->
+                    <div class="trade-input-group checkbox-group">
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="enable-sl">
+                            <label for="enable-sl" class="clickable-label">Stop Loss (SL)</label>
+                        </div>
+                        <div id="sl-control-container" class="collapsed-control" style="display: none;">
+                            <div class="unit-selector" id="sl-unit-selector">
+                                <button type="button" class="unit-btn active" data-unit="price">Price</button>
+                                <button type="button" class="unit-btn" data-unit="pips">Pips</button>
+                                <button type="button" class="unit-btn" data-unit="usd">USD</button>
+                            </div>
+                            <input type="hidden" id="sl-active-unit" value="price">
+
+                            <div class="volume-control">
+                                <button type="button" class="vol-btn" id="btn-sl-minus">-</button>
+                                <input type="number" id="trade-sl" class="trade-number-input" step="0.00001" value="0.00000">
+                                <button type="button" class="vol-btn" id="btn-sl-plus">+</button>
+                            </div>
+                            <div class="control-calc-info">
+                                <span id="sl-info-pips">Distance: <strong id="sl-pips-dist">0 pips</strong></span>
+                                <span id="sl-info-usd">Risk: <strong id="sl-usd-loss" class="text-danger">-$0.00</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Take Profit Control with multi-unit switcher -->
+                    <div class="trade-input-group checkbox-group">
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="enable-tp">
+                            <label for="enable-tp" class="clickable-label">Take Profit (TP)</label>
+                        </div>
+                        <div id="tp-control-container" class="collapsed-control" style="display: none;">
+                            <div class="unit-selector" id="tp-unit-selector">
+                                <button type="button" class="unit-btn active" data-unit="price">Price</button>
+                                <button type="button" class="unit-btn" data-unit="pips">Pips</button>
+                                <button type="button" class="unit-btn" data-unit="usd">USD</button>
+                            </div>
+                            <input type="hidden" id="tp-active-unit" value="price">
+
+                            <div class="volume-control">
+                                <button type="button" class="vol-btn" id="btn-tp-minus">-</button>
+                                <input type="number" id="trade-tp" class="trade-number-input" step="0.00001" value="0.00000">
+                                <button type="button" class="vol-btn" id="btn-tp-plus">+</button>
+                            </div>
+                            <div class="control-calc-info">
+                                <span id="tp-info-pips">Distance: <strong id="tp-pips-dist">0 pips</strong></span>
+                                <span id="tp-info-usd">Profit: <strong id="tp-usd-profit" class="text-success">+$0.00</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exness Styled Execution Button -->
+                <button class="btn-execute sell-mode" id="btn-execute-order">
+                    CONFIRM SELL (SELL MARKET)
+                </button>
             </div>
         </div>
         
-        <!-- Bottom Bar Replay Controls -->
-        <div class="bottom-bar" id="replay-controls" style="display: none;">
-            <div class="replay-section">
-                <button id="replay-play-pause" class="replay-btn" title="Play/Pause (Space)">
-                    <span id="play-icon">▶</span>
-                </button>
-                <button id="replay-prev" class="replay-btn" title="Previous Bar (←)">⏮</button>
-                <button id="replay-next" class="replay-btn" title="Next Bar (→)">⏭</button>
-                <button id="replay-jump-mode" class="replay-btn-toggle" title="Jump Mode: OFF">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 2 L8 14 M2 8 L14 8 M8 2 L11 5 M8 2 L5 5 M8 14 L11 11 M8 14 L5 11" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                    </svg>
-                </button>
-                <span class="replay-label">Controls</span>
+        <!-- Floating TradingView-Style Replay Toolbar -->
+        <div class="tv-replay-toolbar" id="tv-replay-toolbar" style="display: none;">
+            <div class="replay-drag-handle">
+                <svg class="replay-drag-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="color: #787b86; cursor: grab; margin-right: 6px;"><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><circle cx="15" cy="5" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="15" cy="19" r="1.5"></circle></svg>
+                <span class="replay-drag-title">Replay</span>
             </div>
             
-            <div class="replay-section">
-                <label class="replay-label">Start Date:</label>
-                <input type="datetime-local" id="replay-start-date" class="replay-date-input">
-                <button id="replay-jump-date" class="replay-btn-text" title="Jump to Date">Go</button>
-            </div>
+            <div class="toolbar-separator-v"></div>
             
-            <div class="replay-section replay-slider-section">
-                <input type="range" id="replay-slider" class="replay-slider" min="0" max="100" value="0">
-                <span id="replay-progress" class="replay-progress">0 / 0</span>
+            <button id="replay-jump-mode" class="tv-replay-btn" title="Jump to: Click chart to seek">
+                <span class="btn-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 4px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </span> Jump To
+            </button>
+            
+            <div class="toolbar-separator-v"></div>
+            
+            <button id="replay-prev" class="tv-replay-btn-icon" title="Previous Bar (←)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+            </button>
+            
+            <button id="replay-play-pause" class="tv-replay-btn-icon play-btn" title="Play/Pause (Space)">
+                <span id="play-icon" style="display: flex; align-items: center; justify-content: center;">
+                    <svg id="svg-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <svg id="svg-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                </span>
+            </button>
+            
+            <button id="replay-next" class="tv-replay-btn-icon" title="Next Bar (→)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+            </button>
+            
+            <div class="toolbar-separator-v"></div>
+            
+            <div class="replay-status-text">
+                <span id="replay-progress">0 / 0</span>
                 <span id="replay-current-date" class="replay-date-display"></span>
             </div>
             
-            <div class="replay-section">
-                <select id="replay-speed" class="replay-speed-select">
-                    <option value="50">20x</option>
-                    <option value="100">10x</option>
-                    <option value="200">5x</option>
-                    <option value="500">2x</option>
-                    <option value="1000" selected>1x</option>
-                    <option value="2000">0.5x</option>
-                    <option value="4000">0.25x</option>
+            <div class="toolbar-separator-v"></div>
+            
+            <div class="replay-speed-container">
+                <span class="speed-label">Speed:</span>
+                <select id="replay-speed" class="tv-replay-speed-select">
+                    <option value="50">20x (0.05s)</option>
+                    <option value="100">10x (0.1s)</option>
+                    <option value="200">5x (0.2s)</option>
+                    <option value="500">2x (0.5s)</option>
+                    <option value="1000" selected>1x (1s)</option>
+                    <option value="2000">0.5x (2s)</option>
+                    <option value="4000">0.25x (4s)</option>
                 </select>
-                <span class="replay-hint" title="Space=Play/Pause | ←/→=Prev/Next | Shift+←/→=±10 bars">⌨️</span>
-                <button id="replay-close" class="replay-btn" title="Close Replay (Esc)">✕</button>
+            </div>
+            
+            <div class="toolbar-separator-v"></div>
+            
+            <div class="replay-date-container">
+                <input type="datetime-local" id="replay-start-date" class="tv-replay-date-input">
+                <button id="replay-jump-date" class="tv-replay-btn-go" title="Go to date">Go</button>
+            </div>
+            
+            <div class="toolbar-separator-v"></div>
+            
+            <button id="replay-close" class="tv-replay-btn-close" title="Close Replay (Esc)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <!-- Tiny thin slider built-in at the bottom edge of the floating toolbar -->
+            <div class="tv-replay-slider-bar">
+                <input type="range" id="replay-slider" class="tv-replay-slider" min="0" max="100" value="0">
             </div>
         </div>
     </div>
     
-    <!-- Drawing Settings Modal -->
-    <div id="drawing-settings-overlay" class="modal-overlay">
-        <div class="settings-modal">
-            <div class="modal-header">
-                <span class="modal-title" id="settings-modal-title">Cài đặt vật thể</span>
-                <button class="modal-close" id="settings-modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="settings-modal-body">
-                <!-- Dynamic form fields will be injected here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-modal-delete" id="settings-modal-delete">Xóa</button>
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn-modal btn-modal-cancel" id="settings-modal-cancel">Hủy</button>
-                    <button class="btn-modal btn-modal-save" id="settings-modal-save">Lưu</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+
 
     <!-- Scripts -->
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>

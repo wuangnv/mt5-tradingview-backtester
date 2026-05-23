@@ -124,10 +124,7 @@ class MT5DataFetcher:
         """Lấy danh sách các sản phẩm giao dịch từ MT5"""
         res = self._send_request("GET_SYMBOLS")
         if res.get('success'):
-            symbols = res.get('symbols', [])
-            # Lọc lấy các sản phẩm phổ biến để hiển thị đẹp mắt
-            forex_symbols = [s for s in symbols if any(pair in s.upper() for pair in ['EUR', 'GBP', 'USD', 'JPY', 'AUD', 'NZD', 'CAD', 'CHF', 'GOLD', 'XAU'])]
-            return sorted(forex_symbols) if forex_symbols else sorted(symbols)
+            return sorted(res.get('symbols', []))
         return []
         
     def get_historical_data(self, symbol, timeframe, bars=5000):
@@ -163,6 +160,32 @@ class MT5DataFetcher:
         if res.get('success'):
             return res.get('price')
         return None
+
+    def place_order(self, symbol, order_type, lots, sl=0.0, tp=0.0):
+        """Đặt lệnh Buy/Sell lên MT5 qua Socket"""
+        cmd = f"TRADE_{order_type.upper()};{symbol};{lots};{sl};{tp}"
+        print(f"  [Socket] Placing order: {cmd}")
+        return self._send_request(cmd, timeout=10.0)
+        
+    def close_position(self, ticket):
+        """Đóng lệnh MT5 theo ticket qua Socket"""
+        cmd = f"TRADE_CLOSE;{ticket}"
+        print(f"  [Socket] Closing trade ticket: {ticket}")
+        return self._send_request(cmd, timeout=10.0)
+        
+    def get_positions(self):
+        """Lấy danh sách các vị thế đang mở từ MT5"""
+        res = self._send_request("GET_POSITIONS", timeout=5.0)
+        if res.get('success'):
+            return res.get('positions', [])
+        return []
+        
+    def get_account_info(self):
+        """Lấy thông tin tài khoản giao dịch từ MT5"""
+        res = self._send_request("GET_ACCOUNT", timeout=5.0)
+        if res.get('success'):
+            return res.get('account', {})
+        return {}
 
 # Singleton instance
 mt5_fetcher = MT5DataFetcher()
