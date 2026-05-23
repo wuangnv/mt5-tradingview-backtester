@@ -1,106 +1,214 @@
-# 📊 Premium Trading Chart & Bar Replay Tool
+# MT5 TradingView Backtester
 
-A professional, high-performance, and feature-rich **TradingView Clone** designed for manual backtesting, bar replay, and strategy analysis. This application runs **natively on both macOS and Windows**, connecting to **MetaTrader 5** via a custom ultra-fast TCP Socket Gateway.
+Manual backtesting, bar replay, and MT5 trade control in a TradingView-style web app.
 
-Ứng dụng **giả lập TradingView chuyên nghiệp**, hỗ trợ **Bar Replay (tua nến)** và phân tích kỹ thuật thủ công. Chạy native mượt mà trên **cả macOS và Windows**, kết nối trực tiếp với **MetaTrader 5** thông qua đường truyền mạng cục bộ TCP Socket Gateway tốc độ cao.
+This project connects a Flask web app to MetaTrader 5 through a local TCP socket bridge. It is designed for traders who want a fast TradingView-like interface while still using an MT5 demo or live account.
 
----
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Backend-Flask-green)](https://flask.palletsprojects.com/)
+[![MT5](https://img.shields.io/badge/Bridge-MetaTrader%205-orange)](https://www.metatrader5.com/)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey)](./LICENSE)
 
-## ✨ Features / Các tính năng nổi bật
+## Why This Project Exists
 
-### 1. 🎛️ Multi-Chart Layouts (Hệ thống Đa Biểu đồ)
-*   Supports **1, 2 Vertical, 2 Horizontal, and 4 Grid layouts** (TradingView Premium Style).
-*   Active chart focusing with unified symbol and timeframe toolbars.
-*   **Sync Time & Scroll:** Fully synchronized scrolling and zooming across all charts at 60 FPS.
-*   **Sync Crosshair:** Dead-simple crosshair companion lines matching cursor coordinates in real-time.
-*   *Hỗ trợ chia lưới 1, 2 cột, 2 dòng, và 4 ô lưới chuyên nghiệp.*
-*   *Đồng bộ hóa cuộn, thu phóng (Sync Time/Scroll) và đồng bộ con trỏ chữ thập (Sync Crosshair) tức thời.*
+MetaTrader 5 is powerful for execution, but its Python package is hard to use on macOS. This project avoids that problem by using a small MQL5 Expert Advisor as a socket client. The browser UI talks to Flask, Flask talks to MT5, and MT5 sends back candles, prices, positions, account data, and deal history.
 
-### 2. ⏪ Bar Replay Engine (Bộ tua nến Backtest thủ công)
-*   Play, pause, step forward, and adjust playback speed dynamically.
-*   Independent bar replay sessions running concurrently on different chart panels.
-*   *Tua nến thủ công: Chạy, tạm dừng, tiến từng nến, và chỉnh tốc độ tua nến linh hoạt.*
-*   *Chạy tua nến độc lập trên từng biểu đồ con trong chế độ Multi-chart.*
+```mermaid
+flowchart LR
+    Browser["Browser UI<br/>TradingView-style charts"] --> Flask["Flask API<br/>localhost:5000"]
+    Flask --> Socket["TCP Socket<br/>127.0.0.1:9000"]
+    Socket --> EA["MacGateway.mq5<br/>Expert Advisor"]
+    EA --> MT5["MetaTrader 5<br/>Demo or live account"]
+    MT5 --> EA --> Socket --> Flask --> Browser
+```
 
-### 3. 🎨 Elite Drawing Tools (Công cụ vẽ Kỹ thuật cao cấp)
-*   **Complete Toolset:** Cursor, Trend Line, Ray, Arrow, Extended Line, Horizontal Line, Horizontal Ray, and Rectangle.
-*   **Interactive Controls:** Instant select, drag-and-drop entire drawings with zero geometry warping, and quick delete via `Delete`/`Backspace` keys.
-*   **Geometric Object Labels:** Double-click any drawing to write annotations, change border width, color, and toggle label visibility (Retina-crisp, screen-aware sticky labels).
-*   **Long/Short Position (1-Click Placement):** Place risk/reward boxes instantly. Automatically calculates Stop Loss (100 pips) and Take Profit (200 pips) customized to asset types (FX, Gold, JPY pairs, Crypto). Drag anchors to dynamically update PnL and risk ratio.
-*   *Đầy đủ bộ công cụ vẽ: Trendline, Ray, Arrow, Horizontal Ray, Rectangle...*
-*   *Tương tác mượt mà: Di chuyển hình vẽ không méo tỷ lệ, xóa nhanh bằng phím tắt Delete.*
-*   *Viết chữ lên vật thể vẽ (Double-click hiện Sleek Settings Modal), bám biên màn hình thông minh.*
-*   *Công cụ đặt vị thế Long/Short (1-Click): Tự động tính SL/TP theo pipSize riêng biệt của Vàng, FX, JPY, Crypto.*
+## Highlights
 
-### 4. 🍏 macOS & Windows Native Support (Hỗ trợ Đa nền tảng Native)
-*   **TCP Socket Gateway:** Cross-platform socket architecture allows the Flask server to communicate natively on macOS (with MT5 running inside official Wine wrapper) and Windows without heavy VMs.
-*   **Zero CPU Overheating:** Designed using 100% native Python standard libraries (No compiled dependencies, no pandas/numpy required in requirements). Extremely lightweight for older laptops (e.g. Macbook Pro 2017).
-*   *Giao tiếp TCP Socket Gateway giúp chạy mượt mà native trên macOS (MT5 chạy qua Wine) và Windows.*
-*   *Không gây nóng máy, dung lượng siêu nhẹ (chỉ cần thư viện Flask).*
+- TradingView-style chart workspace with 1, 2, and 4 chart layouts.
+- Bar replay with play, pause, step forward, keyboard shortcuts, jump-to-date, and speed control.
+- Frontend history cache for faster replay timeframe switching.
+- Live MT5 account panel with balance, equity, margin, open positions, and recent deal history.
+- Market buy/sell execution from the web UI through MT5.
+- Virtual backtest mode with simulated positions, pending orders, SL/TP, and history.
+- Custom chart time formatting with full date and time display.
+- Lightweight stack: Flask, vanilla JavaScript, CSS, and MQL5 sockets.
 
----
+## Visual Overview
 
-## 🚀 Installation & Setup / Hướng dẫn cài đặt
+### Data And Trading Flow
 
-### Prerequisite / Điều kiện tiên quyết
-*   **Python 3.8+** installed on your system.
-*   **MetaTrader 5** terminal installed and logged into a demo/live broker account.
+```mermaid
+sequenceDiagram
+    participant UI as Web UI
+    participant API as Flask API
+    participant Socket as TCP Socket
+    participant EA as MacGateway EA
+    participant MT5 as MetaTrader 5
 
----
+    UI->>API: Request candles, price, account, positions, history
+    API->>Socket: Send command
+    Socket->>EA: GET_DATA / GET_POSITIONS / GET_HISTORY
+    EA->>MT5: Read market and account data
+    MT5-->>EA: Return result
+    EA-->>Socket: JSON response
+    Socket-->>API: Parsed JSON
+    API-->>UI: Render chart and dashboard
+```
 
-### 🍏 For macOS Users / Dành cho người dùng Mac
+### Replay Cache Flow
 
-#### 1. Configure WebRequest in MT5 Mac
-1.  Open **MetaTrader 5** on macOS.
-2.  Go to **Tools** > **Options** (or press `Cmd + O` / `Ctrl + O`).
-3.  Navigate to the **Expert Advisors** tab.
-4.  Check **"Allow WebRequest for listed URL"**.
-5.  Double-click the **"+"** sign and add: `127.0.0.1`. Click **OK**.
+```mermaid
+flowchart TD
+    A["User enters replay"] --> B["Load active timeframe data"]
+    B --> C["Save fullData and replay index"]
+    C --> D["Warm common timeframe caches in background"]
+    D --> E{"User changes timeframe"}
+    E -->|Cache covers replay time| F["Switch instantly from browser cache"]
+    E -->|Cache missing| G["Fetch only needed bars from MT5"]
+    F --> H["Align replay index by timestamp"]
+    G --> H
+    H --> I["Reset TradingView data and center visible range"]
+```
 
-#### 2. Install the Expert Advisor (EA)
-1.  In MT5, click **File** > **Open Data Folder**.
-2.  Navigate to `MQL5/Experts/`.
-3.  Copy [MacGateway.mq5](./MacGateway.mq5) from this project and paste it into the `Experts` directory.
-4.  Back in MT5, right-click **Expert Advisors** in the *Navigator* side panel and click **Refresh**.
-5.  Drag and drop **MacGateway** onto any open chart.
-6.  In the EA settings panel, check **"Allow Algo Trading"** and click **OK**.
-7.  Click the **Algo Trading** button in the top toolbar to turn the EA's hat icon **green** (Active).
+## Repository Layout
 
-#### 3. Run the Web Application
-1.  Open Terminal, navigate to the project directory, and install requirements:
-    ```bash
-    pip install -r requirements.txt
-    ```
-2.  Start the Flask server:
-    ```bash
-    python app.py
-    ```
-3.  Open your browser and navigate to `http://localhost:5000`.
+```text
+.
+├── app.py                    # Flask routes and API endpoints
+├── mt5_data.py               # Thread-safe TCP socket server for MT5
+├── MacGateway.mq5            # MT5 Expert Advisor socket client
+├── templates/index.html      # Main app layout
+├── static/css/style.css      # App styling and responsive layout
+├── static/js/datafeed.js     # TradingView datafeed and history cache
+├── static/js/chart.js        # Chart panels, trade manager, live dashboard
+├── static/js/replay.js       # Bar replay engine
+└── static/charting_library/  # Local TradingView Advanced Charts files
+```
 
----
+## Important Note About TradingView Advanced Charts
 
-### 💻 For Windows Users / Dành cho người dùng Windows
+This repository does not vendor `static/charting_library/`.
 
-You can set it up **exactly like the macOS guide** using the TCP Socket Gateway (Recommended, lightweight), or run it natively if you have the `MetaTrader5` package.
+TradingView Advanced Charts is not the same as the open-source Lightweight Charts package. It requires access from TradingView and may have redistribution limits. To run this project locally, place your licensed Charting Library files in:
 
-#### Method A: TCP Socket Gateway (Same as macOS - Recommended)
-1.  Open **MetaTrader 5** on Windows.
-2.  Go to **Tools** > **Options** > **Expert Advisors** > Enable **WebRequest** for `127.0.0.1`.
-3.  Copy [MacGateway.mq5](./MacGateway.mq5) into your MT5's `MQL5/Experts/` folder, refresh and drag it onto a chart (Enable **Algo Trading**).
-4.  Run `pip install -r requirements.txt` and `python app.py`.
+```text
+static/charting_library/
+```
 
----
+The app expects this file to exist:
 
-## 🛠️ Technology Stack / Công nghệ sử dụng
+```text
+static/charting_library/charting_library.standalone.js
+```
 
-*   **Frontend:** HTML5, Vanilla CSS3 (Glassmorphism design system), JavaScript (ES6+), [TradingView Lightweight Charts v5.2.0](https://github.com/tradingview/lightweight-charts), Custom Label Overlay Renderers.
-*   **Backend:** Python 3 (Flask), Standard Socket and Threading libraries.
-*   **MetaTrader 5 Bridge:** MQL5 Network Sockets (Non-blocking high-frequency timers).
+## Requirements
 
----
+- Python 3.8 or newer
+- MetaTrader 5
+- A demo or live MT5 account
+- TradingView Advanced Charts files
+- Flask
 
-## 📝 License / Bản quyền
+Install Python dependencies:
 
-This project is licensed under the **MIT License** - see the [LICENSE](./LICENSE) file for details.
+```bash
+pip install -r requirements.txt
+```
 
-*Dự án được phân phối tự do dưới giấy phép MIT License.*
+## Setup
+
+### 1. Install The MT5 Expert Advisor
+
+1. Open MetaTrader 5.
+2. Click `File > Open Data Folder`.
+3. Open `MQL5/Experts/`.
+4. Copy `MacGateway.mq5` into that folder.
+5. In MT5 Navigator, right-click `Expert Advisors` and choose `Refresh`.
+6. Drag `MacGateway` onto any chart.
+7. Enable `Allow Algo Trading`.
+8. Turn on the MT5 `Algo Trading` button.
+
+### 2. Start The Web App
+
+```bash
+python app.py
+```
+
+Then open:
+
+```text
+http://localhost:5000
+```
+
+You should see the MT5 status change to connected when the EA connects to the local socket server.
+
+## Socket Commands
+
+The Flask backend and MT5 EA communicate with newline-terminated text commands:
+
+| Command | Purpose |
+| --- | --- |
+| `GET_SYMBOLS` | List Market Watch symbols |
+| `GET_PRICE;<symbol>` | Get bid and ask |
+| `GET_DATA;<symbol>;<timeframe>;<bars>` | Get OHLCV candles |
+| `TRADE_BUY;<symbol>;<lots>;<sl>;<tp>` | Place market buy |
+| `TRADE_SELL;<symbol>;<lots>;<sl>;<tp>` | Place market sell |
+| `TRADE_CLOSE;<ticket>` | Close an open position |
+| `GET_POSITIONS` | Get open positions |
+| `GET_HISTORY;<days>` | Get recent MT5 deal history |
+| `GET_ACCOUNT` | Get account summary |
+
+## API Endpoints
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/api/status` | `GET` | MT5 connection status |
+| `/api/symbols` | `GET` | Available symbols |
+| `/api/data` | `POST` | Historical candles |
+| `/api/price/<symbol>` | `GET` | Current bid and ask |
+| `/api/trade/place` | `POST` | Place a live MT5 order |
+| `/api/trade/close` | `POST` | Close a live MT5 position |
+| `/api/trade/positions` | `GET` | Open MT5 positions |
+| `/api/trade/history?days=30` | `GET` | Recent MT5 deals |
+| `/api/trade/account` | `GET` | Account balance and margin data |
+
+## Development Notes
+
+- Keep all MT5 socket calls inside `MT5DataFetcher._send_request(...)` so requests stay thread-safe.
+- Do not edit the TradingView library bundle directly. Use widget options, datafeed logic, CSS, and app code.
+- Replay mode depends on timestamp alignment. Update `replayManager.fullData` and `replayManager.currentIndex` before forcing chart data reloads.
+- The live history tab reads MT5 deal history. A newly opened live position appears as `Opened`; closed deals appear as `Profit`, `Loss`, or `Closed`.
+
+## Troubleshooting
+
+### MT5 status stays disconnected
+
+- Make sure `python app.py` is running.
+- Make sure `MacGateway.mq5` is attached to an MT5 chart.
+- Make sure Algo Trading is enabled.
+- Check that the EA uses `127.0.0.1` and port `9000`.
+
+### The chart does not load
+
+- Check that `static/charting_library/charting_library.standalone.js` exists.
+- Check the Flask terminal for `/api/data` errors.
+- Make sure MT5 has the symbol selected in Market Watch.
+
+### Live trade history is empty
+
+- The history tab reads MT5 deals from the last 30 days.
+- Open deals should appear as `Opened`.
+- Closed deals should appear as `Profit`, `Loss`, or `Closed`.
+- If MT5 history is filtered or empty, open the MT5 Toolbox History tab and make sure recent deals are available.
+
+## Roadmap
+
+- Pending order support for live MT5 mode.
+- Export backtest results to CSV.
+- Strategy notes and session tagging.
+- Saved workspaces and chart templates.
+- Docker-friendly backend mode for Windows/Linux.
+
+## License
+
+This project is released under the MIT License. See [LICENSE](./LICENSE).

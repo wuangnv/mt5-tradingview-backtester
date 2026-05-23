@@ -63,6 +63,11 @@ db.sqlite3-journal
 # Flask stuff:
 instance/
 .webassets-cache
+server.log
+
+# TradingView Advanced Charts is proprietary.
+# Download it from TradingView with your own license and place it here locally.
+static/charting_library/
 
 # Scrapy stuff:
 .scrapy

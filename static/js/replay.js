@@ -159,6 +159,40 @@ class ReplayManager {
             if (cm.activePanel.chart) {
                 try {
                     cm.activePanel.chart.resetData();
+
+                    // Auto-scroll the chart to focus on the active replay bar
+                    setTimeout(() => {
+                        if (cm.activePanel?.chartReady && cm.activePanel?.chart && this.fullData[this.currentIndex]) {
+                            const timeframe = cm.activePanel.timeframe;
+                            const timeframeSeconds = {
+                                'M1': 60,
+                                'M5': 300,
+                                'M15': 900,
+                                'M30': 1800,
+                                'H1': 3600,
+                                'H4': 14400,
+                                'D1': 86400,
+                                'W1': 604800
+                            }[timeframe] || 3600;
+
+                            const activeTime = this.fullData[this.currentIndex].time;
+                            const range = {
+                                from: activeTime - 120 * timeframeSeconds, // Show 120 bars of history
+                                to: activeTime + 30 * timeframeSeconds     // Show 30 bars of empty space to the right
+                            };
+
+                            try {
+                                cm.activePanel._ignoreRangeChanged = true; // Prevent sync feedback loops
+                                cm.activePanel.chart.setVisibleRange(range);
+                                setTimeout(() => {
+                                    if (cm.activePanel) cm.activePanel._ignoreRangeChanged = false;
+                                }, 300);
+                            } catch (err) {
+                                console.error("Error setting visible range on chart reset:", err);
+                                if (cm.activePanel) cm.activePanel._ignoreRangeChanged = false;
+                            }
+                        }
+                    }, 400); // 400ms delay to let TV load and draw the candles first
                 } catch (e) {
                     console.error("Error calling resetData on backward seek:", e);
                 }
@@ -254,11 +288,12 @@ class ReplayManager {
         const val = document.getElementById('replay-start-date').value;
         if (!val) { alert('Please select a date'); return; }
 
-        // datetime-local gives LOCAL time; convert to UTC timestamp
-        const localDate = new Date(val);
-        if (isNaN(localDate)) { alert('Invalid date'); return; }
+        const date = this._parseDateTimeString(val);
+        if (!date) { alert('Invalid date format. Please use DD/MM/YYYY HH:MM'); return; }
 
-        const targetTs = Math.floor(localDate.getTime() / 1000);
+        // Local date parsed from input -> convert to UTC timestamp based on chart timezone
+        const tz = window.chartManager?.timezoneOffset ?? 7;
+        const targetTs = Math.floor(date.getTime() / 1000) - (tz * 3600);
 
         if (!this.fullData.length) return;
 
@@ -266,18 +301,45 @@ class ReplayManager {
         const lastTs  = this.fullData[this.fullData.length - 1].time;
 
         if (targetTs < firstTs || targetTs > lastTs) {
+            // Estimate bars needed based on the current timeframe
+            const activePanel = window.chartManager?.activePanel;
+            if (!activePanel) return;
+
+            const timeframe = activePanel.timeframe;
+            const timeframeSeconds = {
+                'M1': 60,
+                'M5': 300,
+                'M15': 900,
+                'M30': 1800,
+                'H1': 3600,
+                'H4': 14400,
+                'D1': 86400,
+                'W1': 604800
+            }[timeframe] || 3600;
+
+            const secondsDiff = lastTs - targetTs;
+            let estimatedBars = Math.ceil((secondsDiff / timeframeSeconds) * 1.15); // 15% buffer
+
+            // Limit to a reasonable max like 100,000 bars
+            const barsToLoad = Math.max(5000, Math.min(estimatedBars, 100000));
+
+            const formattedTarget = date.toLocaleDateString();
             const ok = confirm(
-                `Date is outside the loaded range:\n` +
-                `${new Date(firstTs * 1000).toLocaleDateString()} → ${new Date(lastTs * 1000).toLocaleDateString()}\n\n` +
-                `Load 10 000 bars from MT5 to expand range?`
+                `Date ${formattedTarget} is outside the current loaded range.\n\n` +
+                `Estimated bars needed: ~${estimatedBars} bars.\n` +
+                `Fetch ${barsToLoad} bars from MT5 to expand the range?`
             );
             if (!ok) return;
+
             if (window.chartManager) {
-                const success = await window.chartManager.loadMoreData(10000);
+                const success = await window.chartManager.loadMoreData(barsToLoad);
                 if (success) {
                     this.fullData = window.chartManager.fullData;
                     this._lastDisplayedIndex = -1;
-                } else return;
+                } else {
+                    alert("Failed to load historical data from MetaTrader 5.");
+                    return;
+                }
             }
         }
 
@@ -385,10 +447,43 @@ class ReplayManager {
         const tz = window.chartManager?.timezoneOffset ?? 7;
         const d = new Date(timestamp * 1000);
         d.setUTCHours(d.getUTCHours() + tz);
-        // Format YYYY-MM-DDTHH:MM for datetime-local input
+        // Format as DD/MM/YYYY HH:MM for easy manual reading & text parsing
         const pad = n => String(n).padStart(2, '0');
-        const val = `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+        const val = `${pad(d.getUTCDate())}/${pad(d.getUTCMonth()+1)}/${d.getUTCFullYear()} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
         document.getElementById('replay-start-date').value = val;
+    }
+
+    _parseDateTimeString(str) {
+        if (!str) return null;
+
+        // Clean up string
+        const cleaned = str.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+
+        // Try parsing DD/MM/YYYY HH:MM or DD/MM/YYYY
+        const dmyMatch = cleaned.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})(?:\s+(\d{1,2}):(\d{1,2}))?$/);
+        if (dmyMatch) {
+            const day = parseInt(dmyMatch[1], 10);
+            const month = parseInt(dmyMatch[2], 10) - 1; // 0-indexed
+            const year = parseInt(dmyMatch[3], 10);
+            const hour = dmyMatch[4] ? parseInt(dmyMatch[4], 10) : 0;
+            const minute = dmyMatch[5] ? parseInt(dmyMatch[5], 10) : 0;
+            return new Date(year, month, day, hour, minute);
+        }
+
+        // Try parsing YYYY-MM-DD HH:MM or YYYY-MM-DD
+        const ymdMatch = cleaned.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2}))?$/);
+        if (ymdMatch) {
+            const year = parseInt(ymdMatch[1], 10);
+            const month = parseInt(ymdMatch[2], 10) - 1;
+            const day = parseInt(ymdMatch[3], 10);
+            const hour = ymdMatch[4] ? parseInt(ymdMatch[4], 10) : 0;
+            const minute = ymdMatch[5] ? parseInt(ymdMatch[5], 10) : 0;
+            return new Date(year, month, day, hour, minute);
+        }
+
+        // Fallback to standard JavaScript date parsing
+        const fallback = new Date(str);
+        return isNaN(fallback.getTime()) ? null : fallback;
     }
 }
 

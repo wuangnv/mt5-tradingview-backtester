@@ -241,6 +241,13 @@ void ProcessCommand(string command)
    {
       HandleGetPositions();
    }
+   else if(cmd_type == "GET_HISTORY")
+   {
+      int days = 30;
+      if(total_parts >= 2)
+         days = (int)StringToInteger(parts[1]);
+      HandleGetHistory(days);
+   }
    else if(cmd_type == "GET_ACCOUNT")
    {
       HandleGetAccount();
@@ -504,6 +511,143 @@ void HandleGetPositions()
          count++;
       }
    }
+   json += "]}";
+   SendResponse(json);
+}
+
+//+------------------------------------------------------------------+
+//| Helpers for MT5 history JSON                                     |
+//+------------------------------------------------------------------+
+string DealTypeToString(ENUM_DEAL_TYPE type)
+{
+   if(type == DEAL_TYPE_BUY)
+      return "BUY";
+   if(type == DEAL_TYPE_SELL)
+      return "SELL";
+   return "OTHER";
+}
+
+string DealEntryToString(ENUM_DEAL_ENTRY entry)
+{
+   if(entry == DEAL_ENTRY_IN)
+      return "IN";
+   if(entry == DEAL_ENTRY_OUT)
+      return "OUT";
+   if(entry == DEAL_ENTRY_INOUT)
+      return "INOUT";
+   if(entry == DEAL_ENTRY_OUT_BY)
+      return "OUT_BY";
+   return "UNKNOWN";
+}
+
+double FindHistoryEntryPrice(ulong position_id, string symbol, double fallback)
+{
+   int total = HistoryDealsTotal();
+   for(int i = 0; i < total; i++)
+   {
+      ulong ticket = HistoryDealGetTicket(i);
+      if(ticket <= 0)
+         continue;
+
+      ulong deal_position_id = (ulong)HistoryDealGetInteger(ticket, DEAL_POSITION_ID);
+      string deal_symbol = HistoryDealGetString(ticket, DEAL_SYMBOL);
+      ENUM_DEAL_ENTRY entry = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(ticket, DEAL_ENTRY);
+
+      if(deal_position_id == position_id && deal_symbol == symbol && entry == DEAL_ENTRY_IN)
+         return HistoryDealGetDouble(ticket, DEAL_PRICE);
+   }
+
+   return fallback;
+}
+
+//+------------------------------------------------------------------+
+//| Handle GET_HISTORY request                                       |
+//+------------------------------------------------------------------+
+void HandleGetHistory(int days)
+{
+   if(days <= 0)
+      days = 30;
+   if(days > 365)
+      days = 365;
+
+   datetime to_time = TimeCurrent();
+   datetime from_time = to_time - days * 86400;
+
+   if(!HistorySelect(from_time, to_time))
+   {
+      uint error_code = GetLastError();
+      SendResponse("{\"success\":false,\"message\":\"HistorySelect failed. Error: " + IntegerToString(error_code) + "\"}");
+      return;
+   }
+
+   int total = HistoryDealsTotal();
+   string json = "{\"success\":true,\"history\":[";
+   int count = 0;
+
+   for(int i = total - 1; i >= 0 && count < 100; i--)
+   {
+      ulong ticket = HistoryDealGetTicket(i);
+      if(ticket <= 0)
+         continue;
+
+      ENUM_DEAL_TYPE deal_type = (ENUM_DEAL_TYPE)HistoryDealGetInteger(ticket, DEAL_TYPE);
+      if(deal_type != DEAL_TYPE_BUY && deal_type != DEAL_TYPE_SELL)
+         continue;
+
+      ENUM_DEAL_ENTRY entry = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(ticket, DEAL_ENTRY);
+      string symbol = HistoryDealGetString(ticket, DEAL_SYMBOL);
+      ulong order_id = (ulong)HistoryDealGetInteger(ticket, DEAL_ORDER);
+      ulong position_id = (ulong)HistoryDealGetInteger(ticket, DEAL_POSITION_ID);
+      long time_val = HistoryDealGetInteger(ticket, DEAL_TIME);
+      double volume = HistoryDealGetDouble(ticket, DEAL_VOLUME);
+      double price = HistoryDealGetDouble(ticket, DEAL_PRICE);
+      double profit = HistoryDealGetDouble(ticket, DEAL_PROFIT);
+      double commission = HistoryDealGetDouble(ticket, DEAL_COMMISSION);
+      double swap = HistoryDealGetDouble(ticket, DEAL_SWAP);
+      double total_profit = profit + commission + swap;
+
+      double price_open = price;
+      double price_close = 0.0;
+      string result = "Opened";
+
+      if(entry == DEAL_ENTRY_OUT || entry == DEAL_ENTRY_OUT_BY)
+      {
+         price_open = FindHistoryEntryPrice(position_id, symbol, price);
+         price_close = price;
+         if(total_profit > 0.0)
+            result = "Profit";
+         else if(total_profit < 0.0)
+            result = "Loss";
+         else
+            result = "Closed";
+      }
+      else if(entry == DEAL_ENTRY_INOUT)
+      {
+         price_close = price;
+         result = "Reversed";
+      }
+
+      if(count > 0)
+         json += ",";
+
+      json += "{\"ticket\":" + IntegerToString(ticket) +
+              ",\"order\":" + IntegerToString(order_id) +
+              ",\"position_id\":" + IntegerToString(position_id) +
+              ",\"symbol\":\"" + symbol + "\"" +
+              ",\"type\":\"" + DealTypeToString(deal_type) + "\"" +
+              ",\"entry\":\"" + DealEntryToString(entry) + "\"" +
+              ",\"volume\":" + DoubleToString(volume, 2) +
+              ",\"price_open\":" + DoubleToString(price_open, 5) +
+              ",\"price_close\":" + DoubleToString(price_close, 5) +
+              ",\"profit\":" + DoubleToString(profit, 2) +
+              ",\"commission\":" + DoubleToString(commission, 2) +
+              ",\"swap\":" + DoubleToString(swap, 2) +
+              ",\"profit_total\":" + DoubleToString(total_profit, 2) +
+              ",\"result\":\"" + result + "\"" +
+              ",\"time\":" + IntegerToString(time_val) + "}";
+      count++;
+   }
+
    json += "]}";
    SendResponse(json);
 }

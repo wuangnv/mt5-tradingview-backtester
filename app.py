@@ -148,6 +148,13 @@ def get_positions():
     positions = mt5_fetcher.get_positions()
     return jsonify({'success': True, 'positions': positions})
 
+@app.route('/api/trade/history', methods=['GET'])
+def get_trade_history():
+    """API lấy lịch sử deal gần đây từ MT5"""
+    days = request.args.get('days', 30)
+    history = mt5_fetcher.get_trade_history(days)
+    return jsonify({'success': True, 'history': history})
+
 @app.route('/api/trade/account', methods=['GET'])
 def get_account():
     """API lấy thông tin số dư tài khoản"""

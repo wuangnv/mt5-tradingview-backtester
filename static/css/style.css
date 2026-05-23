@@ -30,6 +30,7 @@ body {
     background: #1c2030;
     border-bottom: 1px solid #2a2e39;
     height: 48px;
+    min-width: 0;
 }
 
 .toolbar-group {
@@ -37,6 +38,7 @@ body {
     align-items: center;
     gap: 8px;
     height: 100%;
+    min-width: 0;
 }
 
 .toolbar-group.right-aligned {
@@ -267,6 +269,8 @@ body {
     display: flex;
     flex: 1;
     overflow: hidden;
+    min-width: 0;
+    min-height: 0;
 }
 
 /* Left Sidebar - Drawing Tools */
@@ -317,6 +321,13 @@ body {
     flex: 1;
     position: relative;
     background: #131722;
+    min-width: 0;
+    min-height: 0;
+    transition: padding-bottom 0.25s ease;
+}
+
+.chart-area.replay-mode {
+    padding-bottom: 78px;
 }
 
 .chart-area.jump-mode {
@@ -351,6 +362,8 @@ body {
     background: #1c2030;
     gap: 4px;
     padding: 0;
+    min-width: 0;
+    min-height: 0;
 }
 
 .charts-grid.layout-1 {
@@ -393,6 +406,8 @@ body {
 .chart-panel-container {
     width: 100%;
     height: 100%;
+    min-width: 0;
+    min-height: 0;
 }
 
 .chart-panel-header {
@@ -654,6 +669,53 @@ body {
     .replay-slider-section {
         max-width: 300px;
     }
+
+    .top-toolbar {
+        gap: 4px;
+        padding: 6px 8px;
+    }
+
+    .brand-container {
+        margin-right: 4px;
+    }
+
+    .brand-name {
+        max-width: 132px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .toolbar-btn {
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+    .account-summary-item {
+        display: none;
+    }
+
+    .tv-replay-toolbar {
+        bottom: 8px;
+        width: calc(100% - 16px);
+        max-width: calc(100% - 16px);
+        gap: 6px;
+        padding: 7px 8px 16px 8px;
+    }
+
+    .replay-drag-handle,
+    .tv-replay-toolbar > .toolbar-separator-v,
+    .speed-label {
+        display: none;
+    }
+
+    .replay-status-text {
+        min-width: 92px;
+    }
+
+    .tv-replay-date-input {
+        width: 124px;
+    }
 }
 
 /* ─── Premium Trading Dashboard & Right Panel ──────────────────────── */
@@ -665,6 +727,8 @@ body {
     height: 100%;
     overflow: hidden;
     background: #131722;
+    min-width: 0;
+    min-height: 0;
 }
 
 /* Bottom Positions & History Dashboard */
@@ -693,12 +757,21 @@ body {
     height: 38px;
     justify-content: space-between;
     user-select: none;
+    gap: 10px;
+    min-width: 0;
 }
 
 .tab-btn-group {
     display: flex;
     align-items: center;
     height: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tab-btn-group::-webkit-scrollbar {
+    display: none;
 }
 
 .dashboard-tabs .tab-btn {
@@ -737,6 +810,9 @@ body {
     color: #787b86;
     align-items: center;
     height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .account-summary-item strong {
@@ -1207,6 +1283,31 @@ body {
     background: rgba(8, 153, 129, 0.15);
     color: #089981;
     border: 1px dashed rgba(8, 153, 129, 0.3);
+}
+
+.badge.result-opened {
+    background: rgba(41, 98, 255, 0.15);
+    color: #2962ff;
+    border: 1px dashed rgba(41, 98, 255, 0.3);
+}
+
+.badge.result-profit {
+    background: rgba(8, 153, 129, 0.15);
+    color: #089981;
+    border: 1px dashed rgba(8, 153, 129, 0.3);
+}
+
+.badge.result-loss {
+    background: rgba(242, 54, 69, 0.15);
+    color: #f23645;
+    border: 1px dashed rgba(242, 54, 69, 0.3);
+}
+
+.badge.result-closed,
+.badge.result-reversed {
+    background: rgba(255, 152, 0, 0.15);
+    color: #ff9800;
+    border: 1px dashed rgba(255, 152, 0, 0.3);
 }
 
 .badge.result-manual {
@@ -1708,18 +1809,22 @@ body {
    ========================================================================== */
 
 .tv-replay-toolbar {
-    position: fixed;
-    top: 60px;
+    position: absolute;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 8px;
-    background: rgba(28, 32, 48, 0.9);
+    width: min(980px, calc(100% - 24px));
+    max-width: calc(100% - 24px);
+    background: rgba(28, 32, 48, 0.95);
     border: 1px solid rgba(80, 84, 100, 0.65);
     border-radius: 8px;
-    padding: 8px 16px 14px 16px; /* space for bottom slider */
+    padding: 8px 14px 16px 14px; /* space for bottom slider */
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -1732,12 +1837,8 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    cursor: grab;
+    cursor: default;
     padding-right: 4px;
-}
-
-.replay-drag-handle:active {
-    cursor: grabbing;
 }
 
 .replay-drag-icon {
@@ -1810,7 +1911,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 90px;
+    min-width: 104px;
     font-size: 11px;
     line-height: 1.3;
 }
@@ -1858,6 +1959,7 @@ body {
     display: flex;
     align-items: center;
     gap: 4px;
+    min-width: 0;
 }
 
 .tv-replay-date-input {
@@ -1870,6 +1972,7 @@ body {
     outline: none;
     font-family: inherit;
     width: 145px;
+    min-width: 0;
 }
 
 .tv-replay-date-input::-webkit-calendar-picker-indicator {
@@ -1920,7 +2023,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 6px;
+    height: 8px;
     overflow: hidden;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -1949,7 +2052,7 @@ body {
 .tv-replay-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 12px;
-    height: 6px;
+    height: 8px;
     background: #2962ff;
     cursor: pointer;
     border-radius: 0;
@@ -1969,7 +2072,7 @@ body {
 
 .tv-replay-slider::-moz-range-thumb {
     width: 12px;
-    height: 6px;
+    height: 8px;
     background: #2962ff;
     cursor: pointer;
     border: none;
@@ -2123,4 +2226,28 @@ body {
     line-height: 1.5;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .tv-replay-toolbar {
+        bottom: 8px;
+        width: calc(100% - 16px);
+        max-width: calc(100% - 16px);
+        gap: 6px;
+        padding: 7px 8px 16px 8px;
+    }
+
+    .tv-replay-toolbar > .toolbar-separator-v,
+    .replay-drag-handle,
+    .speed-label {
+        display: none;
+    }
+
+    .replay-status-text {
+        min-width: 92px;
+    }
+
+    .tv-replay-date-input {
+        width: 124px;
+    }
 }

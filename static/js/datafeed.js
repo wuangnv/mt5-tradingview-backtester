@@ -19,6 +19,94 @@ const configurationData = {
 class MT5Datafeed {
     constructor() {
         this.subscribers = {};
+        this.historyCache = new Map();
+        this.historyRequests = new Map();
+    }
+
+    _historyKey(symbol, timeframe) {
+        return `${symbol}::${timeframe}`;
+    }
+
+    getCachedHistory(symbol, timeframe) {
+        const cached = this.historyCache.get(this._historyKey(symbol, timeframe));
+        return cached ? cached.data : null;
+    }
+
+    hasHistoryCoverage(symbol, timeframe, timestamp, minBars = 2) {
+        const data = this.getCachedHistory(symbol, timeframe);
+        if (!data || data.length < minBars) return false;
+        return data[0].time <= timestamp && data[data.length - 1].time >= timestamp;
+    }
+
+    storeHistory(symbol, timeframe, data) {
+        if (!Array.isArray(data) || data.length === 0) return [];
+        const sorted = data.slice().sort((a, b) => a.time - b.time);
+        this.historyCache.set(this._historyKey(symbol, timeframe), {
+            data: sorted,
+            bars: sorted.length,
+            updatedAt: Date.now()
+        });
+        return sorted;
+    }
+
+    async fetchHistory(symbol, timeframe, bars = 2000, options = {}) {
+        const key = this._historyKey(symbol, timeframe);
+        const cached = this.historyCache.get(key);
+        const force = Boolean(options.force);
+
+        if (!force && cached?.data?.length >= bars) {
+            console.log(`[Datafeed] history cache hit for ${symbol} (${timeframe}) with ${cached.data.length} bars`);
+            return cached.data;
+        }
+
+        const requestKey = `${key}::${bars}`;
+        if (!force && this.historyRequests.has(requestKey)) {
+            console.log(`[Datafeed] sharing in-flight history request for ${symbol} (${timeframe}) ${bars} bars`);
+            return this.historyRequests.get(requestKey);
+        }
+
+        const request = (async () => {
+            console.log(`[Datafeed] fetching ${bars} bars for ${symbol} (${timeframe}) from backend`);
+            const res = await fetch('/api/data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbol, timeframe, bars })
+            });
+            const result = await res.json();
+            if (result.success && result.data && result.data.length > 0) {
+                return this.storeHistory(symbol, timeframe, result.data);
+            }
+            return [];
+        })();
+
+        this.historyRequests.set(requestKey, request);
+        try {
+            return await request;
+        } finally {
+            this.historyRequests.delete(requestKey);
+        }
+    }
+
+    filterReplayBars(bars) {
+        if (!Array.isArray(bars)) return [];
+        if (window.chartManager?.isReplayMode && window.replayManager?.fullData && window.replayManager?.currentIndex !== undefined) {
+            const activeBar = window.replayManager.fullData[window.replayManager.currentIndex];
+            if (activeBar) {
+                return bars.filter(bar => bar.time <= activeBar.time);
+            }
+        }
+        return bars;
+    }
+
+    toTradingViewBars(bars) {
+        return bars.map(bar => ({
+            time: bar.time * 1000,
+            open: bar.open,
+            high: bar.high,
+            low: bar.low,
+            close: bar.close,
+            volume: bar.tick_volume || bar.volume || 0
+        }));
     }
 
     onReady(callback) {
@@ -117,28 +205,14 @@ class MT5Datafeed {
             await panel.activeLoadPromise;
         }
 
-        // Cache hit check: if we already have the full history for this symbol and timeframe
-        if (panel && panel.symbol === symbolInfo.name && panel.timeframe === timeframe && panel.fullData && panel.fullData.length > 2) {
-            console.log(`[Datafeed] getBars (CACHED HIT) for ${symbolInfo.name} (${timeframe}) with ${panel.fullData.length} bars`);
-            let bars = panel.fullData;
-            
-            // If in Replay Mode, filter bars by timestamp to support multi-timeframe sync
-            if (cm?.isReplayMode && window.replayManager?.fullData && window.replayManager?.currentIndex !== undefined) {
-                const activeBar = window.replayManager.fullData[window.replayManager.currentIndex];
-                if (activeBar) {
-                    const activeTime = activeBar.time;
-                    bars = bars.filter(bar => bar.time <= activeTime);
-                }
+        const cachedHistory = this.getCachedHistory(symbolInfo.name, timeframe);
+        if (cachedHistory && cachedHistory.length > 2) {
+            console.log(`[Datafeed] getBars (GLOBAL CACHE HIT) for ${symbolInfo.name} (${timeframe}) with ${cachedHistory.length} bars`);
+            if (panel && panel.symbol === symbolInfo.name && panel.timeframe === timeframe) {
+                panel.fullData = cachedHistory;
             }
 
-            const tvBars = bars.map(bar => ({
-                time: bar.time * 1000, // TV expects milliseconds
-                open: bar.open,
-                high: bar.high,
-                low: bar.low,
-                close: bar.close,
-                volume: bar.tick_volume || bar.volume || 0
-            }));
+            const tvBars = this.toTradingViewBars(this.filterReplayBars(cachedHistory));
 
             console.log(`[Datafeed] getBars successfully returning ${tvBars.length} CACHED bars to TradingView`);
             onHistoryCallback(tvBars, { noData: tvBars.length === 0 });
@@ -146,20 +220,10 @@ class MT5Datafeed {
         }
 
         try {
-            console.log(`[Datafeed] Fetching ${timeframe} history from backend API...`);
-            const res = await fetch('/api/data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    symbol: symbolInfo.name,
-                    timeframe: timeframe,
-                    bars: 2000
-                })
-            });
-            const result = await res.json();
+            const data = await this.fetchHistory(symbolInfo.name, timeframe, 2000);
 
-            if (result.success && result.data && result.data.length > 0) {
-                let bars = result.data;
+            if (data.length > 0) {
+                let bars = data;
                 
                 // Store full data in the chartManager panel so Replay can access it
                 if (cm) {
@@ -168,30 +232,14 @@ class MT5Datafeed {
                         targetPanel = cm.activePanel;
                     }
                     if (targetPanel) {
-                        targetPanel.fullData = result.data;
+                        targetPanel.fullData = data;
                         targetPanel.symbol = symbolInfo.name;
                         targetPanel.timeframe = timeframe;
                         targetPanel.updateHeader();
                     }
                 }
 
-                // If in Replay Mode, filter bars by timestamp to support multi-timeframe sync
-                if (window.chartManager?.isReplayMode && window.replayManager?.fullData && window.replayManager?.currentIndex !== undefined) {
-                    const activeBar = window.replayManager.fullData[window.replayManager.currentIndex];
-                    if (activeBar) {
-                        const activeTime = activeBar.time;
-                        bars = bars.filter(bar => bar.time <= activeTime);
-                    }
-                }
-
-                const tvBars = bars.map(bar => ({
-                    time: bar.time * 1000, // TV expects milliseconds
-                    open: bar.open,
-                    high: bar.high,
-                    low: bar.low,
-                    close: bar.close,
-                    volume: bar.tick_volume || bar.volume || 0
-                }));
+                const tvBars = this.toTradingViewBars(this.filterReplayBars(bars));
 
                 console.log(`[Datafeed] getBars successfully returning ${tvBars.length} bars to TradingView`);
                 onHistoryCallback(tvBars, { noData: tvBars.length === 0 });
@@ -222,6 +270,16 @@ class MT5Datafeed {
      * Pushes real-time bar updates to matching subscribers
      */
     updateRealtime(symbol, timeframe, bar) {
+        const cached = this.getCachedHistory(symbol, timeframe);
+        if (cached && bar) {
+            const idx = cached.findIndex(d => d.time === bar.time);
+            if (idx >= 0) {
+                cached[idx] = bar;
+            } else if (!cached.length || bar.time > cached[cached.length - 1].time) {
+                cached.push(bar);
+            }
+        }
+
         const tfMap = {
             'M1': '1',
             'M5': '5',

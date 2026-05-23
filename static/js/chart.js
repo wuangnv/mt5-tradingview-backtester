@@ -58,6 +58,77 @@ class ChartPanel {
         }
     }
 
+    async fetchHistory(bars = 2000, options = {}) {
+        if (!window.MT5Datafeed?.fetchHistory) return [];
+        const data = await window.MT5Datafeed.fetchHistory(this.symbol, this.timeframe, bars, options);
+        if (data && data.length > 0) {
+            this.fullData = data;
+            this.updateTradeSnapshot(data[data.length - 1]);
+        }
+        return data || [];
+    }
+
+    updateTradeSnapshot(lastBar) {
+        if (!lastBar || !window.tradeManager) return;
+        const spread = window.tradeManager.getSpread(this.symbol);
+        window.tradeManager.currentBid = lastBar.close;
+        window.tradeManager.currentAsk = lastBar.close + spread;
+
+        const precision = window.tradeManager.getPrecision(this.symbol);
+        const quickSellEl = document.getElementById('quick-sell-price');
+        const quickBuyEl = document.getElementById('quick-buy-price');
+        if (quickSellEl) quickSellEl.textContent = window.tradeManager.currentBid.toFixed(precision);
+        if (quickBuyEl) quickBuyEl.textContent = window.tradeManager.currentAsk.toFixed(precision);
+
+        window.tradeManager.updateSLTPDefaultValues();
+        window.tradeManager.updateRiskRewardCalcs();
+        window.tradeManager.updateExecutionButton();
+    }
+
+    prewarmReplayTimeframes(targetTimestamp) {
+        if (!window.MT5Datafeed?.fetchHistory || !targetTimestamp) return;
+
+        const tfSeconds = {
+            'M1': 60,
+            'M5': 300,
+            'M15': 900,
+            'M30': 1800,
+            'H1': 3600,
+            'H4': 14400,
+            'D1': 86400,
+            'W1': 604800
+        };
+        const preferred = ['M5', 'M15', 'M30', 'H1', 'H4', 'D1'];
+        const symbol = this.symbol;
+        const currentTf = this.timeframe;
+        const queue = preferred.filter(tf =>
+            tf !== currentTf &&
+            !window.MT5Datafeed.hasHistoryCoverage(symbol, tf, targetTimestamp)
+        );
+
+        let chain = Promise.resolve();
+        queue.forEach((tf, idx) => {
+            chain = chain.then(() => new Promise(resolve => {
+                setTimeout(async () => {
+                    try {
+                        if (!this.isReplayMode) {
+                            resolve();
+                            return;
+                        }
+                        const secondsDiff = Math.max(0, Math.floor(Date.now() / 1000) - targetTimestamp);
+                        const estimatedBars = Math.ceil((secondsDiff / (tfSeconds[tf] || 3600)) * 1.15);
+                        const bars = Math.max(2000, Math.min(estimatedBars, 12000));
+                        console.log(`[ChartPanel ${this.id}] Background replay cache warm-up: ${symbol} ${tf} ${bars} bars`);
+                        await window.MT5Datafeed.fetchHistory(symbol, tf, bars);
+                    } catch (err) {
+                        console.warn(`[ChartPanel ${this.id}] Replay cache warm-up skipped for ${tf}:`, err);
+                    }
+                    resolve();
+                }, idx === 0 ? 800 : 350);
+            }));
+        });
+    }
+
     createChart() {
         this.chartContainerEl.id = 'chart_container_' + this.id;
 
@@ -72,6 +143,11 @@ class ChartPanel {
             'W1': 'W'
         };
         const res = resMap[this.timeframe] || '60';
+        const pad = value => String(value).padStart(2, '0');
+        const formatChartDate = date =>
+            `${pad(date.getUTCDate())}/${pad(date.getUTCMonth() + 1)}/${date.getUTCFullYear()}`;
+        const formatChartDateTime = date =>
+            `${formatChartDate(date)} ${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
 
         this.tvWidget = new TradingView.widget({
             symbol: this.symbol,
@@ -84,6 +160,29 @@ class ChartPanel {
             style: '1', // Candlestick
             autosize: true,
             fullscreen: false,
+            time_scale: {
+                time_visible: true,
+                seconds_visible: false
+            },
+            custom_formatters: {
+                timeFormatter: {
+                    format: formatChartDateTime,
+                    formatLocal: formatChartDateTime
+                },
+                dateFormatter: {
+                    format: formatChartDate,
+                    formatLocal: formatChartDate
+                },
+                tickMarkFormatter: (date, tickMarkType) => {
+                    if (['Time', 'TimeWithSeconds'].includes(tickMarkType)) {
+                        return `${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
+                    }
+                    if (tickMarkType === 'DayOfMonth') {
+                        return `${pad(date.getUTCDate())}/${pad(date.getUTCMonth() + 1)}`;
+                    }
+                    return formatChartDate(date);
+                }
+            },
             disabled_features: [
                 'volume_force_overlay',
                 'bottom_widget_bar',
@@ -125,7 +224,7 @@ class ChartPanel {
         this.tvWidget.onChartReady(() => {
             this.chartReady = true;
             this.chart = this.tvWidget.chart();
-            
+
             // Set scale margins
             try {
                 this.chart.priceScale('right').setMode(1);
@@ -157,12 +256,12 @@ class ChartPanel {
                 this.chart.crossHairMoved().subscribe(null, (params) => {
                     if (params && params.time) {
                         window.lastCrosshairTime = params.time;
-                        
+
                         // Dynamically switch active panel to this one when mouse hovers over it
                         if (this.manager.activePanel !== this) {
                             this.manager.setActivePanel(this);
                         }
-                        
+
                         if (this.manager.activePanel === this && this.manager.syncCrosshair) {
                             this.manager.syncCrosshairMove(this.id, params.time);
                         }
@@ -185,7 +284,7 @@ class ChartPanel {
                             this.manager.setActivePanel(this);
                         }
                     };
-                    
+
                     iframe.addEventListener('load', () => {
                         try {
                             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -197,7 +296,7 @@ class ChartPanel {
                             console.warn("Could not bind direct iframe DOM listener (same-origin check):", e);
                         }
                     });
-                    
+
                     // In case iframe has already loaded:
                     try {
                         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
@@ -243,24 +342,21 @@ class ChartPanel {
 
             // Subscribe to native symbol changes to sync dashboard and panel
             try {
-                this.chart.onSymbolChanged().subscribe(null, (symbolInfo) => {
+                this.chart.onSymbolChanged().subscribe(null, async (symbolInfo) => {
                     console.log(`[Chart ${this.id}] Native symbol changed to: ${symbolInfo.name}`);
                     if (this.symbol !== symbolInfo.name) {
-                        this.symbol = symbolInfo.name;
-                        
                         // Sync hidden symbol select if this is the active panel
                         if (this.manager.activePanel === this) {
                             const sel = document.getElementById('symbol-select');
                             if (sel) {
                                 sel.value = symbolInfo.name;
-                                sel.dispatchEvent(new Event('change'));
                             }
                             // Sync new TV navbar active symbol text
                             const activeSymText = document.getElementById('active-symbol-text');
                             if (activeSymText) activeSymText.textContent = symbolInfo.name;
                         }
-                        
-                        this.loadData();
+
+                        await this.changeSymbolOrTimeframe(symbolInfo.name, this.timeframe, true);
                     }
                 });
             } catch (e) {
@@ -269,7 +365,7 @@ class ChartPanel {
 
             // Subscribe to native timeframe changes to sync dashboard and panel
             try {
-                this.chart.onIntervalChanged().subscribe(null, (interval) => {
+                this.chart.onIntervalChanged().subscribe(null, async (interval) => {
                     console.log(`[Chart ${this.id}] Native interval changed to: ${interval}`);
                     const invResMap = {
                         '1': 'M1',
@@ -285,20 +381,14 @@ class ChartPanel {
                     };
                     const newTf = invResMap[interval] || 'H1';
                     if (this.timeframe !== newTf) {
-                        this.timeframe = newTf;
-                        
                         // Sync hidden timeframe buttons if this is the active panel
                         if (this.manager.activePanel === this) {
-                            document.querySelectorAll('.tf-btn').forEach(btn => {
-                                btn.classList.toggle('active', btn.dataset.tf === newTf);
-                            });
-                            // Sync new TV navbar timeframe buttons
-                            document.querySelectorAll('.nav-tf-btn').forEach(btn => {
+                            document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(btn => {
                                 btn.classList.toggle('active', btn.dataset.tf === newTf);
                             });
                         }
-                        
-                        this.loadData();
+
+                        await this.changeSymbolOrTimeframe(this.symbol, newTf, true);
                     }
                 });
             } catch (e) {
@@ -323,43 +413,14 @@ class ChartPanel {
         // 1. Pre-fetch 2000 bars history and store the promise so getBars() can share it
         this.activeLoadPromise = (async () => {
             try {
-                console.log(`[ChartPanel ${this.id}] Pre-fetching 2000 bars for ${this.symbol} (${this.timeframe})`);
-                const response = await fetch('/api/data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        symbol: this.symbol,
-                        timeframe: this.timeframe,
-                        bars: 2000
-                    })
-                });
-                const result = await response.json();
-                if (result.success && result.data && result.data.length > 0) {
-                    this.fullData = result.data;
-                    console.log(`[ChartPanel ${this.id}] Pre-fetched ${this.fullData.length} bars successfully.`);
-                    
-                    const lastBar = this.fullData[this.fullData.length - 1];
-                    if (window.tradeManager) {
-                        const spread = window.tradeManager.getSpread(this.symbol);
-                        window.tradeManager.currentBid = lastBar.close;
-                        window.tradeManager.currentAsk = lastBar.close + spread;
-                        
-                        // Update DOM price buttons
-                        const precision = window.tradeManager.getPrecision(this.symbol);
-                        const quickSellEl = document.getElementById('quick-sell-price');
-                        const quickBuyEl = document.getElementById('quick-buy-price');
-                        if (quickSellEl) quickSellEl.textContent = window.tradeManager.currentBid.toFixed(precision);
-                        if (quickBuyEl) quickBuyEl.textContent = window.tradeManager.currentAsk.toFixed(precision);
-                        
-                        window.tradeManager.updateSLTPDefaultValues();
-                        window.tradeManager.updateRiskRewardCalcs();
-                        window.tradeManager.updateExecutionButton();
-                    }
-                    
-                    return result.data;
+                console.log(`[ChartPanel ${this.id}] Loading 2000 bars for ${this.symbol} (${this.timeframe})`);
+                const data = await this.fetchHistory(2000);
+                if (data.length > 0) {
+                    console.log(`[ChartPanel ${this.id}] Loaded ${data.length} bars successfully.`);
+                    return data;
                 }
             } catch (err) {
-                console.error(`[ChartPanel ${this.id}] Error pre-fetching data:`, err);
+                console.error(`[ChartPanel ${this.id}] Error loading data:`, err);
             }
             return [];
         })();
@@ -375,11 +436,160 @@ class ChartPanel {
 
         // 3. Await the pre-fetch promise so this.fullData is guaranteed populated when loadData resolves
         await this.activeLoadPromise;
+        this.activeLoadPromise = null;
     }
 
     async loadMoreData(barCount = 10000) {
-        // Auto-handled by TradingView scroll logic
-        return true;
+        try {
+            console.log(`[ChartPanel ${this.id}] loadMoreData: requesting ${barCount} bars for ${this.symbol} (${this.timeframe})`);
+            const data = await this.fetchHistory(barCount, { force: true });
+            if (data.length > 0) {
+                this.fullData = data;
+                console.log(`[ChartPanel ${this.id}] loadMoreData successfully loaded ${this.fullData.length} bars.`);
+
+                // Clear the cache for datafeed
+                window.MT5Datafeed.resetReplayCache(this.symbol, this.timeframe);
+
+                // Force TradingView to request data again
+                const resMap = {
+                    'M1': '1',
+                    'M5': '5',
+                    'M15': '15',
+                    'M30': '30',
+                    'H1': '60',
+                    'H4': '240',
+                    'D1': 'D',
+                    'W1': 'W'
+                };
+                const res = resMap[this.timeframe] || '60';
+                if (this.tvWidget && this.chartReady) {
+                    this.tvWidget.setSymbol(this.symbol, res);
+                }
+                return true;
+            }
+        } catch (err) {
+            console.error(`[ChartPanel ${this.id}] Error in loadMoreData:`, err);
+        }
+        return false;
+    }
+
+    async changeSymbolOrTimeframe(newSymbol, newTf, skipSetSymbol = false) {
+        const oldSymbol = this.symbol;
+        const oldTf = this.timeframe;
+
+        if (oldSymbol === newSymbol && oldTf === newTf) return;
+
+        console.log(`[ChartPanel ${this.id}] Changing symbol/timeframe from ${oldSymbol} (${oldTf}) to ${newSymbol} (${newTf}), skipSetSymbol: ${skipSetSymbol}`);
+
+        let savedReplayTimestamp = null;
+        const wasReplay = this.isReplayMode;
+
+        if (wasReplay && this.replayIndex !== null && this.fullData && this.fullData.length > 0) {
+            const currentBar = this.fullData[this.replayIndex];
+            if (currentBar) {
+                savedReplayTimestamp = currentBar.time;
+            }
+        }
+
+        this.symbol = newSymbol;
+        this.timeframe = newTf;
+        this.updateHeader();
+
+        // 1. Calculate dynamic bars to pre-fetch if in Replay Mode
+        let barsToFetch = 2000;
+        if (wasReplay && savedReplayTimestamp) {
+            const timeframeSeconds = {
+                'M1': 60,
+                'M5': 300,
+                'M15': 900,
+                'M30': 1800,
+                'H1': 3600,
+                'H4': 14400,
+                'D1': 86400,
+                'W1': 604800
+            }[newTf] || 3600;
+
+            // Get approximate seconds difference from now/latest possible time
+            const nowSeconds = Math.floor(Date.now() / 1000);
+            const secondsDiff = nowSeconds - savedReplayTimestamp;
+            let estimatedBars = Math.ceil((secondsDiff / timeframeSeconds) * 1.15); // 15% safety buffer
+
+            if (estimatedBars > 2000) {
+                barsToFetch = Math.max(2000, Math.min(estimatedBars, 40000)); // Cap at 40k for automatic swapping speed
+                console.log(`[ChartPanel ${this.id}] Replay active. Target timestamp is older than 2000 bars. Dynamically pre-fetching ${barsToFetch} bars.`);
+            }
+        }
+
+        // 2. Pre-fetch bars from backend first. Reuse frontend history cache when
+        // it already covers the replay timestamp, so timeframe toggles are instant.
+        this.activeLoadPromise = (async () => {
+            try {
+                const cached = window.MT5Datafeed?.getCachedHistory?.(newSymbol, newTf);
+                if (wasReplay && savedReplayTimestamp && window.MT5Datafeed?.hasHistoryCoverage?.(newSymbol, newTf, savedReplayTimestamp)) {
+                    this.fullData = cached;
+                    this.updateTradeSnapshot(cached[cached.length - 1]);
+                    console.log(`[ChartPanel ${this.id}] Reused cached ${newTf} history for replay timestamp.`);
+                    return cached;
+                }
+
+                console.log(`[ChartPanel ${this.id}] Loading ${barsToFetch} bars for ${newSymbol} (${newTf})`);
+                const data = await this.fetchHistory(barsToFetch);
+                if (data.length > 0) {
+                    console.log(`[ChartPanel ${this.id}] Loaded ${data.length} bars successfully.`);
+                    return data;
+                }
+            } catch (err) {
+                console.error(`[ChartPanel ${this.id}] Error loading data:`, err);
+            }
+            return [];
+        })();
+
+        const data = await this.activeLoadPromise;
+        this.activeLoadPromise = null;
+
+        // 3. If in replay mode, find bestIndex and update replayManager BEFORE changing TV resolution
+        if (wasReplay && savedReplayTimestamp && data.length > 0) {
+            let bestIndex = 0;
+            let minDiff = Infinity;
+            for (let i = 0; i < data.length; i++) {
+                const diff = Math.abs(data[i].time - savedReplayTimestamp);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    bestIndex = i;
+                }
+            }
+
+            this.replayIndex = bestIndex;
+            if (window.replayManager) {
+                window.replayManager.fullData = data;
+                window.replayManager.currentIndex = bestIndex;
+                window.replayManager._lastDisplayedIndex = -1; // Reset display tracking
+                window.replayManager._updateUI();
+            }
+        }
+
+        // 4. Update symbol/resolution in TradingView Widget
+        const resMap = {
+            'M1': '1',
+            'M5': '5',
+            'M15': '15',
+            'M30': '30',
+            'H1': '60',
+            'H4': '240',
+            'D1': 'D',
+            'W1': 'W'
+        };
+        const res = resMap[newTf] || '60';
+        if (this.chartReady && this.tvWidget) {
+            try {
+                window.MT5Datafeed.resetReplayCache(newSymbol, newTf);
+                if (!skipSetSymbol) {
+                    this.tvWidget.setSymbol(newSymbol, res);
+                }
+            } catch (err) {
+                console.error("Error setting symbol and resolution:", err);
+            }
+        }
     }
 
     enterReplayMode() {
@@ -399,6 +609,9 @@ class ChartPanel {
         if (window.replayManager) {
             window.replayManager.startFromIndex(this.fullData, startIndex);
         }
+
+        const startBar = this.fullData[startIndex];
+        if (startBar) this.prewarmReplayTimeframes(startBar.time);
     }
 
     exitReplayMode() {
@@ -445,10 +658,10 @@ class ChartManager {
         this.syncScroll = false;
         this.syncCrosshair = false;
         this.allSymbols = [];
-        
+
         // Drawing tools state
         this.activeTool = 'cursor';
-        
+
         this.timezoneOffset = 7; // Default UTC+7 (Vietnam)
 
         // Settings Modal State
@@ -472,14 +685,14 @@ class ChartManager {
     init() {
         const savedLayout = localStorage.getItem('activeLayout') || '1';
         this.activeLayout = savedLayout;
-        
+
         this.setLayout(this.activeLayout);
         this.setupEventListeners();
-        
+
         // Load API status and symbols in background asynchronously
         this.checkMT5Status();
         this.loadSymbols();
-        
+
         // Poll status every 8 seconds to auto-reconnect and refresh UI
         console.log('[ChartManager] Initializing status check polling interval (every 8s)...');
         setInterval(() => {
@@ -505,7 +718,7 @@ class ChartManager {
                         // 1. Filter out historical bars in the past to prevent exceptions
                         const lastTimestamp = p.fullData && p.fullData.length > 0 ? p.fullData[p.fullData.length - 1].time : 0;
                         const validBars = result.data.filter(bar => bar.time >= lastTimestamp);
-                        
+
                         validBars.forEach(bar => {
                             try {
                                 window.MT5Datafeed.updateRealtime(p.symbol, p.timeframe, bar);
@@ -513,7 +726,7 @@ class ChartManager {
                                 console.error(`Error updating bar for panel ${p.id}:`, err);
                             }
                         });
-                        
+
                         // 2. Keep p.fullData in sync
                         if (!p.fullData) p.fullData = [];
                         result.data.forEach(bar => {
@@ -531,16 +744,16 @@ class ChartManager {
                         if (p === this.activePanel && window.tradeManager && !window.tradeManager.isReplayMode) {
                             const lastBar = result.data[result.data.length - 1];
                             const spread = window.tradeManager.getSpread(p.symbol);
-                            
+
                             window.tradeManager.currentBid = lastBar.close;
                             window.tradeManager.currentAsk = lastBar.close + spread;
-                            
+
                             const precision = window.tradeManager.getPrecision(p.symbol);
                             const quickSellEl = document.getElementById('quick-sell-price');
                             const quickBuyEl = document.getElementById('quick-buy-price');
                             if (quickSellEl) quickSellEl.textContent = window.tradeManager.currentBid.toFixed(precision);
                             if (quickBuyEl) quickBuyEl.textContent = window.tradeManager.currentAsk.toFixed(precision);
-                            
+
                             window.tradeManager.updateRiskRewardCalcs();
                             window.tradeManager.updateExecutionButton();
                         }
@@ -673,7 +886,7 @@ class ChartManager {
                 panelWrapper.appendChild(panel.headerEl);
                 panelWrapper.appendChild(panel.syncLineEl);
                 panelWrapper.appendChild(panel.chartContainerEl);
-                
+
                 // Re-bind wrapper listener
                 panelWrapper.addEventListener('mousedown', () => {
                     this.setActivePanel(panel);
@@ -761,14 +974,14 @@ class ChartManager {
         if (panel.isReplayMode) {
             document.getElementById('tv-replay-toolbar').style.display = 'flex';
             document.querySelector('.chart-area').classList.add('replay-mode');
-            
+
             if (window.replayManager) {
                 window.replayManager.fullData = panel.fullData;
                 window.replayManager.currentIndex = panel.replayIndex || Math.floor(panel.fullData.length * 0.7);
                 window.replayManager._lastDisplayedIndex = -1;
                 window.replayManager._applyToChart();
                 window.replayManager._updateUI();
-                
+
                 if (panel.replayPlaying) {
                     window.replayManager.play();
                 } else {
@@ -811,12 +1024,12 @@ class ChartManager {
     // Crosshair tracking synchronization
     syncCrosshairMove(sourcePanelId, time) {
         this._syncingCrosshair = true;
-        
+
         this.panels.forEach(panel => {
             if (panel.id !== sourcePanelId && panel.chartReady && panel.chart) {
                 const syncLine = panel.syncLineEl;
                 if (!syncLine) return;
-                
+
                 if (time) {
                     try {
                         const range = panel.chart.getVisibleRange();
@@ -824,7 +1037,7 @@ class ChartManager {
                             const width = panel.chartContainerEl.clientWidth;
                             const chartWidth = width - 55; // deduct right price scale approx width
                             const x = ((time - range.from) / (range.to - range.from)) * chartWidth;
-                            
+
                             if (x >= 0 && x <= chartWidth) {
                                 syncLine.style.transform = `translateX(${x}px)`;
                                 syncLine.style.display = 'block';
@@ -843,7 +1056,7 @@ class ChartManager {
                 }
             }
         });
-        
+
         this._syncingCrosshair = false;
     }
 
@@ -871,47 +1084,17 @@ class ChartManager {
             if (symbolSelect) {
                 symbolSelect.addEventListener('change', async (e) => {
                     if (!this.activePanel) return;
-                    
-                    const oldSymbol = this.activePanel.symbol;
+
                     const newSymbol = e.target.value;
-                    if (oldSymbol === newSymbol) return;
+                    const activeSymText = document.getElementById('active-symbol-text');
+                    if (activeSymText) activeSymText.textContent = newSymbol;
 
-                    let savedReplayTimestamp = null;
-                    const wasReplay = this.activePanel.isReplayMode;
-
-                    if (wasReplay && this.activePanel.replayIndex !== null && this.activePanel.fullData) {
-                        const currentBar = this.activePanel.fullData[this.activePanel.replayIndex];
-                        if (currentBar) {
-                            savedReplayTimestamp = currentBar.time;
-                        }
-                    }
-
-                    this.activePanel.symbol = newSymbol;
-                    await this.activePanel.loadData();
-
-                    if (wasReplay && savedReplayTimestamp && this.activePanel.fullData.length > 0) {
-                        let bestIndex = 0;
-                        let minDiff = Infinity;
-                        for (let i = 0; i < this.activePanel.fullData.length; i++) {
-                            const diff = Math.abs(this.activePanel.fullData[i].time - savedReplayTimestamp);
-                            if (diff < minDiff) {
-                                minDiff = diff;
-                                bestIndex = i;
-                            }
-                        }
-                        
-                        this.activePanel.replayIndex = bestIndex;
-                        if (window.replayManager) {
-                            window.replayManager.startFromIndex(this.activePanel.fullData, bestIndex);
-                        }
-                    }
+                    await this.activePanel.changeSymbolOrTimeframe(newSymbol, this.activePanel.timeframe);
                 });
             }
         } catch (e) {
             console.error('Error binding symbol-select listener:', e);
         }
-
-
 
         // 3. Centralized Timeframe change (Safeguarded)
         try {
@@ -920,44 +1103,12 @@ class ChartManager {
                 tfBtns.forEach(btn => {
                     btn.addEventListener('click', async (e) => {
                         if (!this.activePanel) return;
-                        
+
                         const tf = e.currentTarget.dataset.tf;
                         document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(b => b.classList.remove('active'));
                         document.querySelectorAll(`.tf-btn[data-tf="${tf}"], .nav-tf-btn[data-tf="${tf}"]`).forEach(b => b.classList.add('active'));
-                        
-                        const oldTimeframe = this.activePanel.timeframe;
-                        const newTimeframe = tf;
-                        if (oldTimeframe === newTimeframe) return;
 
-                        let savedReplayTimestamp = null;
-                        const wasReplay = this.activePanel.isReplayMode;
-
-                        if (wasReplay && this.activePanel.replayIndex !== null && this.activePanel.fullData) {
-                            const currentBar = this.activePanel.fullData[this.activePanel.replayIndex];
-                            if (currentBar) {
-                                savedReplayTimestamp = currentBar.time;
-                            }
-                        }
-
-                        this.activePanel.timeframe = newTimeframe;
-                        await this.activePanel.loadData();
-
-                        if (wasReplay && savedReplayTimestamp && this.activePanel.fullData.length > 0) {
-                            let bestIndex = 0;
-                            let minDiff = Infinity;
-                            for (let i = 0; i < this.activePanel.fullData.length; i++) {
-                                const diff = Math.abs(this.activePanel.fullData[i].time - savedReplayTimestamp);
-                                if (diff < minDiff) {
-                                    minDiff = diff;
-                                    bestIndex = i;
-                                }
-                            }
-                            
-                            this.activePanel.replayIndex = bestIndex;
-                            if (window.replayManager) {
-                                window.replayManager.startFromIndex(this.activePanel.fullData, bestIndex);
-                            }
-                        }
+                        await this.activePanel.changeSymbolOrTimeframe(this.activePanel.symbol, tf);
                     });
                 });
             }
@@ -1020,7 +1171,7 @@ class ChartManager {
                 toggleBtn.addEventListener('click', () => {
                     const isCollapsed = tradePanel.classList.toggle('collapsed');
                     toggleBtn.classList.toggle('active', !isCollapsed);
-                    
+
                     // When opened, update values immediately
                     if (!isCollapsed && window.tradeManager) {
                         window.tradeManager.updateSLTPDefaultValues();
@@ -1047,7 +1198,7 @@ class ChartManager {
                 closeBtn.addEventListener('click', () => {
                     tradePanel.classList.add('collapsed');
                     toggleBtn.classList.remove('active');
-                    
+
                     // Force layout refit for active charts
                     setTimeout(() => {
                         this.panels.forEach(p => {
@@ -1088,7 +1239,7 @@ class ChartManager {
             window.addEventListener('keydown', (e) => {
                 // Do NOT intercept keys when user is typing in input fields, textareas, or select dropdowns
                 if (['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
-                
+
                 // Escape key resets tool to cursor
                 if (e.key === 'Escape') {
                     this.selectTool('cursor');
@@ -1109,7 +1260,7 @@ class ChartManager {
                         }
                         return;
                     }
-                    
+
                     e.preventDefault();
                     if (this.activePanel && this.activePanel.chartReady) {
                         try {
@@ -1182,7 +1333,7 @@ class ChartManager {
                             </div>
                             <h1 class="shutdown-title">WuangVibeTrading Stopped</h1>
                             <p class="shutdown-subtitle">The backend service and MetaTrader 5 gateway have been safely terminated.</p>
-                            
+
                             <div class="shutdown-checklist">
                                 <div class="checklist-item">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -1197,7 +1348,7 @@ class ChartManager {
                                     <span>Background workers and chart feeds cleaned up</span>
                                 </div>
                             </div>
-                            
+
                             <div class="shutdown-footer">
                                 You can now safely close this browser window.<br>
                                 To restart the application, launch the <strong>WuangVibeTrading</strong> desktop app again.
@@ -1241,7 +1392,7 @@ class ChartManager {
 
     selectTool(tool) {
         this.activeTool = tool;
-        
+
         // Update active class on toolbar buttons
         const toolItems = document.querySelectorAll('.tool-item');
         toolItems.forEach(btn => {
@@ -1386,7 +1537,7 @@ class TradeManager {
     constructor() {
         this.activeTab = 'positions';
         this.activeSide = 'buy'; // 'buy' or 'sell'
-        
+
         // Default virtual account state
         this.virtualAccount = {
             balance: 10000.0,
@@ -1399,22 +1550,22 @@ class TradeManager {
             history: [],
             ticket_counter: 100000
         };
-        
+
         this.currentBid = 0.0;
         this.currentAsk = 0.0;
-        
+
         this.pollingInterval = null;
         this.priceInterval = null;
-        
+
         this.loadVirtualAccount();
         this.initEvents();
         this.updateAccountUI();
         this.updateTablesUI();
-        
+
         // Start polling for MT5 Live connection state
         this.startMT5Polling();
     }
-    
+
     // ─── LocalStorage Persistence ──────────────────────────────────────────
     loadVirtualAccount() {
         try {
@@ -1433,7 +1584,7 @@ class TradeManager {
             console.error('Failed to load virtual account state:', e);
         }
     }
-    
+
     saveVirtualAccount() {
         try {
             localStorage.setItem('virtual_account_v2', JSON.stringify(this.virtualAccount));
@@ -1441,7 +1592,7 @@ class TradeManager {
             console.error('Failed to save virtual account state:', e);
         }
     }
-    
+
     // ─── Helpers ──────────────────────────────────────────────────────────
     get currentSymbol() {
         if (window.chartManager && window.chartManager.activePanel) {
@@ -1450,11 +1601,11 @@ class TradeManager {
         const sel = document.getElementById('symbol-select');
         return sel ? sel.value : 'EURUSD';
     }
-    
+
     get isReplayMode() {
         return window.chartManager?.isReplayMode ?? false;
     }
-    
+
     getContractSize(symbol) {
         const sym = symbol.toUpperCase();
         if (sym.includes('XAU') || sym.includes('GOLD')) return 100;
@@ -1462,7 +1613,7 @@ class TradeManager {
         if (sym.includes('BTC')) return 1;
         return 100000; // Standard forex lot size
     }
-    
+
     getPipSize(symbol) {
         const sym = symbol.toUpperCase();
         if (sym.includes('JPY')) return 0.01;
@@ -1471,7 +1622,7 @@ class TradeManager {
         if (sym.includes('BTC')) return 1.00;
         return 0.0001;
     }
-    
+
     getSpread(symbol) {
         const sym = symbol.toUpperCase();
         if (sym.includes('JPY')) return 0.015; // 1.5 pips
@@ -1480,7 +1631,7 @@ class TradeManager {
         if (sym.includes('BTC')) return 8.0;
         return 0.00012; // 1.2 pips
     }
-    
+
     getPrecision(symbol) {
         const sym = symbol.toUpperCase();
         if (sym.includes('JPY')) return 3;
@@ -1489,7 +1640,7 @@ class TradeManager {
         if (sym.includes('BTC')) return 2;
         return 5;
     }
-    
+
     convertToUSD(symbol, amountQuote, currentPrice) {
         const sym = symbol.toUpperCase();
         if (sym.includes('USD')) {
@@ -1529,7 +1680,7 @@ class TradeManager {
     getActualSLPrice() {
         const slChecked = document.getElementById('enable-sl').checked;
         if (!slChecked) return 0.0;
-        
+
         const symbol = this.currentSymbol;
         const side = this.activeSide;
         const vol = parseFloat(document.getElementById('trade-volume').value) || 0.01;
@@ -1537,13 +1688,13 @@ class TradeManager {
         const pipSize = this.getPipSize(symbol);
         const activeUnit = document.getElementById('sl-active-unit').value; // 'price', 'pips', 'usd'
         const inputValue = parseFloat(document.getElementById('trade-sl').value) || 0.0;
-        
+
         const orderType = document.getElementById('trade-order-type').value;
         let entryPrice = (side === 'buy') ? this.currentAsk : this.currentBid;
         if (orderType === 'limit') {
             entryPrice = parseFloat(document.getElementById('trade-price').value) || entryPrice;
         }
-        
+
         if (activeUnit === 'price') {
             return inputValue;
         } else if (activeUnit === 'pips') {
@@ -1556,11 +1707,11 @@ class TradeManager {
         }
         return 0.0;
     }
-    
+
     getActualTPPrice() {
         const tpChecked = document.getElementById('enable-tp').checked;
         if (!tpChecked) return 0.0;
-        
+
         const symbol = this.currentSymbol;
         const side = this.activeSide;
         const vol = parseFloat(document.getElementById('trade-volume').value) || 0.01;
@@ -1568,13 +1719,13 @@ class TradeManager {
         const pipSize = this.getPipSize(symbol);
         const activeUnit = document.getElementById('tp-active-unit').value; // 'price', 'pips', 'usd'
         const inputValue = parseFloat(document.getElementById('trade-tp').value) || 0.0;
-        
+
         const orderType = document.getElementById('trade-order-type').value;
         let entryPrice = (side === 'buy') ? this.currentAsk : this.currentBid;
         if (orderType === 'limit') {
             entryPrice = parseFloat(document.getElementById('trade-price').value) || entryPrice;
         }
-        
+
         if (activeUnit === 'price') {
             return inputValue;
         } else if (activeUnit === 'pips') {
@@ -1594,15 +1745,15 @@ class TradeManager {
         const vol = parseFloat(document.getElementById('trade-volume').value) || 0.01;
         const contractSize = this.getContractSize(symbol);
         const pipSize = this.getPipSize(symbol);
-        
+
         const orderType = document.getElementById('trade-order-type').value;
         let entryPrice = (side === 'buy') ? this.currentAsk : this.currentBid;
         if (orderType === 'limit') {
             entryPrice = parseFloat(document.getElementById('trade-price').value) || entryPrice;
         }
-        
+
         const priceDiff = Math.abs(entryPrice - slPrice);
-        
+
         if (unit === 'price') {
             return slPrice;
         } else if (unit === 'pips') {
@@ -1620,15 +1771,15 @@ class TradeManager {
         const vol = parseFloat(document.getElementById('trade-volume').value) || 0.01;
         const contractSize = this.getContractSize(symbol);
         const pipSize = this.getPipSize(symbol);
-        
+
         const orderType = document.getElementById('trade-order-type').value;
         let entryPrice = (side === 'buy') ? this.currentAsk : this.currentBid;
         if (orderType === 'limit') {
             entryPrice = parseFloat(document.getElementById('trade-price').value) || entryPrice;
         }
-        
+
         const priceDiff = Math.abs(entryPrice - tpPrice);
-        
+
         if (unit === 'price') {
             return tpPrice;
         } else if (unit === 'pips') {
@@ -1639,52 +1790,52 @@ class TradeManager {
         }
         return 0.0;
     }
-    
+
     // ─── UI Setup & Handlers ───────────────────────────────────────────────
     initEvents() {
         // Quick BUY/SELL tabs
         const quickSellBtn = document.getElementById('btn-quick-sell');
         const quickBuyBtn = document.getElementById('btn-quick-buy');
         const execBtn = document.getElementById('btn-execute-order');
-        
+
         quickSellBtn.addEventListener('click', () => {
             quickSellBtn.classList.add('active');
             quickBuyBtn.classList.remove('active');
             this.activeSide = 'sell';
-            
+
             const panel = document.getElementById('trading-panel');
             if (panel) {
                 panel.classList.add('sell-active');
                 panel.classList.remove('buy-active');
             }
-            
+
             this.updateExecutionButton();
             this.updateSLTPDefaultValues();
             this.updateRiskRewardCalcs();
         });
-        
+
         quickBuyBtn.addEventListener('click', () => {
             quickBuyBtn.classList.add('active');
             quickSellBtn.classList.remove('active');
             this.activeSide = 'buy';
-            
+
             const panel = document.getElementById('trading-panel');
             if (panel) {
                 panel.classList.add('buy-active');
                 panel.classList.remove('sell-active');
             }
-            
+
             this.updateExecutionButton();
             this.updateSLTPDefaultValues();
             this.updateRiskRewardCalcs();
         });
-        
+
         // Order Type Selection Tabs
         document.querySelectorAll('.exness-order-type-tabs .order-type-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.exness-order-type-tabs .order-type-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                
+
                 const type = tab.dataset.type;
                 const orderTypeSelect = document.getElementById('trade-order-type');
                 if (orderTypeSelect) {
@@ -1693,18 +1844,18 @@ class TradeManager {
                 }
             });
         });
-        
+
         const orderTypeSelect = document.getElementById('trade-order-type');
         const pendingPriceGroup = document.getElementById('pending-price-group');
-        
+
         orderTypeSelect.addEventListener('change', () => {
             const val = orderTypeSelect.value;
-            
+
             // Sync Exness tabs
             document.querySelectorAll('.exness-order-type-tabs .order-type-tab').forEach(t => {
                 t.classList.toggle('active', t.dataset.type === val);
             });
-            
+
             if (val === 'limit') {
                 pendingPriceGroup.style.display = 'flex';
                 // Initialize pending price to mid price
@@ -1716,7 +1867,7 @@ class TradeManager {
             this.updateExecutionButton();
             this.updateRiskRewardCalcs();
         });
-        
+
         // Volume increment / decrement
         const volInput = document.getElementById('trade-volume');
         document.getElementById('btn-vol-minus').addEventListener('click', () => {
@@ -1725,21 +1876,21 @@ class TradeManager {
             volInput.value = val.toFixed(2);
             this.updateRiskRewardCalcs();
         });
-        
+
         document.getElementById('btn-vol-plus').addEventListener('click', () => {
             let val = parseFloat(volInput.value) || 0.10;
             val = val + 0.01;
             volInput.value = val.toFixed(2);
             this.updateRiskRewardCalcs();
         });
-        
+
         volInput.addEventListener('change', () => {
             let val = parseFloat(volInput.value) || 0.10;
             if (val < 0.01) val = 0.01;
             volInput.value = val.toFixed(2);
             this.updateRiskRewardCalcs();
         });
-        
+
         // Quick Lot Selector
         document.querySelectorAll('.lot-q-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1747,7 +1898,7 @@ class TradeManager {
                 this.updateRiskRewardCalcs();
             });
         });
-        
+
         // Pending Price increment / decrement
         const priceInput = document.getElementById('trade-price');
         document.getElementById('btn-price-minus').addEventListener('click', () => {
@@ -1757,7 +1908,7 @@ class TradeManager {
             priceInput.value = val.toFixed(this.getPrecision(this.currentSymbol));
             this.updateRiskRewardCalcs();
         });
-        
+
         document.getElementById('btn-price-plus').addEventListener('click', () => {
             const step = this.getPipSize(this.currentSymbol);
             let val = parseFloat(priceInput.value) || this.currentBid;
@@ -1765,11 +1916,11 @@ class TradeManager {
             priceInput.value = val.toFixed(this.getPrecision(this.currentSymbol));
             this.updateRiskRewardCalcs();
         });
-        
+
         priceInput.addEventListener('change', () => {
             this.updateRiskRewardCalcs();
         });
-        
+
         // SL panel collapsible
         const enableSL = document.getElementById('enable-sl');
         const slContainer = document.getElementById('sl-control-container');
@@ -1782,13 +1933,13 @@ class TradeManager {
             }
             this.updateRiskRewardCalcs();
         });
-        
+
         const slInput = document.getElementById('trade-sl');
         document.getElementById('btn-sl-minus').addEventListener('click', () => {
             const activeUnit = document.getElementById('sl-active-unit').value;
             let step = this.getPipSize(this.currentSymbol);
             let dec = this.getPrecision(this.currentSymbol);
-            
+
             if (activeUnit === 'pips') {
                 step = 1.0;
                 dec = 1;
@@ -1796,18 +1947,18 @@ class TradeManager {
                 step = 5.0;
                 dec = 2;
             }
-            
+
             let val = parseFloat(slInput.value) || 0;
             val = Math.max(0, val - step);
             slInput.value = val.toFixed(dec);
             this.updateRiskRewardCalcs();
         });
-        
+
         document.getElementById('btn-sl-plus').addEventListener('click', () => {
             const activeUnit = document.getElementById('sl-active-unit').value;
             let step = this.getPipSize(this.currentSymbol);
             let dec = this.getPrecision(this.currentSymbol);
-            
+
             if (activeUnit === 'pips') {
                 step = 1.0;
                 dec = 1;
@@ -1815,13 +1966,13 @@ class TradeManager {
                 step = 5.0;
                 dec = 2;
             }
-            
+
             let val = parseFloat(slInput.value) || 0;
             val = val + step;
             slInput.value = val.toFixed(dec);
             this.updateRiskRewardCalcs();
         });
-        
+
         slInput.addEventListener('change', () => {
             this.updateRiskRewardCalcs();
         });
@@ -1832,18 +1983,18 @@ class TradeManager {
                 const oldUnit = document.getElementById('sl-active-unit').value;
                 const newUnit = btn.dataset.unit;
                 if (oldUnit === newUnit) return;
-                
+
                 // Get current absolute SL price first (using the old unit)
                 const slPrice = this.getActualSLPrice();
-                
+
                 // Update active unit in DOM
                 document.getElementById('sl-active-unit').value = newUnit;
                 document.querySelectorAll('#sl-unit-selector .unit-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
+
                 // Convert the absolute price to the new unit value
                 const newValue = this.convertSLPriceToUnit(slPrice, newUnit);
-                
+
                 // Update step and precision based on unit
                 if (newUnit === 'price') {
                     slInput.step = this.getPipSize(this.currentSymbol);
@@ -1855,11 +2006,11 @@ class TradeManager {
                     slInput.step = '5';
                     slInput.value = newValue.toFixed(2);
                 }
-                
+
                 this.updateRiskRewardCalcs();
             });
         });
-        
+
         // TP panel collapsible
         const enableTP = document.getElementById('enable-tp');
         const tpContainer = document.getElementById('tp-control-container');
@@ -1872,13 +2023,13 @@ class TradeManager {
             }
             this.updateRiskRewardCalcs();
         });
-        
+
         const tpInput = document.getElementById('trade-tp');
         document.getElementById('btn-tp-minus').addEventListener('click', () => {
             const activeUnit = document.getElementById('tp-active-unit').value;
             let step = this.getPipSize(this.currentSymbol);
             let dec = this.getPrecision(this.currentSymbol);
-            
+
             if (activeUnit === 'pips') {
                 step = 1.0;
                 dec = 1;
@@ -1886,18 +2037,18 @@ class TradeManager {
                 step = 5.0;
                 dec = 2;
             }
-            
+
             let val = parseFloat(tpInput.value) || 0;
             val = Math.max(0, val - step);
             tpInput.value = val.toFixed(dec);
             this.updateRiskRewardCalcs();
         });
-        
+
         document.getElementById('btn-tp-plus').addEventListener('click', () => {
             const activeUnit = document.getElementById('tp-active-unit').value;
             let step = this.getPipSize(this.currentSymbol);
             let dec = this.getPrecision(this.currentSymbol);
-            
+
             if (activeUnit === 'pips') {
                 step = 1.0;
                 dec = 1;
@@ -1905,13 +2056,13 @@ class TradeManager {
                 step = 5.0;
                 dec = 2;
             }
-            
+
             let val = parseFloat(tpInput.value) || 0;
             val = val + step;
             tpInput.value = val.toFixed(dec);
             this.updateRiskRewardCalcs();
         });
-        
+
         tpInput.addEventListener('change', () => {
             this.updateRiskRewardCalcs();
         });
@@ -1922,18 +2073,18 @@ class TradeManager {
                 const oldUnit = document.getElementById('tp-active-unit').value;
                 const newUnit = btn.dataset.unit;
                 if (oldUnit === newUnit) return;
-                
+
                 // Get current absolute TP price first (using the old unit)
                 const tpPrice = this.getActualTPPrice();
-                
+
                 // Update active unit in DOM
                 document.getElementById('tp-active-unit').value = newUnit;
                 document.querySelectorAll('#tp-unit-selector .unit-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
+
                 // Convert the absolute price to the new unit value
                 const newValue = this.convertTPPriceToUnit(tpPrice, newUnit);
-                
+
                 // Update step and precision based on unit
                 if (newUnit === 'price') {
                     tpInput.step = this.getPipSize(this.currentSymbol);
@@ -1945,37 +2096,37 @@ class TradeManager {
                     tpInput.step = '5';
                     tpInput.value = newValue.toFixed(2);
                 }
-                
+
                 this.updateRiskRewardCalcs();
             });
         });
-        
+
         // Execute Button click
         execBtn.addEventListener('click', () => {
             this.executeOrder();
         });
-        
+
         // Dashboard Tab Switch (Collapsible TV-Style)
         document.querySelectorAll('.dashboard-tabs .tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const bottomDashboard = document.getElementById('bottom-dashboard');
                 const isCollapsed = bottomDashboard.classList.contains('collapsed');
                 const isActive = btn.classList.contains('active');
-                
+
                 if (isActive && !isCollapsed) {
                     bottomDashboard.classList.add('collapsed');
                 } else {
                     bottomDashboard.classList.remove('collapsed');
-                    
+
                     document.querySelectorAll('.dashboard-tabs .tab-btn').forEach(b => b.classList.remove('active'));
                     document.querySelectorAll('.dashboard-tab-content').forEach(c => c.classList.remove('active'));
-                    
+
                     btn.classList.add('active');
                     const tab = btn.dataset.tab;
                     this.activeTab = tab;
                     document.getElementById(`tab-${tab}`).classList.add('active');
                 }
-                
+
                 // Recalculate heights for active charts
                 setTimeout(() => {
                     window.dispatchEvent(new Event('resize'));
@@ -1990,28 +2141,28 @@ class TradeManager {
                 e.stopPropagation();
                 const bottomDashboard = document.getElementById('bottom-dashboard');
                 bottomDashboard.classList.toggle('collapsed');
-                
+
                 // Recalculate heights for active charts
                 setTimeout(() => {
                     window.dispatchEvent(new Event('resize'));
                 }, 350);
             });
         }
-        
+
         // Symbol Select listener to update mode and values
         document.getElementById('symbol-select').addEventListener('change', () => {
             this.updateSLTPDefaultValues();
             this.updateRiskRewardCalcs();
         });
     }
-    
+
     updateExecutionButton() {
         const execBtn = document.getElementById('btn-execute-order');
         const orderType = document.getElementById('trade-order-type').value;
         const side = this.activeSide.toUpperCase();
         const symbol = this.currentSymbol;
         const p = this.getPrecision(symbol);
-        
+
         if (orderType === 'market') {
             const price = (this.activeSide === 'buy') ? this.currentAsk : this.currentBid;
             const priceText = price ? price.toFixed(p) : '0.00000';
@@ -2019,7 +2170,7 @@ class TradeManager {
         } else {
             execBtn.textContent = `CONFIRM ORDER (${side} LIMIT/STOP)`;
         }
-        
+
         if (this.activeSide === 'buy') {
             execBtn.classList.add('buy-mode');
             execBtn.classList.remove('sell-mode');
@@ -2036,11 +2187,11 @@ class TradeManager {
         const precision = this.getPrecision(symbol);
         const vol = parseFloat(document.getElementById('trade-volume').value) || 0.10;
         const contractSize = this.getContractSize(symbol);
-        
+
         const bid = this.currentBid || 1.00000;
         const ask = this.currentAsk || 1.00000;
         const entry = (side === 'buy') ? ask : bid;
-        
+
         if (target === 'all' || target === 'sl') {
             const slActiveUnit = document.getElementById('sl-active-unit').value;
             if (slActiveUnit === 'price') {
@@ -2070,7 +2221,7 @@ class TradeManager {
             }
         }
     }
-    
+
     updateRiskRewardCalcs() {
         const symbol = this.currentSymbol;
         const side = this.activeSide;
@@ -2078,13 +2229,13 @@ class TradeManager {
         const contractSize = this.getContractSize(symbol);
         const pipSize = this.getPipSize(symbol);
         const precision = this.getPrecision(symbol);
-        
+
         const orderType = document.getElementById('trade-order-type').value;
         let entryPrice = (side === 'buy') ? this.currentAsk : this.currentBid;
         if (orderType === 'limit') {
             entryPrice = parseFloat(document.getElementById('trade-price').value) || entryPrice;
         }
-        
+
         // Stop Loss Calculator
         const slChecked = document.getElementById('enable-sl').checked;
         if (slChecked) {
@@ -2096,7 +2247,7 @@ class TradeManager {
                 const pipsDist = (dist / pipSize).toFixed(1);
                 const lossQuote = vol * contractSize * dist;
                 const lossUSD = this.convertToUSD(symbol, lossQuote, entryPrice);
-                
+
                 if (slActiveUnit === 'price') {
                     document.getElementById('sl-info-pips').innerHTML = `Distance: <strong id="sl-pips-dist">${pipsDist} pips</strong>`;
                     document.getElementById('sl-info-usd').innerHTML = `Risk: <strong id="sl-usd-loss" class="text-danger">-$${lossUSD.toFixed(2)}</strong>`;
@@ -2109,7 +2260,7 @@ class TradeManager {
                 }
             }
         }
-        
+
         // Take Profit Calculator
         const tpChecked = document.getElementById('enable-tp').checked;
         if (tpChecked) {
@@ -2121,7 +2272,7 @@ class TradeManager {
                 const pipsDist = (dist / pipSize).toFixed(1);
                 const profitQuote = vol * contractSize * dist;
                 const profitUSD = this.convertToUSD(symbol, profitQuote, entryPrice);
-                
+
                 if (tpActiveUnit === 'price') {
                     document.getElementById('tp-info-pips').innerHTML = `Distance: <strong id="tp-pips-dist">${pipsDist} pips</strong>`;
                     document.getElementById('tp-info-usd').innerHTML = `Profit: <strong id="tp-usd-profit" class="text-success">+$${profitUSD.toFixed(2)}</strong>`;
@@ -2135,22 +2286,44 @@ class TradeManager {
             }
         }
     }
-    
+
+    formatTradeTime(value) {
+        if (!value) return '-';
+        const date = typeof value === 'number' ? new Date(value * 1000) : new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value);
+        return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    resultBadgeClass(result) {
+        return String(result || 'manual')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '') || 'manual';
+    }
+
     // ─── Tick update hook from Replay loop ─────────────────────────────────
     onReplayTick(bar) {
         if (!this.isReplayMode) return;
-        
+
         const symbol = this.currentSymbol;
         const spread = this.getSpread(symbol);
         const precision = this.getPrecision(symbol);
-        
+
         this.currentBid = bar.close;
         this.currentAsk = bar.close + spread;
-        
+
         // Update price buttons UI
         document.getElementById('quick-sell-price').textContent = this.currentBid.toFixed(precision);
         document.getElementById('quick-buy-price').textContent = this.currentAsk.toFixed(precision);
-        
+
         // Update badge
         const badge = document.getElementById('trade-mode-badge');
         badge.textContent = 'SIMULATOR';
@@ -2160,34 +2333,34 @@ class TradeManager {
         this.updateExecutionButton();
         this.updateRiskRewardCalcs();
 
-        
+
         // 1. Process Pending virtual orders
         const pending = this.virtualAccount.pending;
         const active_positions = this.virtualAccount.positions;
         const contractSize = this.getContractSize(symbol);
-        
+
         for (let i = pending.length - 1; i >= 0; i--) {
             const pOrder = pending[i];
             if (pOrder.symbol !== symbol) continue;
-            
+
             // Check if triggered (the bar high/low range includes the order price)
             const lowVal = bar.low;
             const highVal = bar.high;
             const triggerPrice = pOrder.price_order;
-            
+
             let trigger = false;
             if (pOrder.type === 'BUY_LIMIT' && lowVal <= triggerPrice) trigger = true;
             else if (pOrder.type === 'SELL_LIMIT' && highVal >= triggerPrice) trigger = true;
             else if (pOrder.type === 'BUY_STOP' && highVal >= triggerPrice) trigger = true;
             else if (pOrder.type === 'SELL_STOP' && lowVal <= triggerPrice) trigger = true;
-            
+
             if (trigger) {
                 // Fill order!
                 pending.splice(i, 1);
-                
+
                 // Calculate required margin
                 const margin = (pOrder.volume * contractSize * triggerPrice) / 500.0;
-                
+
                 const newPos = {
                     ticket: pOrder.ticket,
                     symbol: pOrder.symbol,
@@ -2201,20 +2374,20 @@ class TradeManager {
                     profit: 0.0,
                     time: bar.time
                 };
-                
+
                 active_positions.push(newPos);
                 console.log(`[Virtual] Pending filled: ${newPos.type} ${newPos.volume} lots at ${triggerPrice}`);
             }
         }
-        
+
         // 2. Update floating profit/loss & check SL/TP for open positions
         for (let i = active_positions.length - 1; i >= 0; i--) {
             const pos = active_positions[i];
             if (pos.symbol !== symbol) continue;
-            
+
             const lowVal = bar.low;
             const highVal = bar.high;
-            
+
             // Floating profit based on replayed candle's close
             pos.price_current = bar.close;
             let profitQuote = 0.0;
@@ -2224,12 +2397,12 @@ class TradeManager {
                 profitQuote = pos.volume * contractSize * (pos.price_open - bar.close);
             }
             pos.profit = this.convertToUSD(pos.symbol, profitQuote, bar.close);
-            
+
             // Check Stop Loss hit
             let isClosed = false;
             let exitPrice = 0.0;
             let closeReason = '';
-            
+
             if (pos.sl > 0) {
                 if (pos.type === 'BUY' && lowVal <= pos.sl) {
                     isClosed = true;
@@ -2241,7 +2414,7 @@ class TradeManager {
                     closeReason = 'SL';
                 }
             }
-            
+
             // Check Take Profit hit
             if (!isClosed && pos.tp > 0) {
                 if (pos.type === 'BUY' && highVal >= pos.tp) {
@@ -2254,11 +2427,11 @@ class TradeManager {
                     closeReason = 'TP';
                 }
             }
-            
+
             if (isClosed) {
                 // Trigger auto closure!
                 active_positions.splice(i, 1);
-                
+
                 let closedProfitQuote = 0.0;
                 if (pos.type === 'BUY') {
                     closedProfitQuote = pos.volume * contractSize * (exitPrice - pos.price_open);
@@ -2266,14 +2439,14 @@ class TradeManager {
                     closedProfitQuote = pos.volume * contractSize * (pos.price_open - exitPrice);
                 }
                 const realizedProfitUSD = this.convertToUSD(pos.symbol, closedProfitQuote, exitPrice);
-                
+
                 // Update Balance
                 this.virtualAccount.balance += realizedProfitUSD;
-                
+
                 // Add to history
                 const date = new Date(bar.time * 1000);
                 const timeStr = date.toLocaleTimeString() + ' ' + date.toLocaleDateString();
-                
+
                 this.virtualAccount.history.unshift({
                     time: timeStr,
                     ticket: pos.ticket,
@@ -2285,11 +2458,11 @@ class TradeManager {
                     profit: realizedProfitUSD,
                     result: closeReason
                 });
-                
+
                 console.log(`[Virtual] Auto-Closed position #${pos.ticket} via ${closeReason} at ${exitPrice}. Profit: $${realizedProfitUSD.toFixed(2)}`);
             }
         }
-        
+
         // 3. Recalculate Equity & Free Margin
         let totalProfit = 0.0;
         let totalMargin = 0.0;
@@ -2297,37 +2470,37 @@ class TradeManager {
             totalProfit += p.profit;
             totalMargin += p.margin;
         });
-        
+
         this.virtualAccount.equity = this.virtualAccount.balance + totalProfit;
         this.virtualAccount.margin = totalMargin;
         this.virtualAccount.free_margin = this.virtualAccount.equity - totalMargin;
         this.virtualAccount.margin_level = totalMargin > 0 ? (this.virtualAccount.equity / totalMargin) * 100 : 0.0;
-        
+
         this.saveVirtualAccount();
         this.updateAccountUI();
         this.updateTablesUI();
         this.updateRiskRewardCalcs();
     }
-    
+
     // ─── Execution Logic ──────────────────────────────────────────────────
     async executeOrder() {
         const symbol = this.currentSymbol;
         const side = this.activeSide;
         const orderType = document.getElementById('trade-order-type').value;
         const vol = parseFloat(document.getElementById('trade-volume').value) || 0.01;
-        
+
         const sl = this.getActualSLPrice();
         const tp = this.getActualTPPrice();
-        
+
         if (this.isReplayMode) {
             // VIRTUAL ORDER PLACEMENT
             const contractSize = this.getContractSize(symbol);
             let entryPrice = (side === 'buy') ? this.currentAsk : this.currentBid;
-            
+
             if (orderType === 'limit') {
                 entryPrice = parseFloat(document.getElementById('trade-price').value) || entryPrice;
             }
-            
+
             const ticket = ++this.virtualAccount.ticket_counter;
             let timeVal = Math.floor(Date.now() / 1000);
             if (window.replayManager && window.replayManager.fullData && window.replayManager.currentIndex !== undefined && window.replayManager.currentIndex !== null) {
@@ -2336,7 +2509,7 @@ class TradeManager {
                     timeVal = currentBar.time;
                 }
             }
-            
+
             if (orderType === 'market') {
                 // Check if margin is sufficient
                 const margin = (vol * contractSize * entryPrice) / 500.0;
@@ -2344,7 +2517,7 @@ class TradeManager {
                     alert('Insufficient margin to place virtual order!');
                     return;
                 }
-                
+
                 this.virtualAccount.positions.push({
                     ticket: ticket,
                     symbol: symbol,
@@ -2368,7 +2541,7 @@ class TradeManager {
                 } else {
                     pType = (entryPrice > currentMid) ? 'SELL_LIMIT' : 'SELL_STOP';
                 }
-                
+
                 this.virtualAccount.pending.push({
                     ticket: ticket,
                     symbol: symbol,
@@ -2380,7 +2553,7 @@ class TradeManager {
                     time: timeVal
                 });
             }
-            
+
             this.saveVirtualAccount();
             this.updateAccountUI();
             this.updateTablesUI();
@@ -2388,7 +2561,7 @@ class TradeManager {
         } else {
             // LIVE MT5 ORDER PLACEMENT
             const apiType = (side === 'buy') ? 'buy' : 'sell';
-            
+
             try {
                 const response = await fetch('/api/trade/place', {
                     method: 'POST',
@@ -2401,7 +2574,7 @@ class TradeManager {
                         tp: tp
                     })
                 });
-                
+
                 const result = await response.json();
                 if (result.success) {
                     alert(`[Live MT5] Order placed successfully! Ticket: #${result.ticket}`);
@@ -2415,7 +2588,7 @@ class TradeManager {
             }
         }
     }
-    
+
     async closePosition(ticket) {
         if (this.isReplayMode) {
             // CLOSE VIRTUAL POSITION
@@ -2424,13 +2597,13 @@ class TradeManager {
             if (idx >= 0) {
                 const pos = positions[idx];
                 positions.splice(idx, 1);
-                
+
                 // Realize profit
                 this.virtualAccount.balance += pos.profit;
-                
+
                 // Release margin
                 this.virtualAccount.equity = this.virtualAccount.balance;
-                
+
                 // Add to history
                 let date = new Date();
                 if (window.replayManager && window.replayManager.fullData && window.replayManager.currentIndex !== undefined && window.replayManager.currentIndex !== null) {
@@ -2451,7 +2624,7 @@ class TradeManager {
                     profit: pos.profit,
                     result: 'Manual Close'
                 });
-                
+
                 this.saveVirtualAccount();
                 this.updateAccountUI();
                 this.updateTablesUI();
@@ -2465,7 +2638,7 @@ class TradeManager {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ticket: ticket })
                 });
-                
+
                 const result = await response.json();
                 if (result.success) {
                     alert(`[Live MT5] Position #${ticket} closed successfully.`);
@@ -2478,7 +2651,7 @@ class TradeManager {
             }
         }
     }
-    
+
     cancelPending(ticket) {
         if (this.isReplayMode) {
             const pending = this.virtualAccount.pending;
@@ -2493,7 +2666,7 @@ class TradeManager {
             alert('MT5 Live pending order cancellation is under development / being updated.');
         }
     }
-    
+
     // ─── UI Redraw Methods ────────────────────────────────────────────────
     updateAccountUI() {
         if (this.isReplayMode) {
@@ -2504,17 +2677,17 @@ class TradeManager {
             document.getElementById('acc-margin-level').textContent = `${this.virtualAccount.margin_level.toFixed(2)}%`;
         }
     }
-    
+
     updateTablesUI() {
         if (!this.isReplayMode) return; // In Live mode tables are updated by polling data
-        
+
         // 1. Redraw Open Positions
         const posBody = document.getElementById('positions-list');
         const countOpenEl = document.getElementById('open-positions-count');
         const positions = this.virtualAccount.positions;
-        
+
         countOpenEl.textContent = positions.length;
-        
+
         if (positions.length === 0) {
             posBody.innerHTML = `<tr><td colspan="10" class="empty-row">No open trading positions.</td></tr>`;
         } else {
@@ -2524,7 +2697,7 @@ class TradeManager {
                 const p = this.getPrecision(pos.symbol);
                 const profColor = pos.profit >= 0 ? 'text-success' : 'text-danger';
                 const sign = pos.profit >= 0 ? '+' : '';
-                
+
                 tr.innerHTML = `
                     <td>#${pos.ticket}</td>
                     <td><strong>${pos.symbol}</strong></td>
@@ -2540,14 +2713,14 @@ class TradeManager {
                 posBody.appendChild(tr);
             });
         }
-        
+
         // 2. Redraw Pending Orders
         const pendBody = document.getElementById('pending-list');
         const countPendEl = document.getElementById('pending-positions-count');
         const pending = this.virtualAccount.pending;
-        
+
         countPendEl.textContent = pending.length;
-        
+
         if (pending.length === 0) {
             pendBody.innerHTML = `<tr><td colspan="9" class="empty-row">No pending orders.</td></tr>`;
         } else {
@@ -2555,7 +2728,7 @@ class TradeManager {
             pending.forEach(pOrd => {
                 const tr = document.createElement('tr');
                 const p = this.getPrecision(pOrd.symbol);
-                
+
                 tr.innerHTML = `
                     <td>#${pOrd.ticket}</td>
                     <td><strong>${pOrd.symbol}</strong></td>
@@ -2570,11 +2743,11 @@ class TradeManager {
                 pendBody.appendChild(tr);
             });
         }
-        
+
         // 3. Redraw History
         const histBody = document.getElementById('history-list');
         const history = this.virtualAccount.history;
-        
+
         if (history.length === 0) {
             histBody.innerHTML = `<tr><td colspan="9" class="empty-row">No trade history available yet.</td></tr>`;
         } else {
@@ -2585,7 +2758,7 @@ class TradeManager {
                 const p = this.getPrecision(h.symbol);
                 const profColor = h.profit >= 0 ? 'text-success' : 'text-danger';
                 const sign = h.profit >= 0 ? '+' : '';
-                
+
                 tr.innerHTML = `
                     <td>${h.time}</td>
                     <td>#${h.ticket}</td>
@@ -2595,29 +2768,63 @@ class TradeManager {
                     <td>${h.price_open.toFixed(p)}</td>
                     <td>${h.price_close.toFixed(p)}</td>
                     <td class="${profColor} font-bold">${sign}$${h.profit.toFixed(2)}</td>
-                    <td><span class="badge result-${h.result ? h.result.toLowerCase() : 'manual'}">${h.result || 'MANUAL'}</span></td>
+                    <td><span class="badge result-${this.resultBadgeClass(h.result)}">${h.result || 'MANUAL'}</span></td>
                 `;
                 histBody.appendChild(tr);
             });
         }
-        
+
         // Draw visual lines on the active charts
         this.drawAllChartLines();
     }
-    
+
+    renderLiveHistory(history) {
+        const histBody = document.getElementById('history-list');
+        if (!histBody) return;
+
+        if (!history || history.length === 0) {
+            histBody.innerHTML = `<tr><td colspan="9" class="empty-row">No live MT5 trade history yet.</td></tr>`;
+            return;
+        }
+
+        histBody.innerHTML = '';
+        history.slice(0, 100).forEach(h => {
+            const tr = document.createElement('tr');
+            const p = this.getPrecision(h.symbol);
+            const profit = Number(h.profit_total ?? h.profit ?? 0);
+            const profColor = profit >= 0 ? 'text-success' : 'text-danger';
+            const sign = profit >= 0 ? '+' : '';
+            const closePrice = Number(h.price_close || 0);
+            const result = h.result || (h.entry === 'IN' ? 'Opened' : 'Closed');
+
+            tr.innerHTML = `
+                <td>${this.formatTradeTime(h.time)}</td>
+                <td>#${h.ticket}</td>
+                <td><strong>${h.symbol}</strong></td>
+                <td><span class="badge ${String(h.type || '').toLowerCase()}">${h.type || '-'}</span></td>
+                <td>${Number(h.volume || 0).toFixed(2)}</td>
+                <td>${Number(h.price_open || 0).toFixed(p)}</td>
+                <td>${closePrice > 0 ? closePrice.toFixed(p) : '-'}</td>
+                <td class="${profColor} font-bold">${sign}$${profit.toFixed(2)}</td>
+                <td><span class="badge result-${this.resultBadgeClass(result)}">${result}</span></td>
+            `;
+            histBody.appendChild(tr);
+        });
+    }
+
     // ─── MT5 Polling & Live updates ─────────────────────────────────────────
     startMT5Polling() {
         // Clear any existing intervals
         if (this.pollingInterval) clearInterval(this.pollingInterval);
         if (this.priceInterval) clearInterval(this.priceInterval);
-        
+
         // Polling loop for Live Account and Positions (every 2.0 seconds)
         this.pollingInterval = setInterval(() => {
             if (!this.isReplayMode) {
                 this.pollMT5TradeState();
             }
         }, 2000);
-        
+
         // Price loop for Live Sell/Buy buttons (every 1.0 second)
         this.priceInterval = setInterval(() => {
             if (!this.isReplayMode) {
@@ -2625,17 +2832,17 @@ class TradeManager {
             }
         }, 1000);
     }
-    
+
     async pollMT5TradeState() {
         const statusEl = document.getElementById('mt5-status');
         const isConnected = statusEl && statusEl.classList.contains('connected');
         if (!isConnected) return;
-        
+
         // Update badge
         const badge = document.getElementById('trade-mode-badge');
         badge.textContent = 'DEMO LIVE';
         badge.className = 'trade-mode-badge live';
-        
+
         try {
             // 1. Fetch Account Info
             const accRes = await fetch('/api/trade/account');
@@ -2648,7 +2855,7 @@ class TradeManager {
                 document.getElementById('acc-free-margin').textContent = `$${acc.free_margin.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
                 document.getElementById('acc-margin-level').textContent = `${acc.margin_level.toFixed(2)}%`;
             }
-            
+
             // 2. Fetch Open Positions
             const posRes = await fetch('/api/trade/positions');
             const posData = await posRes.json();
@@ -2656,9 +2863,9 @@ class TradeManager {
                 const posBody = document.getElementById('positions-list');
                 const countOpenEl = document.getElementById('open-positions-count');
                 const positions = posData.positions;
-                
+
                 countOpenEl.textContent = positions.length;
-                
+
                 if (positions.length === 0) {
                     posBody.innerHTML = `<tr><td colspan="10" class="empty-row">No open trading positions.</td></tr>`;
                 } else {
@@ -2668,7 +2875,7 @@ class TradeManager {
                         const p = this.getPrecision(pos.symbol);
                         const profColor = pos.profit >= 0 ? 'text-success' : 'text-danger';
                         const sign = pos.profit >= 0 ? '+' : '';
-                        
+
                         tr.innerHTML = `
                             <td>#${pos.ticket}</td>
                             <td><strong>${pos.symbol}</strong></td>
@@ -2692,11 +2899,25 @@ class TradeManager {
                     this.drawAllChartLines();
                 }
             }
+
+            // 3. Fetch recent MT5 deals for the Trading History tab.
+            const pendCountEl = document.getElementById('pending-positions-count');
+            if (pendCountEl) pendCountEl.textContent = '0';
+            const pendBody = document.getElementById('pending-list');
+            if (pendBody) {
+                pendBody.innerHTML = `<tr><td colspan="9" class="empty-row">Live pending order display is not available yet.</td></tr>`;
+            }
+
+            const historyRes = await fetch('/api/trade/history?days=30');
+            const historyData = await historyRes.json();
+            if (historyData.success && historyData.history) {
+                this.renderLiveHistory(historyData.history);
+            }
         } catch (e) {
             console.error('Failed to poll live MT5 trade state:', e);
         }
     }
-    
+
     async pollLivePrice() {
         const symbol = this.currentSymbol;
         try {
@@ -2705,14 +2926,14 @@ class TradeManager {
             if (data.success && data.price) {
                 this.currentBid = data.price.bid;
                 this.currentAsk = data.price.ask;
-                
+
                 const p = this.getPrecision(symbol);
                 document.getElementById('quick-sell-price').textContent = this.currentBid.toFixed(p);
                 document.getElementById('quick-buy-price').textContent = this.currentAsk.toFixed(p);
-                
+
                 this.updateRiskRewardCalcs();
                 this.updateExecutionButton();
-                
+
                 // Tick the live price into the active chart's current bar!
                 if (window.chartManager && !window.chartManager.isReplayMode) {
                     window.chartManager.tickActiveChartPrice(symbol, this.currentBid);
@@ -2784,7 +3005,7 @@ class TradeManager {
                     entryLine.setPrice(pos.price_open);
                     entryLine.setQuantity(pos.volume.toFixed(2));
                     entryLine.setText(`${pos.type} #${pos.ticket}`);
-                    
+
                     const sideColor = pos.type === 'BUY' ? '#089981' : '#f23645';
                     entryLine.setLineColor(sideColor);
                     entryLine.setLineStyle(0); // Solid
@@ -2802,7 +3023,7 @@ class TradeManager {
                             }
                         }
                     });
-                    
+
                     panel.activeOrderLines.push(entryLine);
                 } catch (e) {
                     console.error("Error creating entry line:", e);
@@ -2814,13 +3035,13 @@ class TradeManager {
                         const slLine = panel.chart.createOrderLine();
                         slLine.setPrice(pos.sl);
                         slLine.setQuantity('');
-                        
+
                         // Calculate risk amount in USD
                         const dist = Math.abs(pos.price_open - pos.sl);
                         const contractSize = this.getContractSize(pos.symbol);
                         const lossQuote = pos.volume * contractSize * dist;
                         const lossUSD = this.convertToUSD(pos.symbol, lossQuote, pos.price_open);
-                        
+
                         slLine.setText(`SL: ${pos.sl.toFixed(p)} (-$${lossUSD.toFixed(2)})`);
                         slLine.setLineColor('#f23645');
                         slLine.setLineStyle(1); // Dashed
@@ -2862,7 +3083,7 @@ class TradeManager {
                                 }
                             });
                         }
-                        
+
                         panel.activeOrderLines.push(slLine);
                     } catch (e) {
                         console.error("Error creating SL line:", e);
@@ -2875,13 +3096,13 @@ class TradeManager {
                         const tpLine = panel.chart.createOrderLine();
                         tpLine.setPrice(pos.tp);
                         tpLine.setQuantity('');
-                        
+
                         // Calculate profit amount in USD
                         const dist = Math.abs(pos.price_open - pos.tp);
                         const contractSize = this.getContractSize(pos.symbol);
                         const profitQuote = pos.volume * contractSize * dist;
                         const profitUSD = this.convertToUSD(pos.symbol, profitQuote, pos.price_open);
-                        
+
                         tpLine.setText(`TP: ${pos.tp.toFixed(p)} (+$${profitUSD.toFixed(2)})`);
                         tpLine.setLineColor('#089981');
                         tpLine.setLineStyle(1); // Dashed
@@ -2923,7 +3144,7 @@ class TradeManager {
                                 }
                             });
                         }
-                        
+
                         panel.activeOrderLines.push(tpLine);
                     } catch (e) {
                         console.error("Error creating TP line:", e);
@@ -2967,7 +3188,7 @@ class TradeManager {
                             }
                         });
                     }
-                    
+
                     panel.activeOrderLines.push(entryLine);
                 } catch (e) {
                     console.error("Error creating pending entry line:", e);
@@ -3020,7 +3241,7 @@ class TradeManager {
                                 }
                             });
                         }
-                        
+
                         panel.activeOrderLines.push(slLine);
                     } catch (e) {
                         console.error("Error creating pending SL line:", e);
@@ -3074,7 +3295,7 @@ class TradeManager {
                                 }
                             });
                         }
-                        
+
                         panel.activeOrderLines.push(tpLine);
                     } catch (e) {
                         console.error("Error creating pending TP line:", e);

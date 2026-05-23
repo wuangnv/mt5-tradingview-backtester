@@ -17,7 +17,7 @@
                     <span class="brand-name" style="font-size: 15px; font-weight: 800; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 50%, #2962ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.8px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', sans-serif; filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.25));">WuangVibeTrading</span>
                 </div>
             </div>
-            
+
             <div class="toolbar-separator-v"></div>
 
             <!-- Hidden DOM elements for legacy script compatibility -->
@@ -30,7 +30,7 @@
                     <option value="USDCAD">USDCAD</option>
                     <option value="XAUUSD">XAUUSD</option>
                 </select>
-                
+
                 <div class="timeframe-buttons">
                     <button class="tf-btn" data-tf="M1">1m</button>
                     <button class="tf-btn" data-tf="M5">5m</button>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="toolbar-separator-v"></div>
-            
+
             <!-- Replay / Trade buttons -->
             <div class="toolbar-group actions-group">
                 <button id="replay-btn" class="toolbar-btn">
@@ -54,9 +54,9 @@
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg> Order Panel
                 </button>
             </div>
-            
+
             <div class="toolbar-separator-v"></div>
-            
+
             <!-- Layout & Sync Buttons -->
             <div class="toolbar-group layout-group">
                 <div class="layout-select-wrapper">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="toolbar-group right-aligned">
                 <div class="status-indicator" id="mt5-status">
                     <span class="status-dot"></span>
@@ -93,16 +93,88 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Main Layout -->
         <div class="main-layout">
-            
+
             <!-- Middle Section: Charts & Positions Dashboard -->
             <div class="middle-section">
                 <!-- Chart Area -->
                 <div class="chart-area">
                     <div id="charts-grid" class="charts-grid layout-1">
                         <!-- Dynamic chart panels will be injected here by ChartManager -->
+                    </div>
+
+                    <!-- Floating TradingView-Style Replay Toolbar -->
+                    <div class="tv-replay-toolbar" id="tv-replay-toolbar" style="display: none;">
+                        <div class="replay-drag-handle">
+                            <span class="replay-drag-title" style="margin-left: 6px;">Replay</span>
+                        </div>
+
+                        <div class="toolbar-separator-v"></div>
+
+                        <button id="replay-jump-mode" class="tv-replay-btn" title="Jump to: Click chart to seek">
+                            <span class="btn-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 4px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </span> Jump To
+                        </button>
+
+                        <div class="toolbar-separator-v"></div>
+
+                        <button id="replay-prev" class="tv-replay-btn-icon" title="Previous Bar (←)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+                        </button>
+
+                        <button id="replay-play-pause" class="tv-replay-btn-icon play-btn" title="Play/Pause (Space)">
+                            <span id="play-icon" style="display: flex; align-items: center; justify-content: center;">
+                                <svg id="svg-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                <svg id="svg-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                            </span>
+                        </button>
+
+                        <button id="replay-next" class="tv-replay-btn-icon" title="Next Bar (→)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                        </button>
+
+                        <div class="toolbar-separator-v"></div>
+
+                        <div class="replay-status-text">
+                            <span id="replay-progress">0 / 0</span>
+                            <span id="replay-current-date" class="replay-date-display"></span>
+                        </div>
+
+                        <div class="toolbar-separator-v"></div>
+
+                        <div class="replay-speed-container">
+                            <span class="speed-label">Speed:</span>
+                            <select id="replay-speed" class="tv-replay-speed-select">
+                                <option value="50">20x (0.05s)</option>
+                                <option value="100">10x (0.1s)</option>
+                                <option value="200">5x (0.2s)</option>
+                                <option value="500">2x (0.5s)</option>
+                                <option value="1000" selected>1x (1s)</option>
+                                <option value="2000">0.5x (2s)</option>
+                                <option value="4000">0.25x (4s)</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-separator-v"></div>
+
+                        <div class="replay-date-container">
+                            <input type="text" id="replay-start-date" class="tv-replay-date-input" placeholder="DD/MM/YYYY HH:MM">
+                            <button id="replay-jump-date" class="tv-replay-btn-go" title="Go to date">Go</button>
+                        </div>
+
+                        <div class="toolbar-separator-v"></div>
+
+                        <button id="replay-close" class="tv-replay-btn-close" title="Close Replay (Esc)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+
+                        <!-- Tiny thin slider built-in at the bottom edge of the floating toolbar -->
+                        <div class="tv-replay-slider-bar">
+                            <input type="range" id="replay-slider" class="tv-replay-slider" min="0" max="100" value="0">
+                        </div>
                     </div>
                 </div>
 
@@ -114,7 +186,7 @@
                             <button class="tab-btn" data-tab="pending">Pending Orders (<span id="pending-positions-count">0</span>)</button>
                             <button class="tab-btn" data-tab="history">Trading History</button>
                         </div>
-                        
+
                         <div class="account-summary-bar">
                             <span class="account-summary-item">Balance: <strong id="acc-balance">$10,000.00</strong></span>
                             <span class="account-summary-item">Equity: <strong id="acc-equity">$10,000.00</strong></span>
@@ -127,7 +199,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="dashboard-tab-content active" id="tab-positions">
                         <table class="dashboard-table">
                             <thead>
@@ -151,7 +223,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="dashboard-tab-content" id="tab-pending">
                         <table class="dashboard-table">
                             <thead>
@@ -209,7 +281,7 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
-                
+
                 <!-- Quick Trade Tabs (Exness Style Buy/Sell selectors) -->
                 <div class="exness-side-tabs">
                     <button class="side-tab sell active" id="btn-quick-sell">
@@ -221,7 +293,7 @@
                         <span class="price" id="quick-buy-price">0.00000</span>
                     </button>
                 </div>
-                
+
                 <div class="order-settings-container">
                     <!-- Order Type Tab buttons (Exness Style) -->
                     <div class="trade-input-group">
@@ -323,81 +395,7 @@
                 </button>
             </div>
         </div>
-        
-        <!-- Floating TradingView-Style Replay Toolbar -->
-        <div class="tv-replay-toolbar" id="tv-replay-toolbar" style="display: none;">
-            <div class="replay-drag-handle">
-                <svg class="replay-drag-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="color: #787b86; cursor: grab; margin-right: 6px;"><circle cx="9" cy="5" r="1.5"></circle><circle cx="9" cy="12" r="1.5"></circle><circle cx="9" cy="19" r="1.5"></circle><circle cx="15" cy="5" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="15" cy="19" r="1.5"></circle></svg>
-                <span class="replay-drag-title">Replay</span>
-            </div>
-            
-            <div class="toolbar-separator-v"></div>
-            
-            <button id="replay-jump-mode" class="tv-replay-btn" title="Jump to: Click chart to seek">
-                <span class="btn-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 4px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                </span> Jump To
-            </button>
-            
-            <div class="toolbar-separator-v"></div>
-            
-            <button id="replay-prev" class="tv-replay-btn-icon" title="Previous Bar (←)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
-            </button>
-            
-            <button id="replay-play-pause" class="tv-replay-btn-icon play-btn" title="Play/Pause (Space)">
-                <span id="play-icon" style="display: flex; align-items: center; justify-content: center;">
-                    <svg id="svg-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    <svg id="svg-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                </span>
-            </button>
-            
-            <button id="replay-next" class="tv-replay-btn-icon" title="Next Bar (→)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
-            </button>
-            
-            <div class="toolbar-separator-v"></div>
-            
-            <div class="replay-status-text">
-                <span id="replay-progress">0 / 0</span>
-                <span id="replay-current-date" class="replay-date-display"></span>
-            </div>
-            
-            <div class="toolbar-separator-v"></div>
-            
-            <div class="replay-speed-container">
-                <span class="speed-label">Speed:</span>
-                <select id="replay-speed" class="tv-replay-speed-select">
-                    <option value="50">20x (0.05s)</option>
-                    <option value="100">10x (0.1s)</option>
-                    <option value="200">5x (0.2s)</option>
-                    <option value="500">2x (0.5s)</option>
-                    <option value="1000" selected>1x (1s)</option>
-                    <option value="2000">0.5x (2s)</option>
-                    <option value="4000">0.25x (4s)</option>
-                </select>
-            </div>
-            
-            <div class="toolbar-separator-v"></div>
-            
-            <div class="replay-date-container">
-                <input type="datetime-local" id="replay-start-date" class="tv-replay-date-input">
-                <button id="replay-jump-date" class="tv-replay-btn-go" title="Go to date">Go</button>
-            </div>
-            
-            <div class="toolbar-separator-v"></div>
-            
-            <button id="replay-close" class="tv-replay-btn-close" title="Close Replay (Esc)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            
-            <!-- Tiny thin slider built-in at the bottom edge of the floating toolbar -->
-            <div class="tv-replay-slider-bar">
-                <input type="range" id="replay-slider" class="tv-replay-slider" min="0" max="100" value="0">
-            </div>
-        </div>
     </div>
-    
 
 
 
