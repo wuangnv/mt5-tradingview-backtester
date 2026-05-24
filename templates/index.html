@@ -14,7 +14,7 @@
         <div class="top-toolbar">
             <div class="toolbar-group brand-group">
                 <div class="brand-container" style="display: flex; align-items: center; margin-right: 12px; user-select: none;">
-                    <span class="brand-name" style="font-size: 15px; font-weight: 800; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 50%, #2962ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.8px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', sans-serif; filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.25));">WuangVibeTrading</span>
+                    <span class="brand-name" style="font-size: 15px; font-weight: 800; background: linear-gradient(90deg, #00e5ff 0%, #ff4fd8 48%, #b45cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.8px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', sans-serif; filter: drop-shadow(0 0 10px rgba(255, 79, 216, 0.32));">WuangVibeTrading</span>
                 </div>
             </div>
 
@@ -52,6 +52,9 @@
                 </button>
                 <button id="trade-panel-toggle-btn" class="toolbar-btn">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg> Order Panel
+                </button>
+                <button id="playbook-toggle-btn" class="toolbar-btn" title="Open Trading Playbook">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg> Playbook
                 </button>
             </div>
 
@@ -193,7 +196,7 @@
                             <span class="account-summary-item">Margin: <strong id="acc-margin">$0.00</strong></span>
                             <span class="account-summary-item">Free Margin: <strong id="acc-free-margin">$10,000.00</strong></span>
                             <span class="account-summary-item">Margin Level: <strong id="acc-margin-level">0.00%</strong></span>
-                            <div class="toolbar-separator-v" style="height: 14px; margin: 0 4px; background: #2a2e39;"></div>
+                            <div class="toolbar-separator-v" style="height: 14px; margin: 0 4px; background: #2b2141;"></div>
                             <button id="dashboard-toggle-btn" class="dashboard-toggle-btn" title="Collapse / Expand">
                                 <svg width="12" height="12" viewBox="0 0 24 24" style="transition: transform 0.3s ease; display: block;"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                             </button>
@@ -277,7 +280,7 @@
                 <div class="panel-section-title">
                     <span>PLACE TRADE ORDER</span>
                     <span class="trade-mode-badge" id="trade-mode-badge">BACKTEST</span>
-                    <button id="close-trading-panel-btn" class="panel-close-btn" title="Close" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: transparent; border: none; color: #787b86; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;">
+                    <button id="close-trading-panel-btn" class="panel-close-btn" title="Close" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: transparent; border: none; color: #a895c7; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                 </div>
@@ -395,6 +398,192 @@
                 </button>
             </div>
         </div>
+
+        <div class="playbook-overlay" id="playbook-overlay" aria-hidden="true">
+            <aside class="playbook-panel" role="dialog" aria-modal="false" aria-labelledby="playbook-title">
+                <div id="playbook-resize-handle" class="playbook-resize-handle" title="Drag to resize Playbook"></div>
+                <header class="playbook-header">
+                    <div>
+                        <div class="playbook-kicker">Trading Workspace</div>
+                        <h2 id="playbook-title">Playbook Notes</h2>
+                    </div>
+                    <div class="playbook-header-actions">
+                        <button id="playbook-new-note-btn" class="playbook-small-btn">New Note</button>
+                        <button id="playbook-tab-btn" class="playbook-icon-btn" title="Open Playbook in New Tab">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"></path><path d="M10 14 21 3"></path><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path></svg>
+                        </button>
+                        <button id="playbook-fullscreen-btn" class="playbook-icon-btn" title="Toggle Fullscreen Playbook">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 3h3a2 2 0 0 1 2 2v3"></path><path d="M8 21H5a2 2 0 0 1-2-2v-3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+                        </button>
+                        <button id="playbook-close-btn" class="playbook-icon-btn" title="Close Playbook">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="playbook-workspace">
+                    <nav class="playbook-sidebar">
+                        <div class="playbook-search-wrap">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input id="playbook-search-input" type="search" placeholder="Search notes, tags, symbols...">
+                        </div>
+
+                        <div class="playbook-view-tabs">
+                            <button class="active" data-playbook-view="journal">Journal</button>
+                            <button data-playbook-view="setups">Setups</button>
+                            <button data-playbook-view="roadmap">Roadmap</button>
+                        </div>
+
+                        <div class="playbook-filter-row">
+                            <button class="playbook-filter active" data-filter="all">All</button>
+                            <button class="playbook-filter" data-filter="Backtest">Backtest</button>
+                            <button class="playbook-filter" data-filter="Career">Career</button>
+                            <button class="playbook-filter" data-filter="Strategy">Strategy</button>
+                        </div>
+
+                        <div id="playbook-tag-cloud" class="playbook-tag-cloud"></div>
+                        <div id="playbook-note-list" class="playbook-note-list"></div>
+                    </nav>
+
+                    <section class="playbook-editor" id="playbook-journal-view">
+                        <div class="playbook-editor-toolbar">
+                            <div>
+                                <p class="playbook-label">Trading Journal</p>
+                                <p id="playbook-save-state" class="playbook-save-state">Saved locally</p>
+                            </div>
+                            <div class="playbook-editor-actions">
+                                <button id="playbook-duplicate-note-btn" class="playbook-small-btn">Duplicate</button>
+                                <button id="playbook-delete-note-btn" class="playbook-small-btn danger">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="playbook-stats-grid" id="playbook-stats-grid"></div>
+                        <div class="playbook-insight-strip" id="playbook-insight-strip"></div>
+
+                        <input id="playbook-title-input" class="playbook-title-input" type="text" placeholder="Untitled note">
+
+                        <div class="playbook-property-grid">
+                            <label>
+                                <span>Tags</span>
+                                <input id="playbook-tags-input" type="text" placeholder="Backtest, ICT, Liquidity">
+                            </label>
+                            <label>
+                                <span>Symbol</span>
+                                <input id="playbook-symbol-input" type="text" placeholder="EURUSD">
+                            </label>
+                            <label>
+                                <span>Timeframe</span>
+                                <input id="playbook-timeframe-input" type="text" placeholder="H1">
+                            </label>
+                            <label>
+                                <span>Setup</span>
+                                <input id="playbook-setup-input" type="text" placeholder="Liquidity sweep">
+                            </label>
+                            <label>
+                                <span>R Multiple</span>
+                                <input id="playbook-rr-input" type="number" step="0.1" placeholder="1.5">
+                            </label>
+                            <label>
+                                <span>Result</span>
+                                <select id="playbook-result-input">
+                                    <option value="">No result</option>
+                                    <option value="Win">Win</option>
+                                    <option value="Loss">Loss</option>
+                                    <option value="Breakeven">Breakeven</option>
+                                    <option value="Idea">Idea</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="playbook-quick-tags" id="playbook-quick-tags">
+                            <button data-tag="Backtest">Backtest</button>
+                            <button data-tag="Liquidity">Liquidity</button>
+                            <button data-tag="Psychology">Psychology</button>
+                            <button data-tag="AI Research">AI Research</button>
+                            <button data-tag="Mistake">Mistake</button>
+                        </div>
+
+                        <textarea id="playbook-body-input" class="playbook-body-input" spellcheck="false" placeholder="Write your trading note..."></textarea>
+
+                        <div class="playbook-attachments">
+                            <div class="playbook-attachments-head">
+                                <div>
+                                    <p class="playbook-label">Images</p>
+                                    <span>Upload, drag here, or paste screenshots while the note is open.</span>
+                                </div>
+                                <label class="playbook-upload-btn">
+                                    Add Images
+                                    <input id="playbook-image-input" type="file" accept="image/*" multiple>
+                                </label>
+                            </div>
+                            <div id="playbook-drop-zone" class="playbook-drop-zone">
+                                <span>Drop chart screenshots here</span>
+                            </div>
+                            <div id="playbook-image-grid" class="playbook-image-grid"></div>
+                        </div>
+                    </section>
+
+                    <section class="playbook-editor playbook-view-panel" id="playbook-setups-view" hidden>
+                        <div class="playbook-editor-toolbar">
+                            <div>
+                                <p class="playbook-label">Setup Library</p>
+                                <p class="playbook-save-state">Build a repeatable strategy catalog.</p>
+                            </div>
+                            <div class="playbook-editor-actions">
+                                <button id="playbook-new-setup-btn" class="playbook-small-btn">New Setup</button>
+                                <button id="playbook-delete-setup-btn" class="playbook-small-btn danger">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="playbook-setup-layout">
+                            <div id="playbook-setup-list" class="playbook-setup-list"></div>
+                            <div class="playbook-setup-editor">
+                                <input id="playbook-setup-title-input" class="playbook-title-input" type="text" placeholder="Setup name">
+                                <div class="playbook-property-grid">
+                                    <label>
+                                        <span>Status</span>
+                                        <select id="playbook-setup-status-input">
+                                            <option value="Learning">Learning</option>
+                                            <option value="Testing">Testing</option>
+                                            <option value="Validated">Validated</option>
+                                            <option value="Automating">Automating</option>
+                                        </select>
+                                    </label>
+                                    <label>
+                                        <span>Market</span>
+                                        <input id="playbook-setup-market-input" type="text" placeholder="London, NY, crypto">
+                                    </label>
+                                    <label>
+                                        <span>Best TF</span>
+                                        <input id="playbook-setup-timeframe-input" type="text" placeholder="M15-H1">
+                                    </label>
+                                    <label>
+                                        <span>Sample</span>
+                                        <input id="playbook-setup-sample-input" type="number" min="0" step="1" placeholder="100">
+                                    </label>
+                                </div>
+                                <textarea id="playbook-setup-body-input" class="playbook-body-input" spellcheck="false" placeholder="Rules, invalidation, examples, automation notes..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="playbook-editor playbook-view-panel" id="playbook-roadmap-view" hidden>
+                        <div class="playbook-editor-toolbar">
+                            <div>
+                                <p class="playbook-label">Career Roadmap</p>
+                                <p class="playbook-save-state">Move skills from learning to public proof.</p>
+                            </div>
+                            <div class="playbook-roadmap-add">
+                                <input id="playbook-roadmap-input" type="text" placeholder="Add a career task...">
+                                <button id="playbook-roadmap-add-btn" class="playbook-small-btn">Add</button>
+                            </div>
+                        </div>
+
+                        <div class="playbook-roadmap-board" id="playbook-roadmap-board"></div>
+                    </section>
+                </div>
+            </aside>
+        </div>
     </div>
 
 
@@ -402,6 +591,7 @@
 
     <!-- Scripts -->
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/playbook.js') }}"></script>
     <script src="{{ url_for('static', filename='js/replay.js') }}"></script>
 </body>
 </html>

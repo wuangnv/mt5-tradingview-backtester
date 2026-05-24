@@ -204,11 +204,11 @@ class ChartPanel {
                 'items_favoriting'
             ],
             overrides: {
-                'paneProperties.background': '#131722',
-                'paneProperties.vertGridProperties.color': 'rgba(42, 46, 57, 0.15)',
-                'paneProperties.horzGridProperties.color': 'rgba(42, 46, 57, 0.15)',
+                'paneProperties.background': '#0b0714',
+                'paneProperties.vertGridProperties.color': 'rgba(43, 33, 65, 0.15)',
+                'paneProperties.horzGridProperties.color': 'rgba(43, 33, 65, 0.15)',
                 'symbolWatermarkProperties.transparency': 90,
-                'scalesProperties.textColor': '#d1d4dc',
+                'scalesProperties.textColor': '#eee5ff',
                 'mainSeriesProperties.candleStyle.upColor': '#089981',
                 'mainSeriesProperties.candleStyle.downColor': '#f23645',
                 'mainSeriesProperties.candleStyle.drawWick': true,

@@ -77,10 +77,14 @@ flowchart TD
 ├── app.py                    # Flask routes and API endpoints
 ├── mt5_data.py               # Thread-safe TCP socket server for MT5
 ├── MacGateway.mq5            # MT5 Expert Advisor socket client
+├── Start-Windows.bat         # Double-click launcher for Windows
+├── Start-macOS.command       # Double-click launcher for macOS
+├── scripts/                  # Launcher helper scripts
 ├── templates/index.html      # Main app layout
 ├── static/css/style.css      # App styling and responsive layout
 ├── static/js/datafeed.js     # TradingView datafeed and history cache
 ├── static/js/chart.js        # Chart panels, trade manager, live dashboard
+├── static/js/playbook.js     # Trading playbook, journal, strategy library
 ├── static/js/replay.js       # Bar replay engine
 └── static/charting_library/  # Local TradingView Advanced Charts files
 ```
@@ -117,6 +121,22 @@ pip install -r requirements.txt
 
 ## Setup
 
+### Quick Start By Operating System
+
+Windows:
+
+```text
+Double-click Start-Windows.bat
+```
+
+macOS:
+
+```text
+Double-click Start-macOS.command
+```
+
+Both launchers create a local `.venv`, install dependencies, start Flask, and open the app in your browser.
+
 ### 1. Install The MT5 Expert Advisor
 
 1. Open MetaTrader 5.
@@ -141,6 +161,49 @@ http://localhost:5000
 ```
 
 You should see the MT5 status change to connected when the EA connects to the local socket server.
+
+## One-Click Launchers
+
+### Windows Version
+
+Run:
+
+```text
+Start-Windows.bat
+```
+
+The launcher will:
+
+- create a local `.venv` folder if it does not exist;
+- install Python dependencies from `requirements.txt`;
+- start the Flask web server;
+- open `http://127.0.0.1:5000` in your default browser.
+
+Keep the launcher window open while using the app. To stop the server, click the red power button inside the web app or press `Ctrl+C` in the launcher window.
+
+Windows notes:
+
+- Install Python 3.8+ first and enable `Add Python to PATH`.
+- Place your licensed TradingView Charting Library files in `static/charting_library/`.
+- In MT5, copy `MacGateway.mq5` into `MQL5/Experts/`, refresh Expert Advisors, attach it to a chart, and enable Algo Trading.
+- If Windows Firewall asks for permission, allow the local Python app on private networks.
+
+### macOS Version
+
+Run:
+
+```text
+Start-macOS.command
+```
+
+If macOS blocks the file the first time, right-click it, choose `Open`, then confirm.
+
+macOS notes:
+
+- Install Python 3.8+ first if `python3` is not available.
+- Place your licensed TradingView Charting Library files in `static/charting_library/`.
+- In MT5, copy `MacGateway.mq5` into `MQL5/Experts/`, refresh Expert Advisors, attach it to a chart, and enable Algo Trading.
+- Keep the Terminal window open while using the app.
 
 ## Socket Commands
 
