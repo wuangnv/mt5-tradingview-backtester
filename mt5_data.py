@@ -187,18 +187,30 @@ class MT5DataFetcher:
             return res.get('positions', [])
         return []
 
-    def get_trade_history(self, days=30):
+    def get_trade_history(self, days=365):
         """Lấy lịch sử deal gần đây từ MT5"""
         try:
             days = int(days)
         except (TypeError, ValueError):
-            days = 30
+            days = 365
         days = max(1, min(days, 365))
 
         res = self._send_request(f"GET_HISTORY;{days}", timeout=8.0)
-        if res.get('success'):
-            return res.get('history', [])
-        return []
+        if not res.get('success'):
+            return {
+                'success': False,
+                'history': [],
+                'message': res.get('message', 'Failed to fetch MT5 trade history.')
+            }
+
+        return {
+            'success': True,
+            'history': res.get('history', []),
+            'message': res.get('message', 'Trade history loaded.'),
+            'days': res.get('days', days),
+            'total_deals': res.get('total_deals', 0),
+            'returned': res.get('returned', len(res.get('history', [])))
+        }
         
     def get_account_info(self):
         """Lấy thông tin tài khoản giao dịch từ MT5"""

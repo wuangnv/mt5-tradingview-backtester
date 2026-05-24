@@ -648,7 +648,10 @@ void HandleGetHistory(int days)
       count++;
    }
 
-   json += "]}";
+   json += "],\"days\":" + IntegerToString(days) +
+           ",\"total_deals\":" + IntegerToString(total) +
+           ",\"returned\":" + IntegerToString(count) +
+           ",\"message\":\"History scan complete\"}";
    SendResponse(json);
 }
 

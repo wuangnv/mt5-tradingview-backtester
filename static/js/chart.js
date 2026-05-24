@@ -2309,6 +2309,15 @@ class TradeManager {
             .replace(/^-|-$/g, '') || 'manual';
     }
 
+    escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     // ─── Tick update hook from Replay loop ─────────────────────────────────
     onReplayTick(bar) {
         if (!this.isReplayMode) return;
@@ -2812,6 +2821,14 @@ class TradeManager {
         });
     }
 
+    renderLiveHistoryError(message) {
+        const histBody = document.getElementById('history-list');
+        if (!histBody) return;
+
+        const cleanMessage = this.escapeHtml(message || 'Failed to load live MT5 trade history.');
+        histBody.innerHTML = `<tr><td colspan="9" class="empty-row">${cleanMessage}</td></tr>`;
+    }
+
     // ─── MT5 Polling & Live updates ─────────────────────────────────────────
     startMT5Polling() {
         // Clear any existing intervals
@@ -2908,10 +2925,12 @@ class TradeManager {
                 pendBody.innerHTML = `<tr><td colspan="9" class="empty-row">Live pending order display is not available yet.</td></tr>`;
             }
 
-            const historyRes = await fetch('/api/trade/history?days=30');
+            const historyRes = await fetch('/api/trade/history?days=365');
             const historyData = await historyRes.json();
             if (historyData.success && historyData.history) {
                 this.renderLiveHistory(historyData.history);
+            } else {
+                this.renderLiveHistoryError(historyData.message || 'Failed to load live MT5 trade history.');
             }
         } catch (e) {
             console.error('Failed to poll live MT5 trade state:', e);
