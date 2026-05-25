@@ -8,7 +8,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Antigravity AI"
 #property link      "https://google.com"
-#property version   "1.00"
+#property version   "1.02"
 #property strict
 
 // Inputs
@@ -29,7 +29,7 @@ CTrade         g_trade;
 //+------------------------------------------------------------------+
 int OnInit()
 {
-   Print("=== [MacGateway] Starting Expert Advisor ===");
+   Print("=== [MacGateway] Starting Expert Advisor v1.02 ===");
    Print("Connecting to Python Server at " + InpServerHost + ":" + IntegerToString(InpServerPort));
    
    // Set high frequency timer for non-blocking socket checks
@@ -124,13 +124,14 @@ bool ConnectToServer()
 //+------------------------------------------------------------------+
 //| Close socket connection                                          |
 //+------------------------------------------------------------------+
-void CloseConnection()
+void CloseConnection(bool quiet = false)
 {
    if(g_socket != INVALID_HANDLE)
    {
       SocketClose(g_socket);
       g_socket = INVALID_HANDLE;
-      Print("[MacGateway] Connection closed.");
+      if(!quiet)
+         Print("[MacGateway] Connection closed.");
    }
 }
 
@@ -142,7 +143,17 @@ void CheckSocketData()
    if(g_socket == INVALID_HANDLE)
       return;
       
+   ResetLastError();
    uint bytes_available = SocketIsReadable(g_socket);
+   int readable_error = GetLastError();
+   if(bytes_available == 0 && readable_error != 0)
+   {
+      if(readable_error != 5273)
+         Print("[MacGateway] SocketIsReadable error: ", readable_error);
+      CloseConnection(readable_error == 5273);
+      return;
+   }
+
    if(bytes_available > 0)
    {
       uchar buffer[];
@@ -169,8 +180,10 @@ void CheckSocketData()
       }
       else if(bytes_read == -1)
       {
-         Print("[MacGateway] SocketRead error: ", GetLastError());
-         CloseConnection();
+         int error_code = GetLastError();
+         if(error_code != 5273)
+            Print("[MacGateway] SocketRead error: ", error_code);
+         CloseConnection(error_code == 5273);
       }
    }
 }

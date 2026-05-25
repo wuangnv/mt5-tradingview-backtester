@@ -38,6 +38,23 @@ class MT5Datafeed {
         return data[0].time <= timestamp && data[data.length - 1].time >= timestamp;
     }
 
+    coverageInfo(symbol, timeframe, timestamp) {
+        const data = this.getCachedHistory(symbol, timeframe);
+        if (!data || data.length === 0) {
+            return { covered: false, bars: 0, first: null, last: null, data: [] };
+        }
+
+        const first = data[0].time;
+        const last = data[data.length - 1].time;
+        return {
+            covered: first <= timestamp && last >= timestamp,
+            bars: data.length,
+            first,
+            last,
+            data
+        };
+    }
+
     storeHistory(symbol, timeframe, data) {
         if (!Array.isArray(data) || data.length === 0) return [];
         const sorted = data.slice().sort((a, b) => a.time - b.time);
@@ -85,6 +102,45 @@ class MT5Datafeed {
         } finally {
             this.historyRequests.delete(requestKey);
         }
+    }
+
+    async fetchHistoryCovering(symbol, timeframe, timestamp, initialBars = 2000, options = {}) {
+        const defaultMaxBars = {
+            M1: 45000,
+            M5: 70000,
+            M15: 70000,
+            M30: 60000,
+            H1: 50000,
+            H4: 30000,
+            D1: 15000,
+            W1: 8000
+        }[timeframe] || 50000;
+        const maxBars = options.maxBars || defaultMaxBars;
+        const attempts = [];
+        let bars = Math.max(2000, Math.ceil(initialBars));
+
+        while (bars <= maxBars) {
+            attempts.push(bars);
+            bars = Math.ceil(bars * 1.75);
+        }
+        if (attempts[attempts.length - 1] !== maxBars) attempts.push(maxBars);
+
+        for (const requestBars of [...new Set(attempts)]) {
+            const cached = this.coverageInfo(symbol, timeframe, timestamp);
+            if (cached.covered) return cached.data;
+
+            const needsMoreBars = cached.bars < requestBars;
+            if (!needsMoreBars && cached.bars > 0) continue;
+
+            console.log(`[Datafeed] fetching coverage ${symbol} ${timeframe}: ${requestBars} bars for ${new Date(timestamp * 1000).toISOString()}`);
+            const data = await this.fetchHistory(symbol, timeframe, requestBars);
+            if (data.length && data[0].time <= timestamp && data[data.length - 1].time >= timestamp) {
+                return data;
+            }
+        }
+
+        const finalCoverage = this.coverageInfo(symbol, timeframe, timestamp);
+        return finalCoverage.data;
     }
 
     filterReplayBars(bars) {

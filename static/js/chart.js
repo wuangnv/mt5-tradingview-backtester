@@ -14,6 +14,7 @@ class ChartPanel {
         this.isReplayMode = false;
         this.replayIndex = null;
         this.replayPlaying = false;
+        this._timeframeChangeSeq = 0;
 
         this.chart = null;
         this.candlestickSeries = null;
@@ -116,10 +117,10 @@ class ChartPanel {
                             return;
                         }
                         const secondsDiff = Math.max(0, Math.floor(Date.now() / 1000) - targetTimestamp);
-                        const estimatedBars = Math.ceil((secondsDiff / (tfSeconds[tf] || 3600)) * 1.15);
-                        const bars = Math.max(2000, Math.min(estimatedBars, 12000));
+                        const estimatedBars = Math.ceil((secondsDiff / (tfSeconds[tf] || 3600)) * 1.75);
+                        const bars = Math.max(2000, Math.min(estimatedBars, 40000));
                         console.log(`[ChartPanel ${this.id}] Background replay cache warm-up: ${symbol} ${tf} ${bars} bars`);
-                        await window.MT5Datafeed.fetchHistory(symbol, tf, bars);
+                        await window.MT5Datafeed.fetchHistoryCovering(symbol, tf, targetTimestamp, bars);
                     } catch (err) {
                         console.warn(`[ChartPanel ${this.id}] Replay cache warm-up skipped for ${tf}:`, err);
                     }
@@ -127,6 +128,47 @@ class ChartPanel {
                 }, idx === 0 ? 800 : 350);
             }));
         });
+    }
+
+    _timeframeSeconds(timeframe) {
+        return {
+            'M1': 60,
+            'M5': 300,
+            'M15': 900,
+            'M30': 1800,
+            'H1': 3600,
+            'H4': 14400,
+            'D1': 86400,
+            'W1': 604800
+        }[timeframe] || 3600;
+    }
+
+    _estimateReplayBarsForTimestamp(timeframe, timestamp) {
+        const secondsDiff = Math.max(0, Math.floor(Date.now() / 1000) - timestamp);
+        const raw = Math.ceil((secondsDiff / this._timeframeSeconds(timeframe)) * 1.75);
+        const maxBars = {
+            M1: 45000,
+            M5: 70000,
+            M15: 70000,
+            M30: 60000,
+            H1: 50000,
+            H4: 30000,
+            D1: 15000,
+            W1: 8000
+        }[timeframe] || 50000;
+        return Math.max(3000, Math.min(raw, maxBars));
+    }
+
+    _setReplayLoading(message) {
+        const toolbar = document.getElementById('tv-replay-toolbar');
+        const progress = document.getElementById('replay-progress');
+        if (toolbar) toolbar.classList.add('loading');
+        if (progress) progress.textContent = message;
+    }
+
+    _clearReplayLoading() {
+        const toolbar = document.getElementById('tv-replay-toolbar');
+        if (toolbar) toolbar.classList.remove('loading');
     }
 
     createChart() {
@@ -144,10 +186,15 @@ class ChartPanel {
         };
         const res = resMap[this.timeframe] || '60';
         const pad = value => String(value).padStart(2, '0');
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const weekday = date => weekdays[date.getUTCDay()];
         const formatChartDate = date =>
-            `${pad(date.getUTCDate())}/${pad(date.getUTCMonth() + 1)}/${date.getUTCFullYear()}`;
+            `${weekday(date)} ${pad(date.getUTCDate())}/${pad(date.getUTCMonth() + 1)}/${date.getUTCFullYear()}`;
+        const formatChartTime = date =>
+            `${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
         const formatChartDateTime = date =>
-            `${formatChartDate(date)} ${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
+            `${formatChartDate(date)} ${formatChartTime(date)}`;
 
         this.tvWidget = new TradingView.widget({
             symbol: this.symbol,
@@ -166,8 +213,8 @@ class ChartPanel {
             },
             custom_formatters: {
                 timeFormatter: {
-                    format: formatChartDateTime,
-                    formatLocal: formatChartDateTime
+                    format: formatChartTime,
+                    formatLocal: formatChartTime
                 },
                 dateFormatter: {
                     format: formatChartDate,
@@ -175,10 +222,13 @@ class ChartPanel {
                 },
                 tickMarkFormatter: (date, tickMarkType) => {
                     if (['Time', 'TimeWithSeconds'].includes(tickMarkType)) {
-                        return `${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
+                        return formatChartTime(date);
                     }
                     if (tickMarkType === 'DayOfMonth') {
-                        return `${pad(date.getUTCDate())}/${pad(date.getUTCMonth() + 1)}`;
+                        return `${weekday(date)} ${pad(date.getUTCDate())}/${pad(date.getUTCMonth() + 1)}`;
+                    }
+                    if (tickMarkType === 'Month') {
+                        return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
                     }
                     return formatChartDate(date);
                 }
@@ -474,6 +524,7 @@ class ChartPanel {
     }
 
     async changeSymbolOrTimeframe(newSymbol, newTf, skipSetSymbol = false) {
+        const changeSeq = ++this._timeframeChangeSeq;
         const oldSymbol = this.symbol;
         const oldTf = this.timeframe;
 
@@ -491,33 +542,12 @@ class ChartPanel {
             }
         }
 
-        this.symbol = newSymbol;
-        this.timeframe = newTf;
-        this.updateHeader();
-
         // 1. Calculate dynamic bars to pre-fetch if in Replay Mode
         let barsToFetch = 2000;
         if (wasReplay && savedReplayTimestamp) {
-            const timeframeSeconds = {
-                'M1': 60,
-                'M5': 300,
-                'M15': 900,
-                'M30': 1800,
-                'H1': 3600,
-                'H4': 14400,
-                'D1': 86400,
-                'W1': 604800
-            }[newTf] || 3600;
-
-            // Get approximate seconds difference from now/latest possible time
-            const nowSeconds = Math.floor(Date.now() / 1000);
-            const secondsDiff = nowSeconds - savedReplayTimestamp;
-            let estimatedBars = Math.ceil((secondsDiff / timeframeSeconds) * 1.15); // 15% safety buffer
-
-            if (estimatedBars > 2000) {
-                barsToFetch = Math.max(2000, Math.min(estimatedBars, 40000)); // Cap at 40k for automatic swapping speed
-                console.log(`[ChartPanel ${this.id}] Replay active. Target timestamp is older than 2000 bars. Dynamically pre-fetching ${barsToFetch} bars.`);
-            }
+            barsToFetch = this._estimateReplayBarsForTimestamp(newTf, savedReplayTimestamp);
+            console.log(`[ChartPanel ${this.id}] Replay active. Target timestamp needs about ${barsToFetch} ${newTf} bars.`);
+            this._setReplayLoading(`Loading ${newTf} replay data...`);
         }
 
         // 2. Pre-fetch bars from backend first. Reuse frontend history cache when
@@ -526,14 +556,14 @@ class ChartPanel {
             try {
                 const cached = window.MT5Datafeed?.getCachedHistory?.(newSymbol, newTf);
                 if (wasReplay && savedReplayTimestamp && window.MT5Datafeed?.hasHistoryCoverage?.(newSymbol, newTf, savedReplayTimestamp)) {
-                    this.fullData = cached;
-                    this.updateTradeSnapshot(cached[cached.length - 1]);
                     console.log(`[ChartPanel ${this.id}] Reused cached ${newTf} history for replay timestamp.`);
                     return cached;
                 }
 
                 console.log(`[ChartPanel ${this.id}] Loading ${barsToFetch} bars for ${newSymbol} (${newTf})`);
-                const data = await this.fetchHistory(barsToFetch);
+                const data = wasReplay && savedReplayTimestamp && window.MT5Datafeed?.fetchHistoryCovering
+                    ? await window.MT5Datafeed.fetchHistoryCovering(newSymbol, newTf, savedReplayTimestamp, barsToFetch)
+                    : await window.MT5Datafeed.fetchHistory(newSymbol, newTf, barsToFetch);
                 if (data.length > 0) {
                     console.log(`[ChartPanel ${this.id}] Loaded ${data.length} bars successfully.`);
                     return data;
@@ -546,6 +576,33 @@ class ChartPanel {
 
         const data = await this.activeLoadPromise;
         this.activeLoadPromise = null;
+
+        if (changeSeq !== this._timeframeChangeSeq) {
+            console.log(`[ChartPanel ${this.id}] Ignoring stale timeframe change to ${newTf}.`);
+            return;
+        }
+
+        if (wasReplay && savedReplayTimestamp) {
+            const hasCoverage = data.length > 0 && data[0].time <= savedReplayTimestamp && data[data.length - 1].time >= savedReplayTimestamp;
+            if (!hasCoverage) {
+                this._clearReplayLoading();
+                console.warn(`[ChartPanel ${this.id}] ${newTf} data does not cover replay timestamp. Keeping previous timeframe.`);
+                document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tf === oldTf);
+                });
+                if (window.replayManager) window.replayManager._updateUI();
+                alert(`Could not load enough ${newTf} history for this replay date. The chart stayed on ${oldTf}. Try a higher timeframe or load a more recent replay point.`);
+                return;
+            }
+        }
+
+        this.symbol = newSymbol;
+        this.timeframe = newTf;
+        if (data.length > 0) {
+            this.fullData = data;
+            this.updateTradeSnapshot(data[data.length - 1]);
+        }
+        this.updateHeader();
 
         // 3. If in replay mode, find bestIndex and update replayManager BEFORE changing TV resolution
         if (wasReplay && savedReplayTimestamp && data.length > 0) {
@@ -566,6 +623,7 @@ class ChartPanel {
                 window.replayManager._lastDisplayedIndex = -1; // Reset display tracking
                 window.replayManager._updateUI();
             }
+            this.prewarmReplayTimeframes(savedReplayTimestamp);
         }
 
         // 4. Update symbol/resolution in TradingView Widget
@@ -586,9 +644,22 @@ class ChartPanel {
                 if (!skipSetSymbol) {
                     this.tvWidget.setSymbol(newSymbol, res);
                 }
+                if (wasReplay && window.replayManager) {
+                    setTimeout(() => {
+                        window.replayManager._lastDisplayedIndex = -1;
+                        window.replayManager._applyToChart();
+                        window.replayManager._updateUI();
+                        this._clearReplayLoading();
+                    }, 250);
+                } else {
+                    this._clearReplayLoading();
+                }
             } catch (err) {
                 console.error("Error setting symbol and resolution:", err);
+                this._clearReplayLoading();
             }
+        } else {
+            this._clearReplayLoading();
         }
     }
 

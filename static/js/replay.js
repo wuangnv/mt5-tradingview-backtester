@@ -379,9 +379,10 @@ class ReplayManager {
     _updateJumpModeBtn() {
         const btn = document.getElementById('replay-jump-mode');
         btn.classList.toggle('active', this.isJumpMode);
+        btn.setAttribute('aria-pressed', String(this.isJumpMode));
         btn.title = this.isJumpMode
-            ? 'Jump Mode: ON – click chart to seek'
-            : 'Jump Mode: OFF – click to enable';
+            ? 'Jump Mode: ON - click chart to choose the replay bar'
+            : 'Jump Mode: OFF - click to choose a replay start bar';
     }
 
     // ─── UI updates ───────────────────────────────────────────────────────
@@ -390,7 +391,9 @@ class ReplayManager {
         const total = this.fullData.length;
         const idx   = this.currentIndex;
 
-        document.getElementById('replay-progress').textContent = `${idx + 1} / ${total}`;
+        const progressPct = total > 1 ? ((idx / (total - 1)) * 100) : 0;
+        document.getElementById('replay-progress').textContent =
+            `${idx + 1} / ${total} (${progressPct.toFixed(0)}%)`;
 
         const slider = document.getElementById('replay-slider');
         slider.max   = total - 1;
@@ -420,9 +423,14 @@ class ReplayManager {
     _updatePlayPauseBtn() {
         const playSvg = document.getElementById('svg-play');
         const pauseSvg = document.getElementById('svg-pause');
+        const btn = document.getElementById('replay-play-pause');
         if (playSvg && pauseSvg) {
             playSvg.style.display = this.isPlaying ? 'none' : 'block';
             pauseSvg.style.display = this.isPlaying ? 'block' : 'none';
+        }
+        if (btn) {
+            btn.classList.toggle('playing', this.isPlaying);
+            btn.title = this.isPlaying ? 'Pause replay (Space)' : 'Play replay (Space)';
         }
     }
 
@@ -434,7 +442,9 @@ class ReplayManager {
         const tz = window.chartManager?.timezoneOffset ?? 7;
         const d = new Date(bar.time * 1000);
         d.setUTCHours(d.getUTCHours() + tz);
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         return [
+            weekdays[d.getUTCDay()], ' ',
             String(d.getUTCDate()).padStart(2, '0'), '/',
             String(d.getUTCMonth() + 1).padStart(2, '0'), '/',
             d.getUTCFullYear(), ' ',

@@ -139,7 +139,8 @@ class MT5DataFetcher:
         print(f"  [Socket] Fetching {bars} bars for {symbol} ({timeframe})...")
         
         # Gửi lệnh truy vấn lịch sử
-        res = self._send_request(f"GET_DATA;{symbol};{timeframe};{bars}", timeout=30.0)
+        dynamic_timeout = min(90.0, max(30.0, 12.0 + (int(bars) / 2500.0)))
+        res = self._send_request(f"GET_DATA;{symbol};{timeframe};{bars}", timeout=dynamic_timeout)
         
         if not res.get('success'):
             return {
