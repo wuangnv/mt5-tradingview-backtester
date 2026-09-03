@@ -65,6 +65,9 @@ instance/
 .webassets-cache
 server.log
 
+# Local history data (downloaded MT5 bars, user-specific)
+data/
+
 # TradingView Advanced Charts is proprietary.
 # Download it from TradingView with your own license and place it here locally.
 static/charting_library/

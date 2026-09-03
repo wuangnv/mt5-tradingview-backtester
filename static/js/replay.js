@@ -11,6 +11,9 @@ class ReplayManager {
     constructor() {
         this.fullData = [];
         this.currentIndex = 0;
+        this.symbol = null;
+        this.timeframe = null;
+        this.cursorTimestamp = null;
         this._lastDisplayedIndex = -1; // Track what's currently on chart
 
         this.isPlaying = false;
@@ -105,20 +108,24 @@ class ReplayManager {
 
     // ─── Start / Stop ─────────────────────────────────────────────────────
 
-    startFromIndex(data, startIndex) {
+    startFromIndex(data, startIndex, symbol = null, timeframe = null) {
         this.fullData = data;
+        this.symbol = symbol;
+        this.timeframe = timeframe;
         this.isPlaying = false;
         this._lastDisplayedIndex = -1; // Force full setData on first render
 
-        // Clamp index: minimum 10 bars so there's some history visible
-        this.currentIndex = Math.max(10, Math.min(startIndex, data.length - 1));
+        const maxIndex = Math.max(0, data.length - 1);
+        const minIndex = Math.min(10, maxIndex);
+        this.currentIndex = Math.max(minIndex, Math.min(startIndex, maxIndex));
 
         this._applyToChart();
         this._updateUI();
 
         // Set date input to current bar time (timezone-adjusted)
         const bar = data[this.currentIndex];
-        if (bar) this._setDateInput(bar.time);
+        this.cursorTimestamp = bar ? (bar.replayCursorTime || bar.time) : null;
+        if (bar) this._setDateInput(this.cursorTimestamp);
 
         console.log(`Replay: bar ${this.currentIndex + 1} / ${data.length} | ${this._formatBarTime(this.currentIndex)}`);
     }
@@ -127,6 +134,9 @@ class ReplayManager {
         this.pause();
         this.fullData = [];
         this.currentIndex = 0;
+        this.symbol = null;
+        this.timeframe = null;
+        this.cursorTimestamp = null;
         this._lastDisplayedIndex = -1;
         this.isJumpMode = false;
         this._updateJumpModeBtn();
@@ -148,56 +158,15 @@ class ReplayManager {
             this._lastDisplayedIndex >= 0 &&
             this.currentIndex >= this._lastDisplayedIndex;
 
-        if (isForward) {
-            // Efficient: add bars one by one
-            for (let i = this._lastDisplayedIndex + 1; i <= this.currentIndex; i++) {
-                window.MT5Datafeed.updateRealtime(cm.activePanel.symbol, cm.activePanel.timeframe, this.fullData[i]);
-            }
-        } else {
-            // Backward seek or initial load – reset datafeed cache & force redraw
-            window.MT5Datafeed.resetReplayCache(cm.activePanel.symbol, cm.activePanel.timeframe);
-            if (cm.activePanel.chart) {
-                try {
-                    cm.activePanel.chart.resetData();
+        cm.activePanel.fullData = this.fullData;
+        cm.activePanel.replayIndex = this.currentIndex;
+        cm.activePanel.isReplayMode = true;
+        cm.activePanel.applyReplayFrameToChart?.({
+            forceReset: !isForward,
+            focus: !isForward,
+            focusDelay: 400
+        });
 
-                    // Auto-scroll the chart to focus on the active replay bar
-                    setTimeout(() => {
-                        if (cm.activePanel?.chartReady && cm.activePanel?.chart && this.fullData[this.currentIndex]) {
-                            const timeframe = cm.activePanel.timeframe;
-                            const timeframeSeconds = {
-                                'M1': 60,
-                                'M5': 300,
-                                'M15': 900,
-                                'M30': 1800,
-                                'H1': 3600,
-                                'H4': 14400,
-                                'D1': 86400,
-                                'W1': 604800
-                            }[timeframe] || 3600;
-
-                            const activeTime = this.fullData[this.currentIndex].time;
-                            const range = {
-                                from: activeTime - 120 * timeframeSeconds, // Show 120 bars of history
-                                to: activeTime + 30 * timeframeSeconds     // Show 30 bars of empty space to the right
-                            };
-
-                            try {
-                                cm.activePanel._ignoreRangeChanged = true; // Prevent sync feedback loops
-                                cm.activePanel.chart.setVisibleRange(range);
-                                setTimeout(() => {
-                                    if (cm.activePanel) cm.activePanel._ignoreRangeChanged = false;
-                                }, 300);
-                            } catch (err) {
-                                console.error("Error setting visible range on chart reset:", err);
-                                if (cm.activePanel) cm.activePanel._ignoreRangeChanged = false;
-                            }
-                        }
-                    }, 400); // 400ms delay to let TV load and draw the candles first
-                } catch (e) {
-                    console.error("Error calling resetData on backward seek:", e);
-                }
-            }
-        }
         this._lastDisplayedIndex = this.currentIndex;
     }
 
@@ -205,10 +174,13 @@ class ReplayManager {
 
     play() {
         if (!this.fullData.length) return;
-        // If already at end, restart from beginning
+        if (this.fullData.length < 2) return;
+
         if (this.currentIndex >= this.fullData.length - 1) {
-            this.currentIndex = Math.max(0, this.fullData.length - 2);
+            this.currentIndex = Math.max(0, this.fullData.length - 301);
             this._lastDisplayedIndex = -1;
+            this._applyToChart();
+            this._updateUI();
         }
 
         this.isPlaying = true;
@@ -273,13 +245,9 @@ class ReplayManager {
 
     seekToTime(timestamp) {
         if (!this.fullData || !this.fullData.length) return;
-        let lo = 0, hi = this.fullData.length - 1;
-        while (lo < hi) {
-            const mid = (lo + hi) >> 1;
-            if (this.fullData[mid].time < timestamp) lo = mid + 1;
-            else hi = mid;
-        }
-        this.seekTo(lo);
+        let idx = window.MT5Datafeed?.findIndexAtOrBefore?.(this.fullData, timestamp);
+        if (idx === undefined || idx < 0) idx = 0;
+        this.seekTo(idx);
     }
 
     // ─── Jump to Date ─────────────────────────────────────────────────────
@@ -300,57 +268,83 @@ class ReplayManager {
         const firstTs = this.fullData[0].time;
         const lastTs  = this.fullData[this.fullData.length - 1].time;
 
-        if (targetTs < firstTs || targetTs > lastTs) {
-            // Estimate bars needed based on the current timeframe
+        const shouldRefreshSyncedWindow = true;
+        if (shouldRefreshSyncedWindow || targetTs < firstTs || targetTs > lastTs) {
             const activePanel = window.chartManager?.activePanel;
             if (!activePanel) return;
 
             const timeframe = activePanel.timeframe;
-            const timeframeSeconds = {
-                'M1': 60,
-                'M5': 300,
-                'M15': 900,
-                'M30': 1800,
-                'H1': 3600,
-                'H4': 14400,
-                'D1': 86400,
-                'W1': 604800
-            }[timeframe] || 3600;
+            const symbol = activePanel.symbol;
 
-            const secondsDiff = lastTs - targetTs;
-            let estimatedBars = Math.ceil((secondsDiff / timeframeSeconds) * 1.15); // 15% buffer
+            const hasLocal = await window.MT5Datafeed.hasLocalCoverage(symbol, 'M1', targetTs)
+                || await window.MT5Datafeed.hasLocalCoverage(symbol, timeframe, targetTs);
 
-            // Limit to a reasonable max like 100,000 bars
-            const barsToLoad = Math.max(5000, Math.min(estimatedBars, 100000));
+            if (hasLocal) {
+                console.log(`[Replay] jumpToDate: Loading local replay window`);
+                const progress = document.getElementById('replay-progress');
+                if (progress) progress.textContent = 'Loading replay window...';
 
-            const formattedTarget = date.toLocaleDateString();
-            const ok = confirm(
-                `Date ${formattedTarget} is outside the current loaded range.\n\n` +
-                `Estimated bars needed: ~${estimatedBars} bars.\n` +
-                `Fetch ${barsToLoad} bars from MT5 to expand the range?`
-            );
-            if (!ok) return;
-
-            if (window.chartManager) {
-                const success = await window.chartManager.loadMoreData(barsToLoad);
-                if (success) {
-                    this.fullData = window.chartManager.fullData;
+                const data = await window.MT5Datafeed.loadSyncedReplayWindow(symbol, timeframe, targetTs);
+                const idx = window.MT5Datafeed.findIndexAtOrBefore(data, targetTs);
+                if (data.length > 0 && idx >= 0) {
+                    this.fullData = data;
+                    activePanel.fullData = data;
+                    activePanel.replayIndex = idx;
                     this._lastDisplayedIndex = -1;
+                    activePanel.updateReplayCoverageLabel?.();
+                    // Fall through to binary search below
                 } else {
-                    alert("Failed to load historical data from MetaTrader 5.");
+                    alert('Local data does not cover this date. Please download more history.');
+                    return;
+                }
+            } else {
+                // Estimate bars needed based on the current timeframe
+                const timeframeSeconds = {
+                    'M1': 60, 'M5': 300, 'M15': 900, 'M30': 1800,
+                    'H1': 3600, 'H4': 14400, 'D1': 86400, 'W1': 604800
+                }[timeframe] || 3600;
+
+                const secondsDiff = lastTs - targetTs;
+                let estimatedBars = Math.ceil((secondsDiff / timeframeSeconds) * 1.15);
+                const barsToLoad = Math.max(5000, Math.min(estimatedBars, 100000));
+
+                const formattedTarget = date.toLocaleDateString();
+                const ok = confirm(
+                    `Date ${formattedTarget} is outside the current loaded range.\n\n` +
+                    `No local history found for ${symbol} ${timeframe}.\n` +
+                    `Estimated bars needed: ~${estimatedBars} bars.\n\n` +
+                    `Option 1: Download ${barsToLoad} bars from MT5 and save locally?\n` +
+                    `(Use the 📥 Download History button to pre-download large datasets)`
+                );
+                if (!ok) return;
+
+                // Download from MT5 and save to local file
+                const progress = document.getElementById('replay-progress');
+                if (progress) progress.textContent = `Downloading ${barsToLoad} bars...`;
+
+                const result = await window.MT5Datafeed.downloadHistory(symbol, timeframe, barsToLoad);
+                if (!result.success) {
+                    alert("Failed to download history from MetaTrader 5.\n" + (result.message || ''));
+                    return;
+                }
+
+                // Now load the saved local data into cache
+                const data = await window.MT5Datafeed.loadSyncedReplayWindow(symbol, timeframe, targetTs);
+                if (data.length > 0) {
+                    this.fullData = data;
+                    activePanel.fullData = data;
+                    this._lastDisplayedIndex = -1;
+                    activePanel.updateReplayCoverageLabel?.();
+                } else {
+                    alert("Downloaded but could not load data.");
                     return;
                 }
             }
         }
 
-        // Binary search — O(log n) instead of old linear O(n)
-        let lo = 0, hi = this.fullData.length - 1;
-        while (lo < hi) {
-            const mid = (lo + hi) >> 1;
-            if (this.fullData[mid].time < targetTs) lo = mid + 1;
-            else hi = mid;
-        }
-        this.seekTo(lo);
+        let idx = window.MT5Datafeed?.findIndexAtOrBefore?.(this.fullData, targetTs);
+        if (idx === undefined || idx < 0) idx = 0;
+        this.seekTo(idx);
     }
 
     // ─── Speed control ────────────────────────────────────────────────────
@@ -390,6 +384,8 @@ class ReplayManager {
     _updateUI() {
         const total = this.fullData.length;
         const idx   = this.currentIndex;
+        const activeBar = this.fullData[idx];
+        this.cursorTimestamp = activeBar ? (activeBar.replayCursorTime || activeBar.time) : null;
 
         const progressPct = total > 1 ? ((idx / (total - 1)) * 100) : 0;
         document.getElementById('replay-progress').textContent =
@@ -411,12 +407,16 @@ class ReplayManager {
         }
 
         // Trigger simulator trading ticks
-        if (window.tradeManager && this.fullData[idx]) {
-            window.tradeManager.onReplayTick(this.fullData[idx]);
+        if (window.tradeManager && activeBar) {
+            window.tradeManager.onReplayTick(activeBar);
         }
 
         if (window.chartManager) {
-            window.chartManager.updateOHLCInfo(this.fullData[idx]);
+            window.chartManager.updateOHLCInfo(activeBar);
+            window.chartManager.syncReplayPanelsToCursor?.(this.cursorTimestamp, {
+                sourcePanel: window.chartManager.activePanel,
+                forceReset: this._lastDisplayedIndex < 0
+            });
         }
     }
 
@@ -439,8 +439,9 @@ class ReplayManager {
     _formatBarTime(index) {
         const bar = this.fullData[index];
         if (!bar) return '';
+        const timestamp = bar.replayCursorTime || bar.time;
         const tz = window.chartManager?.timezoneOffset ?? 7;
-        const d = new Date(bar.time * 1000);
+        const d = new Date(timestamp * 1000);
         d.setUTCHours(d.getUTCHours() + tz);
         const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         return [

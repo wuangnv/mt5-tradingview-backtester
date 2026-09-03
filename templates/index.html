@@ -50,6 +50,9 @@
                 <button id="replay-btn" class="toolbar-btn">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M8 5v14l11-7z"/></svg> Replay
                 </button>
+                <button id="download-history-btn" class="toolbar-btn" title="Download historical data from MT5 for offline replay">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> History
+                </button>
                 <button id="trade-panel-toggle-btn" class="toolbar-btn">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg> Order Panel
                 </button>
@@ -84,6 +87,7 @@
             </div>
 
             <div class="toolbar-group right-aligned">
+                <button id="mode-toggle-btn" class="toolbar-btn mode-toggle-btn" title="Data source: Local chunk cache or Live MT5 bridge">Data: Local</button>
                 <div class="status-indicator" id="mt5-status">
                     <span class="status-dot"></span>
                     <span class="status-text">MT5</span>
@@ -144,6 +148,7 @@
                         <div class="replay-status-text">
                             <span id="replay-progress">0 / 0</span>
                             <span id="replay-current-date" class="replay-date-display"></span>
+                            <span id="replay-coverage" class="replay-coverage-display">Coverage: local chunk cache</span>
                         </div>
 
                         <div class="toolbar-separator-v"></div>
@@ -583,6 +588,81 @@
                     </section>
                 </div>
             </aside>
+        </div>
+    </div>
+
+
+
+
+    <!-- Download History Modal -->
+    <div class="download-history-modal" id="download-history-modal">
+        <div class="dl-history-content">
+            <div class="dl-history-header">
+                <h3>Download History Data</h3>
+                <p class="dl-history-subtitle">Local-first chunk cache for offline replay. Data: Local reads this cache only.</p>
+                <button id="dl-history-close" class="dl-history-close-btn">&times;</button>
+            </div>
+
+            <div class="dl-history-body">
+                <!-- Only Bulk Download form remains -->
+                <div class="dl-history-form">
+                    <div class="dl-form-row">
+                        <label>Symbols (comma separated)</label>
+                        <input type="text" id="dl-bulk-symbols" class="dl-input" value="BTCUSD, DXY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAGUSD, XAUUSD" placeholder="e.g. EURUSD, GBPUSD, XAUUSD">
+                        <div class="dl-chips-container">
+                            <span class="dl-chip" data-val="BTCUSD,DXY,EURUSD,GBPJPY,GBPUSD,USDJPY,XAGUSD,XAUUSD">My Pairs (Active)</span>
+                            <span class="dl-chip" data-val="EURUSD,GBPUSD,USDJPY,AUDUSD,USDCAD,USDCHF,NZDUSD,XAUUSD">Forex Majors & Gold</span>
+                            <span class="dl-chip" data-val="BTCUSD,ETHUSD">Crypto Only</span>
+                        </div>
+                    </div>
+                    <div class="dl-form-row">
+                        <div class="dl-tf-label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <label style="margin: 0;">Timeframes (Active: Full Timeframes)</label>
+                            <span style="font-size: 11px;">
+                                <span id="dl-bulk-tf-all" style="color: #b45cff; cursor: pointer; font-weight: 600;">☑ Select All</span> |
+                                <span id="dl-bulk-tf-none" style="color: #a895c7; cursor: pointer; font-weight: 600;">☐ Clear</span>
+                            </span>
+                        </div>
+                        <div class="dl-tf-checkboxes-grid">
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M1" checked> M1</label>
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M5" checked> M5</label>
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M15" checked> M15</label>
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M30" checked> M30</label>
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H1" checked> H1</label>
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H4" checked> H4</label>
+                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="D1" checked> D1</label>
+                        </div>
+                    </div>
+                    <div class="dl-form-row">
+                        <label>Bars per Symbol/TF</label>
+                        <select id="dl-bulk-bars" class="dl-input">
+                            <option value="5000">5,000 bars</option>
+                            <option value="10000">10,000 bars</option>
+                            <option value="20000">20,000 bars</option>
+                            <option value="40000" selected>40,000 bars (TV Ultimate)</option>
+                            <option value="50000">50,000 bars</option>
+                            <option value="100000">100,000 bars</option>
+                        </select>
+                    </div>
+                    <div class="dl-action-row" style="display: flex; gap: 10px;">
+                        <button id="dl-bulk-execute" class="dl-execute-btn" style="flex: 1;">⬇ Start Bulk Download</button>
+                        <button id="dl-bulk-stop" class="dl-execute-btn dl-stop-btn" style="flex: 0 0 100px; background: #e03a3e; display: none;">🛑 Stop</button>
+                    </div>
+                </div>
+
+                <div class="dl-history-progress" id="dl-history-progress" style="display: none;">
+                    <div class="dl-progress-track">
+                        <div class="dl-progress-bar" id="dl-history-progress-bar"></div>
+                    </div>
+                </div>
+                <div id="dl-history-status" class="dl-status"></div>
+                <div id="dl-history-result" class="dl-result"></div>
+
+                <div class="dl-history-files-section">
+                    <h4>Local Replay Coverage</h4>
+                    <div id="dl-history-files" class="dl-history-files"></div>
+                </div>
+            </div>
         </div>
     </div>
 

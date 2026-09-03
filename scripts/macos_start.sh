@@ -49,11 +49,12 @@ if [ ! -x "$VENV_PYTHON" ]; then
     "$PYTHON_BIN" -m venv "$VENV_DIR"
 fi
 
-step "Upgrading pip"
-"$VENV_PYTHON" -m pip install --upgrade pip
-
-step "Installing Python dependencies"
-"$VENV_PYTHON" -m pip install -r "$REQUIREMENTS"
+if ! "$VENV_PYTHON" -c "import flask" >/dev/null 2>&1; then
+    step "Installing Python dependencies"
+    "$VENV_PYTHON" -m pip install -r "$REQUIREMENTS"
+else
+    step "Python dependencies already installed"
+fi
 
 step "Starting local web app"
 echo "Browser will open at $URL when the server is ready."

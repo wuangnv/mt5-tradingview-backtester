@@ -2,7 +2,7 @@
 
 // ─── ChartPanel Class (Independent Panel) ──────────────────────────────────
 class ChartPanel {
-    constructor(id, containerEl, symbol, timeframe, manager) {
+    constructor(id, containerEl, symbol, timeframe, manager, options = {}) {
         this.id = id;
         this.containerEl = containerEl; // wrapper element
         this.wrapperEl = containerEl; // alias
@@ -11,15 +11,22 @@ class ChartPanel {
         this.manager = manager;
 
         this.fullData = [];
-        this.isReplayMode = false;
+        this.isReplayMode = Boolean(options.isReplayMode);
         this.replayIndex = null;
         this.replayPlaying = false;
         this._timeframeChangeSeq = 0;
+        this._loadSeq = 0;
+        this._replayLoadingTimeout = null;
+        this._replayFocusTimer = null;
+        this._lastReplayDisplayIndex = -1;
+        this._partialReplayUnavailableBucket = null;
 
         this.chart = null;
         this.candlestickSeries = null;
 
-        this.init();
+        if (!options.deferInit) {
+            this.init();
+        }
     }
 
     init() {
@@ -87,47 +94,9 @@ class ChartPanel {
     }
 
     prewarmReplayTimeframes(targetTimestamp) {
-        if (!window.MT5Datafeed?.fetchHistory || !targetTimestamp) return;
-
-        const tfSeconds = {
-            'M1': 60,
-            'M5': 300,
-            'M15': 900,
-            'M30': 1800,
-            'H1': 3600,
-            'H4': 14400,
-            'D1': 86400,
-            'W1': 604800
-        };
-        const preferred = ['M5', 'M15', 'M30', 'H1', 'H4', 'D1'];
-        const symbol = this.symbol;
-        const currentTf = this.timeframe;
-        const queue = preferred.filter(tf =>
-            tf !== currentTf &&
-            !window.MT5Datafeed.hasHistoryCoverage(symbol, tf, targetTimestamp)
-        );
-
-        let chain = Promise.resolve();
-        queue.forEach((tf, idx) => {
-            chain = chain.then(() => new Promise(resolve => {
-                setTimeout(async () => {
-                    try {
-                        if (!this.isReplayMode) {
-                            resolve();
-                            return;
-                        }
-                        const secondsDiff = Math.max(0, Math.floor(Date.now() / 1000) - targetTimestamp);
-                        const estimatedBars = Math.ceil((secondsDiff / (tfSeconds[tf] || 3600)) * 1.75);
-                        const bars = Math.max(2000, Math.min(estimatedBars, 40000));
-                        console.log(`[ChartPanel ${this.id}] Background replay cache warm-up: ${symbol} ${tf} ${bars} bars`);
-                        await window.MT5Datafeed.fetchHistoryCovering(symbol, tf, targetTimestamp, bars);
-                    } catch (err) {
-                        console.warn(`[ChartPanel ${this.id}] Replay cache warm-up skipped for ${tf}:`, err);
-                    }
-                    resolve();
-                }, idx === 0 ? 800 : 350);
-            }));
-        });
+        // Keep timeframe changes responsive: load replay windows on demand instead
+        // of warming every timeframe in the background.
+        return;
     }
 
     _timeframeSeconds(timeframe) {
@@ -141,6 +110,34 @@ class ChartPanel {
             'D1': 86400,
             'W1': 604800
         }[timeframe] || 3600;
+    }
+
+    _resolutionForTimeframe(timeframe) {
+        return {
+            'M1': '1',
+            'M5': '5',
+            'M15': '15',
+            'M30': '30',
+            'H1': '60',
+            'H4': '240',
+            'D1': 'D',
+            'W1': 'W'
+        }[timeframe] || '60';
+    }
+
+    _applyTradingViewSymbolOrResolution(symbol, resolution, symbolChanged = false) {
+        if (!this.chartReady || !this.tvWidget) return;
+
+        if (!symbolChanged && this.chart && typeof this.chart.setResolution === 'function') {
+            try {
+                this.chart.setResolution(resolution);
+                return;
+            } catch (err) {
+                console.warn(`[ChartPanel ${this.id}] setResolution failed; falling back to setSymbol:`, err);
+            }
+        }
+
+        this.tvWidget.setSymbol(symbol, resolution);
     }
 
     _estimateReplayBarsForTimestamp(timeframe, timestamp) {
@@ -164,11 +161,157 @@ class ChartPanel {
         const progress = document.getElementById('replay-progress');
         if (toolbar) toolbar.classList.add('loading');
         if (progress) progress.textContent = message;
+        clearTimeout(this._replayLoadingTimeout);
+        this._replayLoadingTimeout = setTimeout(() => {
+            this._clearReplayLoading();
+            if (window.replayManager?._updateUI) window.replayManager._updateUI();
+        }, 7000);
     }
 
     _clearReplayLoading() {
+        clearTimeout(this._replayLoadingTimeout);
+        this._replayLoadingTimeout = null;
         const toolbar = document.getElementById('tv-replay-toolbar');
         if (toolbar) toolbar.classList.remove('loading');
+    }
+
+    _focusReplayCursor(delay = 250) {
+        clearTimeout(this._replayFocusTimer);
+        this._replayFocusTimer = setTimeout(() => {
+            const panelIndex = this.replayIndex ?? window.replayManager?.currentIndex;
+            const bar = this.fullData?.[panelIndex] || window.replayManager?.fullData?.[window.replayManager?.currentIndex];
+            if (!this.chartReady || !this.chart || !bar) return;
+
+            const activeTime = bar.replayCursorTime || bar.time;
+            const timeframeSeconds = this._timeframeSeconds(this.timeframe);
+            const range = {
+                from: activeTime - 120 * timeframeSeconds,
+                to: activeTime + 30 * timeframeSeconds
+            };
+
+            try {
+                this._ignoreRangeChanged = true;
+                this.chart.setVisibleRange(range);
+            } catch (err) {
+                console.error(`[ChartPanel ${this.id}] Error focusing replay cursor:`, err);
+            } finally {
+                setTimeout(() => {
+                    this._ignoreRangeChanged = false;
+                }, 300);
+            }
+        }, delay);
+    }
+
+    getReplayTimestamp() {
+        const bar = this.fullData?.[this.replayIndex];
+        return bar ? (bar.replayCursorTime || bar.time) : null;
+    }
+
+    hasReplayCoverage(timestamp) {
+        if (!Array.isArray(this.fullData) || !this.fullData.length || !timestamp) return false;
+        return this.fullData[0].time <= timestamp && this.fullData[this.fullData.length - 1].time >= timestamp;
+    }
+
+    needsReplayRefresh(timestamp) {
+        if (!this.hasReplayCoverage(timestamp)) return true;
+        const idx = window.MT5Datafeed?.findIndexAtOrBefore?.(this.fullData, timestamp);
+        if (idx === undefined || idx < 0) return true;
+        const bar = this.fullData[idx];
+        if (!bar) return true;
+        if (this.timeframe !== 'M1' && (bar.replayCursorTime || bar.time) !== timestamp) {
+            return this._partialReplayUnavailableBucket !== bar.time;
+        }
+        return false;
+    }
+
+    async loadReplayAtTimestamp(timestamp) {
+        if (!timestamp || !window.MT5Datafeed?.loadSyncedReplayWindow) return false;
+        const data = await window.MT5Datafeed.loadSyncedReplayWindow(this.symbol, this.timeframe, timestamp);
+        const idx = window.MT5Datafeed.findIndexAtOrBefore(data, timestamp);
+        if (!data.length || idx < 0) return false;
+
+        this.isReplayMode = true;
+        this.fullData = data;
+        this.replayIndex = idx;
+        this._lastReplayDisplayIndex = -1;
+        const activeBar = data[idx];
+        this._partialReplayUnavailableBucket =
+            this.timeframe !== 'M1' && activeBar && (activeBar.replayCursorTime || activeBar.time) !== timestamp
+                ? activeBar.time
+                : null;
+        this.updateHeader();
+        this.updateReplayCoverageLabel?.();
+        return true;
+    }
+
+    async syncReplayToTimestamp(timestamp, options = {}) {
+        if (!timestamp) return false;
+        const forceReset = Boolean(options.forceReset);
+        const focus = Boolean(options.focus);
+
+        if (forceReset || this.needsReplayRefresh(timestamp)) {
+            const loaded = await this.loadReplayAtTimestamp(timestamp);
+            if (!loaded) return false;
+        } else {
+            const idx = window.MT5Datafeed?.findIndexAtOrBefore?.(this.fullData, timestamp);
+            if (idx === undefined || idx < 0) return false;
+            this.isReplayMode = true;
+            this.replayIndex = idx;
+        }
+
+        if (options.apply !== false) {
+            this.applyReplayFrameToChart({ forceReset, focus });
+        }
+        return true;
+    }
+
+    applyReplayFrameToChart(options = {}) {
+        if (!this.chartReady || !this.chart || !Array.isArray(this.fullData) || this.replayIndex === null) return;
+        const bar = this.fullData[this.replayIndex];
+        if (!bar) return;
+
+        const isForward =
+            !options.forceReset &&
+            this._lastReplayDisplayIndex >= 0 &&
+            this.replayIndex >= this._lastReplayDisplayIndex;
+
+        if (isForward) {
+            if (this.replayIndex === this._lastReplayDisplayIndex) {
+                window.MT5Datafeed.updateRealtime(this.symbol, this.timeframe, bar);
+            } else {
+                for (let i = this._lastReplayDisplayIndex + 1; i <= this.replayIndex; i++) {
+                    window.MT5Datafeed.updateRealtime(this.symbol, this.timeframe, this.fullData[i]);
+                }
+            }
+        } else {
+            try {
+                window.MT5Datafeed.resetReplayCache(this.symbol, this.timeframe);
+                this.chart.resetData();
+            } catch (err) {
+                console.error(`[ChartPanel ${this.id}] Error applying replay frame:`, err);
+            }
+        }
+
+        this._lastReplayDisplayIndex = this.replayIndex;
+        if (focus || !isForward) this._focusReplayCursor(options.focusDelay ?? 250);
+    }
+
+    async updateReplayCoverageLabel() {
+        const el = document.getElementById('replay-coverage');
+        if (!el || !window.MT5Datafeed?.getLocalCoverage) return;
+        el.textContent = 'Coverage: checking...';
+        const coverage = await window.MT5Datafeed.getLocalCoverage(this.symbol, this.timeframe);
+        if (!coverage || !coverage.bars) {
+            el.textContent = `Coverage: no local ${this.symbol} ${this.timeframe}`;
+            return;
+        }
+        const formatTs = ts => {
+            const d = new Date(ts * 1000);
+            d.setUTCHours(d.getUTCHours() + (this.manager?.timezoneOffset ?? 7));
+            const pad = n => String(n).padStart(2, '0');
+            return `${pad(d.getUTCDate())}/${pad(d.getUTCMonth() + 1)}/${d.getUTCFullYear()}`;
+        };
+        el.textContent = `${this.symbol} ${this.timeframe}: ${formatTs(coverage.first)} -> ${formatTs(coverage.last)} (${coverage.bars.toLocaleString()} bars)`;
     }
 
     createChart() {
@@ -448,6 +591,11 @@ class ChartPanel {
     }
 
     async loadData() {
+        if (this.activeLoadPromise) {
+            return await this.activeLoadPromise;
+        }
+
+        const loadSeq = ++this._loadSeq;
         const resMap = {
             'M1': '1',
             'M5': '5',
@@ -460,11 +608,12 @@ class ChartPanel {
         };
         const res = resMap[this.timeframe] || '60';
 
-        // 1. Pre-fetch 2000 bars history and store the promise so getBars() can share it
+        // Pre-fetch history and store the promise so getBars() can share it.
         this.activeLoadPromise = (async () => {
             try {
                 console.log(`[ChartPanel ${this.id}] Loading 2000 bars for ${this.symbol} (${this.timeframe})`);
                 const data = await this.fetchHistory(2000);
+                if (loadSeq !== this._loadSeq) return [];
                 if (data.length > 0) {
                     console.log(`[ChartPanel ${this.id}] Loaded ${data.length} bars successfully.`);
                     return data;
@@ -475,7 +624,6 @@ class ChartPanel {
             return [];
         })();
 
-        // 2. Tell TV to update symbol/resolution (this will asynchronously trigger MT5Datafeed.getBars)
         if (this.chartReady && this.tvWidget) {
             try {
                 this.tvWidget.setSymbol(this.symbol, res);
@@ -484,9 +632,13 @@ class ChartPanel {
             }
         }
 
-        // 3. Await the pre-fetch promise so this.fullData is guaranteed populated when loadData resolves
-        await this.activeLoadPromise;
-        this.activeLoadPromise = null;
+        try {
+            return await this.activeLoadPromise;
+        } finally {
+            if (loadSeq === this._loadSeq) {
+                this.activeLoadPromise = null;
+            }
+        }
     }
 
     async loadMoreData(barCount = 10000) {
@@ -528,41 +680,40 @@ class ChartPanel {
         const oldSymbol = this.symbol;
         const oldTf = this.timeframe;
 
-        if (oldSymbol === newSymbol && oldTf === newTf) return;
+        if (oldSymbol === newSymbol && oldTf === newTf) {
+            this._clearReplayLoading();
+            return;
+        }
 
         console.log(`[ChartPanel ${this.id}] Changing symbol/timeframe from ${oldSymbol} (${oldTf}) to ${newSymbol} (${newTf}), skipSetSymbol: ${skipSetSymbol}`);
 
         let savedReplayTimestamp = null;
         const wasReplay = this.isReplayMode;
+        const wasReplayPlaying = Boolean(wasReplay && window.replayManager?.isPlaying);
 
-        if (wasReplay && this.replayIndex !== null && this.fullData && this.fullData.length > 0) {
+        if (wasReplay && window.replayManager?.cursorTimestamp) {
+            savedReplayTimestamp = window.replayManager.cursorTimestamp;
+        } else if (wasReplay && this.replayIndex !== null && this.fullData && this.fullData.length > 0) {
             const currentBar = this.fullData[this.replayIndex];
             if (currentBar) {
-                savedReplayTimestamp = currentBar.time;
+                savedReplayTimestamp = currentBar.replayCursorTime || currentBar.time;
             }
         }
 
-        // 1. Calculate dynamic bars to pre-fetch if in Replay Mode
         let barsToFetch = 2000;
         if (wasReplay && savedReplayTimestamp) {
-            barsToFetch = this._estimateReplayBarsForTimestamp(newTf, savedReplayTimestamp);
-            console.log(`[ChartPanel ${this.id}] Replay active. Target timestamp needs about ${barsToFetch} ${newTf} bars.`);
+            console.log(`[ChartPanel ${this.id}] Replay active. Loading local window for ${newTf} around ${savedReplayTimestamp}.`);
+            window.replayManager?.pause?.();
             this._setReplayLoading(`Loading ${newTf} replay data...`);
         }
 
-        // 2. Pre-fetch bars from backend first. Reuse frontend history cache when
-        // it already covers the replay timestamp, so timeframe toggles are instant.
-        this.activeLoadPromise = (async () => {
+        // Pre-fetch bars from backend first. In replay mode, build higher
+        // timeframes from M1 so the active candle is partial at the cursor.
+        const loadPromise = (async () => {
             try {
-                const cached = window.MT5Datafeed?.getCachedHistory?.(newSymbol, newTf);
-                if (wasReplay && savedReplayTimestamp && window.MT5Datafeed?.hasHistoryCoverage?.(newSymbol, newTf, savedReplayTimestamp)) {
-                    console.log(`[ChartPanel ${this.id}] Reused cached ${newTf} history for replay timestamp.`);
-                    return cached;
-                }
-
-                console.log(`[ChartPanel ${this.id}] Loading ${barsToFetch} bars for ${newSymbol} (${newTf})`);
-                const data = wasReplay && savedReplayTimestamp && window.MT5Datafeed?.fetchHistoryCovering
-                    ? await window.MT5Datafeed.fetchHistoryCovering(newSymbol, newTf, savedReplayTimestamp, barsToFetch)
+                console.log(`[ChartPanel ${this.id}] Loading data for ${newSymbol} (${newTf})`);
+                const data = wasReplay && savedReplayTimestamp && window.MT5Datafeed?.loadSyncedReplayWindow
+                    ? await window.MT5Datafeed.loadSyncedReplayWindow(newSymbol, newTf, savedReplayTimestamp)
                     : await window.MT5Datafeed.fetchHistory(newSymbol, newTf, barsToFetch);
                 if (data.length > 0) {
                     console.log(`[ChartPanel ${this.id}] Loaded ${data.length} bars successfully.`);
@@ -574,23 +725,32 @@ class ChartPanel {
             return [];
         })();
 
-        const data = await this.activeLoadPromise;
-        this.activeLoadPromise = null;
+        this.activeLoadPromise = loadPromise;
+        const data = await loadPromise;
+        if (this.activeLoadPromise === loadPromise) {
+            this.activeLoadPromise = null;
+        }
 
         if (changeSeq !== this._timeframeChangeSeq) {
             console.log(`[ChartPanel ${this.id}] Ignoring stale timeframe change to ${newTf}.`);
+            this._clearReplayLoading();
             return;
         }
 
         if (wasReplay && savedReplayTimestamp) {
-            const hasCoverage = data.length > 0 && data[0].time <= savedReplayTimestamp && data[data.length - 1].time >= savedReplayTimestamp;
+            const replayIndex = window.MT5Datafeed?.findIndexAtOrBefore?.(data, savedReplayTimestamp) ?? -1;
+            const hasCoverage = replayIndex >= 0 && data.length > replayIndex + 1;
             if (!hasCoverage) {
                 this._clearReplayLoading();
                 console.warn(`[ChartPanel ${this.id}] ${newTf} data does not cover replay timestamp. Keeping previous timeframe.`);
                 document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.tf === oldTf);
                 });
+                if (skipSetSymbol && this.chartReady && this.tvWidget) {
+                    this._applyTradingViewSymbolOrResolution(oldSymbol, this._resolutionForTimeframe(oldTf), oldSymbol !== newSymbol);
+                }
                 if (window.replayManager) window.replayManager._updateUI();
+                if (wasReplayPlaying) window.replayManager?.play?.();
                 alert(`Could not load enough ${newTf} history for this replay date. The chart stayed on ${oldTf}. Try a higher timeframe or load a more recent replay point.`);
                 return;
             }
@@ -606,51 +766,44 @@ class ChartPanel {
 
         // 3. If in replay mode, find bestIndex and update replayManager BEFORE changing TV resolution
         if (wasReplay && savedReplayTimestamp && data.length > 0) {
-            let bestIndex = 0;
-            let minDiff = Infinity;
-            for (let i = 0; i < data.length; i++) {
-                const diff = Math.abs(data[i].time - savedReplayTimestamp);
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    bestIndex = i;
-                }
-            }
+            let bestIndex = window.MT5Datafeed?.findIndexAtOrBefore?.(data, savedReplayTimestamp) ?? 0;
+            if (bestIndex < 0) bestIndex = 0;
 
             this.replayIndex = bestIndex;
             if (window.replayManager) {
                 window.replayManager.fullData = data;
                 window.replayManager.currentIndex = bestIndex;
+                window.replayManager.symbol = newSymbol;
+                window.replayManager.timeframe = newTf;
                 window.replayManager._lastDisplayedIndex = -1; // Reset display tracking
                 window.replayManager._updateUI();
             }
+            this.updateReplayCoverageLabel();
             this.prewarmReplayTimeframes(savedReplayTimestamp);
         }
 
         // 4. Update symbol/resolution in TradingView Widget
-        const resMap = {
-            'M1': '1',
-            'M5': '5',
-            'M15': '15',
-            'M30': '30',
-            'H1': '60',
-            'H4': '240',
-            'D1': 'D',
-            'W1': 'W'
-        };
-        const res = resMap[newTf] || '60';
+        const res = this._resolutionForTimeframe(newTf);
         if (this.chartReady && this.tvWidget) {
             try {
                 window.MT5Datafeed.resetReplayCache(newSymbol, newTf);
                 if (!skipSetSymbol) {
-                    this.tvWidget.setSymbol(newSymbol, res);
+                    this._applyTradingViewSymbolOrResolution(newSymbol, res, oldSymbol !== newSymbol);
                 }
                 if (wasReplay && window.replayManager) {
                     setTimeout(() => {
-                        window.replayManager._lastDisplayedIndex = -1;
-                        window.replayManager._applyToChart();
+                        if (skipSetSymbol && this.chart) {
+                            try {
+                                this.chart.resetData();
+                            } catch (err) {
+                                console.error(`[ChartPanel ${this.id}] Error resetting replay data after native interval switch:`, err);
+                            }
+                        }
                         window.replayManager._updateUI();
+                        this._focusReplayCursor(skipSetSymbol ? 350 : 250);
+                        if (wasReplayPlaying) window.replayManager.play();
                         this._clearReplayLoading();
-                    }, 250);
+                    }, skipSetSymbol ? 80 : 150);
                 } else {
                     this._clearReplayLoading();
                 }
@@ -663,39 +816,80 @@ class ChartPanel {
         }
     }
 
-    enterReplayMode() {
+    async enterReplayMode() {
         if (this.fullData.length === 0) {
             alert('Please load data first!');
             return;
         }
 
         this.isReplayMode = true;
+        document.getElementById('replay-btn')?.classList.add('active');
         document.getElementById('tv-replay-toolbar').style.display = 'flex';
         document.querySelector('.chart-area').classList.add('replay-mode');
 
-        let startIndex = Math.floor(this.fullData.length * 0.7);
+        const symbol = this.symbol;
+        const timeframe = this.timeframe;
+        let data = this.fullData;
+        const initialFutureBars = Math.min(300, Math.max(0, data.length - 20));
+        let startIndex = Math.max(10, data.length - 1 - initialFutureBars);
+        let startTimestamp = data[startIndex]?.time || data[data.length - 1]?.time;
+
+        try {
+            this._setReplayLoading(`Preparing ${timeframe} replay window...`);
+            const localData = startTimestamp
+                ? await window.MT5Datafeed.loadSyncedReplayWindow(symbol, timeframe, startTimestamp)
+                : [];
+            if (localData && localData.length > 0) {
+                console.log(`[ChartPanel ${this.id}] enterReplayMode: Using local replay window (${localData.length} bars)`);
+                data = localData;
+                this.fullData = localData;
+                const idx = window.MT5Datafeed?.findIndexAtOrBefore?.(data, startTimestamp);
+                startIndex = idx >= 0 ? idx : Math.max(10, data.length - 1 - Math.min(300, data.length - 1));
+            }
+        } catch (err) {
+            console.warn(`[ChartPanel ${this.id}] Could not load local history for replay:`, err);
+        } finally {
+            this._clearReplayLoading();
+        }
+
         this.replayIndex = startIndex;
         this.replayPlaying = false;
 
         if (window.replayManager) {
-            window.replayManager.startFromIndex(this.fullData, startIndex);
+            window.replayManager.startFromIndex(data, startIndex, symbol, timeframe);
         }
 
-        const startBar = this.fullData[startIndex];
-        if (startBar) this.prewarmReplayTimeframes(startBar.time);
+        const startBar = data[startIndex];
+        this.updateReplayCoverageLabel();
+        if (startBar) {
+            const startCursor = startBar.replayCursorTime || startBar.time;
+            this.prewarmReplayTimeframes(startCursor);
+            this.manager.activateReplayForLayout?.(this, startCursor);
+        }
     }
 
-    exitReplayMode() {
+    exitReplayMode(stopReplayManager = true) {
         this.isReplayMode = false;
         this.replayPlaying = false;
         this.replayIndex = null;
-        document.getElementById('tv-replay-toolbar').style.display = 'none';
-        document.querySelector('.chart-area').classList.remove('replay-mode');
+        this._lastReplayDisplayIndex = -1;
+        this._partialReplayUnavailableBucket = null;
+        document.getElementById('replay-btn')?.classList.remove('active');
 
-        if (window.replayManager) window.replayManager.stop();
+        if (stopReplayManager && window.chartManager) {
+            window.chartManager.exitReplayMode();
+            return;
+        }
 
         // Reset datafeed cache to show full live chart data again
         window.MT5Datafeed.resetReplayCache(this.symbol, this.timeframe);
+        if (this.chartReady && this.chart) {
+            try {
+                this.chart.resetData();
+            } catch (err) {
+                console.error(`[ChartPanel ${this.id}] Error resetting chart after replay exit:`, err);
+            }
+        }
     }
 
     setJumpMode(enabled) {
@@ -744,6 +938,9 @@ class ChartManager {
         // Internal synchronization flags to avoid feedback loops
         this._syncingTimeScale = false;
         this._syncingCrosshair = false;
+        this._syncingReplayPanels = false;
+        this._pendingReplaySyncTimestamp = null;
+        this._replaySyncSeq = 0;
 
         // Periodic live chart polling loop (fetches full candle updates from MT5 on a slower loop)
         this.liveChartInterval = setInterval(() => {
@@ -772,6 +969,9 @@ class ChartManager {
     }
 
     async pollLiveCharts() {
+        if ((window.appMode || 'backtest') !== 'live') {
+            return;
+        }
         this.panels.forEach(async (p) => {
             if (p.chartReady && p.chart && !p.isReplayMode) {
                 try {
@@ -881,7 +1081,11 @@ class ChartManager {
 
     // Delegations for replay.js
     exitReplayMode() {
-        if (this.activePanel) this.activePanel.exitReplayMode();
+        window.replayManager?.stop?.();
+        this.panels.forEach(panel => panel.exitReplayMode(false));
+        document.getElementById('replay-btn')?.classList.remove('active');
+        document.getElementById('tv-replay-toolbar').style.display = 'none';
+        document.querySelector('.chart-area').classList.remove('replay-mode');
     }
 
     setJumpMode(enabled) {
@@ -924,10 +1128,13 @@ class ChartManager {
             savedConfigs.push({ symbol: p.symbol, timeframe: p.timeframe });
         });
 
+        const replayTimestamp = window.replayManager?.cursorTimestamp || this.activePanel?.getReplayTimestamp?.() || null;
+        const wasReplayLayout = Boolean(replayTimestamp && this.panels.some(panel => panel.isReplayMode));
+
         const defaultConfigs = [
             { symbol: 'EURUSD', timeframe: 'H1' },
-            { symbol: 'GBPUSD', timeframe: 'H1' },
-            { symbol: 'USDJPY', timeframe: 'H1' },
+            { symbol: 'AUDUSD', timeframe: 'H1' },
+            { symbol: 'GBPJPY', timeframe: 'H1' },
             { symbol: 'XAUUSD', timeframe: 'H1' }
         ];
 
@@ -941,6 +1148,7 @@ class ChartManager {
         gridEl.innerHTML = ''; // Clear grid HTML children
 
         const newPanels = [];
+        const deferredPanels = [];
         for (let i = 0; i < panelCount; i++) {
             let panelWrapper = document.getElementById(`panel-wrapper-${i}`);
             if (!panelWrapper) {
@@ -966,12 +1174,17 @@ class ChartManager {
                 newPanels.push(panel);
             } else {
                 const config = savedConfigs[i] || defaultConfigs[i] || defaultConfigs[0];
-                const newPanel = new ChartPanel(`panel-${i}`, panelWrapper, config.symbol, config.timeframe, this);
+                const newPanel = new ChartPanel(`panel-${i}`, panelWrapper, config.symbol, config.timeframe, this, {
+                    deferInit: true,
+                    isReplayMode: wasReplayLayout
+                });
                 newPanels.push(newPanel);
+                deferredPanels.push(newPanel);
             }
         }
 
         this.panels = newPanels;
+        deferredPanels.forEach(panel => panel.init());
 
         // Set active panel
         const stillActive = this.panels.find(p => p === this.activePanel);
@@ -1000,7 +1213,14 @@ class ChartManager {
                 }
             });
             this.panels.forEach(p => {
-                if (p.fullData.length === 0) {
+                if (window.replayManager?.cursorTimestamp && this.isReplayMode) {
+                    p.isReplayMode = true;
+                    this.syncPanelReplayToTimestamp(p, window.replayManager.cursorTimestamp, {
+                        forceReset: true,
+                        focus: true,
+                        reason: 'layout'
+                    });
+                } else if (p.fullData.length === 0) {
                     p.loadData();
                 }
             });
@@ -1025,7 +1245,6 @@ class ChartManager {
         const symbolSelect = document.getElementById('symbol-select');
         if (symbolSelect) {
             symbolSelect.value = panel.symbol;
-            symbolSelect.dispatchEvent(new Event('change'));
         }
 
         // Sync new TV navbar active symbol text
@@ -1047,8 +1266,21 @@ class ChartManager {
             document.querySelector('.chart-area').classList.add('replay-mode');
 
             if (window.replayManager) {
+                const cursor = window.replayManager.cursorTimestamp;
+                if (cursor && panel.needsReplayRefresh?.(cursor)) {
+                    this.syncPanelReplayToTimestamp(panel, cursor, {
+                        forceReset: true,
+                        focus: true,
+                        reason: 'active-panel'
+                    }).then(() => this.setActivePanel(panel, true));
+                    return;
+                }
+
                 window.replayManager.fullData = panel.fullData;
-                window.replayManager.currentIndex = panel.replayIndex || Math.floor(panel.fullData.length * 0.7);
+                window.replayManager.symbol = panel.symbol;
+                window.replayManager.timeframe = panel.timeframe;
+                window.replayManager.currentIndex = panel.replayIndex ?? Math.floor(panel.fullData.length * 0.7);
+                window.replayManager.cursorTimestamp = panel.getReplayTimestamp?.() || window.replayManager.cursorTimestamp;
                 window.replayManager._lastDisplayedIndex = -1;
                 window.replayManager._applyToChart();
                 window.replayManager._updateUI();
@@ -1072,6 +1304,75 @@ class ChartManager {
         if (window.tradeManager) {
             window.tradeManager.drawAllChartLines();
         }
+    }
+
+    async activateReplayForLayout(sourcePanel, timestamp) {
+        if (!timestamp) return;
+        const panels = this.panels.filter(panel => panel !== sourcePanel);
+        await Promise.all(panels.map(panel => this.syncPanelReplayToTimestamp(panel, timestamp, {
+            forceReset: true,
+            focus: true,
+            reason: 'activate-layout'
+        })));
+    }
+
+    async syncPanelReplayToTimestamp(panel, timestamp, options = {}) {
+        if (!panel || !timestamp || !window.MT5Datafeed?.loadSyncedReplayWindow) return false;
+        const syncSeq = ++this._replaySyncSeq;
+        panel.isReplayMode = true;
+
+        try {
+            const ok = await panel.syncReplayToTimestamp(timestamp, options);
+            if (!ok) {
+                console.warn(`[ChartManager] Replay sync skipped for ${panel.symbol} ${panel.timeframe} at ${timestamp}`);
+                return false;
+            }
+
+            if (panel === this.activePanel && window.replayManager && syncSeq >= this._replaySyncSeq) {
+                window.replayManager.fullData = panel.fullData;
+                window.replayManager.currentIndex = panel.replayIndex;
+                window.replayManager.symbol = panel.symbol;
+                window.replayManager.timeframe = panel.timeframe;
+                window.replayManager.cursorTimestamp = panel.getReplayTimestamp?.() || timestamp;
+                window.replayManager._lastDisplayedIndex = panel._lastReplayDisplayIndex;
+                window.replayManager._updateUI();
+            }
+
+            return true;
+        } catch (err) {
+            console.error(`[ChartManager] Error syncing replay panel ${panel.symbol} ${panel.timeframe}:`, err);
+            return false;
+        }
+    }
+
+    syncReplayPanelsToCursor(timestamp, options = {}) {
+        if (!timestamp || this.panels.length < 2) return;
+        if (this._syncingReplayPanels) {
+            this._pendingReplaySyncTimestamp = timestamp;
+            return;
+        }
+
+        const sourcePanel = options.sourcePanel || this.activePanel;
+        const panels = this.panels.filter(panel =>
+            panel !== sourcePanel &&
+            panel.chartReady &&
+            (panel.isReplayMode || this.isReplayMode)
+        );
+        if (!panels.length) return;
+
+        this._syncingReplayPanels = true;
+        Promise.all(panels.map(panel => this.syncPanelReplayToTimestamp(panel, timestamp, {
+            forceReset: Boolean(options.forceReset),
+            focus: Boolean(options.forceReset),
+            reason: 'cursor'
+        }))).finally(() => {
+            this._syncingReplayPanels = false;
+            const pending = this._pendingReplaySyncTimestamp;
+            this._pendingReplaySyncTimestamp = null;
+            if (pending && pending !== timestamp) {
+                this.syncReplayPanelsToCursor(pending, { sourcePanel: this.activePanel });
+            }
+        });
     }
 
     // Time Scale scroll & zoom synchronization
@@ -1148,6 +1449,52 @@ class ChartManager {
 
     // Toolbar Event Bindings
     setupEventListeners() {
+        try {
+            const modeBtn = document.getElementById('mode-toggle-btn');
+            if (modeBtn) {
+                modeBtn.addEventListener('click', async () => {
+                    if (modeBtn.disabled) return;
+                    const previousText = modeBtn.textContent;
+                    modeBtn.disabled = true;
+                    modeBtn.textContent = 'Switching...';
+                    try {
+                        if (!window.appMode) {
+                            const modeRes = await fetch('/api/mode');
+                            const modeData = await modeRes.json();
+                            window.appMode = modeData.mode || 'backtest';
+                        }
+                        const nextMode = window.appMode === 'live' ? 'backtest' : 'live';
+                        const res = await fetch('/api/mode', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ mode: nextMode })
+                        });
+                        const data = await res.json();
+                        if (!data.success) throw new Error(data.message || 'Mode switch failed');
+
+                        window.appMode = data.mode;
+                        modeBtn.textContent = data.mode === 'live' ? 'Data: MT5' : 'Data: Local';
+                        modeBtn.classList.toggle('active', data.mode === 'live');
+                        modeBtn.title = data.mode === 'live'
+                            ? 'Data source: live candles from the MT5 bridge'
+                            : 'Data source: local chunk cache for replay/backtesting';
+
+                        window.MT5Datafeed?.historyCache?.clear?.();
+                        if (window.MT5Datafeed) window.MT5Datafeed._localStatusCache = null;
+                        await this.loadSymbols();
+                        await Promise.all(this.panels.map(p => p.loadData?.()).filter(Boolean));
+                    } catch (err) {
+                        console.error('Mode switch failed:', err);
+                        modeBtn.textContent = previousText || 'Data: Local';
+                        modeBtn.title = `Mode switch failed: ${err.message}`;
+                    } finally {
+                        modeBtn.disabled = false;
+                    }
+                });
+            }
+        } catch (e) {
+            console.error('Error binding mode toggle listener:', e);
+        }
 
         // 1. Centralized Symbol select change (Safeguarded)
         try {
@@ -1452,6 +1799,362 @@ class ChartManager {
         } catch (e) {
             console.error('Error binding quit-app-btn listener:', e);
         }
+
+        // 12. --- Download History Modal ---
+        try {
+            const dlBtn = document.getElementById('download-history-btn');
+            const dlModal = document.getElementById('download-history-modal');
+            const dlClose = document.getElementById('dl-history-close');
+            const dlExec = document.getElementById('dl-history-execute');
+            const dlStatus = document.getElementById('dl-history-status');
+            const dlProgress = document.getElementById('dl-history-progress');
+            const dlProgressBar = document.getElementById('dl-history-progress-bar');
+            const dlResult = document.getElementById('dl-history-result');
+            const dlFilesList = document.getElementById('dl-history-files');
+
+            if (dlBtn && dlModal) {
+                dlBtn.addEventListener('click', async () => {
+                    dlModal.classList.add('show');
+                    // Sync symbol from active panel
+                    const symInput = document.getElementById('dl-history-symbol');
+                    if (symInput && this.activePanel) {
+                        symInput.value = this.activePanel.symbol;
+                    }
+                    // Load existing files status
+                    this._refreshHistoryFilesList();
+                });
+
+                if (dlClose) {
+                    dlClose.addEventListener('click', () => {
+                        dlModal.classList.remove('remove'); // Keep existing logic behavior
+                        dlModal.classList.remove('show');
+                    });
+                }
+
+                // Close on backdrop click
+                dlModal.addEventListener('click', (e) => {
+                    if (e.target === dlModal) dlModal.classList.remove('show');
+                });
+
+                // Tabs Switcher Logic
+                const tabBtns = dlModal.querySelectorAll('.dl-tab-btn');
+                const tabContents = dlModal.querySelectorAll('.dl-tab-content');
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        tabBtns.forEach(b => b.classList.remove('active'));
+                        tabContents.forEach(c => c.style.display = 'none');
+
+                        btn.classList.add('active');
+                        const activeTab = btn.dataset.tab;
+                        const activeContent = document.getElementById(`dl-${activeTab}-tab-content`);
+                        if (activeContent) activeContent.style.display = 'block';
+                    });
+                });
+
+                // Quick chips helper logic
+                dlModal.querySelectorAll('.dl-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        const bulkSymInput = document.getElementById('dl-bulk-symbols');
+                        if (bulkSymInput) {
+                            bulkSymInput.value = chip.dataset.val;
+                        }
+                    });
+                });
+
+                // Single Download Execution
+                if (dlExec) {
+                    dlExec.addEventListener('click', async () => {
+                        const symbol = document.getElementById('dl-history-symbol')?.value || 'EURUSD';
+                        const timeframe = document.getElementById('dl-history-timeframe')?.value || 'H1';
+                        const bars = parseInt(document.getElementById('dl-history-bars')?.value || '10000');
+
+                        if (dlStatus) dlStatus.textContent = `Downloading ${bars} bars for ${symbol} ${timeframe}...`;
+                        if (dlProgress) dlProgress.style.display = 'block';
+                        if (dlProgressBar) {
+                            dlProgressBar.style.width = '30%';
+                            dlProgressBar.classList.add('animating');
+                        }
+                        if (dlResult) dlResult.textContent = '';
+                        dlExec.disabled = true;
+
+                        try {
+                            if (dlProgressBar) dlProgressBar.style.width = '60%';
+
+                            const result = await window.MT5Datafeed.downloadHistory(symbol, timeframe, bars);
+
+                            if (dlProgressBar) {
+                                dlProgressBar.style.width = '100%';
+                                dlProgressBar.classList.remove('animating');
+                            }
+
+                            if (result.success) {
+                                if (dlStatus) dlStatus.textContent = '✅ Download complete!';
+                                if (dlResult) dlResult.textContent = `Downloaded ${result.downloaded} bars. Total stored: ${result.total_stored} bars.`;
+                                dlResult.className = 'dl-result success';
+
+                                // Auto-load into active panel if same symbol/timeframe
+                                if (this.activePanel && this.activePanel.symbol === symbol) {
+                                    const data = await window.MT5Datafeed.loadAndCacheLocalData(symbol, timeframe);
+                                    if (data.length > 0 && this.activePanel.timeframe === timeframe) {
+                                        this.activePanel.fullData = data;
+                                        if (window.replayManager && this.activePanel.isReplayMode) {
+                                            window.replayManager.fullData = data;
+                                            window.replayManager._updateUI();
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (dlStatus) dlStatus.textContent = '❌ Download failed';
+                                if (dlResult) dlResult.textContent = result.message || 'Unknown error';
+                                dlResult.className = 'dl-result error';
+                            }
+                        } catch (err) {
+                            if (dlStatus) dlStatus.textContent = '❌ Error';
+                            if (dlResult) dlResult.textContent = err.message;
+                            dlResult.className = 'dl-result error';
+                        }
+
+                        dlExec.disabled = false;
+                        this._refreshHistoryFilesList();
+                        setTimeout(() => {
+                            if (dlProgress) dlProgress.style.display = 'none';
+                            if (dlProgressBar) dlProgressBar.style.width = '0%';
+                        }, 2500);
+                    });
+                }
+
+                // Bulk Download Select All / Clear Timeframes
+                const tfAllBtn = document.getElementById('dl-bulk-tf-all');
+                const tfNoneBtn = document.getElementById('dl-bulk-tf-none');
+                if (tfAllBtn) {
+                    tfAllBtn.addEventListener('click', () => {
+                        document.querySelectorAll('.dl-bulk-tf').forEach(cb => cb.checked = true);
+                    });
+                }
+                if (tfNoneBtn) {
+                    tfNoneBtn.addEventListener('click', () => {
+                        document.querySelectorAll('.dl-bulk-tf').forEach(cb => cb.checked = false);
+                    });
+                }
+
+                // Bulk Download Execution
+                const bulkExec = document.getElementById('dl-bulk-execute');
+                const bulkStop = document.getElementById('dl-bulk-stop');
+
+                this.isBulkDownloading = false;
+                this.bulkAbortController = null;
+
+                if (bulkExec) {
+                    bulkExec.addEventListener('click', async () => {
+                        // Check if MT5 status is connected
+                        const statusEl = document.getElementById('mt5-status');
+                        if (statusEl && !statusEl.classList.contains('connected')) {
+                            alert('⚠️ MetaTrader 5 Disconnected!\nPlease ensure MT5 is running on your Mac and the MacGateway EA is loaded on a chart, then wait for the connection dot to turn green before starting.');
+                            return;
+                        }
+
+                        const symbolsInput = document.getElementById('dl-bulk-symbols')?.value || '';
+                        const selectedTfs = Array.from(document.querySelectorAll('.dl-bulk-tf:checked')).map(cb => cb.value);
+                        const bars = parseInt(document.getElementById('dl-bulk-bars')?.value || '10000');
+
+                        // Parse symbols
+                        const symbols = symbolsInput.split(',')
+                            .map(s => s.trim().toUpperCase())
+                            .filter(s => s.length > 0);
+
+                        if (symbols.length === 0) {
+                            alert('Please enter at least one Symbol.');
+                            return;
+                        }
+                        if (selectedTfs.length === 0) {
+                            alert('Please select at least one Timeframe.');
+                            return;
+                        }
+
+                        this.isBulkDownloading = true;
+                        this.bulkAbortController = new AbortController();
+                        bulkExec.disabled = true;
+                        if (bulkStop) bulkStop.style.display = 'block';
+                        if (dlProgress) dlProgress.style.display = 'block';
+                        if (dlProgressBar) {
+                            dlProgressBar.style.width = '0%';
+                            dlProgressBar.classList.add('animating');
+                        }
+                        if (dlResult) dlResult.textContent = '';
+
+                        // Generate all combinations
+                        const tasks = [];
+                        for (const symbol of symbols) {
+                            for (const tf of selectedTfs) {
+                                tasks.push({ symbol, timeframe: tf });
+                            }
+                        }
+
+                        let completed = 0;
+                        let successfulCount = 0;
+
+                        if (dlStatus) dlStatus.textContent = `🚀 Starting bulk download for ${tasks.length} tasks...`;
+
+                        try {
+                            for (const task of tasks) {
+                                if (!this.isBulkDownloading) {
+                                    break;
+                                }
+
+                                if (dlStatus) {
+                                    dlStatus.textContent = `🔄 [${completed + 1}/${tasks.length}] Downloading ${task.symbol} ${task.timeframe}...`;
+                                }
+
+                                const progressPercent = Math.round((completed / tasks.length) * 100);
+                                if (dlProgressBar) dlProgressBar.style.width = `${progressPercent}%`;
+
+                                try {
+                                    // Pass signal to allow aborting fetch instantly
+                                    const result = await window.MT5Datafeed.downloadHistory(
+                                        task.symbol,
+                                        task.timeframe,
+                                        bars,
+                                        null,
+                                        this.bulkAbortController.signal
+                                    );
+                                    if (result && result.success) {
+                                        successfulCount++;
+                                    }
+                                } catch (e) {
+                                    console.error(`Error downloading ${task.symbol} ${task.timeframe}:`, e);
+                                }
+
+                                completed++;
+                                this._refreshHistoryFilesList();
+                            }
+
+                            if (dlProgressBar) {
+                                dlProgressBar.style.width = '100%';
+                                dlProgressBar.classList.remove('animating');
+                            }
+
+                            if (this.isBulkDownloading) {
+                                if (successfulCount > 0) {
+                                    if (dlStatus) dlStatus.textContent = `✅ Bulk download completed!`;
+                                    if (dlResult) dlResult.textContent = `Successfully downloaded ${successfulCount} of ${tasks.length} items.`;
+                                    dlResult.className = 'dl-result success';
+                                } else {
+                                    if (dlStatus) dlStatus.textContent = `❌ Bulk download failed!`;
+                                    if (dlResult) dlResult.textContent = `Failed to download any data from MT5. Please check active Symbol spelling, connection logs in MT5 Experts tab, or decrease Bar limit.`;
+                                    dlResult.className = 'dl-result error';
+                                }
+                            } else {
+                                if (dlStatus) dlStatus.textContent = `🛑 Bulk download stopped by user.`;
+                                if (dlResult) dlResult.textContent = `Downloaded ${successfulCount} items before stopping.`;
+                                dlResult.className = 'dl-result error';
+                            }
+                        } catch (err) {
+                            if (dlStatus) dlStatus.textContent = '❌ Bulk download error';
+                            if (dlResult) dlResult.textContent = err.message;
+                            dlResult.className = 'dl-result error';
+                        } finally {
+                            this.isBulkDownloading = false;
+                            this.bulkAbortController = null;
+                            bulkExec.disabled = false;
+                            if (bulkStop) bulkStop.style.display = 'none';
+
+                            // Reload active panel data if it was matching any downloaded combo
+                            if (this.activePanel) {
+                                const activeSym = this.activePanel.symbol;
+                                const activeTf = this.activePanel.timeframe;
+                                if (symbols.includes(activeSym) && selectedTfs.includes(activeTf)) {
+                                    const data = await window.MT5Datafeed.loadAndCacheLocalData(activeSym, activeTf);
+                                    if (data.length > 0) {
+                                        this.activePanel.fullData = data;
+                                        if (window.replayManager && this.activePanel.isReplayMode) {
+                                            window.replayManager.fullData = data;
+                                            window.replayManager._updateUI();
+                                        }
+                                    }
+                                }
+                            }
+
+                            setTimeout(() => {
+                                if (dlProgress) dlProgress.style.display = 'none';
+                                if (dlProgressBar) dlProgressBar.style.width = '0%';
+                            }, 3500);
+                        }
+                    });
+                }
+
+                if (bulkStop) {
+                    bulkStop.addEventListener('click', () => {
+                        this.isBulkDownloading = false;
+                        if (this.bulkAbortController) {
+                            try {
+                                this.bulkAbortController.abort(); // Cancel the active fetch request immediately
+                            } catch (e) {
+                                console.warn('Failed to abort bulk download fetch:', e);
+                            }
+                        }
+                        if (dlStatus) dlStatus.textContent = '🛑 Stopping bulk download...';
+                        bulkStop.disabled = true;
+                        setTimeout(() => { bulkStop.disabled = false; }, 2000);
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Error binding download-history listener:', e);
+        }
+    }
+
+    async _refreshHistoryFilesList() {
+        const dlFilesList = document.getElementById('dl-history-files');
+        if (!dlFilesList) return;
+
+        try {
+            const files = await window.MT5Datafeed.getLocalHistoryStatus();
+            if (!files || files.length === 0) {
+                dlFilesList.innerHTML = '<div class="dl-files-empty">No local chunk history yet.</div>';
+                return;
+            }
+
+            const tz = this.timezoneOffset ?? 7;
+            const formatTs = (ts) => {
+                const d = new Date(ts * 1000);
+                d.setUTCHours(d.getUTCHours() + tz);
+                const pad = n => String(n).padStart(2, '0');
+                return `${pad(d.getUTCDate())}/${pad(d.getUTCMonth()+1)}/${d.getUTCFullYear()}`;
+            };
+
+            dlFilesList.innerHTML = files.map(f => `
+                <div class="dl-file-row">
+                    <span class="dl-file-symbol">${f.symbol}</span>
+                    <span class="dl-file-tf">${f.timeframe}</span>
+                    <span class="dl-file-bars">${f.bars_count.toLocaleString()} bars</span>
+                    <span class="dl-file-range">${formatTs(f.first_time)} -> ${formatTs(f.last_time)}</span>
+                    <span class="dl-file-size">${(f.chunks_count || 0).toLocaleString()} chunks</span>
+                    <button class="dl-file-delete" data-symbol="${f.symbol}" data-tf="${f.timeframe}" title="Delete">✕</button>
+                </div>
+            `).join('');
+
+            // Bind delete buttons
+            dlFilesList.querySelectorAll('.dl-file-delete').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const sym = btn.dataset.symbol;
+                    const tf = btn.dataset.tf;
+                    if (!confirm(`Delete local history for ${sym} ${tf}?`)) return;
+                    try {
+                        await fetch('/api/history/delete', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ symbol: sym, timeframe: tf })
+                        });
+                        window.MT5Datafeed._localStatusCache = null;
+                        this._refreshHistoryFilesList();
+                    } catch (err) {
+                        console.error('Error deleting history file:', err);
+                    }
+                });
+            });
+        } catch (err) {
+            dlFilesList.innerHTML = '<div class="dl-files-empty">Error loading status.</div>';
+        }
     }
 
     changeActiveTimeframe(tf) {
@@ -1566,17 +2269,19 @@ class ChartManager {
             const data = await res.json();
             console.log('[checkMT5Status] API Status response:', data);
             const el = document.getElementById('mt5-status');
+            const modeBtn = document.getElementById('mode-toggle-btn');
+            window.appMode = data.mode || window.appMode || 'backtest';
+            if (modeBtn) {
+                modeBtn.textContent = window.appMode === 'live' ? 'Data: MT5' : 'Data: Local';
+                modeBtn.classList.toggle('active', window.appMode === 'live');
+            }
+            if (!el) return;
             if (data.connected) {
                 const wasDisconnected = !el.classList.contains('connected');
                 el.classList.add('connected');
                 el.querySelector('.status-text').textContent = 'MT5 Connected';
                 if (wasDisconnected || this.allSymbols.length === 0) {
                     await this.loadSymbols();
-                    this.panels.forEach(p => {
-                        if (p.chartReady && p.chart) {
-                            p.loadData();
-                        }
-                    });
                 }
             } else {
                 el.classList.remove('connected');
