@@ -4,10 +4,12 @@ Flask Backend - API cho Trading Chart Tool
 from flask import Flask, render_template, jsonify, request
 from mt5_data import mt5_fetcher
 from history_store import history_store
+from session_store import session_store
 from datetime import datetime, timedelta
 import json
 import threading
 import logging
+import sqlite3
 
 app = Flask(__name__)
 APP_MODE = {'mode': 'backtest'}  # backtest = local-first, live = MT5-first
@@ -379,6 +381,60 @@ def history_coverage():
 @app.route('/api/history/policy', methods=['GET'])
 def history_policy():
     return jsonify({'success': True, 'policy': history_store.policy()})
+
+# ─── Replay Session APIs ───────────────────────────────────────
+
+@app.route('/api/session/save', methods=['POST'])
+def save_replay_session():
+    """Validate and persist one completed virtual replay session."""
+    report = request.get_json(silent=True)
+    if not isinstance(report, dict):
+        return jsonify({'success': False, 'message': 'Request body must be a JSON object'}), 400
+    try:
+        saved = session_store.save(report)
+    except ValueError as error:
+        return jsonify({'success': False, 'message': str(error)}), 400
+    except sqlite3.Error:
+        app.logger.exception('Failed to save replay session')
+        return jsonify({'success': False, 'message': 'Could not save the replay session'}), 500
+    return jsonify({'success': True, 'session': saved}), 201
+
+
+@app.route('/api/sessions', methods=['GET'])
+def get_replay_sessions():
+    """List recent persisted replay-session summaries."""
+    try:
+        limit = int(request.args.get('limit', 50))
+    except (TypeError, ValueError):
+        return jsonify({'success': False, 'message': 'limit must be an integer'}), 400
+    if limit < 1 or limit > 100:
+        return jsonify({'success': False, 'message': 'limit must be between 1 and 100'}), 400
+    try:
+        sessions = session_store.list_sessions(limit)
+    except sqlite3.Error:
+        app.logger.exception('Failed to load replay sessions')
+        return jsonify({'success': False, 'message': 'Could not load replay sessions'}), 500
+    return jsonify({'success': True, 'sessions': sessions})
+
+
+@app.route('/api/sessions/<int:session_id>', methods=['GET', 'DELETE'])
+def replay_session(session_id):
+    """Read a complete report or delete a persisted replay session."""
+    try:
+        if request.method == 'DELETE':
+            deleted = session_store.delete(session_id)
+            if not deleted:
+                return jsonify({'success': False, 'message': 'Session not found'}), 404
+            return jsonify({'success': True})
+
+        saved = session_store.get_session(session_id)
+    except (sqlite3.Error, json.JSONDecodeError):
+        app.logger.exception('Failed to access replay session')
+        return jsonify({'success': False, 'message': 'Could not access the replay session'}), 500
+    if saved is None:
+        return jsonify({'success': False, 'message': 'Session not found'}), 404
+    return jsonify({'success': True, 'session': saved})
+
 
 @app.route('/api/shutdown', methods=['POST'])
 def shutdown():

@@ -36,31 +36,6 @@
             Playbook
         </button>
 
-        <div class="tb-pop-wrap">
-            <button id="btn-layout" class="tb-btn" data-i18n="top.layout" data-i18n-title="top.layout.title" title="Chart layout">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                Layout
-            </button>
-            <div id="layout-dropdown" class="dropdown">
-                <button class="dropdown-item active" data-layout="1">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    <span data-i18n="layout.1">Single</span>
-                </button>
-                <button class="dropdown-item" data-layout="2v">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    <span data-i18n="layout.2v">2 Vertical</span>
-                </button>
-                <button class="dropdown-item" data-layout="2h">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    <span data-i18n="layout.2h">2 Horizontal</span>
-                </button>
-                <button class="dropdown-item" data-layout="4">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    <span data-i18n="layout.4">4 Charts</span>
-                </button>
-            </div>
-        </div>
-
         <div class="tb-spacer"></div>
 
         <button id="btn-mode" class="tb-btn" data-i18n-title="top.mode.title" title="Switch data source (Local cache / Live MT5)">Local</button>
@@ -96,7 +71,7 @@
     <!-- ══ Workspace ══ -->
     <main id="workspace">
         <div id="chart-stage">
-            <div id="charts-grid" class="layout-1"></div>
+            <div id="charts-grid"></div>
 
             <div id="stage-veil"><div class="spinner"></div><span id="stage-veil-text" data-i18n="misc.loading">Loading…</span></div>
 
@@ -297,6 +272,10 @@
                     </div>
                     <div class="an-stats" id="an-stats"></div>
                 </div>
+                <div class="an-progress-box">
+                    <h3 data-i18n="an.progress">Progress across sessions</h3>
+                    <div class="an-progress" id="an-progress"></div>
+                </div>
                 <div class="an-sessions-box">
                     <h3 data-i18n="an.sessions">Saved sessions</h3>
                     <div id="an-sessions"></div>
@@ -379,6 +358,8 @@
         </div>
         <div class="modal-foot">
             <button class="btn" data-close-modal="modal-report" data-i18n="misc.close">Close</button>
+            <button class="btn" id="report-export-csv" data-i18n="report.exportCsv">Export CSV</button>
+            <button class="btn" id="report-export-png" data-i18n="report.exportPng">Export PNG</button>
             <button class="btn primary" id="report-save" data-i18n="report.save">Save session</button>
         </div>
     </div>

@@ -448,22 +448,19 @@ class MT5Datafeed {
 
     getReplayWindowBars(symbol, timeframe, from, to, countBack, firstDataRequest) {
         const cm = window.chartManager;
-        const hasReplayPanel = Boolean(cm?.panels?.some(panel => panel.isReplayMode));
-        if (!hasReplayPanel && !cm?.isReplayMode) return null;
+        const panel = cm?.activePanel;
+        if (!cm?.isReplayMode || !panel?.isReplayMode) return null;
 
         const rm = window.replayManager;
         let replayData = null;
         let replayIndex = null;
 
-        const panel = cm.panels?.find(p =>
-            p.symbol === symbol &&
-            p.timeframe === timeframe &&
-            p.isReplayMode &&
-            Array.isArray(p.fullData) &&
-            p.fullData.length > 0
-        );
-
-        if (panel) {
+        if (
+            panel.symbol === symbol &&
+            panel.timeframe === timeframe &&
+            Array.isArray(panel.fullData) &&
+            panel.fullData.length > 0
+        ) {
             replayData = panel.fullData;
             replayIndex = panel.replayIndex;
         } else if (rm?.fullData?.length && (!rm.symbol || rm.symbol === symbol) && (!rm.timeframe || rm.timeframe === timeframe)) {
@@ -617,16 +614,8 @@ class MT5Datafeed {
         const timeframe = this._resolutionToTimeframe(resolution);
 
         const cm = window.chartManager;
-        let panel = null;
-        if (cm) {
-            panel = cm.panels.find(p => p.symbol === symbolInfo.name && p.timeframe === timeframe);
-            if (!panel && cm.activePanel) {
-                panel = cm.activePanel;
-            }
-        }
-
-        const hasReplayPanel = Boolean(cm?.panels?.some(panel => panel.isReplayMode));
-        const replayMode = Boolean((cm?.isReplayMode || hasReplayPanel) && window.replayManager?.cursorTimestamp);
+        const panel = cm?.activePanel || null;
+        const replayMode = Boolean(cm?.isReplayMode && window.replayManager?.cursorTimestamp);
         if (panel && panel.symbol === symbolInfo.name && panel.activeLoadPromise && (panel.timeframe === timeframe || replayMode)) {
             console.log(`[Datafeed] getBars awaiting activeLoadPromise for ${symbolInfo.name} (${timeframe})`);
             try {
@@ -637,14 +626,12 @@ class MT5Datafeed {
         }
 
         if (replayMode) {
-            const replayPanel = cm?.panels?.find(p => p.symbol === symbolInfo.name && p.timeframe === timeframe && p.isReplayMode);
-            if (replayPanel && (!replayPanel.fullData || replayPanel.fullData.length === 0) && cm?.syncPanelReplayToTimestamp) {
-                await cm.syncPanelReplayToTimestamp(replayPanel, window.replayManager.cursorTimestamp, {
-                    forceReset: false,
-                    focus: false,
-                    apply: false,
-                    reason: 'datafeed'
-                });
+            const isFocusedReplayChart =
+                panel?.isReplayMode &&
+                panel.symbol === symbolInfo.name &&
+                panel.timeframe === timeframe;
+            if (isFocusedReplayChart && (!panel.fullData || panel.fullData.length === 0) && cm?.syncPanelReplayToTimestamp) {
+                await cm.syncPanelReplayToTimestamp(panel, window.replayManager.cursorTimestamp);
             } else {
                 await this.ensureReplayData(symbolInfo.name, timeframe);
             }
@@ -692,15 +679,11 @@ class MT5Datafeed {
                 
                 // Store full data in the chartManager panel so Replay can access it
                 if (cm && firstDataRequest) {
-                    let targetPanel = cm.panels.find(p => p.symbol === symbolInfo.name && p.timeframe === timeframe);
-                    if (!targetPanel && cm.activePanel) {
-                        targetPanel = cm.activePanel;
-                    }
-                    if (targetPanel) {
-                        targetPanel.fullData = data;
-                        targetPanel.symbol = symbolInfo.name;
-                        targetPanel.timeframe = timeframe;
-                        targetPanel.updateHeader();
+                    if (panel) {
+                        panel.fullData = data;
+                        panel.symbol = symbolInfo.name;
+                        panel.timeframe = timeframe;
+                        panel.updateHeader();
                     }
                 }
 

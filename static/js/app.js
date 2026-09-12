@@ -52,6 +52,7 @@ class App {
         this._wireModals();
         this._wireBottomPanel();
         this._wireSettings();
+        window.analytics.loadSessions();
         this._initMode();
         this._pollStatus();
         this._statusTimer = setInterval(() => this._pollStatus(), 5000);
@@ -64,21 +65,6 @@ class App {
             window.replayManager.promptStart());
         document.getElementById('btn-history').addEventListener('click', () => this._openHistory());
         document.getElementById('btn-mode').addEventListener('click', () => this._toggleMode());
-
-        const layoutBtn = document.getElementById('btn-layout');
-        const dropdown = document.getElementById('layout-dropdown');
-        layoutBtn.addEventListener('click', (ev) => {
-            ev.stopPropagation();
-            document.getElementById('settings-dropdown').classList.remove('open');
-            dropdown.classList.toggle('open');
-        });
-        document.addEventListener('click', () => dropdown.classList.remove('open'));
-        dropdown.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', () => {
-                dropdown.classList.remove('open');
-                window.chartManager.setLayout(item.dataset.layout);
-            });
-        });
     }
 
     /* ── Settings popover (language, theme, account reset, quit) ────────── */
@@ -93,7 +79,6 @@ class App {
         const pop = document.getElementById('settings-dropdown');
         btn.addEventListener('click', (ev) => {
             ev.stopPropagation();
-            document.getElementById('layout-dropdown').classList.remove('open');
             pop.classList.toggle('open');
         });
         document.addEventListener('click', () => pop.classList.remove('open'));
@@ -151,6 +136,10 @@ class App {
         });
         document.getElementById('report-save').addEventListener('click', () =>
             window.analytics.savePendingReport());
+        document.getElementById('report-export-csv').addEventListener('click', () =>
+            window.analytics.exportPendingReportCsv());
+        document.getElementById('report-export-png').addEventListener('click', () =>
+            window.analytics.exportReportPng());
     }
 
     _wireDrawers() {
@@ -243,7 +232,7 @@ class App {
             this._renderMode();
             // Hard reset chart caches so data comes from the new source
             window.MT5Datafeed.historyCache.clear();
-            for (const panel of window.chartManager.panels) panel.resetData();
+            window.chartManager.activePanel?.resetData();
             window.showToast(window.I18N.t(next === 'live' ? 'toast.modeLive' : 'toast.modeLocal'), 'success');
         } catch (err) {
             window.showToast(window.I18N.t('toast.modeFail', { msg: err.message }), 'error');

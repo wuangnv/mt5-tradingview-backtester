@@ -24,15 +24,16 @@ flowchart LR
 
 ## Highlights
 
-- TradingView-style chart workspace with 1, 2, and 4 chart layouts.
+- Focused single-chart TradingView-style workspace, optimized for deliberate replay practice.
 - Bar replay with play, pause, step forward, keyboard shortcuts, jump-to-date, and speed control.
 - Frontend history cache for faster replay timeframe switching.
 - Live MT5 account panel with balance, equity, margin, open positions, and recent deal history.
 - Market buy/sell execution from the web UI through MT5.
 - Virtual backtest mode with simulated positions, pending orders, SL/TP, and history.
 - Trade storytelling: execution markers on chart, per-trade R-multiple tracking.
-- Session report on replay exit (equity curve, win rate, profit factor, expectancy, max drawdown) with savable session history.
-- Analytics tab with equity curve and per-trade statistics.
+- Session report on replay exit (equity curve, win rate, profit factor, expectancy, max drawdown), persisted locally in SQLite.
+- Analytics tab with equity curve, per-trade statistics, cross-session progress comparison, and saved report review.
+- CSV trade-ledger and PNG equity-curve export from each session report.
 - Bilingual UI (English / Tiếng Việt), including the TradingView chart locale.
 - Dark and light themes, applied to both the app and the charts.
 - Custom chart time formatting with full date and time display.
@@ -80,6 +81,7 @@ flowchart TD
 ```text
 .
 ├── app.py                    # Flask routes and API endpoints
+├── session_store.py           # Validated SQLite persistence for replay-session reports
 ├── mt5_data.py               # Thread-safe TCP socket server for MT5
 ├── MacGateway.mq5            # MT5 Expert Advisor socket client
 ├── Start-Windows.bat         # Double-click launcher for Windows
@@ -89,7 +91,7 @@ flowchart TD
 ├── static/css/app.css        # Design system: TradingView-authentic dark + light themes
 ├── static/js/datafeed.js     # TradingView datafeed and history cache
 ├── static/js/i18n.js         # Bilingual EN/VI strings (UI + TradingView locale)
-├── static/js/charts.js       # Chart panels, multi-chart layouts, trade markers, live polling
+├── static/js/charts.js        # Focused chart, trade markers, live polling, replay plumbing
 ├── static/js/trading.js      # Order panel, virtual account (R-multiple tracking), bottom dashboard
 ├── static/js/replay.js       # Bar replay engine, keyboard shortcuts, session snapshot
 ├── static/js/playbook.js     # Playbook drawer: journal, setups, roadmap
@@ -243,6 +245,9 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 | `/api/trade/positions` | `GET` | Open MT5 positions |
 | `/api/trade/history?days=30` | `GET` | Recent MT5 deals |
 | `/api/trade/account` | `GET` | Account balance and margin data |
+| `/api/session/save` | `POST` | Validate and save a completed replay session |
+| `/api/sessions?limit=50` | `GET` | List saved replay-session summaries |
+| `/api/sessions/<id>` | `GET`, `DELETE` | Read or delete one saved session |
 
 ## Development Notes
 
@@ -276,7 +281,6 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 ## Roadmap
 
 - Pending order support for live MT5 mode.
-- Export backtest results to CSV.
 - Strategy notes and session tagging.
 - Saved workspaces and chart templates.
 - Docker-friendly backend mode for Windows/Linux.

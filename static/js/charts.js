@@ -1,13 +1,11 @@
 /**
  * charts.js — ChartManager & ChartPanel
- * TradingView widget lifecycle, multi-chart layouts, visible-range sync,
- * live polling and replay plumbing used by datafeed.js.
+ * TradingView widget lifecycle, live polling, and replay plumbing used by
+ * datafeed.js. The workspace intentionally keeps one focused chart.
  *
  * Contract with datafeed.js (do not rename):
- *   window.chartManager.panels[]        — panel objects
  *   window.chartManager.activePanel
  *   window.chartManager.isReplayMode
- *   window.chartManager.syncPanelReplayToTimestamp(panel, ts, opts)
  *   panel.symbol / panel.timeframe / panel.isReplayMode
  *   panel.fullData / panel.replayIndex / panel.activeLoadPromise / panel.updateHeader()
  */
@@ -70,7 +68,6 @@ class ChartPanel {
         this.activeLoadPromise = null;
 
         this.el = null;
-        this._syncingRange = false;
         this.tradeMarkers = [];
     }
 
@@ -144,11 +141,6 @@ class ChartPanel {
                 this.manager.onPanelConfigChanged(this);
             });
 
-            this.chart.onVisibleRangeChanged().subscribe(null, (range) => {
-                if (this._syncingRange || !range) return;
-                this.manager.syncTimeScale(this, range);
-            });
-
             this.widget.subscribe('crossHairMoved', (e) => {
                 if (e && e.time) window.lastCrosshairTime = e.time;
             });
@@ -192,163 +184,84 @@ class ChartPanel {
 
 class ChartManager {
     constructor() {
-        this.panels = [];
         this.activePanel = null;
         this.gridEl = document.getElementById('charts-grid');
-        this.layout = localStorage.getItem('wv_layout') || '1';
         this._liveTimer = null;
-        this._defaults = [
-            { symbol: 'EURUSD', timeframe: 'H1' },
-            { symbol: 'AUDUSD', timeframe: 'H1' },
-            { symbol: 'GBPJPY', timeframe: 'H1' },
-            { symbol: 'XAUUSD', timeframe: 'H1' }
-        ];
     }
 
     get isReplayMode() {
-        return this.panels.some(p => p.isReplayMode);
+        return Boolean(this.activePanel?.isReplayMode);
     }
 
     init() {
-        this.setLayout(this.layout);
+        this._mountPanel({ symbol: 'EURUSD', timeframe: 'H1' });
         this._startLivePolling();
     }
 
-    /* ── Layout ─────────────────────────────────────────────────────────── */
-
-    _panelCount(layout) {
-        return { '1': 1, '2v': 2, '2h': 2, '4': 4 }[layout] || 1;
+    _mountPanel(config) {
+        const panel = new ChartPanel(this, 0, config.symbol, config.timeframe);
+        this.activePanel = panel;
+        panel.mount(this.gridEl);
+        this.setActivePanel(panel);
+        return panel;
     }
 
-    setLayout(layout) {
-        this.layout = layout;
-        localStorage.setItem('wv_layout', layout);
-        const target = this._panelCount(layout);
-
-        this.gridEl.className = `layout-${layout}`;
-        document.querySelectorAll('#layout-dropdown .dropdown-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.layout === layout);
-        });
-
-        // Destroy extra panels (replay must be exited first)
-        while (this.panels.length > target) {
-            const panel = this.panels.pop();
-            if (panel.isReplayMode) window.replayManager?.stop();
-            panel.destroy();
-        }
-
-        // Create missing panels
-        while (this.panels.length < target) {
-            const i = this.panels.length;
-            const cfg = this._defaults[i] || this._defaults[0];
-            const panel = new ChartPanel(this, i, cfg.symbol, cfg.timeframe);
-            this.panels.push(panel);
-            panel.mount(this.gridEl);
-        }
-
-        // Re-index after changes
-        this.panels.forEach((p, i) => { p.index = i; });
-
-        if (!this.activePanel || !this.panels.includes(this.activePanel)) {
-            this.setActivePanel(this.panels[0]);
-        } else {
-            this.setActivePanel(this.activePanel);
-        }
-    }
-
-    /** Destroy and recreate every panel with the same symbol/timeframe.
-     *  Used to apply theme/locale changes. Refuses while replay is active. */
+    /** Recreate the focused widget to apply a language or theme update. */
     rebuild() {
         if (this.isReplayMode) return false;
-        const configs = this.panels.map(p => ({ symbol: p.symbol, timeframe: p.timeframe }));
-        while (this.panels.length) this.panels.pop().destroy();
+        const panel = this.activePanel;
+        const config = {
+            symbol: panel?.symbol || 'EURUSD',
+            timeframe: panel?.timeframe || 'H1'
+        };
+        panel?.destroy();
         this.activePanel = null;
-        configs.forEach((cfg, i) => {
-            const panel = new ChartPanel(this, i, cfg.symbol, cfg.timeframe);
-            this.panels.push(panel);
-            panel.mount(this.gridEl);
-        });
-        this.setActivePanel(this.panels[0]);
+        this._mountPanel(config);
         return true;
     }
 
     setActivePanel(panel) {
         if (!panel) return;
         this.activePanel = panel;
-        this.panels.forEach(p => p.el && p.el.classList.toggle('active', p === panel));
-
-        // In replay, make the replay manager track the newly active panel
-        const rm = window.replayManager;
-        if (panel.isReplayMode && rm && rm.active && Array.isArray(panel.fullData)) {
-            rm.fullData = panel.fullData;
-            rm.currentIndex = panel.replayIndex;
-            rm.symbol = panel.symbol;
-            rm.timeframe = panel.timeframe;
-            rm._updateUI();
-        }
     }
 
     onPanelChanged(panel) {
         if (panel === this.activePanel) window.tradeManager?.syncOrderSymbol();
     }
 
-    /** Symbol/timeframe changed on a panel — resync replay data if needed. */
-    onPanelConfigChanged(panel) {
+    /** Symbol/timeframe changed on the focused chart during replay. */
+    async onPanelConfigChanged(panel) {
         this.onPanelChanged(panel);
         const rm = window.replayManager;
         if (!panel.isReplayMode || !rm?.active || !rm.cursorTimestamp) return;
 
-        // Invalidate stale data so datafeed falls back to the replay manager
         panel.fullData = null;
         panel.replayIndex = -1;
-
-        this.syncPanelReplayToTimestamp(panel, rm.cursorTimestamp).then(() => {
-            if (panel === this.activePanel && Array.isArray(panel.fullData)) {
-                rm.fullData = panel.fullData;
-                rm.currentIndex = panel.replayIndex;
-                rm.symbol = panel.symbol;
-                rm.timeframe = panel.timeframe;
-                rm._lastDisplayedIndex = -1;
-                rm._updateUI();
-            }
-        });
-    }
-
-    /* ── Visible-range sync across panels ───────────────────────────────── */
-
-    syncTimeScale(sourcePanel, range) {
-        for (const panel of this.panels) {
-            if (panel === sourcePanel || !panel.chart) continue;
-            try {
-                panel._syncingRange = true;
-                panel.chart.setVisibleRange(range);
-            } catch (err) { /* range may be out of bounds for this symbol */ }
-            finally {
-                setTimeout(() => { panel._syncingRange = false; }, 50);
-            }
-        }
+        await this.syncPanelReplayToTimestamp(panel, rm.cursorTimestamp);
+        if (!Array.isArray(panel.fullData)) return;
+        rm.fullData = panel.fullData;
+        rm.currentIndex = panel.replayIndex;
+        rm.symbol = panel.symbol;
+        rm.timeframe = panel.timeframe;
+        rm._lastDisplayedIndex = -1;
+        rm._updateUI();
     }
 
     /* ── Replay plumbing (used by datafeed.js + replay.js) ──────────────── */
 
-    /** Put every panel into replay mode synced to the cursor timestamp. */
-    async enterReplayMode(cursorTs) {
-        for (const panel of this.panels) {
-            panel.isReplayMode = true;
-            if (panel !== this.activePanel) {
-                await this.syncPanelReplayToTimestamp(panel, cursorTs, { focus: false });
-            }
-        }
+    /** Put the focused chart into replay mode. */
+    async enterReplayMode() {
+        if (this.activePanel) this.activePanel.isReplayMode = true;
     }
 
     exitReplayMode() {
-        for (const panel of this.panels) {
-            panel.isReplayMode = false;
-            panel.fullData = null;
-            panel.replayIndex = -1;
-            this._clearPanelMarkers(panel);
-            panel.resetData();
-        }
+        const panel = this.activePanel;
+        if (!panel) return;
+        panel.isReplayMode = false;
+        panel.fullData = null;
+        panel.replayIndex = -1;
+        this._clearPanelMarkers(panel);
+        panel.resetData();
     }
 
     /* ── Trade markers (execution arrows on chart) ──────────────────────── */
@@ -358,8 +271,8 @@ class ChartManager {
      * marker: { time, price, direction: 'buy'|'sell', text, color? }
      */
     drawTradeMarker(symbol, marker) {
-        const panel = this.panels.find(p => p.symbol === symbol && p.chart);
-        if (!panel) return;
+         const panel = this.activePanel;
+         if (!panel?.chart || panel.symbol !== symbol) return;
         try {
             if (typeof panel.chart.createExecutionShape !== 'function') return;
             const shape = panel.chart.createExecutionShape({ font: '10px sans-serif' });
@@ -379,7 +292,7 @@ class ChartManager {
     }
 
     clearTradeMarkers() {
-        for (const panel of this.panels) this._clearPanelMarkers(panel);
+        if (this.activePanel) this._clearPanelMarkers(this.activePanel);
     }
 
     /** Load data around ts into a panel and point its replay index at it. */
@@ -402,39 +315,26 @@ class ChartManager {
         return panel;
     }
 
-    /** Re-apply all non-active replay panels to the shared cursor. */
-    syncReplayPanelsToCursor(ts) {
-        for (const panel of this.panels) {
-            if (!panel.isReplayMode || panel === this.activePanel) continue;
-            if (!Array.isArray(panel.fullData) || !panel.fullData.length) continue;
-            const idx = window.MT5Datafeed.findIndexAtOrBefore(panel.fullData, ts);
-            if (idx >= 0 && idx !== panel.replayIndex) {
-                panel.replayIndex = idx;
-                panel.resetData();
-            }
-        }
-    }
-
     /* ── Live polling (live mode only) ──────────────────────────────────── */
 
     _startLivePolling() {
         this._liveTimer = setInterval(async () => {
             if (window.appMode !== 'live' || this.isReplayMode) return;
-            for (const panel of this.panels) {
-                try {
-                    const res = await fetch('/api/data', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ symbol: panel.symbol, timeframe: panel.timeframe, bars: 2, mode: 'live' })
-                    });
-                    const result = await res.json();
-                    if (result.success && Array.isArray(result.data)) {
-                        for (const bar of result.data.slice(-2)) {
-                            window.MT5Datafeed.updateRealtime(panel.symbol, panel.timeframe, bar);
-                        }
+            const panel = this.activePanel;
+            if (!panel) return;
+            try {
+                const res = await fetch('/api/data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ symbol: panel.symbol, timeframe: panel.timeframe, bars: 2, mode: 'live' })
+                });
+                const result = await res.json();
+                if (result.success && Array.isArray(result.data)) {
+                    for (const bar of result.data.slice(-2)) {
+                        window.MT5Datafeed.updateRealtime(panel.symbol, panel.timeframe, bar);
                     }
-                } catch (err) { /* transient — next poll retries */ }
-            }
+                }
+            } catch (err) { /* transient — next poll retries */ }
         }, 10000);
     }
 }

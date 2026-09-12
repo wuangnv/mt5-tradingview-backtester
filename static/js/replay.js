@@ -318,8 +318,6 @@ class ReplayManager {
 
         this._updateUI();
         window.tradeManager?.onReplayTick(bar, this.symbol);
-        window.chartManager?.syncReplayPanelsToCursor(bar.time);
-
         if (this.currentIndex >= this.fullData.length - 50) this._extendData();
     }
 

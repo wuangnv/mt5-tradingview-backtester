@@ -227,14 +227,11 @@ input:focus, select:focus { border-color: var(--accent); }
     flex: 1 1 auto;
     min-height: 0;
     display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
     gap: 1px;
     background: var(--border);
 }
-
-#charts-grid.layout-1  { grid-template-columns: 1fr; grid-template-rows: 1fr; }
-#charts-grid.layout-2v { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
-#charts-grid.layout-2h { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-#charts-grid.layout-4  { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
 
 .chart-panel {
     position: relative;
@@ -243,8 +240,6 @@ input:focus, select:focus { border-color: var(--accent); }
     min-height: 0;
     overflow: hidden;
 }
-
-.chart-panel.active { box-shadow: inset 0 0 0 1px var(--accent); }
 
 .chart-panel .panel-frame {
     position: absolute;
@@ -255,10 +250,6 @@ input:focus, select:focus { border-color: var(--accent); }
     position: absolute;
     inset: 0;
 }
-
-/* ==========================================================================
-   Layout picker dropdown
-   ========================================================================== */
 
 .dropdown {
     position: absolute;
@@ -1062,6 +1053,28 @@ input:focus, select:focus { border-color: var(--accent); }
     padding: 10px 12px;
 }
 
+.an-progress-box {
+    background: var(--bg-panel-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 10px 12px;
+}
+
+.an-progress-box h3 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+}
+
+.an-progress {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    gap: 6px;
+}
+
 .an-session-row {
     display: flex;
     align-items: center;
@@ -1075,6 +1088,11 @@ input:focus, select:focus { border-color: var(--accent); }
 .an-session-row .sess-when { color: var(--text-dim); min-width: 110px; }
 .an-session-row .sess-sym { font-weight: 600; color: var(--text-bright); min-width: 110px; }
 .an-session-row b { margin-left: auto; font-family: var(--mono); }
+
+@media (max-width: 860px) {
+    .an-main { flex-direction: column; }
+    .an-progress { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+}
 
 .an-empty-note {
     color: var(--text-dim);
