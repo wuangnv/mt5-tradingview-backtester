@@ -30,6 +30,11 @@ flowchart LR
 - Live MT5 account panel with balance, equity, margin, open positions, and recent deal history.
 - Market buy/sell execution from the web UI through MT5.
 - Virtual backtest mode with simulated positions, pending orders, SL/TP, and history.
+- Trade storytelling: execution markers on chart, per-trade R-multiple tracking.
+- Session report on replay exit (equity curve, win rate, profit factor, expectancy, max drawdown) with savable session history.
+- Analytics tab with equity curve and per-trade statistics.
+- Bilingual UI (English / Tiếng Việt), including the TradingView chart locale.
+- Dark and light themes, applied to both the app and the charts.
 - Custom chart time formatting with full date and time display.
 - Lightweight stack: Flask, vanilla JavaScript, CSS, and MQL5 sockets.
 
@@ -81,13 +86,15 @@ flowchart TD
 ├── Start-macOS.command       # Double-click launcher for macOS
 ├── scripts/                  # Launcher helper scripts
 ├── templates/index.html      # App shell (topbar, workspace, drawers, modals)
-├── static/css/app.css        # Design system: TradingView-authentic dark theme
+├── static/css/app.css        # Design system: TradingView-authentic dark + light themes
 ├── static/js/datafeed.js     # TradingView datafeed and history cache
-├── static/js/charts.js       # Chart panels, multi-chart layouts, live polling
-├── static/js/trading.js      # Order panel, virtual account, bottom dashboard
-├── static/js/replay.js       # Bar replay engine and keyboard shortcuts
+├── static/js/i18n.js         # Bilingual EN/VI strings (UI + TradingView locale)
+├── static/js/charts.js       # Chart panels, multi-chart layouts, trade markers, live polling
+├── static/js/trading.js      # Order panel, virtual account (R-multiple tracking), bottom dashboard
+├── static/js/replay.js       # Bar replay engine, keyboard shortcuts, session snapshot
 ├── static/js/playbook.js     # Playbook drawer: journal, setups, roadmap
-├── static/js/app.js          # Bootstrap, toolbar, modals, toasts, MT5 status
+├── static/js/analytics.js    # Data storytelling: equity curve, session stats/report, saved sessions
+├── static/js/app.js          # Bootstrap, toolbar, settings (language/theme), modals, MT5 status
 └── static/charting_library/  # Local TradingView Advanced Charts files
 ```
 

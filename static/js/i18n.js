@@ -1,0 +1,463 @@
+/**
+ * i18n.js — bilingual EN/VI UI strings.
+ * Static markup uses data-i18n / data-i18n-title / data-i18n-ph attributes;
+ * dynamic JS strings use I18N.t(key, {vars}). Language persists in
+ * localStorage 'wv_lang' and also drives the TradingView widget locale.
+ */
+
+const I18N_DICTS = {
+    en: {
+        'top.replay': 'Replay',
+        'top.replay.title': 'Bar Replay (manual backtesting)',
+        'top.history': 'History',
+        'top.history.title': 'Download MT5 history for offline use',
+        'top.order': 'Order',
+        'top.order.title': 'Order panel',
+        'top.playbook': 'Playbook',
+        'top.playbook.title': 'Trading playbook & journal',
+        'top.layout': 'Layout',
+        'top.layout.title': 'Chart layout',
+        'layout.1': 'Single',
+        'layout.2v': '2 Vertical',
+        'layout.2h': '2 Horizontal',
+        'layout.4': '4 Charts',
+        'top.mode.title': 'Switch data source (Local cache / Live MT5)',
+        'top.status.title': 'MT5 bridge status',
+        'top.settings.title': 'Settings',
+
+        'rb.close.title': 'Exit replay (Esc)',
+        'rb.jump.title': 'Jump to date',
+        'rb.jumpmode.title': 'Jump mode: click on chart to seek',
+        'rb.prev.title': 'Previous bar (←)',
+        'rb.play.title': 'Play / Pause (Space)',
+        'rb.next.title': 'Next bar (→)',
+        'rb.speed.title': 'Replay speed (↑/↓)',
+        'rb.date.title': 'Current bar — click to jump',
+        'rb.report.title': 'Finish & view session report',
+
+        'order.title': 'Place Order',
+        'order.sell': 'Sell',
+        'order.buy': 'Buy',
+        'order.type': 'Order type',
+        'order.type.market': 'Market',
+        'order.type.buy_limit': 'Buy Limit',
+        'order.type.sell_limit': 'Sell Limit',
+        'order.type.buy_stop': 'Buy Stop',
+        'order.type.sell_stop': 'Sell Stop',
+        'order.price': 'Order price',
+        'order.volume': 'Volume (lots)',
+        'order.sl': 'Stop Loss',
+        'order.tp': 'Take Profit',
+        'order.margin': 'Est. margin',
+
+        'pb.title': 'Playbook',
+        'pb.journal': 'Journal',
+        'pb.setups': 'Setups',
+        'pb.roadmap': 'Roadmap',
+        'pb.newNote': 'New note',
+        'pb.noteTitle.ph': 'Title — e.g. London breakout EURUSD',
+        'pb.noteTags.ph': 'Tags (comma separated)',
+        'pb.noteBody.ph': 'What happened? What did you learn?',
+        'pb.addNote': 'Add note',
+        'pb.search.ph': 'Search notes…',
+        'pb.newSetup': 'New setup',
+        'pb.setupTitle.ph': 'Setup name — e.g. Asian range breakout',
+        'pb.setupBody.ph': 'Entry rules, invalidation, risk…',
+        'pb.addSetup': 'Add setup',
+        'pb.newGoal': 'Roadmap goal',
+        'pb.goalTitle.ph': 'Goal — e.g. 50 replay trades this week',
+        'pb.addGoal': 'Add goal',
+
+        'bp.positions': 'Positions',
+        'bp.pending': 'Pending',
+        'bp.history': 'History',
+        'bp.analytics': 'Analytics',
+        'bp.balance': 'Balance',
+        'bp.equity': 'Equity',
+        'bp.margin': 'Margin',
+        'bp.free': 'Free',
+        'bp.level': 'Level',
+        'bp.collapse.title': 'Collapse panel',
+
+        'col.time': 'Time',
+        'col.ticket': 'Ticket',
+        'col.symbol': 'Symbol',
+        'col.type': 'Type',
+        'col.volume': 'Volume',
+        'col.open': 'Open',
+        'col.current': 'Current',
+        'col.price': 'Price',
+        'col.close': 'Close',
+        'col.pl': 'P/L',
+        'col.result': 'Result',
+
+        'hist.title': 'History Data',
+        'hist.download': 'Download',
+        'hist.localData': 'Local data',
+        'hist.symbols.title': 'Hold Ctrl to select several',
+        'hist.bars.title': 'Bars per symbol/timeframe',
+
+        'jump.title': 'Jump to date',
+        'jump.desc': 'The replay cursor moves to the first bar at or before this time. Missing data is fetched from MT5 when connected.',
+
+        'set.title': 'Settings',
+        'set.language': 'Language',
+        'set.theme': 'Theme',
+        'set.dark': 'Dark',
+        'set.light': 'Light',
+        'set.reset': 'Reset virtual account',
+        'set.resetConfirm': 'Reset the virtual account to $10,000? All replay trades will be lost.',
+        'set.quit': 'Shut down app',
+
+        'an.equityCurve': 'Equity curve',
+        'an.sessions': 'Saved sessions',
+        'an.trades': 'Trades',
+        'an.wins': 'Wins',
+        'an.losses': 'Losses',
+        'an.winRate': 'Win rate',
+        'an.profitFactor': 'Profit factor',
+        'an.expectancy': 'Expectancy',
+        'an.avgWin': 'Avg win',
+        'an.avgLoss': 'Avg loss',
+        'an.avgR': 'Avg R',
+        'an.maxDD': 'Max drawdown',
+        'an.best': 'Best trade',
+        'an.worst': 'Worst trade',
+        'an.streak': 'Streak',
+        'an.netPL': 'Net P/L',
+        'an.empty': 'No closed trades yet — stats appear after your first trade.',
+        'an.noSessions': 'No saved sessions yet.',
+        'an.streakWin': '{n}W',
+        'an.streakLoss': '{n}L',
+
+        'report.title': 'Session Report',
+        'report.save': 'Save session',
+        'report.saved': 'Saved',
+        'report.bars': 'Bars replayed',
+        'report.duration': 'Duration',
+        'report.symbol': 'Symbol',
+
+        'toast.modeSwitchBlock': 'Exit replay before switching data source.',
+        'toast.mt5Required': 'MT5 is not connected. Attach the MacGateway EA first.',
+        'toast.modeLive': 'Data source: Live MT5',
+        'toast.modeLocal': 'Data source: Local cache',
+        'toast.modeFail': 'Mode switch failed: {msg}',
+        'toast.quitConfirm': 'Shut down the trading app?',
+        'toast.selectSymTf': 'Select at least one symbol and one timeframe.',
+        'toast.mt5Download': 'MT5 must be connected to download history.',
+        'toast.dlDone': 'History download complete.',
+        'toast.replayStarted': 'Replay started on {symbol} {timeframe}',
+        'toast.noData': 'No data for {symbol} {timeframe}. Download history first (History button) or connect MT5.',
+        'toast.replayFail': 'Failed to start replay: {msg}',
+        'toast.invalidDate': 'Invalid date.',
+        'toast.noDataAtDate': 'No data at that date. Download history first.',
+        'toast.jumpMode': 'Jump mode: click anywhere on the chart to seek.',
+        'toast.needPrice': 'Enter an order price for pending orders.',
+        'toast.noReplayPrice': 'No replay price available yet.',
+        'toast.pendingLiveOnly': 'Pending orders are only supported in replay mode.',
+        'toast.orderPlaced': 'Order placed: {side} {volume} {symbol}',
+        'toast.orderRejected': 'Order rejected by MT5.',
+        'toast.orderFail': 'Order failed: {msg}',
+        'toast.opened': 'Opened {type} {volume} {symbol} @ {price}',
+        'toast.pendingPlaced': 'Pending {type} {volume} {symbol} @ {price}',
+        'toast.closedTicket': 'Closed #{ticket}',
+        'toast.closeFail': 'Close failed.',
+        'toast.closeFailMsg': 'Close failed: {msg}',
+        'toast.pendingFilled': 'Pending {type} filled @ {price}',
+        'toast.noteNeedsTitle': 'Note needs a title.',
+        'toast.noteSaved': 'Note saved.',
+        'toast.setupNeedsName': 'Setup needs a name.',
+        'toast.setupSaved': 'Setup saved.',
+        'toast.goalNeedsTitle': 'Goal needs a title.',
+        'toast.accountReset': 'Virtual account reset to $10,000.',
+        'toast.sessionSaved': 'Session saved.',
+        'toast.exitReplayFirst': 'Exit replay before doing that.',
+
+        'misc.loading': 'Loading…',
+        'misc.loadingReplay': 'Loading replay data…',
+        'misc.loadingData': 'Loading data…',
+        'misc.close': 'Close',
+        'misc.cancel': 'Cancel',
+        'misc.go': 'Go',
+        'misc.delete': 'Delete',
+        'misc.noNotes': 'No notes yet.',
+        'misc.noSetups': 'No setups yet.',
+        'misc.noGoals': 'No goals yet.',
+        'misc.noLocalData': 'No local data yet.',
+        'misc.histLoadFail': 'Failed to load status.',
+        'misc.emptyPositions': 'No open positions.',
+        'misc.emptyPending': 'No pending orders.',
+        'misc.emptyHistory': 'No trading history.',
+        'misc.appStopped': 'App stopped. You can close this tab.',
+        'misc.bars': '{n} bars',
+
+        'mode.replay': 'Replay',
+        'mode.live': 'Live MT5',
+        'mode.idle': 'Idle',
+        'mode.local': 'Local',
+        'mode.mt5': 'MT5',
+        'mt5.offline': 'MT5 offline',
+
+        'note.replay': 'Replay mode: orders execute against simulated prices at the replay cursor.',
+        'note.live': 'Live mode: market orders are sent to your MT5 account. SL/TP must be set inside MT5.',
+        'note.idle': 'Start a replay or switch to MT5 data to trade.',
+
+        'res.closed': 'Closed',
+        'res.sl': 'Stop Loss',
+        'res.tp': 'Take Profit',
+
+        'dl.progress': 'Downloading {symbol} {timeframe}… ({done}/{total})',
+        'dl.failed': 'Failed {symbol} {timeframe}: {msg}',
+        'dl.done': 'Done — {done}/{total} downloads finished.'
+    },
+
+    vi: {
+        'top.replay': 'Replay',
+        'top.replay.title': 'Phát lại từng nến (backtest thủ công)',
+        'top.history': 'Dữ liệu',
+        'top.history.title': 'Tải lịch sử MT5 để dùng ngoại tuyến',
+        'top.order': 'Lệnh',
+        'top.order.title': 'Panel đặt lệnh',
+        'top.playbook': 'Sổ tay',
+        'top.playbook.title': 'Sổ tay & nhật ký giao dịch',
+        'top.layout': 'Bố cục',
+        'top.layout.title': 'Bố cục biểu đồ',
+        'layout.1': '1 chart',
+        'layout.2v': '2 dọc',
+        'layout.2h': '2 ngang',
+        'layout.4': '4 chart',
+        'top.mode.title': 'Đổi nguồn dữ liệu (bộ nhớ cục bộ / MT5 trực tiếp)',
+        'top.status.title': 'Trạng thái cầu nối MT5',
+        'top.settings.title': 'Cài đặt',
+
+        'rb.close.title': 'Thoát replay (Esc)',
+        'rb.jump.title': 'Nhảy tới ngày',
+        'rb.jumpmode.title': 'Chế độ nhảy: click vào chart để tua',
+        'rb.prev.title': 'Nến trước (←)',
+        'rb.play.title': 'Chạy / Tạm dừng (Space)',
+        'rb.next.title': 'Nến sau (→)',
+        'rb.speed.title': 'Tốc độ replay (↑/↓)',
+        'rb.date.title': 'Nến hiện tại — click để nhảy',
+        'rb.report.title': 'Kết thúc & xem báo cáo session',
+
+        'order.title': 'Đặt lệnh',
+        'order.sell': 'Bán',
+        'order.buy': 'Mua',
+        'order.type': 'Loại lệnh',
+        'order.type.market': 'Thị trường',
+        'order.type.buy_limit': 'Buy Limit',
+        'order.type.sell_limit': 'Sell Limit',
+        'order.type.buy_stop': 'Buy Stop',
+        'order.type.sell_stop': 'Sell Stop',
+        'order.price': 'Giá đặt lệnh',
+        'order.volume': 'Khối lượng (lots)',
+        'order.sl': 'Cắt lỗ (SL)',
+        'order.tp': 'Chốt lời (TP)',
+        'order.margin': 'Ký quỹ ước tính',
+
+        'pb.title': 'Sổ tay',
+        'pb.journal': 'Nhật ký',
+        'pb.setups': 'Setup',
+        'pb.roadmap': 'Lộ trình',
+        'pb.newNote': 'Ghi chú mới',
+        'pb.noteTitle.ph': 'Tiêu đề — vd: London breakout EURUSD',
+        'pb.noteTags.ph': 'Thẻ (phân cách bởi dấu phẩy)',
+        'pb.noteBody.ph': 'Chuyện gì đã xảy ra? Bạn học được gì?',
+        'pb.addNote': 'Thêm ghi chú',
+        'pb.search.ph': 'Tìm ghi chú…',
+        'pb.newSetup': 'Setup mới',
+        'pb.setupTitle.ph': 'Tên setup — vd: phá vỡ range phiên Á',
+        'pb.setupBody.ph': 'Quy tắc vào lệnh, điểm vô hiệu, rủi ro…',
+        'pb.addSetup': 'Thêm setup',
+        'pb.newGoal': 'Mục tiêu lộ trình',
+        'pb.goalTitle.ph': 'Mục tiêu — vd: 50 lệnh replay tuần này',
+        'pb.addGoal': 'Thêm mục tiêu',
+
+        'bp.positions': 'Lệnh mở',
+        'bp.pending': 'Lệnh chờ',
+        'bp.history': 'Lịch sử',
+        'bp.analytics': 'Phân tích',
+        'bp.balance': 'Số dư',
+        'bp.equity': 'Equity',
+        'bp.margin': 'Ký quỹ',
+        'bp.free': 'Ký quỹ trống',
+        'bp.level': 'Mức ký quỹ',
+        'bp.collapse.title': 'Thu gọn panel',
+
+        'col.time': 'Thời gian',
+        'col.ticket': 'Mã',
+        'col.symbol': 'Cặp tiền',
+        'col.type': 'Loại',
+        'col.volume': 'KL',
+        'col.open': 'Mở',
+        'col.current': 'Hiện tại',
+        'col.price': 'Giá',
+        'col.close': 'Đóng',
+        'col.pl': 'Lãi/Lỗ',
+        'col.result': 'Kết quả',
+
+        'hist.title': 'Dữ liệu lịch sử',
+        'hist.download': 'Tải xuống',
+        'hist.localData': 'Dữ liệu cục bộ',
+        'hist.symbols.title': 'Giữ Ctrl để chọn nhiều mục',
+        'hist.bars.title': 'Số nến mỗi cặp tiền/khung thời gian',
+
+        'jump.title': 'Nhảy tới ngày',
+        'jump.desc': 'Con trỏ replay chuyển tới nến đầu tiên tại hoặc trước thời điểm này. Dữ liệu còn thiếu sẽ được lấy từ MT5 khi đã kết nối.',
+
+        'set.title': 'Cài đặt',
+        'set.language': 'Ngôn ngữ',
+        'set.theme': 'Giao diện',
+        'set.dark': 'Tối',
+        'set.light': 'Sáng',
+        'set.reset': 'Reset tài khoản ảo',
+        'set.resetConfirm': 'Reset tài khoản ảo về $10,000? Toàn bộ lệnh replay sẽ bị xóa.',
+        'set.quit': 'Tắt ứng dụng',
+
+        'an.equityCurve': 'Đường equity',
+        'an.sessions': 'Session đã lưu',
+        'an.trades': 'Số lệnh',
+        'an.wins': 'Thắng',
+        'an.losses': 'Thua',
+        'an.winRate': 'Tỷ lệ thắng',
+        'an.profitFactor': 'Hệ số lợi nhuận',
+        'an.expectancy': 'Kỳ vọng/lệnh',
+        'an.avgWin': 'Thắng TB',
+        'an.avgLoss': 'Thua TB',
+        'an.avgR': 'R trung bình',
+        'an.maxDD': 'Sụt giảm tối đa',
+        'an.best': 'Lệnh tốt nhất',
+        'an.worst': 'Lệnh tệ nhất',
+        'an.streak': 'Chuỗi hiện tại',
+        'an.netPL': 'Lãi/Lỗ ròng',
+        'an.empty': 'Chưa có lệnh đóng nào — thống kê sẽ hiện sau lệnh đầu tiên.',
+        'an.noSessions': 'Chưa có session nào được lưu.',
+        'an.streakWin': '{n} thắng',
+        'an.streakLoss': '{n} thua',
+
+        'report.title': 'Báo cáo session',
+        'report.save': 'Lưu session',
+        'report.saved': 'Đã lưu',
+        'report.bars': 'Số nến đã chạy',
+        'report.duration': 'Thời lượng',
+        'report.symbol': 'Cặp tiền',
+
+        'toast.modeSwitchBlock': 'Thoát replay trước khi đổi nguồn dữ liệu.',
+        'toast.mt5Required': 'MT5 chưa kết nối. Gắn EA MacGateway lên chart trước.',
+        'toast.modeLive': 'Nguồn dữ liệu: MT5 trực tiếp',
+        'toast.modeLocal': 'Nguồn dữ liệu: bộ nhớ cục bộ',
+        'toast.modeFail': 'Đổi chế độ thất bại: {msg}',
+        'toast.quitConfirm': 'Tắt ứng dụng trading?',
+        'toast.selectSymTf': 'Chọn ít nhất một cặp tiền và một khung thời gian.',
+        'toast.mt5Download': 'Phải kết nối MT5 để tải dữ liệu lịch sử.',
+        'toast.dlDone': 'Tải dữ liệu lịch sử hoàn tất.',
+        'toast.replayStarted': 'Bắt đầu replay {symbol} {timeframe}',
+        'toast.noData': 'Không có dữ liệu {symbol} {timeframe}. Hãy tải dữ liệu trước (nút Dữ liệu) hoặc kết nối MT5.',
+        'toast.replayFail': 'Không khởi động được replay: {msg}',
+        'toast.invalidDate': 'Ngày không hợp lệ.',
+        'toast.noDataAtDate': 'Không có dữ liệu tại ngày đó. Hãy tải dữ liệu trước.',
+        'toast.jumpMode': 'Chế độ nhảy: click bất kỳ đâu trên chart để tua.',
+        'toast.needPrice': 'Nhập giá cho lệnh chờ.',
+        'toast.noReplayPrice': 'Chưa có giá replay.',
+        'toast.pendingLiveOnly': 'Lệnh chờ chỉ hỗ trợ trong chế độ replay.',
+        'toast.orderPlaced': 'Đã đặt lệnh: {side} {volume} {symbol}',
+        'toast.orderRejected': 'MT5 từ chối lệnh.',
+        'toast.orderFail': 'Lệnh thất bại: {msg}',
+        'toast.opened': 'Đã mở {type} {volume} {symbol} @ {price}',
+        'toast.pendingPlaced': 'Lệnh chờ {type} {volume} {symbol} @ {price}',
+        'toast.closedTicket': 'Đã đóng #{ticket}',
+        'toast.closeFail': 'Đóng lệnh thất bại.',
+        'toast.closeFailMsg': 'Đóng lệnh thất bại: {msg}',
+        'toast.pendingFilled': 'Lệnh chờ {type} đã khớp @ {price}',
+        'toast.noteNeedsTitle': 'Ghi chú cần tiêu đề.',
+        'toast.noteSaved': 'Đã lưu ghi chú.',
+        'toast.setupNeedsName': 'Setup cần có tên.',
+        'toast.setupSaved': 'Đã lưu setup.',
+        'toast.goalNeedsTitle': 'Mục tiêu cần tiêu đề.',
+        'toast.accountReset': 'Đã reset tài khoản ảo về $10,000.',
+        'toast.sessionSaved': 'Đã lưu session.',
+        'toast.exitReplayFirst': 'Thoát replay trước khi thực hiện thao tác này.',
+
+        'misc.loading': 'Đang tải…',
+        'misc.loadingReplay': 'Đang tải dữ liệu replay…',
+        'misc.loadingData': 'Đang tải dữ liệu…',
+        'misc.close': 'Đóng',
+        'misc.cancel': 'Hủy',
+        'misc.go': 'Đi',
+        'misc.delete': 'Xóa',
+        'misc.noNotes': 'Chưa có ghi chú nào.',
+        'misc.noSetups': 'Chưa có setup nào.',
+        'misc.noGoals': 'Chưa có mục tiêu nào.',
+        'misc.noLocalData': 'Chưa có dữ liệu cục bộ.',
+        'misc.histLoadFail': 'Tải trạng thái thất bại.',
+        'misc.emptyPositions': 'Không có lệnh mở.',
+        'misc.emptyPending': 'Không có lệnh chờ.',
+        'misc.emptyHistory': 'Chưa có lịch sử giao dịch.',
+        'misc.appStopped': 'Ứng dụng đã dừng. Bạn có thể đóng tab này.',
+        'misc.bars': '{n} nến',
+
+        'mode.replay': 'Replay',
+        'mode.live': 'MT5 trực tiếp',
+        'mode.idle': 'Chờ',
+        'mode.local': 'Cục bộ',
+        'mode.mt5': 'MT5',
+        'mt5.offline': 'MT5 offline',
+
+        'note.replay': 'Chế độ replay: lệnh khớp theo giá mô phỏng tại con trỏ replay.',
+        'note.live': 'Chế độ live: lệnh thị trường được gửi tới tài khoản MT5 của bạn. SL/TP đặt trong MT5.',
+        'note.idle': 'Bắt đầu replay hoặc chuyển sang dữ liệu MT5 để giao dịch.',
+
+        'res.closed': 'Đóng tay',
+        'res.sl': 'Cắt lỗ',
+        'res.tp': 'Chốt lời',
+
+        'dl.progress': 'Đang tải {symbol} {timeframe}… ({done}/{total})',
+        'dl.failed': 'Lỗi {symbol} {timeframe}: {msg}',
+        'dl.done': 'Xong — {done}/{total} lượt tải hoàn tất.'
+    }
+};
+
+class I18NService {
+    constructor() {
+        this.lang = localStorage.getItem('wv_lang') === 'vi' ? 'vi' : 'en';
+    }
+
+    t(key, vars) {
+        let str = I18N_DICTS[this.lang][key] ?? I18N_DICTS.en[key] ?? key;
+        if (vars) {
+            for (const [k, v] of Object.entries(vars)) str = str.replaceAll(`{${k}}`, String(v));
+        }
+        return str;
+    }
+
+    /** BCP-47 locale for date/time formatting. */
+    dateLocale() { return this.lang === 'vi' ? 'vi-VN' : 'en-GB'; }
+
+    /** TradingView widget locale (charting_library ships vi + en bundles). */
+    tvLocale() { return this.lang; }
+
+    tvTheme() { return localStorage.getItem('wv_theme') === 'light' ? 'Light' : 'Dark'; }
+
+    setLang(lang) {
+        this.lang = lang === 'vi' ? 'vi' : 'en';
+        localStorage.setItem('wv_lang', this.lang);
+        document.documentElement.lang = this.lang;
+        this.apply();
+    }
+
+    /** Translate every tagged element under root (default: whole document). */
+    apply(root = document) {
+        root.querySelectorAll('[data-i18n]').forEach(el => {
+            el.textContent = this.t(el.dataset.i18n);
+        });
+        root.querySelectorAll('[data-i18n-title]').forEach(el => {
+            el.title = this.t(el.dataset.i18nTitle);
+        });
+        root.querySelectorAll('[data-i18n-ph]').forEach(el => {
+            el.placeholder = this.t(el.dataset.i18nPh);
+        });
+        document.documentElement.lang = this.lang;
+    }
+}
+
+window.I18N = new I18NService();

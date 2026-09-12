@@ -19,57 +19,78 @@
         </div>
         <div class="tb-divider"></div>
 
-        <button id="btn-replay" class="tb-btn" title="Bar Replay (manual backtesting)">
+        <button id="btn-replay" class="tb-btn" data-i18n="top.replay" data-i18n-title="top.replay.title" title="Bar Replay (manual backtesting)">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             Replay
         </button>
-        <button id="btn-history" class="tb-btn" title="Download MT5 history for offline use">
+        <button id="btn-history" class="tb-btn" data-i18n="top.history" data-i18n-title="top.history.title" title="Download MT5 history for offline use">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             History
         </button>
-        <button id="btn-order" class="tb-btn" title="Order panel">
+        <button id="btn-order" class="tb-btn" data-i18n="top.order" data-i18n-title="top.order.title" title="Order panel">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg>
             Order
         </button>
-        <button id="btn-playbook" class="tb-btn" title="Trading playbook & journal">
+        <button id="btn-playbook" class="tb-btn" data-i18n="top.playbook" data-i18n-title="top.playbook.title" title="Trading playbook & journal">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
             Playbook
         </button>
 
         <div class="tb-pop-wrap">
-            <button id="btn-layout" class="tb-btn" title="Chart layout">
+            <button id="btn-layout" class="tb-btn" data-i18n="top.layout" data-i18n-title="top.layout.title" title="Chart layout">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                 Layout
             </button>
             <div id="layout-dropdown" class="dropdown">
                 <button class="dropdown-item active" data-layout="1">
                     <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    Single
+                    <span data-i18n="layout.1">Single</span>
                 </button>
                 <button class="dropdown-item" data-layout="2v">
                     <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    2 Vertical
+                    <span data-i18n="layout.2v">2 Vertical</span>
                 </button>
                 <button class="dropdown-item" data-layout="2h">
                     <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    2 Horizontal
+                    <span data-i18n="layout.2h">2 Horizontal</span>
                 </button>
                 <button class="dropdown-item" data-layout="4">
                     <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    4 Charts
+                    <span data-i18n="layout.4">4 Charts</span>
                 </button>
             </div>
         </div>
 
         <div class="tb-spacer"></div>
 
-        <button id="btn-mode" class="tb-btn" title="Switch data source (Local cache / Live MT5)">Local</button>
-        <div id="mt5-status" class="status-pill" title="MT5 bridge status">
+        <button id="btn-mode" class="tb-btn" data-i18n-title="top.mode.title" title="Switch data source (Local cache / Live MT5)">Local</button>
+        <div id="mt5-status" class="status-pill" data-i18n-title="top.status.title" title="MT5 bridge status">
             <span class="dot"></span><span id="mt5-status-text">MT5</span>
         </div>
-        <button id="btn-quit" class="tb-btn danger" title="Shut down the app">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-        </button>
+        <div class="tb-pop-wrap">
+            <button id="btn-settings" class="tb-btn icon-only" data-i18n-title="top.settings.title" title="Settings">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+            <div id="settings-dropdown" class="dropdown settings-pop">
+                <div class="set-row">
+                    <span data-i18n="set.language">Language</span>
+                    <div class="seg" id="set-lang">
+                        <button data-lang="en" class="seg-btn">EN</button>
+                        <button data-lang="vi" class="seg-btn">VI</button>
+                    </div>
+                </div>
+                <div class="set-row">
+                    <span data-i18n="set.theme">Theme</span>
+                    <div class="seg" id="set-theme">
+                        <button data-theme-val="dark" class="seg-btn" data-i18n="set.dark">Dark</button>
+                        <button data-theme-val="light" class="seg-btn" data-i18n="set.light">Light</button>
+                    </div>
+                </div>
+                <div class="set-sep"></div>
+                <button class="dropdown-item" id="set-reset" data-i18n="set.reset">Reset virtual account</button>
+                <button class="dropdown-item danger" id="set-quit" data-i18n="set.quit">Shut down app</button>
+            </div>
+        </div>
     </header>
 
     <!-- ══ Workspace ══ -->
@@ -77,34 +98,34 @@
         <div id="chart-stage">
             <div id="charts-grid" class="layout-1"></div>
 
-            <div id="stage-veil"><div class="spinner"></div><span id="stage-veil-text">Loading…</span></div>
+            <div id="stage-veil"><div class="spinner"></div><span id="stage-veil-text" data-i18n="misc.loading">Loading…</span></div>
 
             <!-- Floating replay bar -->
             <div id="replay-bar">
-                <button id="rb-close" class="rb-btn" title="Exit replay (Esc)">
+                <button id="rb-close" class="rb-btn" data-i18n-title="rb.close.title" title="Exit replay (Esc)">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
                 <div class="rb-divider"></div>
-                <button id="rb-jump" class="rb-btn" title="Jump to date">
+                <button id="rb-jump" class="rb-btn" data-i18n-title="rb.jump.title" title="Jump to date">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 </button>
-                <button id="rb-jump-mode" class="rb-btn" title="Jump mode: click on chart to seek">
+                <button id="rb-jump-mode" class="rb-btn" data-i18n-title="rb.jumpmode.title" title="Jump mode: click on chart to seek">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 </button>
-                <span id="rb-date" class="rb-date" title="Current bar — click to jump"></span>
+                <span id="rb-date" class="rb-date" data-i18n-title="rb.date.title" title="Current bar — click to jump"></span>
                 <div class="rb-divider"></div>
-                <button id="rb-prev" class="rb-btn" title="Previous bar (←)">
+                <button id="rb-prev" class="rb-btn" data-i18n-title="rb.prev.title" title="Previous bar (←)">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
                 </button>
-                <button id="rb-play" class="rb-btn" title="Play / Pause (Space)">
+                <button id="rb-play" class="rb-btn" data-i18n-title="rb.play.title" title="Play / Pause (Space)">
                     <svg id="rb-icon-play" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     <svg id="rb-icon-pause" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                 </button>
-                <button id="rb-next" class="rb-btn" title="Next bar (→)">
+                <button id="rb-next" class="rb-btn" data-i18n-title="rb.next.title" title="Next bar (→)">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
                 </button>
                 <div class="rb-divider"></div>
-                <select id="rb-speed" title="Replay speed (↑/↓)">
+                <select id="rb-speed" data-i18n-title="rb.speed.title" title="Replay speed (↑/↓)">
                     <option value="4000">0.25x</option>
                     <option value="2000">0.5x</option>
                     <option value="1000" selected>1x</option>
@@ -120,9 +141,9 @@
         <!-- ══ Order drawer ══ -->
         <aside id="order-drawer" class="drawer">
             <div class="drawer-head">
-                <h2>Place Order</h2>
+                <h2 data-i18n="order.title">Place Order</h2>
                 <span id="op-mode-badge" class="status-pill" style="margin-left:8px">Replay</span>
-                <button class="drawer-close" data-close-drawer="order-drawer" title="Close">
+                <button class="drawer-close" data-close-drawer="order-drawer" data-i18n-title="misc.close" title="Close">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
@@ -133,33 +154,33 @@
                 </div>
 
                 <div class="op-side-row">
-                    <button id="op-side-sell" class="op-side sell">Sell</button>
-                    <button id="op-side-buy" class="op-side buy active">Buy</button>
+                    <button id="op-side-sell" class="op-side sell" data-i18n="order.sell">Sell</button>
+                    <button id="op-side-buy" class="op-side buy active" data-i18n="order.buy">Buy</button>
                 </div>
 
                 <div class="op-field" id="op-type-field">
-                    <label>Order type</label>
+                    <label data-i18n="order.type">Order type</label>
                     <select id="op-order-type" style="width:100%">
-                        <option value="market" selected>Market</option>
-                        <option value="buy_limit">Buy Limit</option>
-                        <option value="sell_limit">Sell Limit</option>
-                        <option value="buy_stop">Buy Stop</option>
-                        <option value="sell_stop">Sell Stop</option>
+                        <option value="market" selected data-i18n="order.type.market">Market</option>
+                        <option value="buy_limit" data-i18n="order.type.buy_limit">Buy Limit</option>
+                        <option value="sell_limit" data-i18n="order.type.sell_limit">Sell Limit</option>
+                        <option value="buy_stop" data-i18n="order.type.buy_stop">Buy Stop</option>
+                        <option value="sell_stop" data-i18n="order.type.sell_stop">Sell Stop</option>
                     </select>
                 </div>
 
                 <div class="op-field" id="op-price-field" style="display:none">
-                    <label>Order price</label>
+                    <label data-i18n="order.price">Order price</label>
                     <input id="op-order-price" type="number" step="any" placeholder="0.00000">
                 </div>
 
                 <div class="op-field">
-                    <label>Volume (lots)</label>
+                    <label data-i18n="order.volume">Volume (lots)</label>
                     <input id="op-volume" type="number" min="0.01" step="0.01" value="0.01">
                 </div>
 
                 <div class="op-field">
-                    <label><input id="op-sl-on" type="checkbox" style="width:auto;margin-right:6px">Stop Loss</label>
+                    <label><input id="op-sl-on" type="checkbox" style="width:auto;margin-right:6px"><span data-i18n="order.sl">Stop Loss</span></label>
                     <div style="display:flex;gap:8px">
                         <input id="op-sl" type="number" step="any" value="200" disabled style="flex:1">
                         <select id="op-sl-unit" disabled style="width:80px">
@@ -170,7 +191,7 @@
                 </div>
 
                 <div class="op-field">
-                    <label><input id="op-tp-on" type="checkbox" style="width:auto;margin-right:6px">Take Profit</label>
+                    <label><input id="op-tp-on" type="checkbox" style="width:auto;margin-right:6px"><span data-i18n="order.tp">Take Profit</span></label>
                     <div style="display:flex;gap:8px">
                         <input id="op-tp" type="number" step="any" value="400" disabled style="flex:1">
                         <select id="op-tp-unit" disabled style="width:80px">
@@ -180,7 +201,7 @@
                     </div>
                 </div>
 
-                <div class="op-est"><span>Est. margin</span><b id="op-margin">$0.00</b></div>
+                <div class="op-est"><span data-i18n="order.margin">Est. margin</span><b id="op-margin">$0.00</b></div>
 
                 <button id="op-submit" class="op-submit buy">Buy EURUSD 0.01</button>
                 <p class="op-note" id="op-note">Replay mode: orders execute against simulated prices at the replay cursor.</p>
@@ -190,46 +211,46 @@
         <!-- ══ Playbook drawer ══ -->
         <aside id="playbook-drawer" class="drawer" style="width:420px">
             <div class="drawer-head">
-                <h2>Playbook</h2>
-                <button class="drawer-close" data-close-drawer="playbook-drawer" title="Close">
+                <h2 data-i18n="pb.title">Playbook</h2>
+                <button class="drawer-close" data-close-drawer="playbook-drawer" data-i18n-title="misc.close" title="Close">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <div class="pb-tabs">
-                <button class="pb-tab active" data-pb-view="journal">Journal</button>
-                <button class="pb-tab" data-pb-view="setups">Setups</button>
-                <button class="pb-tab" data-pb-view="roadmap">Roadmap</button>
+                <button class="pb-tab active" data-pb-view="journal" data-i18n="pb.journal">Journal</button>
+                <button class="pb-tab" data-pb-view="setups" data-i18n="pb.setups">Setups</button>
+                <button class="pb-tab" data-pb-view="roadmap" data-i18n="pb.roadmap">Roadmap</button>
             </div>
             <div class="drawer-body">
                 <div id="pb-journal-view">
                     <div class="pb-section pb-form">
-                        <h3>New note</h3>
-                        <input id="pb-note-title" placeholder="Title — e.g. London breakout EURUSD">
-                        <input id="pb-note-tags" placeholder="Tags (comma separated)">
-                        <textarea id="pb-note-body" placeholder="What happened? What did you learn?"></textarea>
-                        <button id="pb-note-add" class="pb-submit">Add note</button>
+                        <h3 data-i18n="pb.newNote">New note</h3>
+                        <input id="pb-note-title" data-i18n-ph="pb.noteTitle.ph" placeholder="Title — e.g. London breakout EURUSD">
+                        <input id="pb-note-tags" data-i18n-ph="pb.noteTags.ph" placeholder="Tags (comma separated)">
+                        <textarea id="pb-note-body" data-i18n-ph="pb.noteBody.ph" placeholder="What happened? What did you learn?"></textarea>
+                        <button id="pb-note-add" class="pb-submit" data-i18n="pb.addNote">Add note</button>
                     </div>
                     <div class="pb-section">
-                        <input id="pb-note-search" placeholder="Search notes…" style="width:100%;margin-bottom:8px">
+                        <input id="pb-note-search" data-i18n-ph="pb.search.ph" placeholder="Search notes…" style="width:100%;margin-bottom:8px">
                         <div id="pb-note-list"></div>
                     </div>
                 </div>
 
                 <div id="pb-setups-view" style="display:none">
                     <div class="pb-section pb-form">
-                        <h3>New setup</h3>
-                        <input id="pb-setup-title" placeholder="Setup name — e.g. Asian range breakout">
-                        <textarea id="pb-setup-body" placeholder="Entry rules, invalidation, risk…"></textarea>
-                        <button id="pb-setup-add" class="pb-submit">Add setup</button>
+                        <h3 data-i18n="pb.newSetup">New setup</h3>
+                        <input id="pb-setup-title" data-i18n-ph="pb.setupTitle.ph" placeholder="Setup name — e.g. Asian range breakout">
+                        <textarea id="pb-setup-body" data-i18n-ph="pb.setupBody.ph" placeholder="Entry rules, invalidation, risk…"></textarea>
+                        <button id="pb-setup-add" class="pb-submit" data-i18n="pb.addSetup">Add setup</button>
                     </div>
                     <div class="pb-section"><div id="pb-setup-list"></div></div>
                 </div>
 
                 <div id="pb-roadmap-view" style="display:none">
                     <div class="pb-section pb-form">
-                        <h3>Roadmap goal</h3>
-                        <input id="pb-roadmap-title" placeholder="Goal — e.g. 50 replay trades this week">
-                        <button id="pb-roadmap-add" class="pb-submit">Add goal</button>
+                        <h3 data-i18n="pb.newGoal">Roadmap goal</h3>
+                        <input id="pb-roadmap-title" data-i18n-ph="pb.goalTitle.ph" placeholder="Goal — e.g. 50 replay trades this week">
+                        <button id="pb-roadmap-add" class="pb-submit" data-i18n="pb.addGoal">Add goal</button>
                     </div>
                     <div class="pb-section"><div id="pb-roadmap-list"></div></div>
                 </div>
@@ -240,33 +261,47 @@
     <!-- ══ Bottom panel ══ -->
     <section id="bottom-panel">
         <div class="bp-tabs">
-            <button class="bp-tab active" data-bp-tab="positions">Positions <span class="count" id="cnt-positions">0</span></button>
-            <button class="bp-tab" data-bp-tab="pending">Pending <span class="count" id="cnt-pending">0</span></button>
-            <button class="bp-tab" data-bp-tab="history">History</button>
+            <button class="bp-tab active" data-bp-tab="positions"><span data-i18n="bp.positions">Positions</span> <span class="count" id="cnt-positions">0</span></button>
+            <button class="bp-tab" data-bp-tab="pending"><span data-i18n="bp.pending">Pending</span> <span class="count" id="cnt-pending">0</span></button>
+            <button class="bp-tab" data-bp-tab="history" data-i18n="bp.history">History</button>
+            <button class="bp-tab" data-bp-tab="analytics" data-i18n="bp.analytics">Analytics</button>
             <div class="bp-stats">
-                <span>Balance <b id="st-balance">$10,000.00</b></span>
-                <span>Equity <b id="st-equity">$10,000.00</b></span>
-                <span>Margin <b id="st-margin">$0.00</b></span>
-                <span>Free <b id="st-free">$10,000.00</b></span>
-                <span>Level <b id="st-level">0.00%</b></span>
+                <span><span data-i18n="bp.balance">Balance</span> <b id="st-balance">$10,000.00</b></span>
+                <span><span data-i18n="bp.equity">Equity</span> <b id="st-equity">$10,000.00</b></span>
+                <span><span data-i18n="bp.margin">Margin</span> <b id="st-margin">$0.00</b></span>
+                <span><span data-i18n="bp.free">Free</span> <b id="st-free">$10,000.00</b></span>
+                <span><span data-i18n="bp.level">Level</span> <b id="st-level">0.00%</b></span>
             </div>
-            <button class="bp-collapse" id="bp-collapse" title="Collapse panel">
+            <button class="bp-collapse" id="bp-collapse" data-i18n-title="bp.collapse.title" title="Collapse panel">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
         </div>
         <div class="bp-body">
             <table class="bp-table" id="tbl-positions">
-                <thead><tr><th>Ticket</th><th>Symbol</th><th>Type</th><th>Volume</th><th>Open</th><th>Current</th><th>SL</th><th>TP</th><th>P/L</th><th></th></tr></thead>
+                <thead><tr><th data-i18n="col.ticket">Ticket</th><th data-i18n="col.symbol">Symbol</th><th data-i18n="col.type">Type</th><th data-i18n="col.volume">Volume</th><th data-i18n="col.open">Open</th><th data-i18n="col.current">Current</th><th>SL</th><th>TP</th><th data-i18n="col.pl">P/L</th><th></th></tr></thead>
                 <tbody id="rows-positions"></tbody>
             </table>
             <table class="bp-table" id="tbl-pending" style="display:none">
-                <thead><tr><th>Ticket</th><th>Symbol</th><th>Type</th><th>Volume</th><th>Price</th><th>SL</th><th>TP</th><th></th></tr></thead>
+                <thead><tr><th data-i18n="col.ticket">Ticket</th><th data-i18n="col.symbol">Symbol</th><th data-i18n="col.type">Type</th><th data-i18n="col.volume">Volume</th><th data-i18n="col.price">Price</th><th>SL</th><th>TP</th><th></th></tr></thead>
                 <tbody id="rows-pending"></tbody>
             </table>
             <table class="bp-table" id="tbl-history" style="display:none">
-                <thead><tr><th>Time</th><th>Ticket</th><th>Symbol</th><th>Type</th><th>Volume</th><th>Open</th><th>Close</th><th>P/L</th><th>Result</th></tr></thead>
+                <thead><tr><th data-i18n="col.time">Time</th><th data-i18n="col.ticket">Ticket</th><th data-i18n="col.symbol">Symbol</th><th data-i18n="col.type">Type</th><th data-i18n="col.volume">Volume</th><th data-i18n="col.open">Open</th><th data-i18n="col.close">Close</th><th data-i18n="col.pl">P/L</th><th data-i18n="col.result">Result</th></tr></thead>
                 <tbody id="rows-history"></tbody>
             </table>
+            <div id="analytics-view" style="display:none">
+                <div class="an-main">
+                    <div class="an-chart-box">
+                        <h3 data-i18n="an.equityCurve">Equity curve</h3>
+                        <canvas id="eq-canvas"></canvas>
+                    </div>
+                    <div class="an-stats" id="an-stats"></div>
+                </div>
+                <div class="an-sessions-box">
+                    <h3 data-i18n="an.sessions">Saved sessions</h3>
+                    <div id="an-sessions"></div>
+                </div>
+            </div>
             <div class="bp-empty" id="bp-empty">No open positions.</div>
         </div>
     </section>
@@ -276,15 +311,15 @@
 <div class="modal-overlay" id="modal-history">
     <div class="modal" style="width:560px">
         <div class="modal-head">
-            <h2>History Data</h2>
-            <button class="drawer-close" data-close-modal="modal-history" style="margin-left:auto" title="Close">
+            <h2 data-i18n="hist.title">History Data</h2>
+            <button class="drawer-close" data-close-modal="modal-history" style="margin-left:auto" data-i18n-title="misc.close" title="Close">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
         <div class="modal-body">
             <div class="dl-form">
-                <select id="dl-symbols" multiple size="6" title="Hold Ctrl to select several"></select>
-                <select id="dl-timeframes" multiple size="6" title="Hold Ctrl to select several">
+                <select id="dl-symbols" multiple size="6" data-i18n-title="hist.symbols.title" title="Hold Ctrl to select several"></select>
+                <select id="dl-timeframes" multiple size="6" data-i18n-title="hist.symbols.title" title="Hold Ctrl to select several">
                     <option value="M1" selected>M1</option>
                     <option value="M5">M5</option>
                     <option value="M15">M15</option>
@@ -294,11 +329,11 @@
                     <option value="D1">D1</option>
                     <option value="W1">W1</option>
                 </select>
-                <input id="dl-bars" type="number" min="1000" step="1000" value="50000" title="Bars per symbol/timeframe">
-                <button id="dl-start" class="btn primary">Download</button>
+                <input id="dl-bars" type="number" min="1000" step="1000" value="50000" data-i18n-title="hist.bars.title" title="Bars per symbol/timeframe">
+                <button id="dl-start" class="btn primary" data-i18n="hist.download">Download</button>
             </div>
             <div class="dl-progress" id="dl-progress"></div>
-            <h3 style="font-size:12px;color:var(--text-bright);margin:10px 0 8px">Local data</h3>
+            <h3 style="font-size:12px;color:var(--text-bright);margin:10px 0 8px" data-i18n="hist.localData">Local data</h3>
             <div class="hist-list" id="dl-files"></div>
         </div>
     </div>
@@ -308,30 +343,55 @@
 <div class="modal-overlay" id="modal-jump">
     <div class="modal" style="width:360px">
         <div class="modal-head">
-            <h2>Jump to date</h2>
-            <button class="drawer-close" data-close-modal="modal-jump" style="margin-left:auto" title="Close">
+            <h2 data-i18n="jump.title">Jump to date</h2>
+            <button class="drawer-close" data-close-modal="modal-jump" style="margin-left:auto" data-i18n-title="misc.close" title="Close">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
         <div class="modal-body">
             <div class="jump-grid">
                 <input type="datetime-local" id="jump-datetime">
-                <p style="font-size:11px;color:var(--text-dim);line-height:1.5">The replay cursor moves to the first bar at or before this time. Missing data is fetched from MT5 when connected.</p>
+                <p style="font-size:11px;color:var(--text-dim);line-height:1.5" data-i18n="jump.desc">The replay cursor moves to the first bar at or before this time. Missing data is fetched from MT5 when connected.</p>
             </div>
         </div>
         <div class="modal-foot">
-            <button class="btn" data-close-modal="modal-jump">Cancel</button>
-            <button class="btn primary" id="jump-go">Go</button>
+            <button class="btn" data-close-modal="modal-jump" data-i18n="misc.cancel">Cancel</button>
+            <button class="btn primary" id="jump-go" data-i18n="misc.go">Go</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ Session report modal ══ -->
+<div class="modal-overlay" id="modal-report">
+    <div class="modal" style="width:680px">
+        <div class="modal-head">
+            <h2 data-i18n="report.title">Session Report</h2>
+            <button class="drawer-close" data-close-modal="modal-report" style="margin-left:auto" data-i18n-title="misc.close" title="Close">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="report-meta" id="report-meta"></div>
+            <div class="an-chart-box report-chart">
+                <canvas id="report-canvas"></canvas>
+            </div>
+            <div class="an-stats" id="report-stats"></div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn" data-close-modal="modal-report" data-i18n="misc.close">Close</button>
+            <button class="btn primary" id="report-save" data-i18n="report.save">Save session</button>
         </div>
     </div>
 </div>
 
 <div id="toast-root"></div>
 
+<script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
 <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
 <script src="{{ url_for('static', filename='js/trading.js') }}"></script>
 <script src="{{ url_for('static', filename='js/replay.js') }}"></script>
 <script src="{{ url_for('static', filename='js/playbook.js') }}"></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

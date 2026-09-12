@@ -6,6 +6,8 @@
 
 const PLAYBOOK_KEY = 'trading_playbook_workspace_v3';
 
+const pbT = (key, vars) => window.I18N ? window.I18N.t(key, vars) : key;
+
 class TradingPlaybook {
     constructor() {
         this.workspace = this._load();
@@ -78,7 +80,7 @@ class TradingPlaybook {
 
     addNote() {
         const title = this._els.noteTitle.value.trim();
-        if (!title) { window.showToast('Note needs a title.', 'error'); return; }
+        if (!title) { window.showToast(pbT('toast.noteNeedsTitle'), 'error'); return; }
         this.workspace.notes.unshift({
             id: Date.now(),
             title,
@@ -89,7 +91,7 @@ class TradingPlaybook {
         this._els.noteTitle.value = this._els.noteTags.value = this._els.noteBody.value = '';
         this._save();
         this.renderNotes();
-        window.showToast('Note saved.', 'success');
+        window.showToast(pbT('toast.noteSaved'), 'success');
     }
 
     deleteNote(id) {
@@ -109,12 +111,12 @@ class TradingPlaybook {
                 <h4>${this._esc(n.title)}</h4>
                 ${(n.tags || []).length ? `<p style="color:var(--accent);font-size:11px">${n.tags.map(t => '#' + this._esc(t)).join(' ')}</p>` : ''}
                 ${n.body ? `<p>${this._esc(n.body)}</p>` : ''}
-                <p style="font-size:11px;margin-top:6px">${new Date(n.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                <p style="font-size:11px;margin-top:6px">${new Date(n.createdAt).toLocaleString(window.I18N?.dateLocale() || 'en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
                 <div class="pb-card-actions">
-                    <button class="pb-mini-btn danger" data-del-note="${n.id}">Delete</button>
+                    <button class="pb-mini-btn danger" data-del-note="${n.id}">${pbT('misc.delete')}</button>
                 </div>
             </div>`).join('')
-            : '<p style="color:var(--text-dim);font-size:12px;font-style:italic">No notes yet.</p>';
+            : `<p style="color:var(--text-dim);font-size:12px;font-style:italic">${pbT('misc.noNotes')}</p>`;
         this._els.noteList.querySelectorAll('[data-del-note]').forEach(btn =>
             btn.addEventListener('click', () => this.deleteNote(Number(btn.dataset.delNote))));
     }
@@ -123,7 +125,7 @@ class TradingPlaybook {
 
     addSetup() {
         const title = this._els.setupTitle.value.trim();
-        if (!title) { window.showToast('Setup needs a name.', 'error'); return; }
+        if (!title) { window.showToast(pbT('toast.setupNeedsName'), 'error'); return; }
         this.workspace.setups.unshift({
             id: Date.now(),
             title,
@@ -133,7 +135,7 @@ class TradingPlaybook {
         this._els.setupTitle.value = this._els.setupBody.value = '';
         this._save();
         this.renderSetups();
-        window.showToast('Setup saved.', 'success');
+        window.showToast(pbT('toast.setupSaved'), 'success');
     }
 
     deleteSetup(id) {
@@ -149,10 +151,10 @@ class TradingPlaybook {
                     <h4>${this._esc(s.title)}</h4>
                     ${s.body ? `<p>${this._esc(s.body)}</p>` : ''}
                     <div class="pb-card-actions">
-                        <button class="pb-mini-btn danger" data-del-setup="${s.id}">Delete</button>
+                        <button class="pb-mini-btn danger" data-del-setup="${s.id}">${pbT('misc.delete')}</button>
                     </div>
                 </div>`).join('')
-            : '<p style="color:var(--text-dim);font-size:12px;font-style:italic">No setups yet.</p>';
+            : `<p style="color:var(--text-dim);font-size:12px;font-style:italic">${pbT('misc.noSetups')}</p>`;
         this._els.setupList.querySelectorAll('[data-del-setup]').forEach(btn =>
             btn.addEventListener('click', () => this.deleteSetup(Number(btn.dataset.delSetup))));
     }
@@ -161,7 +163,7 @@ class TradingPlaybook {
 
     addGoal() {
         const title = this._els.roadmapTitle.value.trim();
-        if (!title) { window.showToast('Goal needs a title.', 'error'); return; }
+        if (!title) { window.showToast(pbT('toast.goalNeedsTitle'), 'error'); return; }
         this.workspace.roadmap.unshift({ id: Date.now(), title, done: false, createdAt: Date.now() });
         this._els.roadmapTitle.value = '';
         this._save();
@@ -185,9 +187,9 @@ class TradingPlaybook {
                 <div class="pb-card" style="display:flex;align-items:center;gap:10px">
                     <input type="checkbox" data-toggle-goal="${g.id}" ${g.done ? 'checked' : ''} style="width:auto">
                     <h4 style="flex:1;${g.done ? 'text-decoration:line-through;color:var(--text-dim)' : ''}">${this._esc(g.title)}</h4>
-                    <button class="pb-mini-btn danger" data-del-goal="${g.id}">Delete</button>
+                    <button class="pb-mini-btn danger" data-del-goal="${g.id}">${pbT('misc.delete')}</button>
                 </div>`).join('')
-            : '<p style="color:var(--text-dim);font-size:12px;font-style:italic">No goals yet.</p>';
+            : `<p style="color:var(--text-dim);font-size:12px;font-style:italic">${pbT('misc.noGoals')}</p>`;
         this._els.roadmapList.querySelectorAll('[data-toggle-goal]').forEach(box =>
             box.addEventListener('change', () => this.toggleGoal(Number(box.dataset.toggleGoal))));
         this._els.roadmapList.querySelectorAll('[data-del-goal]').forEach(btn =>

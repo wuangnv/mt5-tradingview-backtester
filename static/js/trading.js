@@ -7,7 +7,12 @@
 const VIRTUAL_ACCOUNT_KEY = 'virtual_account_v2';
 
 const fmtMoney = (v) => '$' + Number(v || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const fmtTime = (ts) => new Date(ts * 1000).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const fmtTime = (ts) => new Date(ts * 1000).toLocaleString(window.I18N?.dateLocale() || 'en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+const t = (key, vars) => window.I18N ? window.I18N.t(key, vars) : key;
+
+/** Stored result strings → i18n keys (legacy data stays in English storage). */
+const RESULT_KEYS = { 'Closed': 'res.closed', 'Stop Loss': 'res.sl', 'Take Profit': 'res.tp' };
 
 class TradeManager {
     constructor() {
@@ -158,7 +163,7 @@ class TradeManager {
 
     _updateSubmitLabel() {
         const e = this._els;
-        const side = this.side === 'buy' ? 'Buy' : 'Sell';
+        const side = this.side === 'buy' ? t('order.buy') : t('order.sell');
         e.submit.textContent = `${side} ${e.symbol.value || ''} ${parseFloat(e.volume.value || 0).toFixed(2)}`;
         e.submit.className = `op-submit ${this.side}`;
     }
@@ -202,9 +207,9 @@ class TradeManager {
             let entryPrice = this.currentPrice(symbol);
             if (orderType !== 'market') {
                 entryPrice = parseFloat(e.orderPrice.value);
-                if (!entryPrice) { window.showToast('Enter an order price for pending orders.', 'error'); return; }
+                if (!entryPrice) { window.showToast(t('toast.needPrice'), 'error'); return; }
             }
-            if (!entryPrice) { window.showToast('No replay price available yet.', 'error'); return; }
+            if (!entryPrice) { window.showToast(t('toast.noReplayPrice'), 'error'); return; }
 
             const type = isBuy ? 'BUY' : 'SELL';
             const sl = this._resolveProtection(symbol, entryPrice, type, e.slOn.checked, parseFloat(e.sl.value), e.slUnit.value);
@@ -217,7 +222,7 @@ class TradeManager {
 
         // Live MT5 — market orders only
         if (orderType !== 'market') {
-            window.showToast('Pending orders are only supported in replay mode.', 'error');
+            window.showToast(t('toast.pendingLiveOnly'), 'error');
             return;
         }
         try {
@@ -228,13 +233,13 @@ class TradeManager {
             });
             const result = await res.json();
             if (result.success) {
-                window.showToast(`Order placed: ${this.side.toUpperCase()} ${volume} ${symbol}`, 'success');
+                window.showToast(t('toast.orderPlaced', { side: this.side.toUpperCase(), volume, symbol }), 'success');
                 this.pollMT5TradeState();
             } else {
-                window.showToast(result.message || 'Order rejected by MT5.', 'error');
+                window.showToast(result.message || t('toast.orderRejected'), 'error');
             }
         } catch (err) {
-            window.showToast('Order failed: ' + err.message, 'error');
+            window.showToast(t('toast.orderFail', { msg: err.message }), 'error');
         }
     }
 
@@ -247,20 +252,28 @@ class TradeManager {
     _openVirtualPosition(symbol, type, volume, price, sl, tp, time = null) {
         const acc = this.virtualAccount;
         const rm = window.replayManager;
-        acc.positions.push({
+        const pos = {
             ticket: this._nextTicket(),
             symbol, type, volume,
             price_open: price,
             price_current: price,
             sl, tp,
             margin: this.calcMargin(symbol, volume, price),
+            // Capital at risk (for R-multiple stats) when a stop loss is set
+            risk: sl > 0 ? Math.abs(this.calcProfit(symbol, type, volume, price, sl)) : null,
             profit: 0,
             time: time || rm?.cursorTimestamp || Math.floor(Date.now() / 1000)
-        });
+        };
+        acc.positions.push(pos);
         this._saveVirtualAccount();
         this.updateAccountUI();
         this.renderTables();
-        window.showToast(`Opened ${type} ${volume} ${symbol} @ ${this.fmt(symbol, price)}`, 'success');
+        window.chartManager?.drawTradeMarker(symbol, {
+            time: pos.time, price,
+            direction: type === 'BUY' ? 'buy' : 'sell',
+            text: `${type} ${volume}`
+        });
+        window.showToast(t('toast.opened', { type, volume, symbol, price: this.fmt(symbol, price) }), 'success');
     }
 
     _placeVirtualPending(symbol, orderType, volume, price, sl, tp) {
@@ -278,7 +291,7 @@ class TradeManager {
         this._saveVirtualAccount();
         this.updateAccountUI();
         this.renderTables();
-        window.showToast(`Pending ${orderType.replace('_', ' ')} ${volume} ${symbol} @ ${this.fmt(symbol, price)}`, 'success');
+        window.showToast(t('toast.pendingPlaced', { type: orderType.replace('_', ' '), volume, symbol, price: this.fmt(symbol, price) }), 'success');
     }
 
     closePosition(ticket) {
@@ -296,12 +309,12 @@ class TradeManager {
             body: JSON.stringify({ ticket })
         }).then(r => r.json()).then(result => {
             if (result.success) {
-                window.showToast(`Closed #${ticket}`, 'success');
+                window.showToast(t('toast.closedTicket', { ticket }), 'success');
                 this.pollMT5TradeState();
             } else {
-                window.showToast(result.message || 'Close failed.', 'error');
+                window.showToast(result.message || t('toast.closeFail'), 'error');
             }
-        }).catch(err => window.showToast('Close failed: ' + err.message, 'error'));
+        }).catch(err => window.showToast(t('toast.closeFailMsg', { msg: err.message }), 'error'));
     }
 
     cancelPending(ticket) {
@@ -315,16 +328,26 @@ class TradeManager {
     _closeVirtualPosition(pos, closePrice, result) {
         const acc = this.virtualAccount;
         const profit = this.calcProfit(pos.symbol, pos.type, pos.volume, pos.price_open, closePrice);
+        const closeTime = window.replayManager?.cursorTimestamp || Math.floor(Date.now() / 1000);
         acc.positions = acc.positions.filter(p => p.ticket !== pos.ticket);
         acc.balance += profit;
         acc.history.unshift({
-            time: window.replayManager?.cursorTimestamp || Math.floor(Date.now() / 1000),
+            time: closeTime,
+            time_open: pos.time,
             ticket: pos.ticket, symbol: pos.symbol, type: pos.type, volume: pos.volume,
-            price_open: pos.price_open, price_close: closePrice, profit, result
+            price_open: pos.price_open, price_close: closePrice, profit, result,
+            r: pos.risk > 0 ? profit / pos.risk : null
         });
         this._saveVirtualAccount();
         this.updateAccountUI();
         this.renderTables();
+        const styles = getComputedStyle(document.documentElement);
+        window.chartManager?.drawTradeMarker(pos.symbol, {
+            time: closeTime, price: closePrice,
+            direction: pos.type === 'BUY' ? 'sell' : 'buy',
+            text: (profit >= 0 ? '+' : '-') + '$' + Math.abs(profit).toFixed(2),
+            color: profit >= 0 ? styles.getPropertyValue('--up').trim() : styles.getPropertyValue('--down').trim()
+        });
     }
 
     /* ── Replay tick: update P/L, fire SL/TP, activate pending ─────────── */
@@ -348,7 +371,7 @@ class TradeManager {
             }
             if (triggered) {
                 this._openVirtualPosition(order.symbol, side, order.volume, p, order.sl, order.tp, bar.time);
-                window.showToast(`Pending ${order.type} filled @ ${this.fmt(symbol, p)}`, 'success');
+                window.showToast(t('toast.pendingFilled', { type: order.type, price: this.fmt(symbol, p) }), 'success');
             } else {
                 remaining.push(order);
             }
@@ -424,19 +447,19 @@ class TradeManager {
                 <td>${p.sl > 0 ? this.fmt(p.symbol, p.sl) : '—'}</td>
                 <td>${p.tp > 0 ? this.fmt(p.symbol, p.tp) : '—'}</td>
                 <td class="${cls}">${fmtMoney(p.profit)}</td>
-                <td><button class="row-close-btn" data-close-ticket="${p.ticket}">Close</button></td>
+                <td><button class="row-close-btn" data-close-ticket="${p.ticket}">${t('misc.close')}</button></td>
             </tr>`;
         }).join('');
 
         // Pending
         const pp = document.getElementById('rows-pending');
         pp.innerHTML = pending.map(o => `<tr>
-            <td>${o.ticket}</td><td>${o.symbol}</td><td>${o.type.replace('_', ' ')}</td>
+            <td>${o.ticket}</td><td>${o.symbol}</td><td>${t('order.type.' + o.type.toLowerCase())}</td>
             <td>${Number(o.volume).toFixed(2)}</td>
             <td>${this.fmt(o.symbol, o.price_order)}</td>
             <td>${o.sl > 0 ? this.fmt(o.symbol, o.sl) : '—'}</td>
             <td>${o.tp > 0 ? this.fmt(o.symbol, o.tp) : '—'}</td>
-            <td><button class="row-close-btn" data-cancel-ticket="${o.ticket}">Cancel</button></td>
+            <td><button class="row-close-btn" data-cancel-ticket="${o.ticket}">${t('misc.cancel')}</button></td>
         </tr>`).join('');
 
         // History
@@ -444,6 +467,7 @@ class TradeManager {
         hr.innerHTML = history.map(h => {
             const pl = h.profit ?? h.profit_total ?? 0;
             const cls = pl >= 0 ? 'cell-pos' : 'cell-neg';
+            const resultKey = RESULT_KEYS[h.result];
             return `<tr>
                 <td>${fmtTime(h.time)}</td><td>${h.ticket}</td><td>${h.symbol}</td>
                 <td class="${h.type === 'BUY' ? 'cell-pos' : 'cell-neg'}">${h.type}</td>
@@ -451,7 +475,7 @@ class TradeManager {
                 <td>${this.fmt(h.symbol, h.price_open)}</td>
                 <td>${h.price_close ? this.fmt(h.symbol, h.price_close) : '—'}</td>
                 <td class="${cls}">${fmtMoney(pl)}</td>
-                <td>${h.result || ''}</td>
+                <td>${resultKey ? t(resultKey) : (h.result || '')}</td>
             </tr>`;
         }).join('');
 
@@ -465,9 +489,30 @@ class TradeManager {
         const activeTab = document.querySelector('.bp-tab.active')?.dataset.bpTab || 'positions';
         const counts = { positions: positions.length, pending: pending.length, history: history.length };
         const emptyEl = document.getElementById('bp-empty');
-        const messages = { positions: 'No open positions.', pending: 'No pending orders.', history: 'No trading history.' };
-        emptyEl.textContent = messages[activeTab];
-        emptyEl.style.display = counts[activeTab] === 0 ? 'block' : 'none';
+        const messages = { positions: 'misc.emptyPositions', pending: 'misc.emptyPending', history: 'misc.emptyHistory' };
+        if (messages[activeTab]) {
+            emptyEl.textContent = t(messages[activeTab]);
+            emptyEl.style.display = counts[activeTab] === 0 ? 'block' : 'none';
+        } else {
+            emptyEl.style.display = 'none';
+        }
+
+        if (activeTab === 'analytics') window.analytics?.render();
+    }
+
+    /** Wipe the virtual replay account back to its default state. */
+    resetVirtualAccount() {
+        if (this.isReplayMode) {
+            window.showToast(t('toast.exitReplayFirst'), 'error');
+            return false;
+        }
+        this.virtualAccount = this._defaultAccount();
+        this._saveVirtualAccount();
+        this.updateAccountUI();
+        this.renderTables();
+        window.chartManager?.clearTradeMarkers();
+        window.analytics?.render();
+        return true;
     }
 
     /* ── Live mode polling ──────────────────────────────────────────────── */
@@ -536,12 +581,12 @@ class TradeManager {
 
     refreshModeUI() {
         const replay = this.isReplayMode;
-        this._els.badge.textContent = replay ? 'Replay' : (window.appMode === 'live' ? 'Live MT5' : 'Idle');
+        this._els.badge.textContent = replay ? t('mode.replay') : (window.appMode === 'live' ? t('mode.live') : t('mode.idle'));
         this._els.note.textContent = replay
-            ? 'Replay mode: orders execute against simulated prices at the replay cursor.'
+            ? t('note.replay')
             : window.appMode === 'live'
-                ? 'Live mode: market orders are sent to your MT5 account. SL/TP must be set inside MT5.'
-                : 'Start a replay or switch to MT5 data to trade.';
+                ? t('note.live')
+                : t('note.idle');
         this._updateSubmitLabel();
     }
 }

@@ -25,6 +25,9 @@ class ReplayManager {
         this._timer = null;
         this._extending = false;
 
+        // Session bookkeeping for the end-of-replay report
+        this._session = null;
+
         this._els = {
             bar: document.getElementById('replay-bar'),
             close: document.getElementById('rb-close'),
@@ -65,7 +68,7 @@ class ReplayManager {
             const value = document.getElementById('jump-datetime').value;
             if (!value) return;
             const ts = Math.floor(new Date(value).getTime() / 1000); // browser local tz
-            if (!Number.isFinite(ts)) { window.showToast('Invalid date.', 'error'); return; }
+            if (!Number.isFinite(ts)) { window.showToast(window.I18N?.t('toast.invalidDate'), 'error'); return; }
             window.closeModal('modal-jump');
             if (this.active) this.seekToTime(ts);
             else this.startAt(ts);
@@ -107,12 +110,12 @@ class ReplayManager {
         const panel = cm?.activePanel;
         if (!panel) return;
 
-        window.showVeil('Loading replay data…');
+        window.showVeil(window.I18N?.t('misc.loadingReplay'));
         try {
             const df = window.MT5Datafeed;
             const data = await df.fetchHistoryCovering(panel.symbol, panel.timeframe, ts, 3000);
             if (!data.length) {
-                window.showToast(`No data for ${panel.symbol} ${panel.timeframe}. Download history first (History button) or connect MT5.`, 'error');
+                window.showToast(window.I18N?.t('toast.noData', { symbol: panel.symbol, timeframe: panel.timeframe }), 'error');
                 return;
             }
             let idx = df.findIndexAtOrBefore(data, ts);
@@ -124,6 +127,17 @@ class ReplayManager {
             this.currentIndex = idx;
             this._lastDisplayedIndex = -1;
             this.active = true;
+
+            // Snapshot account state for the session report
+            const acc = window.tradeManager?.virtualAccount;
+            this._session = {
+                symbol: this.symbol,
+                timeframe: this.timeframe,
+                startIndex: idx,
+                startRealMs: Date.now(),
+                startHistoryLen: acc ? acc.history.length : 0,
+                startBalance: acc ? acc.balance : 10000
+            };
 
             panel.isReplayMode = true;
             panel.fullData = data;
@@ -139,10 +153,10 @@ class ReplayManager {
             window.tradeManager?.refreshModeUI();
             window.tradeManager?.updateAccountUI();
             window.tradeManager?.renderTables();
-            window.showToast(`Replay started on ${this.symbol} ${this.timeframe}`, 'success');
+            window.showToast(window.I18N?.t('toast.replayStarted', { symbol: this.symbol, timeframe: this.timeframe }), 'success');
         } catch (err) {
             console.error('[Replay] start failed:', err);
-            window.showToast('Failed to start replay: ' + err.message, 'error');
+            window.showToast(window.I18N?.t('toast.replayFail', { msg: err.message }), 'error');
         } finally {
             window.hideVeil();
         }
@@ -153,6 +167,10 @@ class ReplayManager {
         this.active = false;
         this.isJumpMode = false;
         this._els.jumpMode.classList.remove('active');
+
+        // Build the session report before tearing down state
+        const report = this._buildSessionReport();
+
         this.fullData = null;
         this.currentIndex = -1;
         this.symbol = null;
@@ -164,6 +182,27 @@ class ReplayManager {
         window.tradeManager?.refreshModeUI();
         window.tradeManager?.updateAccountUI();
         window.tradeManager?.renderTables();
+
+        if (report) window.analytics?.maybeShowSessionReport(report);
+    }
+
+    /** Summarize the session that just ended; null if no session ran. */
+    _buildSessionReport() {
+        const s = this._session;
+        this._session = null;
+        const acc = window.tradeManager?.virtualAccount;
+        if (!s || !acc) return null;
+        // history is newest-first; trades added during the session sit on top
+        const newTrades = acc.history.slice(0, Math.max(0, acc.history.length - s.startHistoryLen));
+        if (!newTrades.length) return null;
+        return window.analytics?.buildSessionReport({
+            symbol: s.symbol,
+            timeframe: s.timeframe,
+            barsReplayed: Math.max(0, this.currentIndex - s.startIndex),
+            realMs: Date.now() - s.startRealMs,
+            newTrades,
+            startBalance: s.startBalance
+        }) || null;
     }
 
     /* ── Playback ───────────────────────────────────────────────────────── */
@@ -225,11 +264,11 @@ class ReplayManager {
         let idx = df.findIndexAtOrBefore(this.fullData || [], ts);
         if (idx < 0) {
             // Outside loaded window — load around the target
-            window.showVeil('Loading data…');
+            window.showVeil(window.I18N?.t('misc.loadingData'));
             try {
                 const data = await df.loadSyncedReplayWindow(this.symbol, this.timeframe, ts);
                 if (!data.length) {
-                    window.showToast('No data at that date. Download history first.', 'error');
+                    window.showToast(window.I18N?.t('toast.noDataAtDate'), 'error');
                     return;
                 }
                 this.fullData = data;
@@ -247,7 +286,7 @@ class ReplayManager {
     toggleJumpMode() {
         this.isJumpMode = !this.isJumpMode;
         this._els.jumpMode.classList.toggle('active', this.isJumpMode);
-        if (this.isJumpMode) window.showToast('Jump mode: click anywhere on the chart to seek.', 'success');
+        if (this.isJumpMode) window.showToast(window.I18N?.t('toast.jumpMode'), 'success');
     }
 
     openJumpModal() { window.openModal('modal-jump'); }
@@ -320,7 +359,7 @@ class ReplayManager {
         const bar = this.fullData?.[this.currentIndex];
         this._els.progress.textContent = `${this.currentIndex + 1} / ${this.fullData?.length || 0}`;
         this._els.date.textContent = bar
-            ? new Date(bar.time * 1000).toLocaleString('en-GB', {
+            ? new Date(bar.time * 1000).toLocaleString(window.I18N?.dateLocale() || 'en-GB', {
                 day: '2-digit', month: 'short', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
               })

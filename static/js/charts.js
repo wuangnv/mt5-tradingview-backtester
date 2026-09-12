@@ -19,6 +19,38 @@ function resolutionToTimeframe(res) {
     return map[res] || 'H1';
 }
 
+/** Chart color overrides matching the app theme. */
+function chartOverrides(theme) {
+    const candle = (up, down) => ({
+        'mainSeriesProperties.candleStyle.upColor': up,
+        'mainSeriesProperties.candleStyle.downColor': down,
+        'mainSeriesProperties.candleStyle.borderUpColor': up,
+        'mainSeriesProperties.candleStyle.borderDownColor': down,
+        'mainSeriesProperties.candleStyle.wickUpColor': up,
+        'mainSeriesProperties.candleStyle.wickDownColor': down
+    });
+    if (theme === 'Light') {
+        return {
+            'paneProperties.background': '#ffffff',
+            'paneProperties.backgroundType': 'solid',
+            'paneProperties.vertGridProperties.color': '#f0f3fa',
+            'paneProperties.horzGridProperties.color': '#f0f3fa',
+            'scalesProperties.textColor': '#131722',
+            'scalesProperties.lineColor': '#e0e3eb',
+            ...candle('#089981', '#f23645')
+        };
+    }
+    return {
+        'paneProperties.background': '#131722',
+        'paneProperties.backgroundType': 'solid',
+        'paneProperties.vertGridProperties.color': '#1e222d',
+        'paneProperties.horzGridProperties.color': '#1e222d',
+        'scalesProperties.textColor': '#787b86',
+        'scalesProperties.lineColor': '#2a2e39',
+        ...candle('#26a69a', '#ef5350')
+    };
+}
+
 /* ==========================================================================
    ChartPanel — one TradingView widget instance
    ========================================================================== */
@@ -39,6 +71,7 @@ class ChartPanel {
 
         this.el = null;
         this._syncingRange = false;
+        this.tradeMarkers = [];
     }
 
     mount(gridEl) {
@@ -61,14 +94,15 @@ class ChartPanel {
 
     _createWidget(host) {
         const df = window.MT5Datafeed;
+        const theme = window.I18N ? window.I18N.tvTheme() : 'Dark';
         this.widget = new TradingView.widget({
             symbol: this.symbol,
             interval: TF_TO_RESOLUTION[this.timeframe] || '60',
             container: host,
             library_path: '/static/charting_library/',
             datafeed: df,
-            locale: 'en',
-            theme: 'Dark',
+            locale: window.I18N ? window.I18N.tvLocale() : 'en',
+            theme: theme,
             style: '1',
             autosize: true,
             fullscreen: false,
@@ -92,23 +126,11 @@ class ChartPanel {
                 'countdown_to_bar_close',
                 'items_favoriting'
             ],
-            overrides: {
-                'paneProperties.background': '#131722',
-                'paneProperties.backgroundType': 'solid',
-                'paneProperties.vertGridProperties.color': '#1e222d',
-                'paneProperties.horzGridProperties.color': '#1e222d',
-                'scalesProperties.textColor': '#787b86',
-                'scalesProperties.lineColor': '#2a2e39',
-                'mainSeriesProperties.candleStyle.upColor': '#26a69a',
-                'mainSeriesProperties.candleStyle.downColor': '#ef5350',
-                'mainSeriesProperties.candleStyle.borderUpColor': '#26a69a',
-                'mainSeriesProperties.candleStyle.borderDownColor': '#ef5350',
-                'mainSeriesProperties.candleStyle.wickUpColor': '#26a69a',
-                'mainSeriesProperties.candleStyle.wickDownColor': '#ef5350'
-            }
+            overrides: chartOverrides(theme)
         });
 
         this.widget.onChartReady(() => {
+            if (!this.widget) return; // panel destroyed before chart became ready
             this.chart = this.widget.chart();
 
             this.chart.onSymbolChanged().subscribe(null, () => {
@@ -152,6 +174,7 @@ class ChartPanel {
     }
 
     destroy() {
+        this.tradeMarkers.length = 0;
         try {
             if (this.widget && typeof this.widget.remove === 'function') this.widget.remove();
         } catch (err) {
@@ -233,6 +256,22 @@ class ChartManager {
         }
     }
 
+    /** Destroy and recreate every panel with the same symbol/timeframe.
+     *  Used to apply theme/locale changes. Refuses while replay is active. */
+    rebuild() {
+        if (this.isReplayMode) return false;
+        const configs = this.panels.map(p => ({ symbol: p.symbol, timeframe: p.timeframe }));
+        while (this.panels.length) this.panels.pop().destroy();
+        this.activePanel = null;
+        configs.forEach((cfg, i) => {
+            const panel = new ChartPanel(this, i, cfg.symbol, cfg.timeframe);
+            this.panels.push(panel);
+            panel.mount(this.gridEl);
+        });
+        this.setActivePanel(this.panels[0]);
+        return true;
+    }
+
     setActivePanel(panel) {
         if (!panel) return;
         this.activePanel = panel;
@@ -307,8 +346,40 @@ class ChartManager {
             panel.isReplayMode = false;
             panel.fullData = null;
             panel.replayIndex = -1;
+            this._clearPanelMarkers(panel);
             panel.resetData();
         }
+    }
+
+    /* ── Trade markers (execution arrows on chart) ──────────────────────── */
+
+    /**
+     * Draw an execution marker on the panel showing `symbol`.
+     * marker: { time, price, direction: 'buy'|'sell', text, color? }
+     */
+    drawTradeMarker(symbol, marker) {
+        const panel = this.panels.find(p => p.symbol === symbol && p.chart);
+        if (!panel) return;
+        try {
+            if (typeof panel.chart.createExecutionShape !== 'function') return;
+            const shape = panel.chart.createExecutionShape({ font: '10px sans-serif' });
+            shape.setDirection(marker.direction);
+            if (marker.text) shape.setText(marker.text);
+            if (marker.color) shape.setArrowColor(marker.color);
+            shape.setTime(marker.time);
+            shape.setPrice(marker.price);
+            panel.tradeMarkers.push(shape);
+        } catch (err) { /* bar outside loaded range — skip silently */ }
+    }
+
+    _clearPanelMarkers(panel) {
+        for (const shape of panel.tradeMarkers.splice(0)) {
+            try { shape.remove(); } catch (err) { /* already gone */ }
+        }
+    }
+
+    clearTradeMarkers() {
+        for (const panel of this.panels) this._clearPanelMarkers(panel);
     }
 
     /** Load data around ts into a panel and point its replay index at it. */

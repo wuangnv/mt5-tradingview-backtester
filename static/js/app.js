@@ -19,7 +19,7 @@ window.showToast = function (message, type = 'info') {
 };
 
 window.showVeil = function (text) {
-    document.getElementById('stage-veil-text').textContent = text || 'Loading…';
+    document.getElementById('stage-veil-text').textContent = text || window.I18N?.t('misc.loading') || 'Loading…';
     document.getElementById('stage-veil').classList.add('open');
 };
 
@@ -38,6 +38,9 @@ class App {
     }
 
     init() {
+        this._initTheme();
+        window.I18N.apply();
+
         window.chartManager.init();
         window.tradeManager.startPolling();
         window.tradeManager.refreshModeUI();
@@ -48,6 +51,7 @@ class App {
         this._wireDrawers();
         this._wireModals();
         this._wireBottomPanel();
+        this._wireSettings();
         this._initMode();
         this._pollStatus();
         this._statusTimer = setInterval(() => this._pollStatus(), 5000);
@@ -59,13 +63,13 @@ class App {
         document.getElementById('btn-replay').addEventListener('click', () =>
             window.replayManager.promptStart());
         document.getElementById('btn-history').addEventListener('click', () => this._openHistory());
-        document.getElementById('btn-quit').addEventListener('click', () => this._quit());
         document.getElementById('btn-mode').addEventListener('click', () => this._toggleMode());
 
         const layoutBtn = document.getElementById('btn-layout');
         const dropdown = document.getElementById('layout-dropdown');
         layoutBtn.addEventListener('click', (ev) => {
             ev.stopPropagation();
+            document.getElementById('settings-dropdown').classList.remove('open');
             dropdown.classList.toggle('open');
         });
         document.addEventListener('click', () => dropdown.classList.remove('open'));
@@ -75,6 +79,78 @@ class App {
                 window.chartManager.setLayout(item.dataset.layout);
             });
         });
+    }
+
+    /* ── Settings popover (language, theme, account reset, quit) ────────── */
+
+    _initTheme() {
+        document.documentElement.dataset.theme =
+            localStorage.getItem('wv_theme') === 'light' ? 'light' : 'dark';
+    }
+
+    _wireSettings() {
+        const btn = document.getElementById('btn-settings');
+        const pop = document.getElementById('settings-dropdown');
+        btn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            document.getElementById('layout-dropdown').classList.remove('open');
+            pop.classList.toggle('open');
+        });
+        document.addEventListener('click', () => pop.classList.remove('open'));
+        pop.addEventListener('click', (ev) => ev.stopPropagation());
+
+        const syncSeg = () => {
+            document.querySelectorAll('#set-lang .seg-btn').forEach(b =>
+                b.classList.toggle('active', b.dataset.lang === window.I18N.lang));
+            document.querySelectorAll('#set-theme .seg-btn').forEach(b =>
+                b.classList.toggle('active', b.dataset.themeVal === (localStorage.getItem('wv_theme') === 'light' ? 'light' : 'dark')));
+        };
+        syncSeg();
+
+        document.querySelectorAll('#set-lang .seg-btn').forEach(b =>
+            b.addEventListener('click', () => {
+                if (b.dataset.lang === window.I18N.lang) return;
+                if (window.chartManager.isReplayMode) {
+                    window.showToast(window.I18N.t('toast.exitReplayFirst'), 'error');
+                    return;
+                }
+                window.I18N.setLang(b.dataset.lang);
+                window.tradeManager.refreshModeUI();
+                window.tradeManager.renderTables();
+                window.tradingPlaybook.render();
+                window.analytics.render();
+                window.chartManager.rebuild();
+                syncSeg();
+            }));
+
+        document.querySelectorAll('#set-theme .seg-btn').forEach(b =>
+            b.addEventListener('click', () => {
+                const theme = b.dataset.themeVal;
+                if (theme === (localStorage.getItem('wv_theme') === 'light' ? 'light' : 'dark')) return;
+                if (window.chartManager.isReplayMode) {
+                    window.showToast(window.I18N.t('toast.exitReplayFirst'), 'error');
+                    return;
+                }
+                localStorage.setItem('wv_theme', theme);
+                document.documentElement.dataset.theme = theme;
+                window.chartManager.rebuild();
+                window.analytics.render();
+                syncSeg();
+            }));
+
+        document.getElementById('set-reset').addEventListener('click', () => {
+            pop.classList.remove('open');
+            if (!confirm(window.I18N.t('set.resetConfirm'))) return;
+            if (window.tradeManager.resetVirtualAccount()) {
+                window.showToast(window.I18N.t('toast.accountReset'), 'success');
+            }
+        });
+        document.getElementById('set-quit').addEventListener('click', () => {
+            pop.classList.remove('open');
+            this._quit();
+        });
+        document.getElementById('report-save').addEventListener('click', () =>
+            window.analytics.savePendingReport());
     }
 
     _wireDrawers() {
@@ -120,9 +196,11 @@ class App {
                 for (const t of ['positions', 'pending', 'history']) {
                     document.getElementById(`tbl-${t}`).style.display = t === name ? 'table' : 'none';
                 }
+                document.getElementById('analytics-view').style.display = name === 'analytics' ? 'flex' : 'none';
                 if (name === 'history' && !window.chartManager.isReplayMode && window.appMode === 'live') {
                     window.tradeManager.loadLiveHistory();
                 }
+                if (name === 'analytics') window.analytics.render();
                 window.tradeManager.renderTables();
             });
         });
@@ -140,19 +218,19 @@ class App {
 
     _renderMode() {
         const btn = document.getElementById('btn-mode');
-        btn.textContent = window.appMode === 'live' ? 'MT5' : 'Local';
+        btn.textContent = window.appMode === 'live' ? window.I18N.t('mode.mt5') : window.I18N.t('mode.local');
         btn.classList.toggle('active', window.appMode === 'live');
         window.tradeManager?.refreshModeUI();
     }
 
     async _toggleMode() {
         if (window.chartManager.isReplayMode) {
-            window.showToast('Exit replay before switching data source.', 'error');
+            window.showToast(window.I18N.t('toast.modeSwitchBlock'), 'error');
             return;
         }
         const next = window.appMode === 'live' ? 'backtest' : 'live';
         if (next === 'live' && !this._mt5Connected) {
-            window.showToast('MT5 is not connected. Attach the MacGateway EA first.', 'error');
+            window.showToast(window.I18N.t('toast.mt5Required'), 'error');
             return;
         }
         try {
@@ -166,9 +244,9 @@ class App {
             // Hard reset chart caches so data comes from the new source
             window.MT5Datafeed.historyCache.clear();
             for (const panel of window.chartManager.panels) panel.resetData();
-            window.showToast(`Data source: ${next === 'live' ? 'Live MT5' : 'Local cache'}`, 'success');
+            window.showToast(window.I18N.t(next === 'live' ? 'toast.modeLive' : 'toast.modeLocal'), 'success');
         } catch (err) {
-            window.showToast('Mode switch failed: ' + err.message, 'error');
+            window.showToast(window.I18N.t('toast.modeFail', { msg: err.message }), 'error');
         }
     }
 
@@ -181,22 +259,22 @@ class App {
             const res = await fetch('/api/status').then(r => r.json());
             this._mt5Connected = Boolean(res.connected);
             pill.classList.toggle('connected', this._mt5Connected);
-            text.textContent = this._mt5Connected ? 'MT5' : 'MT5 offline';
+            text.textContent = this._mt5Connected ? 'MT5' : window.I18N.t('mt5.offline');
             pill.title = res.message || '';
         } catch (err) {
             this._mt5Connected = false;
             pill.classList.remove('connected');
-            text.textContent = 'MT5 offline';
+            text.textContent = window.I18N.t('mt5.offline');
         }
     }
 
     /* ── Quit ───────────────────────────────────────────────────────────── */
 
     async _quit() {
-        if (!confirm('Shut down the trading app?')) return;
+        if (!confirm(window.I18N.t('toast.quitConfirm'))) return;
         try { await fetch('/api/shutdown', { method: 'POST' }); } catch (err) { /* already gone */ }
         document.body.innerHTML =
-            '<div style="display:flex;height:100vh;align-items:center;justify-content:center;color:#787b86;font-family:sans-serif">App stopped. You can close this tab.</div>';
+            `<div style="display:flex;height:100vh;align-items:center;justify-content:center;color:var(--text-dim);font-family:sans-serif">${window.I18N.t('misc.appStopped')}</div>`;
     }
 
     /* ── History modal ──────────────────────────────────────────────────── */
@@ -217,6 +295,7 @@ class App {
 
     async _refreshHistoryFiles() {
         const list = document.getElementById('dl-files');
+        const t = window.I18N;
         try {
             const res = await fetch('/api/history/status').then(r => r.json());
             const files = res.files || [];
@@ -224,10 +303,10 @@ class App {
                 <div class="hist-row">
                     <span class="sym">${f.symbol}</span>
                     <span class="tf">${f.timeframe}</span>
-                    <span class="bars">${Number(f.bars || 0).toLocaleString()} bars</span>
-                    <button class="pb-mini-btn danger" data-del-history="${f.symbol}|${f.timeframe}">Delete</button>
+                    <span class="bars">${t.t('misc.bars', { n: Number(f.bars || 0).toLocaleString() })}</span>
+                    <button class="pb-mini-btn danger" data-del-history="${f.symbol}|${f.timeframe}">${t.t('misc.delete')}</button>
                 </div>`).join('')
-                : '<p style="color:var(--text-dim);font-size:12px;font-style:italic">No local data yet.</p>';
+                : `<p style="color:var(--text-dim);font-size:12px;font-style:italic">${t.t('misc.noLocalData')}</p>`;
             list.querySelectorAll('[data-del-history]').forEach(btn =>
                 btn.addEventListener('click', async () => {
                     const [symbol, timeframe] = btn.dataset.delHistory.split('|');
@@ -240,7 +319,7 @@ class App {
                     this._refreshHistoryFiles();
                 }));
         } catch (err) {
-            list.innerHTML = '<p style="color:var(--down);font-size:12px">Failed to load status.</p>';
+            list.innerHTML = `<p style="color:var(--down);font-size:12px">${t.t('misc.histLoadFail')}</p>`;
         }
     }
 
@@ -251,15 +330,16 @@ class App {
         const progress = document.getElementById('dl-progress');
 
         if (!symbols.length || !timeframes.length) {
-            window.showToast('Select at least one symbol and one timeframe.', 'error');
+            window.showToast(window.I18N.t('toast.selectSymTf'), 'error');
             return;
         }
         if (!this._mt5Connected) {
-            window.showToast('MT5 must be connected to download history.', 'error');
+            window.showToast(window.I18N.t('toast.mt5Download'), 'error');
             return;
         }
 
         const btn = document.getElementById('dl-start');
+        const t = window.I18N;
         btn.disabled = true;
         progress.classList.add('active');
         let done = 0;
@@ -267,21 +347,21 @@ class App {
 
         for (const symbol of symbols) {
             for (const timeframe of timeframes) {
-                progress.textContent = `Downloading ${symbol} ${timeframe}… (${done}/${total})`;
+                progress.textContent = t.t('dl.progress', { symbol, timeframe, done, total });
                 const result = await window.MT5Datafeed.downloadHistory(symbol, timeframe, bars);
                 done += 1;
                 if (!result.success) {
-                    progress.textContent = `Failed ${symbol} ${timeframe}: ${result.message || 'unknown error'}`;
+                    progress.textContent = t.t('dl.failed', { symbol, timeframe, msg: result.message || 'unknown error' });
                     await new Promise(r => setTimeout(r, 1200));
                 }
             }
         }
 
-        progress.textContent = `Done — ${done}/${total} downloads finished.`;
+        progress.textContent = t.t('dl.done', { done, total });
         progress.classList.remove('active');
         btn.disabled = false;
         this._refreshHistoryFiles();
-        window.showToast('History download complete.', 'success');
+        window.showToast(t.t('toast.dlDone'), 'success');
     }
 }
 
