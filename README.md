@@ -80,12 +80,14 @@ flowchart TD
 ├── Start-Windows.bat         # Double-click launcher for Windows
 ├── Start-macOS.command       # Double-click launcher for macOS
 ├── scripts/                  # Launcher helper scripts
-├── templates/index.html      # Main app layout
-├── static/css/style.css      # App styling and responsive layout
+├── templates/index.html      # App shell (topbar, workspace, drawers, modals)
+├── static/css/app.css        # Design system: TradingView-authentic dark theme
 ├── static/js/datafeed.js     # TradingView datafeed and history cache
-├── static/js/chart.js        # Chart panels, trade manager, live dashboard
-├── static/js/playbook.js     # Trading playbook, journal, strategy library
-├── static/js/replay.js       # Bar replay engine
+├── static/js/charts.js       # Chart panels, multi-chart layouts, live polling
+├── static/js/trading.js      # Order panel, virtual account, bottom dashboard
+├── static/js/replay.js       # Bar replay engine and keyboard shortcuts
+├── static/js/playbook.js     # Playbook drawer: journal, setups, roadmap
+├── static/js/app.js          # Bootstrap, toolbar, modals, toasts, MT5 status
 └── static/charting_library/  # Local TradingView Advanced Charts files
 ```
 

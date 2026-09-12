@@ -3,675 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Chart Tool - Bar Replay</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>WuangVibe Trading</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <script src="{{ url_for('static', filename='charting_library/charting_library.standalone.js') }}"></script>
     <script src="{{ url_for('static', filename='js/datafeed.js') }}"></script>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Top Toolbar (TradingView Web Style) -->
-        <div class="top-toolbar">
-            <div class="toolbar-group brand-group">
-                <div class="brand-container" style="display: flex; align-items: center; margin-right: 12px; user-select: none;">
-                    <span class="brand-name" style="font-size: 15px; font-weight: 800; background: linear-gradient(90deg, #00e5ff 0%, #ff4fd8 48%, #b45cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.8px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', sans-serif; filter: drop-shadow(0 0 10px rgba(255, 79, 216, 0.32));">WuangVibeTrading</span>
-                </div>
+<div id="app">
+
+    <!-- ══ Top toolbar ══ -->
+    <header id="topbar">
+        <div class="tb-brand">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"></polyline><polyline points="15 7 21 7 21 13"></polyline></svg>
+            WuangVibe
+        </div>
+        <div class="tb-divider"></div>
+
+        <button id="btn-replay" class="tb-btn" title="Bar Replay (manual backtesting)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Replay
+        </button>
+        <button id="btn-history" class="tb-btn" title="Download MT5 history for offline use">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            History
+        </button>
+        <button id="btn-order" class="tb-btn" title="Order panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg>
+            Order
+        </button>
+        <button id="btn-playbook" class="tb-btn" title="Trading playbook & journal">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+            Playbook
+        </button>
+
+        <div class="tb-pop-wrap">
+            <button id="btn-layout" class="tb-btn" title="Chart layout">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Layout
+            </button>
+            <div id="layout-dropdown" class="dropdown">
+                <button class="dropdown-item active" data-layout="1">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    Single
+                </button>
+                <button class="dropdown-item" data-layout="2v">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    2 Vertical
+                </button>
+                <button class="dropdown-item" data-layout="2h">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    2 Horizontal
+                </button>
+                <button class="dropdown-item" data-layout="4">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    4 Charts
+                </button>
             </div>
+        </div>
 
-            <div class="toolbar-separator-v"></div>
+        <div class="tb-spacer"></div>
 
-            <!-- Hidden DOM elements for legacy script compatibility -->
-            <div style="display: none;">
-                <select id="symbol-select" class="symbol-select">
-                    <option value="EURUSD">EURUSD</option>
-                    <option value="GBPUSD">GBPUSD</option>
-                    <option value="USDJPY">USDJPY</option>
-                    <option value="AUDUSD">AUDUSD</option>
-                    <option value="USDCAD">USDCAD</option>
-                    <option value="XAUUSD">XAUUSD</option>
+        <button id="btn-mode" class="tb-btn" title="Switch data source (Local cache / Live MT5)">Local</button>
+        <div id="mt5-status" class="status-pill" title="MT5 bridge status">
+            <span class="dot"></span><span id="mt5-status-text">MT5</span>
+        </div>
+        <button id="btn-quit" class="tb-btn danger" title="Shut down the app">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+        </button>
+    </header>
+
+    <!-- ══ Workspace ══ -->
+    <main id="workspace">
+        <div id="chart-stage">
+            <div id="charts-grid" class="layout-1"></div>
+
+            <div id="stage-veil"><div class="spinner"></div><span id="stage-veil-text">Loading…</span></div>
+
+            <!-- Floating replay bar -->
+            <div id="replay-bar">
+                <button id="rb-close" class="rb-btn" title="Exit replay (Esc)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <div class="rb-divider"></div>
+                <button id="rb-jump" class="rb-btn" title="Jump to date">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </button>
+                <button id="rb-jump-mode" class="rb-btn" title="Jump mode: click on chart to seek">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </button>
+                <span id="rb-date" class="rb-date" title="Current bar — click to jump"></span>
+                <div class="rb-divider"></div>
+                <button id="rb-prev" class="rb-btn" title="Previous bar (←)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                </button>
+                <button id="rb-play" class="rb-btn" title="Play / Pause (Space)">
+                    <svg id="rb-icon-play" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <svg id="rb-icon-pause" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+                <button id="rb-next" class="rb-btn" title="Next bar (→)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                </button>
+                <div class="rb-divider"></div>
+                <select id="rb-speed" title="Replay speed (↑/↓)">
+                    <option value="4000">0.25x</option>
+                    <option value="2000">0.5x</option>
+                    <option value="1000" selected>1x</option>
+                    <option value="500">2x</option>
+                    <option value="200">5x</option>
+                    <option value="100">10x</option>
+                    <option value="50">20x</option>
                 </select>
-
-                <div class="timeframe-buttons">
-                    <button class="tf-btn" data-tf="M1">1m</button>
-                    <button class="tf-btn" data-tf="M5">5m</button>
-                    <button class="tf-btn" data-tf="M15">15m</button>
-                    <button class="tf-btn" data-tf="M30">30m</button>
-                    <button class="tf-btn active" data-tf="H1">1h</button>
-                    <button class="tf-btn" data-tf="H4">4h</button>
-                    <button class="tf-btn" data-tf="D1">1D</button>
-                    <button class="tf-btn" data-tf="W1">1W</button>
-                </div>
-            </div>
-
-            <div class="toolbar-separator-v"></div>
-
-            <!-- Replay / Trade buttons -->
-            <div class="toolbar-group actions-group">
-                <button id="replay-btn" class="toolbar-btn">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M8 5v14l11-7z"/></svg> Replay
-                </button>
-                <button id="download-history-btn" class="toolbar-btn" title="Download historical data from MT5 for offline replay">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> History
-                </button>
-                <button id="trade-panel-toggle-btn" class="toolbar-btn">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg> Order Panel
-                </button>
-                <button id="playbook-toggle-btn" class="toolbar-btn" title="Open Trading Playbook">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg> Playbook
-                </button>
-            </div>
-
-            <div class="toolbar-separator-v"></div>
-
-            <!-- Layout & Sync Buttons -->
-            <div class="toolbar-group layout-group">
-                <div class="layout-select-wrapper">
-                    <button id="layout-btn" class="toolbar-btn" title="Choose Grid Layout">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Layout
-                    </button>
-                    <div id="layout-dropdown" class="layout-dropdown">
-                        <div class="layout-option active" data-layout="1" title="Single Chart">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                        </div>
-                        <div class="layout-option" data-layout="2v" title="2 Charts Vertical">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                        </div>
-                        <div class="layout-option" data-layout="2h" title="2 Charts Horizontal">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                        </div>
-                        <div class="layout-option" data-layout="4" title="4 Charts Grid">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="toolbar-group right-aligned">
-                <button id="mode-toggle-btn" class="toolbar-btn mode-toggle-btn" title="Data source: Local chunk cache or Live MT5 bridge">Data: Local</button>
-                <div class="status-indicator" id="mt5-status">
-                    <span class="status-dot"></span>
-                    <span class="status-text">MT5</span>
-                </div>
-                <button id="quit-app-btn" class="toolbar-btn quit-btn" title="Quit & Shutdown Application">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                        <line x1="12" y1="2" x2="12" y2="12"></line>
-                    </svg>
-                </button>
+                <span id="rb-progress" class="rb-date">0 / 0</span>
             </div>
         </div>
 
-        <!-- Main Layout -->
-        <div class="main-layout">
-
-            <!-- Middle Section: Charts & Positions Dashboard -->
-            <div class="middle-section">
-                <!-- Chart Area -->
-                <div class="chart-area">
-                    <div id="charts-grid" class="charts-grid layout-1">
-                        <!-- Dynamic chart panels will be injected here by ChartManager -->
-                    </div>
-
-                    <!-- Floating TradingView-Style Replay Toolbar -->
-                    <div class="tv-replay-toolbar" id="tv-replay-toolbar" style="display: none;">
-                        <div class="replay-drag-handle">
-                            <span class="replay-drag-title" style="margin-left: 6px;">Replay</span>
-                        </div>
-
-                        <div class="toolbar-separator-v"></div>
-
-                        <button id="replay-jump-mode" class="tv-replay-btn" title="Jump to: Click chart to seek">
-                            <span class="btn-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 4px;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            </span> Jump To
-                        </button>
-
-                        <div class="toolbar-separator-v"></div>
-
-                        <button id="replay-prev" class="tv-replay-btn-icon" title="Previous Bar (←)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
-                        </button>
-
-                        <button id="replay-play-pause" class="tv-replay-btn-icon play-btn" title="Play/Pause (Space)">
-                            <span id="play-icon" style="display: flex; align-items: center; justify-content: center;">
-                                <svg id="svg-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                                <svg id="svg-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                            </span>
-                        </button>
-
-                        <button id="replay-next" class="tv-replay-btn-icon" title="Next Bar (→)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
-                        </button>
-
-                        <div class="toolbar-separator-v"></div>
-
-                        <div class="replay-status-text">
-                            <span id="replay-progress">0 / 0</span>
-                            <span id="replay-current-date" class="replay-date-display"></span>
-                            <span id="replay-coverage" class="replay-coverage-display">Coverage: local chunk cache</span>
-                        </div>
-
-                        <div class="toolbar-separator-v"></div>
-
-                        <div class="replay-speed-container">
-                            <span class="speed-label">Speed:</span>
-                            <select id="replay-speed" class="tv-replay-speed-select">
-                                <option value="50">20x (0.05s)</option>
-                                <option value="100">10x (0.1s)</option>
-                                <option value="200">5x (0.2s)</option>
-                                <option value="500">2x (0.5s)</option>
-                                <option value="1000" selected>1x (1s)</option>
-                                <option value="2000">0.5x (2s)</option>
-                                <option value="4000">0.25x (4s)</option>
-                            </select>
-                        </div>
-
-                        <div class="toolbar-separator-v"></div>
-
-                        <div class="replay-date-container">
-                            <input type="text" id="replay-start-date" class="tv-replay-date-input" placeholder="DD/MM/YYYY HH:MM">
-                            <button id="replay-jump-date" class="tv-replay-btn-go" title="Go to date">Go</button>
-                        </div>
-
-                        <div class="toolbar-separator-v"></div>
-
-                        <button id="replay-close" class="tv-replay-btn-close" title="Close Replay (Esc)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        </button>
-
-                        <!-- Tiny thin slider built-in at the bottom edge of the floating toolbar -->
-                        <div class="tv-replay-slider-bar">
-                            <input type="range" id="replay-slider" class="tv-replay-slider" min="0" max="100" value="0">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bottom Positions & History Dashboard -->
-                <div class="bottom-dashboard" id="bottom-dashboard">
-                    <div class="dashboard-tabs">
-                        <div class="tab-btn-group">
-                            <button class="tab-btn active" data-tab="positions">Open Positions (<span id="open-positions-count">0</span>)</button>
-                            <button class="tab-btn" data-tab="pending">Pending Orders (<span id="pending-positions-count">0</span>)</button>
-                            <button class="tab-btn" data-tab="history">Trading History</button>
-                        </div>
-
-                        <div class="account-summary-bar">
-                            <span class="account-summary-item">Balance: <strong id="acc-balance">$10,000.00</strong></span>
-                            <span class="account-summary-item">Equity: <strong id="acc-equity">$10,000.00</strong></span>
-                            <span class="account-summary-item">Margin: <strong id="acc-margin">$0.00</strong></span>
-                            <span class="account-summary-item">Free Margin: <strong id="acc-free-margin">$10,000.00</strong></span>
-                            <span class="account-summary-item">Margin Level: <strong id="acc-margin-level">0.00%</strong></span>
-                            <div class="toolbar-separator-v" style="height: 14px; margin: 0 4px; background: #2b2141;"></div>
-                            <button id="dashboard-toggle-btn" class="dashboard-toggle-btn" title="Collapse / Expand">
-                                <svg width="12" height="12" viewBox="0 0 24 24" style="transition: transform 0.3s ease; display: block;"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-tab-content active" id="tab-positions">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Ticket</th>
-                                    <th>Symbol</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>Open Price</th>
-                                    <th>Current Price</th>
-                                    <th>Stop Loss (SL)</th>
-                                    <th>Take Profit (TP)</th>
-                                    <th>Profit/Loss ($)</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="positions-list">
-                                <tr>
-                                    <td colspan="10" class="empty-row">No open trading positions.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="dashboard-tab-content" id="tab-pending">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Ticket</th>
-                                    <th>Symbol</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>Order Price</th>
-                                    <th>Current Price</th>
-                                    <th>Stop Loss</th>
-                                    <th>Take Profit</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pending-list">
-                                <tr>
-                                    <td colspan="9" class="empty-row">No pending orders.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="dashboard-tab-content" id="tab-history">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Ticket</th>
-                                    <th>Symbol</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>Open Price</th>
-                                    <th>Close Price</th>
-                                    <th>Profit/Loss ($)</th>
-                                    <th>Result</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-list">
-                                <tr>
-                                    <td colspan="9" class="empty-row">No trading history.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <!-- ══ Order drawer ══ -->
+        <aside id="order-drawer" class="drawer">
+            <div class="drawer-head">
+                <h2>Place Order</h2>
+                <span id="op-mode-badge" class="status-pill" style="margin-left:8px">Replay</span>
+                <button class="drawer-close" data-close-drawer="order-drawer" title="Close">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
-
-            <!-- Right Sidebar: Exness-Style Trading Panel -->
-            <div class="right-sidebar trading-panel sell-active collapsed" id="trading-panel">
-                <div class="panel-section-title">
-                    <span>PLACE TRADE ORDER</span>
-                    <span class="trade-mode-badge" id="trade-mode-badge">BACKTEST</span>
-                    <button id="close-trading-panel-btn" class="panel-close-btn" title="Close" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: transparent; border: none; color: #a895c7; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
+            <div class="drawer-body">
+                <div class="op-symbol-row">
+                    <select id="op-symbol"></select>
+                    <span id="op-price" class="op-price">—</span>
                 </div>
 
-                <!-- Quick Trade Tabs (Exness Style Buy/Sell selectors) -->
-                <div class="exness-side-tabs">
-                    <button class="side-tab sell active" id="btn-quick-sell">
-                        <span class="label">SELL</span>
-                        <span class="price" id="quick-sell-price">0.00000</span>
-                    </button>
-                    <button class="side-tab buy" id="btn-quick-buy">
-                        <span class="label">BUY</span>
-                        <span class="price" id="quick-buy-price">0.00000</span>
-                    </button>
+                <div class="op-side-row">
+                    <button id="op-side-sell" class="op-side sell">Sell</button>
+                    <button id="op-side-buy" class="op-side buy active">Buy</button>
                 </div>
 
-                <div class="order-settings-container">
-                    <!-- Order Type Tab buttons (Exness Style) -->
-                    <div class="trade-input-group">
-                        <label>Order Type</label>
-                        <div class="exness-order-type-tabs">
-                            <button type="button" class="order-type-tab active" data-type="market">Market</button>
-                            <button type="button" class="order-type-tab" data-type="limit">Pending Limit/Stop</button>
-                        </div>
-                        <!-- Hidden select to keep existing JS logic synced without breaks -->
-                        <select id="trade-order-type" class="trade-select" style="display: none;">
-                            <option value="market" selected>Market</option>
-                            <option value="limit">Pending Limit/Stop</option>
+                <div class="op-field" id="op-type-field">
+                    <label>Order type</label>
+                    <select id="op-order-type" style="width:100%">
+                        <option value="market" selected>Market</option>
+                        <option value="buy_limit">Buy Limit</option>
+                        <option value="sell_limit">Sell Limit</option>
+                        <option value="buy_stop">Buy Stop</option>
+                        <option value="sell_stop">Sell Stop</option>
+                    </select>
+                </div>
+
+                <div class="op-field" id="op-price-field" style="display:none">
+                    <label>Order price</label>
+                    <input id="op-order-price" type="number" step="any" placeholder="0.00000">
+                </div>
+
+                <div class="op-field">
+                    <label>Volume (lots)</label>
+                    <input id="op-volume" type="number" min="0.01" step="0.01" value="0.01">
+                </div>
+
+                <div class="op-field">
+                    <label><input id="op-sl-on" type="checkbox" style="width:auto;margin-right:6px">Stop Loss</label>
+                    <div style="display:flex;gap:8px">
+                        <input id="op-sl" type="number" step="any" value="200" disabled style="flex:1">
+                        <select id="op-sl-unit" disabled style="width:80px">
+                            <option value="pips" selected>pips</option>
+                            <option value="price">price</option>
                         </select>
                     </div>
-
-                    <!-- Pending Order Price Input -->
-                    <div class="trade-input-group" id="pending-price-group" style="display: none;">
-                        <label>Order Price</label>
-                        <div class="volume-control">
-                            <button type="button" class="vol-btn" id="btn-price-minus">-</button>
-                            <input type="number" id="trade-price" class="trade-number-input" step="0.00001" value="0.00000">
-                            <button type="button" class="vol-btn" id="btn-price-plus">+</button>
-                        </div>
-                    </div>
-
-                    <!-- Volume Lots Control -->
-                    <div class="trade-input-group">
-                        <label>Volume (Lots)</label>
-                        <div class="volume-control">
-                            <button type="button" class="vol-btn" id="btn-vol-minus">-</button>
-                            <input type="number" id="trade-volume" class="trade-number-input" step="0.01" min="0.01" value="0.10">
-                            <button type="button" class="vol-btn" id="btn-vol-plus">+</button>
-                        </div>
-                        <div class="lot-quick-select">
-                            <button type="button" class="lot-q-btn">0.01</button>
-                            <button type="button" class="lot-q-btn">0.05</button>
-                            <button type="button" class="lot-q-btn">0.10</button>
-                            <button type="button" class="lot-q-btn">0.50</button>
-                            <button type="button" class="lot-q-btn">1.00</button>
-                        </div>
-                    </div>
-
-                    <!-- Stop Loss Control with multi-unit switcher -->
-                    <div class="trade-input-group checkbox-group">
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="enable-sl">
-                            <label for="enable-sl" class="clickable-label">Stop Loss (SL)</label>
-                        </div>
-                        <div id="sl-control-container" class="collapsed-control" style="display: none;">
-                            <div class="unit-selector" id="sl-unit-selector">
-                                <button type="button" class="unit-btn active" data-unit="price">Price</button>
-                                <button type="button" class="unit-btn" data-unit="pips">Pips</button>
-                                <button type="button" class="unit-btn" data-unit="usd">USD</button>
-                            </div>
-                            <input type="hidden" id="sl-active-unit" value="price">
-
-                            <div class="volume-control">
-                                <button type="button" class="vol-btn" id="btn-sl-minus">-</button>
-                                <input type="number" id="trade-sl" class="trade-number-input" step="0.00001" value="0.00000">
-                                <button type="button" class="vol-btn" id="btn-sl-plus">+</button>
-                            </div>
-                            <div class="control-calc-info">
-                                <span id="sl-info-pips">Distance: <strong id="sl-pips-dist">0 pips</strong></span>
-                                <span id="sl-info-usd">Risk: <strong id="sl-usd-loss" class="text-danger">-$0.00</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Take Profit Control with multi-unit switcher -->
-                    <div class="trade-input-group checkbox-group">
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="enable-tp">
-                            <label for="enable-tp" class="clickable-label">Take Profit (TP)</label>
-                        </div>
-                        <div id="tp-control-container" class="collapsed-control" style="display: none;">
-                            <div class="unit-selector" id="tp-unit-selector">
-                                <button type="button" class="unit-btn active" data-unit="price">Price</button>
-                                <button type="button" class="unit-btn" data-unit="pips">Pips</button>
-                                <button type="button" class="unit-btn" data-unit="usd">USD</button>
-                            </div>
-                            <input type="hidden" id="tp-active-unit" value="price">
-
-                            <div class="volume-control">
-                                <button type="button" class="vol-btn" id="btn-tp-minus">-</button>
-                                <input type="number" id="trade-tp" class="trade-number-input" step="0.00001" value="0.00000">
-                                <button type="button" class="vol-btn" id="btn-tp-plus">+</button>
-                            </div>
-                            <div class="control-calc-info">
-                                <span id="tp-info-pips">Distance: <strong id="tp-pips-dist">0 pips</strong></span>
-                                <span id="tp-info-usd">Profit: <strong id="tp-usd-profit" class="text-success">+$0.00</strong></span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Exness Styled Execution Button -->
-                <button class="btn-execute sell-mode" id="btn-execute-order">
-                    CONFIRM SELL (SELL MARKET)
-                </button>
-            </div>
-        </div>
-
-        <div class="playbook-overlay" id="playbook-overlay" aria-hidden="true">
-            <aside class="playbook-panel" role="dialog" aria-modal="false" aria-labelledby="playbook-title">
-                <div id="playbook-resize-handle" class="playbook-resize-handle" title="Drag to resize Playbook"></div>
-                <header class="playbook-header">
-                    <div>
-                        <div class="playbook-kicker">Trading Workspace</div>
-                        <h2 id="playbook-title">Playbook Notes</h2>
-                    </div>
-                    <div class="playbook-header-actions">
-                        <button id="playbook-new-note-btn" class="playbook-small-btn">New Note</button>
-                        <button id="playbook-tab-btn" class="playbook-icon-btn" title="Open Playbook in New Tab">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"></path><path d="M10 14 21 3"></path><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path></svg>
-                        </button>
-                        <button id="playbook-fullscreen-btn" class="playbook-icon-btn" title="Toggle Fullscreen Playbook">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 3h3a2 2 0 0 1 2 2v3"></path><path d="M8 21H5a2 2 0 0 1-2-2v-3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
-                        </button>
-                        <button id="playbook-close-btn" class="playbook-icon-btn" title="Close Playbook">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        </button>
-                    </div>
-                </header>
-
-                <div class="playbook-workspace">
-                    <nav class="playbook-sidebar">
-                        <div class="playbook-search-wrap">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            <input id="playbook-search-input" type="search" placeholder="Search notes, tags, symbols...">
-                        </div>
-
-                        <div class="playbook-view-tabs">
-                            <button class="active" data-playbook-view="journal">Journal</button>
-                            <button data-playbook-view="setups">Setups</button>
-                            <button data-playbook-view="roadmap">Roadmap</button>
-                        </div>
-
-                        <div class="playbook-filter-row">
-                            <button class="playbook-filter active" data-filter="all">All</button>
-                            <button class="playbook-filter" data-filter="Backtest">Backtest</button>
-                            <button class="playbook-filter" data-filter="Career">Career</button>
-                            <button class="playbook-filter" data-filter="Strategy">Strategy</button>
-                        </div>
-
-                        <div id="playbook-tag-cloud" class="playbook-tag-cloud"></div>
-                        <div id="playbook-note-list" class="playbook-note-list"></div>
-                    </nav>
-
-                    <section class="playbook-editor" id="playbook-journal-view">
-                        <div class="playbook-editor-toolbar">
-                            <div>
-                                <p class="playbook-label">Trading Journal</p>
-                                <p id="playbook-save-state" class="playbook-save-state">Saved locally</p>
-                            </div>
-                            <div class="playbook-editor-actions">
-                                <button id="playbook-duplicate-note-btn" class="playbook-small-btn">Duplicate</button>
-                                <button id="playbook-delete-note-btn" class="playbook-small-btn danger">Delete</button>
-                            </div>
-                        </div>
-
-                        <div class="playbook-stats-grid" id="playbook-stats-grid"></div>
-                        <div class="playbook-insight-strip" id="playbook-insight-strip"></div>
-
-                        <input id="playbook-title-input" class="playbook-title-input" type="text" placeholder="Untitled note">
-
-                        <div class="playbook-property-grid">
-                            <label>
-                                <span>Tags</span>
-                                <input id="playbook-tags-input" type="text" placeholder="Backtest, ICT, Liquidity">
-                            </label>
-                            <label>
-                                <span>Symbol</span>
-                                <input id="playbook-symbol-input" type="text" placeholder="EURUSD">
-                            </label>
-                            <label>
-                                <span>Timeframe</span>
-                                <input id="playbook-timeframe-input" type="text" placeholder="H1">
-                            </label>
-                            <label>
-                                <span>Setup</span>
-                                <input id="playbook-setup-input" type="text" placeholder="Liquidity sweep">
-                            </label>
-                            <label>
-                                <span>R Multiple</span>
-                                <input id="playbook-rr-input" type="number" step="0.1" placeholder="1.5">
-                            </label>
-                            <label>
-                                <span>Result</span>
-                                <select id="playbook-result-input">
-                                    <option value="">No result</option>
-                                    <option value="Win">Win</option>
-                                    <option value="Loss">Loss</option>
-                                    <option value="Breakeven">Breakeven</option>
-                                    <option value="Idea">Idea</option>
-                                </select>
-                            </label>
-                        </div>
-
-                        <div class="playbook-quick-tags" id="playbook-quick-tags">
-                            <button data-tag="Backtest">Backtest</button>
-                            <button data-tag="Liquidity">Liquidity</button>
-                            <button data-tag="Psychology">Psychology</button>
-                            <button data-tag="AI Research">AI Research</button>
-                            <button data-tag="Mistake">Mistake</button>
-                        </div>
-
-                        <textarea id="playbook-body-input" class="playbook-body-input" spellcheck="false" placeholder="Write your trading note..."></textarea>
-
-                        <div class="playbook-attachments">
-                            <div class="playbook-attachments-head">
-                                <div>
-                                    <p class="playbook-label">Images</p>
-                                    <span>Upload, drag here, or paste screenshots while the note is open.</span>
-                                </div>
-                                <label class="playbook-upload-btn">
-                                    Add Images
-                                    <input id="playbook-image-input" type="file" accept="image/*" multiple>
-                                </label>
-                            </div>
-                            <div id="playbook-drop-zone" class="playbook-drop-zone">
-                                <span>Drop chart screenshots here</span>
-                            </div>
-                            <div id="playbook-image-grid" class="playbook-image-grid"></div>
-                        </div>
-                    </section>
-
-                    <section class="playbook-editor playbook-view-panel" id="playbook-setups-view" hidden>
-                        <div class="playbook-editor-toolbar">
-                            <div>
-                                <p class="playbook-label">Setup Library</p>
-                                <p class="playbook-save-state">Build a repeatable strategy catalog.</p>
-                            </div>
-                            <div class="playbook-editor-actions">
-                                <button id="playbook-new-setup-btn" class="playbook-small-btn">New Setup</button>
-                                <button id="playbook-delete-setup-btn" class="playbook-small-btn danger">Delete</button>
-                            </div>
-                        </div>
-
-                        <div class="playbook-setup-layout">
-                            <div id="playbook-setup-list" class="playbook-setup-list"></div>
-                            <div class="playbook-setup-editor">
-                                <input id="playbook-setup-title-input" class="playbook-title-input" type="text" placeholder="Setup name">
-                                <div class="playbook-property-grid">
-                                    <label>
-                                        <span>Status</span>
-                                        <select id="playbook-setup-status-input">
-                                            <option value="Learning">Learning</option>
-                                            <option value="Testing">Testing</option>
-                                            <option value="Validated">Validated</option>
-                                            <option value="Automating">Automating</option>
-                                        </select>
-                                    </label>
-                                    <label>
-                                        <span>Market</span>
-                                        <input id="playbook-setup-market-input" type="text" placeholder="London, NY, crypto">
-                                    </label>
-                                    <label>
-                                        <span>Best TF</span>
-                                        <input id="playbook-setup-timeframe-input" type="text" placeholder="M15-H1">
-                                    </label>
-                                    <label>
-                                        <span>Sample</span>
-                                        <input id="playbook-setup-sample-input" type="number" min="0" step="1" placeholder="100">
-                                    </label>
-                                </div>
-                                <textarea id="playbook-setup-body-input" class="playbook-body-input" spellcheck="false" placeholder="Rules, invalidation, examples, automation notes..."></textarea>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="playbook-editor playbook-view-panel" id="playbook-roadmap-view" hidden>
-                        <div class="playbook-editor-toolbar">
-                            <div>
-                                <p class="playbook-label">Career Roadmap</p>
-                                <p class="playbook-save-state">Move skills from learning to public proof.</p>
-                            </div>
-                            <div class="playbook-roadmap-add">
-                                <input id="playbook-roadmap-input" type="text" placeholder="Add a career task...">
-                                <button id="playbook-roadmap-add-btn" class="playbook-small-btn">Add</button>
-                            </div>
-                        </div>
-
-                        <div class="playbook-roadmap-board" id="playbook-roadmap-board"></div>
-                    </section>
-                </div>
-            </aside>
-        </div>
-    </div>
-
-
-
-
-    <!-- Download History Modal -->
-    <div class="download-history-modal" id="download-history-modal">
-        <div class="dl-history-content">
-            <div class="dl-history-header">
-                <h3>Download History Data</h3>
-                <p class="dl-history-subtitle">Local-first chunk cache for offline replay. Data: Local reads this cache only.</p>
-                <button id="dl-history-close" class="dl-history-close-btn">&times;</button>
-            </div>
-
-            <div class="dl-history-body">
-                <!-- Only Bulk Download form remains -->
-                <div class="dl-history-form">
-                    <div class="dl-form-row">
-                        <label>Symbols (comma separated)</label>
-                        <input type="text" id="dl-bulk-symbols" class="dl-input" value="BTCUSD, DXY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAGUSD, XAUUSD" placeholder="e.g. EURUSD, GBPUSD, XAUUSD">
-                        <div class="dl-chips-container">
-                            <span class="dl-chip" data-val="BTCUSD,DXY,EURUSD,GBPJPY,GBPUSD,USDJPY,XAGUSD,XAUUSD">My Pairs (Active)</span>
-                            <span class="dl-chip" data-val="EURUSD,GBPUSD,USDJPY,AUDUSD,USDCAD,USDCHF,NZDUSD,XAUUSD">Forex Majors & Gold</span>
-                            <span class="dl-chip" data-val="BTCUSD,ETHUSD">Crypto Only</span>
-                        </div>
-                    </div>
-                    <div class="dl-form-row">
-                        <div class="dl-tf-label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <label style="margin: 0;">Timeframes (Active: Full Timeframes)</label>
-                            <span style="font-size: 11px;">
-                                <span id="dl-bulk-tf-all" style="color: #b45cff; cursor: pointer; font-weight: 600;">☑ Select All</span> |
-                                <span id="dl-bulk-tf-none" style="color: #a895c7; cursor: pointer; font-weight: 600;">☐ Clear</span>
-                            </span>
-                        </div>
-                        <div class="dl-tf-checkboxes-grid">
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M1" checked> M1</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M5" checked> M5</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M15" checked> M15</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M30" checked> M30</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H1" checked> H1</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H4" checked> H4</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="D1" checked> D1</label>
-                        </div>
-                    </div>
-                    <div class="dl-form-row">
-                        <label>Bars per Symbol/TF</label>
-                        <select id="dl-bulk-bars" class="dl-input">
-                            <option value="5000">5,000 bars</option>
-                            <option value="10000">10,000 bars</option>
-                            <option value="20000">20,000 bars</option>
-                            <option value="40000" selected>40,000 bars (TV Ultimate)</option>
-                            <option value="50000">50,000 bars</option>
-                            <option value="100000">100,000 bars</option>
+                <div class="op-field">
+                    <label><input id="op-tp-on" type="checkbox" style="width:auto;margin-right:6px">Take Profit</label>
+                    <div style="display:flex;gap:8px">
+                        <input id="op-tp" type="number" step="any" value="400" disabled style="flex:1">
+                        <select id="op-tp-unit" disabled style="width:80px">
+                            <option value="pips" selected>pips</option>
+                            <option value="price">price</option>
                         </select>
                     </div>
-                    <div class="dl-action-row" style="display: flex; gap: 10px;">
-                        <button id="dl-bulk-execute" class="dl-execute-btn" style="flex: 1;">⬇ Start Bulk Download</button>
-                        <button id="dl-bulk-stop" class="dl-execute-btn dl-stop-btn" style="flex: 0 0 100px; background: #e03a3e; display: none;">🛑 Stop</button>
+                </div>
+
+                <div class="op-est"><span>Est. margin</span><b id="op-margin">$0.00</b></div>
+
+                <button id="op-submit" class="op-submit buy">Buy EURUSD 0.01</button>
+                <p class="op-note" id="op-note">Replay mode: orders execute against simulated prices at the replay cursor.</p>
+            </div>
+        </aside>
+
+        <!-- ══ Playbook drawer ══ -->
+        <aside id="playbook-drawer" class="drawer" style="width:420px">
+            <div class="drawer-head">
+                <h2>Playbook</h2>
+                <button class="drawer-close" data-close-drawer="playbook-drawer" title="Close">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="pb-tabs">
+                <button class="pb-tab active" data-pb-view="journal">Journal</button>
+                <button class="pb-tab" data-pb-view="setups">Setups</button>
+                <button class="pb-tab" data-pb-view="roadmap">Roadmap</button>
+            </div>
+            <div class="drawer-body">
+                <div id="pb-journal-view">
+                    <div class="pb-section pb-form">
+                        <h3>New note</h3>
+                        <input id="pb-note-title" placeholder="Title — e.g. London breakout EURUSD">
+                        <input id="pb-note-tags" placeholder="Tags (comma separated)">
+                        <textarea id="pb-note-body" placeholder="What happened? What did you learn?"></textarea>
+                        <button id="pb-note-add" class="pb-submit">Add note</button>
+                    </div>
+                    <div class="pb-section">
+                        <input id="pb-note-search" placeholder="Search notes…" style="width:100%;margin-bottom:8px">
+                        <div id="pb-note-list"></div>
                     </div>
                 </div>
 
-                <div class="dl-history-progress" id="dl-history-progress" style="display: none;">
-                    <div class="dl-progress-track">
-                        <div class="dl-progress-bar" id="dl-history-progress-bar"></div>
+                <div id="pb-setups-view" style="display:none">
+                    <div class="pb-section pb-form">
+                        <h3>New setup</h3>
+                        <input id="pb-setup-title" placeholder="Setup name — e.g. Asian range breakout">
+                        <textarea id="pb-setup-body" placeholder="Entry rules, invalidation, risk…"></textarea>
+                        <button id="pb-setup-add" class="pb-submit">Add setup</button>
                     </div>
+                    <div class="pb-section"><div id="pb-setup-list"></div></div>
                 </div>
-                <div id="dl-history-status" class="dl-status"></div>
-                <div id="dl-history-result" class="dl-result"></div>
 
-                <div class="dl-history-files-section">
-                    <h4>Local Replay Coverage</h4>
-                    <div id="dl-history-files" class="dl-history-files"></div>
+                <div id="pb-roadmap-view" style="display:none">
+                    <div class="pb-section pb-form">
+                        <h3>Roadmap goal</h3>
+                        <input id="pb-roadmap-title" placeholder="Goal — e.g. 50 replay trades this week">
+                        <button id="pb-roadmap-add" class="pb-submit">Add goal</button>
+                    </div>
+                    <div class="pb-section"><div id="pb-roadmap-list"></div></div>
                 </div>
             </div>
+        </aside>
+    </main>
+
+    <!-- ══ Bottom panel ══ -->
+    <section id="bottom-panel">
+        <div class="bp-tabs">
+            <button class="bp-tab active" data-bp-tab="positions">Positions <span class="count" id="cnt-positions">0</span></button>
+            <button class="bp-tab" data-bp-tab="pending">Pending <span class="count" id="cnt-pending">0</span></button>
+            <button class="bp-tab" data-bp-tab="history">History</button>
+            <div class="bp-stats">
+                <span>Balance <b id="st-balance">$10,000.00</b></span>
+                <span>Equity <b id="st-equity">$10,000.00</b></span>
+                <span>Margin <b id="st-margin">$0.00</b></span>
+                <span>Free <b id="st-free">$10,000.00</b></span>
+                <span>Level <b id="st-level">0.00%</b></span>
+            </div>
+            <button class="bp-collapse" id="bp-collapse" title="Collapse panel">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+        </div>
+        <div class="bp-body">
+            <table class="bp-table" id="tbl-positions">
+                <thead><tr><th>Ticket</th><th>Symbol</th><th>Type</th><th>Volume</th><th>Open</th><th>Current</th><th>SL</th><th>TP</th><th>P/L</th><th></th></tr></thead>
+                <tbody id="rows-positions"></tbody>
+            </table>
+            <table class="bp-table" id="tbl-pending" style="display:none">
+                <thead><tr><th>Ticket</th><th>Symbol</th><th>Type</th><th>Volume</th><th>Price</th><th>SL</th><th>TP</th><th></th></tr></thead>
+                <tbody id="rows-pending"></tbody>
+            </table>
+            <table class="bp-table" id="tbl-history" style="display:none">
+                <thead><tr><th>Time</th><th>Ticket</th><th>Symbol</th><th>Type</th><th>Volume</th><th>Open</th><th>Close</th><th>P/L</th><th>Result</th></tr></thead>
+                <tbody id="rows-history"></tbody>
+            </table>
+            <div class="bp-empty" id="bp-empty">No open positions.</div>
+        </div>
+    </section>
+</div>
+
+<!-- ══ History download modal ══ -->
+<div class="modal-overlay" id="modal-history">
+    <div class="modal" style="width:560px">
+        <div class="modal-head">
+            <h2>History Data</h2>
+            <button class="drawer-close" data-close-modal="modal-history" style="margin-left:auto" title="Close">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="dl-form">
+                <select id="dl-symbols" multiple size="6" title="Hold Ctrl to select several"></select>
+                <select id="dl-timeframes" multiple size="6" title="Hold Ctrl to select several">
+                    <option value="M1" selected>M1</option>
+                    <option value="M5">M5</option>
+                    <option value="M15">M15</option>
+                    <option value="M30">M30</option>
+                    <option value="H1">H1</option>
+                    <option value="H4">H4</option>
+                    <option value="D1">D1</option>
+                    <option value="W1">W1</option>
+                </select>
+                <input id="dl-bars" type="number" min="1000" step="1000" value="50000" title="Bars per symbol/timeframe">
+                <button id="dl-start" class="btn primary">Download</button>
+            </div>
+            <div class="dl-progress" id="dl-progress"></div>
+            <h3 style="font-size:12px;color:var(--text-bright);margin:10px 0 8px">Local data</h3>
+            <div class="hist-list" id="dl-files"></div>
         </div>
     </div>
+</div>
 
+<!-- ══ Jump-to-date modal ══ -->
+<div class="modal-overlay" id="modal-jump">
+    <div class="modal" style="width:360px">
+        <div class="modal-head">
+            <h2>Jump to date</h2>
+            <button class="drawer-close" data-close-modal="modal-jump" style="margin-left:auto" title="Close">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="jump-grid">
+                <input type="datetime-local" id="jump-datetime">
+                <p style="font-size:11px;color:var(--text-dim);line-height:1.5">The replay cursor moves to the first bar at or before this time. Missing data is fetched from MT5 when connected.</p>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn" data-close-modal="modal-jump">Cancel</button>
+            <button class="btn primary" id="jump-go">Go</button>
+        </div>
+    </div>
+</div>
 
+<div id="toast-root"></div>
 
-
-    <!-- Scripts -->
-    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/playbook.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/replay.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/trading.js') }}"></script>
+<script src="{{ url_for('static', filename='js/replay.js') }}"></script>
+<script src="{{ url_for('static', filename='js/playbook.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
