@@ -3,25 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Chart Tool - Bar Replay</title>
+    <title>TradingView - Bar Replay & Market Backtester</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='charting_library/charting_library.standalone.js') }}"></script>
     <script src="{{ url_for('static', filename='js/datafeed.js') }}"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Toolbar (TradingView Web Style) -->
-        <div class="top-toolbar">
-            <div class="toolbar-group brand-group">
-                <div class="brand-container" style="display: flex; align-items: center; margin-right: 12px; user-select: none;">
-                    <span class="brand-name" style="font-size: 15px; font-weight: 800; background: linear-gradient(90deg, #00e5ff 0%, #ff4fd8 48%, #b45cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.8px; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', sans-serif; filter: drop-shadow(0 0 10px rgba(255, 79, 216, 0.32));">WuangVibeTrading</span>
+        <!-- Top Navigation Bar (Official TradingView Web Style) -->
+        <header class="top-toolbar tv-header">
+            <!-- Left: Logo & Search & Core Controls -->
+            <div class="tv-header-left">
+                <!-- TV Brand Icon / Menu -->
+                <div class="tv-brand" title="TradingView Workspace">
+                    <svg class="tv-logo-icon" width="28" height="20" viewBox="0 0 28 20" fill="none">
+                        <path d="M12.5 0H7.5L0 20H5L7.5 13H12.5L12.5 0Z" fill="#2962FF"/>
+                        <path d="M20.5 0H15.5V20H20.5V0Z" fill="#2962FF"/>
+                        <path d="M28 0H23V7.5H28V0Z" fill="#2962FF"/>
+                    </svg>
+                    <span class="tv-brand-title">TradingView</span>
                 </div>
+
+                <div class="tv-header-divider"></div>
+
+                <!-- Symbol Search Pill Button -->
+                <div class="tv-symbol-pill" id="tv-symbol-search-trigger" title="Symbol Search (Enter or Click)">
+                    <svg class="tv-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span class="tv-symbol-ticker" id="tv-symbol-btn-ticker">EURUSD</span>
+                    <span class="tv-exchange-tag">EXNESS</span>
+                    <svg class="tv-chevron-icon" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7 10l5 5 5-5z"/>
+                    </svg>
+                </div>
+
+                <div class="tv-header-divider"></div>
+
+                <!-- Visible Timeframe Selector (TradingView Web Style) -->
+                <div class="tv-timeframe-group">
+                    <button class="tv-nav-tf-btn" data-tf="M1" title="1 Minute">1m</button>
+                    <button class="tv-nav-tf-btn" data-tf="M5" title="5 Minutes">5m</button>
+                    <button class="tv-nav-tf-btn" data-tf="M15" title="15 Minutes">15m</button>
+                    <button class="tv-nav-tf-btn" data-tf="M30" title="30 Minutes">30m</button>
+                    <button class="tv-nav-tf-btn active" data-tf="H1" title="1 Hour">1h</button>
+                    <button class="tv-nav-tf-btn" data-tf="H4" title="4 Hours">4h</button>
+                    <button class="tv-nav-tf-btn" data-tf="D1" title="1 Day">D</button>
+                    <button class="tv-nav-tf-btn" data-tf="W1" title="1 Week">W</button>
+                    <div class="tv-tf-dropdown-wrapper">
+                        <button class="tv-nav-tf-more" id="tv-tf-dropdown-btn" title="More Timeframes">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+                        </button>
+                        <div class="tv-tf-dropdown-menu" id="tv-tf-dropdown-menu">
+                            <div class="tv-tf-dd-section">Minutes</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="M1">1 minute</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="M5">5 minutes</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="M15">15 minutes</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="M30">30 minutes</div>
+                            <div class="tv-tf-dd-section">Hours</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="H1">1 hour</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="H4">4 hours</div>
+                            <div class="tv-tf-dd-section">Days / Weeks</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="D1">1 day (D)</div>
+                            <div class="tv-tf-dd-item tv-nav-tf-btn" data-tf="W1">1 week (W)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tv-header-divider"></div>
+
+                <!-- Chart Type Button -->
+                <button class="tv-header-btn icon-only" title="Candlestick Chart">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M9 4v16M9 8h4v8H9zM15 2v20M15 6h4v12h-4z"/>
+                    </svg>
+                </button>
+
+                <!-- Indicators Button -->
+                <button class="tv-header-btn" id="tv-header-indicators" title="Indicators & Metrics">
+                    <span class="tv-fx-badge">ƒx</span>
+                    <span class="btn-text">Indicators</span>
+                </button>
+
+                <!-- Bar Replay Button (TradingView Web Highlight) -->
+                <button class="tv-header-btn tv-replay-trigger-btn" id="replay-btn" title="Bar Replay Mode (Jump & Backtest)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 19 2 12 11 5 11 19" fill="currentColor"></polygon>
+                        <polygon points="22 19 13 12 22 5 22 19" fill="currentColor"></polygon>
+                    </svg>
+                    <span class="btn-text">Replay</span>
+                </button>
+
+                <div class="tv-header-divider"></div>
+
+                <!-- Undo / Redo Buttons -->
+                <button class="tv-header-btn icon-only" id="tv-undo-btn" title="Undo">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 7v6h6"></path>
+                        <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"></path>
+                    </svg>
+                </button>
+                <button class="tv-header-btn icon-only" id="tv-redo-btn" title="Redo">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 7v6h-6"></path>
+                        <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"></path>
+                    </svg>
+                </button>
             </div>
 
-            <div class="toolbar-separator-v"></div>
+            <!-- Right: Layouts, Actions, MT5 Status, Tools -->
+            <div class="tv-header-right">
+                <!-- Layout Multi-Chart Grid -->
+                <div class="layout-select-wrapper">
+                    <button id="layout-btn" class="tv-header-btn" title="Select Multi-Chart Layout">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span class="btn-text">Layout</span>
+                    </button>
+                    <div id="layout-dropdown" class="layout-dropdown">
+                        <div class="layout-option active" data-layout="1" title="Single Chart">
+                            <svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                        <div class="layout-option" data-layout="2v" title="2 Charts Vertical">
+                            <svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                        <div class="layout-option" data-layout="2h" title="2 Charts Horizontal">
+                            <svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                        <div class="layout-option" data-layout="4" title="4 Charts Grid">
+                            <svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Hidden DOM elements for legacy script compatibility -->
+                <div class="tv-header-divider"></div>
+
+                <!-- Data Source Badge (Local Chunk Cache vs Live MT5) -->
+                <button id="mode-toggle-btn" class="tv-mode-badge" title="Data Source: Local Cache or MT5 Live Bridge">
+                    Data: Local
+                </button>
+
+                <!-- MT5 Connection Status -->
+                <div class="status-indicator tv-status-indicator" id="mt5-status" title="MT5 Terminal Bridge Status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">MT5</span>
+                </div>
+
+                <div class="tv-header-divider"></div>
+
+                <!-- Quick Search -->
+                <button id="tv-quick-search-btn" class="tv-header-btn icon-only" title="Quick Search (/)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+
+                <!-- Fullscreen Toggle -->
+                <button id="fullscreen-btn" class="tv-header-btn icon-only" title="Toggle Fullscreen">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                </button>
+
+                <!-- Camera / Snapshot -->
+                <button id="snapshot-btn" class="tv-header-btn icon-only" title="Take a chart snapshot">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                </button>
+
+                <!-- Quit App Button -->
+                <button id="quit-app-btn" class="tv-header-btn icon-only quit-btn" title="Shutdown Server">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        <line x1="12" y1="2" x2="12" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Legacy Hidden Selectors for Script Backwards Compatibility -->
             <div style="display: none;">
+                <button id="trade-panel-toggle-btn"></button>
+                <button id="playbook-toggle-btn"></button>
+                <button id="download-history-btn"></button>
                 <select id="symbol-select" class="symbol-select">
                     <option value="EURUSD">EURUSD</option>
                     <option value="GBPUSD">GBPUSD</option>
@@ -30,7 +201,6 @@
                     <option value="USDCAD">USDCAD</option>
                     <option value="XAUUSD">XAUUSD</option>
                 </select>
-
                 <div class="timeframe-buttons">
                     <button class="tf-btn" data-tf="M1">1m</button>
                     <button class="tf-btn" data-tf="M5">5m</button>
@@ -41,257 +211,302 @@
                     <button class="tf-btn" data-tf="D1">1D</button>
                     <button class="tf-btn" data-tf="W1">1W</button>
                 </div>
+                <span id="active-symbol-text">EURUSD</span>
             </div>
+        </header>
 
-            <div class="toolbar-separator-v"></div>
-
-            <!-- Replay / Trade buttons -->
-            <div class="toolbar-group actions-group">
-                <button id="replay-btn" class="toolbar-btn">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M8 5v14l11-7z"/></svg> Replay
-                </button>
-                <button id="download-history-btn" class="toolbar-btn" title="Download historical data from MT5 for offline replay">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> History
-                </button>
-                <button id="trade-panel-toggle-btn" class="toolbar-btn">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/></svg> Order Panel
-                </button>
-                <button id="playbook-toggle-btn" class="toolbar-btn" title="Open Trading Playbook">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg> Playbook
-                </button>
-            </div>
-
-            <div class="toolbar-separator-v"></div>
-
-            <!-- Layout & Sync Buttons -->
-            <div class="toolbar-group layout-group">
-                <div class="layout-select-wrapper">
-                    <button id="layout-btn" class="toolbar-btn" title="Choose Grid Layout">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; display: inline-block; vertical-align: middle;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Layout
-                    </button>
-                    <div id="layout-dropdown" class="layout-dropdown">
-                        <div class="layout-option active" data-layout="1" title="Single Chart">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <!-- Main Body Layout -->
+        <div class="main-layout tv-main-layout">
+            <!-- Center Section: Chart View & Bottom Dashboard -->
+            <div class="middle-section tv-middle-section">
+                <!-- Chart Canvas Area -->
+                <div class="chart-area tv-chart-area">
+                    <!-- TradingView Quick Buy/Sell Trading Widget (Draggable & Non-blocking) -->
+                    <div class="tv-quick-trade-widget" id="tv-quick-trade-widget" title="Hold drag handle to move anywhere on chart">
+                        <div class="tv-qtw-drag-handle" id="tv-qtw-drag-handle" title="Drag to move widget">
+                            <svg width="6" height="12" viewBox="0 0 6 12" fill="currentColor">
+                                <circle cx="1.5" cy="2" r="1.2"/>
+                                <circle cx="4.5" cy="2" r="1.2"/>
+                                <circle cx="1.5" cy="6" r="1.2"/>
+                                <circle cx="4.5" cy="6" r="1.2"/>
+                                <circle cx="1.5" cy="10" r="1.2"/>
+                                <circle cx="4.5" cy="10" r="1.2"/>
+                            </svg>
                         </div>
-                        <div class="layout-option" data-layout="2v" title="2 Charts Vertical">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        <button class="tv-qtw-btn tv-qtw-sell" id="tv-qtw-sell" title="Quick Sell Market (Click to Trade)">
+                            <span class="tv-qtw-title">SELL</span>
+                            <span class="tv-qtw-price" id="tv-qtw-sell-price">0.00000</span>
+                        </button>
+                        <div class="tv-qtw-vol-box" title="Order Volume (Lots)">
+                            <input type="number" id="tv-qtw-vol" class="tv-qtw-vol-input" value="0.10" step="0.01" min="0.01">
                         </div>
-                        <div class="layout-option" data-layout="2h" title="2 Charts Horizontal">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="18" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                        </div>
-                        <div class="layout-option" data-layout="4" title="4 Charts Grid">
-                            <svg width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="13" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                        </div>
+                        <button class="tv-qtw-btn tv-qtw-buy" id="tv-qtw-buy" title="Quick Buy Market (Click to Trade)">
+                            <span class="tv-qtw-title">BUY</span>
+                            <span class="tv-qtw-price" id="tv-qtw-buy-price">0.00000</span>
+                        </button>
+                        <button class="tv-qtw-toggle-btn" id="tv-qtw-toggle-btn" title="Minimize / Expand Quick Trade">
+                            <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M4 6l4 4 4-4H4z"/>
+                            </svg>
+                        </button>
                     </div>
-                </div>
-            </div>
-
-            <div class="toolbar-group right-aligned">
-                <button id="mode-toggle-btn" class="toolbar-btn mode-toggle-btn" title="Data source: Local chunk cache or Live MT5 bridge">Data: Local</button>
-                <div class="status-indicator" id="mt5-status">
-                    <span class="status-dot"></span>
-                    <span class="status-text">MT5</span>
-                </div>
-                <button id="quit-app-btn" class="toolbar-btn quit-btn" title="Quit & Shutdown Application">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                        <line x1="12" y1="2" x2="12" y2="12"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Main Layout -->
-        <div class="main-layout">
-
-            <!-- Middle Section: Charts & Positions Dashboard -->
-            <div class="middle-section">
-                <!-- Chart Area -->
-                <div class="chart-area">
                     <div id="charts-grid" class="charts-grid layout-1">
-                        <!-- Dynamic chart panels will be injected here by ChartManager -->
+                        <!-- Dynamic chart panels injected here by ChartManager -->
                     </div>
 
                     <!-- Floating TradingView-Style Replay Toolbar -->
                     <div class="tv-replay-toolbar" id="tv-replay-toolbar" style="display: none;">
-                        <div class="replay-drag-handle">
-                            <span class="replay-drag-title" style="margin-left: 6px;">Replay</span>
+                        <div class="replay-drag-handle" title="Drag Replay Bar">
+                            <svg width="12" height="14" viewBox="0 0 12 14" fill="#787b86">
+                                <circle cx="3" cy="2" r="1.5"/><circle cx="9" cy="2" r="1.5"/>
+                                <circle cx="3" cy="7" r="1.5"/><circle cx="9" cy="7" r="1.5"/>
+                                <circle cx="3" cy="12" r="1.5"/><circle cx="9" cy="12" r="1.5"/>
+                            </svg>
+                            <span class="replay-drag-title">Replay</span>
                         </div>
 
-                        <div class="toolbar-separator-v"></div>
+                        <div class="tv-rp-sep"></div>
 
-                        <button id="replay-jump-mode" class="tv-replay-btn" title="Jump to: Click chart to seek">
-                            <span class="btn-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 4px;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            </span> Jump To
+                        <button id="replay-jump-mode" class="tv-rp-btn" title="Jump to Bar: Click anywhere on chart to seek">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="2" x2="12" y2="6"></line>
+                                <line x1="12" y1="18" x2="12" y2="22"></line>
+                                <line x1="2" y1="12" x2="6" y2="12"></line>
+                                <line x1="18" y1="12" x2="22" y2="12"></line>
+                            </svg>
+                            <span>Jump</span>
                         </button>
 
-                        <div class="toolbar-separator-v"></div>
+                        <div class="tv-rp-sep"></div>
 
-                        <button id="replay-prev" class="tv-replay-btn-icon" title="Previous Bar (←)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+                        <button id="replay-prev" class="tv-rp-icon-btn" title="Previous Bar (Left Arrow)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                                <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2.5"></line>
+                            </svg>
                         </button>
 
-                        <button id="replay-play-pause" class="tv-replay-btn-icon play-btn" title="Play/Pause (Space)">
-                            <span id="play-icon" style="display: flex; align-items: center; justify-content: center;">
-                                <svg id="svg-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: block;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                                <svg id="svg-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                            </span>
+                        <button id="replay-play-pause" class="tv-rp-play-btn" title="Play / Pause (Space)">
+                            <svg id="svg-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                            <svg id="svg-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
                         </button>
 
-                        <button id="replay-next" class="tv-replay-btn-icon" title="Next Bar (→)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                        <button id="replay-next" class="tv-rp-icon-btn" title="Next Bar (Right Arrow)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                                <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2.5"></line>
+                            </svg>
                         </button>
 
-                        <div class="toolbar-separator-v"></div>
+                        <div class="tv-rp-sep"></div>
 
                         <div class="replay-status-text">
                             <span id="replay-progress">0 / 0</span>
                             <span id="replay-current-date" class="replay-date-display"></span>
-                            <span id="replay-coverage" class="replay-coverage-display">Coverage: local chunk cache</span>
+                            <span id="replay-coverage" class="replay-coverage-display" style="display: none;"></span>
                         </div>
 
-                        <div class="toolbar-separator-v"></div>
+                        <div class="tv-rp-sep"></div>
 
                         <div class="replay-speed-container">
-                            <span class="speed-label">Speed:</span>
-                            <select id="replay-speed" class="tv-replay-speed-select">
+                            <select id="replay-speed" class="tv-replay-speed-select" title="Playback Speed">
                                 <option value="50">20x (0.05s)</option>
                                 <option value="100">10x (0.1s)</option>
                                 <option value="200">5x (0.2s)</option>
                                 <option value="500">2x (0.5s)</option>
-                                <option value="1000" selected>1x (1s)</option>
-                                <option value="2000">0.5x (2s)</option>
-                                <option value="4000">0.25x (4s)</option>
+                                <option value="1000" selected>1x (1.0s)</option>
+                                <option value="2000">0.5x (2.0s)</option>
+                                <option value="4000">0.25x (4.0s)</option>
                             </select>
                         </div>
 
-                        <div class="toolbar-separator-v"></div>
+                        <div class="tv-rp-sep"></div>
 
                         <div class="replay-date-container">
                             <input type="text" id="replay-start-date" class="tv-replay-date-input" placeholder="DD/MM/YYYY HH:MM">
-                            <button id="replay-jump-date" class="tv-replay-btn-go" title="Go to date">Go</button>
+                            <button id="replay-jump-date" class="tv-replay-btn-go" title="Jump to Date">Go</button>
                         </div>
 
-                        <div class="toolbar-separator-v"></div>
+                        <div class="tv-rp-sep"></div>
 
-                        <button id="replay-close" class="tv-replay-btn-close" title="Close Replay (Esc)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        <button id="replay-close" class="tv-rp-close-btn" title="Exit Replay (Esc)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                         </button>
 
-                        <!-- Tiny thin slider built-in at the bottom edge of the floating toolbar -->
+                        <!-- Built-in Scrubber Slider -->
                         <div class="tv-replay-slider-bar">
                             <input type="range" id="replay-slider" class="tv-replay-slider" min="0" max="100" value="0">
                         </div>
                     </div>
                 </div>
 
-                <!-- Bottom Positions & History Dashboard -->
-                <div class="bottom-dashboard" id="bottom-dashboard">
-                    <div class="dashboard-tabs">
-                        <div class="tab-btn-group">
-                            <button class="tab-btn active" data-tab="positions">Open Positions (<span id="open-positions-count">0</span>)</button>
-                            <button class="tab-btn" data-tab="pending">Pending Orders (<span id="pending-positions-count">0</span>)</button>
-                            <button class="tab-btn" data-tab="history">Trading History</button>
+                <!-- Bottom Trading Panel & Status Bar (TradingView Style) -->
+                <div class="bottom-dashboard tv-bottom-bar" id="bottom-dashboard">
+                    <!-- Status Strip: Time shortcuts + Tabs + Clock -->
+                    <!-- Strip 1: TradingView Bottom Tabs & Account Summary -->
+                    <div class="tv-bottom-tabs-strip">
+                        <div class="tv-bottom-left-tabs">
+                            <button class="tv-b-tab active" id="tv-tab-trading-panel" data-tab="trading-panel">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                                <span>Trading Panel</span>
+                                <span class="tv-tab-badge" id="open-positions-count-badge">0</span>
+                            </button>
+                            <button class="tv-b-tab" id="tv-tab-strategy-tester" data-tab="strategy-tester">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                <span>Strategy Tester</span>
+                            </button>
+                            <button class="tv-b-tab" id="tv-tab-playbook" data-tab="playbook">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+                                <span>Notes</span>
+                            </button>
                         </div>
 
-                        <div class="account-summary-bar">
-                            <span class="account-summary-item">Balance: <strong id="acc-balance">$10,000.00</strong></span>
-                            <span class="account-summary-item">Equity: <strong id="acc-equity">$10,000.00</strong></span>
-                            <span class="account-summary-item">Margin: <strong id="acc-margin">$0.00</strong></span>
-                            <span class="account-summary-item">Free Margin: <strong id="acc-free-margin">$10,000.00</strong></span>
-                            <span class="account-summary-item">Margin Level: <strong id="acc-margin-level">0.00%</strong></span>
-                            <div class="toolbar-separator-v" style="height: 14px; margin: 0 4px; background: #2b2141;"></div>
-                            <button id="dashboard-toggle-btn" class="dashboard-toggle-btn" title="Collapse / Expand">
-                                <svg width="12" height="12" viewBox="0 0 24 24" style="transition: transform 0.3s ease; display: block;"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                        <div class="account-summary-bar tv-account-bar">
+                            <span class="account-summary-item">Account: <strong id="acc-name">Exness MT5</strong></span>
+                            <span class="account-summary-item">Balance: <strong id="acc-balance">,000.00</strong></span>
+                            <span class="account-summary-item">Equity: <strong id="acc-equity">,000.00</strong></span>
+                            <span class="account-summary-item">Margin: <strong id="acc-margin">/bin/zsh.00</strong></span>
+                            <span class="account-summary-item">Free: <strong id="acc-free-margin">,000.00</strong></span>
+                        </div>
+
+                        <div class="tv-bottom-tabs-actions">
+                            <button id="dashboard-toggle-btn" class="dashboard-toggle-btn tv-dock-toggle" title="Expand / Collapse Panel">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                </svg>
                             </button>
                         </div>
                     </div>
 
-                    <div class="dashboard-tab-content active" id="tab-positions">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Ticket</th>
-                                    <th>Symbol</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>Open Price</th>
-                                    <th>Current Price</th>
-                                    <th>Stop Loss (SL)</th>
-                                    <th>Take Profit (TP)</th>
-                                    <th>Profit/Loss ($)</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="positions-list">
-                                <tr>
-                                    <td colspan="10" class="empty-row">No open trading positions.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <!-- Expandable Tab Tables -->
+                    <div class="tv-dashboard-content-area">
+                        <!-- Sub-tabs: Positions, Orders, History -->
+                        <div class="dashboard-tabs tv-sub-tabs">
+                            <button class="tab-btn active" data-tab="positions">
+                                Positions (<span id="open-positions-count">0</span>)
+                            </button>
+                            <button class="tab-btn" data-tab="pending">
+                                Orders (<span id="pending-positions-count">0</span>)
+                            </button>
+                            <button class="tab-btn" data-tab="history">History</button>
+                        </div>
+                        <div class="dashboard-tab-content active" id="tab-positions">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ticket</th>
+                                        <th>Symbol</th>
+                                        <th>Type</th>
+                                        <th>Volume</th>
+                                        <th>Open Price</th>
+                                        <th>Current Price</th>
+                                        <th>Stop Loss</th>
+                                        <th>Take Profit</th>
+                                        <th>Profit/Loss ($)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="positions-list">
+                                    <tr>
+                                        <td colspan="10" class="empty-row">No open trading positions.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="dashboard-tab-content" id="tab-pending">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Ticket</th>
-                                    <th>Symbol</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>Order Price</th>
-                                    <th>Current Price</th>
-                                    <th>Stop Loss</th>
-                                    <th>Take Profit</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pending-list">
-                                <tr>
-                                    <td colspan="9" class="empty-row">No pending orders.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="dashboard-tab-content" id="tab-pending">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ticket</th>
+                                        <th>Symbol</th>
+                                        <th>Type</th>
+                                        <th>Volume</th>
+                                        <th>Order Price</th>
+                                        <th>Current Price</th>
+                                        <th>Stop Loss</th>
+                                        <th>Take Profit</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-list">
+                                    <tr>
+                                        <td colspan="9" class="empty-row">No pending orders.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="dashboard-tab-content" id="tab-history">
-                        <table class="dashboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Ticket</th>
-                                    <th>Symbol</th>
-                                    <th>Type</th>
-                                    <th>Volume</th>
-                                    <th>Open Price</th>
-                                    <th>Close Price</th>
-                                    <th>Profit/Loss ($)</th>
-                                    <th>Result</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-list">
-                                <tr>
-                                    <td colspan="9" class="empty-row">No trading history.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="dashboard-tab-content" id="tab-history">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Ticket</th>
+                                        <th>Symbol</th>
+                                        <th>Type</th>
+                                        <th>Volume</th>
+                                        <th>Open Price</th>
+                                        <th>Close Price</th>
+                                        <th>Profit/Loss ($)</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-list">
+                                    <tr>
+                                        <td colspan="9" class="empty-row">No trading history.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                    <!-- Strip 2: TradingView Bottom-most Status Strip (Always visible at bottom) -->
+                    <div class="tv-bottom-status-strip">
+                        <div class="tv-time-range-group">
+                            <button class="tv-range-btn" data-range="1D">1D</button>
+                            <button class="tv-range-btn" data-range="5D">5D</button>
+                            <button class="tv-range-btn" data-range="1M">1M</button>
+                            <button class="tv-range-btn" data-range="3M">3M</button>
+                            <button class="tv-range-btn" data-range="6M">6M</button>
+                            <button class="tv-range-btn" data-range="YTD">YTD</button>
+                            <button class="tv-range-btn active" data-range="1Y">1Y</button>
+                            <button class="tv-range-btn" data-range="ALL">ALL</button>
+                        </div>
+
+                        <div class="tv-bottom-status-right">
+                            <span class="tv-scale-btn" id="btn-scale-pct" title="Percentage Scale">%</span>
+                            <span class="tv-scale-btn" id="btn-scale-log" title="Logarithmic Scale">log</span>
+                            <span class="tv-scale-btn active" id="btn-scale-auto" title="Auto Scale">auto</span>
+                            <span class="tv-status-divider">|</span>
+                            <span class="tv-live-clock" id="tv-live-clock">--:--:--</span>
+                            <span class="tv-tz-label">UTC+7</span>
+                            <span class="tv-status-divider">|</span>
+                            <span class="tv-market-status" title="Market Status"><span class="market-dot"></span> Market Open</span>
+                        </div>
+                    </div>
             </div>
 
-            <!-- Right Sidebar: Exness-Style Trading Panel -->
-            <div class="right-sidebar trading-panel sell-active collapsed" id="trading-panel">
-                <div class="panel-section-title">
-                    <span>PLACE TRADE ORDER</span>
+            <!-- Right Sidebar: Trading Order Ticket Panel -->
+            <div class="tv-right-sidebar collapsed" id="tv-right-sidebar">
+                <!-- Trading Order Ticket Panel (Keep all existing IDs) -->
+                <div class="right-sidebar trading-panel sell-active tv-trade-drawer" id="trading-panel">
+                <div class="panel-section-title tv-panel-title">
+                    <span class="panel-title-text">ORDER TICKET</span>
                     <span class="trade-mode-badge" id="trade-mode-badge">BACKTEST</span>
-                    <button id="close-trading-panel-btn" class="panel-close-btn" title="Close" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: transparent; border: none; color: #a895c7; cursor: pointer; border-radius: 4px; transition: all 0.2s ease;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <button id="close-trading-panel-btn" class="panel-close-btn" title="Close">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
                     </button>
                 </div>
 
-                <!-- Quick Trade Tabs (Exness Style Buy/Sell selectors) -->
-                <div class="exness-side-tabs">
+                <!-- Quick Trade Split Buttons (Sell / Buy) -->
+                <div class="exness-side-tabs tv-side-tabs">
                     <button class="side-tab sell active" id="btn-quick-sell">
                         <span class="label">SELL</span>
                         <span class="price" id="quick-sell-price">0.00000</span>
@@ -302,22 +517,21 @@
                     </button>
                 </div>
 
-                <div class="order-settings-container">
-                    <!-- Order Type Tab buttons (Exness Style) -->
+                <div class="order-settings-container tv-order-settings">
+                    <!-- Order Type Selector -->
                     <div class="trade-input-group">
                         <label>Order Type</label>
                         <div class="exness-order-type-tabs">
                             <button type="button" class="order-type-tab active" data-type="market">Market</button>
-                            <button type="button" class="order-type-tab" data-type="limit">Pending Limit/Stop</button>
+                            <button type="button" class="order-type-tab" data-type="limit">Pending</button>
                         </div>
-                        <!-- Hidden select to keep existing JS logic synced without breaks -->
                         <select id="trade-order-type" class="trade-select" style="display: none;">
                             <option value="market" selected>Market</option>
                             <option value="limit">Pending Limit/Stop</option>
                         </select>
                     </div>
 
-                    <!-- Pending Order Price Input -->
+                    <!-- Pending Order Price -->
                     <div class="trade-input-group" id="pending-price-group" style="display: none;">
                         <label>Order Price</label>
                         <div class="volume-control">
@@ -344,7 +558,7 @@
                         </div>
                     </div>
 
-                    <!-- Stop Loss Control with multi-unit switcher -->
+                    <!-- Stop Loss Control -->
                     <div class="trade-input-group checkbox-group">
                         <div class="checkbox-row">
                             <input type="checkbox" id="enable-sl">
@@ -370,7 +584,7 @@
                         </div>
                     </div>
 
-                    <!-- Take Profit Control with multi-unit switcher -->
+                    <!-- Take Profit Control -->
                     <div class="trade-input-group checkbox-group">
                         <div class="checkbox-row">
                             <input type="checkbox" id="enable-tp">
@@ -397,13 +611,65 @@
                     </div>
                 </div>
 
-                <!-- Exness Styled Execution Button -->
-                <button class="btn-execute sell-mode" id="btn-execute-order">
+                <!-- Big Confirm Order Button -->
+                <button class="btn-execute sell-mode tv-execute-btn" id="btn-execute-order">
                     CONFIRM SELL (SELL MARKET)
                 </button>
             </div>
+
+            <!-- Rightmost Vertical Tool Strip (TradingView Tool Dock ~45px) -->
+            </div>
+
+            <!-- Rightmost Vertical Tool Strip (TradingView Tool Dock ~45px) -->
+            <aside class="tv-right-dock" id="tv-right-dock">
+                <button class="tv-dock-btn" id="dock-trade-btn" title="Order Ticket / Trade">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11 21h-1l1-7H7.5c-.88 0-.33-.75-.31-.78C8.48 10.94 10.42 7.54 13.01 3h1l-1 7h3.5c.66 0 .31.55.24.69L11 21z"/>
+                    </svg>
+                </button>
+                <button class="tv-dock-btn" id="dock-playbook-btn" title="Trading Playbook & Journal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path>
+                    </svg>
+                </button>
+                <button class="tv-dock-btn" id="dock-history-btn" title="Download Historical Chunks">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+            </aside>        </div>
+
+        <!-- TradingView Symbol Search Dialog Modal -->
+        <div class="tv-symbol-modal-backdrop" id="tv-symbol-modal-backdrop" style="display: none;">
+            <div class="tv-symbol-modal" id="tv-symbol-modal">
+                <div class="tv-symbol-modal-header">
+                    <div class="tv-symbol-input-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="tv-symbol-search-input" placeholder="Search symbol (e.g. EURUSD, BTCUSD, XAUUSD)..." autocomplete="off" spellcheck="false">
+                    </div>
+                    <button class="tv-modal-close" id="tv-symbol-modal-close">&times;</button>
+                </div>
+
+                <div class="tv-symbol-tabs">
+                    <button class="tv-sym-tab active" data-cat="all">All</button>
+                    <button class="tv-sym-tab" data-cat="forex">Forex</button>
+                    <button class="tv-sym-tab" data-cat="crypto">Crypto</button>
+                    <button class="tv-sym-tab" data-cat="commodity">Commodities</button>
+                    <button class="tv-sym-tab" data-cat="indices">Indices</button>
+                </div>
+
+                <div class="tv-symbol-list" id="tv-symbol-search-list">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
         </div>
 
+        <!-- Playbook Overlay Dialog -->
         <div class="playbook-overlay" id="playbook-overlay" aria-hidden="true">
             <aside class="playbook-panel" role="dialog" aria-modal="false" aria-labelledby="playbook-title">
                 <div id="playbook-resize-handle" class="playbook-resize-handle" title="Drag to resize Playbook"></div>
@@ -589,87 +855,80 @@
                 </div>
             </aside>
         </div>
-    </div>
 
-
-
-
-    <!-- Download History Modal -->
-    <div class="download-history-modal" id="download-history-modal">
-        <div class="dl-history-content">
-            <div class="dl-history-header">
-                <h3>Download History Data</h3>
-                <p class="dl-history-subtitle">Local-first chunk cache for offline replay. Data: Local reads this cache only.</p>
-                <button id="dl-history-close" class="dl-history-close-btn">&times;</button>
-            </div>
-
-            <div class="dl-history-body">
-                <!-- Only Bulk Download form remains -->
-                <div class="dl-history-form">
-                    <div class="dl-form-row">
-                        <label>Symbols (comma separated)</label>
-                        <input type="text" id="dl-bulk-symbols" class="dl-input" value="BTCUSD, DXY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAGUSD, XAUUSD" placeholder="e.g. EURUSD, GBPUSD, XAUUSD">
-                        <div class="dl-chips-container">
-                            <span class="dl-chip" data-val="BTCUSD,DXY,EURUSD,GBPJPY,GBPUSD,USDJPY,XAGUSD,XAUUSD">My Pairs (Active)</span>
-                            <span class="dl-chip" data-val="EURUSD,GBPUSD,USDJPY,AUDUSD,USDCAD,USDCHF,NZDUSD,XAUUSD">Forex Majors & Gold</span>
-                            <span class="dl-chip" data-val="BTCUSD,ETHUSD">Crypto Only</span>
-                        </div>
-                    </div>
-                    <div class="dl-form-row">
-                        <div class="dl-tf-label-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <label style="margin: 0;">Timeframes (Active: Full Timeframes)</label>
-                            <span style="font-size: 11px;">
-                                <span id="dl-bulk-tf-all" style="color: #b45cff; cursor: pointer; font-weight: 600;">☑ Select All</span> |
-                                <span id="dl-bulk-tf-none" style="color: #a895c7; cursor: pointer; font-weight: 600;">☐ Clear</span>
-                            </span>
-                        </div>
-                        <div class="dl-tf-checkboxes-grid">
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M1" checked> M1</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M5" checked> M5</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M15" checked> M15</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M30" checked> M30</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H1" checked> H1</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H4" checked> H4</label>
-                            <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="D1" checked> D1</label>
-                        </div>
-                    </div>
-                    <div class="dl-form-row">
-                        <label>Bars per Symbol/TF</label>
-                        <select id="dl-bulk-bars" class="dl-input">
-                            <option value="5000">5,000 bars</option>
-                            <option value="10000">10,000 bars</option>
-                            <option value="20000">20,000 bars</option>
-                            <option value="40000" selected>40,000 bars (TV Ultimate)</option>
-                            <option value="50000">50,000 bars</option>
-                            <option value="100000">100,000 bars</option>
-                        </select>
-                    </div>
-                    <div class="dl-action-row" style="display: flex; gap: 10px;">
-                        <button id="dl-bulk-execute" class="dl-execute-btn" style="flex: 1;">⬇ Start Bulk Download</button>
-                        <button id="dl-bulk-stop" class="dl-execute-btn dl-stop-btn" style="flex: 0 0 100px; background: #e03a3e; display: none;">🛑 Stop</button>
-                    </div>
+        <!-- Download History Modal -->
+        <div class="download-history-modal" id="download-history-modal">
+            <div class="dl-history-content">
+                <div class="dl-history-header">
+                    <h3>Download Historical Chunks</h3>
+                    <p class="dl-history-subtitle">Fast local chunk storage for offline replay without MT5 dependency.</p>
+                    <button id="dl-history-close" class="dl-history-close-btn">&times;</button>
                 </div>
 
-                <div class="dl-history-progress" id="dl-history-progress" style="display: none;">
-                    <div class="dl-progress-track">
-                        <div class="dl-progress-bar" id="dl-history-progress-bar"></div>
+                <div class="dl-history-body">
+                    <div class="dl-history-form">
+                        <div class="dl-form-row">
+                            <label>Symbols (comma separated)</label>
+                            <input type="text" id="dl-bulk-symbols" class="dl-input" value="BTCUSD, DXY, EURUSD, GBPJPY, GBPUSD, USDJPY, XAGUSD, XAUUSD">
+                            <div class="dl-chips-container">
+                                <span class="dl-chip" data-val="BTCUSD,DXY,EURUSD,GBPJPY,GBPUSD,USDJPY,XAGUSD,XAUUSD">Active Forex & Gold</span>
+                                <span class="dl-chip" data-val="EURUSD,GBPUSD,USDJPY,AUDUSD,USDCAD,USDCHF,NZDUSD,XAUUSD">Forex Majors</span>
+                                <span class="dl-chip" data-val="BTCUSD,ETHUSD">Crypto</span>
+                            </div>
+                        </div>
+                        <div class="dl-form-row">
+                            <div class="dl-tf-label-row">
+                                <label>Timeframes</label>
+                                <span style="font-size: 11px;">
+                                    <span id="dl-bulk-tf-all" style="color: #2962ff; cursor: pointer; font-weight: 600;">Select All</span> |
+                                    <span id="dl-bulk-tf-none" style="color: #787b86; cursor: pointer; font-weight: 600;">Clear</span>
+                                </span>
+                            </div>
+                            <div class="dl-tf-checkboxes-grid">
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M1" checked> M1</label>
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M5" checked> M5</label>
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M15" checked> M15</label>
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="M30" checked> M30</label>
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H1" checked> H1</label>
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="H4" checked> H4</label>
+                                <label class="dl-checkbox-lbl"><input type="checkbox" class="dl-bulk-tf" value="D1" checked> D1</label>
+                            </div>
+                        </div>
+                        <div class="dl-form-row">
+                            <label>Bars per Symbol/TF</label>
+                            <select id="dl-bulk-bars" class="dl-input">
+                                <option value="5000">5,000 bars</option>
+                                <option value="10000">10,000 bars</option>
+                                <option value="20000">20,000 bars</option>
+                                <option value="40000" selected>40,000 bars (TradingView Standard)</option>
+                                <option value="50000">50,000 bars</option>
+                                <option value="100000">100,000 bars</option>
+                            </select>
+                        </div>
+                        <div class="dl-action-row" style="display: flex; gap: 10px;">
+                            <button id="dl-bulk-execute" class="dl-execute-btn" style="flex: 1;">⬇ Start Bulk Download</button>
+                            <button id="dl-bulk-stop" class="dl-execute-btn dl-stop-btn" style="flex: 0 0 100px; background: #f23645; display: none;">🛑 Stop</button>
+                        </div>
                     </div>
-                </div>
-                <div id="dl-history-status" class="dl-status"></div>
-                <div id="dl-history-result" class="dl-result"></div>
 
-                <div class="dl-history-files-section">
-                    <h4>Local Replay Coverage</h4>
-                    <div id="dl-history-files" class="dl-history-files"></div>
+                    <div class="dl-history-progress" id="dl-history-progress" style="display: none;">
+                        <div class="dl-progress-track">
+                            <div class="dl-progress-bar" id="dl-history-progress-bar"></div>
+                        </div>
+                    </div>
+                    <div id="dl-history-status" class="dl-status"></div>
+                    <div id="dl-history-result" class="dl-result"></div>
+
+                    <div class="dl-history-files-section">
+                        <h4>Local Chunk Storage Coverage</h4>
+                        <div id="dl-history-files" class="dl-history-files"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
-    <!-- Scripts -->
+    <!-- Application Scripts -->
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/playbook.js') }}"></script>
     <script src="{{ url_for('static', filename='js/replay.js') }}"></script>

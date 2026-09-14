@@ -14,6 +14,9 @@ class ChartPanel {
         this.isReplayMode = Boolean(options.isReplayMode);
         this.replayIndex = null;
         this.replayPlaying = false;
+        this.targetTimeframe = null;
+        this._isChangingResolution = false;
+        this._isChangingSymbol = false;
         this._timeframeChangeSeq = 0;
         this._loadSeq = 0;
         this._replayLoadingTimeout = null;
@@ -397,11 +400,12 @@ class ChartPanel {
                 'items_favoriting'
             ],
             overrides: {
-                'paneProperties.background': '#0b0714',
-                'paneProperties.vertGridProperties.color': 'rgba(43, 33, 65, 0.15)',
-                'paneProperties.horzGridProperties.color': 'rgba(43, 33, 65, 0.15)',
+                'paneProperties.background': '#131722',
+                'paneProperties.vertGridProperties.color': 'rgba(42, 46, 57, 0.5)',
+                'paneProperties.horzGridProperties.color': 'rgba(42, 46, 57, 0.5)',
                 'symbolWatermarkProperties.transparency': 90,
-                'scalesProperties.textColor': '#eee5ff',
+                'scalesProperties.textColor': '#787b86',
+                'scalesProperties.lineColor': '#2a2e39',
                 'mainSeriesProperties.candleStyle.upColor': '#089981',
                 'mainSeriesProperties.candleStyle.downColor': '#f23645',
                 'mainSeriesProperties.candleStyle.drawWick': true,
@@ -536,17 +540,11 @@ class ChartPanel {
             // Subscribe to native symbol changes to sync dashboard and panel
             try {
                 this.chart.onSymbolChanged().subscribe(null, async (symbolInfo) => {
+                    if (this._isChangingSymbol) return;
                     console.log(`[Chart ${this.id}] Native symbol changed to: ${symbolInfo.name}`);
                     if (this.symbol !== symbolInfo.name) {
-                        // Sync hidden symbol select if this is the active panel
                         if (this.manager.activePanel === this) {
-                            const sel = document.getElementById('symbol-select');
-                            if (sel) {
-                                sel.value = symbolInfo.name;
-                            }
-                            // Sync new TV navbar active symbol text
-                            const activeSymText = document.getElementById('active-symbol-text');
-                            if (activeSymText) activeSymText.textContent = symbolInfo.name;
+                            this.manager.syncSymbolUI?.(symbolInfo.name);
                         }
 
                         await this.changeSymbolOrTimeframe(symbolInfo.name, this.timeframe, true);
@@ -559,6 +557,7 @@ class ChartPanel {
             // Subscribe to native timeframe changes to sync dashboard and panel
             try {
                 this.chart.onIntervalChanged().subscribe(null, async (interval) => {
+                    if (this._isChangingResolution) return;
                     console.log(`[Chart ${this.id}] Native interval changed to: ${interval}`);
                     const invResMap = {
                         '1': 'M1',
@@ -574,11 +573,8 @@ class ChartPanel {
                     };
                     const newTf = invResMap[interval] || 'H1';
                     if (this.timeframe !== newTf) {
-                        // Sync hidden timeframe buttons if this is the active panel
                         if (this.manager.activePanel === this) {
-                            document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(btn => {
-                                btn.classList.toggle('active', btn.dataset.tf === newTf);
-                            });
+                            this.manager.syncTimeframeUI?.(newTf);
                         }
 
                         await this.changeSymbolOrTimeframe(this.symbol, newTf, true);
@@ -686,6 +682,7 @@ class ChartPanel {
         }
 
         console.log(`[ChartPanel ${this.id}] Changing symbol/timeframe from ${oldSymbol} (${oldTf}) to ${newSymbol} (${newTf}), skipSetSymbol: ${skipSetSymbol}`);
+        this.targetTimeframe = newTf;
 
         let savedReplayTimestamp = null;
         const wasReplay = this.isReplayMode;
@@ -700,22 +697,20 @@ class ChartPanel {
             }
         }
 
-        let barsToFetch = 2000;
+        let barsToFetch = 3000;
         if (wasReplay && savedReplayTimestamp) {
             console.log(`[ChartPanel ${this.id}] Replay active. Loading local window for ${newTf} around ${savedReplayTimestamp}.`);
             window.replayManager?.pause?.();
             this._setReplayLoading(`Loading ${newTf} replay data...`);
         }
 
-        // Pre-fetch bars from backend first. In replay mode, build higher
-        // timeframes from M1 so the active candle is partial at the cursor.
         const loadPromise = (async () => {
             try {
                 console.log(`[ChartPanel ${this.id}] Loading data for ${newSymbol} (${newTf})`);
                 const data = wasReplay && savedReplayTimestamp && window.MT5Datafeed?.loadSyncedReplayWindow
                     ? await window.MT5Datafeed.loadSyncedReplayWindow(newSymbol, newTf, savedReplayTimestamp)
                     : await window.MT5Datafeed.fetchHistory(newSymbol, newTf, barsToFetch);
-                if (data.length > 0) {
+                if (data && data.length > 0) {
                     console.log(`[ChartPanel ${this.id}] Loaded ${data.length} bars successfully.`);
                     return data;
                 }
@@ -733,38 +728,39 @@ class ChartPanel {
 
         if (changeSeq !== this._timeframeChangeSeq) {
             console.log(`[ChartPanel ${this.id}] Ignoring stale timeframe change to ${newTf}.`);
+            this.targetTimeframe = null;
             this._clearReplayLoading();
             return;
         }
 
         if (wasReplay && savedReplayTimestamp) {
             const replayIndex = window.MT5Datafeed?.findIndexAtOrBefore?.(data, savedReplayTimestamp) ?? -1;
-            const hasCoverage = replayIndex >= 0 && data.length > replayIndex + 1;
+            const hasCoverage = replayIndex >= 0;
             if (!hasCoverage) {
+                this.targetTimeframe = null;
                 this._clearReplayLoading();
                 console.warn(`[ChartPanel ${this.id}] ${newTf} data does not cover replay timestamp. Keeping previous timeframe.`);
-                document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.tf === oldTf);
-                });
+                if (this.manager) this.manager.syncTimeframeUI?.(oldTf);
                 if (skipSetSymbol && this.chartReady && this.tvWidget) {
                     this._applyTradingViewSymbolOrResolution(oldSymbol, this._resolutionForTimeframe(oldTf), oldSymbol !== newSymbol);
                 }
                 if (window.replayManager) window.replayManager._updateUI();
                 if (wasReplayPlaying) window.replayManager?.play?.();
-                alert(`Could not load enough ${newTf} history for this replay date. The chart stayed on ${oldTf}. Try a higher timeframe or load a more recent replay point.`);
+                alert(`Không tìm thấy dữ liệu ${newTf} tại thời điểm Replay này. Biểu đồ giữ nguyên khung ${oldTf}.`);
                 return;
             }
         }
 
         this.symbol = newSymbol;
         this.timeframe = newTf;
+        this.targetTimeframe = null;
         if (data.length > 0) {
             this.fullData = data;
             this.updateTradeSnapshot(data[data.length - 1]);
         }
         this.updateHeader();
 
-        // 3. If in replay mode, find bestIndex and update replayManager BEFORE changing TV resolution
+        // If in replay mode, find bestIndex and update replayManager BEFORE changing TV resolution
         if (wasReplay && savedReplayTimestamp && data.length > 0) {
             let bestIndex = window.MT5Datafeed?.findIndexAtOrBefore?.(data, savedReplayTimestamp) ?? 0;
             if (bestIndex < 0) bestIndex = 0;
@@ -775,40 +771,35 @@ class ChartPanel {
                 window.replayManager.currentIndex = bestIndex;
                 window.replayManager.symbol = newSymbol;
                 window.replayManager.timeframe = newTf;
-                window.replayManager._lastDisplayedIndex = -1; // Reset display tracking
+                window.replayManager._lastDisplayedIndex = -1;
                 window.replayManager._updateUI();
             }
             this.updateReplayCoverageLabel();
-            this.prewarmReplayTimeframes(savedReplayTimestamp);
         }
 
-        // 4. Update symbol/resolution in TradingView Widget
+        // Update symbol/resolution in TradingView Widget
         const res = this._resolutionForTimeframe(newTf);
         if (this.chartReady && this.tvWidget) {
             try {
-                window.MT5Datafeed.resetReplayCache(newSymbol, newTf);
                 if (!skipSetSymbol) {
+                    this._isChangingResolution = true;
+                    if (oldSymbol !== newSymbol) this._isChangingSymbol = true;
                     this._applyTradingViewSymbolOrResolution(newSymbol, res, oldSymbol !== newSymbol);
+                    setTimeout(() => {
+                        this._isChangingResolution = false;
+                        this._isChangingSymbol = false;
+                    }, 250);
                 }
                 if (wasReplay && window.replayManager) {
-                    setTimeout(() => {
-                        if (skipSetSymbol && this.chart) {
-                            try {
-                                this.chart.resetData();
-                            } catch (err) {
-                                console.error(`[ChartPanel ${this.id}] Error resetting replay data after native interval switch:`, err);
-                            }
-                        }
-                        window.replayManager._updateUI();
-                        this._focusReplayCursor(skipSetSymbol ? 350 : 250);
-                        if (wasReplayPlaying) window.replayManager.play();
-                        this._clearReplayLoading();
-                    }, skipSetSymbol ? 80 : 150);
-                } else {
-                    this._clearReplayLoading();
+                    window.replayManager._updateUI();
+                    this._focusReplayCursor(200);
+                    if (wasReplayPlaying) window.replayManager.play();
                 }
+                this._clearReplayLoading();
             } catch (err) {
                 console.error("Error setting symbol and resolution:", err);
+                this._isChangingResolution = false;
+                this._isChangingSymbol = false;
                 this._clearReplayLoading();
             }
         } else {
@@ -956,6 +947,7 @@ class ChartManager {
 
         this.setLayout(this.activeLayout);
         this.setupEventListeners();
+        this.initTradingViewUI();
 
         // Load API status and symbols in background asynchronously
         this.checkMT5Status();
@@ -1241,24 +1233,9 @@ class ChartManager {
         this.activePanel = panel;
         this.activePanel.wrapperEl.classList.add('active');
 
-        // Sync main toolbar
-        const symbolSelect = document.getElementById('symbol-select');
-        if (symbolSelect) {
-            symbolSelect.value = panel.symbol;
-        }
-
-        // Sync new TV navbar active symbol text
-        const activeSymText = document.getElementById('active-symbol-text');
-        if (activeSymText) activeSymText.textContent = panel.symbol;
-
-        document.querySelectorAll('.tf-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tf === panel.timeframe);
-        });
-
-        // Sync new TV navbar timeframe buttons
-        document.querySelectorAll('.nav-tf-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tf === panel.timeframe);
-        });
+        // Sync UI for active panel's symbol and timeframe
+        this.syncSymbolUI(panel.symbol);
+        this.syncTimeframeUI(panel.timeframe);
 
         // Sync Replay controls
         if (panel.isReplayMode) {
@@ -1447,6 +1424,25 @@ class ChartManager {
     }
 
 
+    syncTimeframeUI(tf) {
+        document.querySelectorAll('.tf-btn, .nav-tf-btn, .tv-nav-tf-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tf === tf);
+        });
+        const activeTfEl = document.getElementById('tv-active-tf-text');
+        if (activeTfEl) activeTfEl.textContent = tf;
+    }
+
+    syncSymbolUI(symbol) {
+        const symbolSelect = document.getElementById('symbol-select');
+        if (symbolSelect) symbolSelect.value = symbol;
+        const activeSymText = document.getElementById('active-symbol-text');
+        if (activeSymText) activeSymText.textContent = symbol;
+        const tickerEl = document.getElementById('tv-symbol-btn-ticker');
+        if (tickerEl) tickerEl.textContent = symbol;
+        const searchInput = document.getElementById('tv-symbol-search-input');
+        if (searchInput && !searchInput.value) searchInput.placeholder = `Search (current: ${symbol})...`;
+    }
+
     // Toolbar Event Bindings
     setupEventListeners() {
         try {
@@ -1504,8 +1500,7 @@ class ChartManager {
                     if (!this.activePanel) return;
 
                     const newSymbol = e.target.value;
-                    const activeSymText = document.getElementById('active-symbol-text');
-                    if (activeSymText) activeSymText.textContent = newSymbol;
+                    this.syncSymbolUI(newSymbol);
 
                     await this.activePanel.changeSymbolOrTimeframe(newSymbol, this.activePanel.timeframe);
                 });
@@ -1516,15 +1511,14 @@ class ChartManager {
 
         // 3. Centralized Timeframe change (Safeguarded)
         try {
-            const tfBtns = document.querySelectorAll('.tf-btn, .nav-tf-btn');
+            const tfBtns = document.querySelectorAll('.tf-btn, .nav-tf-btn, .tv-nav-tf-btn');
             if (tfBtns.length > 0) {
                 tfBtns.forEach(btn => {
                     btn.addEventListener('click', async (e) => {
                         if (!this.activePanel) return;
 
                         const tf = e.currentTarget.dataset.tf;
-                        document.querySelectorAll('.tf-btn, .nav-tf-btn').forEach(b => b.classList.remove('active'));
-                        document.querySelectorAll(`.tf-btn[data-tf="${tf}"], .nav-tf-btn[data-tf="${tf}"]`).forEach(b => b.classList.add('active'));
+                        this.syncTimeframeUI(tf);
 
                         await this.activePanel.changeSymbolOrTimeframe(this.activePanel.symbol, tf);
                     });
@@ -1585,50 +1579,15 @@ class ChartManager {
             const toggleBtn = document.getElementById('trade-panel-toggle-btn');
             const closeBtn = document.getElementById('close-trading-panel-btn');
 
-            if (toggleBtn && tradePanel) {
+            if (toggleBtn) {
                 toggleBtn.addEventListener('click', () => {
-                    const isCollapsed = tradePanel.classList.toggle('collapsed');
-                    toggleBtn.classList.toggle('active', !isCollapsed);
-
-                    // When opened, update values immediately
-                    if (!isCollapsed && window.tradeManager) {
-                        window.tradeManager.updateSLTPDefaultValues();
-                        window.tradeManager.updateRiskRewardCalcs();
-                        window.tradeManager.updateExecutionButton();
-                    }
-
-                    // Force layout refit for active charts
-                    setTimeout(() => {
-                        this.panels.forEach(p => {
-                            if (p.tvWidget && typeof p.tvWidget.resize === 'function') {
-                                try {
-                                    const w = p.chartContainerEl.clientWidth;
-                                    const h = p.chartContainerEl.clientHeight;
-                                    p.tvWidget.resize(w, h);
-                                } catch (_) {}
-                            }
-                        });
-                    }, 300);
+                    this.toggleTradeDrawer();
                 });
             }
 
-            if (closeBtn && tradePanel && toggleBtn) {
+            if (closeBtn) {
                 closeBtn.addEventListener('click', () => {
-                    tradePanel.classList.add('collapsed');
-                    toggleBtn.classList.remove('active');
-
-                    // Force layout refit for active charts
-                    setTimeout(() => {
-                        this.panels.forEach(p => {
-                            if (p.tvWidget && typeof p.tvWidget.resize === 'function') {
-                                try {
-                                    const w = p.chartContainerEl.clientWidth;
-                                    const h = p.chartContainerEl.clientHeight;
-                                    p.tvWidget.resize(w, h);
-                                } catch (_) {}
-                            }
-                        });
-                    }, 300);
+                    this.closeTradeDrawer();
                 });
             }
         } catch (e) {
@@ -1732,8 +1691,8 @@ class ChartManager {
 
         // 11. --- Graceful Application Shutdown ---
         try {
-            const quitBtn = document.getElementById('quit-app-btn');
-            if (quitBtn) {
+            const quitBtns = [document.getElementById('tv-disconnect-btn'), document.getElementById('quit-app-btn')].filter(Boolean);
+            quitBtns.forEach(quitBtn => {
                 quitBtn.addEventListener('click', () => {
                     const confirmShutdown = confirm("Are you sure you want to stop WuangVibeTrading and shut down the backend server? This will release all ports and disconnect MT5.");
                     if (!confirmShutdown) return;
@@ -1795,7 +1754,7 @@ class ChartManager {
                         console.warn('Network closed as server is terminating:', err);
                     });
                 });
-            }
+            });
         } catch (e) {
             console.error('Error binding quit-app-btn listener:', e);
         }
@@ -2307,6 +2266,396 @@ class ChartManager {
             }
         } catch (e) { console.error('Failed to load symbols:', e); }
     }
+
+    initTradingViewUI() {
+        // 1. Live Clock
+        const clockEl = document.getElementById('tv-live-clock');
+        const updateClock = () => {
+            if (!clockEl) return;
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            const local = new Date(utc + (3600000 * (this.timezoneOffset || 7)));
+            const pad = n => String(n).padStart(2, '0');
+            clockEl.textContent = `${pad(local.getHours())}:${pad(local.getMinutes())}:${pad(local.getSeconds())}`;
+        };
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // 2. Undo / Redo
+        document.getElementById('tv-undo-btn')?.addEventListener('click', () => {
+            try { this.activePanel?.chart?.executeActionById('undo'); } catch (_) {}
+        });
+        document.getElementById('tv-redo-btn')?.addEventListener('click', () => {
+            try { this.activePanel?.chart?.executeActionById('redo'); } catch (_) {}
+        });
+
+        // 3. Indicators
+        document.getElementById('tv-header-indicators')?.addEventListener('click', () => {
+            try { this.activePanel?.chart?.executeActionById('insertIndicator'); } catch (_) {}
+        });
+
+        // 4. Fullscreen
+        const handleFullscreen = () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        };
+        document.getElementById('tv-fullscreen-btn')?.addEventListener('click', handleFullscreen);
+        document.getElementById('fullscreen-btn')?.addEventListener('click', handleFullscreen);
+
+        // 5. Snapshot
+        const handleSnapshot = () => {
+            try {
+                if (this.activePanel?.tvWidget) {
+                    this.activePanel.tvWidget.takeScreenshot();
+                }
+            } catch (err) {
+                console.error("Take screenshot failed:", err);
+            }
+        };
+        document.getElementById('tv-snapshot-btn')?.addEventListener('click', handleSnapshot);
+        document.getElementById('snapshot-btn')?.addEventListener('click', handleSnapshot);
+
+        // 6. Timeframe Dropdown
+        const tfDropBtn = document.getElementById('tv-tf-dropdown-btn');
+        const tfDropMenu = document.getElementById('tv-tf-dropdown-menu');
+        if (tfDropBtn && tfDropMenu) {
+            tfDropBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                tfDropMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', () => tfDropMenu.classList.remove('show'));
+        }
+
+        // 7. Right Dock & Drawer Controller (Order Ticket)
+        document.getElementById('dock-trade-btn')?.addEventListener('click', () => {
+            this.toggleTradeDrawer();
+        });
+        document.getElementById('dock-playbook-btn')?.addEventListener('click', () => {
+            document.getElementById('playbook-toggle-btn')?.click();
+        });
+        document.getElementById('dock-history-btn')?.addEventListener('click', () => {
+            document.getElementById('download-history-btn')?.click();
+        });
+        document.getElementById('close-trading-panel-btn')?.addEventListener('click', () => {
+            this.closeTradeDrawer();
+        });
+
+        // Initialize Quick Trade Widget (Draggable & Non-blocking)
+        this.initQuickTradeWidget();
+
+        // 8. Scale Mode Buttons (%, log, auto)
+        document.getElementById('btn-scale-pct')?.addEventListener('click', () => {
+            this.setScaleMode(2, 'btn-scale-pct');
+        });
+        document.getElementById('btn-scale-log')?.addEventListener('click', () => {
+            this.setScaleMode(1, 'btn-scale-log');
+        });
+        document.getElementById('btn-scale-auto')?.addEventListener('click', () => {
+            this.setScaleMode(0, 'btn-scale-auto');
+        });
+
+        // 9. Bottom Panel Tabs & Chevron Toggle
+        document.getElementById('tv-tab-trading-panel')?.addEventListener('click', () => {
+            this.toggleBottomDashboard();
+        });
+        document.getElementById('tv-tab-strategy-tester')?.addEventListener('click', () => {
+            document.getElementById('playbook-toggle-btn')?.click();
+        });
+        document.getElementById('tv-tab-playbook')?.addEventListener('click', () => {
+            document.getElementById('playbook-toggle-btn')?.click();
+        });
+
+        // Quick Search Button (navbar)
+        document.getElementById('tv-quick-search-btn')?.addEventListener('click', () => {
+            document.getElementById('tv-symbol-search-trigger')?.click();
+        });
+
+        // 8. Bottom Time Range Buttons
+        document.querySelectorAll('.tv-range-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tv-range-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const range = btn.dataset.range;
+                this.applyTimeRange(range);
+            });
+        });
+
+        // 9. Symbol Search Modal
+        const searchTrigger = document.getElementById('tv-symbol-search-trigger');
+        const modalBackdrop = document.getElementById('tv-symbol-modal-backdrop');
+        const modalClose = document.getElementById('tv-symbol-modal-close');
+        const searchInput = document.getElementById('tv-symbol-search-input');
+
+        const openSymbolModal = () => {
+            if (!modalBackdrop) return;
+            modalBackdrop.style.display = 'flex';
+            this.renderSymbolList();
+            setTimeout(() => searchInput?.focus(), 50);
+        };
+
+        const closeSymbolModal = () => {
+            if (!modalBackdrop) return;
+            modalBackdrop.style.display = 'none';
+        };
+
+        searchTrigger?.addEventListener('click', openSymbolModal);
+        modalClose?.addEventListener('click', closeSymbolModal);
+        modalBackdrop?.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) closeSymbolModal();
+        });
+
+        searchInput?.addEventListener('input', () => {
+            this.renderSymbolList();
+        });
+
+        document.querySelectorAll('.tv-sym-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.tv-sym-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                this.renderSymbolList();
+            });
+        });
+
+        // Quick shortcut to open symbol search: Press "/" or Enter when not typing
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+            if (e.key === '/' || e.key === 'Enter') {
+                e.preventDefault();
+                openSymbolModal();
+            }
+        });
+    }
+
+    applyTimeRange(rangeKey) {
+        if (!this.activePanel?.chartReady || !this.activePanel?.chart) return;
+        const bar = this.activePanel.fullData?.[this.activePanel.replayIndex ?? (this.activePanel.fullData.length - 1)];
+        const toTs = (this.isReplayMode && bar) ? (bar.replayCursorTime || bar.time) : Math.floor(Date.now() / 1000);
+        const rangeSeconds = {
+            '1D': 86400,
+            '5D': 86400 * 5,
+            '1M': 86400 * 30,
+            '3M': 86400 * 90,
+            '6M': 86400 * 180,
+            'YTD': 86400 * 240,
+            '1Y': 86400 * 365,
+            'ALL': 86400 * 365 * 3
+        }[rangeKey] || 86400 * 30;
+
+        const fromTs = Math.max(0, toTs - rangeSeconds);
+        try {
+            this.activePanel._ignoreRangeChanged = true;
+            this.activePanel.chart.setVisibleRange({ from: fromTs, to: toTs });
+        } catch (_) {}
+        setTimeout(() => { this.activePanel._ignoreRangeChanged = false; }, 300);
+    }
+
+
+    toggleTradeDrawer() {
+        const sidebar = document.getElementById('tv-right-sidebar');
+        const tradeBtn = document.getElementById('dock-trade-btn');
+        const tradePanel = document.getElementById('trading-panel');
+        if (!sidebar || !tradePanel) return;
+
+        const isOpen = !sidebar.classList.contains('collapsed');
+        if (isOpen) {
+            this.closeTradeDrawer();
+        } else {
+            sidebar.classList.remove('collapsed');
+            tradePanel.classList.remove('collapsed');
+            tradePanel.style.display = 'flex';
+            tradeBtn?.classList.add('active');
+
+            if (window.tradeManager) {
+                window.tradeManager.updateSLTPDefaultValues();
+                window.tradeManager.updateRiskRewardCalcs();
+                window.tradeManager.updateExecutionButton();
+            }
+
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+                this.panels.forEach(p => {
+                    if (p.tvWidget && typeof p.tvWidget.resize === 'function') {
+                        try {
+                            const w = p.chartContainerEl.clientWidth;
+                            const h = p.chartContainerEl.clientHeight;
+                            p.tvWidget.resize(w, h);
+                        } catch (_) {}
+                    }
+                });
+            }, 150);
+        }
+    }
+
+    closeTradeDrawer() {
+        const sidebar = document.getElementById('tv-right-sidebar');
+        const tradeBtn = document.getElementById('dock-trade-btn');
+        const tradePanel = document.getElementById('trading-panel');
+        if (sidebar) sidebar.classList.add('collapsed');
+        if (tradePanel) tradePanel.classList.add('collapsed');
+        tradeBtn?.classList.remove('active');
+
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+            this.panels.forEach(p => {
+                if (p.tvWidget && typeof p.tvWidget.resize === 'function') {
+                    try {
+                        const w = p.chartContainerEl.clientWidth;
+                        const h = p.chartContainerEl.clientHeight;
+                        p.tvWidget.resize(w, h);
+                    } catch (_) {}
+                }
+            });
+        }, 150);
+    }
+
+    initQuickTradeWidget() {
+        const widget = document.getElementById('tv-quick-trade-widget');
+        if (!widget) return;
+
+        // 1. Restore saved position from localStorage
+        try {
+            const savedPos = JSON.parse(localStorage.getItem('tv_qtw_pos') || 'null');
+            if (savedPos && typeof savedPos.top === 'number' && typeof savedPos.left === 'number') {
+                const parentEl = widget.parentElement || document.body;
+                const maxTop = Math.max(50, parentEl.clientHeight - 50);
+                const maxLeft = Math.max(50, parentEl.clientWidth - 180);
+                const top = Math.max(50, Math.min(savedPos.top, maxTop));
+                const left = Math.max(55, Math.min(savedPos.left, maxLeft));
+                widget.style.top = `${top}px`;
+                widget.style.left = `${left}px`;
+            }
+        } catch (_) {}
+
+        // 2. Drag handle logic
+        const dragHandle = document.getElementById('tv-qtw-drag-handle') || widget;
+        let isDragging = false;
+        let startX = 0, startY = 0;
+        let initLeft = 0, initTop = 0;
+
+        const onMouseDown = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.closest('button')) return;
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = widget.getBoundingClientRect();
+            const parentRect = widget.parentElement.getBoundingClientRect();
+            initLeft = rect.left - parentRect.left;
+            initTop = rect.top - parentRect.top;
+            widget.classList.add('dragging');
+            e.preventDefault();
+        };
+
+        const onMouseMove = (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            const parent = widget.parentElement;
+            const newTop = Math.max(45, Math.min(initTop + dy, parent.clientHeight - 40));
+            const newLeft = Math.max(50, Math.min(initLeft + dx, parent.clientWidth - widget.clientWidth - 10));
+            widget.style.top = `${newTop}px`;
+            widget.style.left = `${newLeft}px`;
+        };
+
+        const onMouseUp = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            widget.classList.remove('dragging');
+            const parentRect = widget.parentElement.getBoundingClientRect();
+            const rect = widget.getBoundingClientRect();
+            const top = rect.top - parentRect.top;
+            const left = rect.left - parentRect.left;
+            localStorage.setItem('tv_qtw_pos', JSON.stringify({ top, left }));
+        };
+
+        dragHandle.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+
+        // 3. Minimize toggle button
+        const toggleBtn = document.getElementById('tv-qtw-toggle-btn');
+        toggleBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            widget.classList.toggle('minimized');
+        });
+    }
+
+    setScaleMode(mode, activeBtnId) {
+        if (!this.activePanel?.chartReady || !this.activePanel?.chart) return;
+        try {
+            this.activePanel.chart.priceScale('right').setMode(mode);
+            document.querySelectorAll('.tv-scale-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(activeBtnId)?.classList.add('active');
+        } catch (e) {
+            console.warn('Set scale mode error:', e);
+        }
+    }
+
+    toggleBottomDashboard() {
+        const dashboard = document.getElementById('bottom-dashboard');
+        const tabBtn = document.getElementById('tv-tab-trading-panel');
+        if (!dashboard) return;
+
+        const isCollapsed = dashboard.classList.toggle('collapsed');
+        tabBtn?.classList.toggle('active', !isCollapsed);
+
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
+    }
+
+    renderSymbolList() {
+        const listEl = document.getElementById('tv-symbol-search-list');
+        const inputEl = document.getElementById('tv-symbol-search-input');
+        if (!listEl) return;
+
+        const query = (inputEl?.value || '').trim().toUpperCase();
+        const activeTab = document.querySelector('.tv-sym-tab.active');
+        const category = activeTab ? activeTab.dataset.cat : 'all';
+
+        const symbols = this.allSymbols && this.allSymbols.length > 0
+            ? this.allSymbols
+            : ['EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD', 'USDCAD', 'USDCHF', 'NZDUSD', 'XAUUSD', 'XAGUSD', 'BTCUSD', 'ETHUSD'];
+
+        let filtered = symbols.filter(sym => {
+            const matchesQuery = !query || sym.toUpperCase().includes(query);
+            if (!matchesQuery) return false;
+            if (category === 'all') return true;
+            const symCat = this.getSymbolCategory(sym);
+            return symCat === category;
+        });
+
+        if (!filtered.length) {
+            listEl.innerHTML = '<div class="tv-sym-empty">No matching symbols found.</div>';
+            return;
+        }
+
+        listEl.innerHTML = filtered.map(sym => {
+            const cat = this.getSymbolCategory(sym).toUpperCase();
+            const isCurrent = this.activePanel?.symbol === sym;
+            return `
+                <div class="tv-sym-row ${isCurrent ? 'selected' : ''}" data-symbol="${sym}">
+                    <div class="tv-sym-main">
+                        <span class="tv-sym-code">${sym}</span>
+                        <span class="tv-sym-badge">${cat}</span>
+                    </div>
+                    <div class="tv-sym-ex">EXNESS</div>
+                </div>
+            `;
+        }).join('');
+
+        listEl.querySelectorAll('.tv-sym-row').forEach(row => {
+            row.addEventListener('click', async () => {
+                const sym = row.dataset.symbol;
+                if (this.activePanel) {
+                    await this.activePanel.changeSymbolOrTimeframe(sym, this.activePanel.timeframe);
+                    this.syncSymbolUI(sym);
+                }
+                const modal = document.getElementById('tv-symbol-modal-backdrop');
+                if (modal) modal.style.display = 'none';
+            });
+        });
+    }
 }
 
 class TradeManager {
@@ -2571,6 +2920,30 @@ class TradeManager {
     initEvents() {
         // Quick BUY/SELL tabs
         const quickSellBtn = document.getElementById('btn-quick-sell');
+        const qtwSellBtn = document.getElementById('tv-qtw-sell');
+        const qtwBuyBtn = document.getElementById('tv-qtw-buy');
+        const qtwVolInput = document.getElementById('tv-qtw-vol');
+        const mainVolInput = document.getElementById('trade-volume');
+
+        if (qtwVolInput && mainVolInput) {
+            qtwVolInput.addEventListener('input', () => {
+                mainVolInput.value = qtwVolInput.value;
+                this.updateRiskRewardCalcs();
+            });
+            mainVolInput.addEventListener('input', () => {
+                qtwVolInput.value = mainVolInput.value;
+            });
+        }
+
+        qtwSellBtn?.addEventListener('click', () => {
+            if (window.chartManager) window.chartManager.toggleRightDrawer('trade');
+            quickSellBtn?.click();
+        });
+
+        qtwBuyBtn?.addEventListener('click', () => {
+            if (window.chartManager) window.chartManager.toggleRightDrawer('trade');
+            quickBuyBtn?.click();
+        });
         const quickBuyBtn = document.getElementById('btn-quick-buy');
         const execBtn = document.getElementById('btn-execute-order');
 
@@ -3108,6 +3481,10 @@ class TradeManager {
         // Update price buttons UI
         document.getElementById('quick-sell-price').textContent = this.currentBid.toFixed(precision);
         document.getElementById('quick-buy-price').textContent = this.currentAsk.toFixed(precision);
+        const qtwSellEl = document.getElementById('tv-qtw-sell-price');
+        const qtwBuyEl = document.getElementById('tv-qtw-buy-price');
+        if (qtwSellEl) qtwSellEl.textContent = this.currentBid.toFixed(precision);
+        if (qtwBuyEl) qtwBuyEl.textContent = this.currentAsk.toFixed(precision);
 
         // Update badge
         const badge = document.getElementById('trade-mode-badge');

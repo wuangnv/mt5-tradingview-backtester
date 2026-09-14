@@ -50,7 +50,7 @@ DEFAULT_CHUNK_BARS = {
     "W1": 520,
 }
 
-MAX_MEMORY_CHUNKS = 32
+MAX_MEMORY_CHUNKS = 256
 
 
 def _norm(value):
@@ -495,6 +495,9 @@ class HistoryStore:
             meta = self.ensure_chunked(symbol, timeframe)
             if not meta:
                 return []
+            if count_back and not max_chunks and from_time is None and to_time is None:
+                chunk_size = int(meta.get("chunkSize") or DEFAULT_CHUNK_BARS.get(timeframe, 1000))
+                max_chunks = max(3, (int(count_back) // max(1, chunk_size)) + 2)
             indexes = self.select_chunk_indexes(symbol, timeframe, from_time, to_time, anchor_time, max_chunks)
             bars = []
             for index in indexes:

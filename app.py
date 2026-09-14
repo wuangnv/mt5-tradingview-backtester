@@ -407,9 +407,28 @@ def shutdown():
 import atexit
 atexit.register(mt5_fetcher.shutdown)
 
+def find_available_port(preferred=5000):
+    env_port = os.environ.get('PORT')
+    if env_port:
+        try:
+            return int(env_port)
+        except ValueError:
+            pass
+    import socket
+    for p in [preferred, 5001, 5002, 8080]:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(('0.0.0.0', p))
+                return p
+            except OSError:
+                continue
+    return preferred
+
 if __name__ == '__main__':
+    import platform
+    current_os = platform.system()
     print("=" * 60)
-    print("Trading Chart Tool - Bar Replay & Manual Backtest")
+    print(f"Trading Chart Tool - Bar Replay & Manual Backtest ({current_os})")
     print("=" * 60)
     print("\nInitializing MT5 connection...")
 
@@ -417,11 +436,11 @@ if __name__ == '__main__':
     if success:
         print(f"SUCCESS: {msg}")
     else:
-        print(f"WARNING: {msg}")
-        print("   Please make sure MT5 is installed and logged in.")
+        print(f"INFO: {msg}")
 
+    server_port = find_available_port(5000)
     print("\nStarting web server...")
-    print("   Open browser at: http://localhost:5000")
+    print(f"   Open browser at: http://localhost:{server_port}")
     print("\n" + "=" * 60 + "\n")
 
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=server_port)

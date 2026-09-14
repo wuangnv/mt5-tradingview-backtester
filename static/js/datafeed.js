@@ -166,34 +166,20 @@ class MT5Datafeed {
             return await this.loadReplayWindow(symbol, 'M1', cursorTime, beforeBars, afterBars);
         }
 
-        const tfSeconds = this._timeframeSeconds(timeframe);
-        const ratio = Math.max(1, Math.ceil(tfSeconds / 60));
-        if (ratio >= 5) {
-            const hybrid = await this.loadHybridReplayWindow(symbol, timeframe, cursorTime, beforeBars, afterBars);
-            if (hybrid.length > 0) {
-                return hybrid;
-            }
+        // Fast path: Load native timeframe bars first and stitch M1 partial if available
+        const hybrid = await this.loadHybridReplayWindow(symbol, timeframe, cursorTime, beforeBars, afterBars);
+        if (hybrid.length > 0) {
+            return hybrid;
         }
 
-        const beforeM1 = Math.max(900, beforeBars * ratio + ratio);
-        const afterM1 = Math.max(300, afterBars * ratio + ratio);
-        const from = Math.max(0, Math.floor(cursorTime - beforeM1 * 60));
-        const to = Math.floor(cursorTime + afterM1 * 60);
-        const maxChunks = Math.max(5, Math.ceil((beforeM1 + afterM1 + 1) / 1440) + 2);
-
-        const m1Bars = await this.fetchHistoryRange(symbol, 'M1', from, to, {
-            target: cursorTime,
-            countBack: beforeM1 + afterM1 + 1,
-            maxChunks
-        });
-        const aggregated = this.aggregateM1Bars(m1Bars, timeframe, cursorTime);
-        if (aggregated.length > 0) {
-            console.log(`[Datafeed] synced ${symbol} ${timeframe} from M1: ${aggregated.length} bars`);
-            return aggregated;
+        // Direct native timeframe window from local chunks
+        const native = await this.loadReplayWindow(symbol, timeframe, cursorTime, beforeBars, afterBars);
+        if (native.length > 0) {
+            return native;
         }
 
-        console.warn(`[Datafeed] M1 sync unavailable for ${symbol} ${timeframe}; falling back to native ${timeframe}`);
-        return await this.loadReplayWindow(symbol, timeframe, cursorTime, beforeBars, afterBars);
+        // Last resort: fetch from history
+        return await this.fetchHistory(symbol, timeframe, beforeBars + afterBars);
     }
 
     async loadHybridReplayWindow(symbol, timeframe, cursorTime, beforeBars, afterBars) {
@@ -457,7 +443,7 @@ class MT5Datafeed {
 
         const panel = cm.panels?.find(p =>
             p.symbol === symbol &&
-            p.timeframe === timeframe &&
+            (p.timeframe === timeframe || p.targetTimeframe === timeframe) &&
             p.isReplayMode &&
             Array.isArray(p.fullData) &&
             p.fullData.length > 0
@@ -619,7 +605,7 @@ class MT5Datafeed {
         const cm = window.chartManager;
         let panel = null;
         if (cm) {
-            panel = cm.panels.find(p => p.symbol === symbolInfo.name && p.timeframe === timeframe);
+            panel = cm.panels.find(p => p.symbol === symbolInfo.name && (p.timeframe === timeframe || p.targetTimeframe === timeframe));
             if (!panel && cm.activePanel) {
                 panel = cm.activePanel;
             }
@@ -627,7 +613,7 @@ class MT5Datafeed {
 
         const hasReplayPanel = Boolean(cm?.panels?.some(panel => panel.isReplayMode));
         const replayMode = Boolean((cm?.isReplayMode || hasReplayPanel) && window.replayManager?.cursorTimestamp);
-        if (panel && panel.symbol === symbolInfo.name && panel.activeLoadPromise && (panel.timeframe === timeframe || replayMode)) {
+        if (panel && panel.symbol === symbolInfo.name && panel.activeLoadPromise) {
             console.log(`[Datafeed] getBars awaiting activeLoadPromise for ${symbolInfo.name} (${timeframe})`);
             try {
                 await panel.activeLoadPromise;
