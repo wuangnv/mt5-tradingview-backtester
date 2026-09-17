@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Desk Simulator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/trade_desk.css') }}">
+</head>
+<body>
+<main class="td-shell">
+    <header class="td-topbar">
+        <strong>Trade Desk</strong>
+        <span class="td-mode">DEMO SIMULATOR / NO MT5</span>
+        <nav class="td-nav" aria-label="Workspace">
+            <a href="/">Evidence</a>
+            <a href="/research">Research</a>
+            <a href="/practice">Practice</a>
+            <a class="active" href="/trade-desk">Trade Desk</a>
+        </nav>
+    </header>
+
+    <section class="td-status" aria-label="Execution status">
+        <div><span>Account</span><strong id="td-account">-</strong></div>
+        <div><span>Server</span><strong id="td-server">-</strong></div>
+        <div><span>Balance</span><strong id="td-balance">-</strong></div>
+        <div><span>Risk limit</span><strong id="td-risk-limit">-</strong></div>
+        <div><span>Live route</span><strong id="td-live">Disabled</strong></div>
+    </section>
+
+    <section class="td-layout">
+        <section class="td-order-pane">
+            <div class="td-pane-head">
+                <div>
+                    <strong>Order draft</strong>
+                    <p>Local simulator only. Preview is recalculated before every send.</p>
+                </div>
+            </div>
+            <form id="td-order-form" class="td-form">
+                <label>Symbol
+                    <select id="td-symbol"><option value="EURUSD">EURUSD</option></select>
+                </label>
+                <label>Side
+                    <select id="td-side"><option value="buy">Buy</option><option value="sell">Sell</option></select>
+                </label>
+                <label>Volume (lots)<input id="td-volume" type="number" min="0.01" max="2" step="0.01" value="0.10"></label>
+                <label>Stop loss<input id="td-stop" type="number" step="0.0001" value="1.0952"></label>
+                <label>Take profit<input id="td-target" type="number" step="0.0001" value="1.1102"></label>
+                <div id="td-preview" class="td-preview">Preview pending.</div>
+                <button id="td-submit" class="td-primary" type="submit" disabled>Send to demo simulator</button>
+            </form>
+            <div id="td-error" class="td-error" hidden></div>
+        </section>
+
+        <section class="td-book-pane">
+            <div class="td-pane-head">
+                <strong>Open positions</strong>
+                <button id="td-refresh" class="td-icon-button" type="button" title="Refresh" aria-label="Refresh">&#8635;</button>
+            </div>
+            <div class="td-table-wrap">
+                <table class="td-table">
+                    <thead><tr><th>ID</th><th>Symbol</th><th>Side</th><th>Volume</th><th>Entry</th><th>SL</th><th>TP</th><th></th></tr></thead>
+                    <tbody id="td-positions"></tbody>
+                </table>
+            </div>
+            <div class="td-pane-head td-requests-head"><strong>Execution journal</strong></div>
+            <div class="td-table-wrap">
+                <table class="td-table">
+                    <thead><tr><th>Request</th><th>Operation</th><th>Status</th><th>Updated</th></tr></thead>
+                    <tbody id="td-requests"></tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+</main>
+<script src="{{ url_for('static', filename='js/trade_desk.js') }}"></script>
+</body>
+</html>

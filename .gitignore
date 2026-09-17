@@ -71,6 +71,8 @@ data/
 # TradingView Advanced Charts is proprietary.
 # Download it from TradingView with your own license and place it here locally.
 static/charting_library/
+# Keep any unpacked source copy local too. Runtime only reads static/charting_library/.
+/charting_library/
 
 # Scrapy stuff:
 .scrapy
