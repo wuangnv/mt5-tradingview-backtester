@@ -147,6 +147,16 @@ class MT5DataFetcher:
                 return json.loads(response_str)
                 
             except socket.timeout:
+                # A timed-out request can still produce a late response. The protocol has no
+                # request envelope, so reusing this socket could let the next command consume
+                # the previous response. Force a reconnect before any further request.
+                if self.client_socket:
+                    try:
+                        self.client_socket.close()
+                    except Exception:
+                        pass
+                self.client_socket = None
+                self.initialized = False
                 return {'success': False, 'message': 'Response timeout from MetaTrader 5.'}
             except Exception as e:
                 # Hủy socket bị lỗi để kích hoạt tự động kết nối lại lần sau

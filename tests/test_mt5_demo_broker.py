@@ -1,5 +1,10 @@
+import tempfile
+import time
 import unittest
+from pathlib import Path
 
+from execution_service import ExecutionRiskDenied, ExecutionService
+from execution_store import ExecutionJournal
 from mt5_demo_broker import MT5SocketDemoAdapter
 
 
@@ -46,7 +51,10 @@ class FakeMT5Fetcher:
         }
 
     def get_price_result(self, symbol):
-        return {"success": True, "price": {"bid": 1.1000, "ask": 1.1002}}
+        return {
+            "success": True,
+            "price": {"bid": 1.1000, "ask": 1.1002, "time": int(time.time())},
+        }
 
     def get_symbol_info(self, symbol):
         return {
@@ -114,13 +122,55 @@ class MT5SocketDemoAdapterTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             MT5SocketDemoAdapter(FakeMT5Fetcher(trade_mode="real"))
 
-    def test_bind_waits_for_connection_and_refuses_timeout(self):
-        class OfflineFetcher(FakeMT5Fetcher):
-            def wait_for_connection(self, timeout):
-                return False
+    def test_bind_timeout_starts_degraded_and_recovers_when_ea_connects(self):
+        class DeferredFetcher(FakeMT5Fetcher):
+            def __init__(self):
+                super().__init__()
+                self.online = False
 
-        with self.assertRaises(ConnectionError):
-            MT5SocketDemoAdapter(OfflineFetcher(), connect_timeout=0.01)
+            def wait_for_connection(self, timeout):
+                return self.online
+
+            def get_execution_context(self):
+                if not self.online:
+                    return {
+                        "success": False,
+                        "message": "No active connection from MT5 Expert Advisor.",
+                    }
+                return super().get_execution_context()
+
+        fetcher = DeferredFetcher()
+        adapter = MT5SocketDemoAdapter(fetcher, connect_timeout=0.01)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            service = ExecutionService(
+                adapter, ExecutionJournal(Path(temp_dir) / "execution.sqlite3")
+            )
+            state = service.snapshot()
+            self.assertFalse(state["connection"]["connected"])
+            self.assertFalse(state["capabilities"]["place_market"])
+            self.assertEqual(state["account"]["account_id"], "")
+
+            fetcher.online = True
+            recovered = service.snapshot()
+            self.assertTrue(recovered["connection"]["connected"])
+            self.assertEqual(recovered["account"]["account_id"], "123456")
+            self.assertEqual(adapter.server_id, "Broker-Demo")
+
+    def test_context_transport_drop_after_wait_starts_degraded(self):
+        class RaceFetcher(FakeMT5Fetcher):
+            def wait_for_connection(self, timeout):
+                return True
+
+            def get_execution_context(self):
+                return {
+                    "success": False,
+                    "message": "Connection with MT5 Expert Advisor was disconnected abruptly.",
+                }
+
+        adapter = MT5SocketDemoAdapter(RaceFetcher(), connect_timeout=0.01)
+        self.assertEqual(adapter.account_id, "")
+        self.assertFalse(adapter.connection_snapshot()["connected"])
+        self.assertFalse(adapter.capabilities_snapshot()["request_lookup"])
 
     def test_identity_capabilities_and_contract_are_demo_bound(self):
         adapter = MT5SocketDemoAdapter(FakeMT5Fetcher())
@@ -132,6 +182,38 @@ class MT5SocketDemoAdapterTests(unittest.TestCase):
         quote = adapter.quote_snapshot("EURUSD")
         self.assertEqual(quote["contract"]["min_volume"], 0.01)
         self.assertEqual(quote["contract"]["volume_step"], 0.01)
+
+    def test_quote_uses_broker_tick_time_and_stale_tick_is_rejected(self):
+        class OldTickFetcher(FakeMT5Fetcher):
+            def get_price_result(self, symbol):
+                return {
+                    "success": True,
+                    "price": {
+                        "bid": 1.1000,
+                        "ask": 1.1002,
+                        "time": int(time.time()) - 3600,
+                    },
+                }
+
+        adapter = MT5SocketDemoAdapter(OldTickFetcher())
+        quote = adapter.quote_snapshot("EURUSD")
+        self.assertGreater(adapter.now_ms() - quote["as_of_ms"], 3_500_000)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            service = ExecutionService(
+                adapter,
+                ExecutionJournal(Path(temp_dir) / "execution.sqlite3"),
+                freshness_ms=5000,
+            )
+            with self.assertRaises(ExecutionRiskDenied):
+                service.preview(
+                    {
+                        "symbol": "EURUSD",
+                        "side": "buy",
+                        "volume": 0.01,
+                        "stop_loss": 1.0950,
+                        "take_profit": 1.1050,
+                    }
+                )
 
     def test_request_id_is_mapped_to_short_safe_stable_broker_tag(self):
         fetcher = FakeMT5Fetcher()

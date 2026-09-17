@@ -9,19 +9,33 @@ class MT5SocketDemoAdapter:
 
     def __init__(self, fetcher, *, connect_timeout=8.0):
         self.fetcher = fetcher
+        self.account_id = ""
+        self.server_id = ""
+        self.account_mode = "demo"
+        self._last_context = None
+        self._startup_error = None
         wait_for_connection = getattr(fetcher, "wait_for_connection", None)
         if callable(wait_for_connection) and not wait_for_connection(connect_timeout):
-            raise ConnectionError("MT5 EA did not connect to the local socket gateway")
-        context = self._read_context(require_bound=False)
-        account = context["account"]
+            self._startup_error = "MT5 EA did not connect to the local socket gateway"
+            return
+        try:
+            context = self._read_context(require_bound=False)
+        except ConnectionError as exc:
+            self._startup_error = str(exc)
+            return
+        self._bind_context(context, initial=True)
+
+    def _bind_context(self, context, *, initial=False):
+        account = context.get("account") or {}
         if str(account.get("trade_mode") or "").lower() != "demo":
-            raise RuntimeError("P4B refuses non-demo MT5 accounts")
+            error_type = RuntimeError if initial else PermissionError
+            raise error_type("P4B refuses non-demo MT5 accounts")
         self.account_id = str(account.get("login") or "")
         self.server_id = str(account.get("server") or "")
-        self.account_mode = "demo"
         if not self.account_id or not self.server_id:
             raise RuntimeError("MT5 demo identity is incomplete")
         self._last_context = context
+        self._startup_error = None
 
     @staticmethod
     def now_ms():
@@ -63,13 +77,16 @@ class MT5SocketDemoAdapter:
             raise RuntimeError("MT5 gateway protocol v2 is required for P4B")
         account = response.get("account") or {}
         if require_bound:
-            if str(account.get("trade_mode") or "").lower() != "demo":
+            if not self.account_id or not self.server_id:
+                self._bind_context(response)
+            elif str(account.get("trade_mode") or "").lower() != "demo":
                 raise PermissionError("MT5 account switched out of demo mode")
-            if str(account.get("login") or "") != self.account_id:
+            elif str(account.get("login") or "") != self.account_id:
                 raise PermissionError("MT5 account login changed after P4B binding")
-            if str(account.get("server") or "") != self.server_id:
+            elif str(account.get("server") or "") != self.server_id:
                 raise PermissionError("MT5 account server changed after P4B binding")
         self._last_context = response
+        self._startup_error = None
         return response
 
     def identity_snapshot(self):
@@ -89,7 +106,7 @@ class MT5SocketDemoAdapter:
             return {
                 "connected": False,
                 "transport": "mt5-socket",
-                "message": str(exc),
+                "message": str(exc) or self._startup_error,
             }
         terminal = context.get("terminal") or {}
         return {
@@ -157,6 +174,13 @@ class MT5SocketDemoAdapter:
         info = symbol_response.get("symbol") or {}
         if not info.get("trade_allowed"):
             raise ValueError(f"broker trading is disabled for {symbol}")
+        try:
+            if price.get("time_msc") is not None:
+                as_of_ms = int(price["time_msc"])
+            else:
+                as_of_ms = int(price.get("time") or 0) * 1000
+        except (TypeError, ValueError):
+            as_of_ms = 0
         return {
             "symbol": str(symbol).upper(),
             "bid": price.get("bid"),
@@ -169,7 +193,7 @@ class MT5SocketDemoAdapter:
                 "max_volume": info.get("volume_max"),
                 "stops_level": info.get("stops_level"),
             },
-            "as_of_ms": self.now_ms(),
+            "as_of_ms": as_of_ms,
         }
 
     def positions_snapshot(self):

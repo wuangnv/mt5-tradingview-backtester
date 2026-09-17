@@ -262,7 +262,6 @@ class ExecutionService:
         )
 
     def reconcile(self, request_id):
-        self._require_capability("request_lookup")
         record = self.journal.get(str(request_id))
         if record is None:
             raise ExecutionValidationError("request_id was not found")
@@ -272,6 +271,9 @@ class ExecutionService:
             or record["account_server"] != getattr(self.adapter, "server_id", None)
         ):
             raise ExecutionDenied("request does not belong to the active demo account")
+        if record["response"] is not None and record["status"] != "unknown":
+            return record["response"]
+        self._require_capability("request_lookup")
         result = self._adapter_read("lookup_request", record["request_id"])
         if result is None:
             result = {"status": "unknown", "request_id": record["request_id"]}

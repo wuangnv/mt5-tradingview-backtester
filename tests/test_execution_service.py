@@ -174,6 +174,18 @@ class ExecutionServiceTests(unittest.TestCase):
         self.assertEqual(replayed, reconciled)
         self.assertEqual(len(self.adapter.calls), 1)
 
+    def test_reconcile_does_not_downgrade_known_result_when_lookup_is_missing(self):
+        context = self.context("known-result")
+        accepted = self.service.place(context, ORDER)
+        self.assertEqual(accepted["status"], "accepted")
+        self.adapter._results.pop(context.request_id, None)
+
+        reconciled = self.service.reconcile(context.request_id)
+        stored = self.journal.get(context.request_id)
+        self.assertEqual(reconciled, accepted)
+        self.assertEqual(stored["status"], "accepted")
+        self.assertEqual(stored["response"], accepted)
+
     def test_disconnect_blocks_reads_and_snapshot_reports_disconnected(self):
         self.adapter.disconnect()
         with self.assertRaises(ExecutionUnknown):
