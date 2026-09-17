@@ -649,8 +649,22 @@ void HandleTradeClose(ulong ticket, string request_id)
    }
 
    bool still_open = PositionSelectByTicket(ticket);
-   string status = still_open ? "partial" : "closed";
-   double remaining_volume = still_open ? PositionGetDouble(POSITION_VOLUME) : 0.0;
+   string status = "accepted";
+   if(trade_result.retcode == TRADE_RETCODE_DONE)
+      status = "closed";
+   else if(trade_result.retcode == TRADE_RETCODE_DONE_PARTIAL)
+      status = "partial";
+
+   double remaining_volume = 0.0;
+   if(status == "partial")
+   {
+      if(still_open)
+         remaining_volume = PositionGetDouble(POSITION_VOLUME);
+      else
+         remaining_volume = MathMax(0.0, volume - trade_result.volume);
+   }
+   else if(status == "accepted")
+      remaining_volume = still_open ? PositionGetDouble(POSITION_VOLUME) : volume;
    SendResponse("{\"success\":true,\"status\":\"" + status + "\",\"request_id\":\"" + JsonEscape(request_id) +
                 "\",\"position_id\":" + IntegerToString(ticket) +
                 ",\"order_id\":" + IntegerToString(trade_result.order) +
