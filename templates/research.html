@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Workspace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/research.css') }}">
+</head>
+<body>
+<main class="rw-shell">
+    <header class="rw-topbar">
+        <div class="rw-brand">Research Workspace</div>
+        <div class="rw-mode">LOCAL RESEARCH</div>
+        <div class="rw-spacer"></div>
+        <a class="rw-nav" href="/">Evidence</a>
+        <button id="rw-refresh" class="rw-icon-btn" type="button" title="Refresh" aria-label="Refresh">&#8635;</button>
+    </header>
+
+    <div id="rw-status" class="rw-status" role="status" aria-live="polite"></div>
+
+    <section class="rw-layout">
+        <aside class="rw-sidebar">
+            <section class="rw-side-band">
+                <h2>Hypotheses</h2>
+                <div id="rw-hypothesis-list" class="rw-list"></div>
+            </section>
+            <section class="rw-side-band">
+                <h2>Strategy versions</h2>
+                <div id="rw-strategy-list" class="rw-list"></div>
+            </section>
+            <section class="rw-side-band">
+                <h2>Protocols</h2>
+                <div id="rw-protocol-list" class="rw-list"></div>
+            </section>
+        </aside>
+
+        <section class="rw-workspace">
+            <div class="rw-heading-row">
+                <h1>Research chain</h1>
+                <span id="rw-schema" class="rw-muted"></span>
+            </div>
+
+            <section class="rw-band">
+                <h2>1. Hypothesis</h2>
+                <form id="rw-hypothesis-form" class="rw-form rw-form-two">
+                    <label>Title<input name="title" maxlength="200" required></label>
+                    <label class="rw-span-two">Thesis<textarea name="thesis" rows="3" maxlength="4000" required></textarea></label>
+                    <div class="rw-form-actions rw-span-two"><button type="submit">Save hypothesis</button></div>
+                </form>
+            </section>
+
+            <section class="rw-band">
+                <h2>2. Strategy version</h2>
+                <form id="rw-strategy-form" class="rw-form rw-form-three">
+                    <label>Hypothesis<select name="hypothesis_id" required></select></label>
+                    <label>Strategy key<input name="strategy_key" maxlength="120" required></label>
+                    <label>Version<input name="version" maxlength="80" required></label>
+                    <label class="rw-span-three">Rules JSON<textarea name="rules" rows="4" required>{}</textarea></label>
+                    <div class="rw-form-actions rw-span-three"><button type="submit">Save version</button></div>
+                </form>
+            </section>
+
+            <section class="rw-band">
+                <h2>3. Protocol</h2>
+                <form id="rw-protocol-form" class="rw-form rw-form-three">
+                    <label>Strategy version<select name="strategy_version_id" required></select></label>
+                    <label>Name<input name="name" maxlength="200" required></label>
+                    <label>Dataset ID<input name="dataset_id" maxlength="200" required></label>
+                    <label>Data start ms<input name="data_start_ms" inputmode="numeric" required></label>
+                    <label>Cutoff ms<input name="cutoff_ms" inputmode="numeric" required></label>
+                    <label>Seed<input name="seed" inputmode="numeric" value="0" required></label>
+                    <label class="rw-span-three">Parameters JSON<textarea name="parameters" rows="3" required>{}</textarea></label>
+                    <div class="rw-form-actions rw-span-three"><button type="submit">Save protocol</button></div>
+                </form>
+            </section>
+
+            <section class="rw-band">
+                <h2>4. Planned run</h2>
+                <form id="rw-run-form" class="rw-form rw-form-three">
+                    <label>Protocol<select name="protocol_id" required></select></label>
+                    <label>Max bars<input name="max_bars" inputmode="numeric" required></label>
+                    <label>Max runtime ms<input name="max_runtime_ms" inputmode="numeric" required></label>
+                    <label class="rw-span-three">Budget note<input name="note" maxlength="500"></label>
+                    <div class="rw-form-actions rw-span-three"><button type="submit">Create planned run</button></div>
+                </form>
+            </section>
+
+            <section class="rw-band">
+                <div class="rw-heading-row">
+                    <h2>Runs</h2>
+                    <span id="rw-run-count" class="rw-muted"></span>
+                </div>
+                <div class="rw-table-wrap">
+                    <table class="rw-table">
+                        <thead><tr><th>Run</th><th>Status</th><th>Strategy</th><th>Protocol</th><th>Repro key</th></tr></thead>
+                        <tbody id="rw-runs"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="rw-run-detail" class="rw-band" hidden>
+                <div class="rw-heading-row">
+                    <h2 id="rw-run-title">Run</h2>
+                    <span id="rw-run-status" class="rw-state"></span>
+                </div>
+                <div id="rw-run-meta" class="rw-kv-grid"></div>
+                <div class="rw-run-actions">
+                    <button id="rw-start" type="button">Start</button>
+                    <button id="rw-cancel" type="button">Cancel</button>
+                </div>
+                <form id="rw-complete-form" class="rw-form rw-form-two">
+                    <label>Observed until ms<input name="observed_until_ms" inputmode="numeric" required></label>
+                    <label class="rw-span-two">Result JSON<textarea name="result" rows="3" required>{}</textarea></label>
+                    <div class="rw-form-actions rw-span-two"><button type="submit">Complete</button></div>
+                </form>
+                <form id="rw-fail-form" class="rw-form rw-form-two">
+                    <label class="rw-span-two">Failure reason<input name="reason" maxlength="1000" required></label>
+                    <div class="rw-form-actions rw-span-two"><button type="submit">Fail run</button></div>
+                </form>
+            </section>
+        </section>
+    </section>
+</main>
+<script src="{{ url_for('static', filename='js/research.js') }}"></script>
+</body>
+</html>
