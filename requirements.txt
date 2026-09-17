@@ -1,1 +1,2 @@
 Flask==3.0.0
+MetaTrader5>=5.0.0; sys_platform == 'win32'

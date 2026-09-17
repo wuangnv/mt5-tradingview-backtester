@@ -1,13 +1,15 @@
 """
 Flask Backend - API cho Trading Chart Tool
 """
-from flask import Flask, render_template, jsonify, request
-from mt5_data import mt5_fetcher
-from history_store import history_store
-from datetime import datetime, timedelta
+import os
+import sys
 import json
 import threading
 import logging
+from datetime import datetime, timedelta
+from flask import Flask, render_template, jsonify, request
+from mt5_data import mt5_fetcher
+from history_store import history_store
 
 app = Flask(__name__)
 APP_MODE = {'mode': 'backtest'}  # backtest = local-first, live = MT5-first
@@ -44,8 +46,14 @@ def get_symbols():
     """API lấy danh sách symbols"""
     local_symbols = {item['symbol'] for item in history_store.get_status()}
     symbols = set(local_symbols)
-    if APP_MODE['mode'] == 'live':
-        symbols.update(mt5_fetcher.get_symbols())
+    try:
+        mt5_syms = mt5_fetcher.get_symbols()
+        if mt5_syms:
+            symbols.update(mt5_syms)
+    except Exception:
+        pass
+    if not symbols:
+        symbols.update(['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD', 'BTCUSD'])
     return jsonify({
         'success': True,
         'symbols': sorted(symbols)
@@ -90,26 +98,17 @@ def get_data():
                 'first_date': local[0]['time'],
                 'last_date': local[-1]['time']
             })
-        print(f"LOCAL MISS: no {symbol} {timeframe} data in local data mode")
-        print(f"{'='*60}\n")
-        return jsonify({
-            'success': False,
-            'data': [],
-            'message': f'No local {symbol} {timeframe} data. Import/download data or switch the data source to MT5.',
-            'symbol': symbol,
-            'timeframe': timeframe,
-            'source': 'local_chunked'
-        })
+        print(f"LOCAL MISS: Fetching from MT5 to populate cache for {symbol} {timeframe}...")
 
     result = mt5_fetcher.get_historical_data(symbol, timeframe, bars)
     if result.get('success') and result.get('data'):
         history_store.save(symbol, timeframe, result['data'])
-        result['source'] = 'mt5_bridge'
+        result['source'] = 'mt5_bridge' if mode == 'live' else 'local_chunked'
 
-    if result['success']:
+    if result.get('success'):
         print(f"SUCCESS: {len(result['data'])} bars returned")
     else:
-        print(f"FAILED: {result['message']}")
+        print(f"FAILED: {result.get('message')}")
 
     print(f"{'='*60}\n")
 
@@ -157,20 +156,11 @@ def get_data_range():
             'last_date': local[-1]['time'],
         })
 
-    if mode != 'live' and not history_store.should_try_mt5(timeframe, target_ts or from_int):
-        return jsonify({
-            'success': False,
-            'data': [],
-            'need_import': True,
-            'source': 'local_chunked',
-            'message': f'No local {symbol} {timeframe} data for this range. Import JSON/CSV data or switch the data source to MT5.',
-        })
-
-    if mode == 'live':
-        result = mt5_fetcher.get_historical_range(symbol, timeframe, from_int, to_int)
-        if result.get('success') and result.get('data'):
-            history_store.save(symbol, timeframe, result['data'])
-            result['source'] = 'mt5_bridge'
+    # Tải dải nến từ MT5 và cache lại cho lần sau
+    result = mt5_fetcher.get_historical_range(symbol, timeframe, from_int, to_int)
+    if result.get('success') and result.get('data'):
+        history_store.save(symbol, timeframe, result['data'])
+        result['source'] = 'mt5_bridge' if mode == 'live' else 'local_chunked'
         return jsonify(result)
 
     return jsonify({

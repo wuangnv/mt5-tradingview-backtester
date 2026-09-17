@@ -9,6 +9,7 @@ import socket
 import threading
 import json
 import time
+from datetime import datetime, timedelta
 
 IS_WINDOWS = sys.platform.startswith('win')
 IS_MACOS = sys.platform == 'darwin'
@@ -69,6 +70,7 @@ class MT5DataFetcher:
         with self.lock:
             # 1. Ưu tiên kiểm tra kết nối từ MT5 EA Socket (hoạt động xuất sắc trên cả Mac và Windows)
             if self.client_socket is not None:
+                self.initialized = True
                 return True, "MetaTrader 5 Expert Advisor connected via Socket Gateway (Port 9000)"
             
             # 2. Nếu trên Windows và có native MetaTrader5 package
@@ -77,6 +79,7 @@ class MT5DataFetcher:
                     try:
                         if native_mt5.initialize():
                             self._native_initialized = True
+                            self.initialized = True
                             account = native_mt5.account_info()
                             acc_id = account.login if account else 'Active'
                             return True, f"MetaTrader 5 connected via Native Windows API (Account #{acc_id})"
@@ -86,6 +89,7 @@ class MT5DataFetcher:
                     except Exception as e:
                         print(f"[MT5 Native] Exception during initialize: {e}")
                 elif self._native_initialized:
+                    self.initialized = True
                     return True, "MetaTrader 5 connected via Native Windows API"
 
             # 3. Thông báo hướng dẫn kết nối rõ ràng theo hệ điều hành
@@ -245,6 +249,53 @@ class MT5DataFetcher:
             'message': 'Failed to fetch historical data from MT5. Please check MT5 connection.'
         }
         
+    def get_historical_range(self, symbol, timeframe, from_ts, to_ts):
+        """Lấy dữ liệu lịch sử nến theo khoảng thời gian từ MT5"""
+        if self.client_socket:
+            res = self._send_request(f"GET_RANGE;{symbol};{timeframe};{from_ts};{to_ts}", timeout=30.0)
+            if res.get('success'):
+                return res
+
+        if IS_WINDOWS and native_mt5 is not None and self._native_initialized:
+            try:
+                tf_map = {
+                    'M1': native_mt5.TIMEFRAME_M1,
+                    'M5': native_mt5.TIMEFRAME_M5,
+                    'M15': native_mt5.TIMEFRAME_M15,
+                    'M30': native_mt5.TIMEFRAME_M30,
+                    'H1': native_mt5.TIMEFRAME_H1,
+                    'H4': native_mt5.TIMEFRAME_H4,
+                    'D1': native_mt5.TIMEFRAME_D1,
+                    'W1': native_mt5.TIMEFRAME_W1,
+                    'MN1': native_mt5.TIMEFRAME_MN1,
+                }
+                tf_code = tf_map.get(timeframe.upper(), native_mt5.TIMEFRAME_H1)
+                rates = native_mt5.copy_rates_range(symbol, tf_code, int(from_ts), int(to_ts))
+                if rates is not None and len(rates) > 0:
+                    data = []
+                    for r in rates:
+                        data.append({
+                            'time': int(r['time']),
+                            'open': float(r['open']),
+                            'high': float(r['high']),
+                            'low': float(r['low']),
+                            'close': float(r['close']),
+                            'volume': float(r['tick_volume'])
+                        })
+                    return {
+                        'success': True,
+                        'data': data,
+                        'symbol': symbol,
+                        'timeframe': timeframe,
+                        'first_date': data[0]['time'],
+                        'last_date': data[-1]['time']
+                    }
+            except Exception as e:
+                print(f"[MT5 Native] Error copy_rates_range: {e}")
+
+        # Fallback to count_back fetch
+        return self.get_historical_data(symbol, timeframe, bars=5000)
+        
     def get_current_price(self, symbol):
         """Lấy giá Tick hiện tại (Bid/Ask)"""
         if self.client_socket:
@@ -373,6 +424,31 @@ class MT5DataFetcher:
             res = self._send_request(f"GET_HISTORY;{days}", timeout=8.0)
             if res.get('success'):
                 return res
+
+        if IS_WINDOWS and native_mt5 is not None and self._native_initialized:
+            try:
+                from_date = datetime.now() - timedelta(days=days)
+                deals = native_mt5.history_deals_get(from_date, datetime.now())
+                if deals:
+                    history = []
+                    for d in deals:
+                        if d.entry == native_mt5.DEAL_ENTRY_OUT:
+                            history.append({
+                                'ticket': d.ticket,
+                                'order': d.order,
+                                'time': int(d.time),
+                                'symbol': d.symbol,
+                                'type': 'buy' if d.type == native_mt5.DEAL_TYPE_BUY else 'sell',
+                                'lots': float(d.volume),
+                                'price': float(d.price),
+                                'profit': float(d.profit),
+                                'commission': float(d.commission),
+                                'swap': float(d.swap)
+                            })
+                    return {'success': True, 'history': history}
+                return {'success': True, 'history': []}
+            except Exception as e:
+                print(f"[MT5 Native] Error get_trade_history: {e}")
 
         return {
             'success': False,
