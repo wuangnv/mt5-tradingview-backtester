@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Explorer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/evidence.css') }}">
+</head>
+<body>
+<main class="ev-shell">
+    <header class="ev-topbar">
+        <div class="ev-brand">Evidence Explorer</div>
+        <div class="ev-readonly">READ ONLY</div>
+        <div class="ev-spacer"></div>
+        <button id="ev-export-json" class="ev-command" type="button" disabled>Export JSON</button>
+        <button id="ev-export-csv" class="ev-command" type="button" disabled>Export CSV</button>
+    </header>
+
+    <section class="ev-layout">
+        <aside class="ev-runs">
+            <div class="ev-pane-head">
+                <strong>Runs</strong>
+                <button id="ev-refresh" class="ev-icon-btn" type="button" title="Refresh" aria-label="Refresh">&#8635;</button>
+            </div>
+            <div id="ev-run-list" class="ev-run-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="ev-workspace">
+            <div id="ev-empty" class="ev-empty">Select a run to inspect its evidence.</div>
+            <div id="ev-detail" class="ev-detail" hidden>
+                <div class="ev-heading-row">
+                    <div>
+                        <h1 id="ev-title">Run</h1>
+                        <div id="ev-subtitle" class="ev-subtitle"></div>
+                    </div>
+                    <div id="ev-compare-state" class="ev-compare-state"></div>
+                </div>
+
+                <div id="ev-warning" class="ev-warning" hidden></div>
+
+                <section class="ev-band">
+                    <h2>Official metrics</h2>
+                    <div id="ev-metrics" class="ev-metric-grid"></div>
+                    <canvas id="ev-equity" class="ev-equity" height="180"></canvas>
+                </section>
+
+                <section class="ev-band">
+                    <h2>Provenance and assumptions</h2>
+                    <div id="ev-provenance" class="ev-kv-grid"></div>
+                </section>
+
+                <section class="ev-band ev-ledger-band">
+                    <div class="ev-section-row">
+                        <h2>Ledger</h2>
+                        <span id="ev-ledger-count" class="ev-muted"></span>
+                    </div>
+                    <div class="ev-table-wrap">
+                        <table class="ev-table">
+                            <thead>
+                            <tr>
+                                <th>Trade</th><th>Side</th><th>Open UTC</th><th>Close UTC</th>
+                                <th>Qty</th><th>Net P/L</th><th>Fees</th><th>Realized R</th>
+                            </tr>
+                            </thead>
+                            <tbody id="ev-ledger"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="ev-inspector" class="ev-band" hidden>
+                    <h2>Trade inspector</h2>
+                    <div id="ev-inspector-grid" class="ev-kv-grid"></div>
+                </section>
+            </div>
+        </section>
+    </section>
+</main>
+<script src="{{ url_for('static', filename='js/evidence.js') }}"></script>
+</body>
+</html>
