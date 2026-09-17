@@ -1,5 +1,6 @@
 (() => {
     const els = {
+        mode: document.getElementById('td-mode'),
         account: document.getElementById('td-account'),
         server: document.getElementById('td-server'),
         balance: document.getElementById('td-balance'),
@@ -50,6 +51,11 @@
 
     function renderState(next) {
         state = next;
+        if (els.mode) {
+            els.mode.textContent = next.adapter === 'mt5-demo-socket'
+                ? 'MT5 DEMO / LIVE BLOCKED'
+                : 'DEMO SIMULATOR / NO MT5';
+        }
         els.account.textContent = next.account.account_id;
         els.server.textContent = next.account.server;
         els.balance.textContent = money(next.account.balance);

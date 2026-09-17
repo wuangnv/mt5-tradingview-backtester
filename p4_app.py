@@ -1,4 +1,4 @@
-"""P4 local Trade Desk shell backed only by the deterministic demo simulator."""
+"""P4 local Trade Desk shell with simulator and strict MT5-demo backends."""
 
 import os
 from urllib.parse import urlsplit
@@ -20,6 +20,18 @@ from execution_store import ExecutionJournal, ExecutionStoreError
 from p3_app import create_app as create_practice_app
 
 
+def _default_execution_adapter():
+    backend = str(os.environ.get("P4_EXECUTION_BACKEND") or "simulator").strip().lower()
+    if backend in {"simulator", "local-simulator"}:
+        return DemoBrokerSimulator()
+    if backend == "mt5-demo":
+        from mt5_data import mt5_fetcher
+        from mt5_demo_broker import MT5SocketDemoAdapter
+
+        return MT5SocketDemoAdapter(mt5_fetcher)
+    raise RuntimeError(f"unsupported P4 execution backend {backend!r}")
+
+
 def create_app(
     evidence_db_path=None,
     research_db_path=None,
@@ -36,11 +48,10 @@ def create_app(
         journal_db_path,
         history_root,
     )
-    adapter = demo_adapter or DemoBrokerSimulator()
-    app.config["EXECUTION_SERVICE"] = execution_service or ExecutionService(
-        adapter,
-        ExecutionJournal(execution_db_path),
-    )
+    if execution_service is None:
+        adapter = demo_adapter or _default_execution_adapter()
+        execution_service = ExecutionService(adapter, ExecutionJournal(execution_db_path))
+    app.config["EXECUTION_SERVICE"] = execution_service
 
     def error_response(code, message, status):
         return jsonify({"success": False, "error": {"code": code, "message": message}}), status
@@ -108,7 +119,10 @@ def create_app(
 
     @app.get("/trade-desk")
     def trade_desk():
-        return render_template("trade_desk.html")
+        adapter_name = getattr(
+            app.config["EXECUTION_SERVICE"].adapter, "adapter_name", "unknown"
+        )
+        return render_template("trade_desk.html", execution_adapter=adapter_name)
 
     @app.get("/api/execution/state")
     def execution_state():

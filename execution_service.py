@@ -294,7 +294,7 @@ class ExecutionService:
             positions = []
         return {
             "mode": "demo",
-            "adapter": "local-simulator",
+            "adapter": getattr(self.adapter, "adapter_name", "unknown"),
             "live_execution_enabled": False,
             "connection": connection,
             "capabilities": capabilities,

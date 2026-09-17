@@ -8,7 +8,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Antigravity AI"
 #property link      "https://google.com"
-#property version   "1.02"
+#property version   "1.03"
 #property strict
 
 // Inputs
@@ -24,12 +24,34 @@ uint           g_last_connect_time = 0; // Throttles reconnection to avoid freez
 #include <Trade\Trade.mqh>
 CTrade         g_trade;
 
+string JsonEscape(string value)
+{
+   StringReplace(value, "\\", "\\\\");
+   StringReplace(value, "\"", "\\\"");
+   StringReplace(value, "\r", "\\r");
+   StringReplace(value, "\n", "\\n");
+   return value;
+}
+
+string AccountTradeModeToString(long mode)
+{
+   if(mode == ACCOUNT_TRADE_MODE_DEMO) return "demo";
+   if(mode == ACCOUNT_TRADE_MODE_CONTEST) return "contest";
+   if(mode == ACCOUNT_TRADE_MODE_REAL) return "real";
+   return "unknown";
+}
+
+string BoolJson(bool value)
+{
+   return value ? "true" : "false";
+}
+
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
 {
-   Print("=== [MacGateway] Starting Expert Advisor v1.02 ===");
+   Print("=== [MacGateway] Starting Expert Advisor v1.03 ===");
    Print("Connecting to Python Server at " + InpServerHost + ":" + IntegerToString(InpServerPort));
    
    // Set high frequency timer for non-blocking socket checks
@@ -227,6 +249,19 @@ void ProcessCommand(string command)
       string symbol = parts[1];
       HandleGetPrice(symbol);
    }
+   else if(cmd_type == "GET_EXECUTION_CONTEXT")
+   {
+      HandleGetExecutionContext();
+   }
+   else if(cmd_type == "GET_SYMBOL_INFO")
+   {
+      if(total_parts < 2)
+      {
+         SendResponse("{\"success\":false,\"message\":\"Invalid GET_SYMBOL_INFO parameters\"}");
+         return;
+      }
+      HandleGetSymbolInfo(parts[1]);
+   }
    else if(cmd_type == "TRADE_BUY" || cmd_type == "TRADE_SELL")
    {
       if(total_parts < 5)
@@ -238,7 +273,8 @@ void ProcessCommand(string command)
       double lots = StringToDouble(parts[2]);
       double sl = StringToDouble(parts[3]);
       double tp = StringToDouble(parts[4]);
-      HandleTradeOrder(cmd_type == "TRADE_BUY" ? "BUY" : "SELL", symbol, lots, sl, tp);
+      string request_id = total_parts >= 6 ? parts[5] : "";
+      HandleTradeOrder(cmd_type == "TRADE_BUY" ? "BUY" : "SELL", symbol, lots, sl, tp, request_id);
    }
    else if(cmd_type == "TRADE_CLOSE")
    {
@@ -248,7 +284,17 @@ void ProcessCommand(string command)
          return;
       }
       ulong ticket = (ulong)StringToInteger(parts[1]);
-      HandleTradeClose(ticket);
+      string request_id = total_parts >= 3 ? parts[2] : "";
+      HandleTradeClose(ticket, request_id);
+   }
+   else if(cmd_type == "GET_REQUEST")
+   {
+      if(total_parts < 2)
+      {
+         SendResponse("{\"success\":false,\"message\":\"Invalid GET_REQUEST parameters\"}");
+         return;
+      }
+      HandleGetRequest(parts[1]);
    }
    else if(cmd_type == "GET_POSITIONS")
    {
@@ -396,6 +442,72 @@ void HandleGetPrice(string symbol)
 }
 
 //+------------------------------------------------------------------+
+//| Return execution identity and hard demo/live safety fields       |
+//+------------------------------------------------------------------+
+void HandleGetExecutionContext()
+{
+   long login = AccountInfoInteger(ACCOUNT_LOGIN);
+   long trade_mode = AccountInfoInteger(ACCOUNT_TRADE_MODE);
+   string server = JsonEscape(AccountInfoString(ACCOUNT_SERVER));
+   string company = JsonEscape(AccountInfoString(ACCOUNT_COMPANY));
+   string currency = JsonEscape(AccountInfoString(ACCOUNT_CURRENCY));
+   bool account_trade_allowed = (bool)AccountInfoInteger(ACCOUNT_TRADE_ALLOWED);
+   bool account_trade_expert = (bool)AccountInfoInteger(ACCOUNT_TRADE_EXPERT);
+   bool terminal_connected = (bool)TerminalInfoInteger(TERMINAL_CONNECTED);
+   bool terminal_trade_allowed = (bool)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED);
+   bool mql_trade_allowed = (bool)MQLInfoInteger(MQL_TRADE_ALLOWED);
+
+   string json = "{\"success\":true,\"protocol_version\":2,\"account\":{" +
+                 "\"login\":" + IntegerToString(login) +
+                 ",\"server\":\"" + server + "\"" +
+                 ",\"company\":\"" + company + "\"" +
+                 ",\"currency\":\"" + currency + "\"" +
+                 ",\"trade_mode\":\"" + AccountTradeModeToString(trade_mode) + "\"" +
+                 ",\"trade_mode_code\":" + IntegerToString(trade_mode) +
+                 ",\"trade_allowed\":" + BoolJson(account_trade_allowed) +
+                 ",\"trade_expert\":" + BoolJson(account_trade_expert) +
+                 "},\"terminal\":{" +
+                 "\"connected\":" + BoolJson(terminal_connected) +
+                 ",\"trade_allowed\":" + BoolJson(terminal_trade_allowed) +
+                 ",\"mql_trade_allowed\":" + BoolJson(mql_trade_allowed) + "}}";
+   SendResponse(json);
+}
+
+//+------------------------------------------------------------------+
+//| Return broker contract fields needed by the P4 risk gate         |
+//+------------------------------------------------------------------+
+void HandleGetSymbolInfo(string symbol)
+{
+   if(!SymbolSelect(symbol, true))
+   {
+      SendResponse("{\"success\":false,\"message\":\"Symbol not found: " + JsonEscape(symbol) + "\"}");
+      return;
+   }
+
+   long trade_mode = SymbolInfoInteger(symbol, SYMBOL_TRADE_MODE);
+   int digits = (int)SymbolInfoInteger(symbol, SYMBOL_DIGITS);
+   int stops_level = (int)SymbolInfoInteger(symbol, SYMBOL_TRADE_STOPS_LEVEL);
+   double tick_size = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
+   double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+   double volume_min = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
+   double volume_max = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MAX);
+   double volume_step = SymbolInfoDouble(symbol, SYMBOL_VOLUME_STEP);
+
+   string json = "{\"success\":true,\"symbol\":{" +
+                 "\"name\":\"" + JsonEscape(symbol) + "\"" +
+                 ",\"trade_mode\":" + IntegerToString(trade_mode) +
+                 ",\"trade_allowed\":" + BoolJson(trade_mode != SYMBOL_TRADE_MODE_DISABLED) +
+                 ",\"digits\":" + IntegerToString(digits) +
+                 ",\"stops_level\":" + IntegerToString(stops_level) +
+                 ",\"tick_size\":" + DoubleToString(tick_size, 8) +
+                 ",\"tick_value\":" + DoubleToString(tick_value, 8) +
+                 ",\"volume_min\":" + DoubleToString(volume_min, 8) +
+                 ",\"volume_max\":" + DoubleToString(volume_max, 8) +
+                 ",\"volume_step\":" + DoubleToString(volume_step, 8) + "}}";
+   SendResponse(json);
+}
+
+//+------------------------------------------------------------------+
 //| Send response string back to Python server                       |
 //+------------------------------------------------------------------+
 void SendResponse(string response)
@@ -430,32 +542,54 @@ void SendResponse(string response)
 //+------------------------------------------------------------------+
 //| Handle placing Buy or Sell orders                                |
 //+------------------------------------------------------------------+
-void HandleTradeOrder(string type, string symbol, double lots, double sl, double tp)
+void HandleTradeOrder(string type, string symbol, double lots, double sl, double tp, string request_id)
 {
    g_trade.SetDeviationInPoints(10);
+   g_trade.SetTypeFillingBySymbol(symbol);
    
    bool res = false;
    if(type == "BUY")
    {
-      res = g_trade.Buy(lots, symbol, 0, sl, tp);
+      res = g_trade.Buy(lots, symbol, 0, sl, tp, request_id);
    }
    else if(type == "SELL")
    {
-      res = g_trade.Sell(lots, symbol, 0, sl, tp);
+      res = g_trade.Sell(lots, symbol, 0, sl, tp, request_id);
    }
    
-   if(res)
+   uint ret_code = g_trade.ResultRetcode();
+   bool accepted = res && (ret_code == TRADE_RETCODE_DONE ||
+                           ret_code == TRADE_RETCODE_DONE_PARTIAL ||
+                           ret_code == TRADE_RETCODE_PLACED);
+   if(accepted)
    {
-      ulong ticket = g_trade.ResultOrder();
+      ulong order_id = g_trade.ResultOrder();
+      ulong deal_id = g_trade.ResultDeal();
+      ulong position_id = 0;
+      if(deal_id > 0 && HistoryDealSelect(deal_id))
+         position_id = (ulong)HistoryDealGetInteger(deal_id, DEAL_POSITION_ID);
       double price = g_trade.ResultPrice();
-      string resp = "{\"success\":true,\"message\":\"Order placed successfully\",\"ticket\":" + IntegerToString(ticket) + ",\"price\":" + DoubleToString(price, 5) + "}";
+      double filled_volume = g_trade.ResultVolume();
+      double remaining_volume = MathMax(0.0, lots - filled_volume);
+      string status = ret_code == TRADE_RETCODE_DONE_PARTIAL ? "partial" : "accepted";
+      string resp = "{\"success\":true,\"status\":\"" + status + "\",\"message\":\"Order placed successfully\"" +
+                    ",\"request_id\":\"" + JsonEscape(request_id) + "\"" +
+                    ",\"order_id\":" + IntegerToString(order_id) +
+                    ",\"deal_id\":" + IntegerToString(deal_id) +
+                    ",\"position_id\":" + IntegerToString(position_id) +
+                    ",\"filled_volume\":" + DoubleToString(filled_volume, 8) +
+                    ",\"remaining_volume\":" + DoubleToString(remaining_volume, 8) +
+                    ",\"price\":" + DoubleToString(price, 5) +
+                    ",\"retcode\":" + IntegerToString(ret_code) + "}";
       SendResponse(resp);
    }
    else
    {
       uint error_code = GetLastError();
-      uint ret_code = g_trade.ResultRetcode();
-      string resp = "{\"success\":false,\"message\":\"Trade failed. RetCode: " + IntegerToString(ret_code) + ", Error: " + IntegerToString(error_code) + "\"}";
+      string resp = "{\"success\":false,\"status\":\"rejected\",\"request_id\":\"" + JsonEscape(request_id) +
+                    "\",\"retcode\":" + IntegerToString(ret_code) +
+                    ",\"error\":" + IntegerToString(error_code) +
+                    ",\"message\":\"Trade failed\"}";
       SendResponse(resp);
    }
 }
@@ -463,19 +597,141 @@ void HandleTradeOrder(string type, string symbol, double lots, double sl, double
 //+------------------------------------------------------------------+
 //| Handle closing position by ticket                                |
 //+------------------------------------------------------------------+
-void HandleTradeClose(ulong ticket)
+void HandleTradeClose(ulong ticket, string request_id)
 {
-   bool res = g_trade.PositionClose(ticket);
-   if(res)
+   if(!PositionSelectByTicket(ticket))
    {
-      SendResponse("{\"success\":true,\"message\":\"Position closed successfully\"}");
+      SendResponse("{\"success\":false,\"status\":\"rejected\",\"request_id\":\"" + JsonEscape(request_id) +
+                   "\",\"message\":\"Position not found\"}");
+      return;
    }
+
+   string symbol = PositionGetString(POSITION_SYMBOL);
+   double volume = PositionGetDouble(POSITION_VOLUME);
+   ENUM_POSITION_TYPE position_type = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
+   MqlTick tick;
+   if(!SymbolInfoTick(symbol, tick))
+   {
+      SendResponse("{\"success\":false,\"status\":\"rejected\",\"request_id\":\"" + JsonEscape(request_id) +
+                   "\",\"message\":\"Failed to read close quote\"}");
+      return;
+   }
+
+   MqlTradeRequest trade_request = {};
+   MqlTradeResult trade_result = {};
+   trade_request.action = TRADE_ACTION_DEAL;
+   trade_request.position = ticket;
+   trade_request.symbol = symbol;
+   trade_request.volume = volume;
+   trade_request.deviation = 10;
+   trade_request.comment = request_id;
+   trade_request.type = position_type == POSITION_TYPE_BUY ? ORDER_TYPE_SELL : ORDER_TYPE_BUY;
+   trade_request.price = trade_request.type == ORDER_TYPE_BUY ? tick.ask : tick.bid;
+
+   long filling = SymbolInfoInteger(symbol, SYMBOL_FILLING_MODE);
+   if((filling & SYMBOL_FILLING_FOK) == SYMBOL_FILLING_FOK)
+      trade_request.type_filling = ORDER_FILLING_FOK;
+   else if((filling & SYMBOL_FILLING_IOC) == SYMBOL_FILLING_IOC)
+      trade_request.type_filling = ORDER_FILLING_IOC;
    else
+      trade_request.type_filling = ORDER_FILLING_RETURN;
+
+   bool sent = OrderSend(trade_request, trade_result);
+   bool accepted = sent && (trade_result.retcode == TRADE_RETCODE_DONE ||
+                            trade_result.retcode == TRADE_RETCODE_DONE_PARTIAL ||
+                            trade_result.retcode == TRADE_RETCODE_PLACED);
+   if(!accepted)
    {
-      uint error_code = GetLastError();
-      uint ret_code = g_trade.ResultRetcode();
-      SendResponse("{\"success\":false,\"message\":\"Close failed. RetCode: " + IntegerToString(ret_code) + ", Error: " + IntegerToString(error_code) + "\"}");
+      SendResponse("{\"success\":false,\"status\":\"rejected\",\"request_id\":\"" + JsonEscape(request_id) +
+                   "\",\"retcode\":" + IntegerToString(trade_result.retcode) +
+                   ",\"message\":\"Close failed\"}");
+      return;
    }
+
+   bool still_open = PositionSelectByTicket(ticket);
+   string status = still_open ? "partial" : "closed";
+   double remaining_volume = still_open ? PositionGetDouble(POSITION_VOLUME) : 0.0;
+   SendResponse("{\"success\":true,\"status\":\"" + status + "\",\"request_id\":\"" + JsonEscape(request_id) +
+                "\",\"position_id\":" + IntegerToString(ticket) +
+                ",\"order_id\":" + IntegerToString(trade_result.order) +
+                ",\"deal_id\":" + IntegerToString(trade_result.deal) +
+                ",\"filled_volume\":" + DoubleToString(trade_result.volume, 8) +
+                ",\"remaining_volume\":" + DoubleToString(remaining_volume, 8) +
+                ",\"price\":" + DoubleToString(trade_result.price, 5) +
+                ",\"retcode\":" + IntegerToString(trade_result.retcode) + "}");
+}
+
+//+------------------------------------------------------------------+
+//| Reconcile a durable P4 request from broker-visible comments      |
+//+------------------------------------------------------------------+
+void HandleGetRequest(string request_id)
+{
+   string escaped_request = JsonEscape(request_id);
+
+   int position_total = PositionsTotal();
+   for(int i = 0; i < position_total; i++)
+   {
+      ulong position_id = PositionGetTicket(i);
+      if(position_id <= 0)
+         continue;
+      string comment = PositionGetString(POSITION_COMMENT);
+      if(comment == request_id || StringFind(comment, request_id) == 0)
+      {
+         SendResponse("{\"success\":true,\"found\":true,\"status\":\"accepted\",\"request_id\":\"" + escaped_request +
+                      "\",\"position_id\":" + IntegerToString(position_id) +
+                      ",\"source\":\"position\"}");
+         return;
+      }
+   }
+
+   datetime to_time = TimeCurrent();
+   datetime from_time = to_time - 7 * 86400;
+   if(HistorySelect(from_time, to_time))
+   {
+      int deal_total = HistoryDealsTotal();
+      for(int i = deal_total - 1; i >= 0; i--)
+      {
+         ulong deal_id = HistoryDealGetTicket(i);
+         if(deal_id <= 0)
+            continue;
+         string comment = HistoryDealGetString(deal_id, DEAL_COMMENT);
+         if(comment != request_id && StringFind(comment, request_id) != 0)
+            continue;
+
+         ENUM_DEAL_ENTRY entry = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(deal_id, DEAL_ENTRY);
+         ulong order_id = (ulong)HistoryDealGetInteger(deal_id, DEAL_ORDER);
+         ulong position_id = (ulong)HistoryDealGetInteger(deal_id, DEAL_POSITION_ID);
+         string status = (entry == DEAL_ENTRY_OUT || entry == DEAL_ENTRY_OUT_BY) ? "closed" : "accepted";
+         SendResponse("{\"success\":true,\"found\":true,\"status\":\"" + status + "\",\"request_id\":\"" + escaped_request +
+                      "\",\"order_id\":" + IntegerToString(order_id) +
+                      ",\"deal_id\":" + IntegerToString(deal_id) +
+                      ",\"position_id\":" + IntegerToString(position_id) +
+                      ",\"volume\":" + DoubleToString(HistoryDealGetDouble(deal_id, DEAL_VOLUME), 8) +
+                      ",\"price\":" + DoubleToString(HistoryDealGetDouble(deal_id, DEAL_PRICE), 8) +
+                      ",\"source\":\"deal\"}");
+         return;
+      }
+
+      int order_total = HistoryOrdersTotal();
+      for(int i = order_total - 1; i >= 0; i--)
+      {
+         ulong order_id = HistoryOrderGetTicket(i);
+         if(order_id <= 0)
+            continue;
+         string comment = HistoryOrderGetString(order_id, ORDER_COMMENT);
+         if(comment != request_id && StringFind(comment, request_id) != 0)
+            continue;
+
+         ulong position_id = (ulong)HistoryOrderGetInteger(order_id, ORDER_POSITION_ID);
+         SendResponse("{\"success\":true,\"found\":true,\"status\":\"accepted\",\"request_id\":\"" + escaped_request +
+                      "\",\"order_id\":" + IntegerToString(order_id) +
+                      ",\"position_id\":" + IntegerToString(position_id) +
+                      ",\"source\":\"order\"}");
+         return;
+      }
+   }
+
+   SendResponse("{\"success\":true,\"found\":false,\"status\":\"unknown\",\"request_id\":\"" + escaped_request + "\"}");
 }
 
 //+------------------------------------------------------------------+

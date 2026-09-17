@@ -4,6 +4,8 @@ import time
 
 
 class DemoBrokerSimulator:
+    adapter_name = "local-simulator"
+
     def __init__(self, account_id="demo-sim-1", balance=10000.0):
         self.account_id = str(account_id)
         self.server_id = "LOCAL-SIM"

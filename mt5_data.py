@@ -6,6 +6,13 @@ import threading
 import json
 import time
 
+
+def _protocol_token(value, name):
+    token = str(value)
+    if not token or any(char in token for char in (";", "\r", "\n")):
+        raise ValueError(f"{name} contains an invalid socket-protocol token")
+    return token
+
 class MT5DataFetcher:
     """Class giao tiếp với MetaTrader 5 thông qua TCP Socket Gateway (máy chủ socket nội bộ)"""
     
@@ -78,6 +85,26 @@ class MT5DataFetcher:
                     pass
                 self.server_socket = None
             self.initialized = False
+
+    def drop_client_connection(self):
+        """Close only the active EA connection so the EA can reconnect to this server."""
+        with self.lock:
+            if self.client_socket:
+                try:
+                    self.client_socket.close()
+                except Exception:
+                    pass
+                self.client_socket = None
+            self.initialized = False
+
+    def wait_for_connection(self, timeout=10.0):
+        deadline = time.time() + max(0.0, float(timeout))
+        while time.time() < deadline:
+            connected, _ = self.initialize()
+            if connected:
+                return True
+            time.sleep(0.25)
+        return self.initialize()[0]
             
     def _send_request(self, command_str, timeout=15.0):
         """Gửi lệnh đến MT5 EA qua Socket và nhận phản hồi JSON (Thread-safe)"""
@@ -169,17 +196,47 @@ class MT5DataFetcher:
             return res.get('price')
         return None
 
-    def place_order(self, symbol, order_type, lots, sl=0.0, tp=0.0):
+    def get_price_result(self, symbol):
+        """Return the raw tick response so adapters can distinguish offline from missing data."""
+        return self._send_request(
+            f"GET_PRICE;{_protocol_token(symbol, 'symbol')}", timeout=3.0
+        )
+
+    def get_execution_context(self):
+        """Return broker/account identity and explicit trade-mode safety fields."""
+        return self._send_request("GET_EXECUTION_CONTEXT", timeout=5.0)
+
+    def get_symbol_info(self, symbol):
+        """Return broker contract limits for one symbol."""
+        return self._send_request(
+            f"GET_SYMBOL_INFO;{_protocol_token(symbol, 'symbol')}", timeout=5.0
+        )
+
+    def place_order(self, symbol, order_type, lots, sl=0.0, tp=0.0, request_id=None):
         """Đặt lệnh Buy/Sell lên MT5 qua Socket"""
-        cmd = f"TRADE_{order_type.upper()};{symbol};{lots};{sl};{tp}"
+        side = str(order_type).upper()
+        if side not in {"BUY", "SELL"}:
+            raise ValueError("order_type must be BUY or SELL")
+        safe_symbol = _protocol_token(symbol, "symbol")
+        cmd = f"TRADE_{side};{safe_symbol};{lots};{sl};{tp}"
+        if request_id:
+            cmd += f";{_protocol_token(request_id, 'request_id')}"
         print(f"  [Socket] Placing order: {cmd}")
         return self._send_request(cmd, timeout=10.0)
         
-    def close_position(self, ticket):
+    def close_position(self, ticket, request_id=None):
         """Đóng lệnh MT5 theo ticket qua Socket"""
-        cmd = f"TRADE_CLOSE;{ticket}"
+        cmd = f"TRADE_CLOSE;{_protocol_token(ticket, 'ticket')}"
+        if request_id:
+            cmd += f";{_protocol_token(request_id, 'request_id')}"
         print(f"  [Socket] Closing trade ticket: {ticket}")
         return self._send_request(cmd, timeout=10.0)
+
+    def lookup_request(self, request_id):
+        """Reconcile a request by the broker-visible request comment."""
+        return self._send_request(
+            f"GET_REQUEST;{_protocol_token(request_id, 'request_id')}", timeout=8.0
+        )
         
     def get_positions(self):
         """Lấy danh sách các vị thế đang mở từ MT5"""
@@ -187,6 +244,10 @@ class MT5DataFetcher:
         if res.get('success'):
             return res.get('positions', [])
         return []
+
+    def get_positions_result(self):
+        """Return the raw positions response so adapters can distinguish empty from offline."""
+        return self._send_request("GET_POSITIONS", timeout=5.0)
 
     def get_trade_history(self, days=365):
         """Lấy lịch sử deal gần đây từ MT5"""
@@ -219,6 +280,10 @@ class MT5DataFetcher:
         if res.get('success'):
             return res.get('account', {})
         return {}
+
+    def get_account_result(self):
+        """Return the raw account response for strict execution adapters."""
+        return self._send_request("GET_ACCOUNT", timeout=5.0)
 
 # Singleton instance
 mt5_fetcher = MT5DataFetcher()

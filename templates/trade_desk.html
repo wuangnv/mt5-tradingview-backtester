@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Desk Simulator</title>
+    <title>Trade Desk Demo</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/trade_desk.css') }}">
 </head>
@@ -11,7 +11,7 @@
 <main class="td-shell">
     <header class="td-topbar">
         <strong>Trade Desk</strong>
-        <span class="td-mode">DEMO SIMULATOR / NO MT5</span>
+        <span id="td-mode" class="td-mode">{% if execution_adapter == 'mt5-demo-socket' %}MT5 DEMO / LIVE BLOCKED{% else %}DEMO SIMULATOR / NO MT5{% endif %}</span>
         <nav class="td-nav" aria-label="Workspace">
             <a href="/">Evidence</a>
             <a href="/research">Research</a>
@@ -33,7 +33,7 @@
             <div class="td-pane-head">
                 <div>
                     <strong>Order draft</strong>
-                    <p>Local simulator only. Preview is recalculated before every send.</p>
+                    <p>{% if execution_adapter == 'mt5-demo-socket' %}MT5 demo account only. Preview is recalculated before every send.{% else %}Local simulator only. Preview is recalculated before every send.{% endif %}</p>
                 </div>
             </div>
             <form id="td-order-form" class="td-form">
@@ -47,7 +47,7 @@
                 <label>Stop loss<input id="td-stop" type="number" step="0.0001" value="1.0952"></label>
                 <label>Take profit<input id="td-target" type="number" step="0.0001" value="1.1102"></label>
                 <div id="td-preview" class="td-preview">Preview pending.</div>
-                <button id="td-submit" class="td-primary" type="submit" disabled>Send to demo simulator</button>
+                <button id="td-submit" class="td-primary" type="submit" disabled>{% if execution_adapter == 'mt5-demo-socket' %}Send to MT5 demo{% else %}Send to demo simulator{% endif %}</button>
             </form>
             <div id="td-error" class="td-error" hidden></div>
         </section>
