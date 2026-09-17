@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Replay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}">
+</head>
+<body>
+<main class="pr-shell">
+    <header class="pr-topbar">
+        <strong>Practice Replay</strong>
+        <span class="pr-mode">LOCAL / REPLAY</span>
+        <nav class="pr-nav" aria-label="Workspace">
+            <a href="/">Evidence</a>
+            <a href="/research">Research</a>
+            <a class="active" href="/practice">Practice</a>
+        </nav>
+    </header>
+
+    <section class="pr-layout">
+        <aside class="pr-source-pane">
+            <div class="pr-pane-head">
+                <strong>Evidence trades</strong>
+                <button id="pr-refresh" class="pr-icon-button" type="button" title="Refresh" aria-label="Refresh">&#8635;</button>
+            </div>
+            <div id="pr-source-list" class="pr-source-list" aria-live="polite"></div>
+        </aside>
+
+        <section class="pr-chart-pane">
+            <div class="pr-replay-bar">
+                <div>
+                    <strong id="pr-trade-title">Select a trade</strong>
+                    <div id="pr-trade-subtitle" class="pr-muted"></div>
+                </div>
+                <div class="pr-replay-controls">
+                    <button id="pr-prev" type="button" disabled>Previous</button>
+                    <span id="pr-cursor" class="pr-cursor">-</span>
+                    <button id="pr-next" type="button" disabled>Next</button>
+                </div>
+            </div>
+
+            <div id="pr-error" class="pr-error" hidden></div>
+            <div class="pr-chart-wrap">
+                <canvas id="pr-chart" class="pr-chart" aria-label="Candlestick replay chart"></canvas>
+                <div id="pr-chart-empty" class="pr-chart-empty">Select an evidence trade.</div>
+            </div>
+
+            <div class="pr-trade-strip">
+                <div><span>Side</span><strong id="pr-side">-</strong></div>
+                <div><span>Entry fill</span><strong id="pr-entry">-</strong></div>
+                <div><span>Close fill</span><strong id="pr-exit">hidden</strong></div>
+                <div><span>Net P/L</span><strong id="pr-pnl">hidden</strong></div>
+                <div><span>Data source</span><strong id="pr-source-id">-</strong></div>
+            </div>
+        </section>
+
+        <aside class="pr-journal-pane">
+            <div class="pr-pane-head">
+                <strong>Journal</strong>
+                <span id="pr-revision" class="pr-muted">No entry</span>
+            </div>
+            <form id="pr-journal-form" class="pr-journal-form">
+                <label>Intended entry<input id="pr-intended-entry" name="intended_entry" inputmode="decimal"></label>
+                <label>Stop<input id="pr-intended-stop" name="intended_stop" inputmode="decimal"></label>
+                <label>Target<input id="pr-intended-target" name="intended_target" inputmode="decimal"></label>
+                <label>Execution
+                    <select id="pr-grade" name="execution_grade">
+                        <option value="unclear">Unclear</option>
+                        <option value="followed">Followed plan</option>
+                        <option value="deviated">Deviated</option>
+                    </select>
+                </label>
+                <fieldset class="pr-checks">
+                    <legend>Rule checks</legend>
+                    <label><input id="pr-check-entry" type="checkbox"> Entry rule</label>
+                    <label><input id="pr-check-risk" type="checkbox"> Risk rule</label>
+                    <label><input id="pr-check-exit" type="checkbox"> Exit rule</label>
+                </fieldset>
+                <label>Notes<textarea id="pr-notes" name="notes" rows="7"></textarea></label>
+                <button id="pr-save" class="pr-primary" type="submit" disabled>Save journal</button>
+            </form>
+            <div class="pr-journal-meta">
+                <div><span>Fill snapshot</span><strong id="pr-fill-summary">-</strong></div>
+                <div><span>Provenance</span><strong id="pr-journal-source">-</strong></div>
+            </div>
+        </aside>
+    </section>
+</main>
+<script src="{{ url_for('static', filename='js/practice.js') }}"></script>
+</body>
+</html>
