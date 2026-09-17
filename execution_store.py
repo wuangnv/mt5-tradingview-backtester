@@ -219,11 +219,17 @@ class ExecutionJournal:
                 """
                 UPDATE execution_requests
                 SET updated_at_ms = ?, status = ?, response_json = ?
-                WHERE request_id = ?
+                WHERE request_id = ? AND status = 'unknown'
                 """,
                 (now_ms, status, payload, str(request_id)),
             )
-            if cursor.rowcount != 1:
+            if cursor.rowcount == 0:
+                row = connection.execute(
+                    "SELECT * FROM execution_requests WHERE request_id = ?",
+                    (str(request_id),),
+                ).fetchone()
+                if row is not None:
+                    return self._row_to_record(row)
                 raise ExecutionRequestNotFound(str(request_id))
         return self.get(request_id)
 

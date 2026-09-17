@@ -1,5 +1,6 @@
 import sqlite3
 import tempfile
+import threading
 import unittest
 from pathlib import Path
 
@@ -201,6 +202,43 @@ class ExecutionServiceTests(unittest.TestCase):
         self.assertEqual(reconciled["filled_volume"], 0.05)
         self.assertEqual(reconciled["remaining_volume"], 0.05)
         self.assertEqual(self.journal.get(context.request_id)["status"], "partial")
+
+    def test_journal_known_result_cannot_be_downgraded_by_late_unknown_finish(self):
+        context = self.context("concurrent-reconcile")
+        payload = {"order": self.service._normalize_order(ORDER)}
+        self.journal.prepare(
+            context.request_id,
+            context.mode,
+            context.account_id,
+            context.account_server,
+            "place",
+            fingerprint(payload),
+        )
+        barrier = threading.Barrier(3)
+        results = []
+
+        def finish(result):
+            barrier.wait()
+            results.append(self.journal.finish(context.request_id, result))
+
+        accepted = threading.Thread(
+            target=finish,
+            args=({"status": "accepted", "broker_order_id": "known-42"},),
+        )
+        unknown = threading.Thread(
+            target=finish,
+            args=({"status": "unknown", "request_id": context.request_id},),
+        )
+        accepted.start()
+        unknown.start()
+        barrier.wait()
+        accepted.join()
+        unknown.join()
+
+        stored = self.journal.get(context.request_id)
+        self.assertEqual(stored["status"], "accepted")
+        self.assertEqual(stored["response"]["broker_order_id"], "known-42")
+        self.assertEqual(len(results), 2)
 
     def test_reconcile_does_not_downgrade_known_result_when_lookup_is_missing(self):
         context = self.context("known-result")
