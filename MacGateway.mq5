@@ -689,26 +689,67 @@ void HandleGetRequest(string request_id)
 {
    string escaped_request = JsonEscape(request_id);
 
-   int position_total = PositionsTotal();
-   for(int i = 0; i < position_total; i++)
-   {
-      ulong position_id = PositionGetTicket(i);
-      if(position_id <= 0)
-         continue;
-      string comment = PositionGetString(POSITION_COMMENT);
-      if(comment == request_id || StringFind(comment, request_id) == 0)
-      {
-         SendResponse("{\"success\":true,\"found\":true,\"status\":\"accepted\",\"request_id\":\"" + escaped_request +
-                      "\",\"position_id\":" + IntegerToString(position_id) +
-                      ",\"source\":\"position\"}");
-         return;
-      }
-   }
-
    datetime to_time = TimeCurrent();
    datetime from_time = to_time - 7 * 86400;
    if(HistorySelect(from_time, to_time))
    {
+      int order_total = HistoryOrdersTotal();
+      for(int i = order_total - 1; i >= 0; i--)
+      {
+         ulong order_id = HistoryOrderGetTicket(i);
+         if(order_id <= 0)
+            continue;
+         string comment = HistoryOrderGetString(order_id, ORDER_COMMENT);
+         if(comment != request_id && StringFind(comment, request_id) != 0)
+            continue;
+
+         double initial_volume = HistoryOrderGetDouble(order_id, ORDER_VOLUME_INITIAL);
+         double filled_volume = 0.0;
+         double last_price = 0.0;
+         ulong last_deal_id = 0;
+         ulong position_id = (ulong)HistoryOrderGetInteger(order_id, ORDER_POSITION_ID);
+         bool closing = false;
+
+         int deal_total = HistoryDealsTotal();
+         for(int j = deal_total - 1; j >= 0; j--)
+         {
+            ulong deal_id = HistoryDealGetTicket(j);
+            if(deal_id <= 0 || (ulong)HistoryDealGetInteger(deal_id, DEAL_ORDER) != order_id)
+               continue;
+
+            filled_volume += HistoryDealGetDouble(deal_id, DEAL_VOLUME);
+            if(last_deal_id == 0)
+            {
+               last_deal_id = deal_id;
+               last_price = HistoryDealGetDouble(deal_id, DEAL_PRICE);
+               ulong deal_position_id = (ulong)HistoryDealGetInteger(deal_id, DEAL_POSITION_ID);
+               if(deal_position_id > 0)
+                  position_id = deal_position_id;
+            }
+            ENUM_DEAL_ENTRY entry = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(deal_id, DEAL_ENTRY);
+            if(entry == DEAL_ENTRY_OUT || entry == DEAL_ENTRY_OUT_BY)
+               closing = true;
+         }
+
+         double remaining_volume = MathMax(0.0, initial_volume - filled_volume);
+         string status = "accepted";
+         if(filled_volume > 0.0 && remaining_volume > 0.00000001)
+            status = "partial";
+         else if(filled_volume > 0.0 && closing)
+            status = "closed";
+
+         SendResponse("{\"success\":true,\"found\":true,\"status\":\"" + status + "\",\"request_id\":\"" + escaped_request +
+                      "\",\"order_id\":" + IntegerToString(order_id) +
+                      ",\"deal_id\":" + IntegerToString(last_deal_id) +
+                      ",\"position_id\":" + IntegerToString(position_id) +
+                      ",\"volume\":" + DoubleToString(filled_volume, 8) +
+                      ",\"filled_volume\":" + DoubleToString(filled_volume, 8) +
+                      ",\"remaining_volume\":" + DoubleToString(remaining_volume, 8) +
+                      ",\"price\":" + DoubleToString(last_price, 8) +
+                      ",\"source\":\"order\"}");
+         return;
+      }
+
       int deal_total = HistoryDealsTotal();
       for(int i = deal_total - 1; i >= 0; i--)
       {
@@ -732,22 +773,22 @@ void HandleGetRequest(string request_id)
                       ",\"source\":\"deal\"}");
          return;
       }
+   }
 
-      int order_total = HistoryOrdersTotal();
-      for(int i = order_total - 1; i >= 0; i--)
+   int position_total = PositionsTotal();
+   for(int i = 0; i < position_total; i++)
+   {
+      ulong position_id = PositionGetTicket(i);
+      if(position_id <= 0)
+         continue;
+      string comment = PositionGetString(POSITION_COMMENT);
+      if(comment == request_id || StringFind(comment, request_id) == 0)
       {
-         ulong order_id = HistoryOrderGetTicket(i);
-         if(order_id <= 0)
-            continue;
-         string comment = HistoryOrderGetString(order_id, ORDER_COMMENT);
-         if(comment != request_id && StringFind(comment, request_id) != 0)
-            continue;
-
-         ulong position_id = (ulong)HistoryOrderGetInteger(order_id, ORDER_POSITION_ID);
+         double volume = PositionGetDouble(POSITION_VOLUME);
          SendResponse("{\"success\":true,\"found\":true,\"status\":\"accepted\",\"request_id\":\"" + escaped_request +
-                      "\",\"order_id\":" + IntegerToString(order_id) +
-                      ",\"position_id\":" + IntegerToString(position_id) +
-                      ",\"source\":\"order\"}");
+                      "\",\"position_id\":" + IntegerToString(position_id) +
+                      ",\"volume\":" + DoubleToString(volume, 8) +
+                      ",\"source\":\"position\"}");
          return;
       }
    }

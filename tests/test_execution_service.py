@@ -174,6 +174,34 @@ class ExecutionServiceTests(unittest.TestCase):
         self.assertEqual(replayed, reconciled)
         self.assertEqual(len(self.adapter.calls), 1)
 
+    def test_unknown_request_reconciles_partial_fill_without_losing_volumes(self):
+        context = self.context("timeout-partial")
+        payload = {"order": self.service._normalize_order(ORDER)}
+        self.journal.prepare(
+            context.request_id,
+            context.mode,
+            context.account_id,
+            context.account_server,
+            "place",
+            fingerprint(payload),
+        )
+        self.adapter.set_result(
+            context.request_id,
+            {
+                "status": "partial",
+                "broker_order_id": "partial-42",
+                "filled_volume": 0.05,
+                "remaining_volume": 0.05,
+            },
+        )
+
+        reconciled = self.service.reconcile(context.request_id)
+
+        self.assertEqual(reconciled["status"], "partial")
+        self.assertEqual(reconciled["filled_volume"], 0.05)
+        self.assertEqual(reconciled["remaining_volume"], 0.05)
+        self.assertEqual(self.journal.get(context.request_id)["status"], "partial")
+
     def test_reconcile_does_not_downgrade_known_result_when_lookup_is_missing(self):
         context = self.context("known-result")
         accepted = self.service.place(context, ORDER)
@@ -196,6 +224,24 @@ class ExecutionServiceTests(unittest.TestCase):
         self.assertEqual(snapshot["positions"], [])
         self.adapter.reconnect()
         self.assertTrue(self.service.preview(ORDER)["passed"])
+
+    def test_snapshot_degrades_if_transport_drops_after_connected_check(self):
+        class SnapshotRaceAdapter(DemoBrokerSimulator):
+            def account_snapshot(self):
+                self.disconnect()
+                return super().account_snapshot()
+
+        adapter = SnapshotRaceAdapter()
+        service = ExecutionService(adapter, self.journal)
+
+        snapshot = service.snapshot()
+
+        self.assertFalse(snapshot["connection"]["connected"])
+        self.assertIn("unavailable", snapshot["connection"]["message"])
+        self.assertIsNone(snapshot["account"]["balance"])
+        self.assertEqual(snapshot["positions"], [])
+        self.assertTrue(snapshot["capabilities"])
+        self.assertFalse(any(snapshot["capabilities"].values()))
 
     def test_v1_journal_migration_backs_up_and_marks_server_unknown(self):
         legacy_path = Path(self.temp_dir.name) / "legacy.sqlite3"

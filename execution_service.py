@@ -288,8 +288,17 @@ class ExecutionService:
         capabilities = self.adapter.capabilities_snapshot()
         identity = self.adapter.identity_snapshot()
         if connection.get("connected"):
-            account = self._adapter_read("account_snapshot")
-            positions = self._adapter_read("positions_snapshot")
+            try:
+                account = self._adapter_read("account_snapshot")
+                positions = self._adapter_read("positions_snapshot")
+            except ExecutionUnknown as exc:
+                connection = dict(connection)
+                connection["connected"] = False
+                connection["message"] = str(exc)
+                capabilities = {key: False for key in capabilities}
+                account = dict(identity)
+                account.update({"balance": None, "equity": None, "as_of_ms": None})
+                positions = []
         else:
             account = dict(identity)
             account.update({"balance": None, "equity": None, "as_of_ms": None})

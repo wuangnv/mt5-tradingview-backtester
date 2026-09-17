@@ -281,7 +281,7 @@ class MT5SocketDemoAdapter:
         )
         if not response.get("found"):
             return None
-        return {
+        result = {
             "status": response.get("status") or "unknown",
             "broker_order_id": str(response.get("order_id") or "") or None,
             "deal_id": str(response.get("deal_id") or "") or None,
@@ -290,6 +290,10 @@ class MT5SocketDemoAdapter:
             "price": response.get("price"),
             "source": response.get("source"),
         }
+        for key in ("filled_volume", "remaining_volume"):
+            if key in response:
+                result[key] = response[key]
+        return result
 
     def reconnect(self, timeout=12.0):
         self.fetcher.drop_client_connection()

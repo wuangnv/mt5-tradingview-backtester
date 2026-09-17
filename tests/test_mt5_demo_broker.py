@@ -322,6 +322,31 @@ class MT5SocketDemoAdapterTests(unittest.TestCase):
         self.assertEqual(result["filled_volume"], 0.01)
         self.assertEqual(result["remaining_volume"], 0.01)
 
+    def test_lookup_preserves_partial_fill_fields_from_mt5(self):
+        class PartialLookupFetcher(FakeMT5Fetcher):
+            def lookup_request(self, request_id):
+                self.lookup_calls.append(request_id)
+                return {
+                    "success": True,
+                    "found": True,
+                    "status": "partial",
+                    "order_id": 41,
+                    "deal_id": 42,
+                    "position_id": 43,
+                    "volume": 0.01,
+                    "filled_volume": 0.01,
+                    "remaining_volume": 0.01,
+                    "price": 1.1002,
+                    "source": "order",
+                }
+
+        adapter = MT5SocketDemoAdapter(PartialLookupFetcher())
+        result = adapter.lookup_request("partial-reconcile")
+
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["filled_volume"], 0.01)
+        self.assertEqual(result["remaining_volume"], 0.01)
+
     def test_account_or_server_switch_is_denied_before_trade(self):
         fetcher = FakeMT5Fetcher()
         adapter = MT5SocketDemoAdapter(fetcher)
