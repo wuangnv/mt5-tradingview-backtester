@@ -51,9 +51,16 @@ class FakeMT5Fetcher:
         }
 
     def get_price_result(self, symbol):
+        now = int(time.time())
         return {
             "success": True,
-            "price": {"bid": 1.1000, "ask": 1.1002, "time": int(time.time())},
+            "price": {
+                "bid": 1.1000,
+                "ask": 1.1002,
+                "time": now,
+                "time_msc": now * 1000,
+                "server_time": now,
+            },
         }
 
     def get_symbol_info(self, symbol):
@@ -61,6 +68,8 @@ class FakeMT5Fetcher:
             "success": True,
             "symbol": {
                 "trade_allowed": True,
+                "filling_mode": 1,
+                "execution_mode": 2,
                 "tick_size": 0.0001,
                 "tick_value": 10.0,
                 "volume_step": 0.01,
@@ -182,16 +191,21 @@ class MT5SocketDemoAdapterTests(unittest.TestCase):
         quote = adapter.quote_snapshot("EURUSD")
         self.assertEqual(quote["contract"]["min_volume"], 0.01)
         self.assertEqual(quote["contract"]["volume_step"], 0.01)
+        self.assertEqual(quote["contract"]["filling_mode"], 1)
+        self.assertEqual(quote["contract"]["execution_mode"], 2)
 
     def test_quote_uses_broker_tick_time_and_stale_tick_is_rejected(self):
         class OldTickFetcher(FakeMT5Fetcher):
             def get_price_result(self, symbol):
+                server_now = int(time.time()) + 3 * 3600
                 return {
                     "success": True,
                     "price": {
                         "bid": 1.1000,
                         "ask": 1.1002,
-                        "time": int(time.time()) - 3600,
+                        "time": server_now - 3600,
+                        "time_msc": (server_now - 3600) * 1000,
+                        "server_time": server_now,
                     },
                 }
 
@@ -214,6 +228,41 @@ class MT5SocketDemoAdapterTests(unittest.TestCase):
                         "take_profit": 1.1050,
                     }
                 )
+
+    def test_quote_freshness_uses_broker_clock_not_local_timezone(self):
+        class OffsetBrokerClockFetcher(FakeMT5Fetcher):
+            def get_price_result(self, symbol):
+                broker_now = int(time.time()) + 3 * 3600
+                return {
+                    "success": True,
+                    "price": {
+                        "bid": 1.1000,
+                        "ask": 1.1002,
+                        "time": broker_now,
+                        "time_msc": broker_now * 1000,
+                        "server_time": broker_now,
+                    },
+                }
+
+        adapter = MT5SocketDemoAdapter(OffsetBrokerClockFetcher())
+        quote = adapter.quote_snapshot("EURUSD")
+        self.assertLess(abs(adapter.now_ms() - quote["as_of_ms"]), 1500)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            service = ExecutionService(
+                adapter,
+                ExecutionJournal(Path(temp_dir) / "execution.sqlite3"),
+                freshness_ms=5000,
+            )
+            preview = service.preview(
+                {
+                    "symbol": "EURUSD",
+                    "side": "buy",
+                    "volume": 0.01,
+                    "stop_loss": 1.0950,
+                    "take_profit": 1.1050,
+                }
+            )
+            self.assertTrue(preview["passed"])
 
     def test_request_id_is_mapped_to_short_safe_stable_broker_tag(self):
         fetcher = FakeMT5Fetcher()
@@ -238,6 +287,40 @@ class MT5SocketDemoAdapterTests(unittest.TestCase):
         self.assertEqual(fetcher.place_calls, [expected])
         self.assertEqual(fetcher.close_calls, [expected])
         self.assertEqual(fetcher.lookup_calls, [expected])
+
+    def test_adapter_preserves_partial_fill_fields_from_mt5(self):
+        class PartialFillFetcher(FakeMT5Fetcher):
+            def place_order(
+                self, symbol, side, volume, stop_loss, take_profit, *, request_id
+            ):
+                self.place_calls.append(request_id)
+                return {
+                    "success": True,
+                    "status": "partial",
+                    "order_id": 31,
+                    "deal_id": 32,
+                    "position_id": 33,
+                    "price": 1.1002,
+                    "retcode": 10010,
+                    "filled_volume": 0.01,
+                    "remaining_volume": 0.01,
+                }
+
+        adapter = MT5SocketDemoAdapter(PartialFillFetcher())
+        result = adapter.place(
+            {
+                "symbol": "EURUSD",
+                "side": "buy",
+                "volume": 0.02,
+                "stop_loss": 1.0950,
+                "take_profit": 1.1050,
+            },
+            "partial-adapter",
+        )
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["retcode"], 10010)
+        self.assertEqual(result["filled_volume"], 0.01)
+        self.assertEqual(result["remaining_volume"], 0.01)
 
     def test_account_or_server_switch_is_denied_before_trade(self):
         fetcher = FakeMT5Fetcher()

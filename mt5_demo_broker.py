@@ -176,9 +176,18 @@ class MT5SocketDemoAdapter:
             raise ValueError(f"broker trading is disabled for {symbol}")
         try:
             if price.get("time_msc") is not None:
-                as_of_ms = int(price["time_msc"])
+                tick_ms = int(price["time_msc"])
             else:
-                as_of_ms = int(price.get("time") or 0) * 1000
+                tick_ms = int(price.get("time") or 0) * 1000
+            if price.get("server_time_msc") is not None:
+                broker_now_ms = int(price["server_time_msc"])
+            else:
+                broker_now_ms = int(price.get("server_time") or 0) * 1000
+            if tick_ms <= 0 or broker_now_ms <= 0:
+                as_of_ms = 0
+            else:
+                broker_age_ms = max(0, broker_now_ms - tick_ms)
+                as_of_ms = self.now_ms() - broker_age_ms
         except (TypeError, ValueError):
             as_of_ms = 0
         return {
@@ -192,6 +201,8 @@ class MT5SocketDemoAdapter:
                 "min_volume": info.get("volume_min"),
                 "max_volume": info.get("volume_max"),
                 "stops_level": info.get("stops_level"),
+                "filling_mode": info.get("filling_mode"),
+                "execution_mode": info.get("execution_mode"),
             },
             "as_of_ms": as_of_ms,
         }

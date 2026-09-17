@@ -429,10 +429,13 @@ void HandleGetPrice(string symbol)
    MqlTick tick;
    if(SymbolInfoTick(symbol, tick))
    {
+      datetime server_time = TimeCurrent();
       string response = "{\"success\":true,\"price\":{" + 
                         "\"bid\":" + DoubleToString(tick.bid, 5) + "," + 
                         "\"ask\":" + DoubleToString(tick.ask, 5) + "," + 
-                        "\"time\":" + IntegerToString(tick.time) + "}}";
+                        "\"time\":" + IntegerToString(tick.time) + "," +
+                        "\"time_msc\":" + IntegerToString(tick.time_msc) + "," +
+                        "\"server_time\":" + IntegerToString(server_time) + "}}";
       SendResponse(response);
    }
    else
@@ -485,6 +488,8 @@ void HandleGetSymbolInfo(string symbol)
    }
 
    long trade_mode = SymbolInfoInteger(symbol, SYMBOL_TRADE_MODE);
+   long filling_mode = SymbolInfoInteger(symbol, SYMBOL_FILLING_MODE);
+   long execution_mode = SymbolInfoInteger(symbol, SYMBOL_TRADE_EXEMODE);
    int digits = (int)SymbolInfoInteger(symbol, SYMBOL_DIGITS);
    int stops_level = (int)SymbolInfoInteger(symbol, SYMBOL_TRADE_STOPS_LEVEL);
    double tick_size = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
@@ -497,6 +502,8 @@ void HandleGetSymbolInfo(string symbol)
                  "\"name\":\"" + JsonEscape(symbol) + "\"" +
                  ",\"trade_mode\":" + IntegerToString(trade_mode) +
                  ",\"trade_allowed\":" + BoolJson(trade_mode != SYMBOL_TRADE_MODE_DISABLED) +
+                 ",\"filling_mode\":" + IntegerToString(filling_mode) +
+                 ",\"execution_mode\":" + IntegerToString(execution_mode) +
                  ",\"digits\":" + IntegerToString(digits) +
                  ",\"stops_level\":" + IntegerToString(stops_level) +
                  ",\"tick_size\":" + DoubleToString(tick_size, 8) +
