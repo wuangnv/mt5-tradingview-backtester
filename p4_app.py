@@ -125,6 +125,7 @@ def create_app(
         context = ExecutionContext(
             mode=value.get("mode"),
             account_id=value.get("account_id"),
+            account_server=value.get("account_server"),
             request_id=value.get("request_id"),
         )
         result = app.config["EXECUTION_SERVICE"].place(context, value.get("order"))
@@ -136,6 +137,7 @@ def create_app(
         context = ExecutionContext(
             mode=value.get("mode"),
             account_id=value.get("account_id"),
+            account_server=value.get("account_server"),
             request_id=value.get("request_id"),
         )
         result = app.config["EXECUTION_SERVICE"].close(context, position_id)

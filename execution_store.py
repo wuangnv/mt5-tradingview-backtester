@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import shutil
 import sqlite3
 import threading
 import time
@@ -9,7 +10,7 @@ from contextlib import contextmanager
 from pathlib import Path
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 
 class ExecutionStoreError(RuntimeError):
@@ -72,7 +73,7 @@ class ExecutionJournal:
         with self._init_lock:
             with self._connection() as connection:
                 version = connection.execute("PRAGMA user_version").fetchone()[0]
-                if version not in (0, SCHEMA_VERSION):
+                if version not in (0, 1, SCHEMA_VERSION):
                     raise ExecutionStoreError(
                         f"unsupported execution database schema version {version}"
                     )
@@ -84,6 +85,7 @@ class ExecutionJournal:
                         updated_at_ms INTEGER NOT NULL,
                         mode TEXT NOT NULL,
                         account_id TEXT NOT NULL,
+                        account_server TEXT NOT NULL,
                         operation TEXT NOT NULL,
                         request_fingerprint TEXT NOT NULL,
                         status TEXT NOT NULL,
@@ -94,6 +96,16 @@ class ExecutionJournal:
                     """
                 )
                 if version == 0:
+                    connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+                elif version == 1:
+                    backup_path = self.db_path.with_suffix(
+                        self.db_path.suffix + f".v1-{int(time.time() * 1000)}.bak"
+                    )
+                    connection.commit()
+                    shutil.copy2(self.db_path, backup_path)
+                    connection.execute(
+                        "ALTER TABLE execution_requests ADD COLUMN account_server TEXT NOT NULL DEFAULT ''"
+                    )
                     connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
 
     @staticmethod
@@ -107,6 +119,7 @@ class ExecutionJournal:
             "updated_at_ms": row["updated_at_ms"],
             "mode": row["mode"],
             "account_id": row["account_id"],
+            "account_server": row["account_server"],
             "operation": row["operation"],
             "request_fingerprint": row["request_fingerprint"],
             "status": row["status"],
@@ -120,12 +133,32 @@ class ExecutionJournal:
             ).fetchone()
         return self._row_to_record(row)
 
+    def find_matching(
+        self, request_id, mode, account_id, account_server, operation, request_fingerprint
+    ):
+        record = self.get(request_id)
+        if record is None:
+            return None
+        self._assert_intent(
+            record, mode, account_id, account_server, operation, request_fingerprint
+        )
+        return record
+
     @staticmethod
-    def _assert_intent(record, mode, account_id, operation, request_fingerprint):
-        expected = (str(mode), str(account_id), str(operation), str(request_fingerprint))
+    def _assert_intent(
+        record, mode, account_id, account_server, operation, request_fingerprint
+    ):
+        expected = (
+            str(mode),
+            str(account_id),
+            str(account_server),
+            str(operation),
+            str(request_fingerprint),
+        )
         actual = (
             record["mode"],
             record["account_id"],
+            record["account_server"],
             record["operation"],
             record["request_fingerprint"],
         )
@@ -134,12 +167,15 @@ class ExecutionJournal:
                 "request_id was already used for a different execution intent"
             )
 
-    def prepare(self, request_id, mode, account_id, operation, request_fingerprint):
+    def prepare(
+        self, request_id, mode, account_id, account_server, operation, request_fingerprint
+    ):
         request_id = str(request_id).strip()
         now_ms = int(time.time() * 1000)
-        existing = self.get(request_id)
+        existing = self.find_matching(
+            request_id, mode, account_id, account_server, operation, request_fingerprint
+        )
         if existing is not None:
-            self._assert_intent(existing, mode, account_id, operation, request_fingerprint)
             return existing, False
 
         created = True
@@ -148,9 +184,9 @@ class ExecutionJournal:
                 connection.execute(
                     """
                     INSERT INTO execution_requests (
-                        request_id, created_at_ms, updated_at_ms, mode, account_id,
+                        request_id, created_at_ms, updated_at_ms, mode, account_id, account_server,
                         operation, request_fingerprint, status, response_json
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, 'unknown', NULL)
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'unknown', NULL)
                     """,
                     (
                         request_id,
@@ -158,6 +194,7 @@ class ExecutionJournal:
                         now_ms,
                         str(mode),
                         str(account_id),
+                        str(account_server),
                         str(operation),
                         str(request_fingerprint),
                     ),
@@ -168,7 +205,9 @@ class ExecutionJournal:
         record = self.get(request_id)
         if record is None:
             raise ExecutionStoreError("execution request could not be persisted")
-        self._assert_intent(record, mode, account_id, operation, request_fingerprint)
+        self._assert_intent(
+            record, mode, account_id, account_server, operation, request_fingerprint
+        )
         return record, created
 
     def finish(self, request_id, result):

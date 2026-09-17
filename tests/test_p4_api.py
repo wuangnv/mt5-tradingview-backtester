@@ -50,11 +50,14 @@ class P4ApiTests(unittest.TestCase):
         state = self.client.get("/api/execution/state")
         self.assertEqual(state.status_code, 200)
         self.assertFalse(state.json["state"]["live_execution_enabled"])
+        self.assertTrue(state.json["state"]["connection"]["connected"])
+        self.assertTrue(state.json["state"]["capabilities"]["request_lookup"])
 
     def test_place_requires_confirmation_demo_mode_matching_account_and_risk(self):
         payload = {
             "mode": "demo",
             "account_id": "demo-sim-1",
+            "account_server": "LOCAL-SIM",
             "request_id": "api-1",
             "order": ORDER,
         }
@@ -85,6 +88,21 @@ class P4ApiTests(unittest.TestCase):
             headers=self.confirmed_headers(),
         )
         self.assertEqual(too_risky.status_code, 409)
+
+        wrong_server = self.client.post(
+            "/api/execution/orders",
+            json=dict(payload, request_id="api-server", account_server="OTHER"),
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(wrong_server.status_code, 403)
+
+    def test_disconnected_state_remains_readable_and_preview_is_unavailable(self):
+        self.adapter.disconnect()
+        state = self.client.get("/api/execution/state")
+        self.assertEqual(state.status_code, 200)
+        self.assertFalse(state.json["state"]["connection"]["connected"])
+        preview = self.client.post("/api/execution/preview", json={"order": ORDER})
+        self.assertEqual(preview.status_code, 503)
 
     def test_non_loopback_and_cross_origin_are_denied(self):
         remote = self.client.get(

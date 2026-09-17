@@ -6,12 +6,22 @@ import time
 class DemoBrokerSimulator:
     def __init__(self, account_id="demo-sim-1", balance=10000.0):
         self.account_id = str(account_id)
+        self.server_id = "LOCAL-SIM"
+        self.account_mode = "demo"
         self.balance = float(balance)
+        self.connected = True
         self._positions = {}
         self._results = {}
         self._calls = []
         self._next_position = 1
         self.next_status = "accepted"
+        self._capabilities = {
+            "place_market": True,
+            "close_position": True,
+            "protective_sl_tp": True,
+            "partial_fill_reporting": True,
+            "request_lookup": True,
+        }
         self._quotes = {
             "EURUSD": {
                 "bid": 1.1000,
@@ -34,11 +44,46 @@ class DemoBrokerSimulator:
     def calls(self):
         return list(self._calls)
 
-    def account_snapshot(self):
+    def _require_connection(self):
+        if not self.connected:
+            raise ConnectionError("demo broker simulator is disconnected")
+
+    def identity_snapshot(self):
         return {
             "account_id": self.account_id,
-            "server": "LOCAL-SIM",
-            "mode": "demo",
+            "server": self.server_id,
+            "mode": self.account_mode,
+            "currency": "USD",
+        }
+
+    def connection_snapshot(self):
+        return {"connected": self.connected, "transport": "local-simulator"}
+
+    def capabilities_snapshot(self):
+        return dict(self._capabilities)
+
+    def set_capability(self, name, enabled):
+        self._capabilities[str(name)] = bool(enabled)
+
+    def set_quote(self, symbol, *, bid, ask):
+        symbol = str(symbol).upper()
+        if symbol not in self._quotes:
+            raise ValueError(f"unsupported simulator symbol {symbol}")
+        self._quotes[symbol]["bid"] = float(bid)
+        self._quotes[symbol]["ask"] = float(ask)
+
+    def disconnect(self):
+        self.connected = False
+
+    def reconnect(self):
+        self.connected = True
+
+    def account_snapshot(self):
+        self._require_connection()
+        return {
+            "account_id": self.account_id,
+            "server": self.server_id,
+            "mode": self.account_mode,
             "currency": "USD",
             "balance": self.balance,
             "equity": self.balance,
@@ -46,6 +91,7 @@ class DemoBrokerSimulator:
         }
 
     def quote_snapshot(self, symbol):
+        self._require_connection()
         symbol = str(symbol).upper()
         if symbol not in self._quotes:
             raise ValueError(f"unsupported simulator symbol {symbol}")
@@ -59,15 +105,10 @@ class DemoBrokerSimulator:
         }
 
     def positions_snapshot(self):
+        self._require_connection()
         return [dict(value) for value in self._positions.values()]
 
-    def place(self, order, request_id):
-        self._calls.append(("place", str(request_id), dict(order)))
-        if self.next_status != "accepted":
-            result = {"status": self.next_status, "broker_order_id": None}
-            self._results[str(request_id)] = dict(result)
-            return result
-
+    def _accepted_position(self, order, volume=None):
         quote = self.quote_snapshot(order["symbol"])
         fill_price = quote["ask"] if order["side"] == "buy" else quote["bid"]
         position_id = f"sim-pos-{self._next_position}"
@@ -76,21 +117,50 @@ class DemoBrokerSimulator:
             "position_id": position_id,
             "symbol": order["symbol"],
             "side": order["side"],
-            "volume": order["volume"],
+            "volume": order["volume"] if volume is None else volume,
             "entry_price": fill_price,
             "stop_loss": order["stop_loss"],
             "take_profit": order["take_profit"],
         }
         self._positions[position_id] = position
+        return position
+
+    def place(self, order, request_id):
+        self._require_connection()
+        self._calls.append(("place", str(request_id), dict(order)))
+        if self.next_status == "rejected":
+            result = {"status": self.next_status, "broker_order_id": None}
+            self._results[str(request_id)] = dict(result)
+            return result
+
+        if self.next_status == "partial":
+            filled_volume = round(order["volume"] / 2.0, 8)
+            position = self._accepted_position(order, filled_volume)
+            result = {
+                "status": "partial",
+                "broker_order_id": f"sim-order-{position['position_id']}",
+                "filled_volume": filled_volume,
+                "remaining_volume": round(order["volume"] - filled_volume, 8),
+                "position": dict(position),
+                "deal": {"fee": 0.0, "fill_price": position["entry_price"]},
+            }
+            self._results[str(request_id)] = dict(result)
+            return result
+
+        position = self._accepted_position(order)
         result = {
             "status": "accepted",
-            "broker_order_id": f"sim-order-{position_id}",
+            "broker_order_id": f"sim-order-{position['position_id']}",
             "position": dict(position),
+            "deal": {"fee": 0.0, "fill_price": position["entry_price"]},
         }
         self._results[str(request_id)] = dict(result)
+        if self.next_status == "timeout_accepted":
+            raise TimeoutError("simulated timeout after broker accepted the request")
         return result
 
     def close(self, position_id, request_id):
+        self._require_connection()
         self._calls.append(("close", str(request_id), str(position_id)))
         if self.next_status != "accepted":
             result = {"status": self.next_status, "broker_order_id": None}
@@ -105,6 +175,7 @@ class DemoBrokerSimulator:
         return result
 
     def lookup_request(self, request_id):
+        self._require_connection()
         result = self._results.get(str(request_id))
         return dict(result) if result is not None else None
 

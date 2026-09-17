@@ -115,6 +115,7 @@
                 body: JSON.stringify({
                     mode: 'demo',
                     account_id: state.account.account_id,
+                    account_server: state.account.server,
                     request_id: requestId(),
                     order: orderPayload(),
                 }),
@@ -134,7 +135,12 @@
             await jsonFetch(`/api/execution/positions/${encodeURIComponent(button.dataset.close)}/close`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json', 'X-Execution-Intent': 'confirmed'},
-                body: JSON.stringify({mode: 'demo', account_id: state.account.account_id, request_id: requestId()}),
+                body: JSON.stringify({
+                    mode: 'demo',
+                    account_id: state.account.account_id,
+                    account_server: state.account.server,
+                    request_id: requestId(),
+                }),
             });
             await refresh();
             await preview();

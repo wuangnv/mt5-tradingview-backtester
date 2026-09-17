@@ -30,6 +30,7 @@ class ExecutionUnknown(ExecutionError):
 class ExecutionContext:
     mode: str
     account_id: str
+    account_server: str
     request_id: str
 
 
@@ -73,8 +74,25 @@ class ExecutionService:
             raise ExecutionDenied(f"execution disabled in {mode or 'unspecified'} mode")
         if not context.account_id or context.account_id != self.adapter.account_id:
             raise ExecutionDenied("explicit matching demo account_id is required")
+        if getattr(self.adapter, "account_mode", None) != "demo":
+            raise ExecutionDenied("adapter account mode is not demo")
+        if not context.account_server or context.account_server != getattr(
+            self.adapter, "server_id", None
+        ):
+            raise ExecutionDenied("explicit matching demo account server is required")
         if not str(context.request_id).strip():
             raise ExecutionDenied("request_id is required")
+
+    def _adapter_read(self, name, *args):
+        try:
+            return getattr(self.adapter, name)(*args)
+        except (ConnectionError, TimeoutError, OSError) as exc:
+            raise ExecutionUnknown("broker adapter is unavailable; reconcile before retrying") from exc
+
+    def _require_capability(self, name):
+        capabilities = self.adapter.capabilities_snapshot()
+        if not capabilities.get(name):
+            raise ExecutionDenied(f"broker capability {name} is unavailable")
 
     def _normalize_order(self, order):
         if not isinstance(order, dict):
@@ -102,9 +120,9 @@ class ExecutionService:
 
     def preview(self, order):
         order = self._normalize_order(order)
-        account = self.adapter.account_snapshot()
+        account = self._adapter_read("account_snapshot")
         try:
-            quote = self.adapter.quote_snapshot(order["symbol"])
+            quote = self._adapter_read("quote_snapshot", order["symbol"])
         except (KeyError, ValueError) as exc:
             raise ExecutionValidationError(str(exc)) from exc
         now_ms = self.adapter.now_ms()
@@ -147,7 +165,7 @@ class ExecutionService:
         risk_amount = stop_ticks * tick_value * volume
         balance = _finite_number(account.get("balance"), "account.balance", minimum=0)
         risk_limit = min(self.max_risk_amount, balance * self.max_risk_pct / 100.0)
-        positions = self.adapter.positions_snapshot()
+        positions = self._adapter_read("positions_snapshot")
         reasons = []
         if len(positions) >= self.max_positions:
             reasons.append("max_positions reached")
@@ -174,6 +192,7 @@ class ExecutionService:
             context.request_id,
             context.mode,
             context.account_id,
+            context.account_server,
             operation,
             request_fingerprint,
         )
@@ -194,13 +213,30 @@ class ExecutionService:
         self.journal.finish(context.request_id, result)
         return result
 
+    def _existing_result(self, context, operation, payload):
+        record = self.journal.find_matching(
+            context.request_id,
+            context.mode,
+            context.account_id,
+            context.account_server,
+            operation,
+            fingerprint(payload),
+        )
+        if record is None:
+            return None
+        return record["response"] or {"status": "unknown", "request_id": context.request_id}
+
     def place(self, context: ExecutionContext, order):
         self._guard(context)
-        preview = self.preview(order)
+        normalized = self._normalize_order(order)
+        payload = {"order": normalized}
+        existing = self._existing_result(context, "place", payload)
+        if existing is not None:
+            return existing
+        self._require_capability("place_market")
+        preview = self.preview(normalized)
         if not preview["passed"]:
             raise ExecutionRiskDenied("; ".join(preview["reasons"]))
-        normalized = preview["order"]
-        payload = {"order": normalized, "risk": {"entry_price": preview["entry_price"]}}
         return self._run_once(
             context,
             "place",
@@ -209,23 +245,34 @@ class ExecutionService:
         )
 
     def close(self, context: ExecutionContext, position_id):
+        self._guard(context)
         position_id = str(position_id or "").strip()
         if not position_id:
             raise ExecutionValidationError("position_id is required")
+        payload = {"position_id": position_id}
+        existing = self._existing_result(context, "close", payload)
+        if existing is not None:
+            return existing
+        self._require_capability("close_position")
         return self._run_once(
             context,
             "close",
-            {"position_id": position_id},
+            payload,
             lambda: self.adapter.close(position_id, context.request_id),
         )
 
     def reconcile(self, request_id):
+        self._require_capability("request_lookup")
         record = self.journal.get(str(request_id))
         if record is None:
             raise ExecutionValidationError("request_id was not found")
-        if record["mode"] != "demo" or record["account_id"] != self.adapter.account_id:
+        if (
+            record["mode"] != "demo"
+            or record["account_id"] != self.adapter.account_id
+            or record["account_server"] != getattr(self.adapter, "server_id", None)
+        ):
             raise ExecutionDenied("request does not belong to the active demo account")
-        result = self.adapter.lookup_request(record["request_id"])
+        result = self._adapter_read("lookup_request", record["request_id"])
         if result is None:
             result = {"status": "unknown", "request_id": record["request_id"]}
         else:
@@ -235,12 +282,24 @@ class ExecutionService:
         return self.journal.finish(record["request_id"], result)["response"]
 
     def snapshot(self):
+        connection = self.adapter.connection_snapshot()
+        capabilities = self.adapter.capabilities_snapshot()
+        identity = self.adapter.identity_snapshot()
+        if connection.get("connected"):
+            account = self._adapter_read("account_snapshot")
+            positions = self._adapter_read("positions_snapshot")
+        else:
+            account = dict(identity)
+            account.update({"balance": None, "equity": None, "as_of_ms": None})
+            positions = []
         return {
             "mode": "demo",
             "adapter": "local-simulator",
             "live_execution_enabled": False,
-            "account": self.adapter.account_snapshot(),
-            "positions": self.adapter.positions_snapshot(),
+            "connection": connection,
+            "capabilities": capabilities,
+            "account": account,
+            "positions": positions,
             "requests": self.journal.list_recent(50),
             "limits": {
                 "max_risk_pct": self.max_risk_pct,

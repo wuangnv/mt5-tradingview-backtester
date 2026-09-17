@@ -27,26 +27,29 @@ def main():
         db_path = Path(temp) / "execution.sqlite3"
         adapter = DemoBrokerSimulator()
         service = ExecutionService(adapter, ExecutionJournal(db_path))
-        ctx = ExecutionContext("demo", adapter.account_id, "verify-accepted")
+        ctx = ExecutionContext("demo", adapter.account_id, adapter.server_id, "verify-accepted")
+        risk_blocked = not service.preview(dict(ORDER, stop_loss=1.0802))["passed"]
         first = service.place(ctx, ORDER)
+        adapter.set_quote("EURUSD", bid=1.1200, ask=1.1202)
         second = service.place(ctx, ORDER)
 
         denied_modes = []
         for mode in ("local", "replay", "live"):
             try:
-                service.place(ExecutionContext(mode, adapter.account_id, f"deny-{mode}"), ORDER)
+                service.place(
+                    ExecutionContext(mode, adapter.account_id, adapter.server_id, f"deny-{mode}"),
+                    ORDER,
+                )
             except ExecutionDenied:
                 denied_modes.append(mode)
 
-        risk_blocked = not service.preview(dict(ORDER, stop_loss=1.0802))["passed"]
-
-        crash_ctx = ExecutionContext("demo", adapter.account_id, "verify-crash")
-        preview = service.preview(ORDER)
-        intent = {"order": preview["order"], "risk": {"entry_price": preview["entry_price"]}}
+        crash_ctx = ExecutionContext("demo", adapter.account_id, adapter.server_id, "verify-crash")
+        intent = {"order": service._normalize_order(ORDER)}
         service.journal.prepare(
             crash_ctx.request_id,
             crash_ctx.mode,
             crash_ctx.account_id,
+            crash_ctx.account_server,
             "place",
             fingerprint(intent),
         )
@@ -59,6 +62,22 @@ def main():
         )
         reconciled = restarted.reconcile(crash_ctx.request_id)
 
+        timeout_adapter = DemoBrokerSimulator()
+        timeout_adapter.next_status = "timeout_accepted"
+        timeout_service = ExecutionService(
+            timeout_adapter, ExecutionJournal(Path(temp) / "timeout.sqlite3")
+        )
+        timeout_ctx = ExecutionContext(
+            "demo", timeout_adapter.account_id, timeout_adapter.server_id, "verify-timeout"
+        )
+        timeout_unknown = False
+        try:
+            timeout_service.place(timeout_ctx, ORDER)
+        except Exception as exc:
+            timeout_unknown = getattr(exc, "code", None) == "EXECUTION_UNKNOWN"
+        timeout_adapter.next_status = "accepted"
+        timeout_reconciled = timeout_service.reconcile(timeout_ctx.request_id)
+
         output = {
             "success": all(
                 [
@@ -69,6 +88,9 @@ def main():
                     unknown.get("status") == "unknown",
                     restarted_adapter.calls == [],
                     reconciled.get("broker_order_id") == "verify-reconciled",
+                    timeout_unknown,
+                    timeout_reconciled.get("status") == "accepted",
+                    len(timeout_adapter.calls) == 1,
                     "mt5_data" not in sys.modules,
                     "app" not in sys.modules,
                 ]
@@ -78,6 +100,9 @@ def main():
             "risk_blocked": risk_blocked,
             "restart_unknown": unknown.get("status") == "unknown",
             "reconciled_without_resend": restarted_adapter.calls == [],
+            "timeout_reconciled_without_resend": timeout_unknown
+            and timeout_reconciled.get("status") == "accepted"
+            and len(timeout_adapter.calls) == 1,
             "live_execution_enabled": False,
             "mt5_modules_imported": "mt5_data" in sys.modules or "app" in sys.modules,
         }
