@@ -19,7 +19,14 @@ def reproduce_fixture(bars, cutoff_ms, seed, parameters=None):
     if not isinstance(parameters, dict):
         raise ValueError("parameters must be an object")
 
-    visible = bars_through_cutoff(bars, cutoff_ms)
+    try:
+        cutoff_ms = int(cutoff_ms)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("cutoff_ms must be an integer") from exc
+    if cutoff_ms < 0:
+        raise ValueError("cutoff_ms must be non-negative")
+
+    visible = bars_through_cutoff(bars, cutoff_ms / 1000)
     if not visible:
         raise ValueError("fixture has no bars at or before cutoff_ms")
     payload = {
@@ -39,5 +46,5 @@ def reproduce_fixture(bars, cutoff_ms, seed, parameters=None):
         "fixture_checksum": hashlib.sha256(encoded).hexdigest(),
         "input_bar_count": len(bars),
         "visible_bar_count": len(visible),
-        "observed_until_ms": visible[-1]["time"],
+        "observed_until_ms": int(float(visible[-1]["time"]) * 1000),
     }

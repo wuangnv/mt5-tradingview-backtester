@@ -129,6 +129,7 @@
         addKv(meta, 'Budget', run.budget);
         addKv(meta, 'Cutoff ms', run.protocol.cutoff_ms);
         addKv(meta, 'Dataset', run.protocol.dataset_id);
+        addKv(meta, 'Dataset SHA-256', run.protocol.dataset_sha256);
         addKv(meta, 'Strategy', `${run.strategy_version.strategy_key}@${run.strategy_version.version}`);
         addKv(meta, 'Terminal reason', run.terminal_reason);
 
@@ -151,7 +152,7 @@
         renderSelects();
         renderSideList('rw-hypothesis-list', body.workspace.hypotheses, (x) => x.title, (x) => `#${x.id}`);
         renderSideList('rw-strategy-list', body.workspace.strategy_versions, (x) => `${x.strategy_key}@${x.version}`, (x) => `hypothesis #${x.hypothesis_id}`);
-        renderSideList('rw-protocol-list', body.workspace.protocols, (x) => x.name, (x) => `${x.dataset_id} · cutoff ${x.cutoff_ms}`);
+        renderSideList('rw-protocol-list', body.workspace.protocols, (x) => x.name, (x) => `${x.dataset_id} · ${shortKey(x.dataset_sha256)} · cutoff ${x.cutoff_ms}`);
         renderRuns();
         if (state.selectedRun) {
             const exists = body.workspace.runs.some((run) => run.id === state.selectedRun.id);
@@ -196,6 +197,7 @@
         strategy_version_id: Number(data.get('strategy_version_id')),
         name: data.get('name'),
         dataset_id: data.get('dataset_id'),
+        dataset_sha256: data.get('dataset_sha256'),
         data_start_ms: Number(data.get('data_start_ms')),
         cutoff_ms: Number(data.get('cutoff_ms')),
         seed: Number(data.get('seed')),

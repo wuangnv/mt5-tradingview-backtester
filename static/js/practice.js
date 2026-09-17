@@ -194,7 +194,8 @@
         els.checkExit.checked = Boolean(review.rule_checks?.exit);
         els.notes.value = review.notes || '';
         els.revision.textContent = `Revision ${review.revision}`;
-        els.fillSummary.textContent = `${entry.fill.side} ${entry.fill.quantity} @ ${formatPrice(entry.fill.entry)} -> ${formatPrice(entry.fill.exit)}`;
+        const exit = entry.fill.exit == null ? 'hidden' : formatPrice(entry.fill.exit);
+        els.fillSummary.textContent = `${entry.fill.side} ${entry.fill.quantity} @ ${formatPrice(entry.fill.entry)} -> ${exit}`;
         els.journalSource.textContent = `${entry.source.evidence_run_id}/${entry.source.trade_id}`;
     }
 
@@ -290,7 +291,7 @@
         clearError();
         try {
             const payload = {
-                decision_time_ms: state.context.mapping.open_bar_available_ms,
+                cursor_ms: state.context.replay.cursor_ms,
                 intended_entry: numberOrNull(els.intendedEntry),
                 intended_stop: numberOrNull(els.intendedStop),
                 intended_target: numberOrNull(els.intendedTarget),

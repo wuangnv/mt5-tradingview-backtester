@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import re
 import sqlite3
 import threading
 import time
@@ -9,8 +10,9 @@ from contextlib import contextmanager
 from pathlib import Path
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 TERMINAL_STATUSES = {"completed", "failed", "cancelled"}
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 class ResearchError(RuntimeError):
@@ -65,6 +67,13 @@ def _text(value, name, max_length=4000):
     return value
 
 
+def _sha256(value, name):
+    value = _text(value, name, 64).lower()
+    if not _SHA256_RE.fullmatch(value):
+        raise ResearchValidationError(f"{name} must be a 64-character SHA-256 hex digest")
+    return value
+
+
 def _integer(value, name, minimum=None):
     if isinstance(value, bool):
         raise ResearchValidationError(f"{name} must be an integer")
@@ -105,6 +114,17 @@ class ResearchStore:
         connection.execute("PRAGMA foreign_keys = ON")
         return connection
 
+    def _backup_before_migration(self, connection, version):
+        backup_path = self.db_path.with_name(f"{self.db_path.name}.v{version}.bak")
+        if backup_path.exists():
+            return backup_path
+        backup_connection = sqlite3.connect(str(backup_path), timeout=10)
+        try:
+            connection.backup(backup_connection)
+        finally:
+            backup_connection.close()
+        return backup_path
+
     @contextmanager
     def _connection(self):
         connection = self._connect()
@@ -122,7 +142,7 @@ class ResearchStore:
         with self._init_lock:
             with self._connection() as connection:
                 version = connection.execute("PRAGMA user_version").fetchone()[0]
-                if version not in (0, SCHEMA_VERSION):
+                if version not in (0, 1, SCHEMA_VERSION):
                     raise ResearchConflict(
                         f"unsupported research database schema version {version}"
                     )
@@ -152,6 +172,7 @@ class ResearchStore:
                         strategy_version_id INTEGER NOT NULL,
                         name TEXT NOT NULL,
                         dataset_id TEXT NOT NULL,
+                        dataset_sha256 TEXT NOT NULL,
                         data_start_ms INTEGER NOT NULL,
                         cutoff_ms INTEGER NOT NULL,
                         seed INTEGER NOT NULL,
@@ -178,7 +199,18 @@ class ResearchStore:
                     ON research_runs (created_at_ms DESC);
                     """
                 )
-                if version == 0:
+                if version == 1:
+                    self._backup_before_migration(connection, version)
+                    columns = {
+                        row["name"]
+                        for row in connection.execute("PRAGMA table_info(research_protocols)").fetchall()
+                    }
+                    if "dataset_sha256" not in columns:
+                        connection.execute(
+                            "ALTER TABLE research_protocols ADD COLUMN dataset_sha256 TEXT"
+                        )
+                    connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+                elif version == 0:
                     connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
 
     @staticmethod
@@ -278,6 +310,7 @@ class ResearchStore:
         )
         name = _text(payload.get("name"), "name", 200)
         dataset_id = _text(payload.get("dataset_id"), "dataset_id", 200)
+        dataset_sha256 = _sha256(payload.get("dataset_sha256"), "dataset_sha256")
         data_start_ms = _integer(payload.get("data_start_ms"), "data_start_ms", 0)
         cutoff_ms = _integer(payload.get("cutoff_ms"), "cutoff_ms", 1)
         if cutoff_ms <= data_start_ms:
@@ -292,15 +325,16 @@ class ResearchStore:
             cursor = connection.execute(
                 """
                 INSERT INTO research_protocols (
-                    created_at_ms, strategy_version_id, name, dataset_id,
+                    created_at_ms, strategy_version_id, name, dataset_id, dataset_sha256,
                     data_start_ms, cutoff_ms, seed, parameters_json
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     created_at_ms,
                     strategy_version_id,
                     name,
                     dataset_id,
+                    dataset_sha256,
                     data_start_ms,
                     cutoff_ms,
                     seed,
@@ -348,22 +382,25 @@ class ResearchStore:
         hypothesis = self._require_row(
             connection, "hypotheses", strategy["hypothesis_id"], "hypothesis"
         )
+        dataset_sha256 = protocol["dataset_sha256"]
+        if not dataset_sha256:
+            raise ResearchConflict(
+                "protocol predates dataset fingerprinting; create a new protocol with dataset_sha256"
+            )
         return {
             "hypothesis": {
-                "id": hypothesis["id"],
                 "title": hypothesis["title"],
                 "thesis": hypothesis["thesis"],
             },
             "strategy": {
-                "id": strategy["id"],
                 "strategy_key": strategy["strategy_key"],
                 "version": strategy["version"],
                 "rules": json.loads(strategy["rules_json"]),
             },
             "protocol": {
-                "id": protocol["id"],
                 "name": protocol["name"],
                 "dataset_id": protocol["dataset_id"],
+                "dataset_sha256": _sha256(dataset_sha256, "protocol.dataset_sha256"),
                 "data_start_ms": protocol["data_start_ms"],
                 "cutoff_ms": protocol["cutoff_ms"],
                 "seed": protocol["seed"],

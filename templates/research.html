@@ -67,6 +67,7 @@
                     <label>Strategy version<select name="strategy_version_id" required></select></label>
                     <label>Name<input name="name" maxlength="200" required></label>
                     <label>Dataset ID<input name="dataset_id" maxlength="200" required></label>
+                    <label>Dataset SHA-256<input name="dataset_sha256" maxlength="64" minlength="64" pattern="[0-9A-Fa-f]{64}" required></label>
                     <label>Data start ms<input name="data_start_ms" inputmode="numeric" required></label>
                     <label>Cutoff ms<input name="cutoff_ms" inputmode="numeric" required></label>
                     <label>Seed<input name="seed" inputmode="numeric" value="0" required></label>

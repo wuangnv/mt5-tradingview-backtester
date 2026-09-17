@@ -65,6 +65,7 @@ class P2ResearchApiTests(unittest.TestCase):
                 "strategy_version_id": strategy["id"],
                 "name": "fixture",
                 "dataset_id": "fixture-v1",
+                "dataset_sha256": "a" * 64,
                 "data_start_ms": 1000,
                 "cutoff_ms": 5000,
                 "seed": 11,

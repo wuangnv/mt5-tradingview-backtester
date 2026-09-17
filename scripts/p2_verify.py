@@ -1,5 +1,6 @@
 """Deterministic P2 verification against an isolated temporary research database."""
 
+import hashlib
 import json
 import sys
 import tempfile
@@ -17,6 +18,15 @@ from research_store import ResearchStore, ResearchValidationError  # noqa: E402
 def main():
     with tempfile.TemporaryDirectory() as temp_dir:
         store = ResearchStore(Path(temp_dir) / "research.sqlite3")
+        bars = [
+            {"time": 1_742_788_800, "close": 1.0},
+            {"time": 1_742_792_400, "close": 1.1},
+            {"time": 1_742_796_000, "close": 9.9},
+        ]
+        dataset_sha256 = hashlib.sha256(
+            json.dumps(bars, separators=(",", ":"), sort_keys=True).encode("utf-8")
+        ).hexdigest()
+        cutoff_ms = bars[1]["time"] * 1000
         hypothesis = store.create_hypothesis(
             {"title": "P2 verifier", "thesis": "Fixture behavior must be reproducible."}
         )
@@ -33,8 +43,9 @@ def main():
                 "strategy_version_id": strategy["id"],
                 "name": "deterministic fixture",
                 "dataset_id": "p2-fixture-v1",
-                "data_start_ms": 1000,
-                "cutoff_ms": 5000,
+                "dataset_sha256": dataset_sha256,
+                "data_start_ms": bars[0]["time"] * 1000,
+                "cutoff_ms": cutoff_ms,
                 "seed": 17,
                 "parameters": {"cost_model": "fixture-v1"},
             }
@@ -44,17 +55,12 @@ def main():
         second = store.create_run({"protocol_id": protocol["id"], "budget": budget})
         store.start_run(first["id"])
 
-        bars = [
-            {"time": 1000, "close": 1.0},
-            {"time": 2000, "close": 1.1},
-            {"time": 6000, "close": 9.9},
-        ]
         fixture_a = reproduce_fixture(bars, protocol["cutoff_ms"], protocol["seed"], protocol["parameters"])
         fixture_b = reproduce_fixture(bars, protocol["cutoff_ms"], protocol["seed"], protocol["parameters"])
 
         future_leak_blocked = False
         try:
-            store.complete_run(first["id"], {"observed_until_ms": 5001, "result": {}})
+            store.complete_run(first["id"], {"observed_until_ms": cutoff_ms + 1, "result": {}})
         except ResearchValidationError:
             future_leak_blocked = True
 
@@ -68,6 +74,7 @@ def main():
             "same_repro_key": first["repro_key"] == second["repro_key"],
             "same_fixture_checksum": fixture_a["fixture_checksum"] == fixture_b["fixture_checksum"],
             "future_bar_excluded": fixture_a["visible_bar_count"] == 2,
+            "production_timestamp_units": fixture_a["observed_until_ms"] == cutoff_ms,
             "future_leak_blocked": future_leak_blocked,
             "statuses": [first["status"], second["status"]],
             "budget_preserved": first["budget"] == budget and second["budget"] == budget,
@@ -78,6 +85,7 @@ def main():
                 result["same_repro_key"],
                 result["same_fixture_checksum"],
                 result["future_bar_excluded"],
+                result["production_timestamp_units"],
                 result["future_leak_blocked"],
                 result["statuses"] == ["completed", "cancelled"],
                 result["budget_preserved"],

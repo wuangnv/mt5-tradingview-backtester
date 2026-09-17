@@ -147,7 +147,7 @@ class P3PracticeApiTests(unittest.TestCase):
         created = self.client.post(
             "/api/practice/runs/1/trades/1001/journal",
             json={
-                "decision_time_ms": 7200000,
+                "cursor_ms": 10800000,
                 "intended_entry": 1.05,
                 "intended_stop": 1.00,
                 "intended_target": 1.10,
@@ -161,14 +161,20 @@ class P3PracticeApiTests(unittest.TestCase):
         self.assertEqual(created.status_code, 201)
         entry = created.json["entry"]
         self.assertEqual(entry["fill"]["entry"], 1.06)
-        self.assertEqual(entry["fill"]["exit"], 1.01)
+        self.assertIsNone(entry["fill"]["exit"])
+        self.assertIsNone(entry["fill"]["close_time_ms"])
+        self.assertEqual(entry["source"]["decision_time_ms"], 10800000)
         self.assertEqual(entry["source"]["evidence_run_id"], "1")
         self.assertEqual(entry["source"]["trade_id"], "1001")
         self.assertTrue(entry["source"]["data_source_id"].startswith("local-chunks-v1:EURUSD:H1:"))
 
+        stored = self.app.config["JOURNAL_STORE"].get(entry["id"])
+        self.assertEqual(stored["fill"]["exit"], 1.01)
+
         updated = self.client.patch(
             f"/api/practice/journal/{entry['id']}",
             json={
+                "cursor_ms": 10800000,
                 "intended_entry": 1.04,
                 "intended_stop": 0.99,
                 "intended_target": 1.11,
@@ -182,11 +188,20 @@ class P3PracticeApiTests(unittest.TestCase):
         updated_entry = updated.json["entry"]
         self.assertEqual(updated_entry["review"]["revision"], 2)
         self.assertEqual(updated_entry["fill"]["entry"], 1.06)
+        self.assertIsNone(updated_entry["fill"]["exit"])
         history = self.client.get(f"/api/practice/journal/{entry['id']}/history")
         self.assertEqual([row["revision"] for row in history.json["revisions"]], [1, 2])
 
-        context = self.client.get("/api/practice/runs/1/trades/1001/context").json["context"]
-        self.assertEqual(context["journal"]["id"], entry["id"])
+        before_close = self.client.get(
+            "/api/practice/runs/1/trades/1001/context?cursor_ms=10800000"
+        ).json["context"]
+        self.assertEqual(before_close["journal"]["id"], entry["id"])
+        self.assertIsNone(before_close["journal"]["fill"]["exit"])
+
+        closed = self.client.get(
+            "/api/practice/runs/1/trades/1001/context?cursor_ms=14400000"
+        ).json["context"]
+        self.assertEqual(closed["journal"]["fill"]["exit"], 1.01)
         self.assertEqual(hashlib.sha256(self.evidence_db.read_bytes()).hexdigest(), self.evidence_hash)
         self.assertEqual(self._history_hashes(), self.history_hashes)
 

@@ -147,7 +147,7 @@ def verify():
         created_response = client.post(
             "/api/practice/runs/1/trades/1001/journal",
             json={
-                "decision_time_ms": 7200000,
+                "cursor_ms": 10800000,
                 "intended_entry": 1.05,
                 "intended_stop": 1.00,
                 "intended_target": 1.10,
@@ -161,12 +161,30 @@ def verify():
         if created_response.status_code != 201:
             raise RuntimeError("journal create failed")
         entry = created_response.json["entry"]
-        if entry["fill"]["entry"] != 1.06 or entry["fill"]["exit"] != 1.01:
-            raise RuntimeError("client was able to spoof fill values")
+        if entry["fill"]["entry"] != 1.06 or entry["fill"]["exit"] is not None:
+            raise RuntimeError("journal response leaked outcome or accepted spoofed fill")
+        if entry["source"]["decision_time_ms"] != 10800000:
+            raise RuntimeError("journal decision cursor does not match replay cursor")
+        stored_entry = app.config["JOURNAL_STORE"].get(entry["id"])
+        if stored_entry["fill"]["entry"] != 1.06 or stored_entry["fill"]["exit"] != 1.01:
+            raise RuntimeError("backend fill snapshot is not canonical")
+
+        journal_before_close = client.get(
+            "/api/practice/runs/1/trades/1001/context?cursor_ms=10800000"
+        ).json["context"]["journal"]
+        if journal_before_close["fill"]["exit"] is not None:
+            raise RuntimeError("journal leaked exit through replay context before close")
+
+        journal_after_close = client.get(
+            "/api/practice/runs/1/trades/1001/context?cursor_ms=14400000"
+        ).json["context"]["journal"]
+        if journal_after_close["fill"]["exit"] != 1.01:
+            raise RuntimeError("journal outcome was not revealed after close")
 
         updated_response = client.patch(
             f"/api/practice/journal/{entry['id']}",
             json={
+                "cursor_ms": 10800000,
                 "intended_entry": 1.04,
                 "intended_stop": 0.99,
                 "intended_target": 1.11,
@@ -175,7 +193,11 @@ def verify():
                 "notes": "reviewed",
             },
         )
-        if updated_response.status_code != 200 or updated_response.json["entry"]["review"]["revision"] != 2:
+        if (
+            updated_response.status_code != 200
+            or updated_response.json["entry"]["review"]["revision"] != 2
+            or updated_response.json["entry"]["fill"]["exit"] is not None
+        ):
             raise RuntimeError("journal revision update failed")
         history_response = client.get(f"/api/practice/journal/{entry['id']}/history")
         if [item["revision"] for item in history_response.json["revisions"]] != [1, 2]:
@@ -196,6 +218,8 @@ def verify():
             "future_ohlc_hidden": True,
             "outcome_masked_until_close": True,
             "backend_fill_snapshot": True,
+            "journal_outcome_masked_until_close": True,
+            "decision_cursor_preserved": True,
             "journal_revision_history": True,
             "evidence_unchanged": True,
             "history_unchanged": True,

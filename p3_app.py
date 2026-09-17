@@ -133,7 +133,7 @@ def create_app(
 
     @app.patch("/api/practice/journal/<entry_id>")
     def journal_update(entry_id):
-        entry = app.config["JOURNAL_STORE"].update(entry_id, payload())
+        entry = app.config["PRACTICE_SERVICE"].update_journal(entry_id, payload())
         return jsonify({"success": True, "entry": entry})
 
     return app

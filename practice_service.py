@@ -75,6 +75,32 @@ class PracticeService:
         available_ms = (int(bar["time"]) + timeframe_seconds) * 1000
         return bar, delta, available_ms
 
+    def _replay_cursor(self, symbol, timeframe, value, name):
+        cursor_ms = _integer(value, name)
+        if cursor_ms < 0:
+            raise PracticeValidationError(f"{name} must be non-negative")
+        bars = self.history_reader.load_through(
+            symbol, timeframe, cursor_ms // 1000, before_bars=1
+        )
+        if not bars or int(bars[-1]["available_at"]) * 1000 != cursor_ms:
+            raise PracticeValidationError(f"{name} must match a closed replay bar")
+        return cursor_ms
+
+    @staticmethod
+    def _journal_view(entry, close_revealed):
+        if entry is None:
+            return None
+        view = {
+            **entry,
+            "source": dict(entry["source"]),
+            "fill": dict(entry["fill"]),
+            "review": dict(entry["review"]),
+        }
+        if not close_revealed:
+            view["fill"]["close_time_ms"] = None
+            view["fill"]["exit"] = None
+        return view
+
     def trade_context(self, run_id, trade_id, *, cursor_ms=None, before_bars=100):
         run, trade, symbol, timeframe, open_ms, close_ms = self._source(run_id, trade_id)
         open_bar, open_delta, open_available_ms = self._map_bar_label(
@@ -113,6 +139,7 @@ class PracticeService:
         provenance = self.history_reader.provenance(symbol, timeframe)
         previous_time = self.history_reader.previous_bar_time(symbol, timeframe, cursor_s)
         next_time = self.history_reader.next_bar_time(symbol, timeframe, cursor_s)
+        journal = self.journal_store.get_by_source("replay", run_id, trade_id)
         return {
             "practice_schema_version": "practice-context-v1",
             "source": {
@@ -136,7 +163,7 @@ class PracticeService:
             },
             "trade": trade_view,
             "bars": bars,
-            "journal": self.journal_store.get_by_source("replay", run_id, trade_id),
+            "journal": self._journal_view(journal, close_revealed),
         }
 
     def create_journal(self, run_id, trade_id, payload):
@@ -145,8 +172,14 @@ class PracticeService:
         run, trade, symbol, timeframe, open_ms, close_ms = self._source(run_id, trade_id)
         _, _, open_available_ms = self._map_bar_label(symbol, timeframe, open_ms, "trade open time")
         _, _, close_available_ms = self._map_bar_label(symbol, timeframe, close_ms, "trade close time")
-        decision_time_ms = payload.get("decision_time_ms", open_available_ms)
-        decision_time_ms = _integer(decision_time_ms, "decision_time_ms")
+        decision_time_ms = self._replay_cursor(
+            symbol,
+            timeframe,
+            payload.get("cursor_ms", payload.get("decision_time_ms", open_available_ms)),
+            "decision_time_ms",
+        )
+        if decision_time_ms < open_available_ms:
+            raise PracticeValidationError("decision_time_ms cannot be before the replay entry cursor")
         if decision_time_ms > close_available_ms:
             raise PracticeValidationError("decision_time_ms cannot be after the recorded trade close")
         provenance = self.history_reader.provenance(symbol, timeframe)
@@ -167,4 +200,32 @@ class PracticeService:
             "fill_entry": trade["price_open"],
             "fill_exit": trade["price_close"],
         }
-        return self.journal_store.create(source, payload)
+        entry = self.journal_store.create(source, payload)
+        return self._journal_view(entry, decision_time_ms >= close_available_ms)
+
+    def update_journal(self, entry_id, payload):
+        if not isinstance(payload, dict):
+            raise PracticeValidationError("journal payload must be an object")
+        current = self.journal_store.get(entry_id)
+        source = current["source"]
+        if source.get("source_kind") != "replay":
+            raise PracticeValidationError("journal source is not a replay trade")
+        _, _, symbol, timeframe, open_ms, close_ms = self._source(
+            source["evidence_run_id"], source["trade_id"]
+        )
+        _, _, open_available_ms = self._map_bar_label(
+            symbol, timeframe, open_ms, "trade open time"
+        )
+        _, _, close_available_ms = self._map_bar_label(
+            symbol, timeframe, close_ms, "trade close time"
+        )
+        cursor_ms = self._replay_cursor(
+            symbol,
+            timeframe,
+            payload.get("cursor_ms", source["decision_time_ms"]),
+            "cursor_ms",
+        )
+        if cursor_ms < open_available_ms:
+            raise PracticeValidationError("cursor_ms cannot be before the replay entry cursor")
+        entry = self.journal_store.update(entry_id, payload)
+        return self._journal_view(entry, cursor_ms >= close_available_ms)
