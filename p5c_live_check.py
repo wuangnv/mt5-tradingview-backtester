@@ -32,7 +32,13 @@ def _positive_number(value, label):
     return number
 
 
-def inspect_live_account(fetcher, *, expected_account_id=None, expected_server=None):
+def inspect_live_account(
+    fetcher,
+    *,
+    expected_account_id=None,
+    expected_server=None,
+    require_trading_permission=True,
+):
     context = _success(fetcher.get_execution_context(), "MT5 execution context")
     if int(context.get("protocol_version") or 0) < 3:
         raise LiveCheckError("MT5 gateway protocol v3 is required for live OrderCheck")
@@ -52,13 +58,13 @@ def inspect_live_account(fetcher, *, expected_account_id=None, expected_server=N
         blockers.append("live account server does not match the approved server")
     if not terminal.get("connected"):
         blockers.append("MT5 terminal is disconnected")
-    if not account.get("trade_allowed"):
+    if require_trading_permission and not account.get("trade_allowed"):
         blockers.append("MT5 account does not allow trading")
-    if not account.get("trade_expert"):
+    if require_trading_permission and not account.get("trade_expert"):
         blockers.append("MT5 account does not allow expert trading")
-    if not terminal.get("trade_allowed"):
+    if require_trading_permission and not terminal.get("trade_allowed"):
         blockers.append("MT5 terminal trading is disabled")
-    if not terminal.get("mql_trade_allowed"):
+    if require_trading_permission and not terminal.get("mql_trade_allowed"):
         blockers.append("MT5 MQL trading is disabled")
     if blockers:
         raise LiveCheckError("; ".join(blockers))
@@ -121,11 +127,13 @@ def run_live_check(
     expected_account_id=None,
     expected_server=None,
     symbol="EURUSD",
+    require_trading_permission=True,
 ):
     preflight = inspect_live_account(
         fetcher,
         expected_account_id=expected_account_id,
         expected_server=expected_server,
+        require_trading_permission=require_trading_permission,
     )
     before_positions = list(preflight["positions"])
     order = build_minimum_market_check(fetcher, symbol)
@@ -168,6 +176,11 @@ def parse_args(argv=None):
     parser.add_argument("--expected-account-id")
     parser.add_argument("--expected-server")
     parser.add_argument("--symbol", default="EURUSD")
+    parser.add_argument(
+        "--connectivity-only",
+        action="store_true",
+        help="skip account trade permission blockers for MT5 connectivity validation",
+    )
     return parser.parse_args(argv)
 
 
@@ -182,6 +195,7 @@ def main(argv=None):
         expected_account_id=args.expected_account_id,
         expected_server=args.expected_server,
         symbol=args.symbol,
+        require_trading_permission=not args.connectivity_only,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     return 0

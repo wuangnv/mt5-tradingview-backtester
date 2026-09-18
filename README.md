@@ -17,7 +17,7 @@ MetaTrader 5 is powerful for execution, but its Python package is hard to use on
 flowchart LR
     Browser["Browser UI<br/>TradingView-style charts"] --> Flask["Flask API<br/>localhost:5000"]
     Flask --> Socket["TCP Socket<br/>127.0.0.1:9000"]
-    Socket --> EA["MacGateway.mq5<br/>Expert Advisor"]
+    Socket --> EA["MT5Gateway.mq5<br/>Expert Advisor"]
     EA --> MT5["MetaTrader 5<br/>Demo or live account"]
     MT5 --> EA --> Socket --> Flask --> Browser
 ```
@@ -48,7 +48,7 @@ sequenceDiagram
     participant UI as Web UI
     participant API as Flask API
     participant Socket as TCP Socket
-    participant EA as MacGateway EA
+    participant EA as MT5Gateway EA
     participant MT5 as MetaTrader 5
 
     UI->>API: Request candles, price, account, positions, history
@@ -83,7 +83,7 @@ flowchart TD
 ├── app.py                    # Flask routes and API endpoints
 ├── session_store.py           # Validated SQLite persistence for replay-session reports
 ├── mt5_data.py               # Thread-safe TCP socket server for MT5
-├── MacGateway.mq5            # MT5 Expert Advisor socket client
+├── MT5Gateway.mq5            # MT5 Expert Advisor socket client
 ├── Start-Windows.bat         # Double-click launcher for Windows
 ├── Start-macOS.command       # Double-click launcher for macOS
 ├── scripts/                  # Launcher helper scripts
@@ -153,9 +153,9 @@ Both launchers create a local `.venv`, install dependencies, start Flask, and op
 1. Open MetaTrader 5.
 2. Click `File > Open Data Folder`.
 3. Open `MQL5/Experts/`.
-4. Copy `MacGateway.mq5` into that folder.
+4. Copy `MT5Gateway.mq5` into that folder.
 5. In MT5 Navigator, right-click `Expert Advisors` and choose `Refresh`.
-6. Drag `MacGateway` onto any chart.
+6. Drag `MT5Gateway` onto any chart.
 7. Enable `Allow Algo Trading`.
 8. Turn on the MT5 `Algo Trading` button.
 
@@ -196,7 +196,7 @@ Windows notes:
 
 - Install Python 3.8+ first and enable `Add Python to PATH`.
 - Place your licensed TradingView Charting Library files in `static/charting_library/`.
-- In MT5, copy `MacGateway.mq5` into `MQL5/Experts/`, refresh Expert Advisors, attach it to a chart, and enable Algo Trading.
+- In MT5, copy `MT5Gateway.mq5` into `MQL5/Experts/`, refresh Expert Advisors, attach it to a chart, and enable Algo Trading.
 - If Windows Firewall asks for permission, allow the local Python app on private networks.
 
 ### macOS Version
@@ -213,7 +213,7 @@ macOS notes:
 
 - Install Python 3.8+ first if `python3` is not available.
 - Place your licensed TradingView Charting Library files in `static/charting_library/`.
-- In MT5, copy `MacGateway.mq5` into `MQL5/Experts/`, refresh Expert Advisors, attach it to a chart, and enable Algo Trading.
+- In MT5, copy `MT5Gateway.mq5` into `MQL5/Experts/`, refresh Expert Advisors, attach it to a chart, and enable Algo Trading.
 - Keep the Terminal window open while using the app.
 
 ## Socket Commands
@@ -261,7 +261,7 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 ### MT5 status stays disconnected
 
 - Make sure `python app.py` is running.
-- Make sure `MacGateway.mq5` is attached to an MT5 chart.
+- Make sure `MT5Gateway.mq5` is attached to an MT5 chart.
 - Make sure Algo Trading is enabled.
 - Check that the EA uses `127.0.0.1` and port `9000`.
 

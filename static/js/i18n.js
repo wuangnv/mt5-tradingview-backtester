@@ -149,7 +149,7 @@ const I18N_DICTS = {
         'report.symbol': 'Symbol',
 
         'toast.modeSwitchBlock': 'Exit replay before switching data source.',
-        'toast.mt5Required': 'MT5 is not connected. Attach the MacGateway EA first.',
+        'toast.mt5Required': 'MT5 is not connected. Attach the MT5Gateway EA first.',
         'toast.modeLive': 'Data source: Live MT5',
         'toast.modeLocal': 'Data source: Local cache',
         'toast.modeFail': 'Mode switch failed: {msg}',
@@ -371,7 +371,7 @@ const I18N_DICTS = {
         'report.symbol': 'Cặp tiền',
 
         'toast.modeSwitchBlock': 'Thoát replay trước khi đổi nguồn dữ liệu.',
-        'toast.mt5Required': 'MT5 chưa kết nối. Gắn EA MacGateway lên chart trước.',
+        'toast.mt5Required': 'MT5 chưa kết nối. Gắn EA MT5Gateway lên chart trước.',
         'toast.modeLive': 'Nguồn dữ liệu: MT5 trực tiếp',
         'toast.modeLocal': 'Nguồn dữ liệu: bộ nhớ cục bộ',
         'toast.modeFail': 'Đổi chế độ thất bại: {msg}',

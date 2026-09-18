@@ -69,6 +69,46 @@ class MT5DataFetcherTransportTests(unittest.TestCase):
             peer.close()
             worker.join(timeout=1)
 
+    def test_heartbeat_is_ignored_and_extra_frames_are_preserved(self):
+        module_path = Path(__file__).resolve().parents[1] / "mt5_data.py"
+        spec = importlib.util.spec_from_file_location("mt5_data_heartbeat_test", module_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch("threading.Thread"):
+            spec.loader.exec_module(module)
+
+        client, peer = socket.socketpair()
+        fetcher = object.__new__(module.MT5DataFetcher)
+        fetcher.client_socket = client
+        fetcher.initialized = True
+        fetcher.lock = threading.Lock()
+        fetcher.request_lock = threading.Lock()
+        fetcher._recv_buffer = bytearray()
+
+        def responder():
+            try:
+                peer.recv(4096)
+                peer.sendall(
+                    b'{"type":"heartbeat","protocol_version":3,"connected":true}\n'
+                    b'{"success":true,"marker":"first"}\n'
+                    b'{"success":true,"marker":"second"}\n'
+                )
+            except OSError:
+                pass
+
+        worker = threading.Thread(target=responder, daemon=True)
+        worker.start()
+        try:
+            first = fetcher._send_request("FIRST", timeout=0.5)
+            second = fetcher._send_request("SECOND", timeout=0.5)
+
+            self.assertEqual(first, {"success": True, "marker": "first"})
+            self.assertEqual(second, {"success": True, "marker": "second"})
+            self.assertGreater(fetcher.last_heartbeat, 0)
+        finally:
+            client.close()
+            peer.close()
+            worker.join(timeout=1)
+
 
 if __name__ == "__main__":
     unittest.main()

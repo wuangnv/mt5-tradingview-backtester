@@ -1,0 +1,17 @@
+[Common]
+Login=416382260
+Server=Exness-MT5Trial14
+
+[Experts]
+Enabled=1
+AllowLiveTrading=1
+AllowDllImport=1
+WebRequest=1
+WebRequestUrl=127.0.0.1
+Account=0
+Profile=0
+
+[StartUp]
+Expert=MT5Gateway
+Symbol=EURUSDm
+Period=M15

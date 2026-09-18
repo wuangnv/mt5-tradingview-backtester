@@ -1,25 +1,28 @@
 //+------------------------------------------------------------------+
-//|                                                   MacGateway.mq5 |
+//|                                                    MT5Gateway.mq5 |
 //|                                  Copyright 2026, Antigravity AI  |
 //|                                             https://google.com   |
 //|                                                                  |
-//| An Expert Advisor for streaming data from MT5 to Python Flask    |
+//| An Expert Advisor for streaming data from MT5 to Python services  |
 //| using native MQL5 sockets (perfect for macOS Wine environment).  |
 //+------------------------------------------------------------------+
 #property copyright "Antigravity AI"
 #property link      "https://google.com"
-#property version   "1.03"
+#property version   "1.20"
 #property strict
 
 // Inputs
 input string   InpServerHost     = "127.0.0.1"; // Python Server Host
 input int      InpServerPort     = 9000;        // Python Server Port
-input int      InpTimerMs        = 50;          // Timer Interval (ms)
+input int      InpTimerMs        = 100;         // Timer Interval (ms)
+input int      InpHeartbeatSec   = 10;          // Heartbeat interval
 
 // Global variables
 int            g_socket          = INVALID_HANDLE;
 string         g_recv_buffer     = "";
 uint           g_last_connect_time = 0; // Throttles reconnection to avoid freezing MT5
+uint           g_last_heartbeat_time = 0;
+string         g_last_request_id = "";
 
 #include <Trade\Trade.mqh>
 CTrade         g_trade;
@@ -51,7 +54,7 @@ string BoolJson(bool value)
 //+------------------------------------------------------------------+
 int OnInit()
 {
-   Print("=== [MacGateway] Starting Expert Advisor v1.03 ===");
+   Print("=== [MT5Gateway] Starting Expert Advisor v1.10 ===");
    Print("Connecting to Python Server at " + InpServerHost + ":" + IntegerToString(InpServerPort));
    
    // Set high frequency timer for non-blocking socket checks
@@ -69,7 +72,7 @@ int OnInit()
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
 {
-   Print("=== [MacGateway] Stopping Expert Advisor ===");
+   Print("=== [MT5Gateway] Stopping Expert Advisor ===");
    EventKillTimer();
    CloseConnection();
 }
@@ -101,7 +104,17 @@ void OnTimer()
    else
    {
       CheckSocketData();
+      SendHeartbeat();
    }
+}
+
+void SendHeartbeat()
+{
+   uint now = GetTickCount();
+   if(now - g_last_heartbeat_time < (uint)(InpHeartbeatSec * 1000))
+      return;
+   g_last_heartbeat_time = now;
+   SendResponse("{\"type\":\"heartbeat\",\"protocol_version\":3,\"connected\":true}");
 }
 
 //+------------------------------------------------------------------+
@@ -117,7 +130,7 @@ bool ConnectToServer()
    g_socket = SocketCreate();
    if(g_socket == INVALID_HANDLE)
    {
-      Print("[MacGateway] Failed to create socket. Error: ", GetLastError());
+      Print("[MT5Gateway] Failed to create socket. Error: ", GetLastError());
       return false;
    }
    
@@ -125,21 +138,21 @@ bool ConnectToServer()
    if(!SocketConnect(g_socket, InpServerHost, InpServerPort, 1000))
    {
       int error_code = GetLastError();
-      Print("[MacGateway] Connection to Python Server failed. Error code: ", error_code);
+      Print("[MT5Gateway] Connection to Python Server failed. Error code: ", error_code);
       if(error_code == 4014)
       {
-         Print("[MacGateway] ERROR 4014: Function not allowed. Check if 'Allow Algo Trading' is checked in the EA Common settings and globally.");
+         Print("[MT5Gateway] ERROR 4014: Function not allowed. Check if 'Allow Algo Trading' is checked in the EA Common settings and globally.");
       }
       else if(error_code == 5272)
       {
-         Print("[MacGateway] ERROR 5272: Cannot connect. Make sure Python app.py is running and '127.0.0.1' is in the Tools > Options > Expert Advisors > Allow WebRequest list.");
+         Print("[MT5Gateway] ERROR 5272: Cannot connect. Make sure Python app.py is running and '127.0.0.1' is in the Tools > Options > Expert Advisors > Allow WebRequest list.");
       }
       SocketClose(g_socket);
       g_socket = INVALID_HANDLE;
       return false;
    }
    
-   Print("[MacGateway] Successfully connected to Python server on port ", InpServerPort);
+   Print("[MT5Gateway] Successfully connected to Python server on port ", InpServerPort);
    return true;
 }
 
@@ -153,7 +166,7 @@ void CloseConnection(bool quiet = false)
       SocketClose(g_socket);
       g_socket = INVALID_HANDLE;
       if(!quiet)
-         Print("[MacGateway] Connection closed.");
+         Print("[MT5Gateway] Connection closed.");
    }
 }
 
@@ -171,7 +184,7 @@ void CheckSocketData()
    if(bytes_available == 0 && readable_error != 0)
    {
       if(readable_error != 5273)
-         Print("[MacGateway] SocketIsReadable error: ", readable_error);
+         Print("[MT5Gateway] SocketIsReadable error: ", readable_error);
       CloseConnection(readable_error == 5273);
       return;
    }
@@ -204,7 +217,7 @@ void CheckSocketData()
       {
          int error_code = GetLastError();
          if(error_code != 5273)
-            Print("[MacGateway] SocketRead error: ", error_code);
+            Print("[MT5Gateway] SocketRead error: ", error_code);
          CloseConnection(error_code == 5273);
       }
    }
@@ -613,7 +626,7 @@ void SendResponse(string response)
       int sent = SocketSend(g_socket, chunk, chunk_size);
       if(sent <= 0)
       {
-         Print("[MacGateway] SocketSend failed. Error: ", GetLastError());
+         Print("[MT5Gateway] SocketSend failed. Error: ", GetLastError());
          CloseConnection();
          break;
       }
@@ -626,6 +639,13 @@ void SendResponse(string response)
 //+------------------------------------------------------------------+
 void HandleTradeOrder(string type, string symbol, double lots, double sl, double tp, string request_id)
 {
+   // Prevent accidental duplicate submissions after reconnects or client retries.
+   if(request_id != "" && request_id == g_last_request_id)
+   {
+      SendResponse("{\"success\":false,\"status\":\"duplicate\",\"request_id\":\"" + JsonEscape(request_id) + "\"}");
+      return;
+   }
+
    g_trade.SetDeviationInPoints(10);
    g_trade.SetTypeFillingBySymbol(symbol);
    
@@ -634,6 +654,9 @@ void HandleTradeOrder(string type, string symbol, double lots, double sl, double
    {
       res = g_trade.Buy(lots, symbol, 0, sl, tp, request_id);
    }
+
+   if(res && request_id != "")
+      g_last_request_id = request_id;
    else if(type == "SELL")
    {
       res = g_trade.Sell(lots, symbol, 0, sl, tp, request_id);

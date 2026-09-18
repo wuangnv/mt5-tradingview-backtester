@@ -13,6 +13,15 @@ def _protocol_token(value, name):
         raise ValueError(f"{name} contains an invalid socket-protocol token")
     return token
 
+
+def _base_symbol(symbol):
+    """Normalize broker symbols such as Exness EURUSDm to EURUSD."""
+    value = str(symbol or "").strip().upper()
+    for suffix in ("C", "M", "R", "Z"):
+        if value.endswith(suffix) and len(value) > 3:
+            return value[:-1]
+    return value
+
 class MT5DataFetcher:
     """Class giao tiếp với MetaTrader 5 thông qua TCP Socket Gateway (máy chủ socket nội bộ)"""
     
@@ -22,6 +31,11 @@ class MT5DataFetcher:
         self.server_socket = None
         self.client_socket = None
         self.initialized = False
+        self.protocol_version = None
+        self.last_heartbeat = 0
+        self._recv_buffer = bytearray()
+        self._symbol_cache = {}
+        self.request_lock = threading.Lock()
         self.lock = threading.Lock()
         
         # Khởi động Socket Server trong background thread để không chặn Flask
@@ -47,6 +61,7 @@ class MT5DataFetcher:
                 client_sock, addr = self.server_socket.accept()
                 with self.lock:
                     self.client_socket = client_sock
+                    self._recv_buffer = bytearray()
                     self.initialized = True
                 print(f"\n[SocketServer] MT5 EA connected successfully from {addr}!")
             except Exception as e:
@@ -67,7 +82,7 @@ class MT5DataFetcher:
                     self.client_socket = None
                     self.initialized = False
             
-            return False, "No connection from MT5 Expert Advisor. Please open MT5 on Mac, allow WebRequest for 127.0.0.1 and drag-and-drop MacGateway EA onto a chart."
+            return False, "No connection from MT5 Expert Advisor. Please open MT5, allow local socket access and drag-and-drop MT5Gateway EA onto a chart."
             
     def shutdown(self):
         """Đóng toàn bộ socket khi tắt server Flask"""
@@ -78,6 +93,7 @@ class MT5DataFetcher:
                 except Exception:
                     pass
                 self.client_socket = None
+            self._recv_buffer = bytearray()
             if self.server_socket:
                 try:
                     self.server_socket.close()
@@ -95,6 +111,7 @@ class MT5DataFetcher:
                 except Exception:
                     pass
                 self.client_socket = None
+            self._recv_buffer = bytearray()
             self.initialized = False
 
     def wait_for_connection(self, timeout=10.0):
@@ -115,36 +132,59 @@ class MT5DataFetcher:
                 break
             time.sleep(0.5)
             
-        with self.lock:
+        if not hasattr(self, "request_lock"):
+            self.request_lock = threading.Lock()
+        if not hasattr(self, "lock"):
+            self.lock = threading.Lock()
+
+        with self.request_lock:
+          with self.lock:
             if not self.client_socket:
                 return {'success': False, 'message': 'No active connection from MT5 Expert Advisor.'}
+
+            # Older tests/builders can instantiate this class without __init__.
+            if not hasattr(self, "_recv_buffer"):
+                self._recv_buffer = bytearray()
                 
             try:
                 # Gửi lệnh với ký tự kết thúc là \n
                 payload = (command_str + "\n").encode('utf-8')
                 self.client_socket.sendall(payload)
                 
-                # Thiết lập thời gian timeout cho socket để tránh treo luồng nếu EA đứng
-                self.client_socket.settimeout(timeout)
-                
-                # Tích lũy phản hồi cho đến khi đọc được ký tự \n phân tách
-                buffer = bytearray()
+                deadline = time.monotonic() + max(0.0, float(timeout))
                 while True:
+                    # The EA can emit an unsolicited heartbeat before or beside
+                    # the response to a request. Consume complete newline-delimited
+                    # frames one at a time and retain any later frame for the next
+                    # request instead of treating the heartbeat as the response.
+                    newline_pos = self._recv_buffer.find(b'\n')
+                    if newline_pos >= 0:
+                        frame = bytes(self._recv_buffer[:newline_pos])
+                        del self._recv_buffer[:newline_pos + 1]
+                        if not frame.strip():
+                            continue
+
+                        response = json.loads(frame.decode('utf-8').strip())
+                        if isinstance(response, dict) and response.get('type') == 'heartbeat':
+                            self.last_heartbeat = time.time()
+                            continue
+                        if isinstance(response, dict) and response.get('protocol_version'):
+                            self.protocol_version = response.get('protocol_version')
+                        return response
+
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise socket.timeout()
+                    self.client_socket.settimeout(remaining)
                     chunk = self.client_socket.recv(8192)
                     if not chunk:
                         # Kết nối bị đóng từ phía client
                         self.client_socket = None
+                        self._recv_buffer = bytearray()
                         self.initialized = False
                         return {'success': False, 'message': 'Connection with MT5 Expert Advisor was disconnected abruptly.'}
-                    
-                    buffer.extend(chunk)
-                    if b'\n' in chunk:
-                        if buffer.endswith(b'\n'):
-                            break
-                            
-                # Giải mã dữ liệu và loại bỏ khoảng trắng dư thừa
-                response_str = buffer.decode('utf-8').strip()
-                return json.loads(response_str)
+
+                    self._recv_buffer.extend(chunk)
                 
             except socket.timeout:
                 # A timed-out request can still produce a late response. The protocol has no
@@ -156,11 +196,18 @@ class MT5DataFetcher:
                     except Exception:
                         pass
                 self.client_socket = None
+                self._recv_buffer = bytearray()
                 self.initialized = False
                 return {'success': False, 'message': 'Response timeout from MetaTrader 5.'}
             except Exception as e:
                 # Hủy socket bị lỗi để kích hoạt tự động kết nối lại lần sau
+                if self.client_socket:
+                    try:
+                        self.client_socket.close()
+                    except Exception:
+                        pass
                 self.client_socket = None
+                self._recv_buffer = bytearray()
                 self.initialized = False
                 return {'success': False, 'message': f'Socket communication error: {str(e)}'}
 
@@ -169,9 +216,33 @@ class MT5DataFetcher:
         res = self._send_request("GET_SYMBOLS")
         if res.get('success'):
             return sorted(res.get('symbols', []))
+
+    def resolve_symbol(self, symbol):
+        """Resolve UI symbols to broker symbols (Exness Standard uses suffix m)."""
+        requested = str(symbol or "").strip().upper()
+        if not requested:
+            return requested
+        if not hasattr(self, "_symbol_cache"):
+            self._symbol_cache = {}
+        if requested in self._symbol_cache:
+            return self._symbol_cache[requested]
+        try:
+            available = self.get_symbols()
+            if requested in available:
+                self._symbol_cache[requested] = requested
+                return requested
+            base = _base_symbol(requested)
+            for item in available:
+                if _base_symbol(item) == base:
+                    self._symbol_cache[requested] = item
+                    return item
+        except Exception:
+            pass
+        return requested
         return []
         
     def get_historical_data(self, symbol, timeframe, bars=5000):
+        symbol = self.resolve_symbol(symbol)
         """Lấy dữ liệu lịch sử nến (OHLCV) từ MT5"""
         print(f"  [Socket] Fetching {bars} bars for {symbol} ({timeframe})...")
         
@@ -200,6 +271,7 @@ class MT5DataFetcher:
         }
         
     def get_current_price(self, symbol):
+        symbol = self.resolve_symbol(symbol)
         """Lấy giá Tick hiện tại (Bid/Ask)"""
         res = self._send_request(f"GET_PRICE;{symbol}", timeout=3.0)
         if res.get('success'):
@@ -207,6 +279,7 @@ class MT5DataFetcher:
         return None
 
     def get_price_result(self, symbol):
+        symbol = self.resolve_symbol(symbol)
         """Return the raw tick response so adapters can distinguish offline from missing data."""
         return self._send_request(
             f"GET_PRICE;{_protocol_token(symbol, 'symbol')}", timeout=3.0
@@ -217,12 +290,14 @@ class MT5DataFetcher:
         return self._send_request("GET_EXECUTION_CONTEXT", timeout=5.0)
 
     def get_symbol_info(self, symbol):
+        symbol = self.resolve_symbol(symbol)
         """Return broker contract limits for one symbol."""
         return self._send_request(
             f"GET_SYMBOL_INFO;{_protocol_token(symbol, 'symbol')}", timeout=5.0
         )
 
     def check_order(self, symbol, order_type, lots, sl=0.0, tp=0.0):
+        symbol = self.resolve_symbol(symbol)
         """Ask MT5 to validate a market request without sending it."""
         side = str(order_type).upper()
         if side not in {"BUY", "SELL"}:
@@ -233,6 +308,7 @@ class MT5DataFetcher:
         )
 
     def place_order(self, symbol, order_type, lots, sl=0.0, tp=0.0, request_id=None):
+        symbol = self.resolve_symbol(symbol)
         """Đặt lệnh Buy/Sell lên MT5 qua Socket"""
         side = str(order_type).upper()
         if side not in {"BUY", "SELL"}:
