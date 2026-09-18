@@ -8,6 +8,26 @@ from unittest.mock import patch
 
 
 class MT5DataFetcherTransportTests(unittest.TestCase):
+    def test_check_order_uses_read_only_gateway_command(self):
+        module_path = Path(__file__).resolve().parents[1] / "mt5_data.py"
+        spec = importlib.util.spec_from_file_location("mt5_data_check_test", module_path)
+        module = importlib.util.module_from_spec(spec)
+        with patch("threading.Thread"):
+            spec.loader.exec_module(module)
+
+        fetcher = object.__new__(module.MT5DataFetcher)
+        calls = []
+
+        def fake_send(command, timeout):
+            calls.append((command, timeout))
+            return {"success": True, "check": {"checked": False}}
+
+        fetcher._send_request = fake_send
+        result = fetcher.check_order("EURUSD", "buy", 0.01, 1.09, 0.0)
+
+        self.assertTrue(result["success"])
+        self.assertEqual(calls, [("CHECK_ORDER;BUY;EURUSD;0.01;1.09;0.0", 8.0)])
+
     def test_timeout_discards_socket_so_late_response_cannot_poison_next_request(self):
         module_path = Path(__file__).resolve().parents[1] / "mt5_data.py"
         spec = importlib.util.spec_from_file_location("mt5_data_transport_test", module_path)

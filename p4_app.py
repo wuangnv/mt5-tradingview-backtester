@@ -166,15 +166,22 @@ def create_app(
     return app
 
 
-app = create_app(
-    os.environ.get("EVIDENCE_DB_PATH"),
-    os.environ.get("RESEARCH_DB_PATH"),
-    os.environ.get("JOURNAL_DB_PATH"),
-    os.environ.get("HISTORY_CHUNKS_PATH"),
-    os.environ.get("EXECUTION_DB_PATH"),
-)
-
-
 if __name__ == "__main__":
+    app = create_app(
+        os.environ.get("EVIDENCE_DB_PATH"),
+        os.environ.get("RESEARCH_DB_PATH"),
+        os.environ.get("JOURNAL_DB_PATH"),
+        os.environ.get("HISTORY_CHUNKS_PATH"),
+        os.environ.get("EXECUTION_DB_PATH"),
+    )
     port = int(os.environ.get("TRADE_DESK_PORT", "5004"))
     app.run(host="127.0.0.1", port=port, debug=False)
+else:
+    app = create_app(
+        os.environ.get("EVIDENCE_DB_PATH"),
+        os.environ.get("RESEARCH_DB_PATH"),
+        os.environ.get("JOURNAL_DB_PATH"),
+        os.environ.get("HISTORY_CHUNKS_PATH"),
+        os.environ.get("EXECUTION_DB_PATH"),
+        demo_adapter=DemoBrokerSimulator(),
+    )

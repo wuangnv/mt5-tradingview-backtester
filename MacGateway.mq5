@@ -262,6 +262,20 @@ void ProcessCommand(string command)
       }
       HandleGetSymbolInfo(parts[1]);
    }
+   else if(cmd_type == "CHECK_ORDER")
+   {
+      if(total_parts < 6)
+      {
+         SendResponse("{\"success\":false,\"message\":\"Invalid CHECK_ORDER parameters\"}");
+         return;
+      }
+      string order_type = parts[1];
+      string symbol = parts[2];
+      double lots = StringToDouble(parts[3]);
+      double sl = StringToDouble(parts[4]);
+      double tp = StringToDouble(parts[5]);
+      HandleCheckOrder(order_type, symbol, lots, sl, tp);
+   }
    else if(cmd_type == "TRADE_BUY" || cmd_type == "TRADE_SELL")
    {
       if(total_parts < 5)
@@ -460,7 +474,7 @@ void HandleGetExecutionContext()
    bool terminal_trade_allowed = (bool)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED);
    bool mql_trade_allowed = (bool)MQLInfoInteger(MQL_TRADE_ALLOWED);
 
-   string json = "{\"success\":true,\"protocol_version\":2,\"account\":{" +
+   string json = "{\"success\":true,\"protocol_version\":3,\"account\":{" +
                  "\"login\":" + IntegerToString(login) +
                  ",\"server\":\"" + server + "\"" +
                  ",\"company\":\"" + company + "\"" +
@@ -494,6 +508,7 @@ void HandleGetSymbolInfo(string symbol)
    int stops_level = (int)SymbolInfoInteger(symbol, SYMBOL_TRADE_STOPS_LEVEL);
    double tick_size = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
    double tick_value = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+   double point = SymbolInfoDouble(symbol, SYMBOL_POINT);
    double volume_min = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MIN);
    double volume_max = SymbolInfoDouble(symbol, SYMBOL_VOLUME_MAX);
    double volume_step = SymbolInfoDouble(symbol, SYMBOL_VOLUME_STEP);
@@ -508,10 +523,70 @@ void HandleGetSymbolInfo(string symbol)
                  ",\"stops_level\":" + IntegerToString(stops_level) +
                  ",\"tick_size\":" + DoubleToString(tick_size, 8) +
                  ",\"tick_value\":" + DoubleToString(tick_value, 8) +
+                 ",\"point\":" + DoubleToString(point, 8) +
                  ",\"volume_min\":" + DoubleToString(volume_min, 8) +
                  ",\"volume_max\":" + DoubleToString(volume_max, 8) +
                  ",\"volume_step\":" + DoubleToString(volume_step, 8) + "}}";
    SendResponse(json);
+}
+
+//+------------------------------------------------------------------+
+//| Broker-side validation without sending an order                  |
+//+------------------------------------------------------------------+
+void HandleCheckOrder(string type, string symbol, double lots, double sl, double tp)
+{
+   if(type != "BUY" && type != "SELL")
+   {
+      SendResponse("{\"success\":false,\"message\":\"CHECK_ORDER type must be BUY or SELL\"}");
+      return;
+   }
+   if(!SymbolSelect(symbol, true))
+   {
+      SendResponse("{\"success\":false,\"message\":\"Symbol not found: " + JsonEscape(symbol) + "\"}");
+      return;
+   }
+
+   MqlTick tick;
+   if(!SymbolInfoTick(symbol, tick))
+   {
+      SendResponse("{\"success\":false,\"message\":\"Failed to read quote for " + JsonEscape(symbol) + "\"}");
+      return;
+   }
+
+   MqlTradeRequest request = {};
+   MqlTradeCheckResult check = {};
+   request.action = TRADE_ACTION_DEAL;
+   request.symbol = symbol;
+   request.volume = lots;
+   request.type = type == "BUY" ? ORDER_TYPE_BUY : ORDER_TYPE_SELL;
+   request.price = request.type == ORDER_TYPE_BUY ? tick.ask : tick.bid;
+   request.sl = sl;
+   request.tp = tp;
+   request.deviation = 10;
+
+   long filling = SymbolInfoInteger(symbol, SYMBOL_FILLING_MODE);
+   if((filling & SYMBOL_FILLING_FOK) == SYMBOL_FILLING_FOK)
+      request.type_filling = ORDER_FILLING_FOK;
+   else if((filling & SYMBOL_FILLING_IOC) == SYMBOL_FILLING_IOC)
+      request.type_filling = ORDER_FILLING_IOC;
+   else
+      request.type_filling = ORDER_FILLING_RETURN;
+
+   ResetLastError();
+   bool checked = OrderCheck(request, check);
+   uint error_code = GetLastError();
+   string response = "{\"success\":true,\"check\":{" +
+                     "\"checked\":" + BoolJson(checked) +
+                     ",\"retcode\":" + IntegerToString(check.retcode) +
+                     ",\"last_error\":" + IntegerToString(error_code) +
+                     ",\"balance\":" + DoubleToString(check.balance, 2) +
+                     ",\"equity\":" + DoubleToString(check.equity, 2) +
+                     ",\"profit\":" + DoubleToString(check.profit, 2) +
+                     ",\"margin\":" + DoubleToString(check.margin, 2) +
+                     ",\"margin_free\":" + DoubleToString(check.margin_free, 2) +
+                     ",\"margin_level\":" + DoubleToString(check.margin_level, 2) +
+                     ",\"comment\":\"" + JsonEscape(check.comment) + "\"}}";
+   SendResponse(response);
 }
 
 //+------------------------------------------------------------------+

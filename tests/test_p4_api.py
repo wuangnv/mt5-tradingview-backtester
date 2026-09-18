@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 import tempfile
@@ -124,6 +125,8 @@ class P4ApiTests(unittest.TestCase):
         self.assertEqual(same_origin_custom_port.status_code, 200)
 
     def test_importing_p4_does_not_load_mt5_or_legacy_app(self):
+        environment = dict(os.environ)
+        environment["P4_EXECUTION_BACKEND"] = "mt5-demo"
         process = subprocess.run(
             [
                 sys.executable,
@@ -136,6 +139,7 @@ class P4ApiTests(unittest.TestCase):
             capture_output=True,
             text=True,
             timeout=10,
+            env=environment,
         )
         self.assertEqual(process.returncode, 0, process.stderr)
 

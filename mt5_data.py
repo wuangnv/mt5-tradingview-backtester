@@ -222,6 +222,16 @@ class MT5DataFetcher:
             f"GET_SYMBOL_INFO;{_protocol_token(symbol, 'symbol')}", timeout=5.0
         )
 
+    def check_order(self, symbol, order_type, lots, sl=0.0, tp=0.0):
+        """Ask MT5 to validate a market request without sending it."""
+        side = str(order_type).upper()
+        if side not in {"BUY", "SELL"}:
+            raise ValueError("order_type must be BUY or SELL")
+        safe_symbol = _protocol_token(symbol, "symbol")
+        return self._send_request(
+            f"CHECK_ORDER;{side};{safe_symbol};{lots};{sl};{tp}", timeout=8.0
+        )
+
     def place_order(self, symbol, order_type, lots, sl=0.0, tp=0.0, request_id=None):
         """Đặt lệnh Buy/Sell lên MT5 qua Socket"""
         side = str(order_type).upper()

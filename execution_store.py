@@ -246,3 +246,23 @@ class ExecutionJournal:
                 (limit,),
             ).fetchall()
         return [self._row_to_record(row) for row in rows]
+
+    def list_unknown(self, *, mode=None, account_id=None, account_server=None):
+        clauses = ["status = 'unknown'"]
+        values = []
+        for column, value in (
+            ("mode", mode),
+            ("account_id", account_id),
+            ("account_server", account_server),
+        ):
+            if value is not None:
+                clauses.append(f"{column} = ?")
+                values.append(str(value))
+        query = (
+            "SELECT * FROM execution_requests WHERE "
+            + " AND ".join(clauses)
+            + " ORDER BY updated_at_ms DESC"
+        )
+        with self._connection() as connection:
+            rows = connection.execute(query, values).fetchall()
+        return [self._row_to_record(row) for row in rows]
