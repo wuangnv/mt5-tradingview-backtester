@@ -4,8 +4,7 @@ $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $VenvDir = Join-Path $ProjectRoot ".venv"
 $VenvPython = Join-Path $VenvDir "Scripts\python.exe"
 $Requirements = Join-Path $ProjectRoot "requirements.txt"
-$AppFile = Join-Path $ProjectRoot "app.py"
-$ChartingLibrary = Join-Path $ProjectRoot "static\charting_library\charting_library.standalone.js"
+$AppFile = Join-Path $ProjectRoot "workspace_app.py"
 $Url = "http://127.0.0.1:5000"
 
 function Write-Step($Message) {
@@ -43,14 +42,7 @@ Write-Host " WuangVibeTrading - Windows Launcher" -ForegroundColor Magenta
 Write-Host "============================================================" -ForegroundColor Magenta
 
 if (!(Test-Path $AppFile)) {
-    throw "app.py was not found. Please keep this launcher inside the project root."
-}
-
-if (!(Test-Path $ChartingLibrary)) {
-    Write-Host ""
-    Write-Host "Warning: TradingView charting library was not found:" -ForegroundColor Yellow
-    Write-Host "  $ChartingLibrary" -ForegroundColor Yellow
-    Write-Host "The server can start, but the chart will not load until the licensed TradingView files are placed there." -ForegroundColor Yellow
+    throw "workspace_app.py was not found. Please keep this launcher inside the project root."
 }
 
 $python = Find-Python
@@ -70,7 +62,7 @@ Write-Step "Installing Python dependencies"
 Write-Step "Starting local web app"
 Write-Host "Browser will open at $Url when the server is ready." -ForegroundColor Green
 Write-Host "Keep this window open while using the app." -ForegroundColor Yellow
-Write-Host "Use the red power button in the app or press Ctrl+C here to stop." -ForegroundColor Yellow
+Write-Host "Press Ctrl+C here to stop." -ForegroundColor Yellow
 Write-Host ""
 
 Start-Job -ScriptBlock {

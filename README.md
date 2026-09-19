@@ -1,6 +1,8 @@
 # MT5 TradingView Backtester
 
-Manual backtesting, bar replay, and MT5 trade control in a TradingView-style web app.
+Manual backtesting, bar replay, and guarded MT5 demo trade control in a TradingView-style web app.
+
+The supported daily entrypoint is `workspace_app.py`. It combines Evidence, Research, Practice & Journal, Demo Trade Desk, and read-only live readiness in one local Flask workspace. The older `app.py` UI remains for legacy replay compatibility, but the launchers no longer use it.
 
 This project connects a Flask web app to MetaTrader 5 through a local TCP socket bridge. It is designed for traders who want a fast TradingView-like interface while still using an MT5 demo or live account.
 
@@ -28,11 +30,13 @@ flowchart LR
 - Bar replay with play, pause, step forward, keyboard shortcuts, jump-to-date, and speed control.
 - Frontend history cache for faster replay timeframe switching.
 - Live MT5 account panel with balance, equity, margin, open positions, and recent deal history.
-- Market buy/sell execution from the web UI through MT5.
+- Guarded Trade Desk execution is demo-only; legacy direct trade routes are retired and live execution is not exposed.
 - Virtual backtest mode with simulated positions, pending orders, SL/TP, and history.
 - Trade storytelling: execution markers on chart, per-trade R-multiple tracking.
 - Session report on replay exit (equity curve, win rate, profit factor, expectancy, max drawdown), persisted locally in SQLite.
 - Analytics tab with equity curve, per-trade statistics, cross-session progress comparison, and saved report review.
+- Integrated Evidence analytics uses `metrics-v2` for explicit N/A semantics, closed-trade balance drawdown labeling, one filtered read model, and basis-aware comparison/export.
+- Probability / Risk Lab provides clearly labeled hypothetical models plus a gated empirical UTC-day block bootstrap; it does not present either as a forecast.
 - CSV trade-ledger and PNG equity-curve export from each session report.
 - Bilingual UI (English / Tiếng Việt), including the TradingView chart locale.
 - Dark and light themes, applied to both the app and the charts.
@@ -148,6 +152,8 @@ Double-click Start-macOS.command
 
 Both launchers create a local `.venv`, install dependencies, start Flask, and open the app in your browser.
 
+The launchers start `workspace_app.py` on loopback. Demo execution uses the local simulator by default and live execution remains locked behind a separate gate.
+
 ### 1. Install The MT5 Expert Advisor
 
 1. Open MetaTrader 5.
@@ -156,13 +162,14 @@ Both launchers create a local `.venv`, install dependencies, start Flask, and op
 4. Copy `MT5Gateway.mq5` into that folder.
 5. In MT5 Navigator, right-click `Expert Advisors` and choose `Refresh`.
 6. Drag `MT5Gateway` onto any chart.
-7. Enable `Allow Algo Trading`.
-8. Turn on the MT5 `Algo Trading` button.
+7. The gateway is read-only by default for execution. Leave `InpEnableDemoExecution=false` unless you are running an explicitly approved demo-only rehearsal.
+8. For an approved demo rehearsal only, set `InpEnableDemoExecution=true` and configure the exact `InpExpectedDemoLogin` and `InpExpectedDemoServer`; the gateway still refuses non-demo accounts.
+9. Enable `Allow Algo Trading` / the MT5 `Algo Trading` button only when that approved demo execution scope requires it.
 
 ### 2. Start The Web App
 
 ```bash
-python app.py
+python workspace_app.py
 ```
 
 Then open:
@@ -171,7 +178,7 @@ Then open:
 http://localhost:5000
 ```
 
-You should see the MT5 status change to connected when the EA connects to the local socket server.
+The integrated workspace starts without an MT5 connection. MT5-backed readiness remains opt-in and does not enable live execution.
 
 ## One-Click Launchers
 
@@ -190,7 +197,7 @@ The launcher will:
 - start the Flask web server;
 - open `http://127.0.0.1:5000` in your default browser.
 
-Keep the launcher window open while using the app. To stop the server, click the red power button inside the web app or press `Ctrl+C` in the launcher window.
+Keep the launcher window open while using the app. Press `Ctrl+C` in the launcher window to stop it.
 
 Windows notes:
 
@@ -225,9 +232,10 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 | `GET_SYMBOLS` | List Market Watch symbols |
 | `GET_PRICE;<symbol>` | Get bid and ask |
 | `GET_DATA;<symbol>;<timeframe>;<bars>` | Get OHLCV candles |
-| `TRADE_BUY;<symbol>;<lots>;<sl>;<tp>` | Place market buy |
-| `TRADE_SELL;<symbol>;<lots>;<sl>;<tp>` | Place market sell |
-| `TRADE_CLOSE;<ticket>` | Close an open position |
+| `TRADE_BUY;<symbol>;<lots>;<sl>;<tp>;<request_id>` | Demo-only market buy when the EA execution opt-in and exact demo identity guard both pass |
+| `TRADE_SELL;<symbol>;<lots>;<sl>;<tp>;<request_id>` | Demo-only market sell when the EA execution opt-in and exact demo identity guard both pass |
+| `TRADE_CLOSE;<ticket>;<request_id>` | Demo-only close under the same execution guard |
+| `CHECK_ORDER;<side>;<symbol>;<lots>;<sl>;<tp>` | Broker-side validation only; does not send an order |
 | `GET_POSITIONS` | Get open positions |
 | `GET_HISTORY;<days>` | Get recent MT5 deal history |
 | `GET_ACCOUNT` | Get account summary |
@@ -240,21 +248,47 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 | `/api/symbols` | `GET` | Available symbols |
 | `/api/data` | `POST` | Historical candles |
 | `/api/price/<symbol>` | `GET` | Current bid and ask |
-| `/api/trade/place` | `POST` | Place a live MT5 order |
-| `/api/trade/close` | `POST` | Close a live MT5 position |
+| `/api/trade/place` | `POST` | Retired legacy write route; returns `410 LEGACY_EXECUTION_DISABLED` |
+| `/api/trade/close` | `POST` | Retired legacy write route; returns `410 LEGACY_EXECUTION_DISABLED` |
 | `/api/trade/positions` | `GET` | Open MT5 positions |
 | `/api/trade/history?days=30` | `GET` | Recent MT5 deals |
 | `/api/trade/account` | `GET` | Account balance and margin data |
+| `/trade-desk` | `GET` | Guarded demo Trade Desk |
+| `/api/execution/state` | `GET` | Demo execution state and durable request journal |
+| `/api/execution/preview` | `POST` | Risk preview; no order send |
+| `/api/execution/orders` | `POST` | Guarded demo-only order placement through `ExecutionService` |
+| `/api/execution/positions/<id>/close` | `POST` | Guarded demo-only close through `ExecutionService` |
+| `/api/execution/requests/<request_id>/reconcile` | `POST` | Reconcile an unknown durable request before retrying |
+| `/risk-lab` | `GET` | Probability / Risk Lab with R3a hypothetical models and gated R3b bootstrap |
+| `/api/risk-lab/streak` | `POST` | IID loss-streak scenario using the trailing-loss recurrence |
+| `/api/risk-lab/equity` | `POST` | Fixed-fraction consecutive-loss equity scenario |
+| `/api/risk-lab/breakeven` | `POST` | Fixed two-outcome break-even and expectancy scenario |
 | `/api/session/save` | `POST` | Validate and save a completed replay session |
 | `/api/sessions?limit=50` | `GET` | List saved replay-session summaries |
 | `/api/sessions/<id>` | `GET`, `DELETE` | Read or delete one saved session |
 
 ## Development Notes
 
+- `workspace_app.py` is the supported integrated entrypoint. The P1-P5 modules are factories and do not create default stores merely by being imported.
+- R2 analytics lives in `analytics_read_model.py` / `workspace_analytics.py`; keep filtering, export, comparison and UI on that read model instead of duplicating formulas in JavaScript.
+- R3a deterministic models live in `risk_lab.py`; R3b empirical resampling lives in `risk_bootstrap.py` and requires dataset/range/cost/risk provenance plus minimum trade/day-block coverage. Do not relax the eligibility gate just to produce a number.
+- Importing `mt5_data.py` does not start the local socket listener. MT5-backed runtime paths must explicitly start the transport.
 - Keep all MT5 socket calls inside `MT5DataFetcher._send_request(...)` so requests stay thread-safe.
+- Do not add new direct calls from web routes to `place_order()` / `close_position()`. Supported execution goes through `ExecutionService`; the legacy write routes are intentionally retired.
 - Do not edit the TradingView library bundle directly. Use widget options, datafeed logic, CSS, and app code.
 - Replay mode depends on timestamp alignment. Update `replayManager.fullData` and `replayManager.currentIndex` before forcing chart data reloads.
 - The live history tab reads MT5 deal history. A newly opened live position appears as `Opened`; closed deals appear as `Profit`, `Loss`, or `Closed`.
+
+## Workspace Backup And Restore
+
+Backups are copy-only and validated before restore. Restore refuses to overwrite a non-empty destination.
+
+```bash
+python scripts/workspace_backup.py backup D:\path\to\workspace-backup
+python scripts/workspace_backup.py restore D:\path\to\workspace-backup D:\path\to\restored-data
+```
+
+The backup includes the workspace SQLite databases plus local replay chunks, records schema versions and checksums, and restores into a separate data directory. Point `WORKSPACE_DATA_ROOT` at that restored directory when validating a restored copy.
 
 ## Troubleshooting
 

@@ -4,6 +4,11 @@
         context: null,
         journal: null,
     };
+    const initialQuery = new URLSearchParams(window.location.search);
+    const requestedSelection = {
+        runId: initialQuery.get('run'),
+        tradeId: initialQuery.get('trade'),
+    };
 
     const els = {
         refresh: document.getElementById('pr-refresh'),
@@ -87,6 +92,13 @@
                 groups.push({ run, trades: ledger.trades || [] });
             }
             renderSources(groups);
+            const target = state.selected || requestedSelection;
+            if (target.runId && target.tradeId) {
+                const button = Array.from(document.querySelectorAll('.pr-trade-button')).find(node =>
+                    node.dataset.runId === String(target.runId) && node.dataset.tradeId === String(target.tradeId)
+                );
+                if (button) await selectTrade(target.runId, target.tradeId, button);
+            }
         } catch (error) {
             els.sourceList.textContent = '';
             showError(error);
@@ -130,6 +142,20 @@
     async function selectTrade(runId, tradeId, button) {
         clearError();
         state.selected = { runId: String(runId), tradeId: String(tradeId) };
+        const url = new URL(window.location.href);
+        url.searchParams.set('run', state.selected.runId);
+        url.searchParams.set('trade', state.selected.tradeId);
+        window.history.replaceState(null, '', url);
+        const evidence = document.querySelector('[data-workspace-link="evidence"]');
+        if (evidence) {
+            const evidenceQuery = new URLSearchParams();
+            evidenceQuery.set('run', state.selected.runId);
+            for (const key of ['side', 'outcome']) {
+                const value = url.searchParams.get(key);
+                if (value) evidenceQuery.set(key, value);
+            }
+            evidence.href = `/?${evidenceQuery.toString()}`;
+        }
         document.querySelectorAll('.pr-trade-button.active').forEach(node => node.classList.remove('active'));
         button?.classList.add('active');
         await loadContext();

@@ -99,9 +99,7 @@ def create_app(evidence_db_path=None, research_db_path=None, evidence_store=None
     return app
 
 
-app = create_app(os.environ.get("EVIDENCE_DB_PATH"), os.environ.get("RESEARCH_DB_PATH"))
-
-
 if __name__ == "__main__":
+    app = create_app(os.environ.get("EVIDENCE_DB_PATH"), os.environ.get("RESEARCH_DB_PATH"))
     port = int(os.environ.get("RESEARCH_PORT", "5002"))
     app.run(host="127.0.0.1", port=port, debug=False)

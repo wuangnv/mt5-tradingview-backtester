@@ -6,8 +6,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="$PROJECT_ROOT/.venv"
 VENV_PYTHON="$VENV_DIR/bin/python"
 REQUIREMENTS="$PROJECT_ROOT/requirements.txt"
-APP_FILE="$PROJECT_ROOT/app.py"
-CHARTING_LIBRARY="$PROJECT_ROOT/static/charting_library/charting_library.standalone.js"
+APP_FILE="$PROJECT_ROOT/workspace_app.py"
 URL="http://127.0.0.1:5000"
 
 step() {
@@ -31,15 +30,8 @@ find_python() {
 }
 
 if [ ! -f "$APP_FILE" ]; then
-    echo "app.py was not found. Please keep this launcher inside the project root."
+    echo "workspace_app.py was not found. Please keep this launcher inside the project root."
     exit 1
-fi
-
-if [ ! -f "$CHARTING_LIBRARY" ]; then
-    echo
-    echo "Warning: TradingView charting library was not found:"
-    echo "  $CHARTING_LIBRARY"
-    echo "The server can start, but the chart will not load until the licensed TradingView files are placed there."
 fi
 
 PYTHON_BIN="$(find_python)"
@@ -59,7 +51,7 @@ fi
 step "Starting local web app"
 echo "Browser will open at $URL when the server is ready."
 echo "Keep this Terminal window open while using the app."
-echo "Use the red power button in the app or press Ctrl+C here to stop."
+echo "Press Ctrl+C here to stop."
 echo
 
 (

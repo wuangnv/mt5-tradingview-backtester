@@ -256,10 +256,8 @@ class P1EvidenceApiTests(unittest.TestCase):
             [
                 sys.executable,
                 "-c",
-                "import os; "
-                f"os.environ['EVIDENCE_DB_PATH'] = r'{self.db_path}'; "
                 "import p1_app; "
-                "client = p1_app.app.test_client(); "
+                f"client = p1_app.create_app(r'{self.db_path}').test_client(); "
                 "assert client.get('/api/runs').status_code == 200",
             ],
             cwd=Path(__file__).resolve().parents[1],
@@ -268,6 +266,11 @@ class P1EvidenceApiTests(unittest.TestCase):
             timeout=10,
         )
         self.assertEqual(process.returncode, 0, process.stderr)
+
+    def test_importing_p1_does_not_create_a_runtime_app(self):
+        import p1_app
+
+        self.assertFalse(hasattr(p1_app, "app"))
 
     def test_read_only_verifier_runs_as_a_direct_script(self):
         process = subprocess.run(

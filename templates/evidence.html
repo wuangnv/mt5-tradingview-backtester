@@ -13,6 +13,7 @@
         <div class="ev-brand">Evidence Explorer</div>
         <div class="ev-readonly">READ ONLY</div>
         <div class="ev-spacer"></div>
+        {% include "_workspace_nav.html" %}
         <button id="ev-export-json" class="ev-command" type="button" disabled>Export JSON</button>
         <button id="ev-export-csv" class="ev-command" type="button" disabled>Export CSV</button>
     </header>
@@ -39,10 +40,54 @@
 
                 <div id="ev-warning" class="ev-warning" hidden></div>
 
+                <section class="ev-band ev-controls" aria-label="Analytics scope">
+                    <div class="ev-filter-row">
+                        <label>Side
+                            <select id="ev-filter-side">
+                                <option value="all">All</option>
+                                <option value="BUY">Buy</option>
+                                <option value="SELL">Sell</option>
+                            </select>
+                        </label>
+                        <label>Outcome
+                            <select id="ev-filter-outcome">
+                                <option value="all">All</option>
+                                <option value="win">Win</option>
+                                <option value="loss">Loss</option>
+                                <option value="breakeven">Breakeven</option>
+                            </select>
+                        </label>
+                        <div id="ev-scope" class="ev-scope"></div>
+                        <div class="ev-compare-control">
+                            <label>Compare with
+                                <select id="ev-compare-run"><option value="">None</option></select>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="ev-compare-detail" class="ev-compare-detail" hidden></div>
+                </section>
+
                 <section class="ev-band">
-                    <h2>Official metrics</h2>
+                    <div class="ev-section-row">
+                        <h2>Analytics · metrics-v2</h2>
+                        <span id="ev-metric-basis" class="ev-muted"></span>
+                    </div>
                     <div id="ev-metrics" class="ev-metric-grid"></div>
-                    <canvas id="ev-equity" class="ev-equity" height="180"></canvas>
+                    <div class="ev-chart-block">
+                        <div class="ev-chart-title">Closed-trade balance path</div>
+                        <canvas id="ev-equity" class="ev-equity" height="180"></canvas>
+                    </div>
+                    <div class="ev-chart-grid">
+                        <div class="ev-chart-block">
+                            <div class="ev-chart-title">Closed-trade balance drawdown</div>
+                            <canvas id="ev-drawdown" class="ev-equity" height="160"></canvas>
+                        </div>
+                        <div class="ev-chart-block">
+                            <div class="ev-chart-title">Realized R distribution</div>
+                            <canvas id="ev-r-histogram" class="ev-equity" height="160"></canvas>
+                            <div id="ev-r-unavailable" class="ev-chart-empty" hidden>Unavailable: planned risk is missing for one or more selected trades.</div>
+                        </div>
+                    </div>
                 </section>
 
                 <section class="ev-band">
@@ -69,7 +114,10 @@
                 </section>
 
                 <section id="ev-inspector" class="ev-band" hidden>
-                    <h2>Trade inspector</h2>
+                    <div class="ev-section-row">
+                        <h2>Trade inspector</h2>
+                        <a id="ev-open-practice" class="workspace-inline-link" href="/practice">Open in Practice</a>
+                    </div>
                     <div id="ev-inspector-grid" class="ev-kv-grid"></div>
                 </section>
             </div>

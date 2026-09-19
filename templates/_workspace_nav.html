@@ -1,0 +1,8 @@
+<nav class="workspace-nav" aria-label="Workspace">
+    <a data-workspace-link="evidence" class="{% if request.path == '/' %}active{% endif %}" href="/">Evidence</a>
+    <a data-workspace-link="research" class="{% if request.path == '/research' %}active{% endif %}" href="/research">Research</a>
+    <a data-workspace-link="practice" class="{% if request.path == '/practice' %}active{% endif %}" href="/practice">Practice &amp; Journal</a>
+    <a data-workspace-link="trade-desk" class="{% if request.path == '/trade-desk' %}active{% endif %}" href="/trade-desk">Demo Trade Desk</a>
+    <a data-workspace-link="risk-lab" class="{% if request.path == '/risk-lab' %}active{% endif %}" href="/risk-lab">Risk Lab</a>
+    <span class="workspace-live-lock" title="Live execution requires a separate approved gate">Live locked</span>
+</nav>

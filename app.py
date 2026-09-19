@@ -6,8 +6,8 @@ from mt5_data import mt5_fetcher
 from history_store import history_store
 from session_store import session_store
 from datetime import datetime, timedelta
+from urllib.parse import urlsplit
 import json
-import threading
 import logging
 import sqlite3
 
@@ -18,21 +18,49 @@ APP_MODE = {'mode': 'backtest'}  # backtest = local-first, live = MT5-first
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 
-# Đảm bảo MT5 chỉ init một lần duy nhất (thread-safe)
-_mt5_init_lock = threading.Lock()
-_mt5_init_done = False
-
 @app.before_request
-def ensure_mt5_initialized():
-    global _mt5_init_done
-    if _mt5_init_done:
-        return  # Thoát ngay nếu đã init
-    with _mt5_init_lock:
-        if not _mt5_init_done:
-            success, msg = mt5_fetcher.initialize()
-            _mt5_init_done = True
-            if not success:
-                print(f"Warning: {msg}")
+def protect_local_mutations():
+    if request.method not in {'POST', 'PATCH', 'PUT', 'DELETE'}:
+        return None
+    if request.remote_addr not in {'127.0.0.1', '::1'}:
+        return jsonify({
+            'success': False,
+            'error': {'code': 'LOCAL_ONLY', 'message': 'local API writes are loopback-only'},
+        }), 403
+    host = (urlsplit(f"//{request.host}").hostname or '').lower()
+    if host not in {'127.0.0.1', 'localhost', '::1'}:
+        return jsonify({
+            'success': False,
+            'error': {'code': 'LOCAL_ONLY', 'message': 'local API writes require a loopback host'},
+        }), 403
+    origin = request.headers.get('Origin')
+    if origin:
+        parsed = urlsplit(origin)
+        if (
+            parsed.scheme != 'http'
+            or (parsed.hostname or '').lower() not in {'127.0.0.1', 'localhost', '::1'}
+            or parsed.netloc.lower() != request.host.lower()
+        ):
+            return jsonify({
+                'success': False,
+                'error': {'code': 'ORIGIN_DENIED', 'message': 'local API write origin is not allowed'},
+            }), 403
+    return None
+
+
+def ensure_mt5_transport_started():
+    starter = getattr(mt5_fetcher, 'start_server', None)
+    if callable(starter):
+        starter()
+
+
+def legacy_execution_disabled():
+    message = 'Legacy MT5 execution is disabled. Use the guarded Trade Desk execution flow.'
+    return jsonify({
+        'success': False,
+        'message': message,
+        'error': {'code': 'LEGACY_EXECUTION_DISABLED', 'message': message},
+    }), 410
 
 
 @app.route('/')
@@ -47,6 +75,7 @@ def get_symbols():
     local_symbols = {item['symbol'] for item in history_store.get_status()}
     symbols = set(local_symbols)
     if APP_MODE['mode'] == 'live':
+        ensure_mt5_transport_started()
         symbols.update(mt5_fetcher.get_symbols())
     return jsonify({
         'success': True,
@@ -103,6 +132,7 @@ def get_data():
             'source': 'local_chunked'
         })
 
+    ensure_mt5_transport_started()
     result = mt5_fetcher.get_historical_data(symbol, timeframe, bars)
     if result.get('success') and result.get('data'):
         history_store.save(symbol, timeframe, result['data'])
@@ -169,6 +199,7 @@ def get_data_range():
         })
 
     if mode == 'live':
+        ensure_mt5_transport_started()
         result = mt5_fetcher.get_historical_range(symbol, timeframe, from_int, to_int)
         if result.get('success') and result.get('data'):
             history_store.save(symbol, timeframe, result['data'])
@@ -197,6 +228,7 @@ def app_mode():
 @app.route('/api/price/<symbol>', methods=['GET'])
 def get_current_price(symbol):
     """API lấy giá hiện tại"""
+    ensure_mt5_transport_started()
     price = mt5_fetcher.get_current_price(symbol)
     if price:
         return jsonify({
@@ -231,47 +263,32 @@ def get_status():
 
 @app.route('/api/trade/place', methods=['POST'])
 def place_trade():
-    """API đặt lệnh mua/bán lên MT5"""
-    data = request.get_json()
-    symbol = data.get('symbol')
-    order_type = data.get('type')
-    lots = data.get('lots', 0.01)
-    sl = data.get('sl', 0.0)
-    tp = data.get('tp', 0.0)
-
-    if not symbol or not order_type:
-        return jsonify({'success': False, 'message': 'Missing symbol or order type'}), 400
-
-    res = mt5_fetcher.place_order(symbol, order_type, lots, sl, tp)
-    return jsonify(res)
+    """Retired legacy execution route; guarded Trade Desk is the only supported path."""
+    return legacy_execution_disabled()
 
 @app.route('/api/trade/close', methods=['POST'])
 def close_trade():
-    """API đóng vị thế theo ticket"""
-    data = request.get_json()
-    ticket = data.get('ticket')
-
-    if not ticket:
-        return jsonify({'success': False, 'message': 'Missing ticket ID'}), 400
-
-    res = mt5_fetcher.close_position(ticket)
-    return jsonify(res)
+    """Retired legacy execution route; guarded Trade Desk is the only supported path."""
+    return legacy_execution_disabled()
 
 @app.route('/api/trade/positions', methods=['GET'])
 def get_positions():
     """API lấy danh sách các vị thế đang chạy"""
+    ensure_mt5_transport_started()
     positions = mt5_fetcher.get_positions()
     return jsonify({'success': True, 'positions': positions})
 
 @app.route('/api/trade/history', methods=['GET'])
 def get_trade_history():
     """API lấy lịch sử deal gần đây từ MT5"""
+    ensure_mt5_transport_started()
     days = request.args.get('days', 365)
     return jsonify(mt5_fetcher.get_trade_history(days))
 
 @app.route('/api/trade/account', methods=['GET'])
 def get_account():
     """API lấy thông tin số dư tài khoản"""
+    ensure_mt5_transport_started()
     account = mt5_fetcher.get_account_info()
     return jsonify({'success': True, 'account': account})
 
@@ -300,6 +317,7 @@ def history_download():
     print(f"{'='*60}")
 
     # Fetch from MT5 via socket
+    ensure_mt5_transport_started()
     result = mt5_fetcher.get_historical_data(symbol, timeframe, bars)
 
     if not result['success']:
@@ -480,4 +498,4 @@ if __name__ == '__main__':
     print("   Open browser at: http://localhost:5000")
     print("\n" + "=" * 60 + "\n")
 
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='127.0.0.1', port=5000)

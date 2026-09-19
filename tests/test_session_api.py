@@ -10,17 +10,14 @@ class ReplaySessionApiTests(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
         self.original_store = application.session_store
-        self.original_mt5_state = application._mt5_init_done
         application.session_store = SessionStore(
             Path(self.temp_dir.name) / "sessions.sqlite3"
         )
-        application._mt5_init_done = True
         application.app.config["TESTING"] = True
         self.client = application.app.test_client()
 
     def tearDown(self):
         application.session_store = self.original_store
-        application._mt5_init_done = self.original_mt5_state
         self.temp_dir.cleanup()
 
     @staticmethod

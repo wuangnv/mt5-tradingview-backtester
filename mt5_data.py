@@ -29,6 +29,7 @@ class MT5DataFetcher:
         self.host = host
         self.port = port
         self.server_socket = None
+        self.server_thread = None
         self.client_socket = None
         self.initialized = False
         self.protocol_version = None
@@ -37,10 +38,22 @@ class MT5DataFetcher:
         self._symbol_cache = {}
         self.request_lock = threading.Lock()
         self.lock = threading.Lock()
-        
-        # Khởi động Socket Server trong background thread để không chặn Flask
-        self.server_thread = threading.Thread(target=self._run_server, daemon=True)
-        self.server_thread.start()
+        self._server_start_lock = threading.Lock()
+
+    def start_server(self):
+        """Explicitly start the local MT5 listener.
+
+        Importing this module must stay side-effect free. Callers that really
+        need the MT5 bridge opt in through initialize()/wait_for_connection().
+        """
+        with self._server_start_lock:
+            if self.server_thread is not None and self.server_thread.is_alive():
+                return False
+            if self.server_socket is not None:
+                return False
+            self.server_thread = threading.Thread(target=self._run_server, daemon=True)
+            self.server_thread.start()
+            return True
         
     def _run_server(self):
         """Khởi chạy TCP Socket Server lắng nghe kết nối từ MT5 EA"""
@@ -54,6 +67,11 @@ class MT5DataFetcher:
             print(f"\n[SocketServer] Listening on {self.host}:{self.port}...")
         except Exception as e:
             print(f"\n[SocketServer] Error starting socket server: {str(e)}")
+            try:
+                self.server_socket.close()
+            except Exception:
+                pass
+            self.server_socket = None
             return
             
         while True:
@@ -73,6 +91,7 @@ class MT5DataFetcher:
                 
     def initialize(self):
         """Kiểm tra và khởi tạo trạng thái kết nối"""
+        self.start_server()
         with self.lock:
             if self.client_socket is not None:
                 try:
@@ -115,6 +134,7 @@ class MT5DataFetcher:
             self.initialized = False
 
     def wait_for_connection(self, timeout=10.0):
+        self.start_server()
         deadline = time.time() + max(0.0, float(timeout))
         while time.time() < deadline:
             connected, _ = self.initialize()

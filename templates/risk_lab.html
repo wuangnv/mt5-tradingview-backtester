@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability / Risk Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/risk_lab.css') }}">
+</head>
+<body>
+<main class="risk-shell">
+    <header class="risk-topbar">
+        <div class="risk-brand">Probability / Risk Lab</div>
+        <div class="risk-badge">HYPOTHETICAL</div>
+        {% include "_workspace_nav.html" %}
+    </header>
+
+    <div class="risk-content">
+        <section class="risk-intro" aria-labelledby="risk-title">
+            <div>
+                <h1 id="risk-title">Model the mechanism, not a prediction</h1>
+                <p>These scenarios do not overwrite observed trading results. Inputs are assumptions unless a later empirical model explicitly says otherwise.</p>
+            </div>
+            <div class="risk-source">Model version <strong>risk-lab-v1</strong></div>
+        </section>
+
+        <section class="risk-model" aria-labelledby="streak-title">
+            <div class="risk-model-copy">
+                <div class="risk-kicker">Hypothetical IID Bernoulli</div>
+                <h2 id="streak-title">How likely is a k-loss streak within N trades?</h2>
+                <p><code>q^k</code> answers only whether the next k trades are all losses. The horizon question uses the trailing-loss recurrence and overlapping windows are not treated as independent.</p>
+                <div class="risk-fields">
+                    <label>Loss probability q (%)<input id="risk-q" type="number" min="0" max="100" step="0.1" value="50"></label>
+                    <label>Streak length k<input id="risk-k" type="number" min="1" max="10000" step="1" value="2"></label>
+                    <label>Horizon N<input id="risk-n" type="number" min="0" max="10000" step="1" value="20"></label>
+                </div>
+                <button id="risk-streak-run" class="risk-action" type="button">Calculate streak scenario</button>
+            </div>
+            <div class="risk-output" aria-live="polite">
+                <dl class="risk-stats">
+                    <div><dt>Next k all losses</dt><dd id="risk-next-k">-</dd></div>
+                    <div><dt>At least one streak by N</dt><dd id="risk-at-least">-</dd></div>
+                </dl>
+                <canvas id="risk-streak-chart" class="risk-chart" height="180"></canvas>
+                <div id="risk-streak-meta" class="risk-meta"></div>
+            </div>
+        </section>
+
+        <section class="risk-model" aria-labelledby="equity-title">
+            <div class="risk-model-copy">
+                <div class="risk-kicker">Hypothetical fixed-fraction losses</div>
+                <h2 id="equity-title">What happens after repeated losses at fixed risk?</h2>
+                <p>Each loss is exactly a fixed fraction of equity immediately before that trade. Gap, slippage, cashflow, partial fills and overlapping exposure are outside this model.</p>
+                <div class="risk-fields">
+                    <label>Starting equity<input id="risk-equity" type="number" min="0.01" step="100" value="10000"></label>
+                    <label>Risk per loss (%)<input id="risk-fraction" type="number" min="0" max="99.99" step="0.1" value="1"></label>
+                    <label>Loss count<input id="risk-losses" type="number" min="0" max="10000" step="1" value="10"></label>
+                </div>
+                <button id="risk-equity-run" class="risk-action" type="button">Calculate equity path</button>
+            </div>
+            <div class="risk-output" aria-live="polite">
+                <dl class="risk-stats">
+                    <div><dt>Ending equity</dt><dd id="risk-ending-equity">-</dd></div>
+                    <div><dt>Drawdown</dt><dd id="risk-drawdown">-</dd></div>
+                    <div><dt>Recovery needed</dt><dd id="risk-recovery">-</dd></div>
+                </dl>
+                <canvas id="risk-equity-chart" class="risk-chart" height="180"></canvas>
+                <div id="risk-equity-meta" class="risk-meta"></div>
+            </div>
+        </section>
+
+        <section class="risk-model" aria-labelledby="breakeven-title">
+            <div class="risk-model-copy">
+                <div class="risk-kicker">Hypothetical fixed two-outcome payoff</div>
+                <h2 id="breakeven-title">What win rate breaks even for this payoff?</h2>
+                <p>Use positive payoff magnitudes. Extra cost belongs here only when W/L do not already include that same cost.</p>
+                <div class="risk-fields risk-fields-four">
+                    <label>Win payoff W<input id="risk-win" type="number" min="0.000001" step="0.1" value="2"></label>
+                    <label>Loss amount L<input id="risk-loss" type="number" min="0.000001" step="0.1" value="1"></label>
+                    <label>Extra cost c<input id="risk-cost" type="number" min="0" step="0.01" value="0"></label>
+                    <label>Assumed win rate (%)<input id="risk-win-prob" type="number" min="0" max="100" step="0.1" value="50"></label>
+                </div>
+                <button id="risk-breakeven-run" class="risk-action" type="button">Calculate break-even</button>
+            </div>
+            <div class="risk-output" aria-live="polite">
+                <dl class="risk-stats">
+                    <div><dt>Break-even win rate</dt><dd id="risk-breakeven-rate">-</dd></div>
+                    <div><dt>Expectancy at assumed p</dt><dd id="risk-expectancy">-</dd></div>
+                </dl>
+                <div id="risk-breakeven-meta" class="risk-meta"></div>
+            </div>
+        </section>
+
+        <section class="risk-model" aria-labelledby="bootstrap-title">
+            <div class="risk-model-copy">
+                <div class="risk-kicker">Empirical simulation · gated</div>
+                <h2 id="bootstrap-title">How variable could this eligible run look under day-block resampling?</h2>
+                <p>This model only runs when the source run has enough ordered trades, UTC-day blocks, and explicit dataset/cost/risk provenance. It preserves trade order inside sampled UTC days.</p>
+                <div class="risk-fields risk-fields-four">
+                    <label>Run ID<input id="risk-bootstrap-run" type="text" value="1"></label>
+                    <label>Seed<input id="risk-bootstrap-seed" type="number" min="0" max="4294967295" step="1" value="12345"></label>
+                    <label>Paths<input id="risk-bootstrap-paths" type="number" min="1" max="10000" step="100" value="1000"></label>
+                    <label>Horizon trades<input id="risk-bootstrap-horizon" type="number" min="1" max="2000" step="1" value="100"></label>
+                    <label>Drawdown threshold (%)<input id="risk-bootstrap-threshold" type="number" min="0.01" max="99.99" step="0.1" value="10"></label>
+                </div>
+                <button id="risk-bootstrap-check" class="risk-secondary-action" type="button">Check eligibility</button>
+                <button id="risk-bootstrap-run-action" class="risk-action" type="button">Run block bootstrap</button>
+            </div>
+            <div class="risk-output" aria-live="polite">
+                <div id="risk-bootstrap-state" class="risk-gate-state">Eligibility not checked.</div>
+                <dl class="risk-stats">
+                    <div><dt>Median terminal equity</dt><dd id="risk-bootstrap-terminal">N/A</dd></div>
+                    <div><dt>Median max drawdown</dt><dd id="risk-bootstrap-dd">N/A</dd></div>
+                    <div><dt>Median max loss streak</dt><dd id="risk-bootstrap-streak">N/A</dd></div>
+                    <div><dt>Threshold breach rate</dt><dd id="risk-bootstrap-breach">N/A</dd></div>
+                    <div><dt>Monte Carlo SE</dt><dd id="risk-bootstrap-se">N/A</dd></div>
+                </dl>
+                <div id="risk-bootstrap-meta" class="risk-meta"></div>
+            </div>
+        </section>
+
+        <div id="risk-error" class="risk-error" role="alert" hidden></div>
+    </div>
+</main>
+<script src="{{ url_for('static', filename='js/risk_lab.js') }}"></script>
+</body>
+</html>

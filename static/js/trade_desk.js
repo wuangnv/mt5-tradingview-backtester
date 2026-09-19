@@ -22,10 +22,49 @@
 
     let state = null;
     let previewTimer = null;
+    const memoryIntents = new Map();
+    const intentPrefix = 'trade-desk-intent:';
 
     const requestId = () => window.crypto?.randomUUID?.() || `req-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const money = value => `$${Number(value || 0).toFixed(2)}`;
     const price = value => Number(value || 0).toFixed(5);
+
+    function readIntent(key) {
+        try {
+            const raw = window.sessionStorage?.getItem(intentPrefix + key);
+            return raw ? JSON.parse(raw) : (memoryIntents.get(key) || null);
+        } catch (_) {
+            return memoryIntents.get(key) || null;
+        }
+    }
+
+    function writeIntent(key, value) {
+        memoryIntents.set(key, value);
+        try {
+            window.sessionStorage?.setItem(intentPrefix + key, JSON.stringify(value));
+        } catch (_) { /* in-memory fallback keeps double-click idempotence */ }
+    }
+
+    function clearIntent(key) {
+        memoryIntents.delete(key);
+        try {
+            window.sessionStorage?.removeItem(intentPrefix + key);
+        } catch (_) { /* ignore unavailable storage */ }
+    }
+
+    function durableRequestId(key, intent) {
+        const signature = JSON.stringify(intent);
+        const existing = readIntent(key);
+        if (existing?.signature === signature && existing?.request_id) return existing.request_id;
+        if (existing?.request_id) {
+            const error = new Error('Resolve the previous execution request before submitting a changed intent.');
+            error.code = 'EXECUTION_INTENT_PENDING';
+            throw error;
+        }
+        const next = {signature, request_id: requestId()};
+        writeIntent(key, next);
+        return next.request_id;
+    }
 
     function orderPayload() {
         return {
@@ -40,8 +79,27 @@
     async function jsonFetch(url, options = {}) {
         const response = await fetch(url, options);
         const body = await response.json();
-        if (!response.ok || !body.success) throw new Error(body.error?.message || `HTTP ${response.status}`);
+        if (!response.ok || !body.success) {
+            const error = new Error(body.error?.message || `HTTP ${response.status}`);
+            error.status = response.status;
+            error.code = body.error?.code;
+            throw error;
+        }
         return body;
+    }
+
+    async function reconcileUnknown(request_id) {
+        const body = await jsonFetch(`/api/execution/requests/${encodeURIComponent(request_id)}/reconcile`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'X-Execution-Intent': 'confirmed'},
+            body: JSON.stringify({}),
+        });
+        if (body.result?.status === 'unknown') {
+            const error = new Error('Request status is still unknown. Reconcile again before creating a new intent.');
+            error.code = 'EXECUTION_UNKNOWN';
+            throw error;
+        }
+        return body.result;
     }
 
     function showError(message) {
@@ -60,7 +118,7 @@
         els.server.textContent = next.account.server;
         els.balance.textContent = money(next.account.balance);
         els.riskLimit.textContent = `${money(next.limits.max_risk_amount)} / ${next.limits.max_risk_pct}%`;
-        els.live.textContent = next.live_execution_enabled ? 'Enabled' : 'Disabled';
+        els.live.textContent = 'Locked';
 
         els.positions.innerHTML = next.positions.length ? next.positions.map(pos => `
             <tr>
@@ -79,6 +137,15 @@
             showError('');
             const body = await jsonFetch('/api/execution/state');
             renderState(body.state);
+            try {
+                const readiness = await jsonFetch('/api/live-readiness/state');
+                const live = readiness.state;
+                els.live.textContent = live.ready_for_live_gate
+                    ? 'Locked / readiness passed'
+                    : `Locked / ${live.probe === 'disabled' ? 'readiness disabled' : 'not ready'}`;
+            } catch (_) {
+                els.live.textContent = 'Locked / readiness unavailable';
+            }
         } catch (error) {
             showError(error.message);
         }
@@ -113,22 +180,27 @@
     els.form.addEventListener('submit', async event => {
         event.preventDefault();
         if (!state) return;
+        const intentKey = 'place';
+        const intent = {
+            mode: 'demo',
+            account_id: state.account.account_id,
+            account_server: state.account.server,
+            order: orderPayload(),
+        };
         try {
             showError('');
-            await jsonFetch('/api/execution/orders', {
+            intent.request_id = durableRequestId(intentKey, intent);
+            const body = await jsonFetch('/api/execution/orders', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json', 'X-Execution-Intent': 'confirmed'},
-                body: JSON.stringify({
-                    mode: 'demo',
-                    account_id: state.account.account_id,
-                    account_server: state.account.server,
-                    request_id: requestId(),
-                    order: orderPayload(),
-                }),
+                body: JSON.stringify(intent),
             });
+            if (body.result?.status === 'unknown') await reconcileUnknown(intent.request_id);
+            clearIntent(intentKey);
             await refresh();
             await preview();
         } catch (error) {
+            if (!['EXECUTION_UNKNOWN', 'EXECUTION_INTENT_PENDING'].includes(error.code)) clearIntent(intentKey);
             showError(error.message);
         }
     });
@@ -136,21 +208,32 @@
     els.positions.addEventListener('click', async event => {
         const button = event.target.closest('[data-close]');
         if (!button || !state) return;
+        const intentKey = `close:${button.dataset.close}`;
+        const intent = {
+            mode: 'demo',
+            account_id: state.account.account_id,
+            account_server: state.account.server,
+            position_id: button.dataset.close,
+        };
         try {
             showError('');
-            await jsonFetch(`/api/execution/positions/${encodeURIComponent(button.dataset.close)}/close`, {
+            const request_id = durableRequestId(intentKey, intent);
+            const body = await jsonFetch(`/api/execution/positions/${encodeURIComponent(button.dataset.close)}/close`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json', 'X-Execution-Intent': 'confirmed'},
                 body: JSON.stringify({
-                    mode: 'demo',
-                    account_id: state.account.account_id,
-                    account_server: state.account.server,
-                    request_id: requestId(),
+                    mode: intent.mode,
+                    account_id: intent.account_id,
+                    account_server: intent.account_server,
+                    request_id,
                 }),
             });
+            if (body.result?.status === 'unknown') await reconcileUnknown(request_id);
+            clearIntent(intentKey);
             await refresh();
             await preview();
         } catch (error) {
+            if (!['EXECUTION_UNKNOWN', 'EXECUTION_INTENT_PENDING'].includes(error.code)) clearIntent(intentKey);
             showError(error.message);
         }
     });

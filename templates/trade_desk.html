@@ -12,12 +12,7 @@
     <header class="td-topbar">
         <strong>Trade Desk</strong>
         <span id="td-mode" class="td-mode">{% if execution_adapter == 'mt5-demo-socket' %}MT5 DEMO / LIVE BLOCKED{% else %}DEMO SIMULATOR / NO MT5{% endif %}</span>
-        <nav class="td-nav" aria-label="Workspace">
-            <a href="/">Evidence</a>
-            <a href="/research">Research</a>
-            <a href="/practice">Practice</a>
-            <a class="active" href="/trade-desk">Trade Desk</a>
-        </nav>
+        {% include "_workspace_nav.html" %}
     </header>
 
     <section class="td-status" aria-label="Execution status">
@@ -25,7 +20,7 @@
         <div><span>Server</span><strong id="td-server">-</strong></div>
         <div><span>Balance</span><strong id="td-balance">-</strong></div>
         <div><span>Risk limit</span><strong id="td-risk-limit">-</strong></div>
-        <div><span>Live route</span><strong id="td-live">Disabled</strong></div>
+        <div><span>Live readiness</span><strong id="td-live">Locked / checking</strong></div>
     </section>
 
     <section class="td-layout">

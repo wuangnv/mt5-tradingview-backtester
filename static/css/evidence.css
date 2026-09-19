@@ -91,6 +91,31 @@ html, body { overflow: auto; }
 
 .ev-band { padding: 16px 0; border-top: 1px solid var(--border); }
 .ev-band h2 { margin-bottom: 12px; font-size: 14px; color: var(--text-bright); }
+.ev-section-row h2 { margin-bottom: 0; }
+
+.ev-filter-row {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+    min-width: 0;
+}
+.ev-filter-row label {
+    display: grid;
+    gap: 5px;
+    color: var(--text-dim);
+    font-size: 11px;
+}
+.ev-filter-row select { min-width: 116px; }
+.ev-scope { flex: 1 1 auto; min-width: 180px; color: var(--text-dim); font-size: 12px; }
+.ev-compare-control { margin-left: auto; }
+.ev-compare-detail {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 12px;
+}
+.ev-compare-detail.blocked { color: var(--warn); }
 
 .ev-metric-grid {
     display: grid;
@@ -103,7 +128,11 @@ html, body { overflow: auto; }
 .ev-metric-label { display: block; color: var(--text-dim); font-size: 11px; margin-bottom: 6px; }
 .ev-metric-value { font: 600 15px var(--mono); color: var(--text-bright); }
 
-.ev-equity { width: 100%; margin-top: 12px; border-bottom: 1px solid var(--border); }
+.ev-chart-block { min-width: 0; margin-top: 12px; }
+.ev-chart-title { color: var(--text-dim); font-size: 11px; }
+.ev-chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.ev-equity { width: 100%; margin-top: 6px; border-bottom: 1px solid var(--border); }
+.ev-chart-empty { min-height: 54px; padding: 18px 0; color: var(--warn); font-size: 12px; }
 .ev-kv-grid { display: grid; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 8px 18px; }
 .ev-kv { min-width: 0; }
 .ev-kv-label { color: var(--text-dim); font-size: 11px; }
@@ -134,6 +163,9 @@ html, body { overflow: auto; }
     .ev-workspace { padding: 14px 12px 30px; }
     .ev-metric-grid { grid-template-columns: repeat(3, minmax(95px, 1fr)); }
     .ev-kv-grid { grid-template-columns: repeat(2, minmax(150px, 1fr)); }
+    .ev-filter-row { flex-wrap: wrap; align-items: end; }
+    .ev-scope { order: 4; flex-basis: 100%; }
+    .ev-compare-control { margin-left: 0; }
 }
 
 @media (max-width: 560px) {
@@ -142,6 +174,7 @@ html, body { overflow: auto; }
     .ev-run-list { grid-template-columns: 1fr; }
     .ev-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ev-kv-grid { grid-template-columns: 1fr; }
+    .ev-chart-grid { grid-template-columns: 1fr; }
     .ev-heading-row { display: block; }
     .ev-compare-state { margin-top: 8px; text-align: left; }
 }

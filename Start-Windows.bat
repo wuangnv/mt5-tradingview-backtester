@@ -13,7 +13,7 @@ echo.
 where powershell >nul 2>nul
 if errorlevel 1 (
     echo PowerShell was not found on this Windows machine.
-    echo Please install PowerShell or run: python app.py
+    echo Please install PowerShell or run: python workspace_app.py
     pause
     exit /b 1
 )

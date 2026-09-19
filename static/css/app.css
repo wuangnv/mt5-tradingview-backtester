@@ -85,6 +85,44 @@ button {
     cursor: pointer;
 }
 
+.workspace-nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.workspace-nav a,
+.workspace-inline-link {
+    color: var(--text-dim);
+    text-decoration: none;
+}
+
+.workspace-nav a {
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    border-radius: var(--radius);
+    white-space: nowrap;
+}
+
+.workspace-nav a:hover,
+.workspace-nav a.active {
+    color: var(--text-bright);
+    background: var(--hover);
+}
+
+.workspace-inline-link:hover { color: var(--text-bright); }
+
+.workspace-live-lock {
+    flex: 0 0 auto;
+    padding: 0 6px;
+    color: var(--warn);
+    font: 11px var(--mono);
+    white-space: nowrap;
+}
+
 input, select {
     font-family: inherit;
     background: var(--bg);

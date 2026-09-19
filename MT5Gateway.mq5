@@ -8,7 +8,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Antigravity AI"
 #property link      "https://google.com"
-#property version   "1.20"
+#property version   "1.21"
 #property strict
 
 // Inputs
@@ -16,6 +16,9 @@ input string   InpServerHost     = "127.0.0.1"; // Python Server Host
 input int      InpServerPort     = 9000;        // Python Server Port
 input int      InpTimerMs        = 100;         // Timer Interval (ms)
 input int      InpHeartbeatSec   = 10;          // Heartbeat interval
+input bool     InpEnableDemoExecution = false;  // Explicit opt-in for demo execution
+input long     InpExpectedDemoLogin   = 0;      // Exact approved demo login
+input string   InpExpectedDemoServer  = "";     // Exact approved demo server
 
 // Global variables
 int            g_socket          = INVALID_HANDLE;
@@ -49,12 +52,57 @@ string BoolJson(bool value)
    return value ? "true" : "false";
 }
 
+bool DemoExecutionAllowed(string request_id, string &reason)
+{
+   if(!InpEnableDemoExecution)
+   {
+      reason = "demo execution is disabled by default";
+      return false;
+   }
+   if(request_id == "")
+   {
+      reason = "request_id is required";
+      return false;
+   }
+   if(InpExpectedDemoLogin <= 0 || InpExpectedDemoServer == "")
+   {
+      reason = "exact demo account and server must be configured";
+      return false;
+   }
+   if(AccountInfoInteger(ACCOUNT_TRADE_MODE) != ACCOUNT_TRADE_MODE_DEMO)
+   {
+      reason = "non-demo account execution is forbidden";
+      return false;
+   }
+   if(AccountInfoInteger(ACCOUNT_LOGIN) != InpExpectedDemoLogin ||
+      AccountInfoString(ACCOUNT_SERVER) != InpExpectedDemoServer)
+   {
+      reason = "active demo account does not match the approved identity";
+      return false;
+   }
+   if(!(bool)AccountInfoInteger(ACCOUNT_TRADE_ALLOWED) ||
+      !(bool)AccountInfoInteger(ACCOUNT_TRADE_EXPERT) ||
+      !(bool)TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) ||
+      !(bool)MQLInfoInteger(MQL_TRADE_ALLOWED))
+   {
+      reason = "terminal or account trading permission is disabled";
+      return false;
+   }
+   return true;
+}
+
+void SendExecutionDenied(string request_id, string reason)
+{
+   SendResponse("{\"success\":false,\"status\":\"rejected\",\"error\":\"EXECUTION_DISABLED\",\"request_id\":\"" +
+                JsonEscape(request_id) + "\",\"message\":\"" + JsonEscape(reason) + "\"}");
+}
+
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
 {
-   Print("=== [MT5Gateway] Starting Expert Advisor v1.10 ===");
+   Print("=== [MT5Gateway] Starting Expert Advisor v1.21 ===");
    Print("Connecting to Python Server at " + InpServerHost + ":" + IntegerToString(InpServerPort));
    
    // Set high frequency timer for non-blocking socket checks
@@ -301,6 +349,12 @@ void ProcessCommand(string command)
       double sl = StringToDouble(parts[3]);
       double tp = StringToDouble(parts[4]);
       string request_id = total_parts >= 6 ? parts[5] : "";
+      string execution_reason = "";
+      if(!DemoExecutionAllowed(request_id, execution_reason))
+      {
+         SendExecutionDenied(request_id, execution_reason);
+         return;
+      }
       HandleTradeOrder(cmd_type == "TRADE_BUY" ? "BUY" : "SELL", symbol, lots, sl, tp, request_id);
    }
    else if(cmd_type == "TRADE_CLOSE")
@@ -312,6 +366,12 @@ void ProcessCommand(string command)
       }
       ulong ticket = (ulong)StringToInteger(parts[1]);
       string request_id = total_parts >= 3 ? parts[2] : "";
+      string execution_reason = "";
+      if(!DemoExecutionAllowed(request_id, execution_reason))
+      {
+         SendExecutionDenied(request_id, execution_reason);
+         return;
+      }
       HandleTradeClose(ticket, request_id);
    }
    else if(cmd_type == "GET_REQUEST")

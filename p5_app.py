@@ -39,6 +39,7 @@ def _default_live_probe():
     if backend == "mt5-readonly":
         from mt5_data import mt5_fetcher
 
+        mt5_fetcher.start_server()
         return MT5LiveReadinessProbe(mt5_fetcher)
     raise RuntimeError(f"unsupported P5 readiness backend {backend!r}")
 
@@ -144,15 +145,13 @@ def create_app(
     return app
 
 
-app = create_app(
-    os.environ.get("EVIDENCE_DB_PATH"),
-    os.environ.get("RESEARCH_DB_PATH"),
-    os.environ.get("JOURNAL_DB_PATH"),
-    os.environ.get("HISTORY_CHUNKS_PATH"),
-    os.environ.get("EXECUTION_DB_PATH"),
-)
-
-
 if __name__ == "__main__":
+    app = create_app(
+        os.environ.get("EVIDENCE_DB_PATH"),
+        os.environ.get("RESEARCH_DB_PATH"),
+        os.environ.get("JOURNAL_DB_PATH"),
+        os.environ.get("HISTORY_CHUNKS_PATH"),
+        os.environ.get("EXECUTION_DB_PATH"),
+    )
     port = int(os.environ.get("P5_READINESS_PORT", "5005"))
     app.run(host="127.0.0.1", port=port, debug=False)

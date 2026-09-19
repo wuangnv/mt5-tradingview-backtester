@@ -139,14 +139,12 @@ def create_app(
     return app
 
 
-app = create_app(
-    os.environ.get("EVIDENCE_DB_PATH"),
-    os.environ.get("RESEARCH_DB_PATH"),
-    os.environ.get("JOURNAL_DB_PATH"),
-    os.environ.get("HISTORY_CHUNKS_PATH"),
-)
-
-
 if __name__ == "__main__":
+    app = create_app(
+        os.environ.get("EVIDENCE_DB_PATH"),
+        os.environ.get("RESEARCH_DB_PATH"),
+        os.environ.get("JOURNAL_DB_PATH"),
+        os.environ.get("HISTORY_CHUNKS_PATH"),
+    )
     port = int(os.environ.get("PRACTICE_PORT", "5003"))
     app.run(host="127.0.0.1", port=port, debug=False)

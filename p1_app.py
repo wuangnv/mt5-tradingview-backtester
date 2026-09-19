@@ -237,9 +237,7 @@ def create_app(db_path=None, store=None):
     return app
 
 
-app = create_app(os.environ.get("EVIDENCE_DB_PATH"))
-
-
 if __name__ == "__main__":
+    app = create_app(os.environ.get("EVIDENCE_DB_PATH"))
     port = int(os.environ.get("EVIDENCE_PORT", "5001"))
     app.run(host="127.0.0.1", port=port, debug=False)
