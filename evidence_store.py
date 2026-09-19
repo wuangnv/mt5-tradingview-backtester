@@ -11,6 +11,7 @@ from evidence_metrics import compute_metrics_v1
 
 
 LEGACY_SCHEMA_VERSION = "legacy-replay-session-v1"
+EVIDENCE_SCHEMA_VERSION = "replay-evidence-v2"
 
 
 class EvidenceStoreError(Exception):
@@ -108,8 +109,40 @@ class EvidenceStore:
             raise EvidenceStoreError("could not open session database read-only") from exc
 
     @staticmethod
-    def _summary(row):
-        return {
+    def _payload_evidence(payload):
+        value = payload.get("evidence") if isinstance(payload, dict) else None
+        if value is None:
+            return None
+        if not isinstance(value, dict):
+            raise EvidenceInvalid("session evidence metadata must be an object")
+        if value.get("artifact_schema_version") != EVIDENCE_SCHEMA_VERSION:
+            raise EvidenceSchemaUnsupported("session evidence schema is unsupported")
+        for name in ("data", "assumptions", "reproduce"):
+            if not isinstance(value.get(name), dict):
+                raise EvidenceInvalid(f"session evidence {name} must be an object")
+        required = {
+            "strategy_id": value.get("strategy_id"),
+            "strategy_version": value.get("strategy_version"),
+            "dataset_id": value["data"].get("dataset_id"),
+            "source_id": value["data"].get("source_id"),
+            "requested_range": value["data"].get("requested_range"),
+            "quality_status": value["data"].get("quality_status"),
+            "cost_model_version": value["assumptions"].get("cost_model_version"),
+            "fill_model_version": value["assumptions"].get("fill_model_version"),
+            "risk_model_version": value["assumptions"].get("risk_model_version"),
+            "engine_version": value["reproduce"].get("engine_version"),
+            "metric_version": value["reproduce"].get("metric_version"),
+            "code_hash": value["reproduce"].get("code_hash"),
+            "config_hash": value["reproduce"].get("config_hash"),
+        }
+        missing = sorted(name for name, field_value in required.items() if field_value in (None, ""))
+        if missing:
+            raise EvidenceInvalid(f"session evidence metadata is incomplete: {', '.join(missing)}")
+        return value
+
+    @classmethod
+    def _summary(cls, row, payload=None):
+        run = {
             "run_id": str(row["id"]),
             "artifact_schema_version": LEGACY_SCHEMA_VERSION,
             "created_at_utc": _utc_from_millis(row["created_at_ms"]),
@@ -153,13 +186,54 @@ class EvidenceStore:
                 ],
             },
         }
+        evidence = cls._payload_evidence(payload or {})
+        if evidence is None:
+            return run
+
+        data = evidence["data"]
+        assumptions = evidence["assumptions"]
+        reproduce = evidence["reproduce"]
+        run.update(
+            {
+                "artifact_schema_version": EVIDENCE_SCHEMA_VERSION,
+                "strategy_id": evidence.get("strategy_id"),
+                "strategy_version": evidence.get("strategy_version"),
+                "data": {
+                    **run["data"],
+                    "dataset_id": data.get("dataset_id"),
+                    "source_id": data.get("source_id"),
+                    "requested_range": data.get("requested_range"),
+                    "observed_range": data.get("observed_range"),
+                    "timezone": data.get("timezone"),
+                    "quality_status": data.get("quality_status"),
+                },
+                "assumptions": {
+                    **run["assumptions"],
+                    "cost_model_version": assumptions.get("cost_model_version"),
+                    "spread": assumptions.get("spread"),
+                    "slippage": assumptions.get("slippage"),
+                    "commission": assumptions.get("commission"),
+                    "fill_model_version": assumptions.get("fill_model_version"),
+                    "risk_model_version": assumptions.get("risk_model_version"),
+                },
+                "reproduce": {
+                    "engine_version": reproduce.get("engine_version"),
+                    "metric_version": reproduce.get("metric_version"),
+                    "code_hash": reproduce.get("code_hash"),
+                    "config_hash": reproduce.get("config_hash"),
+                    "seed": reproduce.get("seed"),
+                },
+                "comparison": {"ready": True, "reasons": []},
+            }
+        )
+        return run
 
     def list_runs(self, limit=50):
         try:
             with closing(self._connect()) as connection:
                 rows = connection.execute(
                     """
-                    SELECT id, created_at_ms, symbol, timeframe, bars_replayed
+                    SELECT id, created_at_ms, symbol, timeframe, bars_replayed, payload
                     FROM replay_sessions
                     ORDER BY created_at_ms DESC, id DESC
                     LIMIT ?
@@ -170,7 +244,16 @@ class EvidenceStore:
             raise
         except sqlite3.Error as exc:
             raise EvidenceStoreError("could not list replay sessions") from exc
-        return [self._summary(row) for row in rows]
+        runs = []
+        for row in rows:
+            try:
+                payload = json.loads(row["payload"])
+            except (TypeError, json.JSONDecodeError) as exc:
+                raise EvidenceInvalid("session payload is not valid JSON") from exc
+            if not isinstance(payload, dict):
+                raise EvidenceInvalid("session payload must be an object")
+            runs.append(self._summary(row, payload))
+        return runs
 
     def _load(self, run_id):
         try:
@@ -273,7 +356,7 @@ class EvidenceStore:
 
     def get_run(self, run_id):
         row, payload, _ = self._load_reconciled(run_id)
-        run = self._summary(row)
+        run = self._summary(row, payload)
         run["starting_balance"] = _finite_number(
             payload.get("startBalance", row["start_balance"]),
             "startBalance",
@@ -309,7 +392,7 @@ class EvidenceStore:
     def build_evidence_bundle(self, run_id):
         """Return the canonical P1 export/read model for one run."""
         row, payload, ledger = self._load_reconciled(run_id)
-        run = self._summary(row)
+        run = self._summary(row, payload)
         run["starting_balance"] = _finite_number(
             payload.get("startBalance", row["start_balance"]),
             "startBalance",

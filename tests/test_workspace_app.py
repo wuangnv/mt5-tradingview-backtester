@@ -8,6 +8,8 @@ import unittest
 from pathlib import Path
 
 from demo_broker import DemoBrokerSimulator
+from r3b_qa_fixture import build_r3b_qa_report
+from session_store import SessionStore
 from workspace_app import create_app
 from workspace_storage import WorkspaceStorageError, backup_workspace, restore_workspace
 
@@ -211,6 +213,38 @@ class WorkspaceAppTests(unittest.TestCase):
         )
         self.assertEqual(blocked.status_code, 422)
         self.assertEqual(blocked.json["error"]["code"], "RISK_LAB_INSUFFICIENT_DATA")
+
+    def test_r3b_provenance_complete_qa_run_is_eligible_and_reproducible_end_to_end(self):
+        saved = SessionStore(self.data_root / "sessions.sqlite3").save(build_r3b_qa_report())
+        run_id = str(saved["id"])
+
+        run = self.client.get(f"/api/runs/{run_id}")
+        self.assertEqual(run.status_code, 200)
+        self.assertEqual(run.json["run"]["artifact_schema_version"], "replay-evidence-v2")
+        self.assertEqual(run.json["run"]["data"]["quality_status"], "synthetic_qa_only")
+        self.assertTrue(run.json["run"]["comparison"]["ready"])
+
+        eligibility = self.client.get(f"/api/risk-lab/bootstrap/eligibility/{run_id}")
+        self.assertEqual(eligibility.status_code, 200)
+        gate = eligibility.json["eligibility"]
+        self.assertTrue(gate["eligible"])
+        self.assertEqual(gate["observed"]["closed_trades"], 30)
+        self.assertGreaterEqual(gate["observed"]["utc_day_blocks"], 5)
+
+        request_payload = {
+            "run_id": run_id,
+            "seed": 123,
+            "path_count": 250,
+            "horizon": 30,
+            "breach_drawdown_fraction": 0.10,
+        }
+        first = self.client.post("/api/risk-lab/bootstrap", json=request_payload)
+        second = self.client.post("/api/risk-lab/bootstrap", json=request_payload)
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(second.status_code, 200)
+        self.assertEqual(first.json["simulation"], second.json["simulation"])
+        self.assertEqual(first.json["simulation"]["method"]["block_count"], 10)
+        self.assertIn("breach_monte_carlo_se", first.json["simulation"]["results"])
 
     def test_end_to_end_journal_export_restart_and_copy_restore(self):
         runs = self.client.get("/api/runs?limit=10").json["runs"]

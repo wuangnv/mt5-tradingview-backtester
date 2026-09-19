@@ -19,6 +19,7 @@ MAX_TRADES_PER_SESSION = 5000
 MAX_DURATION_MS = 7 * 24 * 60 * 60 * 1000
 MAX_BARS_REPLAYED = 10_000_000
 MAX_ABS_MONEY = 1_000_000_000
+EVIDENCE_SCHEMA_VERSION = "replay-evidence-v2"
 
 
 class SessionStore:
@@ -110,6 +111,110 @@ class SessionStore:
         return text
 
     @classmethod
+    def _evidence_range(cls, value, name):
+        if not isinstance(value, dict):
+            raise ValueError(f"{name} must be an object")
+        start = cls._text(value.get("from"), f"{name}.from", maximum=64)
+        end = cls._text(value.get("to"), f"{name}.to", maximum=64)
+        return {"from": start, "to": end}
+
+    @classmethod
+    def _normalize_evidence(cls, value):
+        if value is None:
+            return None
+        if not isinstance(value, dict):
+            raise ValueError("evidence must be an object")
+
+        schema = cls._text(
+            value.get("artifact_schema_version"),
+            "evidence artifact_schema_version",
+            maximum=64,
+        )
+        if schema != EVIDENCE_SCHEMA_VERSION:
+            raise ValueError(f"evidence artifact_schema_version must be {EVIDENCE_SCHEMA_VERSION}")
+
+        data = value.get("data")
+        assumptions = value.get("assumptions")
+        reproduce = value.get("reproduce")
+        if not isinstance(data, dict):
+            raise ValueError("evidence.data must be an object")
+        if not isinstance(assumptions, dict):
+            raise ValueError("evidence.assumptions must be an object")
+        if not isinstance(reproduce, dict):
+            raise ValueError("evidence.reproduce must be an object")
+
+        observed_range = data.get("observed_range")
+        if observed_range is not None:
+            observed_range = cls._evidence_range(observed_range, "evidence.data.observed_range")
+
+        def optional_number(field):
+            raw = assumptions.get(field)
+            if raw in (None, ""):
+                return None
+            return cls._number(raw, f"evidence.assumptions.{field}", 0, MAX_ABS_MONEY)
+
+        seed = reproduce.get("seed")
+        if seed in (None, ""):
+            seed = None
+        else:
+            seed = cls._integer(seed, "evidence.reproduce.seed", 0, 2**32 - 1)
+
+        return {
+            "artifact_schema_version": schema,
+            "strategy_id": cls._text(value.get("strategy_id"), "evidence strategy_id", maximum=128),
+            "strategy_version": cls._text(
+                value.get("strategy_version"), "evidence strategy_version", maximum=128
+            ),
+            "data": {
+                "dataset_id": cls._text(data.get("dataset_id"), "evidence.data.dataset_id", maximum=200),
+                "source_id": cls._text(data.get("source_id"), "evidence.data.source_id", maximum=200),
+                "requested_range": cls._evidence_range(
+                    data.get("requested_range"), "evidence.data.requested_range"
+                ),
+                "observed_range": observed_range,
+                "timezone": cls._text(data.get("timezone", "UTC"), "evidence.data.timezone", maximum=64),
+                "quality_status": cls._text(
+                    data.get("quality_status"), "evidence.data.quality_status", maximum=64
+                ),
+            },
+            "assumptions": {
+                "cost_model_version": cls._text(
+                    assumptions.get("cost_model_version"),
+                    "evidence.assumptions.cost_model_version",
+                    maximum=128,
+                ),
+                "spread": optional_number("spread"),
+                "slippage": optional_number("slippage"),
+                "commission": optional_number("commission"),
+                "fill_model_version": cls._text(
+                    assumptions.get("fill_model_version"),
+                    "evidence.assumptions.fill_model_version",
+                    maximum=128,
+                ),
+                "risk_model_version": cls._text(
+                    assumptions.get("risk_model_version"),
+                    "evidence.assumptions.risk_model_version",
+                    maximum=128,
+                ),
+            },
+            "reproduce": {
+                "engine_version": cls._text(
+                    reproduce.get("engine_version"), "evidence.reproduce.engine_version", maximum=128
+                ),
+                "metric_version": cls._text(
+                    reproduce.get("metric_version"), "evidence.reproduce.metric_version", maximum=128
+                ),
+                "code_hash": cls._text(
+                    reproduce.get("code_hash"), "evidence.reproduce.code_hash", maximum=128
+                ),
+                "config_hash": cls._text(
+                    reproduce.get("config_hash"), "evidence.reproduce.config_hash", maximum=128
+                ),
+                "seed": seed,
+            },
+        }
+
+    @classmethod
     def _normalize_trade(cls, value):
         if not isinstance(value, dict):
             raise ValueError("every trade must be an object")
@@ -184,7 +289,7 @@ class SessionStore:
         gross_loss = abs(sum(profit for profit in profits if profit <= 0))
         net_profit = sum(profits)
 
-        return {
+        normalized = {
             "date": int(time.time() * 1000),
             "symbol": symbol,
             "timeframe": timeframe,
@@ -212,6 +317,10 @@ class SessionStore:
                 "winRate": (len(wins) / len(trades)) * 100,
             },
         }
+        evidence = cls._normalize_evidence(report.get("evidence"))
+        if evidence is not None:
+            normalized["evidence"] = evidence
+        return normalized
 
     @staticmethod
     def _summary(row):

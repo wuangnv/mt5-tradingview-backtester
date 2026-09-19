@@ -134,6 +134,7 @@ class ReplayManager {
                 symbol: this.symbol,
                 timeframe: this.timeframe,
                 startIndex: idx,
+                startReplayTime: data[idx].time,
                 startRealMs: Date.now(),
                 startHistoryLen: acc ? acc.history.length : 0,
                 startBalance: acc ? acc.balance : 10000
@@ -201,7 +202,11 @@ class ReplayManager {
             barsReplayed: Math.max(0, this.currentIndex - s.startIndex),
             realMs: Date.now() - s.startRealMs,
             newTrades,
-            startBalance: s.startBalance
+            startBalance: s.startBalance,
+            replayRange: {
+                from: s.startReplayTime,
+                to: this.cursorTimestamp
+            }
         }) || null;
     }
 

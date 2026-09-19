@@ -5,6 +5,7 @@ from flask import Flask, render_template, jsonify, request
 from mt5_data import mt5_fetcher
 from history_store import history_store
 from session_store import session_store
+from replay_provenance import build_replay_evidence
 from datetime import datetime, timedelta
 from urllib.parse import urlsplit
 import json
@@ -408,7 +409,15 @@ def save_replay_session():
     report = request.get_json(silent=True)
     if not isinstance(report, dict):
         return jsonify({'success': False, 'message': 'Request body must be a JSON object'}), 400
+    if 'evidence' in report:
+        return jsonify({
+            'success': False,
+            'message': 'evidence metadata is server-generated and must not be supplied by the client'
+        }), 400
     try:
+        if 'replayRange' in report:
+            report = dict(report)
+            report['evidence'] = build_replay_evidence(report, history_store)
         saved = session_store.save(report)
     except ValueError as error:
         return jsonify({'success': False, 'message': str(error)}), 400

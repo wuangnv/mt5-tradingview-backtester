@@ -221,12 +221,13 @@ class Analytics {
     /* ── Session report ─────────────────────────────────────────────────── */
 
     /** Build a report object for the replay session that just ended. */
-    buildSessionReport({ symbol, timeframe, barsReplayed, realMs, newTrades, startBalance }) {
+    buildSessionReport({ symbol, timeframe, barsReplayed, realMs, newTrades, startBalance, replayRange }) {
         return {
             id: Date.now(),
             date: Date.now(),
             symbol, timeframe, barsReplayed, realMs,
             startBalance,
+            replayRange,
             trades: newTrades,
             stats: this.computeStats(newTrades, startBalance)
         };
