@@ -105,6 +105,23 @@ class PlaybookDraft(BaseModel):
     status: Literal["draft", "frozen"] = "draft"
     execution_capability: Literal["manual-only", "engine-supported", "needs-definition"]
     rules: dict
+    parent_playbook_id: str | None = Field(default=None, max_length=128)
+    parent_revision: int | None = Field(default=None, ge=1)
+
+
+class PlaybookFreezeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int = Field(ge=1)
+
+
+class PlaybookForkRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int = Field(ge=1)
+    name: str | None = Field(default=None, min_length=1, max_length=160)
+    execution_capability: Literal["manual-only", "engine-supported", "needs-definition"] | None = None
+    rules: dict | None = None
 
 
 class JournalDraft(BaseModel):

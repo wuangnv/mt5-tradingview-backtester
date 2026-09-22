@@ -1,0 +1,47 @@
+{
+  "schema": "U3-PLAYBOOK-JOURNAL-r1",
+  "date": "2026-09-22",
+  "result": "PASS",
+  "scope": "PATH-2 U3a/U3b backend contract slice on local PostgreSQL fixture; software/local integration only, not full U3 product acceptance",
+  "base_revision": "47d5fbf35614c269eecf8fb1133f5b63db801fd9",
+  "checks": {
+    "u3_playbook_journal_final_candidate": "3/3 PASS",
+    "f7_product_slice_final_candidate": "6/6 PASS",
+    "python_compileall": "PASS",
+    "git_diff_check": "PASS; existing Windows LF/CRLF conversion warnings only",
+    "supporting_pre_guard_regressions": "10/10 PASS before the final create-frozen guard: 5 FH2 workspace auth + 4 U2 provider boundary + 1 reference slice",
+    "broad_destructive_discovery": "NOT RUN; the tool safety layer blocked broad/follow-up destructive test discovery before execution, so no full-suite PASS is claimed"
+  },
+  "contract": {
+    "new_playbook_initial_state": "draft only",
+    "freeze_transition": "explicit optimistic-revision transition",
+    "frozen_playbook_mutation": "denied",
+    "fork_source": "frozen playbook exact revision",
+    "fork_lineage": "server-managed parent_playbook_id + parent_revision",
+    "revision_history": "tenant-scoped immutable revision read model",
+    "journal_source": "immutable across review revisions",
+    "journal_review_fields": "revisioned with optimistic concurrency"
+  },
+  "review": {
+    "independent_read_only_audit": "PASS after one finding was fixed",
+    "closed_finding": "API originally allowed direct creation with status=frozen, bypassing draft->freeze; final candidate rejects non-draft creation",
+    "shared_schema_change": false
+  },
+  "acceptance_boundaries": {
+    "software_contract_verified": true,
+    "local_postgresql_integration_verified": true,
+    "tenant_scope_verified_in_slice": true,
+    "u3_learn_bridge_complete": false,
+    "u3_supported_ui_accepted": false,
+    "u1_visual_direction_accepted": false,
+    "u5_engine_linkage_verified": false,
+    "empirical_strategy_verified": false,
+    "broker_demo_verified": false,
+    "live_production_verified": false
+  },
+  "next": [
+    "Use frozen playbook record_id + exact revision as the immutable U5 executable-strategy identity; do not overload a free-form strategy_version string.",
+    "Keep U3 Learn as a separate tenant-safe read-only bridge and U3/UI work behind the U1 visual approval gate.",
+    "Keep real data/holdout, broker/demo/live, paid provider, OAuth and deployment gates closed."
+  ]
+}

@@ -13,6 +13,18 @@ from .retained import (
 from .store import PostgresStore
 
 
+class PlaybookFrozenError(RuntimeError):
+    pass
+
+
+class PlaybookLineageError(RuntimeError):
+    pass
+
+
+class JournalSourceImmutableError(RuntimeError):
+    pass
+
+
 class ProductService:
     def __init__(self, store: PostgresStore, ai_service=None):
         self.store = store
@@ -81,13 +93,77 @@ class ProductService:
         return evaluate_prop_profile(payload["profile"], payload["snapshot"])
 
     def create_playbook(self, workspace_id: str, draft: PlaybookDraft) -> dict:
+        if draft.parent_playbook_id is not None or draft.parent_revision is not None:
+            raise PlaybookLineageError("playbook lineage is server-managed")
+        if draft.status != "draft":
+            raise PlaybookFrozenError("new playbooks must start as draft")
         return self.store.create_record(workspace_id, "playbook", draft.model_dump(mode="json"))
 
     def update_playbook(self, workspace_id: str, record_id: str, expected_revision: int, payload: dict) -> dict:
+        current = self.store.get_record(workspace_id, "playbook", record_id)
+        if current is None:
+            raise LookupError("playbook not found")
+        if int(current["revision"]) != int(expected_revision):
+            raise RuntimeError("record revision conflict")
+        current_payload = current["payload"]
+        if current_payload["status"] == "frozen":
+            raise PlaybookFrozenError("frozen playbooks are immutable")
+        validated = PlaybookDraft.model_validate(payload)
+        if validated.status != "draft":
+            raise PlaybookFrozenError("use the freeze transition to freeze a playbook")
+        if validated.parent_playbook_id != current_payload.get("parent_playbook_id"):
+            raise PlaybookLineageError("playbook parent id is immutable")
+        if validated.parent_revision != current_payload.get("parent_revision"):
+            raise PlaybookLineageError("playbook parent revision is immutable")
+        return self.store.update_record(
+            workspace_id, "playbook", record_id, expected_revision, validated.model_dump(mode="json")
+        )
+
+    def freeze_playbook(self, workspace_id: str, record_id: str, expected_revision: int) -> dict:
+        current = self.store.get_record(workspace_id, "playbook", record_id)
+        if current is None:
+            raise LookupError("playbook not found")
+        if int(current["revision"]) != int(expected_revision):
+            raise RuntimeError("record revision conflict")
+        if current["payload"]["status"] == "frozen":
+            return current
+        payload = {**current["payload"], "status": "frozen"}
         validated = PlaybookDraft.model_validate(payload)
         return self.store.update_record(
             workspace_id, "playbook", record_id, expected_revision, validated.model_dump(mode="json")
         )
+
+    def fork_playbook(
+        self,
+        workspace_id: str,
+        record_id: str,
+        expected_revision: int,
+        *,
+        name: str | None = None,
+        execution_capability: str | None = None,
+        rules: dict | None = None,
+    ) -> dict:
+        current = self.store.get_record(workspace_id, "playbook", record_id)
+        if current is None:
+            raise LookupError("playbook not found")
+        if int(current["revision"]) != int(expected_revision):
+            raise RuntimeError("record revision conflict")
+        if current["payload"]["status"] != "frozen":
+            raise PlaybookFrozenError("freeze the source playbook before forking it")
+        payload = {
+            **current["payload"],
+            "status": "draft",
+            "parent_playbook_id": record_id,
+            "parent_revision": expected_revision,
+        }
+        if name is not None:
+            payload["name"] = name
+        if execution_capability is not None:
+            payload["execution_capability"] = execution_capability
+        if rules is not None:
+            payload["rules"] = rules
+        validated = PlaybookDraft.model_validate(payload)
+        return self.store.create_record(workspace_id, "playbook", validated.model_dump(mode="json"))
 
     def create_journal(self, workspace_id: str, draft: JournalDraft) -> dict:
         source = draft.source
@@ -100,7 +176,14 @@ class ProductService:
         )
 
     def update_journal(self, workspace_id: str, record_id: str, expected_revision: int, payload: dict) -> dict:
+        current = self.store.get_record(workspace_id, "journal", record_id)
+        if current is None:
+            raise LookupError("journal record not found")
+        if int(current["revision"]) != int(expected_revision):
+            raise RuntimeError("record revision conflict")
         validated = JournalDraft.model_validate(payload)
+        if validated.source != current["payload"]["source"]:
+            raise JournalSourceImmutableError("journal source is immutable")
         return self.store.update_record(
             workspace_id, "journal", record_id, expected_revision, validated.model_dump(mode="json")
         )

@@ -40,6 +40,12 @@ QA/providers, full renderer/drawing acceptance, tenant-safe Learn progress migra
 real AI provider evaluation, broker demo/live acceptance, Miro update and final user
 acceptance remain separate gates.
 
+The U3 backend contract now also makes Playbook lifecycle explicit: new records start
+as drafts, freezing is an optimistic-revision transition, frozen records are immutable,
+and a changed setup is a new draft fork with server-owned parent record/revision
+lineage. Journal review revisions cannot rewrite their source context. This hardening
+does not claim the supported Playbook/Journal UI or the tenant-safe Learn bridge.
+
 The Python environment is project-local and locked by `uv.lock`:
 
 ```powershell

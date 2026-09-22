@@ -512,6 +512,33 @@ class PostgresStore:
         records = [self.get_record(workspace_id, kind, row["record_id"]) for row in ids]
         return [record for record in records if record and not record["deleted"]]
 
+    def list_record_revisions(self, workspace_id: str, kind: str, record_id: str) -> list[dict]:
+        with self.connect() as conn:
+            exists = conn.execute(
+                "SELECT 1 FROM workspace_records WHERE workspace_id=%s AND kind=%s AND record_id=%s",
+                (workspace_id, kind, record_id),
+            ).fetchone()
+            if not exists:
+                raise LookupError("record not found")
+            rows = conn.execute(
+                """
+                SELECT revision,payload_json,deleted,created_at_utc
+                FROM workspace_record_revisions
+                WHERE workspace_id=%s AND kind=%s AND record_id=%s
+                ORDER BY revision
+                """,
+                (workspace_id, kind, record_id),
+            ).fetchall()
+        return [
+            {
+                "revision": int(row["revision"]),
+                "payload": row["payload_json"],
+                "deleted": bool(row["deleted"]),
+                "created_at_utc": row["created_at_utc"],
+            }
+            for row in rows
+        ]
+
     def update_record(self, workspace_id: str, kind: str, record_id: str, expected_revision: int, payload: dict) -> dict:
         now = utc_now_iso()
         with self.connect() as conn:

@@ -102,7 +102,7 @@ class F7ProductSliceTests(unittest.TestCase):
                 headers=headers,
                 json={
                     "name": "Breakout London",
-                    "status": "frozen",
+                    "status": "draft",
                     "execution_capability": "manual-only",
                     "rules": {"entry": "close above range", "skip": "major news"},
                 },
@@ -116,7 +116,7 @@ class F7ProductSliceTests(unittest.TestCase):
                     "expected_revision": 1,
                     "payload": {
                         "name": "Breakout London",
-                        "status": "frozen",
+                        "status": "draft",
                         "execution_capability": "manual-only",
                         "rules": {"entry": "close above range", "skip": "major news or stale data"},
                     },

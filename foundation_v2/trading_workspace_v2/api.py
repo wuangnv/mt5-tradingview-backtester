@@ -19,6 +19,8 @@ from .contracts import (
     JournalDraft,
     NewsVisibilityRequest,
     PlaybookDraft,
+    PlaybookForkRequest,
+    PlaybookFreezeRequest,
     PropEvaluationRequest,
     ReplayBranch,
     ReplayCreate,
@@ -26,7 +28,7 @@ from .contracts import (
     RevisionRequest,
 )
 from .data_sources import DataProviderRegistry, LocalCatalogProvider
-from .product import ProductService
+from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .replay import ReplayService
 from .research import ResearchService
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
@@ -202,7 +204,12 @@ def create_app(
 
     @app.post("/api/v2/playbooks", status_code=201)
     def create_playbook(body: PlaybookDraft, workspace: str = Depends(workspace_id)):
-        return product.create_playbook(workspace, body)
+        try:
+            return product.create_playbook(workspace, body)
+        except PlaybookFrozenError as exc:
+            raise HTTPException(status_code=409, detail=str(exc))
+        except PlaybookLineageError as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
 
     @app.get("/api/v2/playbooks")
     def list_playbooks(workspace: str = Depends(workspace_id)):
@@ -221,10 +228,48 @@ def create_app(
             return product.update_playbook(workspace, record_id, body.expected_revision, body.payload)
         except LookupError:
             raise HTTPException(status_code=404, detail="playbook_not_found")
+        except PlaybookFrozenError as exc:
+            raise HTTPException(status_code=409, detail=str(exc))
+        except PlaybookLineageError as exc:
+            raise HTTPException(status_code=409, detail=str(exc))
         except RuntimeError:
             raise HTTPException(status_code=409, detail="revision_conflict")
         except ValidationError as exc:
             raise HTTPException(status_code=422, detail=exc.errors())
+
+    @app.get("/api/v2/playbooks/{record_id}/revisions")
+    def list_playbook_revisions(record_id: str, workspace: str = Depends(workspace_id)):
+        try:
+            return {"items": store.list_record_revisions(workspace, "playbook", record_id)}
+        except LookupError:
+            raise HTTPException(status_code=404, detail="playbook_not_found")
+
+    @app.post("/api/v2/playbooks/{record_id}/freeze")
+    def freeze_playbook(record_id: str, body: PlaybookFreezeRequest, workspace: str = Depends(workspace_id)):
+        try:
+            return product.freeze_playbook(workspace, record_id, body.expected_revision)
+        except LookupError:
+            raise HTTPException(status_code=404, detail="playbook_not_found")
+        except RuntimeError:
+            raise HTTPException(status_code=409, detail="revision_conflict")
+
+    @app.post("/api/v2/playbooks/{record_id}/fork", status_code=201)
+    def fork_playbook(record_id: str, body: PlaybookForkRequest, workspace: str = Depends(workspace_id)):
+        try:
+            return product.fork_playbook(
+                workspace,
+                record_id,
+                body.expected_revision,
+                name=body.name,
+                execution_capability=body.execution_capability,
+                rules=body.rules,
+            )
+        except LookupError:
+            raise HTTPException(status_code=404, detail="playbook_not_found")
+        except PlaybookFrozenError as exc:
+            raise HTTPException(status_code=409, detail=str(exc))
+        except RuntimeError:
+            raise HTTPException(status_code=409, detail="revision_conflict")
 
     @app.post("/api/v2/journal", status_code=201)
     def create_journal(body: JournalDraft, workspace: str = Depends(workspace_id)):
@@ -237,12 +282,28 @@ def create_app(
     def list_journal(workspace: str = Depends(workspace_id)):
         return {"items": store.list_records(workspace, "journal")}
 
+    @app.get("/api/v2/journal/{record_id}")
+    def get_journal(record_id: str, workspace: str = Depends(workspace_id)):
+        record = store.get_record(workspace, "journal", record_id)
+        if record is None:
+            raise HTTPException(status_code=404, detail="journal_not_found")
+        return record
+
+    @app.get("/api/v2/journal/{record_id}/revisions")
+    def list_journal_revisions(record_id: str, workspace: str = Depends(workspace_id)):
+        try:
+            return {"items": store.list_record_revisions(workspace, "journal", record_id)}
+        except LookupError:
+            raise HTTPException(status_code=404, detail="journal_not_found")
+
     @app.post("/api/v2/journal/{record_id}/revisions")
     def revise_journal(record_id: str, body: RevisionRequest, workspace: str = Depends(workspace_id)):
         try:
             return product.update_journal(workspace, record_id, body.expected_revision, body.payload)
         except LookupError:
             raise HTTPException(status_code=404, detail="journal_not_found")
+        except JournalSourceImmutableError as exc:
+            raise HTTPException(status_code=409, detail=str(exc))
         except RuntimeError:
             raise HTTPException(status_code=409, detail="revision_conflict")
         except ValidationError as exc:
