@@ -458,20 +458,48 @@ class MT5Datafeed {
         }
 
         if (!replayData?.length) return null;
-        if (replayIndex === undefined || replayIndex === null || replayIndex < 0) {
-            replayIndex = this.findIndexAtOrBefore(replayData, rm?.cursorTimestamp || to);
+
+        // Strictly determine cutoff according to the simulated replay cursor
+        let cursor = rm?.cursorTimestamp;
+        if (!cursor && panel?.getReplayTimestamp) {
+            cursor = panel.getReplayTimestamp();
         }
 
-        const endIndex = Math.max(0, Math.min(replayIndex || 0, replayData.length - 1));
+        let endIndex = -1;
+        if (cursor) {
+            endIndex = this.findIndexAtOrBefore(replayData, cursor);
+        }
+        if (endIndex < 0) {
+            if (replayIndex !== undefined && replayIndex !== null && replayIndex >= 0) {
+                endIndex = Math.min(replayIndex, replayData.length - 1);
+            } else {
+                endIndex = this.findIndexAtOrBefore(replayData, cursor || to);
+            }
+        }
+
         const firstTime = replayData[0]?.time;
         if (firstTime && to < firstTime) return { bars: [], noData: true };
+        if (endIndex < 0) return { bars: [], noData: true };
+
+        endIndex = Math.min(endIndex, replayData.length - 1);
         const allowed = replayData.slice(0, endIndex + 1);
+
         if (firstDataRequest) {
-            const requested = Math.max(120, Math.ceil((countBack || 250) * 1.2));
-            return { bars: allowed.slice(-requested), noData: allowed.length === 0 };
+            const requested = Math.max(countBack || 300, 300);
+            const resultBars = allowed.length > requested ? allowed.slice(-requested) : allowed;
+            return { bars: resultBars, noData: resultBars.length === 0 };
         }
+
         const ranged = allowed.filter(bar => bar.time >= from && bar.time <= to);
-        if (ranged.length > 0) return { bars: ranged, noData: false };
+        if (ranged.length > 0) {
+            const finalBars = (countBack && ranged.length > countBack) ? ranged.slice(-countBack) : ranged;
+            return { bars: finalBars, noData: false };
+        }
+
+        if (firstTime && to < firstTime) {
+            return { bars: [], noData: true };
+        }
+
         // In replay mode, empty ranges after the cursor are expected future space,
         // not missing history. Returning noData=true here can leave TV in a
         // loading/no-data loop after interval changes.
@@ -519,10 +547,19 @@ class MT5Datafeed {
 
     filterReplayBars(bars) {
         if (!Array.isArray(bars)) return [];
-        if (window.chartManager?.isReplayMode && window.replayManager?.fullData && window.replayManager?.currentIndex !== undefined) {
-            const activeBar = window.replayManager.fullData[window.replayManager.currentIndex];
-            if (activeBar) {
-                return bars.filter(bar => bar.time <= activeBar.time);
+        const cm = window.chartManager;
+        const rm = window.replayManager;
+        if ((cm?.isReplayMode || cm?.panels?.some(p => p.isReplayMode)) && rm) {
+            const cursor = rm.cursorTimestamp;
+            if (cursor) {
+                return bars.filter(bar => bar.time <= cursor);
+            }
+            if (rm.fullData && rm.currentIndex !== undefined) {
+                const activeBar = rm.fullData[rm.currentIndex];
+                if (activeBar) {
+                    const activeTime = activeBar.replayCursorTime || activeBar.time;
+                    return bars.filter(bar => bar.time <= activeTime);
+                }
             }
         }
         return bars;

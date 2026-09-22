@@ -17,6 +17,8 @@ class ChartPanel {
         this.targetTimeframe = null;
         this._isChangingResolution = false;
         this._isChangingSymbol = false;
+        this._expectedResolution = null;
+        this._expectedSymbol = null;
         this._timeframeChangeSeq = 0;
         this._loadSeq = 0;
         this._replayLoadingTimeout = null;
@@ -128,19 +130,55 @@ class ChartPanel {
         }[timeframe] || '60';
     }
 
-    _applyTradingViewSymbolOrResolution(symbol, resolution, symbolChanged = false) {
-        if (!this.chartReady || !this.tvWidget) return;
+    _normalizeResolution(res) {
+        if (!res) return '';
+        const s = String(res);
+        if (s === '1D' || s === 'D') return 'D';
+        if (s === '1W' || s === 'W') return 'W';
+        if (s === '1M' || s === 'M') return 'M';
+        return s;
+    }
+
+    _applyTradingViewSymbolOrResolution(symbol, resolution, symbolChanged = false, callback = null) {
+        if (!this.chartReady || !this.tvWidget) {
+            if (typeof callback === 'function') callback();
+            return;
+        }
+
+        let called = false;
+        const done = () => {
+            if (called) return;
+            called = true;
+            if (typeof callback === 'function') {
+                callback();
+            }
+        };
+
+        // Fallback safety timeout in case TradingView resolution change callback is delayed
+        const safetyTimeout = setTimeout(() => {
+            done();
+        }, 3000);
+
+        const safeDone = () => {
+            clearTimeout(safetyTimeout);
+            done();
+        };
 
         if (!symbolChanged && this.chart && typeof this.chart.setResolution === 'function') {
             try {
-                this.chart.setResolution(resolution);
+                this.chart.setResolution(resolution, safeDone);
                 return;
             } catch (err) {
                 console.warn(`[ChartPanel ${this.id}] setResolution failed; falling back to setSymbol:`, err);
             }
         }
 
-        this.tvWidget.setSymbol(symbol, resolution);
+        try {
+            this.tvWidget.setSymbol(symbol, resolution, safeDone);
+        } catch (err) {
+            console.error(`[ChartPanel ${this.id}] setSymbol failed:`, err);
+            safeDone();
+        }
     }
 
     _estimateReplayBarsForTimestamp(timeframe, timestamp) {
@@ -178,7 +216,7 @@ class ChartPanel {
         if (toolbar) toolbar.classList.remove('loading');
     }
 
-    _focusReplayCursor(delay = 250) {
+    _focusReplayCursor(delay = 100, options = {}) {
         clearTimeout(this._replayFocusTimer);
         this._replayFocusTimer = setTimeout(() => {
             const panelIndex = this.replayIndex ?? window.replayManager?.currentIndex;
@@ -187,9 +225,38 @@ class ChartPanel {
 
             const activeTime = bar.replayCursorTime || bar.time;
             const timeframeSeconds = this._timeframeSeconds(this.timeframe);
+
+            // Determine visible bars count and ratio to preserve user zoom level
+            let barCount = options.barCount;
+            let ratioRight = options.ratioRight ?? 0.2;
+
+            if (!barCount && typeof this.chart.getVisibleRange === 'function') {
+                try {
+                    const curRange = this.chart.getVisibleRange();
+                    if (curRange && typeof curRange.from === 'number' && typeof curRange.to === 'number' && curRange.to > curRange.from) {
+                        const totalSec = curRange.to - curRange.from;
+                        const detectedBars = Math.round(totalSec / timeframeSeconds);
+                        if (detectedBars >= 15 && detectedBars <= 1000) {
+                            barCount = detectedBars;
+                            if (activeTime >= curRange.from && activeTime <= curRange.to) {
+                                ratioRight = Math.max(0.1, Math.min(0.4, (curRange.to - activeTime) / totalSec));
+                            }
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            if (!barCount || barCount < 15 || barCount > 1000) {
+                barCount = 150; // Fallback default: 120 bars left, 30 bars right
+                ratioRight = 0.2;
+            }
+
+            const rightBars = Math.max(5, Math.round(barCount * ratioRight));
+            const leftBars = Math.max(10, barCount - rightBars);
+
             const range = {
-                from: activeTime - 120 * timeframeSeconds,
-                to: activeTime + 30 * timeframeSeconds
+                from: activeTime - leftBars * timeframeSeconds,
+                to: activeTime + rightBars * timeframeSeconds
             };
 
             try {
@@ -207,7 +274,13 @@ class ChartPanel {
 
     getReplayTimestamp() {
         const bar = this.fullData?.[this.replayIndex];
-        return bar ? (bar.replayCursorTime || bar.time) : null;
+        if (!bar) return null;
+        const rm = window.replayManager;
+        const tfSeconds = this._timeframeSeconds(this.timeframe);
+        if (rm?.cursorTimestamp && rm.cursorTimestamp >= bar.time && rm.cursorTimestamp < bar.time + tfSeconds) {
+            return rm.cursorTimestamp;
+        }
+        return bar.replayCursorTime || bar.time;
     }
 
     hasReplayCoverage(timestamp) {
@@ -540,7 +613,13 @@ class ChartPanel {
             // Subscribe to native symbol changes to sync dashboard and panel
             try {
                 this.chart.onSymbolChanged().subscribe(null, async (symbolInfo) => {
-                    if (this._isChangingSymbol) return;
+                    if (this._isChangingSymbol) {
+                        if (this._expectedSymbol && this._expectedSymbol === symbolInfo.name) {
+                            console.log(`[Chart ${this.id}] Suppressing echo onSymbolChanged for expected symbol: ${symbolInfo.name}`);
+                            return;
+                        }
+                        return;
+                    }
                     console.log(`[Chart ${this.id}] Native symbol changed to: ${symbolInfo.name}`);
                     if (this.symbol !== symbolInfo.name) {
                         if (this.manager.activePanel === this) {
@@ -557,7 +636,23 @@ class ChartPanel {
             // Subscribe to native timeframe changes to sync dashboard and panel
             try {
                 this.chart.onIntervalChanged().subscribe(null, async (interval) => {
-                    if (this._isChangingResolution) return;
+                    const normInterval = this._normalizeResolution(interval);
+                    const expectedNorm = this._normalizeResolution(this._expectedResolution);
+
+                    if (this._isChangingResolution) {
+                        if (expectedNorm && expectedNorm === normInterval) {
+                            console.log(`[Chart ${this.id}] Suppressing echo onIntervalChanged for expected resolution: ${interval}`);
+                            return;
+                        }
+                        return;
+                    }
+
+                    if (expectedNorm && expectedNorm === normInterval) {
+                        console.log(`[Chart ${this.id}] Clearing expected resolution onIntervalChanged: ${interval}`);
+                        this._expectedResolution = null;
+                        return;
+                    }
+
                     console.log(`[Chart ${this.id}] Native interval changed to: ${interval}`);
                     const invResMap = {
                         '1': 'M1',
@@ -571,7 +666,7 @@ class ChartPanel {
                         'W': 'W1',
                         '1W': 'W1'
                     };
-                    const newTf = invResMap[interval] || 'H1';
+                    const newTf = invResMap[interval] || invResMap[normInterval] || 'H1';
                     if (this.timeframe !== newTf) {
                         if (this.manager.activePanel === this) {
                             this.manager.syncTimeframeUI?.(newTf);
@@ -697,6 +792,23 @@ class ChartPanel {
             }
         }
 
+        // Capture zoom level (visible bars count) before resolution change to preserve zoom
+        let currentBarCount = null;
+        let currentRatioRight = 0.2;
+        if (this.chartReady && this.chart && typeof this.chart.getVisibleRange === 'function') {
+            try {
+                const curRange = this.chart.getVisibleRange();
+                if (curRange && typeof curRange.from === 'number' && typeof curRange.to === 'number' && curRange.to > curRange.from) {
+                    const oldTfSec = this._timeframeSeconds(oldTf);
+                    const totalSec = curRange.to - curRange.from;
+                    currentBarCount = Math.round(totalSec / oldTfSec);
+                    if (savedReplayTimestamp && savedReplayTimestamp >= curRange.from && savedReplayTimestamp <= curRange.to) {
+                        currentRatioRight = Math.max(0.1, Math.min(0.4, (curRange.to - savedReplayTimestamp) / totalSec));
+                    }
+                }
+            } catch (e) {}
+        }
+
         let barsToFetch = 3000;
         if (wasReplay && savedReplayTimestamp) {
             console.log(`[ChartPanel ${this.id}] Replay active. Loading local window for ${newTf} around ${savedReplayTimestamp}.`);
@@ -771,6 +883,8 @@ class ChartPanel {
                 window.replayManager.currentIndex = bestIndex;
                 window.replayManager.symbol = newSymbol;
                 window.replayManager.timeframe = newTf;
+                // Preserve exact simulated cursor timestamp
+                window.replayManager.cursorTimestamp = savedReplayTimestamp;
                 window.replayManager._lastDisplayedIndex = -1;
                 window.replayManager._updateUI();
             }
@@ -779,31 +893,43 @@ class ChartPanel {
 
         // Update symbol/resolution in TradingView Widget
         const res = this._resolutionForTimeframe(newTf);
+
+        const finalizeChange = () => {
+            this._isChangingResolution = false;
+            this._isChangingSymbol = false;
+            this._expectedResolution = null;
+            this._expectedSymbol = null;
+            this._clearReplayLoading();
+
+            if (wasReplay && window.replayManager) {
+                window.replayManager.cursorTimestamp = savedReplayTimestamp;
+                window.replayManager._updateUI();
+                this._focusReplayCursor(50, { barCount: currentBarCount, ratioRight: currentRatioRight });
+                if (wasReplayPlaying) window.replayManager.play();
+            }
+        };
+
         if (this.chartReady && this.tvWidget) {
             try {
                 if (!skipSetSymbol) {
                     this._isChangingResolution = true;
-                    if (oldSymbol !== newSymbol) this._isChangingSymbol = true;
-                    this._applyTradingViewSymbolOrResolution(newSymbol, res, oldSymbol !== newSymbol);
-                    setTimeout(() => {
-                        this._isChangingResolution = false;
-                        this._isChangingSymbol = false;
-                    }, 250);
+                    this._expectedResolution = res;
+                    if (oldSymbol !== newSymbol) {
+                        this._isChangingSymbol = true;
+                        this._expectedSymbol = newSymbol;
+                    }
+                    this._applyTradingViewSymbolOrResolution(newSymbol, res, oldSymbol !== newSymbol, () => {
+                        finalizeChange();
+                    });
+                } else {
+                    finalizeChange();
                 }
-                if (wasReplay && window.replayManager) {
-                    window.replayManager._updateUI();
-                    this._focusReplayCursor(200);
-                    if (wasReplayPlaying) window.replayManager.play();
-                }
-                this._clearReplayLoading();
             } catch (err) {
                 console.error("Error setting symbol and resolution:", err);
-                this._isChangingResolution = false;
-                this._isChangingSymbol = false;
-                this._clearReplayLoading();
+                finalizeChange();
             }
         } else {
-            this._clearReplayLoading();
+            finalizeChange();
         }
     }
 
@@ -1257,7 +1383,11 @@ class ChartManager {
                 window.replayManager.symbol = panel.symbol;
                 window.replayManager.timeframe = panel.timeframe;
                 window.replayManager.currentIndex = panel.replayIndex ?? Math.floor(panel.fullData.length * 0.7);
-                window.replayManager.cursorTimestamp = panel.getReplayTimestamp?.() || window.replayManager.cursorTimestamp;
+                if (cursor) {
+                    window.replayManager.cursorTimestamp = cursor;
+                } else {
+                    window.replayManager.cursorTimestamp = panel.getReplayTimestamp?.() || window.replayManager.cursorTimestamp;
+                }
                 window.replayManager._lastDisplayedIndex = -1;
                 window.replayManager._applyToChart();
                 window.replayManager._updateUI();
@@ -1310,7 +1440,7 @@ class ChartManager {
                 window.replayManager.currentIndex = panel.replayIndex;
                 window.replayManager.symbol = panel.symbol;
                 window.replayManager.timeframe = panel.timeframe;
-                window.replayManager.cursorTimestamp = panel.getReplayTimestamp?.() || timestamp;
+                window.replayManager.cursorTimestamp = timestamp;
                 window.replayManager._lastDisplayedIndex = panel._lastReplayDisplayIndex;
                 window.replayManager._updateUI();
             }

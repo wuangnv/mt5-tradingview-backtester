@@ -106,6 +106,15 @@ class ReplayManager {
         }
     }
 
+    _getTimeframeSeconds(tf = null) {
+        const timeframe = tf || this.timeframe || window.chartManager?.activePanel?.timeframe || 'H1';
+        const timeframeSeconds = {
+            'M1': 60, 'M5': 300, 'M15': 900, 'M30': 1800,
+            'H1': 3600, 'H4': 14400, 'D1': 86400, 'W1': 604800
+        };
+        return timeframeSeconds[timeframe] || 3600;
+    }
+
     // ─── Start / Stop ─────────────────────────────────────────────────────
 
     startFromIndex(data, startIndex, symbol = null, timeframe = null) {
@@ -119,13 +128,25 @@ class ReplayManager {
         const minIndex = Math.min(10, maxIndex);
         this.currentIndex = Math.max(minIndex, Math.min(startIndex, maxIndex));
 
+        const bar = data[this.currentIndex];
+        const tfSeconds = this._getTimeframeSeconds(timeframe);
+        if (bar) {
+            const barStart = bar.time;
+            const barEnd = barStart + tfSeconds;
+            if (this.cursorTimestamp !== null && this.cursorTimestamp >= barStart && this.cursorTimestamp < barEnd) {
+                // Keep simulated cursorTimestamp intact
+            } else {
+                this.cursorTimestamp = bar.replayCursorTime || bar.time;
+            }
+        } else {
+            this.cursorTimestamp = null;
+        }
+
         this._applyToChart();
         this._updateUI();
 
         // Set date input to current bar time (timezone-adjusted)
-        const bar = data[this.currentIndex];
-        this.cursorTimestamp = bar ? (bar.replayCursorTime || bar.time) : null;
-        if (bar) this._setDateInput(this.cursorTimestamp);
+        if (this.cursorTimestamp) this._setDateInput(this.cursorTimestamp);
 
         console.log(`Replay: bar ${this.currentIndex + 1} / ${data.length} | ${this._formatBarTime(this.currentIndex)}`);
     }
@@ -179,6 +200,8 @@ class ReplayManager {
         if (this.currentIndex >= this.fullData.length - 1) {
             this.currentIndex = Math.max(0, this.fullData.length - 301);
             this._lastDisplayedIndex = -1;
+            const bar = this.fullData[this.currentIndex];
+            this.cursorTimestamp = bar ? (bar.replayCursorTime || bar.time) : null;
             this._applyToChart();
             this._updateUI();
         }
@@ -188,9 +211,7 @@ class ReplayManager {
 
         this.playInterval = setInterval(() => {
             if (this.currentIndex < this.fullData.length - 1) {
-                this.currentIndex++;
-                this._applyToChart();
-                this._updateUI();
+                this.nextBar();
             } else {
                 this.pause();
                 document.getElementById('replay-progress').textContent =
@@ -212,7 +233,25 @@ class ReplayManager {
 
     nextBar() {
         if (this.currentIndex < this.fullData.length - 1) {
+            const currentBar = this.fullData[this.currentIndex];
             this.currentIndex++;
+            const nextBar = this.fullData[this.currentIndex];
+            const tfSeconds = this._getTimeframeSeconds();
+
+            if (this.cursorTimestamp !== null) {
+                const advanced = this.cursorTimestamp + tfSeconds;
+                if (nextBar && advanced < nextBar.time) {
+                    const offset = currentBar ? Math.max(0, this.cursorTimestamp - currentBar.time) : 0;
+                    this.cursorTimestamp = nextBar.time + Math.min(offset, tfSeconds - 1);
+                } else if (nextBar && advanced >= nextBar.time + tfSeconds) {
+                    this.cursorTimestamp = nextBar.time;
+                } else {
+                    this.cursorTimestamp = advanced;
+                }
+            } else if (nextBar) {
+                this.cursorTimestamp = nextBar.replayCursorTime || nextBar.time;
+            }
+
             this._applyToChart();
             this._updateUI();
         }
@@ -220,7 +259,23 @@ class ReplayManager {
 
     previousBar() {
         if (this.currentIndex > 0) {
+            const currentBar = this.fullData[this.currentIndex];
             this.currentIndex--;
+            const prevBar = this.fullData[this.currentIndex];
+            const tfSeconds = this._getTimeframeSeconds();
+
+            if (this.cursorTimestamp !== null) {
+                const regressed = this.cursorTimestamp - tfSeconds;
+                if (prevBar && (regressed < prevBar.time || regressed >= prevBar.time + tfSeconds)) {
+                    const offset = currentBar ? Math.max(0, this.cursorTimestamp - currentBar.time) : 0;
+                    this.cursorTimestamp = prevBar.time + Math.min(offset, tfSeconds - 1);
+                } else {
+                    this.cursorTimestamp = regressed;
+                }
+            } else if (prevBar) {
+                this.cursorTimestamp = prevBar.replayCursorTime || prevBar.time;
+            }
+
             this._applyToChart();
             this._updateUI();
         }
@@ -230,6 +285,18 @@ class ReplayManager {
         const next = Math.max(0, Math.min(this.currentIndex + n, this.fullData.length - 1));
         if (next !== this.currentIndex) {
             this.currentIndex = next;
+            const bar = this.fullData[this.currentIndex];
+            const tfSeconds = this._getTimeframeSeconds();
+            if (this.cursorTimestamp !== null && bar) {
+                const targetTs = this.cursorTimestamp + n * tfSeconds;
+                if (targetTs >= bar.time && targetTs < bar.time + tfSeconds) {
+                    this.cursorTimestamp = targetTs;
+                } else {
+                    this.cursorTimestamp = bar.replayCursorTime || bar.time;
+                }
+            } else if (bar) {
+                this.cursorTimestamp = bar.replayCursorTime || bar.time;
+            }
             this._applyToChart();
             this._updateUI();
         }
@@ -238,6 +305,17 @@ class ReplayManager {
     seekTo(index) {
         if (index >= 0 && index < this.fullData.length) {
             this.currentIndex = index;
+            const bar = this.fullData[index];
+            const tfSeconds = this._getTimeframeSeconds();
+            if (this.cursorTimestamp !== null && bar) {
+                if (this.cursorTimestamp >= bar.time && this.cursorTimestamp < bar.time + tfSeconds) {
+                    // Keep existing simulated cursorTimestamp
+                } else {
+                    this.cursorTimestamp = bar.replayCursorTime || bar.time;
+                }
+            } else if (bar) {
+                this.cursorTimestamp = bar.replayCursorTime || bar.time;
+            }
             this._applyToChart();
             this._updateUI();
         }
@@ -247,7 +325,10 @@ class ReplayManager {
         if (!this.fullData || !this.fullData.length) return;
         let idx = window.MT5Datafeed?.findIndexAtOrBefore?.(this.fullData, timestamp);
         if (idx === undefined || idx < 0) idx = 0;
-        this.seekTo(idx);
+        this.cursorTimestamp = timestamp;
+        this.currentIndex = idx;
+        this._applyToChart();
+        this._updateUI();
     }
 
     // ─── Jump to Date ─────────────────────────────────────────────────────
@@ -344,7 +425,7 @@ class ReplayManager {
 
         let idx = window.MT5Datafeed?.findIndexAtOrBefore?.(this.fullData, targetTs);
         if (idx === undefined || idx < 0) idx = 0;
-        this.seekTo(idx);
+        this.seekToTime(targetTs);
     }
 
     // ─── Speed control ────────────────────────────────────────────────────
@@ -385,7 +466,24 @@ class ReplayManager {
         const total = this.fullData.length;
         const idx   = this.currentIndex;
         const activeBar = this.fullData[idx];
-        this.cursorTimestamp = activeBar ? (activeBar.replayCursorTime || activeBar.time) : null;
+
+        if (activeBar) {
+            const tfSeconds = this._getTimeframeSeconds();
+            const barStart = activeBar.time;
+            const barEnd = barStart + tfSeconds;
+
+            // Nếu this.cursorTimestamp hiện tại đã nằm trong khoảng của cây nến hiện tại,
+            // thì GIỮ NGUYÊN this.cursorTimestamp, không được đè bằng activeBar.time (vốn là giờ mở nến thô)
+            if (this.cursorTimestamp !== null && this.cursorTimestamp >= barStart && this.cursorTimestamp < barEnd) {
+                // Keep simulated cursorTimestamp intact
+            } else if (activeBar.replayCursorTime && activeBar.replayCursorTime >= barStart && activeBar.replayCursorTime < barEnd) {
+                this.cursorTimestamp = activeBar.replayCursorTime;
+            } else {
+                this.cursorTimestamp = activeBar.time;
+            }
+        } else {
+            this.cursorTimestamp = null;
+        }
 
         const progressPct = total > 1 ? ((idx / (total - 1)) * 100) : 0;
         document.getElementById('replay-progress').textContent =
@@ -439,7 +537,9 @@ class ReplayManager {
     _formatBarTime(index) {
         const bar = this.fullData[index];
         if (!bar) return '';
-        const timestamp = bar.replayCursorTime || bar.time;
+        const timestamp = (index === this.currentIndex && this.cursorTimestamp !== null)
+            ? this.cursorTimestamp
+            : (bar.replayCursorTime || bar.time);
         const tz = window.chartManager?.timezoneOffset ?? 7;
         const d = new Date(timestamp * 1000);
         d.setUTCHours(d.getUTCHours() + tz);
