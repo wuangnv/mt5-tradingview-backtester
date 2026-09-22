@@ -117,6 +117,33 @@ class ArtifactStore:
             raise ArtifactConflict("dataset checksum mismatch")
         return pq.read_table(path).to_pylist()
 
+    def read_dataset_range(
+        self, relative_path: str, expected_sha256: str, *, from_utc: int, to_utc: int,
+        max_bars: int, continue_check=None,
+    ) -> list[dict]:
+        path = (self.root / relative_path).resolve()
+        if self.root not in path.parents:
+            raise ValueError("artifact path escapes root")
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for block in iter(lambda: handle.read(1024 * 1024), b""):
+                if continue_check is not None:
+                    continue_check()
+                digest.update(block)
+        if digest.hexdigest() != expected_sha256:
+            raise ArtifactConflict("dataset checksum mismatch")
+        rows = []
+        with pq.ParquetFile(path) as parquet:
+            for batch in parquet.iter_batches(batch_size=4096, columns=["timestamp", "open", "high", "low", "close"]):
+                if continue_check is not None:
+                    continue_check()
+                for row in batch.to_pylist():
+                    if from_utc <= row["timestamp"] < to_utc:
+                        if len(rows) >= max_bars:
+                            raise ValueError("run exceeded budget.max_bars")
+                        rows.append(row)
+        return rows
+
     def write_result(self, workspace_id: str, job_id: str, payload: dict) -> tuple[str, str]:
         results = self._workspace_dir(workspace_id, "results")
         target = results / f"{job_id}.json"

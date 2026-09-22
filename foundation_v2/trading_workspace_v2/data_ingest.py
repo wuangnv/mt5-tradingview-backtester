@@ -15,7 +15,7 @@ from .retained import InstrumentSpec
 from .store import PostgresStore
 
 
-TRANSFORM_VERSION = "u2-normalize-v2"
+TRANSFORM_VERSION = "u2-normalize-v3"
 REQUIRED_COLUMNS = ("time", "open", "high", "low", "close")
 GAP_CLASSES = {"scheduled_closed", "missing_expected", "source_sparse", "unknown"}
 
@@ -174,6 +174,7 @@ def preview_csv(
     row_count = 0
     duplicate_count = 0
     out_of_order_count = 0
+    overlapping_interval_count = 0
     previous_input_time = None
     first_time = None
     last_time = None
@@ -214,6 +215,8 @@ def preview_csv(
                 for (current_time,) in ordered:
                     if previous_time is not None:
                         delta = int(current_time) - int(previous_time)
+                        if delta < timeframe_seconds:
+                            overlapping_interval_count += 1
                         if delta > timeframe_seconds:
                             classification = "unknown"
                             if gap_classifier is not None:
@@ -238,7 +241,7 @@ def preview_csv(
             columns = [str(column).strip() for column in next(reader)]
         except StopIteration:
             columns = []
-    disposition = "missing_data" if row_count == 0 else "review" if duplicate_count or out_of_order_count or gaps else "pass"
+    disposition = "missing_data" if row_count == 0 else "review" if duplicate_count or out_of_order_count or gaps or overlapping_interval_count else "pass"
     source_snapshot = source.model_dump(mode="json")
     instrument_snapshot = _instrument_snapshot(instrument)
     holdout = _holdout_snapshot(holdout_policy)
@@ -262,6 +265,7 @@ def preview_csv(
         "quality": {
             "duplicates": duplicate_count,
             "out_of_order": out_of_order_count,
+            "overlapping_intervals": overlapping_interval_count,
             "gaps": gaps,
             "disposition": disposition,
         },

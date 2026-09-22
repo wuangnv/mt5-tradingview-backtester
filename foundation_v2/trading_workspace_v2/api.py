@@ -14,6 +14,7 @@ from .contracts import (
     CONTRACT_VERSION,
     ChartAnnotationDraft,
     CostPreviewRequest,
+    CreateEngineResearchJob,
     CreateResearchJob,
     InstrumentValidationRequest,
     JournalDraft,
@@ -147,6 +148,18 @@ def create_app(
             )
         except LookupError:
             raise HTTPException(status_code=404, detail="dataset_not_found")
+        return job.model_dump(mode="json")
+
+    @app.post("/api/v2/research/engine-jobs", status_code=202)
+    def create_engine_research_job(body: CreateEngineResearchJob, workspace: str = Depends(workspace_id)):
+        try:
+            job = service.create_engine_job(workspace_id=workspace, request=body)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail=str(exc))
+        except PermissionError as exc:
+            raise HTTPException(status_code=403, detail=str(exc))
+        except (ValueError, DataContractError) as exc:
+            raise HTTPException(status_code=422, detail=str(exc))
         return job.model_dump(mode="json")
 
     @app.get("/api/v2/research/jobs/{job_id}")

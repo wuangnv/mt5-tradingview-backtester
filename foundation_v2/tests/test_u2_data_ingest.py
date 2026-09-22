@@ -107,6 +107,15 @@ class U2DataIngestTests(unittest.TestCase):
                 timeframe_seconds=3600,
             )
 
+    def test_overlapping_timeframes_are_not_qa_approved(self):
+        path = self.write_csv([
+            {"time": i * 1800, "open": 1, "high": 2, "low": 1, "close": 1, "volume": 1}
+            for i in range(4)
+        ])
+        preview = preview_csv(path, source_fixture(), instrument_fixture(), 3600)
+        self.assertEqual(preview["quality"]["overlapping_intervals"], 3)
+        self.assertEqual(preview["quality"]["disposition"], "review")
+
     def test_preview_exposes_duplicates_order_gaps_and_locked_holdout_metadata(self):
         path = self.write_csv(
             [

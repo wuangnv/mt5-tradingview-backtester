@@ -46,6 +46,29 @@ and a changed setup is a new draft fork with server-owned parent record/revision
 lineage. Journal review revisions cannot rewrite their source context. This hardening
 does not claim the supported Playbook/Journal UI or the tenant-safe Learn bridge.
 
+The U5 reference-engine slice adds `/api/v2/research/engine-jobs`. Each job pins a
+frozen Playbook record and exact revision, dataset/source/QA/instrument snapshots,
+half-open time range, split, cost assumptions, seed, code closure hash and budget.
+`bar-breakout-v1` is the retained deterministic reference, not a replacement for
+the approved NautilusTrader primary-engine adapter. The original `close-delta-v1`
+reference route remains separate and unchanged.
+
+The reference strategy decides on closed bars, enters at the next bar open and
+exits at a fixed-horizon close. Midpoint bars plus constant assumed spread use
+adverse tick rounding; slippage is a separate modeled monetary cost. The planned
+stop distance is only the R denominator: protective orders and margin are not
+implemented, and unsupported rule fields are rejected. Cost component/net
+rounding differences remain explicit as `rounding_adjustment`. Decimal
+reconciliation and source-fill checks run before immutable result publication.
+
+U5 validation is synthetic software/local PostgreSQL integration only. Full U5
+still requires the Nautilus adapter, protective-order/margin/simultaneous-event
+corpus, replay comparison, progress/restart checkpoints, hard process resource
+limits, chronological OOS/walk-forward/stress and approved real data. Current
+runtime deadline checks are cooperative and input loading is batch/row bounded;
+neither is an OS-level RAM/runtime isolation claim. U2 import QA v3 now classifies
+sub-timeframe overlapping bars as review-required without rewriting old manifests.
+
 The Python environment is project-local and locked by `uv.lock`:
 
 ```powershell

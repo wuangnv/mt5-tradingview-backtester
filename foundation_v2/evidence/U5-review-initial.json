@@ -1,0 +1,18 @@
+{
+  "schema": "u5-review-v1",
+  "date": "2026-09-22",
+  "reviewer": "/root/u5_path2_review",
+  "candidate": "uncommitted U5 WIP on 86d300055e58e8659c6ad0217c97c15d290c4214 before resumed fixes",
+  "verdict": "fail",
+  "findings": [
+    {"severity": "P1", "finding": "U2 QA accepted sub-timeframe bars and U5 could enter before signal close."},
+    {"severity": "P1", "finding": "Fixed-horizon reference lacks protective orders, margin, simultaneous events and tick rounding; full U5b cannot be accepted."},
+    {"severity": "P1", "finding": "Reconciliation reused compute_metrics_v2 and did not derive fills/costs independently."},
+    {"severity": "P1", "finding": "Engine code hash covered only research_engine.py, omitting retained computation dependencies."},
+    {"severity": "P2", "finding": "Independent U2 money rounding can make gross - rounded fees differ from rounded net."},
+    {"severity": "P2", "finding": "Runtime budget was checked only after engine completion; full U5a resource/progress/checkpoint behavior was absent."},
+    {"severity": "P2", "finding": "Half-open range ending at holdout boundary was rejected; skipped_overlap counter was unreachable."}
+  ],
+  "validation_limit": "Initial reviewer could not run DB tests because no disposable fixture DSN was configured; 3 tests skipped. No DB PASS claimed.",
+  "disposition": "Preserved initial review. Resumed fixes and their fresh validation/review are separate evidence; full U5 requirements remain open."
+}

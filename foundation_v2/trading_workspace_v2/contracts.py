@@ -65,6 +65,23 @@ class CreateResearchJob(BaseModel):
     starting_balance: float = Field(gt=0)
 
 
+class CreateEngineResearchJob(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    dataset_id: str = Field(min_length=1)
+    playbook_id: str = Field(min_length=1, max_length=128)
+    playbook_revision: int = Field(ge=1, strict=True)
+    starting_balance: float = Field(gt=0)
+    data_from_utc: int = Field(ge=0, strict=True)
+    data_to_utc: int = Field(gt=0, strict=True)
+    split: Literal["baseline", "train", "validation"] = "baseline"
+    seed: int = 0
+    spread_price: float = Field(default=0.0, ge=0)
+    cost_model: dict
+    max_bars: int = Field(default=100_000, ge=2, le=1_000_000, strict=True)
+    max_runtime_ms: int = Field(default=30_000, ge=100, le=600_000, strict=True)
+
+
 class ResearchJobView(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -74,6 +91,8 @@ class ResearchJobView(BaseModel):
     dataset_id: str
     strategy_version: str
     starting_balance: float
+    protocol_sha256: str | None = None
+    protocol: dict | None = None
     status: Literal["queued", "running", "completed", "failed", "canceled"]
     cancel_requested: bool = False
     result_path: str | None = None
@@ -95,6 +114,30 @@ class ResearchResult(BaseModel):
     metrics_schema_version: str
     metrics: dict
     trade_count: int
+    created_at_utc: str
+
+
+class EngineResearchResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    artifact_schema_version: Literal["research-engine-result-v1"] = "research-engine-result-v1"
+    contract_version: str = CONTRACT_VERSION
+    job_id: str
+    workspace_id: str
+    dataset_id: str
+    dataset_sha256: str
+    protocol_sha256: str
+    protocol: dict
+    playbook_id: str
+    playbook_revision: int
+    engine_version: Literal["bar-breakout-v1"] = "bar-breakout-v1"
+    engine_code_sha256: str
+    split: Literal["baseline", "train", "validation"]
+    assumptions: dict
+    signals: dict
+    ledger: list[dict]
+    metrics: dict
+    observed_range: dict
     created_at_utc: str
 
 

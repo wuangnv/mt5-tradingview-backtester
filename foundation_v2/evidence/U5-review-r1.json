@@ -1,0 +1,22 @@
+{
+  "schema": "u5-review-v1",
+  "date": "2026-09-22",
+  "reviewer": "/root/u5_final_review",
+  "verdict": "pass",
+  "scope": "Partial U5 fixed-horizon reference/protocol slice only; not the primary Nautilus adapter or full U5",
+  "validation": "U5-validation-r2.json",
+  "validation_sha256": "a47a272166d8e8dfdf2e165125a12226b219ffd1e9d25e3671629a8b2eeadc81",
+  "checks": {
+    "independent_source_review": "PASS; no actionable blocker in claimed scope",
+    "evidence_source_hashes": "Reviewer independently matched all R2 source hashes to current files",
+    "fixture_validation": "58/58 PASS, zero skipped, source stable; executed by coordinator",
+    "reviewer_test_rerun": "Not run: reviewer could not launch the venv base Python in its environment; not a DB/test PASS claim"
+  },
+  "findings": [
+    {"severity": "closed", "finding": "Sub-timeframe bars now require QA review and engine rejects overlap before signal use."},
+    {"severity": "closed", "finding": "Independent Decimal reconciliation and hand-calculated golden tests cover money, fills, timing and rounding adjustment."},
+    {"severity": "closed", "finding": "Source closure hash and loaded-source guard reject drift; budget/lease rechecked before publish, late candidates quarantined."},
+    {"severity": "scope", "finding": "Protective orders, margin, simultaneous events, replay comparison, Nautilus adapter, hard resource isolation, progress/checkpoints and U5c remain open."},
+    {"severity": "gate", "finding": "No UX, empirical, real licensed data, broker/demo/live, paid provider or deployment acceptance claimed."}
+  ]
+}

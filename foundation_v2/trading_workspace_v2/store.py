@@ -55,6 +55,8 @@ ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS attempt_no integer NOT NULL D
 ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_owner text;
 ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_token text;
 ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_expires_at_utc timestamptz;
+ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS protocol_json jsonb;
+ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS protocol_sha256 text;
 ALTER TABLE research_jobs DROP CONSTRAINT IF EXISTS research_jobs_status_check;
 ALTER TABLE research_jobs ADD CONSTRAINT research_jobs_status_check
     CHECK (status IN ('queued','running','completed','failed','canceled'));
@@ -103,6 +105,8 @@ class ClaimedJob:
     dataset_id: str
     strategy_version: str
     starting_balance: float
+    protocol: dict | None
+    protocol_sha256: str | None
     attempt_no: int
     lease_owner: str
     lease_token: str
@@ -181,6 +185,38 @@ class PostgresStore:
             conn.commit()
         return self.get_job(workspace_id, job_id)
 
+    def create_engine_job(
+        self,
+        workspace_id: str,
+        dataset_id: str,
+        starting_balance: float,
+        protocol: dict,
+        protocol_sha256: str,
+    ) -> ResearchJobView:
+        job_id = uuid4().hex
+        now = utc_now_iso()
+        with self.connect() as conn:
+            conn.execute(
+                """
+                INSERT INTO research_jobs(
+                    workspace_id,job_id,dataset_id,strategy_version,starting_balance,status,
+                    protocol_json,protocol_sha256,created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,%s,'bar-breakout-v1',%s,'queued',%s::jsonb,%s,%s,%s)
+                """,
+                (
+                    workspace_id,
+                    job_id,
+                    dataset_id,
+                    starting_balance,
+                    json.dumps(protocol, sort_keys=True),
+                    protocol_sha256,
+                    now,
+                    now,
+                ),
+            )
+            conn.commit()
+        return self.get_job(workspace_id, job_id)
+
     def get_job(self, workspace_id: str, job_id: str) -> ResearchJobView | None:
         with self.connect() as conn:
             row = conn.execute(
@@ -195,6 +231,8 @@ class PostgresStore:
             dataset_id=row["dataset_id"],
             strategy_version=row["strategy_version"],
             starting_balance=float(row["starting_balance"]),
+            protocol_sha256=row.get("protocol_sha256"),
+            protocol=row.get("protocol_json"),
             status=row["status"],
             cancel_requested=bool(row["cancel_requested"]),
             result_path=row["result_path"],
@@ -251,7 +289,8 @@ class PostgresStore:
             self._recover_expired_jobs(conn, now)
             row = conn.execute(
                 """
-                SELECT workspace_id,job_id,dataset_id,strategy_version,starting_balance,attempt_no
+                SELECT workspace_id,job_id,dataset_id,strategy_version,starting_balance,attempt_no,
+                       protocol_json,protocol_sha256
                 FROM research_jobs
                 WHERE status='queued' AND cancel_requested=false
                 ORDER BY created_at_utc, job_id
@@ -287,6 +326,8 @@ class PostgresStore:
             dataset_id=row["dataset_id"],
             strategy_version=row["strategy_version"],
             starting_balance=float(row["starting_balance"]),
+            protocol=row["protocol_json"],
+            protocol_sha256=row["protocol_sha256"],
             attempt_no=int(claimed["attempt_no"]),
             lease_owner=worker_id,
             lease_token=lease_token,
@@ -538,6 +579,26 @@ class PostgresStore:
             }
             for row in rows
         ]
+
+    def get_record_revision(self, workspace_id: str, kind: str, record_id: str, revision: int) -> dict | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT revision,payload_json,deleted,created_at_utc
+                FROM workspace_record_revisions
+                WHERE workspace_id=%s AND kind=%s AND record_id=%s AND revision=%s
+                """,
+                (workspace_id, kind, record_id, int(revision)),
+            ).fetchone()
+        if row is None:
+            return None
+        return {
+            "record_id": record_id,
+            "revision": int(row["revision"]),
+            "payload": row["payload_json"],
+            "deleted": bool(row["deleted"]),
+            "created_at_utc": row["created_at_utc"],
+        }
 
     def update_record(self, workspace_id: str, kind: str, record_id: str, expected_revision: int, payload: dict) -> dict:
         now = utc_now_iso()

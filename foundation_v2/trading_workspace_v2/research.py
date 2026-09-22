@@ -1,12 +1,43 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import threading
+import time
 from uuid import uuid4
 
-from .artifacts import ArtifactStore
-from .contracts import DatasetManifest, DatasetSource, ResearchResult, utc_now_iso
-from .retained import SourceSpec, compute_metrics_v2
+from .artifacts import ArtifactStore, canonical_json_bytes
+from .contracts import DatasetManifest, DatasetSource, EngineResearchResult, ResearchResult, utc_now_iso
+from .research_engine import (
+    ENGINE_VERSION,
+    ResearchEngineInterrupted,
+    ResearchEngineValidationError,
+    engine_code_sha256,
+    execute_breakout,
+    validate_rules,
+)
+from .research_validation import validate_engine_result
+from .retained import CostModel, InstrumentSpec, SourceSpec, compute_metrics_v2
 from .store import ClaimedJob, PostgresStore, StaleJobAttempt
+
+
+def _engine_dataset_snapshot(manifest):
+    return {key: getattr(manifest, key) for key in (
+        "dataset_id", "artifact_sha256", "normalized_sha256", "instrument_spec", "timeframe_seconds",
+        "transform_version", "quality", "holdout_policy",
+    )} | {"source": manifest.source.model_dump(mode="json")}
+
+
+def _check_holdout(manifest, end):
+    holdout = manifest.holdout_policy or {"mode": "none"}
+    if holdout.get("mode") == "none":
+        return
+    boundary = holdout.get("from_utc")
+    if holdout.get("mode") != "metadata_only" or boundary is None:
+        raise PermissionError("dataset holdout policy is invalid")
+    # Current U2 artifacts must be entirely pre-holdout, including the final bar.
+    if end > int(boundary) or manifest.last_timestamp + int(manifest.timeframe_seconds or 0) > int(boundary):
+        raise PermissionError("requested research data reaches locked holdout data")
 
 
 class ResearchService:
@@ -69,6 +100,76 @@ class ResearchService:
             raise ValueError(f"dataset is not QA-approved: {disposition}")
         return self.store.create_job(workspace_id, dataset_id, strategy_version, starting_balance)
 
+    def create_engine_job(self, *, workspace_id: str, request) -> object:
+        manifest = self.store.get_dataset(workspace_id, request.dataset_id)
+        if manifest is None:
+            raise LookupError("dataset_not_found")
+        disposition = str(manifest.quality.get("disposition") or "") if manifest.quality else ""
+        if disposition != "pass":
+            raise ValueError(f"dataset is not QA-approved: {disposition or 'unknown'}")
+        if manifest.instrument_spec is None or manifest.timeframe_seconds is None:
+            raise ValueError("dataset is missing instrument/timeframe snapshot required by engine")
+
+        playbook = self.store.get_record_revision(
+            workspace_id, "playbook", request.playbook_id, request.playbook_revision
+        )
+        if playbook is None or playbook["deleted"]:
+            raise LookupError("playbook_revision_not_found")
+        payload = playbook["payload"]
+        if payload.get("status") != "frozen":
+            raise ValueError("engine research requires an exact frozen playbook revision")
+        if payload.get("execution_capability") != "engine-supported":
+            raise ValueError("playbook revision is not engine-supported")
+        rules = payload.get("rules") or {}
+        validate_rules(rules)
+
+        if int(request.data_to_utc) <= int(request.data_from_utc):
+            raise ValueError("data_to_utc must be greater than data_from_utc")
+        available_end = int(manifest.last_timestamp) + int(manifest.timeframe_seconds)
+        if int(request.data_from_utc) < int(manifest.first_timestamp) or int(request.data_to_utc) > available_end:
+            raise ValueError("requested research range exceeds dataset available range")
+        _check_holdout(manifest, int(request.data_to_utc))
+
+        instrument = InstrumentSpec.from_mapping(manifest.instrument_spec)
+        allowed_costs = set(CostModel.__dataclass_fields__)
+        if set(request.cost_model) - allowed_costs:
+            raise ValueError("unsupported cost model fields")
+        if type(request.cost_model.get("rounding_decimals", 2)) is not int:
+            raise ValueError("cost rounding_decimals must be an integer")
+        cost_model = CostModel.from_mapping(request.cost_model)
+        if cost_model.account_ccy != instrument.account_ccy:
+            raise ValueError("cost model account currency does not match instrument snapshot")
+
+        protocol = {
+            "schema_version": "research-protocol-v1",
+            "playbook": {
+                "record_id": request.playbook_id,
+                "revision": int(request.playbook_revision),
+                "name": payload.get("name"),
+                "execution_capability": payload.get("execution_capability"),
+                "rules": rules,
+            },
+            "dataset": _engine_dataset_snapshot(manifest),
+            "range": {"from_utc": int(request.data_from_utc), "to_utc": int(request.data_to_utc)},
+            "split": request.split,
+            "starting_balance": float(request.starting_balance),
+            "seed": int(request.seed),
+            "parameters": {
+                "spread_price": float(request.spread_price),
+                "cost_model": request.cost_model,
+            },
+            "engine": {"version": ENGINE_VERSION, "code_sha256": engine_code_sha256()},
+            "budget": {"max_bars": int(request.max_bars), "max_runtime_ms": int(request.max_runtime_ms)},
+        }
+        protocol_sha256 = hashlib.sha256(canonical_json_bytes(protocol)).hexdigest()
+        return self.store.create_engine_job(
+            workspace_id,
+            manifest.dataset_id,
+            float(request.starting_balance),
+            protocol,
+            protocol_sha256,
+        )
+
     def cancel_job(self, workspace_id: str, job_id: str):
         job = self.store.cancel_job(workspace_id, job_id)
         if job is not None and job.status == "canceled":
@@ -101,18 +202,96 @@ class ResearchService:
     def _lease_guard(self, job: ClaimedJob):
         return _LeaseGuard(self, job)
 
-    def execute_claimed(self, job: ClaimedJob) -> ResearchResult | None:
+    def execute_claimed(self, job: ClaimedJob) -> ResearchResult | EngineResearchResult | None:
         if self._honor_cancel(job):
             return None
         with self._lease_guard(job) as lease_guard:
             manifest = self.store.get_dataset(job.workspace_id, job.dataset_id)
             if manifest is None:
                 raise LookupError("claimed dataset missing")
-            rows = self.artifacts.read_dataset(manifest.artifact_path, manifest.artifact_sha256)
             if not lease_guard.owned():
                 return None
+            if job.protocol is not None:
+                if not job.protocol_sha256:
+                    raise ResearchEngineValidationError("engine job is missing protocol hash")
+                actual_protocol_hash = hashlib.sha256(canonical_json_bytes(job.protocol)).hexdigest()
+                if actual_protocol_hash != job.protocol_sha256:
+                    raise ResearchEngineValidationError("queued protocol hash mismatch")
+                _check_holdout(manifest, int(job.protocol["range"]["to_utc"]))
+                if job.protocol.get("dataset") != _engine_dataset_snapshot(manifest):
+                    raise ResearchEngineValidationError("dataset snapshot changed after job creation")
+                started = time.perf_counter()
+                deadline = started + int(job.protocol["budget"]["max_runtime_ms"]) / 1000
+
+                def check_budget():
+                    if time.perf_counter() >= deadline:
+                        raise ResearchEngineValidationError("run exceeded budget.max_runtime_ms")
+                    if not lease_guard.owned():
+                        raise ResearchEngineInterrupted("research execution interrupted")
+
+                try:
+                    rows = self.artifacts.read_dataset_range(
+                        manifest.artifact_path, manifest.artifact_sha256,
+                        from_utc=job.protocol["range"]["from_utc"], to_utc=job.protocol["range"]["to_utc"],
+                        max_bars=job.protocol["budget"]["max_bars"], continue_check=check_budget,
+                    )
+                    engine = execute_breakout(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
+                except ResearchEngineInterrupted:
+                    return None
+                elapsed_ms = (time.perf_counter() - started) * 1000.0
+                if elapsed_ms > int(job.protocol["budget"]["max_runtime_ms"]):
+                    raise ResearchEngineValidationError("run exceeded budget.max_runtime_ms")
+                result = EngineResearchResult(
+                    job_id=job.job_id,
+                    workspace_id=job.workspace_id,
+                    dataset_id=job.dataset_id,
+                    dataset_sha256=manifest.artifact_sha256,
+                    protocol_sha256=job.protocol_sha256,
+                    protocol=job.protocol,
+                    playbook_id=job.protocol["playbook"]["record_id"],
+                    playbook_revision=int(job.protocol["playbook"]["revision"]),
+                    engine_code_sha256=job.protocol["engine"]["code_sha256"],
+                    split=job.protocol["split"],
+                    assumptions=engine["assumptions"],
+                    signals=engine["signals"],
+                    ledger=engine["ledger"],
+                    metrics=engine["metrics"],
+                    observed_range={**engine["observed_range"], "elapsed_ms": round(elapsed_ms, 3)},
+                    created_at_utc=utc_now_iso(),
+                )
+                payload = result.model_dump(mode="json")
+                try:
+                    validate_engine_result(payload, rows=rows, continue_check=check_budget)
+                    check_budget()
+                except ResearchEngineInterrupted:
+                    return None
+                path, checksum = self.artifacts.write_result_candidate(
+                    job.workspace_id,
+                    job.job_id,
+                    job.attempt_no,
+                    job.lease_token,
+                    payload,
+                )
+                try:
+                    check_budget()
+                except ResearchEngineInterrupted:
+                    self.artifacts.quarantine_result_candidate(path)
+                    return None
+                except Exception:
+                    self.artifacts.quarantine_result_candidate(path)
+                    raise
+                try:
+                    completed = self.store.complete_job(job, path, checksum)
+                except Exception:
+                    self.artifacts.quarantine_result_candidate(path)
+                    raise
+                if not completed:
+                    self.artifacts.quarantine_result_candidate(path)
+                    return None
+                return result
             if job.strategy_version != "close-delta-v1":
                 raise ValueError("unsupported strategy version")
+            rows = self.artifacts.read_dataset(manifest.artifact_path, manifest.artifact_sha256)
             ledger = []
             for index in range(1, len(rows)):
                 if not lease_guard.owned():
@@ -163,7 +342,7 @@ class ResearchService:
             return None
         return result
 
-    def run_one(self) -> ResearchResult | None:
+    def run_one(self) -> ResearchResult | EngineResearchResult | None:
         self.recover_stale_jobs()
         job = self.store.claim_next_job(self.worker_id, self.lease_seconds)
         if job is None:
