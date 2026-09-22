@@ -25,6 +25,7 @@ from .contracts import (
     ReplayStep,
     RevisionRequest,
 )
+from .data_sources import DataProviderRegistry, LocalCatalogProvider
 from .product import ProductService
 from .replay import ReplayService
 from .research import ResearchService
@@ -49,6 +50,7 @@ def create_app(
     artifact_root: str | Path | None = None,
     ai_service=None,
     authorization: LocalWorkspaceAuthorization | None = None,
+    data_registry: DataProviderRegistry | None = None,
 ) -> FastAPI:
     dsn = dsn or os.environ["TW_V2_DATABASE_URL"]
     artifact_root = artifact_root or os.environ["TW_V2_ARTIFACT_ROOT"]
@@ -58,6 +60,7 @@ def create_app(
     service = ResearchService(store, artifacts)
     replay = ReplayService(store, artifacts)
     product = ProductService(store, ai_service=ai_service)
+    data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store)])
 
     if authorization is None:
         with store.connect() as conn:
@@ -75,6 +78,7 @@ def create_app(
     app.state.service = service
     app.state.product = product
     app.state.replay = replay
+    app.state.data_registry = data_registry
     app.state.authorization = authorization
 
     @app.get("/health")
@@ -92,7 +96,11 @@ def create_app(
 
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
-        return {"items": product.list_datasets(workspace), "holdout_access": False}
+        return {"items": data_registry.list_datasets(workspace), "holdout_access": False}
+
+    @app.get("/api/v2/data/providers")
+    def list_data_providers(workspace: str = Depends(workspace_id)):
+        return {"items": data_registry.capabilities()}
 
     @app.post("/api/v2/data/instruments/validate")
     def validate_instrument(body: InstrumentValidationRequest, workspace: str = Depends(workspace_id)):

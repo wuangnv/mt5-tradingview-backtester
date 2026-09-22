@@ -1,0 +1,62 @@
+{
+  "schema": "U2-DATA-FOUNDATION-r1",
+  "date": "2026-09-22",
+  "result": "PASS",
+  "scope": "PATH-2 U2 backend slice on local/synthetic data; software and local integration only, not full U2 product acceptance",
+  "base_revision": "ec24ecc",
+  "checks": {
+    "streaming_import_semantics": "5/5 PASS",
+    "provider_boundary": "4/4 PASS",
+    "workspace_authorization_regression": "5/5 PASS",
+    "reference_slice_regression": "1/1 PASS",
+    "retained_contract_regression": "3/3 PASS",
+    "python_compileall": "PASS",
+    "git_diff_check": "PASS; repository emitted existing CRLF conversion warnings only",
+    "full_foundation_baseline_before_slice": "33/33 PASS at ec24ecc",
+    "full_destructive_f7_rerun_after_slice": "NOT RUN; command was blocked by tool safety before execution, so no PASS is claimed"
+  },
+  "provider_boundary": {
+    "default_provider": "local-catalog",
+    "remote_vendor_claimed": false,
+    "fresh_quote_capability": false,
+    "holdout_content_capability": false,
+    "user_facing_import_route": false,
+    "fake_provider_contract_tested": true,
+    "workspace_scoped_dataset_listing": true
+  },
+  "benchmark": {
+    "schema": "U2-D12-BENCHMARK-v2",
+    "fixture": "20k synthetic M1 bars",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10",
+    "cold_elapsed_ms": 2654.584,
+    "warm_elapsed_ms": 2751.144,
+    "cold_python_peak_bytes": 2020201,
+    "warm_python_peak_bytes": 2020217,
+    "semantic_identity_preserved": true,
+    "pre_fix_cold_elapsed_ms": 123668.286,
+    "pre_fix_warm_elapsed_ms": 137385.56,
+    "finding": "per-row DuckDB timestamp indexing caused the regression; a temporary SQLite index restored low-memory streaming performance"
+  },
+  "source_sha256": {
+    "foundation_v2/trading_workspace_v2/api.py": "1fc62a3870c8b14159d8a0658f22e4dc5eab8098d9c2118bb58bf9b8bb7f1dc3",
+    "foundation_v2/trading_workspace_v2/data_ingest.py": "faa57650d9190d988eb235ef209a1218915d1167951ee5023ac4a4790e482a83",
+    "foundation_v2/trading_workspace_v2/data_sources.py": "be40b3bedb4eb6d0e0d7b47b983975e5548a2f27a2af5bc13bc16c90e4fb499d",
+    "foundation_v2/tests/test_u2_provider_boundary.py": "985e1fdeb4ee2fb88a7db25f19b30ec98dae43ff49eff7fac42cca46ad06b7a9",
+    "foundation_v2/scripts/u2_benchmark.py": "3a989871dbcc0b01ce0d0033e93942f8ea04758136ab4b8775809c31be123886"
+  },
+  "acceptance_boundaries": {
+    "software_contract_verified": true,
+    "local_integration_verified": true,
+    "data_desk_ui_accepted": false,
+    "real_provider_verified": false,
+    "real_market_data_verified": false,
+    "empirical_strategy_verified": false,
+    "broker_demo_verified": false,
+    "live_production_verified": false
+  },
+  "next": [
+    "Keep the browser import preview/confirm workflow pending U1 visual approval; do not expose arbitrary server file paths.",
+    "Continue independent PATH-2 U3/U4/U5 backend slices from existing F7 contracts while preserving real-provider, holdout, broker, and live gates."
+  ]
+}

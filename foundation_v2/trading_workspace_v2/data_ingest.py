@@ -3,11 +3,11 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import sqlite3
+import tempfile
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
-
-import duckdb
 
 from .artifacts import ArtifactStore
 from .contracts import DatasetManifest, DatasetSource, utc_now_iso
@@ -177,56 +177,60 @@ def preview_csv(
     previous_input_time = None
     first_time = None
     last_time = None
-    timestamps = duckdb.connect(":memory:")
-    try:
-        timestamps.execute("CREATE TABLE timestamps(time_utc BIGINT PRIMARY KEY)")
-        for row in _read_rows(path):
-            row_count += 1
-            timestamp = int(row["timestamp"])
-            if previous_input_time is not None and timestamp < previous_input_time:
-                out_of_order_count += 1
-            previous_input_time = timestamp
-            first_time = timestamp if first_time is None else min(first_time, timestamp)
-            last_time = timestamp if last_time is None else max(last_time, timestamp)
-            inserted = timestamps.execute(
-                "INSERT INTO timestamps VALUES (?) ON CONFLICT DO NOTHING RETURNING time_utc",
-                [timestamp],
-            ).fetchone()
-            if inserted is None:
-                duplicate_count += 1
-            normalized_digest.update(
-                json.dumps(row, sort_keys=True, separators=(",", ":")).encode("ascii")
-            )
-            normalized_digest.update(b"\n")
+    with tempfile.TemporaryDirectory(prefix="tw-u2-index-") as temp_dir:
+        timestamps = sqlite3.connect(Path(temp_dir) / "timestamps.sqlite3")
+        try:
+            timestamps.execute("CREATE TABLE timestamps(time_utc INTEGER PRIMARY KEY)")
+            timestamp_batch = []
+            for row in _read_rows(path):
+                row_count += 1
+                timestamp = int(row["timestamp"])
+                if previous_input_time is not None and timestamp < previous_input_time:
+                    out_of_order_count += 1
+                previous_input_time = timestamp
+                first_time = timestamp if first_time is None else min(first_time, timestamp)
+                last_time = timestamp if last_time is None else max(last_time, timestamp)
+                timestamp_batch.append((timestamp,))
+                if len(timestamp_batch) >= 10_000:
+                    timestamps.executemany("INSERT OR IGNORE INTO timestamps(time_utc) VALUES (?)", timestamp_batch)
+                    timestamp_batch.clear()
+                normalized_digest.update(
+                    json.dumps(row, sort_keys=True, separators=(",", ":")).encode("ascii")
+                )
+                normalized_digest.update(b"\n")
 
-        unique_row_count = int(timestamps.execute("SELECT count(*) FROM timestamps").fetchone()[0])
-        gaps = []
-        previous_time = None
-        cursor = timestamps.execute("SELECT time_utc FROM timestamps ORDER BY time_utc")
-        while True:
-            ordered = cursor.fetchmany(10_000)
-            if not ordered:
-                break
-            for (current_time,) in ordered:
-                if previous_time is not None:
-                    delta = int(current_time) - int(previous_time)
-                    if delta > timeframe_seconds:
-                        classification = "unknown"
-                        if gap_classifier is not None:
-                            classification = str(gap_classifier(int(previous_time), int(current_time)) or "unknown")
-                        if classification not in GAP_CLASSES:
-                            raise DataImportError("gap_classifier returned unsupported classification")
-                        gaps.append(
-                            {
-                                "from_utc": int(previous_time),
-                                "to_utc": int(current_time),
-                                "missing_intervals": max(0, delta // timeframe_seconds - 1),
-                                "classification": classification,
-                            }
-                        )
-                previous_time = current_time
-    finally:
-        timestamps.close()
+            if timestamp_batch:
+                timestamps.executemany("INSERT OR IGNORE INTO timestamps(time_utc) VALUES (?)", timestamp_batch)
+            timestamps.commit()
+            unique_row_count = int(timestamps.execute("SELECT count(*) FROM timestamps").fetchone()[0])
+            duplicate_count = row_count - unique_row_count
+            gaps = []
+            previous_time = None
+            cursor = timestamps.execute("SELECT time_utc FROM timestamps ORDER BY time_utc")
+            while True:
+                ordered = cursor.fetchmany(10_000)
+                if not ordered:
+                    break
+                for (current_time,) in ordered:
+                    if previous_time is not None:
+                        delta = int(current_time) - int(previous_time)
+                        if delta > timeframe_seconds:
+                            classification = "unknown"
+                            if gap_classifier is not None:
+                                classification = str(gap_classifier(int(previous_time), int(current_time)) or "unknown")
+                            if classification not in GAP_CLASSES:
+                                raise DataImportError("gap_classifier returned unsupported classification")
+                            gaps.append(
+                                {
+                                    "from_utc": int(previous_time),
+                                    "to_utc": int(current_time),
+                                    "missing_intervals": max(0, delta // timeframe_seconds - 1),
+                                    "classification": classification,
+                                }
+                            )
+                    previous_time = current_time
+        finally:
+            timestamps.close()
 
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.reader(handle)
