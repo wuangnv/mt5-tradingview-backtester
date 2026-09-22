@@ -1,0 +1,36 @@
+{
+  "schema": "u5-checkpoint-v1",
+  "date": "2026-09-22",
+  "task": "U5-PATH2-ENGINE-r1",
+  "integrated_revision": "c49dfc2e504d13b54cab6279c9d86625ce14609e",
+  "base_revision": "86d300055e58e8659c6ad0217c97c15d290c4214",
+  "ledger_revision": 209,
+  "result": "PASS for partial reference/protocol slice",
+  "evidence": ["U5-validation-integrated-r1.json", "U5-review-r1.json"],
+  "checks": "58/58 post-integration PASS, zero skipped, source hashes stable; independent review PASS",
+  "state_flow": "Frozen Playbook revision + dataset snapshot -> immutable protocol/job -> leased reference execution -> independent reconciliation -> fenced immutable result",
+  "acceptance": {
+    "software_contract_verified": true,
+    "local_synthetic_postgresql_integration_verified": true,
+    "ux_accepted": false,
+    "empirical_data_verified": false,
+    "broker_demo_verified": false,
+    "live_production_verified": false,
+    "whole_u5_complete": false
+  },
+  "next": [
+    "Approved Nautilus primary-engine adapter with independent semantics tests",
+    "Full U5a resource isolation, progress and restart checkpoints",
+    "Full U5b protective/margin/simultaneous-event and replay comparison",
+    "U5c chronological OOS/walk-forward/stress/sweep, then approved real data"
+  ],
+  "cleanup_c1": {
+    "legacy_reference_modules": "keep unchanged; no data/test/fixture deletion",
+    "reference_job_route": "keep close-delta-v1 separate for existing reference acceptance",
+    "new_engine_route": "additive, scoped to explicit frozen engine-supported rules",
+    "data_qa": "new normalization v3; historical manifests not rewritten",
+    "packaging_gap": "pre-existing untracked retained modules remain outside this commit; clean clone is still U9 work"
+  },
+  "rollback": "Revert only this slice after checking consumers; preserve immutable results/protocols and unrelated dirty files. No destructive database downgrade or global reset.",
+  "safety": "No broker, holdout content, paid provider, deployment, user-data deletion or global environment change."
+}
