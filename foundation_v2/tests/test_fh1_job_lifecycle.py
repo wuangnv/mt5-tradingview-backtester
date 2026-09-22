@@ -106,7 +106,7 @@ class FH1JobLifecycleTests(unittest.TestCase):
             {"winner": "should-not-publish"},
         )
 
-        canceled = self.store.cancel_job("tenant-a", job.job_id)
+        canceled = self.service.cancel_job("tenant-a", job.job_id)
         self.assertEqual(canceled.status, "canceled")
         self.assertTrue(canceled.cancel_requested)
         self.assertFalse(self.store.complete_job(claimed, path, checksum))
@@ -115,7 +115,9 @@ class FH1JobLifecycleTests(unittest.TestCase):
         self.assertEqual(current.status, "canceled")
         self.assertIsNone(current.result_path)
         self.assertIsNone(self.service.get_result("tenant-a", job.job_id))
-        self.assertTrue((Path(self.temp.name) / path).exists())
+        self.assertFalse((Path(self.temp.name) / path).exists())
+        quarantine = Path(self.temp.name) / "tenant-a" / "quarantine" / "results" / job.job_id
+        self.assertEqual(len(list(quarantine.glob("attempt-*.json"))), 1)
 
     def test_complete_before_cancel_wins(self):
         job = self.create_job()

@@ -65,6 +65,12 @@ class ResearchService:
             raise LookupError("dataset not found in workspace")
         return self.store.create_job(workspace_id, dataset_id, strategy_version, starting_balance)
 
+    def cancel_job(self, workspace_id: str, job_id: str):
+        job = self.store.cancel_job(workspace_id, job_id)
+        if job is not None and job.status == "canceled":
+            self.artifacts.quarantine_job_candidates(workspace_id, job_id)
+        return job
+
     def recover_stale_jobs(self) -> list[dict]:
         recovered = self.store.recover_expired_jobs()
         for item in recovered:

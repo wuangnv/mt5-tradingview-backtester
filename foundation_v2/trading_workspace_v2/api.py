@@ -151,7 +151,7 @@ def create_app(
 
     @app.post("/api/v2/research/jobs/{job_id}/cancel")
     def cancel_research_job(job_id: str, workspace: str = Depends(workspace_id)):
-        job = store.cancel_job(workspace, job_id)
+        job = service.cancel_job(workspace, job_id)
         if job is None:
             raise HTTPException(status_code=404, detail="job_not_found")
         return job.model_dump(mode="json")
