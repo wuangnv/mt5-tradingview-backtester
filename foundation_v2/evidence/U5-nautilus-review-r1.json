@@ -1,0 +1,24 @@
+{
+  "schema": "u5-nautilus-independent-review-v1",
+  "task": "U5-NAUTILUS-ADAPTER-r1",
+  "candidate": "c118f438b493a9e67971a3ac9465c643c64540a9",
+  "reviewer_locator": "/root/u5_nautilus_audit",
+  "verdict": "pass",
+  "findings": [],
+  "resolved_findings": [
+    "Worker-crash orphaning resolved by a parent-owned Job Object lifecycle while the engine child retains its own memory and active-process ceilings.",
+    "Raw Nautilus fills are bound to published ledger trades by order/fill IDs, prices, quantities, sides, and nanosecond timestamps and are independently reconciled.",
+    "Runtime identity is fail-closed against the isolated uv.lock and immutable protocol, including Nautilus and PyArrow versions plus adapter/source hashes.",
+    "Independent long/short cost/tick/timing oracles and worker-crash/runtime-identity coverage are committed and passing."
+  ],
+  "review_validation": {
+    "independent_nautilus_tests": "4/4 passed",
+    "engine_runtime_tests": "4/4 passed",
+    "reference_oracle_tests": "8/8 passed",
+    "two_layer_job_object_regression": "no regression found"
+  },
+  "residual_scope": [
+    "Full U5b/U5c/data/UX gates remain deferred exactly as listed in the task packet.",
+    "Reviewer-local disposable PostgreSQL integration was unavailable; root post-commit integrated validation is recorded separately."
+  ]
+}
