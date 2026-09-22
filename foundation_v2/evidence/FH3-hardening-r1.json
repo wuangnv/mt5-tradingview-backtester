@@ -1,0 +1,60 @@
+{
+  "schema": "FH3-HARDENING-r1",
+  "date": "2026-09-22",
+  "result": "PASS",
+  "scope": "PATH-2 local foundation integration on synthetic QA data; software/integration verified only",
+  "baseline_head": "7c63a2f85a7d211ec2feb51fe045b6aa92d62dcd",
+  "checks": {
+    "focused_fh_suite": "16/16 PASS",
+    "full_foundation_suite": "26/26 PASS",
+    "python_compileall": "PASS",
+    "fresh_postgres_separate_worker": "PASS",
+    "dataset_job_worker_result_api_ui": "PASS",
+    "vite_production_build": "PASS",
+    "desktop_browser": {
+      "viewport": [1365, 768],
+      "scroll_width": 1365,
+      "client_width": 1365,
+      "chart_width": 1025.3333740234375,
+      "chart_height": 220,
+      "canvas_count": 7,
+      "safety_text": "Khong co quyen gui lenh broker",
+      "job_status": "Hoan tat"
+    },
+    "mobile_browser": {
+      "viewport": [390, 844],
+      "scroll_width": 390,
+      "client_width": 390,
+      "chart_width": 362,
+      "chart_height": 220,
+      "canvas_count": 7,
+      "safety_text": "Khong co quyen gui lenh broker",
+      "job_status": "Hoan tat"
+    },
+    "restore_rehearsal": "PASS; see FH3-restore-rehearsal-r1.json",
+    "broker_execution_capability": false
+  },
+  "integration_fixture": {
+    "workspace_id": "tenant-ui",
+    "dataset_id": "b658ea1980ef4bb7ac595117ed0e5739",
+    "job_id": "4a2b85d75f5046f3a2773533c28cac9",
+    "metrics_schema_version": "metrics-v2"
+  },
+  "dependency_sha256": {
+    "foundation_v2/uv.lock": "a8c0b6812a90310598db5c37effd57847246336085f1a56eb7053ce6bc77c07e",
+    "foundation_v2/web/package-lock.json": "8a6c8e897d5294678bb0960aa6114707f5fcc67d0e86ef71f249ed34b8c298c6"
+  },
+  "notes": [
+    "The packaged Playwright Chromium launcher still fails on this Windows Codex runtime with spawn UNKNOWN after the fresh PostgreSQL and separate-worker steps succeed.",
+    "Browser QA was therefore completed with the already-connected Codex in-app browser, matching the documented F6 fallback pattern rather than treating the launcher limitation as a product failure.",
+    "A manual integration attempt that reused the prior test database with a different artifact root correctly failed on an old queued fixture whose temporary dataset file no longer existed. A fresh isolated database plus matching artifact root then passed; historical/failed fixture state was not rewritten."
+  ],
+  "acceptance_boundaries": {
+    "software_contract_verified": true,
+    "local_integration_verified": true,
+    "ux_owner_accepted": false,
+    "empirical_real_data_verified": false,
+    "broker_demo_verified": false,
+    "live_production_verified": false
+  }
+}

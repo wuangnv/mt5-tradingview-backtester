@@ -1,0 +1,39 @@
+{
+  "schema": "FH2-WORKSPACE-AUTH-r1",
+  "date": "2026-09-22",
+  "result": "PASS",
+  "scope": "Local trusted identity and server-side workspace authorization; not production multi-user authentication",
+  "baseline_head": "7c63a2f85a7d211ec2feb51fe045b6aa92d62dcd",
+  "checks": {
+    "missing_trusted_identity_401": true,
+    "client_workspace_switch_403": true,
+    "membership_revocation_immediate_403": true,
+    "cross_tenant_job_hidden": true,
+    "cross_tenant_completed_artifact_hidden": true,
+    "cross_tenant_record_id_hidden": true,
+    "execution_capability_locked": true,
+    "health_discloses_local_only_auth": true
+  },
+  "claims": {
+    "production_auth": false,
+    "oauth_or_idp": false,
+    "database_rls": false,
+    "broker_execution": false,
+    "internal_worker_scheduler_scope": "global queued-job claim with claimed workspace_id carried through execution"
+  },
+  "verification": {
+    "postgresql": "17.11 disposable local cluster",
+    "focused_suite": "16 tests passed; FH-1 and FH-2 combined",
+    "full_foundation_suite": "26 tests passed"
+  },
+  "source_sha256": {
+    "foundation_v2/README.md": "d81473aa4bea6e42b93ee1b55a71fe20a4d448bc7225ae9fadb9b9887847d4f6",
+    "foundation_v2/trading_workspace_v2/api.py": "b7076db4882e4b0532c5893630fd460b24c7f63e06b70cf25d9055e292e7f6c1",
+    "foundation_v2/trading_workspace_v2/auth.py": "d8df4595c34c8fc5daf2dbb09e40ea836ef6603c74420b704257c62c4edc0dd1",
+    "foundation_v2/tests/test_fh2_workspace_auth.py": "66f3e933c4a6192c87b9e138280167734ce3f0a35e2d4a78ec8f03c49b95430a"
+  },
+  "limitations": [
+    "Membership storage is local in-process configuration, not a durable production identity system.",
+    "PostgreSQL RLS and dedicated application DB roles are not implemented and are explicitly reported unsupported."
+  ]
+}

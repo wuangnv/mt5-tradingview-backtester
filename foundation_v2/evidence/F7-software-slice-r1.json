@@ -1,0 +1,37 @@
+{
+  "schema": "F7-SOFTWARE-SLICE-r1",
+  "date": "2026-09-22",
+  "result": "PARTIAL_ACCEPTED",
+  "scope": "software foundation only; no visual-system approval, real provider/data acceptance, broker action, live execution, cloud deploy, holdout read or Miro mutation",
+  "software_evidence": {
+    "postgres_integration_tests": "6 passed",
+    "vite_build": "passed",
+    "desktop_browser": "passed",
+    "mobile_390x844_browser": "passed",
+    "tenant_cross_access": "404/isolated",
+    "annotation_future_anchor": "422/rejected",
+    "ai_holdout_field": "422/rejected",
+    "execution_intent": "403/broker_execution_locked"
+  },
+  "u_status": {
+    "U0": "software-verified foundation baseline",
+    "U1": "pending owner visual approval; reference slice responsive only",
+    "U2": "partial software-verified: tenant data catalog/provenance/holdout lock; real data QA/news/cost/providers pending",
+    "U3": "partial software-verified: versioned Playbook and Journal including no-trade/dedupe; Learn/UI acceptance pending",
+    "U4": "partial software-verified: versioned annotations and replay-cutoff guard; full drawing/replay/two-timeframe browser fixtures pending",
+    "U5": "partial software-verified: durable jobs, separate worker, immutable artifacts, one reference strategy; real dataset/OOS workflow pending",
+    "U6": "partial software-verified: retained metrics-v2 source/provenance; empirical/prop/real-equity gates pending",
+    "U7": "partial software-verified: offline/fake provider boundary, context guards, no broker authority; real provider/UI eval and TypeSafe production decision pending",
+    "U8": "locked-by-design: broker execution capability false; demo and live acceptance remain separate gates",
+    "U9": "partial: Python and Node lockfiles, Windows local acceptance and explicit blocked reasons; clean-clone restore/backup/Miro/final owner acceptance pending"
+  },
+  "external_or_owner_gates": [
+    "u1_owner_visual_approval",
+    "real_data_qa",
+    "real_ai_provider_approval",
+    "demo_broker_acceptance",
+    "live_execution_authorization",
+    "miro_update_permission",
+    "final_owner_acceptance"
+  ]
+}

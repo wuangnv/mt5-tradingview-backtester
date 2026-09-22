@@ -1,0 +1,74 @@
+{
+  "schema": "F7-SOFTWARE-SLICE-r2",
+  "date": "2026-09-22",
+  "result": "PARTIAL_ACCEPTED",
+  "scope": "local software foundation on synthetic fixtures; no owner visual approval, real provider/data acceptance, broker action, live execution, cloud deploy, holdout read or Miro mutation",
+  "verification": {
+    "postgres_version": "17.11",
+    "foundation_tests": 10,
+    "foundation_tests_result": "PASS",
+    "python_compileall": "PASS",
+    "uv_frozen_sync": "PASS: 21 packages checked",
+    "npm_ci": "PASS: 69 packages installed, 0 vulnerabilities",
+    "vite_build": "PASS",
+    "browser_desktop": "PASS from F6/F7 current build acceptance",
+    "browser_mobile_390x844": "PASS from F6/F7 current build acceptance",
+    "restore_rehearsal": "PASS"
+  },
+  "software_evidence": {
+    "tenant_cross_access": "404/isolated",
+    "immutable_dataset_and_result_artifacts": true,
+    "versioned_playbook_journal_annotations": true,
+    "replay_prefix_only_no_future_suffix": true,
+    "replay_rewind_creates_branch": true,
+    "annotation_future_anchor": "422/rejected",
+    "research_cancel": "durable; canceled work produces no result artifact",
+    "instrument_contract": "validated with effective period and units",
+    "cost_contract": "deterministic bid/ask embedded plus commission/slippage/financing",
+    "news_contract": "future-known revisions hidden; archive proxy explicit",
+    "prop_contract": "missing equity/HWM returns blocked_by_data",
+    "ai_holdout_field": "422/rejected",
+    "execution_intent": "403/broker_execution_locked",
+    "postgres_restore": "metadata counts, record revisions, dataset/result hashes and artifacts preserved"
+  },
+  "u_status": {
+    "U0": "software-verified foundation baseline",
+    "U1": "pending owner visual approval; responsive reference slice only",
+    "U2": "partial software-verified: dataset/instrument/cost/news contracts, provenance and holdout lock; real data QA/providers pending",
+    "U3": "partial software-verified: versioned Playbook and Journal; tenant-safe Learn progress migration and supported UI pending",
+    "U4": "partial software-verified: replay cutoff/prefix isolation, rewind branching and versioned annotations; renderer/drawing/two-timeframe owner acceptance pending",
+    "U5": "partial software-verified: durable jobs/cancel, separate worker and immutable artifacts; supported real engine/OOS/stress workflow pending",
+    "U6": "partial software-verified: metrics-v2, cost semantics and prop blocker evaluator; empirical/real-equity gates pending",
+    "U7": "partial software-verified: offline/fake provider boundary, context/holdout guards and no broker authority; real provider/UI eval pending",
+    "U8": "locked-by-design: broker execution capability false; demo and live acceptance remain separate gates",
+    "U9": "partial software-verified: frozen Python/Node dependencies, Windows build, PostgreSQL dump/restore plus artifact checksum rehearsal; Miro/final owner/public deployment gates pending"
+  },
+  "portability": {
+    "restore_receipt": "evidence/F7-restore-rehearsal-r1.json",
+    "restore_receipt_sha256": "98fe409bd1f18d4e4ca59050a763530b0eda363d5064251e3cefa9edecf55985",
+    "uv_lock_sha256": "a8c0b6812a90310598db5c37effd57847246336085f1a56eb7053ce6bc77c07e",
+    "web_package_lock_sha256": "8a6c8e897d5294678bb0960aa6114707f5fcc67d0e86ef71f249ed34b8c298c6"
+  },
+  "source_hashes": {
+    "api_py": "3bb704e3834ca0eb96fb24d34a3d4e452cde54988d372c29a951f75fce3c8a81",
+    "store_py": "e786121c3cf77cb5436cbe50faad04792c644a40351a2ba71d1ba69bbd268aee",
+    "replay_py": "73b576851cb0d6b58d625c64118e01ce13818a35e8781702396f559cd4534924"
+  },
+  "explicit_non_acceptance": [
+    "u1_owner_visual_approval",
+    "real_data_qa_and_provider_selection",
+    "full_supported_engine_oos_stress_acceptance",
+    "tenant_safe_learn_progress_migration",
+    "real_ai_provider_approval",
+    "demo_broker_acceptance",
+    "live_execution_authorization",
+    "miro_update_permission",
+    "public_or_commercial_deployment",
+    "final_owner_acceptance"
+  ],
+  "notes": [
+    "Legacy research_engine.py was inspected but not imported wholesale because it still depends on legacy research_store ownership; reuse is deferred until the pure engine core has a clean boundary.",
+    "Personal education/progress.json was not exposed through the multi-tenant API because doing so would leak one user's progress across tenants; Learn remains a migration gate instead of a false pass.",
+    "npm reported esbuild's postinstall as not allowScripts-whitelisted; no blanket script approval was added. The clean install and Vite build succeeded without changing that policy."
+  ]
+}

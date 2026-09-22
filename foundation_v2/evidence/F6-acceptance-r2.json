@@ -1,0 +1,54 @@
+{
+  "schema": "F6-ACCEPTANCE-r2",
+  "date": "2026-09-22",
+  "result": "PASS",
+  "scope": "PATH-2 local reference slice; synthetic QA data only; no broker/live/cloud/holdout action",
+  "git": {
+    "branch": "Nam",
+    "head": "7c63a2f85a7d211ec2feb51fe045b6aa92d62dcd",
+    "worktree": "dirty-existing-WIP"
+  },
+  "checks": {
+    "postgresql_version": "17.11",
+    "python_integration_tests": "6 passed before F7 receipt write",
+    "separate_worker_process": true,
+    "api_health_execution_capability": false,
+    "postgres_job_completed": true,
+    "react_vite_build_pass": true,
+    "browser_desktop_pass": true,
+    "browser_mobile_390x844_pass": true,
+    "broker_execution_capability": false
+  },
+  "fixture": {
+    "workspace_id": "tenant-ui",
+    "dataset_id": "1f7690415cf4422196593a185b86eb31",
+    "dataset_sha256": "8e3d1b66112a44bef1e34a5aa3edb895534c7743d0a743e44d5a818c2515d8af",
+    "job_id": "a873eed715a746c8bd7039ff012cf523",
+    "job_status": "completed",
+    "result_sha256": "443cb275e6cdc63f327ba07c265fca3c0d9ad32291cfcd7f0683dd7cfb909563",
+    "metrics_schema_version": "metrics-v2"
+  },
+  "browser": {
+    "runner": "Codex in-app browser with read-only DOM/CDP viewport inspection",
+    "desktop": {
+      "viewport": [1280, 720],
+      "scroll_width": 1280,
+      "chart_width": 940,
+      "chart_height": 220,
+      "canvas_count": 7
+    },
+    "mobile": {
+      "viewport": [390, 844],
+      "scroll_width": 390,
+      "chart_width": 362,
+      "chart_height": 220,
+      "canvas_count": 7,
+      "safety_text": "Khong co quyen gui lenh broker"
+    },
+    "note": "The package Playwright launcher hit Windows spawn UNKNOWN in this Codex runtime, so browser QA was completed through the already-connected in-app browser instead of generating screenshot files."
+  },
+  "dependency_hashes": {
+    "uv_lock_sha256": "a8c0b6812a90310598db5c37effd57847246336085f1a56eb7053ce6bc77c07e",
+    "web_package_lock_sha256": "8a6c8e897d5294678bb0960aa6114707f5fcc67d0e86ef71f249ed34b8c298c6"
+  }
+}

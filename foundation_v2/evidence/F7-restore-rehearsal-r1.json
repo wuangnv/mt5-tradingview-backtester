@@ -1,0 +1,37 @@
+{
+  "broker_execution_capability": false,
+  "checks": {
+    "cross_tenant_denied_by_scope": true,
+    "dataset_artifact_readable": true,
+    "dataset_hash_match": true,
+    "metadata_counts_match": true,
+    "playbook_revision_restored": true,
+    "result_artifact_readable": true,
+    "result_hash_match": true
+  },
+  "dump_sha256": "24ade32cd7dc462d2cdf54a134de86c88e4b82f10eb71796cb76920bc31065f8",
+  "fixture": {
+    "dataset_id": "5b95e80da66b44b0b7a2289ec6f6d500",
+    "dataset_sha256": "97c3a95ff1ab852679afdb384d169326a68633cef897d5bac2ea22418b4680b0",
+    "job_id": "a71569ae8d16451e8c487f88bdcb76f3",
+    "playbook_id": "04b3e4ac76e74aa3b4609ac81a0215ef",
+    "result_sha256": "82d099f62438c3157c590b9f4850191ec79befb315420ed59604c75a3da91456"
+  },
+  "result": "PASS",
+  "schema": "F7-RESTORE-REHEARSAL-r1",
+  "scope": "temporary PostgreSQL metadata dump/restore plus immutable artifact directory copy; synthetic fixture only",
+  "source_counts": {
+    "datasets": 1,
+    "research_jobs": 1,
+    "workspace_record_revisions": 1,
+    "workspace_records": 1,
+    "workspaces": 1
+  },
+  "target_counts": {
+    "datasets": 1,
+    "research_jobs": 1,
+    "workspace_record_revisions": 1,
+    "workspace_records": 1,
+    "workspaces": 1
+  }
+}

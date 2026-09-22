@@ -1,0 +1,19 @@
+{
+  "name": "trading-workspace-foundation-v2-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "lightweight-charts": "^5.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "playwright": "^1.55.0",
+    "vite": "^7.0.0"
+  }
+}

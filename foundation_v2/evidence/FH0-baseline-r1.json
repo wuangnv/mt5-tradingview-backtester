@@ -1,0 +1,73 @@
+{
+  "checkpoint": "FH-0",
+  "captured_at_local": "2026-09-22T08:49:00+07:00",
+  "scope": "PATH-2 foundation hardening baseline; local/synthetic only",
+  "repo": {
+    "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester",
+    "branch": "Nam",
+    "head": "7c63a2f85a7d211ec2feb51fe045b6aa92d62dcd",
+    "origin_relation": {
+      "behind": 0,
+      "ahead": 2
+    },
+    "worktree": "dirty; preserve unrelated tracked/untracked WIP; foundation_v2 is untracked at this baseline"
+  },
+  "operational_state": {
+    "run_id": "20260921T115933Z-315e8ddd",
+    "state_revision": 144,
+    "state_sha256": "59F88B1F306FA932717C0A3E954350ADAE986FF792AF3B831CB059E387C1482D",
+    "ledger_sha256": "369F2D6B611D8D2DFAE696A4037ACCDA38309428C66FCFE67967791388AE925A",
+    "owner": {
+      "state": "active",
+      "generation": 1,
+      "locator": "codex-native2-parent",
+      "acquired_at": "2026-09-21 12:01:46"
+    },
+    "task_summary": "CO-00..CO-06, F0-REFRESH, F1-CONTRACT, F2-SAFETY, F3-SPIKES and F5-PACKAGE are accepted in STATE revision 144; no task row is running. Historical uncertain attempts remain evidence and are not rewritten.",
+    "ownership_note": "The owner locator is generic and old; it is not treated by itself as proof that a previous execution process is still alive. This checkpoint continues from accepted state instead of bootstrapping a new validation run."
+  },
+  "source_manifest": {
+    "foundation_v2/trading_workspace_v2/__init__.py": "B036547E55400F4374C27EC0539B660E5A97E7126E819C51BF0265A01BBAF061",
+    "foundation_v2/trading_workspace_v2/api.py": "3BB704E3834CA0EB96FB24D34A3D4E452CDE54988D372C29A951F75FCE3C8A81",
+    "foundation_v2/trading_workspace_v2/artifacts.py": "1F0AB92C2CD2D443078272186881E51F728035C9142035D4BF6862A963937CBC",
+    "foundation_v2/trading_workspace_v2/contracts.py": "FB462A1B1B56510BC281D4A131BE670B87546B33DA4C31AADF3B65A333A6D6A3",
+    "foundation_v2/trading_workspace_v2/product.py": "80809F9658C36E0CD4BFC18A9EE1DADCA1D7CC9750A8F3DE52ECEAD51C6A5A43",
+    "foundation_v2/trading_workspace_v2/replay.py": "73B576851CB0D6B58D625C64118E01CE13818A35E8781702396F559CD4534924",
+    "foundation_v2/trading_workspace_v2/research.py": "68F4FB5D90D065698C2F343AC301196601E85C0C6E6A47838AE337412DBB59F8",
+    "foundation_v2/trading_workspace_v2/retained.py": "D3AF6271A5DD337F20164DBC95970D050C86BBDE954D94BD59B042AA51FB0BF6",
+    "foundation_v2/trading_workspace_v2/store.py": "E786121C3CF77CB5436CBE50FAAD04792C644A40351A2BA71D1BA69BBD268AEE",
+    "foundation_v2/trading_workspace_v2/worker.py": "2FDF2844F43B58D4CA9434DB9D23DD615AF64A13B2E211B1649937AA51443071",
+    "foundation_v2/tests/test_contracts.py": "AA2242001C7EAF9A5BBA937E3FD6488759678E06766852DBFB0F21D15567EBF1",
+    "foundation_v2/tests/test_f7_product_slice.py": "0EAA14378F41F7D3C81C194AF2638F58393A6D0A642FD6D72DED8E831DC98D34",
+    "foundation_v2/tests/test_reference_slice.py": "9E960EE3199EF53F3301C04AD1439B015B7CF85C000999F6FFCFC893A0F5E5BC",
+    "foundation_v2/README.md": "6F7BC7D62B505909E34C9911B112FA7BA4ECC75C952A822F14AB910BD9DD21D4"
+  },
+  "dependency_locks": {
+    "foundation_v2/pyproject.toml": "62DF68D69D7920B000A24AF6ED477A3E5509FBD0FF8731BB3657705780F4C898",
+    "foundation_v2/uv.lock": "A8C0B6812A90310598DB5C37EFFD57847246336085F1A56EB7053CE6BC77C07E",
+    "foundation_v2/web/package.json": "257A329A4134FAF719933DF8EE343F27E16C80BAC4C51E28E3BE0A7A4619E1C4",
+    "foundation_v2/web/package-lock.json": "8A6C8E897D5294678BB0960AA6114707F5FCC67D0E86EF71F249ED34B8C298C6"
+  },
+  "accepted_input_receipts": {
+    "foundation_v2/evidence/F6-acceptance-r2.json": "4B94CA932F55A55E294EA234427CC5AAA1E021F1B7D77D6A9FFD41D023FD2136",
+    "foundation_v2/evidence/F7-software-slice-r2.json": "BA806E78FB57EB467D10F41FCB0AF62F937E2F57754A674A5A26B5C2591FE8B1",
+    "foundation_v2/evidence/F7-restore-rehearsal-r1.json": "98FE409BD1F18D4E4CA59050A763530B0EDA363D5064251E3CEFA9EDECF55985"
+  },
+  "known_hardening_findings": [
+    "complete_job can win after cancel_requested becomes true",
+    "running jobs do not yet have lease/attempt fencing or stuck-worker recovery",
+    "result artifact publication can precede durable completion and needs orphan/unpublished handling",
+    "X-Workspace-Id is client-selected and is not authenticated/authorized membership"
+  ],
+  "ready_tasks": [
+    "FH-1 job lifecycle",
+    "FH-2 workspace authorization"
+  ],
+  "gates_preserved": [
+    "no broker/live actions",
+    "no holdout access",
+    "no paid provider or OAuth",
+    "no public/cloud deployment",
+    "no destructive cleanup or global environment change"
+  ]
+}

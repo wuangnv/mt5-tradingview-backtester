@@ -1,0 +1,38 @@
+{
+  "schema": "FH1-JOB-LIFECYCLE-r1",
+  "date": "2026-09-22",
+  "result": "PASS",
+  "scope": "PostgreSQL job lifecycle hardening on synthetic QA data; no broker/live/cloud/holdout action",
+  "baseline_head": "7c63a2f85a7d211ec2feb51fe045b6aa92d62dcd",
+  "candidate_state": "dirty WIP pinned by source hashes; commit pending coordinator integration",
+  "checks": {
+    "cancel_before_finalize": true,
+    "complete_before_cancel": true,
+    "concurrent_cancel_finalize_serialized": true,
+    "expired_job_recovery": true,
+    "stale_attempt_fenced": true,
+    "two_workers_single_claim": true,
+    "persistent_worker_recovery_loop": true,
+    "blocking_step_lease_heartbeat": true,
+    "unpublished_candidate_quarantined": true,
+    "destructive_fixture_guard": true
+  },
+  "verification": {
+    "postgresql": "17.11 disposable local cluster",
+    "focused_suite": "16 tests passed; FH-1 and FH-2 combined",
+    "full_foundation_suite": "26 tests passed",
+    "python_compileall": "PASS"
+  },
+  "source_sha256": {
+    "foundation_v2/trading_workspace_v2/artifacts.py": "c30d656ed96b8b7190688a0c7ac3fc1d244462ebc4437fb79941265fe3bcccb2",
+    "foundation_v2/trading_workspace_v2/research.py": "c7d083fc29c54861aa96a68b5fddcaa0c11f6fc17fcbd4932153ca70ecaaf58b",
+    "foundation_v2/trading_workspace_v2/store.py": "12acfcde74e2162073853dab0d0ab7de927adc88a767ee4b7ff29beaa7ae9bb7",
+    "foundation_v2/trading_workspace_v2/worker.py": "45e8c4f620e997cf8d26e6e72e77c0f6e05a7308934b570b160499c5894ac287",
+    "foundation_v2/tests/test_fh1_job_lifecycle.py": "aa164717c767997b0ebfbfce2c7bb8e01d78bd84636b295f47ec718dc1943089"
+  },
+  "limitations": [
+    "Crash cases are deterministic lease-expiry simulations plus restart/recovery checks, not OS process-kill fault injection.",
+    "Persistent worker mode is implemented but was not installed or started as a user service.",
+    "Quarantined unpublished candidates are preserved for forensic/recovery purposes; retention cleanup remains a separate policy decision."
+  ]
+}
