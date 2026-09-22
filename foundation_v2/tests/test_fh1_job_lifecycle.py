@@ -107,6 +107,7 @@ class FH1JobLifecycleTests(unittest.TestCase):
         )
 
         canceled = self.store.cancel_job("tenant-a", job.job_id)
+        self.assertEqual(canceled.status, "canceled")
         self.assertTrue(canceled.cancel_requested)
         self.assertFalse(self.store.complete_job(claimed, path, checksum))
 
@@ -196,14 +197,15 @@ class FH1JobLifecycleTests(unittest.TestCase):
         self.assertNotEqual(orphan_path, result_path)
         self.assertEqual(self.service.get_result("tenant-a", job.job_id), {"attempt": 2})
 
-    def test_expired_cancel_request_recovers_to_canceled_not_queued(self):
+    def test_running_cancel_terminalizes_without_waiting_for_lease_expiry(self):
         job = self.create_job()
         self.store.claim_next_job("worker-a", 60)
-        self.store.cancel_job("tenant-a", job.job_id)
+        canceled = self.store.cancel_job("tenant-a", job.job_id)
+        self.assertEqual(canceled.status, "canceled")
         self.expire(job.job_id)
 
         recovered = self.store.recover_expired_jobs()
-        self.assertEqual(recovered[0]["status"], "canceled")
+        self.assertEqual(recovered, [])
         current = self.store.get_job("tenant-a", job.job_id)
         self.assertEqual(current.status, "canceled")
         self.assertIsNone(self.store.claim_next_job("worker-b", 60))

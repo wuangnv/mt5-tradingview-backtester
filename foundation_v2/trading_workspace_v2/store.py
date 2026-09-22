@@ -320,6 +320,9 @@ class PostgresStore:
                 """,
                 (job.workspace_id, job.job_id),
             ).fetchone()
+            if row is not None and row["status"] == "canceled" and bool(row["cancel_requested"]):
+                conn.rollback()
+                return False
             if (
                 row is None
                 or row["status"] != "running"
@@ -371,7 +374,12 @@ class PostgresStore:
                 )
             elif row["status"] == "running":
                 conn.execute(
-                    "UPDATE research_jobs SET cancel_requested=true,updated_at_utc=%s WHERE workspace_id=%s AND job_id=%s",
+                    """
+                    UPDATE research_jobs
+                    SET status='canceled',cancel_requested=true,result_path=NULL,result_sha256=NULL,
+                        lease_owner=NULL,lease_token=NULL,lease_expires_at_utc=NULL,updated_at_utc=%s
+                    WHERE workspace_id=%s AND job_id=%s
+                    """,
                     (now, workspace_id, job_id),
                 )
             conn.commit()
