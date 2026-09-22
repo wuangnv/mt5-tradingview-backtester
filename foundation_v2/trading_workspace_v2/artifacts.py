@@ -3,6 +3,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
+from collections.abc import Iterable
 from pathlib import Path
 from uuid import uuid4
 
@@ -38,13 +40,73 @@ class ArtifactStore:
         return path
 
     def write_dataset(self, workspace_id: str, dataset_id: str, rows: list[dict]) -> tuple[str, str]:
+        return self.write_dataset_iter(workspace_id, dataset_id, rows)
+
+    def write_dataset_iter(
+        self,
+        workspace_id: str,
+        dataset_id: str,
+        rows: Iterable[dict],
+        *,
+        batch_size: int = 50_000,
+    ) -> tuple[str, str]:
+        if batch_size <= 0:
+            raise ValueError("batch_size must be positive")
         target = self._workspace_dir(workspace_id, "datasets") / f"{dataset_id}.parquet"
         if target.exists():
             raise ArtifactConflict(f"dataset artifact already exists: {dataset_id}")
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
-        table = pa.Table.from_pylist(rows)
-        pq.write_table(table, temp, compression="zstd")
-        os.replace(temp, target)
+        writer = None
+        batch = []
+        try:
+            for row in rows:
+                batch.append(row)
+                if len(batch) >= batch_size:
+                    table = pa.Table.from_pylist(batch)
+                    if writer is None:
+                        writer = pq.ParquetWriter(temp, table.schema, compression="zstd")
+                    elif table.schema != writer.schema:
+                        table = table.cast(writer.schema)
+                    writer.write_table(table)
+                    batch.clear()
+            if batch:
+                table = pa.Table.from_pylist(batch)
+                if writer is None:
+                    writer = pq.ParquetWriter(temp, table.schema, compression="zstd")
+                elif table.schema != writer.schema:
+                    table = table.cast(writer.schema)
+                writer.write_table(table)
+            if writer is None:
+                raise ValueError("dataset requires at least one row")
+            writer.close()
+            writer = None
+            os.replace(temp, target)
+        finally:
+            if writer is not None:
+                writer.close()
+            if temp.exists():
+                temp.unlink()
+        return str(target.relative_to(self.root)), sha256_file(target)
+
+    def write_raw_source(self, workspace_id: str, dataset_id: str, source_path: str | Path) -> tuple[str, str]:
+        source = Path(source_path)
+        if not source.is_file():
+            raise FileNotFoundError(source)
+        target_dir = self._workspace_dir(workspace_id, "raw") / dataset_id
+        target = target_dir / "source.csv"
+        if target.exists():
+            raise ArtifactConflict(f"raw artifact already exists: {dataset_id}")
+        target_dir.mkdir(parents=True, exist_ok=True)
+        temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
+        try:
+            with source.open("rb") as source_handle, temp.open("wb") as target_handle:
+                shutil.copyfileobj(source_handle, target_handle, length=1024 * 1024)
+                target_handle.flush()
+                os.fsync(target_handle.fileno())
+            os.replace(temp, target)
+        finally:
+            if temp.exists():
+                temp.unlink()
         return str(target.relative_to(self.root)), sha256_file(target)
 
     def read_dataset(self, relative_path: str, expected_sha256: str) -> list[dict]:
@@ -101,15 +163,22 @@ class ArtifactStore:
         parts = relative.parts
         if len(parts) < 4 or parts[1] != "results" or not source.name.startswith("attempt-"):
             raise ValueError("not a result candidate path")
-        if not source.exists():
-            return None
         workspace_id, _, job_id = parts[:3]
         quarantine_dir = self.root / workspace_id / "quarantine" / "results" / job_id
         quarantine_dir.mkdir(parents=True, exist_ok=True)
         target = quarantine_dir / source.name
+        if not source.exists():
+            return str(target.relative_to(self.root)) if target.exists() else None
         if target.exists():
+            if not source.exists():
+                return str(target.relative_to(self.root))
             raise ArtifactConflict(f"quarantine artifact already exists: {relative_path}")
-        os.replace(source, target)
+        try:
+            os.replace(source, target)
+        except FileNotFoundError:
+            if target.exists():
+                return str(target.relative_to(self.root))
+            return None
         try:
             source.parent.rmdir()
         except OSError:

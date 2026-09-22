@@ -45,6 +45,15 @@ class DatasetManifest(BaseModel):
     last_timestamp: int
     artifact_path: str
     artifact_sha256: str
+    raw_artifact_path: str | None = None
+    raw_sha256: str | None = None
+    normalized_sha256: str | None = None
+    instrument_spec: dict | None = None
+    timeframe_seconds: int | None = Field(default=None, gt=0)
+    available_range: dict | None = None
+    quality: dict = Field(default_factory=dict)
+    holdout_policy: dict = Field(default_factory=lambda: {"mode": "none"})
+    transform_version: str | None = None
     created_at_utc: str
 
 

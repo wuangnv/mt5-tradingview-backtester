@@ -227,6 +227,18 @@ class PostgresStore:
             conn.commit()
         return recovered
 
+    def terminal_jobs_requiring_candidate_cleanup(self) -> list[dict]:
+        with self.connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT workspace_id,job_id,status
+                FROM research_jobs
+                WHERE status IN ('canceled','failed') AND result_path IS NULL
+                ORDER BY updated_at_utc,workspace_id,job_id
+                """
+            ).fetchall()
+        return [dict(row) for row in rows]
+
     def claim_next_job(self, worker_id: str = "local-worker", lease_seconds: int = 30) -> ClaimedJob | None:
         worker_id = worker_id.strip()
         if not worker_id:

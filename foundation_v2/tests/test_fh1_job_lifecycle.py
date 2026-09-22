@@ -224,6 +224,52 @@ class FH1JobLifecycleTests(unittest.TestCase):
         self.assertEqual(current.status, "canceled")
         self.assertIsNone(current.result_path)
 
+    def test_recovery_quarantines_candidate_written_after_cancel_scan_then_crash(self):
+        job = self.create_job()
+        stale = self.store.claim_next_job("worker-a", 60)
+
+        canceled = self.service.cancel_job("tenant-a", job.job_id)
+        self.assertEqual(canceled.status, "canceled")
+        path, _ = self.artifacts.write_result_candidate(
+            stale.workspace_id,
+            stale.job_id,
+            stale.attempt_no,
+            stale.lease_token,
+            {"race": "written-after-cancel-scan"},
+        )
+        source = Path(self.temp.name) / path
+        self.assertTrue(source.exists())
+
+        self.assertEqual(self.service.recover_stale_jobs(), [])
+        self.assertFalse(source.exists())
+        quarantine = Path(self.temp.name) / "tenant-a" / "quarantine" / "results" / job.job_id
+        self.assertEqual(len(list(quarantine.glob("attempt-*.json"))), 1)
+        self.assertIsNone(self.service.get_result("tenant-a", job.job_id))
+
+    def test_concurrent_candidate_quarantine_is_idempotent(self):
+        job = self.create_job()
+        claimed = self.store.claim_next_job("worker-a", 60)
+        path, _ = self.artifacts.write_result_candidate(
+            claimed.workspace_id,
+            claimed.job_id,
+            claimed.attempt_no,
+            claimed.lease_token,
+            {"race": "cleanup"},
+        )
+        barrier = threading.Barrier(2)
+
+        def quarantine():
+            barrier.wait()
+            return self.artifacts.quarantine_result_candidate(path)
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            first = pool.submit(quarantine)
+            second = pool.submit(quarantine)
+            results = [first.result(), second.result()]
+
+        self.assertEqual(results[0], results[1])
+        self.assertIsNotNone(results[0])
+
     def test_cancel_and_complete_race_has_one_consistent_terminal_winner(self):
         job = self.create_job()
         claimed = self.store.claim_next_job("worker-a", 60)

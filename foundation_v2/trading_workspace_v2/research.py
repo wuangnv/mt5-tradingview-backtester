@@ -61,8 +61,12 @@ class ResearchService:
         return manifest
 
     def create_job(self, *, workspace_id: str, dataset_id: str, strategy_version: str, starting_balance: float):
-        if self.store.get_dataset(workspace_id, dataset_id) is None:
+        manifest = self.store.get_dataset(workspace_id, dataset_id)
+        if manifest is None:
             raise LookupError("dataset not found in workspace")
+        disposition = str(manifest.quality.get("disposition") or "") if manifest.quality else ""
+        if disposition and disposition != "pass":
+            raise ValueError(f"dataset is not QA-approved: {disposition}")
         return self.store.create_job(workspace_id, dataset_id, strategy_version, starting_balance)
 
     def cancel_job(self, workspace_id: str, job_id: str):
@@ -73,8 +77,14 @@ class ResearchService:
 
     def recover_stale_jobs(self) -> list[dict]:
         recovered = self.store.recover_expired_jobs()
+        cleanup = {
+            (item["workspace_id"], item["job_id"])
+            for item in self.store.terminal_jobs_requiring_candidate_cleanup()
+        }
         for item in recovered:
-            self.artifacts.quarantine_job_candidates(item["workspace_id"], item["job_id"])
+            cleanup.add((item["workspace_id"], item["job_id"]))
+        for workspace_id, job_id in sorted(cleanup):
+            self.artifacts.quarantine_job_candidates(workspace_id, job_id)
         return recovered
 
     def _honor_cancel(self, job: ClaimedJob) -> bool:
