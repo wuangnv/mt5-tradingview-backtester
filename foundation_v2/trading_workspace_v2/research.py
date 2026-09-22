@@ -15,6 +15,16 @@ from .research_engine import (
     engine_code_sha256,
     execute_breakout,
     validate_rules,
+    verify_engine_code,
+)
+from .nautilus_worker import (
+    ADAPTER_VERSION,
+    NAUTILUS_VERSION,
+    adapter_hash,
+    execute_native_process,
+    normalize_native_result,
+    runtime_identity,
+    runtime_ready,
 )
 from .research_validation import validate_engine_result
 from .retained import CostModel, InstrumentSpec, SourceSpec, compute_metrics_v2
@@ -139,6 +149,14 @@ class ResearchService:
         cost_model = CostModel.from_mapping(request.cost_model)
         if cost_model.account_ccy != instrument.account_ccy:
             raise ValueError("cost model account currency does not match instrument snapshot")
+        if request.engine_backend == "nautilus":
+            if not runtime_ready():
+                raise ValueError("isolated Nautilus runtime is unavailable")
+            if instrument.asset_class != "fx" or instrument.account_ccy != instrument.quote_ccy:
+                raise ValueError("Nautilus FX adapter requires account currency equal to quote currency")
+            native_runtime_identity = runtime_identity()
+        else:
+            native_runtime_identity = None
 
         protocol = {
             "schema_version": "research-protocol-v1",
@@ -158,8 +176,11 @@ class ResearchService:
                 "spread_price": float(request.spread_price),
                 "cost_model": request.cost_model,
             },
-            "engine": {"version": ENGINE_VERSION, "code_sha256": engine_code_sha256()},
-            "budget": {"max_bars": int(request.max_bars), "max_runtime_ms": int(request.max_runtime_ms)},
+            "engine": {"version": ENGINE_VERSION, "code_sha256": engine_code_sha256(), "backend": request.engine_backend,
+                       **({"native_version": NAUTILUS_VERSION, "adapter_version": ADAPTER_VERSION,
+                           "adapter_sha256": adapter_hash(), "runtime_identity": native_runtime_identity}
+                          if request.engine_backend == "nautilus" else {})},
+            "budget": {"max_bars": int(request.max_bars), "max_runtime_ms": int(request.max_runtime_ms), "max_memory_mb": request.max_memory_mb},
         }
         protocol_sha256 = hashlib.sha256(canonical_json_bytes(protocol)).hexdigest()
         return self.store.create_engine_job(
@@ -235,7 +256,12 @@ class ResearchService:
                         from_utc=job.protocol["range"]["from_utc"], to_utc=job.protocol["range"]["to_utc"],
                         max_bars=job.protocol["budget"]["max_bars"], continue_check=check_budget,
                     )
-                    engine = execute_breakout(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
+                    verify_engine_code(job.protocol)
+                    if job.protocol["engine"].get("backend", "reference") == "nautilus":
+                        native = execute_native_process(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
+                        engine = normalize_native_result(native, job.protocol)
+                    else:
+                        engine = execute_breakout(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
                 except ResearchEngineInterrupted:
                     return None
                 elapsed_ms = (time.perf_counter() - started) * 1000.0
@@ -257,6 +283,7 @@ class ResearchService:
                     ledger=engine["ledger"],
                     metrics=engine["metrics"],
                     observed_range={**engine["observed_range"], "elapsed_ms": round(elapsed_ms, 3)},
+                    execution=engine.get("execution", {}),
                     created_at_utc=utc_now_iso(),
                 )
                 payload = result.model_dump(mode="json")

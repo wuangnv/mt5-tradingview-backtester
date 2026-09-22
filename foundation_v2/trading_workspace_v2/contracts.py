@@ -75,11 +75,13 @@ class CreateEngineResearchJob(BaseModel):
     data_from_utc: int = Field(ge=0, strict=True)
     data_to_utc: int = Field(gt=0, strict=True)
     split: Literal["baseline", "train", "validation"] = "baseline"
+    engine_backend: Literal["nautilus", "reference"] = "nautilus"
     seed: int = 0
     spread_price: float = Field(default=0.0, ge=0)
     cost_model: dict
     max_bars: int = Field(default=100_000, ge=2, le=1_000_000, strict=True)
     max_runtime_ms: int = Field(default=30_000, ge=100, le=600_000, strict=True)
+    max_memory_mb: int = Field(default=1024, ge=256, le=4096, strict=True)
 
 
 class ResearchJobView(BaseModel):
@@ -138,6 +140,7 @@ class EngineResearchResult(BaseModel):
     ledger: list[dict]
     metrics: dict
     observed_range: dict
+    execution: dict = Field(default_factory=dict)
     created_at_utc: str
 
 

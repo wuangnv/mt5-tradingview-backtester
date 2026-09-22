@@ -1,0 +1,123 @@
+{
+  "schema": "u5-focused-validation-v1",
+  "at_utc": "2026-09-22T13:05:50.382980+00:00",
+  "scope": "local synthetic software and PostgreSQL integration; no empirical/broker/UI acceptance",
+  "database": "tw_u5_resume_20260922",
+  "data_directory": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/.runtime/f7-pgdata-20260922",
+  "postgresql_version": "PostgreSQL 17.11 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit",
+  "source_sha256": {
+    "data_contracts.py": "d3a41b09aabc91583c15f70689baea4be06cba185f01f4ba075711774890af7b",
+    "data_costs.py": "2ad54c4f87e776efb5444b16cb28359f0db70c515e2acfb8582013730cb9ac24",
+    "evidence_metrics.py": "81f97a6560e902516951e08283c53f14183c9a5a7cbac787dff18223fc5fb9e6",
+    "foundation_v2/tests/test_contracts.py": "aa2242001c7eaf9a5bba937e3fd6488759678e06766852dbfb0f21d15567ebf1",
+    "foundation_v2/tests/test_f7_product_slice.py": "802a79a4ca8b352751263d39ce1e8e8f80bd443260fd487a3bd42bc351cd5665",
+    "foundation_v2/tests/test_fh1_job_lifecycle.py": "9ff4c47db6a4ad2d8b224e44931e2e2a8e701c10c70827dac7c43dcf231cc2e1",
+    "foundation_v2/tests/test_fh2_workspace_auth.py": "66f3e933c4a6192c87b9e138280167734ce3f0a35e2d4a78ec8f03c49b95430a",
+    "foundation_v2/tests/test_reference_slice.py": "560537daa5659f7695359459e8b9b10b789a98dc3c9533080ed64252c145536b",
+    "foundation_v2/tests/test_u2_data_ingest.py": "2782b8435a7e07823bdf263c6f25afaeb267a8c672167369c7a4fcf8016538f4",
+    "foundation_v2/tests/test_u2_provider_boundary.py": "985e1fdeb4ee2fb88a7db25f19b30ec98dae43ff49eff7fac42cca46ad06b7a9",
+    "foundation_v2/tests/test_u3_playbook_journal.py": "6ba10d1c1e66256892764220590a94f24984bf14a7fd6bbd2a9c47c165ec6b61",
+    "foundation_v2/tests/test_u5_engine_oracle.py": "0833e6f6ad764e617d3d9850c7b97a94730366816c1c982165c0c98797ea84e7",
+    "foundation_v2/tests/test_u5_engine_path2.py": "ebf1c011bc943d86e4bf4636dc06177920f45b6793d2ad60cf9234090b97d04d",
+    "foundation_v2/tests/test_u5_nautilus.py": "0e047ecbf84a8d1a6944e3d820b70ca5a61822ab2c780996b42f48e214bd349e",
+    "foundation_v2/tests/validate_u5_slice.py": "29d7698eae1d72b5ef16844318819c0c0d00f9ed85c2be4b27c5de1a4c472f16",
+    "foundation_v2/trading_workspace_v2/__init__.py": "b036547e55400f4374c27ec0539b660e5a97e7126e819c51bf0265a01bbaf061",
+    "foundation_v2/trading_workspace_v2/api.py": "33a3f0f934d590d4c8b8d88c6442f9b6206fefdf3e2cf0be3cd597713887f2a9",
+    "foundation_v2/trading_workspace_v2/artifacts.py": "f37b24116289621be10da0357bf3a446d05d93d1cb157b79a59fe5e8830c0780",
+    "foundation_v2/trading_workspace_v2/auth.py": "d8df4595c34c8fc5daf2dbb09e40ea836ef6603c74420b704257c62c4edc0dd1",
+    "foundation_v2/trading_workspace_v2/contracts.py": "534bb8b106a9588f35a475b3e0b9271c6f9c1b76680a7f9b66fc588e899f2ca9",
+    "foundation_v2/trading_workspace_v2/data_ingest.py": "4f84e2ba77413ef01bbf76b0969c720856a04b2620cb64423213bd664975a8a0",
+    "foundation_v2/trading_workspace_v2/data_sources.py": "be40b3bedb4eb6d0e0d7b47b983975e5548a2f27a2af5bc13bc16c90e4fb499d",
+    "foundation_v2/trading_workspace_v2/nautilus_worker.py": "5c4934161598d25a371bbc167dc8db3f0d4b2b24c9377c6c50d0b1b13b921ce2",
+    "foundation_v2/trading_workspace_v2/product.py": "834bc479909b91be0cb2d3cf7733e1c11d4511747c9ffb541e2860402863e5c4",
+    "foundation_v2/trading_workspace_v2/replay.py": "73b576851cb0d6b58d625c64118e01ce13818a35e8781702396f559cd4534924",
+    "foundation_v2/trading_workspace_v2/research.py": "d223a1436c0bdf8079ada8aea43bc704e3bc6f0bb1eccb6ba712bfbb11ffece5",
+    "foundation_v2/trading_workspace_v2/research_engine.py": "af815a5d8db3102ec21615db920af1779645ad719f7bb40eb142736839f2a76c",
+    "foundation_v2/trading_workspace_v2/research_validation.py": "fdaff7e961e6dd9ba3b9e311b737228f23fb28777d6e940661f5062257d2cf87",
+    "foundation_v2/trading_workspace_v2/retained.py": "d3af6271a5dd337f20164dbc95970d050c86bbde954d94bd59b042aa51fb0bf6",
+    "foundation_v2/trading_workspace_v2/store.py": "1b2f03e50d1f86519adab4df6432a0a0499d1b7b9b77c52230cea77f3d184c21",
+    "foundation_v2/trading_workspace_v2/worker.py": "45e8c4f620e997cf8d26e6e72e77c0f6e05a7308934b570b160499c5894ac287",
+    "foundation_v2/uv.lock": "a8c0b6812a90310598db5c37effd57847246336085f1a56eb7053ce6bc77c07e"
+  },
+  "source_unchanged_during_tests": true,
+  "checks": [
+    {
+      "module": "test_u5_engine_oracle",
+      "tests": 8,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_deadline_and_cancellation_fail_closed (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_deadline_and_cancellation_fail_closed) ... ok\ntest_hash_drift_covers_retained_cost_source_and_queued_protocol (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_hash_drift_covers_retained_cost_source_and_queued_protocol) ... ok\ntest_integer_rules_and_timeframe_reject_fractional_nonfinite_and_bool_values (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_integer_rules_and_timeframe_reject_fractional_nonfinite_and_bool_values) ... ok\ntest_long_next_open_fixed_horizon_cost_and_rounding_are_golden (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_long_next_open_fixed_horizon_cost_and_rounding_are_golden) ... ok\ntest_no_signal_produces_no_ledger_entries (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_no_signal_produces_no_ledger_entries) ... ok\ntest_short_entry_floor_exit_ceil_and_cost_are_golden (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_short_entry_floor_exit_ceil_and_cost_are_golden) ... ok\ntest_single_position_skips_signal_while_fixed_horizon_trade_is_open (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_single_position_skips_signal_while_fixed_horizon_trade_is_open) ... ok\ntest_sub_timeframe_rows_are_rejected_before_closed_bar_signal_use (foundation_v2.tests.test_u5_engine_oracle.U5EngineGoldenOracleTests.test_sub_timeframe_rows_are_rejected_before_closed_bar_signal_use) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.083s\n\nOK\n"
+    },
+    {
+      "module": "test_u5_engine_path2",
+      "tests": 9,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_cancel_during_engine_has_no_published_or_partial_success (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_cancel_during_engine_has_no_published_or_partial_success) ... ok\ntest_deadline_after_candidate_write_quarantines_instead_of_publishing (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_deadline_after_candidate_write_quarantines_instead_of_publishing) ... ok\ntest_engine_job_pins_frozen_playbook_protocol_and_reconciles (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_engine_job_pins_frozen_playbook_protocol_and_reconciles) ... ok\ntest_engine_job_rejects_draft_manual_and_locked_holdout (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_engine_job_rejects_draft_manual_and_locked_holdout) ... ok\ntest_half_open_holdout_boundary_and_worker_reauthorization (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_half_open_holdout_boundary_and_worker_reauthorization) ... ok\ntest_independent_reconciliation_blocks_self_consistent_cost_bug (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_independent_reconciliation_blocks_self_consistent_cost_bug) ... ok\ntest_protocol_tamper_and_bar_budget_do_not_publish_result (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_protocol_tamper_and_bar_budget_do_not_publish_result) ... ok\ntest_same_protocol_reproduces_business_output_and_old_revision_stays_pinned (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_same_protocol_reproduces_business_output_and_old_revision_stays_pinned) ... ok\ntest_tenant_boundary_hides_foreign_playbook_and_result (foundation_v2.tests.test_u5_engine_path2.U5EnginePath2Tests.test_tenant_boundary_hides_foreign_playbook_and_result) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 17.225s\n\nOK\n"
+    },
+    {
+      "module": "test_u5_nautilus",
+      "tests": 8,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_long_and_short_match_hand_cost_tick_and_timing_oracles (foundation_v2.tests.test_u5_nautilus.NautilusIndependentOracleTests.test_long_and_short_match_hand_cost_tick_and_timing_oracles) ... ok\ntest_runtime_identity_and_dependency_isolation_are_pinned (foundation_v2.tests.test_u5_nautilus.NautilusIndependentOracleTests.test_runtime_identity_and_dependency_isolation_are_pinned) ... ok\ntest_runtime_version_mismatch_is_rejected_before_normalization (foundation_v2.tests.test_u5_nautilus.NautilusIndependentOracleTests.test_runtime_version_mismatch_is_rejected_before_normalization) ... ok\ntest_worker_death_closes_owned_job_and_kills_child (foundation_v2.tests.test_u5_nautilus.NautilusIndependentOracleTests.test_worker_death_closes_owned_job_and_kills_child) ... ok\ntest_actual_engine_job_and_reference_agree_on_business_ledger (foundation_v2.tests.test_u5_nautilus.NautilusIntegrationTests.test_actual_engine_job_and_reference_agree_on_business_ledger) ... ok\ntest_cancellation_stops_running_native_child (foundation_v2.tests.test_u5_nautilus.NautilusIntegrationTests.test_cancellation_stops_running_native_child) ... ok\ntest_primary_engine_is_explicit_and_new_requests_default_to_it (foundation_v2.tests.test_u5_nautilus.NautilusIntegrationTests.test_primary_engine_is_explicit_and_new_requests_default_to_it) ... ok\ntest_timeout_kills_process_and_never_publishes (foundation_v2.tests.test_u5_nautilus.NautilusIntegrationTests.test_timeout_kills_process_and_never_publishes) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 19.078s\n\nOK\n"
+    },
+    {
+      "module": "test_u2_data_ingest",
+      "tests": 6,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_holdout_metadata_never_authorizes_content_past_boundary (foundation_v2.tests.test_u2_data_ingest.U2DataIngestTests.test_holdout_metadata_never_authorizes_content_past_boundary) ... ok\ntest_naive_time_and_insufficient_dataset_fail_closed (foundation_v2.tests.test_u2_data_ingest.U2DataIngestTests.test_naive_time_and_insufficient_dataset_fail_closed) ... ok\ntest_overlapping_timeframes_are_not_qa_approved (foundation_v2.tests.test_u2_data_ingest.U2DataIngestTests.test_overlapping_timeframes_are_not_qa_approved) ... ok\ntest_preview_and_import_preserve_identity_range_and_raw_copy (foundation_v2.tests.test_u2_data_ingest.U2DataIngestTests.test_preview_and_import_preserve_identity_range_and_raw_copy) ... ok\ntest_preview_exposes_duplicates_order_gaps_and_locked_holdout_metadata (foundation_v2.tests.test_u2_data_ingest.U2DataIngestTests.test_preview_exposes_duplicates_order_gaps_and_locked_holdout_metadata) ... ok\ntest_same_inputs_are_reproducible_and_instrument_change_changes_identity (foundation_v2.tests.test_u2_data_ingest.U2DataIngestTests.test_same_inputs_are_reproducible_and_instrument_change_changes_identity) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.954s\n\nOK\n"
+    },
+    {
+      "module": "test_u3_playbook_journal",
+      "tests": 3,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_frozen_playbook_is_immutable_and_fork_preserves_lineage (foundation_v2.tests.test_u3_playbook_journal.U3PlaybookJournalTests.test_frozen_playbook_is_immutable_and_fork_preserves_lineage) ... ok\ntest_journal_source_is_immutable_while_review_fields_are_revisioned (foundation_v2.tests.test_u3_playbook_journal.U3PlaybookJournalTests.test_journal_source_is_immutable_while_review_fields_are_revisioned) ... ok\ntest_lineage_is_server_managed_and_workspace_scoped (foundation_v2.tests.test_u3_playbook_journal.U3PlaybookJournalTests.test_lineage_is_server_managed_and_workspace_scoped) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 1.793s\n\nOK\n"
+    },
+    {
+      "module": "test_f7_product_slice",
+      "tests": 6,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_ai_boundary_and_execution_remain_non_broker (foundation_v2.tests.test_f7_product_slice.F7ProductSliceTests.test_ai_boundary_and_execution_remain_non_broker) ... ok\ntest_data_catalog_and_overview_are_tenant_scoped (foundation_v2.tests.test_f7_product_slice.F7ProductSliceTests.test_data_catalog_and_overview_are_tenant_scoped) ... ok\ntest_data_cost_news_and_prop_contracts_preserve_unknowns (foundation_v2.tests.test_f7_product_slice.F7ProductSliceTests.test_data_cost_news_and_prop_contracts_preserve_unknowns) ... ok\ntest_playbook_journal_and_annotation_are_versioned_and_isolated (foundation_v2.tests.test_f7_product_slice.F7ProductSliceTests.test_playbook_journal_and_annotation_are_versioned_and_isolated) ... ok\ntest_replay_cutoff_branch_and_future_suffix_are_isolated (foundation_v2.tests.test_f7_product_slice.F7ProductSliceTests.test_replay_cutoff_branch_and_future_suffix_are_isolated) ... ok\ntest_research_cancel_is_durable_and_produces_no_result (foundation_v2.tests.test_f7_product_slice.F7ProductSliceTests.test_research_cancel_is_durable_and_produces_no_result) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 4.601s\n\nOK\n"
+    },
+    {
+      "module": "test_fh1_job_lifecycle",
+      "tests": 13,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_background_lease_heartbeat_prevents_reclaim_during_blocking_read (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_background_lease_heartbeat_prevents_reclaim_during_blocking_read) ... ok\ntest_cancel_and_complete_race_has_one_consistent_terminal_winner (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_cancel_and_complete_race_has_one_consistent_terminal_winner) ... ok\ntest_cancel_before_finalize_wins_and_candidate_is_not_authoritative (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_cancel_before_finalize_wins_and_candidate_is_not_authoritative) ... ok\ntest_complete_before_cancel_wins (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_complete_before_cancel_wins) ... ok\ntest_concurrent_candidate_quarantine_is_idempotent (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_concurrent_candidate_quarantine_is_idempotent) ... ok\ntest_crash_after_candidate_leaves_orphan_but_retry_can_publish (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_crash_after_candidate_leaves_orphan_but_retry_can_publish) ... ok\ntest_crash_after_claim_requeues_and_stale_attempt_cannot_finalize (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_crash_after_claim_requeues_and_stale_attempt_cannot_finalize) ... ok\ntest_recovery_quarantines_candidate_written_after_cancel_scan_then_crash (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_recovery_quarantines_candidate_written_after_cancel_scan_then_crash) ... ok\ntest_running_cancel_terminalizes_without_waiting_for_lease_expiry (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_running_cancel_terminalizes_without_waiting_for_lease_expiry) ... ok\ntest_service_restart_reclaims_an_expired_running_job (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_service_restart_reclaims_an_expired_running_job) ... ok\ntest_service_run_one_publishes_only_the_owned_attempt (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_service_run_one_publishes_only_the_owned_attempt) ... ok\ntest_stale_worker_observing_cancel_terminalizes_expired_last_job (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_stale_worker_observing_cancel_terminalizes_expired_last_job) ... ok\ntest_two_workers_cannot_claim_the_same_job (foundation_v2.tests.test_fh1_job_lifecycle.FH1JobLifecycleTests.test_two_workers_cannot_claim_the_same_job) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 9.973s\n\nOK\n"
+    },
+    {
+      "module": "test_fh2_workspace_auth",
+      "tests": 5,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_cross_tenant_job_and_completed_artifact_are_not_exposed (foundation_v2.tests.test_fh2_workspace_auth.FH2WorkspaceAuthorizationTests.test_cross_tenant_job_and_completed_artifact_are_not_exposed) ... ok\ntest_cross_tenant_record_id_is_hidden (foundation_v2.tests.test_fh2_workspace_auth.FH2WorkspaceAuthorizationTests.test_cross_tenant_record_id_is_hidden) ... ok\ntest_health_discloses_local_only_auth_and_execution_stays_locked (foundation_v2.tests.test_fh2_workspace_auth.FH2WorkspaceAuthorizationTests.test_health_discloses_local_only_auth_and_execution_stays_locked) ... ok\ntest_missing_trusted_identity_is_rejected (foundation_v2.tests.test_fh2_workspace_auth.FH2WorkspaceAuthorizationTests.test_missing_trusted_identity_is_rejected) ... ok\ntest_workspace_header_is_only_a_request_and_revocation_is_immediate (foundation_v2.tests.test_fh2_workspace_auth.FH2WorkspaceAuthorizationTests.test_workspace_header_is_only_a_request_and_revocation_is_immediate) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 1.588s\n\nOK\n"
+    },
+    {
+      "module": "test_reference_slice",
+      "tests": 1,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_two_tenants_job_worker_api_and_immutable_artifact (foundation_v2.tests.test_reference_slice.ReferenceSliceTests.test_two_tenants_job_worker_api_and_immutable_artifact) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 2.108s\n\nOK\n"
+    },
+    {
+      "module": "test_contracts",
+      "tests": 3,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_retained_ai_boundary_has_no_broker_or_execution_imports (foundation_v2.tests.test_contracts.ContractTests.test_retained_ai_boundary_has_no_broker_or_execution_imports) ... ok\ntest_retained_modules_stay_framework_independent (foundation_v2.tests.test_contracts.ContractTests.test_retained_modules_stay_framework_independent) ... ok\ntest_source_contract_matches_retained_validator (foundation_v2.tests.test_contracts.ContractTests.test_source_contract_matches_retained_validator) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.025s\n\nOK\n"
+    },
+    {
+      "module": "test_u2_provider_boundary",
+      "tests": 4,
+      "skipped": 0,
+      "passed": true,
+      "log": "test_default_registry_discloses_local_capabilities_without_remote_claims (foundation_v2.tests.test_u2_provider_boundary.U2ProviderBoundaryTests.test_default_registry_discloses_local_capabilities_without_remote_claims) ... ok\ntest_duplicate_provider_ids_fail_closed (foundation_v2.tests.test_u2_provider_boundary.U2ProviderBoundaryTests.test_duplicate_provider_ids_fail_closed) ... ok\ntest_fake_provider_proves_replacement_and_keeps_workspace_scope (foundation_v2.tests.test_u2_provider_boundary.U2ProviderBoundaryTests.test_fake_provider_proves_replacement_and_keeps_workspace_scope) ... ok\ntest_local_catalog_exposes_only_the_authorized_workspace_dataset (foundation_v2.tests.test_u2_provider_boundary.U2ProviderBoundaryTests.test_local_catalog_exposes_only_the_authorized_workspace_dataset) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.541s\n\nOK\n"
+    }
+  ],
+  "passed": true
+}

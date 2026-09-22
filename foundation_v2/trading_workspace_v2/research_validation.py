@@ -66,6 +66,36 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
     timeframe = int(protocol["dataset"]["timeframe_seconds"])
     bars = None if rows is None else [row for row in rows if protocol["range"]["from_utc"] <= row["timestamp"] and row["timestamp"] + timeframe <= protocol["range"]["to_utc"]]
     index_by_time = {} if bars is None else {row["timestamp"]: i for i, row in enumerate(bars)}
+    native_fills = None
+    if protocol.get("engine", {}).get("backend") == "nautilus":
+        execution = result.get("execution")
+        if not isinstance(execution, dict) or not isinstance(execution.get("fills"), list):
+            raise ResearchReconciliationError("Nautilus execution evidence is missing")
+        if execution.get("native_version") != protocol["engine"].get("native_version"):
+            raise ResearchReconciliationError("Nautilus runtime identity differs from protocol")
+        if execution.get("adapter_version") != protocol["engine"].get("adapter_version"):
+            raise ResearchReconciliationError("Nautilus adapter identity differs from protocol")
+        if execution.get("runtime_identity") != protocol["engine"].get("runtime_identity"):
+            raise ResearchReconciliationError("Nautilus runtime environment differs from protocol")
+        isolation = execution.get("isolation") or {}
+        if isolation.get("worker_owned_job_object") is not True or isolation.get("active_process_limit") != 1:
+            raise ResearchReconciliationError("Nautilus process isolation evidence is incomplete")
+        if isolation.get("process_memory_limit_mb") != protocol["budget"].get("max_memory_mb"):
+            raise ResearchReconciliationError("Nautilus memory isolation differs from protocol")
+        if execution.get("signals") != result.get("signals"):
+            raise ResearchReconciliationError("Nautilus signal evidence differs from result")
+        observed = execution.get("observed_range") or {}
+        published_observed = result.get("observed_range") or {}
+        for field in ("from_utc", "to_utc", "bar_count"):
+            if observed.get(field) != published_observed.get(field):
+                raise ResearchReconciliationError("Nautilus observed range differs from result")
+        native_fills = execution["fills"]
+        if len(native_fills) != len(ledger) * 2:
+            raise ResearchReconciliationError("Nautilus fill count does not match ledger")
+        fill_ids = [fill.get("native_trade_id") for fill in native_fills]
+        order_ids = [fill.get("client_order_id") for fill in native_fills]
+        if any(not value for value in fill_ids + order_ids) or len(set(fill_ids)) != len(fill_ids) or len(set(order_ids)) != len(order_ids):
+            raise ResearchReconciliationError("Nautilus fill/order identities are missing or duplicated")
     nets, gross_values, fee_values, rs = [], [], [], []
     last_close = protocol["range"]["from_utc"]
 
@@ -89,6 +119,38 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
         if not last_close <= signal <= opened < closed <= protocol["range"]["to_utc"]:
             raise ResearchReconciliationError(f"{label} timing order/overlap is invalid")
         last_close = closed
+
+        if native_fills is not None:
+            native_entry, native_exit = native_fills[index * 2:index * 2 + 2]
+            link = trade.get("execution_link")
+            if not isinstance(link, dict):
+                raise ResearchReconciliationError(f"{label} Nautilus execution link is missing")
+            expected_link = {
+                "entry_order_id": native_entry.get("client_order_id"),
+                "exit_order_id": native_exit.get("client_order_id"),
+                "entry_fill_id": native_entry.get("native_trade_id"),
+                "exit_fill_id": native_exit.get("native_trade_id"),
+                "entry_timestamp_ns": native_entry.get("timestamp_ns"),
+                "exit_timestamp_ns": native_exit.get("timestamp_ns"),
+            }
+            if link != expected_link:
+                raise ResearchReconciliationError(f"{label} Nautilus execution identity differs from raw fills")
+            if native_entry.get("role") != "entry" or native_exit.get("role") != "exit":
+                raise ResearchReconciliationError(f"{label} Nautilus fill roles are invalid")
+            if native_entry.get("signal_time_utc") != signal or native_exit.get("signal_time_utc") != signal:
+                raise ResearchReconciliationError(f"{label} Nautilus fill signal linkage is invalid")
+            if native_entry.get("side") != side or native_exit.get("side") == side:
+                raise ResearchReconciliationError(f"{label} Nautilus fill sides are invalid")
+            _expect(native_entry.get("units"), units, label + ".native_entry.units")
+            _expect(native_exit.get("units"), units, label + ".native_exit.units")
+            _expect(native_entry.get("price"), entry, label + ".native_entry.price")
+            _expect(native_exit.get("price"), exit_price, label + ".native_exit.price")
+            entry_ns = native_entry.get("timestamp_ns")
+            exit_ns = native_exit.get("timestamp_ns")
+            if type(entry_ns) is not int or type(exit_ns) is not int:
+                raise ResearchReconciliationError(f"{label} Nautilus fill timestamps must be integer nanoseconds")
+            if entry_ns != opened * 10**9 + 1 or exit_ns != closed * 10**9:
+                raise ResearchReconciliationError(f"{label} Nautilus fill timing differs from next-open/fixed-close contract")
 
         if bars is not None:
             entry_index = index_by_time.get(opened, -1)

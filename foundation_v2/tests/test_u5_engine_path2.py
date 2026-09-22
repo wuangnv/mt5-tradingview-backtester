@@ -147,6 +147,7 @@ class U5EnginePath2Tests(unittest.TestCase):
             "data_from_utc": 0,
             "data_to_utc": 28_800,
             "split": "baseline",
+            "engine_backend": "reference",
             "seed": 7,
             "spread_price": 0.0002,
             "cost_model": {

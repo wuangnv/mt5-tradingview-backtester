@@ -26,10 +26,23 @@ def engine_code_sha256() -> str:
     package = Path(__file__).resolve().parent
     sources = {f"foundation/{path.name}": path for path in package.glob("*.py")}
     sources["foundation/uv.lock"] = package.parent / "uv.lock"
+    runtime = package.parent / "engine_runtime"
+    for name in ("adapter.py", "limits.py", "run.py", "pyproject.toml", "uv.lock"):
+        path = runtime / name
+        if path.is_file():
+            sources[f"engine_runtime/{name}"] = path
     for module in (CostModel, InstrumentSpec, calculate_round_trip_cost, compute_metrics_v2):
         sources[f"retained/{module.__module__}.py"] = Path(inspect.getfile(module))
     manifest = {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in sources.items()}
     return hashlib.sha256(json.dumps(manifest, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def verify_engine_code(protocol):
+    current_hash = engine_code_sha256()
+    if current_hash != _LOADED_CODE_SHA256:
+        raise ResearchEngineValidationError("engine sources changed; restart worker before execution")
+    if protocol.get("engine", {}).get("code_sha256") != current_hash:
+        raise ResearchEngineValidationError("engine code hash no longer matches queued protocol")
 
 
 def _positive_int(value, name: str) -> int:
@@ -82,11 +95,7 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
     check()
     if protocol.get("engine", {}).get("version") != ENGINE_VERSION:
         raise ResearchEngineValidationError("unsupported engine version")
-    current_hash = engine_code_sha256()
-    if current_hash != _LOADED_CODE_SHA256:
-        raise ResearchEngineValidationError("engine sources changed; restart worker before execution")
-    if protocol.get("engine", {}).get("code_sha256") != current_hash:
-        raise ResearchEngineValidationError("engine code hash no longer matches queued protocol")
+    verify_engine_code(protocol)
 
     rules = protocol.get("playbook", {}).get("rules") or {}
     validate_rules(rules)
