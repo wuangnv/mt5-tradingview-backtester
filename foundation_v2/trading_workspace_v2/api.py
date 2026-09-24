@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
@@ -29,6 +30,7 @@ from .contracts import (
     RevisionRequest,
 )
 from .data_sources import DataProviderRegistry, LocalCatalogProvider
+from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .replay import ReplayService
 from .research import ResearchService
@@ -55,6 +57,7 @@ def create_app(
     ai_service=None,
     authorization: LocalWorkspaceAuthorization | None = None,
     data_registry: DataProviderRegistry | None = None,
+    learn_roots: Mapping[str, str | Path] | None = None,
 ) -> FastAPI:
     dsn = dsn or os.environ["TW_V2_DATABASE_URL"]
     artifact_root = artifact_root or os.environ["TW_V2_ARTIFACT_ROOT"]
@@ -65,6 +68,13 @@ def create_app(
     replay = ReplayService(store, artifacts)
     product = ProductService(store, ai_service=ai_service)
     data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store)])
+    if learn_roots is None:
+        learn_workspace = os.getenv("TW_V2_LEARN_WORKSPACE_ID")
+        education_root = os.getenv("TW_V2_EDUCATION_ROOT")
+        if bool(learn_workspace) != bool(education_root):
+            raise RuntimeError("TW_V2_LEARN_WORKSPACE_ID and TW_V2_EDUCATION_ROOT must be configured together")
+        learn_roots = {learn_workspace: education_root} if learn_workspace and education_root else {}
+    learn = LearnCatalog(learn_roots)
 
     if authorization is None:
         with store.connect() as conn:
@@ -83,6 +93,7 @@ def create_app(
     app.state.product = product
     app.state.replay = replay
     app.state.data_registry = data_registry
+    app.state.learn = learn
     app.state.authorization = authorization
 
     @app.get("/health")
@@ -97,6 +108,35 @@ def create_app(
     @app.get("/api/v2/overview")
     def get_overview(workspace: str = Depends(workspace_id)):
         return product.overview(workspace)
+
+    @app.get("/api/v2/learn/overview")
+    def get_learn_overview(workspace: str = Depends(workspace_id)):
+        try:
+            return learn.overview(workspace)
+        except LearnWorkspaceNotConfigured as exc:
+            raise HTTPException(status_code=404, detail="learn_not_configured") from exc
+        except LearnCatalogError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @app.get("/api/v2/learn/glossary")
+    def get_learn_glossary(workspace: str = Depends(workspace_id)):
+        try:
+            return learn.glossary(workspace)
+        except LearnWorkspaceNotConfigured as exc:
+            raise HTTPException(status_code=404, detail="learn_not_configured") from exc
+        except LearnCatalogError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @app.get("/api/v2/learn/resources/{resource_id}")
+    def get_learn_resource(resource_id: str, workspace: str = Depends(workspace_id)):
+        try:
+            return learn.resource(workspace, resource_id)
+        except LearnWorkspaceNotConfigured as exc:
+            raise HTTPException(status_code=404, detail="learn_not_configured") from exc
+        except LearnResourceNotFound as exc:
+            raise HTTPException(status_code=404, detail="learn_resource_not_found") from exc
+        except LearnCatalogError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
