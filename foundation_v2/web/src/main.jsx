@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createChart, LineSeries } from 'lightweight-charts'
+import LearnWorkspace from './LearnWorkspace.jsx'
 import ReplayWorkspace from './ReplayWorkspace.jsx'
 import './styles.css'
 
@@ -42,6 +43,8 @@ function EquityChart({ points }) {
 
 function ResearchWorkspace({ workspace, query }) {
   const jobId = query.get('job') || ''
+  const learnParams = new URLSearchParams({ view: 'learn', workspace, from: 'research' })
+  if (jobId) learnParams.set('job', jobId)
   const [state, setState] = useState({ status: 'loading', payload: null, error: null })
 
   useEffect(() => {
@@ -77,7 +80,10 @@ function ResearchWorkspace({ workspace, query }) {
           <div className="eyebrow">FOUNDATION V2 / REFERENCE SLICE</div>
           <h1>Nghien cuu</h1>
         </div>
-        <div className="safety" data-testid="safety-lock">Khong co quyen gui lenh broker</div>
+        <div className="topbar-actions">
+          <a className="context-link" href={`/?${learnParams.toString()}`}>Học & thuật ngữ</a>
+          <div className="safety" data-testid="safety-lock">Khong co quyen gui lenh broker</div>
+        </div>
       </header>
 
       <section className="statusbar" aria-label="Trang thai run">
@@ -131,8 +137,10 @@ function ResearchWorkspace({ workspace, query }) {
 function App() {
   const query = new URLSearchParams(window.location.search)
   const workspace = query.get('workspace') || 'tenant-a'
+  const isLearn = query.get('view') === 'learn'
   const isReplay = query.get('view') === 'replay' || query.has('session') || query.has('dataset')
 
+  if (isLearn) return <LearnWorkspace workspace={workspace} query={query} />
   if (isReplay) return <ReplayWorkspace workspace={workspace} query={query} />
   return <ResearchWorkspace workspace={workspace} query={query} />
 }

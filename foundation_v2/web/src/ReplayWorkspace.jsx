@@ -216,9 +216,12 @@ export default function ReplayWorkspace({ workspace, query }) {
           <h1>Replay thị trường</h1>
           <p>Chỉ hiển thị phần dữ liệu đã mở tới decision cutoff hiện tại.</p>
         </div>
-        <div className="replay-lock" data-testid="replay-lock">
-          <strong>REPLAY / SIMULATION</strong>
-          <span>Broker locked · không gửi lệnh</span>
+        <div className="replay-topbar-actions">
+          <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}`}>Học & thuật ngữ</a>
+          <div className="replay-lock" data-testid="replay-lock">
+            <strong>REPLAY / SIMULATION</strong>
+            <span>Broker locked · không gửi lệnh</span>
+          </div>
         </div>
       </header>
 

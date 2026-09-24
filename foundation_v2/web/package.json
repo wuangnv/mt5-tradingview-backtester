@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "test:learn-ui": "node run_learn_ui_acceptance.mjs"
   },
   "dependencies": {
     "lightweight-charts": "^5.0.0",
