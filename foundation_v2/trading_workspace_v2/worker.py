@@ -21,9 +21,17 @@ def main() -> int:
         default=float(os.getenv("TW_V2_WORKER_POLL_SECONDS", "1")),
         help="idle polling interval for persistent recovery/worker mode",
     )
+    parser.add_argument(
+        "--max-active-jobs",
+        type=int,
+        default=int(os.getenv("TW_V2_MAX_ACTIVE_RESEARCH_JOBS", "1")),
+        help="global active research-job admission cap for this PostgreSQL authority",
+    )
     args = parser.parse_args()
     if args.poll_seconds <= 0:
         raise SystemExit("--poll-seconds must be positive")
+    if args.max_active_jobs <= 0:
+        raise SystemExit("--max-active-jobs must be positive")
     store = PostgresStore(os.environ["TW_V2_DATABASE_URL"])
     store.initialize()
     worker_id = os.getenv("TW_V2_WORKER_ID") or f"{socket.gethostname()}-{os.getpid()}-{uuid4().hex[:8]}"
@@ -33,6 +41,7 @@ def main() -> int:
         ArtifactStore(os.environ["TW_V2_ARTIFACT_ROOT"]),
         worker_id=worker_id,
         lease_seconds=lease_seconds,
+        max_active_jobs=args.max_active_jobs,
     )
     if args.once:
         result = service.run_one()

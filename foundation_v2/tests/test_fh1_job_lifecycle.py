@@ -378,6 +378,71 @@ class FH1JobLifecycleTests(unittest.TestCase):
         self.assertEqual(len(owned), 1)
         self.assertEqual(owned[0].job_id, job.job_id)
 
+    def test_checkpoint_survives_expired_lease_and_stale_writer_is_denied(self):
+        job = self.create_job()
+        first = self.store.claim_next_job("worker-a", 60)
+        self.assertTrue(
+            self.store.update_job_checkpoint(
+                first,
+                checkpoint={"schema": "research-job-checkpoint-v1", "phase": "dataset-loaded", "attempt_no": first.attempt_no},
+                progress={"phase_index": 2, "phase_count": 4},
+            )
+        )
+        self.expire(job.job_id)
+        second = self.store.claim_next_job("worker-b", 60)
+        self.assertEqual(second.attempt_no, first.attempt_no + 1)
+
+        checkpoint = self.store.get_job_checkpoint("tenant-a", job.job_id)
+        self.assertEqual(checkpoint["checkpoint"]["phase"], "dataset-loaded")
+        self.assertEqual(checkpoint["checkpoint"]["attempt_no"], first.attempt_no)
+        self.assertEqual(checkpoint["current_attempt_no"], second.attempt_no)
+        self.assertFalse(
+            self.store.update_job_checkpoint(
+                first,
+                checkpoint={"schema": "research-job-checkpoint-v1", "phase": "stale"},
+            )
+        )
+        self.assertTrue(
+            self.store.update_job_checkpoint(
+                second,
+                checkpoint={"schema": "research-job-checkpoint-v1", "phase": "resumed", "attempt_no": second.attempt_no},
+            )
+        )
+
+    def test_global_admission_cap_is_atomic_across_workers(self):
+        first_job = self.create_job()
+        second_job = self.create_job()
+        barrier = threading.Barrier(2)
+
+        def claim(worker_id: str):
+            barrier.wait()
+            return PostgresStore(self.dsn).claim_next_job(
+                worker_id,
+                60,
+                max_active_jobs=1,
+            )
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            claims = list(pool.map(claim, ("worker-a", "worker-b")))
+
+        owned = [claimed for claimed in claims if claimed is not None]
+        self.assertEqual(len(owned), 1)
+        self.assertIn(owned[0].job_id, {first_job.job_id, second_job.job_id})
+        with self.store.connect() as conn:
+            statuses = conn.execute(
+                "SELECT status,count(*) AS n FROM research_jobs GROUP BY status ORDER BY status"
+            ).fetchall()
+        self.assertEqual({row["status"]: int(row["n"]) for row in statuses}, {"queued": 1, "running": 1})
+
+    def test_run_one_persists_candidate_ready_checkpoint(self):
+        job = self.create_job()
+        result = self.service.run_one()
+        self.assertEqual(result.job_id, job.job_id)
+        checkpoint = self.store.get_job_checkpoint("tenant-a", job.job_id)
+        self.assertEqual(checkpoint["status"], "completed")
+        self.assertEqual(checkpoint["checkpoint"]["phase"], "candidate-ready")
+        self.assertEqual(checkpoint["progress"], {"phase_count": 4, "phase_index": 4})
+
 
 if __name__ == "__main__":
     unittest.main()

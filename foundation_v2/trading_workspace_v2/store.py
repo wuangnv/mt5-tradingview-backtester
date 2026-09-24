@@ -10,6 +10,9 @@ from psycopg.rows import dict_row
 from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
 
 
+RESEARCH_JOB_ADMISSION_LOCK_KEY = 0x52534A41
+
+
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS workspaces (
     workspace_id text PRIMARY KEY,
@@ -57,6 +60,8 @@ ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_token text;
 ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS lease_expires_at_utc timestamptz;
 ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS protocol_json jsonb;
 ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS protocol_sha256 text;
+ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS checkpoint_json jsonb;
+ALTER TABLE research_jobs ADD COLUMN IF NOT EXISTS progress_json jsonb;
 ALTER TABLE research_jobs DROP CONSTRAINT IF EXISTS research_jobs_status_check;
 ALTER TABLE research_jobs ADD CONSTRAINT research_jobs_status_check
     CHECK (status IN ('queued','running','completed','failed','canceled'));
@@ -242,6 +247,66 @@ class PostgresStore:
             updated_at_utc=row["updated_at_utc"],
         )
 
+    def update_job_checkpoint(
+        self,
+        job: ClaimedJob,
+        *,
+        checkpoint: dict,
+        progress: dict | None = None,
+    ) -> bool:
+        """Persist resumable worker state only for the current lease owner."""
+        if not isinstance(checkpoint, dict):
+            raise ValueError("checkpoint must be an object")
+        if checkpoint.get("schema") != "research-job-checkpoint-v1" or not isinstance(checkpoint.get("phase"), str):
+            raise ValueError("checkpoint schema/phase is invalid")
+        if progress is not None and not isinstance(progress, dict):
+            raise ValueError("progress must be an object")
+        now = utc_now_iso()
+        with self.connect() as conn:
+            updated = conn.execute(
+                """
+                UPDATE research_jobs
+                SET checkpoint_json=%s::jsonb,
+                    progress_json=COALESCE(%s::jsonb, progress_json),
+                    updated_at_utc=%s
+                WHERE workspace_id=%s AND job_id=%s AND status='running'
+                  AND attempt_no=%s AND lease_owner=%s AND lease_token=%s
+                  AND lease_expires_at_utc > CURRENT_TIMESTAMP
+                """,
+                (
+                    json.dumps(checkpoint, sort_keys=True),
+                    json.dumps(progress, sort_keys=True) if progress is not None else None,
+                    now,
+                    job.workspace_id,
+                    job.job_id,
+                    job.attempt_no,
+                    job.lease_owner,
+                    job.lease_token,
+                ),
+            )
+            conn.commit()
+        return updated.rowcount == 1
+
+    def get_job_checkpoint(self, workspace_id: str, job_id: str) -> dict | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT checkpoint_json,progress_json,attempt_no,status,updated_at_utc
+                FROM research_jobs
+                WHERE workspace_id=%s AND job_id=%s
+                """,
+                (workspace_id, job_id),
+            ).fetchone()
+        if not row or row["checkpoint_json"] is None:
+            return None
+        return {
+            "checkpoint": row["checkpoint_json"],
+            "progress": row["progress_json"],
+            "current_attempt_no": int(row["attempt_no"]),
+            "status": row["status"],
+            "updated_at_utc": row["updated_at_utc"],
+        }
+
     def _recover_expired_jobs(self, conn, now: str) -> list[dict]:
         return conn.execute(
             """
@@ -277,16 +342,39 @@ class PostgresStore:
             ).fetchall()
         return [dict(row) for row in rows]
 
-    def claim_next_job(self, worker_id: str = "local-worker", lease_seconds: int = 30) -> ClaimedJob | None:
+    def claim_next_job(
+        self,
+        worker_id: str = "local-worker",
+        lease_seconds: int = 30,
+        max_active_jobs: int | None = None,
+    ) -> ClaimedJob | None:
         worker_id = worker_id.strip()
         if not worker_id:
             raise ValueError("worker_id is required")
         if lease_seconds <= 0:
             raise ValueError("lease_seconds must be positive")
+        if max_active_jobs is not None and max_active_jobs <= 0:
+            raise ValueError("max_active_jobs must be positive")
         lease_token = uuid4().hex
         with self.connect() as conn:
             now = utc_now_iso()
             self._recover_expired_jobs(conn, now)
+            if max_active_jobs is not None:
+                # Every capped product worker claim must use this transaction lock so
+                # the active-count check and the following claim share one admission gate.
+                conn.execute("SELECT pg_advisory_xact_lock(%s)", (RESEARCH_JOB_ADMISSION_LOCK_KEY,))
+                active = conn.execute(
+                    """
+                    SELECT count(*) AS n
+                    FROM research_jobs
+                    WHERE status='running'
+                      AND cancel_requested=false
+                      AND lease_expires_at_utc > CURRENT_TIMESTAMP
+                    """
+                ).fetchone()["n"]
+                if int(active) >= max_active_jobs:
+                    conn.commit()
+                    return None
             row = conn.execute(
                 """
                 SELECT workspace_id,job_id,dataset_id,strategy_version,starting_balance,attempt_no,

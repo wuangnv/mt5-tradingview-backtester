@@ -58,11 +58,15 @@ class ResearchService:
         *,
         worker_id: str | None = None,
         lease_seconds: int = 30,
+        max_active_jobs: int | None = None,
     ):
         self.store = store
         self.artifacts = artifacts
         self.worker_id = worker_id or f"research-{uuid4().hex}"
         self.lease_seconds = lease_seconds
+        if max_active_jobs is not None and max_active_jobs <= 0:
+            raise ValueError("max_active_jobs must be positive")
+        self.max_active_jobs = max_active_jobs
 
     def register_dataset(
         self,
@@ -241,6 +245,17 @@ class ResearchService:
                 raise LookupError("claimed dataset missing")
             if not lease_guard.owned():
                 return None
+            if not self.save_checkpoint(
+                job,
+                {
+                    "schema": "research-job-checkpoint-v1",
+                    "phase": "claimed",
+                    "attempt_no": job.attempt_no,
+                    "dataset_id": job.dataset_id,
+                },
+                {"phase_index": 0, "phase_count": 4},
+            ):
+                return None
             if job.protocol is not None:
                 if not job.protocol_sha256:
                     raise ResearchEngineValidationError("engine job is missing protocol hash")
@@ -250,6 +265,17 @@ class ResearchService:
                 _check_holdout(manifest, int(job.protocol["range"]["to_utc"]))
                 if job.protocol.get("dataset") != _engine_dataset_snapshot(manifest):
                     raise ResearchEngineValidationError("dataset snapshot changed after job creation")
+                if not self.save_checkpoint(
+                    job,
+                    {
+                        "schema": "research-job-checkpoint-v1",
+                        "phase": "protocol-validated",
+                        "attempt_no": job.attempt_no,
+                        "protocol_sha256": job.protocol_sha256,
+                    },
+                    {"phase_index": 1, "phase_count": 4},
+                ):
+                    return None
                 started = time.perf_counter()
                 deadline = started + int(job.protocol["budget"]["max_runtime_ms"]) / 1000
 
@@ -265,6 +291,19 @@ class ResearchService:
                         from_utc=job.protocol["range"]["from_utc"], to_utc=job.protocol["range"]["to_utc"],
                         max_bars=job.protocol["budget"]["max_bars"], continue_check=check_budget,
                     )
+                    if not self.save_checkpoint(
+                        job,
+                        {
+                            "schema": "research-job-checkpoint-v1",
+                            "phase": "dataset-loaded",
+                            "attempt_no": job.attempt_no,
+                            "row_count": len(rows),
+                            "from_utc": job.protocol["range"]["from_utc"],
+                            "to_utc": job.protocol["range"]["to_utc"],
+                        },
+                        {"phase_index": 2, "phase_count": 4},
+                    ):
+                        return None
                     verify_engine_code(job.protocol)
                     if job.protocol["engine"].get("backend", "reference") == "nautilus":
                         native = execute_native_process(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
@@ -301,6 +340,17 @@ class ResearchService:
                     check_budget()
                 except ResearchEngineInterrupted:
                     return None
+                if not self.save_checkpoint(
+                    job,
+                    {
+                        "schema": "research-job-checkpoint-v1",
+                        "phase": "result-validated",
+                        "attempt_no": job.attempt_no,
+                        "trade_count": len(result.ledger),
+                    },
+                    {"phase_index": 3, "phase_count": 4},
+                ):
+                    return None
                 path, checksum = self.artifacts.write_result_candidate(
                     job.workspace_id,
                     job.job_id,
@@ -316,6 +366,18 @@ class ResearchService:
                 except Exception:
                     self.artifacts.quarantine_result_candidate(path)
                     raise
+                if not self.save_checkpoint(
+                    job,
+                    {
+                        "schema": "research-job-checkpoint-v1",
+                        "phase": "candidate-ready",
+                        "attempt_no": job.attempt_no,
+                        "result_sha256": checksum,
+                    },
+                    {"phase_index": 4, "phase_count": 4},
+                ):
+                    self.artifacts.quarantine_result_candidate(path)
+                    return None
                 try:
                     completed = self.store.complete_job(job, path, checksum)
                 except Exception:
@@ -328,6 +390,17 @@ class ResearchService:
             if job.strategy_version != "close-delta-v1":
                 raise ValueError("unsupported strategy version")
             rows = self.artifacts.read_dataset(manifest.artifact_path, manifest.artifact_sha256)
+            if not self.save_checkpoint(
+                job,
+                {
+                    "schema": "research-job-checkpoint-v1",
+                    "phase": "dataset-loaded",
+                    "attempt_no": job.attempt_no,
+                    "row_count": len(rows),
+                },
+                {"phase_index": 2, "phase_count": 4},
+            ):
+                return None
             ledger = []
             for index in range(1, len(rows)):
                 if not lease_guard.owned():
@@ -365,6 +438,18 @@ class ResearchService:
                 job.lease_token,
                 result.model_dump(mode="json"),
             )
+            if not self.save_checkpoint(
+                job,
+                {
+                    "schema": "research-job-checkpoint-v1",
+                    "phase": "candidate-ready",
+                    "attempt_no": job.attempt_no,
+                    "result_sha256": checksum,
+                },
+                {"phase_index": 4, "phase_count": 4},
+            ):
+                self.artifacts.quarantine_result_candidate(path)
+                return None
             if not lease_guard.owned():
                 self.artifacts.quarantine_result_candidate(path)
                 return None
@@ -380,7 +465,11 @@ class ResearchService:
 
     def run_one(self) -> ResearchResult | EngineResearchResult | None:
         self.recover_stale_jobs()
-        job = self.store.claim_next_job(self.worker_id, self.lease_seconds)
+        job = self.store.claim_next_job(
+            self.worker_id,
+            self.lease_seconds,
+            max_active_jobs=self.max_active_jobs,
+        )
         if job is None:
             return None
         try:
@@ -388,6 +477,12 @@ class ResearchService:
         except Exception:
             self.store.fail_job(job, "WORKER_EXECUTION_FAILED")
             raise
+
+    def save_checkpoint(self, job: ClaimedJob, checkpoint: dict, progress: dict | None = None) -> bool:
+        return self.store.update_job_checkpoint(job, checkpoint=checkpoint, progress=progress)
+
+    def resume_checkpoint(self, workspace_id: str, job_id: str) -> dict | None:
+        return self.store.get_job_checkpoint(workspace_id, job_id)
 
     def get_result(self, workspace_id: str, job_id: str) -> dict | None:
         job = self.store.get_job(workspace_id, job_id)
