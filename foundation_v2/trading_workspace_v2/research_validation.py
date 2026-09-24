@@ -10,6 +10,69 @@ class ResearchReconciliationError(RuntimeError):
     pass
 
 
+def compare_replay_research_cutoff(*, replay_view: dict, research_protocol: dict, rows: list[dict]) -> dict:
+    """Fail closed when a manual replay cutoff is not the same research boundary.
+
+    This intentionally compares only immutable source semantics. It does not infer
+    future rows, fills, or execution outcomes from a replay session.
+    """
+    if not isinstance(replay_view, dict) or not isinstance(research_protocol, dict):
+        raise ResearchReconciliationError("replay comparison requires structured inputs")
+    visible = replay_view.get("visible_rows")
+    if not isinstance(visible, list) or not visible:
+        raise ResearchReconciliationError("replay comparison lacks visible rows")
+    if not isinstance(rows, list) or not rows:
+        raise ResearchReconciliationError("research comparison requires source rows")
+    cutoff = replay_view.get("cutoff_timestamp")
+    if type(cutoff) is not int:
+        raise ResearchReconciliationError("replay cutoff timestamp is unavailable")
+    if any(not isinstance(row, dict) or type(row.get("timestamp")) is not int for row in rows + visible):
+        raise ResearchReconciliationError("replay comparison rows require integer timestamps")
+
+    source_timestamps = [row["timestamp"] for row in rows]
+    if source_timestamps.count(cutoff) != 1:
+        raise ResearchReconciliationError("replay cutoff is not a unique source boundary")
+    cutoff_index = source_timestamps.index(cutoff)
+    expected_visible = rows[: cutoff_index + 1]
+    if visible != expected_visible:
+        raise ResearchReconciliationError("replay visible rows differ from immutable source prefix")
+
+    expected_has_future = cutoff_index + 1 < len(rows)
+    has_future = replay_view.get("has_future_rows")
+    if type(has_future) is not bool or has_future != expected_has_future:
+        raise ResearchReconciliationError("replay future-row flag differs from immutable source")
+
+    dataset = research_protocol.get("dataset")
+    if not isinstance(dataset, dict):
+        raise ResearchReconciliationError("research dataset identity is unavailable")
+    replay_sha = replay_view.get("dataset_sha256")
+    protocol_sha = dataset.get("artifact_sha256")
+    if not isinstance(replay_sha, str) or not replay_sha or replay_sha != protocol_sha:
+        raise ResearchReconciliationError("replay dataset differs from research protocol")
+    timeframe = dataset.get("timeframe_seconds")
+    if type(timeframe) is not int or timeframe <= 0:
+        raise ResearchReconciliationError("research timeframe is unavailable")
+
+    range_ = research_protocol.get("range")
+    if not isinstance(range_, dict):
+        raise ResearchReconciliationError("research range is unavailable")
+    declared_from = range_.get("from_utc")
+    declared_to = range_.get("to_utc")
+    if type(declared_from) is not int or type(declared_to) is not int:
+        raise ResearchReconciliationError("research range is unavailable")
+    if declared_from > visible[0]["timestamp"]:
+        raise ResearchReconciliationError("research range starts after replay source prefix")
+    if declared_to != cutoff + timeframe:
+        raise ResearchReconciliationError("research range does not end at the replay decision boundary")
+    return {
+        "reconciled": True,
+        "oracle": "replay-cutoff-v1",
+        "cutoff_timestamp": cutoff,
+        "future_rows_hidden": has_future,
+        "visible_row_count": len(visible),
+    }
+
+
 def _number(value, name):
     if isinstance(value, bool):
         raise ResearchReconciliationError(f"{name} must be numeric")

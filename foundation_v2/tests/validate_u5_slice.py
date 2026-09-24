@@ -20,7 +20,7 @@ PROJECT = Path(__file__).resolve().parents[2]
 V2 = PROJECT / "foundation_v2"
 sys.path[:0] = [str(PROJECT), str(V2)]
 MODULES = (
-    "test_u5_engine_oracle", "test_u5_engine_path2", "test_u5_nautilus", "test_u5b_protective_margin", "test_u2_data_ingest",
+    "test_u5_engine_oracle", "test_u5_engine_path2", "test_u5_nautilus", "test_u5b_protective_margin", "test_u5b_replay_compare", "test_u2_data_ingest",
     "test_u3_playbook_journal", "test_f7_product_slice", "test_fh1_job_lifecycle",
     "test_fh2_workspace_auth", "test_reference_slice", "test_contracts", "test_u2_provider_boundary",
 )
