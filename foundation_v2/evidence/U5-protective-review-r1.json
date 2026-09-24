@@ -1,0 +1,23 @@
+{
+  "candidate": "fa191a018077848b566bb0a24949601d2f0cb022",
+  "reviewer_locator": "/root/u5b_review3",
+  "verdict": "pass",
+  "findings": [],
+  "verified_findings_closed": [
+    "P1: timing, protective_orders, and margin_model disclosures are bound to protocol/backend and tamper-rejected for reference and Nautilus results",
+    "P2: protective exit at close-1ns, signal at the same close, and next-open entry ordering is explicitly regression-tested without false overlap"
+  ],
+  "evidence": {
+    "candidate_validation": "foundation_v2/evidence/U5-protective-validation-r6.json",
+    "integrated_validation": "foundation_v2/evidence/U5-protective-validation-integrated-r1.json",
+    "candidate_tests": 76,
+    "integrated_tests": 76,
+    "skipped": 0
+  },
+  "residual_scope": [
+    "manual/replay comparison on the same unseen segment",
+    "durable progress/restart checkpoints and explicit concurrency admission",
+    "U5c chronological OOS/walk-forward/stress/bounded sweep",
+    "real licensed dataset and owner UX acceptance"
+  ]
+}
