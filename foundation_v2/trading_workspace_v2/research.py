@@ -132,6 +132,8 @@ class ResearchService:
             raise ValueError("playbook revision is not engine-supported")
         rules = payload.get("rules") or {}
         validate_rules(rules)
+        if rules.get("exit_mode", "fixed_horizon") == "protective" and request.research_leverage is None:
+            raise ValueError("protective research requires research_leverage")
 
         if int(request.data_to_utc) <= int(request.data_from_utc):
             raise ValueError("data_to_utc must be greater than data_from_utc")
@@ -158,6 +160,16 @@ class ResearchService:
         else:
             native_runtime_identity = None
 
+        parameters = {
+            "spread_price": float(request.spread_price),
+            "cost_model": request.cost_model,
+        }
+        if request.research_leverage is not None:
+            parameters["research_margin"] = {
+                "version": "fixed-starting-balance-leverage-v1",
+                "leverage": float(request.research_leverage),
+            }
+
         protocol = {
             "schema_version": "research-protocol-v1",
             "playbook": {
@@ -172,10 +184,7 @@ class ResearchService:
             "split": request.split,
             "starting_balance": float(request.starting_balance),
             "seed": int(request.seed),
-            "parameters": {
-                "spread_price": float(request.spread_price),
-                "cost_model": request.cost_model,
-            },
+            "parameters": parameters,
             "engine": {"version": ENGINE_VERSION, "code_sha256": engine_code_sha256(), "backend": request.engine_backend,
                        **({"native_version": NAUTILUS_VERSION, "adapter_version": ADAPTER_VERSION,
                            "adapter_sha256": adapter_hash(), "runtime_identity": native_runtime_identity}

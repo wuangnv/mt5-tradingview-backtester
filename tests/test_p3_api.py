@@ -202,6 +202,48 @@ class P3PracticeApiTests(unittest.TestCase):
             "/api/practice/runs/1/trades/1001/context?cursor_ms=14400000"
         ).json["context"]
         self.assertEqual(closed["journal"]["fill"]["exit"], 1.01)
+
+    def test_decision_journal_records_no_trade_without_fill(self):
+        created = self.client.post(
+            "/api/practice/decisions",
+            json={
+                "source": {
+                    "source_kind": "replay-cursor",
+                    "source_ref": "fixture-run:cursor-10800000",
+                    "symbol": "EURUSD",
+                    "timeframe": "H1",
+                    "decision_time_ms": 10800000,
+                    "setup_version_id": "range-break@0.2.0",
+                },
+                "review": {
+                    "disposition": "no-trade",
+                    "observation": "No valid close outside the range.",
+                    "hypothesis": "Setup is not active.",
+                    "decision": "Skip.",
+                    "tags": ["discipline"],
+                    "notes": "API fixture",
+                },
+            },
+        )
+        self.assertEqual(created.status_code, 201)
+        decision = created.json["decision"]
+        self.assertNotIn("fill", decision)
+        self.assertEqual(decision["review"]["disposition"], "no-trade")
+
+        updated = self.client.patch(
+            f"/api/practice/decisions/{decision['id']}",
+            json={
+                "disposition": "observation",
+                "observation": "Reviewed later without changing the original source.",
+                "hypothesis": "",
+                "decision": "Keep as a skip.",
+                "tags": ["review"],
+                "notes": "revision two",
+            },
+        )
+        self.assertEqual(updated.status_code, 200)
+        history = self.client.get(f"/api/practice/decisions/{decision['id']}/history")
+        self.assertEqual([item["revision"] for item in history.json["revisions"]], [1, 2])
         self.assertEqual(hashlib.sha256(self.evidence_db.read_bytes()).hexdigest(), self.evidence_hash)
         self.assertEqual(self._history_hashes(), self.history_hashes)
 

@@ -66,6 +66,49 @@ class JournalStoreTests(unittest.TestCase):
         with self.assertRaises(JournalConflict):
             self.store.create(self.source, {"notes": "duplicate"})
 
+    def test_no_trade_decision_has_revision_history_without_fake_fill(self):
+        source = {
+            "source_kind": "replay-cursor",
+            "source_ref": "run-1:cursor-7200000",
+            "symbol": "EURUSD",
+            "timeframe": "H1",
+            "decision_time_ms": 7200000,
+            "setup_version_id": "range-break@0.2.0",
+        }
+        created = self.store.create_decision(
+            source,
+            {
+                "disposition": "no-trade",
+                "observation": "Price is still inside the range.",
+                "hypothesis": "Breakout condition is not satisfied.",
+                "decision": "Skip this bar.",
+                "tags": ["range", "discipline", "range"],
+                "notes": "fixture",
+            },
+        )
+        self.assertNotIn("fill", created)
+        self.assertEqual(created["review"]["tags"], ["range", "discipline"])
+        updated = self.store.update_decision(
+            created["id"],
+            {
+                "disposition": "missed-trade",
+                "observation": "Signal appeared after the recorded skip.",
+                "hypothesis": "The original rule interpretation may be too strict.",
+                "decision": "Review the rule; do not rewrite the historical decision.",
+                "tags": ["review"],
+                "notes": "second revision",
+            },
+        )
+        self.assertEqual(updated["source"], created["source"])
+        self.assertEqual(updated["review"]["revision"], 2)
+        history = self.store.decision_history(created["id"])
+        self.assertEqual([item["revision"] for item in history], [1, 2])
+        self.assertEqual(history[0]["disposition"], "no-trade")
+        self.assertEqual(history[1]["disposition"], "missed-trade")
+
+        with self.assertRaises(JournalConflict):
+            self.store.create_decision(source, {"disposition": "observation"})
+
 
 if __name__ == "__main__":
     unittest.main()

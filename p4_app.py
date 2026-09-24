@@ -157,11 +157,88 @@ def create_app(
         result = app.config["EXECUTION_SERVICE"].close(context, position_id)
         return jsonify({"success": True, "result": result})
 
+    @app.post("/api/execution/pending-orders")
+    def execution_place_pending():
+        value = confirmed_payload()
+        context = ExecutionContext(
+            mode=value.get("mode"),
+            account_id=value.get("account_id"),
+            account_server=value.get("account_server"),
+            request_id=value.get("request_id"),
+        )
+        result = app.config["EXECUTION_SERVICE"].place_pending(context, value.get("order"))
+        return jsonify({"success": True, "result": result}), 201
+
+    @app.post("/api/execution/pending-orders/<order_id>/cancel")
+    def execution_cancel_pending(order_id):
+        value = confirmed_payload()
+        context = ExecutionContext(
+            mode=value.get("mode"),
+            account_id=value.get("account_id"),
+            account_server=value.get("account_server"),
+            request_id=value.get("request_id"),
+        )
+        result = app.config["EXECUTION_SERVICE"].cancel_pending(context, order_id)
+        return jsonify({"success": True, "result": result})
+
+    @app.patch("/api/execution/positions/<position_id>")
+    def execution_modify_position(position_id):
+        value = confirmed_payload()
+        context = ExecutionContext(
+            mode=value.get("mode"),
+            account_id=value.get("account_id"),
+            account_server=value.get("account_server"),
+            request_id=value.get("request_id"),
+        )
+        result = app.config["EXECUTION_SERVICE"].modify_position(
+            context, position_id, value.get("changes")
+        )
+        return jsonify({"success": True, "result": result})
+
+    @app.post("/api/execution/positions/<position_id>/partial-close")
+    def execution_partial_close(position_id):
+        value = confirmed_payload()
+        context = ExecutionContext(
+            mode=value.get("mode"),
+            account_id=value.get("account_id"),
+            account_server=value.get("account_server"),
+            request_id=value.get("request_id"),
+        )
+        result = app.config["EXECUTION_SERVICE"].partial_close(
+            context, position_id, value.get("volume")
+        )
+        return jsonify({"success": True, "result": result})
+
     @app.post("/api/execution/requests/<request_id>/reconcile")
     def execution_reconcile(request_id):
         confirmed_payload()
         result = app.config["EXECUTION_SERVICE"].reconcile(request_id)
         return jsonify({"success": True, "result": result})
+
+    @app.post("/api/execution/kill-switch")
+    def execution_kill_switch():
+        value = confirmed_payload()
+        result = app.config["EXECUTION_SERVICE"].set_kill_switch(
+            value.get("enabled"), value.get("reason", "")
+        )
+        return jsonify({"success": True, "kill_switch": result})
+
+    @app.post("/api/execution/alerts")
+    def execution_create_alert():
+        value = confirmed_payload()
+        result = app.config["EXECUTION_SERVICE"].create_alert(
+            value.get("kind"),
+            value.get("rule"),
+            value.get("expires_at_ms"),
+            value.get("alert_id"),
+        )
+        return jsonify({"success": True, "alert": result}), 201
+
+    @app.post("/api/execution/alerts/<alert_id>/ack")
+    def execution_ack_alert(alert_id):
+        confirmed_payload()
+        result = app.config["EXECUTION_SERVICE"].acknowledge_alert(alert_id)
+        return jsonify({"success": True, "alert": result})
 
     return app
 

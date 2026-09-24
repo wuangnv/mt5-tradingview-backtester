@@ -10,8 +10,10 @@ from contextlib import contextmanager
 from pathlib import Path
 
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 TERMINAL_STATUSES = {"completed", "failed", "cancelled"}
+STRATEGY_MATURITY = {"draft", "frozen"}
+STRATEGY_CAPABILITIES = {"manual-only", "engine-supported", "needs-definition"}
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -88,6 +90,15 @@ def _integer(value, name, minimum=None):
     return number
 
 
+def _choice(value, name, choices, default=None):
+    if value is None and default is not None:
+        value = default
+    value = _text(value, name, 80).lower()
+    if value not in choices:
+        raise ResearchValidationError(f"{name} must be one of: {', '.join(sorted(choices))}")
+    return value
+
+
 def _budget(value):
     value = _object(value, "budget")
     max_bars = _integer(value.get("max_bars"), "budget.max_bars", 1)
@@ -142,7 +153,7 @@ class ResearchStore:
         with self._init_lock:
             with self._connection() as connection:
                 version = connection.execute("PRAGMA user_version").fetchone()[0]
-                if version not in (0, 1, SCHEMA_VERSION):
+                if version not in (0, 1, 2, SCHEMA_VERSION):
                     raise ResearchConflict(
                         f"unsupported research database schema version {version}"
                     )
@@ -162,7 +173,11 @@ class ResearchStore:
                         strategy_key TEXT NOT NULL,
                         version TEXT NOT NULL,
                         rules_json TEXT NOT NULL,
+                        maturity TEXT NOT NULL DEFAULT 'frozen',
+                        capability_status TEXT NOT NULL DEFAULT 'needs-definition',
+                        parent_strategy_version_id INTEGER,
                         FOREIGN KEY (hypothesis_id) REFERENCES hypotheses(id),
+                        FOREIGN KEY (parent_strategy_version_id) REFERENCES strategy_versions(id),
                         UNIQUE (strategy_key, version)
                     );
 
@@ -199,15 +214,31 @@ class ResearchStore:
                     ON research_runs (created_at_ms DESC);
                     """
                 )
-                if version == 1:
+                if version in (1, 2):
                     self._backup_before_migration(connection, version)
-                    columns = {
+                    protocol_columns = {
                         row["name"]
                         for row in connection.execute("PRAGMA table_info(research_protocols)").fetchall()
                     }
-                    if "dataset_sha256" not in columns:
+                    if "dataset_sha256" not in protocol_columns:
                         connection.execute(
                             "ALTER TABLE research_protocols ADD COLUMN dataset_sha256 TEXT"
+                        )
+                    strategy_columns = {
+                        row["name"]
+                        for row in connection.execute("PRAGMA table_info(strategy_versions)").fetchall()
+                    }
+                    if "maturity" not in strategy_columns:
+                        connection.execute(
+                            "ALTER TABLE strategy_versions ADD COLUMN maturity TEXT NOT NULL DEFAULT 'frozen'"
+                        )
+                    if "capability_status" not in strategy_columns:
+                        connection.execute(
+                            "ALTER TABLE strategy_versions ADD COLUMN capability_status TEXT NOT NULL DEFAULT 'needs-definition'"
+                        )
+                    if "parent_strategy_version_id" not in strategy_columns:
+                        connection.execute(
+                            "ALTER TABLE strategy_versions ADD COLUMN parent_strategy_version_id INTEGER REFERENCES strategy_versions(id)"
                         )
                     connection.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
                 elif version == 0:
@@ -255,17 +286,52 @@ class ResearchStore:
         strategy_key = _text(payload.get("strategy_key"), "strategy_key", 120)
         version = _text(payload.get("version"), "version", 80)
         rules = _object(payload.get("rules"), "rules")
+        maturity = _choice(payload.get("maturity"), "maturity", STRATEGY_MATURITY, "frozen")
+        capability_status = _choice(
+            payload.get("capability_status"),
+            "capability_status",
+            STRATEGY_CAPABILITIES,
+            "needs-definition",
+        )
+        parent_strategy_version_id = payload.get("parent_strategy_version_id")
+        if parent_strategy_version_id is not None:
+            parent_strategy_version_id = _integer(
+                parent_strategy_version_id,
+                "parent_strategy_version_id",
+                1,
+            )
         created_at_ms = _now_ms()
         with self._connection() as connection:
             self._require_row(connection, "hypotheses", hypothesis_id, "hypothesis")
+            if parent_strategy_version_id is not None:
+                parent = self._require_row(
+                    connection,
+                    "strategy_versions",
+                    parent_strategy_version_id,
+                    "parent strategy version",
+                )
+                if int(parent["hypothesis_id"]) != hypothesis_id or parent["strategy_key"] != strategy_key:
+                    raise ResearchValidationError(
+                        "parent strategy version must use the same hypothesis and strategy_key"
+                    )
             try:
                 cursor = connection.execute(
                     """
                     INSERT INTO strategy_versions (
-                        created_at_ms, hypothesis_id, strategy_key, version, rules_json
-                    ) VALUES (?, ?, ?, ?, ?)
+                        created_at_ms, hypothesis_id, strategy_key, version, rules_json,
+                        maturity, capability_status, parent_strategy_version_id
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     """,
-                    (created_at_ms, hypothesis_id, strategy_key, version, _canonical_json(rules)),
+                    (
+                        created_at_ms,
+                        hypothesis_id,
+                        strategy_key,
+                        version,
+                        _canonical_json(rules),
+                        maturity,
+                        capability_status,
+                        parent_strategy_version_id,
+                    ),
                 )
             except sqlite3.IntegrityError as exc:
                 raise ResearchConflict(
@@ -273,6 +339,27 @@ class ResearchStore:
                 ) from exc
             row_id = cursor.lastrowid
         return self.get_strategy_version(row_id)
+
+    def freeze_strategy_version(self, strategy_version_id, capability_status=None):
+        strategy_version_id = _integer(strategy_version_id, "strategy_version_id", 1)
+        with self._connection() as connection:
+            row = self._require_row(
+                connection, "strategy_versions", strategy_version_id, "strategy version"
+            )
+            if row["maturity"] != "draft":
+                raise ResearchConflict("only a draft strategy version can be frozen")
+            capability = row["capability_status"]
+            if capability_status is not None:
+                capability = _choice(
+                    capability_status,
+                    "capability_status",
+                    STRATEGY_CAPABILITIES,
+                )
+            connection.execute(
+                "UPDATE strategy_versions SET maturity = 'frozen', capability_status = ? WHERE id = ?",
+                (capability, strategy_version_id),
+            )
+        return self.get_strategy_version(strategy_version_id)
 
     def get_strategy_version(self, strategy_version_id):
         strategy_version_id = _integer(strategy_version_id, "strategy_version_id", 1)
@@ -319,9 +406,11 @@ class ResearchStore:
         parameters = _object(payload.get("parameters"), "parameters", default={})
         created_at_ms = _now_ms()
         with self._connection() as connection:
-            self._require_row(
+            strategy = self._require_row(
                 connection, "strategy_versions", strategy_version_id, "strategy version"
             )
+            if strategy["maturity"] != "frozen":
+                raise ResearchConflict("research protocol requires a frozen strategy version")
             cursor = connection.execute(
                 """
                 INSERT INTO research_protocols (

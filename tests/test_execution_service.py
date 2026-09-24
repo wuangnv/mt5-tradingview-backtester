@@ -151,6 +151,44 @@ class ExecutionServiceTests(unittest.TestCase):
         self.assertAlmostEqual(result["position"]["volume"], 0.05)
         self.assertIn("deal", result)
 
+    def test_pending_modify_partial_close_lifecycle_is_capability_guarded_and_idempotent(self):
+        pending_order = dict(
+            ORDER,
+            order_type="limit",
+            trigger_price=1.0990,
+            stop_loss=1.0940,
+            take_profit=1.1090,
+        )
+        pending_context = self.context("pending-1")
+        pending = self.service.place_pending(pending_context, pending_order)
+        self.assertEqual(pending["status"], "accepted")
+        order_id = pending["broker_order_id"]
+        self.assertEqual(self.service.place_pending(pending_context, pending_order), pending)
+
+        canceled = self.service.cancel_pending(self.context("cancel-1"), order_id)
+        self.assertEqual(canceled["status"], "canceled")
+
+        placed = self.service.place(self.context("position-1"), ORDER)
+        position_id = placed["position"]["position_id"]
+        modified = self.service.modify_position(
+            self.context("modify-1"), position_id, {"stop_loss": 1.0960, "take_profit": 1.1120}
+        )
+        self.assertEqual(modified["status"], "modified")
+        self.assertEqual(modified["position"]["stop_loss"], 1.0960)
+
+        partial = self.service.partial_close(self.context("partial-close-1"), position_id, 0.04)
+        self.assertEqual(partial["status"], "partial_closed")
+        self.assertAlmostEqual(partial["remaining_volume"], 0.06)
+        self.assertEqual(self.service.partial_close(self.context("partial-close-1"), position_id, 0.04), partial)
+
+        snapshot = self.service.snapshot()
+        self.assertEqual(snapshot["pending_orders"], [])
+        self.assertAlmostEqual(snapshot["positions"][0]["volume"], 0.06)
+
+        self.adapter.set_capability("place_pending", False)
+        with self.assertRaises(ExecutionDenied):
+            self.service.place_pending(self.context("pending-denied"), pending_order)
+
     def test_rejected_result_is_explicit_and_not_resent(self):
         self.adapter.next_status = "rejected"
         context = self.context("rejected-order")
@@ -263,6 +301,43 @@ class ExecutionServiceTests(unittest.TestCase):
         self.adapter.reconnect()
         self.assertTrue(self.service.preview(ORDER)["passed"])
 
+    def test_kill_switch_persists_blocks_new_orders_but_allows_risk_reduction(self):
+        placed = self.service.place(self.context("kill-place"), ORDER)
+        position_id = placed["position"]["position_id"]
+        control = self.service.set_kill_switch(True, "operator pause")
+        self.assertTrue(control["block_new_orders"])
+        with self.assertRaises(ExecutionDenied):
+            self.service.place(self.context("kill-blocked"), ORDER)
+        closed = self.service.close(self.context("kill-close"), position_id)
+        self.assertEqual(closed["status"], "closed")
+
+        restarted = ExecutionService(DemoBrokerSimulator(), ExecutionJournal(self.db_path))
+        self.assertTrue(restarted.snapshot()["kill_switch"]["block_new_orders"])
+        restarted.set_kill_switch(False, "resume")
+        self.assertFalse(restarted.snapshot()["kill_switch"]["block_new_orders"])
+
+    def test_alerts_have_expiry_ack_and_in_app_capability_states(self):
+        disconnect = self.service.create_alert("disconnect", {}, alert_id="alert-disconnect")
+        self.assertEqual(disconnect["status"], "active")
+        price = self.service.create_alert(
+            "price", {"symbol": "EURUSD", "above": 1.1001}, alert_id="alert-price"
+        )
+        self.assertEqual(price["rule"]["symbol"], "EURUSD")
+        news = self.service.create_alert(
+            "news", {"currency": "USD", "impact": "high"}, alert_id="alert-news"
+        )
+        self.assertEqual(news["kind"], "news")
+
+        snapshot = self.service.snapshot()
+        by_id = {item["alert_id"]: item for item in snapshot["alerts"]}
+        self.assertEqual(by_id["alert-disconnect"]["evaluation"], "clear")
+        self.assertEqual(by_id["alert-price"]["evaluation"], "triggered")
+        self.assertEqual(by_id["alert-news"]["evaluation"], "blocked_by_capability")
+        self.assertEqual(snapshot["alert_runtime"], "in_app_poll_only")
+
+        acknowledged = self.service.acknowledge_alert("alert-price")
+        self.assertEqual(acknowledged["status"], "acknowledged")
+
     def test_snapshot_degrades_if_transport_drops_after_connected_check(self):
         class SnapshotRaceAdapter(DemoBrokerSimulator):
             def account_snapshot(self):
@@ -311,7 +386,7 @@ class ExecutionServiceTests(unittest.TestCase):
         self.assertEqual(migrated.get("legacy")["account_server"], "")
         check = sqlite3.connect(legacy_path)
         try:
-            self.assertEqual(check.execute("PRAGMA user_version").fetchone()[0], 2)
+            self.assertEqual(check.execute("PRAGMA user_version").fetchone()[0], 3)
         finally:
             check.close()
         self.assertEqual(len(list(legacy_path.parent.glob("legacy.sqlite3.v1-*.bak"))), 1)

@@ -79,6 +79,7 @@ class CreateEngineResearchJob(BaseModel):
     seed: int = 0
     spread_price: float = Field(default=0.0, ge=0)
     cost_model: dict
+    research_leverage: float | None = Field(default=None, ge=1, le=1000)
     max_bars: int = Field(default=100_000, ge=2, le=1_000_000, strict=True)
     max_runtime_ms: int = Field(default=30_000, ge=100, le=600_000, strict=True)
     max_memory_mb: int = Field(default=1024, ge=256, le=4096, strict=True)

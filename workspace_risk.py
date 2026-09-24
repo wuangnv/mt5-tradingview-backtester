@@ -2,6 +2,7 @@
 
 from flask import jsonify, render_template, request
 
+from prop_profile import evaluate_prop_profile
 from risk_lab import (
     RiskLabValidationError,
     breakeven_win_rate,
@@ -92,3 +93,9 @@ def register_risk_lab_routes(app):
             breach_drawdown_fraction=value.get("breach_drawdown_fraction", 0.10),
         )
         return jsonify({"success": True, "simulation": result})
+
+    @app.post("/api/risk-lab/prop-profile/evaluate")
+    def risk_lab_prop_profile():
+        value = payload()
+        result = evaluate_prop_profile(value.get("profile"), value.get("snapshot"))
+        return jsonify({"success": True, "evaluation": result})

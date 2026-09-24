@@ -20,7 +20,7 @@ PROJECT = Path(__file__).resolve().parents[2]
 V2 = PROJECT / "foundation_v2"
 sys.path[:0] = [str(PROJECT), str(V2)]
 MODULES = (
-    "test_u5_engine_oracle", "test_u5_engine_path2", "test_u5_nautilus", "test_u2_data_ingest",
+    "test_u5_engine_oracle", "test_u5_engine_path2", "test_u5_nautilus", "test_u5b_protective_margin", "test_u2_data_ingest",
     "test_u3_playbook_journal", "test_f7_product_slice", "test_fh1_job_lifecycle",
     "test_fh2_workspace_auth", "test_reference_slice", "test_contracts", "test_u2_provider_boundary",
 )
@@ -28,6 +28,7 @@ MODULES = (
 
 def hashes():
     paths = list((V2 / "trading_workspace_v2").glob("*.py")) + [V2 / "uv.lock", Path(__file__)]
+    paths += [V2 / "engine_runtime" / name for name in ("adapter.py", "limits.py", "run.py", "pyproject.toml", "uv.lock")]
     paths += [V2 / "tests" / f"{name}.py" for name in MODULES]
     paths += [PROJECT / name for name in ("data_contracts.py", "data_costs.py", "evidence_metrics.py")]
     return {path.relative_to(PROJECT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(paths)}

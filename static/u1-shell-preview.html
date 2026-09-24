@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U1 Shell Preview - Trading Workspace</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/u1_shell_preview.css">
+</head>
+<body class="u1-shell-preview">
+<header class="shell-topbar">
+    <div class="shell-brand">
+        <strong>Trading Workspace</strong>
+        <span>SHELL REVIEW</span>
+    </div>
+
+    <div class="shell-current" aria-live="polite">
+        <span>Khu vực</span>
+        <strong id="shell-current-page">Tổng quan</strong>
+    </div>
+
+    <div class="shell-actions">
+        <span class="shell-state"><i></i>Local</span>
+        <span class="shell-lock">Broker send locked</span>
+        <button id="shell-theme-toggle" type="button" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện sáng/tối">◐</button>
+    </div>
+</header>
+
+<div class="shell-frame">
+    <aside class="shell-sidebar" aria-label="Điều hướng workspace">
+        <div class="shell-workspace">
+            <span>Workspace</span>
+            <strong>MT5 Backtester</strong>
+        </div>
+
+        <nav class="shell-nav" aria-label="Các khu vực">
+            <button class="active" type="button" data-shell-page="Tổng quan"><span>01</span><strong>Tổng quan</strong></button>
+            <button type="button" data-shell-page="Chiến lược"><span>02</span><strong>Chiến lược</strong></button>
+            <button type="button" data-shell-page="Dữ liệu"><span>03</span><strong>Dữ liệu</strong></button>
+            <button type="button" data-shell-page="Nghiên cứu"><span>04</span><strong>Nghiên cứu</strong></button>
+            <button type="button" data-shell-page="Phân tích"><span>05</span><strong>Phân tích</strong></button>
+            <button type="button" data-shell-page="Chart & Thực hành"><span>06</span><strong>Chart &amp; Thực hành</strong></button>
+            <button type="button" data-shell-page="Giao dịch"><span>07</span><strong>Giao dịch</strong></button>
+            <button type="button" data-shell-page="Học"><span>08</span><strong>Học</strong></button>
+        </nav>
+
+        <button class="shell-settings" type="button" data-shell-page="Cài đặt"><span>09</span><strong>Cài đặt</strong></button>
+    </aside>
+
+    <main class="shell-main">
+        <section class="shell-page" aria-labelledby="shell-page-title">
+            <div class="shell-page-head">
+                <p>TRADING WORKSPACE / <span id="shell-page-eyebrow">TỔNG QUAN</span></p>
+                <h1 id="shell-page-title">Tổng quan</h1>
+            </div>
+
+            <div class="shell-empty" aria-label="Nội dung trang chưa được đưa vào lượt review này">
+                <div></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="js/u1_shell_preview.js"></script>
+</body>
+</html>

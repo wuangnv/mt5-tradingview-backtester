@@ -20,11 +20,17 @@ class WorkspaceAppTests(unittest.TestCase):
         self.root = Path(self.temp_dir.name)
         self.data_root = self.root / "data"
         self.data_root.mkdir()
+        self.education_root = self.root / "education"
+        self._create_education()
         self._create_evidence_db()
         self._create_history()
         self.evidence_hash = hashlib.sha256((self.data_root / "sessions.sqlite3").read_bytes()).hexdigest()
         self.history_hashes = self._history_hashes(self.data_root / "chunks")
-        self.app = create_app(self.data_root, demo_adapter=DemoBrokerSimulator())
+        self.app = create_app(
+            self.data_root,
+            demo_adapter=DemoBrokerSimulator(),
+            education_root=self.education_root,
+        )
         self.app.config["TESTING"] = True
         self.client = self.app.test_client()
 
@@ -110,6 +116,50 @@ class WorkspaceAppTests(unittest.TestCase):
         )
         (directory / "chunk_000000.json").write_text(json.dumps({"bars": bars}), encoding="utf-8")
 
+    def _create_education(self):
+        self.education_root.mkdir(parents=True)
+        (self.education_root / "course.json").write_text(
+            json.dumps(
+                {
+                    "version": "1.1",
+                    "title": "Trading foundations",
+                    "status": "authored_not_learner_validated",
+                    "primary_language": "vi",
+                    "start_lesson": "M01-L01",
+                    "modules": [
+                        {
+                            "id": "M01",
+                            "title": "Co che giao dich",
+                            "file": "modules/01-giao-dich.md",
+                            "lessons": [{"id": "M01-L01", "title": "Hai gia mua/ban"}],
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        (self.education_root / "progress.json").write_text(
+            json.dumps(
+                {
+                    "main_course": {
+                        "status": "in_progress",
+                        "current_lesson_id": "M01-L01",
+                        "completed_lessons": [],
+                        "completed_modules": [],
+                    },
+                    "pending_activity": {
+                        "id": "PENDING-1",
+                        "objective": "Read a chart",
+                        "lesson_file": "practice/example.md",
+                        "variant": "fixture",
+                        "expected": "must never be exposed",
+                    },
+                    "assessments": {"answer": "secret tutor key"},
+                }
+            ),
+            encoding="utf-8",
+        )
+
     @staticmethod
     def _history_hashes(root):
         return {
@@ -137,6 +187,66 @@ class WorkspaceAppTests(unittest.TestCase):
         self.assertFalse(readiness.json["state"]["execution_enabled"])
         self.assertFalse(readiness.json["state"]["ready_for_live_gate"])
         self.assertEqual(self.client.post("/api/trade/place", json={}).status_code, 404)
+
+    def test_u2_data_desk_metadata_is_read_only_and_holdout_content_stays_locked(self):
+        providers = self.client.get("/api/data-desk/providers")
+        self.assertEqual(providers.status_code, 200)
+        self.assertEqual(providers.json["providers"][0]["provider_id"], "local-chunks")
+        self.assertFalse(providers.json["providers"][0]["capabilities"]["fresh_quote"])
+        self.assertFalse(providers.json["providers"][0]["capabilities"]["holdout_content"])
+
+        datasets = self.client.get("/api/data-desk/datasets")
+        self.assertEqual(datasets.status_code, 200)
+        self.assertEqual(len(datasets.json["datasets"]), 1)
+        dataset = datasets.json["datasets"][0]
+        self.assertEqual(dataset["dataset_key"], "EURUSD:H1")
+        self.assertEqual(dataset["rows"], 5)
+        self.assertEqual(dataset["verified_range"], None)
+        self.assertEqual(dataset["quality_status"], "unverified_local_cache")
+        self.assertEqual(dataset["holdout"], {"metadata_visible": True, "content_access": False})
+
+    def test_u3c_learn_bridge_uses_existing_owner_without_exposing_answer_keys(self):
+        response = self.client.get("/api/learn/overview")
+        self.assertEqual(response.status_code, 200)
+        learn = response.json["learn"]
+        self.assertEqual(learn["schema_version"], "learn-overview-v1")
+        self.assertEqual(learn["progress"]["current_lesson_id"], "M01-L01")
+        self.assertEqual(learn["progress"]["pending_activity"]["id"], "PENDING-1")
+        self.assertTrue(learn["safety"]["read_only"])
+        self.assertFalse(learn["safety"]["answer_keys_exposed"])
+        serialized = json.dumps(response.json)
+        self.assertNotIn("secret tutor key", serialized)
+        self.assertNotIn("must never be exposed", serialized)
+
+    def test_u4_chart_state_api_versions_annotations_and_blocks_future_anchors(self):
+        payload = {
+            "kind": "entry",
+            "instrument_id": "EURUSD",
+            "timeframe": "H1",
+            "cutoff_ms": 7_200_000,
+            "anchors": [{"time_utc": 7200, "price": 1.04}],
+            "source": {"kind": "replay", "id": "1:1001"},
+            "strategy_version_id": "manual-replay-v1",
+            "label": "planned entry",
+        }
+        created = self.client.post("/api/chart/annotations", json=payload)
+        self.assertEqual(created.status_code, 201)
+        annotation = created.json["annotation"]
+        listed = self.client.get("/api/chart/annotations?instrument_id=EURUSD&timeframe=H1")
+        self.assertEqual([item["id"] for item in listed.json["annotations"]], [annotation["id"]])
+
+        future = dict(payload)
+        future["anchors"] = [{"time_utc": 10800, "price": 1.01}]
+        blocked = self.client.post("/api/chart/annotations", json=future)
+        self.assertEqual(blocked.status_code, 422)
+        self.assertEqual(blocked.json["error"]["code"], "CHART_INVALID")
+
+        layout = self.client.put(
+            "/api/chart/layouts/practice",
+            json={"payload": {"panels": [{"symbol": "EURUSD", "timeframe": "H1"}]}},
+        )
+        self.assertEqual(layout.status_code, 200)
+        self.assertEqual(layout.json["layout"]["revision"], 1)
 
     def test_r3a_risk_lab_api_is_hypothetical_and_validated(self):
         streak = self.client.post(
@@ -170,6 +280,28 @@ class WorkspaceAppTests(unittest.TestCase):
         )
         self.assertEqual(invalid.status_code, 400)
         self.assertEqual(invalid.json["error"]["code"], "RISK_LAB_INVALID_REQUEST")
+
+    def test_u6d_prop_profile_api_stays_blocked_when_required_equity_path_is_missing(self):
+        response = self.client.post(
+            "/api/risk-lab/prop-profile/evaluate",
+            json={
+                "profile": {
+                    "profile_id": "fixture-prop",
+                    "terms_version": "test-v1",
+                    "effective_from": "2026-09-19",
+                    "reset_timezone": "Asia/Ho_Chi_Minh",
+                    "cost_basis": "included",
+                    "total_drawdown": {"type": "trailing", "amount": 1000, "basis": "equity"},
+                    "daily_loss": {"amount": 500, "basis": "equity"},
+                },
+                "snapshot": {"starting_balance": 10000, "balance": 9900},
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        evaluation = response.json["evaluation"]
+        self.assertEqual(evaluation["status"], "blocked_by_data")
+        self.assertIn("missing_equity", evaluation["blocked_by_data"])
+        self.assertIn("missing_high_water_mark", evaluation["blocked_by_data"])
 
     def test_r2_analytics_api_filter_and_export_share_one_read_model(self):
         analytics = self.client.get("/api/analytics/runs/1?side=BUY&outcome=loss")
@@ -246,6 +378,26 @@ class WorkspaceAppTests(unittest.TestCase):
         self.assertEqual(first.json["simulation"]["method"]["block_count"], 10)
         self.assertIn("breach_monte_carlo_se", first.json["simulation"]["results"])
 
+    def test_workspace_status_is_explicitly_partial_and_reports_actual_local_schemas(self):
+        response = self.client.get("/api/workspace/status")
+        self.assertEqual(response.status_code, 200)
+        status = response.json["workspace"]
+        self.assertEqual(status["status_schema_version"], "workspace-integration-status-v2")
+        self.assertFalse(status["acceptance"]["full_product_complete"])
+        self.assertIn("ui_acceptance_pending", status["acceptance"]["blockers"])
+        self.assertIn("live_execution_permission_pending", status["acceptance"]["blockers"])
+        self.assertIn("production_research_protocol_pending", status["acceptance"]["blockers"])
+        self.assertIn("miro_update_pending", status["acceptance"]["blockers"])
+        self.assertEqual(status["database_user_versions"]["chart.sqlite3"], 1)
+        self.assertEqual(status["database_user_versions"]["research.sqlite3"], 3)
+        self.assertTrue(status["capabilities"]["prop_profile_evaluator"])
+        self.assertFalse(status["capabilities"]["learn_bridge"]["answer_keys_exposed"])
+        self.assertFalse(status["capabilities"]["execution"]["live_execution_enabled"])
+        self.assertEqual(
+            status["capabilities"]["execution"]["alert_runtime"], "in_app_poll_only"
+        )
+        self.assertFalse(status["capabilities"]["ai_advisory"]["execution_capability"])
+
     def test_end_to_end_journal_export_restart_and_copy_restore(self):
         runs = self.client.get("/api/runs?limit=10").json["runs"]
         self.assertEqual([run["run_id"] for run in runs], ["1"])
@@ -279,7 +431,11 @@ class WorkspaceAppTests(unittest.TestCase):
         self.assertEqual(export.status_code, 200)
         self.assertIn(b"net_pnl", export.data)
 
-        restarted = create_app(self.data_root, demo_adapter=DemoBrokerSimulator())
+        restarted = create_app(
+            self.data_root,
+            demo_adapter=DemoBrokerSimulator(),
+            education_root=self.education_root,
+        )
         restarted.config["TESTING"] = True
         restored_entry = restarted.test_client().get(f"/api/practice/journal/{entry_id}")
         self.assertEqual(restored_entry.status_code, 200)
@@ -289,8 +445,13 @@ class WorkspaceAppTests(unittest.TestCase):
         restored_root = self.root / "restored"
         manifest = backup_workspace(self.data_root, backup_root)
         restore_workspace(backup_root, restored_root)
-        self.assertEqual(manifest["databases"]["research.sqlite3"]["user_version"], 2)
-        restored_app = create_app(restored_root, demo_adapter=DemoBrokerSimulator())
+        self.assertEqual(manifest["databases"]["research.sqlite3"]["user_version"], 3)
+        self.assertEqual(manifest["databases"]["execution.sqlite3"]["user_version"], 3)
+        restored_app = create_app(
+            restored_root,
+            demo_adapter=DemoBrokerSimulator(),
+            education_root=self.education_root,
+        )
         restored_app.config["TESTING"] = True
         restored_client = restored_app.test_client()
         restored_journal = restored_client.get(f"/api/practice/journal/{entry_id}")

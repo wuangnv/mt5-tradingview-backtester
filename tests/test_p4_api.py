@@ -97,6 +97,59 @@ class P4ApiTests(unittest.TestCase):
         )
         self.assertEqual(wrong_server.status_code, 403)
 
+    def test_simulator_supports_pending_modify_and_partial_close_routes(self):
+        base = {
+            "mode": "demo",
+            "account_id": "demo-sim-1",
+            "account_server": "LOCAL-SIM",
+        }
+        pending = self.client.post(
+            "/api/execution/pending-orders",
+            json={
+                **base,
+                "request_id": "api-pending",
+                "order": dict(
+                    ORDER,
+                    order_type="limit",
+                    trigger_price=1.0990,
+                    stop_loss=1.0940,
+                    take_profit=1.1090,
+                ),
+            },
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(pending.status_code, 201)
+        pending_id = pending.json["result"]["broker_order_id"]
+        canceled = self.client.post(
+            f"/api/execution/pending-orders/{pending_id}/cancel",
+            json={**base, "request_id": "api-cancel"},
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(canceled.json["result"]["status"], "canceled")
+
+        placed = self.client.post(
+            "/api/execution/orders",
+            json={**base, "request_id": "api-position", "order": ORDER},
+            headers=self.confirmed_headers(),
+        )
+        position_id = placed.json["result"]["position"]["position_id"]
+        modified = self.client.patch(
+            f"/api/execution/positions/{position_id}",
+            json={
+                **base,
+                "request_id": "api-modify",
+                "changes": {"stop_loss": 1.0960, "take_profit": 1.1120},
+            },
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(modified.json["result"]["status"], "modified")
+        partial = self.client.post(
+            f"/api/execution/positions/{position_id}/partial-close",
+            json={**base, "request_id": "api-partial-close", "volume": 0.04},
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(partial.json["result"]["status"], "partial_closed")
+
     def test_disconnected_state_remains_readable_and_preview_is_unavailable(self):
         self.adapter.disconnect()
         state = self.client.get("/api/execution/state")
@@ -104,6 +157,48 @@ class P4ApiTests(unittest.TestCase):
         self.assertFalse(state.json["state"]["connection"]["connected"])
         preview = self.client.post("/api/execution/preview", json={"order": ORDER})
         self.assertEqual(preview.status_code, 503)
+
+    def test_kill_switch_and_alert_routes_are_local_confirmed_and_explicit(self):
+        enabled = self.client.post(
+            "/api/execution/kill-switch",
+            json={"enabled": True, "reason": "manual pause"},
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(enabled.status_code, 200)
+        self.assertTrue(enabled.json["kill_switch"]["block_new_orders"])
+
+        blocked = self.client.post(
+            "/api/execution/orders",
+            json={
+                "mode": "demo",
+                "account_id": "demo-sim-1",
+                "account_server": "LOCAL-SIM",
+                "request_id": "blocked-by-kill",
+                "order": ORDER,
+            },
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(blocked.status_code, 403)
+
+        alert = self.client.post(
+            "/api/execution/alerts",
+            json={"kind": "disconnect", "rule": {}, "alert_id": "api-alert"},
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(alert.status_code, 201)
+        acknowledged = self.client.post(
+            "/api/execution/alerts/api-alert/ack",
+            json={},
+            headers=self.confirmed_headers(),
+        )
+        self.assertEqual(acknowledged.json["alert"]["status"], "acknowledged")
+
+        state = self.client.get("/api/execution/state")
+        self.assertEqual(state.json["state"]["alert_runtime"], "in_app_poll_only")
+        self.assertEqual(
+            state.json["state"]["kill_switch"]["close_positions"],
+            "explicit_confirmed_action_required",
+        )
 
     def test_non_loopback_and_cross_origin_are_denied(self):
         remote = self.client.get(

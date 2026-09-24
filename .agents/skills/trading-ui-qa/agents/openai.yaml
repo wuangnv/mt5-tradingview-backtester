@@ -1,0 +1,4 @@
+interface:
+  display_name: "Trading UI QA"
+  short_description: "Playwright-first QA for Trading Workspace UI"
+  default_prompt: "Use $trading-ui-qa to verify the assigned Trading Workspace UI slice and report scoped evidence."

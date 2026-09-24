@@ -32,6 +32,7 @@ from .data_sources import DataProviderRegistry, LocalCatalogProvider
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .replay import ReplayService
 from .research import ResearchService
+from .nautilus_worker import runtime_ready
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
 from .store import PostgresStore
 
@@ -149,6 +150,15 @@ def create_app(
         except LookupError:
             raise HTTPException(status_code=404, detail="dataset_not_found")
         return job.model_dump(mode="json")
+
+    @app.get("/api/v2/research/engines")
+    def research_engines(workspace: str = Depends(workspace_id)):
+        return {"primary": "nautilus", "items": [
+            {"id": "nautilus", "version": "1.231.0", "available": runtime_ready(),
+             "scope": "fx quote/account currency match; modeled open/close quotes; fixed-horizon; no broker"},
+            {"id": "reference", "version": "bar-breakout-v1", "available": True,
+             "scope": "deterministic oracle/reference; not the primary engine"},
+        ]}
 
     @app.post("/api/v2/research/engine-jobs", status_code=202)
     def create_engine_research_job(body: CreateEngineResearchJob, workspace: str = Depends(workspace_id)):

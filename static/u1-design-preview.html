@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U1 Design Preview - Trading Workspace</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/u1_design_preview.css">
+</head>
+<body class="u1-preview">
+<header class="u1-topbar">
+    <div class="u1-brand">
+        <strong>Trading Workspace</strong>
+        <span class="u1-preview-badge">U1 PREVIEW · DỮ LIỆU MẪU</span>
+    </div>
+    <nav class="u1-primary-nav" aria-label="Điều hướng chính">
+        <button type="button" class="active" data-preview-target="overview">Tổng quan</button>
+        <button type="button" data-preview-target="strategies">Chiến lược</button>
+        <button type="button" data-preview-target="data">Dữ liệu</button>
+        <button type="button" data-preview-target="research">Nghiên cứu</button>
+        <button type="button" data-preview-target="analytics">Phân tích</button>
+        <button type="button" data-preview-target="chart">Chart &amp; Thực hành</button>
+        <button type="button" data-preview-target="trade">Giao dịch</button>
+        <button type="button" data-preview-target="learn">Học</button>
+        <button type="button" data-preview-target="settings">Cài đặt</button>
+    </nav>
+    <div class="u1-top-actions">
+        <span class="u1-connection"><i></i> Local</span>
+        <button id="density-toggle" class="u1-tool-button" type="button" title="Đổi mật độ hiển thị">Gọn</button>
+        <button id="theme-toggle" class="u1-tool-button" type="button" title="Đổi giao diện sáng/tối">◐</button>
+    </div>
+</header>
+
+<div class="u1-app-shell">
+    <aside class="u1-sidebar" aria-label="Không gian làm việc">
+        <div class="u1-side-heading">Workspace</div>
+        <button class="u1-side-link active" type="button" data-preview-target="overview"><span>01</span>Tổng quan</button>
+        <button class="u1-side-link" type="button" data-preview-target="strategies"><span>02</span>Chiến lược</button>
+        <button class="u1-side-link" type="button" data-preview-target="data"><span>03</span>Dữ liệu</button>
+        <button class="u1-side-link" type="button" data-preview-target="research"><span>04</span>Nghiên cứu</button>
+        <button class="u1-side-link" type="button" data-preview-target="analytics"><span>05</span>Phân tích</button>
+        <button class="u1-side-link" type="button" data-preview-target="chart"><span>06</span>Chart &amp; Thực hành</button>
+        <button class="u1-side-link" type="button" data-preview-target="trade"><span>07</span>Giao dịch</button>
+        <button class="u1-side-link" type="button" data-preview-target="learn"><span>08</span>Học</button>
+        <div class="u1-side-spacer"></div>
+        <button class="u1-side-link" type="button" data-preview-target="settings"><span>09</span>Cài đặt</button>
+    </aside>
+
+    <main class="u1-main">
+        <section id="preview-overview" class="u1-view active" data-preview-view="overview">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">TỔNG QUAN / OVERVIEW</p>
+                    <h1>Hôm nay cần làm gì tiếp?</h1>
+                    <p>Một màn điều phối công việc, không phải tường KPI. Mọi trạng thái bên dưới là fixture cho preview U1.</p>
+                </div>
+                <span class="u1-status neutral">LOCAL PREVIEW</span>
+            </div>
+
+            <div class="u1-scopebar">
+                <div><span>Workspace</span><strong>MT5 Backtester</strong></div>
+                <div><span>Research</span><strong>1 draft · 1 run pending</strong></div>
+                <div><span>Data</span><strong>Local cache · QA pending</strong></div>
+                <div><span>Execution</span><strong>Broker send locked</strong></div>
+                <div><span>Learn</span><strong>Read-only bridge</strong></div>
+                <button type="button" data-preview-target="settings">Cài đặt</button>
+            </div>
+
+            <div class="u1-overview-grid">
+                <section class="u1-work-panel u1-next-panel">
+                    <div class="u1-section-title"><h2>Việc tiếp theo</h2><span>3 việc</span></div>
+                    <button class="u1-task-row" type="button" data-preview-target="data">
+                        <span class="u1-task-index">01</span>
+                        <span><strong>Kiểm tra chất lượng dataset</strong><small>EURUSDm · M15 · local cache chưa xác minh</small></span>
+                        <b>Dữ liệu</b>
+                    </button>
+                    <button class="u1-task-row" type="button" data-preview-target="research">
+                        <span class="u1-task-index">02</span>
+                        <span><strong>Chốt rule còn thiếu</strong><small>London breakout v0.4 · news/retest collision</small></span>
+                        <b>Nghiên cứu</b>
+                    </button>
+                    <button class="u1-task-row" type="button" data-preview-target="chart">
+                        <span class="u1-task-index">03</span>
+                        <span><strong>Replay một trade mẫu</strong><small>Kiểm tra chart → draft → journal flow</small></span>
+                        <b>Thực hành</b>
+                    </button>
+                </section>
+
+                <section class="u1-work-panel">
+                    <div class="u1-section-title"><h2>Run đang theo dõi</h2><span>LB-042</span></div>
+                    <div class="u1-run-summary">
+                        <div><span>Trạng thái</span><strong>Planned · chưa chạy</strong></div>
+                        <div><span>Strategy</span><strong>London breakout v0.4</strong></div>
+                        <div><span>Dataset</span><strong>EXN-EURUSD-M15-v4</strong></div>
+                        <div><span>Holdout</span><strong>Locked · metadata only</strong></div>
+                    </div>
+                    <div class="u1-inline-actions">
+                        <button type="button" data-preview-target="research">Mở protocol</button>
+                        <button type="button" data-preview-target="analytics">Xem Analytics fixture</button>
+                    </div>
+                </section>
+
+                <section class="u1-work-panel">
+                    <div class="u1-section-title"><h2>Dữ liệu &amp; quyền</h2><span>Fail-closed</span></div>
+                    <div class="u1-health-list">
+                        <div><i class="ok"></i><span><strong>Local chunks</strong><small>Đọc metadata/history khả dụng</small></span><b>READ</b></div>
+                        <div><i class="warn"></i><span><strong>Data QA</strong><small>Chưa có verified range</small></span><b>CHECK</b></div>
+                        <div><i class="lock"></i><span><strong>Holdout content</strong><small>Không mở trong preview</small></span><b>LOCKED</b></div>
+                        <div><i class="lock"></i><span><strong>Live execution</strong><small>Không có đường gửi broker ở U1</small></span><b>LOCKED</b></div>
+                    </div>
+                </section>
+
+                <section class="u1-work-panel">
+                    <div class="u1-section-title"><h2>Gần đây</h2><span>Preview activity</span></div>
+                    <div class="u1-activity-list">
+                        <div><time>17:42</time><span>Chỉnh protocol London breakout v0.4</span><b>DRAFT</b></div>
+                        <div><time>16:10</time><span>Xem ARCHIVE-12 Analytics fixture</span><b>READ</b></div>
+                        <div><time>14:35</time><span>Lưu layout replay EURUSDm M15</span><b>LOCAL</b></div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section id="preview-strategies" class="u1-view" data-preview-view="strategies">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">CHIẾN LƯỢC / PLAYBOOK</p>
+                    <h1>Bộ luật có phiên bản, nguồn và lịch sử rõ</h1>
+                    <p>Chỉnh strategy như một playbook có version; run luôn trỏ về đúng phiên bản đã dùng.</p>
+                </div>
+                <button class="u1-primary-button" type="button" id="strategy-new-version">Tạo phiên bản mới</button>
+            </div>
+
+            <div class="u1-library-layout">
+                <aside class="u1-library-list">
+                    <div class="u1-section-title"><h2>Playbook</h2><span>3 chiến lược</span></div>
+                    <button class="u1-library-item active" type="button" data-strategy-key="london">
+                        <strong>London breakout + retest</strong><small>v0.4 · draft · 2 linked runs</small>
+                    </button>
+                    <button class="u1-library-item" type="button" data-strategy-key="asia">
+                        <strong>Asia range fade</strong><small>v1.2 · stable · 4 linked runs</small>
+                    </button>
+                    <button class="u1-library-item" type="button" data-strategy-key="ny">
+                        <strong>NY continuation</strong><small>v0.2 · paused · thiếu exit rule</small>
+                    </button>
+                </aside>
+
+                <section class="u1-library-detail">
+                    <div class="u1-section-title">
+                        <div><p class="u1-eyebrow">ĐANG CHỌN</p><h2 id="strategy-title">London breakout + retest</h2></div>
+                        <span id="strategy-version" class="u1-status neutral">v0.4 · DRAFT</span>
+                    </div>
+                    <p id="strategy-thesis" class="u1-detail-lead">Tìm breakout khỏi London high/low rồi chờ retest có điều kiện trước khi vào lệnh.</p>
+
+                    <div class="u1-rule-editor-grid">
+                        <div><span>Entry</span><strong id="strategy-entry">Breakout London high + retest ≤ 4 nến</strong></div>
+                        <div><span>Stop loss</span><strong id="strategy-stop">Sau swing retest + 1.5 pip buffer</strong></div>
+                        <div><span>Exit</span><strong id="strategy-exit">2R hoặc đóng 16:30 London</strong></div>
+                        <div><span>Skip</span><strong id="strategy-skip">High-impact news ± 20 phút</strong></div>
+                    </div>
+
+                    <div class="u1-detail-columns">
+                        <div>
+                            <div class="u1-section-title"><h2>Phiên bản</h2><span>Immutable history</span></div>
+                            <div class="u1-version-list" id="strategy-history">
+                                <div><b>v0.4</b><span>Draft · thêm retest window</span><time>19/09/2026</time></div>
+                                <div><b>v0.3</b><span>Closed · chỉnh news skip</span><time>17/09/2026</time></div>
+                                <div><b>v0.2</b><span>Closed · baseline</span><time>14/09/2026</time></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="u1-section-title"><h2>Liên kết</h2><span id="strategy-links-count">2 runs</span></div>
+                            <div class="u1-linked-list" id="strategy-links">
+                                <button type="button" data-preview-target="research"><strong>LB-042</strong><span>Planned · OOS protocol</span></button>
+                                <button type="button" data-preview-target="analytics"><strong>LB-031</strong><span>Archived · review</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="strategy-action-note" class="u1-inline-note" hidden></p>
+                </section>
+            </div>
+        </section>
+
+        <section id="preview-data" class="u1-view" data-preview-view="data">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">DỮ LIỆU / DATA DESK</p>
+                    <h1>Biết mình đang có dữ liệu gì trước khi chạy</h1>
+                    <p>Xem provider, phạm vi, chất lượng, hash và holdout boundary. Preview không mở nội dung holdout.</p>
+                </div>
+                <span class="u1-status neutral">LOCAL-CHUNKS · READ ONLY</span>
+            </div>
+
+            <div class="u1-provider-strip">
+                <div><span>Provider</span><strong>local-chunks</strong><small>replaceable boundary</small></div>
+                <div><span>Metadata</span><strong class="positive">Có</strong><small>read_metadata</small></div>
+                <div><span>History</span><strong class="positive">Có</strong><small>read_history</small></div>
+                <div><span>News</span><strong>N/A</strong><small>không tự giả lập</small></div>
+                <div><span>Fresh quote</span><strong>N/A</strong><small>không tự giả lập</small></div>
+                <div><span>Holdout content</span><strong class="negative">Locked</strong><small>metadata only</small></div>
+            </div>
+
+            <div class="u1-data-layout">
+                <section class="u1-work-panel u1-data-table-panel">
+                    <div class="u1-section-title"><h2>Datasets</h2><span>Fixture UI · 3 rows</span></div>
+                    <div class="u1-table-wrap">
+                        <table>
+                            <thead><tr><th>Dataset</th><th>Instrument</th><th>TF</th><th>Available range</th><th class="num">Bars</th><th>Quality</th><th>Holdout</th></tr></thead>
+                            <tbody id="dataset-rows">
+                                <tr class="selected" data-dataset-key="eurusd"><td>EURUSD:M15</td><td>EURUSDm</td><td>M15</td><td>01/01/2025 → 31/08/2026</td><td class="num">41.280</td><td>Unverified local cache</td><td>Locked</td></tr>
+                                <tr data-dataset-key="gbpusd"><td>GBPUSD:H1</td><td>GBPUSDm</td><td>H1</td><td>01/03/2025 → 31/08/2026</td><td class="num">9.216</td><td>Unverified local cache</td><td>Locked</td></tr>
+                                <tr data-dataset-key="xauusd"><td>XAUUSD:M15</td><td>XAUUSDm</td><td>M15</td><td>15/06/2026 → 31/08/2026</td><td class="num">5.940</td><td>Partial range</td><td>Locked</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <aside class="u1-data-inspector">
+                    <div class="u1-section-title"><h2 id="dataset-title">EURUSD:M15</h2><span id="dataset-quality">Unverified</span></div>
+                    <dl>
+                        <div><dt>Provider</dt><dd>local-chunks</dd></div>
+                        <div><dt>Available</dt><dd id="dataset-range">01/01/2025 → 31/08/2026</dd></div>
+                        <div><dt>Rows</dt><dd id="dataset-bars">41.280</dd></div>
+                        <div><dt>Verified range</dt><dd>N/A</dd></div>
+                        <div><dt>Holdout</dt><dd>Metadata visible · content locked</dd></div>
+                    </dl>
+                    <div class="u1-warning-row compact-warning"><strong>QA pending</strong><span>Không dùng “available” như “verified”.</span></div>
+                    <button class="u1-primary-button full" type="button" data-preview-target="research">Dùng trong Research</button>
+                </aside>
+            </div>
+        </section>
+
+        <section id="preview-research" class="u1-view" data-preview-view="research">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">NGHIÊN CỨU / RESEARCH</p>
+                    <h1>Tạo run có phạm vi và ngân sách rõ</h1>
+                    <p>Đi từ giả thuyết → phiên bản chiến lược → protocol → run. Không cần nhập JSON ở luồng cơ bản.</p>
+                </div>
+                <button class="u1-primary-button" type="button">+ Tạo giả thuyết</button>
+            </div>
+
+            <div class="u1-scopebar" aria-label="Phạm vi nghiên cứu">
+                <div><span>Instrument</span><strong>EURUSDm</strong></div>
+                <div><span>Khung</span><strong>15 phút</strong></div>
+                <div><span>Dataset</span><strong>EXN-EURUSD-M15-v4</strong></div>
+                <div><span>Timezone</span><strong>UTC+7</strong></div>
+                <div><span>Cost basis</span><strong>Broker demo v2</strong></div>
+                <button type="button">Thay đổi</button>
+            </div>
+
+            <div class="u1-research-layout">
+                <aside class="u1-research-list">
+                    <div class="u1-section-title">
+                        <h2>Chuỗi nghiên cứu</h2>
+                        <span>3 bản ghi</span>
+                    </div>
+                    <button class="u1-research-item active" type="button">
+                        <span class="u1-state-dot draft"></span>
+                        <span><strong>London breakout + retest</strong><small>Đang soạn · 2 câu hỏi còn thiếu</small></span>
+                    </button>
+                    <button class="u1-research-item" type="button">
+                        <span class="u1-state-dot done"></span>
+                        <span><strong>Asia range fade</strong><small>Đã đóng · 2 runs</small></span>
+                    </button>
+                    <button class="u1-research-item" type="button">
+                        <span class="u1-state-dot paused"></span>
+                        <span><strong>NY continuation</strong><small>Tạm dừng · thiếu rule thoát</small></span>
+                    </button>
+                </aside>
+
+                <div class="u1-research-editor">
+                    <div class="u1-stepper" aria-label="Tiến trình tạo run">
+                        <button class="active" type="button"><span>1</span>Giả thuyết</button>
+                        <button class="active" type="button"><span>2</span>Bộ luật</button>
+                        <button class="active" type="button"><span>3</span>Protocol</button>
+                        <button type="button"><span>4</span>Run</button>
+                    </div>
+
+                    <section class="u1-form-section">
+                        <div class="u1-section-title">
+                            <div>
+                                <p class="u1-eyebrow">BƯỚC 3 / PROTOCOL</p>
+                                <h2>Chốt cách kiểm chứng trước khi chạy</h2>
+                            </div>
+                            <span class="u1-status neutral">DRAFT</span>
+                        </div>
+                        <div class="u1-form-grid three">
+                            <label>Phiên bản chiến lược
+                                <select><option>London breakout · v0.4</option></select>
+                            </label>
+                            <label>Khoảng dữ liệu
+                                <select><option>01/01/2025 – 30/06/2026</option></select>
+                            </label>
+                            <label>Holdout
+                                <select><option>01/07/2026 – 31/08/2026</option></select>
+                            </label>
+                            <label>Ngân sách thử nghiệm
+                                <input value="60 trials" inputmode="numeric">
+                            </label>
+                            <label>Runtime tối đa
+                                <input value="20 phút" inputmode="numeric">
+                            </label>
+                            <label>Seed
+                                <input value="20260919" inputmode="numeric">
+                            </label>
+                        </div>
+
+                        <div class="u1-rule-summary">
+                            <div><span>Entry</span><strong>Breakout London high + retest ≤ 4 nến</strong></div>
+                            <div><span>SL</span><strong>Sau swing retest + 1.5 pip buffer</strong></div>
+                            <div><span>TP</span><strong>2R hoặc đóng 16:30 London</strong></div>
+                            <div><span>Skip</span><strong>High-impact news ± 20 phút</strong></div>
+                        </div>
+
+                        <div class="u1-warning-row">
+                            <strong>1 điểm cần xác nhận:</strong>
+                            <span>Chưa định nghĩa cách xử lý khi retest xảy ra đúng nến có news.</span>
+                            <button type="button">Bổ sung rule</button>
+                        </div>
+                    </section>
+
+                    <footer class="u1-action-row">
+                        <span>Run sẽ giữ dataset hash, cost model, seed và strategy version.</span>
+                        <button type="button">Lưu nháp</button>
+                        <button class="u1-primary-button" type="button">Tạo planned run</button>
+                    </footer>
+                </div>
+            </div>
+        </section>
+
+        <section id="preview-analytics" class="u1-view" data-preview-view="analytics" data-analytics-direction="a">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">PHÂN TÍCH / ANALYTICS</p>
+                    <h1>ARCHIVE-12 · phòng thử UI thật</h1>
+                    <p>Cùng một fixture synthetic, cùng semantics; chỉ thay layout và hierarchy để so direction bằng HTML/CSS/JS thật.</p>
+                </div>
+                <div class="u1-page-actions">
+                    <span class="u1-status neutral">READ-ONLY · SYNTHETIC</span>
+                </div>
+            </div>
+
+            <div class="u1-direction-lab" aria-label="Chọn direction Analytics">
+                <div class="u1-direction-copy">
+                    <span>Direction đang xem</span>
+                    <strong id="analytics-direction-name">A — Phân tích theo diễn tiến</strong>
+                    <small id="analytics-direction-note">Ưu tiên đọc từ tổng quan → đường balance → trades → chi tiết.</small>
+                </div>
+                <div class="u1-direction-tabs" role="group" aria-label="Direction A đến D">
+                    <button class="active" type="button" data-analytics-direction="a" title="Phân tích theo diễn tiến">A</button>
+                    <button type="button" data-analytics-direction="b" title="Bàn nghiên cứu mật độ cao">B</button>
+                    <button type="button" data-analytics-direction="c" title="Thẩm định theo chuỗi chứng cứ">C</button>
+                    <button type="button" data-analytics-direction="d" title="Nhật ký phân tích điềm tĩnh">D</button>
+                </div>
+                <span class="u1-real-ui-badge">UI thật · không phải ảnh</span>
+            </div>
+
+            <div class="u1-scopebar">
+                <div><span>Nguồn</span><strong>ARCHIVE-12</strong></div>
+                <div><span>Loại</span><strong>Synthetic immutable fixture</strong></div>
+                <div><span>Trades</span><strong>12 closed</strong></div>
+                <div><span>Balance</span><strong>1.000 → 1.006 USD</strong></div>
+                <div><span>Basis</span><strong>Net USD · fees N/A</strong></div>
+                <button type="button" id="analytics-reset">Reset</button>
+            </div>
+
+            <div class="u1-filter-row" aria-label="Bộ lọc Analytics">
+                <label>Kết quả
+                    <select id="analytics-outcome-filter">
+                        <option value="all">Tất cả</option>
+                        <option value="W">Win</option>
+                        <option value="L">Loss</option>
+                        <option value="BE">Breakeven</option>
+                    </select>
+                </label>
+                <span id="analytics-filter-summary">12 / 12 trades</span>
+                <span class="u1-filter-note">Candle review: N/A vì fixture không có price history.</span>
+            </div>
+
+            <div class="u1-analytics-workspace">
+                <section class="u1-metric-strip" aria-label="Chỉ số chính">
+                    <div class="u1-metric"><span>Net P/L</span><strong class="positive">+6 USD</strong><small>N=12 · net fixture</small></div>
+                    <div class="u1-metric"><span>Win rate</span><strong>41,7%</strong><small>5W / 6L / 1BE</small></div>
+                    <div class="u1-metric"><span>Mean net R</span><strong>+0,05 R</strong><small>N=12</small></div>
+                    <div class="u1-metric"><span>Max DD balance</span><strong class="negative">32 USD</strong><small>Closed-trade balance DD</small></div>
+                    <div class="u1-metric"><span>Chuỗi thua dài nhất</span><strong>3 lệnh</strong><small>Observed only</small></div>
+                </section>
+
+                <section class="u1-chart-section">
+                    <div class="u1-section-title">
+                        <div><h2>Balance theo 12 lệnh đóng</h2><span>Closed-trade balance · USD</span></div>
+                        <div class="u1-legend"><i class="equity"></i>Balance <i class="drawdown"></i>Drawdown</div>
+                    </div>
+                    <svg class="u1-equity-chart" viewBox="0 0 760 270" role="img" aria-label="Biểu đồ equity mẫu">
+                        <g class="grid-lines">
+                            <line x1="56" y1="34" x2="736" y2="34"></line>
+                            <line x1="56" y1="94" x2="736" y2="94"></line>
+                            <line x1="56" y1="154" x2="736" y2="154"></line>
+                            <line x1="56" y1="214" x2="736" y2="214"></line>
+                        </g>
+                        <path class="drawdown-area" d="M56 112 L112 148 L168 130 L224 92 L280 142 L336 188 L392 232 L448 142 L504 142 L560 174 L616 124 L672 146 L728 160 L728 224 L56 224 Z"></path>
+                        <path class="equity-line" d="M56 112 L112 148 L168 130 L224 92 L280 142 L336 188 L392 232 L448 142 L504 142 L560 174 L616 124 L672 146 L728 160"></path>
+                        <g class="axis-labels"><text x="12" y="38">1.025</text><text x="12" y="98">1.015</text><text x="12" y="158">1.005</text><text x="12" y="218">0.995</text><text x="56" y="250">T01</text><text x="356" y="250">T06</text><text x="684" y="250">T12</text></g>
+                    </svg>
+                </section>
+
+                <aside class="u1-inspector">
+                    <div class="u1-section-title"><h2>Đang kiểm tra</h2><span id="inspector-id">T01</span></div>
+                    <dl>
+                        <div><dt>Kết quả</dt><dd id="inspector-result" class="positive">Win · +15 USD</dd></div>
+                        <div><dt>Net R</dt><dd id="inspector-r">+0,50 R</dd></div>
+                        <div><dt>Setup</dt><dd id="inspector-setup">Fixture A</dd></div>
+                        <div><dt>Nguồn</dt><dd>ARCHIVE-12</dd></div>
+                        <div><dt>Candle review</dt><dd>N/A</dd></div>
+                    </dl>
+                    <p id="inspector-note" class="u1-inspector-note">Synthetic trade để kiểm tra selection state.</p>
+                    <button class="u1-primary-button full" type="button" disabled>Không có price history</button>
+                    <button class="u1-link-button" type="button" id="analytics-show-provenance">Xem provenance</button>
+                </aside>
+
+                <section class="u1-table-section">
+                    <div class="u1-section-title"><h2>Trades trong scope</h2><span id="analytics-table-count">12 bản ghi · chọn một dòng để inspect</span></div>
+                    <div class="u1-table-wrap">
+                        <table>
+                            <thead><tr><th>ID</th><th>Source</th><th>Setup</th><th class="num">Net USD</th><th class="num">Net R</th><th>Outcome</th><th>Note</th></tr></thead>
+                            <tbody id="analytics-trades">
+                                <tr class="selected" data-outcome="W" data-trade-id="T01" data-result="Win · +15 USD" data-r="+0,50 R" data-setup="Fixture A" data-note="Synthetic trade để kiểm tra selection state."><td>T01</td><td>ARCHIVE-12</td><td>Fixture A</td><td class="num positive">+15</td><td class="num positive">+0,50 R</td><td>W</td><td>review</td></tr>
+                                <tr data-outcome="L" data-trade-id="T02" data-result="Loss · −8 USD" data-r="−0,20 R" data-setup="Fixture A" data-note="Loss 1; balance vẫn trên mức khởi đầu."><td>T02</td><td>ARCHIVE-12</td><td>Fixture A</td><td class="num negative">−8</td><td class="num negative">−0,20 R</td><td>L</td><td>—</td></tr>
+                                <tr data-outcome="W" data-trade-id="T03" data-result="Win · +4 USD" data-r="+0,10 R" data-setup="Fixture B" data-note="Win nhỏ để kiểm tra tabular alignment."><td>T03</td><td>ARCHIVE-12</td><td>Fixture B</td><td class="num positive">+4</td><td class="num positive">+0,10 R</td><td>W</td><td>—</td></tr>
+                                <tr data-outcome="W" data-trade-id="T04" data-result="Win · +8 USD" data-r="+0,20 R" data-setup="Fixture B" data-note="Balance đạt local peak 1.019 USD."><td>T04</td><td>ARCHIVE-12</td><td>Fixture B</td><td class="num positive">+8</td><td class="num positive">+0,20 R</td><td>W</td><td>peak</td></tr>
+                                <tr data-outcome="L" data-trade-id="T05" data-result="Loss · −11 USD" data-r="−0,25 R" data-setup="Fixture B" data-note="Bắt đầu chuỗi ba loss liên tiếp."><td>T05</td><td>ARCHIVE-12</td><td>Fixture B</td><td class="num negative">−11</td><td class="num negative">−0,25 R</td><td>L</td><td>streak</td></tr>
+                                <tr data-outcome="L" data-trade-id="T06" data-result="Loss · −11 USD" data-r="−0,25 R" data-setup="Fixture B" data-note="Loss thứ hai trong chuỗi drawdown."><td>T06</td><td>ARCHIVE-12</td><td>Fixture B</td><td class="num negative">−11</td><td class="num negative">−0,25 R</td><td>L</td><td>streak</td></tr>
+                                <tr data-outcome="L" data-trade-id="T07" data-result="Loss · −10 USD" data-r="−0,20 R" data-setup="Fixture B" data-note="Trough 987 USD; closed-balance drawdown = 32 USD từ peak 1.019."><td>T07</td><td>ARCHIVE-12</td><td>Fixture B</td><td class="num negative">−10</td><td class="num negative">−0,20 R</td><td>L</td><td>DD 32</td></tr>
+                                <tr data-outcome="W" data-trade-id="T08" data-result="Win · +20 USD" data-r="+0,65 R" data-setup="Fixture C" data-note="Phục hồi sau drawdown; không suy ra edge từ fixture."><td>T08</td><td>ARCHIVE-12</td><td>Fixture C</td><td class="num positive">+20</td><td class="num positive">+0,65 R</td><td>W</td><td>recovery</td></tr>
+                                <tr data-outcome="BE" data-trade-id="T09" data-result="Breakeven · 0 USD" data-r="0,00 R" data-setup="Fixture C" data-note="Unknown/zero semantics: đây là zero thật, không phải N/A."><td>T09</td><td>ARCHIVE-12</td><td>Fixture C</td><td class="num">0</td><td class="num">0,00 R</td><td>BE</td><td>zero</td></tr>
+                                <tr data-outcome="L" data-trade-id="T10" data-result="Loss · −7 USD" data-r="−0,15 R" data-setup="Fixture C" data-note="Synthetic loss; candle evidence unavailable."><td>T10</td><td>ARCHIVE-12</td><td>Fixture C</td><td class="num negative">−7</td><td class="num negative">−0,15 R</td><td>L</td><td>—</td></tr>
+                                <tr data-outcome="W" data-trade-id="T11" data-result="Win · +11 USD" data-r="+0,30 R" data-setup="Fixture A" data-note="Win cuối fixture; provenance vẫn là ARCHIVE-12."><td>T11</td><td>ARCHIVE-12</td><td>Fixture A</td><td class="num positive">+11</td><td class="num positive">+0,30 R</td><td>W</td><td>—</td></tr>
+                                <tr data-outcome="L" data-trade-id="T12" data-result="Loss · −5 USD" data-r="−0,10 R" data-setup="Fixture A" data-note="Final balance 1.006 USD; tổng net +6 USD."><td>T12</td><td>ARCHIVE-12</td><td>Fixture A</td><td class="num negative">−5</td><td class="num negative">−0,10 R</td><td>L</td><td>final</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <aside class="u1-analytics-context" id="analytics-provenance">
+                    <div class="u1-section-title"><h2>Ngữ cảnh &amp; giới hạn</h2><span>Evidence chain</span></div>
+                    <dl>
+                        <div><dt>Owner</dt><dd>ARCHIVE-12 fixture</dd></div>
+                        <div><dt>Sample</dt><dd>N=12 closed trades</dd></div>
+                        <div><dt>Fees</dt><dd>N/A</dd></div>
+                        <div><dt>MAE / MFE</dt><dd>N/A</dd></div>
+                        <div><dt>Planned RR</dt><dd>N/A</dd></div>
+                        <div><dt>Price history</dt><dd>Not supplied</dd></div>
+                    </dl>
+                    <p>Direction chỉ được đổi cách sắp xếp. Không direction nào được phép tự thêm broker metadata, giá, fee hay candle.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section id="preview-chart" class="u1-view" data-preview-view="chart">
+            <div class="u1-page-head compact-head">
+                <div>
+                    <p class="u1-eyebrow">CHART &amp; THỰC HÀNH</p>
+                    <h1>EURUSDm · 15 phút</h1>
+                </div>
+                <div class="u1-chart-context">
+                    <span class="u1-status replay">REPLAY</span>
+                    <span>Cutoff: 21/08/2026 15:00 UTC+7</span>
+                    <span>Run: LB-042</span>
+                </div>
+            </div>
+
+            <div class="u1-chart-toolbar">
+                <div class="u1-segmented" aria-label="Khung thời gian"><button>5m</button><button class="active">15m</button><button>1h</button><button>4h</button></div>
+                <span class="separator"></span>
+                <button type="button">Đường</button>
+                <button type="button">Vùng</button>
+                <button type="button">Entry</button>
+                <button type="button">SL</button>
+                <button type="button">TP</button>
+                <span class="u1-toolbar-spacer"></span>
+                <button type="button">Lưu bố cục</button>
+                <button type="button">Hoàn tác</button>
+            </div>
+
+            <div class="u1-trading-layout">
+                <section class="u1-chart-canvas-wrap">
+                    <div class="u1-chart-pricebar">
+                        <strong>EURUSDm</strong>
+                        <span>O 1.17342</span><span>H 1.17408</span><span>L 1.17296</span><span>C 1.17388</span>
+                        <span class="positive">+0,04%</span>
+                    </div>
+                    <svg id="candle-chart" class="u1-candle-chart" viewBox="0 0 1040 560" role="img" aria-label="Biểu đồ nến mẫu"></svg>
+                    <div class="u1-replay-controls">
+                        <button type="button">◀</button>
+                        <button class="play" type="button">▶</button>
+                        <button type="button">▶|</button>
+                        <span>Nến 186 / 420</span>
+                        <select><option>1×</option><option>2×</option><option>4×</option></select>
+                    </div>
+                </section>
+
+                <aside class="u1-order-panel">
+                    <div class="u1-mode-banner"><strong>REPLAY · KHÔNG GỬI BROKER</strong><span>Mọi thao tác chỉ cập nhật nháp</span></div>
+                    <div class="u1-order-head"><h2>Nháp lệnh</h2><span>Chưa xác nhận</span></div>
+                    <div class="u1-segmented wide"><button class="active">Mua / Long</button><button>Bán / Short</button></div>
+
+                    <label>Entry
+                        <div class="u1-input-unit"><input id="entry-input" value="1.17390"><span>price</span></div>
+                    </label>
+                    <label>Stop loss
+                        <div class="u1-input-unit"><input id="sl-input" value="1.17190"><span>20,0 pip</span></div>
+                    </label>
+                    <label>Take profit
+                        <div class="u1-input-unit"><input id="tp-input" value="1.17790"><span>40,0 pip</span></div>
+                    </label>
+                    <label>Rủi ro tối đa
+                        <div class="u1-input-unit"><input id="risk-input" value="50"><span>USD</span></div>
+                    </label>
+
+                    <div class="u1-risk-preview">
+                        <div><span>Khối lượng ước tính</span><strong>0,25 lot</strong></div>
+                        <div><span>Planned RR</span><strong>1 : 2,00</strong></div>
+                        <div><span>Lỗ dự kiến tại SL</span><strong class="negative">−50,00 USD</strong></div>
+                        <div><span>Phí mô phỏng</span><strong>3,80 USD</strong></div>
+                    </div>
+
+                    <div class="u1-order-note">Giá, lot và phí đang là fixture cho preview. U1 không thay đổi execution contract.</div>
+                    <button class="u1-primary-button full" type="button">Đặt lệnh giả lập</button>
+                    <button class="u1-link-button" type="button">Ghi vào journal thay vì vào lệnh</button>
+                </aside>
+            </div>
+        </section>
+
+        <section id="preview-trade" class="u1-view" data-preview-view="trade">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">GIAO DỊCH / TRADE DESK</p>
+                    <h1>Soạn và kiểm tra lệnh trước khi có quyền gửi</h1>
+                    <p>Preview chỉ mô phỏng draft/check flow. Không có thao tác nào trong màn này gửi lệnh tới broker.</p>
+                </div>
+                <span class="u1-status replay">LIVE LOCKED</span>
+            </div>
+
+            <div class="u1-scopebar">
+                <div><span>Mode</span><strong>DEMO PREVIEW</strong></div>
+                <div><span>Connection</span><strong>Offline fixture</strong></div>
+                <div><span>Account</span><strong>N/A</strong></div>
+                <div><span>Quote</span><strong>Fixture only</strong></div>
+                <div><span>Broker send</span><strong>Disabled</strong></div>
+                <button type="button" data-preview-target="chart">Mở chart</button>
+            </div>
+
+            <div class="u1-trade-desk-layout">
+                <section class="u1-work-panel">
+                    <div class="u1-section-title"><h2>Nháp lệnh</h2><span id="trade-draft-state">Chưa kiểm tra</span></div>
+                    <div class="u1-form-grid three">
+                        <label>Symbol
+                            <select id="trade-symbol"><option>EURUSDm</option><option>GBPUSDm</option></select>
+                        </label>
+                        <label>Loại lệnh
+                            <select id="trade-order-type"><option>Market</option><option>Limit</option><option>Stop</option></select>
+                        </label>
+                        <label>Hướng
+                            <select id="trade-side"><option value="buy">Mua / Long</option><option value="sell">Bán / Short</option></select>
+                        </label>
+                        <label>Entry
+                            <input id="trade-entry" value="1.17390" inputmode="decimal">
+                        </label>
+                        <label>Stop loss
+                            <input id="trade-stop" value="1.17190" inputmode="decimal">
+                        </label>
+                        <label>Take profit
+                            <input id="trade-target" value="1.17790" inputmode="decimal">
+                        </label>
+                        <label>Risk budget
+                            <input id="trade-risk" value="50" inputmode="decimal">
+                        </label>
+                        <label>Volume
+                            <input id="trade-volume" value="0.25" inputmode="decimal">
+                        </label>
+                        <label>Time in force
+                            <select><option>Day / session</option><option>GTC preview</option></select>
+                        </label>
+                    </div>
+                    <div class="u1-trade-check" id="trade-check-result">
+                        <span>Draft chưa được kiểm tra.</span>
+                        <strong>Broker capability vẫn bị khóa.</strong>
+                    </div>
+                    <div class="u1-inline-actions">
+                        <button class="u1-primary-button" type="button" id="trade-check-button">Kiểm tra nháp</button>
+                        <button type="button" disabled title="Preview U1 không có broker-send capability">Gửi broker</button>
+                    </div>
+                </section>
+
+                <aside class="u1-work-panel u1-trade-state-panel">
+                    <div class="u1-section-title"><h2>Execution boundary</h2><span>Fail-closed</span></div>
+                    <div class="u1-health-list">
+                        <div><i class="ok"></i><span><strong>Draft editing</strong><small>Cho phép trong preview</small></span><b>ON</b></div>
+                        <div><i class="warn"></i><span><strong>Order check</strong><small>Chỉ mô phỏng validation UI</small></span><b>PREVIEW</b></div>
+                        <div><i class="lock"></i><span><strong>Order send</strong><small>Không expose capability</small></span><b>LOCKED</b></div>
+                        <div><i class="lock"></i><span><strong>Live mode</strong><small>Cần gate riêng ngoài U1</small></span><b>LOCKED</b></div>
+                    </div>
+                    <div class="u1-section-title u1-section-gap"><h2>Positions</h2><span>0 fixture</span></div>
+                    <div class="u1-empty-state"><strong>Không có position trong preview</strong><span>Unknown và zero được tách rõ; đây là zero fixture, không phải trạng thái broker thật.</span></div>
+                </aside>
+
+                <section class="u1-work-panel u1-trade-log-panel">
+                    <div class="u1-section-title"><h2>Lifecycle</h2><span>Draft only</span></div>
+                    <div class="u1-lifecycle">
+                        <div class="done"><span>1</span><strong>Draft</strong><small>Đang chỉnh</small></div>
+                        <div id="trade-step-check"><span>2</span><strong>Validate</strong><small>Chưa chạy</small></div>
+                        <div><span>3</span><strong>Confirm</strong><small>Không khả dụng</small></div>
+                        <div><span>4</span><strong>Broker</strong><small>Locked</small></div>
+                        <div><span>5</span><strong>Reconcile</strong><small>N/A</small></div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section id="preview-learn" class="u1-view" data-preview-view="learn">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">HỌC / LEARN</p>
+                    <h1>Học đúng khái niệm ngay trong workflow trading</h1>
+                    <p>Bridge đọc tiến độ course; không tự chấm hoàn thành và không expose answer key.</p>
+                </div>
+                <span class="u1-status neutral">READ ONLY</span>
+            </div>
+
+            <div class="u1-learn-layout">
+                <aside class="u1-library-list">
+                    <div class="u1-section-title"><h2>Course</h2><span>3 module mẫu</span></div>
+                    <button class="u1-library-item active" type="button" data-lesson-key="structure">
+                        <strong>1. Cấu trúc thị trường</strong><small>Đang học · 2/4 bài</small>
+                    </button>
+                    <button class="u1-library-item" type="button" data-lesson-key="risk">
+                        <strong>2. Risk &amp; R</strong><small>Chưa bắt đầu · 0/3 bài</small>
+                    </button>
+                    <button class="u1-library-item" type="button" data-lesson-key="review">
+                        <strong>3. Review giao dịch</strong><small>Chưa bắt đầu · 0/3 bài</small>
+                    </button>
+                </aside>
+
+                <section class="u1-learn-reader">
+                    <div class="u1-section-title">
+                        <div><p class="u1-eyebrow">BÀI HIỆN TẠI</p><h2 id="learn-title">Higher High, Higher Low và khi trend suy yếu</h2></div>
+                        <span id="learn-progress">2 / 4</span>
+                    </div>
+                    <p class="u1-detail-lead" id="learn-summary">Nhìn cấu trúc trước khi nhìn tín hiệu vào lệnh; một cây nến không tự xác nhận đảo chiều.</p>
+                    <div class="u1-learn-callout">
+                        <strong>Mục tiêu</strong>
+                        <span id="learn-objective">Phân biệt uptrend đang khỏe, cấu trúc suy yếu và downtrend đã xác nhận.</span>
+                    </div>
+                    <div class="u1-learn-example" id="learn-example">
+                        <div><span>Ví dụ</span><strong>HH 1.1050 → HL 1.1010 → HH 1.1080</strong></div>
+                        <p>Nếu giá phá HL 1.1010, uptrend suy yếu. Chỉ khi hình thành LL → LH → LL mới gọi downtrend rõ hơn.</p>
+                    </div>
+                    <div class="u1-inline-actions">
+                        <button type="button" data-preview-target="chart">Mở ví dụ trên Chart</button>
+                        <button type="button" data-preview-target="strategies">Liên hệ Playbook</button>
+                    </div>
+                    <div class="u1-readonly-note">Tiến độ thật thuộc `education/progress.json`. Preview không ghi hoặc tự hoàn thành bài.</div>
+                </section>
+
+                <aside class="u1-work-panel u1-learn-context">
+                    <div class="u1-section-title"><h2>Tài nguyên</h2><span>Bridge</span></div>
+                    <div class="u1-resource-list">
+                        <button type="button"><strong>COURSE.md</strong><span>Nội dung course</span></button>
+                        <button type="button"><strong>reference.md</strong><span>Thuật ngữ</span></button>
+                        <button type="button"><strong>workbook.md</strong><span>Bài luyện tập</span></button>
+                    </div>
+                    <div class="u1-section-title u1-section-gap"><h2>Safety</h2><span>Course bridge</span></div>
+                    <div class="u1-health-list">
+                        <div><i class="ok"></i><span><strong>Read only</strong><small>Không sửa course source</small></span><b>YES</b></div>
+                        <div><i class="lock"></i><span><strong>Answer keys</strong><small>Không expose</small></span><b>HIDDEN</b></div>
+                        <div><i class="lock"></i><span><strong>Auto completion</strong><small>Tắt</small></span><b>OFF</b></div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="preview-settings" class="u1-view" data-preview-view="settings">
+            <div class="u1-page-head">
+                <div>
+                    <p class="u1-eyebrow">CÀI ĐẶT / SETTINGS</p>
+                    <h1>Cấu hình workspace và trạng thái capability</h1>
+                    <p>Không nhập secret vào preview. Các provider/broker cần quyền riêng vẫn hiển thị unavailable hoặc locked.</p>
+                </div>
+                <span class="u1-status neutral">LOCAL SETTINGS</span>
+            </div>
+
+            <div class="u1-settings-layout">
+                <section class="u1-settings-section">
+                    <div class="u1-section-title"><h2>Giao diện</h2><span>Áp dụng ngay trong preview</span></div>
+                    <div class="u1-setting-row">
+                        <div><strong>Theme</strong><span>Sáng hoặc tối</span></div>
+                        <div class="u1-segmented" id="settings-theme">
+                            <button class="active" type="button" data-theme-choice="light">Sáng</button>
+                            <button type="button" data-theme-choice="dark">Tối</button>
+                        </div>
+                    </div>
+                    <div class="u1-setting-row">
+                        <div><strong>Mật độ</strong><span>Thoáng hoặc gọn cho phiên làm việc dài</span></div>
+                        <div class="u1-segmented" id="settings-density">
+                            <button class="active" type="button" data-density-choice="comfortable">Thoáng</button>
+                            <button type="button" data-density-choice="compact">Gọn</button>
+                        </div>
+                    </div>
+                    <div class="u1-setting-row">
+                        <div><strong>Ngôn ngữ</strong><span>Tiếng Việt là mặc định</span></div>
+                        <select><option>Tiếng Việt</option><option disabled>English · chưa nối nguồn dịch</option></select>
+                    </div>
+                </section>
+
+                <section class="u1-settings-section">
+                    <div class="u1-section-title"><h2>Hành vi workspace</h2><span>Preview state</span></div>
+                    <label class="u1-toggle-row"><span><strong>Giữ màn gần nhất</strong><small>Quay lại đúng context trong phiên preview</small></span><input id="remember-view" type="checkbox" checked></label>
+                    <label class="u1-toggle-row"><span><strong>Giữ filter Analytics</strong><small>Không reset outcome filter khi đổi màn</small></span><input id="remember-filter" type="checkbox" checked></label>
+                    <label class="u1-toggle-row"><span><strong>Animation nhẹ</strong><small>Chỉ scroll/state transition, không trang trí</small></span><input type="checkbox" checked></label>
+                </section>
+
+                <section class="u1-settings-section">
+                    <div class="u1-section-title"><h2>Capabilities</h2><span>Không phải secrets</span></div>
+                    <div class="u1-capability-table">
+                        <div><strong>Data · local-chunks</strong><span>read_metadata / read_history</span><b class="positive">AVAILABLE</b></div>
+                        <div><strong>Learn bridge</strong><span>read-only</span><b class="positive">AVAILABLE</b></div>
+                        <div><strong>AI provider</strong><span>real provider acceptance pending</span><b>OFFLINE</b></div>
+                        <div><strong>Demo broker</strong><span>real broker acceptance pending</span><b>LOCKED</b></div>
+                        <div><strong>Live execution</strong><span>separate permission gate</span><b class="negative">LOCKED</b></div>
+                    </div>
+                </section>
+
+                <section class="u1-settings-section">
+                    <div class="u1-section-title"><h2>Dữ liệu cá nhân</h2><span>Local workspace</span></div>
+                    <div class="u1-setting-row">
+                        <div><strong>Backup / export</strong><span>UI production sẽ dùng workflow backup thật; preview không tạo file.</span></div>
+                        <button type="button" disabled>Xuất backup</button>
+                    </div>
+                    <p class="u1-inline-note">Preview không yêu cầu API key, OAuth, mật khẩu broker hoặc thay đổi cấu hình hệ thống.</p>
+                </section>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="js/u1_design_preview.js"></script>
+</body>
+</html>

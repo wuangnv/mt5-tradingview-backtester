@@ -173,6 +173,21 @@ class ReadOnlyHistoryReader:
             "last_time": int(meta.get("lastTime") or 0),
         }
 
+    def metadata(self, symbol, timeframe):
+        """Return catalog metadata without reading any bar chunk content."""
+        symbol, timeframe = self._normalize(symbol, timeframe)
+        raw, meta, _ = self._load_meta(symbol, timeframe)
+        return {
+            "schema_version": "local-chunks-v1",
+            "source_id": f"local-chunks-v1:{symbol}:{timeframe}",
+            "meta_sha256": hashlib.sha256(raw).hexdigest(),
+            "symbol": symbol,
+            "timeframe": timeframe,
+            "bars": int(meta.get("count") or 0),
+            "first_time": int(meta.get("firstTime") or 0),
+            "last_time": int(meta.get("lastTime") or 0),
+        }
+
     def load_through(self, symbol, timeframe, cursor_time, before_bars=100):
         symbol, timeframe = self._normalize(symbol, timeframe)
         cursor = _timestamp(cursor_time, "cursor_time")

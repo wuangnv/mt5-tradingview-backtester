@@ -11,9 +11,10 @@ from pathlib import Path
 BACKUP_SCHEMA_VERSION = 1
 DATABASES = {
     "sessions.sqlite3": {0},
-    "research.sqlite3": {0, 1, 2},
+    "research.sqlite3": {0, 1, 2, 3},
     "journal.sqlite3": {0},
-    "execution.sqlite3": {0, 1, 2},
+    "execution.sqlite3": {0, 1, 2, 3},
+    "chart.sqlite3": {1},
 }
 
 

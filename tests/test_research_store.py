@@ -143,6 +143,9 @@ class ResearchStoreTests(unittest.TestCase):
     def test_strategy_version_is_unique_and_immutable_by_contract(self):
         protocol = self._protocol()
         strategy = self.store.get_strategy_version(protocol["strategy_version_id"])
+        self.assertEqual(strategy["maturity"], "frozen")
+        self.assertEqual(strategy["capability_status"], "needs-definition")
+        self.assertIsNone(strategy["parent_strategy_version_id"])
         with self.assertRaises(ResearchConflict):
             self.store.create_strategy_version(
                 {
@@ -152,6 +155,95 @@ class ResearchStoreTests(unittest.TestCase):
                     "rules": {"entry": "different"},
                 }
             )
+
+    def test_draft_must_be_frozen_before_protocol_and_fork_keeps_parent(self):
+        hypothesis = self.store.create_hypothesis(
+            {"title": "Manual setup", "thesis": "Document first, automate later."}
+        )
+        draft = self.store.create_strategy_version(
+            {
+                "hypothesis_id": hypothesis["id"],
+                "strategy_key": "manual-setup",
+                "version": "0.1.0",
+                "rules": {"entry": "visual confirmation"},
+                "maturity": "draft",
+                "capability_status": "manual-only",
+            }
+        )
+        with self.assertRaisesRegex(ResearchConflict, "requires a frozen"):
+            self.store.create_protocol(
+                {
+                    "strategy_version_id": draft["id"],
+                    "name": "blocked draft",
+                    "dataset_id": "fixture",
+                    "dataset_sha256": "a" * 64,
+                    "data_start_ms": 1,
+                    "cutoff_ms": 2,
+                    "seed": 0,
+                    "parameters": {},
+                }
+            )
+        frozen = self.store.freeze_strategy_version(draft["id"])
+        self.assertEqual(frozen["maturity"], "frozen")
+        self.assertEqual(frozen["capability_status"], "manual-only")
+
+        forked = self.store.create_strategy_version(
+            {
+                "hypothesis_id": hypothesis["id"],
+                "strategy_key": "manual-setup",
+                "version": "0.2.0",
+                "rules": {"entry": "defined close confirmation"},
+                "maturity": "draft",
+                "capability_status": "needs-definition",
+                "parent_strategy_version_id": frozen["id"],
+            }
+        )
+        self.assertEqual(forked["parent_strategy_version_id"], int(frozen["id"]))
+
+    def test_v2_migration_backs_up_before_playbook_metadata_columns(self):
+        legacy_path = Path(self.temp_dir.name) / "legacy-v2.sqlite3"
+        legacy = ResearchStore(legacy_path)
+        hypothesis = legacy.create_hypothesis({"title": "legacy", "thesis": "legacy"})
+        legacy.create_strategy_version(
+            {
+                "hypothesis_id": hypothesis["id"],
+                "strategy_key": "legacy",
+                "version": "1",
+                "rules": {"entry": "legacy"},
+            }
+        )
+        connection = sqlite3.connect(legacy_path)
+        connection.execute("PRAGMA user_version = 2")
+        connection.execute("ALTER TABLE strategy_versions RENAME TO strategy_versions_v3")
+        connection.execute(
+            """
+            CREATE TABLE strategy_versions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                created_at_ms INTEGER NOT NULL,
+                hypothesis_id INTEGER NOT NULL,
+                strategy_key TEXT NOT NULL,
+                version TEXT NOT NULL,
+                rules_json TEXT NOT NULL,
+                UNIQUE (strategy_key, version)
+            )
+            """
+        )
+        connection.execute(
+            """
+            INSERT INTO strategy_versions (id, created_at_ms, hypothesis_id, strategy_key, version, rules_json)
+            SELECT id, created_at_ms, hypothesis_id, strategy_key, version, rules_json FROM strategy_versions_v3
+            """
+        )
+        connection.execute("DROP TABLE strategy_versions_v3")
+        connection.commit()
+        connection.close()
+
+        migrated = ResearchStore(legacy_path)
+        migrated_strategy = migrated.get_strategy_version(1)
+        self.assertEqual(migrated_strategy["maturity"], "frozen")
+        self.assertEqual(migrated_strategy["capability_status"], "needs-definition")
+        backup_path = legacy_path.with_name(f"{legacy_path.name}.v2.bak")
+        self.assertTrue(backup_path.is_file())
 
     def test_budget_must_exist_before_run_is_created(self):
         protocol = self._protocol()

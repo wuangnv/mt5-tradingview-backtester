@@ -30,6 +30,150 @@ def _expect(value, expected, name):
         raise ResearchReconciliationError(f"{name} does not match independent oracle")
 
 
+def _quote_sides(midpoint, spread, tick):
+    midpoint = _number(midpoint, "source.price")
+    half_spread = spread / 2
+    bid = ((midpoint - half_spread) / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
+    ask = ((midpoint + half_spread) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+    if bid <= 0:
+        raise ResearchReconciliationError("source quote is nonpositive")
+    return bid, ask
+
+
+def _protective_source_oracle(*, bars, entry_index, side, rules, protocol, tick, spread, units, rate, timeframe):
+    margin = protocol.get("parameters", {}).get("research_margin")
+    if not isinstance(margin, dict) or margin.get("version") != "fixed-starting-balance-leverage-v1":
+        raise ResearchReconciliationError("protective result lacks immutable research margin assumptions")
+    leverage = _number(margin.get("leverage"), "research_margin.leverage")
+    if leverage <= 0:
+        raise ResearchReconciliationError("research leverage must be positive")
+    entry_bid, entry_ask = _quote_sides(bars[entry_index]["open"], spread, tick)
+    entry = entry_ask if side == "BUY" else entry_bid
+    margin_required = entry * units * rate / leverage
+    if margin_required > _number(protocol["starting_balance"], "starting_balance"):
+        raise ResearchReconciliationError("published protective trade exceeds research margin assumption")
+    stop_distance = _number(rules["stop_loss_distance_price"], "stop_loss_distance_price")
+    take_profit_distance = _number(rules["take_profit_distance_price"], "take_profit_distance_price")
+    if side == "BUY":
+        stop = ((entry - stop_distance) / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
+        take_profit = ((entry + take_profit_distance) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+    else:
+        stop = ((entry + stop_distance) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+        take_profit = ((entry - take_profit_distance) / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
+    if stop <= 0 or take_profit <= 0:
+        raise ResearchReconciliationError("protective levels are nonpositive")
+
+    horizon_index = entry_index + int(rules["hold_bars"]) - 1
+    for bar_index in range(entry_index, horizon_index + 1):
+        row = bars[bar_index]
+        if bar_index > entry_index:
+            open_bid, open_ask = _quote_sides(row["open"], spread, tick)
+            if side == "BUY" and open_bid <= stop:
+                return entry, stop, take_profit, margin_required, "stop_loss_gap", open_bid, int(row["timestamp"]), bar_index
+            if side == "BUY" and open_bid >= take_profit:
+                return entry, stop, take_profit, margin_required, "take_profit_gap", take_profit, int(row["timestamp"]), bar_index
+            if side == "SELL" and open_ask >= stop:
+                return entry, stop, take_profit, margin_required, "stop_loss_gap", open_ask, int(row["timestamp"]), bar_index
+            if side == "SELL" and open_ask <= take_profit:
+                return entry, stop, take_profit, margin_required, "take_profit_gap", take_profit, int(row["timestamp"]), bar_index
+        low_bid, low_ask = _quote_sides(row["low"], spread, tick)
+        high_bid, high_ask = _quote_sides(row["high"], spread, tick)
+        if side == "BUY":
+            stop_hit = low_bid <= stop
+            take_profit_hit = high_bid >= take_profit
+        else:
+            stop_hit = high_ask >= stop
+            take_profit_hit = low_ask <= take_profit
+        if stop_hit and take_profit_hit:
+            raise ResearchReconciliationError("source bar has ambiguous protective exit")
+        if stop_hit:
+            return entry, stop, take_profit, margin_required, "stop_loss", stop, int(row["timestamp"]) + timeframe, bar_index
+        if take_profit_hit:
+            return entry, stop, take_profit, margin_required, "take_profit", take_profit, int(row["timestamp"]) + timeframe, bar_index
+
+    exit_bid, exit_ask = _quote_sides(bars[horizon_index]["close"], spread, tick)
+    return (
+        entry,
+        stop,
+        take_profit,
+        margin_required,
+        "horizon",
+        exit_bid if side == "BUY" else exit_ask,
+        int(bars[horizon_index]["timestamp"]) + timeframe,
+        horizon_index,
+    )
+
+
+def _signal_source_oracle(*, bars, rules, protocol, tick, spread, units, rate, timeframe):
+    lookback = int(rules["lookback"])
+    hold_bars = int(rules["hold_bars"])
+    direction = str(rules.get("direction") or "both").lower()
+    exit_mode = rules.get("exit_mode", "fixed_horizon")
+    signals = {"long": 0, "short": 0, "no_signal": 0, "skipped_overlap": 0}
+    leverage = starting_balance = None
+    if exit_mode == "protective":
+        margin = protocol.get("parameters", {}).get("research_margin")
+        if not isinstance(margin, dict) or margin.get("version") != "fixed-starting-balance-leverage-v1":
+            raise ResearchReconciliationError("protective result lacks immutable research margin assumptions")
+        leverage = _number(margin.get("leverage"), "research_margin.leverage")
+        if leverage <= 0:
+            raise ResearchReconciliationError("research leverage must be positive")
+        starting_balance = _number(protocol["starting_balance"], "starting_balance")
+        signals["skipped_margin"] = 0
+
+    i = lookback
+    next_free_index = i
+    while i < len(bars) - hold_bars:
+        decision = bars[i]
+        prior = bars[i - lookback:i]
+        close = _number(decision["close"], "source.close")
+        prior_high = max(_number(row["high"], "source.high") for row in prior)
+        prior_low = min(_number(row["low"], "source.low") for row in prior)
+        side = None
+        if close > prior_high and direction in {"long", "both"}:
+            side = "BUY"
+            signals["long"] += 1
+        elif close < prior_low and direction in {"short", "both"}:
+            side = "SELL"
+            signals["short"] += 1
+        else:
+            signals["no_signal"] += 1
+            i += 1
+            continue
+
+        if i < next_free_index:
+            signals["skipped_overlap"] += 1
+            i += 1
+            continue
+
+        entry_index = i + 1
+        if exit_mode == "protective":
+            entry_bid, entry_ask = _quote_sides(bars[entry_index]["open"], spread, tick)
+            entry = entry_ask if side == "BUY" else entry_bid
+            margin_required = entry * units * rate / leverage
+            if margin_required > starting_balance:
+                signals["skipped_margin"] += 1
+                i += 1
+                continue
+            *_, actual_exit_index = _protective_source_oracle(
+                bars=bars,
+                entry_index=entry_index,
+                side=side,
+                rules=rules,
+                protocol=protocol,
+                tick=tick,
+                spread=spread,
+                units=units,
+                rate=rate,
+                timeframe=timeframe,
+            )
+        else:
+            actual_exit_index = i + hold_bars
+        next_free_index = actual_exit_index
+        i += 1
+    return signals
+
+
 def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> dict:
     if result.get("artifact_schema_version") != "research-engine-result-v1":
         raise ResearchReconciliationError("unsupported research engine artifact schema")
@@ -56,6 +200,7 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
     model = protocol["parameters"]["cost_model"]
     instrument = protocol["dataset"]["instrument_spec"]
     rules = protocol["playbook"]["rules"]
+    exit_mode = rules.get("exit_mode", "fixed_horizon")
     quantity = _number(rules["quantity"], "quantity")
     units = quantity * _number(instrument["contract_size"], "contract_size")
     rate = _number(model.get("quote_to_account_rate", 1), "conversion")
@@ -66,6 +211,20 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
     timeframe = int(protocol["dataset"]["timeframe_seconds"])
     bars = None if rows is None else [row for row in rows if protocol["range"]["from_utc"] <= row["timestamp"] and row["timestamp"] + timeframe <= protocol["range"]["to_utc"]]
     index_by_time = {} if bars is None else {row["timestamp"]: i for i, row in enumerate(bars)}
+    full_spread = _number(protocol["parameters"].get("spread_price", 0), "spread")
+    if bars is not None:
+        expected_signals = _signal_source_oracle(
+            bars=bars,
+            rules=rules,
+            protocol=protocol,
+            tick=tick,
+            spread=full_spread,
+            units=units,
+            rate=rate,
+            timeframe=timeframe,
+        )
+        if result.get("signals") != expected_signals:
+            raise ResearchReconciliationError("signal counters do not match independent source oracle")
     native_fills = None
     if protocol.get("engine", {}).get("backend") == "nautilus":
         execution = result.get("execution")
@@ -106,7 +265,8 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
         side = trade.get("side")
         if side not in {"BUY", "SELL"} or trade.get("trade_id") != f"engine-{index + 1}":
             raise ResearchReconciliationError(f"{label} side/identity is invalid")
-        if trade.get("symbol") != instrument["instrument_id"] or trade.get("exit_model") != "fixed_horizon_bar_close":
+        expected_exit_model = "protective_bracket" if exit_mode == "protective" else "fixed_horizon_bar_close"
+        if trade.get("symbol") != instrument["instrument_id"] or trade.get("exit_model") != expected_exit_model:
             raise ResearchReconciliationError(f"{label} execution model is invalid")
         entry = _number(trade.get("price_open"), label + ".price_open")
         exit_price = _number(trade.get("price_close"), label + ".price_close")
@@ -149,15 +309,44 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
             exit_ns = native_exit.get("timestamp_ns")
             if type(entry_ns) is not int or type(exit_ns) is not int:
                 raise ResearchReconciliationError(f"{label} Nautilus fill timestamps must be integer nanoseconds")
-            if entry_ns != opened * 10**9 + 1 or exit_ns != closed * 10**9:
+            if entry_ns != opened * 10**9 + 1:
+                raise ResearchReconciliationError(f"{label} Nautilus entry timing differs from next-open contract")
+            if native_entry.get("order_type") != "MARKET":
+                raise ResearchReconciliationError(f"{label} Nautilus entry is not a market order")
+            if exit_mode == "protective":
+                reason = trade.get("exit_reason")
+                if native_exit.get("exit_reason") != reason or native_exit.get("close_time_utc") != closed:
+                    raise ResearchReconciliationError(f"{label} Nautilus protective exit context differs from ledger")
+                expected_order_type = {
+                    "stop_loss": "STOP_MARKET",
+                    "stop_loss_gap": "STOP_MARKET",
+                    "take_profit": "LIMIT",
+                    "take_profit_gap": "LIMIT",
+                    "horizon": "MARKET",
+                }.get(reason)
+                if native_exit.get("order_type") != expected_order_type:
+                    raise ResearchReconciliationError(f"{label} Nautilus protective order type differs from exit reason")
+                if reason in {"stop_loss", "take_profit"}:
+                    expected_exit_ns = closed * 10**9 - 1
+                elif reason in {"stop_loss_gap", "take_profit_gap"}:
+                    expected_exit_ns = closed * 10**9 + 1
+                elif reason == "horizon":
+                    expected_exit_ns = closed * 10**9
+                else:
+                    raise ResearchReconciliationError(f"{label} protective exit reason is invalid")
+                if exit_ns != expected_exit_ns:
+                    raise ResearchReconciliationError(f"{label} Nautilus protective fill timing differs from modeled event")
+                if reason != "horizon":
+                    if not native_entry.get("order_list_id") or native_entry.get("order_list_id") != native_exit.get("order_list_id"):
+                        raise ResearchReconciliationError(f"{label} Nautilus protective fills are not linked to one bracket")
+            elif exit_ns != closed * 10**9:
                 raise ResearchReconciliationError(f"{label} Nautilus fill timing differs from next-open/fixed-close contract")
 
         if bars is not None:
             entry_index = index_by_time.get(opened, -1)
-            exit_index = index_by_time.get(closed - timeframe, -1)
             lookback = int(rules["lookback"])
-            if entry_index <= lookback or exit_index != entry_index + int(rules["hold_bars"]) - 1:
-                raise ResearchReconciliationError(f"{label} fill does not match source horizon")
+            if entry_index <= lookback:
+                raise ResearchReconciliationError(f"{label} entry does not match source timing")
             decision = bars[entry_index - 1]
             if signal != decision["timestamp"] + timeframe:
                 raise ResearchReconciliationError(f"{label} signal is not a closed bar")
@@ -165,13 +354,51 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
             triggered = (side == "BUY" and rules.get("direction", "both") != "short" and decision["close"] > max(row["high"] for row in prior)) or (side == "SELL" and rules.get("direction", "both") != "long" and decision["close"] < min(row["low"] for row in prior))
             if not triggered:
                 raise ResearchReconciliationError(f"{label} signal not supported by source bars")
-            spread = _number(protocol["parameters"].get("spread_price", 0), "spread") / 2
-            raw_open = _number(bars[entry_index]["open"], "source.open")
-            raw_close = _number(bars[exit_index]["close"], "source.close")
-            expected_entry = ((raw_open + (spread if side == "BUY" else -spread)) / tick).to_integral_value(rounding=ROUND_CEILING if side == "BUY" else ROUND_FLOOR) * tick
-            expected_exit = ((raw_close + (-spread if side == "BUY" else spread)) / tick).to_integral_value(rounding=ROUND_FLOOR if side == "BUY" else ROUND_CEILING) * tick
-            _expect(entry, expected_entry, label + ".entry_from_source")
-            _expect(exit_price, expected_exit, label + ".exit_from_source")
+            if exit_mode == "protective":
+                (
+                    expected_entry,
+                    expected_stop,
+                    expected_take_profit,
+                    expected_margin,
+                    expected_reason,
+                    expected_exit,
+                    expected_close,
+                    expected_exit_index,
+                ) = _protective_source_oracle(
+                    bars=bars,
+                    entry_index=entry_index,
+                    side=side,
+                    rules=rules,
+                    protocol=protocol,
+                    tick=tick,
+                    spread=full_spread,
+                    units=units,
+                    rate=rate,
+                    timeframe=timeframe,
+                )
+                _expect(entry, expected_entry, label + ".entry_from_source")
+                _expect(exit_price, expected_exit, label + ".exit_from_source")
+                _expect(trade.get("protective_stop_price"), expected_stop, label + ".protective_stop_price")
+                _expect(trade.get("protective_take_profit_price"), expected_take_profit, label + ".protective_take_profit_price")
+                _expect(trade.get("research_margin_required_account"), expected_margin, label + ".research_margin_required_account")
+                if trade.get("exit_reason") != expected_reason or closed != expected_close:
+                    raise ResearchReconciliationError(f"{label} protective exit differs from source oracle")
+                if expected_exit_index != index_by_time.get(
+                    expected_close if expected_reason.endswith("_gap") else expected_close - timeframe,
+                    -1,
+                ):
+                    raise ResearchReconciliationError(f"{label} protective source index is inconsistent")
+            else:
+                exit_index = index_by_time.get(closed - timeframe, -1)
+                if exit_index != entry_index + int(rules["hold_bars"]) - 1:
+                    raise ResearchReconciliationError(f"{label} fill does not match source horizon")
+                half_spread = full_spread / 2
+                raw_open = _number(bars[entry_index]["open"], "source.open")
+                raw_close = _number(bars[exit_index]["close"], "source.close")
+                expected_entry = ((raw_open + (half_spread if side == "BUY" else -half_spread)) / tick).to_integral_value(rounding=ROUND_CEILING if side == "BUY" else ROUND_FLOOR) * tick
+                expected_exit = ((raw_close + (-half_spread if side == "BUY" else half_spread)) / tick).to_integral_value(rounding=ROUND_FLOOR if side == "BUY" else ROUND_CEILING) * tick
+                _expect(entry, expected_entry, label + ".entry_from_source")
+                _expect(exit_price, expected_exit, label + ".exit_from_source")
 
         # Derive Decimal costs independently of the engine's retained helper.
         gross_quote = (exit_price - entry) * units * (1 if side == "BUY" else -1)

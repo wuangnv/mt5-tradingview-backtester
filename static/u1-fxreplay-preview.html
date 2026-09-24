@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U1 FX Replay-inspired Preview - Trading Workspace</title>
+    <link rel="stylesheet" href="css/u1_fxreplay_preview.css">
+</head>
+<body>
+<div class="fx-app" id="fx-app">
+    <header class="fx-topbar">
+        <div class="fx-brand-block">
+            <button class="fx-icon-button" type="button" title="Menu" aria-label="Menu">☰</button>
+            <strong>Trading Workspace</strong>
+            <span class="fx-preview-tag">U1 PREVIEW</span>
+        </div>
+
+        <nav class="fx-workspace-actions" aria-label="Công cụ workspace">
+            <button type="button" data-top-action="back">← <span>Quay lại</span></button>
+            <button type="button" data-panel="journal">Journal</button>
+            <button type="button" data-panel="analytics">Phân tích</button>
+            <button class="fx-order-trigger" type="button" data-panel="order">Nháp lệnh</button>
+        </nav>
+
+        <div class="fx-top-status">
+            <button type="button" id="fx-goto-button">Go to</button>
+            <span class="fx-mode-chip">REPLAY</span>
+            <span class="fx-local-chip"><i></i> Local</span>
+            <button class="fx-icon-button" id="fx-theme-toggle" type="button" title="Đổi sáng/tối" aria-label="Đổi sáng/tối">◐</button>
+        </div>
+    </header>
+
+    <div class="fx-shell">
+        <aside class="fx-rail" aria-label="Điều hướng chính">
+            <button class="active" type="button" data-space="overview" title="Tổng quan"><span>⌂</span><small>Tổng quan</small></button>
+            <button type="button" data-space="strategies" title="Chiến lược"><span>≡</span><small>Chiến lược</small></button>
+            <button type="button" data-space="data" title="Dữ liệu"><span>▤</span><small>Dữ liệu</small></button>
+            <button type="button" data-space="research" title="Nghiên cứu"><span>⌕</span><small>Nghiên cứu</small></button>
+            <button type="button" data-space="analytics" title="Phân tích"><span>⌁</span><small>Phân tích</small></button>
+            <button type="button" data-space="chart" title="Chart & Thực hành"><span>▥</span><small>Chart</small></button>
+            <button type="button" data-space="trade" title="Giao dịch"><span>⇄</span><small>Giao dịch</small></button>
+            <button type="button" data-space="learn" title="Học"><span>?</span><small>Học</small></button>
+            <div class="fx-rail-spacer"></div>
+            <button type="button" data-space="settings" title="Cài đặt"><span>⚙</span><small>Cài đặt</small></button>
+        </aside>
+
+        <main class="fx-main">
+            <section class="fx-space active" data-space-view="overview">
+                <div class="fx-overview-head">
+                    <div>
+                        <p>TRADING WORKSPACE</p>
+                        <h1>Tiếp tục phiên làm việc</h1>
+                        <span>Đi từ dữ liệu → nghiên cứu → replay → review trong cùng workspace.</span>
+                    </div>
+                    <button class="fx-primary-button" type="button" data-space-jump="chart">Mở Chart & Thực hành</button>
+                </div>
+                <div class="fx-overview-grid">
+                    <section class="fx-flat-section fx-next-work">
+                        <div class="fx-section-heading"><h2>Việc tiếp theo</h2><span>3 mục</span></div>
+                        <button type="button" data-space-jump="data"><b>01</b><span><strong>Kiểm tra dataset EURUSDm M15</strong><small>Local cache · QA chưa xác minh</small></span><em>Dữ liệu</em></button>
+                        <button type="button" data-space-jump="research"><b>02</b><span><strong>Hoàn thiện London breakout v0.4</strong><small>Rule news/retest còn thiếu</small></span><em>Nghiên cứu</em></button>
+                        <button type="button" data-space-jump="chart"><b>03</b><span><strong>Replay trade mẫu</strong><small>Chart → draft → journal</small></span><em>Thực hành</em></button>
+                    </section>
+                    <section class="fx-flat-section">
+                        <div class="fx-section-heading"><h2>Workspace hiện tại</h2><span>LB-042</span></div>
+                        <dl class="fx-detail-list">
+                            <div><dt>Strategy</dt><dd>London breakout v0.4</dd></div>
+                            <div><dt>Dataset</dt><dd>EXN-EURUSD-M15-v4</dd></div>
+                            <div><dt>Mode</dt><dd>Replay fixture</dd></div>
+                            <div><dt>Broker send</dt><dd class="fx-warn-text">Locked</dd></div>
+                        </dl>
+                    </section>
+                    <section class="fx-flat-section">
+                        <div class="fx-section-heading"><h2>Trạng thái dữ liệu</h2><span>Fail-closed</span></div>
+                        <div class="fx-health-row"><i class="ok"></i><span>Local chunks</span><strong>READ</strong></div>
+                        <div class="fx-health-row"><i class="warn"></i><span>Verified range</span><strong>CHECK</strong></div>
+                        <div class="fx-health-row"><i></i><span>Holdout content</span><strong>LOCKED</strong></div>
+                    </section>
+                </div>
+            </section>
+
+            <section class="fx-space" data-space-view="strategies">
+                <header class="fx-page-header"><div><p>CHIẾN LƯỢC</p><h1>Playbook</h1></div><button class="fx-primary-button" type="button">+ Setup mới</button></header>
+                <div class="fx-list-table">
+                    <div class="fx-list-head"><span>Tên</span><span>Version</span><span>Trạng thái</span><span>Runs</span></div>
+                    <button type="button"><span><strong>London breakout</strong><small>Session breakout · retest</small></span><span>v0.4</span><span class="fx-state-draft">DRAFT</span><span>3</span></button>
+                    <button type="button"><span><strong>NY continuation</strong><small>Trend continuation</small></span><span>v0.2</span><span>FROZEN</span><span>8</span></button>
+                    <button type="button"><span><strong>Asia sweep</strong><small>Manual-only</small></span><span>v0.1</span><span>MANUAL</span><span>0</span></button>
+                </div>
+            </section>
+
+            <section class="fx-space" data-space-view="data">
+                <header class="fx-page-header"><div><p>DỮ LIỆU</p><h1>Data desk</h1></div><span class="fx-mode-chip">LOCAL</span></header>
+                <div class="fx-data-layout">
+                    <section class="fx-flat-section">
+                        <div class="fx-section-heading"><h2>EURUSDm · M15</h2><span>EXN-EURUSD-M15-v4</span></div>
+                        <dl class="fx-detail-list">
+                            <div><dt>Available</dt><dd>Local fixture</dd></div>
+                            <div><dt>QA</dt><dd class="fx-warn-text">Pending</dd></div>
+                            <div><dt>Used by run</dt><dd>LB-042</dd></div>
+                            <div><dt>Holdout</dt><dd>Metadata only · locked</dd></div>
+                        </dl>
+                    </section>
+                    <section class="fx-flat-section">
+                        <div class="fx-section-heading"><h2>Quality checks</h2><span>Không biến unknown thành zero</span></div>
+                        <div class="fx-check-line"><span>Schema / timezone</span><strong>Ready</strong></div>
+                        <div class="fx-check-line"><span>Gap classification</span><strong>Pending</strong></div>
+                        <div class="fx-check-line"><span>Cost basis</span><strong>Fixture</strong></div>
+                    </section>
+                </div>
+            </section>
+
+            <section class="fx-space" data-space-view="research">
+                <header class="fx-page-header"><div><p>NGHIÊN CỨU</p><h1>Tạo protocol</h1></div><span class="fx-state-draft">DRAFT</span></header>
+                <div class="fx-research-layout">
+                    <aside class="fx-run-list">
+                        <button class="active" type="button"><strong>LB-042</strong><small>London breakout v0.4</small></button>
+                        <button type="button"><strong>LB-031</strong><small>Archived review</small></button>
+                    </aside>
+                    <section class="fx-research-form">
+                        <div class="fx-field-grid">
+                            <label>Strategy<select><option>London breakout v0.4</option></select></label>
+                            <label>Dataset<select><option>EXN-EURUSD-M15-v4</option></select></label>
+                            <label>Instrument<input value="EURUSDm" readonly></label>
+                            <label>Timeframe<input value="15m" readonly></label>
+                        </div>
+                        <div class="fx-research-rule"><span>Entry</span><strong>Breakout → retest → confirmation</strong></div>
+                        <div class="fx-research-rule"><span>Holdout</span><strong>Locked · metadata only</strong></div>
+                        <div class="fx-research-footer"><span>Chưa đủ điều kiện chạy production.</span><button class="fx-primary-button" type="button">Lưu nháp</button></div>
+                    </section>
+                </div>
+            </section>
+
+            <section class="fx-space fx-chart-space" data-space-view="chart">
+                <div class="fx-chart-toolbar">
+                    <div class="fx-symbol-select"><strong>EURUSDm</strong><span>15m</span></div>
+                    <div class="fx-timeframes" aria-label="Khung thời gian">
+                        <button type="button">5m</button><button class="active" type="button">15m</button><button type="button">1h</button><button type="button">4h</button>
+                    </div>
+                    <button type="button">Indicators</button>
+                    <button type="button">Template</button>
+                    <span class="fx-toolbar-spacer"></span>
+                    <span class="fx-fixture-label">DỮ LIỆU MẪU · LB-042</span>
+                </div>
+
+                <div class="fx-chart-stage">
+                    <aside class="fx-drawing-tools" aria-label="Công cụ vẽ">
+                        <button type="button" title="Con trỏ">↖</button>
+                        <button type="button" title="Đường xu hướng">╱</button>
+                        <button type="button" title="Vùng">▭</button>
+                        <button type="button" title="Text">T</button>
+                        <span></span>
+                        <button type="button" title="Entry">E</button>
+                        <button type="button" title="Stop loss">S</button>
+                        <button type="button" title="Take profit">T</button>
+                    </aside>
+
+                    <div class="fx-chart-canvas">
+                        <div class="fx-ohlc-row"><strong>EURUSDm</strong><span>O 1.17342</span><span>H 1.17408</span><span>L 1.17296</span><span>C 1.17388</span><b>+0,04%</b></div>
+                        <svg id="fx-candle-chart" viewBox="0 0 1100 620" role="img" aria-label="Biểu đồ nến fixture"></svg>
+                        <div class="fx-chart-watermark"><strong>EURUSDm</strong><span>15 · Replay fixture</span></div>
+                    </div>
+
+                    <div class="fx-replay-dock" aria-label="Điều khiển replay">
+                        <button type="button" id="fx-step-back" title="Lùi một nến">|◀</button>
+                        <button class="fx-play-button" type="button" id="fx-play" title="Phát / tạm dừng">▶</button>
+                        <button type="button" id="fx-step-forward" title="Tiến một nến">▶|</button>
+                        <span id="fx-candle-counter">Nến 186 / 420</span>
+                        <select id="fx-speed" aria-label="Tốc độ replay"><option>1×</option><option>2×</option><option>4×</option></select>
+                        <span class="fx-replay-separator"></span>
+                        <span>Future hidden</span>
+                    </div>
+
+                    <div class="fx-bottom-status">
+                        <span><b>REPLAY</b> · cutoff 21/08/2026 15:00 UTC+7</span>
+                        <span>Run <strong>LB-042</strong></span>
+                        <span>Broker send <strong class="fx-warn-text">LOCKED</strong></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="fx-space" data-space-view="learn">
+                <header class="fx-page-header"><div><p>HỌC</p><h1>Glossary & course bridge</h1></div><span>Read-only</span></header>
+                <div class="fx-glossary">
+                    <div><strong>Drawdown</strong><span>Mức sụt giảm từ đỉnh vốn xuống đáy sau đó.</span></div>
+                    <div><strong>Realized R</strong><span>Kết quả ròng chia cho planned risk budget.</span></div>
+                    <div><strong>Replay cutoff</strong><span>Mốc thời gian chặn dữ liệu tương lai trong lúc luyện.</span></div>
+                </div>
+            </section>
+
+            <section class="fx-space" data-space-view="settings">
+                <header class="fx-page-header"><div><p>CÀI ĐẶT</p><h1>Workspace settings</h1></div></header>
+                <div class="fx-settings-list">
+                    <label><span><strong>Theme</strong><small>Đồng bộ shell và chart preview</small></span><button type="button" data-settings-theme>Dark / Light</button></label>
+                    <label><span><strong>Live execution</strong><small>Không được mở bằng UI preview</small></span><strong class="fx-warn-text">LOCKED</strong></label>
+                    <label><span><strong>Holdout</strong><small>Chỉ metadata trong U1</small></span><strong>LOCKED</strong></label>
+                </div>
+            </section>
+        </main>
+
+        <aside class="fx-side-panel" id="fx-side-panel" aria-live="polite" aria-label="Panel chi tiết">
+            <div class="fx-panel-head">
+                <div><span id="fx-panel-kicker">JOURNAL</span><h2 id="fx-panel-title">Review phiên</h2></div>
+                <button class="fx-icon-button" id="fx-panel-close" type="button" title="Đóng panel" aria-label="Đóng panel">×</button>
+            </div>
+            <div id="fx-panel-content"></div>
+        </aside>
+    </div>
+
+    <div class="fx-goto-popover" id="fx-goto-popover" hidden>
+        <strong>Go to</strong>
+        <button type="button">London open · 14:00</button>
+        <button type="button">Replay cutoff · 15:00</button>
+        <button type="button">Trade T08 · recovery</button>
+    </div>
+</div>
+
+<template id="fx-panel-journal-template">
+    <div class="fx-panel-stack">
+        <div class="fx-panel-notice"><strong>Replay journal</strong><span>Fixture only · chưa ghi dữ liệu thật.</span></div>
+        <label>Setup<select><option>London breakout v0.4</option></select></label>
+        <label>Quyết định<textarea rows="5">Chờ retest trong vùng, chỉ vào nếu nến xác nhận giữ trên breakout.</textarea></label>
+        <div class="fx-panel-row"><span>Rule version</span><strong>v0.4</strong></div>
+        <div class="fx-panel-row"><span>Trade link</span><strong>T08</strong></div>
+        <button class="fx-primary-button" type="button">Lưu ghi chú nháp</button>
+    </div>
+</template>
+
+<template id="fx-panel-analytics-template">
+    <div class="fx-panel-stack">
+        <div class="fx-panel-notice"><strong>ARCHIVE-12</strong><span>12 trades · fixture dùng cho U1.</span></div>
+        <div class="fx-metric-grid">
+            <div><span>Net</span><strong>+6 USD</strong></div>
+            <div><span>Mean R</span><strong>+0,05 R</strong></div>
+            <div><span>Max DD</span><strong>32 USD</strong></div>
+            <div><span>W / L / BE</span><strong>5 / 6 / 1</strong></div>
+        </div>
+        <div class="fx-panel-row"><span>Longest loss streak</span><strong>3</strong></div>
+        <div class="fx-panel-row"><span>Price path</span><strong>N/A</strong></div>
+        <div class="fx-panel-row"><span>MAE / MFE</span><strong>N/A</strong></div>
+    </div>
+</template>
+
+<template id="fx-panel-order-template">
+    <div class="fx-panel-stack">
+        <div class="fx-panel-warning"><strong>REPLAY · KHÔNG GỬI BROKER</strong><span>Mọi thao tác chỉ cập nhật nháp.</span></div>
+        <div class="fx-side-toggle"><button class="active" type="button" data-side="long">Long</button><button type="button" data-side="short">Short</button></div>
+        <label>Entry<input value="1.17390" inputmode="decimal"></label>
+        <label>Stop loss<input value="1.17190" inputmode="decimal"></label>
+        <label>Take profit<input value="1.17790" inputmode="decimal"></label>
+        <label>Risk budget<input value="50" inputmode="decimal"></label>
+        <div class="fx-panel-row"><span>Planned RR</span><strong>1 : 2,00</strong></div>
+        <div class="fx-panel-row"><span>Estimated size</span><strong>0,25 lot</strong></div>
+        <button class="fx-primary-button" type="button">Đặt lệnh giả lập</button>
+        <button class="fx-text-button" type="button">Ghi journal thay vì vào lệnh</button>
+    </div>
+</template>
+
+<script src="js/u1_fxreplay_preview.js"></script>
+</body>
+</html>

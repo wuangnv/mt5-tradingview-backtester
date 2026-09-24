@@ -13,9 +13,11 @@ class DemoBrokerSimulator:
         self.balance = float(balance)
         self.connected = True
         self._positions = {}
+        self._pending_orders = {}
         self._results = {}
         self._calls = []
         self._next_position = 1
+        self._next_order = 1
         self.next_status = "accepted"
         self._capabilities = {
             "place_market": True,
@@ -23,6 +25,10 @@ class DemoBrokerSimulator:
             "protective_sl_tp": True,
             "partial_fill_reporting": True,
             "request_lookup": True,
+            "place_pending": True,
+            "cancel_pending": True,
+            "modify_position": True,
+            "partial_close": True,
         }
         self._quotes = {
             "EURUSD": {
@@ -110,6 +116,10 @@ class DemoBrokerSimulator:
         self._require_connection()
         return [dict(value) for value in self._positions.values()]
 
+    def pending_orders_snapshot(self):
+        self._require_connection()
+        return [dict(value) for value in self._pending_orders.values()]
+
     def _accepted_position(self, order, volume=None):
         quote = self.quote_snapshot(order["symbol"])
         fill_price = quote["ask"] if order["side"] == "buy" else quote["bid"]
@@ -173,6 +183,76 @@ class DemoBrokerSimulator:
             result = {"status": "rejected", "reason": "position not found"}
         else:
             result = {"status": "closed", "position_id": str(position_id)}
+        self._results[str(request_id)] = dict(result)
+        return result
+
+    def place_pending(self, order, request_id):
+        self._require_connection()
+        self._calls.append(("place_pending", str(request_id), dict(order)))
+        if self.next_status != "accepted":
+            result = {"status": self.next_status, "broker_order_id": None}
+            self._results[str(request_id)] = dict(result)
+            return result
+        order_id = f"sim-pending-{self._next_order}"
+        self._next_order += 1
+        pending = {
+            "order_id": order_id,
+            "symbol": order["symbol"],
+            "side": order["side"],
+            "order_type": order["order_type"],
+            "volume": order["volume"],
+            "trigger_price": order["trigger_price"],
+            "stop_loss": order["stop_loss"],
+            "take_profit": order["take_profit"],
+        }
+        self._pending_orders[order_id] = pending
+        result = {"status": "accepted", "broker_order_id": order_id, "pending_order": dict(pending)}
+        self._results[str(request_id)] = dict(result)
+        return result
+
+    def cancel_pending(self, order_id, request_id):
+        self._require_connection()
+        self._calls.append(("cancel_pending", str(request_id), str(order_id)))
+        pending = self._pending_orders.pop(str(order_id), None)
+        if pending is None:
+            result = {"status": "rejected", "reason": "pending order not found"}
+        else:
+            result = {"status": "canceled", "broker_order_id": str(order_id)}
+        self._results[str(request_id)] = dict(result)
+        return result
+
+    def modify_position(self, position_id, changes, request_id):
+        self._require_connection()
+        self._calls.append(("modify_position", str(request_id), str(position_id), dict(changes)))
+        position = self._positions.get(str(position_id))
+        if position is None:
+            result = {"status": "rejected", "reason": "position not found"}
+        else:
+            if "stop_loss" in changes:
+                position["stop_loss"] = changes["stop_loss"]
+            if "take_profit" in changes:
+                position["take_profit"] = changes["take_profit"]
+            result = {"status": "modified", "position": dict(position)}
+        self._results[str(request_id)] = dict(result)
+        return result
+
+    def partial_close(self, position_id, volume, request_id):
+        self._require_connection()
+        self._calls.append(("partial_close", str(request_id), str(position_id), float(volume)))
+        position = self._positions.get(str(position_id))
+        if position is None:
+            result = {"status": "rejected", "reason": "position not found"}
+        elif float(volume) >= float(position["volume"]):
+            result = {"status": "rejected", "reason": "partial close volume must be below position volume"}
+        else:
+            position["volume"] = round(float(position["volume"]) - float(volume), 8)
+            result = {
+                "status": "partial_closed",
+                "position_id": str(position_id),
+                "closed_volume": float(volume),
+                "remaining_volume": position["volume"],
+                "position": dict(position),
+            }
         self._results[str(request_id)] = dict(result)
         return result
 

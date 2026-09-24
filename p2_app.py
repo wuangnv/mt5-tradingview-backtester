@@ -61,6 +61,15 @@ def create_app(evidence_db_path=None, research_db_path=None, evidence_store=None
         item = app.config["RESEARCH_STORE"].create_strategy_version(payload())
         return jsonify({"success": True, "strategy_version": item}), 201
 
+    @app.post("/api/research/strategy-versions/<strategy_version_id>/freeze")
+    def freeze_strategy_version(strategy_version_id):
+        body = payload()
+        item = app.config["RESEARCH_STORE"].freeze_strategy_version(
+            strategy_version_id,
+            body.get("capability_status"),
+        )
+        return jsonify({"success": True, "strategy_version": item})
+
     @app.post("/api/research/protocols")
     def create_protocol():
         item = app.config["RESEARCH_STORE"].create_protocol(payload())

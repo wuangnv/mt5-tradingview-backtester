@@ -136,6 +136,35 @@ def create_app(
         entry = app.config["PRACTICE_SERVICE"].update_journal(entry_id, payload())
         return jsonify({"success": True, "entry": entry})
 
+    @app.get("/api/practice/decisions")
+    def decision_list():
+        entries = app.config["JOURNAL_STORE"].list_decisions(request.args.get("limit", 100))
+        return jsonify({"success": True, "decisions": entries})
+
+    @app.post("/api/practice/decisions")
+    def decision_create():
+        body = payload()
+        entry = app.config["JOURNAL_STORE"].create_decision(
+            body.get("source"),
+            body.get("review"),
+        )
+        return jsonify({"success": True, "decision": entry}), 201
+
+    @app.get("/api/practice/decisions/<decision_id>")
+    def decision_detail(decision_id):
+        entry = app.config["JOURNAL_STORE"].get_decision(decision_id)
+        return jsonify({"success": True, "decision": entry})
+
+    @app.get("/api/practice/decisions/<decision_id>/history")
+    def decision_history(decision_id):
+        revisions = app.config["JOURNAL_STORE"].decision_history(decision_id)
+        return jsonify({"success": True, "decision_id": str(decision_id), "revisions": revisions})
+
+    @app.patch("/api/practice/decisions/<decision_id>")
+    def decision_update(decision_id):
+        entry = app.config["JOURNAL_STORE"].update_decision(decision_id, payload())
+        return jsonify({"success": True, "decision": entry})
+
     return app
 
 

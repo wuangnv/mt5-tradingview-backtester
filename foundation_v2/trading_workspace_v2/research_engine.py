@@ -70,9 +70,12 @@ def _positive_float(value, name: str) -> float:
 
 
 def validate_rules(rules: dict) -> None:
-    allowed = {"engine", "lookback", "hold_bars", "quantity", "planned_stop_distance_price", "direction"}
+    allowed = {
+        "engine", "lookback", "hold_bars", "quantity", "planned_stop_distance_price", "direction",
+        "exit_mode", "stop_loss_distance_price", "take_profit_distance_price",
+    }
     if set(rules) - allowed:
-        raise ResearchEngineValidationError("unsupported rule fields; protective orders and margin are not implemented")
+        raise ResearchEngineValidationError("unsupported rule fields")
     if rules.get("engine") != ENGINE_VERSION:
         raise ResearchEngineValidationError(f"playbook rules must declare engine={ENGINE_VERSION}")
     for name in ("lookback", "hold_bars"):
@@ -81,6 +84,22 @@ def validate_rules(rules: dict) -> None:
         _positive_float(rules.get(name), f"rules.{name}")
     if rules.get("direction", "both") not in {"long", "short", "both"}:
         raise ResearchEngineValidationError("rules.direction must be long, short, or both")
+    exit_mode = rules.get("exit_mode", "fixed_horizon")
+    if exit_mode not in {"fixed_horizon", "protective"}:
+        raise ResearchEngineValidationError("rules.exit_mode must be fixed_horizon or protective")
+    protective_fields = ("stop_loss_distance_price", "take_profit_distance_price")
+    if exit_mode == "protective":
+        for name in protective_fields:
+            _positive_float(rules.get(name), f"rules.{name}")
+        if not math.isclose(
+            float(rules["stop_loss_distance_price"]),
+            float(rules["planned_stop_distance_price"]),
+            rel_tol=0,
+            abs_tol=1e-12,
+        ):
+            raise ResearchEngineValidationError("protective stop distance must equal planned_stop_distance_price")
+    elif any(name in rules for name in protective_fields):
+        raise ResearchEngineValidationError("protective distances require rules.exit_mode=protective")
 
 
 def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, deadline=None) -> dict:
@@ -104,6 +123,17 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
     quantity = _positive_float(rules.get("quantity"), "rules.quantity")
     stop_distance = _positive_float(rules.get("planned_stop_distance_price"), "rules.planned_stop_distance_price")
     direction = str(rules.get("direction") or "both").lower()
+    exit_mode = str(rules.get("exit_mode") or "fixed_horizon")
+    protective_stop_distance = None
+    protective_take_profit_distance = None
+    research_leverage = None
+    if exit_mode == "protective":
+        protective_stop_distance = Decimal(str(_positive_float(rules.get("stop_loss_distance_price"), "rules.stop_loss_distance_price")))
+        protective_take_profit_distance = Decimal(str(_positive_float(rules.get("take_profit_distance_price"), "rules.take_profit_distance_price")))
+        margin = protocol.get("parameters", {}).get("research_margin")
+        if not isinstance(margin, dict) or margin.get("version") != "fixed-starting-balance-leverage-v1":
+            raise ResearchEngineValidationError("protective research requires fixed research margin assumptions")
+        research_leverage = Decimal(str(_positive_float(margin.get("leverage"), "parameters.research_margin.leverage")))
     if direction not in {"long", "short", "both"}:
         raise ResearchEngineValidationError("rules.direction must be long, short, or both")
 
@@ -143,6 +173,8 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
     starting_balance = _positive_float(protocol["starting_balance"], "starting_balance")
     ledger: list[dict] = []
     signals = {"long": 0, "short": 0, "no_signal": 0, "skipped_overlap": 0}
+    if exit_mode == "protective":
+        signals["skipped_margin"] = 0
     i = lookback
     next_free_index = i
     while i < len(bars) - hold_bars:
@@ -189,22 +221,94 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
         def ask(mid):
             return ((mid + half_spread) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
 
+        entry_bid = bid(entry_mid)
+        entry_ask = ask(entry_mid)
+        actual_exit_index = exit_index
+        exit_reason = None
+        protective_stop = None
+        protective_take_profit = None
+        margin_required = None
+        if exit_mode == "protective":
+            entry_fill = entry_ask if side == "BUY" else entry_bid
+            units = Decimal(str(quantity)) * instrument.contract_size
+            margin_required = entry_fill * units * cost_model.quote_to_account_rate / research_leverage
+            if margin_required > Decimal(str(starting_balance)):
+                signals["skipped_margin"] += 1
+                i += 1
+                continue
+            if side == "BUY":
+                protective_stop = ((entry_fill - protective_stop_distance) / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
+                protective_take_profit = ((entry_fill + protective_take_profit_distance) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+            else:
+                protective_stop = ((entry_fill + protective_stop_distance) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+                protective_take_profit = ((entry_fill - protective_take_profit_distance) / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
+            if protective_stop <= 0 or protective_take_profit <= 0:
+                raise ResearchEngineValidationError("protective levels must remain positive")
+
+            exit_fill = None
+            for bar_index in range(entry_index, exit_index + 1):
+                check()
+                candidate = bars[bar_index]
+                open_mid = Decimal(str(candidate["open"]))
+                if bar_index > entry_index:
+                    open_bid, open_ask = bid(open_mid), ask(open_mid)
+                    if side == "BUY" and open_bid <= protective_stop:
+                        exit_fill, exit_reason, close_time = open_bid, "stop_loss_gap", int(candidate["timestamp"])
+                    elif side == "BUY" and open_bid >= protective_take_profit:
+                        exit_fill, exit_reason, close_time = protective_take_profit, "take_profit_gap", int(candidate["timestamp"])
+                    elif side == "SELL" and open_ask >= protective_stop:
+                        exit_fill, exit_reason, close_time = open_ask, "stop_loss_gap", int(candidate["timestamp"])
+                    elif side == "SELL" and open_ask <= protective_take_profit:
+                        exit_fill, exit_reason, close_time = protective_take_profit, "take_profit_gap", int(candidate["timestamp"])
+                    if exit_fill is not None:
+                        actual_exit_index = bar_index
+                        break
+
+                low_mid = Decimal(str(candidate["low"]))
+                high_mid = Decimal(str(candidate["high"]))
+                if side == "BUY":
+                    stop_hit = bid(low_mid) <= protective_stop
+                    take_profit_hit = bid(high_mid) >= protective_take_profit
+                else:
+                    stop_hit = ask(high_mid) >= protective_stop
+                    take_profit_hit = ask(low_mid) <= protective_take_profit
+                if stop_hit and take_profit_hit:
+                    raise ResearchEngineValidationError("protective exit is intrabar ambiguous; lower-timeframe ordering required")
+                if stop_hit:
+                    exit_fill, exit_reason = protective_stop, "stop_loss"
+                elif take_profit_hit:
+                    exit_fill, exit_reason = protective_take_profit, "take_profit"
+                if exit_fill is not None:
+                    actual_exit_index = bar_index
+                    close_time = int(candidate["timestamp"]) + timeframe_seconds
+                    break
+
+            if exit_fill is None:
+                exit_reason = "horizon"
+                actual_exit_index = exit_index
+                close_time = int(exit_bar["timestamp"]) + timeframe_seconds
+                exit_mid = Decimal(str(exit_bar["close"]))
+                exit_bid, exit_ask = bid(exit_mid), ask(exit_mid)
+            else:
+                exit_bid = exit_ask = exit_fill
+        else:
+            exit_bid, exit_ask = bid(exit_mid), ask(exit_mid)
+
         cost = calculate_round_trip_cost(
             cost_model,
             side,
             quantity,
             float(instrument.contract_size),
-            bid(entry_mid),
-            ask(entry_mid),
-            bid(exit_mid),
-            ask(exit_mid),
+            entry_bid,
+            entry_ask,
+            exit_bid,
+            exit_ask,
         )
         fees = sum(Decimal(str(cost[key])) for key in ("commission_account", "slippage_account", "financing_account"))
         # U2 rounds gross, components and net independently; keep that difference visible.
         rounding_adjustment = Decimal(str(cost["net_account"])) - Decimal(str(cost["gross_account"])) + fees
         planned_risk = stop_distance * quantity * float(instrument.contract_size) * float(cost_model.quote_to_account_rate)
-        ledger.append(
-            {
+        trade = {
                 "trade_id": f"engine-{len(ledger) + 1}",
                 "signal_time_utc": signal_time,
                 "open_time_utc": int(entry_bar["timestamp"]),
@@ -221,10 +325,17 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
                 "net_pnl": cost["net_account"],
                 "planned_risk_budget": planned_risk,
                 "realized_r": cost["net_account"] / planned_risk,
-                "exit_model": "fixed_horizon_bar_close",
+                "exit_model": "protective_bracket" if exit_mode == "protective" else "fixed_horizon_bar_close",
             }
-        )
-        next_free_index = exit_index
+        if exit_mode == "protective":
+            trade.update({
+                "exit_reason": exit_reason,
+                "protective_stop_price": float(protective_stop),
+                "protective_take_profit_price": float(protective_take_profit),
+                "research_margin_required_account": float(margin_required),
+            })
+        ledger.append(trade)
+        next_free_index = actual_exit_index
         i += 1
 
     check()
@@ -241,8 +352,14 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
             "cost_model_version": cost_model.version,
             "cost_evidence": "hypothetical zero-cost scenario" if not any((spread_price, cost_model.commission_per_side_account, cost_model.minimum_fee_account, cost_model.slippage_price_per_side, cost_model.financing_account)) else "modeled costs; not broker-confirmed",
             "planned_risk_model": "fixed_stop_distance_budget_v1",
-            "protective_orders": "unsupported; planned stop distance is an R denominator only",
-            "margin_model": "unsupported; not broker execution evidence",
+            "protective_orders": (
+                "stop-market + take-profit limit; same-bar dual-hit fails closed; hold_bars is max horizon"
+                if exit_mode == "protective" else "disabled; planned stop distance is an R denominator only"
+            ),
+            "margin_model": (
+                f"fixed starting-balance leverage {float(research_leverage):g}:1; research assumption only, not broker evidence"
+                if exit_mode == "protective" else "disabled; not broker execution evidence"
+            ),
             "data_quality": dataset.get("quality"),
             "data_source": dataset.get("source"),
         },

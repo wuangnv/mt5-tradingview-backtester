@@ -191,6 +191,7 @@ def normalize_native_result(native, protocol):
     if native.get("runtime_identity") != engine.get("runtime_identity"):
         raise ResearchEngineValidationError("Nautilus runtime identity does not match queued protocol")
     rules = protocol["playbook"]["rules"]
+    exit_mode = rules.get("exit_mode", "fixed_horizon")
     spec = protocol["dataset"]["instrument_spec"]
     model = CostModel.from_mapping(protocol["parameters"]["cost_model"])
     quantity = Decimal(str(rules["quantity"]))
@@ -209,25 +210,57 @@ def normalize_native_result(native, protocol):
                                          opened["price"], opened["price"], closed["price"], closed["price"])
         fees = sum(Decimal(str(cost[key])) for key in ("commission_account", "slippage_account", "financing_account"))
         adjustment = Decimal(str(cost["net_account"])) - Decimal(str(cost["gross_account"])) + fees
-        ledger.append({"trade_id": f"engine-{len(ledger) + 1}", "signal_time_utc": opened["signal_time_utc"],
-                       "open_time_utc": opened["timestamp_ns"] // 10**9, "close_time_utc": closed["timestamp_ns"] // 10**9,
+        close_time_utc = (
+            int(closed["close_time_utc"])
+            if exit_mode == "protective" else closed["timestamp_ns"] // 10**9
+        )
+        trade = {"trade_id": f"engine-{len(ledger) + 1}", "signal_time_utc": opened["signal_time_utc"],
+                       "open_time_utc": opened["timestamp_ns"] // 10**9, "close_time_utc": close_time_utc,
                        "symbol": spec["instrument_id"], "side": opened["side"], "quantity": float(quantity),
                        "price_open": cost["entry_fill"], "price_close": cost["exit_fill"],
                        "gross_pnl": cost["gross_account"], "fees": float(fees), "rounding_adjustment": float(adjustment),
                        "costs": cost, "net_pnl": cost["net_account"], "planned_risk_budget": float(risk),
-                       "realized_r": float(Decimal(str(cost["net_account"])) / risk), "exit_model": "fixed_horizon_bar_close",
+                       "realized_r": float(Decimal(str(cost["net_account"])) / risk),
+                       "exit_model": "protective_bracket" if exit_mode == "protective" else "fixed_horizon_bar_close",
                        "execution_link": {
                            "entry_order_id": opened["client_order_id"], "exit_order_id": closed["client_order_id"],
                            "entry_fill_id": opened["native_trade_id"], "exit_fill_id": closed["native_trade_id"],
                            "entry_timestamp_ns": opened["timestamp_ns"], "exit_timestamp_ns": closed["timestamp_ns"],
-                       }})
+                       }}
+        if exit_mode == "protective":
+            required = (
+                "exit_reason", "protective_stop_price", "protective_take_profit_price",
+                "research_margin_required_account",
+            )
+            if any(field not in closed and field not in opened for field in required):
+                raise ResearchEngineValidationError("native protective fill context is incomplete")
+            trade.update({
+                "exit_reason": closed["exit_reason"],
+                "protective_stop_price": float(Decimal(str(opened["protective_stop_price"]))),
+                "protective_take_profit_price": float(Decimal(str(opened["protective_take_profit_price"]))),
+                "research_margin_required_account": float(Decimal(str(opened["research_margin_required_account"]))),
+            })
+        ledger.append(trade)
+    research_margin = protocol.get("parameters", {}).get("research_margin")
+    protective_assumption = (
+        "actual Nautilus market-entry bracket with stop-market + take-profit limit; same-bar dual-hit preflight fails closed; hold_bars is max horizon"
+        if exit_mode == "protective" else "disabled; planned stop distance is an R denominator only"
+    )
+    margin_assumption = (
+        f"fixed starting-balance leverage {float(research_margin['leverage']):g}:1; research assumption only, not broker evidence"
+        if exit_mode == "protective" else "disabled; not broker execution evidence"
+    )
     return {"ledger": ledger, "metrics": compute_metrics_v2(ledger, protocol["starting_balance"]),
             "signals": native["signals"], "observed_range": native["observed_range"], "execution": native,
             "assumptions": {"execution_engine": "nautilus-trader", "engine_version": native["native_version"],
-                            "timing": "closed bar -> next open +1ns modeled ordering; fixed-horizon close",
+                            "timing": (
+                                "closed bar -> next open +1ns; protective boundary ticks only for unambiguous OHLC threshold hits; fixed horizon fallback"
+                                if exit_mode == "protective" else
+                                "closed bar -> next open +1ns modeled ordering; fixed-horizon close"
+                            ),
                             "price_basis": native["quote_model"], "spread_price": protocol["parameters"]["spread_price"],
                             "costs": "retained modeled costs applied to native fills; no broker or native fee claim",
                             "cost_model_version": model.version, "rounding": "explicit rounding_adjustment",
-                            "planned_risk_model": "fixed_stop_distance_budget_v1", "protective_orders": "not yet supported",
-                            "margin_model": "Nautilus default FX margin; not an accepted broker margin model",
+                            "planned_risk_model": "fixed_stop_distance_budget_v1", "protective_orders": protective_assumption,
+                            "margin_model": margin_assumption,
                             "data_quality": protocol["dataset"].get("quality"), "data_source": protocol["dataset"].get("source")}}

@@ -257,12 +257,28 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 | `/api/execution/state` | `GET` | Demo execution state and durable request journal |
 | `/api/execution/preview` | `POST` | Risk preview; no order send |
 | `/api/execution/orders` | `POST` | Guarded demo-only order placement through `ExecutionService` |
+| `/api/execution/pending-orders` | `POST` | Guarded demo-only pending limit/stop placement |
 | `/api/execution/positions/<id>/close` | `POST` | Guarded demo-only close through `ExecutionService` |
 | `/api/execution/requests/<request_id>/reconcile` | `POST` | Reconcile an unknown durable request before retrying |
+| `/api/execution/kill-switch` | `POST` | Persistently block/unblock new demo orders; close/cancel remain separate confirmed actions |
+| `/api/execution/alerts` | `POST` | Register local in-app price/news/disconnect/risk alert rules with expiry support |
+| `/api/execution/alerts/<id>/ack` | `POST` | Acknowledge one persisted in-app alert |
+| `/api/chart/annotations` | `GET`, `POST` | Versioned time/price annotations with replay-cutoff validation |
+| `/api/chart/layouts/<layout_key>` | `GET`, `PUT` | Revisioned workspace chart-layout state |
+| `/api/research/runs/<id>/execute` | `POST` | Run one explicitly supported deterministic local research engine |
+| `/api/research/runs/<id>/validation` | `GET` | Independent reconciliation of a completed engine artifact |
+| `/api/research/runs/<id>/analytics` | `GET` | Reconciled research analytics with explicit blocked-by-data fields |
+| `/api/ai/status` | `GET` | Advisory AI/provider capabilities; execution capability is always false |
+| `/api/ai/request` | `POST` | Context-hashed advisory job request through the configured provider boundary |
+| `/api/workspace/status` | `GET` | Local schema/capability/acceptance status; never substitutes for final acceptance |
+| `/api/learn/overview` | `GET` | Read-only course/progress bridge from `education/` without tutor answer keys |
 | `/risk-lab` | `GET` | Probability / Risk Lab with R3a hypothetical models and gated R3b bootstrap |
+| `/api/data-desk/providers` | `GET` | Read-only data-provider capability metadata; does not expose broker execution or fresh quote capability |
+| `/api/data-desk/datasets` | `GET` | Read-only local dataset catalog from metadata only; does not read holdout/bar content |
 | `/api/risk-lab/streak` | `POST` | IID loss-streak scenario using the trailing-loss recurrence |
 | `/api/risk-lab/equity` | `POST` | Fixed-fraction consecutive-loss equity scenario |
 | `/api/risk-lab/breakeven` | `POST` | Fixed two-outcome break-even and expectancy scenario |
+| `/api/risk-lab/prop-profile/evaluate` | `POST` | Versioned generic prop-rule evaluation; missing path inputs stay `blocked_by_data` |
 | `/api/session/save` | `POST` | Validate and save a completed replay session |
 | `/api/sessions?limit=50` | `GET` | List saved replay-session summaries |
 | `/api/sessions/<id>` | `GET`, `DELETE` | Read or delete one saved session |
@@ -270,6 +286,13 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 ## Development Notes
 
 - `workspace_app.py` is the supported integrated entrypoint. The P1-P5 modules are factories and do not create default stores merely by being imported.
+- U2 data foundations live in `data_contracts.py`, `data_import.py`, `data_costs.py`, `data_news.py`, and `workspace_data.py`. The workspace currently exposes metadata-only Data Desk APIs; CSV import helpers are not wired to a user-facing write route yet.
+- U4 chart state lives in `chart_store.py` / `workspace_chart.py`; store time/price/source/cutoff data there rather than pixel coordinates or renderer-specific objects.
+- U5 local automatic research lives in `research_engine.py`; only strategy versions explicitly marked `engine-supported` with matching rule-engine metadata may execute.
+- U6 research reconciliation/analytics lives in `research_validation.py`; generic versioned prop-rule evaluation lives in `prop_profile.py`. Missing floating-equity, MAE/MFE, exposure, session/setup or prop inputs must remain `blocked_by_data`, not zero-filled.
+- U7 advisory AI lives behind `ai_service.py` / `ai_provider.py`; the workspace defaults to the offline provider and the AI boundary has no broker execution capability.
+- U3c Learn metadata is bridged read-only by `workspace_learn.py` from the existing `education/course.json` and `education/progress.json` owners. It does not expose tutor answer keys or create a second progress tracker.
+- U8 execution safety state is durable in `execution.sqlite3` schema v3. The kill switch blocks new orders only; cancel/close remain explicit confirmed actions. Alerts are evaluated only while the app is running; there is no background notification daemon.
 - R2 analytics lives in `analytics_read_model.py` / `workspace_analytics.py`; keep filtering, export, comparison and UI on that read model instead of duplicating formulas in JavaScript.
 - R3a deterministic models live in `risk_lab.py`; R3b empirical resampling lives in `risk_bootstrap.py` and requires dataset/range/cost/risk provenance plus minimum trade/day-block coverage. Do not relax the eligibility gate just to produce a number.
 - Provenance-complete replay artifacts use the strict `replay-evidence-v2` metadata block. New browser replay saves include their replay range so the server can content-hash the exact local bars and record explicit cost/fill/risk/reproduction versions. For isolated R3b integration acceptance, `scripts/r3b_qa_run.py --data-root <empty-or-QA-data-root>` creates a clearly labeled synthetic QA run; it is not production empirical evidence and should not be written into the normal workspace data directory.
@@ -291,11 +314,19 @@ python scripts/workspace_backup.py restore D:\path\to\workspace-backup D:\path\t
 
 The backup includes the workspace SQLite databases plus local replay chunks, records schema versions and checksums, and restores into a separate data directory. Point `WORKSPACE_DATA_ROOT` at that restored directory when validating a restored copy.
 
+For an isolated clean-setup smoke on Windows, including a fresh venv and dependency install:
+
+```bash
+python scripts/portability_smoke.py
+```
+
+The smoke copies the project and the minimum education owner files to a temporary `TradingWorkspace` layout, installs only `requirements.txt`, starts the app through the Flask test client with the local simulator, and verifies workspace/Learn/execution status without connecting to MT5.
+
 ## Troubleshooting
 
 ### MT5 status stays disconnected
 
-- Make sure `python app.py` is running.
+- Make sure `python workspace_app.py` is running. `app.py` is retained only for legacy replay compatibility and is not the supported daily launcher.
 - Make sure `MT5Gateway.mq5` is attached to an MT5 chart.
 - Make sure Algo Trading is enabled.
 - Check that the EA uses `127.0.0.1` and port `9000`.

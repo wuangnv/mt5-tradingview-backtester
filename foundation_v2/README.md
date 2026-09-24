@@ -53,11 +53,16 @@ half-open time range, split, cost assumptions, seed, code closure hash and budge
 1.231.0 is the primary adapter for new supported engine requests. The original
 `close-delta-v1` reference route remains separate and unchanged.
 
-The reference strategy decides on closed bars, enters at the next bar open and
-exits at a fixed-horizon close. Midpoint bars plus constant assumed spread use
-adverse tick rounding; slippage is a separate modeled monetary cost. The planned
-stop distance is only the R denominator: protective orders and margin are not
-implemented, and unsupported rule fields are rejected. Cost component/net
+The reference strategy decides on closed bars, enters at the next bar open and,
+by default, exits at a fixed-horizon close. An optional `protective` mode pins a
+stop-market distance, take-profit limit distance and fixed research leverage in
+the immutable protocol. The stop distance must equal the planned R denominator.
+If one OHLC bar can hit both protective levels without lower-timeframe ordering,
+the run fails closed; gap-through stops use the executable modeled opening quote,
+while take-profit limits never improve past their limit price. The leverage model
+is a research-only starting-balance admission assumption, not broker margin
+evidence. Midpoint bars plus constant assumed spread use adverse tick rounding;
+slippage is a separate modeled monetary cost. Cost component/net
 rounding differences remain explicit as `rounding_adjustment`. Decimal
 reconciliation and source-fill checks run before immutable result publication.
 The Nautilus runtime is project-isolated from the control environment, pins its
@@ -69,10 +74,11 @@ independently reconciled before result publication.
 
 U5 validation is synthetic software/local PostgreSQL integration only. The
 Nautilus primary-adapter slice covers next-open timing, independent long/short
-cost/tick oracles, cancel/deadline/worker-crash cleanup and hard process memory/
-count limits. Full U5 still requires the protective-order/margin/simultaneous-
-event corpus, replay comparison, durable progress/restart checkpoints,
-chronological OOS/walk-forward/stress and approved real data. Runtime duration is
+cost/tick oracles, real contingent bracket orders for supported protective cases,
+gap/horizon/margin/dual-hit fixtures, cancel/deadline/worker-crash cleanup and
+hard process memory/count limits. Full U5 still requires replay comparison,
+durable progress/restart checkpoints, chronological OOS/walk-forward/stress and
+approved real data. Runtime duration is
 still enforced by the supervising worker rather than an OS CPU-time cap; input
 loading remains batch/row bounded. U2 import QA v3 now classifies
 sub-timeframe overlapping bars as review-required without rewriting old manifests.

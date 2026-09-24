@@ -121,6 +121,35 @@ class JournalStore:
                     );
                     CREATE INDEX IF NOT EXISTS idx_journal_entries_updated
                     ON journal_entries(updated_at_ms DESC, id DESC);
+
+                    CREATE TABLE IF NOT EXISTS journal_decisions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        created_at_ms INTEGER NOT NULL,
+                        updated_at_ms INTEGER NOT NULL,
+                        source_kind TEXT NOT NULL,
+                        source_ref TEXT NOT NULL,
+                        symbol TEXT NOT NULL,
+                        timeframe TEXT NOT NULL,
+                        decision_time_ms INTEGER NOT NULL,
+                        setup_version_id TEXT NOT NULL,
+                        current_revision INTEGER NOT NULL,
+                        UNIQUE(source_kind, source_ref)
+                    );
+                    CREATE TABLE IF NOT EXISTS journal_decision_revisions (
+                        decision_id INTEGER NOT NULL,
+                        revision INTEGER NOT NULL,
+                        created_at_ms INTEGER NOT NULL,
+                        disposition TEXT NOT NULL,
+                        observation TEXT NOT NULL,
+                        hypothesis TEXT NOT NULL,
+                        decision TEXT NOT NULL,
+                        tags_json TEXT NOT NULL,
+                        notes TEXT NOT NULL,
+                        PRIMARY KEY(decision_id, revision),
+                        FOREIGN KEY(decision_id) REFERENCES journal_decisions(id)
+                    );
+                    CREATE INDEX IF NOT EXISTS idx_journal_decisions_updated
+                    ON journal_decisions(updated_at_ms DESC, id DESC);
                     """
                 )
 
@@ -184,6 +213,74 @@ class JournalStore:
         return normalized
 
     @staticmethod
+    def _decision_source(source):
+        if not isinstance(source, dict):
+            raise JournalValidationError("decision source must be an object")
+        normalized = {}
+        for field, maximum in (
+            ("source_kind", 64),
+            ("source_ref", 256),
+            ("symbol", 64),
+            ("timeframe", 32),
+        ):
+            normalized[field] = _text(
+                source.get(field),
+                field,
+                maximum=maximum,
+                allow_empty=False,
+            )
+        try:
+            normalized["decision_time_ms"] = int(source.get("decision_time_ms"))
+        except (TypeError, ValueError) as exc:
+            raise JournalValidationError("decision_time_ms must be an integer") from exc
+        if normalized["decision_time_ms"] < 0:
+            raise JournalValidationError("decision_time_ms must be non-negative")
+        normalized["setup_version_id"] = _text(
+            source.get("setup_version_id"),
+            "setup_version_id",
+            maximum=256,
+            allow_empty=True,
+        )
+        return normalized
+
+    @staticmethod
+    def _decision_review(payload):
+        if not isinstance(payload, dict):
+            raise JournalValidationError("decision review must be an object")
+        disposition = str(payload.get("disposition") or "").strip().lower()
+        if disposition not in {"no-trade", "missed-trade", "observation"}:
+            raise JournalValidationError("disposition is invalid")
+        tags = payload.get("tags") or []
+        if not isinstance(tags, list) or len(tags) > 32:
+            raise JournalValidationError("tags must be a list with at most 32 items")
+        normalized_tags = []
+        for tag in tags:
+            normalized = _text(tag, "tag", maximum=64, allow_empty=False)
+            if normalized not in normalized_tags:
+                normalized_tags.append(normalized)
+        return {
+            "disposition": disposition,
+            "observation": _text(payload.get("observation"), "observation"),
+            "hypothesis": _text(payload.get("hypothesis"), "hypothesis"),
+            "decision": _text(payload.get("decision"), "decision"),
+            "tags": normalized_tags,
+            "notes": _text(payload.get("notes"), "notes"),
+        }
+
+    @staticmethod
+    def _decision_revision_payload(row):
+        return {
+            "revision": int(row["revision"]),
+            "created_at_ms": int(row["revision_created_at_ms"]),
+            "disposition": row["disposition"],
+            "observation": row["observation"],
+            "hypothesis": row["hypothesis"],
+            "decision": row["decision"],
+            "tags": json.loads(row["tags_json"]),
+            "notes": row["notes"],
+        }
+
+    @staticmethod
     def _revision_payload(row):
         return {
             "revision": int(row["revision"]),
@@ -213,6 +310,23 @@ class JournalStore:
             raise JournalNotFound("journal entry was not found")
         return row
 
+    def _get_decision_row(self, connection, decision_id):
+        row = connection.execute(
+            """
+            SELECT d.*, r.revision AS revision, r.created_at_ms AS revision_created_at_ms,
+                   r.disposition, r.observation, r.hypothesis, r.decision,
+                   r.tags_json, r.notes
+            FROM journal_decisions d
+            JOIN journal_decision_revisions r
+              ON r.decision_id = d.id AND r.revision = d.current_revision
+            WHERE d.id = ?
+            """,
+            (int(decision_id),),
+        ).fetchone()
+        if row is None:
+            raise JournalNotFound("journal decision was not found")
+        return row
+
     def _serialize(self, row):
         return {
             "journal_schema_version": "journal-v1",
@@ -239,6 +353,23 @@ class JournalStore:
                 "exit": row["fill_exit"],
             },
             "review": self._revision_payload(row),
+        }
+
+    def _serialize_decision(self, row):
+        return {
+            "journal_schema_version": "journal-decision-v1",
+            "id": str(row["id"]),
+            "created_at_ms": int(row["created_at_ms"]),
+            "updated_at_ms": int(row["updated_at_ms"]),
+            "source": {
+                "source_kind": row["source_kind"],
+                "source_ref": row["source_ref"],
+                "symbol": row["symbol"],
+                "timeframe": row["timeframe"],
+                "decision_time_ms": int(row["decision_time_ms"]),
+                "setup_version_id": row["setup_version_id"] or None,
+            },
+            "review": self._decision_revision_payload(row),
         }
 
     def create(self, source, review):
@@ -378,3 +509,124 @@ class JournalStore:
                 (limit,),
             ).fetchall()
             return [self._serialize(self._get_row(connection, row["id"])) for row in rows]
+
+    def create_decision(self, source, review):
+        source = self._decision_source(source)
+        review = self._decision_review(review)
+        now = int(time.time() * 1000)
+        with self._lock:
+            try:
+                with self._connection() as connection:
+                    cursor = connection.execute(
+                        """
+                        INSERT INTO journal_decisions (
+                            created_at_ms, updated_at_ms, source_kind, source_ref,
+                            symbol, timeframe, decision_time_ms, setup_version_id,
+                            current_revision
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+                        """,
+                        (
+                            now,
+                            now,
+                            source["source_kind"],
+                            source["source_ref"],
+                            source["symbol"],
+                            source["timeframe"],
+                            source["decision_time_ms"],
+                            source["setup_version_id"],
+                        ),
+                    )
+                    decision_id = cursor.lastrowid
+                    connection.execute(
+                        """
+                        INSERT INTO journal_decision_revisions (
+                            decision_id, revision, created_at_ms, disposition,
+                            observation, hypothesis, decision, tags_json, notes
+                        ) VALUES (?, 1, ?, ?, ?, ?, ?, ?, ?)
+                        """,
+                        (
+                            decision_id,
+                            now,
+                            review["disposition"],
+                            review["observation"],
+                            review["hypothesis"],
+                            review["decision"],
+                            json.dumps(review["tags"], separators=(",", ":"), ensure_ascii=True),
+                            review["notes"],
+                        ),
+                    )
+            except sqlite3.IntegrityError as exc:
+                raise JournalConflict("this decision source already has a journal record") from exc
+        return self.get_decision(decision_id)
+
+    def update_decision(self, decision_id, review):
+        review = self._decision_review(review)
+        now = int(time.time() * 1000)
+        with self._lock:
+            with self._connection() as connection:
+                current = self._get_decision_row(connection, decision_id)
+                revision = int(current["current_revision"]) + 1
+                connection.execute(
+                    """
+                    INSERT INTO journal_decision_revisions (
+                        decision_id, revision, created_at_ms, disposition,
+                        observation, hypothesis, decision, tags_json, notes
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        int(decision_id),
+                        revision,
+                        now,
+                        review["disposition"],
+                        review["observation"],
+                        review["hypothesis"],
+                        review["decision"],
+                        json.dumps(review["tags"], separators=(",", ":"), ensure_ascii=True),
+                        review["notes"],
+                    ),
+                )
+                connection.execute(
+                    "UPDATE journal_decisions SET updated_at_ms = ?, current_revision = ? WHERE id = ?",
+                    (now, revision, int(decision_id)),
+                )
+        return self.get_decision(decision_id)
+
+    def get_decision(self, decision_id):
+        with self._connection() as connection:
+            return self._serialize_decision(self._get_decision_row(connection, decision_id))
+
+    def decision_history(self, decision_id):
+        with self._connection() as connection:
+            entry = connection.execute(
+                "SELECT id FROM journal_decisions WHERE id = ?",
+                (int(decision_id),),
+            ).fetchone()
+            if entry is None:
+                raise JournalNotFound("journal decision was not found")
+            rows = connection.execute(
+                """
+                SELECT revision, created_at_ms AS revision_created_at_ms,
+                       disposition, observation, hypothesis, decision, tags_json, notes
+                FROM journal_decision_revisions
+                WHERE decision_id = ? ORDER BY revision ASC
+                """,
+                (int(decision_id),),
+            ).fetchall()
+            return [self._decision_revision_payload(row) for row in rows]
+
+    def list_decisions(self, limit=100):
+        try:
+            limit = int(limit)
+        except (TypeError, ValueError) as exc:
+            raise JournalValidationError("limit must be an integer") from exc
+        if limit < 1 or limit > 100:
+            raise JournalValidationError("limit must be between 1 and 100")
+        with self._connection() as connection:
+            rows = connection.execute(
+                "SELECT id FROM journal_decisions ORDER BY updated_at_ms DESC, id DESC LIMIT ?",
+                (limit,),
+            ).fetchall()
+            return [
+                self._serialize_decision(self._get_decision_row(connection, row["id"]))
+                for row in rows
+            ]

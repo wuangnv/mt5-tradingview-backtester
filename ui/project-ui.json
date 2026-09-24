@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "status": "exploration",
+  "globalUiSystem": null,
+  "globalUiSystemVersion": null,
+  "theme": null,
+  "themeVersion": null,
+  "domain": "trading",
+  "domainUiVersion": "0.1.0-dev",
+  "representativeScreens": [
+    "research",
+    "analytics",
+    "chart-practice"
+  ],
+  "explorationArtifact": "static/u1-design-preview.html",
+  "activeReviewArtifact": "static/u1-fxreplay-preview.html",
+  "reviewMode": "fxreplay-inspired-fast-track",
+  "referenceProduct": "FX Replay",
+  "referenceUse": "layout-and-workflow-only",
+  "reviewSequence": [
+    "shell",
+    "overview",
+    "strategies",
+    "data",
+    "research",
+    "analytics",
+    "chart-practice",
+    "trade",
+    "learn",
+    "settings"
+  ],
+  "candidateMedium": "runnable-code",
+  "imageOnlyCandidatesApprovable": false,
+  "previewScreens": [
+    "overview",
+    "strategies",
+    "data",
+    "research",
+    "analytics",
+    "chart-practice",
+    "trade",
+    "learn",
+    "settings"
+  ],
+  "approvedForProductionPropagation": false
+}
