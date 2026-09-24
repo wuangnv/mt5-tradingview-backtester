@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createChart, LineSeries } from 'lightweight-charts'
+import ReplayWorkspace from './ReplayWorkspace.jsx'
 import './styles.css'
 
 function formatNumber(value, digits = 2) {
@@ -39,9 +40,7 @@ function EquityChart({ points }) {
   return <div className="chart" ref={hostRef} aria-label="Duong von research" />
 }
 
-function App() {
-  const query = new URLSearchParams(window.location.search)
-  const workspace = query.get('workspace') || 'tenant-a'
+function ResearchWorkspace({ workspace, query }) {
   const jobId = query.get('job') || ''
   const [state, setState] = useState({ status: 'loading', payload: null, error: null })
 
@@ -127,6 +126,15 @@ function App() {
       )}
     </main>
   )
+}
+
+function App() {
+  const query = new URLSearchParams(window.location.search)
+  const workspace = query.get('workspace') || 'tenant-a'
+  const isReplay = query.get('view') === 'replay' || query.has('session') || query.has('dataset')
+
+  if (isReplay) return <ReplayWorkspace workspace={workspace} query={query} />
+  return <ResearchWorkspace workspace={workspace} query={query} />
 }
 
 createRoot(document.getElementById('root')).render(<App />)
