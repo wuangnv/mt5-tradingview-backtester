@@ -32,11 +32,18 @@ from .contracts import (
 from .data_sources import DataProviderRegistry, LocalCatalogProvider
 from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
+from .prop_session import (
+    PropAttemptCreateRequest,
+    PropResumeSaveRequest,
+    PropSessionContractError,
+    PropSessionSnapshot,
+    PropSessionUpdateRequest,
+)
 from .replay import ReplayService
 from .research import ResearchService
 from .nautilus_worker import runtime_ready
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
-from .store import PostgresStore
+from .store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
 
 
 def workspace_id(request: Request, x_workspace_id: str = Header(..., min_length=1)) -> str:
@@ -177,6 +184,123 @@ def create_app(
             return product.evaluate_prop(body.model_dump(mode="json"))
         except PropProfileValidationError as exc:
             raise HTTPException(status_code=422, detail=str(exc))
+
+    def require_prop_scope(workspace: str, session_id: str, *items) -> None:
+        for item in items:
+            if getattr(item, "workspace_id", workspace) != workspace:
+                raise HTTPException(status_code=403, detail="prop_workspace_mismatch")
+            if getattr(item, "session_id", session_id) != session_id:
+                raise HTTPException(status_code=422, detail="prop_session_mismatch")
+
+    @app.post("/api/v2/prop/sessions", status_code=201)
+    def create_prop_session(body: PropSessionSnapshot, workspace: str = Depends(workspace_id)):
+        require_prop_scope(workspace, body.session_id, body)
+        try:
+            return store.create_prop_session(body).model_dump(mode="json")
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    @app.get("/api/v2/prop/sessions")
+    def list_prop_sessions(workspace: str = Depends(workspace_id)):
+        return {"items": [item.model_dump(mode="json") for item in store.list_prop_sessions(workspace)]}
+
+    @app.get("/api/v2/prop/sessions/{session_id}")
+    def get_prop_session(session_id: str, workspace: str = Depends(workspace_id)):
+        session = store.get_prop_session(workspace, session_id)
+        if session is None:
+            raise HTTPException(status_code=404, detail="prop_session_not_found")
+        return session.model_dump(mode="json")
+
+    @app.put("/api/v2/prop/sessions/{session_id}")
+    def update_prop_session(session_id: str, body: PropSessionUpdateRequest, workspace: str = Depends(workspace_id)):
+        require_prop_scope(workspace, session_id, body.session)
+        try:
+            result = store.update_prop_session(
+                body.session,
+                expected_revision=body.expected_revision,
+                operation_id=body.operation_id,
+            )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="prop_session_not_found") from exc
+        except PropIdempotencyConflict as exc:
+            raise HTTPException(status_code=409, detail="prop_idempotency_conflict") from exc
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return {
+            "session": result["session"].model_dump(mode="json"),
+            "duplicate": result["duplicate"],
+        }
+
+    @app.post("/api/v2/prop/sessions/{session_id}/attempts", status_code=201)
+    def create_prop_attempt(session_id: str, body: PropAttemptCreateRequest, workspace: str = Depends(workspace_id)):
+        require_prop_scope(workspace, session_id, body.attempt, body.phase)
+        try:
+            result = store.create_prop_attempt(body.attempt, body.phase, resume_state=body.resume_state)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="prop_session_not_found") from exc
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return {
+            "session": result["session"].model_dump(mode="json"),
+            "attempt": result["attempt"].model_dump(mode="json"),
+            "phase": result["phase"].model_dump(mode="json"),
+            "resume_state": result["resume_state"],
+            "duplicate": result["duplicate"],
+        }
+
+    @app.get("/api/v2/prop/sessions/{session_id}/attempts")
+    def list_prop_attempts(session_id: str, workspace: str = Depends(workspace_id)):
+        if store.get_prop_session(workspace, session_id) is None:
+            raise HTTPException(status_code=404, detail="prop_session_not_found")
+        return {
+            "items": [
+                item.model_dump(mode="json")
+                for item in store.list_prop_attempts(workspace, session_id)
+            ]
+        }
+
+    @app.get("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}")
+    def get_prop_attempt(session_id: str, attempt_id: str, workspace: str = Depends(workspace_id)):
+        result = store.get_prop_resume_state(workspace, session_id, attempt_id)
+        if result is None:
+            raise HTTPException(status_code=404, detail="prop_attempt_not_found")
+        return {
+            "session": result["session"].model_dump(mode="json"),
+            "attempt": result["attempt"].model_dump(mode="json"),
+            "phase": result["phase"].model_dump(mode="json"),
+            "resume_state": result["resume_state"],
+        }
+
+    @app.put("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/resume")
+    def save_prop_resume(
+        session_id: str,
+        attempt_id: str,
+        body: PropResumeSaveRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        require_prop_scope(workspace, session_id, body.attempt, body.phase)
+        if body.attempt.attempt_id != attempt_id or body.phase.attempt_id != attempt_id:
+            raise HTTPException(status_code=422, detail="prop_attempt_mismatch")
+        try:
+            result = store.save_prop_resume_state(
+                body.attempt,
+                body.phase,
+                expected_revision=body.expected_revision,
+                operation_id=body.operation_id,
+                resume_state=body.resume_state,
+            )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="prop_attempt_not_found") from exc
+        except PropIdempotencyConflict as exc:
+            raise HTTPException(status_code=409, detail="prop_idempotency_conflict") from exc
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return {
+            "attempt": result["attempt"].model_dump(mode="json"),
+            "phase": result["phase"].model_dump(mode="json"),
+            "resume_state": result["resume_state"],
+            "duplicate": result["duplicate"],
+        }
 
     @app.post("/api/v2/research/jobs", status_code=202)
     def create_research_job(body: CreateResearchJob, workspace: str = Depends(workspace_id)):

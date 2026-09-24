@@ -234,6 +234,32 @@ class PhaseStateSnapshot(BaseModel):
         return self
 
 
+class PropSessionUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    session: PropSessionSnapshot
+    expected_revision: int = Field(ge=1, strict=True)
+    operation_id: str = Field(min_length=1, max_length=128)
+
+
+class PropAttemptCreateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    attempt: ChallengeAttemptSnapshot
+    phase: PhaseStateSnapshot
+    resume_state: dict = Field(default_factory=dict)
+
+
+class PropResumeSaveRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    attempt: ChallengeAttemptSnapshot
+    phase: PhaseStateSnapshot
+    expected_revision: int = Field(ge=1, strict=True)
+    operation_id: str = Field(min_length=1, max_length=128)
+    resume_state: dict = Field(default_factory=dict)
+
+
 class TransitionIntent(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

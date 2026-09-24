@@ -1,13 +1,22 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import dataclass
+from datetime import datetime
 from uuid import uuid4
 
 import psycopg
 from psycopg.rows import dict_row
 
 from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
+from .prop_session import (
+    ChallengeAttemptSnapshot,
+    PhaseStateSnapshot,
+    PropSessionContractError,
+    PropSessionSnapshot,
+    validate_attempt_against_session,
+)
 
 
 RESEARCH_JOB_ADMISSION_LOCK_KEY = 0x52534A41
@@ -69,6 +78,72 @@ ALTER TABLE research_jobs ADD CONSTRAINT research_jobs_status_check
 CREATE INDEX IF NOT EXISTS idx_research_jobs_lease_expiry
     ON research_jobs(status, lease_expires_at_utc);
 
+CREATE TABLE IF NOT EXISTS prop_sessions (
+    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
+    session_id text NOT NULL,
+    current_revision integer NOT NULL CHECK (current_revision >= 1),
+    snapshot_json jsonb NOT NULL,
+    created_at_utc text NOT NULL,
+    updated_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, session_id)
+);
+
+CREATE TABLE IF NOT EXISTS prop_session_revisions (
+    workspace_id text NOT NULL,
+    session_id text NOT NULL,
+    revision integer NOT NULL CHECK (revision >= 1),
+    snapshot_json jsonb NOT NULL,
+    created_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, session_id, revision),
+    FOREIGN KEY (workspace_id, session_id)
+        REFERENCES prop_sessions(workspace_id, session_id)
+);
+
+CREATE TABLE IF NOT EXISTS prop_attempts (
+    workspace_id text NOT NULL,
+    session_id text NOT NULL,
+    attempt_id text NOT NULL,
+    current_revision integer NOT NULL CHECK (current_revision >= 1),
+    snapshot_json jsonb NOT NULL,
+    phase_json jsonb NOT NULL,
+    resume_json jsonb NOT NULL DEFAULT '{}'::jsonb,
+    created_at_utc text NOT NULL,
+    updated_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, session_id, attempt_id),
+    FOREIGN KEY (workspace_id, session_id)
+        REFERENCES prop_sessions(workspace_id, session_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_prop_attempts_session_updated
+    ON prop_attempts(workspace_id, session_id, updated_at_utc DESC, attempt_id);
+
+CREATE TABLE IF NOT EXISTS prop_attempt_revisions (
+    workspace_id text NOT NULL,
+    session_id text NOT NULL,
+    attempt_id text NOT NULL,
+    revision integer NOT NULL CHECK (revision >= 1),
+    snapshot_json jsonb NOT NULL,
+    phase_json jsonb NOT NULL,
+    resume_json jsonb NOT NULL DEFAULT '{}'::jsonb,
+    created_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, session_id, attempt_id, revision),
+    FOREIGN KEY (workspace_id, session_id, attempt_id)
+        REFERENCES prop_attempts(workspace_id, session_id, attempt_id)
+);
+
+CREATE TABLE IF NOT EXISTS prop_mutation_receipts (
+    workspace_id text NOT NULL,
+    session_id text NOT NULL,
+    attempt_id text NOT NULL DEFAULT '',
+    operation_id text NOT NULL,
+    fingerprint text NOT NULL,
+    entity_revision integer NOT NULL CHECK (entity_revision >= 1),
+    created_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, session_id, attempt_id, operation_id),
+    FOREIGN KEY (workspace_id, session_id)
+        REFERENCES prop_sessions(workspace_id, session_id)
+);
+
 CREATE TABLE IF NOT EXISTS workspace_records (
     workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
     kind text NOT NULL CHECK (kind IN ('playbook','journal','annotation','replay')),
@@ -119,6 +194,25 @@ class ClaimedJob:
 
 class StaleJobAttempt(RuntimeError):
     pass
+
+
+class PropPersistenceConflict(RuntimeError):
+    pass
+
+
+class PropIdempotencyConflict(PropPersistenceConflict):
+    pass
+
+
+_TERMINAL_PROP_ATTEMPT_STATUSES = {"completed_pass", "failed_breach", "expired", "abandoned"}
+
+
+def _canonical_json(payload: dict) -> str:
+    return json.dumps(payload, sort_keys=True, separators=(",", ":"))
+
+
+def _payload_fingerprint(payload: dict) -> str:
+    return hashlib.sha256(_canonical_json(payload).encode("utf-8")).hexdigest()
 
 
 class PostgresStore:
@@ -721,6 +815,514 @@ class PostgresStore:
             )
             conn.commit()
         return self.get_record(workspace_id, kind, record_id)
+
+    def create_prop_session(self, session: PropSessionSnapshot) -> PropSessionSnapshot:
+        if session.revision != 1:
+            raise PropPersistenceConflict("new prop sessions must start at revision 1")
+        self.ensure_workspace(session.workspace_id)
+        payload = session.model_dump(mode="json")
+        now = utc_now_iso()
+        with self.connect() as conn:
+            encoded = json.dumps(payload, sort_keys=True)
+            inserted = conn.execute(
+                """
+                INSERT INTO prop_sessions(
+                    workspace_id,session_id,current_revision,snapshot_json,created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,1,%s::jsonb,%s,%s)
+                ON CONFLICT (workspace_id,session_id) DO NOTHING
+                RETURNING session_id
+                """,
+                (session.workspace_id, session.session_id, encoded, now, now),
+            ).fetchone()
+            if inserted is None:
+                existing = conn.execute(
+                    "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s",
+                    (session.workspace_id, session.session_id),
+                ).fetchone()
+                current = PropSessionSnapshot.model_validate(existing["snapshot_json"])
+                if current == session:
+                    return current
+                raise PropPersistenceConflict("prop session already exists with different content")
+            conn.execute(
+                """
+                INSERT INTO prop_session_revisions(
+                    workspace_id,session_id,revision,snapshot_json,created_at_utc
+                ) VALUES(%s,%s,1,%s::jsonb,%s)
+                """,
+                (session.workspace_id, session.session_id, encoded, now),
+            )
+            conn.commit()
+        return session
+
+    def get_prop_session(self, workspace_id: str, session_id: str) -> PropSessionSnapshot | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s",
+                (workspace_id, session_id),
+            ).fetchone()
+        return PropSessionSnapshot.model_validate(row["snapshot_json"]) if row else None
+
+    def list_prop_sessions(self, workspace_id: str) -> list[PropSessionSnapshot]:
+        with self.connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_sessions
+                WHERE workspace_id=%s
+                ORDER BY updated_at_utc DESC,session_id
+                """,
+                (workspace_id,),
+            ).fetchall()
+        return [PropSessionSnapshot.model_validate(row["snapshot_json"]) for row in rows]
+
+    def update_prop_session(
+        self,
+        session: PropSessionSnapshot,
+        *,
+        expected_revision: int,
+        operation_id: str,
+    ) -> dict:
+        payload = session.model_dump(mode="json")
+        fingerprint = _payload_fingerprint(payload)
+        now = utc_now_iso()
+        with self.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT current_revision,snapshot_json FROM prop_sessions
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (session.workspace_id, session.session_id),
+            ).fetchone()
+            if row is None:
+                raise LookupError("prop session not found")
+            receipt = conn.execute(
+                """
+                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id='' AND operation_id=%s
+                """,
+                (session.workspace_id, session.session_id, operation_id),
+            ).fetchone()
+            if receipt is not None:
+                if receipt["fingerprint"] != fingerprint:
+                    raise PropIdempotencyConflict("operation_id was already used with different session content")
+                revision = conn.execute(
+                    """
+                    SELECT snapshot_json FROM prop_session_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND revision=%s
+                    """,
+                    (session.workspace_id, session.session_id, int(receipt["entity_revision"])),
+                ).fetchone()
+                if revision is None:
+                    raise PropPersistenceConflict("idempotency receipt points to a missing session revision")
+                return {"session": PropSessionSnapshot.model_validate(revision["snapshot_json"]), "duplicate": True}
+            current = PropSessionSnapshot.model_validate(row["snapshot_json"])
+            if int(row["current_revision"]) != int(expected_revision):
+                raise PropPersistenceConflict("prop session revision conflict")
+            if session.revision != int(expected_revision) + 1:
+                raise PropPersistenceConflict("prop session snapshot revision must advance exactly once")
+            if session.mode != current.mode or session.session_type != current.session_type:
+                raise PropPersistenceConflict("prop session mode and type are immutable")
+            if session.profile.model_dump(mode="json") != current.profile.model_dump(mode="json"):
+                raise PropPersistenceConflict("frozen prop profile cannot be changed after session creation")
+
+            encoded = json.dumps(payload, sort_keys=True)
+            conn.execute(
+                """
+                INSERT INTO prop_session_revisions(
+                    workspace_id,session_id,revision,snapshot_json,created_at_utc
+                ) VALUES(%s,%s,%s,%s::jsonb,%s)
+                """,
+                (session.workspace_id, session.session_id, session.revision, encoded, now),
+            )
+            conn.execute(
+                """
+                UPDATE prop_sessions SET current_revision=%s,snapshot_json=%s::jsonb,updated_at_utc=%s
+                WHERE workspace_id=%s AND session_id=%s
+                """,
+                (session.revision, encoded, now, session.workspace_id, session.session_id),
+            )
+            conn.execute(
+                """
+                INSERT INTO prop_mutation_receipts(
+                    workspace_id,session_id,attempt_id,operation_id,fingerprint,entity_revision,created_at_utc
+                ) VALUES(%s,%s,'',%s,%s,%s,%s)
+                """,
+                (session.workspace_id, session.session_id, operation_id, fingerprint, session.revision, now),
+            )
+            conn.commit()
+        return {"session": session, "duplicate": False}
+
+    @staticmethod
+    def _validate_prop_phase_scope(
+        session: PropSessionSnapshot,
+        attempt: ChallengeAttemptSnapshot,
+        phase: PhaseStateSnapshot,
+    ) -> None:
+        validate_attempt_against_session(session, attempt)
+        if (
+            phase.workspace_id != attempt.workspace_id
+            or phase.session_id != attempt.session_id
+            or phase.attempt_id != attempt.attempt_id
+        ):
+            raise PropSessionContractError("phase state scope does not match attempt")
+        if phase.profile_hash != attempt.profile_hash:
+            raise PropSessionContractError("phase state profile version mismatch")
+        if phase.phase_index > len(session.profile.phases):
+            raise PropSessionContractError("phase state references an unknown frozen phase")
+        phase_spec = session.profile.phases[phase.phase_index - 1]
+        if phase.initial_balance != phase_spec.initial_capital:
+            raise PropSessionContractError("phase initial balance does not match frozen phase capital")
+        if phase.virtual_time_utc < attempt.virtual_start_utc or phase.virtual_time_utc > attempt.virtual_cutoff_utc:
+            raise PropSessionContractError("phase virtual time is outside the attempt interval")
+
+    @staticmethod
+    def _validate_resume_counts(phase: PhaseStateSnapshot, resume_state: dict) -> None:
+        positions = resume_state.get("open_positions")
+        pending = resume_state.get("pending_orders")
+        if phase.open_positions > 0 and not isinstance(positions, (list, tuple, dict)):
+            raise PropPersistenceConflict("resume open_positions are required when the phase has open positions")
+        if phase.pending_orders > 0 and not isinstance(pending, (list, tuple, dict)):
+            raise PropPersistenceConflict("resume pending_orders are required when the phase has pending orders")
+        if positions is not None and not isinstance(positions, (list, tuple, dict)):
+            raise PropPersistenceConflict("resume open_positions must be a collection")
+        if pending is not None and not isinstance(pending, (list, tuple, dict)):
+            raise PropPersistenceConflict("resume pending_orders must be a collection")
+        if isinstance(positions, (list, tuple, dict)) and len(positions) != phase.open_positions:
+            raise PropPersistenceConflict("resume open_positions do not match the phase snapshot count")
+        if isinstance(pending, (list, tuple, dict)) and len(pending) != phase.pending_orders:
+            raise PropPersistenceConflict("resume pending_orders do not match the phase snapshot count")
+
+    @staticmethod
+    def _cursor_key(resume_state: dict, *, required: bool) -> tuple[int, datetime] | None:
+        cursor = resume_state.get("cursor")
+        if cursor is None and not required:
+            return None
+        if not isinstance(cursor, dict):
+            raise PropPersistenceConflict("resume cursor is required and must be structured")
+        bar_index = cursor.get("bar_index")
+        timestamp = cursor.get("timestamp_utc")
+        if isinstance(bar_index, bool) or not isinstance(bar_index, int) or bar_index < 0:
+            raise PropPersistenceConflict("resume cursor bar_index must be a nonnegative integer")
+        if not isinstance(timestamp, str) or not timestamp.strip():
+            raise PropPersistenceConflict("resume cursor timestamp_utc is required")
+        try:
+            parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise PropPersistenceConflict("resume cursor timestamp_utc must be ISO-8601") from exc
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise PropPersistenceConflict("resume cursor timestamp_utc must be timezone-aware")
+        return bar_index, parsed
+
+    @classmethod
+    def _validate_resume_cursor(cls, resume_state: dict, previous_resume_state: dict | None = None) -> None:
+        current = cls._cursor_key(resume_state, required=True)
+        previous = cls._cursor_key(previous_resume_state or {}, required=False)
+        if previous is None:
+            return
+        if current[0] < previous[0] or current[1] < previous[1]:
+            raise PropPersistenceConflict("resume cursor cannot move backwards within an attempt")
+
+    def create_prop_attempt(
+        self,
+        attempt: ChallengeAttemptSnapshot,
+        phase: PhaseStateSnapshot,
+        *,
+        resume_state: dict | None = None,
+    ) -> dict:
+        if attempt.revision != 1:
+            raise PropPersistenceConflict("new prop attempts must start at revision 1")
+        resume = dict(resume_state or {})
+        now = utc_now_iso()
+        with self.connect() as conn:
+            session_row = conn.execute(
+                "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s FOR UPDATE",
+                (attempt.workspace_id, attempt.session_id),
+            ).fetchone()
+            if session_row is None:
+                raise LookupError("prop session not found")
+            session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
+            self._validate_prop_phase_scope(session, attempt, phase)
+            self._validate_resume_counts(phase, resume)
+            if attempt.parent_attempt_id:
+                parent = conn.execute(
+                    """
+                    SELECT 1 FROM prop_attempts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                    """,
+                    (attempt.workspace_id, attempt.session_id, attempt.parent_attempt_id),
+                ).fetchone()
+                if parent is None:
+                    raise PropPersistenceConflict("parent prop attempt does not exist in this session")
+
+            attempt_json = json.dumps(attempt.model_dump(mode="json"), sort_keys=True)
+            phase_json = json.dumps(phase.model_dump(mode="json"), sort_keys=True)
+            resume_json = json.dumps(resume, sort_keys=True)
+            inserted = conn.execute(
+                """
+                INSERT INTO prop_attempts(
+                    workspace_id,session_id,attempt_id,current_revision,snapshot_json,phase_json,resume_json,
+                    created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,%s,1,%s::jsonb,%s::jsonb,%s::jsonb,%s,%s)
+                ON CONFLICT (workspace_id,session_id,attempt_id) DO NOTHING
+                RETURNING attempt_id
+                """,
+                (
+                    attempt.workspace_id,
+                    attempt.session_id,
+                    attempt.attempt_id,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                    now,
+                ),
+            ).fetchone()
+            if inserted is None:
+                existing = conn.execute(
+                    """
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                    """,
+                    (attempt.workspace_id, attempt.session_id, attempt.attempt_id),
+                ).fetchone()
+                current_attempt = ChallengeAttemptSnapshot.model_validate(existing["snapshot_json"])
+                current_phase = PhaseStateSnapshot.model_validate(existing["phase_json"])
+                if current_attempt == attempt and current_phase == phase and existing["resume_json"] == resume:
+                    return {
+                        "session": session,
+                        "attempt": current_attempt,
+                        "phase": current_phase,
+                        "resume_state": existing["resume_json"],
+                        "duplicate": True,
+                    }
+                raise PropPersistenceConflict("prop attempt already exists with different content")
+            conn.execute(
+                """
+                INSERT INTO prop_attempt_revisions(
+                    workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                ) VALUES(%s,%s,%s,1,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                """,
+                (
+                    attempt.workspace_id,
+                    attempt.session_id,
+                    attempt.attempt_id,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                ),
+            )
+            conn.commit()
+        return {"session": session, "attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
+
+    def get_prop_attempt(
+        self,
+        workspace_id: str,
+        session_id: str,
+        attempt_id: str,
+    ) -> ChallengeAttemptSnapshot | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                """,
+                (workspace_id, session_id, attempt_id),
+            ).fetchone()
+        return ChallengeAttemptSnapshot.model_validate(row["snapshot_json"]) if row else None
+
+    def list_prop_attempts(self, workspace_id: str, session_id: str) -> list[ChallengeAttemptSnapshot]:
+        with self.connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s
+                ORDER BY created_at_utc,attempt_id
+                """,
+                (workspace_id, session_id),
+            ).fetchall()
+        return [ChallengeAttemptSnapshot.model_validate(row["snapshot_json"]) for row in rows]
+
+    def get_prop_resume_state(self, workspace_id: str, session_id: str, attempt_id: str) -> dict | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT s.snapshot_json AS session_json,
+                       a.snapshot_json AS attempt_json,a.phase_json,a.resume_json
+                FROM prop_sessions s
+                JOIN prop_attempts a
+                  ON a.workspace_id=s.workspace_id AND a.session_id=s.session_id
+                WHERE s.workspace_id=%s AND s.session_id=%s AND a.attempt_id=%s
+                """,
+                (workspace_id, session_id, attempt_id),
+            ).fetchone()
+        if row is None:
+            return None
+        return {
+            "session": PropSessionSnapshot.model_validate(row["session_json"]),
+            "attempt": ChallengeAttemptSnapshot.model_validate(row["attempt_json"]),
+            "phase": PhaseStateSnapshot.model_validate(row["phase_json"]),
+            "resume_state": row["resume_json"],
+        }
+
+    def save_prop_resume_state(
+        self,
+        attempt: ChallengeAttemptSnapshot,
+        phase: PhaseStateSnapshot,
+        *,
+        expected_revision: int,
+        operation_id: str,
+        resume_state: dict | None = None,
+    ) -> dict:
+        resume = dict(resume_state or {})
+        mutation_payload = {
+            "attempt": attempt.model_dump(mode="json"),
+            "phase": phase.model_dump(mode="json"),
+            "resume_state": resume,
+        }
+        fingerprint = _payload_fingerprint(mutation_payload)
+        now = utc_now_iso()
+        with self.connect() as conn:
+            row = conn.execute(
+                """
+                SELECT current_revision,snapshot_json,phase_json,resume_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                FOR UPDATE
+                """,
+                (attempt.workspace_id, attempt.session_id, attempt.attempt_id),
+            ).fetchone()
+            if row is None:
+                raise LookupError("prop attempt not found")
+            receipt = conn.execute(
+                """
+                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
+                """,
+                (attempt.workspace_id, attempt.session_id, attempt.attempt_id, operation_id),
+            ).fetchone()
+            if receipt is not None:
+                if receipt["fingerprint"] != fingerprint:
+                    raise PropIdempotencyConflict("operation_id was already used with different attempt content")
+                revision = conn.execute(
+                    """
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempt_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=%s
+                    """,
+                    (
+                        attempt.workspace_id,
+                        attempt.session_id,
+                        attempt.attempt_id,
+                        int(receipt["entity_revision"]),
+                    ),
+                ).fetchone()
+                if revision is None:
+                    raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
+                return {
+                    "attempt": ChallengeAttemptSnapshot.model_validate(revision["snapshot_json"]),
+                    "phase": PhaseStateSnapshot.model_validate(revision["phase_json"]),
+                    "resume_state": revision["resume_json"],
+                    "duplicate": True,
+                }
+
+            session_row = conn.execute(
+                "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s",
+                (attempt.workspace_id, attempt.session_id),
+            ).fetchone()
+            if session_row is None:
+                raise LookupError("prop session not found")
+            session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
+            self._validate_prop_phase_scope(session, attempt, phase)
+            self._validate_resume_counts(phase, resume)
+            self._validate_resume_cursor(resume, row["resume_json"])
+            current = ChallengeAttemptSnapshot.model_validate(row["snapshot_json"])
+            current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
+            if int(row["current_revision"]) != int(expected_revision):
+                raise PropPersistenceConflict("prop attempt revision conflict")
+            if attempt.revision != int(expected_revision) + 1:
+                raise PropPersistenceConflict("prop attempt snapshot revision must advance exactly once")
+            immutable_fields = (
+                "workspace_id",
+                "session_id",
+                "attempt_id",
+                "mode",
+                "profile_id",
+                "terms_version",
+                "profile_hash",
+                "data_version",
+                "cost_version",
+                "engine_version",
+                "parent_attempt_id",
+                "branch_kind",
+                "virtual_start_utc",
+                "virtual_cutoff_utc",
+            )
+            if any(getattr(attempt, field) != getattr(current, field) for field in immutable_fields):
+                raise PropPersistenceConflict("immutable prop attempt identity/version fields cannot change")
+            if current.status in _TERMINAL_PROP_ATTEMPT_STATUSES:
+                raise PropPersistenceConflict("terminal prop attempts are immutable")
+            if phase.last_event_sequence < current_phase.last_event_sequence:
+                raise PropPersistenceConflict("prop event sequence cannot move backwards")
+            if phase.virtual_time_utc < current_phase.virtual_time_utc:
+                raise PropPersistenceConflict("prop virtual time cannot move backwards")
+            if phase.phase_index < current_phase.phase_index or phase.phase_index > current_phase.phase_index + 1:
+                raise PropPersistenceConflict("prop phase index must stay current or advance exactly once")
+
+            attempt_json = json.dumps(attempt.model_dump(mode="json"), sort_keys=True)
+            phase_json = json.dumps(phase.model_dump(mode="json"), sort_keys=True)
+            resume_json = json.dumps(resume, sort_keys=True)
+            conn.execute(
+                """
+                INSERT INTO prop_attempt_revisions(
+                    workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                """,
+                (
+                    attempt.workspace_id,
+                    attempt.session_id,
+                    attempt.attempt_id,
+                    attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                ),
+            )
+            conn.execute(
+                """
+                UPDATE prop_attempts
+                SET current_revision=%s,snapshot_json=%s::jsonb,phase_json=%s::jsonb,resume_json=%s::jsonb,
+                    updated_at_utc=%s
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                """,
+                (
+                    attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                    attempt.workspace_id,
+                    attempt.session_id,
+                    attempt.attempt_id,
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO prop_mutation_receipts(
+                    workspace_id,session_id,attempt_id,operation_id,fingerprint,entity_revision,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s)
+                """,
+                (
+                    attempt.workspace_id,
+                    attempt.session_id,
+                    attempt.attempt_id,
+                    operation_id,
+                    fingerprint,
+                    attempt.revision,
+                    now,
+                ),
+            )
+            conn.commit()
+        return {"attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
 
     def overview_counts(self, workspace_id: str) -> dict:
         with self.connect() as conn:
