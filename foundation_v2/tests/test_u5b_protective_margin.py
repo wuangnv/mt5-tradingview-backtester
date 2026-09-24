@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import os
 import time
@@ -109,6 +110,8 @@ class U5BProtectiveOracleTests(unittest.TestCase):
         self.assertEqual(reference["signals"], normalized["signals"])
         self.assertEqual(reference["metrics"], normalized["metrics"])
         self.assertEqual(business(reference["ledger"]), business(normalized["ledger"]))
+        self.assertEqual(reference["assumptions"]["timing"], normalized["assumptions"]["timing"])
+        self.assertEqual(reference["assumptions"]["margin_model"], normalized["assumptions"]["margin_model"])
         return reference, normalized, native
 
     def test_long_and_short_stop_and_take_profit_use_native_contingent_orders(self):
@@ -178,6 +181,50 @@ class U5BProtectiveOracleTests(unittest.TestCase):
                 continue_check=lambda: True,
                 deadline=time.perf_counter() + 10,
             )
+
+    def test_protective_exit_at_close_precedes_same_close_signal_and_next_open_entry(self):
+        rows = [
+            oracle.bar(0, 9.80, 9.90, 9.70, 9.80),
+            oracle.bar(3600, 9.80, 10.00, 9.70, 9.90),
+            oracle.bar(7200, 9.90, 10.30, 9.85, 10.20),
+            oracle.bar(10800, 10.05, 10.30, 10.00, 10.15),
+            oracle.bar(14400, 10.15, 10.50, 10.10, 10.45),
+            oracle.bar(18000, 10.46, 10.60, 10.40, 10.50),
+            oracle.bar(21600, 10.50, 10.70, 10.40, 10.55),
+        ]
+        _, normalized, native = self.run_pair(rows, direction="long", hold_bars=2)
+        self.assertEqual(len(normalized["ledger"]), 2)
+        first, second = normalized["ledger"]
+        self.assertEqual(first["exit_reason"], "take_profit")
+        self.assertEqual(first["close_time_utc"], second["signal_time_utc"])
+        self.assertEqual(second["signal_time_utc"], second["open_time_utc"])
+        self.assertEqual(normalized["signals"]["skipped_overlap"], 0)
+        self.assertLess(native["fills"][1]["timestamp_ns"], second["signal_time_utc"] * 10**9)
+        self.assertEqual(native["fills"][2]["timestamp_ns"], second["open_time_utc"] * 10**9 + 1)
+
+    def test_assumption_disclosure_is_bound_to_protocol_and_backend(self):
+        rows = self.long_base + [oracle.bar(10800, 10.03, 10.20, 9.80, 10.00)]
+        reference_protocol = protective_protocol(rows)
+        reference = execute_breakout(rows, reference_protocol)
+        native_contract = native_protocol(rows)
+        native = execute_native_process(
+            rows,
+            native_contract,
+            continue_check=lambda: True,
+            deadline=time.perf_counter() + 10,
+        )
+        normalized = normalize_native_result(native, native_contract)
+        payloads = (
+            ("reference", validation_payload(reference, reference_protocol)),
+            ("nautilus", validation_payload(normalized, native_contract)),
+        )
+        for backend, payload in payloads:
+            for field in ("timing", "protective_orders", "margin_model"):
+                with self.subTest(backend=backend, field=field):
+                    tampered = copy.deepcopy(payload)
+                    tampered["assumptions"][field] = "tampered"
+                    with self.assertRaisesRegex(ResearchReconciliationError, f"assumptions\\.{field}"):
+                        validate_engine_result(tampered, rows=rows)
 
     def test_insufficient_research_margin_skips_without_publishing_trade(self):
         rows = self.long_base + [oracle.bar(10800, 10.03, 10.20, 9.95, 10.10)]

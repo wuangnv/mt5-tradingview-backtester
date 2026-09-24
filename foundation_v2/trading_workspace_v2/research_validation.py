@@ -174,6 +174,49 @@ def _signal_source_oracle(*, bars, rules, protocol, tick, spread, units, rate, t
     return signals
 
 
+def _validate_assumption_disclosure(*, result, protocol, exit_mode):
+    assumptions = result.get("assumptions")
+    if not isinstance(assumptions, dict):
+        raise ResearchReconciliationError("research assumptions are missing")
+
+    backend = protocol.get("engine", {}).get("backend")
+    is_nautilus = backend == "nautilus"
+    if exit_mode == "protective":
+        expected_timing = (
+            "closed bar -> next open +1ns; protective boundary ticks only for unambiguous OHLC threshold hits; fixed horizon fallback"
+        )
+        expected_protective = (
+            "actual Nautilus market-entry bracket with stop-market + take-profit limit; same-bar dual-hit preflight fails closed; hold_bars is max horizon"
+            if is_nautilus
+            else "stop-market + take-profit limit; same-bar dual-hit fails closed; hold_bars is max horizon"
+        )
+        margin = protocol.get("parameters", {}).get("research_margin")
+        if not isinstance(margin, dict):
+            raise ResearchReconciliationError("protective result lacks immutable research margin assumptions")
+        leverage = _number(margin.get("leverage"), "research_margin.leverage")
+        if leverage <= 0:
+            raise ResearchReconciliationError("research leverage must be positive")
+        expected_margin = (
+            f"fixed starting-balance leverage {float(leverage):g}:1; research assumption only, not broker evidence"
+        )
+    else:
+        expected_timing = (
+            "closed bar -> next open +1ns modeled ordering; fixed-horizon close"
+            if is_nautilus
+            else "closed-bar signal; next-bar-open entry; fixed-horizon bar-close exit"
+        )
+        expected_protective = "disabled; planned stop distance is an R denominator only"
+        expected_margin = "disabled; not broker execution evidence"
+
+    for field, expected in (
+        ("timing", expected_timing),
+        ("protective_orders", expected_protective),
+        ("margin_model", expected_margin),
+    ):
+        if assumptions.get(field) != expected:
+            raise ResearchReconciliationError(f"assumptions.{field} differs from protocol/backend contract")
+
+
 def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> dict:
     if result.get("artifact_schema_version") != "research-engine-result-v1":
         raise ResearchReconciliationError("unsupported research engine artifact schema")
@@ -201,6 +244,7 @@ def validate_engine_result(result: dict, *, rows=None, continue_check=None) -> d
     instrument = protocol["dataset"]["instrument_spec"]
     rules = protocol["playbook"]["rules"]
     exit_mode = rules.get("exit_mode", "fixed_horizon")
+    _validate_assumption_disclosure(result=result, protocol=protocol, exit_mode=exit_mode)
     quantity = _number(rules["quantity"], "quantity")
     units = quantity * _number(instrument["contract_size"], "contract_size")
     rate = _number(model.get("quote_to_account_rate", 1), "conversion")

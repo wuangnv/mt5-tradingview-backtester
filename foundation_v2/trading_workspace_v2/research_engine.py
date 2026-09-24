@@ -343,7 +343,11 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
     check()
     return {
         "assumptions": {
-            "timing": "closed-bar signal; next-bar-open entry; fixed-horizon bar-close exit",
+            "timing": (
+                "closed bar -> next open +1ns; protective boundary ticks only for unambiguous OHLC threshold hits; fixed horizon fallback"
+                if exit_mode == "protective" else
+                "closed-bar signal; next-bar-open entry; fixed-horizon bar-close exit"
+            ),
             "overlap": "single position; overlapping signals skipped",
             "spread_price": float(spread_price),
             "price_basis": "midpoint OHLC plus assumed constant spread; adverse tick rounding",
