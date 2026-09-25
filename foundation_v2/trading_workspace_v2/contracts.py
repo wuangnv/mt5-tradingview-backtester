@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 CONTRACT_VERSION = "foundation-v2.1"
@@ -83,6 +83,18 @@ class CreateEngineResearchJob(BaseModel):
     max_bars: int = Field(default=100_000, ge=2, le=1_000_000, strict=True)
     max_runtime_ms: int = Field(default=30_000, ge=100, le=600_000, strict=True)
     max_memory_mb: int = Field(default=1024, ge=256, le=4096, strict=True)
+    walk_forward: dict | None = None
+    parameter_space: dict | None = None
+    max_trials: int | None = Field(default=None, ge=1, le=10_000, strict=True)
+
+    @model_validator(mode="after")
+    def validate_oos_configuration(self):
+        requested = (self.walk_forward is not None, self.parameter_space is not None, self.max_trials is not None)
+        if any(requested) and not all(requested):
+            raise ValueError("walk_forward, parameter_space and max_trials must be provided together")
+        if any(requested) and self.split != "validation":
+            raise ValueError("OOS configuration requires split=validation")
+        return self
 
 
 class ResearchJobView(BaseModel):
@@ -142,6 +154,32 @@ class EngineResearchResult(BaseModel):
     metrics: dict
     observed_range: dict
     execution: dict = Field(default_factory=dict)
+    created_at_utc: str
+
+
+class OOSResearchResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    artifact_schema_version: Literal["research-oos-result-v1"] = "research-oos-result-v1"
+    contract_version: str = CONTRACT_VERSION
+    job_id: str
+    workspace_id: str
+    dataset_id: str
+    dataset_sha256: str
+    protocol_sha256: str
+    protocol: dict
+    playbook_id: str
+    playbook_revision: int
+    engine_version: Literal["bar-breakout-v1"] = "bar-breakout-v1"
+    engine_code_sha256: str
+    split: Literal["validation"] = "validation"
+    validation_schema: Literal["research-oos-validation-v1"] = "research-oos-validation-v1"
+    selection: dict
+    walk_forward: dict
+    sweep: dict
+    trials: list[dict]
+    outcome_summary: dict
+    source_range: dict
     created_at_utc: str
 
 

@@ -327,7 +327,13 @@ def create_app(
     @app.post("/api/v2/research/engine-jobs", status_code=202)
     def create_engine_research_job(body: CreateEngineResearchJob, workspace: str = Depends(workspace_id)):
         try:
-            job = service.create_engine_job(workspace_id=workspace, request=body)
+            job = service.create_engine_job(
+                workspace_id=workspace,
+                request=body,
+                walk_forward=body.walk_forward,
+                parameter_space=body.parameter_space,
+                max_trials=body.max_trials,
+            )
         except LookupError as exc:
             raise HTTPException(status_code=404, detail=str(exc))
         except PermissionError as exc:

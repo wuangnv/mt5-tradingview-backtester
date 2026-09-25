@@ -4,10 +4,11 @@ import hashlib
 import json
 import threading
 import time
+from copy import deepcopy
 from uuid import uuid4
 
 from .artifacts import ArtifactStore, canonical_json_bytes
-from .contracts import DatasetManifest, DatasetSource, EngineResearchResult, ResearchResult, utc_now_iso
+from .contracts import DatasetManifest, DatasetSource, EngineResearchResult, OOSResearchResult, ResearchResult, utc_now_iso
 from .research_engine import (
     ENGINE_VERSION,
     ResearchEngineInterrupted,
@@ -26,7 +27,8 @@ from .nautilus_worker import (
     runtime_identity,
     runtime_ready,
 )
-from .research_validation import validate_engine_result
+from .research_validation import ResearchReconciliationError, validate_engine_result
+from .research_oos import build_bounded_sweep, build_walk_forward_plan, summarize_sweep_outcomes
 from .retained import CostModel, InstrumentSpec, SourceSpec, compute_metrics_v2
 from .store import ClaimedJob, PostgresStore, StaleJobAttempt
 
@@ -48,6 +50,88 @@ def _check_holdout(manifest, end):
     # Current U2 artifacts must be entirely pre-holdout, including the final bar.
     if end > int(boundary) or manifest.last_timestamp + int(manifest.timeframe_seconds or 0) > int(boundary):
         raise PermissionError("requested research data reaches locked holdout data")
+
+
+def _canonical_oos_validation(rows, manifest, rules: dict, walk_forward: dict, parameter_space: dict, max_trials: int):
+    if not isinstance(walk_forward, dict):
+        raise ValueError("walk_forward must be structured")
+    allowed_walk_forward = {
+        "train_bars", "oos_bars", "step_bars", "purge_bars", "embargo_bars",
+        "overlap_bars", "expanding", "max_folds",
+    }
+    unknown_walk_forward = sorted(set(walk_forward) - allowed_walk_forward)
+    if unknown_walk_forward:
+        raise ValueError(f"unsupported walk_forward fields: {', '.join(unknown_walk_forward)}")
+    if not isinstance(parameter_space, dict):
+        raise ValueError("parameter_space must be structured")
+    unknown_parameters = sorted(set(parameter_space) - set(rules))
+    if unknown_parameters:
+        raise ValueError(f"parameter sweep references unsupported playbook rules: {', '.join(unknown_parameters)}")
+
+    plan = build_walk_forward_plan(
+        rows,
+        timeframe_seconds=int(manifest.timeframe_seconds),
+        holdout_policy=manifest.holdout_policy,
+        **walk_forward,
+    )
+    sweep = build_bounded_sweep(parameter_space, max_trials=max_trials)
+    for trial in sweep["trials"]:
+        validate_rules({**rules, **trial["parameters"]})
+
+    walk_forward_request = {
+        "train_bars": plan["train_bars"],
+        "oos_bars": plan["oos_bars"],
+        "step_bars": plan["step_bars"],
+        "purge_bars": plan["purge_bars"],
+        "embargo_bars": plan["embargo_bars"],
+        "overlap_bars": plan["overlap_bars"],
+        "expanding": plan["expanding"],
+        "max_folds": int(walk_forward.get("max_folds", 20)),
+    }
+    return {
+        "schema": "research-oos-validation-v1",
+        "holdout_access": False,
+        "selection": {
+            "mode": "none",
+            "objective": None,
+            "ranking": False,
+            "winner": None,
+            "automatic_selection": False,
+            "reason": "objective_not_predeclared",
+        },
+        "walk_forward_request": walk_forward_request,
+        "walk_forward": plan,
+        "sweep_request": {"parameter_space": parameter_space, "max_trials": sweep["max_trials"]},
+        "sweep": sweep,
+    }
+
+
+def _verify_oos_validation(protocol: dict, rows: list[dict], manifest) -> dict | None:
+    validation = protocol.get("validation")
+    if validation is None:
+        return None
+    if not isinstance(validation, dict) or validation.get("schema") != "research-oos-validation-v1":
+        raise ResearchEngineValidationError("research validation protocol is invalid")
+    if validation.get("holdout_access") is not False:
+        raise ResearchEngineValidationError("research validation protocol cannot authorize holdout content")
+    walk_forward = validation.get("walk_forward_request")
+    sweep_request = validation.get("sweep_request")
+    if not isinstance(walk_forward, dict) or not isinstance(sweep_request, dict):
+        raise ResearchEngineValidationError("research validation protocol is incomplete")
+    try:
+        rebuilt = _canonical_oos_validation(
+            rows,
+            manifest,
+            protocol.get("playbook", {}).get("rules") or {},
+            walk_forward,
+            sweep_request.get("parameter_space"),
+            sweep_request.get("max_trials"),
+        )
+    except (TypeError, ValueError) as exc:
+        raise ResearchEngineValidationError("research validation protocol cannot be reconstructed") from exc
+    if rebuilt != validation:
+        raise ResearchEngineValidationError("research validation protocol changed after job creation")
+    return validation
 
 
 class ResearchService:
@@ -114,7 +198,15 @@ class ResearchService:
             raise ValueError(f"dataset is not QA-approved: {disposition}")
         return self.store.create_job(workspace_id, dataset_id, strategy_version, starting_balance)
 
-    def create_engine_job(self, *, workspace_id: str, request) -> object:
+    def create_engine_job(
+        self,
+        *,
+        workspace_id: str,
+        request,
+        walk_forward: dict | None = None,
+        parameter_space: dict | None = None,
+        max_trials: int | None = None,
+    ) -> object:
         manifest = self.store.get_dataset(workspace_id, request.dataset_id)
         if manifest is None:
             raise LookupError("dataset_not_found")
@@ -195,6 +287,27 @@ class ResearchService:
                           if request.engine_backend == "nautilus" else {})},
             "budget": {"max_bars": int(request.max_bars), "max_runtime_ms": int(request.max_runtime_ms), "max_memory_mb": request.max_memory_mb},
         }
+        requested_oos = (walk_forward is not None, parameter_space is not None, max_trials is not None)
+        if any(requested_oos):
+            if not all(requested_oos):
+                raise ValueError("walk_forward, parameter_space and max_trials must be provided together")
+            if request.split != "validation":
+                raise ValueError("OOS configuration requires split=validation")
+            rows = self.artifacts.read_dataset_range(
+                manifest.artifact_path,
+                manifest.artifact_sha256,
+                from_utc=int(request.data_from_utc),
+                to_utc=int(request.data_to_utc),
+                max_bars=int(request.max_bars),
+            )
+            protocol["validation"] = _canonical_oos_validation(
+                rows,
+                manifest,
+                rules,
+                walk_forward,
+                parameter_space,
+                max_trials,
+            )
         protocol_sha256 = hashlib.sha256(canonical_json_bytes(protocol)).hexdigest()
         return self.store.create_engine_job(
             workspace_id,
@@ -202,6 +315,23 @@ class ResearchService:
             float(request.starting_balance),
             protocol,
             protocol_sha256,
+        )
+
+    def create_oos_engine_job(
+        self,
+        *,
+        workspace_id: str,
+        request,
+        walk_forward: dict,
+        parameter_space: dict,
+        max_trials: int,
+    ) -> object:
+        return self.create_engine_job(
+            workspace_id=workspace_id,
+            request=request,
+            walk_forward=walk_forward,
+            parameter_space=parameter_space,
+            max_trials=max_trials,
         )
 
     def cancel_job(self, workspace_id: str, job_id: str):
@@ -236,10 +366,11 @@ class ResearchService:
     def _lease_guard(self, job: ClaimedJob):
         return _LeaseGuard(self, job)
 
-    def execute_claimed(self, job: ClaimedJob) -> ResearchResult | EngineResearchResult | None:
+    def execute_claimed(self, job: ClaimedJob) -> ResearchResult | EngineResearchResult | OOSResearchResult | None:
         if self._honor_cancel(job):
             return None
         with self._lease_guard(job) as lease_guard:
+            phase_count = 5 if job.protocol is not None and job.protocol.get("validation") is not None else 4
             manifest = self.store.get_dataset(job.workspace_id, job.dataset_id)
             if manifest is None:
                 raise LookupError("claimed dataset missing")
@@ -253,7 +384,7 @@ class ResearchService:
                     "attempt_no": job.attempt_no,
                     "dataset_id": job.dataset_id,
                 },
-                {"phase_index": 0, "phase_count": 4},
+                {"phase_index": 0, "phase_count": phase_count},
             ):
                 return None
             if job.protocol is not None:
@@ -273,7 +404,7 @@ class ResearchService:
                         "attempt_no": job.attempt_no,
                         "protocol_sha256": job.protocol_sha256,
                     },
-                    {"phase_index": 1, "phase_count": 4},
+                    {"phase_index": 1, "phase_count": phase_count},
                 ):
                     return None
                 started = time.perf_counter()
@@ -301,54 +432,199 @@ class ResearchService:
                             "from_utc": job.protocol["range"]["from_utc"],
                             "to_utc": job.protocol["range"]["to_utc"],
                         },
-                        {"phase_index": 2, "phase_count": 4},
+                        {"phase_index": 2, "phase_count": phase_count},
                     ):
                         return None
+                    validation = _verify_oos_validation(job.protocol, rows, manifest)
+                    if validation is not None:
+                        if not self.save_checkpoint(
+                            job,
+                            {
+                                "schema": "research-job-checkpoint-v1",
+                                "phase": "oos-validation-verified",
+                                "attempt_no": job.attempt_no,
+                                "validation_schema": validation["schema"],
+                                "holdout_access": False,
+                                "fold_count": validation["walk_forward"]["fold_count"],
+                                "trial_count": validation["sweep"]["trial_count"],
+                                "sweep_truncated": validation["sweep"]["truncated"],
+                            },
+                            {"phase_index": 3, "phase_count": phase_count},
+                        ):
+                            return None
                     verify_engine_code(job.protocol)
-                    if job.protocol["engine"].get("backend", "reference") == "nautilus":
-                        native = execute_native_process(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
-                        engine = normalize_native_result(native, job.protocol)
+
+                    def run_engine(slice_rows: list[dict], slice_protocol: dict) -> dict:
+                        check_budget()
+                        if slice_protocol["engine"].get("backend", "reference") == "nautilus":
+                            native = execute_native_process(
+                                slice_rows,
+                                slice_protocol,
+                                continue_check=lease_guard.owned,
+                                deadline=deadline,
+                            )
+                            engine_result = normalize_native_result(native, slice_protocol)
+                        else:
+                            engine_result = execute_breakout(
+                                slice_rows,
+                                slice_protocol,
+                                continue_check=lease_guard.owned,
+                                deadline=deadline,
+                            )
+                        slice_protocol_sha256 = hashlib.sha256(canonical_json_bytes(slice_protocol)).hexdigest()
+                        slice_result = EngineResearchResult(
+                            job_id=job.job_id,
+                            workspace_id=job.workspace_id,
+                            dataset_id=job.dataset_id,
+                            dataset_sha256=manifest.artifact_sha256,
+                            protocol_sha256=slice_protocol_sha256,
+                            protocol=slice_protocol,
+                            playbook_id=slice_protocol["playbook"]["record_id"],
+                            playbook_revision=int(slice_protocol["playbook"]["revision"]),
+                            engine_code_sha256=slice_protocol["engine"]["code_sha256"],
+                            split=slice_protocol["split"],
+                            assumptions=engine_result["assumptions"],
+                            signals=engine_result["signals"],
+                            ledger=engine_result["ledger"],
+                            metrics=engine_result["metrics"],
+                            observed_range=engine_result["observed_range"],
+                            execution=engine_result.get("execution", {}),
+                            created_at_utc=utc_now_iso(),
+                        )
+                        validate_engine_result(
+                            slice_result.model_dump(mode="json"),
+                            rows=slice_rows,
+                            continue_check=check_budget,
+                        )
+                        check_budget()
+                        return engine_result
+
+                    if validation is None:
+                        engine = run_engine(rows, job.protocol)
                     else:
-                        engine = execute_breakout(rows, job.protocol, continue_check=lease_guard.owned, deadline=deadline)
+                        trial_results = []
+                        terminal_outcomes = []
+                        for trial in validation["sweep"]["trials"]:
+                            check_budget()
+                            trial_result = {
+                                "trial_id": trial["trial_id"],
+                                "parameters": trial["parameters"],
+                                "status": "completed",
+                                "folds": [],
+                            }
+                            for fold in validation["walk_forward"]["folds"]:
+                                fold_result = {"fold": fold["fold"], "status": "completed"}
+                                for segment_name, split in (("train", "train"), ("oos", "validation")):
+                                    planned_range = fold[segment_name]
+                                    start = int(planned_range["start_index"])
+                                    stop = int(planned_range["stop_index"])
+                                    slice_rows = rows[start:stop]
+                                    slice_protocol = deepcopy(job.protocol)
+                                    slice_protocol.pop("validation", None)
+                                    slice_protocol["split"] = split
+                                    slice_protocol["range"] = {
+                                        "from_utc": int(planned_range["from_utc"]),
+                                        "to_utc": int(planned_range["to_utc"]),
+                                    }
+                                    slice_protocol["playbook"]["rules"] = {
+                                        **job.protocol["playbook"]["rules"],
+                                        **trial["parameters"],
+                                    }
+                                    try:
+                                        engine_result = run_engine(slice_rows, slice_protocol)
+                                        fold_result[segment_name] = {
+                                            "status": "completed",
+                                            "metrics": engine_result["metrics"],
+                                            "signals": engine_result["signals"],
+                                            "trade_count": len(engine_result["ledger"]),
+                                            "observed_range": engine_result["observed_range"],
+                                        }
+                                    except ResearchEngineInterrupted:
+                                        raise
+                                    except ResearchEngineValidationError as exc:
+                                        if str(exc) == "run exceeded budget.max_runtime_ms":
+                                            raise
+                                        fold_result[segment_name] = {
+                                            "status": "failed",
+                                            "error": str(exc)[:500],
+                                        }
+                                        fold_result["status"] = "failed"
+                                        trial_result["status"] = "failed"
+                                    except ResearchReconciliationError as exc:
+                                        fold_result[segment_name] = {
+                                            "status": "failed",
+                                            "error": str(exc)[:500],
+                                        }
+                                        fold_result["status"] = "failed"
+                                        trial_result["status"] = "failed"
+                                trial_result["folds"].append(fold_result)
+                            terminal_outcomes.append(
+                                {"trial_id": trial_result["trial_id"], "status": trial_result["status"]}
+                            )
+                            trial_results.append(trial_result)
+                        outcome_summary = summarize_sweep_outcomes(validation["sweep"], terminal_outcomes)
+                        engine = None
                 except ResearchEngineInterrupted:
                     return None
                 elapsed_ms = (time.perf_counter() - started) * 1000.0
                 if elapsed_ms > int(job.protocol["budget"]["max_runtime_ms"]):
                     raise ResearchEngineValidationError("run exceeded budget.max_runtime_ms")
-                result = EngineResearchResult(
-                    job_id=job.job_id,
-                    workspace_id=job.workspace_id,
-                    dataset_id=job.dataset_id,
-                    dataset_sha256=manifest.artifact_sha256,
-                    protocol_sha256=job.protocol_sha256,
-                    protocol=job.protocol,
-                    playbook_id=job.protocol["playbook"]["record_id"],
-                    playbook_revision=int(job.protocol["playbook"]["revision"]),
-                    engine_code_sha256=job.protocol["engine"]["code_sha256"],
-                    split=job.protocol["split"],
-                    assumptions=engine["assumptions"],
-                    signals=engine["signals"],
-                    ledger=engine["ledger"],
-                    metrics=engine["metrics"],
-                    observed_range={**engine["observed_range"], "elapsed_ms": round(elapsed_ms, 3)},
-                    execution=engine.get("execution", {}),
-                    created_at_utc=utc_now_iso(),
-                )
+                if validation is None:
+                    result = EngineResearchResult(
+                        job_id=job.job_id,
+                        workspace_id=job.workspace_id,
+                        dataset_id=job.dataset_id,
+                        dataset_sha256=manifest.artifact_sha256,
+                        protocol_sha256=job.protocol_sha256,
+                        protocol=job.protocol,
+                        playbook_id=job.protocol["playbook"]["record_id"],
+                        playbook_revision=int(job.protocol["playbook"]["revision"]),
+                        engine_code_sha256=job.protocol["engine"]["code_sha256"],
+                        split=job.protocol["split"],
+                        assumptions=engine["assumptions"],
+                        signals=engine["signals"],
+                        ledger=engine["ledger"],
+                        metrics=engine["metrics"],
+                        observed_range={**engine["observed_range"], "elapsed_ms": round(elapsed_ms, 3)},
+                        execution=engine.get("execution", {}),
+                        created_at_utc=utc_now_iso(),
+                    )
+                    result_checkpoint = {"trade_count": len(result.ledger)}
+                else:
+                    result = OOSResearchResult(
+                        job_id=job.job_id,
+                        workspace_id=job.workspace_id,
+                        dataset_id=job.dataset_id,
+                        dataset_sha256=manifest.artifact_sha256,
+                        protocol_sha256=job.protocol_sha256,
+                        protocol=job.protocol,
+                        playbook_id=job.protocol["playbook"]["record_id"],
+                        playbook_revision=int(job.protocol["playbook"]["revision"]),
+                        engine_code_sha256=job.protocol["engine"]["code_sha256"],
+                        selection=validation["selection"],
+                        walk_forward=validation["walk_forward"],
+                        sweep=validation["sweep"],
+                        trials=trial_results,
+                        outcome_summary=outcome_summary,
+                        source_range={
+                            "from_utc": int(job.protocol["range"]["from_utc"]),
+                            "to_utc": int(job.protocol["range"]["to_utc"]),
+                            "bar_count": len(rows),
+                            "elapsed_ms": round(elapsed_ms, 3),
+                        },
+                        created_at_utc=utc_now_iso(),
+                    )
+                    result_checkpoint = {"trial_status_counts": outcome_summary["status_counts"]}
                 payload = result.model_dump(mode="json")
-                try:
-                    validate_engine_result(payload, rows=rows, continue_check=check_budget)
-                    check_budget()
-                except ResearchEngineInterrupted:
-                    return None
                 if not self.save_checkpoint(
                     job,
                     {
                         "schema": "research-job-checkpoint-v1",
                         "phase": "result-validated",
                         "attempt_no": job.attempt_no,
-                        "trade_count": len(result.ledger),
+                        **result_checkpoint,
                     },
-                    {"phase_index": 3, "phase_count": 4},
+                    {"phase_index": phase_count - 1, "phase_count": phase_count},
                 ):
                     return None
                 path, checksum = self.artifacts.write_result_candidate(
@@ -374,7 +650,7 @@ class ResearchService:
                         "attempt_no": job.attempt_no,
                         "result_sha256": checksum,
                     },
-                    {"phase_index": 4, "phase_count": 4},
+                    {"phase_index": phase_count, "phase_count": phase_count},
                 ):
                     self.artifacts.quarantine_result_candidate(path)
                     return None
