@@ -173,6 +173,32 @@ async function main() {
         return json(route, 201, body)
       }
 
+      if (url.pathname === '/api/v2/prop/session-bundles' && request.method() === 'POST') {
+        const body = JSON.parse(request.postData() || '{}')
+        assert.equal(body.session.workspace_id, workspace)
+        assert.equal(body.attempt.workspace_id, workspace)
+        assert.equal(body.phase.workspace_id, workspace)
+        assert.equal(body.session.mode, 'simulation')
+        assert.equal(body.attempt.mode, 'simulation')
+        assert.equal(body.attempt.session_id, body.session.session_id)
+        assert.equal(body.phase.session_id, body.session.session_id)
+        assert.equal(body.phase.attempt_id, body.attempt.attempt_id)
+        assert.ok(body.resume_state?.cursor, 'atomic bundle create must carry a cursor')
+        assert.deepEqual(body.resume_state.open_positions, [])
+        assert.deepEqual(body.resume_state.pending_orders, [])
+        sessions.push(body.session)
+        attempts.set(body.session.session_id, [body.attempt])
+        const bundle = {
+          session: body.session,
+          attempt: body.attempt,
+          phase: body.phase,
+          resume_state: body.resume_state,
+          duplicate: false,
+        }
+        bundles.set(`${body.session.session_id}/${body.attempt.attempt_id}`, bundle)
+        return json(route, 201, bundle)
+      }
+
       const attemptsMatch = url.pathname.match(/^\/api\/v2\/prop\/sessions\/([^/]+)\/attempts$/)
       if (attemptsMatch) {
         const sessionId = decodeURIComponent(attemptsMatch[1])
@@ -215,7 +241,7 @@ async function main() {
     await page.getByLabel('Profile').selectOption('custom')
     await page.getByLabel('Dataset version').fill('dataset-created-v2')
     await page.getByRole('button', { name: 'Tạo session mô phỏng' }).click()
-    await page.getByTestId('prop-resume-bundle').waitFor()
+    await page.getByTestId('prop-resume-bundle').getByText('dataset-created-v2', { exact: true }).waitFor()
     assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /dataset-created-v2/)
     assert.equal(sessions.length, 2)
     const createdSession = sessions[1]
@@ -260,7 +286,19 @@ async function main() {
     await page.getByTestId('prop-error').waitFor()
 
     const mutations = propRequests.filter((request) => request.method !== 'GET')
-    assert.ok(mutations.length >= 3, 'expected fixture mutation coverage')
+    const bundleCreates = mutations.filter(
+      (request) => request.method === 'POST' && request.path === '/api/v2/prop/session-bundles',
+    )
+    assert.ok(bundleCreates.length >= 2, 'expected atomic bundle create plus conflict coverage')
+    assert.equal(
+      mutations.some(
+        (request) => request.method === 'POST' && (
+          request.path === '/api/v2/prop/sessions' || /\/attempts$/.test(request.path)
+        ),
+      ),
+      false,
+      'legacy two-step Prop create path was used',
+    )
     assert.equal(mutations.every((request) => request.path.startsWith('/api/v2/prop/')), true, 'mutation escaped prop API')
     assert.equal(mutations.some((request) => /broker|credential|account_id/i.test(request.body || '')), false, 'broker/credential field leaked into prop mutation')
 
