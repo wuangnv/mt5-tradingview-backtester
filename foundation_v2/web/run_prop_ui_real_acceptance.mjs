@@ -81,19 +81,38 @@ try {
     )
     if (!currentResponse.ok) throw new Error(`load resume update fixture failed: HTTP ${currentResponse.status}`)
     const current = await currentResponse.json()
-    const timestamp = new Date(new Date(current.phase.virtual_time_utc).getTime() + 60_000).toISOString()
-    const body = {
-      attempt: { ...current.attempt, status: 'paused', revision: current.attempt.revision + 1 },
-      phase: {
-        ...current.phase,
-        virtual_time_utc: timestamp,
-        last_event_sequence: current.phase.last_event_sequence + 1,
+    const startResponse = await fetch(
+      `/api/v2/prop/sessions/${encodeURIComponent(sessionId)}/attempts/${encodeURIComponent(attemptId)}/transitions`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          workspace_id: workspace,
+          session_id: sessionId,
+          attempt_id: attemptId,
+          profile_hash: current.attempt.profile_hash,
+          intent_id: `ps02-real-start-${attemptId}`,
+          expected_revision: current.attempt.revision,
+          event_sequence: current.phase.last_event_sequence,
+          action: 'start',
+        }),
       },
-      expected_revision: current.attempt.revision,
+    )
+    if (!startResponse.ok) throw new Error(`start transition failed: HTTP ${startResponse.status}`)
+    const started = await startResponse.json()
+    const timestamp = new Date(new Date(started.phase.virtual_time_utc).getTime() + 60_000).toISOString()
+    const body = {
+      attempt: { ...started.attempt, revision: started.attempt.revision + 1 },
+      phase: {
+        ...started.phase,
+        virtual_time_utc: timestamp,
+        last_event_sequence: started.phase.last_event_sequence + 1,
+      },
+      expected_revision: started.attempt.revision,
       operation_id: `ps01-real-resume-${attemptId}`,
       resume_state: {
-        ...current.resume_state,
-        cursor: { bar_index: current.resume_state.cursor.bar_index + 1, timestamp_utc: timestamp },
+        ...started.resume_state,
+        cursor: { bar_index: started.resume_state.cursor.bar_index + 1, timestamp_utc: timestamp },
       },
     }
     const response = await fetch(
@@ -101,7 +120,26 @@ try {
       { method: 'PUT', headers, body: JSON.stringify(body) },
     )
     if (!response.ok) throw new Error(`resume update failed: HTTP ${response.status}`)
-    const updated = await response.json()
+    const checkpointed = await response.json()
+    const transitionResponse = await fetch(
+      `/api/v2/prop/sessions/${encodeURIComponent(sessionId)}/attempts/${encodeURIComponent(attemptId)}/transitions`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          workspace_id: workspace,
+          session_id: sessionId,
+          attempt_id: attemptId,
+          profile_hash: checkpointed.attempt.profile_hash,
+          intent_id: `ps02-real-pause-${attemptId}`,
+          expected_revision: checkpointed.attempt.revision,
+          event_sequence: checkpointed.phase.last_event_sequence,
+          action: 'pause',
+        }),
+      },
+    )
+    if (!transitionResponse.ok) throw new Error(`pause transition failed: HTTP ${transitionResponse.status}`)
+    const updated = await transitionResponse.json()
     return {
       revision: updated.attempt.revision,
       status: updated.attempt.status,
@@ -110,7 +148,7 @@ try {
     }
   }, { workspace, sessionId: firstState.sessionId, attemptId: firstState.attemptId })
 
-  assert.equal(updatedState.revision, 2)
+  assert.equal(updatedState.revision, 4)
   assert.equal(updatedState.status, 'paused')
   assert.equal(updatedState.cursor.bar_index, 1)
   assert.equal(updatedState.lastEventSequence, 1)

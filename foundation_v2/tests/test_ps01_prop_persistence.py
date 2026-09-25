@@ -30,6 +30,7 @@ from trading_workspace_v2.prop_session import (
     PropProfileSnapshot,
     PropSessionSnapshot,
     ThresholdValue,
+    TransitionIntent,
 )
 from trading_workspace_v2.api import create_app
 from trading_workspace_v2.auth import LocalWorkspaceAuthorization
@@ -133,7 +134,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
         self.store.create_prop_attempt(self.attempt, self.phase, resume_state=self.resume_state)
 
     def test_resume_round_trip_preserves_cursor_money_event_and_orders_after_store_restart(self):
-        next_attempt = self.attempt.model_copy(update={"status": "paused", "revision": 2})
+        next_attempt = self.attempt.model_copy(update={"revision": 2})
         next_phase = self.phase.model_copy(
             update={
                 "balance": Decimal("100500"),
@@ -162,7 +163,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
         restored = restarted_store.get_prop_resume_state(self.workspace_id, self.session_id, self.attempt_id)
         self.assertIsNotNone(restored)
         self.assertEqual(restored["attempt"].revision, 2)
-        self.assertEqual(restored["attempt"].status, "paused")
+        self.assertEqual(restored["attempt"].status, "running")
         self.assertEqual(restored["attempt"].profile_hash, self.session.profile.profile_hash)
         self.assertEqual(restored["phase"].equity, Decimal("100375"))
         self.assertEqual(restored["phase"].high_water_mark, Decimal("100750"))
@@ -176,7 +177,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
 
     def test_attempt_writes_are_revision_fenced_and_durably_idempotent(self):
         operation_id = f"pause-{uuid4().hex}"
-        next_attempt = self.attempt.model_copy(update={"status": "paused", "revision": 2})
+        next_attempt = self.attempt.model_copy(update={"revision": 2})
         next_phase = self.phase.model_copy(
             update={
                 "virtual_time_utc": self.start + timedelta(hours=4),
@@ -222,7 +223,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
 
     def test_concurrent_duplicate_operation_is_serialized_as_idempotent_success(self):
         operation_id = f"two-tabs-{uuid4().hex}"
-        next_attempt = self.attempt.model_copy(update={"status": "paused", "revision": 2})
+        next_attempt = self.attempt.model_copy(update={"revision": 2})
         next_phase = self.phase.model_copy(
             update={
                 "virtual_time_utc": self.start + timedelta(hours=4),
@@ -247,7 +248,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
         self.assertTrue(all(result["attempt"] == next_attempt for result in results))
 
     def test_resume_rejects_missing_position_or_pending_order_state(self):
-        next_attempt = self.attempt.model_copy(update={"status": "paused", "revision": 2})
+        next_attempt = self.attempt.model_copy(update={"revision": 2})
         next_phase = self.phase.model_copy(
             update={
                 "virtual_time_utc": self.start + timedelta(hours=4),
@@ -272,7 +273,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
             )
 
     def test_resume_requires_monotonic_cursor_within_attempt(self):
-        next_attempt = self.attempt.model_copy(update={"status": "paused", "revision": 2})
+        next_attempt = self.attempt.model_copy(update={"revision": 2})
         next_phase = self.phase.model_copy(
             update={
                 "virtual_time_utc": self.start + timedelta(hours=4),
@@ -341,6 +342,34 @@ class Ps01PropPersistenceTests(unittest.TestCase):
             attempts = list(executor.map(lambda _: create_attempt_once(), range(2)))
         self.assertEqual(sorted(result["duplicate"] for result in attempts), [False, True])
 
+    def test_session_allows_only_one_active_attempt_and_restart_requires_terminal_parent(self):
+        second = self.attempt.model_copy(
+            update={
+                "attempt_id": f"second-{uuid4().hex}",
+                "parent_attempt_id": self.attempt_id,
+            }
+        )
+        second_phase = self.phase.model_copy(update={"attempt_id": second.attempt_id})
+        with self.assertRaisesRegex(PropPersistenceConflict, "active attempt"):
+            self.store.create_prop_attempt(second, second_phase, resume_state=self.resume_state)
+
+        abandoned = self.store.apply_prop_transition_intent(
+            TransitionIntent(
+                workspace_id=self.workspace_id,
+                session_id=self.session_id,
+                attempt_id=self.attempt_id,
+                profile_hash=self.session.profile.profile_hash,
+                intent_id=f"abandon-{uuid4().hex}",
+                expected_revision=1,
+                event_sequence=self.phase.last_event_sequence,
+                action="abandon",
+            )
+        )
+        restarted = self.store.create_prop_attempt(second, second_phase, resume_state=self.resume_state)
+        self.assertFalse(restarted["duplicate"])
+        self.assertEqual(restarted["session"].status, second.status)
+        self.assertEqual(abandoned["attempt"].status, "abandoned")
+
     def test_atomic_bundle_rolls_back_new_session_when_attempt_cannot_be_created(self):
         suffix = uuid4().hex
         workspace_id = f"ps01-bundle-{suffix}"
@@ -381,6 +410,57 @@ class Ps01PropPersistenceTests(unittest.TestCase):
         self.assertFalse(first["duplicate"])
         self.assertTrue(duplicate["duplicate"])
 
+    def test_atomic_bundle_cannot_create_a_second_active_attempt(self):
+        suffix = uuid4().hex
+        workspace_id = f"ps01-bundle-active-{suffix}"
+        session_id = f"session-{suffix}"
+        first_attempt_id = f"attempt-a-{suffix}"
+        second_attempt_id = f"attempt-b-{suffix}"
+        session = self.session.model_copy(update={"workspace_id": workspace_id, "session_id": session_id})
+        first_attempt = self.attempt.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": first_attempt_id}
+        )
+        first_phase = self.phase.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": first_attempt_id}
+        )
+        second_attempt = first_attempt.model_copy(
+            update={"attempt_id": second_attempt_id, "parent_attempt_id": first_attempt_id}
+        )
+        second_phase = first_phase.model_copy(update={"attempt_id": second_attempt_id})
+
+        self.store.create_prop_session_bundle(
+            session,
+            first_attempt,
+            first_phase,
+            resume_state=self.resume_state,
+        )
+        with self.assertRaisesRegex(PropPersistenceConflict, "active attempt"):
+            self.store.create_prop_session_bundle(
+                session,
+                second_attempt,
+                second_phase,
+                resume_state=self.resume_state,
+            )
+
+    def test_atomic_bundle_rejects_divergent_session_and_attempt_lifecycle_status(self):
+        suffix = uuid4().hex
+        workspace_id = f"ps01-bundle-status-{suffix}"
+        session_id = f"session-{suffix}"
+        attempt_id = f"attempt-{suffix}"
+        session = self.session.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "status": "paused"}
+        )
+        attempt = self.attempt.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": attempt_id}
+        )
+        phase = self.phase.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": attempt_id}
+        )
+
+        with self.assertRaisesRegex(PropPersistenceConflict, "lifecycle status must match"):
+            self.store.create_prop_session_bundle(session, attempt, phase, resume_state=self.resume_state)
+        self.assertIsNone(self.store.get_prop_session(workspace_id, session_id))
+
     def test_session_profile_is_frozen_and_tenant_queries_are_isolated(self):
         changed_profile = self.session.profile.model_copy(update={"terms_version": "changed-after-start"})
         changed = self.session.model_copy(update={"profile": changed_profile, "revision": 2})
@@ -391,8 +471,8 @@ class Ps01PropPersistenceTests(unittest.TestCase):
                 operation_id=f"profile-edit-{uuid4().hex}",
             )
 
-        valid = self.session.model_copy(update={"status": "paused", "revision": 2})
-        operation_id = f"session-pause-{uuid4().hex}"
+        valid = self.session.model_copy(update={"revision": 2})
+        operation_id = f"session-checkpoint-{uuid4().hex}"
         first = self.store.update_prop_session(valid, expected_revision=1, operation_id=operation_id)
         duplicate = PostgresStore(self.dsn).update_prop_session(
             valid,
@@ -406,17 +486,20 @@ class Ps01PropPersistenceTests(unittest.TestCase):
         self.assertEqual(self.store.list_prop_sessions(f"other-{self.workspace_id}"), [])
 
     def test_terminal_attempt_cannot_be_rewritten(self):
-        terminal = self.attempt.model_copy(update={"status": "failed_breach", "revision": 2})
-        terminal_phase = self.phase.model_copy(
-            update={"last_event_sequence": 8, "virtual_time_utc": self.start + timedelta(hours=5)}
+        terminal_result = self.store.apply_prop_transition_intent(
+            TransitionIntent(
+                workspace_id=self.workspace_id,
+                session_id=self.session_id,
+                attempt_id=self.attempt_id,
+                profile_hash=self.session.profile.profile_hash,
+                intent_id=f"abandon-{uuid4().hex}",
+                expected_revision=1,
+                event_sequence=self.phase.last_event_sequence,
+                action="abandon",
+            )
         )
-        self.store.save_prop_resume_state(
-            terminal,
-            terminal_phase,
-            expected_revision=1,
-            operation_id=f"breach-{uuid4().hex}",
-            resume_state=self.resume_state,
-        )
+        terminal = terminal_result["attempt"]
+        terminal_phase = terminal_result["phase"]
         rewritten = terminal.model_copy(update={"status": "completed_pass", "revision": 3})
         with self.assertRaisesRegex(PropPersistenceConflict, "terminal prop attempts are immutable"):
             self.store.save_prop_resume_state(
@@ -509,7 +592,7 @@ class Ps01PropPersistenceTests(unittest.TestCase):
                 self.assertEqual(attempts.status_code, 200)
                 self.assertEqual([item["attempt_id"] for item in attempts.json()["items"]], [self.attempt_id])
 
-                next_attempt = self.attempt.model_copy(update={"status": "paused", "revision": 2})
+                next_attempt = self.attempt.model_copy(update={"revision": 2})
                 next_phase = self.phase.model_copy(
                     update={
                         "virtual_time_utc": self.start + timedelta(hours=3),
@@ -538,6 +621,25 @@ class Ps01PropPersistenceTests(unittest.TestCase):
                 self.assertFalse(first.json()["duplicate"])
                 self.assertEqual(duplicate.status_code, 200)
                 self.assertTrue(duplicate.json()["duplicate"])
+
+                transition_id = f"api-pause-transition-{uuid4().hex}"
+                paused = client.post(
+                    f"/api/v2/prop/sessions/{self.session_id}/attempts/{self.attempt_id}/transitions",
+                    headers=headers,
+                    json={
+                        "workspace_id": self.workspace_id,
+                        "session_id": self.session_id,
+                        "attempt_id": self.attempt_id,
+                        "profile_hash": self.session.profile.profile_hash,
+                        "intent_id": transition_id,
+                        "expected_revision": 2,
+                        "event_sequence": 8,
+                        "action": "pause",
+                    },
+                )
+                self.assertEqual(paused.status_code, 200)
+                self.assertEqual(paused.json()["attempt"]["status"], "paused")
+                self.assertEqual(paused.json()["session"]["status"], "paused")
 
                 foreign = self.session.model_copy(
                     update={

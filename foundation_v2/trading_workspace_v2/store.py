@@ -16,6 +16,8 @@ from .prop_session import (
     PropLifecycleEvent,
     PropSessionContractError,
     PropSessionSnapshot,
+    TransitionIntent,
+    apply_prop_lifecycle_command,
     evaluate_prop_lifecycle_event,
     validate_attempt_against_session,
 )
@@ -986,6 +988,8 @@ class PostgresStore:
                 raise PropPersistenceConflict("prop session mode and type are immutable")
             if session.profile.model_dump(mode="json") != current.profile.model_dump(mode="json"):
                 raise PropPersistenceConflict("frozen prop profile cannot be changed after session creation")
+            if session.status != current.status:
+                raise PropPersistenceConflict("prop session lifecycle status is server-owned")
 
             encoded = json.dumps(payload, sort_keys=True)
             conn.execute(
@@ -1013,6 +1017,30 @@ class PostgresStore:
             )
             conn.commit()
         return {"session": session, "duplicate": False}
+
+    @staticmethod
+    def _sync_prop_session_status(conn, session: PropSessionSnapshot, status: str, now: str) -> PropSessionSnapshot:
+        if session.status == status:
+            return session
+        updated = session.model_copy(update={"status": status, "revision": session.revision + 1})
+        encoded = json.dumps(updated.model_dump(mode="json"), sort_keys=True)
+        conn.execute(
+            """
+            INSERT INTO prop_session_revisions(
+                workspace_id,session_id,revision,snapshot_json,created_at_utc
+            ) VALUES(%s,%s,%s,%s::jsonb,%s)
+            """,
+            (updated.workspace_id, updated.session_id, updated.revision, encoded, now),
+        )
+        conn.execute(
+            """
+            UPDATE prop_sessions
+            SET current_revision=%s,snapshot_json=%s::jsonb,updated_at_utc=%s
+            WHERE workspace_id=%s AND session_id=%s
+            """,
+            (updated.revision, encoded, now, updated.workspace_id, updated.session_id),
+        )
+        return updated
 
     @staticmethod
     def _validate_prop_phase_scope(
@@ -1117,16 +1145,34 @@ class PostgresStore:
             session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
             self._validate_prop_phase_scope(session, attempt, phase)
             self._validate_resume_counts(phase, resume)
+            existing_attempt_rows = conn.execute(
+                """
+                SELECT attempt_id,snapshot_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (attempt.workspace_id, attempt.session_id),
+            ).fetchall()
+            for existing_row in existing_attempt_rows:
+                existing_attempt = ChallengeAttemptSnapshot.model_validate(existing_row["snapshot_json"])
+                if (
+                    existing_attempt.attempt_id != attempt.attempt_id
+                    and existing_attempt.status not in _TERMINAL_PROP_ATTEMPT_STATUSES
+                ):
+                    raise PropPersistenceConflict("prop session already has an active attempt")
             if attempt.parent_attempt_id:
                 parent = conn.execute(
                     """
-                    SELECT 1 FROM prop_attempts
+                    SELECT snapshot_json FROM prop_attempts
                     WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
                     """,
                     (attempt.workspace_id, attempt.session_id, attempt.parent_attempt_id),
                 ).fetchone()
                 if parent is None:
                     raise PropPersistenceConflict("parent prop attempt does not exist in this session")
+                parent_attempt = ChallengeAttemptSnapshot.model_validate(parent["snapshot_json"])
+                if parent_attempt.status not in _TERMINAL_PROP_ATTEMPT_STATUSES:
+                    raise PropPersistenceConflict("parent prop attempt must be terminal before restart")
 
             attempt_json = json.dumps(attempt.model_dump(mode="json"), sort_keys=True)
             phase_json = json.dumps(phase.model_dump(mode="json"), sort_keys=True)
@@ -1162,6 +1208,8 @@ class PostgresStore:
                 current_attempt = ChallengeAttemptSnapshot.model_validate(existing["snapshot_json"])
                 current_phase = PhaseStateSnapshot.model_validate(existing["phase_json"])
                 if current_attempt == attempt and current_phase == phase and existing["resume_json"] == resume:
+                    if session.status != current_attempt.status:
+                        raise PropPersistenceConflict("prop session and attempt lifecycle status diverged")
                     return {
                         "session": session,
                         "attempt": current_attempt,
@@ -1186,6 +1234,7 @@ class PostgresStore:
                     now,
                 ),
             )
+            session = self._sync_prop_session_status(conn, session, attempt.status, now)
             conn.commit()
         return {"session": session, "attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
 
@@ -1204,6 +1253,8 @@ class PostgresStore:
             raise PropPersistenceConflict("new prop attempts must start at revision 1")
         if attempt.workspace_id != session.workspace_id or attempt.session_id != session.session_id:
             raise PropPersistenceConflict("prop attempt does not belong to the session")
+        if session.status != attempt.status:
+            raise PropPersistenceConflict("prop session and attempt lifecycle status must match")
 
         resume = dict(resume_state or {})
         self._validate_prop_phase_scope(session, attempt, phase)
@@ -1247,16 +1298,34 @@ class PostgresStore:
                     (session.workspace_id, session.session_id, session_json, now),
                 )
 
+            existing_attempt_rows = conn.execute(
+                """
+                SELECT attempt_id,snapshot_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (attempt.workspace_id, attempt.session_id),
+            ).fetchall()
+            for existing_row in existing_attempt_rows:
+                existing_attempt = ChallengeAttemptSnapshot.model_validate(existing_row["snapshot_json"])
+                if (
+                    existing_attempt.attempt_id != attempt.attempt_id
+                    and existing_attempt.status not in _TERMINAL_PROP_ATTEMPT_STATUSES
+                ):
+                    raise PropPersistenceConflict("prop session already has an active attempt")
             if attempt.parent_attempt_id:
                 parent = conn.execute(
                     """
-                    SELECT 1 FROM prop_attempts
+                    SELECT snapshot_json FROM prop_attempts
                     WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
                     """,
                     (attempt.workspace_id, attempt.session_id, attempt.parent_attempt_id),
                 ).fetchone()
                 if parent is None:
                     raise PropPersistenceConflict("parent prop attempt does not exist in this session")
+                parent_attempt = ChallengeAttemptSnapshot.model_validate(parent["snapshot_json"])
+                if parent_attempt.status not in _TERMINAL_PROP_ATTEMPT_STATUSES:
+                    raise PropPersistenceConflict("parent prop attempt must be terminal before restart")
 
             inserted_attempt = conn.execute(
                 """
@@ -1498,12 +1567,14 @@ class PostgresStore:
                 raise PropPersistenceConflict("immutable prop attempt identity/version fields cannot change")
             if current.status in _TERMINAL_PROP_ATTEMPT_STATUSES:
                 raise PropPersistenceConflict("terminal prop attempts are immutable")
+            if attempt.status != current.status:
+                raise PropPersistenceConflict("prop attempt lifecycle status is server-owned")
             if phase.last_event_sequence < current_phase.last_event_sequence:
                 raise PropPersistenceConflict("prop event sequence cannot move backwards")
             if phase.virtual_time_utc < current_phase.virtual_time_utc:
                 raise PropPersistenceConflict("prop virtual time cannot move backwards")
-            if phase.phase_index < current_phase.phase_index or phase.phase_index > current_phase.phase_index + 1:
-                raise PropPersistenceConflict("prop phase index must stay current or advance exactly once")
+            if phase.phase_index != current_phase.phase_index:
+                raise PropPersistenceConflict("prop phase index is server-owned")
 
             attempt_json = json.dumps(attempt.model_dump(mode="json"), sort_keys=True)
             phase_json = json.dumps(phase.model_dump(mode="json"), sort_keys=True)
@@ -1562,6 +1633,159 @@ class PostgresStore:
             conn.commit()
         return {"attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
 
+    def apply_prop_transition_intent(self, intent: TransitionIntent) -> dict:
+        """Atomically apply one server-owned Prop lifecycle command."""
+
+        fingerprint = _payload_fingerprint(intent.model_dump(mode="json"))
+        now = utc_now_iso()
+        with self.connect() as conn:
+            session_row = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_sessions
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (intent.workspace_id, intent.session_id),
+            ).fetchone()
+            if session_row is None:
+                raise LookupError("prop session not found")
+            session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
+
+            row = conn.execute(
+                """
+                SELECT current_revision,snapshot_json,phase_json,resume_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                FOR UPDATE
+                """,
+                (intent.workspace_id, intent.session_id, intent.attempt_id),
+            ).fetchone()
+            if row is None:
+                raise LookupError("prop attempt not found")
+
+            receipt = conn.execute(
+                """
+                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
+                """,
+                (intent.workspace_id, intent.session_id, intent.attempt_id, intent.intent_id),
+            ).fetchone()
+            if receipt is not None:
+                if receipt["fingerprint"] != fingerprint:
+                    raise PropIdempotencyConflict("intent_id was already used with different transition content")
+                revision = conn.execute(
+                    """
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempt_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=%s
+                    """,
+                    (
+                        intent.workspace_id,
+                        intent.session_id,
+                        intent.attempt_id,
+                        int(receipt["entity_revision"]),
+                    ),
+                ).fetchone()
+                if revision is None:
+                    raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
+                current_attempt = ChallengeAttemptSnapshot.model_validate(row["snapshot_json"])
+                current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
+                if session.status != current_attempt.status:
+                    raise PropPersistenceConflict("prop session and attempt lifecycle status diverged")
+                return {
+                    "session": session,
+                    "attempt": current_attempt,
+                    "phase": current_phase,
+                    "resume_state": row["resume_json"],
+                    "duplicate": True,
+                }
+
+            current = ChallengeAttemptSnapshot.model_validate(row["snapshot_json"])
+            current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
+            current_resume = dict(row["resume_json"] or {})
+            if int(row["current_revision"]) != intent.expected_revision:
+                raise PropPersistenceConflict("prop attempt revision conflict")
+            if session.status != current.status:
+                raise PropPersistenceConflict("prop session and attempt lifecycle status diverged")
+            self._validate_prop_phase_scope(session, current, current_phase)
+            self._validate_resume_counts(current_phase, current_resume)
+
+            result = apply_prop_lifecycle_command(
+                session,
+                current,
+                current_phase,
+                intent,
+                resume_state=current_resume,
+            )
+            updated_attempt = result["attempt"]
+            updated_phase = result["phase"]
+            updated_resume = result["resume_state"]
+            self._validate_prop_phase_scope(session, updated_attempt, updated_phase)
+            self._validate_resume_counts(updated_phase, updated_resume)
+            self._validate_resume_cursor(updated_resume, current_resume)
+
+            attempt_json = json.dumps(updated_attempt.model_dump(mode="json"), sort_keys=True)
+            phase_json = json.dumps(updated_phase.model_dump(mode="json"), sort_keys=True)
+            resume_json = json.dumps(updated_resume, sort_keys=True)
+            conn.execute(
+                """
+                INSERT INTO prop_attempt_revisions(
+                    workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                """,
+                (
+                    intent.workspace_id,
+                    intent.session_id,
+                    intent.attempt_id,
+                    updated_attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                ),
+            )
+            conn.execute(
+                """
+                UPDATE prop_attempts
+                SET current_revision=%s,snapshot_json=%s::jsonb,phase_json=%s::jsonb,resume_json=%s::jsonb,
+                    updated_at_utc=%s
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                """,
+                (
+                    updated_attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                    intent.workspace_id,
+                    intent.session_id,
+                    intent.attempt_id,
+                ),
+            )
+            updated_session = self._sync_prop_session_status(conn, session, updated_attempt.status, now)
+            conn.execute(
+                """
+                INSERT INTO prop_mutation_receipts(
+                    workspace_id,session_id,attempt_id,operation_id,fingerprint,entity_revision,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s)
+                """,
+                (
+                    intent.workspace_id,
+                    intent.session_id,
+                    intent.attempt_id,
+                    intent.intent_id,
+                    fingerprint,
+                    updated_attempt.revision,
+                    now,
+                ),
+            )
+            conn.commit()
+        return {
+            "session": updated_session,
+            "attempt": updated_attempt,
+            "phase": updated_phase,
+            "resume_state": updated_resume,
+            "duplicate": False,
+        }
+
     def apply_prop_lifecycle_event(
         self,
         event: PropLifecycleEvent,
@@ -1604,7 +1828,7 @@ class PostgresStore:
 
             receipt = conn.execute(
                 """
-                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                SELECT fingerprint,entity_revision,created_at_utc FROM prop_mutation_receipts
                 WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
                 """,
                 (event.workspace_id, event.session_id, event.attempt_id, event.operation_id),
@@ -1626,11 +1850,26 @@ class PostgresStore:
                 ).fetchone()
                 if revision is None:
                     raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
+                historical_session_row = conn.execute(
+                    """
+                    SELECT snapshot_json FROM prop_session_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND created_at_utc<=%s
+                    ORDER BY created_at_utc DESC,revision DESC
+                    LIMIT 1
+                    """,
+                    (event.workspace_id, event.session_id, receipt["created_at_utc"]),
+                ).fetchone()
+                if historical_session_row is None:
+                    raise PropPersistenceConflict("idempotency receipt points before prop session history")
+                historical_session = PropSessionSnapshot.model_validate(historical_session_row["snapshot_json"])
+                historical_attempt = ChallengeAttemptSnapshot.model_validate(revision["snapshot_json"])
+                if historical_session.status != historical_attempt.status:
+                    raise PropPersistenceConflict("historical prop session and attempt lifecycle status diverged")
                 historical_resume = revision["resume_json"]
                 lifecycle = historical_resume.get("prop_lifecycle") if isinstance(historical_resume, dict) else None
                 return {
-                    "session": session,
-                    "attempt": ChallengeAttemptSnapshot.model_validate(revision["snapshot_json"]),
+                    "session": historical_session,
+                    "attempt": historical_attempt,
                     "phase": PhaseStateSnapshot.model_validate(revision["phase_json"]),
                     "resume_state": historical_resume,
                     "objectives": lifecycle.get("last_objectives") if isinstance(lifecycle, dict) else None,
@@ -1641,6 +1880,8 @@ class PostgresStore:
             current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
             if int(row["current_revision"]) != event.expected_revision:
                 raise PropPersistenceConflict("prop attempt revision conflict")
+            if session.status != current.status:
+                raise PropPersistenceConflict("prop session and attempt lifecycle status diverged")
 
             current_resume = dict(row["resume_json"] or {})
             next_resume = dict(
@@ -1707,6 +1948,7 @@ class PostgresStore:
                     event.attempt_id,
                 ),
             )
+            updated_session = self._sync_prop_session_status(conn, session, updated_attempt.status, now)
             conn.execute(
                 """
                 INSERT INTO prop_mutation_receipts(
@@ -1725,7 +1967,7 @@ class PostgresStore:
             )
             conn.commit()
         return {
-            "session": session,
+            "session": updated_session,
             "attempt": updated_attempt,
             "phase": updated_phase,
             "resume_state": updated_resume,

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import os
+import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timezone
@@ -29,16 +30,24 @@ from trading_workspace_v2.prop_session import (
     PropSessionContractError,
     PropSessionSnapshot,
     ThresholdValue,
+    TransitionIntent,
+    apply_prop_lifecycle_command,
     evaluate_prop_lifecycle_event,
 )
-from trading_workspace_v2.store import PostgresStore, PropPersistenceConflict
+from trading_workspace_v2.api import create_app
+from trading_workspace_v2.auth import LocalWorkspaceAuthorization
+from trading_workspace_v2.store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
+from fastapi.testclient import TestClient
 
 
 def phase_spec(
     *,
+    phase_index: int = 1,
+    initial_capital: Decimal = Decimal("100000"),
     min_days: int = 0,
     max_days: int | None = 30,
     reset_order: str = "fees_then_reset",
+    carry_policy: str = "reset",
     position_policy: str = "must_be_flat",
     overall_kind: str = "static",
     trailing_granularity: str | None = None,
@@ -48,8 +57,8 @@ def phase_spec(
     profit_target_amount: Decimal = Decimal("10000"),
 ) -> PropPhaseSpec:
     return PropPhaseSpec(
-        phase_index=1,
-        initial_capital=Decimal("100000"),
+        phase_index=phase_index,
+        initial_capital=initial_capital,
         currency="USD",
         profit_target=ProfitTargetRule(
             threshold=ThresholdValue(amount=profit_target_amount),
@@ -72,6 +81,7 @@ def phase_spec(
         reset_order=reset_order,
         min_qualifying_days=min_days,
         max_calendar_days=max_days,
+        carry_policy=carry_policy,
         position_policy=position_policy,
     )
 
@@ -114,12 +124,12 @@ def context(spec: PropPhaseSpec | None = None):
         attempt_id="attempt-1",
         profile_hash=profile.profile_hash,
         phase_index=1,
-        initial_balance=Decimal("100000"),
-        balance=Decimal("100000"),
+        initial_balance=spec.initial_capital,
+        balance=spec.initial_capital,
         floating_pl=Decimal("0"),
-        equity=Decimal("100000"),
-        high_water_mark=Decimal("100000"),
-        daily_anchor=Decimal("100000"),
+        equity=spec.initial_capital,
+        high_water_mark=spec.initial_capital,
+        daily_anchor=spec.initial_capital,
         qualifying_days=0,
         virtual_time_utc=datetime(2026, 1, 1, 12, tzinfo=timezone.utc),
         last_event_sequence=7,
@@ -128,6 +138,21 @@ def context(spec: PropPhaseSpec | None = None):
         evaluation_quality="full_for_declared_model",
     )
     return session, attempt, phase
+
+
+def multi_phase_context(*, carry_policy: str, position_policy: str = "must_be_flat"):
+    first = phase_spec(carry_policy=carry_policy, position_policy=position_policy)
+    second = phase_spec(
+        phase_index=2,
+        initial_capital=Decimal("50000"),
+        profit_target_amount=Decimal("5000"),
+    )
+    session, attempt, phase = context(first)
+    profile = PropProfileSnapshot(
+        **session.profile.model_dump(exclude={"phases"}),
+        phases=[first, second],
+    )
+    return session.model_copy(update={"profile": profile}), attempt, phase
 
 
 def event(**overrides) -> PropLifecycleEvent:
@@ -149,6 +174,25 @@ def event(**overrides) -> PropLifecycleEvent:
     }
     payload.update(overrides)
     return PropLifecycleEvent(**payload)
+
+
+def transition_intent(
+    attempt: ChallengeAttemptSnapshot,
+    phase: PhaseStateSnapshot,
+    action: str,
+    *,
+    intent_id: str | None = None,
+) -> TransitionIntent:
+    return TransitionIntent(
+        workspace_id=attempt.workspace_id,
+        session_id=attempt.session_id,
+        attempt_id=attempt.attempt_id,
+        profile_hash=attempt.profile_hash,
+        intent_id=intent_id or f"intent-{uuid4().hex}",
+        expected_revision=attempt.revision,
+        event_sequence=phase.last_event_sequence,
+        action=action,
+    )
 
 
 class Ps02PropLifecycleTests(unittest.TestCase):
@@ -231,6 +275,173 @@ class Ps02PropLifecycleTests(unittest.TestCase):
         )
         self.assertTrue(ready["objectives"]["positions_ready"])
         self.assertEqual(ready["attempt"].status, "completed_pass")
+
+    def test_open_position_phase_pass_requires_carry_all_policy(self):
+        for carry_policy in ("reset", "carry_balance"):
+            with self.subTest(carry_policy=carry_policy):
+                session, attempt, phase = multi_phase_context(
+                    carry_policy=carry_policy,
+                    position_policy="carry",
+                )
+                result = evaluate_prop_lifecycle_event(
+                    session,
+                    attempt,
+                    phase,
+                    event(balance_before_separate_costs=Decimal("111000"), open_positions=1),
+                    resume_state={
+                        "open_positions": [{"position_id": "pos-1"}],
+                        "pending_orders": [],
+                    },
+                )
+                self.assertFalse(result["objectives"]["positions_ready"])
+                self.assertEqual(result["attempt"].status, "running")
+
+        session, attempt, phase = multi_phase_context(
+            carry_policy="carry_all",
+            position_policy="carry",
+        )
+        carried = evaluate_prop_lifecycle_event(
+            session,
+            attempt,
+            phase,
+            event(balance_before_separate_costs=Decimal("111000"), open_positions=1),
+            resume_state={"open_positions": [{"position_id": "pos-1"}], "pending_orders": []},
+        )
+        self.assertTrue(carried["objectives"]["positions_ready"])
+        self.assertEqual(carried["attempt"].status, "phase_passed")
+
+    def test_explicit_pause_resume_commands_do_not_advance_virtual_clock(self):
+        session, attempt, phase = context()
+        paused = apply_prop_lifecycle_command(
+            session,
+            attempt,
+            phase,
+            transition_intent(attempt, phase, "pause"),
+            resume_state={"cursor": {"bar_index": 7, "timestamp_utc": "2026-01-01T12:00:00Z"}},
+        )
+        self.assertEqual(paused["attempt"].status, "paused")
+        self.assertEqual(paused["phase"].virtual_time_utc, phase.virtual_time_utc)
+        self.assertEqual(paused["phase"].last_event_sequence, phase.last_event_sequence)
+
+        resumed = apply_prop_lifecycle_command(
+            session.model_copy(update={"status": "paused"}),
+            paused["attempt"],
+            paused["phase"],
+            transition_intent(paused["attempt"], paused["phase"], "resume"),
+            resume_state=paused["resume_state"],
+        )
+        self.assertEqual(resumed["attempt"].status, "running")
+        self.assertEqual(resumed["phase"].virtual_time_utc, phase.virtual_time_utc)
+
+    def test_next_phase_reset_and_carry_balance_are_explicit(self):
+        for carry_policy, expected_balance in (
+            ("reset", Decimal("50000")),
+            ("carry_balance", Decimal("111000")),
+        ):
+            with self.subTest(carry_policy=carry_policy):
+                session, attempt, phase = multi_phase_context(carry_policy=carry_policy)
+                attempt = attempt.model_copy(update={"status": "phase_passed", "revision": 4})
+                phase = phase.model_copy(
+                    update={
+                        "balance": Decimal("111000"),
+                        "equity": Decimal("111000"),
+                        "high_water_mark": Decimal("111000"),
+                    }
+                )
+                resume = {
+                    "cursor": {"bar_index": 77, "timestamp_utc": "2026-01-01T13:00:00Z"},
+                    "open_positions": [],
+                    "pending_orders": [],
+                }
+                result = apply_prop_lifecycle_command(
+                    session.model_copy(update={"status": "phase_passed"}),
+                    attempt,
+                    phase,
+                    transition_intent(attempt, phase, "next_phase"),
+                    resume_state=resume,
+                )
+                self.assertEqual(result["attempt"].status, "next_phase_ready")
+                self.assertEqual(result["phase"].phase_index, 2)
+                self.assertEqual(result["phase"].initial_balance, Decimal("50000"))
+                self.assertEqual(result["phase"].balance, expected_balance)
+                self.assertEqual(result["phase"].floating_pl, Decimal("0"))
+                self.assertEqual(result["phase"].equity, expected_balance)
+                self.assertEqual(result["phase"].qualifying_days, 0)
+                self.assertEqual(result["phase"].virtual_time_utc, phase.virtual_time_utc)
+                self.assertEqual(result["phase"].last_event_sequence, phase.last_event_sequence)
+                self.assertEqual(result["resume_state"]["cursor"], resume["cursor"])
+                self.assertEqual(result["resume_state"]["open_positions"], [])
+                self.assertEqual(result["resume_state"]["pending_orders"], [])
+
+    def test_next_phase_carry_all_preserves_live_simulator_state(self):
+        session, attempt, phase = multi_phase_context(
+            carry_policy="carry_all",
+            position_policy="carry",
+        )
+        attempt = attempt.model_copy(update={"status": "phase_passed", "revision": 4})
+        phase = phase.model_copy(
+            update={
+                "balance": Decimal("111000"),
+                "floating_pl": Decimal("-250"),
+                "equity": Decimal("110750"),
+                "high_water_mark": Decimal("112000"),
+                "daily_anchor": Decimal("109000"),
+                "open_positions": 1,
+            }
+        )
+        resume = {
+            "cursor": {"bar_index": 77, "timestamp_utc": "2026-01-01T13:00:00Z"},
+            "open_positions": [{"position_id": "pos-1", "side": "long"}],
+            "pending_orders": [],
+        }
+        result = apply_prop_lifecycle_command(
+            session.model_copy(update={"status": "phase_passed"}),
+            attempt,
+            phase,
+            transition_intent(attempt, phase, "next_phase"),
+            resume_state=resume,
+        )
+        self.assertEqual(result["phase"].phase_index, 2)
+        self.assertEqual(result["phase"].balance, phase.balance)
+        self.assertEqual(result["phase"].floating_pl, phase.floating_pl)
+        self.assertEqual(result["phase"].equity, phase.equity)
+        self.assertEqual(result["phase"].open_positions, 1)
+        self.assertEqual(result["resume_state"]["open_positions"], resume["open_positions"])
+        self.assertEqual(
+            result["resume_state"]["prop_lifecycle"]["phase_transitions"][-1]["carry_policy"],
+            "carry_all",
+        )
+
+    def test_next_phase_rejects_pending_orders_and_final_phase(self):
+        session, attempt, phase = multi_phase_context(carry_policy="reset")
+        attempt = attempt.model_copy(update={"status": "phase_passed", "revision": 4})
+        pending_phase = phase.model_copy(update={"pending_orders": 1})
+        with self.assertRaisesRegex(PropSessionContractError, "pending orders"):
+            apply_prop_lifecycle_command(
+                session.model_copy(update={"status": "phase_passed"}),
+                attempt,
+                pending_phase,
+                transition_intent(attempt, pending_phase, "next_phase"),
+                resume_state={"pending_orders": [{"order_id": "ord-1"}]},
+            )
+
+        final_phase = phase.model_copy(
+            update={
+                "phase_index": 2,
+                "initial_balance": Decimal("50000"),
+                "balance": Decimal("50000"),
+                "equity": Decimal("50000"),
+                "high_water_mark": Decimal("50000"),
+                "daily_anchor": Decimal("50000"),
+            }
+        )
+        with self.assertRaisesRegex(PropSessionContractError, "final frozen phase"):
+            apply_prop_lifecycle_command(
+                session.model_copy(update={"status": "phase_passed"}),
+                attempt,
+                final_phase,
+                transition_intent(attempt, final_phase, "next_phase"),
+            )
 
     def test_calendar_boundary_is_explicit_and_fees_then_reset_updates_anchor_after_cost(self):
         session, attempt, phase = context(phase_spec(reset_order="fees_then_reset"))
@@ -453,6 +664,42 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
         payload.update(overrides)
         return PropLifecycleEvent(**payload)
 
+    def create_multiphase_bundle(self, *, carry_policy: str, position_policy: str = "must_be_flat"):
+        suffix = uuid4().hex
+        workspace_id = f"ps02-multi-{suffix}"
+        session_id = f"session-{suffix}"
+        attempt_id = f"attempt-{suffix}"
+        base_session, base_attempt, base_phase = multi_phase_context(
+            carry_policy=carry_policy,
+            position_policy=position_policy,
+        )
+        session = base_session.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "status": "running"}
+        )
+        attempt = base_attempt.model_copy(
+            update={
+                "workspace_id": workspace_id,
+                "session_id": session_id,
+                "attempt_id": attempt_id,
+                "revision": 1,
+            }
+        )
+        phase = base_phase.model_copy(
+            update={
+                "workspace_id": workspace_id,
+                "session_id": session_id,
+                "attempt_id": attempt_id,
+                "last_event_sequence": 0,
+            }
+        )
+        resume = {
+            "cursor": {"bar_index": 10, "timestamp_utc": "2026-01-01T12:00:00Z"},
+            "open_positions": [],
+            "pending_orders": [],
+        }
+        self.store.create_prop_session_bundle(session, attempt, phase, resume_state=resume)
+        return session, attempt, phase, resume
+
     def test_store_event_is_atomic_idempotent_and_restorable(self):
         lifecycle_event = self.lifecycle_event()
         resume = {
@@ -504,6 +751,30 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
         self.assertEqual(recovered["attempt"].status, "completed_pass")
         self.assertEqual(recovered["phase"].last_event_sequence, 1)
 
+    def test_late_duplicate_lifecycle_event_returns_matching_historical_session(self):
+        blocked_event = self.lifecycle_event(
+            operation_id=f"blocked-late-{uuid4().hex}",
+            evaluation_quality="insufficient",
+        )
+        blocked_resume = {
+            **self.resume,
+            "cursor": {"bar_index": 99, "timestamp_utc": "2026-01-01T13:00:00Z"},
+        }
+        first = self.store.apply_prop_lifecycle_event(blocked_event, resume_state=blocked_resume)
+        paused = self.store.apply_prop_transition_intent(
+            transition_intent(first["attempt"], first["phase"], "pause")
+        )
+        self.assertEqual(paused["session"].status, "paused")
+
+        duplicate = PostgresStore(self.dsn).apply_prop_lifecycle_event(
+            blocked_event,
+            resume_state=blocked_resume,
+        )
+        self.assertTrue(duplicate["duplicate"])
+        self.assertEqual(duplicate["attempt"].revision, 2)
+        self.assertEqual(duplicate["attempt"].status, "running")
+        self.assertEqual(duplicate["session"].status, "running")
+
     def test_two_tabs_with_same_revision_cannot_apply_two_distinct_events(self):
         events = [
             self.lifecycle_event(operation_id=f"tab-a-{uuid4().hex}"),
@@ -525,6 +796,237 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
         self.assertEqual(len(conflicts), 1)
         restored = self.store.get_prop_resume_state(self.workspace_id, self.session_id, self.attempt_id)
         self.assertEqual(restored["attempt"].revision, 2)
+
+    def test_transition_store_is_idempotent_revision_fenced_and_syncs_session(self):
+        intent_id = f"pause-{uuid4().hex}"
+        pause = transition_intent(self.attempt, self.phase, "pause", intent_id=intent_id)
+        first = self.store.apply_prop_transition_intent(pause)
+        duplicate = PostgresStore(self.dsn).apply_prop_transition_intent(pause)
+
+        self.assertFalse(first["duplicate"])
+        self.assertTrue(duplicate["duplicate"])
+        self.assertEqual(first["attempt"].status, "paused")
+        self.assertEqual(first["attempt"].revision, 2)
+        self.assertEqual(first["session"].status, "paused")
+        self.assertEqual(first["session"].revision, 2)
+        self.assertEqual(first["phase"].virtual_time_utc, self.phase.virtual_time_utc)
+        self.assertEqual(first["resume_state"]["cursor"], self.resume["cursor"])
+
+        tampered = pause.model_copy(update={"action": "abandon"})
+        with self.assertRaises(PropIdempotencyConflict):
+            self.store.apply_prop_transition_intent(tampered)
+
+        stale = pause.model_copy(update={"intent_id": f"stale-{uuid4().hex}", "action": "resume"})
+        with self.assertRaisesRegex(PropPersistenceConflict, "revision conflict"):
+            self.store.apply_prop_transition_intent(stale)
+
+        resumed = self.store.apply_prop_transition_intent(
+            transition_intent(first["attempt"], first["phase"], "resume")
+        )
+        self.assertEqual(resumed["attempt"].status, "running")
+        self.assertEqual(resumed["attempt"].revision, 3)
+        self.assertEqual(resumed["session"].status, "running")
+        self.assertEqual(resumed["phase"].virtual_time_utc, self.phase.virtual_time_utc)
+        self.assertEqual(resumed["phase"].last_event_sequence, self.phase.last_event_sequence)
+
+        late_duplicate = PostgresStore(self.dsn).apply_prop_transition_intent(pause)
+        self.assertTrue(late_duplicate["duplicate"])
+        self.assertEqual(late_duplicate["attempt"].status, "running")
+        self.assertEqual(late_duplicate["session"].status, "running")
+        self.assertEqual(late_duplicate["attempt"].revision, 3)
+
+    def test_two_tabs_cannot_apply_two_distinct_transition_intents(self):
+        intents = [
+            transition_intent(self.attempt, self.phase, "pause", intent_id=f"tab-a-{uuid4().hex}"),
+            transition_intent(self.attempt, self.phase, "pause", intent_id=f"tab-b-{uuid4().hex}"),
+        ]
+
+        def apply(item):
+            try:
+                return PostgresStore(self.dsn).apply_prop_transition_intent(item)
+            except Exception as exc:
+                return exc
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            outcomes = list(pool.map(apply, intents))
+
+        successes = [value for value in outcomes if isinstance(value, dict)]
+        conflicts = [value for value in outcomes if isinstance(value, PropPersistenceConflict)]
+        self.assertEqual(len(successes), 1)
+        self.assertEqual(len(conflicts), 1)
+        restored = self.store.get_prop_resume_state(self.workspace_id, self.session_id, self.attempt_id)
+        self.assertEqual(restored["attempt"].revision, 2)
+        self.assertEqual(restored["attempt"].status, "paused")
+        self.assertEqual(restored["session"].status, "paused")
+
+    def test_multiphase_reset_carry_balance_and_carry_all_persist_without_hidden_drops(self):
+        cases = (
+            ("reset", "must_be_flat", 0, Decimal("50000"), Decimal("0")),
+            ("carry_balance", "must_be_flat", 0, Decimal("111000"), Decimal("0")),
+            ("carry_all", "carry", 1, Decimal("111000"), Decimal("-250")),
+        )
+        for carry_policy, position_policy, open_positions, expected_balance, floating_pl in cases:
+            with self.subTest(carry_policy=carry_policy):
+                session, attempt, phase, resume = self.create_multiphase_bundle(
+                    carry_policy=carry_policy,
+                    position_policy=position_policy,
+                )
+                next_resume = {
+                    **resume,
+                    "cursor": {"bar_index": 11, "timestamp_utc": "2026-01-01T13:00:00Z"},
+                    "open_positions": ([{"position_id": "pos-1"}] if open_positions else []),
+                }
+                passed = self.store.apply_prop_lifecycle_event(
+                    PropLifecycleEvent(
+                        workspace_id=session.workspace_id,
+                        session_id=session.session_id,
+                        attempt_id=attempt.attempt_id,
+                        profile_hash=attempt.profile_hash,
+                        operation_id=f"pass-{uuid4().hex}",
+                        expected_revision=1,
+                        event_sequence=1,
+                        virtual_time_utc=datetime(2026, 1, 1, 13, tzinfo=timezone.utc),
+                        balance_before_separate_costs=Decimal("111000"),
+                        floating_pl=floating_pl,
+                        open_positions=open_positions,
+                        pending_orders=0,
+                        evaluation_quality="full_for_declared_model",
+                    ),
+                    resume_state=next_resume,
+                )
+                self.assertEqual(passed["attempt"].status, "phase_passed")
+                self.assertEqual(passed["session"].status, "phase_passed")
+
+                advanced = self.store.apply_prop_transition_intent(
+                    transition_intent(passed["attempt"], passed["phase"], "next_phase")
+                )
+                self.assertEqual(advanced["attempt"].status, "next_phase_ready")
+                self.assertEqual(advanced["session"].status, "next_phase_ready")
+                self.assertEqual(advanced["phase"].phase_index, 2)
+                self.assertEqual(advanced["phase"].initial_balance, Decimal("50000"))
+                self.assertEqual(advanced["phase"].balance, expected_balance)
+                self.assertEqual(advanced["phase"].floating_pl, floating_pl)
+                self.assertEqual(advanced["phase"].open_positions, open_positions)
+                self.assertEqual(advanced["resume_state"]["cursor"], next_resume["cursor"])
+                self.assertEqual(len(advanced["resume_state"]["open_positions"]), open_positions)
+
+                with self.store.connect() as conn:
+                    previous = conn.execute(
+                        """
+                        SELECT phase_json FROM prop_attempt_revisions
+                        WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=2
+                        """,
+                        (session.workspace_id, session.session_id, attempt.attempt_id),
+                    ).fetchone()
+                self.assertEqual(previous["phase_json"]["phase_index"], 1)
+
+    def test_next_phase_rejects_incompatible_persisted_open_position_without_mutation(self):
+        session, attempt, phase, resume = self.create_multiphase_bundle(carry_policy="reset")
+        phase_passed = phase.model_copy(update={"open_positions": 1})
+        attempt_passed = attempt.model_copy(update={"status": "phase_passed"})
+        session_passed = session.model_copy(update={"status": "phase_passed"})
+
+        suffix = uuid4().hex
+        session_passed = session_passed.model_copy(update={"session_id": f"invalid-session-{suffix}"})
+        attempt_passed = attempt_passed.model_copy(
+            update={"session_id": session_passed.session_id, "attempt_id": f"invalid-attempt-{suffix}"}
+        )
+        phase_passed = phase_passed.model_copy(
+            update={"session_id": session_passed.session_id, "attempt_id": attempt_passed.attempt_id}
+        )
+        invalid_resume = {
+            **resume,
+            "open_positions": [{"position_id": "pos-1"}],
+        }
+        self.store.create_prop_session_bundle(
+            session_passed,
+            attempt_passed,
+            phase_passed,
+            resume_state=invalid_resume,
+        )
+        with self.assertRaisesRegex(PropSessionContractError, "requires flat positions"):
+            self.store.apply_prop_transition_intent(
+                transition_intent(attempt_passed, phase_passed, "next_phase")
+            )
+        restored = self.store.get_prop_resume_state(
+            session_passed.workspace_id,
+            session_passed.session_id,
+            attempt_passed.attempt_id,
+        )
+        self.assertEqual(restored["attempt"].revision, 1)
+        self.assertEqual(restored["phase"].phase_index, 1)
+        self.assertEqual(restored["phase"].open_positions, 1)
+
+    def test_next_phase_rejects_replay_bound_attempt_until_canonical_replay_transition_exists(self):
+        session, attempt, phase, resume = self.create_multiphase_bundle(carry_policy="reset")
+        attempt_passed = attempt.model_copy(update={"status": "phase_passed"})
+        session_passed = session.model_copy(update={"status": "phase_passed"})
+        replay_resume = {
+            **resume,
+            "replay_binding": {
+                "replay_session_id": "replay-1",
+                "branch_id": "root",
+                "last_replay_event_sequence": 7,
+            },
+        }
+        suffix = uuid4().hex
+        session_passed = session_passed.model_copy(update={"session_id": f"replay-bound-session-{suffix}"})
+        attempt_passed = attempt_passed.model_copy(
+            update={"session_id": session_passed.session_id, "attempt_id": f"replay-bound-attempt-{suffix}"}
+        )
+        phase = phase.model_copy(
+            update={"session_id": session_passed.session_id, "attempt_id": attempt_passed.attempt_id}
+        )
+        self.store.create_prop_session_bundle(
+            session_passed,
+            attempt_passed,
+            phase,
+            resume_state=replay_resume,
+        )
+        with self.assertRaisesRegex(PropSessionContractError, "canonical replay phase transition"):
+            self.store.apply_prop_transition_intent(
+                transition_intent(attempt_passed, phase, "next_phase")
+            )
+        restored = self.store.get_prop_resume_state(
+            session_passed.workspace_id,
+            session_passed.session_id,
+            attempt_passed.attempt_id,
+        )
+        self.assertEqual(restored["attempt"].revision, 1)
+        self.assertEqual(restored["phase"].phase_index, 1)
+
+    def test_transition_api_is_tenant_scoped_and_remains_simulation_only(self):
+        authorization = LocalWorkspaceAuthorization.for_local_owner([self.workspace_id])
+        with tempfile.TemporaryDirectory(prefix="ps02-transition-api-") as artifact_root:
+            with TestClient(
+                create_app(
+                    dsn=self.dsn,
+                    artifact_root=artifact_root,
+                    authorization=authorization,
+                    learn_roots={},
+                )
+            ) as client:
+                headers = {"X-Workspace-Id": self.workspace_id}
+                body = transition_intent(self.attempt, self.phase, "pause").model_dump(mode="json")
+                response = client.post(
+                    f"/api/v2/prop/sessions/{self.session_id}/attempts/{self.attempt_id}/transitions",
+                    headers=headers,
+                    json=body,
+                )
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.json()["attempt"]["mode"], "simulation")
+                self.assertEqual(response.json()["attempt"]["status"], "paused")
+                self.assertEqual(response.json()["session"]["status"], "paused")
+                self.assertFalse(client.get("/health").json()["execution_capability"])
+
+                denied_body = {**body, "workspace_id": f"other-{self.workspace_id}", "intent_id": uuid4().hex}
+                denied = client.post(
+                    f"/api/v2/prop/sessions/{self.session_id}/attempts/{self.attempt_id}/transitions",
+                    headers=headers,
+                    json=denied_body,
+                )
+                self.assertEqual(denied.status_code, 403)
+                self.assertEqual(denied.json()["detail"], "prop_workspace_mismatch")
 
     def test_store_event_cannot_cross_workspace_scope(self):
         foreign = self.lifecycle_event(

@@ -396,6 +396,128 @@ def apply_transition_intent(
     return TransitionResult(attempt=updated, intent_fingerprint=fingerprint, duplicate=False)
 
 
+_CLIENT_LIFECYCLE_ACTIONS = frozenset({"start", "pause", "resume", "next_phase", "abandon"})
+
+
+def apply_prop_lifecycle_command(
+    session: PropSessionSnapshot,
+    attempt: ChallengeAttemptSnapshot,
+    phase: PhaseStateSnapshot,
+    intent: TransitionIntent,
+    *,
+    resume_state: dict | None = None,
+) -> dict:
+    """Apply one explicit user lifecycle command without advancing simulator time."""
+
+    validate_attempt_against_session(session, attempt)
+    if intent.action not in _CLIENT_LIFECYCLE_ACTIONS:
+        raise PropSessionContractError(f"transition {intent.action} is evaluator-owned")
+    if phase.workspace_id != attempt.workspace_id or phase.session_id != attempt.session_id:
+        raise PropSessionContractError("phase state scope does not match attempt")
+    if phase.attempt_id != attempt.attempt_id or phase.profile_hash != attempt.profile_hash:
+        raise PropSessionContractError("phase state identity does not match attempt")
+    if intent.event_sequence != phase.last_event_sequence:
+        raise PropSessionContractError("transition event sequence must match current simulator sequence")
+
+    transition = apply_transition_intent(attempt, intent, {})
+    resume = dict(resume_state or {})
+    if intent.action != "next_phase":
+        return {
+            "attempt": transition.attempt,
+            "phase": phase,
+            "resume_state": resume,
+            "intent_fingerprint": transition.intent_fingerprint,
+        }
+
+    if resume.get("replay_binding"):
+        raise PropSessionContractError(
+            "next_phase for Replay-bound attempts requires canonical replay phase transition support"
+        )
+    if phase.phase_index >= len(session.profile.phases):
+        raise PropSessionContractError("next_phase is invalid after the final frozen phase")
+
+    current_spec = session.profile.phases[phase.phase_index - 1]
+    next_spec = session.profile.phases[phase.phase_index]
+    if phase.pending_orders != 0:
+        raise PropSessionContractError("next phase requires zero pending orders")
+    can_carry_open_positions = (
+        current_spec.position_policy == "carry" and current_spec.carry_policy == "carry_all"
+    )
+    if phase.open_positions != 0 and not can_carry_open_positions:
+        raise PropSessionContractError("next phase requires flat positions for the frozen carry policy")
+
+    if current_spec.carry_policy == "reset":
+        next_balance = next_spec.initial_capital
+        next_floating = Decimal("0")
+        next_equity = next_balance
+        next_hwm = next_balance
+        next_daily_anchor = next_balance
+        resume["open_positions"] = []
+        resume["pending_orders"] = []
+    elif current_spec.carry_policy == "carry_balance":
+        next_balance = phase.balance
+        next_floating = Decimal("0")
+        next_equity = next_balance
+        next_hwm = max(next_spec.initial_capital, next_balance)
+        next_daily_anchor = next_balance
+        resume["open_positions"] = []
+        resume["pending_orders"] = []
+    else:
+        next_balance = phase.balance
+        next_floating = phase.floating_pl
+        next_equity = phase.equity
+        next_basis_value = (
+            next_balance
+            if next_spec.overall_drawdown.kind == "trailing"
+            and next_spec.overall_drawdown.basis == "balance"
+            else next_equity
+        )
+        next_hwm = max(phase.high_water_mark, next_basis_value)
+        next_daily_anchor = phase.daily_anchor
+
+    lifecycle = dict(resume.get("prop_lifecycle") or {})
+    transitions = list(lifecycle.get("phase_transitions") or [])
+    transitions.append(
+        {
+            "intent_id": intent.intent_id,
+            "from_phase_index": phase.phase_index,
+            "to_phase_index": next_spec.phase_index,
+            "carry_policy": current_spec.carry_policy,
+            "event_sequence": phase.last_event_sequence,
+            "virtual_time_utc": phase.virtual_time_utc.isoformat(),
+        }
+    )
+    lifecycle.update(
+        {
+            "qualifying_local_dates": [],
+            "phase_transitions": transitions,
+            "last_transition_intent_id": intent.intent_id,
+        }
+    )
+    resume["prop_lifecycle"] = lifecycle
+
+    next_phase = phase.model_copy(
+        update={
+            "phase_index": next_spec.phase_index,
+            "initial_balance": next_spec.initial_capital,
+            "balance": next_balance,
+            "floating_pl": next_floating,
+            "equity": next_equity,
+            "high_water_mark": next_hwm,
+            "daily_anchor": next_daily_anchor,
+            "qualifying_days": 0,
+            "open_positions": phase.open_positions if current_spec.carry_policy == "carry_all" else 0,
+            "pending_orders": phase.pending_orders if current_spec.carry_policy == "carry_all" else 0,
+        }
+    )
+    return {
+        "attempt": transition.attempt,
+        "phase": next_phase,
+        "resume_state": resume,
+        "intent_fingerprint": transition.intent_fingerprint,
+    }
+
+
 class MoneyOracleInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -761,7 +883,12 @@ def evaluate_prop_lifecycle_event(
         )
     is_last_phase = phase.phase_index == len(session.profile.phases)
     positions_ready = event.pending_orders == 0 and (
-        event.open_positions == 0 or (not is_last_phase and phase_spec.position_policy == "carry")
+        event.open_positions == 0
+        or (
+            not is_last_phase
+            and phase_spec.position_policy == "carry"
+            and phase_spec.carry_policy == "carry_all"
+        )
     )
     objective_pass_ready = (
         money["profit_target"]["hit"]

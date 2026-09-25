@@ -42,6 +42,7 @@ from .prop_session import (
     PropSessionContractError,
     PropSessionSnapshot,
     PropSessionUpdateRequest,
+    TransitionIntent,
 )
 from .prop_replay import ReplayPropConnectionError
 from .replay import ReplayService
@@ -294,6 +295,32 @@ def create_app(
             "attempt": result["attempt"].model_dump(mode="json"),
             "phase": result["phase"].model_dump(mode="json"),
             "resume_state": result["resume_state"],
+        }
+
+    @app.post("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/transitions")
+    def transition_prop_attempt(
+        session_id: str,
+        attempt_id: str,
+        body: TransitionIntent,
+        workspace: str = Depends(workspace_id),
+    ):
+        require_prop_scope(workspace, session_id, body)
+        if body.attempt_id != attempt_id:
+            raise HTTPException(status_code=422, detail="prop_attempt_mismatch")
+        try:
+            result = store.apply_prop_transition_intent(body)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="prop_attempt_not_found") from exc
+        except PropIdempotencyConflict as exc:
+            raise HTTPException(status_code=409, detail="prop_idempotency_conflict") from exc
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return {
+            "session": result["session"].model_dump(mode="json"),
+            "attempt": result["attempt"].model_dump(mode="json"),
+            "phase": result["phase"].model_dump(mode="json"),
+            "resume_state": result["resume_state"],
+            "duplicate": result["duplicate"],
         }
 
     @app.put("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/resume")
