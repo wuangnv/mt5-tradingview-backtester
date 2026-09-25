@@ -192,6 +192,7 @@ class FakeStore:
     def __init__(self, rows):
         self.rows = rows
         self.records = {}
+        self.record_revisions = {}
         self.counter = 0
         self.prop = prop_state()
         self.receipts = {}
@@ -210,7 +211,8 @@ class FakeStore:
     def create_record(self, workspace_id, kind, payload, *, source_key=None):
         self.counter += 1
         record_id = f"replay-{self.counter}"
-        self.records[(workspace_id, kind, record_id)] = {
+        key = (workspace_id, kind, record_id)
+        self.records[key] = {
             "record_id": record_id,
             "source_key": source_key,
             "revision": 1,
@@ -219,6 +221,14 @@ class FakeStore:
             "created_at_utc": "2026-01-01T00:00:00Z",
             "updated_at_utc": "2026-01-01T00:00:00Z",
         }
+        self.record_revisions[key] = [
+            {
+                "revision": 1,
+                "payload": dict(payload),
+                "deleted": False,
+                "created_at_utc": "2026-01-01T00:00:00Z",
+            }
+        ]
         return self.get_record(workspace_id, kind, record_id)
 
     def get_record(self, workspace_id, kind, record_id):
@@ -236,7 +246,54 @@ class FakeStore:
             raise RuntimeError("record revision conflict")
         current["revision"] += 1
         current["payload"] = dict(payload)
+        self.record_revisions[key].append(
+            {
+                "revision": current["revision"],
+                "payload": dict(payload),
+                "deleted": False,
+                "created_at_utc": "2026-01-01T00:00:00Z",
+            }
+        )
         return self.get_record(workspace_id, kind, record_id)
+
+    def list_record_revisions(self, workspace_id, kind, record_id):
+        key = (workspace_id, kind, record_id)
+        if key not in self.records:
+            raise LookupError("record not found")
+        return [{**item, "payload": dict(item["payload"])} for item in self.record_revisions[key]]
+
+    def create_replay_branch_record(
+        self,
+        workspace_id,
+        parent_session_id,
+        expected_parent_revision,
+        record_id,
+        payload,
+    ):
+        parent = self.get_record(workspace_id, "replay", parent_session_id)
+        if parent is None:
+            raise LookupError("record not found")
+        if parent["revision"] != expected_parent_revision:
+            raise RuntimeError("record revision conflict")
+        key = (workspace_id, "replay", record_id)
+        self.records[key] = {
+            "record_id": record_id,
+            "source_key": None,
+            "revision": 1,
+            "payload": dict(payload),
+            "deleted": False,
+            "created_at_utc": "2026-01-01T00:00:00Z",
+            "updated_at_utc": "2026-01-01T00:00:00Z",
+        }
+        self.record_revisions[key] = [
+            {
+                "revision": 1,
+                "payload": dict(payload),
+                "deleted": False,
+                "created_at_utc": "2026-01-01T00:00:00Z",
+            }
+        ]
+        return self.get_record(workspace_id, "replay", record_id)
 
     def get_prop_resume_state(self, workspace_id, session_id, attempt_id):
         session, attempt, phase, resume = self.prop
@@ -478,10 +535,67 @@ class ReplayPropConnectionTests(unittest.TestCase):
                 phase.model_copy(update={"initial_balance": "99999"}),
             )
 
-    def test_execution_enabled_branch_fails_closed_until_checkpoint_reconstruction_exists(self):
+    def test_execution_enabled_branch_restores_latest_persisted_checkpoint_and_is_independent(self):
         session_id, stepped = self.build_open_replay()
-        with self.assertRaisesRegex(ValueError, "canonical checkpoint"):
-            self.service.branch("tenant-a", session_id, stepped["revision"], 0)
+        parent_before = self.store.get_record("tenant-a", "replay", session_id)
+        branched = self.service.branch("tenant-a", session_id, stepped["revision"], 0)
+        child = ReplayExecutionSnapshot.model_validate(branched["payload"]["execution"])
+
+        self.assertNotEqual(branched["record_id"], session_id)
+        self.assertNotEqual(branched["payload"]["branch_id"], stepped["payload"]["branch_id"])
+        self.assertEqual(branched["payload"]["parent_session_id"], session_id)
+        self.assertEqual(branched["payload"]["parent_revision"], stepped["revision"])
+        self.assertEqual(branched["payload"]["parent_checkpoint_revision"], 3)
+        self.assertEqual(branched["payload"]["parent_checkpoint_source"], "record_revision")
+        self.assertEqual(child.cursor_index, 0)
+        self.assertEqual(child.event_sequence, 0)
+        self.assertIsNotNone(child.pending_market_order)
+        self.assertIsNone(child.position)
+        self.assertEqual(child.replay_session_id, branched["record_id"])
+        self.assertEqual(child.branch_id, branched["payload"]["branch_id"])
+
+        child_step = self.service.step("tenant-a", branched["record_id"], branched["revision"], 1)
+        child_after = ReplayExecutionSnapshot.model_validate(child_step["payload"]["execution"])
+        self.assertIsNotNone(child_after.position)
+        self.assertEqual(child_after.cursor_index, 1)
+        self.assertEqual(self.store.get_record("tenant-a", "replay", session_id), parent_before)
+
+    def test_execution_branch_reconstructs_intermediate_bar_close_from_ledger(self):
+        created = self.service.create("tenant-a", "dataset-1", 0)
+        session_id = created["record_id"]
+        initialized = self.service.initialize_execution(
+            "tenant-a",
+            session_id,
+            created["revision"],
+            instrument_spec=instrument_mapping(),
+            cost_model=cost_mapping(),
+            spread_price="0.0002",
+            timeframe_seconds=60,
+            starting_balance="100000",
+        )
+        queued = self.service.queue_market_order(
+            "tenant-a",
+            session_id,
+            initialized["revision"],
+            operation_id="branch-mid-open",
+            side="BUY",
+            quantity="0.10",
+            stop_loss="1.0900",
+            take_profit="1.1200",
+        )
+        stepped = self.service.step("tenant-a", session_id, queued["revision"], 2)
+        branched = self.service.branch("tenant-a", session_id, stepped["revision"], 1)
+        child = ReplayExecutionSnapshot.model_validate(branched["payload"]["execution"])
+
+        self.assertEqual(branched["payload"]["parent_checkpoint_source"], "ledger_price_mark")
+        self.assertEqual(branched["payload"]["parent_checkpoint_revision"], stepped["revision"])
+        self.assertEqual(branched["payload"]["parent_checkpoint_event_sequence"], 2)
+        self.assertEqual(child.cursor_index, 1)
+        self.assertEqual(child.event_sequence, 2)
+        self.assertEqual(len(child.ledger), 2)
+        self.assertIsNotNone(child.position)
+        self.assertEqual(child.ledger[-1]["cursor_index"], 1)
+        self.assertTrue(all(item["replay_session_id"] == branched["record_id"] for item in child.ledger))
 
 
 @unittest.skipUnless(os.getenv("TW_V2_DATABASE_URL"), "TW_V2_DATABASE_URL is required for replay/prop PostgreSQL integration")
@@ -659,6 +773,40 @@ class ReplayPropPostgresIntegrationTests(unittest.TestCase):
             action="next_phase",
         )
         return session, attempt, phase, resume, intent
+
+    def test_postgres_execution_branch_persists_checkpoint_without_mutating_parent(self):
+        _, replay_service, replay_id, stepped, parent_snapshot, _ = self._build_replay_boundary(
+            with_position=True
+        )
+        parent_before = self.store.get_record(self.workspace_id, "replay", replay_id)
+
+        branched = replay_service.branch(
+            self.workspace_id,
+            replay_id,
+            stepped["revision"],
+            0,
+        )
+        child_id = branched["record_id"]
+        child = ReplayExecutionSnapshot.model_validate(branched["payload"]["execution"])
+
+        self.assertNotEqual(child_id, replay_id)
+        self.assertEqual(branched["revision"], 1)
+        self.assertEqual(branched["payload"]["parent_session_id"], replay_id)
+        self.assertEqual(branched["payload"]["parent_revision"], stepped["revision"])
+        self.assertEqual(branched["payload"]["parent_checkpoint_revision"], stepped["revision"] - 1)
+        self.assertEqual(branched["payload"]["parent_checkpoint_source"], "record_revision")
+        self.assertEqual(child.cursor_index, 0)
+        self.assertEqual(child.event_sequence, 0)
+        self.assertIsNotNone(child.pending_market_order)
+        self.assertIsNone(child.position)
+        self.assertEqual(child.dataset_sha256, parent_snapshot.dataset_sha256)
+        self.assertEqual(self.store.get_record(self.workspace_id, "replay", replay_id), parent_before)
+
+        advanced = replay_service.step(self.workspace_id, child_id, branched["revision"], 1)
+        child_after = ReplayExecutionSnapshot.model_validate(advanced["payload"]["execution"])
+        self.assertIsNotNone(child_after.position)
+        self.assertEqual(child_after.cursor_index, 1)
+        self.assertEqual(self.store.get_record(self.workspace_id, "replay", replay_id), parent_before)
 
     def test_api_replay_fill_ledger_feeds_persisted_prop_attempt_idempotently(self):
         rows = [

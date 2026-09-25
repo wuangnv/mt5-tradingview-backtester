@@ -12,10 +12,13 @@ from .prop_replay import (
 )
 from .replay_execution import (
     ReplayExecutionEvent,
+    ReplayExecutionError,
     ReplayExecutionSnapshot,
     advance_replay_execution,
+    fork_replay_execution_checkpoint,
     initialize_replay_execution,
     queue_market_order,
+    reconstruct_replay_execution_checkpoint,
 )
 from .store import PostgresStore
 
@@ -203,20 +206,89 @@ class ReplayService:
             raise LookupError("replay session not found")
         if record["revision"] != expected_revision:
             raise RuntimeError("record revision conflict")
-        if record["payload"].get("execution") is not None:
-            raise ValueError("execution-enabled replay branching requires a canonical checkpoint and is not supported yet")
         current_cursor = int(record["payload"]["cursor_index"])
+        if cursor_index < 0:
+            raise ValueError("branch cursor must be nonnegative")
         if cursor_index > current_cursor:
             raise ValueError("branch cursor cannot exceed current replay cursor")
+        child_session_id = uuid4().hex
+        child_branch_id = uuid4().hex
         payload = {
             "dataset_id": record["payload"]["dataset_id"],
             "cursor_index": int(cursor_index),
-            "branch_id": uuid4().hex,
+            "branch_id": child_branch_id,
             "parent_session_id": session_id,
             "parent_revision": int(expected_revision),
             "status": "paused",
         }
-        branched = self.store.create_record(workspace_id, "replay", payload)
+        current_execution = self._execution_snapshot(record["payload"])
+        if current_execution is not None:
+            checkpoint = None
+            checkpoint_revision = None
+            checkpoint_source = None
+            for historical in reversed(self.store.list_record_revisions(workspace_id, "replay", session_id)):
+                if int(historical["revision"]) > int(expected_revision):
+                    continue
+                historical_payload = historical["payload"]
+                if int(historical_payload.get("cursor_index", -1)) != int(cursor_index):
+                    continue
+                historical_execution = self._execution_snapshot(historical_payload)
+                if historical_execution is None:
+                    continue
+                if historical_execution.cursor_index != int(cursor_index):
+                    raise RuntimeError("historical replay execution cursor is inconsistent with replay state")
+                checkpoint = historical_execution
+                checkpoint_revision = int(historical["revision"])
+                checkpoint_source = "record_revision"
+                break
+            if checkpoint is None:
+                try:
+                    checkpoint = reconstruct_replay_execution_checkpoint(
+                        current_execution,
+                        cursor_index=int(cursor_index),
+                    )
+                except ReplayExecutionError as exc:
+                    raise ValueError(str(exc)) from exc
+                checkpoint_revision = int(expected_revision)
+                checkpoint_source = "ledger_price_mark"
+
+            immutable_fields = (
+                "replay_session_id",
+                "branch_id",
+                "dataset_id",
+                "dataset_sha256",
+                "instrument_spec",
+                "cost_model",
+                "spread_price",
+                "timeframe_seconds",
+                "starting_balance",
+            )
+            for field in immutable_fields:
+                if getattr(checkpoint, field) != getattr(current_execution, field):
+                    raise RuntimeError("historical replay execution checkpoint is inconsistent with current lineage")
+            try:
+                forked_execution = fork_replay_execution_checkpoint(
+                    checkpoint,
+                    replay_session_id=child_session_id,
+                    branch_id=child_branch_id,
+                )
+            except ReplayExecutionError as exc:
+                raise ValueError(str(exc)) from exc
+            payload.update(
+                {
+                    "execution": forked_execution.model_dump(mode="json"),
+                    "parent_checkpoint_revision": checkpoint_revision,
+                    "parent_checkpoint_event_sequence": checkpoint.event_sequence,
+                    "parent_checkpoint_source": checkpoint_source,
+                }
+            )
+        branched = self.store.create_replay_branch_record(
+            workspace_id,
+            session_id,
+            expected_revision,
+            child_session_id,
+            payload,
+        )
         return self.view(workspace_id, branched["record_id"])
 
     def feed_prop_lifecycle(

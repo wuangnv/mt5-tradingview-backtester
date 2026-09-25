@@ -127,6 +127,122 @@ class ReplayPhaseTransition(BaseModel):
     event: ReplayExecutionEvent
 
 
+def reconstruct_replay_execution_checkpoint(
+    snapshot: ReplayExecutionSnapshot,
+    *,
+    cursor_index: int,
+) -> ReplayExecutionSnapshot:
+    """Rebuild an immutable bar-close execution checkpoint from the canonical ledger."""
+
+    if isinstance(cursor_index, bool) or not isinstance(cursor_index, int) or cursor_index < 0:
+        raise ReplayExecutionError("checkpoint cursor_index must be a nonnegative integer")
+    if cursor_index > snapshot.cursor_index:
+        raise ReplayExecutionError("checkpoint cursor cannot exceed the replay execution cursor")
+    if cursor_index == snapshot.cursor_index:
+        return snapshot
+
+    selected: ReplayExecutionEvent | None = None
+    prefix: list[ReplayExecutionEvent] = []
+    expected_sequence = 1
+    phase_index = 1
+    phase_initial_balance = snapshot.starting_balance
+    for raw in snapshot.ledger:
+        event = ReplayExecutionEvent.model_validate(raw)
+        if event.sequence != expected_sequence:
+            raise ReplayExecutionError("replay execution ledger sequence is not contiguous")
+        expected_sequence += 1
+        if (
+            event.replay_session_id != snapshot.replay_session_id
+            or event.branch_id != snapshot.branch_id
+            or event.dataset_id != snapshot.dataset_id
+            or event.dataset_sha256 != snapshot.dataset_sha256
+        ):
+            raise ReplayExecutionError("replay execution ledger lineage is inconsistent")
+        if event.cursor_index > snapshot.cursor_index:
+            raise ReplayExecutionError("replay execution ledger cursor exceeds the snapshot cursor")
+        prefix.append(event)
+        if event.kind == "phase_transition":
+            details = event.details or {}
+            from_phase = int(details.get("from_phase_index") or 0)
+            to_phase = int(details.get("to_phase_index") or 0)
+            if from_phase != phase_index or to_phase != from_phase + 1:
+                raise ReplayExecutionError("replay phase-transition ledger is inconsistent")
+            phase_index = to_phase
+            phase_initial_balance = _decimal(
+                details.get("next_phase_initial_balance"),
+                "next_phase_initial_balance",
+                positive=True,
+            )
+        if event.kind == "price_mark" and event.cursor_index == cursor_index:
+            selected = event
+            break
+
+    if selected is None:
+        raise ReplayExecutionError("execution branch cursor has no canonical checkpoint")
+
+    details = selected.details or {}
+    raw_position = details.get("open_position")
+    raw_pending = details.get("pending_market_order")
+    position = ReplayOpenPosition.model_validate(raw_position) if raw_position is not None else None
+    pending = ReplayQueuedMarketOrder.model_validate(raw_pending) if raw_pending is not None else None
+    if selected.open_positions != (1 if position is not None else 0):
+        raise ReplayExecutionError("replay checkpoint position state is inconsistent")
+    if selected.pending_orders != (1 if pending is not None else 0):
+        raise ReplayExecutionError("replay checkpoint pending-order state is inconsistent")
+
+    ledger = [event.model_dump(mode="json") for event in prefix]
+    return snapshot.model_copy(
+        update={
+            "phase_index": phase_index,
+            "phase_initial_balance": phase_initial_balance,
+            "balance": selected.balance,
+            "floating_pl": selected.floating_pl,
+            "equity": selected.equity,
+            "cursor_index": cursor_index,
+            "event_sequence": selected.sequence,
+            "pending_market_order": pending,
+            "position": position,
+            "ledger": ledger,
+        }
+    )
+
+
+def fork_replay_execution_checkpoint(
+    snapshot: ReplayExecutionSnapshot,
+    *,
+    replay_session_id: str,
+    branch_id: str,
+) -> ReplayExecutionSnapshot:
+    """Fork a canonical checkpoint onto a new Replay session/branch lineage."""
+
+    if snapshot.event_sequence != len(snapshot.ledger):
+        raise ReplayExecutionError("replay execution ledger length does not match event_sequence")
+    remapped_ledger: list[dict] = []
+    for expected_sequence, raw in enumerate(snapshot.ledger, start=1):
+        event = ReplayExecutionEvent.model_validate(raw)
+        if event.sequence != expected_sequence:
+            raise ReplayExecutionError("replay execution ledger sequence is not contiguous")
+        if (
+            event.replay_session_id != snapshot.replay_session_id
+            or event.branch_id != snapshot.branch_id
+            or event.dataset_id != snapshot.dataset_id
+            or event.dataset_sha256 != snapshot.dataset_sha256
+        ):
+            raise ReplayExecutionError("replay execution ledger lineage is inconsistent")
+        remapped_ledger.append(
+            event.model_copy(
+                update={"replay_session_id": replay_session_id, "branch_id": branch_id}
+            ).model_dump(mode="json")
+        )
+    return snapshot.model_copy(
+        update={
+            "replay_session_id": replay_session_id,
+            "branch_id": branch_id,
+            "ledger": remapped_ledger,
+        }
+    )
+
+
 def _instrument_mapping(instrument: InstrumentSpec) -> dict:
     return {
         "instrument_id": instrument.instrument_id,

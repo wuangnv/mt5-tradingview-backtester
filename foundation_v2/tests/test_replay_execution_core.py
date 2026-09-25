@@ -16,8 +16,10 @@ if str(V2) not in sys.path:
 from trading_workspace_v2.execution_semantics import IntrabarAmbiguityError
 from trading_workspace_v2.replay_execution import (
     advance_replay_execution,
+    fork_replay_execution_checkpoint,
     initialize_replay_execution,
     queue_market_order,
+    reconstruct_replay_execution_checkpoint,
     transition_replay_phase,
 )
 from trading_workspace_v2.retained import CostModel, InstrumentSpec
@@ -238,6 +240,79 @@ class ReplayExecutionCoreTests(unittest.TestCase):
                 stop_loss="1.0950",
                 take_profit="1.1200",
             )
+
+    def test_reconstruct_and_fork_checkpoint_preserve_historical_execution_state(self):
+        queued = queue_market_order(
+            initial_state(),
+            operation_id="branch-open",
+            side="BUY",
+            quantity="0.10",
+            stop_loss="1.0900",
+            take_profit="1.1200",
+        )
+        first = advance_replay_execution(
+            queued,
+            bar={"timestamp": 60, "open": 1.1000, "high": 1.1030, "low": 1.0990, "close": 1.1020},
+            cursor_index=1,
+        ).snapshot
+        second = advance_replay_execution(
+            first,
+            bar={"timestamp": 120, "open": 1.1020, "high": 1.1040, "low": 1.1010, "close": 1.1030},
+            cursor_index=2,
+        ).snapshot
+
+        checkpoint = reconstruct_replay_execution_checkpoint(second, cursor_index=1)
+        self.assertEqual(checkpoint.cursor_index, 1)
+        self.assertEqual(checkpoint.event_sequence, 2)
+        self.assertEqual(len(checkpoint.ledger), 2)
+        self.assertEqual(checkpoint.balance, first.balance)
+        self.assertEqual(checkpoint.floating_pl, first.floating_pl)
+        self.assertEqual(checkpoint.equity, first.equity)
+        self.assertEqual(checkpoint.position, first.position)
+
+        forked = fork_replay_execution_checkpoint(
+            checkpoint,
+            replay_session_id="replay-child",
+            branch_id="branch-child",
+        )
+        self.assertEqual(forked.replay_session_id, "replay-child")
+        self.assertEqual(forked.branch_id, "branch-child")
+        self.assertEqual(forked.position, checkpoint.position)
+        self.assertTrue(all(item["replay_session_id"] == "replay-child" for item in forked.ledger))
+        self.assertTrue(all(item["branch_id"] == "branch-child" for item in forked.ledger))
+        self.assertEqual(second.cursor_index, 2)
+        self.assertEqual(second.event_sequence, 3)
+
+    def test_reconstruct_checkpoint_preserves_phase_metadata_after_transition(self):
+        phase_two = transition_replay_phase(
+            initial_state(),
+            intent_id="phase-2-before-branch",
+            intent_fingerprint="branch-phase-fingerprint",
+            from_phase_index=1,
+            to_phase_index=2,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+            next_phase_initial_balance="50000",
+            virtual_time_utc=0,
+        ).snapshot
+        first = advance_replay_execution(
+            phase_two,
+            bar={"timestamp": 60, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000},
+            cursor_index=1,
+        ).snapshot
+        second = advance_replay_execution(
+            first,
+            bar={"timestamp": 120, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000},
+            cursor_index=2,
+        ).snapshot
+
+        checkpoint = reconstruct_replay_execution_checkpoint(second, cursor_index=1)
+        self.assertEqual(checkpoint.phase_index, 2)
+        self.assertEqual(checkpoint.phase_initial_balance, Decimal("50000"))
+        self.assertEqual(checkpoint.starting_balance, Decimal("100000"))
+        self.assertEqual(checkpoint.balance, Decimal("50000"))
+        self.assertEqual(checkpoint.event_sequence, 2)
+        self.assertEqual([item["kind"] for item in checkpoint.ledger], ["phase_transition", "price_mark"])
 
     def test_phase_reset_keeps_origin_and_advances_explicit_phase_metadata(self):
         state = initial_state(2).model_copy(

@@ -774,6 +774,50 @@ class PostgresStore:
             conn.commit()
         return self.get_record(workspace_id, kind, record_id)
 
+    def create_replay_branch_record(
+        self,
+        workspace_id: str,
+        parent_session_id: str,
+        expected_parent_revision: int,
+        record_id: str,
+        payload: dict,
+    ) -> dict:
+        """Create one Replay branch while revision-fencing the immutable parent head."""
+
+        self.ensure_workspace(workspace_id)
+        now = utc_now_iso()
+        with self.connect() as conn:
+            parent = conn.execute(
+                """
+                SELECT current_revision FROM workspace_records
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s
+                FOR UPDATE
+                """,
+                (workspace_id, parent_session_id),
+            ).fetchone()
+            if parent is None:
+                raise LookupError("record not found")
+            if int(parent["current_revision"]) != int(expected_parent_revision):
+                raise RuntimeError("record revision conflict")
+            conn.execute(
+                """
+                INSERT INTO workspace_records(
+                    workspace_id,kind,record_id,source_key,current_revision,created_at_utc,updated_at_utc
+                ) VALUES(%s,'replay',%s,NULL,1,%s,%s)
+                """,
+                (workspace_id, record_id, now, now),
+            )
+            conn.execute(
+                """
+                INSERT INTO workspace_record_revisions(
+                    workspace_id,kind,record_id,revision,payload_json,deleted,created_at_utc
+                ) VALUES(%s,'replay',%s,1,%s::jsonb,false,%s)
+                """,
+                (workspace_id, record_id, json.dumps(payload, sort_keys=True), now),
+            )
+            conn.commit()
+        return self.get_record(workspace_id, "replay", record_id)
+
     def get_record(self, workspace_id: str, kind: str, record_id: str) -> dict | None:
         with self.connect() as conn:
             row = conn.execute(
