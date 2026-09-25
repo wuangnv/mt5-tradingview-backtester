@@ -199,6 +199,16 @@ export default function ReplayWorkspace({ workspace, query }) {
   const completed = replay?.payload?.status === 'completed' || replay?.has_future_rows === false
   const lineage = replay?.payload?.parent_session_id
   const canBranch = Boolean(replay) && cursor > 0 && branchCursor < cursor && !conflict
+  const learnHref = useMemo(() => {
+    const params = new URLSearchParams({ view: 'learn', workspace, from: 'replay' })
+    if (sessionId) {
+      params.set('session', sessionId)
+    } else if (datasetDraft.trim()) {
+      params.set('dataset', datasetDraft.trim())
+      params.set('start', String(startDraft))
+    }
+    return `/?${params.toString()}`
+  }, [datasetDraft, sessionId, startDraft, workspace])
 
   const statusLabel = useMemo(() => {
     if (conflict) return 'Xung đột phiên'
@@ -217,7 +227,7 @@ export default function ReplayWorkspace({ workspace, query }) {
           <p>Chỉ hiển thị phần dữ liệu đã mở tới decision cutoff hiện tại.</p>
         </div>
         <div className="replay-topbar-actions">
-          <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}`}>Học & thuật ngữ</a>
+          <a className="context-link" href={learnHref}>Học & thuật ngữ</a>
           <div className="replay-lock" data-testid="replay-lock">
             <strong>REPLAY / SIMULATION</strong>
             <span>Broker locked · không gửi lệnh</span>

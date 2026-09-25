@@ -228,10 +228,27 @@ async function main() {
     await page.getByTestId('learn-safety-error').waitFor()
 
     mode = 'happy'
-    await page.goto(`${origin}/?view=replay&workspace=tenant-ui`)
+    await page.route('**/api/v2/replay/sessions/replay-context-1', (route) => fulfillJson(route, 404, { detail: 'fixture_not_found' }))
+    await page.goto(`${origin}/?view=replay&workspace=tenant-ui&session=replay-context-1`)
     assert.match(await page.getByTestId('replay-lock').innerText(), /REPLAY \/ SIMULATION/)
     const replayLearnHref = await page.getByRole('link', { name: 'Học & thuật ngữ' }).getAttribute('href')
     assert.match(replayLearnHref || '', /view=learn/)
+    assert.match(replayLearnHref || '', /from=replay/)
+    assert.match(replayLearnHref || '', /session=replay-context-1/)
+
+    await page.goto(`${origin}${replayLearnHref}`)
+    await page.getByTestId('learn-readonly').waitFor()
+    const replayReturnHref = await page.getByRole('link', { name: 'Về Replay' }).getAttribute('href')
+    assert.match(replayReturnHref || '', /view=replay/)
+    assert.match(replayReturnHref || '', /session=replay-context-1/)
+
+    mode = 'denied'
+    await page.goto(`${origin}/?view=learn&workspace=tenant-denied&from=replay&dataset=dataset-context-1&start=7`)
+    await page.getByTestId('learn-denied').waitFor()
+    const deniedReplayReturnHref = await page.getByRole('link', { name: 'Về Replay' }).getAttribute('href')
+    assert.match(deniedReplayReturnHref || '', /dataset=dataset-context-1/)
+    assert.match(deniedReplayReturnHref || '', /start=7/)
+    mode = 'happy'
 
     await page.route('**/api/v2/research/jobs/job-context-1', (route) => fulfillJson(route, 404, { detail: 'fixture_not_found' }))
     await page.goto(`${origin}/?workspace=tenant-ui&job=job-context-1`)
@@ -264,7 +281,8 @@ async function main() {
         'unsafe_contract_fail_closed',
         'answer_keys_absent',
         'learn_requests_get_only',
-        'replay_context_link_preserves_simulation_lock',
+        'replay_context_round_trip_preserves_session',
+        'replay_error_state_preserves_dataset_start_fallback',
         'research_context_link_preserves_job',
         'responsive_1440_768_360',
       ],

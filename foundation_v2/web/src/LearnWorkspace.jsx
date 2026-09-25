@@ -47,6 +47,20 @@ function returnTarget(query, workspace) {
     return { href: `/?${params.toString()}`, label: 'Về Research' }
   }
 
+  if (from === 'replay') {
+    params.set('view', 'replay')
+    const sessionId = query.get('session')
+    const datasetId = query.get('dataset')
+    const start = query.get('start')
+    if (sessionId) {
+      params.set('session', sessionId)
+    } else if (datasetId) {
+      params.set('dataset', datasetId)
+      if (start) params.set('start', start)
+    }
+    return { href: `/?${params.toString()}`, label: 'Về Replay' }
+  }
+
   return { href: `/?${params.toString()}`, label: 'Research' }
 }
 
@@ -156,7 +170,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (overview.status === 'denied') {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
         <StateMessage kind="denied" testId="learn-denied">Workspace này không có quyền đọc Learn.</StateMessage>
       </main>
     )
@@ -165,7 +179,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (overview.status === 'unavailable') {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
         <StateMessage kind="empty" testId="learn-unavailable">Learn chưa được cấu hình cho workspace này.</StateMessage>
       </main>
     )
@@ -174,7 +188,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (overview.status === 'error') {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
         <StateMessage kind="error" testId="learn-error">Không đọc được Learn: {overview.error}</StateMessage>
       </main>
     )
@@ -183,7 +197,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (safety?.read_only !== true || safety?.answer_keys_exposed !== false || safety?.auto_completion_enabled !== false) {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
         <StateMessage kind="error" testId="learn-safety-error">Learn đang trả về safety contract không hợp lệ nên nội dung đã được khóa.</StateMessage>
       </main>
     )
