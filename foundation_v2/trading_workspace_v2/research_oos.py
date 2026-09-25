@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from decimal import Decimal, InvalidOperation
 from itertools import islice, product
 from math import prod
+import re
 
 
 class ResearchValidationPlanError(ValueError):
@@ -20,6 +22,73 @@ def _nonnegative_int(value, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise ResearchValidationPlanError(f"{name} must be a nonnegative integer")
     return value
+
+
+def _bounded_multiplier(value, name: str) -> str:
+    if isinstance(value, bool):
+        raise ResearchValidationPlanError(f"{name} must be a finite multiplier between 0 and 10")
+    try:
+        parsed = Decimal(str(value))
+    except (InvalidOperation, TypeError, ValueError) as exc:
+        raise ResearchValidationPlanError(f"{name} must be a finite multiplier between 0 and 10") from exc
+    if not parsed.is_finite() or parsed < 0 or parsed > 10:
+        raise ResearchValidationPlanError(f"{name} must be a finite multiplier between 0 and 10")
+    return format(parsed.normalize(), "f")
+
+
+def build_cost_fill_stress_plan(stress_scenarios: list[dict] | None) -> dict:
+    """Normalize a small deterministic matrix of cost/fill stress multipliers.
+
+    The base scenario is always present. Callers may add at most seven declared
+    scenarios; each can only scale already-pinned execution-cost inputs.
+    """
+
+    if stress_scenarios is None:
+        stress_scenarios = []
+    if not isinstance(stress_scenarios, list):
+        raise ResearchValidationPlanError("stress_scenarios must be a list")
+    if len(stress_scenarios) > 7:
+        raise ResearchValidationPlanError("stress_scenarios supports at most 7 declared scenarios")
+
+    multiplier_fields = (
+        "spread_price_multiplier",
+        "commission_multiplier",
+        "minimum_fee_multiplier",
+        "slippage_multiplier",
+        "financing_multiplier",
+    )
+    base = {"scenario_id": "base", **{field: "1" for field in multiplier_fields}}
+    scenarios = [base]
+    seen = {"base"}
+    for raw in stress_scenarios:
+        if not isinstance(raw, dict):
+            raise ResearchValidationPlanError("stress scenario must be structured")
+        unknown = sorted(set(raw) - ({"scenario_id"} | set(multiplier_fields)))
+        if unknown:
+            raise ResearchValidationPlanError(f"unsupported stress scenario fields: {', '.join(unknown)}")
+        scenario_id = raw.get("scenario_id")
+        if (
+            not isinstance(scenario_id, str)
+            or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}", scenario_id) is None
+        ):
+            raise ResearchValidationPlanError("stress scenario_id must use 1-64 letters, digits, dot, dash, or underscore")
+        if scenario_id in seen:
+            raise ResearchValidationPlanError("stress scenario_id values must be unique and cannot reuse base")
+        normalized = {"scenario_id": scenario_id}
+        for field in multiplier_fields:
+            normalized[field] = _bounded_multiplier(raw.get(field, 1), f"{scenario_id}.{field}")
+        if all(normalized[field] == "1" for field in multiplier_fields):
+            raise ResearchValidationPlanError("declared stress scenario must change at least one multiplier")
+        seen.add(scenario_id)
+        scenarios.append(normalized)
+
+    return {
+        "schema": "bounded-cost-fill-stress-v1",
+        "selection": "declared-order",
+        "max_scenarios": 8,
+        "scenario_count": len(scenarios),
+        "scenarios": scenarios,
+    }
 
 
 def _validate_rows(rows: list[dict], timeframe_seconds: int) -> list[int]:

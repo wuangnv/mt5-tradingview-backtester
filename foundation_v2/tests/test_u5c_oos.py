@@ -22,6 +22,7 @@ from trading_workspace_v2.research_engine import ResearchEngineInterrupted, Rese
 from trading_workspace_v2.research_oos import (
     ResearchValidationPlanError,
     build_bounded_sweep,
+    build_cost_fill_stress_plan,
     build_walk_forward_plan,
     summarize_sweep_outcomes,
 )
@@ -354,6 +355,37 @@ class U5cBoundedSweepTests(unittest.TestCase):
             )
 
 
+class U5cStressPlanTests(unittest.TestCase):
+    def test_cost_fill_stress_plan_is_bounded_deterministic_and_normalized(self):
+        declared = [
+            {
+                "scenario_id": "wide-fill",
+                "spread_price_multiplier": 2,
+                "slippage_multiplier": "3.0",
+            },
+            {
+                "scenario_id": "fee-shock",
+                "commission_multiplier": 4,
+                "minimum_fee_multiplier": 2,
+                "financing_multiplier": 1.5,
+            },
+        ]
+        first = build_cost_fill_stress_plan(declared)
+        second = build_cost_fill_stress_plan(copy.deepcopy(declared))
+        self.assertEqual(first, second)
+        self.assertEqual([item["scenario_id"] for item in first["scenarios"]], ["base", "wide-fill", "fee-shock"])
+        self.assertEqual(first["scenarios"][1]["spread_price_multiplier"], "2")
+        self.assertEqual(first["scenarios"][1]["slippage_multiplier"], "3")
+        self.assertEqual(first["scenario_count"], 3)
+
+        with self.assertRaisesRegex(ResearchValidationPlanError, "between 0 and 10"):
+            build_cost_fill_stress_plan([{"scenario_id": "unbounded", "spread_price_multiplier": 11}])
+        with self.assertRaisesRegex(ResearchValidationPlanError, "at most 7"):
+            build_cost_fill_stress_plan([{"scenario_id": f"s-{index}", "spread_price_multiplier": 2} for index in range(8)])
+        with self.assertRaisesRegex(ResearchValidationPlanError, "change at least one"):
+            build_cost_fill_stress_plan([{"scenario_id": "no-op"}])
+
+
 class U5cResearchJobWiringTests(unittest.TestCase):
     def setUp(self):
         self.manifest = manifest_fixture()
@@ -558,6 +590,138 @@ class U5cResearchJobWiringTests(unittest.TestCase):
             )
             self.assertEqual(terminal_checkpoint["trial_count"], 3)
             self.assertTrue(terminal_checkpoint["fully_accounted"])
+
+    def test_worker_runs_pinned_cost_fill_stress_matrix_pre_holdout_without_ranking(self):
+        request = engine_request(self.manifest).model_copy(
+            update={
+                "spread_price": 0.0002,
+                "cost_model": {
+                    **engine_request(self.manifest).cost_model,
+                    "commission_per_side_account": 1,
+                    "minimum_fee_account": 0.5,
+                    "slippage_price_per_side": 0.0001,
+                    "financing_account": 0.2,
+                },
+            }
+        )
+        job = self.service.create_oos_engine_job(
+            workspace_id="tenant-a",
+            request=request,
+            walk_forward={
+                "train_bars": 8,
+                "oos_bars": 4,
+                "purge_bars": 1,
+                "embargo_bars": 1,
+                "max_folds": 1,
+                "stress_scenarios": [
+                    {
+                        "scenario_id": "wide-fill",
+                        "spread_price_multiplier": 2,
+                        "slippage_multiplier": 3,
+                    },
+                    {
+                        "scenario_id": "fee-shock",
+                        "commission_multiplier": 4,
+                        "minimum_fee_multiplier": 2,
+                    },
+                ],
+            },
+            parameter_space={"lookback": [2]},
+            max_trials=1,
+        )
+        validation = job.protocol["validation"]
+        self.assertEqual(validation["stress"]["scenario_count"], 3)
+        self.assertEqual(
+            validation["stress_config_sha256"],
+            hashlib.sha256(canonical_json_bytes(validation["stress"])).hexdigest(),
+        )
+        self.assertFalse(validation["selection"]["ranking"])
+        self.assertIsNone(validation["selection"]["winner"])
+
+        claimed = ClaimedJob(
+            workspace_id=job.workspace_id,
+            job_id=job.job_id,
+            dataset_id=job.dataset_id,
+            strategy_version=job.strategy_version,
+            starting_balance=job.starting_balance,
+            protocol=job.protocol,
+            protocol_sha256=job.protocol_sha256,
+            attempt_no=1,
+            lease_owner="u5c-worker",
+            lease_token="lease-u5c",
+        )
+        calls = []
+
+        def fake_engine(slice_rows, protocol, *, continue_check=None, deadline=None):
+            calls.append(copy.deepcopy(protocol))
+            return {
+                "assumptions": {},
+                "signals": {"long": 0, "short": 0, "no_signal": len(slice_rows), "skipped_overlap": 0},
+                "ledger": [],
+                "metrics": {"metric_schema_version": "metrics-v2"},
+                "observed_range": {
+                    "from_utc": slice_rows[0]["timestamp"],
+                    "to_utc": slice_rows[-1]["timestamp"] + TIMEFRAME,
+                    "bar_count": len(slice_rows),
+                },
+                "execution": {},
+            }
+
+        with (
+            patch("trading_workspace_v2.research.verify_engine_code"),
+            patch("trading_workspace_v2.research.execute_breakout", side_effect=fake_engine),
+            patch("trading_workspace_v2.research.validate_engine_result", return_value={"reconciled": True}),
+        ):
+            result = self.service.execute_claimed(claimed)
+
+        self.assertEqual(len(calls), 6)
+        scenarios = [calls[index]["stress_scenario"]["scenario_id"] for index in range(0, len(calls), 2)]
+        self.assertEqual(scenarios, ["base", "wide-fill", "fee-shock"])
+        for call in calls:
+            self.assertLessEqual(call["range"]["to_utc"], self.manifest.holdout_policy["from_utc"] )
+            self.assertNotIn("validation", call)
+        wide = next(call for call in calls if call["stress_scenario"]["scenario_id"] == "wide-fill")
+        self.assertEqual(wide["parameters"]["spread_price"], "0.0004")
+        self.assertEqual(wide["parameters"]["cost_model"]["slippage_price_per_side"], "0.0003")
+        self.assertIn("stress:wide-fill", wide["parameters"]["cost_model"]["version"] )
+        fee = next(call for call in calls if call["stress_scenario"]["scenario_id"] == "fee-shock")
+        self.assertEqual(fee["parameters"]["cost_model"]["commission_per_side_account"], "4")
+        self.assertEqual(fee["parameters"]["cost_model"]["minimum_fee_account"], "1")
+        self.assertFalse(result.selection["ranking"] )
+        self.assertIsNone(result.selection["winner"] )
+        fold = result.trials[0]["folds"][0]
+        self.assertEqual([item["scenario_id"] for item in fold["stress_scenarios"]], ["base", "wide-fill", "fee-shock"])
+        self.assertTrue(all(item["status"] == "completed" for item in fold["stress_scenarios"]))
+
+    def test_rehashed_stress_plan_tamper_fails_closed(self):
+        request = engine_request(self.manifest)
+        job = self.service.create_oos_engine_job(
+            workspace_id="tenant-a",
+            request=request,
+            walk_forward={
+                "train_bars": 8,
+                "oos_bars": 4,
+                "stress_scenarios": [{"scenario_id": "wide-fill", "spread_price_multiplier": 2}],
+            },
+            parameter_space={"lookback": [2]},
+            max_trials=1,
+        )
+        tampered = copy.deepcopy(job.protocol)
+        tampered["validation"]["stress"]["scenarios"][1]["spread_price_multiplier"] = "9"
+        claimed = ClaimedJob(
+            workspace_id=job.workspace_id,
+            job_id=job.job_id,
+            dataset_id=job.dataset_id,
+            strategy_version=job.strategy_version,
+            starting_balance=job.starting_balance,
+            protocol=tampered,
+            protocol_sha256=hashlib.sha256(canonical_json_bytes(tampered)).hexdigest(),
+            attempt_no=1,
+            lease_owner="u5c-worker",
+            lease_token="lease-u5c",
+        )
+        with self.assertRaisesRegex(ResearchEngineValidationError, "changed after job creation"):
+            self.service.execute_claimed(claimed)
 
     def test_terminal_oos_checkpoint_keeps_completed_trials_when_cancel_arrives_late(self):
         queued = self.create_job()

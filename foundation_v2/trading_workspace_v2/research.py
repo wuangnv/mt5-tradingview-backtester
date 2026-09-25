@@ -5,6 +5,7 @@ import json
 import threading
 import time
 from copy import deepcopy
+from decimal import Decimal
 from uuid import uuid4
 
 from .artifacts import ArtifactStore, canonical_json_bytes
@@ -30,6 +31,7 @@ from .nautilus_worker import (
 from .research_validation import ResearchReconciliationError, validate_engine_result
 from .research_oos import (
     build_bounded_sweep,
+    build_cost_fill_stress_plan,
     build_walk_forward_plan,
     complete_canceled_sweep_outcomes,
     summarize_sweep_outcomes,
@@ -62,7 +64,7 @@ def _canonical_oos_request(rules: dict, walk_forward: dict, parameter_space: dic
         raise ValueError("walk_forward must be structured")
     allowed_walk_forward = {
         "train_bars", "oos_bars", "step_bars", "purge_bars", "embargo_bars",
-        "overlap_bars", "expanding", "max_folds",
+        "overlap_bars", "expanding", "max_folds", "stress_scenarios",
     }
     unknown_walk_forward = sorted(set(walk_forward) - allowed_walk_forward)
     if unknown_walk_forward:
@@ -76,6 +78,12 @@ def _canonical_oos_request(rules: dict, walk_forward: dict, parameter_space: dic
     sweep = build_bounded_sweep(parameter_space, max_trials=max_trials)
     for trial in sweep["trials"]:
         validate_rules({**rules, **trial["parameters"]})
+    declared_stress = walk_forward.get("stress_scenarios") or []
+    stress = build_cost_fill_stress_plan(declared_stress)
+    stress_request = [deepcopy(item) for item in stress["scenarios"] if item["scenario_id"] != "base"]
+    if sweep["trial_count"] * stress["scenario_count"] > 10_000:
+        raise ValueError("OOS trial/stress matrix exceeds 10000 combinations")
+    stress_config_sha256 = hashlib.sha256(canonical_json_bytes(stress)).hexdigest()
 
     walk_forward_request = {
         "train_bars": walk_forward.get("train_bars"),
@@ -99,6 +107,9 @@ def _canonical_oos_request(rules: dict, walk_forward: dict, parameter_space: dic
             "reason": "objective_not_predeclared",
         },
         "walk_forward_request": walk_forward_request,
+        "stress_request": stress_request,
+        "stress": stress,
+        "stress_config_sha256": stress_config_sha256,
         "sweep_request": {"parameter_space": parameter_space, "max_trials": sweep["max_trials"]},
         "sweep": sweep,
     }
@@ -119,7 +130,7 @@ def _materialize_oos_validation(protocol: dict, rows: list[dict], manifest) -> d
     try:
         rebuilt_request = _canonical_oos_request(
             protocol.get("playbook", {}).get("rules") or {},
-            walk_forward,
+            {**walk_forward, "stress_scenarios": validation.get("stress_request") or []},
             sweep_request.get("parameter_space"),
             sweep_request.get("max_trials"),
         )
@@ -141,6 +152,34 @@ def _materialize_oos_validation(protocol: dict, rows: list[dict], manifest) -> d
     if stored_plan is not None and stored_plan != plan:
         raise ResearchEngineValidationError("research validation protocol changed after job creation")
     return {**rebuilt_request, "walk_forward": plan}
+
+
+def _apply_cost_fill_stress(protocol: dict, scenario: dict) -> dict:
+    stressed = deepcopy(protocol)
+    parameters = stressed["parameters"]
+    cost_model = deepcopy(parameters["cost_model"])
+
+    def scaled(value, multiplier):
+        return format((Decimal(str(value)) * Decimal(str(multiplier))).normalize(), "f")
+
+    parameters["spread_price"] = scaled(parameters.get("spread_price", 0), scenario["spread_price_multiplier"])
+    cost_model["commission_per_side_account"] = scaled(
+        cost_model.get("commission_per_side_account", 0), scenario["commission_multiplier"]
+    )
+    cost_model["minimum_fee_account"] = scaled(
+        cost_model.get("minimum_fee_account", 0), scenario["minimum_fee_multiplier"]
+    )
+    cost_model["slippage_price_per_side"] = scaled(
+        cost_model.get("slippage_price_per_side", 0), scenario["slippage_multiplier"]
+    )
+    cost_model["financing_account"] = scaled(
+        cost_model.get("financing_account", 0), scenario["financing_multiplier"]
+    )
+    if scenario["scenario_id"] != "base":
+        cost_model["version"] = f"{cost_model['version']}|stress:{scenario['scenario_id']}"
+    parameters["cost_model"] = cost_model
+    stressed["stress_scenario"] = deepcopy(scenario)
+    return stressed
 
 
 class ResearchService:
@@ -450,6 +489,8 @@ class ResearchService:
                                 "fold_count": validation["walk_forward"]["fold_count"],
                                 "trial_count": validation["sweep"]["trial_count"],
                                 "sweep_truncated": validation["sweep"]["truncated"],
+                                "stress_config_sha256": validation["stress_config_sha256"],
+                                "stress_scenario_count": validation["stress"]["scenario_count"],
                             },
                             {"phase_index": 3, "phase_count": phase_count},
                         ):
@@ -514,50 +555,63 @@ class ResearchService:
                                 "folds": [],
                             }
                             for fold in validation["walk_forward"]["folds"]:
-                                fold_result = {"fold": fold["fold"], "status": "completed"}
-                                for segment_name, split in (("train", "train"), ("oos", "validation")):
-                                    planned_range = fold[segment_name]
-                                    start = int(planned_range["start_index"])
-                                    stop = int(planned_range["stop_index"])
-                                    slice_rows = rows[start:stop]
-                                    slice_protocol = deepcopy(job.protocol)
-                                    slice_protocol.pop("validation", None)
-                                    slice_protocol["split"] = split
-                                    slice_protocol["range"] = {
-                                        "from_utc": int(planned_range["from_utc"]),
-                                        "to_utc": int(planned_range["to_utc"]),
+                                fold_result = {"fold": fold["fold"], "status": "completed", "stress_scenarios": []}
+                                for scenario in validation["stress"]["scenarios"]:
+                                    scenario_result = {
+                                        "scenario_id": scenario["scenario_id"],
+                                        "config": deepcopy(scenario),
+                                        "status": "completed",
                                     }
-                                    slice_protocol["playbook"]["rules"] = {
-                                        **job.protocol["playbook"]["rules"],
-                                        **trial["parameters"],
-                                    }
-                                    try:
-                                        engine_result = run_engine(slice_rows, slice_protocol)
-                                        fold_result[segment_name] = {
-                                            "status": "completed",
-                                            "metrics": engine_result["metrics"],
-                                            "signals": engine_result["signals"],
-                                            "trade_count": len(engine_result["ledger"]),
-                                            "observed_range": engine_result["observed_range"],
+                                    for segment_name, split in (("train", "train"), ("oos", "validation")):
+                                        planned_range = fold[segment_name]
+                                        start = int(planned_range["start_index"])
+                                        stop = int(planned_range["stop_index"])
+                                        slice_rows = rows[start:stop]
+                                        slice_protocol = deepcopy(job.protocol)
+                                        slice_protocol.pop("validation", None)
+                                        slice_protocol["split"] = split
+                                        slice_protocol["range"] = {
+                                            "from_utc": int(planned_range["from_utc"]),
+                                            "to_utc": int(planned_range["to_utc"]),
                                         }
-                                    except ResearchEngineInterrupted:
-                                        raise
-                                    except ResearchEngineValidationError as exc:
-                                        if str(exc) == "run exceeded budget.max_runtime_ms":
+                                        slice_protocol["playbook"]["rules"] = {
+                                            **job.protocol["playbook"]["rules"],
+                                            **trial["parameters"],
+                                        }
+                                        slice_protocol = _apply_cost_fill_stress(slice_protocol, scenario)
+                                        try:
+                                            engine_result = run_engine(slice_rows, slice_protocol)
+                                            scenario_result[segment_name] = {
+                                                "status": "completed",
+                                                "metrics": engine_result["metrics"],
+                                                "signals": engine_result["signals"],
+                                                "trade_count": len(engine_result["ledger"]),
+                                                "observed_range": engine_result["observed_range"],
+                                            }
+                                        except ResearchEngineInterrupted:
                                             raise
-                                        fold_result[segment_name] = {
-                                            "status": "failed",
-                                            "error": str(exc)[:500],
-                                        }
-                                        fold_result["status"] = "failed"
-                                        trial_result["status"] = "failed"
-                                    except ResearchReconciliationError as exc:
-                                        fold_result[segment_name] = {
-                                            "status": "failed",
-                                            "error": str(exc)[:500],
-                                        }
-                                        fold_result["status"] = "failed"
-                                        trial_result["status"] = "failed"
+                                        except ResearchEngineValidationError as exc:
+                                            if str(exc) == "run exceeded budget.max_runtime_ms":
+                                                raise
+                                            scenario_result[segment_name] = {
+                                                "status": "failed",
+                                                "error": str(exc)[:500],
+                                            }
+                                            scenario_result["status"] = "failed"
+                                            fold_result["status"] = "failed"
+                                            trial_result["status"] = "failed"
+                                        except ResearchReconciliationError as exc:
+                                            scenario_result[segment_name] = {
+                                                "status": "failed",
+                                                "error": str(exc)[:500],
+                                            }
+                                            scenario_result["status"] = "failed"
+                                            fold_result["status"] = "failed"
+                                            trial_result["status"] = "failed"
+                                    fold_result["stress_scenarios"].append(scenario_result)
+                                    if scenario["scenario_id"] == "base":
+                                        fold_result["train"] = deepcopy(scenario_result["train"])
+                                        fold_result["oos"] = deepcopy(scenario_result["oos"])
                                 trial_result["folds"].append(fold_result)
                             terminal_outcomes.append(
                                 {"trial_id": trial_result["trial_id"], "status": trial_result["status"]}
