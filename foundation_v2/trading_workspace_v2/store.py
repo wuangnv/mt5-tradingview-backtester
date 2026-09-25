@@ -10,6 +10,11 @@ import psycopg
 from psycopg.rows import dict_row
 
 from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
+from .prop_replay import (
+    ReplayPropConnectionError,
+    validate_replay_prop_transition_boundary,
+    validate_replay_prop_transition_result,
+)
 from .prop_session import (
     ChallengeAttemptSnapshot,
     PhaseStateSnapshot,
@@ -20,6 +25,11 @@ from .prop_session import (
     apply_prop_lifecycle_command,
     evaluate_prop_lifecycle_event,
     validate_attempt_against_session,
+)
+from .replay_execution import (
+    ReplayExecutionError,
+    ReplayExecutionSnapshot,
+    transition_replay_phase,
 )
 from .research_oos import complete_canceled_sweep_outcomes
 
@@ -1633,11 +1643,345 @@ class PostgresStore:
             conn.commit()
         return {"attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
 
+    def _apply_replay_bound_prop_next_phase(
+        self,
+        intent: TransitionIntent,
+        *,
+        fingerprint: str,
+        now: str,
+        replay_session_id: str,
+    ) -> dict:
+        """Advance canonical Replay and Prop phase state in one transaction."""
+
+        with self.connect() as conn:
+            replay_meta = conn.execute(
+                """
+                SELECT current_revision,source_key,created_at_utc,updated_at_utc
+                FROM workspace_records
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s
+                FOR UPDATE
+                """,
+                (intent.workspace_id, replay_session_id),
+            ).fetchone()
+            if replay_meta is None:
+                raise PropPersistenceConflict("canonical replay session not found")
+            replay_version = conn.execute(
+                """
+                SELECT payload_json,deleted
+                FROM workspace_record_revisions
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s AND revision=%s
+                """,
+                (intent.workspace_id, replay_session_id, int(replay_meta["current_revision"])),
+            ).fetchone()
+            if replay_version is None:
+                raise PropPersistenceConflict("canonical replay current revision is missing")
+            if bool(replay_version["deleted"]):
+                raise PropPersistenceConflict("canonical replay session not found")
+            replay_row = {**replay_meta, **replay_version}
+
+            session_row = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_sessions
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (intent.workspace_id, intent.session_id),
+            ).fetchone()
+            if session_row is None:
+                raise LookupError("prop session not found")
+            session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
+
+            row = conn.execute(
+                """
+                SELECT current_revision,snapshot_json,phase_json,resume_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                FOR UPDATE
+                """,
+                (intent.workspace_id, intent.session_id, intent.attempt_id),
+            ).fetchone()
+            if row is None:
+                raise LookupError("prop attempt not found")
+
+            receipt = conn.execute(
+                """
+                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
+                """,
+                (intent.workspace_id, intent.session_id, intent.attempt_id, intent.intent_id),
+            ).fetchone()
+            if receipt is not None:
+                if receipt["fingerprint"] != fingerprint:
+                    raise PropIdempotencyConflict("intent_id was already used with different transition content")
+                receipt_revision = conn.execute(
+                    """
+                    SELECT 1 FROM prop_attempt_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=%s
+                    """,
+                    (
+                        intent.workspace_id,
+                        intent.session_id,
+                        intent.attempt_id,
+                        int(receipt["entity_revision"]),
+                    ),
+                ).fetchone()
+                if receipt_revision is None:
+                    raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
+                try:
+                    current_replay = ReplayExecutionSnapshot.model_validate(
+                        dict(replay_row["payload_json"] or {}).get("execution")
+                    )
+                except ValueError as exc:
+                    raise PropPersistenceConflict("canonical replay execution snapshot is invalid") from exc
+                transition_receipt = next(
+                    (
+                        item
+                        for item in current_replay.ledger
+                        if item.get("kind") == "phase_transition"
+                        and (item.get("details") or {}).get("intent_id") == intent.intent_id
+                    ),
+                    None,
+                )
+                if (
+                    transition_receipt is None
+                    or (transition_receipt.get("details") or {}).get("intent_fingerprint") != fingerprint
+                ):
+                    raise PropPersistenceConflict("idempotency receipt has no matching canonical replay transition event")
+                current_attempt = ChallengeAttemptSnapshot.model_validate(row["snapshot_json"])
+                current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
+                if session.status != current_attempt.status:
+                    raise PropPersistenceConflict("prop session and attempt lifecycle status diverged")
+                return {
+                    "session": session,
+                    "attempt": current_attempt,
+                    "phase": current_phase,
+                    "resume_state": row["resume_json"],
+                    "duplicate": True,
+                    "replay_record": {
+                        "record_id": replay_session_id,
+                        "revision": int(replay_row["current_revision"]),
+                        "payload": replay_row["payload_json"],
+                    },
+                }
+
+            current = ChallengeAttemptSnapshot.model_validate(row["snapshot_json"])
+            current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
+            current_resume = dict(row["resume_json"] or {})
+            if int(row["current_revision"]) != intent.expected_revision:
+                raise PropPersistenceConflict("prop attempt revision conflict")
+            if session.status != current.status:
+                raise PropPersistenceConflict("prop session and attempt lifecycle status diverged")
+            self._validate_prop_phase_scope(session, current, current_phase)
+            self._validate_resume_counts(current_phase, current_resume)
+
+            binding = current_resume.get("replay_binding")
+            if not isinstance(binding, dict) or binding.get("replay_session_id") != replay_session_id:
+                raise PropPersistenceConflict("prop replay binding changed before canonical phase transition")
+            replay_payload = dict(replay_row["payload_json"] or {})
+            raw_execution = replay_payload.get("execution")
+            if raw_execution is None:
+                raise PropPersistenceConflict("canonical replay execution is not initialized")
+            try:
+                replay_snapshot = ReplayExecutionSnapshot.model_validate(raw_execution)
+            except ValueError as exc:
+                raise PropPersistenceConflict("canonical replay execution snapshot is invalid") from exc
+
+            dataset_row = conn.execute(
+                """
+                SELECT manifest_json,artifact_sha256 FROM datasets
+                WHERE workspace_id=%s AND dataset_id=%s
+                """,
+                (intent.workspace_id, replay_snapshot.dataset_id),
+            ).fetchone()
+            if dataset_row is None:
+                raise PropPersistenceConflict("canonical replay dataset is missing")
+            manifest = DatasetManifest.model_validate(dataset_row["manifest_json"])
+            if manifest.artifact_sha256 != replay_snapshot.dataset_sha256:
+                raise PropPersistenceConflict("canonical replay dataset sha256 changed")
+
+            current_spec = session.profile.phases[current_phase.phase_index - 1]
+            try:
+                validate_replay_prop_transition_boundary(
+                    replay_snapshot,
+                    replay_payload=replay_payload,
+                    dataset_row_count=manifest.row_count,
+                    attempt=current,
+                    phase=current_phase,
+                    resume_state=current_resume,
+                    phase_spec=current_spec,
+                )
+            except ReplayPropConnectionError as exc:
+                raise PropPersistenceConflict(str(exc)) from exc
+
+            result = apply_prop_lifecycle_command(
+                session,
+                current,
+                current_phase,
+                intent,
+                resume_state=current_resume,
+                canonical_replay_transition=True,
+            )
+            updated_attempt = result["attempt"]
+            updated_phase = result["phase"]
+            updated_resume = dict(result["resume_state"])
+            try:
+                replay_transition = transition_replay_phase(
+                    replay_snapshot,
+                    intent_id=intent.intent_id,
+                    intent_fingerprint=result["intent_fingerprint"],
+                    from_phase_index=current_phase.phase_index,
+                    to_phase_index=updated_phase.phase_index,
+                    carry_policy=current_spec.carry_policy,
+                    position_policy=current_spec.position_policy,
+                    next_phase_initial_balance=updated_phase.initial_balance,
+                    virtual_time_utc=int(current_phase.virtual_time_utc.timestamp()),
+                )
+            except ReplayExecutionError as exc:
+                raise PropPersistenceConflict(str(exc)) from exc
+
+            next_binding = dict(updated_resume.get("replay_binding") or {})
+            next_binding.update(
+                {
+                    "replay_session_id": replay_transition.snapshot.replay_session_id,
+                    "branch_id": replay_transition.snapshot.branch_id,
+                    "dataset_id": replay_transition.snapshot.dataset_id,
+                    "dataset_sha256": replay_transition.snapshot.dataset_sha256,
+                    "last_replay_event_sequence": replay_transition.event.sequence,
+                    "phase_index": updated_phase.phase_index,
+                }
+            )
+            updated_resume["replay_binding"] = next_binding
+            try:
+                validate_replay_prop_transition_result(
+                    replay_transition.snapshot,
+                    attempt=updated_attempt,
+                    phase=updated_phase,
+                    resume_state=updated_resume,
+                )
+            except ReplayPropConnectionError as exc:
+                raise PropPersistenceConflict(str(exc)) from exc
+            self._validate_prop_phase_scope(session, updated_attempt, updated_phase)
+            self._validate_resume_counts(updated_phase, updated_resume)
+            self._validate_resume_cursor(updated_resume, current_resume)
+
+            replay_payload["execution"] = replay_transition.snapshot.model_dump(mode="json")
+            replay_revision = int(replay_row["current_revision"]) + 1
+            conn.execute(
+                """
+                INSERT INTO workspace_record_revisions(
+                    workspace_id,kind,record_id,revision,payload_json,deleted,created_at_utc
+                ) VALUES(%s,'replay',%s,%s,%s::jsonb,false,%s)
+                """,
+                (
+                    intent.workspace_id,
+                    replay_session_id,
+                    replay_revision,
+                    json.dumps(replay_payload, sort_keys=True),
+                    now,
+                ),
+            )
+            conn.execute(
+                """
+                UPDATE workspace_records SET current_revision=%s,updated_at_utc=%s
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s
+                """,
+                (replay_revision, now, intent.workspace_id, replay_session_id),
+            )
+
+            attempt_json = json.dumps(updated_attempt.model_dump(mode="json"), sort_keys=True)
+            phase_json = json.dumps(updated_phase.model_dump(mode="json"), sort_keys=True)
+            resume_json = json.dumps(updated_resume, sort_keys=True)
+            conn.execute(
+                """
+                INSERT INTO prop_attempt_revisions(
+                    workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                """,
+                (
+                    intent.workspace_id,
+                    intent.session_id,
+                    intent.attempt_id,
+                    updated_attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                ),
+            )
+            conn.execute(
+                """
+                UPDATE prop_attempts
+                SET current_revision=%s,snapshot_json=%s::jsonb,phase_json=%s::jsonb,resume_json=%s::jsonb,
+                    updated_at_utc=%s
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                """,
+                (
+                    updated_attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                    intent.workspace_id,
+                    intent.session_id,
+                    intent.attempt_id,
+                ),
+            )
+            updated_session = self._sync_prop_session_status(conn, session, updated_attempt.status, now)
+            conn.execute(
+                """
+                INSERT INTO prop_mutation_receipts(
+                    workspace_id,session_id,attempt_id,operation_id,fingerprint,entity_revision,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s)
+                """,
+                (
+                    intent.workspace_id,
+                    intent.session_id,
+                    intent.attempt_id,
+                    intent.intent_id,
+                    fingerprint,
+                    updated_attempt.revision,
+                    now,
+                ),
+            )
+            conn.commit()
+        return {
+            "session": updated_session,
+            "attempt": updated_attempt,
+            "phase": updated_phase,
+            "resume_state": updated_resume,
+            "duplicate": False,
+            "replay_record": {
+                "record_id": replay_session_id,
+                "revision": replay_revision,
+                "payload": replay_payload,
+            },
+        }
+
     def apply_prop_transition_intent(self, intent: TransitionIntent) -> dict:
         """Atomically apply one server-owned Prop lifecycle command."""
 
         fingerprint = _payload_fingerprint(intent.model_dump(mode="json"))
         now = utc_now_iso()
+        if intent.action == "next_phase":
+            with self.connect() as preview_conn:
+                preview = preview_conn.execute(
+                    """
+                    SELECT resume_json FROM prop_attempts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                    """,
+                    (intent.workspace_id, intent.session_id, intent.attempt_id),
+                ).fetchone()
+            if preview is None:
+                raise LookupError("prop attempt not found")
+            preview_binding = dict(preview["resume_json"] or {}).get("replay_binding")
+            if preview_binding is not None:
+                if not isinstance(preview_binding, dict) or not preview_binding.get("replay_session_id"):
+                    raise PropPersistenceConflict("prop replay binding is invalid")
+                return self._apply_replay_bound_prop_next_phase(
+                    intent,
+                    fingerprint=fingerprint,
+                    now=now,
+                    replay_session_id=str(preview_binding["replay_session_id"]),
+                )
         with self.connect() as conn:
             session_row = conn.execute(
                 """

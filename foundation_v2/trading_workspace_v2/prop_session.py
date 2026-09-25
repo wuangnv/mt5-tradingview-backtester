@@ -406,6 +406,7 @@ def apply_prop_lifecycle_command(
     intent: TransitionIntent,
     *,
     resume_state: dict | None = None,
+    canonical_replay_transition: bool = False,
 ) -> dict:
     """Apply one explicit user lifecycle command without advancing simulator time."""
 
@@ -429,7 +430,7 @@ def apply_prop_lifecycle_command(
             "intent_fingerprint": transition.intent_fingerprint,
         }
 
-    if resume.get("replay_binding"):
+    if resume.get("replay_binding") and not canonical_replay_transition:
         raise PropSessionContractError(
             "next_phase for Replay-bound attempts requires canonical replay phase transition support"
         )

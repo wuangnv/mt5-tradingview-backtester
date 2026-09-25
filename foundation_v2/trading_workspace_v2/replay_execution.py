@@ -68,6 +68,8 @@ class ReplayExecutionSnapshot(BaseModel):
     spread_price: Decimal = Field(ge=0)
     timeframe_seconds: int = Field(gt=0, strict=True)
     starting_balance: Decimal = Field(gt=0)
+    phase_index: int = Field(default=1, ge=1, strict=True)
+    phase_initial_balance: Decimal | None = Field(default=None, gt=0)
     balance: Decimal
     floating_pl: Decimal = Decimal("0")
     equity: Decimal
@@ -89,7 +91,7 @@ class ReplayExecutionEvent(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     sequence: int = Field(ge=1, strict=True)
-    kind: Literal["market_fill", "protective_fill", "price_mark"]
+    kind: Literal["market_fill", "protective_fill", "price_mark", "phase_transition"]
     replay_session_id: str = Field(min_length=1, max_length=128)
     branch_id: str = Field(min_length=1, max_length=128)
     dataset_id: str = Field(min_length=1, max_length=128)
@@ -116,6 +118,13 @@ class ReplayExecutionAdvance(BaseModel):
 
     snapshot: ReplayExecutionSnapshot
     events: list[ReplayExecutionEvent]
+
+
+class ReplayPhaseTransition(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    snapshot: ReplayExecutionSnapshot
+    event: ReplayExecutionEvent
 
 
 def _instrument_mapping(instrument: InstrumentSpec) -> dict:
@@ -182,6 +191,8 @@ def initialize_replay_execution(
         spread_price=spread,
         timeframe_seconds=timeframe_seconds,
         starting_balance=balance,
+        phase_index=1,
+        phase_initial_balance=balance,
         balance=balance,
         equity=balance,
         cursor_index=cursor_index,
@@ -221,6 +232,99 @@ def queue_market_order(
         submitted_cursor_index=snapshot.cursor_index,
     )
     return snapshot.model_copy(update={"pending_market_order": order})
+
+
+def transition_replay_phase(
+    snapshot: ReplayExecutionSnapshot,
+    *,
+    intent_id: str,
+    intent_fingerprint: str,
+    from_phase_index: int,
+    to_phase_index: int,
+    carry_policy: Literal["reset", "carry_balance", "carry_all"],
+    position_policy: Literal["must_be_flat", "carry", "close_by_simulator"],
+    next_phase_initial_balance,
+    virtual_time_utc: int,
+) -> ReplayPhaseTransition:
+    """Record a zero-time canonical account transition between Prop phases."""
+
+    if snapshot.pending_market_order is not None:
+        raise ReplayExecutionError("phase transition requires zero pending replay orders")
+    if snapshot.phase_index != from_phase_index:
+        raise ReplayExecutionError("replay phase transition does not match the canonical replay phase")
+    if to_phase_index != from_phase_index + 1:
+        raise ReplayExecutionError("replay phase transition must advance exactly one phase")
+    next_initial = _decimal(next_phase_initial_balance, "next_phase_initial_balance", positive=True)
+    if virtual_time_utc < 0:
+        raise ReplayExecutionError("phase transition virtual_time_utc must be nonnegative")
+
+    position = snapshot.position
+    if position is not None and position_policy == "close_by_simulator":
+        raise ReplayExecutionError("close_by_simulator with an open replay position is not supported yet")
+    if carry_policy in {"reset", "carry_balance"} and position is not None:
+        raise ReplayExecutionError("reset/carry_balance phase transition requires a flat replay account")
+    if position is not None and not (carry_policy == "carry_all" and position_policy == "carry"):
+        raise ReplayExecutionError("open replay position is incompatible with the frozen phase carry policy")
+
+    if carry_policy == "reset":
+        balance = next_initial
+        floating = Decimal("0")
+        position = None
+    elif carry_policy == "carry_balance":
+        balance = snapshot.balance
+        floating = Decimal("0")
+        position = None
+    else:
+        balance = snapshot.balance
+        floating = snapshot.floating_pl
+
+    event = ReplayExecutionEvent(
+        sequence=snapshot.event_sequence + 1,
+        kind="phase_transition",
+        replay_session_id=snapshot.replay_session_id,
+        branch_id=snapshot.branch_id,
+        dataset_id=snapshot.dataset_id,
+        dataset_sha256=snapshot.dataset_sha256,
+        cursor_index=snapshot.cursor_index,
+        virtual_time_utc=virtual_time_utc,
+        balance=balance,
+        floating_pl=floating,
+        equity=balance + floating,
+        open_positions=1 if position is not None else 0,
+        pending_orders=0,
+        details={
+            "intent_id": intent_id,
+            "intent_fingerprint": intent_fingerprint,
+            "from_phase_index": from_phase_index,
+            "to_phase_index": to_phase_index,
+            "carry_policy": carry_policy,
+            "position_policy": position_policy,
+            "next_phase_initial_balance": str(next_initial),
+            "from_balance": str(snapshot.balance),
+            "from_floating_pl": str(snapshot.floating_pl),
+            "from_equity": str(snapshot.equity),
+            "to_balance": str(balance),
+            "to_floating_pl": str(floating),
+            "to_equity": str(balance + floating),
+            "open_position": position.model_dump(mode="json") if position is not None else None,
+        },
+    )
+    ledger = [dict(item) for item in snapshot.ledger]
+    ledger.append(event.model_dump(mode="json"))
+    updated = snapshot.model_copy(
+        update={
+            "phase_index": to_phase_index,
+            "phase_initial_balance": next_initial,
+            "balance": balance,
+            "floating_pl": floating,
+            "equity": balance + floating,
+            "event_sequence": event.sequence,
+            "pending_market_order": None,
+            "position": position,
+            "ledger": ledger,
+        }
+    )
+    return ReplayPhaseTransition(snapshot=updated, event=event)
 
 
 def _liquidation_pnl(
@@ -435,6 +539,8 @@ def advance_replay_execution(
             spread_price=snapshot.spread_price,
             timeframe_seconds=snapshot.timeframe_seconds,
             starting_balance=snapshot.starting_balance,
+            phase_index=snapshot.phase_index,
+            phase_initial_balance=snapshot.phase_initial_balance,
             balance=balance,
             floating_pl=floating,
             equity=balance + floating,

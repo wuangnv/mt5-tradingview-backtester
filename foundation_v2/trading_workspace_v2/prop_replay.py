@@ -33,8 +33,141 @@ def validate_replay_prop_binding(
         raise ReplayPropConnectionError("prop attempt data_version must pin the replay dataset sha256")
     if attempt.cost_version != str(snapshot.cost_model.get("version") or ""):
         raise ReplayPropConnectionError("prop attempt cost_version does not match replay cost model")
-    if phase.initial_balance != snapshot.starting_balance:
+    if phase.phase_index != snapshot.phase_index:
+        raise ReplayPropConnectionError("prop phase index does not match replay phase index")
+    replay_phase_initial = snapshot.phase_initial_balance or snapshot.starting_balance
+    if phase.initial_balance != replay_phase_initial:
         raise ReplayPropConnectionError("prop phase initial balance does not match replay starting balance")
+
+
+def validate_replay_prop_transition_boundary(
+    snapshot: ReplayExecutionSnapshot,
+    *,
+    replay_payload: dict,
+    dataset_row_count: int,
+    attempt: ChallengeAttemptSnapshot,
+    phase: PhaseStateSnapshot,
+    resume_state: dict,
+    phase_spec: PropPhaseSpec,
+) -> None:
+    """Fail closed unless Replay and Prop describe the same phase boundary."""
+
+    validate_replay_prop_binding(snapshot, attempt, phase)
+    if replay_payload.get("dataset_id") != snapshot.dataset_id:
+        raise ReplayPropConnectionError("replay payload dataset does not match canonical execution")
+    if replay_payload.get("branch_id") != snapshot.branch_id:
+        raise ReplayPropConnectionError("replay payload branch does not match canonical execution")
+    if int(replay_payload.get("cursor_index", -1)) != snapshot.cursor_index:
+        raise ReplayPropConnectionError("replay payload cursor does not match canonical execution")
+    if replay_payload.get("status") == "completed" or snapshot.cursor_index >= int(dataset_row_count) - 1:
+        raise ReplayPropConnectionError("next phase requires a future replay bar")
+
+    binding = resume_state.get("replay_binding")
+    if not isinstance(binding, dict):
+        raise ReplayPropConnectionError("prop replay binding is required for canonical phase transition")
+    expected_lineage = {
+        "replay_session_id": snapshot.replay_session_id,
+        "branch_id": snapshot.branch_id,
+        "dataset_id": snapshot.dataset_id,
+        "dataset_sha256": snapshot.dataset_sha256,
+    }
+    for key, expected in expected_lineage.items():
+        if binding.get(key) != expected:
+            raise ReplayPropConnectionError("prop replay binding lineage does not match canonical replay")
+    try:
+        last_replay_event_sequence = int(binding.get("last_replay_event_sequence"))
+    except (TypeError, ValueError) as exc:
+        raise ReplayPropConnectionError("prop replay binding event sequence is invalid") from exc
+    if last_replay_event_sequence != snapshot.event_sequence:
+        raise ReplayPropConnectionError("canonical replay has unconsumed progression at the phase boundary")
+
+    boundary_event = None
+    for item in reversed(snapshot.ledger):
+        try:
+            item_sequence = int(item.get("sequence", -1))
+        except (TypeError, ValueError) as exc:
+            raise ReplayPropConnectionError("canonical replay ledger sequence is invalid") from exc
+        if item_sequence != snapshot.event_sequence:
+            continue
+        try:
+            boundary_event = ReplayExecutionEvent.model_validate(item)
+        except ValueError as exc:
+            raise ReplayPropConnectionError("canonical replay boundary event is invalid") from exc
+        break
+    if boundary_event is None or boundary_event.kind != "price_mark":
+        raise ReplayPropConnectionError("phase transition requires the latest canonical replay price mark")
+
+    cursor = resume_state.get("cursor")
+    if not isinstance(cursor, dict) or cursor.get("bar_index") != snapshot.cursor_index:
+        raise ReplayPropConnectionError("prop resume cursor does not match canonical replay cursor")
+    timestamp = cursor.get("timestamp_utc")
+    if not isinstance(timestamp, str):
+        raise ReplayPropConnectionError("prop resume cursor timestamp is invalid")
+    try:
+        resume_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone(timezone.utc)
+    except ValueError as exc:
+        raise ReplayPropConnectionError("prop resume cursor timestamp is invalid") from exc
+    boundary_time = datetime.fromtimestamp(boundary_event.virtual_time_utc, tz=timezone.utc)
+    phase_time = phase.virtual_time_utc.astimezone(timezone.utc)
+    if resume_time != boundary_time or phase_time != boundary_time:
+        raise ReplayPropConnectionError("prop virtual time does not match canonical replay boundary")
+
+    if (
+        phase.balance != snapshot.balance
+        or phase.floating_pl != snapshot.floating_pl
+        or phase.equity != snapshot.equity
+    ):
+        raise ReplayPropConnectionError("prop money state does not match canonical replay boundary")
+    if snapshot.pending_market_order is not None or phase.pending_orders != 0:
+        raise ReplayPropConnectionError("phase transition requires zero pending replay orders")
+    if resume_state.get("pending_orders") not in (None, []):
+        raise ReplayPropConnectionError("prop pending order state does not match canonical replay boundary")
+
+    expected_position = snapshot.position.model_dump(mode="json") if snapshot.position is not None else None
+    expected_positions = [expected_position] if expected_position is not None else []
+    if phase.open_positions != len(expected_positions):
+        raise ReplayPropConnectionError("prop open position count does not match canonical replay boundary")
+    if resume_state.get("open_positions") != expected_positions:
+        raise ReplayPropConnectionError("prop open position state does not match canonical replay boundary")
+    if snapshot.position is not None and phase_spec.position_policy == "close_by_simulator":
+        raise ReplayPropConnectionError("close_by_simulator with an open replay position is not supported yet")
+    if snapshot.position is not None and not (
+        phase_spec.position_policy == "carry" and phase_spec.carry_policy == "carry_all"
+    ):
+        raise ReplayPropConnectionError("open replay position is incompatible with the frozen phase carry policy")
+
+
+def validate_replay_prop_transition_result(
+    snapshot: ReplayExecutionSnapshot,
+    *,
+    attempt: ChallengeAttemptSnapshot,
+    phase: PhaseStateSnapshot,
+    resume_state: dict,
+) -> None:
+    validate_replay_prop_binding(snapshot, attempt, phase)
+    if (
+        phase.balance != snapshot.balance
+        or phase.floating_pl != snapshot.floating_pl
+        or phase.equity != snapshot.equity
+    ):
+        raise ReplayPropConnectionError("prop phase transition money state diverged from canonical replay")
+    expected_position = snapshot.position.model_dump(mode="json") if snapshot.position is not None else None
+    expected_positions = [expected_position] if expected_position is not None else []
+    if phase.open_positions != len(expected_positions) or resume_state.get("open_positions") != expected_positions:
+        raise ReplayPropConnectionError("prop phase transition position state diverged from canonical replay")
+    if snapshot.pending_market_order is not None or phase.pending_orders != 0:
+        raise ReplayPropConnectionError("prop phase transition pending state diverged from canonical replay")
+    if resume_state.get("pending_orders") not in (None, []):
+        raise ReplayPropConnectionError("prop phase transition pending state diverged from canonical replay")
+    binding = resume_state.get("replay_binding")
+    if not isinstance(binding, dict):
+        raise ReplayPropConnectionError("prop replay binding did not advance to the canonical transition event")
+    try:
+        last_sequence = int(binding.get("last_replay_event_sequence", -1))
+    except (TypeError, ValueError) as exc:
+        raise ReplayPropConnectionError("prop replay binding transition sequence is invalid") from exc
+    if last_sequence != snapshot.event_sequence:
+        raise ReplayPropConnectionError("prop replay binding did not advance to the canonical transition event")
 
 
 def replay_event_operation_id(

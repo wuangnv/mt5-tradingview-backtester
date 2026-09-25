@@ -18,6 +18,7 @@ from trading_workspace_v2.replay_execution import (
     advance_replay_execution,
     initialize_replay_execution,
     queue_market_order,
+    transition_replay_phase,
 )
 from trading_workspace_v2.retained import CostModel, InstrumentSpec
 
@@ -236,6 +237,111 @@ class ReplayExecutionCoreTests(unittest.TestCase):
                 quantity="0.10",
                 stop_loss="1.0950",
                 take_profit="1.1200",
+            )
+
+    def test_phase_reset_keeps_origin_and_advances_explicit_phase_metadata(self):
+        state = initial_state(2).model_copy(
+            update={
+                "balance": Decimal("103000"),
+                "equity": Decimal("103000"),
+            }
+        )
+        result = transition_replay_phase(
+            state,
+            intent_id="phase-2",
+            intent_fingerprint="fingerprint-1",
+            from_phase_index=1,
+            to_phase_index=2,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+            next_phase_initial_balance="50000",
+            virtual_time_utc=120,
+        )
+        self.assertEqual(result.snapshot.starting_balance, Decimal("100000"))
+        self.assertEqual(result.snapshot.phase_index, 2)
+        self.assertEqual(result.snapshot.phase_initial_balance, Decimal("50000"))
+        self.assertEqual(result.snapshot.balance, Decimal("50000"))
+        self.assertEqual(result.snapshot.equity, Decimal("50000"))
+        self.assertEqual(result.snapshot.cursor_index, 2)
+        self.assertEqual(result.snapshot.event_sequence, 1)
+        self.assertEqual(result.event.kind, "phase_transition")
+        self.assertEqual(result.event.details["position_policy"], "must_be_flat")
+
+        advanced = advance_replay_execution(
+            result.snapshot,
+            bar={"timestamp": 180, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000},
+            cursor_index=3,
+        )
+        self.assertEqual(advanced.snapshot.phase_index, 2)
+        self.assertEqual(advanced.snapshot.phase_initial_balance, Decimal("50000"))
+        self.assertEqual(advanced.snapshot.starting_balance, Decimal("100000"))
+
+    def test_phase_carry_balance_preserves_realized_balance_while_resetting_floating(self):
+        state = initial_state().model_copy(
+            update={
+                "balance": Decimal("104500"),
+                "floating_pl": Decimal("0"),
+                "equity": Decimal("104500"),
+            }
+        )
+        result = transition_replay_phase(
+            state,
+            intent_id="phase-2",
+            intent_fingerprint="fingerprint-2",
+            from_phase_index=1,
+            to_phase_index=2,
+            carry_policy="carry_balance",
+            position_policy="must_be_flat",
+            next_phase_initial_balance="50000",
+            virtual_time_utc=0,
+        )
+        self.assertEqual(result.snapshot.balance, Decimal("104500"))
+        self.assertEqual(result.snapshot.floating_pl, Decimal("0"))
+        self.assertEqual(result.snapshot.equity, Decimal("104500"))
+        self.assertEqual(result.snapshot.phase_initial_balance, Decimal("50000"))
+
+    def test_phase_carry_all_preserves_exact_live_position_and_rejects_close_by_simulator(self):
+        queued = queue_market_order(
+            initial_state(),
+            operation_id="carry-open",
+            side="BUY",
+            quantity="0.10",
+            stop_loss="1.0900",
+            take_profit="1.1200",
+        )
+        opened = advance_replay_execution(
+            queued,
+            bar={"timestamp": 60, "open": 1.1000, "high": 1.1030, "low": 1.0990, "close": 1.1020},
+            cursor_index=1,
+        ).snapshot
+        carried = transition_replay_phase(
+            opened,
+            intent_id="phase-2",
+            intent_fingerprint="fingerprint-3",
+            from_phase_index=1,
+            to_phase_index=2,
+            carry_policy="carry_all",
+            position_policy="carry",
+            next_phase_initial_balance="50000",
+            virtual_time_utc=120,
+        )
+        self.assertEqual(carried.snapshot.position, opened.position)
+        self.assertEqual(carried.snapshot.balance, opened.balance)
+        self.assertEqual(carried.snapshot.floating_pl, opened.floating_pl)
+        self.assertEqual(carried.snapshot.equity, opened.equity)
+        self.assertEqual(carried.event.details["open_position"], opened.position.model_dump(mode="json"))
+
+        with self.assertRaisesRegex(ValueError, "close_by_simulator"):
+            transition_replay_phase(
+                opened,
+                intent_id="phase-2-close",
+                intent_fingerprint="fingerprint-4",
+                from_phase_index=1,
+                to_phase_index=2,
+                carry_policy="carry_all",
+                position_policy="close_by_simulator",
+                next_phase_initial_balance="50000",
+                virtual_time_utc=120,
             )
 
 

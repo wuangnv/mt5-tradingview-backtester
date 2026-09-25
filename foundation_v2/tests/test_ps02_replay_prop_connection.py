@@ -4,9 +4,11 @@ import os
 import sys
 import tempfile
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 from uuid import uuid4
 
 from fastapi.testclient import TestClient
@@ -34,12 +36,13 @@ from trading_workspace_v2.prop_session import (
     PropProfileSnapshot,
     PropSessionSnapshot,
     ThresholdValue,
+    TransitionIntent,
     evaluate_prop_lifecycle_event,
 )
 from trading_workspace_v2.replay import ReplayService
 from trading_workspace_v2.replay_execution import ReplayExecutionEvent, ReplayExecutionSnapshot
 from trading_workspace_v2.research import ResearchService
-from trading_workspace_v2.store import PostgresStore
+from trading_workspace_v2.store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
 
 
 DATASET_SHA = "a" * 64
@@ -77,11 +80,18 @@ def cost_mapping():
     }
 
 
-def phase_spec(*, equity_rules: bool = False):
+def phase_spec(
+    *,
+    equity_rules: bool = False,
+    phase_index: int = 1,
+    initial_capital: str = "100000",
+    carry_policy: str = "reset",
+    position_policy: str = "carry",
+):
     basis = "equity" if equity_rules else "balance"
     return PropPhaseSpec(
-        phase_index=1,
-        initial_capital="100000",
+        phase_index=phase_index,
+        initial_capital=initial_capital,
         currency="USD",
         profit_target=ProfitTargetRule(
             threshold=ThresholdValue(amount="10000"), basis=basis, comparator="gte"
@@ -97,7 +107,8 @@ def phase_spec(*, equity_rules: bool = False):
         ),
         reset_timezone="UTC",
         min_qualifying_days=0,
-        position_policy="carry",
+        carry_policy=carry_policy,
+        position_policy=position_policy,
     )
 
 
@@ -487,6 +498,168 @@ class ReplayPropPostgresIntegrationTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def _build_replay_boundary(self, *, with_position: bool = False, row_count: int = 4):
+        rows = [
+            {
+                "timestamp": BASE_TIME + index * 60,
+                "open": 1.1000 + index * 0.0010,
+                "high": 1.1020 + index * 0.0010,
+                "low": 1.0990 + index * 0.0010,
+                "close": 1.1010 + index * 0.0010,
+                "volume": 10 + index,
+            }
+            for index in range(row_count)
+        ]
+        dataset = self.research.register_dataset(
+            workspace_id=self.workspace_id,
+            source=DatasetSource(
+                source_id=f"ps02c2-boundary-{uuid4().hex}",
+                provider="synthetic-local",
+                instrument_mapping={"EURUSD": "EURUSD"},
+                license_use="qa-only",
+                retrieved_at_utc="2026-09-25T00:00:00Z",
+                export_settings="ps02c2-boundary-v1",
+            ),
+            instrument_id="EURUSD",
+            timeframe="1m",
+            rows=rows,
+        )
+        replay_service = ReplayService(self.store, self.artifacts)
+        created = replay_service.create(self.workspace_id, dataset.dataset_id, 0)
+        replay_id = created["record_id"]
+        initialized = replay_service.initialize_execution(
+            self.workspace_id,
+            replay_id,
+            created["revision"],
+            instrument_spec=instrument_mapping(),
+            cost_model=cost_mapping(),
+            spread_price="0.0002",
+            timeframe_seconds=60,
+            starting_balance="100000",
+        )
+        expected_revision = initialized["revision"]
+        if with_position:
+            queued = replay_service.queue_market_order(
+                self.workspace_id,
+                replay_id,
+                expected_revision,
+                operation_id=f"open-{uuid4().hex}",
+                side="BUY",
+                quantity="0.10",
+                stop_loss="1.0900",
+                take_profit="1.1400",
+            )
+            expected_revision = queued["revision"]
+        stepped = replay_service.step(self.workspace_id, replay_id, expected_revision, 1)
+        snapshot = ReplayExecutionSnapshot.model_validate(stepped["payload"]["execution"])
+        event = ReplayExecutionEvent.model_validate(snapshot.ledger[-1])
+        self.assertEqual(event.kind, "price_mark")
+        return dataset, replay_service, replay_id, stepped, snapshot, event
+
+    def _create_bound_multiphase_bundle(
+        self,
+        *,
+        dataset,
+        replay_id: str,
+        snapshot: ReplayExecutionSnapshot,
+        boundary_event: ReplayExecutionEvent,
+        carry_policy: str,
+        position_policy: str,
+        next_initial: str = "50000",
+    ):
+        first = phase_spec(
+            phase_index=1,
+            initial_capital="100000",
+            carry_policy=carry_policy,
+            position_policy=position_policy,
+        )
+        second = phase_spec(
+            phase_index=2,
+            initial_capital=next_initial,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+        profile = PropProfileSnapshot(
+            profile_id="ps02c2-multi",
+            terms_version="2026-09-25",
+            profile_hash=f"sha256:{uuid4().hex}",
+            effective_from=date(2026, 9, 25),
+            source_kind="generic",
+            supported_rule_flags=["daily_loss", "overall_drawdown", "profit_target"],
+            phases=[first, second],
+        )
+        session_id = f"prop-{uuid4().hex}"
+        attempt_id = f"attempt-{uuid4().hex}"
+        session = PropSessionSnapshot(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            profile=profile,
+            status="phase_passed",
+        )
+        attempt = ChallengeAttemptSnapshot(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            profile_id=profile.profile_id,
+            terms_version=profile.terms_version,
+            profile_hash=profile.profile_hash,
+            data_version=f"sha256:{dataset.artifact_sha256}",
+            cost_version="replay-cost-v1",
+            engine_version="replay-v1",
+            status="phase_passed",
+            revision=1,
+            virtual_start_utc=datetime.fromtimestamp(BASE_TIME, tz=timezone.utc),
+            virtual_cutoff_utc=datetime.fromtimestamp(BASE_TIME + 3600, tz=timezone.utc),
+        )
+        boundary_time = datetime.fromtimestamp(boundary_event.virtual_time_utc, tz=timezone.utc)
+        open_position = snapshot.position.model_dump(mode="json") if snapshot.position is not None else None
+        phase = PhaseStateSnapshot(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            profile_hash=profile.profile_hash,
+            phase_index=1,
+            initial_balance="100000",
+            balance=snapshot.balance,
+            floating_pl=snapshot.floating_pl,
+            equity=snapshot.equity,
+            high_water_mark=max(snapshot.equity, snapshot.balance),
+            daily_anchor="100000",
+            qualifying_days=0,
+            virtual_time_utc=boundary_time,
+            last_event_sequence=1,
+            open_positions=1 if open_position is not None else 0,
+            pending_orders=0,
+            evaluation_quality="full_for_declared_model",
+        )
+        resume = {
+            "cursor": {
+                "bar_index": snapshot.cursor_index,
+                "timestamp_utc": boundary_time.isoformat().replace("+00:00", "Z"),
+            },
+            "open_positions": [open_position] if open_position is not None else [],
+            "pending_orders": [],
+            "replay_binding": {
+                "replay_session_id": replay_id,
+                "branch_id": snapshot.branch_id,
+                "dataset_id": snapshot.dataset_id,
+                "dataset_sha256": snapshot.dataset_sha256,
+                "last_replay_event_sequence": snapshot.event_sequence,
+            },
+        }
+        self.store.create_prop_session_bundle(session, attempt, phase, resume_state=resume)
+        intent = TransitionIntent(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            profile_hash=profile.profile_hash,
+            intent_id=f"phase-next-{uuid4().hex}",
+            expected_revision=1,
+            event_sequence=1,
+            action="next_phase",
+        )
+        return session, attempt, phase, resume, intent
+
     def test_api_replay_fill_ledger_feeds_persisted_prop_attempt_idempotently(self):
         rows = [
             {"timestamp": BASE_TIME, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000, "volume": 10},
@@ -598,6 +771,396 @@ class ReplayPropPostgresIntegrationTests(unittest.TestCase):
         snapshot = ReplayExecutionSnapshot.model_validate(replay_record["payload"]["execution"])
         self.assertEqual(snapshot.event_sequence, 2)
         self.assertEqual(len(snapshot.ledger), 2)
+
+    def test_replay_bound_next_phase_is_atomic_idempotent_and_phase2_feedable(self):
+        rows = [
+            {"timestamp": BASE_TIME, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000, "volume": 10},
+            {"timestamp": BASE_TIME + 60, "open": 1.1000, "high": 1.1020, "low": 1.0990, "close": 1.1010, "volume": 11},
+            {"timestamp": BASE_TIME + 120, "open": 1.1010, "high": 1.1030, "low": 1.1000, "close": 1.1020, "volume": 12},
+            {"timestamp": BASE_TIME + 180, "open": 1.1020, "high": 1.1040, "low": 1.1010, "close": 1.1030, "volume": 13},
+        ]
+        dataset = self.research.register_dataset(
+            workspace_id=self.workspace_id,
+            source=DatasetSource(
+                source_id="ps02c2-phase-fixture",
+                provider="synthetic-local",
+                instrument_mapping={"EURUSD": "EURUSD"},
+                license_use="qa-only",
+                retrieved_at_utc="2026-09-25T00:00:00Z",
+                export_settings="ps02c2-phase-transition-v1",
+            ),
+            instrument_id="EURUSD",
+            timeframe="1m",
+            rows=rows,
+        )
+        replay_service = ReplayService(self.store, self.artifacts)
+        created = replay_service.create(self.workspace_id, dataset.dataset_id, 0)
+        replay_id = created["record_id"]
+        initialized = replay_service.initialize_execution(
+            self.workspace_id,
+            replay_id,
+            created["revision"],
+            instrument_spec=instrument_mapping(),
+            cost_model=cost_mapping(),
+            spread_price="0.0002",
+            timeframe_seconds=60,
+            starting_balance="100000",
+        )
+        stepped = replay_service.step(self.workspace_id, replay_id, initialized["revision"], 1)
+        boundary = ReplayExecutionSnapshot.model_validate(stepped["payload"]["execution"])
+        boundary_event = ReplayExecutionEvent.model_validate(boundary.ledger[-1])
+        self.assertEqual(boundary_event.kind, "price_mark")
+
+        first = phase_spec(
+            phase_index=1,
+            initial_capital="100000",
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+        second = phase_spec(
+            phase_index=2,
+            initial_capital="50000",
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+        profile = PropProfileSnapshot(
+            profile_id="ps02c2-multi",
+            terms_version="2026-09-25",
+            profile_hash="sha256:ps02c2-multi",
+            effective_from=date(2026, 9, 25),
+            source_kind="generic",
+            supported_rule_flags=["daily_loss", "overall_drawdown", "profit_target"],
+            phases=[first, second],
+        )
+        session_id = f"prop-{uuid4().hex}"
+        attempt_id = f"attempt-{uuid4().hex}"
+        session = PropSessionSnapshot(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            profile=profile,
+            status="phase_passed",
+        )
+        attempt = ChallengeAttemptSnapshot(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            profile_id=profile.profile_id,
+            terms_version=profile.terms_version,
+            profile_hash=profile.profile_hash,
+            data_version=f"sha256:{dataset.artifact_sha256}",
+            cost_version="replay-cost-v1",
+            engine_version="replay-v1",
+            status="phase_passed",
+            revision=1,
+            virtual_start_utc=datetime.fromtimestamp(BASE_TIME, tz=timezone.utc),
+            virtual_cutoff_utc=datetime.fromtimestamp(BASE_TIME + 3600, tz=timezone.utc),
+        )
+        boundary_time = datetime.fromtimestamp(boundary_event.virtual_time_utc, tz=timezone.utc)
+        phase = PhaseStateSnapshot(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            profile_hash=profile.profile_hash,
+            phase_index=1,
+            initial_balance="100000",
+            balance=boundary.balance,
+            floating_pl=boundary.floating_pl,
+            equity=boundary.equity,
+            high_water_mark=max(boundary.equity, boundary.balance),
+            daily_anchor="100000",
+            qualifying_days=0,
+            virtual_time_utc=boundary_time,
+            last_event_sequence=1,
+            open_positions=0,
+            pending_orders=0,
+            evaluation_quality="full_for_declared_model",
+        )
+        resume = {
+            "cursor": {
+                "bar_index": boundary.cursor_index,
+                "timestamp_utc": boundary_time.isoformat().replace("+00:00", "Z"),
+            },
+            "open_positions": [],
+            "pending_orders": [],
+            "replay_binding": {
+                "replay_session_id": replay_id,
+                "branch_id": boundary.branch_id,
+                "dataset_id": boundary.dataset_id,
+                "dataset_sha256": boundary.dataset_sha256,
+                "last_replay_event_sequence": boundary.event_sequence,
+            },
+        }
+        self.store.create_prop_session_bundle(session, attempt, phase, resume_state=resume)
+
+        intent = TransitionIntent(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            profile_hash=profile.profile_hash,
+            intent_id="phase-1-to-2",
+            expected_revision=1,
+            event_sequence=1,
+            action="next_phase",
+        )
+        transitioned = self.store.apply_prop_transition_intent(intent)
+        self.assertFalse(transitioned["duplicate"])
+        self.assertEqual(transitioned["attempt"].status, "next_phase_ready")
+        self.assertEqual(transitioned["phase"].phase_index, 2)
+        self.assertEqual(transitioned["phase"].initial_balance, 50000)
+        self.assertEqual(transitioned["phase"].balance, 50000)
+
+        replay_after = ReplayExecutionSnapshot.model_validate(
+            transitioned["replay_record"]["payload"]["execution"]
+        )
+        self.assertEqual(replay_after.starting_balance, 100000)
+        self.assertEqual(replay_after.phase_index, 2)
+        self.assertEqual(replay_after.phase_initial_balance, 50000)
+        self.assertEqual(replay_after.balance, 50000)
+        self.assertEqual(replay_after.event_sequence, boundary.event_sequence + 1)
+        self.assertEqual(replay_after.ledger[-1]["kind"], "phase_transition")
+        self.assertEqual(
+            transitioned["resume_state"]["replay_binding"]["last_replay_event_sequence"],
+            replay_after.event_sequence,
+        )
+
+        duplicate = PostgresStore(os.environ["TW_V2_DATABASE_URL"]).apply_prop_transition_intent(intent)
+        self.assertTrue(duplicate["duplicate"])
+        self.assertEqual(duplicate["attempt"].revision, transitioned["attempt"].revision)
+        self.assertEqual(duplicate["replay_record"]["revision"], transitioned["replay_record"]["revision"])
+
+        started = self.store.apply_prop_transition_intent(
+            TransitionIntent(
+                workspace_id=self.workspace_id,
+                session_id=session_id,
+                attempt_id=attempt_id,
+                profile_hash=profile.profile_hash,
+                intent_id="start-phase-2",
+                expected_revision=transitioned["attempt"].revision,
+                event_sequence=transitioned["phase"].last_event_sequence,
+                action="start",
+            )
+        )
+        advanced = replay_service.step(
+            self.workspace_id,
+            replay_id,
+            transitioned["replay_record"]["revision"],
+            1,
+        )
+        advanced_snapshot = ReplayExecutionSnapshot.model_validate(advanced["payload"]["execution"])
+        self.assertEqual(advanced_snapshot.phase_index, 2)
+        phase2_mark = ReplayExecutionEvent.model_validate(advanced_snapshot.ledger[-1])
+        fed = replay_service.feed_prop_lifecycle(
+            self.workspace_id,
+            replay_id,
+            prop_session_id=session_id,
+            prop_attempt_id=attempt_id,
+            replay_event_sequence=phase2_mark.sequence,
+            expected_prop_revision=started["attempt"].revision,
+            prop_event_sequence=started["phase"].last_event_sequence + 1,
+        )
+        self.assertFalse(fed["duplicate"])
+        self.assertEqual(fed["phase"]["phase_index"], 2)
+        self.assertEqual(fed["phase"]["initial_balance"], "50000")
+
+        with self.assertRaises(PropIdempotencyConflict):
+            self.store.apply_prop_transition_intent(
+                intent.model_copy(update={"expected_revision": 999})
+            )
+
+        late_duplicate = self.store.apply_prop_transition_intent(intent)
+        self.assertTrue(late_duplicate["duplicate"])
+        self.assertEqual(late_duplicate["attempt"].revision, fed["attempt"]["revision"])
+        self.assertEqual(late_duplicate["phase"].phase_index, 2)
+
+    def test_replay_bound_carry_all_preserves_position_and_two_tab_race_commits_once(self):
+        dataset, _, replay_id, _, snapshot, boundary_event = self._build_replay_boundary(with_position=True)
+        _, _, _, _, intent = self._create_bound_multiphase_bundle(
+            dataset=dataset,
+            replay_id=replay_id,
+            snapshot=snapshot,
+            boundary_event=boundary_event,
+            carry_policy="carry_all",
+            position_policy="carry",
+            next_initial="50000",
+        )
+        second_intent = intent.model_copy(update={"intent_id": f"phase-next-{uuid4().hex}"})
+
+        def apply(candidate):
+            try:
+                return PostgresStore(os.environ["TW_V2_DATABASE_URL"]).apply_prop_transition_intent(candidate)
+            except Exception as exc:
+                return exc
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            outcomes = list(pool.map(apply, (intent, second_intent)))
+        successes = [item for item in outcomes if isinstance(item, dict)]
+        failures = [item for item in outcomes if isinstance(item, Exception)]
+        self.assertEqual(len(successes), 1)
+        self.assertEqual(len(failures), 1)
+        self.assertIsInstance(failures[0], PropPersistenceConflict)
+
+        result = successes[0]
+        replay_after = ReplayExecutionSnapshot.model_validate(result["replay_record"]["payload"]["execution"])
+        self.assertEqual(replay_after.position, snapshot.position)
+        self.assertEqual(replay_after.balance, snapshot.balance)
+        self.assertEqual(replay_after.floating_pl, snapshot.floating_pl)
+        self.assertEqual(result["resume_state"]["open_positions"], [snapshot.position.model_dump(mode="json")])
+        self.assertEqual(
+            len([item for item in replay_after.ledger if item.get("kind") == "phase_transition"]),
+            1,
+        )
+
+    def test_replay_bound_carry_balance_preserves_realized_balance_in_both_domains(self):
+        dataset, _, replay_id, _, snapshot, boundary_event = self._build_replay_boundary()
+        carried_balance = snapshot.balance + 2750
+        carried_snapshot = snapshot.model_copy(
+            update={"balance": carried_balance, "floating_pl": 0, "equity": carried_balance}
+        )
+        boundary_event = boundary_event.model_copy(
+            update={
+                "balance": carried_balance,
+                "floating_pl": 0,
+                "equity": carried_balance,
+            }
+        )
+        carried_snapshot = carried_snapshot.model_copy(
+            update={
+                "ledger": [
+                    *carried_snapshot.ledger[:-1],
+                    boundary_event.model_dump(mode="json"),
+                ]
+            }
+        )
+        replay_record = self.store.get_record(self.workspace_id, "replay", replay_id)
+        replay_payload = dict(replay_record["payload"])
+        replay_payload["execution"] = carried_snapshot.model_dump(mode="json")
+        self.store.update_record(
+            self.workspace_id,
+            "replay",
+            replay_id,
+            replay_record["revision"],
+            replay_payload,
+        )
+        _, _, _, _, intent = self._create_bound_multiphase_bundle(
+            dataset=dataset,
+            replay_id=replay_id,
+            snapshot=carried_snapshot,
+            boundary_event=boundary_event,
+            carry_policy="carry_balance",
+            position_policy="must_be_flat",
+            next_initial="50000",
+        )
+
+        result = self.store.apply_prop_transition_intent(intent)
+        replay_after = ReplayExecutionSnapshot.model_validate(result["replay_record"]["payload"]["execution"])
+        self.assertEqual(result["phase"].balance, carried_balance)
+        self.assertEqual(result["phase"].floating_pl, 0)
+        self.assertEqual(result["phase"].high_water_mark, carried_balance)
+        self.assertEqual(replay_after.balance, carried_balance)
+        self.assertEqual(replay_after.floating_pl, 0)
+        self.assertEqual(replay_after.phase_initial_balance, 50000)
+
+    def test_replay_bound_next_phase_rejects_unconsumed_replay_progression_without_prop_writes(self):
+        dataset, replay_service, replay_id, stepped, snapshot, boundary_event = self._build_replay_boundary()
+        session, attempt, _, _, intent = self._create_bound_multiphase_bundle(
+            dataset=dataset,
+            replay_id=replay_id,
+            snapshot=snapshot,
+            boundary_event=boundary_event,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+        advanced = replay_service.step(self.workspace_id, replay_id, stepped["revision"], 1)
+        advanced_snapshot = ReplayExecutionSnapshot.model_validate(advanced["payload"]["execution"])
+        self.assertGreater(advanced_snapshot.event_sequence, snapshot.event_sequence)
+
+        with self.assertRaisesRegex(PropPersistenceConflict, "unconsumed progression"):
+            self.store.apply_prop_transition_intent(intent)
+
+        restored = self.store.get_prop_resume_state(self.workspace_id, session.session_id, attempt.attempt_id)
+        self.assertEqual(restored["attempt"].revision, 1)
+        self.assertEqual(restored["phase"].phase_index, 1)
+        replay_restored = self.store.get_record(self.workspace_id, "replay", replay_id)
+        self.assertEqual(replay_restored["revision"], advanced["revision"])
+        self.assertFalse(any(item.get("kind") == "phase_transition" for item in advanced_snapshot.ledger))
+
+    def test_replay_bound_next_phase_rejects_pending_replay_order_without_prop_writes(self):
+        dataset, replay_service, replay_id, stepped, snapshot, boundary_event = self._build_replay_boundary()
+        session, attempt, _, _, intent = self._create_bound_multiphase_bundle(
+            dataset=dataset,
+            replay_id=replay_id,
+            snapshot=snapshot,
+            boundary_event=boundary_event,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+        queued = replay_service.queue_market_order(
+            self.workspace_id,
+            replay_id,
+            stepped["revision"],
+            operation_id=f"pending-{uuid4().hex}",
+            side="BUY",
+            quantity="0.10",
+            stop_loss="1.0900",
+            take_profit="1.1400",
+        )
+
+        with self.assertRaisesRegex(PropPersistenceConflict, "zero pending replay orders"):
+            self.store.apply_prop_transition_intent(intent)
+
+        prop_restored = self.store.get_prop_resume_state(self.workspace_id, session.session_id, attempt.attempt_id)
+        self.assertEqual(prop_restored["attempt"].revision, 1)
+        self.assertEqual(prop_restored["phase"].phase_index, 1)
+        replay_restored = self.store.get_record(self.workspace_id, "replay", replay_id)
+        self.assertEqual(replay_restored["revision"], queued["revision"])
+        restored_snapshot = ReplayExecutionSnapshot.model_validate(replay_restored["payload"]["execution"])
+        self.assertIsNotNone(restored_snapshot.pending_market_order)
+        self.assertFalse(any(item.get("kind") == "phase_transition" for item in restored_snapshot.ledger))
+
+    def test_replay_bound_next_phase_rolls_back_replay_and_prop_on_mid_transaction_failure(self):
+        dataset, _, replay_id, stepped, snapshot, boundary_event = self._build_replay_boundary()
+        session, attempt, _, _, intent = self._create_bound_multiphase_bundle(
+            dataset=dataset,
+            replay_id=replay_id,
+            snapshot=snapshot,
+            boundary_event=boundary_event,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+
+        with patch.object(self.store, "_sync_prop_session_status", side_effect=RuntimeError("forced sync failure")):
+            with self.assertRaisesRegex(RuntimeError, "forced sync failure"):
+                self.store.apply_prop_transition_intent(intent)
+
+        replay_restored = self.store.get_record(self.workspace_id, "replay", replay_id)
+        restored_snapshot = ReplayExecutionSnapshot.model_validate(replay_restored["payload"]["execution"])
+        self.assertEqual(replay_restored["revision"], stepped["revision"])
+        self.assertEqual(restored_snapshot.event_sequence, snapshot.event_sequence)
+        self.assertFalse(any(item.get("kind") == "phase_transition" for item in restored_snapshot.ledger))
+        prop_restored = self.store.get_prop_resume_state(self.workspace_id, session.session_id, attempt.attempt_id)
+        self.assertEqual(prop_restored["attempt"].revision, 1)
+        self.assertEqual(prop_restored["phase"].phase_index, 1)
+
+    def test_replay_bound_next_phase_rejects_final_dataset_bar_without_writes(self):
+        dataset, _, replay_id, stepped, snapshot, boundary_event = self._build_replay_boundary(row_count=2)
+        session, attempt, _, _, intent = self._create_bound_multiphase_bundle(
+            dataset=dataset,
+            replay_id=replay_id,
+            snapshot=snapshot,
+            boundary_event=boundary_event,
+            carry_policy="reset",
+            position_policy="must_be_flat",
+        )
+        self.assertEqual(stepped["payload"]["status"], "completed")
+
+        with self.assertRaisesRegex(PropPersistenceConflict, "future replay bar"):
+            self.store.apply_prop_transition_intent(intent)
+
+        replay_restored = self.store.get_record(self.workspace_id, "replay", replay_id)
+        self.assertEqual(replay_restored["revision"], stepped["revision"])
+        prop_restored = self.store.get_prop_resume_state(self.workspace_id, session.session_id, attempt.attempt_id)
+        self.assertEqual(prop_restored["attempt"].revision, 1)
+        self.assertEqual(prop_restored["phase"].phase_index, 1)
 
 
 if __name__ == "__main__":

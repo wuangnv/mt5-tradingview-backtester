@@ -196,6 +196,27 @@ def transition_intent(
 
 
 class Ps02PropLifecycleTests(unittest.TestCase):
+    def test_direct_replay_bound_next_phase_requires_canonical_store_transition(self):
+        session, attempt, phase = multi_phase_context(carry_policy="reset")
+        attempt = attempt.model_copy(update={"status": "phase_passed", "revision": 4})
+        session = session.model_copy(update={"status": "phase_passed"})
+        with self.assertRaisesRegex(PropSessionContractError, "canonical replay phase transition"):
+            apply_prop_lifecycle_command(
+                session,
+                attempt,
+                phase,
+                transition_intent(attempt, phase, "next_phase"),
+                resume_state={
+                    "replay_binding": {
+                        "replay_session_id": "replay-1",
+                        "branch_id": "root",
+                        "dataset_id": "dataset-1",
+                        "dataset_sha256": "a" * 64,
+                        "last_replay_event_sequence": 7,
+                    }
+                },
+            )
+
     def test_breach_wins_when_profit_target_and_loss_breach_share_one_event(self):
         session, attempt, phase = context()
         result = evaluate_prop_lifecycle_event(
@@ -957,7 +978,7 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
         self.assertEqual(restored["phase"].phase_index, 1)
         self.assertEqual(restored["phase"].open_positions, 1)
 
-    def test_next_phase_rejects_replay_bound_attempt_until_canonical_replay_transition_exists(self):
+    def test_next_phase_rejects_replay_binding_when_canonical_replay_record_is_missing(self):
         session, attempt, phase, resume = self.create_multiphase_bundle(carry_policy="reset")
         attempt_passed = attempt.model_copy(update={"status": "phase_passed"})
         session_passed = session.model_copy(update={"status": "phase_passed"})
@@ -983,7 +1004,7 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
             phase,
             resume_state=replay_resume,
         )
-        with self.assertRaisesRegex(PropSessionContractError, "canonical replay phase transition"):
+        with self.assertRaisesRegex(PropPersistenceConflict, "canonical replay session not found"):
             self.store.apply_prop_transition_intent(
                 transition_intent(attempt_passed, phase, "next_phase")
             )
