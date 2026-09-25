@@ -228,8 +228,6 @@ class PhaseStateSnapshot(BaseModel):
     def money_path_is_consistent(self):
         if self.equity != self.balance + self.floating_pl:
             raise ValueError("equity must equal balance plus floating_pl")
-        if self.high_water_mark < self.equity:
-            raise ValueError("high_water_mark cannot be below current equity")
         _utc(self.virtual_time_utc, "virtual_time_utc")
         return self
 
@@ -267,6 +265,41 @@ class PropResumeSaveRequest(BaseModel):
     expected_revision: int = Field(ge=1, strict=True)
     operation_id: str = Field(min_length=1, max_length=128)
     resume_state: dict = Field(default_factory=dict)
+
+
+class PropLifecycleEvent(BaseModel):
+    """Canonical simulation snapshot consumed by the Prop evaluator.
+
+    This contract deliberately consumes simulator state instead of creating fills.
+    A later Replay/simulator slice owns order generation and fill semantics.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    workspace_id: str = Field(min_length=1, max_length=128)
+    session_id: str = Field(min_length=1, max_length=128)
+    attempt_id: str = Field(min_length=1, max_length=128)
+    profile_hash: str = Field(min_length=8, max_length=128)
+    operation_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=1, strict=True)
+    event_sequence: int = Field(ge=1, strict=True)
+    kind: Literal["simulation_snapshot", "calendar_boundary"] = "simulation_snapshot"
+    virtual_time_utc: datetime
+    balance_before_separate_costs: Decimal
+    floating_pl: Decimal = Decimal("0")
+    fees: Decimal = Decimal("0")
+    swap: Decimal = Decimal("0")
+    conversion_adjustment: Decimal = Decimal("0")
+    accounting: Literal["costs_included", "costs_separate"] = "costs_included"
+    open_positions: int = Field(default=0, ge=0, strict=True)
+    pending_orders: int = Field(default=0, ge=0, strict=True)
+    evaluation_quality: Literal["full_for_declared_model", "approximate", "insufficient"]
+    qualifying_day: bool = False
+
+    @field_validator("virtual_time_utc")
+    @classmethod
+    def event_time_is_aware(cls, value: datetime) -> datetime:
+        return _utc(value, "virtual_time_utc")
 
 
 class TransitionIntent(BaseModel):
@@ -545,6 +578,258 @@ def calendar_oracle(
         "min_qualifying_days_satisfied": len(qualifying) >= phase.min_qualifying_days,
         "deadline_utc": deadline_utc,
         "expired": expired,
+    }
+
+
+def evaluate_prop_lifecycle_event(
+    session: PropSessionSnapshot,
+    attempt: ChallengeAttemptSnapshot,
+    phase: PhaseStateSnapshot,
+    event: PropLifecycleEvent,
+    *,
+    resume_state: dict | None = None,
+) -> dict:
+    """Evaluate one ordered simulation event without generating orders or fills."""
+
+    validate_attempt_against_session(session, attempt)
+    if event.workspace_id != attempt.workspace_id:
+        raise PropSessionContractError("workspace mismatch")
+    if event.session_id != attempt.session_id or event.attempt_id != attempt.attempt_id:
+        raise PropSessionContractError("session or attempt mismatch")
+    if event.profile_hash != attempt.profile_hash or phase.profile_hash != attempt.profile_hash:
+        raise PropSessionContractError("profile version mismatch")
+    if event.expected_revision != attempt.revision:
+        raise PropSessionContractError("attempt revision conflict")
+    if attempt.status != "running":
+        raise PropSessionContractError("lifecycle events require a running attempt")
+    if event.event_sequence != phase.last_event_sequence + 1:
+        raise PropSessionContractError("event sequence must advance exactly once")
+
+    event_time = _utc(event.virtual_time_utc, "virtual_time_utc")
+    phase_time = _utc(phase.virtual_time_utc, "phase.virtual_time_utc")
+    if event_time < phase_time:
+        raise PropSessionContractError("virtual time cannot move backwards")
+    if event_time > _utc(attempt.virtual_cutoff_utc, "attempt.virtual_cutoff_utc"):
+        raise PropSessionContractError("event exceeds the attempt virtual cutoff")
+    if phase.phase_index > len(session.profile.phases):
+        raise PropSessionContractError("phase state references an unknown frozen phase")
+    phase_spec = session.profile.phases[phase.phase_index - 1]
+    eod_trailing = (
+        phase_spec.overall_drawdown.kind == "trailing"
+        and phase_spec.overall_drawdown.trailing_granularity == "end_of_day"
+    )
+    phase_hwm_current = (
+        phase.balance
+        if phase_spec.overall_drawdown.kind == "trailing"
+        and phase_spec.overall_drawdown.basis == "balance"
+        else phase.equity
+    )
+    if not eod_trailing and phase.high_water_mark < phase_hwm_current:
+        raise PropSessionContractError("high_water_mark cannot be below current equity")
+
+    resume = dict(resume_state or {})
+    lifecycle = dict(resume.get("prop_lifecycle") or {})
+    if event.evaluation_quality != "full_for_declared_model":
+        objectives = {
+            "schema": "prop-objectives-v1",
+            "phase_index": phase.phase_index,
+            "money": None,
+            "calendar": None,
+            "positions_ready": False,
+            "pass_ready": False,
+            "technical_status": "blocked_by_data",
+            "terminal_action": None,
+        }
+        lifecycle.update(
+            {
+                "last_operation_id": event.operation_id,
+                "last_event_kind": event.kind,
+                "last_objectives": objectives,
+            }
+        )
+        resume["prop_lifecycle"] = lifecycle
+        return {
+            "attempt": attempt.model_copy(update={"revision": attempt.revision + 1}),
+            "phase": phase.model_copy(update={"evaluation_quality": event.evaluation_quality}),
+            "resume_state": resume,
+            "objectives": objectives,
+        }
+
+    raw_dates = lifecycle.get("qualifying_local_dates") or []
+    try:
+        qualifying_dates = {date.fromisoformat(str(value)) for value in raw_dates}
+    except ValueError as exc:
+        raise PropSessionContractError("stored qualifying day is invalid") from exc
+    if event.qualifying_day:
+        local_day = event_time.astimezone(ZoneInfo(phase_spec.reset_timezone)).date()
+        qualifying_dates.add(local_day)
+
+    calendar = calendar_oracle(
+        phase_spec,
+        virtual_start_utc=attempt.virtual_start_utc,
+        previous_virtual_utc=phase_time,
+        current_virtual_utc=event_time,
+        qualifying_local_dates=sorted(qualifying_dates),
+    )
+    boundaries = calendar["reset_boundaries"]
+    if event.kind == "simulation_snapshot" and boundaries:
+        raise PropSessionContractError("calendar boundary must be processed explicitly before simulation progression")
+    if event.kind == "calendar_boundary":
+        if len(boundaries) != 1 or boundaries[0]["boundary_utc"] != event_time:
+            raise PropSessionContractError("calendar boundary event must match the next reset boundary exactly")
+
+    pre_cost_balance = _decimal(event.balance_before_separate_costs, "balance_before_separate_costs")
+    if event.accounting == "costs_separate":
+        pre_cost_balance += _decimal(event.conversion_adjustment, "conversion_adjustment")
+    pre_cost_equity = pre_cost_balance + _decimal(event.floating_pl, "floating_pl")
+    pre_cost_hwm_value = (
+        pre_cost_balance
+        if phase_spec.overall_drawdown.kind == "trailing"
+        and phase_spec.overall_drawdown.basis == "balance"
+        else pre_cost_equity
+    )
+    next_hwm = phase.high_water_mark if eod_trailing else max(phase.high_water_mark, pre_cost_hwm_value)
+
+    daily_anchor = phase.daily_anchor
+    if event.kind == "calendar_boundary" and phase_spec.reset_order == "reset_then_fees":
+        daily_anchor = pre_cost_balance if phase_spec.daily_loss.basis == "balance" else pre_cost_equity
+
+    evaluation_money = money_oracle(
+        phase_spec,
+        MoneyOracleInput(
+            initial_capital=phase.initial_balance,
+            daily_anchor=daily_anchor,
+            balance_before_separate_costs=event.balance_before_separate_costs,
+            floating_pl=event.floating_pl,
+            high_water_mark=next_hwm,
+            fees=event.fees,
+            swap=event.swap,
+            conversion_adjustment=event.conversion_adjustment,
+            accounting=event.accounting,
+        ),
+    )
+    if not eod_trailing:
+        evaluated_hwm_value = (
+            evaluation_money["balance"]
+            if phase_spec.overall_drawdown.kind == "trailing"
+            and phase_spec.overall_drawdown.basis == "balance"
+            else evaluation_money["equity"]
+        )
+        next_hwm = max(next_hwm, evaluated_hwm_value)
+    money = evaluation_money
+    if (
+        event.kind == "calendar_boundary"
+        and phase_spec.reset_order == "fees_then_reset"
+        and evaluation_money["terminal_precedence"] is None
+    ):
+        daily_anchor = (
+            evaluation_money["balance"]
+            if phase_spec.daily_loss.basis == "balance"
+            else evaluation_money["equity"]
+        )
+        # Fees/swap were already applied before the reset. Re-evaluate the visible
+        # post-reset objective floors from the resulting money state without
+        # applying those costs a second time.
+        money = money_oracle(
+            phase_spec,
+            MoneyOracleInput(
+                initial_capital=phase.initial_balance,
+                daily_anchor=daily_anchor,
+                balance_before_separate_costs=evaluation_money["balance"],
+                floating_pl=event.floating_pl,
+                high_water_mark=next_hwm,
+                accounting="costs_included",
+            ),
+        )
+    if eod_trailing and event.kind == "calendar_boundary":
+        boundary_hwm_value = (
+            money["balance"]
+            if phase_spec.overall_drawdown.basis == "balance"
+            else money["equity"]
+        )
+        next_hwm = max(next_hwm, boundary_hwm_value)
+        money = money_oracle(
+            phase_spec,
+            MoneyOracleInput(
+                initial_capital=phase.initial_balance,
+                daily_anchor=daily_anchor,
+                balance_before_separate_costs=money["balance"],
+                floating_pl=event.floating_pl,
+                high_water_mark=next_hwm,
+                accounting="costs_included",
+            ),
+        )
+    is_last_phase = phase.phase_index == len(session.profile.phases)
+    positions_ready = event.pending_orders == 0 and (
+        event.open_positions == 0 or (not is_last_phase and phase_spec.position_policy == "carry")
+    )
+    objective_pass_ready = (
+        money["profit_target"]["hit"]
+        and calendar["min_qualifying_days_satisfied"]
+        and positions_ready
+    )
+
+    terminal_action = None
+    next_status: AttemptStatus = attempt.status
+    if money["terminal_precedence"] == "failed_breach":
+        terminal_action = "breach"
+        next_status = "failed_breach"
+    elif calendar["expired"]:
+        terminal_action = "expire"
+        next_status = "expired"
+    elif objective_pass_ready:
+        if is_last_phase:
+            terminal_action = "complete_pass"
+            next_status = "completed_pass"
+        else:
+            terminal_action = "phase_pass"
+            next_status = "phase_passed"
+
+    updated_attempt = attempt.model_copy(
+        update={"status": next_status, "revision": attempt.revision + 1}
+    )
+    updated_phase = phase.model_copy(
+        update={
+            "balance": money["balance"],
+            "floating_pl": _decimal(event.floating_pl, "floating_pl"),
+            "equity": money["equity"],
+            "high_water_mark": next_hwm,
+            "daily_anchor": daily_anchor,
+            "qualifying_days": calendar["qualifying_days"],
+            "virtual_time_utc": event_time,
+            "last_event_sequence": event.event_sequence,
+            "open_positions": event.open_positions,
+            "pending_orders": event.pending_orders,
+            "evaluation_quality": event.evaluation_quality,
+        }
+    )
+    objectives = {
+        "schema": "prop-objectives-v1",
+        "phase_index": phase.phase_index,
+        "money": money,
+        "calendar": calendar,
+        "positions_ready": positions_ready,
+        "pass_ready": objective_pass_ready,
+        "technical_status": "ready",
+        "terminal_action": terminal_action,
+    }
+    persisted_objectives = json.loads(json.dumps(objectives, default=str))
+    lifecycle.update(
+        {
+            "qualifying_local_dates": [value.isoformat() for value in sorted(qualifying_dates)],
+            "last_operation_id": event.operation_id,
+            "last_event_kind": event.kind,
+            # Keep the persisted snapshot JSON-safe and precision-preserving.
+            # Decimal values become strings and datetimes become ISO strings.
+            "last_objectives": persisted_objectives,
+        }
+    )
+    resume["prop_lifecycle"] = lifecycle
+    return {
+        "attempt": updated_attempt,
+        "phase": updated_phase,
+        "resume_state": resume,
+        "objectives": persisted_objectives,
     }
 
 

@@ -13,8 +13,10 @@ from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
 from .prop_session import (
     ChallengeAttemptSnapshot,
     PhaseStateSnapshot,
+    PropLifecycleEvent,
     PropSessionContractError,
     PropSessionSnapshot,
+    evaluate_prop_lifecycle_event,
     validate_attempt_against_session,
 )
 from .research_oos import complete_canceled_sweep_outcomes
@@ -1032,6 +1034,18 @@ class PostgresStore:
         phase_spec = session.profile.phases[phase.phase_index - 1]
         if phase.initial_balance != phase_spec.initial_capital:
             raise PropSessionContractError("phase initial balance does not match frozen phase capital")
+        eod_trailing = (
+            phase_spec.overall_drawdown.kind == "trailing"
+            and phase_spec.overall_drawdown.trailing_granularity == "end_of_day"
+        )
+        hwm_current = (
+            phase.balance
+            if phase_spec.overall_drawdown.kind == "trailing"
+            and phase_spec.overall_drawdown.basis == "balance"
+            else phase.equity
+        )
+        if not eod_trailing and phase.high_water_mark < hwm_current:
+            raise PropSessionContractError("high_water_mark cannot be below current equity")
         if phase.virtual_time_utc < attempt.virtual_start_utc or phase.virtual_time_utc > attempt.virtual_cutoff_utc:
             raise PropSessionContractError("phase virtual time is outside the attempt interval")
 
@@ -1512,6 +1526,177 @@ class PostgresStore:
             )
             conn.commit()
         return {"attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
+
+    def apply_prop_lifecycle_event(
+        self,
+        event: PropLifecycleEvent,
+        *,
+        resume_state: dict | None = None,
+    ) -> dict:
+        """Atomically evaluate and persist one simulation-only Prop lifecycle event."""
+
+        supplied_resume = None if resume_state is None else dict(resume_state)
+        fingerprint = _payload_fingerprint(
+            {
+                "event": event.model_dump(mode="json"),
+                "resume_state": supplied_resume,
+            }
+        )
+        now = utc_now_iso()
+        with self.connect() as conn:
+            session_row = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_sessions
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (event.workspace_id, event.session_id),
+            ).fetchone()
+            if session_row is None:
+                raise LookupError("prop session not found")
+            session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
+
+            row = conn.execute(
+                """
+                SELECT current_revision,snapshot_json,phase_json,resume_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                FOR UPDATE
+                """,
+                (event.workspace_id, event.session_id, event.attempt_id),
+            ).fetchone()
+            if row is None:
+                raise LookupError("prop attempt not found")
+
+            receipt = conn.execute(
+                """
+                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
+                """,
+                (event.workspace_id, event.session_id, event.attempt_id, event.operation_id),
+            ).fetchone()
+            if receipt is not None:
+                if receipt["fingerprint"] != fingerprint:
+                    raise PropIdempotencyConflict("operation_id was already used with different lifecycle content")
+                revision = conn.execute(
+                    """
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempt_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=%s
+                    """,
+                    (
+                        event.workspace_id,
+                        event.session_id,
+                        event.attempt_id,
+                        int(receipt["entity_revision"]),
+                    ),
+                ).fetchone()
+                if revision is None:
+                    raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
+                historical_resume = revision["resume_json"]
+                lifecycle = historical_resume.get("prop_lifecycle") if isinstance(historical_resume, dict) else None
+                return {
+                    "session": session,
+                    "attempt": ChallengeAttemptSnapshot.model_validate(revision["snapshot_json"]),
+                    "phase": PhaseStateSnapshot.model_validate(revision["phase_json"]),
+                    "resume_state": historical_resume,
+                    "objectives": lifecycle.get("last_objectives") if isinstance(lifecycle, dict) else None,
+                    "duplicate": True,
+                }
+
+            current = ChallengeAttemptSnapshot.model_validate(row["snapshot_json"])
+            current_phase = PhaseStateSnapshot.model_validate(row["phase_json"])
+            if int(row["current_revision"]) != event.expected_revision:
+                raise PropPersistenceConflict("prop attempt revision conflict")
+
+            current_resume = dict(row["resume_json"] or {})
+            next_resume = dict(
+                current_resume
+                if supplied_resume is None or event.evaluation_quality != "full_for_declared_model"
+                else supplied_resume
+            )
+            # Lifecycle-derived state is server-owned. A simulator may update cursor,
+            # positions and pending orders but cannot rewrite objective history.
+            if "prop_lifecycle" in current_resume:
+                next_resume["prop_lifecycle"] = current_resume["prop_lifecycle"]
+
+            result = evaluate_prop_lifecycle_event(
+                session,
+                current,
+                current_phase,
+                event,
+                resume_state=next_resume,
+            )
+            updated_attempt = result["attempt"]
+            updated_phase = result["phase"]
+            updated_resume = result["resume_state"]
+            self._validate_prop_phase_scope(session, updated_attempt, updated_phase)
+            self._validate_resume_counts(updated_phase, updated_resume)
+            self._validate_resume_cursor(updated_resume, current_resume)
+            if updated_phase.phase_index != current_phase.phase_index:
+                raise PropPersistenceConflict("lifecycle evaluation cannot change phase index directly")
+
+            attempt_json = json.dumps(updated_attempt.model_dump(mode="json"), sort_keys=True)
+            phase_json = json.dumps(updated_phase.model_dump(mode="json"), sort_keys=True)
+            resume_json = json.dumps(updated_resume, sort_keys=True)
+            conn.execute(
+                """
+                INSERT INTO prop_attempt_revisions(
+                    workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                """,
+                (
+                    event.workspace_id,
+                    event.session_id,
+                    event.attempt_id,
+                    updated_attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                ),
+            )
+            conn.execute(
+                """
+                UPDATE prop_attempts
+                SET current_revision=%s,snapshot_json=%s::jsonb,phase_json=%s::jsonb,resume_json=%s::jsonb,
+                    updated_at_utc=%s
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                """,
+                (
+                    updated_attempt.revision,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                    event.workspace_id,
+                    event.session_id,
+                    event.attempt_id,
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO prop_mutation_receipts(
+                    workspace_id,session_id,attempt_id,operation_id,fingerprint,entity_revision,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s)
+                """,
+                (
+                    event.workspace_id,
+                    event.session_id,
+                    event.attempt_id,
+                    event.operation_id,
+                    fingerprint,
+                    updated_attempt.revision,
+                    now,
+                ),
+            )
+            conn.commit()
+        return {
+            "session": session,
+            "attempt": updated_attempt,
+            "phase": updated_phase,
+            "resume_state": updated_resume,
+            "objectives": result["objectives"],
+            "duplicate": False,
+        }
 
     def overview_counts(self, workspace_id: str) -> dict:
         with self.connect() as conn:
