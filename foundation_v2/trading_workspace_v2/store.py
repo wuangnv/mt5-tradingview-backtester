@@ -1368,6 +1368,41 @@ class PostgresStore:
             "resume_state": row["resume_json"],
         }
 
+    def get_prop_mutation_snapshot(
+        self,
+        workspace_id: str,
+        session_id: str,
+        attempt_id: str,
+        operation_id: str,
+    ) -> dict | None:
+        """Return the immutable attempt revision recorded for one mutation receipt."""
+
+        with self.connect() as conn:
+            receipt = conn.execute(
+                """
+                SELECT fingerprint,entity_revision FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
+                """,
+                (workspace_id, session_id, attempt_id, operation_id),
+            ).fetchone()
+            if receipt is None:
+                return None
+            revision = conn.execute(
+                """
+                SELECT snapshot_json,phase_json,resume_json FROM prop_attempt_revisions
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=%s
+                """,
+                (workspace_id, session_id, attempt_id, int(receipt["entity_revision"])),
+            ).fetchone()
+        if revision is None:
+            raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
+        return {
+            "fingerprint": receipt["fingerprint"],
+            "attempt": ChallengeAttemptSnapshot.model_validate(revision["snapshot_json"]),
+            "phase": PhaseStateSnapshot.model_validate(revision["phase_json"]),
+            "resume_state": revision["resume_json"],
+        }
+
     def save_prop_resume_state(
         self,
         attempt: ChallengeAttemptSnapshot,

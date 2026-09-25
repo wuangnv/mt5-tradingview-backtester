@@ -6,6 +6,7 @@ from uuid import uuid4
 from .artifacts import ArtifactStore
 from .prop_replay import (
     ReplayPropConnectionError,
+    replay_event_operation_id,
     replay_mark_to_prop_event,
     validate_replay_prop_binding,
 )
@@ -134,6 +135,9 @@ class ReplayService:
             raise ValueError("replay execution is not initialized")
         if snapshot.cursor_index != int(payload["cursor_index"]):
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
+        _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
+        if payload.get("status") == "completed" or snapshot.cursor_index >= len(rows) - 1:
+            raise ValueError("market order requires a future replay bar")
         queued = queue_market_order(
             snapshot,
             operation_id=operation_id,
@@ -251,6 +255,20 @@ class ReplayService:
         if selected is None:
             raise LookupError("replay price_mark event not found")
 
+        operation_id = replay_event_operation_id(
+            replay_session_id=replay_session_id,
+            branch_id=snapshot.branch_id,
+            replay_event_sequence=selected.sequence,
+            prop_session_id=prop_session_id,
+            prop_attempt_id=prop_attempt_id,
+        )
+        prior_mutation = self.store.get_prop_mutation_snapshot(
+            workspace_id,
+            prop_session_id,
+            prop_attempt_id,
+            operation_id,
+        )
+
         resume = dict(prop_state["resume_state"] or {})
         binding = resume.get("replay_binding")
         last_replay_event_sequence = 0
@@ -268,14 +286,15 @@ class ReplayService:
                     raise ReplayPropConnectionError("prop attempt is already bound to a different replay lineage")
             last_replay_event_sequence = int(binding.get("last_replay_event_sequence") or 0)
 
-        if replay_event_sequence < last_replay_event_sequence:
+        if replay_event_sequence < last_replay_event_sequence and prior_mutation is None:
             raise ReplayPropConnectionError("replay lifecycle events cannot move backwards")
-        if replay_event_sequence > last_replay_event_sequence:
+        if prior_mutation is None and replay_event_sequence > last_replay_event_sequence:
             next_marks = [item.sequence for item in marks if item.sequence > last_replay_event_sequence]
             if not next_marks or replay_event_sequence != min(next_marks):
                 raise ReplayPropConnectionError("replay price_mark events must feed prop lifecycle in order")
 
-        if prop_event_sequence not in {phase.last_event_sequence, phase.last_event_sequence + 1}:
+        event_phase = prior_mutation["phase"] if prior_mutation is not None else phase
+        if prior_mutation is None and prop_event_sequence not in {phase.last_event_sequence, phase.last_event_sequence + 1}:
             raise ReplayPropConnectionError("prop event sequence is not the next event or an exact retry")
 
         prop_event = replay_mark_to_prop_event(
@@ -285,12 +304,12 @@ class ReplayService:
             profile_hash=attempt.profile_hash,
             expected_prop_revision=expected_prop_revision,
             prop_event_sequence=prop_event_sequence,
-            phase_spec=session.profile.phases[phase.phase_index - 1],
+            phase_spec=session.profile.phases[event_phase.phase_index - 1],
             replay_event=selected,
         )
         event_position = selected.details.get("open_position")
         event_pending = selected.details.get("pending_market_order")
-        next_resume = dict(resume)
+        next_resume = dict(prior_mutation["resume_state"] if prior_mutation is not None else resume)
         # The Prop store owns this subtree and excludes caller changes to it.
         # Omitting it keeps an exact retry byte-for-byte stable after the store
         # has written the latest objective evaluation into current resume state.

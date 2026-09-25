@@ -242,6 +242,18 @@ class FakeStore:
             "resume_state": dict(resume),
         }
 
+    def get_prop_mutation_snapshot(self, workspace_id, session_id, attempt_id, operation_id):
+        previous = self.receipts.get(operation_id)
+        if previous is None:
+            return None
+        _, _, prior_result = previous
+        return {
+            "fingerprint": "fake-receipt",
+            "attempt": prior_result["attempt"],
+            "phase": prior_result["phase"],
+            "resume_state": prior_result["resume_state"],
+        }
+
     def apply_prop_lifecycle_event(self, event, *, resume_state=None):
         previous = self.receipts.get(event.operation_id)
         if previous is not None:
@@ -347,6 +359,74 @@ class ReplayPropConnectionTests(unittest.TestCase):
         )
         self.assertTrue(duplicate["duplicate"])
         self.assertEqual(duplicate["attempt"]["revision"], 2)
+
+    def test_delayed_exact_retry_after_later_mark_remains_idempotent(self):
+        session_id, stepped = self.build_open_replay()
+        first = self.service.feed_prop_lifecycle(
+            "tenant-a",
+            session_id,
+            prop_session_id="prop-session",
+            prop_attempt_id="attempt-1",
+            replay_event_sequence=2,
+            expected_prop_revision=1,
+            prop_event_sequence=1,
+        )
+        self.assertFalse(first["duplicate"])
+
+        advanced = self.service.step("tenant-a", session_id, stepped["revision"], 1)
+        snapshot = ReplayExecutionSnapshot.model_validate(advanced["payload"]["execution"])
+        second_mark = next(
+            item for item in snapshot.ledger
+            if item["kind"] == "price_mark" and item["sequence"] > 2
+        )
+        second = self.service.feed_prop_lifecycle(
+            "tenant-a",
+            session_id,
+            prop_session_id="prop-session",
+            prop_attempt_id="attempt-1",
+            replay_event_sequence=second_mark["sequence"],
+            expected_prop_revision=2,
+            prop_event_sequence=2,
+        )
+        self.assertFalse(second["duplicate"])
+        self.assertEqual(second["attempt"]["revision"], 3)
+
+        delayed = self.service.feed_prop_lifecycle(
+            "tenant-a",
+            session_id,
+            prop_session_id="prop-session",
+            prop_attempt_id="attempt-1",
+            replay_event_sequence=2,
+            expected_prop_revision=1,
+            prop_event_sequence=1,
+        )
+        self.assertTrue(delayed["duplicate"])
+        self.assertEqual(delayed["attempt"]["revision"], 2)
+
+    def test_market_order_rejected_when_replay_has_no_future_bar(self):
+        created = self.service.create("tenant-a", "dataset-1", len(self.rows) - 1)
+        session_id = created["record_id"]
+        initialized = self.service.initialize_execution(
+            "tenant-a",
+            session_id,
+            1,
+            instrument_spec=instrument_mapping(),
+            cost_model=cost_mapping(),
+            spread_price="0.0002",
+            timeframe_seconds=60,
+            starting_balance="100000",
+        )
+        with self.assertRaisesRegex(ValueError, "future replay bar"):
+            self.service.queue_market_order(
+                "tenant-a",
+                session_id,
+                initialized["revision"],
+                operation_id="too-late",
+                side="BUY",
+                quantity="0.10",
+                stop_loss="1.0900",
+                take_profit="1.1200",
+            )
 
     def test_equity_rule_downgrades_bar_close_mark_without_intrabar_path(self):
         session_id, stepped = self.build_open_replay()
