@@ -661,7 +661,12 @@ class ResearchService:
                         },
                         created_at_utc=utc_now_iso(),
                     )
-                    result_checkpoint = {"trial_status_counts": outcome_summary["status_counts"]}
+                    result_checkpoint = {
+                        "trial_outcomes": list(terminal_outcomes),
+                        "trial_status_counts": outcome_summary["status_counts"],
+                        "trial_count": outcome_summary["trial_count"],
+                        "fully_accounted": outcome_summary["fully_accounted"],
+                    }
                 payload = result.model_dump(mode="json")
                 if not self.save_checkpoint(
                     job,
@@ -696,6 +701,7 @@ class ResearchService:
                         "phase": "candidate-ready",
                         "attempt_no": job.attempt_no,
                         "result_sha256": checksum,
+                        **result_checkpoint,
                     },
                     {"phase_index": phase_count, "phase_count": phase_count},
                 ):

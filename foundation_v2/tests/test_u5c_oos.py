@@ -25,7 +25,7 @@ from trading_workspace_v2.research_oos import (
     build_walk_forward_plan,
     summarize_sweep_outcomes,
 )
-from trading_workspace_v2.store import ClaimedJob
+from trading_workspace_v2.store import ClaimedJob, _oos_cancellation_state
 
 
 TIMEFRAME = 60
@@ -540,6 +540,54 @@ class U5cResearchJobWiringTests(unittest.TestCase):
         self.assertTrue(checkpoint["sweep_truncated"])
         self.assertEqual(progress, {"phase_index": 3, "phase_count": 5})
         self.assertEqual(self.store.checkpoints[-1][1], {"phase_index": 5, "phase_count": 5})
+        for phase in ("result-validated", "candidate-ready"):
+            terminal_checkpoint = next(
+                checkpoint for checkpoint, _progress in self.store.checkpoints if checkpoint["phase"] == phase
+            )
+            self.assertEqual(
+                terminal_checkpoint["trial_outcomes"],
+                [
+                    {"trial_id": "trial-0001", "status": "completed"},
+                    {"trial_id": "trial-0002", "status": "completed"},
+                    {"trial_id": "trial-0003", "status": "completed"},
+                ],
+            )
+            self.assertEqual(
+                terminal_checkpoint["trial_status_counts"],
+                {"canceled": 0, "completed": 3, "failed": 0},
+            )
+            self.assertEqual(terminal_checkpoint["trial_count"], 3)
+            self.assertTrue(terminal_checkpoint["fully_accounted"])
+
+    def test_terminal_oos_checkpoint_keeps_completed_trials_when_cancel_arrives_late(self):
+        queued = self.create_job()
+        completed = [
+            {"trial_id": "trial-0001", "status": "completed"},
+            {"trial_id": "trial-0002", "status": "completed"},
+            {"trial_id": "trial-0003", "status": "completed"},
+        ]
+        for phase in ("result-validated", "candidate-ready"):
+            with self.subTest(phase=phase):
+                row = {
+                    "protocol_json": queued.protocol,
+                    "attempt_no": 4,
+                    "checkpoint_json": {
+                        "schema": "research-job-checkpoint-v1",
+                        "phase": phase,
+                        "attempt_no": 4,
+                        "trial_outcomes": copy.deepcopy(completed),
+                    },
+                }
+                checkpoint, progress = _oos_cancellation_state(row)
+                self.assertEqual(checkpoint["phase"], "oos-sweep-canceled")
+                self.assertEqual(checkpoint["trial_outcomes"], completed)
+                self.assertEqual(
+                    checkpoint["trial_status_counts"],
+                    {"canceled": 0, "completed": 3, "failed": 0},
+                )
+                self.assertTrue(checkpoint["fully_accounted"])
+                self.assertEqual(progress["trial_index"], 3)
+                self.assertEqual(progress["trial_count"], 3)
 
     def test_worker_records_failed_trial_and_continues_to_terminal_outcomes(self):
         queued = self.create_job()
