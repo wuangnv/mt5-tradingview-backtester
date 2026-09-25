@@ -38,6 +38,7 @@ from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookL
 from .prop_session import (
     PropAttemptCreateRequest,
     PropResumeSaveRequest,
+    ReplayPropBranchAttemptRequest,
     PropSessionBundleCreateRequest,
     PropSessionContractError,
     PropSessionSnapshot,
@@ -494,6 +495,39 @@ def create_app(
             raise HTTPException(status_code=404, detail="replay_not_found")
         except RuntimeError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post(
+        "/api/v2/replay/sessions/{replay_session_id}/prop/sessions/{prop_session_id}/attempts/{parent_attempt_id}/branch",
+        status_code=201,
+    )
+    def branch_replay_prop_attempt(
+        replay_session_id: str,
+        prop_session_id: str,
+        parent_attempt_id: str,
+        body: ReplayPropBranchAttemptRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return replay.branch_prop_attempt(
+                workspace,
+                replay_session_id,
+                prop_session_id=prop_session_id,
+                parent_attempt_id=parent_attempt_id,
+                expected_replay_revision=body.expected_replay_revision,
+                expected_parent_replay_revision=body.expected_parent_replay_revision,
+                expected_parent_attempt_revision=body.expected_parent_attempt_revision,
+                operation_id=body.operation_id,
+            )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        except PropIdempotencyConflict as exc:
+            raise HTTPException(status_code=409, detail="prop_idempotency_conflict") from exc
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ReplayPropConnectionError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 

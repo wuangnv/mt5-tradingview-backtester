@@ -774,6 +774,113 @@ class ReplayPropPostgresIntegrationTests(unittest.TestCase):
         )
         return session, attempt, phase, resume, intent
 
+    def _build_terminal_parent_for_hindsight_branch(self):
+        rows = [
+            {
+                "timestamp": BASE_TIME + index * 60,
+                "open": 1.1000 + index * 0.0010,
+                "high": 1.1020 + index * 0.0010,
+                "low": 1.0990 + index * 0.0010,
+                "close": 1.1010 + index * 0.0010,
+                "volume": 10 + index,
+            }
+            for index in range(4)
+        ]
+        dataset = self.research.register_dataset(
+            workspace_id=self.workspace_id,
+            source=DatasetSource(
+                source_id=f"ps02c4-hindsight-{uuid4().hex}",
+                provider="synthetic-local",
+                instrument_mapping={"EURUSD": "EURUSD"},
+                license_use="qa-only",
+                retrieved_at_utc="2026-09-26T00:00:00Z",
+                export_settings="ps02c4-hindsight-v1",
+            ),
+            instrument_id="EURUSD",
+            timeframe="1m",
+            rows=rows,
+        )
+        replay_service = ReplayService(self.store, self.artifacts)
+        created = replay_service.create(self.workspace_id, dataset.dataset_id, 0)
+        replay_id = created["record_id"]
+        initialized = replay_service.initialize_execution(
+            self.workspace_id,
+            replay_id,
+            created["revision"],
+            instrument_spec=instrument_mapping(),
+            cost_model=cost_mapping(),
+            spread_price="0.0002",
+            timeframe_seconds=60,
+            starting_balance="100000",
+        )
+
+        session_id = f"prop-{uuid4().hex}"
+        attempt_id = f"attempt-{uuid4().hex}"
+        session, attempt, phase, resume = prop_state(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            dataset_sha256=dataset.artifact_sha256,
+        )
+        self.store.create_prop_session_bundle(session, attempt, phase, resume_state=resume)
+
+        first_step = replay_service.step(self.workspace_id, replay_id, initialized["revision"], 1)
+        first_snapshot = ReplayExecutionSnapshot.model_validate(first_step["payload"]["execution"])
+        first_mark = ReplayExecutionEvent.model_validate(first_snapshot.ledger[-1])
+        first_prop = replay_service.feed_prop_lifecycle(
+            self.workspace_id,
+            replay_id,
+            prop_session_id=session_id,
+            prop_attempt_id=attempt_id,
+            replay_event_sequence=first_mark.sequence,
+            expected_prop_revision=1,
+            prop_event_sequence=1,
+        )
+        self.assertEqual(first_prop["attempt"]["revision"], 2)
+
+        second_step = replay_service.step(self.workspace_id, replay_id, first_step["revision"], 1)
+        second_snapshot = ReplayExecutionSnapshot.model_validate(second_step["payload"]["execution"])
+        second_mark = ReplayExecutionEvent.model_validate(second_snapshot.ledger[-1])
+        second_prop = replay_service.feed_prop_lifecycle(
+            self.workspace_id,
+            replay_id,
+            prop_session_id=session_id,
+            prop_attempt_id=attempt_id,
+            replay_event_sequence=second_mark.sequence,
+            expected_prop_revision=2,
+            prop_event_sequence=2,
+        )
+        terminal = self.store.apply_prop_transition_intent(
+            TransitionIntent(
+                workspace_id=self.workspace_id,
+                session_id=session_id,
+                attempt_id=attempt_id,
+                profile_hash=attempt.profile_hash,
+                intent_id=f"abandon-{uuid4().hex}",
+                expected_revision=second_prop["attempt"]["revision"],
+                event_sequence=second_prop["phase"]["last_event_sequence"],
+                action="abandon",
+            )
+        )
+        branched = replay_service.branch(
+            self.workspace_id,
+            replay_id,
+            second_step["revision"],
+            first_snapshot.cursor_index,
+        )
+        return {
+            "dataset": dataset,
+            "replay_service": replay_service,
+            "parent_replay_id": replay_id,
+            "parent_replay_revision": second_step["revision"],
+            "child_replay": branched,
+            "prop_session_id": session_id,
+            "parent_attempt_id": attempt_id,
+            "parent_attempt_revision": terminal["attempt"].revision,
+            "historical_prop_revision": first_prop["attempt"]["revision"],
+            "historical_replay_snapshot": first_snapshot,
+        }
+
     def test_postgres_execution_branch_persists_checkpoint_without_mutating_parent(self):
         _, replay_service, replay_id, stepped, parent_snapshot, _ = self._build_replay_boundary(
             with_position=True
@@ -807,6 +914,206 @@ class ReplayPropPostgresIntegrationTests(unittest.TestCase):
         self.assertIsNotNone(child_after.position)
         self.assertEqual(child_after.cursor_index, 1)
         self.assertEqual(self.store.get_record(self.workspace_id, "replay", replay_id), parent_before)
+
+    def test_hindsight_branch_clones_canonical_prop_checkpoint_idempotently_and_child_continues(self):
+        fixture = self._build_terminal_parent_for_hindsight_branch()
+        replay_service = fixture["replay_service"]
+        child_replay = fixture["child_replay"]
+        parent_before = self.store.get_prop_resume_state(
+            self.workspace_id, fixture["prop_session_id"], fixture["parent_attempt_id"]
+        )
+        parent_replay_before = self.store.get_record(self.workspace_id, "replay", fixture["parent_replay_id"])
+        operation_id = f"hindsight-{uuid4().hex}"
+        kwargs = {
+            "prop_session_id": fixture["prop_session_id"],
+            "parent_attempt_id": fixture["parent_attempt_id"],
+            "expected_replay_revision": child_replay["revision"],
+            "expected_parent_replay_revision": fixture["parent_replay_revision"],
+            "expected_parent_attempt_revision": fixture["parent_attempt_revision"],
+            "operation_id": operation_id,
+        }
+
+        def create_once():
+            return ReplayService(PostgresStore(os.environ["TW_V2_DATABASE_URL"]), self.artifacts).branch_prop_attempt(
+                self.workspace_id, child_replay["record_id"], **kwargs
+            )
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(lambda _: create_once(), range(2)))
+        self.assertEqual(sorted(item["duplicate"] for item in results), [False, True])
+        created = next(item for item in results if not item["duplicate"])
+        child_attempt_id = created["attempt"]["attempt_id"]
+        self.assertEqual(created["attempt"]["parent_attempt_id"], fixture["parent_attempt_id"])
+        self.assertEqual(created["attempt"]["branch_kind"], "hindsight_exploratory")
+        self.assertEqual(created["attempt"]["status"], "paused")
+        self.assertEqual(created["attempt"]["revision"], 1)
+        self.assertEqual(
+            created["resume_state"]["branch_provenance"]["parent_attempt_revision"],
+            fixture["historical_prop_revision"],
+        )
+        self.assertEqual(
+            created["resume_state"]["replay_binding"]["replay_session_id"], child_replay["record_id"]
+        )
+        self.assertEqual(
+            created["resume_state"]["cursor"]["bar_index"],
+            fixture["historical_replay_snapshot"].cursor_index,
+        )
+
+        parent_after = self.store.get_prop_resume_state(
+            self.workspace_id, fixture["prop_session_id"], fixture["parent_attempt_id"]
+        )
+        self.assertEqual(parent_after["attempt"], parent_before["attempt"])
+        self.assertEqual(parent_after["phase"], parent_before["phase"])
+        self.assertEqual(parent_after["resume_state"], parent_before["resume_state"])
+        self.assertEqual(
+            self.store.get_record(self.workspace_id, "replay", fixture["parent_replay_id"]),
+            parent_replay_before,
+        )
+
+        with self.assertRaises(PropIdempotencyConflict):
+            replay_service.branch_prop_attempt(
+                self.workspace_id,
+                child_replay["record_id"],
+                **{**kwargs, "expected_replay_revision": child_replay["revision"] + 1},
+            )
+
+        child_state = self.store.get_prop_resume_state(
+            self.workspace_id, fixture["prop_session_id"], child_attempt_id
+        )
+        resumed = self.store.apply_prop_transition_intent(
+            TransitionIntent(
+                workspace_id=self.workspace_id,
+                session_id=fixture["prop_session_id"],
+                attempt_id=child_attempt_id,
+                profile_hash=child_state["attempt"].profile_hash,
+                intent_id=f"resume-{uuid4().hex}",
+                expected_revision=child_state["attempt"].revision,
+                event_sequence=child_state["phase"].last_event_sequence,
+                action="resume",
+            )
+        )
+        advanced = replay_service.step(
+            self.workspace_id, child_replay["record_id"], child_replay["revision"], 1
+        )
+        child_snapshot = ReplayExecutionSnapshot.model_validate(advanced["payload"]["execution"])
+        next_mark = ReplayExecutionEvent.model_validate(child_snapshot.ledger[-1])
+        fed = replay_service.feed_prop_lifecycle(
+            self.workspace_id,
+            child_replay["record_id"],
+            prop_session_id=fixture["prop_session_id"],
+            prop_attempt_id=child_attempt_id,
+            replay_event_sequence=next_mark.sequence,
+            expected_prop_revision=resumed["attempt"].revision,
+            prop_event_sequence=resumed["phase"].last_event_sequence + 1,
+        )
+        self.assertEqual(fed["resume_state"]["cursor"]["bar_index"], child_snapshot.cursor_index)
+        self.assertEqual(fed["attempt"]["branch_kind"], "hindsight_exploratory")
+        self.assertEqual(
+            self.store.get_record(self.workspace_id, "replay", fixture["parent_replay_id"]),
+            parent_replay_before,
+        )
+
+    def test_hindsight_branch_rejects_missing_canonical_prop_checkpoint_and_foreign_scope(self):
+        dataset, replay_service, replay_id, first_step, first_snapshot, _ = self._build_replay_boundary(row_count=4)
+        second_step = replay_service.step(self.workspace_id, replay_id, first_step["revision"], 1)
+        second_snapshot = ReplayExecutionSnapshot.model_validate(second_step["payload"]["execution"])
+        session_id = f"prop-{uuid4().hex}"
+        attempt_id = f"attempt-{uuid4().hex}"
+        session, attempt, phase, _ = prop_state(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            dataset_sha256=dataset.artifact_sha256,
+        )
+        terminal_session = session.model_copy(update={"status": "abandoned"})
+        terminal_attempt = attempt.model_copy(update={"status": "abandoned"})
+        terminal_time = datetime.fromtimestamp(second_snapshot.ledger[-1]["virtual_time_utc"], tz=timezone.utc)
+        terminal_phase = phase.model_copy(
+            update={
+                "balance": second_snapshot.balance,
+                "floating_pl": second_snapshot.floating_pl,
+                "equity": second_snapshot.equity,
+                "high_water_mark": max(second_snapshot.balance, second_snapshot.equity),
+                "virtual_time_utc": terminal_time,
+                "last_event_sequence": 1,
+            }
+        )
+        terminal_resume = {
+            "cursor": {
+                "bar_index": second_snapshot.cursor_index,
+                "timestamp_utc": terminal_time.isoformat().replace("+00:00", "Z"),
+            },
+            "open_positions": [],
+            "pending_orders": [],
+            "replay_binding": {
+                "replay_session_id": replay_id,
+                "branch_id": second_snapshot.branch_id,
+                "dataset_id": second_snapshot.dataset_id,
+                "dataset_sha256": second_snapshot.dataset_sha256,
+                "last_replay_event_sequence": second_snapshot.event_sequence,
+            },
+        }
+        self.store.create_prop_session_bundle(
+            terminal_session, terminal_attempt, terminal_phase, resume_state=terminal_resume
+        )
+        branch = replay_service.branch(
+            self.workspace_id, replay_id, second_step["revision"], second_snapshot.cursor_index
+        )
+        kwargs = {
+            "prop_session_id": session_id,
+            "parent_attempt_id": attempt_id,
+            "expected_replay_revision": branch["revision"],
+            "expected_parent_replay_revision": second_step["revision"],
+            "expected_parent_attempt_revision": 1,
+            "operation_id": f"missing-checkpoint-{uuid4().hex}",
+        }
+        with self.assertRaisesRegex(ReplayPropConnectionError, "canonical historical Prop checkpoint"):
+            replay_service.branch_prop_attempt(self.workspace_id, branch["record_id"], **kwargs)
+        with self.assertRaises(LookupError):
+            replay_service.branch_prop_attempt("foreign-tenant", branch["record_id"], **kwargs)
+
+        rogue = terminal_attempt.model_copy(
+            update={
+                "attempt_id": f"rogue-{uuid4().hex}",
+                "revision": 1,
+                "parent_attempt_id": attempt_id,
+                "branch_kind": "hindsight_exploratory",
+            }
+        )
+        rogue_phase = terminal_phase.model_copy(update={"attempt_id": rogue.attempt_id})
+        with self.assertRaisesRegex(PropPersistenceConflict, "canonical Replay branch binding"):
+            self.store.create_prop_attempt(rogue, rogue_phase, resume_state=terminal_resume)
+
+    def test_hindsight_branch_api_is_tenant_scoped_and_returns_server_owned_child(self):
+        fixture = self._build_terminal_parent_for_hindsight_branch()
+        child_replay = fixture["child_replay"]
+        app = create_app(
+            dsn=os.environ["TW_V2_DATABASE_URL"],
+            artifact_root=self.temp.name,
+            authorization=self.authorization,
+        )
+        url = (
+            f"/api/v2/replay/sessions/{child_replay['record_id']}/prop/sessions/{fixture['prop_session_id']}"
+            f"/attempts/{fixture['parent_attempt_id']}/branch"
+        )
+        body = {
+            "expected_replay_revision": child_replay["revision"],
+            "expected_parent_replay_revision": fixture["parent_replay_revision"],
+            "expected_parent_attempt_revision": fixture["parent_attempt_revision"],
+            "operation_id": f"api-hindsight-{uuid4().hex}",
+        }
+        with TestClient(app) as client:
+            denied = client.post(url, headers={"X-Workspace-Id": "foreign-tenant"}, json=body)
+            self.assertEqual(denied.status_code, 403, denied.text)
+            created = client.post(url, headers={"X-Workspace-Id": self.workspace_id}, json=body)
+            self.assertEqual(created.status_code, 201, created.text)
+            payload = created.json()
+            self.assertEqual(payload["attempt"]["branch_kind"], "hindsight_exploratory")
+            self.assertEqual(payload["attempt"]["parent_attempt_id"], fixture["parent_attempt_id"] )
+            self.assertEqual(payload["attempt"]["status"], "paused")
+            duplicate = client.post(url, headers={"X-Workspace-Id": self.workspace_id}, json=body)
+            self.assertEqual(duplicate.status_code, 201, duplicate.text)
+            self.assertTrue(duplicate.json()["duplicate"])
 
     def test_api_replay_fill_ledger_feeds_persisted_prop_attempt_idempotently(self):
         rows = [

@@ -40,6 +40,99 @@ def validate_replay_prop_binding(
         raise ReplayPropConnectionError("prop phase initial balance does not match replay starting balance")
 
 
+def validate_replay_prop_branch_checkpoint(
+    child_snapshot: ReplayExecutionSnapshot,
+    *,
+    child_payload: dict,
+    parent_snapshot: ReplayExecutionSnapshot,
+    historical_attempt: ChallengeAttemptSnapshot,
+    phase: PhaseStateSnapshot,
+    resume_state: dict,
+) -> None:
+    """Validate one immutable Prop checkpoint against a historical Replay branch boundary."""
+
+    validate_replay_prop_binding(child_snapshot, historical_attempt, phase)
+    if child_snapshot.replay_session_id == parent_snapshot.replay_session_id:
+        raise ReplayPropConnectionError("replay branch must use a distinct child session")
+    if child_payload.get("parent_session_id") != parent_snapshot.replay_session_id:
+        raise ReplayPropConnectionError("replay branch parent lineage is inconsistent")
+    if child_payload.get("branch_id") != child_snapshot.branch_id:
+        raise ReplayPropConnectionError("replay branch payload does not match child execution lineage")
+    if int(child_payload.get("cursor_index", -1)) != child_snapshot.cursor_index:
+        raise ReplayPropConnectionError("replay branch payload cursor does not match child execution")
+    try:
+        checkpoint_sequence = int(child_payload.get("parent_checkpoint_event_sequence"))
+    except (TypeError, ValueError) as exc:
+        raise ReplayPropConnectionError("replay branch checkpoint event sequence is invalid") from exc
+    if checkpoint_sequence != child_snapshot.event_sequence:
+        raise ReplayPropConnectionError("replay branch checkpoint event sequence does not match child execution")
+    if (
+        child_snapshot.dataset_id != parent_snapshot.dataset_id
+        or child_snapshot.dataset_sha256 != parent_snapshot.dataset_sha256
+        or child_snapshot.instrument_spec != parent_snapshot.instrument_spec
+        or child_snapshot.cost_model != parent_snapshot.cost_model
+        or child_snapshot.starting_balance != parent_snapshot.starting_balance
+    ):
+        raise ReplayPropConnectionError("replay branch immutable execution pins diverged from its parent")
+
+    binding = resume_state.get("replay_binding")
+    if not isinstance(binding, dict):
+        raise ReplayPropConnectionError("historical prop checkpoint is not bound to Replay")
+    expected_binding = {
+        "replay_session_id": parent_snapshot.replay_session_id,
+        "branch_id": parent_snapshot.branch_id,
+        "dataset_id": child_snapshot.dataset_id,
+        "dataset_sha256": child_snapshot.dataset_sha256,
+        "last_replay_event_sequence": child_snapshot.event_sequence,
+    }
+    for key, expected in expected_binding.items():
+        if binding.get(key) != expected:
+            raise ReplayPropConnectionError("historical prop checkpoint does not match Replay branch boundary")
+
+    cursor = resume_state.get("cursor")
+    if not isinstance(cursor, dict) or cursor.get("bar_index") != child_snapshot.cursor_index:
+        raise ReplayPropConnectionError("historical prop checkpoint cursor does not match Replay branch boundary")
+    timestamp = cursor.get("timestamp_utc")
+    if not isinstance(timestamp, str):
+        raise ReplayPropConnectionError("historical prop checkpoint timestamp is invalid")
+    try:
+        cursor_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).astimezone(timezone.utc)
+    except ValueError as exc:
+        raise ReplayPropConnectionError("historical prop checkpoint timestamp is invalid") from exc
+    checkpoint_event = None
+    for item in reversed(child_snapshot.ledger):
+        try:
+            candidate = ReplayExecutionEvent.model_validate(item)
+        except ValueError as exc:
+            raise ReplayPropConnectionError("replay branch checkpoint ledger is invalid") from exc
+        if candidate.sequence == child_snapshot.event_sequence:
+            checkpoint_event = candidate
+            break
+    if checkpoint_event is None:
+        raise ReplayPropConnectionError("replay branch checkpoint event is missing")
+    replay_time = datetime.fromtimestamp(checkpoint_event.virtual_time_utc, tz=timezone.utc)
+    if cursor_time != replay_time or phase.virtual_time_utc.astimezone(timezone.utc) != replay_time:
+        raise ReplayPropConnectionError("historical prop checkpoint time does not match Replay branch boundary")
+    if (
+        phase.balance != child_snapshot.balance
+        or phase.floating_pl != child_snapshot.floating_pl
+        or phase.equity != child_snapshot.equity
+    ):
+        raise ReplayPropConnectionError("historical prop checkpoint money does not match Replay branch boundary")
+
+    expected_position = child_snapshot.position.model_dump(mode="json") if child_snapshot.position is not None else None
+    expected_positions = [expected_position] if expected_position is not None else []
+    expected_pending = (
+        [child_snapshot.pending_market_order.model_dump(mode="json")]
+        if child_snapshot.pending_market_order is not None
+        else []
+    )
+    if phase.open_positions != len(expected_positions) or resume_state.get("open_positions", []) != expected_positions:
+        raise ReplayPropConnectionError("historical prop checkpoint position state does not match Replay branch boundary")
+    if phase.pending_orders != len(expected_pending) or resume_state.get("pending_orders", []) != expected_pending:
+        raise ReplayPropConnectionError("historical prop checkpoint pending state does not match Replay branch boundary")
+
+
 def validate_replay_prop_transition_boundary(
     snapshot: ReplayExecutionSnapshot,
     *,

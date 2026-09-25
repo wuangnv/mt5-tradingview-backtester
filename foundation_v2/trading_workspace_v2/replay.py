@@ -291,6 +291,36 @@ class ReplayService:
         )
         return self.view(workspace_id, branched["record_id"])
 
+    def branch_prop_attempt(
+        self,
+        workspace_id: str,
+        replay_session_id: str,
+        *,
+        prop_session_id: str,
+        parent_attempt_id: str,
+        expected_replay_revision: int,
+        expected_parent_replay_revision: int,
+        expected_parent_attempt_revision: int,
+        operation_id: str,
+    ) -> dict:
+        result = self.store.create_prop_branch_attempt(
+            workspace_id,
+            replay_session_id,
+            prop_session_id=prop_session_id,
+            parent_attempt_id=parent_attempt_id,
+            expected_replay_revision=expected_replay_revision,
+            expected_parent_replay_revision=expected_parent_replay_revision,
+            expected_parent_attempt_revision=expected_parent_attempt_revision,
+            operation_id=operation_id,
+        )
+        return {
+            "session": result["session"].model_dump(mode="json"),
+            "attempt": result["attempt"].model_dump(mode="json"),
+            "phase": result["phase"].model_dump(mode="json"),
+            "resume_state": result["resume_state"],
+            "duplicate": result["duplicate"],
+        }
+
     def feed_prop_lifecycle(
         self,
         workspace_id: str,

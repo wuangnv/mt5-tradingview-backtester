@@ -257,6 +257,15 @@ class PropSessionBundleCreateRequest(BaseModel):
     resume_state: dict = Field(default_factory=dict)
 
 
+class ReplayPropBranchAttemptRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_replay_revision: int = Field(ge=1, strict=True)
+    expected_parent_replay_revision: int = Field(ge=1, strict=True)
+    expected_parent_attempt_revision: int = Field(ge=1, strict=True)
+    operation_id: str = Field(min_length=1, max_length=128)
+
+
 class PropResumeSaveRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

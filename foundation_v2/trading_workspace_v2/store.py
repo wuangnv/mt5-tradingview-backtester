@@ -12,6 +12,8 @@ from psycopg.rows import dict_row
 from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
 from .prop_replay import (
     ReplayPropConnectionError,
+    replay_event_operation_id,
+    validate_replay_prop_branch_checkpoint,
     validate_replay_prop_transition_boundary,
     validate_replay_prop_transition_result,
 )
@@ -28,6 +30,7 @@ from .prop_session import (
 )
 from .replay_execution import (
     ReplayExecutionError,
+    ReplayExecutionEvent,
     ReplayExecutionSnapshot,
     transition_replay_phase,
 )
@@ -1178,6 +1181,312 @@ class PostgresStore:
         if current[0] < previous[0] or current[1] < previous[1]:
             raise PropPersistenceConflict("resume cursor cannot move backwards within an attempt")
 
+    def create_prop_branch_attempt(
+        self,
+        workspace_id: str,
+        replay_session_id: str,
+        *,
+        prop_session_id: str,
+        parent_attempt_id: str,
+        expected_replay_revision: int,
+        expected_parent_replay_revision: int,
+        expected_parent_attempt_revision: int,
+        operation_id: str,
+    ) -> dict:
+        """Clone one canonical historical Prop checkpoint onto a Replay hindsight branch."""
+
+        identity = "|".join((workspace_id, prop_session_id, parent_attempt_id, operation_id)).encode("utf-8")
+        child_attempt_id = f"branch-{hashlib.sha256(identity).hexdigest()[:40]}"
+        mutation_payload = {
+            "replay_session_id": replay_session_id,
+            "prop_session_id": prop_session_id,
+            "parent_attempt_id": parent_attempt_id,
+            "expected_replay_revision": int(expected_replay_revision),
+            "expected_parent_replay_revision": int(expected_parent_replay_revision),
+            "expected_parent_attempt_revision": int(expected_parent_attempt_revision),
+            "operation_id": operation_id,
+        }
+        fingerprint = _payload_fingerprint(mutation_payload)
+        now = utc_now_iso()
+
+        with self.connect() as conn:
+            session_row = conn.execute(
+                """
+                SELECT snapshot_json FROM prop_sessions
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (workspace_id, prop_session_id),
+            ).fetchone()
+            if session_row is None:
+                raise LookupError("prop session not found")
+            session = PropSessionSnapshot.model_validate(session_row["snapshot_json"])
+
+            receipt = conn.execute(
+                """
+                SELECT fingerprint FROM prop_mutation_receipts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
+                """,
+                (workspace_id, prop_session_id, child_attempt_id, operation_id),
+            ).fetchone()
+            if receipt is not None:
+                if receipt["fingerprint"] != fingerprint:
+                    raise PropIdempotencyConflict("operation_id was already used with different Replay branch content")
+                current = conn.execute(
+                    """
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                    FOR UPDATE
+                    """,
+                    (workspace_id, prop_session_id, child_attempt_id),
+                ).fetchone()
+                if current is None:
+                    raise PropPersistenceConflict("branch receipt points to a missing child attempt")
+                current_session = conn.execute(
+                    "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s",
+                    (workspace_id, prop_session_id),
+                ).fetchone()
+                return {
+                    "session": PropSessionSnapshot.model_validate(current_session["snapshot_json"]),
+                    "attempt": ChallengeAttemptSnapshot.model_validate(current["snapshot_json"]),
+                    "phase": PhaseStateSnapshot.model_validate(current["phase_json"]),
+                    "resume_state": current["resume_json"],
+                    "duplicate": True,
+                }
+
+            child_record = conn.execute(
+                """
+                SELECT current_revision FROM workspace_records
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s
+                FOR UPDATE
+                """,
+                (workspace_id, replay_session_id),
+            ).fetchone()
+            if child_record is None:
+                raise LookupError("replay branch not found")
+            if int(child_record["current_revision"]) != int(expected_replay_revision):
+                raise PropPersistenceConflict("replay branch revision conflict")
+            child_row = conn.execute(
+                """
+                SELECT payload_json FROM workspace_record_revisions
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s AND revision=%s
+                """,
+                (workspace_id, replay_session_id, int(expected_replay_revision)),
+            ).fetchone()
+            child_payload = dict(child_row["payload_json"] if child_row else {})
+            parent_replay_id = child_payload.get("parent_session_id")
+            if not isinstance(parent_replay_id, str) or not parent_replay_id:
+                raise ReplayPropConnectionError("Replay session is not a canonical historical branch")
+            if int(child_payload.get("parent_revision", -1)) != int(expected_parent_replay_revision):
+                raise PropPersistenceConflict("Replay branch parent revision does not match request")
+
+            parent_record = conn.execute(
+                """
+                SELECT current_revision FROM workspace_records
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s
+                FOR UPDATE
+                """,
+                (workspace_id, parent_replay_id),
+            ).fetchone()
+            if parent_record is None:
+                raise LookupError("parent replay session not found")
+            if int(parent_record["current_revision"]) != int(expected_parent_replay_revision):
+                raise PropPersistenceConflict("parent replay revision conflict")
+            parent_replay_row = conn.execute(
+                """
+                SELECT payload_json FROM workspace_record_revisions
+                WHERE workspace_id=%s AND kind='replay' AND record_id=%s AND revision=%s
+                """,
+                (workspace_id, parent_replay_id, int(expected_parent_replay_revision)),
+            ).fetchone()
+            if parent_replay_row is None:
+                raise PropPersistenceConflict("parent replay revision is missing")
+
+            parent_row = conn.execute(
+                """
+                SELECT current_revision,snapshot_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                FOR UPDATE
+                """,
+                (workspace_id, prop_session_id, parent_attempt_id),
+            ).fetchone()
+            if parent_row is None:
+                raise LookupError("parent prop attempt not found")
+            parent_attempt = ChallengeAttemptSnapshot.model_validate(parent_row["snapshot_json"])
+            if int(parent_row["current_revision"]) != int(expected_parent_attempt_revision):
+                raise PropPersistenceConflict("parent prop attempt revision conflict")
+            if parent_attempt.status not in _TERMINAL_PROP_ATTEMPT_STATUSES:
+                raise PropPersistenceConflict("parent prop attempt must be terminal before historical branch")
+            if parent_attempt.branch_kind == "hindsight_exploratory":
+                raise PropPersistenceConflict("nested hindsight Prop attempt branching is not supported")
+
+            child_execution = child_payload.get("execution")
+            parent_execution = parent_replay_row["payload_json"].get("execution")
+            if not isinstance(child_execution, dict) or not isinstance(parent_execution, dict):
+                raise ReplayPropConnectionError("Replay branch execution checkpoint is unavailable")
+            child_snapshot = ReplayExecutionSnapshot.model_validate(child_execution)
+            parent_snapshot = ReplayExecutionSnapshot.model_validate(parent_execution)
+            if child_snapshot.replay_session_id != replay_session_id:
+                raise ReplayPropConnectionError("Replay branch execution lineage is inconsistent")
+
+            existing_attempt_rows = conn.execute(
+                """
+                SELECT attempt_id,snapshot_json FROM prop_attempts
+                WHERE workspace_id=%s AND session_id=%s
+                FOR UPDATE
+                """,
+                (workspace_id, prop_session_id),
+            ).fetchall()
+            for existing_row in existing_attempt_rows:
+                existing_attempt = ChallengeAttemptSnapshot.model_validate(existing_row["snapshot_json"])
+                if existing_attempt.attempt_id != parent_attempt_id and existing_attempt.status not in _TERMINAL_PROP_ATTEMPT_STATUSES:
+                    raise PropPersistenceConflict("prop session already has an active attempt")
+
+            historical_rows = conn.execute(
+                """
+                SELECT revision,snapshot_json,phase_json,resume_json
+                FROM prop_attempt_revisions
+                WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                ORDER BY revision DESC
+                """,
+                (workspace_id, prop_session_id, parent_attempt_id),
+            ).fetchall()
+            try:
+                checkpoint_event = ReplayExecutionEvent.model_validate(child_snapshot.ledger[-1])
+            except (IndexError, ValueError) as exc:
+                raise ReplayPropConnectionError("Replay branch checkpoint event is invalid") from exc
+            if checkpoint_event.sequence != child_snapshot.event_sequence:
+                raise ReplayPropConnectionError("Replay branch checkpoint event sequence is inconsistent")
+
+            historical = None
+            for candidate in historical_rows:
+                candidate_attempt = ChallengeAttemptSnapshot.model_validate(candidate["snapshot_json"])
+                candidate_phase = PhaseStateSnapshot.model_validate(candidate["phase_json"])
+                candidate_resume = dict(candidate["resume_json"] or {})
+                try:
+                    validate_replay_prop_branch_checkpoint(
+                        child_snapshot,
+                        child_payload=child_payload,
+                        parent_snapshot=parent_snapshot,
+                        historical_attempt=candidate_attempt,
+                        phase=candidate_phase,
+                        resume_state=candidate_resume,
+                    )
+                except ReplayPropConnectionError:
+                    continue
+
+                receipt_rows = conn.execute(
+                    """
+                    SELECT operation_id,fingerprint
+                    FROM prop_mutation_receipts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND entity_revision=%s
+                    """,
+                    (workspace_id, prop_session_id, parent_attempt_id, int(candidate["revision"])),
+                ).fetchall()
+                canonical_receipt = False
+                if checkpoint_event.kind == "price_mark":
+                    expected_operation_id = replay_event_operation_id(
+                        replay_session_id=parent_replay_id,
+                        branch_id=parent_snapshot.branch_id,
+                        replay_event_sequence=checkpoint_event.sequence,
+                        prop_session_id=prop_session_id,
+                        prop_attempt_id=parent_attempt_id,
+                    )
+                    canonical_receipt = any(
+                        row["operation_id"] == expected_operation_id for row in receipt_rows
+                    )
+                elif checkpoint_event.kind == "phase_transition":
+                    details = checkpoint_event.details or {}
+                    intent_id = details.get("intent_id")
+                    intent_fingerprint = details.get("intent_fingerprint")
+                    canonical_receipt = bool(intent_id and intent_fingerprint) and any(
+                        row["operation_id"] == intent_id and row["fingerprint"] == intent_fingerprint
+                        for row in receipt_rows
+                    )
+                if not canonical_receipt:
+                    continue
+                historical = (int(candidate["revision"]), candidate_attempt, candidate_phase, candidate_resume)
+                break
+            if historical is None:
+                raise ReplayPropConnectionError("canonical historical Prop checkpoint was not found for Replay branch boundary")
+
+            historical_revision, historical_attempt, historical_phase, historical_resume = historical
+            child_attempt = historical_attempt.model_copy(
+                update={
+                    "attempt_id": child_attempt_id,
+                    "status": "paused",
+                    "revision": 1,
+                    "parent_attempt_id": parent_attempt_id,
+                    "branch_kind": "hindsight_exploratory",
+                }
+            )
+            child_phase = historical_phase.model_copy(update={"attempt_id": child_attempt_id})
+            child_resume = dict(historical_resume)
+            child_resume["replay_binding"] = {
+                "replay_session_id": replay_session_id,
+                "branch_id": child_snapshot.branch_id,
+                "dataset_id": child_snapshot.dataset_id,
+                "dataset_sha256": child_snapshot.dataset_sha256,
+                "last_replay_event_sequence": child_snapshot.event_sequence,
+            }
+            child_resume["branch_provenance"] = {
+                "kind": "replay_prop_hindsight_branch_v1",
+                "parent_attempt_id": parent_attempt_id,
+                "parent_attempt_revision": historical_revision,
+                "parent_replay_session_id": parent_replay_id,
+                "parent_replay_revision": int(expected_parent_replay_revision),
+                "parent_checkpoint_event_sequence": child_snapshot.event_sequence,
+            }
+            self._validate_prop_phase_scope(session, child_attempt, child_phase)
+            self._validate_resume_counts(child_phase, child_resume)
+            self._validate_resume_cursor(child_resume)
+            validate_replay_prop_branch_checkpoint(
+                child_snapshot,
+                child_payload=child_payload,
+                parent_snapshot=parent_snapshot,
+                historical_attempt=historical_attempt,
+                phase=historical_phase,
+                resume_state=historical_resume,
+            )
+
+            attempt_json = json.dumps(child_attempt.model_dump(mode="json"), sort_keys=True)
+            phase_json = json.dumps(child_phase.model_dump(mode="json"), sort_keys=True)
+            resume_json = json.dumps(child_resume, sort_keys=True)
+            conn.execute(
+                """
+                INSERT INTO prop_attempts(
+                    workspace_id,session_id,attempt_id,current_revision,snapshot_json,phase_json,resume_json,
+                    created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,%s,1,%s::jsonb,%s::jsonb,%s::jsonb,%s,%s)
+                """,
+                (workspace_id, prop_session_id, child_attempt_id, attempt_json, phase_json, resume_json, now, now),
+            )
+            conn.execute(
+                """
+                INSERT INTO prop_attempt_revisions(
+                    workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                ) VALUES(%s,%s,%s,1,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                """,
+                (workspace_id, prop_session_id, child_attempt_id, attempt_json, phase_json, resume_json, now),
+            )
+            session = self._sync_prop_session_status(conn, session, child_attempt.status, now)
+            conn.execute(
+                """
+                INSERT INTO prop_mutation_receipts(
+                    workspace_id,session_id,attempt_id,operation_id,fingerprint,entity_revision,created_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,1,%s)
+                """,
+                (workspace_id, prop_session_id, child_attempt_id, operation_id, fingerprint, now),
+            )
+            conn.commit()
+        return {
+            "session": session,
+            "attempt": child_attempt,
+            "phase": child_phase,
+            "resume_state": child_resume,
+            "duplicate": False,
+        }
+
     def create_prop_attempt(
         self,
         attempt: ChallengeAttemptSnapshot,
@@ -1187,6 +1496,8 @@ class PostgresStore:
     ) -> dict:
         if attempt.revision != 1:
             raise PropPersistenceConflict("new prop attempts must start at revision 1")
+        if attempt.branch_kind != "clean":
+            raise PropPersistenceConflict("hindsight prop attempts require canonical Replay branch binding")
         resume = dict(resume_state or {})
         now = utc_now_iso()
         with self.connect() as conn:
@@ -1305,6 +1616,8 @@ class PostgresStore:
             raise PropPersistenceConflict("new prop sessions must start at revision 1")
         if attempt.revision != 1:
             raise PropPersistenceConflict("new prop attempts must start at revision 1")
+        if attempt.branch_kind != "clean":
+            raise PropPersistenceConflict("hindsight prop attempts require canonical Replay branch binding")
         if attempt.workspace_id != session.workspace_id or attempt.session_id != session.session_id:
             raise PropPersistenceConflict("prop attempt does not belong to the session")
         if session.status != attempt.status:
