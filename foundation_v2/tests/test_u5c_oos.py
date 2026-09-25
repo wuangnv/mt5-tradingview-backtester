@@ -18,7 +18,7 @@ for entry in (str(ROOT), str(V2)):
 from trading_workspace_v2.artifacts import canonical_json_bytes
 from trading_workspace_v2.contracts import CreateEngineResearchJob, DatasetManifest, DatasetSource
 from trading_workspace_v2.research import ResearchService
-from trading_workspace_v2.research_engine import ResearchEngineValidationError
+from trading_workspace_v2.research_engine import ResearchEngineInterrupted, ResearchEngineValidationError
 from trading_workspace_v2.research_oos import (
     ResearchValidationPlanError,
     build_bounded_sweep,
@@ -138,8 +138,10 @@ class _FakeArtifacts:
     def __init__(self, fixture_rows: list[dict]):
         self.rows = fixture_rows
         self.result_payload = None
+        self.read_calls = 0
 
     def read_dataset_range(self, _path, _checksum, *, from_utc, to_utc, max_bars, continue_check=None):
+        self.read_calls += 1
         selected = [row for row in self.rows if from_utc <= row["timestamp"] < to_utc]
         if len(selected) > max_bars:
             raise ValueError("run exceeded budget.max_bars")
@@ -415,16 +417,29 @@ class U5cResearchJobWiringTests(unittest.TestCase):
                 max_trials=1,
             )
 
-    def test_oos_job_pins_plans_inside_hashed_protocol_without_opening_holdout(self):
+    def test_oos_job_queues_request_only_protocol_without_reading_dataset(self):
         job = self.create_job()
 
         validation = job.protocol["validation"]
         self.assertEqual(validation["schema"], "research-oos-validation-v1")
         self.assertFalse(validation["holdout_access"])
-        self.assertFalse(validation["walk_forward"]["holdout"]["access"])
-        self.assertEqual(validation["walk_forward"]["fold_count"], 1)
+        self.assertNotIn("walk_forward", validation)
+        self.assertEqual(
+            validation["walk_forward_request"],
+            {
+                "train_bars": 8,
+                "oos_bars": 4,
+                "step_bars": 4,
+                "purge_bars": 1,
+                "embargo_bars": 1,
+                "overlap_bars": 0,
+                "expanding": True,
+                "max_folds": 2,
+            },
+        )
         self.assertEqual(validation["sweep"]["trial_count"], 3)
         self.assertTrue(validation["sweep"]["truncated"])
+        self.assertEqual(self.artifacts.read_calls, 0)
         self.assertEqual(
             validation["selection"],
             {
@@ -482,6 +497,7 @@ class U5cResearchJobWiringTests(unittest.TestCase):
             result = self.service.execute_claimed(claimed)
 
         self.assertIsNotNone(result)
+        self.assertEqual(self.artifacts.read_calls, 1)
         self.assertEqual(result.artifact_schema_version, "research-oos-result-v1")
         self.assertEqual(result.selection["mode"], "none")
         self.assertFalse(result.selection["ranking"])
@@ -572,6 +588,67 @@ class U5cResearchJobWiringTests(unittest.TestCase):
         failed = result.trials[1]
         self.assertEqual(failed["folds"][0]["train"]["status"], "failed")
         self.assertEqual(failed["folds"][0]["oos"]["status"], "failed")
+
+    def test_worker_interruption_accounts_remaining_trials_as_canceled_without_result(self):
+        queued = self.create_job()
+        claimed = ClaimedJob(
+            workspace_id=queued.workspace_id,
+            job_id=queued.job_id,
+            dataset_id=queued.dataset_id,
+            strategy_version=queued.strategy_version,
+            starting_balance=queued.starting_balance,
+            protocol=queued.protocol,
+            protocol_sha256=queued.protocol_sha256,
+            attempt_no=1,
+            lease_owner="u5c-worker",
+            lease_token="lease-u5c",
+        )
+        calls = 0
+
+        def interrupt_during_second_trial(slice_rows, protocol, *, continue_check=None, deadline=None):
+            nonlocal calls
+            calls += 1
+            if calls == 3:
+                raise ResearchEngineInterrupted("cancel during sweep")
+            return {
+                "assumptions": {},
+                "signals": {},
+                "ledger": [],
+                "metrics": {"metric_schema_version": "metrics-v2"},
+                "observed_range": {
+                    "from_utc": slice_rows[0]["timestamp"],
+                    "to_utc": slice_rows[-1]["timestamp"] + TIMEFRAME,
+                    "bar_count": len(slice_rows),
+                },
+                "execution": {},
+            }
+
+        with (
+            patch("trading_workspace_v2.research.verify_engine_code"),
+            patch("trading_workspace_v2.research.execute_breakout", side_effect=interrupt_during_second_trial),
+            patch("trading_workspace_v2.research.validate_engine_result", return_value={"reconciled": True}),
+        ):
+            result = self.service.execute_claimed(claimed)
+
+        self.assertIsNone(result)
+        self.assertIsNone(self.artifacts.result_payload)
+        checkpoint, progress = self.store.checkpoints[-1]
+        self.assertEqual(checkpoint["phase"], "oos-sweep-canceled")
+        self.assertTrue(checkpoint["fully_accounted"])
+        self.assertEqual(
+            checkpoint["trial_outcomes"],
+            [
+                {"trial_id": "trial-0001", "status": "completed"},
+                {"trial_id": "trial-0002", "status": "canceled"},
+                {"trial_id": "trial-0003", "status": "canceled"},
+            ],
+        )
+        self.assertEqual(
+            checkpoint["trial_status_counts"],
+            {"canceled": 2, "completed": 1, "failed": 0},
+        )
+        self.assertEqual(progress["trial_index"], 1)
+        self.assertEqual(progress["trial_count"], 3)
 
     def test_baseline_worker_keeps_single_full_range_engine_result(self):
         baseline_request = engine_request(self.manifest).model_copy(update={"split": "baseline"})

@@ -223,3 +223,38 @@ def summarize_sweep_outcomes(sweep: dict, outcomes: list[dict]) -> dict:
         "fully_accounted": True,
         "status_counts": counts,
     }
+
+
+def complete_canceled_sweep_outcomes(sweep: dict, outcomes: list[dict]) -> tuple[list[dict], dict]:
+    """Terminalize a partial sweep by marking every unrecorded trial canceled."""
+
+    trials = sweep.get("trials") if isinstance(sweep, dict) else None
+    if not isinstance(trials, list) or not trials:
+        raise ResearchValidationPlanError("sweep plan is missing trials")
+    if not isinstance(outcomes, list):
+        raise ResearchValidationPlanError("sweep outcomes must be a list")
+
+    planned = [trial.get("trial_id") for trial in trials]
+    if any(not isinstance(trial_id, str) or not trial_id for trial_id in planned) or len(set(planned)) != len(planned):
+        raise ResearchValidationPlanError("sweep plan has invalid trial identities")
+
+    allowed = {"completed", "failed", "canceled"}
+    observed: dict[str, str] = {}
+    for outcome in outcomes:
+        if not isinstance(outcome, dict):
+            raise ResearchValidationPlanError("sweep outcomes must be structured")
+        trial_id = outcome.get("trial_id")
+        status = outcome.get("status")
+        if trial_id not in planned:
+            raise ResearchValidationPlanError("sweep outcome references an unplanned trial")
+        if trial_id in observed:
+            raise ResearchValidationPlanError("sweep outcome duplicates a trial")
+        if status not in allowed:
+            raise ResearchValidationPlanError("sweep outcome must be completed, failed, or canceled")
+        observed[trial_id] = status
+
+    terminal = [
+        {"trial_id": trial_id, "status": observed.get(trial_id, "canceled")}
+        for trial_id in planned
+    ]
+    return terminal, summarize_sweep_outcomes(sweep, terminal)

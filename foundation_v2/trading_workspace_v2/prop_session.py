@@ -250,6 +250,15 @@ class PropAttemptCreateRequest(BaseModel):
     resume_state: dict = Field(default_factory=dict)
 
 
+class PropSessionBundleCreateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    session: PropSessionSnapshot
+    attempt: ChallengeAttemptSnapshot
+    phase: PhaseStateSnapshot
+    resume_state: dict = Field(default_factory=dict)
+
+
 class PropResumeSaveRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

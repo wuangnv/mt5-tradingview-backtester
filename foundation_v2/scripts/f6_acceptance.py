@@ -39,10 +39,15 @@ def run(cmd: list[str], *, env=None, cwd=None) -> subprocess.CompletedProcess:
         capture_output=True,
     )
     if completed.stdout and completed.stdout.strip():
-        print(completed.stdout.strip())
+        encoding = sys.stdout.encoding or "utf-8"
+        print(completed.stdout.strip().encode(encoding, errors="backslashreplace").decode(encoding))
     if completed.returncode != 0:
         if completed.stderr and completed.stderr.strip():
-            print(completed.stderr.strip(), file=sys.stderr)
+            encoding = sys.stderr.encoding or "utf-8"
+            print(
+                completed.stderr.strip().encode(encoding, errors="backslashreplace").decode(encoding),
+                file=sys.stderr,
+            )
         raise SystemExit(completed.returncode)
     return completed
 
@@ -218,7 +223,15 @@ def main() -> int:
             try:
                 wait_http(f"http://127.0.0.1:{api_port}/health", api)
                 web = subprocess.Popen(
-                    ["npm.cmd", "exec", "vite", "--", "--host", "127.0.0.1", "--port", str(web_port), "--strictPort"],
+                    [
+                        "node",
+                        str(WEB / "node_modules" / "vite" / "bin" / "vite.js"),
+                        "--host",
+                        "127.0.0.1",
+                        "--port",
+                        str(web_port),
+                        "--strictPort",
+                    ],
                     cwd=WEB,
                     env=web_env,
                     stdout=subprocess.DEVNULL,

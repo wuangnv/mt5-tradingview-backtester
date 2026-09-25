@@ -35,6 +35,7 @@ from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookL
 from .prop_session import (
     PropAttemptCreateRequest,
     PropResumeSaveRequest,
+    PropSessionBundleCreateRequest,
     PropSessionContractError,
     PropSessionSnapshot,
     PropSessionUpdateRequest,
@@ -199,6 +200,26 @@ def create_app(
             return store.create_prop_session(body).model_dump(mode="json")
         except (PropPersistenceConflict, PropSessionContractError) as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+    @app.post("/api/v2/prop/session-bundles", status_code=201)
+    def create_prop_session_bundle(body: PropSessionBundleCreateRequest, workspace: str = Depends(workspace_id)):
+        require_prop_scope(workspace, body.session.session_id, body.session, body.attempt, body.phase)
+        try:
+            result = store.create_prop_session_bundle(
+                body.session,
+                body.attempt,
+                body.phase,
+                resume_state=body.resume_state,
+            )
+        except (PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return {
+            "session": result["session"].model_dump(mode="json"),
+            "attempt": result["attempt"].model_dump(mode="json"),
+            "phase": result["phase"].model_dump(mode="json"),
+            "resume_state": result["resume_state"],
+            "duplicate": result["duplicate"],
+        }
 
     @app.get("/api/v2/prop/sessions")
     def list_prop_sessions(workspace: str = Depends(workspace_id)):

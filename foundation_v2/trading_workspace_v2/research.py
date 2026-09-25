@@ -28,7 +28,12 @@ from .nautilus_worker import (
     runtime_ready,
 )
 from .research_validation import ResearchReconciliationError, validate_engine_result
-from .research_oos import build_bounded_sweep, build_walk_forward_plan, summarize_sweep_outcomes
+from .research_oos import (
+    build_bounded_sweep,
+    build_walk_forward_plan,
+    complete_canceled_sweep_outcomes,
+    summarize_sweep_outcomes,
+)
 from .retained import CostModel, InstrumentSpec, SourceSpec, compute_metrics_v2
 from .store import ClaimedJob, PostgresStore, StaleJobAttempt
 
@@ -52,7 +57,7 @@ def _check_holdout(manifest, end):
         raise PermissionError("requested research data reaches locked holdout data")
 
 
-def _canonical_oos_validation(rows, manifest, rules: dict, walk_forward: dict, parameter_space: dict, max_trials: int):
+def _canonical_oos_request(rules: dict, walk_forward: dict, parameter_space: dict, max_trials: int):
     if not isinstance(walk_forward, dict):
         raise ValueError("walk_forward must be structured")
     allowed_walk_forward = {
@@ -68,24 +73,18 @@ def _canonical_oos_validation(rows, manifest, rules: dict, walk_forward: dict, p
     if unknown_parameters:
         raise ValueError(f"parameter sweep references unsupported playbook rules: {', '.join(unknown_parameters)}")
 
-    plan = build_walk_forward_plan(
-        rows,
-        timeframe_seconds=int(manifest.timeframe_seconds),
-        holdout_policy=manifest.holdout_policy,
-        **walk_forward,
-    )
     sweep = build_bounded_sweep(parameter_space, max_trials=max_trials)
     for trial in sweep["trials"]:
         validate_rules({**rules, **trial["parameters"]})
 
     walk_forward_request = {
-        "train_bars": plan["train_bars"],
-        "oos_bars": plan["oos_bars"],
-        "step_bars": plan["step_bars"],
-        "purge_bars": plan["purge_bars"],
-        "embargo_bars": plan["embargo_bars"],
-        "overlap_bars": plan["overlap_bars"],
-        "expanding": plan["expanding"],
+        "train_bars": walk_forward.get("train_bars"),
+        "oos_bars": walk_forward.get("oos_bars"),
+        "step_bars": walk_forward.get("step_bars", walk_forward.get("oos_bars")),
+        "purge_bars": walk_forward.get("purge_bars", 0),
+        "embargo_bars": walk_forward.get("embargo_bars", 0),
+        "overlap_bars": walk_forward.get("overlap_bars", 0),
+        "expanding": walk_forward.get("expanding", True),
         "max_folds": int(walk_forward.get("max_folds", 20)),
     }
     return {
@@ -100,13 +99,12 @@ def _canonical_oos_validation(rows, manifest, rules: dict, walk_forward: dict, p
             "reason": "objective_not_predeclared",
         },
         "walk_forward_request": walk_forward_request,
-        "walk_forward": plan,
         "sweep_request": {"parameter_space": parameter_space, "max_trials": sweep["max_trials"]},
         "sweep": sweep,
     }
 
 
-def _verify_oos_validation(protocol: dict, rows: list[dict], manifest) -> dict | None:
+def _materialize_oos_validation(protocol: dict, rows: list[dict], manifest) -> dict | None:
     validation = protocol.get("validation")
     if validation is None:
         return None
@@ -119,9 +117,7 @@ def _verify_oos_validation(protocol: dict, rows: list[dict], manifest) -> dict |
     if not isinstance(walk_forward, dict) or not isinstance(sweep_request, dict):
         raise ResearchEngineValidationError("research validation protocol is incomplete")
     try:
-        rebuilt = _canonical_oos_validation(
-            rows,
-            manifest,
+        rebuilt_request = _canonical_oos_request(
             protocol.get("playbook", {}).get("rules") or {},
             walk_forward,
             sweep_request.get("parameter_space"),
@@ -129,9 +125,22 @@ def _verify_oos_validation(protocol: dict, rows: list[dict], manifest) -> dict |
         )
     except (TypeError, ValueError) as exc:
         raise ResearchEngineValidationError("research validation protocol cannot be reconstructed") from exc
-    if rebuilt != validation:
+    stored_plan = validation.get("walk_forward")
+    request_only = {key: value for key, value in validation.items() if key != "walk_forward"}
+    if rebuilt_request != request_only:
         raise ResearchEngineValidationError("research validation protocol changed after job creation")
-    return validation
+    try:
+        plan = build_walk_forward_plan(
+            rows,
+            timeframe_seconds=int(manifest.timeframe_seconds),
+            holdout_policy=manifest.holdout_policy,
+            **rebuilt_request["walk_forward_request"],
+        )
+    except (TypeError, ValueError) as exc:
+        raise ResearchEngineValidationError("research validation plan cannot be materialized") from exc
+    if stored_plan is not None and stored_plan != plan:
+        raise ResearchEngineValidationError("research validation protocol changed after job creation")
+    return {**rebuilt_request, "walk_forward": plan}
 
 
 class ResearchService:
@@ -293,16 +302,7 @@ class ResearchService:
                 raise ValueError("walk_forward, parameter_space and max_trials must be provided together")
             if request.split != "validation":
                 raise ValueError("OOS configuration requires split=validation")
-            rows = self.artifacts.read_dataset_range(
-                manifest.artifact_path,
-                manifest.artifact_sha256,
-                from_utc=int(request.data_from_utc),
-                to_utc=int(request.data_to_utc),
-                max_bars=int(request.max_bars),
-            )
-            protocol["validation"] = _canonical_oos_validation(
-                rows,
-                manifest,
+            protocol["validation"] = _canonical_oos_request(
                 rules,
                 walk_forward,
                 parameter_space,
@@ -416,6 +416,8 @@ class ResearchService:
                     if not lease_guard.owned():
                         raise ResearchEngineInterrupted("research execution interrupted")
 
+                validation = None
+                terminal_outcomes: list[dict] = []
                 try:
                     rows = self.artifacts.read_dataset_range(
                         manifest.artifact_path, manifest.artifact_sha256,
@@ -435,7 +437,7 @@ class ResearchService:
                         {"phase_index": 2, "phase_count": phase_count},
                     ):
                         return None
-                    validation = _verify_oos_validation(job.protocol, rows, manifest)
+                    validation = _materialize_oos_validation(job.protocol, rows, manifest)
                     if validation is not None:
                         if not self.save_checkpoint(
                             job,
@@ -503,7 +505,6 @@ class ResearchService:
                         engine = run_engine(rows, job.protocol)
                     else:
                         trial_results = []
-                        terminal_outcomes = []
                         for trial in validation["sweep"]["trials"]:
                             check_budget()
                             trial_result = {
@@ -562,9 +563,55 @@ class ResearchService:
                                 {"trial_id": trial_result["trial_id"], "status": trial_result["status"]}
                             )
                             trial_results.append(trial_result)
+                            partial_counts = {
+                                status: sum(item["status"] == status for item in terminal_outcomes)
+                                for status in ("canceled", "completed", "failed")
+                            }
+                            if not self.save_checkpoint(
+                                job,
+                                {
+                                    "schema": "research-job-checkpoint-v1",
+                                    "phase": "oos-sweep-progress",
+                                    "attempt_no": job.attempt_no,
+                                    "validation_schema": validation["schema"],
+                                    "trial_outcomes": list(terminal_outcomes),
+                                    "trial_status_counts": partial_counts,
+                                    "trial_count": validation["sweep"]["trial_count"],
+                                },
+                                {
+                                    "phase_index": 3,
+                                    "phase_count": phase_count,
+                                    "trial_index": len(terminal_outcomes),
+                                    "trial_count": validation["sweep"]["trial_count"],
+                                },
+                            ):
+                                return None
                         outcome_summary = summarize_sweep_outcomes(validation["sweep"], terminal_outcomes)
                         engine = None
                 except ResearchEngineInterrupted:
+                    if validation is not None:
+                        canceled_outcomes, canceled_summary = complete_canceled_sweep_outcomes(
+                            validation["sweep"], terminal_outcomes
+                        )
+                        self.save_checkpoint(
+                            job,
+                            {
+                                "schema": "research-job-checkpoint-v1",
+                                "phase": "oos-sweep-canceled",
+                                "attempt_no": job.attempt_no,
+                                "validation_schema": validation["schema"],
+                                "trial_outcomes": canceled_outcomes,
+                                "trial_status_counts": canceled_summary["status_counts"],
+                                "trial_count": canceled_summary["trial_count"],
+                                "fully_accounted": canceled_summary["fully_accounted"],
+                            },
+                            {
+                                "phase_index": 3,
+                                "phase_count": phase_count,
+                                "trial_index": len(terminal_outcomes),
+                                "trial_count": validation["sweep"]["trial_count"],
+                            },
+                        )
                     return None
                 elapsed_ms = (time.perf_counter() - started) * 1000.0
                 if elapsed_ms > int(job.protocol["budget"]["max_runtime_ms"]):

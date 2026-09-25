@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 import sys
 import tempfile
 import threading
@@ -211,6 +212,116 @@ class FH1JobLifecycleTests(unittest.TestCase):
         current = self.store.get_job("tenant-a", job.job_id)
         self.assertEqual(current.status, "canceled")
         self.assertIsNone(self.store.claim_next_job("worker-b", 60))
+
+    def test_running_oos_cancel_persists_fully_accounted_terminal_outcomes(self):
+        job = self.create_job()
+        claimed = self.store.claim_next_job("worker-a", 60)
+        protocol = {
+            "validation": {
+                "schema": "research-oos-validation-v1",
+                "sweep": {
+                    "trials": [
+                        {"trial_id": "trial-0001", "parameters": {"lookback": 2}},
+                        {"trial_id": "trial-0002", "parameters": {"lookback": 3}},
+                        {"trial_id": "trial-0003", "parameters": {"lookback": 4}},
+                    ]
+                },
+            }
+        }
+        partial_checkpoint = {
+            "schema": "research-job-checkpoint-v1",
+            "phase": "oos-sweep-progress",
+            "attempt_no": claimed.attempt_no,
+            "validation_schema": "research-oos-validation-v1",
+            "trial_outcomes": [{"trial_id": "trial-0001", "status": "completed"}],
+        }
+        with self.store.connect() as conn:
+            conn.execute(
+                """
+                UPDATE research_jobs
+                SET protocol_json=%s::jsonb,checkpoint_json=%s::jsonb
+                WHERE workspace_id='tenant-a' AND job_id=%s
+                """,
+                (json.dumps(protocol), json.dumps(partial_checkpoint), job.job_id),
+            )
+            conn.commit()
+
+        canceled = self.store.cancel_job("tenant-a", job.job_id)
+        self.assertEqual(canceled.status, "canceled")
+        self.assertIsNone(canceled.result_path)
+        checkpoint = self.store.get_job_checkpoint("tenant-a", job.job_id)
+        self.assertEqual(checkpoint["status"], "canceled")
+        self.assertEqual(checkpoint["checkpoint"]["phase"], "oos-sweep-canceled")
+        self.assertTrue(checkpoint["checkpoint"]["fully_accounted"])
+        self.assertEqual(
+            checkpoint["checkpoint"]["trial_outcomes"],
+            [
+                {"trial_id": "trial-0001", "status": "completed"},
+                {"trial_id": "trial-0002", "status": "canceled"},
+                {"trial_id": "trial-0003", "status": "canceled"},
+            ],
+        )
+        self.assertEqual(
+            checkpoint["checkpoint"]["trial_status_counts"],
+            {"canceled": 2, "completed": 1, "failed": 0},
+        )
+        self.assertEqual(checkpoint["progress"]["trial_index"], 1)
+        self.assertEqual(checkpoint["progress"]["trial_count"], 3)
+
+    def test_retry_cancel_does_not_reuse_oos_outcomes_from_stale_attempt(self):
+        job = self.create_job()
+        first = self.store.claim_next_job("worker-a", 60)
+        protocol = {
+            "validation": {
+                "schema": "research-oos-validation-v1",
+                "sweep": {
+                    "trials": [
+                        {"trial_id": "trial-0001", "parameters": {"lookback": 2}},
+                        {"trial_id": "trial-0002", "parameters": {"lookback": 3}},
+                    ]
+                },
+            }
+        }
+        stale_checkpoint = {
+            "schema": "research-job-checkpoint-v1",
+            "phase": "oos-sweep-progress",
+            "attempt_no": first.attempt_no,
+            "validation_schema": "research-oos-validation-v1",
+            "trial_outcomes": [{"trial_id": "trial-0001", "status": "completed"}],
+        }
+        with self.store.connect() as conn:
+            conn.execute(
+                """
+                UPDATE research_jobs
+                SET protocol_json=%s::jsonb,checkpoint_json=%s::jsonb
+                WHERE workspace_id='tenant-a' AND job_id=%s
+                """,
+                (json.dumps(protocol), json.dumps(stale_checkpoint), job.job_id),
+            )
+            conn.commit()
+
+        self.expire(job.job_id)
+        recovered = self.store.recover_expired_jobs()
+        self.assertEqual(recovered[0]["status"], "queued")
+        second = self.store.claim_next_job("worker-b", 60)
+        self.assertEqual(second.attempt_no, first.attempt_no + 1)
+
+        canceled = self.store.cancel_job("tenant-a", job.job_id)
+        self.assertEqual(canceled.status, "canceled")
+        checkpoint = self.store.get_job_checkpoint("tenant-a", job.job_id)
+        self.assertEqual(checkpoint["checkpoint"]["attempt_no"], second.attempt_no)
+        self.assertEqual(
+            checkpoint["checkpoint"]["trial_outcomes"],
+            [
+                {"trial_id": "trial-0001", "status": "canceled"},
+                {"trial_id": "trial-0002", "status": "canceled"},
+            ],
+        )
+        self.assertEqual(
+            checkpoint["checkpoint"]["trial_status_counts"],
+            {"canceled": 2, "completed": 0, "failed": 0},
+        )
+        self.assertEqual(checkpoint["progress"]["trial_index"], 0)
 
     def test_stale_worker_observing_cancel_terminalizes_expired_last_job(self):
         job = self.create_job()

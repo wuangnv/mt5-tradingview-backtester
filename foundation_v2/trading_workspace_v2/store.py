@@ -17,9 +17,52 @@ from .prop_session import (
     PropSessionSnapshot,
     validate_attempt_against_session,
 )
+from .research_oos import complete_canceled_sweep_outcomes
 
 
 RESEARCH_JOB_ADMISSION_LOCK_KEY = 0x52534A41
+
+
+def _oos_cancellation_state(row: dict) -> tuple[dict, dict] | None:
+    protocol = row.get("protocol_json")
+    validation = protocol.get("validation") if isinstance(protocol, dict) else None
+    sweep = validation.get("sweep") if isinstance(validation, dict) else None
+    if validation is None or validation.get("schema") != "research-oos-validation-v1" or not isinstance(sweep, dict):
+        return None
+
+    checkpoint = row.get("checkpoint_json")
+    same_attempt_checkpoint = False
+    if isinstance(checkpoint, dict):
+        try:
+            same_attempt_checkpoint = int(checkpoint.get("attempt_no")) == int(row.get("attempt_no") or 0)
+        except (TypeError, ValueError):
+            same_attempt_checkpoint = False
+    partial_outcomes = checkpoint.get("trial_outcomes") if same_attempt_checkpoint else []
+    if not isinstance(partial_outcomes, list):
+        partial_outcomes = []
+    try:
+        terminal_outcomes, summary = complete_canceled_sweep_outcomes(sweep, partial_outcomes)
+    except ValueError:
+        return None
+
+    observed_count = len(partial_outcomes)
+    terminal_checkpoint = {
+        "schema": "research-job-checkpoint-v1",
+        "phase": "oos-sweep-canceled",
+        "attempt_no": int(row.get("attempt_no") or 0),
+        "validation_schema": validation["schema"],
+        "trial_outcomes": terminal_outcomes,
+        "trial_status_counts": summary["status_counts"],
+        "trial_count": summary["trial_count"],
+        "fully_accounted": summary["fully_accounted"],
+    }
+    terminal_progress = {
+        "phase_index": 3,
+        "phase_count": 5,
+        "trial_index": observed_count,
+        "trial_count": summary["trial_count"],
+    }
+    return terminal_checkpoint, terminal_progress
 
 
 SCHEMA_SQL = """
@@ -596,26 +639,43 @@ class PostgresStore:
         now = utc_now_iso()
         with self.connect() as conn:
             row = conn.execute(
-                "SELECT status FROM research_jobs WHERE workspace_id=%s AND job_id=%s FOR UPDATE",
+                """
+                SELECT status,attempt_no,protocol_json,checkpoint_json,progress_json
+                FROM research_jobs
+                WHERE workspace_id=%s AND job_id=%s
+                FOR UPDATE
+                """,
                 (workspace_id, job_id),
             ).fetchone()
             if not row:
                 conn.rollback()
                 return None
+            cancellation_state = _oos_cancellation_state(row)
+            checkpoint_json = json.dumps(cancellation_state[0], sort_keys=True) if cancellation_state else None
+            progress_json = json.dumps(cancellation_state[1], sort_keys=True) if cancellation_state else None
             if row["status"] == "queued":
                 conn.execute(
-                    "UPDATE research_jobs SET status='canceled',cancel_requested=true,updated_at_utc=%s WHERE workspace_id=%s AND job_id=%s",
-                    (now, workspace_id, job_id),
+                    """
+                    UPDATE research_jobs
+                    SET status='canceled',cancel_requested=true,
+                        checkpoint_json=COALESCE(%s::jsonb,checkpoint_json),
+                        progress_json=COALESCE(%s::jsonb,progress_json),
+                        updated_at_utc=%s
+                    WHERE workspace_id=%s AND job_id=%s
+                    """,
+                    (checkpoint_json, progress_json, now, workspace_id, job_id),
                 )
             elif row["status"] == "running":
                 conn.execute(
                     """
                     UPDATE research_jobs
                     SET status='canceled',cancel_requested=true,result_path=NULL,result_sha256=NULL,
+                        checkpoint_json=COALESCE(%s::jsonb,checkpoint_json),
+                        progress_json=COALESCE(%s::jsonb,progress_json),
                         lease_owner=NULL,lease_token=NULL,lease_expires_at_utc=NULL,updated_at_utc=%s
                     WHERE workspace_id=%s AND job_id=%s
                     """,
-                    (now, workspace_id, job_id),
+                    (checkpoint_json, progress_json, now, workspace_id, job_id),
                 )
             conn.commit()
         return self.get_job(workspace_id, job_id)
@@ -1114,6 +1174,135 @@ class PostgresStore:
             )
             conn.commit()
         return {"session": session, "attempt": attempt, "phase": phase, "resume_state": resume, "duplicate": False}
+
+    def create_prop_session_bundle(
+        self,
+        session: PropSessionSnapshot,
+        attempt: ChallengeAttemptSnapshot,
+        phase: PhaseStateSnapshot,
+        *,
+        resume_state: dict | None = None,
+    ) -> dict:
+        """Create the initial session and attempt atomically, with exact-payload retry semantics."""
+        if session.revision != 1:
+            raise PropPersistenceConflict("new prop sessions must start at revision 1")
+        if attempt.revision != 1:
+            raise PropPersistenceConflict("new prop attempts must start at revision 1")
+        if attempt.workspace_id != session.workspace_id or attempt.session_id != session.session_id:
+            raise PropPersistenceConflict("prop attempt does not belong to the session")
+
+        resume = dict(resume_state or {})
+        self._validate_prop_phase_scope(session, attempt, phase)
+        self._validate_resume_counts(phase, resume)
+        self.ensure_workspace(session.workspace_id)
+        now = utc_now_iso()
+        session_json = json.dumps(session.model_dump(mode="json"), sort_keys=True)
+        attempt_json = json.dumps(attempt.model_dump(mode="json"), sort_keys=True)
+        phase_json = json.dumps(phase.model_dump(mode="json"), sort_keys=True)
+        resume_json = json.dumps(resume, sort_keys=True)
+
+        with self.connect() as conn:
+            inserted_session = conn.execute(
+                """
+                INSERT INTO prop_sessions(
+                    workspace_id,session_id,current_revision,snapshot_json,created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,1,%s::jsonb,%s,%s)
+                ON CONFLICT (workspace_id,session_id) DO NOTHING
+                RETURNING session_id
+                """,
+                (session.workspace_id, session.session_id, session_json, now, now),
+            ).fetchone()
+            if inserted_session is None:
+                existing_session = conn.execute(
+                    """
+                    SELECT snapshot_json FROM prop_sessions
+                    WHERE workspace_id=%s AND session_id=%s FOR UPDATE
+                    """,
+                    (session.workspace_id, session.session_id),
+                ).fetchone()
+                current_session = PropSessionSnapshot.model_validate(existing_session["snapshot_json"])
+                if current_session != session:
+                    raise PropPersistenceConflict("prop session already exists with different content")
+            else:
+                conn.execute(
+                    """
+                    INSERT INTO prop_session_revisions(
+                        workspace_id,session_id,revision,snapshot_json,created_at_utc
+                    ) VALUES(%s,%s,1,%s::jsonb,%s)
+                    """,
+                    (session.workspace_id, session.session_id, session_json, now),
+                )
+
+            if attempt.parent_attempt_id:
+                parent = conn.execute(
+                    """
+                    SELECT 1 FROM prop_attempts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                    """,
+                    (attempt.workspace_id, attempt.session_id, attempt.parent_attempt_id),
+                ).fetchone()
+                if parent is None:
+                    raise PropPersistenceConflict("parent prop attempt does not exist in this session")
+
+            inserted_attempt = conn.execute(
+                """
+                INSERT INTO prop_attempts(
+                    workspace_id,session_id,attempt_id,current_revision,snapshot_json,phase_json,resume_json,
+                    created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,%s,1,%s::jsonb,%s::jsonb,%s::jsonb,%s,%s)
+                ON CONFLICT (workspace_id,session_id,attempt_id) DO NOTHING
+                RETURNING attempt_id
+                """,
+                (
+                    attempt.workspace_id,
+                    attempt.session_id,
+                    attempt.attempt_id,
+                    attempt_json,
+                    phase_json,
+                    resume_json,
+                    now,
+                    now,
+                ),
+            ).fetchone()
+            duplicate = inserted_attempt is None
+            if duplicate:
+                existing = conn.execute(
+                    """
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempts
+                    WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
+                    FOR UPDATE
+                    """,
+                    (attempt.workspace_id, attempt.session_id, attempt.attempt_id),
+                ).fetchone()
+                current_attempt = ChallengeAttemptSnapshot.model_validate(existing["snapshot_json"])
+                current_phase = PhaseStateSnapshot.model_validate(existing["phase_json"])
+                if current_attempt != attempt or current_phase != phase or existing["resume_json"] != resume:
+                    raise PropPersistenceConflict("prop attempt already exists with different content")
+            else:
+                conn.execute(
+                    """
+                    INSERT INTO prop_attempt_revisions(
+                        workspace_id,session_id,attempt_id,revision,snapshot_json,phase_json,resume_json,created_at_utc
+                    ) VALUES(%s,%s,%s,1,%s::jsonb,%s::jsonb,%s::jsonb,%s)
+                    """,
+                    (
+                        attempt.workspace_id,
+                        attempt.session_id,
+                        attempt.attempt_id,
+                        attempt_json,
+                        phase_json,
+                        resume_json,
+                        now,
+                    ),
+                )
+            conn.commit()
+        return {
+            "session": session,
+            "attempt": attempt,
+            "phase": phase,
+            "resume_state": resume,
+            "duplicate": duplicate,
+        }
 
     def get_prop_attempt(
         self,

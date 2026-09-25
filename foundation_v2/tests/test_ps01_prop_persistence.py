@@ -341,6 +341,46 @@ class Ps01PropPersistenceTests(unittest.TestCase):
             attempts = list(executor.map(lambda _: create_attempt_once(), range(2)))
         self.assertEqual(sorted(result["duplicate"] for result in attempts), [False, True])
 
+    def test_atomic_bundle_rolls_back_new_session_when_attempt_cannot_be_created(self):
+        suffix = uuid4().hex
+        workspace_id = f"ps01-bundle-{suffix}"
+        session_id = f"session-{suffix}"
+        attempt_id = f"attempt-{suffix}"
+        session = self.session.model_copy(update={"workspace_id": workspace_id, "session_id": session_id})
+        attempt = self.attempt.model_copy(
+            update={
+                "workspace_id": workspace_id,
+                "session_id": session_id,
+                "attempt_id": attempt_id,
+                "parent_attempt_id": "missing-parent",
+            }
+        )
+        phase = self.phase.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": attempt_id}
+        )
+        with self.assertRaisesRegex(PropPersistenceConflict, "parent prop attempt"):
+            self.store.create_prop_session_bundle(session, attempt, phase, resume_state=self.resume_state)
+        self.assertIsNone(self.store.get_prop_session(workspace_id, session_id))
+
+    def test_atomic_bundle_retry_is_idempotent(self):
+        suffix = uuid4().hex
+        workspace_id = f"ps01-bundle-retry-{suffix}"
+        session_id = f"session-{suffix}"
+        attempt_id = f"attempt-{suffix}"
+        session = self.session.model_copy(update={"workspace_id": workspace_id, "session_id": session_id})
+        attempt = self.attempt.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": attempt_id}
+        )
+        phase = self.phase.model_copy(
+            update={"workspace_id": workspace_id, "session_id": session_id, "attempt_id": attempt_id}
+        )
+        first = self.store.create_prop_session_bundle(session, attempt, phase, resume_state=self.resume_state)
+        duplicate = PostgresStore(self.dsn).create_prop_session_bundle(
+            session, attempt, phase, resume_state=self.resume_state
+        )
+        self.assertFalse(first["duplicate"])
+        self.assertTrue(duplicate["duplicate"])
+
     def test_session_profile_is_frozen_and_tenant_queries_are_isolated(self):
         changed_profile = self.session.profile.model_copy(update={"terms_version": "changed-after-start"})
         changed = self.session.model_copy(update={"profile": changed_profile, "revision": 2})
@@ -407,6 +447,61 @@ class Ps01PropPersistenceTests(unittest.TestCase):
                 self.assertEqual(current.json()["attempt"]["mode"], "simulation")
                 self.assertEqual(current.json()["resume_state"]["cursor"]["bar_index"], 412)
 
+                bundle_suffix = uuid4().hex
+                bundle_session = self.session.model_copy(
+                    update={"session_id": f"bundle-session-{bundle_suffix}"}
+                )
+                bundle_attempt = self.attempt.model_copy(
+                    update={
+                        "session_id": bundle_session.session_id,
+                        "attempt_id": f"bundle-attempt-{bundle_suffix}",
+                    }
+                )
+                bundle_phase = self.phase.model_copy(
+                    update={
+                        "session_id": bundle_session.session_id,
+                        "attempt_id": bundle_attempt.attempt_id,
+                    }
+                )
+                bundled = client.post(
+                    "/api/v2/prop/session-bundles",
+                    headers=headers,
+                    json={
+                        "session": bundle_session.model_dump(mode="json"),
+                        "attempt": bundle_attempt.model_dump(mode="json"),
+                        "phase": bundle_phase.model_dump(mode="json"),
+                        "resume_state": self.resume_state,
+                    },
+                )
+                self.assertEqual(bundled.status_code, 201)
+                self.assertFalse(bundled.json()["duplicate"])
+                self.assertEqual(bundled.json()["attempt"]["mode"], "simulation")
+                bundled_retry = client.post(
+                    "/api/v2/prop/session-bundles",
+                    headers=headers,
+                    json={
+                        "session": bundle_session.model_dump(mode="json"),
+                        "attempt": bundle_attempt.model_dump(mode="json"),
+                        "phase": bundle_phase.model_dump(mode="json"),
+                        "resume_state": self.resume_state,
+                    },
+                )
+                self.assertEqual(bundled_retry.status_code, 201)
+                self.assertTrue(bundled_retry.json()["duplicate"])
+
+                conflicting_bundle_attempt = bundle_attempt.model_copy(update={"data_version": "different-dataset"})
+                conflicting_bundle = client.post(
+                    "/api/v2/prop/session-bundles",
+                    headers=headers,
+                    json={
+                        "session": bundle_session.model_dump(mode="json"),
+                        "attempt": conflicting_bundle_attempt.model_dump(mode="json"),
+                        "phase": bundle_phase.model_dump(mode="json"),
+                        "resume_state": self.resume_state,
+                    },
+                )
+                self.assertEqual(conflicting_bundle.status_code, 409)
+
                 attempts = client.get(
                     f"/api/v2/prop/sessions/{self.session_id}/attempts",
                     headers=headers,
@@ -457,6 +552,30 @@ class Ps01PropPersistenceTests(unittest.TestCase):
                 )
                 self.assertEqual(denied.status_code, 403)
                 self.assertEqual(denied.json()["detail"], "prop_workspace_mismatch")
+                foreign_attempt = bundle_attempt.model_copy(
+                    update={
+                        "workspace_id": foreign.workspace_id,
+                        "session_id": foreign.session_id,
+                    }
+                )
+                foreign_phase = bundle_phase.model_copy(
+                    update={
+                        "workspace_id": foreign.workspace_id,
+                        "session_id": foreign.session_id,
+                    }
+                )
+                denied_bundle = client.post(
+                    "/api/v2/prop/session-bundles",
+                    headers=headers,
+                    json={
+                        "session": foreign.model_dump(mode="json"),
+                        "attempt": foreign_attempt.model_dump(mode="json"),
+                        "phase": foreign_phase.model_dump(mode="json"),
+                        "resume_state": self.resume_state,
+                    },
+                )
+                self.assertEqual(denied_bundle.status_code, 403)
+                self.assertEqual(denied_bundle.json()["detail"], "prop_workspace_mismatch")
                 self.assertFalse(client.get("/health").json()["execution_capability"])
 
 

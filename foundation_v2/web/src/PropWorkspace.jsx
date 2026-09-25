@@ -281,14 +281,11 @@ export default function PropWorkspace({ workspace }) {
         pending_orders: [],
       }
 
-      const created = await propJson('/api/v2/prop/sessions', workspace, {
+      const bundle = await propJson('/api/v2/prop/session-bundles', workspace, {
         method: 'POST',
-        body: JSON.stringify(session),
+        body: JSON.stringify({ session, attempt, phase, resume_state: resumeState }),
       })
-      const bundle = await propJson(`/api/v2/prop/sessions/${encodeURIComponent(sessionId)}/attempts`, workspace, {
-        method: 'POST',
-        body: JSON.stringify({ attempt, phase, resume_state: resumeState }),
-      })
+      const created = bundle.session
       setSessions((current) => ({ status: 'ready', items: [...current.items, created], error: null }))
       setSelected({ status: 'ready', session: created, attempts: [bundle.attempt], bundle, error: null })
     } catch (error) {
