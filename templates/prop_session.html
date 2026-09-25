@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prop Session</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+<main class="workspace-shell">
+    {% include "_workspace_nav.html" %}
+    <section>
+        <h1>Prop Session</h1>
+        <p>Luồng luyện challenge đang dùng contract PS-00. Trang này chưa tạo lệnh broker và chưa thay thế evaluator.</p>
+        <ul>
+            <li>Profile/version: sẵn sàng nối backend session.</li>
+            <li>Attempt lifecycle: draft → running → completed/failed theo contract.</li>
+            <li>Simulator, objectives và resume persistence sẽ được nối ở các lát U4/U6 tiếp theo.</li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

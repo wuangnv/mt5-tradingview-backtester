@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "test:learn-ui": "node run_learn_ui_acceptance.mjs"
+    "test:learn-ui": "node run_learn_ui_acceptance.mjs",
+    "test:prop-ui": "node run_prop_ui_acceptance.mjs"
   },
   "dependencies": {
     "lightweight-charts": "^5.0.0",

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createChart, LineSeries } from 'lightweight-charts'
 import LearnWorkspace from './LearnWorkspace.jsx'
+import PropWorkspace from './PropWorkspace.jsx'
 import ReplayWorkspace from './ReplayWorkspace.jsx'
 import './styles.css'
 
@@ -138,9 +139,11 @@ function App() {
   const query = new URLSearchParams(window.location.search)
   const workspace = query.get('workspace') || 'tenant-a'
   const isLearn = query.get('view') === 'learn'
+  const isProp = query.get('view') === 'testing' || query.get('view') === 'prop'
   const isReplay = query.get('view') === 'replay' || query.has('session') || query.has('dataset')
 
   if (isLearn) return <LearnWorkspace workspace={workspace} query={query} />
+  if (isProp) return <PropWorkspace workspace={workspace} query={query} />
   if (isReplay) return <ReplayWorkspace workspace={workspace} query={query} />
   return <ResearchWorkspace workspace={workspace} query={query} />
 }

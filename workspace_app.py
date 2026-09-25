@@ -15,6 +15,7 @@ from workspace_data import DataProviderRegistry, LocalChunksProvider, register_d
 from workspace_learn import register_learn_routes
 from workspace_research_engine import register_research_engine_routes
 from workspace_risk import register_risk_lab_routes
+from workspace_prop import register_prop_routes
 from workspace_status import register_workspace_status_route
 
 
@@ -77,6 +78,7 @@ def create_app(data_root=None, **kwargs):
     )
     register_analytics_routes(app)
     register_risk_lab_routes(app)
+    register_prop_routes(app)
     if education_root is None:
         education_root = os.environ.get("EDUCATION_ROOT") or Path(__file__).resolve().parents[2] / "education"
     register_learn_routes(app, education_root)
