@@ -23,6 +23,7 @@ if str(V2) not in sys.path:
 
 from trading_workspace_v2.prop_replay import (
     ReplayPropConnectionError,
+    replay_event_operation_id,
     replay_mark_to_prop_event,
     validate_replay_prop_binding,
 )
@@ -1012,6 +1013,111 @@ class ReplayPropPostgresIntegrationTests(unittest.TestCase):
             self.store.get_record(self.workspace_id, "replay", fixture["parent_replay_id"]),
             parent_replay_before,
         )
+
+        delayed_duplicate = create_once()
+        self.assertTrue(delayed_duplicate["duplicate"])
+        self.assertEqual(delayed_duplicate["session"], created["session"])
+        self.assertEqual(delayed_duplicate["attempt"], created["attempt"])
+        self.assertEqual(delayed_duplicate["phase"], created["phase"])
+        self.assertEqual(delayed_duplicate["resume_state"], created["resume_state"])
+        self.assertEqual(delayed_duplicate["attempt"]["revision"], 1)
+
+    def test_hindsight_branch_rejects_forged_generic_resume_receipt(self):
+        dataset, replay_service, replay_id, first_step, _, _ = self._build_replay_boundary(row_count=4)
+        second_step = replay_service.step(self.workspace_id, replay_id, first_step["revision"], 1)
+        second_snapshot = ReplayExecutionSnapshot.model_validate(second_step["payload"]["execution"])
+        checkpoint_event = ReplayExecutionEvent.model_validate(second_snapshot.ledger[-1])
+        session_id = f"prop-{uuid4().hex}"
+        attempt_id = f"attempt-{uuid4().hex}"
+        session, attempt, phase, resume = prop_state(
+            workspace_id=self.workspace_id,
+            session_id=session_id,
+            attempt_id=attempt_id,
+            dataset_sha256=dataset.artifact_sha256,
+        )
+        self.store.create_prop_session_bundle(session, attempt, phase, resume_state=resume)
+
+        forged_phase = phase.model_copy(
+            update={
+                "balance": second_snapshot.balance,
+                "floating_pl": second_snapshot.floating_pl,
+                "equity": second_snapshot.equity,
+                "high_water_mark": max(second_snapshot.balance, second_snapshot.equity),
+                "virtual_time_utc": datetime.fromtimestamp(checkpoint_event.virtual_time_utc, tz=timezone.utc),
+                "last_event_sequence": 2,
+                "open_positions": 1 if second_snapshot.position is not None else 0,
+                "pending_orders": 1 if second_snapshot.pending_market_order is not None else 0,
+            }
+        )
+        forged_resume = {
+            "cursor": {
+                "bar_index": second_snapshot.cursor_index,
+                "timestamp_utc": datetime.fromtimestamp(
+                    checkpoint_event.virtual_time_utc, tz=timezone.utc
+                ).isoformat().replace("+00:00", "Z"),
+            },
+            "open_positions": (
+                [second_snapshot.position.model_dump(mode="json")]
+                if second_snapshot.position is not None
+                else []
+            ),
+            "pending_orders": (
+                [second_snapshot.pending_market_order.model_dump(mode="json")]
+                if second_snapshot.pending_market_order is not None
+                else []
+            ),
+            "replay_binding": {
+                "replay_session_id": replay_id,
+                "branch_id": second_snapshot.branch_id,
+                "dataset_id": second_snapshot.dataset_id,
+                "dataset_sha256": second_snapshot.dataset_sha256,
+                "last_replay_event_sequence": second_snapshot.event_sequence,
+            },
+        }
+        forged_operation_id = replay_event_operation_id(
+            replay_session_id=replay_id,
+            branch_id=second_snapshot.branch_id,
+            replay_event_sequence=second_snapshot.event_sequence,
+            prop_session_id=session_id,
+            prop_attempt_id=attempt_id,
+        )
+        forged = self.store.save_prop_resume_state(
+            attempt.model_copy(update={"revision": 2}),
+            forged_phase,
+            expected_revision=1,
+            operation_id=forged_operation_id,
+            resume_state=forged_resume,
+        )
+        self.assertEqual(forged["attempt"].revision, 2)
+        terminal = self.store.apply_prop_transition_intent(
+            TransitionIntent(
+                workspace_id=self.workspace_id,
+                session_id=session_id,
+                attempt_id=attempt_id,
+                profile_hash=attempt.profile_hash,
+                intent_id=f"abandon-forged-{uuid4().hex}",
+                expected_revision=2,
+                event_sequence=forged_phase.last_event_sequence,
+                action="abandon",
+            )
+        )
+        branch = replay_service.branch(
+            self.workspace_id,
+            replay_id,
+            second_step["revision"],
+            second_snapshot.cursor_index,
+        )
+        with self.assertRaisesRegex(ReplayPropConnectionError, "canonical historical Prop checkpoint"):
+            replay_service.branch_prop_attempt(
+                self.workspace_id,
+                branch["record_id"],
+                prop_session_id=session_id,
+                parent_attempt_id=attempt_id,
+                expected_replay_revision=branch["revision"],
+                expected_parent_replay_revision=second_step["revision"],
+                expected_parent_attempt_revision=terminal["attempt"].revision,
+                operation_id=f"reject-forged-{uuid4().hex}",
+            )
 
     def test_hindsight_branch_rejects_missing_canonical_prop_checkpoint_and_foreign_scope(self):
         dataset, replay_service, replay_id, first_step, first_snapshot, _ = self._build_replay_boundary(row_count=4)

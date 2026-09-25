@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 
 import psycopg
@@ -13,6 +13,7 @@ from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
 from .prop_replay import (
     ReplayPropConnectionError,
     replay_event_operation_id,
+    replay_mark_to_prop_event,
     validate_replay_prop_branch_checkpoint,
     validate_replay_prop_transition_boundary,
     validate_replay_prop_transition_result,
@@ -1224,7 +1225,7 @@ class PostgresStore:
 
             receipt = conn.execute(
                 """
-                SELECT fingerprint FROM prop_mutation_receipts
+                SELECT fingerprint,entity_revision,created_at_utc FROM prop_mutation_receipts
                 WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND operation_id=%s
                 """,
                 (workspace_id, prop_session_id, child_attempt_id, operation_id),
@@ -1232,25 +1233,32 @@ class PostgresStore:
             if receipt is not None:
                 if receipt["fingerprint"] != fingerprint:
                     raise PropIdempotencyConflict("operation_id was already used with different Replay branch content")
-                current = conn.execute(
+                created = conn.execute(
                     """
-                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempts
+                    SELECT snapshot_json,phase_json,resume_json FROM prop_attempt_revisions
                     WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
-                    FOR UPDATE
+                      AND revision=%s
                     """,
-                    (workspace_id, prop_session_id, child_attempt_id),
+                    (workspace_id, prop_session_id, child_attempt_id, int(receipt["entity_revision"])),
                 ).fetchone()
-                if current is None:
-                    raise PropPersistenceConflict("branch receipt points to a missing child attempt")
-                current_session = conn.execute(
-                    "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s",
-                    (workspace_id, prop_session_id),
+                if created is None:
+                    raise PropPersistenceConflict("branch receipt points to a missing child attempt revision")
+                created_session = conn.execute(
+                    """
+                    SELECT snapshot_json FROM prop_session_revisions
+                    WHERE workspace_id=%s AND session_id=%s AND created_at_utc<=%s
+                    ORDER BY created_at_utc DESC,revision DESC
+                    LIMIT 1
+                    """,
+                    (workspace_id, prop_session_id, receipt["created_at_utc"]),
                 ).fetchone()
+                if created_session is None:
+                    raise PropPersistenceConflict("branch receipt points before prop session history")
                 return {
-                    "session": PropSessionSnapshot.model_validate(current_session["snapshot_json"]),
-                    "attempt": ChallengeAttemptSnapshot.model_validate(current["snapshot_json"]),
-                    "phase": PhaseStateSnapshot.model_validate(current["phase_json"]),
-                    "resume_state": current["resume_json"],
+                    "session": PropSessionSnapshot.model_validate(created_session["snapshot_json"]),
+                    "attempt": ChallengeAttemptSnapshot.model_validate(created["snapshot_json"]),
+                    "phase": PhaseStateSnapshot.model_validate(created["phase_json"]),
+                    "resume_state": created["resume_json"],
                     "duplicate": True,
                 }
 
@@ -1344,7 +1352,7 @@ class PostgresStore:
 
             historical_rows = conn.execute(
                 """
-                SELECT revision,snapshot_json,phase_json,resume_json
+                SELECT revision,snapshot_json,phase_json,resume_json,created_at_utc
                 FROM prop_attempt_revisions
                 WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s
                 ORDER BY revision DESC
@@ -1357,6 +1365,17 @@ class PostgresStore:
                 raise ReplayPropConnectionError("Replay branch checkpoint event is invalid") from exc
             if checkpoint_event.sequence != child_snapshot.event_sequence:
                 raise ReplayPropConnectionError("Replay branch checkpoint event sequence is inconsistent")
+            parent_checkpoint_event = None
+            for item in reversed(parent_snapshot.ledger):
+                try:
+                    candidate_event = ReplayExecutionEvent.model_validate(item)
+                except ValueError as exc:
+                    raise ReplayPropConnectionError("parent Replay checkpoint ledger is invalid") from exc
+                if candidate_event.sequence == checkpoint_event.sequence:
+                    parent_checkpoint_event = candidate_event
+                    break
+            if parent_checkpoint_event is None:
+                raise ReplayPropConnectionError("parent Replay checkpoint event is missing")
 
             historical = None
             for candidate in historical_rows:
@@ -1392,9 +1411,72 @@ class PostgresStore:
                         prop_session_id=prop_session_id,
                         prop_attempt_id=parent_attempt_id,
                     )
-                    canonical_receipt = any(
-                        row["operation_id"] == expected_operation_id for row in receipt_rows
-                    )
+                    previous = conn.execute(
+                        """
+                        SELECT snapshot_json,phase_json,resume_json
+                        FROM prop_attempt_revisions
+                        WHERE workspace_id=%s AND session_id=%s AND attempt_id=%s AND revision=%s
+                        """,
+                        (workspace_id, prop_session_id, parent_attempt_id, int(candidate["revision"]) - 1),
+                    ).fetchone()
+                    if previous is not None:
+                        previous_attempt = ChallengeAttemptSnapshot.model_validate(previous["snapshot_json"])
+                        previous_phase = PhaseStateSnapshot.model_validate(previous["phase_json"])
+                        previous_resume = dict(previous["resume_json"] or {})
+                        try:
+                            prop_event = replay_mark_to_prop_event(
+                                workspace_id=workspace_id,
+                                prop_session_id=prop_session_id,
+                                prop_attempt_id=parent_attempt_id,
+                                profile_hash=previous_attempt.profile_hash,
+                                expected_prop_revision=previous_attempt.revision,
+                                prop_event_sequence=candidate_phase.last_event_sequence,
+                                phase_spec=session.profile.phases[previous_phase.phase_index - 1],
+                                replay_event=parent_checkpoint_event,
+                            )
+                            supplied_resume = dict(previous_resume)
+                            supplied_resume.pop("prop_lifecycle", None)
+                            supplied_resume["cursor"] = {
+                                "bar_index": parent_checkpoint_event.cursor_index,
+                                "timestamp_utc": datetime.fromtimestamp(
+                                    parent_checkpoint_event.virtual_time_utc, tz=timezone.utc
+                                ).isoformat().replace("+00:00", "Z"),
+                            }
+                            event_position = parent_checkpoint_event.details.get("open_position")
+                            event_pending = parent_checkpoint_event.details.get("pending_market_order")
+                            supplied_resume["open_positions"] = [event_position] if event_position is not None else []
+                            supplied_resume["pending_orders"] = [event_pending] if event_pending is not None else []
+                            supplied_resume["replay_binding"] = {
+                                "replay_session_id": parent_replay_id,
+                                "branch_id": parent_snapshot.branch_id,
+                                "dataset_id": parent_snapshot.dataset_id,
+                                "dataset_sha256": parent_snapshot.dataset_sha256,
+                                "last_replay_event_sequence": parent_checkpoint_event.sequence,
+                            }
+                            expected_fingerprint = _payload_fingerprint(
+                                {"event": prop_event.model_dump(mode="json"), "resume_state": supplied_resume}
+                            )
+                            evaluation_resume = dict(supplied_resume)
+                            if "prop_lifecycle" in previous_resume:
+                                evaluation_resume["prop_lifecycle"] = previous_resume["prop_lifecycle"]
+                            expected_result = evaluate_prop_lifecycle_event(
+                                session,
+                                previous_attempt,
+                                previous_phase,
+                                prop_event,
+                                resume_state=evaluation_resume,
+                            )
+                            canonical_receipt = any(
+                                row["operation_id"] == expected_operation_id
+                                and row["fingerprint"] == expected_fingerprint
+                                for row in receipt_rows
+                            ) and (
+                                expected_result["attempt"] == candidate_attempt
+                                and expected_result["phase"] == candidate_phase
+                                and expected_result["resume_state"] == candidate_resume
+                            )
+                        except (IndexError, PropSessionContractError, ReplayPropConnectionError):
+                            canonical_receipt = False
                 elif checkpoint_event.kind == "phase_transition":
                     details = checkpoint_event.details or {}
                     intent_id = details.get("intent_id")
