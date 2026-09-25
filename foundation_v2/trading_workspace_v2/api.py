@@ -26,6 +26,9 @@ from .contracts import (
     PropEvaluationRequest,
     ReplayBranch,
     ReplayCreate,
+    ReplayExecutionInitialize,
+    ReplayMarketOrderRequest,
+    ReplayPropFeedRequest,
     ReplayStep,
     RevisionRequest,
 )
@@ -40,6 +43,7 @@ from .prop_session import (
     PropSessionSnapshot,
     PropSessionUpdateRequest,
 )
+from .prop_replay import ReplayPropConnectionError
 from .replay import ReplayService
 from .research import ResearchService
 from .nautilus_worker import runtime_ready
@@ -396,14 +400,64 @@ def create_app(
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
 
+    @app.post("/api/v2/replay/sessions/{session_id}/execution")
+    def initialize_replay_execution(
+        session_id: str,
+        body: ReplayExecutionInitialize,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return replay.initialize_execution(
+                workspace,
+                session_id,
+                body.expected_revision,
+                instrument_spec=body.instrument_spec,
+                cost_model=body.cost_model,
+                spread_price=body.spread_price,
+                timeframe_seconds=body.timeframe_seconds,
+                starting_balance=body.starting_balance,
+            )
+        except LookupError:
+            raise HTTPException(status_code=404, detail="replay_not_found")
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post("/api/v2/replay/sessions/{session_id}/orders/market")
+    def queue_replay_market_order(
+        session_id: str,
+        body: ReplayMarketOrderRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return replay.queue_market_order(
+                workspace,
+                session_id,
+                body.expected_revision,
+                operation_id=body.operation_id,
+                side=body.side,
+                quantity=body.quantity,
+                stop_loss=body.stop_loss,
+                take_profit=body.take_profit,
+            )
+        except LookupError:
+            raise HTTPException(status_code=404, detail="replay_not_found")
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
     @app.post("/api/v2/replay/sessions/{session_id}/step")
     def step_replay(session_id: str, body: ReplayStep, workspace: str = Depends(workspace_id)):
         try:
             return replay.step(workspace, session_id, body.expected_revision, body.steps)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
-        except RuntimeError:
-            raise HTTPException(status_code=409, detail="revision_conflict")
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     @app.post("/api/v2/replay/sessions/{session_id}/branch", status_code=201)
     def branch_replay(session_id: str, body: ReplayBranch, workspace: str = Depends(workspace_id)):
@@ -411,8 +465,37 @@ def create_app(
             return replay.branch(workspace, session_id, body.expected_revision, body.cursor_index)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
-        except RuntimeError:
-            raise HTTPException(status_code=409, detail="revision_conflict")
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post(
+        "/api/v2/replay/sessions/{replay_session_id}/prop/sessions/{prop_session_id}/attempts/{attempt_id}/feed"
+    )
+    def feed_replay_prop_lifecycle(
+        replay_session_id: str,
+        prop_session_id: str,
+        attempt_id: str,
+        body: ReplayPropFeedRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return replay.feed_prop_lifecycle(
+                workspace,
+                replay_session_id,
+                prop_session_id=prop_session_id,
+                prop_attempt_id=attempt_id,
+                replay_event_sequence=body.replay_event_sequence,
+                expected_prop_revision=body.expected_prop_revision,
+                prop_event_sequence=body.prop_event_sequence,
+            )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        except (PropIdempotencyConflict, PropPersistenceConflict, PropSessionContractError) as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ReplayPropConnectionError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc))
 

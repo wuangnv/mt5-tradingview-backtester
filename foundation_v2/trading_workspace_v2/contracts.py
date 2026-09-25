@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from decimal import Decimal
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -290,6 +291,36 @@ class ReplayBranch(BaseModel):
 
     expected_revision: int = Field(ge=1)
     cursor_index: int = Field(ge=0)
+
+
+class ReplayExecutionInitialize(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    expected_revision: int = Field(ge=1, strict=True)
+    instrument_spec: dict
+    cost_model: dict
+    spread_price: Decimal = Field(ge=0)
+    timeframe_seconds: int = Field(gt=0, strict=True)
+    starting_balance: Decimal = Field(gt=0)
+
+
+class ReplayMarketOrderRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    expected_revision: int = Field(ge=1, strict=True)
+    operation_id: str = Field(min_length=1, max_length=128)
+    side: Literal["BUY", "SELL"]
+    quantity: Decimal = Field(gt=0)
+    stop_loss: Decimal = Field(gt=0)
+    take_profit: Decimal = Field(gt=0)
+
+
+class ReplayPropFeedRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    replay_event_sequence: int = Field(ge=1, strict=True)
+    expected_prop_revision: int = Field(ge=1, strict=True)
+    prop_event_sequence: int = Field(ge=1, strict=True)
 
 
 class InstrumentValidationRequest(BaseModel):

@@ -9,6 +9,7 @@ from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR
 from pathlib import Path
 
 from .retained import CostModel, InstrumentSpec, calculate_round_trip_cost, compute_metrics_v2
+from .execution_semantics import IntrabarAmbiguityError, protective_exit_for_bar, quote_from_mid
 
 
 ENGINE_VERSION = "bar-breakout-v1"
@@ -210,19 +211,12 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
         close_time = int(exit_bar["timestamp"]) + timeframe_seconds
         if close_time > data_to:
             break
-        half_spread = spread_price / 2
         entry_mid = Decimal(str(entry_bar["open"]))
         exit_mid = Decimal(str(exit_bar["close"]))
         tick = instrument.tick_size
-
-        def bid(mid):
-            return ((mid - half_spread) / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
-
-        def ask(mid):
-            return ((mid + half_spread) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
-
-        entry_bid = bid(entry_mid)
-        entry_ask = ask(entry_mid)
+        entry_bid, entry_ask = quote_from_mid(
+            entry_mid, spread_price=spread_price, tick_size=tick
+        )
         actual_exit_index = exit_index
         exit_reason = None
         protective_stop = None
@@ -249,38 +243,25 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
             for bar_index in range(entry_index, exit_index + 1):
                 check()
                 candidate = bars[bar_index]
-                open_mid = Decimal(str(candidate["open"]))
-                if bar_index > entry_index:
-                    open_bid, open_ask = bid(open_mid), ask(open_mid)
-                    if side == "BUY" and open_bid <= protective_stop:
-                        exit_fill, exit_reason, close_time = open_bid, "stop_loss_gap", int(candidate["timestamp"])
-                    elif side == "BUY" and open_bid >= protective_take_profit:
-                        exit_fill, exit_reason, close_time = protective_take_profit, "take_profit_gap", int(candidate["timestamp"])
-                    elif side == "SELL" and open_ask >= protective_stop:
-                        exit_fill, exit_reason, close_time = open_ask, "stop_loss_gap", int(candidate["timestamp"])
-                    elif side == "SELL" and open_ask <= protective_take_profit:
-                        exit_fill, exit_reason, close_time = protective_take_profit, "take_profit_gap", int(candidate["timestamp"])
-                    if exit_fill is not None:
-                        actual_exit_index = bar_index
-                        break
-
-                low_mid = Decimal(str(candidate["low"]))
-                high_mid = Decimal(str(candidate["high"]))
-                if side == "BUY":
-                    stop_hit = bid(low_mid) <= protective_stop
-                    take_profit_hit = bid(high_mid) >= protective_take_profit
-                else:
-                    stop_hit = ask(high_mid) >= protective_stop
-                    take_profit_hit = ask(low_mid) <= protective_take_profit
-                if stop_hit and take_profit_hit:
-                    raise ResearchEngineValidationError("protective exit is intrabar ambiguous; lower-timeframe ordering required")
-                if stop_hit:
-                    exit_fill, exit_reason = protective_stop, "stop_loss"
-                elif take_profit_hit:
-                    exit_fill, exit_reason = protective_take_profit, "take_profit"
-                if exit_fill is not None:
+                try:
+                    protective = protective_exit_for_bar(
+                        side=side,
+                        bar=candidate,
+                        stop_loss=protective_stop,
+                        take_profit=protective_take_profit,
+                        spread_price=spread_price,
+                        tick_size=tick,
+                        allow_open_gap=bar_index > entry_index,
+                    )
+                except IntrabarAmbiguityError as exc:
+                    raise ResearchEngineValidationError(str(exc)) from exc
+                if protective is not None:
+                    exit_fill = protective["exit_price"]
+                    exit_reason = protective["reason"]
                     actual_exit_index = bar_index
-                    close_time = int(candidate["timestamp"]) + timeframe_seconds
+                    close_time = int(candidate["timestamp"])
+                    if not protective["at_open"]:
+                        close_time += timeframe_seconds
                     break
 
             if exit_fill is None:
@@ -288,11 +269,15 @@ def execute_breakout(rows: list[dict], protocol: dict, *, continue_check=None, d
                 actual_exit_index = exit_index
                 close_time = int(exit_bar["timestamp"]) + timeframe_seconds
                 exit_mid = Decimal(str(exit_bar["close"]))
-                exit_bid, exit_ask = bid(exit_mid), ask(exit_mid)
+                exit_bid, exit_ask = quote_from_mid(
+                    exit_mid, spread_price=spread_price, tick_size=tick
+                )
             else:
                 exit_bid = exit_ask = exit_fill
         else:
-            exit_bid, exit_ask = bid(exit_mid), ask(exit_mid)
+            exit_bid, exit_ask = quote_from_mid(
+                exit_mid, spread_price=spread_price, tick_size=tick
+            )
 
         cost = calculate_round_trip_cost(
             cost_model,
