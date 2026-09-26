@@ -391,6 +391,20 @@ async function main() {
 
     await page.getByRole('button', { name: 'Reports' }).click()
     await page.getByTestId('prop-reports-view').waitFor()
+    const sharedReload = page.getByTestId('prop-reports-view').getByRole('button', { name: 'Tải lại' })
+    const sharedControlStyle = await sharedReload.evaluate((element) => {
+      const style = getComputedStyle(element)
+      return {
+        className: element.className,
+        focus: style.getPropertyValue('--ui-focus').trim(),
+        background: style.backgroundColor,
+        borderStyle: style.borderStyle,
+      }
+    })
+    assert.match(sharedControlStyle.className, /\bui-button\b/)
+    assert.equal(sharedControlStyle.focus, '#60a5fa')
+    assert.equal(sharedControlStyle.background, 'rgb(22, 29, 45)')
+    assert.equal(sharedControlStyle.borderStyle, 'solid')
     await page.getByLabel('Report status').selectOption('failed_breach')
     await page.getByLabel('Report branch').selectOption('clean')
     await page.getByTestId('prop-report-list').getByText('Daily loss đã bị breach.', { exact: false }).waitFor()

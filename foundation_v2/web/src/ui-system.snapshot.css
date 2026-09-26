@@ -1,0 +1,83 @@
+/* annam-ui: annam-productivity@1.0.0; source-sha256: 578f95b7f93be56bd4375bcb71512a90e33528c7213e7d1e346f65c2d55186f9; generated: deterministic */
+
+:root {
+  --ui-bg: #f6f7f9;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f1f5f9;
+  --ui-surface-hover: #eef2f7;
+  --ui-text: #0f172a;
+  --ui-text-soft: #334155;
+  --ui-muted: #64748b;
+  --ui-border: #e2e8f0;
+  --ui-border-strong: #cbd5e1;
+  --ui-accent: #2563eb;
+  --ui-accent-fg: #ffffff;
+  --ui-selected: #2563eb;
+  --ui-selected-soft: #eff6ff;
+  --ui-focus: #2563eb;
+  --ui-success: #16a34a;
+  --ui-warning: #d97706;
+  --ui-warning-text: #92400e;
+  --ui-error: #dc2626;
+  --ui-unknown: #64748b;
+  --ui-btn-accent-bg: #2563eb;
+  --ui-btn-accent-fg: #ffffff;
+  --ui-btn-success-bg: #15803d;
+  --ui-btn-success-fg: #ffffff;
+}
+
+.dark, .ui-theme-dark {
+  --ui-bg: #0a0e17;
+  --ui-surface: #111725;
+  --ui-surface-2: #161d2d;
+  --ui-surface-hover: #1b2334;
+  --ui-text: #e8edf5;
+  --ui-text-soft: #c3ccdb;
+  --ui-muted: #8b98ad;
+  --ui-border: #232c3e;
+  --ui-border-strong: #33405a;
+  --ui-accent: #3b82f6;
+  --ui-accent-fg: #ffffff;
+  --ui-selected: #3b82f6;
+  --ui-selected-soft: #16233d;
+  --ui-focus: #60a5fa;
+  --ui-success: #22c55e;
+  --ui-warning: #f59e0b;
+  --ui-warning-text: #fcd34d;
+  --ui-error: #f87171;
+  --ui-unknown: #8b98ad;
+  --ui-btn-accent-bg: #2563eb;
+  --ui-btn-accent-fg: #ffffff;
+  --ui-btn-success-bg: #15803d;
+  --ui-btn-success-fg: #ffffff;
+}
+
+.ui-button {
+  border: 1px solid var(--ui-border-strong);
+  border-radius: 4px;
+  background: var(--ui-surface-2);
+  color: var(--ui-text);
+  cursor: pointer;
+}
+
+.ui-button:hover:not(:disabled) {
+  border-color: var(--ui-border-strong);
+  background: var(--ui-surface-hover);
+}
+
+.ui-button:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.ui-button--primary {
+  border-color: var(--ui-btn-accent-bg);
+  background: var(--ui-btn-accent-bg);
+  color: var(--ui-btn-accent-fg);
+}
+

@@ -393,7 +393,7 @@ export default function PropWorkspace({ workspace }) {
   const sessionCountLabel = useMemo(() => `${sessions.items.length} session`, [sessions.items.length])
 
   return (
-    <main className="prop-shell">
+    <main className="prop-shell ui-theme-dark">
       <header className="prop-topbar">
         <div>
           <div className="eyebrow">TESTING / PROP SESSION</div>
@@ -656,7 +656,7 @@ export default function PropWorkspace({ workspace }) {
                 <option value="hindsight_exploratory">hindsight_exploratory</option>
               </select>
             </label>
-            <button type="button" className="prop-refresh" onClick={loadReports}>Tải lại</button>
+            <button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={loadReports}>Tải lại</button>
           </div>
 
           {reports.status === 'loading' && <StateMessage kind="loading" testId="prop-reports-loading">Đang đọc reports…</StateMessage>}
@@ -688,7 +688,7 @@ export default function PropWorkspace({ workspace }) {
                   <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(item.session.session_id)}&attempt=${encodeURIComponent(item.attempt.attempt_id)}`}>Learn</a>
                   <button
                     type="button"
-                    className="prop-refresh"
+                    className="ui-button ui-button--neutral prop-refresh"
                     disabled={pendingAction === `export:${item.attempt.attempt_id}`}
                     onClick={() => exportReport(item)}
                   >CSV</button>
