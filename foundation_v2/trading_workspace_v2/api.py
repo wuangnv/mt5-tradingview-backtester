@@ -471,11 +471,17 @@ def create_app(
             raise HTTPException(status_code=422, detail=str(exc))
 
     @app.get("/api/v2/replay/sessions/{session_id}")
-    def get_replay(session_id: str, workspace: str = Depends(workspace_id)):
+    def get_replay(
+        session_id: str,
+        cursor_index: int | None = None,
+        workspace: str = Depends(workspace_id),
+    ):
         try:
-            return replay.view(workspace, session_id)
+            return replay.view(workspace, session_id, cursor_index=cursor_index)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     @app.post("/api/v2/replay/sessions/{session_id}/execution")
     def initialize_replay_execution(

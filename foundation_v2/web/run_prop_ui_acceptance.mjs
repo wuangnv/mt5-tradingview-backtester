@@ -97,6 +97,13 @@ const persistedBundle = {
   phase: persistedPhase,
   resume_state: {
     cursor: { bar_index: 412, timestamp_utc: '2026-09-01T10:00:00Z' },
+    replay_binding: {
+      replay_session_id: 'replay-from-report-fixture',
+      branch_id: 'replay-from-report-fixture-branch',
+      dataset_id: 'dataset-fixture-v1',
+      dataset_sha256: 'fixture-sha256-no-future-leak',
+      last_replay_event_sequence: 7,
+    },
     open_positions: [{ position_id: 'pos-1' }],
     pending_orders: [{ order_id: 'ord-1' }],
   },
@@ -176,7 +183,8 @@ function reportFor(bundle) {
     },
     provenance: {
       hindsight_exploratory: bundle.attempt.branch_kind === 'hindsight_exploratory',
-      replay_binding: null,
+      replay_binding: bundle.resume_state.replay_binding || null,
+      replay_cursor: bundle.resume_state.replay_binding ? bundle.resume_state.cursor : null,
       branch_provenance: null,
     },
     tutorials: {
@@ -389,6 +397,16 @@ async function main() {
     const reportText = await page.getByTestId('prop-report-list').innerText()
     assert.match(reportText, /failed_breach/i)
     assert.match(reportText, /attempt-persisted-1/)
+    const replayLink = page.getByTestId('prop-report-list').getByRole('link', { name: 'Replay #412' })
+    await replayLink.waitFor()
+    const replayHref = await replayLink.getAttribute('href')
+    assert.ok(replayHref, 'report replay link missing href')
+    const replayUrl = new URL(replayHref, origin)
+    assert.equal(replayUrl.searchParams.get('view'), 'replay')
+    assert.equal(replayUrl.searchParams.get('workspace'), 'tenant-prop-ui')
+    assert.equal(replayUrl.searchParams.get('session'), 'replay-from-report-fixture')
+    assert.equal(replayUrl.searchParams.get('cursor'), '412')
+    assert.equal(replayUrl.searchParams.get('from'), 'prop-report')
     const downloadPromise = page.waitForEvent('download')
     await page.getByTestId('prop-report-list').getByRole('button', { name: 'CSV' }).click()
     const download = await downloadPromise
@@ -462,6 +480,7 @@ async function main() {
         'persisted_id_reload_resume',
         'cursor_and_money_resume_state',
         'attempt_report_reason_explanation',
+        'report_to_exact_replay_cursor_link',
         'report_status_and_branch_filters',
         'report_csv_export',
         'report_failure_does_not_hide_resume_state',

@@ -251,6 +251,24 @@ class F7ProductSliceTests(unittest.TestCase):
             self.assertEqual(stepped.json()["payload"]["cursor_index"], 2)
             self.assertEqual(stepped.json()["payload"]["status"], "completed")
 
+            historical = client.get(
+                f"/api/v2/replay/sessions/{session_id}?cursor_index=1",
+                headers=headers,
+            )
+            self.assertEqual(historical.status_code, 200)
+            self.assertEqual(historical.json()["payload"]["cursor_index"], 2)
+            self.assertEqual(historical.json()["view_cursor_index"], 1)
+            self.assertEqual(historical.json()["canonical_cursor_index"], 2)
+            self.assertTrue(historical.json()["historical_view"])
+            self.assertEqual(historical.json()["visible_row_count"], 2)
+            self.assertEqual(historical.json()["cutoff_timestamp"], 1060)
+            self.assertTrue(historical.json()["has_future_rows"])
+
+            after_historical = client.get(f"/api/v2/replay/sessions/{session_id}", headers=headers)
+            self.assertEqual(after_historical.status_code, 200)
+            self.assertEqual(after_historical.json()["payload"]["cursor_index"], 2)
+            self.assertFalse(after_historical.json()["historical_view"])
+
             branched = client.post(
                 f"/api/v2/replay/sessions/{session_id}/branch",
                 headers=headers,

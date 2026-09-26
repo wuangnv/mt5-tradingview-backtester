@@ -37,10 +37,12 @@ function seedSession(id = 'replay-fixture', cursor = 3, revision = 1, parent = n
   })
 }
 
-function view(id) {
+function view(id, requestedCursor = null) {
   const session = sessions.get(id)
   if (!session) return null
-  const visible = rows.slice(0, session.payload.cursor_index + 1)
+  const canonicalCursor = session.payload.cursor_index
+  const viewCursor = requestedCursor === null ? canonicalCursor : requestedCursor
+  const visible = rows.slice(0, viewCursor + 1)
   return {
     ...session,
     dataset_sha256: 'fixture-sha256-no-future-leak',
@@ -49,6 +51,9 @@ function view(id) {
     visible_row_count: visible.length,
     total_row_count: rows.length,
     has_future_rows: visible.length < rows.length,
+    view_cursor_index: viewCursor,
+    canonical_cursor_index: canonicalCursor,
+    historical_view: viewCursor !== canonicalCursor,
   }
 }
 
@@ -96,7 +101,17 @@ async function main() {
       const current = sessions.get(sessionId)
 
       if (!current) return fulfillJson(route, 404, { detail: 'replay_not_found' })
-      if (request.method() === 'GET') return fulfillJson(route, 200, view(sessionId))
+      if (request.method() === 'GET') {
+        const rawCursor = url.searchParams.get('cursor_index')
+        let requestedCursor = null
+        if (rawCursor !== null) {
+          requestedCursor = Number(rawCursor)
+          if (!Number.isInteger(requestedCursor) || requestedCursor < 0 || requestedCursor > current.payload.cursor_index) {
+            return fulfillJson(route, 422, { detail: 'invalid historical replay cursor' })
+          }
+        }
+        return fulfillJson(route, 200, view(sessionId, requestedCursor))
+      }
       const body = request.postDataJSON()
       if (forceConflict) {
         forceConflict = false
@@ -119,6 +134,17 @@ async function main() {
       }
       return fulfillJson(route, 404, { detail: 'unknown_action' })
     })
+
+    await page.goto(`${origin}/?view=replay&workspace=tenant-ui&session=replay-fixture&cursor=1&from=prop-report`)
+    await page.getByTestId('replay-history-view').waitFor()
+    assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '2')
+    assert.match(await page.getByTestId('replay-history-view').innerText(), /cutoff report ở nến #1/i)
+    assert.match(await page.getByTestId('replay-history-view').innerText(), /Replay gốc hiện ở nến #3/i)
+    assert.equal(await page.getByTestId('step-1').isDisabled(), true)
+    assert.equal(await page.getByTestId('step-10').isDisabled(), true)
+    assert.equal(await page.getByTestId('branch-cursor').isDisabled(), true)
+    assert.match(await page.getByTestId('branch-replay').innerText(), /Tạo branch từ report #1/)
+    await page.screenshot({ path: path.join(evidenceDir, 'replay-report-cutoff-ui.png'), fullPage: true })
 
     await page.goto(`${origin}/?view=replay&workspace=tenant-ui&session=replay-fixture`)
     await page.getByTestId('replay-chart').waitFor()
@@ -163,7 +189,7 @@ async function main() {
     console.log(JSON.stringify({
       status: 'PASS',
       fixture: 'ui-labeled-controlled-replay',
-      checks: ['visible_rows_only', 'broker_locked', '409_reload', 'branch_lineage', 'persisted_resume', 'completed', 'responsive_1440_768_360'],
+      checks: ['report_exact_cursor_historical_view', 'historical_view_read_only', 'visible_rows_only', 'broker_locked', '409_reload', 'branch_lineage', 'persisted_resume', 'completed', 'responsive_1440_768_360'],
       screenshots: [1440, 768, 360].map((width) => path.join(evidenceDir, `replay-ui-${width}.png`)),
     }, null, 2))
   } finally {

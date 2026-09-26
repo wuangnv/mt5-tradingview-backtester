@@ -1,0 +1,36 @@
+{
+  "schema": "workspace-next-stage-mt5-report-replay-v1",
+  "status": "PASS",
+  "scope": "M3 MT5 Prop report -> exact historical Replay cursor",
+  "source_head": "665552177892d50f7df4fab3d5a31a538b8ac403",
+  "source_hashes": {
+    "foundation_v2/trading_workspace_v2/api.py": "52dc9cbf06302e708d6a9e6648c15bee019303fcf34b33323925a5f79757ecb4",
+    "foundation_v2/trading_workspace_v2/prop_report.py": "651600a4bcaa6271038bce10739e5fbefc658541b967fcff0beda2b452f6db66",
+    "foundation_v2/trading_workspace_v2/replay.py": "212356edf0765a14728d41d88d7c5e8f6fd6a98679a1a98f65c5bb451464d3ec",
+    "foundation_v2/tests/test_f7_product_slice.py": "7093852be8800fb58461ba7ae1d47467b158e5f6731ca6a720d064c18b1ceadc",
+    "foundation_v2/tests/test_ps03_prop_reports.py": "0a259cc9b131548de34edc4115291f7bb342ccb34573c027257627380d2ff739",
+    "foundation_v2/web/src/PropWorkspace.jsx": "53e5e45859eaee0c08cd68e99d5f5bd8a18cd2325673f9d8f149d9c67dff4ac9",
+    "foundation_v2/web/src/ReplayWorkspace.jsx": "da91487b4b9ae355b689cbf4b2043f1cc3580cd49039298fe643307aac0bebcf",
+    "foundation_v2/web/src/styles.css": "95a9c608332461597d4c3f1da26114007669278255461c75e1d390688c023682",
+    "foundation_v2/web/run_prop_ui_acceptance.mjs": "e8684a1a55a7c22734aa01e80caa4e6ae91b01f0651f6f454ad56a9853165836",
+    "foundation_v2/web/run_replay_ui_acceptance.mjs": "83972f9979063a0efe9fd83bd7942870bdcf113b23bfc1486eb4314d88e25f04"
+  },
+  "checks": {
+    "ps02_disposable_postgres_api": "PASS",
+    "ps03_disposable_postgres_api_vite_playwright": "PASS",
+    "controlled_prop_report_exact_cursor_link": "PASS",
+    "controlled_replay_historical_cutoff_read_only": "PASS",
+    "web_build": "PASS",
+    "broker_contacted": false,
+    "holdout_opened": false
+  },
+  "evidence": {
+    "ps02": "ps02/PS02-replay-connection-r1.json",
+    "ps03": "ps03/PS03-report-ui-acceptance-r1.json",
+    "replay_fixture": "replay-ui-fixture.json",
+    "prop_fixture": "prop-ui-fixture.json",
+    "historical_screenshot": "../replay-report-cutoff-ui.png",
+    "build_log": "web-build.txt"
+  },
+  "residual": "Figma/Make remains separate; this receipt proves the MT5 runtime/UI exact-cursor slice only."
+}

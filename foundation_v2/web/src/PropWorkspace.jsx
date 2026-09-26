@@ -118,6 +118,21 @@ function reportReasonLabel(code) {
   return labels[code] || code
 }
 
+function reportReplayHref(report, workspace) {
+  const binding = report?.provenance?.replay_binding
+  const cursor = report?.provenance?.replay_cursor
+  const cursorIndex = Number(cursor?.bar_index)
+  if (!binding?.replay_session_id || !Number.isInteger(cursorIndex) || cursorIndex < 0) return null
+  const params = new URLSearchParams({
+    view: 'replay',
+    workspace,
+    session: binding.replay_session_id,
+    cursor: String(cursorIndex),
+    from: 'prop-report',
+  })
+  return { href: `/?${params.toString()}`, cursorIndex }
+}
+
 export default function PropWorkspace({ workspace }) {
   const [draft, setDraft] = useState(initialDraft)
   const [sessions, setSessions] = useState({ status: 'loading', items: [], error: null })
@@ -371,6 +386,7 @@ export default function PropWorkspace({ workspace }) {
   const phase = bundle?.phase
   const attempt = bundle?.attempt
   const report = selected.report
+  const selectedReplayTarget = reportReplayHref(report, workspace)
   const currency = selected.session?.profile?.phases?.[0]?.currency || draft.currency
   const cursor = bundle?.resume_state?.cursor
   const selectedTerminal = TERMINAL_STATUSES.has(attempt?.status)
@@ -586,6 +602,11 @@ export default function PropWorkspace({ workspace }) {
                       )}
                     </div>
                     <div className="prop-report-actions">
+                      {selectedReplayTarget && (
+                        <a className="context-link" data-testid="prop-report-replay" href={selectedReplayTarget.href}>
+                          Mở replay #{selectedReplayTarget.cursorIndex}
+                        </a>
+                      )}
                       <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(report.session.session_id)}&attempt=${encodeURIComponent(report.attempt.attempt_id)}`}>Mở Learn</a>
                       <button
                         type="button"
@@ -644,8 +665,9 @@ export default function PropWorkspace({ workspace }) {
           {reports.status === 'ready' && !reports.items.length && <StateMessage kind="empty" testId="prop-reports-empty">Không có report khớp bộ lọc.</StateMessage>}
 
           <div className="prop-report-list" data-testid="prop-report-list">
-            {reports.items.map((item) => (
-              <article className="prop-report-row" key={`${item.session.session_id}/${item.attempt.attempt_id}`}>
+            {reports.items.map((item) => {
+              const replayTarget = reportReplayHref(item, workspace)
+              return <article className="prop-report-row" key={`${item.session.session_id}/${item.attempt.attempt_id}`}>
                 <div>
                   <span>{item.outcome.status} · {item.attempt.branch_kind}</span>
                   <strong>{item.session.session_id}</strong>
@@ -662,6 +684,7 @@ export default function PropWorkspace({ workspace }) {
                   <small>{item.result_source}</small>
                 </div>
                 <div className="prop-report-row-actions">
+                  {replayTarget && <a className="context-link" href={replayTarget.href}>Replay #{replayTarget.cursorIndex}</a>}
                   <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(item.session.session_id)}&attempt=${encodeURIComponent(item.attempt.attempt_id)}`}>Learn</a>
                   <button
                     type="button"
@@ -671,7 +694,7 @@ export default function PropWorkspace({ workspace }) {
                   >CSV</button>
                 </div>
               </article>
-            ))}
+            })}
           </div>
         </section>
       )}

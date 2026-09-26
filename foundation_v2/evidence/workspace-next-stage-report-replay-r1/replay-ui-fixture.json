@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "fixture": "ui-labeled-controlled-replay",
+  "checks": [
+    "report_exact_cursor_historical_view",
+    "historical_view_read_only",
+    "visible_rows_only",
+    "broker_locked",
+    "409_reload",
+    "branch_lineage",
+    "persisted_resume",
+    "completed",
+    "responsive_1440_768_360"
+  ],
+  "screenshots": [
+    "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\replay-ui-1440.png",
+    "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\replay-ui-768.png",
+    "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\replay-ui-360.png"
+  ]
+}

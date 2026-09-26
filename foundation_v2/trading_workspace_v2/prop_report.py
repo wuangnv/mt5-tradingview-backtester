@@ -60,6 +60,7 @@ def build_prop_attempt_report(
     lifecycle = resume.get("prop_lifecycle")
     objectives = deepcopy(lifecycle.get("last_objectives")) if isinstance(lifecycle, dict) else None
     replay_binding = deepcopy(resume.get("replay_binding")) if isinstance(resume.get("replay_binding"), dict) else None
+    replay_cursor = deepcopy(resume.get("cursor")) if replay_binding is not None and isinstance(resume.get("cursor"), dict) else None
     branch_provenance = (
         deepcopy(resume.get("branch_provenance"))
         if isinstance(resume.get("branch_provenance"), dict)
@@ -131,6 +132,7 @@ def build_prop_attempt_report(
         "provenance": {
             "hindsight_exploratory": attempt.branch_kind == "hindsight_exploratory",
             "replay_binding": replay_binding,
+            "replay_cursor": replay_cursor,
             "branch_provenance": branch_provenance,
         },
         "tutorials": {

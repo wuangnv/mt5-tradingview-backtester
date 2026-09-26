@@ -153,16 +153,21 @@ class ReplayService:
         self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
 
-    def view(self, workspace_id: str, session_id: str) -> dict:
+    def view(self, workspace_id: str, session_id: str, cursor_index: int | None = None) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
             raise LookupError("replay session not found")
         payload = record["payload"]
         manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
-        cursor = int(payload["cursor_index"])
-        if cursor >= len(rows):
+        canonical_cursor = int(payload["cursor_index"])
+        if canonical_cursor >= len(rows):
             raise RuntimeError("replay cursor exceeds immutable dataset")
-        visible = rows[: cursor + 1]
+        view_cursor = canonical_cursor if cursor_index is None else int(cursor_index)
+        if view_cursor < 0:
+            raise ValueError("view cursor must be nonnegative")
+        if view_cursor > canonical_cursor:
+            raise ValueError("view cursor cannot exceed current replay cursor")
+        visible = rows[: view_cursor + 1]
         return {
             **record,
             "dataset_sha256": manifest.artifact_sha256,
@@ -170,7 +175,10 @@ class ReplayService:
             "visible_rows": visible,
             "visible_row_count": len(visible),
             "total_row_count": len(rows),
-            "has_future_rows": cursor + 1 < len(rows),
+            "has_future_rows": view_cursor + 1 < len(rows),
+            "view_cursor_index": view_cursor,
+            "canonical_cursor_index": canonical_cursor,
+            "historical_view": view_cursor != canonical_cursor,
         }
 
     def step(self, workspace_id: str, session_id: str, expected_revision: int, steps: int = 1) -> dict:

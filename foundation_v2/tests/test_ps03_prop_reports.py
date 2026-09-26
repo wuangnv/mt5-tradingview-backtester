@@ -163,6 +163,10 @@ class Ps03PropReportTests(unittest.TestCase):
         self.assertEqual(report["result_source"], "replay_simulation")
         self.assertTrue(report["provenance"]["hindsight_exploratory"])
         self.assertEqual(report["provenance"]["replay_binding"]["replay_session_id"], "replay-child")
+        self.assertEqual(
+            report["provenance"]["replay_cursor"],
+            {"bar_index": 91, "timestamp_utc": "2026-09-03T12:00:00Z"},
+        )
         self.assertEqual(report["provenance"]["branch_provenance"]["parent_attempt_id"], "parent-1")
 
     def test_csv_export_uses_stable_summary_fields_without_nested_resume_payload(self):

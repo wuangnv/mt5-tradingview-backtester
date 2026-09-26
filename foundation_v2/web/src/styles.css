@@ -101,6 +101,9 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 .conflict-banner div { display: grid; gap: 3px; }
 .conflict-banner span { font-size: 12px; color: #cda6a6; }
 .conflict-banner button { border-radius: 4px; padding: 0 12px; }
+.replay-history-banner { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 0; border-bottom: 1px solid #5a4b2d; color: #f0d69c; }
+.replay-history-banner div { display: grid; gap: 3px; }
+.replay-history-banner span { font-size: 12px; color: #cbb98f; }
 
 .replay-workspace { display: grid; grid-template-columns: minmax(0, 1fr) 310px; min-height: 620px; }
 .replay-main { min-width: 0; padding: 16px 20px 0 0; }
@@ -152,6 +155,7 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
   .cutoff-readout { text-align: left; }
   .replay-chart { height: 360px; }
   .conflict-banner { align-items: flex-start; flex-direction: column; }
+  .replay-history-banner { align-items: flex-start; flex-direction: column; }
 }
 
 @media (max-width: 520px) {

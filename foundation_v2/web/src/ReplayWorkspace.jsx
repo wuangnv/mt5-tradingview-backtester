@@ -83,11 +83,12 @@ function ReplayChart({ rows }) {
   )
 }
 
-function replaceSessionInUrl(sessionId) {
+function replaceSessionInUrl(sessionId, preserveCursor = false) {
   const url = new URL(window.location.href)
   url.searchParams.set('view', 'replay')
   url.searchParams.set('session', sessionId)
   url.searchParams.delete('dataset')
+  if (!preserveCursor) url.searchParams.delete('cursor')
   window.history.replaceState(null, '', url)
 }
 
@@ -96,6 +97,9 @@ export default function ReplayWorkspace({ workspace, query }) {
   const requestedSession = query.get('session') || ''
   const requestedDataset = query.get('dataset') || ''
   const requestedStart = Number(query.get('start') || 0)
+  const requestedCursorParam = query.get('cursor')
+  const requestedCursor = requestedCursorParam === null ? null : Number(requestedCursorParam)
+  const requestedCursorValid = requestedCursor === null || (Number.isInteger(requestedCursor) && requestedCursor >= 0)
   const [sessionId, setSessionId] = useState(requestedSession)
   const [state, setState] = useState({ status: 'idle', payload: null, error: null })
   const [pendingAction, setPendingAction] = useState('')
@@ -104,23 +108,25 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [datasetDraft, setDatasetDraft] = useState(requestedDataset)
   const [startDraft, setStartDraft] = useState(Number.isFinite(requestedStart) ? Math.max(0, requestedStart) : 0)
 
-  const rememberSession = useCallback((nextSessionId) => {
+  const rememberSession = useCallback((nextSessionId, preserveCursor = false) => {
     setSessionId(nextSessionId)
     window.localStorage.setItem(storageKey, nextSessionId)
-    replaceSessionInUrl(nextSessionId)
+    replaceSessionInUrl(nextSessionId, preserveCursor)
   }, [storageKey])
 
-  const loadSession = useCallback(async (targetSessionId) => {
+  const loadSession = useCallback(async (targetSessionId, targetCursor = null) => {
     if (!targetSessionId) return
     setState((current) => ({ status: 'loading', payload: current.payload, error: null }))
     setConflict(false)
     try {
-      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(targetSessionId)}`, {
+      const suffix = targetCursor === null ? '' : `?cursor_index=${encodeURIComponent(targetCursor)}`
+      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(targetSessionId)}${suffix}`, {
         headers: { 'X-Workspace-Id': workspace },
       })
       const payload = await readJson(response)
-      rememberSession(payload.record_id)
-      setBranchCursor(Math.max(0, Number(payload.payload.cursor_index) - 1))
+      rememberSession(payload.record_id, targetCursor !== null)
+      const viewCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
+      setBranchCursor(payload.historical_view ? Math.max(0, viewCursor) : Math.max(0, viewCursor - 1))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       setState({ status: 'error', payload: null, error: String(error.message || error) })
@@ -154,7 +160,11 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   useEffect(() => {
     if (requestedSession) {
-      loadSession(requestedSession)
+      if (!requestedCursorValid) {
+        setState({ status: 'error', payload: null, error: 'Cursor replay trong URL không hợp lệ.' })
+        return
+      }
+      loadSession(requestedSession, requestedCursor)
       return
     }
     const persisted = window.localStorage.getItem(storageKey)
@@ -178,7 +188,9 @@ export default function ReplayWorkspace({ workspace, query }) {
       })
       const payload = await readJson(response)
       if (kind === 'branch') rememberSession(payload.record_id)
-      setBranchCursor(Math.max(0, Number(payload.payload.cursor_index) - 1))
+      else replaceSessionInUrl(payload.record_id)
+      const nextCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
+      setBranchCursor(Math.max(0, nextCursor - 1))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       if (error.code === 'revision_conflict') {
@@ -192,13 +204,17 @@ export default function ReplayWorkspace({ workspace, query }) {
   }, [rememberSession, sessionId, state.payload, workspace])
 
   const replay = state.payload
-  const cursor = Number(replay?.payload?.cursor_index ?? 0)
+  const cursor = Number(replay?.view_cursor_index ?? replay?.payload?.cursor_index ?? 0)
+  const canonicalCursor = Number(replay?.canonical_cursor_index ?? replay?.payload?.cursor_index ?? cursor)
+  const historicalView = Boolean(replay?.historical_view)
   const revision = Number(replay?.revision ?? 0)
   const visibleRows = replay?.visible_rows || []
   const currentBar = visibleRows.length ? visibleRows[visibleRows.length - 1] : null
   const completed = replay?.payload?.status === 'completed' || replay?.has_future_rows === false
   const lineage = replay?.payload?.parent_session_id
-  const canBranch = Boolean(replay) && cursor > 0 && branchCursor < cursor && !conflict
+  const canBranch = Boolean(replay) && !conflict && (
+    historicalView ? cursor < canonicalCursor : cursor > 0 && branchCursor < cursor
+  )
   const learnHref = useMemo(() => {
     const params = new URLSearchParams({ view: 'learn', workspace, from: 'replay' })
     if (sessionId) {
@@ -212,11 +228,12 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   const statusLabel = useMemo(() => {
     if (conflict) return 'Xung đột phiên'
+    if (historicalView) return 'Cutoff lịch sử'
     if (completed) return 'Hoàn tất dataset'
     if (state.status === 'loading') return 'Đang tải'
     if (state.status === 'error') return 'Có lỗi'
     return 'Tạm dừng'
-  }, [completed, conflict, state.status])
+  }, [completed, conflict, historicalView, state.status])
 
   return (
     <main className="replay-shell">
@@ -290,6 +307,16 @@ export default function ReplayWorkspace({ workspace, query }) {
             </section>
           )}
 
+          {historicalView && (
+            <section className="replay-history-banner" role="status" data-testid="replay-history-view">
+              <div>
+                <strong>Đang xem đúng cutoff report ở nến #{cursor}.</strong>
+                <span>Replay gốc hiện ở nến #{canonicalCursor}; dữ liệu sau cutoff này không được render.</span>
+              </div>
+              <span>Tạo branch nếu muốn tiếp tục từ đúng mốc report mà không sửa session gốc.</span>
+            </section>
+          )}
+
           <section className="replay-workspace">
             <div className="replay-main">
               <div className="replay-toolbar" aria-label="Điều khiển replay">
@@ -298,7 +325,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     type="button"
                     data-testid="step-1"
                     onClick={() => mutate('step', { expected_revision: revision, steps: 1 })}
-                    disabled={completed || conflict || Boolean(pendingAction)}
+                    disabled={historicalView || completed || conflict || Boolean(pendingAction)}
                   >
                     +1 nến
                   </button>
@@ -306,7 +333,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     type="button"
                     data-testid="step-10"
                     onClick={() => mutate('step', { expected_revision: revision, steps: 10 })}
-                    disabled={completed || conflict || Boolean(pendingAction)}
+                    disabled={historicalView || completed || conflict || Boolean(pendingAction)}
                   >
                     +10 nến
                   </button>
@@ -343,10 +370,10 @@ export default function ReplayWorkspace({ workspace, query }) {
                   data-testid="branch-cursor"
                   type="range"
                   min="0"
-                  max={Math.max(0, cursor - 1)}
-                  value={Math.min(branchCursor, Math.max(0, cursor - 1))}
+                  max={historicalView ? cursor : Math.max(0, cursor - 1)}
+                  value={historicalView ? cursor : Math.min(branchCursor, Math.max(0, cursor - 1))}
                   onChange={(event) => setBranchCursor(Number(event.target.value))}
-                  disabled={cursor <= 0 || conflict || Boolean(pendingAction)}
+                  disabled={historicalView || cursor <= 0 || conflict || Boolean(pendingAction)}
                   aria-label="Nến bắt đầu branch"
                 />
                 <button
@@ -356,7 +383,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   disabled={!canBranch || Boolean(pendingAction)}
                   onClick={() => mutate('branch', { expected_revision: revision, cursor_index: branchCursor })}
                 >
-                  Tạo branch từ nến #{branchCursor}
+                  {historicalView ? `Tạo branch từ report #${cursor}` : `Tạo branch từ nến #${branchCursor}`}
                 </button>
               </section>
 
