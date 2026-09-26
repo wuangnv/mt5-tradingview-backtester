@@ -34,7 +34,7 @@ try {
   assert.match(await page.getByTestId('prop-lock').innerText(), /SIMULATION ONLY/)
   assert.match(await page.getByTestId('prop-lock').innerText(), /Không broker call/)
 
-  await page.getByLabel('Tên session').fill('PS01 real service')
+  await page.getByLabel('Tên session').fill('PS03 real service')
   await page.getByLabel('Profile').selectOption('custom')
   await page.getByLabel('Dataset version').fill('dataset-real-service-v1')
   await page.getByRole('button', { name: 'Tạo session mô phỏng' }).click()
@@ -159,6 +159,8 @@ try {
   assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /dataset-real-service-v1/)
   assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /paused/)
   assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /#1/)
+  assert.match(await page.getByTestId('prop-report').innerText(), /paused/i)
+  assert.match(await page.getByTestId('prop-report').innerText(), /Chưa có terminal reason/i)
 
   const afterReload = await page.evaluate(async ({ workspace, sessionId, attemptId }) => {
     const response = await fetch(
@@ -180,6 +182,31 @@ try {
   assert.equal(afterReload.openPositions, 0)
   assert.equal(afterReload.pendingOrders, 0)
 
+  await page.getByRole('button', { name: 'Reports' }).click()
+  await page.getByTestId('prop-reports-view').waitFor()
+  await page.getByLabel('Report status').selectOption('paused')
+  await page.getByLabel('Report branch').selectOption('clean')
+  await page.getByTestId('prop-report-list').getByText(firstState.attemptId, { exact: true }).waitFor()
+  const reportListText = await page.getByTestId('prop-report-list').innerText()
+  assert.match(reportListText, /paused/i)
+  assert.match(reportListText, /Chưa có terminal reason/i)
+
+  const reportDownloadPromise = page.waitForEvent('download')
+  await page.getByTestId('prop-report-list').getByRole('button', { name: 'CSV' }).click()
+  const reportDownload = await reportDownloadPromise
+  assert.match(reportDownload.suggestedFilename(), /\.csv$/)
+  const reportCsvPath = await reportDownload.path()
+  assert.ok(reportCsvPath, 'CSV export did not produce a local download')
+
+  await page.getByLabel('Report branch').selectOption('hindsight_exploratory')
+  await page.getByTestId('prop-reports-empty').waitFor()
+  await page.getByLabel('Report branch').selectOption('clean')
+  await page.getByTestId('prop-report-list').getByText(firstState.attemptId, { exact: true }).waitFor()
+  const reportsScreenshot = path.join(evidenceDir, 'ps03-real-service-reports-1440.png')
+  await page.screenshot({ path: reportsScreenshot, fullPage: true })
+  await page.getByRole('button', { name: 'Sessions' }).click()
+  await page.getByTestId('prop-report').waitFor()
+
   const deniedStatus = await page.evaluate(async () => {
     const response = await fetch('/api/v2/prop/sessions', { headers: { 'X-Workspace-Id': 'tenant-not-authorized' } })
     return response.status
@@ -189,7 +216,7 @@ try {
   const screenshots = []
   for (const width of [1440, 768, 360]) {
     await page.setViewportSize({ width, height: 1000 })
-    const screenshot = path.join(evidenceDir, `ps01-real-service-${width}.png`)
+    const screenshot = path.join(evidenceDir, `ps03-real-service-${width}.png`)
     await page.screenshot({ path: screenshot, fullPage: true })
     screenshots.push(screenshot)
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
@@ -222,6 +249,21 @@ try {
     'broker/account credential field leaked into a Prop mutation',
   )
   assert.equal(requests.some((request) => /execution|broker/i.test(request.path)), false)
+  assert.equal(
+    requests.some((request) => request.method === 'GET' && request.path.endsWith('/report')),
+    true,
+    'selected attempt report was not loaded from the real API',
+  )
+  assert.equal(
+    requests.some((request) => request.method === 'GET' && request.path === '/api/v2/prop/reports'),
+    true,
+    'report list was not loaded from the real API',
+  )
+  assert.equal(
+    requests.some((request) => request.method === 'GET' && request.path.endsWith('/report.csv')),
+    true,
+    'report CSV export did not use the real API',
+  )
   const unexpectedConsoleErrors = consoleErrors.filter(
     (message) => !/Failed to load resource: the server responded with a status of 403 \(Forbidden\)/.test(message),
   )
@@ -229,7 +271,7 @@ try {
 
   console.log(JSON.stringify({
     status: 'PASS',
-    fixture: 'ps01-real-service-postgres-api-vite',
+    fixture: 'ps03-real-service-postgres-api-vite',
     workspace,
     sessionId: firstState.sessionId,
     attemptId: firstState.attemptId,
@@ -240,12 +282,15 @@ try {
       'postgres_persisted_ids',
       'resume_update_persisted_before_reload',
       'reload_resume_same_ids_and_updated_cursor',
+      'selected_attempt_report_from_real_api',
+      'report_status_and_branch_filters_real_api',
+      'report_csv_export_real_api',
       'tenant_denial',
       'mutations_prop_api_only',
       'no_broker_execution_request',
       'responsive_1440_768_360',
     ],
-    screenshots,
+    screenshots: [reportsScreenshot, ...screenshots],
   }, null, 2))
 } finally {
   await browser.close()

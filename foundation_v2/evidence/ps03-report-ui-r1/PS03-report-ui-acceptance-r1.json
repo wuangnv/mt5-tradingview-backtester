@@ -1,0 +1,54 @@
+{
+  "artifact_hashes": {
+    "ps03-real-service-1440.png": "3b0f46fa0953f8972b17052d39b1a279579a707b2f553e12fe5c67043324491c",
+    "ps03-real-service-360.png": "3ae2a23fd44d27fa6bfca37aca86e029b34e1b14ea1fb9d701c135f484bca2b8",
+    "ps03-real-service-768.png": "083276749b461fa7b59983949f7f56d909eb923ee50123e2c71830c097473d43",
+    "ps03-real-service-reports-1440.png": "95e3dae72bda5d2231df2563fb7b848fc5ccfa77fa2987f3c0f3c710e3561ca7"
+  },
+  "checks": {
+    "broker_execution_capability": false,
+    "postgres_attempt_persisted": true,
+    "postgres_session_persisted": true,
+    "prop_persistence_and_report_tests_pass": true,
+    "real_service_browser_report_flow_pass": true,
+    "report_filter_and_csv_real_api": true,
+    "vite_build_pass": true
+  },
+  "residual_scope": [
+    "journal integration and broader U3c contextual links",
+    "licensed real-data Prop journey and final INT-PS recovery acceptance",
+    "Figma Make round-trip and whole-product U1 visual acceptance",
+    "broker/demo/live, holdout, provider and deployment gates"
+  ],
+  "result": "PASS",
+  "schema": "PS03-REPORT-UI-ACCEPTANCE-r1",
+  "scope": "PS-03 local disposable PostgreSQL/API/Vite/Playwright report slice: persisted attempt report, status/branch filtering, breach explanation, Learn link and CSV export; simulation only",
+  "ui": {
+    "attemptId": "attempt-muhuf6dd-7slx1",
+    "checks": [
+      "initial_empty_state",
+      "simulation_only_lock",
+      "ui_atomic_create_session_and_attempt_via_real_api",
+      "postgres_persisted_ids",
+      "resume_update_persisted_before_reload",
+      "reload_resume_same_ids_and_updated_cursor",
+      "selected_attempt_report_from_real_api",
+      "report_status_and_branch_filters_real_api",
+      "report_csv_export_real_api",
+      "tenant_denial",
+      "mutations_prop_api_only",
+      "no_broker_execution_request",
+      "responsive_1440_768_360"
+    ],
+    "fixture": "ps03-real-service-postgres-api-vite",
+    "screenshots": [
+      "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ps03-report-ui-r1\\ps03-real-service-reports-1440.png",
+      "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ps03-report-ui-r1\\ps03-real-service-1440.png",
+      "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ps03-report-ui-r1\\ps03-real-service-768.png",
+      "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ps03-report-ui-r1\\ps03-real-service-360.png"
+    ],
+    "sessionId": "ps03-real-service-muhuf6dd-7slx1",
+    "status": "PASS",
+    "workspace": "tenant-ps03-real"
+  }
+}

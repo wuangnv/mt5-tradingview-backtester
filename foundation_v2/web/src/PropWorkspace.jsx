@@ -106,34 +106,54 @@ function sessionLabel(session) {
   return profile.source_kind === 'custom' ? 'Custom practice' : 'Generic practice'
 }
 
+function reportReasonLabel(code) {
+  const labels = {
+    daily_loss_breached: 'Daily loss đã bị breach.',
+    overall_drawdown_breached: 'Overall drawdown đã bị breach.',
+    data_quality_incomplete: 'Thiếu dữ liệu để kết luận đầy đủ.',
+    virtual_cutoff_expired: 'Attempt hết thời gian mô phỏng.',
+    attempt_abandoned: 'Attempt đã bị bỏ.',
+    declared_objectives_satisfied: 'Các objective đã khai báo được thỏa mãn.',
+  }
+  return labels[code] || code
+}
+
 export default function PropWorkspace({ workspace }) {
   const [draft, setDraft] = useState(initialDraft)
   const [sessions, setSessions] = useState({ status: 'loading', items: [], error: null })
-  const [selected, setSelected] = useState({ status: 'idle', session: null, attempts: [], bundle: null, error: null })
+  const [selected, setSelected] = useState({ status: 'idle', session: null, attempts: [], bundle: null, report: null, reportError: null, error: null })
+  const [activeTab, setActiveTab] = useState('sessions')
+  const [reports, setReports] = useState({ status: 'idle', items: [], error: null })
+  const [reportFilters, setReportFilters] = useState({ status: '', branchKind: '' })
   const [pendingAction, setPendingAction] = useState('')
   const [conflict, setConflict] = useState(null)
 
   const loadBundle = useCallback(async (session, attempts) => {
     const latest = attempts.length ? attempts[attempts.length - 1] : null
     if (!latest) {
-      setSelected({ status: 'ready', session, attempts, bundle: null, error: null })
+      setSelected({ status: 'ready', session, attempts, bundle: null, report: null, reportError: null, error: null })
       return
     }
     setSelected((current) => ({ ...current, status: 'loading', session, attempts, error: null }))
     try {
-      const bundle = await propJson(
-        `/api/v2/prop/sessions/${encodeURIComponent(session.session_id)}/attempts/${encodeURIComponent(latest.attempt_id)}`,
-        workspace,
-      )
-      setSelected({ status: 'ready', session, attempts, bundle, error: null })
+      const attemptBase = `/api/v2/prop/sessions/${encodeURIComponent(session.session_id)}/attempts/${encodeURIComponent(latest.attempt_id)}`
+      const bundle = await propJson(attemptBase, workspace)
+      let report = null
+      let reportError = null
+      try {
+        report = await propJson(`${attemptBase}/report`, workspace)
+      } catch (error) {
+        reportError = error.message
+      }
+      setSelected({ status: 'ready', session, attempts, bundle, report, reportError, error: null })
     } catch (error) {
-      setSelected({ status: error.kind || 'error', session, attempts, bundle: null, error: error.message })
+      setSelected({ status: error.kind || 'error', session, attempts, bundle: null, report: null, reportError: null, error: error.message })
     }
   }, [workspace])
 
   const openSession = useCallback(async (session) => {
     setConflict(null)
-    setSelected({ status: 'loading', session, attempts: [], bundle: null, error: null })
+    setSelected({ status: 'loading', session, attempts: [], bundle: null, report: null, reportError: null, error: null })
     try {
       const payload = await propJson(
         `/api/v2/prop/sessions/${encodeURIComponent(session.session_id)}/attempts`,
@@ -141,7 +161,7 @@ export default function PropWorkspace({ workspace }) {
       )
       await loadBundle(session, payload.items || [])
     } catch (error) {
-      setSelected({ status: error.kind || 'error', session, attempts: [], bundle: null, error: error.message })
+      setSelected({ status: error.kind || 'error', session, attempts: [], bundle: null, report: null, reportError: null, error: error.message })
     }
   }, [loadBundle, workspace])
 
@@ -153,7 +173,7 @@ export default function PropWorkspace({ workspace }) {
       setSessions({ status: 'ready', items, error: null })
 
       if (!items.length) {
-        setSelected({ status: 'idle', session: null, attempts: [], bundle: null, error: null })
+        setSelected({ status: 'idle', session: null, attempts: [], bundle: null, report: null, reportError: null, error: null })
         return
       }
 
@@ -168,6 +188,23 @@ export default function PropWorkspace({ workspace }) {
   useEffect(() => {
     loadSessions()
   }, [workspace]) // Re-discover sessions and attempts from the backend on every page load/workspace change.
+
+  const loadReports = useCallback(async () => {
+    setReports((current) => ({ status: 'loading', items: current.items, error: null }))
+    const params = new URLSearchParams()
+    if (reportFilters.status) params.set('status', reportFilters.status)
+    if (reportFilters.branchKind) params.set('branch_kind', reportFilters.branchKind)
+    try {
+      const payload = await propJson(`/api/v2/prop/reports${params.size ? `?${params}` : ''}`, workspace)
+      setReports({ status: 'ready', items: payload.items || [], error: null })
+    } catch (error) {
+      setReports({ status: error.kind || 'error', items: [], error: error.message })
+    }
+  }, [reportFilters, workspace])
+
+  useEffect(() => {
+    if (activeTab === 'reports') loadReports()
+  }, [activeTab, loadReports])
 
   const updateDraft = (field, value) => setDraft((current) => ({ ...current, [field]: value }))
 
@@ -287,7 +324,7 @@ export default function PropWorkspace({ workspace }) {
       })
       const created = bundle.session
       setSessions((current) => ({ status: 'ready', items: [...current.items, created], error: null }))
-      setSelected({ status: 'ready', session: created, attempts: [bundle.attempt], bundle, error: null })
+      await loadBundle(created, [bundle.attempt])
     } catch (error) {
       if (error.kind === 'conflict') setConflict(error.message)
       else if (error.kind === 'denied') setSessions({ status: 'denied', items: [], error: error.message })
@@ -296,11 +333,44 @@ export default function PropWorkspace({ workspace }) {
     } finally {
       setPendingAction('')
     }
-  }, [draft, loadSessions, workspace])
+  }, [draft, loadBundle, loadSessions, workspace])
+
+  const exportReport = useCallback(async (report) => {
+    const sessionId = report?.session?.session_id
+    const attemptId = report?.attempt?.attempt_id
+    if (!sessionId || !attemptId) return
+    const actionKey = `export:${attemptId}`
+    setPendingAction(actionKey)
+    setConflict(null)
+    try {
+      const response = await fetch(
+        `/api/v2/prop/sessions/${encodeURIComponent(sessionId)}/attempts/${encodeURIComponent(attemptId)}/report.csv`,
+        { headers: { 'X-Workspace-Id': workspace } },
+      )
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}))
+        throw apiError(response, payload)
+      }
+      const blob = await response.blob()
+      const href = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = href
+      link.download = `prop-${sessionId}-${attemptId}.csv`
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      URL.revokeObjectURL(href)
+    } catch (error) {
+      setConflict(`Không export được report: ${error.message}`)
+    } finally {
+      setPendingAction('')
+    }
+  }, [workspace])
 
   const bundle = selected.bundle
   const phase = bundle?.phase
   const attempt = bundle?.attempt
+  const report = selected.report
   const currency = selected.session?.profile?.phases?.[0]?.currency || draft.currency
   const cursor = bundle?.resume_state?.cursor
   const selectedTerminal = TERMINAL_STATUSES.has(attempt?.status)
@@ -325,13 +395,23 @@ export default function PropWorkspace({ workspace }) {
       </header>
 
       <nav className="prop-tabs" aria-label="Testing views">
-        <button type="button" className="is-active" aria-current="page">Sessions</button>
+        <button
+          type="button"
+          className={activeTab === 'sessions' ? 'is-active' : ''}
+          aria-current={activeTab === 'sessions' ? 'page' : undefined}
+          onClick={() => setActiveTab('sessions')}
+        >Sessions</button>
+        <button
+          type="button"
+          className={activeTab === 'reports' ? 'is-active' : ''}
+          aria-current={activeTab === 'reports' ? 'page' : undefined}
+          onClick={() => setActiveTab('reports')}
+        >Reports</button>
         <button type="button" disabled>Dashboard</button>
         <button type="button" disabled>Trades</button>
-        <button type="button" disabled>Analytics</button>
       </nav>
 
-      <section className="prop-layout">
+      {activeTab === 'sessions' && <section className="prop-layout">
         <aside className="prop-sidebar">
           <div className="prop-section-head">
             <div><span>Workspace</span><strong>{workspace}</strong></div>
@@ -475,11 +555,126 @@ export default function PropWorkspace({ workspace }) {
                 <div className="prop-resume-note" data-testid="prop-resume-note">
                   “Mở tiếp tục” ở PS-01 chỉ khôi phục state đã persist. UI không tự chạy clock, fill lệnh hay transition phase.
                 </div>
+
+                {selected.reportError && (
+                  <StateMessage kind="error" testId="prop-report-error">
+                    Resume state vẫn dùng được, nhưng report chưa tải được: {selected.reportError}
+                  </StateMessage>
+                )}
+
+                {report && (
+                  <section className="prop-report" data-testid="prop-report">
+                    <div className="prop-section-head">
+                      <div><span>Attempt report</span><strong>{report.outcome.status}</strong></div>
+                      <small>{report.result_source}</small>
+                    </div>
+                    <div className="prop-report-summary">
+                      <div><span>Technical</span><strong>{report.outcome.technical_status || 'N/A'}</strong></div>
+                      <div><span>Terminal</span><strong>{report.outcome.terminal ? 'Có' : 'Chưa'}</strong></div>
+                      <div><span>Branch</span><strong>{report.attempt.branch_kind}</strong></div>
+                      <div><span>Quality</span><strong>{report.phase.evaluation_quality}</strong></div>
+                    </div>
+                    <div className="prop-report-copy">
+                      <strong>Giải thích kết quả</strong>
+                      {report.outcome.reason_codes.length ? (
+                        <ul>{report.outcome.reason_codes.map((code) => <li key={code}>{reportReasonLabel(code)}</li>)}</ul>
+                      ) : (
+                        <p>Attempt chưa có terminal reason. Report chỉ phản ánh state mô phỏng đã persist.</p>
+                      )}
+                      {report.provenance.hindsight_exploratory && (
+                        <p className="prop-report-warning">Đây là hindsight branch để khám phá sau checkpoint; không gộp với clean attempt.</p>
+                      )}
+                    </div>
+                    <div className="prop-report-actions">
+                      <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(report.session.session_id)}&attempt=${encodeURIComponent(report.attempt.attempt_id)}`}>Mở Learn</a>
+                      <button
+                        type="button"
+                        className="prop-refresh"
+                        data-testid="prop-report-export"
+                        disabled={pendingAction === `export:${report.attempt.attempt_id}`}
+                        onClick={() => exportReport(report)}
+                      >
+                        {pendingAction === `export:${report.attempt.attempt_id}` ? 'Đang export…' : 'Export CSV'}
+                      </button>
+                    </div>
+                  </section>
+                )}
               </div>
             )}
           </section>
         </section>
-      </section>
+      </section>}
+
+      {activeTab === 'reports' && (
+        <section className="prop-reports" data-testid="prop-reports-view">
+          <div className="prop-section-head">
+            <div><span>Reports</span><strong>Read-only từ persisted Prop state</strong></div>
+            <small>{reports.items.length} report</small>
+          </div>
+          <div className="prop-report-filters">
+            <label className="prop-field">
+              <span>Status</span>
+              <select aria-label="Report status" value={reportFilters.status} onChange={(event) => setReportFilters((current) => ({ ...current, status: event.target.value }))}>
+                <option value="">Tất cả</option>
+                <option value="ready">ready</option>
+                <option value="running">running</option>
+                <option value="paused">paused</option>
+                <option value="phase_passed">phase_passed</option>
+                <option value="next_phase_ready">next_phase_ready</option>
+                <option value="completed_pass">completed_pass</option>
+                <option value="failed_breach">failed_breach</option>
+                <option value="expired">expired</option>
+                <option value="abandoned">abandoned</option>
+              </select>
+            </label>
+            <label className="prop-field">
+              <span>Branch</span>
+              <select aria-label="Report branch" value={reportFilters.branchKind} onChange={(event) => setReportFilters((current) => ({ ...current, branchKind: event.target.value }))}>
+                <option value="">Tất cả</option>
+                <option value="clean">clean</option>
+                <option value="hindsight_exploratory">hindsight_exploratory</option>
+              </select>
+            </label>
+            <button type="button" className="prop-refresh" onClick={loadReports}>Tải lại</button>
+          </div>
+
+          {reports.status === 'loading' && <StateMessage kind="loading" testId="prop-reports-loading">Đang đọc reports…</StateMessage>}
+          {reports.status === 'denied' && <StateMessage kind="denied" testId="prop-reports-denied">Workspace này không có quyền đọc Prop reports.</StateMessage>}
+          {reports.status === 'error' && <StateMessage kind="error" testId="prop-reports-error">Không đọc được reports: {reports.error}</StateMessage>}
+          {reports.status === 'ready' && !reports.items.length && <StateMessage kind="empty" testId="prop-reports-empty">Không có report khớp bộ lọc.</StateMessage>}
+
+          <div className="prop-report-list" data-testid="prop-report-list">
+            {reports.items.map((item) => (
+              <article className="prop-report-row" key={`${item.session.session_id}/${item.attempt.attempt_id}`}>
+                <div>
+                  <span>{item.outcome.status} · {item.attempt.branch_kind}</span>
+                  <strong>{item.session.session_id}</strong>
+                  <small>{item.attempt.attempt_id}</small>
+                </div>
+                <div>
+                  <span>Balance / equity</span>
+                  <strong>{item.phase.balance} / {item.phase.equity}</strong>
+                  <small>{item.phase.evaluation_quality}</small>
+                </div>
+                <div className="prop-report-row-reasons">
+                  <span>Reason</span>
+                  <strong>{item.outcome.reason_codes.length ? item.outcome.reason_codes.map(reportReasonLabel).join(' ') : 'Chưa có terminal reason.'}</strong>
+                  <small>{item.result_source}</small>
+                </div>
+                <div className="prop-report-row-actions">
+                  <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(item.session.session_id)}&attempt=${encodeURIComponent(item.attempt.attempt_id)}`}>Learn</a>
+                  <button
+                    type="button"
+                    className="prop-refresh"
+                    disabled={pendingAction === `export:${item.attempt.attempt_id}`}
+                    onClick={() => exportReport(item)}
+                  >CSV</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   )
 }

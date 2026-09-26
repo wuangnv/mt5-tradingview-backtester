@@ -63,7 +63,7 @@ const persistedAttempt = {
   data_version: 'dataset-fixture-v1',
   cost_version: 'cost-v1',
   engine_version: 'replay-v1',
-  status: 'running',
+  status: 'failed_breach',
   revision: 3,
   parent_attempt_id: null,
   branch_kind: 'clean',
@@ -78,9 +78,9 @@ const persistedPhase = {
   profile_hash: profile.profile_hash,
   phase_index: 1,
   initial_balance: '100000',
-  balance: '100250',
-  floating_pl: '-50',
-  equity: '100200',
+  balance: '94900',
+  floating_pl: '-100',
+  equity: '94800',
   high_water_mark: '100400',
   daily_anchor: '100100',
   qualifying_days: 1,
@@ -110,6 +110,88 @@ let mode = 'happy'
 
 function json(route, status, payload) {
   return route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(payload) })
+}
+
+function reportFor(bundle) {
+  const breached = bundle.attempt.status === 'failed_breach'
+  return {
+    schema_version: 'prop-attempt-report-v1',
+    mode: 'simulation',
+    result_source: 'simulation',
+    broker_execution_capability: false,
+    session: {
+      session_id: bundle.session.session_id,
+      session_type: bundle.session.session_type,
+      status: bundle.session.status,
+      revision: bundle.session.revision,
+    },
+    profile: {
+      profile_id: bundle.session.profile.profile_id,
+      terms_version: bundle.session.profile.terms_version,
+      profile_hash: bundle.session.profile.profile_hash,
+      effective_from: bundle.session.profile.effective_from,
+      source_kind: bundle.session.profile.source_kind,
+    },
+    attempt: {
+      attempt_id: bundle.attempt.attempt_id,
+      status: bundle.attempt.status,
+      revision: bundle.attempt.revision,
+      parent_attempt_id: bundle.attempt.parent_attempt_id,
+      branch_kind: bundle.attempt.branch_kind,
+      data_version: bundle.attempt.data_version,
+      cost_version: bundle.attempt.cost_version,
+      engine_version: bundle.attempt.engine_version,
+      virtual_start_utc: bundle.attempt.virtual_start_utc,
+      virtual_cutoff_utc: bundle.attempt.virtual_cutoff_utc,
+    },
+    phase: {
+      phase_index: bundle.phase.phase_index,
+      balance: bundle.phase.balance,
+      floating_pl: bundle.phase.floating_pl,
+      equity: bundle.phase.equity,
+      high_water_mark: bundle.phase.high_water_mark,
+      daily_anchor: bundle.phase.daily_anchor,
+      qualifying_days: bundle.phase.qualifying_days,
+      virtual_time_utc: bundle.phase.virtual_time_utc,
+      last_event_sequence: bundle.phase.last_event_sequence,
+      open_positions: bundle.phase.open_positions,
+      pending_orders: bundle.phase.pending_orders,
+      evaluation_quality: bundle.phase.evaluation_quality,
+    },
+    objectives: breached ? {
+      technical_status: 'failed',
+      terminal_action: 'breach',
+      money: {
+        daily_loss: { breached: true, current: bundle.phase.equity, floor: '95100', reference: bundle.phase.daily_anchor },
+        overall_drawdown: { breached: false, current: bundle.phase.equity, floor: '90000', reference: bundle.phase.high_water_mark },
+      },
+    } : null,
+    outcome: {
+      status: bundle.attempt.status,
+      terminal: breached,
+      technical_status: breached ? 'failed' : null,
+      terminal_action: breached ? 'breach' : null,
+      reason_codes: breached ? ['daily_loss_breached'] : [],
+      breaches: breached ? [{ rule: 'daily_loss', current: bundle.phase.equity, floor: '95100', reference: bundle.phase.daily_anchor }] : [],
+    },
+    provenance: {
+      hindsight_exploratory: bundle.attempt.branch_kind === 'hindsight_exploratory',
+      replay_binding: null,
+      branch_provenance: null,
+    },
+    tutorials: {
+      learn_view_href: '/?view=learn',
+      learn_overview_href: '/api/v2/learn/overview',
+      answer_keys_exposed: false,
+      auto_completion_enabled: false,
+    },
+    safety: {
+      simulation_only: true,
+      broker_results_included: false,
+      broker_credentials_included: false,
+      holdout_content_included: false,
+    },
+  }
 }
 
 async function waitForServer() {
@@ -155,6 +237,9 @@ async function main() {
 
       if (mode === 'denied') return json(route, 403, { detail: 'workspace_access_denied' })
       if (mode === 'error') return json(route, 503, { detail: 'prop_store_unavailable' })
+      if (mode === 'report-error' && /\/report$/.test(url.pathname)) {
+        return json(route, 503, { detail: 'prop_report_unavailable' })
+      }
       if (mode === 'empty' && request.method() === 'GET' && url.pathname === '/api/v2/prop/sessions') {
         return json(route, 200, { items: [] })
       }
@@ -219,6 +304,44 @@ async function main() {
         }
       }
 
+      if (url.pathname === '/api/v2/prop/reports' && request.method() === 'GET') {
+        const status = url.searchParams.get('status')
+        const branchKind = url.searchParams.get('branch_kind')
+        const items = [...bundles.values()]
+          .map(reportFor)
+          .filter((report) => !status || report.attempt.status === status)
+          .filter((report) => !branchKind || report.attempt.branch_kind === branchKind)
+        return json(route, 200, {
+          schema_version: 'prop-report-list-v1',
+          filters: { status, branch_kind: branchKind },
+          items,
+          count: items.length,
+          broker_execution_capability: false,
+        })
+      }
+
+      const reportCsvMatch = url.pathname.match(/^\/api\/v2\/prop\/sessions\/([^/]+)\/attempts\/([^/]+)\/report\.csv$/)
+      if (reportCsvMatch && request.method() === 'GET') {
+        const key = `${decodeURIComponent(reportCsvMatch[1])}/${decodeURIComponent(reportCsvMatch[2])}`
+        const bundle = bundles.get(key)
+        if (!bundle) return json(route, 404, { detail: 'prop_attempt_not_found' })
+        const report = reportFor(bundle)
+        const body = `attempt_id,status,reason_codes\n${report.attempt.attempt_id},${report.outcome.status},${report.outcome.reason_codes.join('|')}\n`
+        return route.fulfill({
+          status: 200,
+          contentType: 'text/csv; charset=utf-8',
+          headers: { 'Content-Disposition': 'attachment; filename="prop-attempt-report.csv"' },
+          body,
+        })
+      }
+
+      const reportMatch = url.pathname.match(/^\/api\/v2\/prop\/sessions\/([^/]+)\/attempts\/([^/]+)\/report$/)
+      if (reportMatch && request.method() === 'GET') {
+        const key = `${decodeURIComponent(reportMatch[1])}/${decodeURIComponent(reportMatch[2])}`
+        const bundle = bundles.get(key)
+        return bundle ? json(route, 200, reportFor(bundle)) : json(route, 404, { detail: 'prop_attempt_not_found' })
+      }
+
       const bundleMatch = url.pathname.match(/^\/api\/v2\/prop\/sessions\/([^/]+)\/attempts\/([^/]+)$/)
       if (bundleMatch && request.method() === 'GET') {
         const key = `${decodeURIComponent(bundleMatch[1])}/${decodeURIComponent(bundleMatch[2])}`
@@ -236,6 +359,7 @@ async function main() {
     assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /attempt-persisted-1/)
     assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /#412/)
     assert.match(await page.getByTestId('prop-resume-note').innerText(), /không tự chạy clock/i)
+    assert.match(await page.getByTestId('prop-report').innerText(), /Daily loss đã bị breach/)
 
     await page.getByLabel('Tên session').fill('Custom UI acceptance')
     await page.getByLabel('Profile').selectOption('custom')
@@ -257,6 +381,23 @@ async function main() {
       'reload did not discover attempts from backend',
     )
 
+    await page.getByRole('button', { name: 'Reports' }).click()
+    await page.getByTestId('prop-reports-view').waitFor()
+    await page.getByLabel('Report status').selectOption('failed_breach')
+    await page.getByLabel('Report branch').selectOption('clean')
+    await page.getByTestId('prop-report-list').getByText('Daily loss đã bị breach.', { exact: false }).waitFor()
+    const reportText = await page.getByTestId('prop-report-list').innerText()
+    assert.match(reportText, /failed_breach/i)
+    assert.match(reportText, /attempt-persisted-1/)
+    const downloadPromise = page.waitForEvent('download')
+    await page.getByTestId('prop-report-list').getByRole('button', { name: 'CSV' }).click()
+    const download = await downloadPromise
+    assert.match(download.suggestedFilename(), /\.csv$/)
+
+    await page.getByLabel('Report branch').selectOption('hindsight_exploratory')
+    await page.getByTestId('prop-reports-empty').waitFor()
+    await page.getByRole('button', { name: 'Sessions' }).click()
+
     const screenshots = []
     for (const width of [1440, 768, 360]) {
       await page.setViewportSize({ width, height: 1000 })
@@ -272,6 +413,12 @@ async function main() {
     await page.getByRole('button', { name: 'Tạo session mô phỏng' }).click()
     await page.getByTestId('prop-conflict').waitFor()
     assert.match(await page.getByTestId('prop-conflict').innerText(), /fixture_revision_conflict/)
+
+    mode = 'report-error'
+    await page.goto(`${origin}/?view=testing&workspace=tenant-prop-ui`)
+    await page.getByTestId('prop-resume-bundle').waitFor()
+    await page.getByTestId('prop-report-error').waitFor()
+    assert.match(await page.getByTestId('prop-report-error').innerText(), /prop_report_unavailable/)
 
     mode = 'empty'
     await page.goto(`${origin}/?view=testing&workspace=tenant-empty`)
@@ -307,13 +454,17 @@ async function main() {
 
     console.log(JSON.stringify({
       status: 'PASS',
-      fixture: 'ui-labeled-ps01-prop-session',
+      fixture: 'ui-labeled-ps03-prop-report',
       checks: [
         'simulation_only_lock',
         'backend_session_and_attempt_discovery',
         'create_session_and_attempt',
         'persisted_id_reload_resume',
         'cursor_and_money_resume_state',
+        'attempt_report_reason_explanation',
+        'report_status_and_branch_filters',
+        'report_csv_export',
+        'report_failure_does_not_hide_resume_state',
         'mutations_prop_api_only',
         'no_broker_or_credential_payload',
         'conflict',
