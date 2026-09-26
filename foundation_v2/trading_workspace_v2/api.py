@@ -3,8 +3,9 @@ from __future__ import annotations
 import os
 from collections.abc import Mapping
 from pathlib import Path
+from typing import Literal
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from psycopg.errors import UniqueViolation
 from pydantic import ValidationError
 
@@ -36,6 +37,7 @@ from .data_sources import DataProviderRegistry, LocalCatalogProvider
 from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .prop_session import (
+    AttemptStatus,
     PropAttemptCreateRequest,
     PropResumeSaveRequest,
     ReplayPropBranchAttemptRequest,
@@ -46,6 +48,7 @@ from .prop_session import (
     TransitionIntent,
 )
 from .prop_replay import ReplayPropConnectionError
+from .prop_report import build_prop_attempt_report, prop_attempt_report_csv
 from .replay import ReplayService
 from .research import ResearchService
 from .nautilus_worker import runtime_ready
@@ -296,6 +299,52 @@ def create_app(
             "attempt": result["attempt"].model_dump(mode="json"),
             "phase": result["phase"].model_dump(mode="json"),
             "resume_state": result["resume_state"],
+        }
+
+    def prop_report_or_404(workspace: str, session_id: str, attempt_id: str) -> dict:
+        result = store.get_prop_resume_state(workspace, session_id, attempt_id)
+        if result is None:
+            raise HTTPException(status_code=404, detail="prop_attempt_not_found")
+        return build_prop_attempt_report(
+            result["session"],
+            result["attempt"],
+            result["phase"],
+            result["resume_state"],
+        )
+
+    @app.get("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/report")
+    def get_prop_attempt_report(session_id: str, attempt_id: str, workspace: str = Depends(workspace_id)):
+        return prop_report_or_404(workspace, session_id, attempt_id)
+
+    @app.get("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/report.csv")
+    def export_prop_attempt_report(session_id: str, attempt_id: str, workspace: str = Depends(workspace_id)):
+        report = prop_report_or_404(workspace, session_id, attempt_id)
+        return Response(
+            content=prop_attempt_report_csv(report),
+            media_type="text/csv; charset=utf-8",
+            headers={"Content-Disposition": 'attachment; filename="prop-attempt-report.csv"'},
+        )
+
+    @app.get("/api/v2/prop/reports")
+    def list_prop_reports(
+        status: AttemptStatus | None = None,
+        branch_kind: Literal["clean", "hindsight_exploratory"] | None = None,
+        workspace: str = Depends(workspace_id),
+    ):
+        reports = []
+        for session in store.list_prop_sessions(workspace):
+            for attempt in store.list_prop_attempts(workspace, session.session_id):
+                if status is not None and attempt.status != status:
+                    continue
+                if branch_kind is not None and attempt.branch_kind != branch_kind:
+                    continue
+                reports.append(prop_report_or_404(workspace, session.session_id, attempt.attempt_id))
+        return {
+            "schema_version": "prop-report-list-v1",
+            "filters": {"status": status, "branch_kind": branch_kind},
+            "items": reports,
+            "count": len(reports),
+            "broker_execution_capability": False,
         }
 
     @app.post("/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/transitions")
