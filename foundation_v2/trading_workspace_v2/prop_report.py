@@ -151,6 +151,11 @@ def build_prop_attempt_report(
 def prop_attempt_report_csv(report: dict) -> str:
     """Export stable summary fields without serializing arbitrary nested state."""
 
+    def spreadsheet_safe_text(value):
+        if isinstance(value, str) and value[:1] in {"=", "+", "-", "@", "\t", "\r"}:
+            return "'" + value
+        return value
+
     session = report["session"]
     attempt = report["attempt"]
     phase = report["phase"]
@@ -186,5 +191,27 @@ def prop_attempt_report_csv(report: dict) -> str:
     output = io.StringIO(newline="")
     writer = csv.DictWriter(output, fieldnames=list(row))
     writer.writeheader()
-    writer.writerow(row)
+    text_fields = {
+        "schema_version",
+        "mode",
+        "result_source",
+        "session_id",
+        "session_status",
+        "attempt_id",
+        "attempt_status",
+        "branch_kind",
+        "data_version",
+        "cost_version",
+        "engine_version",
+        "virtual_time_utc",
+        "evaluation_quality",
+        "terminal_action",
+        "reason_codes",
+    }
+    writer.writerow(
+        {
+            field: spreadsheet_safe_text(value) if field in text_fields else value
+            for field, value in row.items()
+        }
+    )
     return output.getvalue()

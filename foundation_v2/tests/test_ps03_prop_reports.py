@@ -177,6 +177,27 @@ class Ps03PropReportTests(unittest.TestCase):
         self.assertNotIn("open_positions", rows[0])
         self.assertNotIn("objectives", rows[0])
 
+    def test_csv_export_neutralizes_formula_like_text_without_changing_numeric_fields(self):
+        session, attempt, phase, resume = fixture()
+        for prefix in ("=", "+", "-", "@", "\t", "\r"):
+            candidate = attempt.model_copy(update={"data_version": f"{prefix}1+1"})
+            report = build_prop_attempt_report(session, candidate, phase, resume)
+            row = list(csv.DictReader(io.StringIO(prop_attempt_report_csv(report))))[0]
+
+            self.assertEqual(row["data_version"], f"'{prefix}1+1")
+            self.assertEqual(row["session_revision"], "5")
+            self.assertEqual(row["balance"], "100500")
+
+        negative_phase = phase.model_copy(
+            update={"balance": Decimal("-100.25"), "equity": Decimal("-50.5")}
+        )
+        negative_report = build_prop_attempt_report(session, attempt, negative_phase, resume)
+        negative_row = list(
+            csv.DictReader(io.StringIO(prop_attempt_report_csv(negative_report)))
+        )[0]
+        self.assertEqual(negative_row["balance"], "-100.25")
+        self.assertEqual(negative_row["equity"], "-50.5")
+
 
 @unittest.skipUnless(os.getenv("TW_V2_DATABASE_URL"), "TW_V2_DATABASE_URL is required for PS-03 API tests")
 class Ps03PropReportApiTests(unittest.TestCase):
