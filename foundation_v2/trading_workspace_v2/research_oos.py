@@ -256,17 +256,33 @@ def build_bounded_sweep(parameter_space: dict[str, list], *, max_trials: int) ->
     }
 
 
-def summarize_sweep_outcomes(sweep: dict, outcomes: list[dict]) -> dict:
-    """Require an explicit terminal outcome for every planned sweep trial."""
+def _planned_trial_ids(sweep: dict) -> list[str]:
+    """Validate and return the server-owned trial identities from a sweep.
+
+    Sweep plans are persisted in job protocols/checkpoints and may therefore be
+    malformed at a trust boundary.  Keep malformed plans on the typed research
+    validation path instead of leaking an ``AttributeError`` from ``.get``.
+    """
 
     trials = sweep.get("trials") if isinstance(sweep, dict) else None
     if not isinstance(trials, list) or not trials:
         raise ResearchValidationPlanError("sweep plan is missing trials")
+    if any(not isinstance(trial, dict) for trial in trials):
+        raise ResearchValidationPlanError("sweep plan has invalid trial identities")
+    planned = [trial.get("trial_id") for trial in trials]
+    if any(not isinstance(trial_id, str) or not trial_id.strip() for trial_id in planned):
+        raise ResearchValidationPlanError("sweep plan has invalid trial identities")
+    if len(set(planned)) != len(planned):
+        raise ResearchValidationPlanError("sweep plan has invalid trial identities")
+    return planned
+
+
+def summarize_sweep_outcomes(sweep: dict, outcomes: list[dict]) -> dict:
+    """Require an explicit terminal outcome for every planned sweep trial."""
+
+    planned = _planned_trial_ids(sweep)
     if not isinstance(outcomes, list):
         raise ResearchValidationPlanError("sweep outcomes must be a list")
-    planned = [trial.get("trial_id") for trial in trials]
-    if any(not isinstance(trial_id, str) or not trial_id for trial_id in planned) or len(set(planned)) != len(planned):
-        raise ResearchValidationPlanError("sweep plan has invalid trial identities")
 
     allowed = {"completed", "failed", "canceled"}
     observed: dict[str, str] = {}
@@ -297,15 +313,9 @@ def summarize_sweep_outcomes(sweep: dict, outcomes: list[dict]) -> dict:
 def complete_canceled_sweep_outcomes(sweep: dict, outcomes: list[dict]) -> tuple[list[dict], dict]:
     """Terminalize a partial sweep by marking every unrecorded trial canceled."""
 
-    trials = sweep.get("trials") if isinstance(sweep, dict) else None
-    if not isinstance(trials, list) or not trials:
-        raise ResearchValidationPlanError("sweep plan is missing trials")
+    planned = _planned_trial_ids(sweep)
     if not isinstance(outcomes, list):
         raise ResearchValidationPlanError("sweep outcomes must be a list")
-
-    planned = [trial.get("trial_id") for trial in trials]
-    if any(not isinstance(trial_id, str) or not trial_id for trial_id in planned) or len(set(planned)) != len(planned):
-        raise ResearchValidationPlanError("sweep plan has invalid trial identities")
 
     allowed = {"completed", "failed", "canceled"}
     observed: dict[str, str] = {}

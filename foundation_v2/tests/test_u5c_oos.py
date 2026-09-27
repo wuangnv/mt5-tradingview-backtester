@@ -24,6 +24,7 @@ from trading_workspace_v2.research_oos import (
     build_bounded_sweep,
     build_cost_fill_stress_plan,
     build_walk_forward_plan,
+    complete_canceled_sweep_outcomes,
     summarize_sweep_outcomes,
 )
 from trading_workspace_v2.store import ClaimedJob, _oos_cancellation_state
@@ -353,6 +354,18 @@ class U5cBoundedSweepTests(unittest.TestCase):
                     {"trial_id": "trial-0002", "status": "failed"},
                 ],
             )
+
+    def test_malformed_persisted_trial_plan_fails_with_typed_validation_error(self):
+        for malformed in (
+            {"trials": [None]},
+            {"trials": ["trial-0001"]},
+            {"trials": [{"trial_id": ""}]},
+        ):
+            with self.subTest(malformed=malformed):
+                with self.assertRaisesRegex(ResearchValidationPlanError, "invalid trial identities"):
+                    summarize_sweep_outcomes(malformed, [])
+                with self.assertRaisesRegex(ResearchValidationPlanError, "invalid trial identities"):
+                    complete_canceled_sweep_outcomes(malformed, [])
 
 
 class U5cStressPlanTests(unittest.TestCase):
