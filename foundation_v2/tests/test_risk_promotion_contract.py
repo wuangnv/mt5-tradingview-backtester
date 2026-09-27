@@ -138,6 +138,16 @@ class AITradeModeTests(unittest.TestCase):
             ),
             (),
         )
+        self.assertTrue(
+            mode.can_execute(
+                adapter_mode="paper",
+                account_id="paper-account",
+                symbol="TEST",
+                action="open",
+                budget=ready_budget(),
+                now=BASE_TIME,
+            )
+        )
         blockers = mode.execution_blockers(
             adapter_mode="paper",
             account_id="other-account",
@@ -149,6 +159,16 @@ class AITradeModeTests(unittest.TestCase):
         self.assertIn("account_scope_mismatch", blockers)
         self.assertIn("symbol_scope_mismatch", blockers)
         self.assertIn("action_scope_mismatch", blockers)
+        self.assertFalse(
+            mode.can_execute(
+                adapter_mode="paper",
+                account_id="other-account",
+                symbol="OTHER",
+                action="withdraw",
+                budget=ready_budget(),
+                now=BASE_TIME,
+            )
+        )
 
     def test_live_mode_needs_reconciliation_and_expiry(self):
         mode = live_mode().model_copy(update={"reconciliation_state": "unknown", "expires_at_utc": None})

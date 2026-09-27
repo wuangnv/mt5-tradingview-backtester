@@ -302,6 +302,27 @@ class AITradeMode(BaseModel):
             blockers.append("action_scope_mismatch")
         return tuple(dict.fromkeys(blockers))
 
+    def can_execute(
+        self,
+        *,
+        adapter_mode: Literal["paper", "live"],
+        account_id: str | None,
+        symbol: str | None,
+        action: str | None,
+        budget: RiskBudget | None,
+        now: datetime | None = None,
+    ) -> bool:
+        """Return true only when every explicit capability gate is satisfied."""
+
+        return not self.execution_blockers(
+            adapter_mode=adapter_mode,
+            account_id=account_id,
+            symbol=symbol,
+            action=action,
+            budget=budget,
+            now=now,
+        )
+
 
 class PromotionSnapshot(BaseModel):
     """Versioned state for one strategy, sleeve or account scope."""
