@@ -1,0 +1,37 @@
+{
+  "schema": "chart-intelligence-c1-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline closed-bar FVG, confirmed swing/BOS and timezone-aware session boundaries",
+  "rule_version": "smc-core.v1",
+  "changed_files": [
+    "trading_workspace_v2/chart_intelligence.py",
+    "trading_workspace_v2/__init__.py",
+    "tests/test_chart_intelligence.py",
+    "evidence/chart-intelligence-c1-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "command": "PYTHONPATH=. uv run pytest -q tests/test_chart_intelligence.py tests/test_chart_overlay_contract.py tests/test_feature_timing_contract.py",
+    "passed": 21,
+    "failed": 0,
+    "warnings": 0,
+    "compileall": "PASS"
+  },
+  "properties": {
+    "closed_bar_only": true,
+    "prefix_replay_checked": true,
+    "mtf": false,
+    "provider": false,
+    "broker_actions": false,
+    "ai_execution_capability": false,
+    "holdout_access": false,
+    "overlay_cap": 256
+  },
+  "not_claimed": [
+    "positive trading edge",
+    "full SMC/ICT vocabulary",
+    "MTF engine",
+    "renderer or TradingView license acceptance",
+    "AI provider quality",
+    "broker or live execution"
+  ]
+}
