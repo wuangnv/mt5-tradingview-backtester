@@ -1,0 +1,37 @@
+{
+  "schema": "chart-intelligence-c2-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "causal higher-timeframe last-confirmed mapping to lower/display bars",
+  "rule_version": "smc-core.v1",
+  "changed_files": [
+    "trading_workspace_v2/chart_intelligence.py",
+    "tests/test_chart_intelligence.py",
+    "evidence/chart-intelligence-c2-mtf-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "command": "PYTHONPATH=. uv run pytest -q tests/test_chart_intelligence.py tests/test_chart_intelligence_stress.py tests/test_chart_overlay_contract.py tests/test_feature_timing_contract.py",
+    "passed": 32,
+    "failed": 0,
+    "warnings": 0,
+    "compileall": "PASS"
+  },
+  "properties": {
+    "closed_source_boundary_inclusive": true,
+    "last_confirmed_policy": true,
+    "source_close_timestamp_recorded": true,
+    "prefix_replay_checked": true,
+    "dst_utc_fixture_checked": true,
+    "provider": false,
+    "broker_actions": false,
+    "ai_execution_capability": false,
+    "holdout_access": false
+  },
+  "not_claimed": [
+    "positive trading edge",
+    "renderer or TradingView license acceptance",
+    "lower-timeframe aggregation",
+    "MTF provider integration",
+    "AI provider quality",
+    "broker or live execution"
+  ]
+}

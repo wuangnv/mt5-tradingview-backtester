@@ -9,6 +9,7 @@ from trading_workspace_v2.chart_intelligence import (
     ChartEngineConfig,
     ChartIntelligenceError,
     SessionSpec,
+    map_last_confirmed_htf,
     run_chart_intelligence,
     build_overlay_packets,
 )
@@ -140,4 +141,126 @@ def test_invalid_order_and_cutoff_fail_closed() -> None:
             [bar(1_700_004_000, 1.0, 1.1, 0.9, 1.0)],
             config,
             cutoff_timestamp=1_700_003_999,
+        )
+
+
+def test_mtf_last_confirmed_mapping_uses_closed_boundary_and_keeps_unknown_prefix() -> None:
+    start = 1_700_010_000
+    display = [
+        bar(start + offset, 10.0, 11.0, 9.0, 10.0)
+        for offset in (100, 199, 200, 399, 400, 500)
+    ]
+    source = [
+        bar(start + 200, 10.0, 12.0, 9.0, 11.0),
+        bar(start + 400, 11.0, 13.0, 10.0, 12.0),
+    ]
+
+    mappings = map_last_confirmed_htf(
+        display,
+        source,
+        display_timeframe_seconds=60,
+        source_timeframe_seconds=300,
+    )
+
+    assert [mapping.source_bar_close_timestamp for mapping in mappings] == [
+        None,
+        None,
+        start + 200,
+        start + 200,
+        start + 400,
+        start + 400,
+    ]
+    assert mappings[2].source_bar_id == f"bar:{start + 200}"
+    assert mappings[2].as_dict() == {
+        "policy": "higher_closed",
+        "display_bar_id": f"bar:{start + 200}",
+        "display_timestamp": start + 200,
+        "display_timeframe_seconds": 60,
+        "source_timeframe_seconds": 300,
+        "source_bar_id": f"bar:{start + 200}",
+        "source_bar_close_timestamp": start + 200,
+    }
+
+
+def test_mtf_mapping_does_not_leak_future_source_and_is_prefix_stable_at_cutoff() -> None:
+    start = 1_700_020_000
+    display = [
+        bar(start + offset, 10.0, 11.0, 9.0, 10.0)
+        for offset in (100, 200, 300, 400)
+    ]
+    confirmed = bar(start + 200, 10.0, 12.0, 9.0, 11.0)
+    future = bar(start + 400, 11.0, 13.0, 10.0, 12.0)
+    cutoff = start + 300
+
+    prefix = map_last_confirmed_htf(
+        display[:3],
+        [confirmed],
+        display_timeframe_seconds=60,
+        source_timeframe_seconds=300,
+    )
+    full_cutoff = map_last_confirmed_htf(
+        display,
+        [confirmed, future],
+        display_timeframe_seconds=60,
+        source_timeframe_seconds=300,
+        cutoff_timestamp=cutoff,
+    )
+
+    assert [mapping.as_dict() for mapping in prefix] == [mapping.as_dict() for mapping in full_cutoff]
+    assert len(full_cutoff) == 3
+    assert all(
+        mapping.source_bar_close_timestamp is None
+        or mapping.source_bar_close_timestamp <= mapping.display_timestamp <= cutoff
+        for mapping in full_cutoff
+    )
+
+
+def test_mtf_mapping_accepts_utc_boundary_across_dst_without_local_rebucketing() -> None:
+    # The timestamps straddle London's 2026 spring-forward boundary.  MTF
+    # mapping is defined on UTC close times, so no local-hour conversion may
+    # move the source boundary.
+    transition = int(datetime(2026, 3, 29, 0, 59, tzinfo=UTC).timestamp())
+    display = [
+        bar(transition + seconds, 10.0, 11.0, 9.0, 10.0)
+        for seconds in (0, 60, 3_660)
+    ]
+    source = [
+        bar(transition, 10.0, 12.0, 9.0, 11.0),
+        bar(transition + 3_660, 11.0, 13.0, 10.0, 12.0),
+    ]
+
+    mappings = map_last_confirmed_htf(
+        display,
+        source,
+        display_timeframe_seconds=60,
+        source_timeframe_seconds=3_600,
+    )
+
+    assert [mapping.source_bar_close_timestamp for mapping in mappings] == [
+        transition,
+        transition,
+        transition + 3_660,
+    ]
+
+
+def test_mtf_mapping_rejects_non_higher_timeframe_and_invalid_source_order() -> None:
+    display = [bar(1_700_030_000, 10.0, 11.0, 9.0, 10.0)]
+    source = [bar(1_700_030_000, 10.0, 11.0, 9.0, 10.0)]
+    with pytest.raises(ChartIntelligenceError, match="greater than display_timeframe_seconds"):
+        map_last_confirmed_htf(
+            display,
+            source,
+            display_timeframe_seconds=300,
+            source_timeframe_seconds=300,
+        )
+
+    with pytest.raises(ChartIntelligenceError, match="strictly increasing"):
+        map_last_confirmed_htf(
+            display,
+            [
+                bar(1_700_030_100, 10.0, 11.0, 9.0, 10.0),
+                bar(1_700_030_099, 10.0, 11.0, 9.0, 10.0),
+            ],
+            display_timeframe_seconds=60,
+            source_timeframe_seconds=300,
         )

@@ -1,4 +1,4 @@
-"""Deterministic, closed-bar chart intelligence for the C1 research slice.
+"""Deterministic, closed-bar chart intelligence for the C1/C2 research slice.
 
 This module intentionally implements a small causal core rather than an
 ``AI-SMC`` indicator.  It consumes validated, UTC-timestamped OHLC bars and
@@ -13,7 +13,10 @@ before calling :func:`run_chart_intelligence`.
 
 The detector is PREP_ONLY: it does not call a provider, broker, filesystem,
 network, or execution route.  ``build_overlay_packets`` adapts the canonical
-events to the existing :mod:`chart_overlay_contract` renderer boundary.
+events to the existing :mod:`chart_overlay_contract` renderer boundary.  The
+small C2 MTF adapter below maps a lower-timeframe close to the latest already
+closed higher-timeframe bar; it never exposes a future HTF close to a lower
+bar.
 """
 
 from __future__ import annotations
@@ -256,6 +259,67 @@ class ChartEvent:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class MTFBarMapping:
+    """Causal mapping from one display bar to its latest confirmed HTF bar.
+
+    ``ChartBar.timestamp`` is a close timestamp.  A source bar is therefore
+    eligible exactly when ``source_bar.timestamp <= display_bar.timestamp``;
+    equality is intentional because both bars are closed at that boundary.
+    ``source_bar`` stays available to a caller that needs OHLC context while
+    :meth:`as_dict` exposes only stable IDs/timestamps for JSON or overlays.
+    A missing source bar is represented by ``None`` instead of carrying a
+    provisional/future value.
+    """
+
+    display_bar: ChartBar
+    source_bar: ChartBar | None
+    display_timeframe_seconds: int
+    source_timeframe_seconds: int
+    policy: str = "higher_closed"
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.display_bar, ChartBar):
+            raise ChartIntelligenceError("display_bar must be a ChartBar")
+        if self.source_bar is not None and not isinstance(self.source_bar, ChartBar):
+            raise ChartIntelligenceError("source_bar must be a ChartBar or None")
+        display_tf = _strict_int(self.display_timeframe_seconds, "display_timeframe_seconds", minimum=1)
+        source_tf = _strict_int(self.source_timeframe_seconds, "source_timeframe_seconds", minimum=1)
+        if source_tf <= display_tf:
+            raise ChartIntelligenceError(
+                "source_timeframe_seconds must be greater than display_timeframe_seconds for higher_closed mapping"
+            )
+        if self.policy != "higher_closed":
+            raise ChartIntelligenceError("MTF mapping policy must be higher_closed")
+        if self.source_bar is not None and self.source_bar.timestamp > self.display_bar.timestamp:
+            raise ChartIntelligenceError("source_bar close must not exceed display_bar close")
+
+    @property
+    def display_timestamp(self) -> int:
+        return self.display_bar.timestamp
+
+    @property
+    def source_bar_close_timestamp(self) -> int | None:
+        return None if self.source_bar is None else self.source_bar.timestamp
+
+    @property
+    def source_bar_id(self) -> str | None:
+        return None if self.source_bar is None else _bar_id(self.source_bar.timestamp)
+
+    def as_dict(self) -> dict[str, Any]:
+        """Return the bounded, causal mapping metadata."""
+
+        return {
+            "policy": self.policy,
+            "display_bar_id": _bar_id(self.display_bar.timestamp),
+            "display_timestamp": self.display_timestamp,
+            "display_timeframe_seconds": self.display_timeframe_seconds,
+            "source_timeframe_seconds": self.source_timeframe_seconds,
+            "source_bar_id": self.source_bar_id,
+            "source_bar_close_timestamp": self.source_bar_close_timestamp,
+        }
+
+
 def _normalize_bars(bars: Iterable[ChartBar | Mapping[str, Any]]) -> tuple[ChartBar, ...]:
     normalized: list[ChartBar] = []
     for index, raw in enumerate(bars):
@@ -267,6 +331,69 @@ def _normalize_bars(bars: Iterable[ChartBar | Mapping[str, Any]]) -> tuple[Chart
     if not normalized:
         raise ChartIntelligenceError("bars must contain at least one bar")
     return tuple(normalized)
+
+
+def map_last_confirmed_htf(
+    display_bars: Iterable[ChartBar | Mapping[str, Any]],
+    source_bars: Iterable[ChartBar | Mapping[str, Any]],
+    *,
+    display_timeframe_seconds: int,
+    source_timeframe_seconds: int,
+    cutoff_timestamp: int | None = None,
+) -> tuple[MTFBarMapping, ...]:
+    """Map each lower/display close to the last confirmed HTF close.
+
+    Both inputs contain UTC close timestamps.  The source timeframe must be
+    strictly higher than the display timeframe, matching the overlay
+    contract's ``higher_closed`` policy.  The linear merge only advances the
+    source cursor while its close is at or before the current display close,
+    which makes the no-lookahead rule explicit and independent of source
+    values.  Missing history before the first source close remains unknown
+    (`source_bar is None`), and is never backfilled from a future bar.
+
+    ``cutoff_timestamp`` is inclusive.  Display bars after it are not part of
+    the returned mapping; a cutoff before the first display bar is rejected,
+    consistent with :func:`run_chart_intelligence`.
+    """
+
+    display_tf = _strict_int(display_timeframe_seconds, "display_timeframe_seconds", minimum=1)
+    source_tf = _strict_int(source_timeframe_seconds, "source_timeframe_seconds", minimum=1)
+    if source_tf <= display_tf:
+        raise ChartIntelligenceError(
+            "source_timeframe_seconds must be greater than display_timeframe_seconds for higher_closed mapping"
+        )
+
+    normalized_display = _normalize_bars(display_bars)
+    normalized_source = _normalize_bars(source_bars)
+    cutoff = normalized_display[-1].timestamp if cutoff_timestamp is None else _strict_int(
+        cutoff_timestamp, "cutoff_timestamp", minimum=1
+    )
+    if cutoff < normalized_display[0].timestamp:
+        raise ChartIntelligenceError("cutoff_timestamp precedes first display bar")
+
+    mappings: list[MTFBarMapping] = []
+    source_index = 0
+    confirmed: ChartBar | None = None
+    for display_bar in normalized_display:
+        if display_bar.timestamp > cutoff:
+            break
+        while source_index < len(normalized_source) and normalized_source[source_index].timestamp <= display_bar.timestamp:
+            confirmed = normalized_source[source_index]
+            source_index += 1
+        mappings.append(
+            MTFBarMapping(
+                display_bar=display_bar,
+                source_bar=confirmed,
+                display_timeframe_seconds=display_tf,
+                source_timeframe_seconds=source_tf,
+            )
+        )
+    return tuple(mappings)
+
+
+# Descriptive alias for callers that use the generic MTF terminology.  Keep a
+# single implementation so both names carry exactly the same causal policy.
+map_last_confirmed_mtf = map_last_confirmed_htf
 
 
 def _event(config: ChartEngineConfig, *, kind: str, direction: str, anchor_timestamp: int, known_at: int, source_bars: Sequence[ChartBar], price_low: float, price_high: float, confirmation_lag_bars: int, parameters: Mapping[str, Any], identity: Mapping[str, Any]) -> ChartEvent:
@@ -624,8 +751,11 @@ __all__ = [
     "ChartEvent",
     "ChartIntelligenceError",
     "EVENT_SCHEMA",
+    "MTFBarMapping",
     "RULE_VERSION",
     "SessionSpec",
     "build_overlay_packets",
+    "map_last_confirmed_htf",
+    "map_last_confirmed_mtf",
     "run_chart_intelligence",
 ]
