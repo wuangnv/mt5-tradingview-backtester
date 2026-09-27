@@ -1,0 +1,26 @@
+{
+  "schema": "chart-explainability-receipt-v1",
+  "mode": "PREP_ONLY",
+  "engine": "deterministic-offline",
+  "status": "PASS",
+  "scope": "C4 explainability inspector contract for one causal chart event",
+  "command": "PYTHONPATH=.; uv run pytest -q tests/test_chart_explainability_contract.py tests/test_chart_intelligence.py tests/test_chart_intelligence_stress.py tests/test_chart_overlay_contract.py tests/test_chart_renderer_contract.py tests/test_chart_ai_contract.py tests/test_feature_timing_contract.py",
+  "tests_passed": 57,
+  "tests_failed": 0,
+  "compileall": "PASS",
+  "module_sha256": "8914c8bd258e026a5dc242f97fb0720685a8bc31255eb23b58836e810f0603cf",
+  "test_sha256": "3ce32b6b5691e95f1bc5a648314d89d3253dcd7dd64873c14e0455de8f061ea6",
+  "guarantees": [
+    "event rule/version and parameter definition hash",
+    "all source bars present and <= known_at <= cutoff",
+    "explicit invalidation state; unknown is visible",
+    "deterministic manual recompute values/checks",
+    "provenance required and provider/broker forbidden"
+  ],
+  "claims_not_made": [
+    "no chart SDK/renderer integration",
+    "no provider/network/broker/order execution",
+    "no profitability or edge claim"
+  ],
+  "generated_at_utc": "2026-09-27T10:31:41.7474875Z"
+}
