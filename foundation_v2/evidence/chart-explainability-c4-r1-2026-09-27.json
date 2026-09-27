@@ -8,8 +8,8 @@
   "tests_passed": 57,
   "tests_failed": 0,
   "compileall": "PASS",
-  "module_sha256": "8914c8bd258e026a5dc242f97fb0720685a8bc31255eb23b58836e810f0603cf",
-  "test_sha256": "3ce32b6b5691e95f1bc5a648314d89d3253dcd7dd64873c14e0455de8f061ea6",
+  "module_sha256": "ad9dab7a12fbe6dda9ebdf4e945f37f455e977b3e2ba7c4ce90072f9469ec8fd",
+  "test_sha256": "6e5bb1a2073d582a4ea2ae2a03c1a5d75bb9c62938fe43ad49f6dde74580d946",
   "guarantees": [
     "event rule/version and parameter definition hash",
     "all source bars present and <= known_at <= cutoff",
@@ -22,5 +22,5 @@
     "no provider/network/broker/order execution",
     "no profitability or edge claim"
   ],
-  "generated_at_utc": "2026-09-27T10:31:41.7474875Z"
+  "generated_at_utc": "2026-09-27T10:36:31.6222668Z"
 }

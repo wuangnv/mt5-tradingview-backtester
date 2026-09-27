@@ -120,3 +120,8 @@ def test_provenance_forbidden_provider_and_unknown_values_fail_closed() -> None:
     with pytest.raises(ChartExplainabilityError, match="finite|OHLC|must be > 0"):
         validate_chart_explanation(packet)
 
+    unavailable = build_chart_explanation(event, bars, cutoff_timestamp=cutoff, provenance=provenance())
+    unavailable["source_bars"][0]["availability"] = "missing"
+    with pytest.raises(ChartExplainabilityError, match="not available"):
+        validate_chart_explanation(unavailable)
+

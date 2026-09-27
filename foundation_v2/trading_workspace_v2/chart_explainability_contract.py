@@ -137,6 +137,9 @@ def _event_payload(event: ChartEvent | Mapping[str, Any]) -> dict[str, Any]:
         "parameters",
         "identity",
     }
+    unknown = sorted(set(payload) - (required | {"schema"}))
+    if unknown:
+        raise ChartExplainabilityError(f"event has unsupported fields: {unknown}")
     missing = sorted(required - set(payload))
     if missing:
         raise ChartExplainabilityError(f"event is missing fields: {missing}")
@@ -200,6 +203,11 @@ def _normalize_source_bars(
             if row_id is not None and row_id != embedded_id:
                 raise ChartExplainabilityError(f"source_bars[{index}] key does not match embedded bar_id")
             row_id = embedded_id
+            availability = raw.get("availability", "available")
+            if availability != "available":
+                raise ChartExplainabilityError(
+                    f"source_bars[{index}] is not available: {availability!r}"
+                )
             raw = {key: value for key, value in raw.items() if key not in {"bar_id", "availability"}}
         try:
             bar = raw if isinstance(raw, ChartBar) else ChartBar.from_mapping(raw, index=index)
@@ -404,6 +412,8 @@ def _validate_packet(payload: Mapping[str, Any]) -> dict[str, Any]:
     else:
         if not recompute.get("unknown_fields"):
             raise ChartExplainabilityError("unknown recompute requires unknown_fields")
+        if not isinstance(recompute["unknown_fields"], (list, tuple)):
+            raise ChartExplainabilityError("recompute.unknown_fields must be a list")
     provenance = _normalize_provenance(payload["provenance"])
     normalized = {
         "schema": EXPLANATION_SCHEMA,
