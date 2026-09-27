@@ -41,7 +41,12 @@ def rows(offset: float) -> list[dict]:
     ]
 
 
-@unittest.skipUnless(os.getenv("TW_V2_DATABASE_URL") and os.getenv("TW_V2_ARTIFACT_ROOT"), "F6 integration environment not configured")
+@unittest.skipUnless(
+    os.getenv("TW_V2_DATABASE_URL")
+    and os.getenv("TW_V2_ARTIFACT_ROOT")
+    and os.getenv("TW_V2_ALLOW_DESTRUCTIVE_TEST_DB") == "1",
+    "F6 integration environment or destructive test DB flag is not configured",
+)
 class ReferenceSliceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -51,6 +56,14 @@ class ReferenceSliceTests(unittest.TestCase):
         cls.store.initialize()
         cls.artifacts = ArtifactStore(cls.artifact_root)
         cls.service = ResearchService(cls.store, cls.artifacts)
+
+    def setUp(self):
+        # This suite owns a shared integration database but writes artifacts to
+        # its own root. Reset metadata before claiming jobs so a prior suite
+        # cannot leave a queued job pointing at a deleted temp artifact root.
+        with self.store.connect() as conn:
+            conn.execute("TRUNCATE workspace_record_revisions,workspace_records,research_jobs,datasets,workspaces CASCADE")
+            conn.commit()
 
     def test_two_tenants_job_worker_api_and_immutable_artifact(self):
         a = self.service.register_dataset(

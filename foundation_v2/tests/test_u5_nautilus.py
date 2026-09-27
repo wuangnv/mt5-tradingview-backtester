@@ -160,9 +160,14 @@ class NautilusIndependentOracleTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory(prefix="tw-job-owner-") as directory:
             pid_file = Path(directory) / "child.pid"
+            # The helper imports the framework-independent retained modules
+            # (data_contracts, data_costs, ...) from the repository root, not
+            # only from the foundation_v2 package directory.
             foundation = str(RUNTIME.parent)
+            repository = str(RUNTIME.parent.parent)
             script = (
                 "import subprocess,sys,time\n"
+                f"sys.path.insert(0, {repository!r})\n"
                 f"sys.path.insert(0, {foundation!r})\n"
                 "from trading_workspace_v2.nautilus_worker import _WorkerOwnedJob\n"
                 "job=_WorkerOwnedJob()\n"

@@ -40,6 +40,19 @@ class F7ProductSliceTests(unittest.TestCase):
     def setUpClass(cls):
         cls.dsn = os.environ["TW_V2_DATABASE_URL"]
 
+    @classmethod
+    def tearDownClass(cls):
+        # F7 uses per-test temporary artifact roots, while the PostgreSQL
+        # fixture is shared by the integration suite. Remove its persisted
+        # rows before the next suite can claim a job whose temp artifact root
+        # has already been deleted.
+        if os.getenv("TW_V2_ALLOW_DESTRUCTIVE_TEST_DB") != "1":
+            return
+        store = PostgresStore(cls.dsn)
+        with store.connect() as conn:
+            conn.execute("TRUNCATE workspace_record_revisions,workspace_records,research_jobs,datasets,workspaces CASCADE")
+            conn.commit()
+
     def setUp(self):
         if os.getenv("TW_V2_ALLOW_DESTRUCTIVE_TEST_DB") != "1":
             self.fail("TW_V2_ALLOW_DESTRUCTIVE_TEST_DB=1 is required for TRUNCATE fixture tests")
