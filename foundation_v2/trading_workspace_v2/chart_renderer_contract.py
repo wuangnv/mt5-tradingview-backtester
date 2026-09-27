@@ -122,11 +122,27 @@ class RendererState:
     generation: int = 0
     objects: dict[str, dict[str, Any]] = field(default_factory=dict)
     tombstones: dict[str, int] = field(default_factory=dict)
+    source: dict[str, Any] | None = None
+    cutoff_timestamp: int | None = None
+    indicator_sha256: str | None = None
 
     def __post_init__(self) -> None:
         _strict_int(self.generation, "state.generation", minimum=0)
         if not isinstance(self.objects, dict) or not isinstance(self.tombstones, dict):
             raise ChartRendererContractError("state objects and tombstones must be objects")
+        if self.source is not None and not isinstance(self.source, dict):
+            raise ChartRendererContractError("state.source must be an object or null")
+        if self.cutoff_timestamp is not None:
+            _strict_int(self.cutoff_timestamp, "state.cutoff_timestamp", minimum=1)
+        if self.indicator_sha256 is not None:
+            if (
+                not isinstance(self.indicator_sha256, str)
+                or len(self.indicator_sha256) != 64
+                or any(character not in "0123456789abcdef" for character in self.indicator_sha256.lower())
+            ):
+                raise ChartRendererContractError("state.indicator_sha256 must be a SHA-256 hex digest")
+            self.indicator_sha256 = self.indicator_sha256.lower()
+        self.source = copy.deepcopy(self.source) if self.source is not None else None
         normalized_objects: dict[str, dict[str, Any]] = {}
         for object_id, value in self.objects.items():
             if not isinstance(object_id, str) or not object_id:
@@ -158,6 +174,9 @@ class RendererState:
             "mode": RENDERER_MODE,
             "engine": RENDERER_ENGINE,
             "generation": self.generation,
+            "source": copy.deepcopy(self.source),
+            "cutoff_timestamp": self.cutoff_timestamp,
+            "indicator_sha256": self.indicator_sha256,
             "objects": copy.deepcopy(self.objects),
             "tombstones": dict(sorted(self.tombstones.items())),
         }
@@ -418,8 +437,22 @@ def build_render_plan(
                 viewport=viewport,
             )
 
-    previous_objects = previous_state.objects if previous_state else {}
-    previous_tombstones = previous_state.tombstones if previous_state else {}
+    scope_reset = bool(
+        previous_state
+        and previous_state.source is not None
+        and (
+            previous_state.source != source
+            or previous_state.cutoff_timestamp != cutoff_timestamp
+            or previous_state.indicator_sha256 != normalized["indicator_sha256"]
+        )
+    )
+    previous_objects = (
+        previous_state.objects if previous_state and not scope_reset else {}
+    )
+    previous_tombstones = (
+        previous_state.tombstones if previous_state and not scope_reset else {}
+    )
+    scope_reset_ids = sorted(previous_state.objects) if scope_reset and previous_state else []
     for object_id, object_value in active.items():
         old = previous_objects.get(object_id)
         tombstone_revision = previous_tombstones.get(object_id)
@@ -484,6 +517,7 @@ def build_render_plan(
     remove_reasons = {
         object_id: "stale_snapshot" for object_id in stale_ids
     }
+    remove_reasons.update({object_id: "scope_reset" for object_id in scope_reset_ids})
     remove_reasons.update(
         {object_id: "budget_evicted" for object_id in budget_evicted_previous_ids}
     )
@@ -537,6 +571,9 @@ def build_render_plan(
         generation=(previous_state.generation + 1) if previous_state else 1,
         objects=next_objects,
         tombstones=next_tombstones,
+        source=source,
+        cutoff_timestamp=cutoff_timestamp,
+        indicator_sha256=normalized["indicator_sha256"],
     )
     visible_count = sum(1 for item in selected if item["visible"])
     stats = {
@@ -546,12 +583,14 @@ def build_render_plan(
         "objects_hidden": len(selected) - visible_count,
         "objects_evicted": len(evicted_ids),
         "objects_stale_removed": len(stale_ids),
+        "objects_scope_reset": len(scope_reset_ids),
         "objects_undone": len(undone_ids),
         "operations": len(operations),
     }
     stale_cleanup = {
         "policy": "full_snapshot_reconcile",
         "stale_ids": stale_ids,
+        "scope_reset_ids": scope_reset_ids,
         "undone_ids": sorted(undone_ids),
         "evicted_ids": evicted_ids,
         "removed_previous_ids": sorted(remove_reasons),

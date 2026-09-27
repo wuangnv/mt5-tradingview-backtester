@@ -43,10 +43,14 @@ def indicator() -> dict:
     }
 
 
-def packet(*, statuses: tuple[str, ...] = ("preview",)) -> dict:
+def packet(
+    *,
+    statuses: tuple[str, ...] = ("preview",),
+    source_id: str = "renderer-fixture",
+    cutoff: int = 1_700_000_180,
+) -> dict:
     spec = validate_indicator_spec(indicator())
-    source = {"kind": "replay", "id": "renderer-fixture", "dataset_id": "fixture"}
-    cutoff = 1_700_000_180
+    source = {"kind": "replay", "id": source_id, "dataset_id": "fixture"}
     overlays: list[dict] = []
     for index, status in enumerate(statuses, start=1):
         object_id = f"fvg-{index}"
@@ -123,6 +127,21 @@ def test_missing_overlay_is_stale_and_cleanup_is_explicit() -> None:
     assert {item["object_id"] for item in second.operations} == {"fvg-2"}
     assert second.operations[0]["reason"] == "stale_snapshot"
     assert second.next_state.tombstones == {"fvg-2": 1}
+
+
+def test_source_or_cutoff_change_resets_old_surface_scope() -> None:
+    first = build_render_plan(packet(statuses=("committed",)))
+    changed = build_render_plan(
+        packet(statuses=("committed",), source_id="renderer-fixture-next"),
+        previous_state=first.next_state,
+    )
+    assert changed.stale_cleanup["scope_reset_ids"] == ["fvg-1"]
+    assert changed.stats["objects_scope_reset"] == 1
+    assert {item["reason"] for item in changed.operations} == {
+        "scope_reset",
+        "new",
+    }
+    assert changed.next_state.tombstones == {}
 
 
 def test_object_and_visible_caps_are_bounded_with_deterministic_eviction() -> None:
