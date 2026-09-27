@@ -14,6 +14,7 @@ __all__ = [
     "feature_timing_contract",
     "zone_lifecycle",
     "risk_promotion_contracts",
+    "execution_intent_contract",
     "research",
     "store",
     "strategy_contracts",
