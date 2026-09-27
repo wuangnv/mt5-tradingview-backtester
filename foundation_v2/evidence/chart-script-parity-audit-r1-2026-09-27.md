@@ -12,10 +12,12 @@ Keep one deterministic, closed-bar engine as the semantic authority. Pine,
 TradingView Advanced Charts, and MQL5 are projections that must pass the same
 parity fixtures. Do not port a community script as a second source of truth.
 The current engine has a sound causal core for FVG, confirmed swing, close-BOS,
-session and last-confirmed MTF mapping. Commit `d3a1fef` now propagates
+session and last-confirmed MTF mapping. Commit `d3a1fef` propagates
 machine-readable causal metadata and separates delayed swing overlays from
-zero-delay structure changes. Renderer acceptance still remains PREP_ONLY until
-the cross-adapter fixtures below are closed.
+zero-delay structure changes. Commit `f1aafbd` freezes the named pivot tie
+policy and adds bounded Pine/MQL parity fixtures for pivot timing and local
+advisory alerts. Renderer and direct-MQL acceptance still remain PREP_ONLY for
+the open gates below.
 
 ## Official semantics checked
 
@@ -50,7 +52,7 @@ Primary URLs:
 ## Local behavior verified
 
 The audit inspected the canonical files below at MT5 repo HEAD
-`d3a1fef` and ran a deterministic probe. The CHoCH/liquidity candidate is
+`f1aafbd` and ran deterministic probes. The CHoCH/liquidity candidate is
 committed; alert normalization and the `LIQUIDITY_SWEEP` allow-list were fixed
 in `666e8da`. Causal overlay metadata and the delayed-swing packet split were
 fixed in `d3a1fef`. The remaining findings below are still PREP_ONLY gates.
@@ -77,15 +79,26 @@ fixed in `d3a1fef`. The remaining findings below are still PREP_ONLY gates.
   `LIQUIDITY_SWEEP`; alert event normalization uppercases `CHoCH` to the
   canonical `CHOCH` and `666e8da` adds `LIQUIDITY_SWEEP` to the allow-list.
   The direct alert smoke now emits receipts for both kinds.
+- `ChartEngineConfig.pivot_tie_policy` is explicitly frozen as
+  `left_strict_right_inclusive`: an equal value on the left disqualifies a
+  pivot, while an equal value on the right keeps the earliest candidate. The
+  parity fixture covers the equal-right case and rejects unknown policy names.
+- The parity fixture confirms a swing can be backfilled to its anchor for
+  display while `known_at` remains the confirmation bar: the prefix has no
+  event, and an overlay cutoff at the anchor rejects the event as future.
+- The alert parity fixture confirms the local adapter is close-only: a delayed
+  event cannot pass an anchor-time cutoff, emits at `known_at` with the saved
+  input snapshot, and is suppressed on reconnect. A same-bar confirmed event
+  emits once; a provisional event never emits.
 
 ## Findings and gates
 
 | ID | Severity | Finding | Required action |
 |---|---|---|---|
 | PARITY-01 | resolved | `d3a1fef` splits delayed swings from zero-delay structure and retains machine-readable `known_at`, source bars and lag in the validated overlay packet. | Keep renderer adapters bound to these fields; never parse causal timing from labels. |
-| PARITY-02 | high | Equal-high/equal-low pivot behavior is implicit and asymmetric (`>` on the left, `>=` on the right). Pine/MQL implementations may choose a different tie policy. | Freeze a named tie policy and add equal-price positive/negative fixtures before claiming cross-adapter parity. |
-| PARITY-03 | high | No fixture proves that Pine plot-offset/backfill is not mistaken for event time. | Compare `anchor_time` with `known_at`; assert no event is visible before confirmation in replay and alert paths. |
-| PARITY-04 | high | Alert parity is not covered for same-bar versus close-only delivery. | Add confirmed-only, once-per-close, duplicate/reconnect and saved-input snapshot fixtures. Keep delivery local/advisory. |
+| PARITY-02 | resolved | `f1aafbd` freezes `left_strict_right_inclusive` and covers equal-right pivot selection plus unknown-policy rejection. | Keep this policy in every Pine/MQL projection; do not claim a different tie rule without a versioned fixture. |
+| PARITY-03 | resolved | `f1aafbd` proves the anchor may be backfilled for display while `known_at` remains the confirmation bar; prefix replay and an anchor-time overlay cutoff cannot expose the event early. | Renderer adapters must retain `known_at` and use cutoff-scoped packets; never infer event time from the plotted anchor. |
+| PARITY-04 | resolved | `f1aafbd` covers confirmed-only close timing, same-bar emission, saved input cutoff, and reconnect dedupe at the local advisory boundary. | Keep delivery local/advisory and carry the returned ledger across reconnect/replay. |
 | PARITY-05 | medium | No MQL5 `CopyRates`/`iBarShift(exact=true)` gap/order corpus is checked against the canonical mapper. | Add physical-order normalization, missing-bar unknown, DST and irregular-gap fixtures. |
 | PARITY-06 | medium | Engine vocabulary/adapter declarations include OB, CHoCH/MSS, liquidity and OTE, but this slice does not yet calculate their lifecycle semantics. | Keep these as schema/reference only until each has a versioned detector, invalidation and OOS fixture; do not render a placeholder as confirmed. |
 | PARITY-07 | medium | C2 intentionally treats a source close equal to a display close as eligible. Pine's common no-repaint `expression[1]` + `lookahead_on` idiom exposes that value from the first lower-timeframe bar after the boundary. Both are causal but differ by one lower bar. | Freeze a named boundary mode (`inclusive_closed_boundary` or `pine_offset_first_next_bar`) and test both before claiming byte-for-byte Pine parity. |
@@ -127,8 +140,9 @@ PYTHONPATH=. uv run pytest -q \
   tests/test_chart_overlay_contract.py \
   tests/test_chart_renderer_contract.py \
   tests/test_chart_ai_contract.py \
-  tests/test_feature_timing_contract.py
-78 passed
+  tests/test_feature_timing_contract.py \
+  tests/test_chart_script_parity.py
+91 passed
 
 Overlay/intelligence/renderer focused: 32 passed
 
@@ -138,9 +152,9 @@ git diff --check
 PASS
 ```
 
-These tests validate the existing offline contracts; they do not close the
-PARITY-02..08 gaps above. PARITY-01 is resolved by `d3a1fef` and PARITY-09 by
-`666e8da`. No provider,
+These tests validate the existing offline contracts; PARITY-02, PARITY-03 and
+PARITY-04 are resolved by `f1aafbd`. PARITY-01 remains resolved by `d3a1fef`
+and PARITY-09 by `666e8da`; PARITY-05..08 remain open as listed above. No provider,
 broker, alert service, API key, account,
 holdout data, or live execution was opened.
 
@@ -150,14 +164,17 @@ The code inspected for this receipt was hashed before writing it:
 
 ```text
 foundation_v2/trading_workspace_v2/chart_intelligence.py
-f996a85e52b1d4841d0b955794f5e3c6e103b229d9adffc1881961aec4771fd8
+d5aaf8fcfd77ba70bcf194c58c47da5e385cbb9d32530c866146d527427f4dbd
 foundation_v2/trading_workspace_v2/chart_overlay_contract.py
 7ec159cdcf34855546c43971a579859f57eca8e3398c00f73b4f52219366cec8
 foundation_v2/tests/test_chart_intelligence.py
 4ac5f12d12c0084ac5e0f09cca68a4c7002b1fb9bcff79e93c1b7b7ef05fed41
 foundation_v2/tests/test_chart_overlay_contract.py
 d6d7fb3fd67dbf0b7e40827b299609bc346be8c913c6fc39b6c3de09f6eaf33b
+foundation_v2/tests/test_chart_script_parity.py
+34c9a45f9ef11010c7e3031d85e4aa837196211e3d45635484703c2ae3f5c33f
 ```
 
-This receipt intentionally records open parity work instead of claiming that
-Pine or MQL5 output is already production-equivalent.
+This receipt intentionally keeps the remaining MQL/Pine adapter work open; the
+resolved fixtures are canonical-engine and local-advisory evidence, not a claim
+that Pine or MQL5 output is already production-equivalent.
