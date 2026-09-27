@@ -1,0 +1,68 @@
+{
+  "schema": "chart-script-parity-audit-v1",
+  "status": "AUDIT_FINDINGS_OPEN",
+  "mode": "PREP_ONLY",
+  "retrieved_at": "2026-09-27",
+  "repo_head": "d3a1fef",
+  "scope": {
+    "canonical_engine": "foundation_v2/trading_workspace_v2/chart_intelligence.py",
+    "overlay_contract": "foundation_v2/trading_workspace_v2/chart_overlay_contract.py",
+    "adapters": ["Pine Script/TradingView", "TradingView Advanced Charts", "MQL5"],
+    "families": ["FVG", "SWING", "BOS", "CHoCH/MSS", "liquidity/sweep", "order block", "OTE", "session/DST", "MTF", "alerts"]
+  },
+  "primary_sources": [
+    {"id": "pine_execution", "url": "https://www.tradingview.com/pine-script-docs/language/execution-model/", "http_status": 200},
+    {"id": "pine_mtf", "url": "https://www.tradingview.com/pine-script-docs/concepts/other-timeframes-and-data/", "http_status": 200},
+    {"id": "pine_drawings", "url": "https://www.tradingview.com/pine-script-docs/visuals/lines-and-boxes/", "http_status": 200},
+    {"id": "pine_alerts", "url": "https://www.tradingview.com/pine-script-docs/concepts/alerts/", "http_status": 200},
+    {"id": "tv_custom_studies", "url": "https://www.tradingview.com/charting-library-docs/latest/custom_studies/Custom-Studies-Examples/", "http_status": 200},
+    {"id": "tv_marks", "url": "https://www.tradingview.com/charting-library-docs/latest/ui_elements/Marks/", "http_status": 200},
+    {"id": "mql_custom_indicators", "url": "https://www.mql5.com/en/docs/customind", "http_status": 200},
+    {"id": "mql_oncalculate", "url": "https://www.mql5.com/en/docs/event_handlers/oncalculate", "http_status": 200},
+    {"id": "mql_copyrates", "url": "https://www.mql5.com/en/docs/series/copyrates", "http_status": 200},
+    {"id": "mql_ibarshift", "url": "https://www.mql5.com/en/docs/series/ibarshift", "http_status": 200},
+    {"id": "mql_objects", "url": "https://www.mql5.com/en/docs/constants/objectconstants/enum_object_property", "http_status": 200}
+  ],
+  "local_hashes": {
+    "foundation_v2/trading_workspace_v2/chart_intelligence.py": "f996a85e52b1d4841d0b955794f5e3c6e103b229d9adffc1881961aec4771fd8",
+    "foundation_v2/trading_workspace_v2/chart_overlay_contract.py": "7ec159cdcf34855546c43971a579859f57eca8e3398c00f73b4f52219366cec8",
+    "foundation_v2/tests/test_chart_intelligence.py": "4ac5f12d12c0084ac5e0f09cca68a4c7002b1fb9bcff79e93c1b7b7ef05fed41",
+    "foundation_v2/tests/test_chart_overlay_contract.py": "d6d7fb3fd67dbf0b7e40827b299609bc346be8c913c6fc39b6c3de09f6eaf33b",
+    "MT5Gateway.mq5": "ecafcdaf34905373b7d006fb8f13f18fafb702b0ae1d6d749a5a1297a0ddd526"
+  },
+  "verified_behavior": [
+    "normalized UTC close timestamps",
+    "FVG emitted on third closed bar",
+    "swing emitted after right confirmation bars",
+    "BOS uses close break against confirmed swing",
+    "MTF source close must be <= display close",
+    "overlay packet rejects future anchors and forbidden provider/broker fields"
+  ],
+  "findings": [
+    {"id": "PARITY-01", "severity": "resolved", "summary": "d3a1fef splits delayed swings from zero-delay structure and retains machine-readable known_at, source bars and lag in validated overlay packets."},
+    {"id": "PARITY-02", "severity": "high", "summary": "Equal-price pivot tie policy is implicit/asymmetric and lacks parity fixtures."},
+    {"id": "PARITY-03", "severity": "high", "summary": "No Pine plot-offset/backfill replay fixture proves visibility begins at known_at."},
+    {"id": "PARITY-04", "severity": "high", "summary": "No alert fixture covers same-bar versus close-only delivery, saved inputs and reconnect dedupe."},
+    {"id": "PARITY-05", "severity": "medium", "summary": "No MQL CopyRates/iBarShift order and missing-gap corpus is compared to the canonical mapper."},
+    {"id": "PARITY-06", "severity": "medium", "summary": "OB, CHoCH/MSS, liquidity and OTE are vocabulary/adapter declarations here, not lifecycle detectors in this slice."},
+    {"id": "PARITY-07", "severity": "medium", "summary": "C2 inclusive close equality is causal but differs by one lower bar from Pine expression[1]+lookahead_on boundary timing; boundary mode must be explicit for byte-for-byte parity."},
+    {"id": "PARITY-08", "severity": "blocker", "summary": "Legacy MT5Gateway HandleGetData overwrites the newest CopyRates row with current bid/high/low, emits bar-open time without a closed marker, and falls back unknown timeframe strings to PERIOD_CURRENT; direct ChartBar ingestion is unsafe."},
+    {"id": "PARITY-09", "severity": "resolved", "summary": "Committed CHoCH normalization and LIQUIDITY_SWEEP allow-list support in 666e8da; positive alert tests cover both kinds."}
+  ],
+  "validation": {
+    "focused_chart_suite": {"status": "PASS", "passed": 78},
+    "focused_overlay_intelligence_renderer": {"status": "PASS", "passed": 32},
+    "compileall": "PASS",
+    "git_diff_check": "PASS",
+    "provider_network_broker": "NOT_USED"
+  },
+  "next_gates": [
+    "keep renderer adapters bound to machine-readable known_at/source_bar_ids/lag",
+    "freeze pivot tie policy and add equal-price fixtures",
+    "add Pine/MQL alert, plot-offset, CopyRates and iBarShift parity fixtures",
+    "implement OB/CHoCH/liquidity/OTE only with versioned lifecycle and invalidation contracts",
+    "choose and fixture the explicit MTF boundary mode for Pine parity",
+    "gate MT5Gateway live-row overwrite and open-time conversion before MQL parity",
+    "keep uppercase canonical event-kind normalization stable across adapters"
+  ]
+}
