@@ -47,6 +47,7 @@ from .chart_overlay_contract import (
 RULE_VERSION = "smc-core.v1"
 EVENT_SCHEMA = "chart-event-v1"
 _DST_FOLD_POLICIES = frozenset({"reject", "first", "second"})
+_PIVOT_TIE_POLICIES = frozenset({"left_strict_right_inclusive"})
 
 
 class ChartIntelligenceError(ValueError):
@@ -236,6 +237,11 @@ class ChartEngineConfig:
     fvg_min_gap: float = 0.0
     session: SessionSpec | None = None
     source: Mapping[str, Any] = None  # type: ignore[assignment]
+    # The explicit policy matches the current detector semantics: an equal
+    # high/low on the left disqualifies the candidate, while an equal value on
+    # the right leaves the earliest candidate as the pivot.  Keeping this in
+    # the canonical config makes Pine/MQL tie behaviour a versioned contract.
+    pivot_tie_policy: str = "left_strict_right_inclusive"
 
     def __post_init__(self) -> None:
         instrument = _text(self.instrument_id, "instrument_id", maximum=64).upper()
@@ -248,6 +254,10 @@ class ChartEngineConfig:
         left = _strict_int(self.swing_left, "swing_left", minimum=1)
         right = _strict_int(self.swing_right, "swing_right", minimum=1)
         gap = _finite(self.fvg_min_gap, "fvg_min_gap", non_negative=True)
+        tie_policy = _text(self.pivot_tie_policy, "pivot_tie_policy", maximum=64).lower()
+        if tie_policy not in _PIVOT_TIE_POLICIES:
+            choices = ", ".join(sorted(_PIVOT_TIE_POLICIES))
+            raise ChartIntelligenceError(f"pivot_tie_policy must be one of: {choices}")
         source = self.source if self.source is not None else {"kind": "synthetic", "id": "chart-c1"}
         if not isinstance(source, Mapping):
             raise ChartIntelligenceError("source must be an object")
@@ -262,6 +272,7 @@ class ChartEngineConfig:
         object.__setattr__(self, "swing_right", right)
         object.__setattr__(self, "fvg_min_gap", gap)
         object.__setattr__(self, "source", normalized_source)
+        object.__setattr__(self, "pivot_tie_policy", tie_policy)
 
 
 @dataclass(frozen=True, slots=True)
@@ -515,13 +526,21 @@ def _detect_fvg(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cutoff: i
     return events
 
 
-def _is_swing_high(bars: tuple[ChartBar, ...], index: int, left: int, right: int) -> bool:
+def _is_swing_high(
+    bars: tuple[ChartBar, ...], index: int, left: int, right: int, tie_policy: str
+) -> bool:
     pivot = bars[index].high
+    if tie_policy != "left_strict_right_inclusive":
+        raise ChartIntelligenceError("unsupported pivot_tie_policy")
     return all(pivot > bars[item].high for item in range(index - left, index)) and all(pivot >= bars[item].high for item in range(index + 1, index + right + 1))
 
 
-def _is_swing_low(bars: tuple[ChartBar, ...], index: int, left: int, right: int) -> bool:
+def _is_swing_low(
+    bars: tuple[ChartBar, ...], index: int, left: int, right: int, tie_policy: str
+) -> bool:
     pivot = bars[index].low
+    if tie_policy != "left_strict_right_inclusive":
+        raise ChartIntelligenceError("unsupported pivot_tie_policy")
     return all(pivot < bars[item].low for item in range(index - left, index)) and all(pivot <= bars[item].low for item in range(index + 1, index + right + 1))
 
 
@@ -542,8 +561,8 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
             pivot = bars[pivot_index]
             window_end = pivot_index + config.swing_right
             if window_end < len(bars):
-                if _is_swing_high(bars, pivot_index, config.swing_left, config.swing_right):
-                    identity = {"pivot": pivot.timestamp, "swing": "high", "left": config.swing_left, "right": config.swing_right}
+                if _is_swing_high(bars, pivot_index, config.swing_left, config.swing_right, config.pivot_tie_policy):
+                    identity = {"pivot": pivot.timestamp, "swing": "high", "left": config.swing_left, "right": config.swing_right, "tie_policy": config.pivot_tie_policy}
                     swing = _event(
                         config,
                         kind="SWING",
@@ -554,14 +573,14 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
                         price_low=pivot.high,
                         price_high=pivot.high,
                         confirmation_lag_bars=config.swing_right,
-                        parameters={"swing": "high", "left": config.swing_left, "right": config.swing_right},
+                        parameters={"swing": "high", "left": config.swing_left, "right": config.swing_right, "tie_policy": config.pivot_tie_policy},
                         identity=identity,
                     )
                     events.append(swing)
                     confirmed_high = (pivot_index, pivot)
                     broken_high_id = None
-                if _is_swing_low(bars, pivot_index, config.swing_left, config.swing_right):
-                    identity = {"pivot": pivot.timestamp, "swing": "low", "left": config.swing_left, "right": config.swing_right}
+                if _is_swing_low(bars, pivot_index, config.swing_left, config.swing_right, config.pivot_tie_policy):
+                    identity = {"pivot": pivot.timestamp, "swing": "low", "left": config.swing_left, "right": config.swing_right, "tie_policy": config.pivot_tie_policy}
                     swing = _event(
                         config,
                         kind="SWING",
@@ -572,7 +591,7 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
                         price_low=pivot.low,
                         price_high=pivot.low,
                         confirmation_lag_bars=config.swing_right,
-                        parameters={"swing": "low", "left": config.swing_left, "right": config.swing_right},
+                        parameters={"swing": "low", "left": config.swing_left, "right": config.swing_right, "tie_policy": config.pivot_tie_policy},
                         identity=identity,
                     )
                     events.append(swing)
@@ -862,7 +881,7 @@ def build_overlay_packets(config: ChartEngineConfig, events: Sequence[ChartEvent
             config,
             indicator_id,
             family,
-            parameters={"rule_version": RULE_VERSION, "swing_left": config.swing_left, "swing_right": config.swing_right, "fvg_min_gap": config.fvg_min_gap},
+            parameters={"rule_version": RULE_VERSION, "swing_left": config.swing_left, "swing_right": config.swing_right, "fvg_min_gap": config.fvg_min_gap, "pivot_tie_policy": config.pivot_tie_policy},
             session=session,
             causal_delay_bars=max(event.confirmation_lag_bars for event in selected),
         )
