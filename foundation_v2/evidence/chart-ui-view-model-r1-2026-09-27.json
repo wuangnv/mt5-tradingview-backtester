@@ -1,0 +1,41 @@
+{
+  "schema": "chart-ui-view-model-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline causal chart UI view-model",
+  "commit": "44ef2b0",
+  "changed_files": [
+    "trading_workspace_v2/chart_ui_contract.py",
+    "tests/test_chart_ui_contract.py",
+    "trading_workspace_v2/__init__.py"
+  ],
+  "validation": {
+    "focused_command": "PYTHONPATH=. uv run pytest -q tests/test_chart_ui_contract.py",
+    "focused_passed": 4,
+    "focused_failed": 0,
+    "compileall": "PASS",
+    "diff_check": "PASS"
+  },
+  "properties": {
+    "single_causal_scope": true,
+    "renderer_source_cutoff_generation_bound": true,
+    "ai_response_context_bound": true,
+    "explainability_source_cutoff_bound": true,
+    "alert_rule_input_ledger_receipts_validated": true,
+    "explicit_unknown_unavailable_stale_states": true,
+    "flat_first_panel_projection": true,
+    "provider_called": false,
+    "network_called": false,
+    "broker_called": false,
+    "external_alert_delivery": false,
+    "execution_capability": false,
+    "write_authority": false
+  },
+  "not_claimed": [
+    "browser visual or interaction acceptance",
+    "TradingView or MQL5 adapter acceptance",
+    "AI provider quality or calibration",
+    "broker, demo or live execution",
+    "trading edge or profitability"
+  ],
+  "acceptance": "PREP_ONLY"
+}
