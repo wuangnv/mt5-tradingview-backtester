@@ -1,0 +1,35 @@
+{
+  "schema": "learn-ui-state-distinction-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline Learn UI unavailable-versus-empty state preservation",
+  "commit": "57631b5",
+  "changed_files": [
+    "web/src/LearnWorkspace.jsx",
+    "web/src/styles.css",
+    "web/run_learn_ui_acceptance.mjs"
+  ],
+  "validation": {
+    "focused_command": "npm run test:learn-ui",
+    "focused_result": "PASS",
+    "build_command": "npm run build",
+    "build_result": "PASS",
+    "diff_check": "PASS"
+  },
+  "properties": {
+    "unavailable_distinct_from_empty": true,
+    "unavailable_has_visible_text": true,
+    "overview_resource_glossary_consistent": true,
+    "read_only_requests_preserved": true,
+    "provider_called": false,
+    "network_called": false,
+    "broker_called": false,
+    "execution_capability": false
+  },
+  "not_claimed": [
+    "whole product visual acceptance",
+    "shared token 1.1.0 consumer migration",
+    "provider or broker behavior",
+    "Learn backend contract redesign"
+  ],
+  "acceptance": "PREP_ONLY"
+}
