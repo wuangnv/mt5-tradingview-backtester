@@ -205,6 +205,8 @@ class ExecutionLedger(BaseModel):
                 raise ValueError("execution event identity does not match intent")
             if event.at_utc < projected_updated_at:
                 raise ValueError("execution events must be chronological")
+            if event.event_type == "send_started" and event.at_utc >= self.intent.expires_at_utc:
+                raise ValueError("send_started occurs after intent expiry")
             if event.event_type == "send_started":
                 if projected_status != "prepared":
                     raise ValueError("send_started is invalid for the persisted ledger state")
@@ -358,6 +360,8 @@ def apply_execution_event(ledger: ExecutionLedger, event: ExecutionEvent) -> Exe
     if event.event_type == "send_started":
         if ledger.status != "prepared":
             raise ExecutionContractError("send_started is allowed only for a prepared intent")
+        if event.at_utc >= ledger.intent.expires_at_utc:
+            raise ExecutionContractError("send_started occurs after intent expiry")
         next_status = "sending"
     elif event.event_type == "send_unknown":
         if ledger.status != "sending":

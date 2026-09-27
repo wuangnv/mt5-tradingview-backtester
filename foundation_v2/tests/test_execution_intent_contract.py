@@ -114,6 +114,16 @@ def test_unknown_send_cannot_be_sent_again_and_reconciles_once() -> None:
     assert reconciled.event_sequence == 3
 
 
+@pytest.mark.parametrize("offset", [timedelta(minutes=10), timedelta(minutes=11)])
+def test_send_started_at_or_after_expiry_is_denied(offset: timedelta) -> None:
+    prepared = prepare_execution_intent(intent())
+    with pytest.raises(ExecutionContractError, match="intent expiry"):
+        apply_execution_event(
+            prepared,
+            event(prepared, "send_started", at=BASE_TIME + offset),
+        )
+
+
 def test_unknown_requires_reconciliation_source_and_scope_match() -> None:
     prepared = prepare_execution_intent(intent())
     sending = apply_execution_event(prepared, event(prepared, "send_started"))
