@@ -88,6 +88,60 @@ class ChartOverlayContractTests(unittest.TestCase):
         self.assertEqual(result["overlays"][0]["confidence"], {"state": "unknown", "value": None})
         self.assertEqual(len(result["overlays"][0]["cache_key"]), 64)
 
+    def test_causal_metadata_is_optional_but_preserved_when_supplied(self):
+        payload = packet()
+        payload["overlays"][0].update(
+            {
+                "known_at": 1_700_000_120,
+                "source_bar_ids": ["bar:1700000060", "bar:1700000120"],
+                "confirmation_lag_bars": 0,
+            }
+        )
+        result = validate_overlay_packet(payload)
+        self.assertEqual(result["overlays"][0]["known_at"], 1_700_000_120)
+        self.assertEqual(result["overlays"][0]["source_bar_ids"], ["bar:1700000060", "bar:1700000120"])
+        self.assertEqual(result["overlays"][0]["confirmation_lag_bars"], 0)
+
+    def test_causal_metadata_rejects_future_and_mismatched_values(self):
+        future = packet()
+        future["overlays"][0].update(
+            {
+                "known_at": future["cutoff_timestamp"] + 1,
+                "source_bar_ids": ["bar:1700000060", "bar:1700000120"],
+                "confirmation_lag_bars": 0,
+            }
+        )
+        with self.assertRaisesRegex(ChartOverlayContractError, "known_at exceeds replay cutoff"):
+            validate_overlay_packet(future)
+
+        mismatched = packet()
+        mismatched["overlays"][0].update(
+            {
+                "known_at": 1_700_000_121,
+                "source_bar_ids": ["bar:1700000060", "bar:1700000120"],
+                "confirmation_lag_bars": 0,
+            }
+        )
+        with self.assertRaisesRegex(ChartOverlayContractError, "known_at does not match zero confirmation lag"):
+            validate_overlay_packet(mismatched)
+
+        partial = packet()
+        partial["overlays"][0]["known_at"] = 1_700_000_120
+        with self.assertRaisesRegex(ChartOverlayContractError, "must be supplied together"):
+            validate_overlay_packet(partial)
+
+    def test_causal_metadata_rejects_lag_longer_than_indicator_delay(self):
+        payload = packet()
+        payload["overlays"][0].update(
+            {
+                "known_at": 1_700_000_120,
+                "source_bar_ids": ["bar:1700000060", "bar:1700000120"],
+                "confirmation_lag_bars": 1,
+            }
+        )
+        with self.assertRaisesRegex(ChartOverlayContractError, "confirmation lag exceeds indicator delay"):
+            validate_overlay_packet(payload)
+
     def test_anchor_after_cutoff_is_rejected(self):
         payload = packet()
         payload["overlays"][0]["anchors"][1]["timestamp"] = payload["cutoff_timestamp"] + 1

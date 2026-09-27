@@ -116,6 +116,25 @@ def test_preview_accept_undo_lifecycle_reconciles_and_tombstones() -> None:
     assert third.next_state.tombstones == {"fvg-1": 3}
 
 
+def test_render_objects_retain_causal_overlay_metadata() -> None:
+    payload = packet()
+    overlay = payload["overlays"][0]
+    known_at = max(anchor["timestamp"] for anchor in overlay["anchors"])
+    overlay.update(
+        {
+            "known_at": known_at,
+            "source_bar_ids": [f"bar:{anchor['timestamp']}" for anchor in overlay["anchors"]],
+            "confirmation_lag_bars": 0,
+        }
+    )
+
+    plan = build_render_plan(payload)
+    rendered = plan.objects[0]
+    assert rendered["known_at"] == known_at
+    assert rendered["source_bar_ids"] == [f"bar:{anchor['timestamp']}" for anchor in overlay["anchors"]]
+    assert rendered["confirmation_lag_bars"] == 0
+
+
 def test_missing_overlay_is_stale_and_cleanup_is_explicit() -> None:
     original = packet(statuses=("committed", "committed"))
     first = build_render_plan(original)

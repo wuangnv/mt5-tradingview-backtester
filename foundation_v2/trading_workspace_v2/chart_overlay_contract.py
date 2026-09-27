@@ -310,6 +310,19 @@ def _anchor(value: Any, name: str, cutoff: int) -> dict[str, Any]:
     return {"timestamp": timestamp, "price": _finite_number(value["price"], f"{name}.price", positive=True)}
 
 
+def _source_bar_ids(value: Any, name: str = "overlay.source_bar_ids") -> list[str]:
+    """Normalize the event bars retained with an overlay for causal replay."""
+
+    if not isinstance(value, list) or not value:
+        raise ChartOverlayContractError(f"{name} must be a non-empty list")
+    if len(value) > 256:
+        raise ChartOverlayContractError(f"{name} contains too many items")
+    result = [_text(item, f"{name}[{index}]", maximum=128) for index, item in enumerate(value)]
+    if len(set(result)) != len(result):
+        raise ChartOverlayContractError(f"{name} must contain unique IDs")
+    return result
+
+
 def cache_key(*, indicator: dict[str, Any], source: dict[str, Any], instrument_id: str, display_timeframe_seconds: int, cutoff_timestamp: int) -> str:
     """Derive a cache identity from causal inputs and definition version."""
 
@@ -350,7 +363,15 @@ def validate_overlay(overlay: dict[str, Any], *, indicator: dict[str, Any], pack
     missing = required - set(overlay)
     if missing:
         raise ChartOverlayContractError(f"overlay missing fields: {sorted(missing)}")
-    unknown = set(overlay) - required - {"label", "undo_of_revision"}
+    unknown = set(overlay) - required - {
+        "label",
+        "undo_of_revision",
+        # Optional for backwards compatibility with pre-causal overlay
+        # packets; generated packets always include all three fields.
+        "known_at",
+        "source_bar_ids",
+        "confirmation_lag_bars",
+    }
     if unknown:
         raise ChartOverlayContractError(f"overlay has unsupported fields: {sorted(unknown)}")
     if overlay["schema"] != OVERLAY_SCHEMA or overlay["mode"] != PREP_ONLY_MODE:
@@ -372,6 +393,46 @@ def validate_overlay(overlay: dict[str, Any], *, indicator: dict[str, Any], pack
     if not isinstance(anchors, list) or len(anchors) != expected:
         raise ChartOverlayContractError(f"{kind} requires exactly {expected} anchor(s)")
     normalized_anchors = [_anchor(item, f"overlay.anchors[{index}]", cutoff) for index, item in enumerate(anchors)]
+    normalized_indicator = validate_indicator_spec(indicator)
+    causal_fields = {"known_at", "source_bar_ids", "confirmation_lag_bars"}
+    supplied_causal = causal_fields & set(overlay)
+    if supplied_causal and supplied_causal != causal_fields:
+        raise ChartOverlayContractError("causal metadata fields must be supplied together")
+    known_at = None
+    source_bar_ids = None
+    confirmation_lag_bars = None
+    if supplied_causal:
+        known_at = _strict_int(overlay["known_at"], "overlay.known_at", minimum=1)
+        if known_at > cutoff:
+            raise ChartOverlayContractError("overlay known_at exceeds replay cutoff")
+        max_anchor = max(anchor["timestamp"] for anchor in normalized_anchors)
+        if known_at < max_anchor:
+            raise ChartOverlayContractError("overlay known_at precedes an anchor")
+        source_bar_ids = _source_bar_ids(overlay["source_bar_ids"])
+        confirmation_lag_bars = _strict_int(
+            overlay["confirmation_lag_bars"],
+            "overlay.confirmation_lag_bars",
+            minimum=0,
+        )
+        if confirmation_lag_bars == 0 and known_at != max_anchor:
+            raise ChartOverlayContractError("overlay known_at does not match zero confirmation lag")
+        if confirmation_lag_bars > normalized_indicator["causal_delay_bars"]:
+            raise ChartOverlayContractError("overlay confirmation lag exceeds indicator delay")
+        canonical_source_timestamps: set[int] = set()
+        for source_bar_id in source_bar_ids:
+            if not source_bar_id.startswith("bar:"):
+                continue
+            suffix = source_bar_id[4:]
+            if not suffix.isdigit() or int(suffix) < 1:
+                raise ChartOverlayContractError("overlay source bar ID has an invalid timestamp")
+            source_timestamp = int(suffix)
+            if source_timestamp > known_at:
+                raise ChartOverlayContractError("overlay source bar exceeds known_at")
+            canonical_source_timestamps.add(source_timestamp)
+        if canonical_source_timestamps:
+            anchor_timestamps = {anchor["timestamp"] for anchor in normalized_anchors}
+            if not anchor_timestamps.issubset(canonical_source_timestamps):
+                raise ChartOverlayContractError("overlay source bars do not cover anchors")
     confidence = _confidence(overlay["confidence"])
     repaint = _repaint(overlay["repaint"])
     status = _text(overlay["status"], "overlay.status", maximum=16)
@@ -387,7 +448,6 @@ def validate_overlay(overlay: dict[str, Any], *, indicator: dict[str, Any], pack
         if "undo_of_revision" in overlay:
             raise ChartOverlayContractError("undo_of_revision is only valid for undone overlays")
     indicator_hash = _text(overlay["indicator_sha256"], "overlay.indicator_sha256", maximum=64).lower()
-    normalized_indicator = validate_indicator_spec(indicator)
     if indicator_hash != definition_sha256(normalized_indicator):
         raise ChartOverlayContractError("overlay indicator_sha256 does not match indicator")
     expected_cache = cache_key(
@@ -420,6 +480,15 @@ def validate_overlay(overlay: dict[str, Any], *, indicator: dict[str, Any], pack
         "cache_key": expected_cache,
         **({"label": label} if label is not None else {}),
         **({"undo_of_revision": undo_revision} if undo_revision is not None else {}),
+        **(
+            {
+                "known_at": known_at,
+                "source_bar_ids": source_bar_ids,
+                "confirmation_lag_bars": confirmation_lag_bars,
+            }
+            if supplied_causal
+            else {}
+        ),
     }
 
 

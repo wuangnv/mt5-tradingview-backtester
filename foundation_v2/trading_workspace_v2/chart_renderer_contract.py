@@ -264,6 +264,12 @@ def _render_object(
     }
     if "label" in overlay:
         result["label"] = overlay["label"]
+    # Preserve causal event metadata for browser/MQL adapters.  The renderer
+    # may project an object, but it must not erase when the event became known
+    # or which source bars justified it.
+    for field in ("known_at", "source_bar_ids", "confirmation_lag_bars"):
+        if field in overlay:
+            result[field] = copy.deepcopy(overlay[field])
     return result
 
 

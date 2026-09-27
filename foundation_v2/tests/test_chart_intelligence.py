@@ -186,6 +186,11 @@ def test_overlay_packets_validate_and_keep_events_bounded() -> None:
     packets = build_overlay_packets(config, events)
     assert set(packets) == {"fvg"}
     assert packets["fvg"]["overlays"][0]["status"] == "committed"
+    fvg = next(event for event in events if event.kind == "FVG")
+    overlay = packets["fvg"]["overlays"][0]
+    assert overlay["known_at"] == fvg.known_at
+    assert overlay["source_bar_ids"] == list(fvg.source_bar_ids)
+    assert overlay["confirmation_lag_bars"] == fvg.confirmation_lag_bars
 
 
 def test_overlay_separates_delayed_swings_from_zero_delay_structure_changes() -> None:
@@ -214,6 +219,12 @@ def test_overlay_separates_delayed_swings_from_zero_delay_structure_changes() ->
     assert packets["swing"]["indicator"]["indicator_id"] == "swing_points"
     assert packets["swing"]["indicator"]["causal_delay_bars"] == 1
     assert all(item["label"].startswith("SWING ") for item in packets["swing"]["overlays"])
+    swing = next(event for event in run_chart_intelligence(bars, config) if event.kind == "SWING")
+    swing_overlay = packets["swing"]["overlays"][0]
+    assert swing_overlay["known_at"] == swing.known_at
+    assert swing_overlay["known_at"] > swing_overlay["anchors"][0]["timestamp"]
+    assert swing_overlay["source_bar_ids"] == list(swing.source_bar_ids)
+    assert swing_overlay["confirmation_lag_bars"] == swing.confirmation_lag_bars
 
 
 @pytest.mark.parametrize("bad_value", [math.nan, math.inf, -math.inf])

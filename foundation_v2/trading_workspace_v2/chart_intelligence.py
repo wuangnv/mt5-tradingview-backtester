@@ -810,7 +810,10 @@ def run_chart_intelligence(
     return tuple(events)
 
 
-def _indicator(config: ChartEngineConfig, indicator_id: str, family: str, *, parameters: Mapping[str, Any], session: SessionSpec | None = None) -> dict[str, Any]:
+def _indicator(config: ChartEngineConfig, indicator_id: str, family: str, *, parameters: Mapping[str, Any], session: SessionSpec | None = None, causal_delay_bars: int | None = None) -> dict[str, Any]:
+    delay = config.swing_right if indicator_id == "swing_points" else 0
+    if causal_delay_bars is not None:
+        delay = _strict_int(causal_delay_bars, "causal_delay_bars")
     spec: dict[str, Any] = {
         "schema": INDICATOR_SCHEMA,
         "mode": PREP_ONLY_MODE,
@@ -823,7 +826,7 @@ def _indicator(config: ChartEngineConfig, indicator_id: str, family: str, *, par
         "source_timeframe_seconds": config.timeframe_seconds,
         "mtf_policy": "same_timeframe",
         "lookahead": "closed_only",
-        "causal_delay_bars": config.swing_right if indicator_id == "swing_points" else 0,
+        "causal_delay_bars": delay,
         "repaint": {"flag": False, "state": "confirmed", "confirmation_bars": 0},
         "parameters": dict(parameters),
     }
@@ -861,6 +864,7 @@ def build_overlay_packets(config: ChartEngineConfig, events: Sequence[ChartEvent
             family,
             parameters={"rule_version": RULE_VERSION, "swing_left": config.swing_left, "swing_right": config.swing_right, "fvg_min_gap": config.fvg_min_gap},
             session=session,
+            causal_delay_bars=max(event.confirmation_lag_bars for event in selected),
         )
         indicator_hash = definition_sha256(indicator)
         overlays: list[dict[str, Any]] = []
@@ -895,6 +899,9 @@ def build_overlay_packets(config: ChartEngineConfig, events: Sequence[ChartEvent
                 "anchors": anchors,
                 "confidence": {"state": "known", "value": 1.0},
                 "repaint": {"flag": False, "state": "confirmed", "confirmation_bars": 0},
+                "known_at": event.known_at,
+                "source_bar_ids": list(event.source_bar_ids),
+                "confirmation_lag_bars": event.confirmation_lag_bars,
                 "status": "committed",
                 "revision": 1,
                 "indicator_sha256": indicator_hash,
