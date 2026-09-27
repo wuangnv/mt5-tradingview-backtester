@@ -676,6 +676,7 @@ def create_app(
                 name=body.name,
                 execution_capability=body.execution_capability,
                 rules=body.rules,
+                strategy_spec=body.strategy_spec,
             )
         except LookupError:
             raise HTTPException(status_code=404, detail="playbook_not_found")

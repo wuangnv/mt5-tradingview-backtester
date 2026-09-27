@@ -335,6 +335,8 @@ class ResearchService:
                           if request.engine_backend == "nautilus" else {})},
             "budget": {"max_bars": int(request.max_bars), "max_runtime_ms": int(request.max_runtime_ms), "max_memory_mb": request.max_memory_mb},
         }
+        if payload.get("strategy_spec") is not None:
+            protocol["playbook"]["strategy_spec"] = payload["strategy_spec"]
         requested_oos = (walk_forward is not None, parameter_space is not None, max_trials is not None)
         if any(requested_oos):
             if not all(requested_oos):

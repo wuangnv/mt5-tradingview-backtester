@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .contracts import ChartAnnotationDraft, JournalDraft, PlaybookDraft
+from .strategy_contracts import StrategyResearchSpec
 from .retained import (
     AIService,
     CostModel,
@@ -142,6 +143,7 @@ class ProductService:
         name: str | None = None,
         execution_capability: str | None = None,
         rules: dict | None = None,
+        strategy_spec: StrategyResearchSpec | None = None,
     ) -> dict:
         current = self.store.get_record(workspace_id, "playbook", record_id)
         if current is None:
@@ -162,6 +164,8 @@ class ProductService:
             payload["execution_capability"] = execution_capability
         if rules is not None:
             payload["rules"] = rules
+        if strategy_spec is not None:
+            payload["strategy_spec"] = strategy_spec.model_dump(mode="json")
         validated = PlaybookDraft.model_validate(payload)
         return self.store.create_record(workspace_id, "playbook", validated.model_dump(mode="json"))
 

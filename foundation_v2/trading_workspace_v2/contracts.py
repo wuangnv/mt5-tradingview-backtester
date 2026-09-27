@@ -6,6 +6,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from .strategy_contracts import StrategyResearchSpec
+
 
 CONTRACT_VERSION = "foundation-v2.1"
 
@@ -191,6 +193,7 @@ class PlaybookDraft(BaseModel):
     status: Literal["draft", "frozen"] = "draft"
     execution_capability: Literal["manual-only", "engine-supported", "needs-definition"]
     rules: dict
+    strategy_spec: StrategyResearchSpec | None = None
     parent_playbook_id: str | None = Field(default=None, max_length=128)
     parent_revision: int | None = Field(default=None, ge=1)
 
@@ -208,6 +211,7 @@ class PlaybookForkRequest(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=160)
     execution_capability: Literal["manual-only", "engine-supported", "needs-definition"] | None = None
     rules: dict | None = None
+    strategy_spec: StrategyResearchSpec | None = None
 
 
 class JournalDraft(BaseModel):

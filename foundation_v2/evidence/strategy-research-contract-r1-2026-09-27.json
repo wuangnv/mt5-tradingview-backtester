@@ -1,0 +1,37 @@
+{
+  "schema": "mt5-strategy-research-contract-receipt-v1",
+  "scope": "foundation_v2 level-1 local research contract",
+  "source_head_before_change": "563e5f5",
+  "receipt_commit": "the Git commit containing this receipt",
+  "purpose": "Pin ICT, SMC, and price-action hypotheses without misclassifying them as executable strategies or proven edge.",
+  "implemented": {
+    "strategy_metadata_schema": "strategy-research-spec-v1",
+    "evaluation_schema": "research-evaluation-v1",
+    "families": ["ict", "smc", "price_action"],
+    "default_execution_capability": "needs-definition",
+    "default_edge_status": "unproven",
+    "holdout_access": false,
+    "rules_boundary": "methodology metadata is separate from deterministic engine rules"
+  },
+  "files": [
+    "trading_workspace_v2/strategy_contracts.py",
+    "trading_workspace_v2/contracts.py",
+    "trading_workspace_v2/product.py",
+    "trading_workspace_v2/api.py",
+    "trading_workspace_v2/research.py",
+    "tests/test_strategy_research_contract.py"
+  ],
+  "validation": {
+    "command": "PYTHONPATH=.;.. uv run --with pytest python -m pytest -q tests/test_strategy_research_contract.py tests/test_u5_engine_path2.py tests/test_u5c_oos.py",
+    "result": "24 passed, 9 skipped, 5 subtests passed, 2 warnings",
+    "postgres_integration": "not-run: TW_V2_DATABASE_URL is unavailable; no service was started"
+  },
+  "excluded_claims": [
+    "No broker/live execution",
+    "No holdout content access",
+    "No provider/OAuth/credits",
+    "No claim of empirical edge, profitability, or production acceptance",
+    "No new strategy execution engine; bar-breakout-v1 remains the only deterministic engine"
+  ],
+  "rollback": "Revert the coherent commit containing this receipt and the listed source/test files; existing playbooks without strategy_spec remain backward compatible."
+}
