@@ -27,7 +27,7 @@ replay produces stable identities.
 
 ```text
 $env:PYTHONPATH='.'; uv run pytest -q tests/test_chart_alert_contract.py
-10 passed
+12 passed
 ```
 
 The tests cover canonical rule hashes, confirmed-only filtering, snapshots,
@@ -47,3 +47,4 @@ This is **PREP_ONLY**. It does not implement a notification worker,
 subscription persistence, push/email/Telegram delivery, alert scheduling,
 renderer integration, AI scoring, broker access, or execution permission.
 Those adapters require separate contracts and gates.
+

@@ -15,7 +15,7 @@
   "engine": "offline-advisory",
   "focused_validation": {
     "command": "$env:PYTHONPATH='.'; uv run pytest -q tests/test_chart_alert_contract.py",
-    "result": "10 passed"
+    "result": "12 passed"
   },
   "input_snapshot_sha256": "7d949efe4e20cc62393aa037a59041f10a59e338946abb8e379540cdfbf674f1",
   "mode": "PREP_ONLY",
@@ -27,3 +27,4 @@
   "scope": "local-advisory-only",
   "status": "PREP_ONLY"
 }
+
