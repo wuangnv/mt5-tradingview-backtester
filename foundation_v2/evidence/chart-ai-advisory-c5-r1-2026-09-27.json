@@ -1,0 +1,49 @@
+{
+  "schema": "chart-ai-advisory-c5-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline typed AI-on-chart advisory boundary",
+  "changed_files": [
+    "trading_workspace_v2/chart_ai_contract.py",
+    "trading_workspace_v2/__init__.py",
+    "tests/test_chart_ai_contract.py",
+    "evidence/chart-ai-advisory-c5-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "focused_command": "PYTHONPATH=. uv run pytest -q tests/test_chart_ai_contract.py",
+    "focused_passed": 10,
+    "focused_failed": 0,
+    "chart_regression_command": "PYTHONPATH=. uv run pytest -q tests/test_chart_ai_contract.py tests/test_chart_intelligence.py tests/test_chart_intelligence_stress.py tests/test_chart_overlay_contract.py tests/test_chart_renderer_contract.py",
+    "chart_regression_passed": 42,
+    "chart_regression_failed": 0,
+    "compileall": "PASS",
+    "diff_check": "PASS"
+  },
+  "properties": {
+    "typed_request_response": true,
+    "canonical_context_hash": true,
+    "context_hash_excludes_request_id": true,
+    "closed_bar_cutoff_guard": true,
+    "evidence_ids_bound_to_request": true,
+    "bounded_context_bytes": 65536,
+    "bounded_evidence_items": 512,
+    "prompt_injection_fail_closed": true,
+    "unknown_timeout_fail_closed": true,
+    "stale_context_fail_closed": true,
+    "forbidden_secret_holdout_fields_rejected": true,
+    "execution_capability": false,
+    "write_authority": false,
+    "provider_called": false,
+    "broker_called": false,
+    "network_called": false,
+    "holdout_access": false
+  },
+  "not_claimed": [
+    "TypeSafe/Jev provider quality or calibration",
+    "AI semantic correctness or trading edge",
+    "renderer visual acceptance",
+    "alert delivery",
+    "broker, demo or live execution",
+    "automatic persistence or order authority"
+  ],
+  "acceptance": "NOT_CLAIMED"
+}
