@@ -190,6 +190,20 @@ def test_tampered_receipt_cannot_detach_input_event_or_expiry() -> None:
         validate_alert_receipt(tampered)
 
 
+def test_receipt_must_satisfy_the_enabled_rule() -> None:
+    receipt = evaluate_chart_alerts(rule(), [event()], 1_700_000_120).emitted[0]
+    tampered = copy.deepcopy(receipt)
+    tampered["event_snapshot"]["kind"] = "SESSION"
+    with pytest.raises(ChartAlertContractError):
+        validate_alert_receipt(tampered)
+    tampered = copy.deepcopy(receipt)
+    tampered["rule_snapshot"]["enabled"] = False
+    # The rule hash is intentionally left unchanged: either mismatch or the
+    # enabled-rule check must reject this forged receipt.
+    with pytest.raises(ChartAlertContractError):
+        validate_alert_receipt(tampered)
+
+
 def test_ledger_rejects_unknown_state_fields() -> None:
     payload = AlertLedger.empty(rule()).as_dict()
     payload["execution_capability"] = False

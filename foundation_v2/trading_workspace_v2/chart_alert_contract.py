@@ -673,6 +673,8 @@ def validate_alert_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
     event = _normalize_event(raw["event_snapshot"], index=0)
     if event["event_id"] != event_id or event["state"] != _CONFIRMED:
         raise ChartAlertContractError("receipt event must be the confirmed referenced event")
+    if not normalized_rule["enabled"] or not _matches(normalized_rule, event):
+        raise ChartAlertContractError("receipt event does not satisfy the enabled rule")
     if not isinstance(raw["input_snapshot"], Mapping):
         raise ChartAlertContractError("receipt.input_snapshot must be an object")
     snapshot = dict(raw["input_snapshot"])
