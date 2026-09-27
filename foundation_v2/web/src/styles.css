@@ -183,6 +183,7 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 .learn-message { padding: 22px 0; color: #aeb7be; font-size: 13px; line-height: 1.5; }
 .learn-message-loading { color: #b7c4cc; }
 .learn-message-empty { color: #8f9aa3; }
+.learn-message-unavailable { color: #d7b56d; }
 .learn-message-error, .learn-message-denied { color: #ef9c9c; }
 
 .learn-summary { display: grid; grid-template-columns: 1.4fr .55fr .65fr .7fr; border-bottom: 1px solid #293036; }

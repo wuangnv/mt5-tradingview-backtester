@@ -180,7 +180,7 @@ export default function LearnWorkspace({ workspace, query }) {
     return (
       <main className="learn-shell">
         <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
-        <StateMessage kind="empty" testId="learn-unavailable">Learn chưa được cấu hình cho workspace này.</StateMessage>
+        <StateMessage kind="unavailable" testId="learn-unavailable">Learn chưa được cấu hình cho workspace này.</StateMessage>
       </main>
     )
   }
@@ -300,7 +300,7 @@ export default function LearnWorkspace({ workspace, query }) {
           {resource.status === 'loading' && <StateMessage kind="loading" testId="learn-resource-loading">Đang tải tài liệu…</StateMessage>}
           {resource.status === 'empty' && <StateMessage kind="empty" testId="learn-resource-empty">Tài liệu này đang trống.</StateMessage>}
           {resource.status === 'denied' && <StateMessage kind="denied" testId="learn-resource-denied">Bạn không có quyền đọc tài liệu này.</StateMessage>}
-          {resource.status === 'unavailable' && <StateMessage kind="empty" testId="learn-resource-unavailable">Tài liệu này không có trong danh mục Learn được phép.</StateMessage>}
+          {resource.status === 'unavailable' && <StateMessage kind="unavailable" testId="learn-resource-unavailable">Tài liệu này không có trong danh mục Learn được phép.</StateMessage>}
           {resource.status === 'error' && <StateMessage kind="error" testId="learn-resource-error">Không đọc được tài liệu: {resource.error}</StateMessage>}
           {resource.status === 'ready' && (
             <pre className="learn-resource-copy" data-testid="learn-resource-content">{resource.payload?.content}</pre>
@@ -323,7 +323,7 @@ export default function LearnWorkspace({ workspace, query }) {
 
           {glossary.status === 'loading' && <StateMessage kind="loading" testId="learn-glossary-loading">Đang đọc glossary…</StateMessage>}
           {glossary.status === 'denied' && <StateMessage kind="denied" testId="learn-glossary-denied">Không có quyền đọc glossary.</StateMessage>}
-          {glossary.status === 'unavailable' && <StateMessage kind="empty">Glossary chưa được cấu hình.</StateMessage>}
+          {glossary.status === 'unavailable' && <StateMessage kind="unavailable">Glossary chưa được cấu hình.</StateMessage>}
           {glossary.status === 'error' && <StateMessage kind="error">Không đọc được glossary: {glossary.error}</StateMessage>}
           {glossary.status === 'ready' && glossaryItems.length === 0 && (
             <StateMessage kind="empty" testId="learn-glossary-empty">

@@ -217,7 +217,10 @@ async function main() {
 
     mode = 'unavailable'
     await page.goto(`${origin}/?view=learn&workspace=tenant-unconfigured`)
-    await page.getByTestId('learn-unavailable').waitFor()
+    const unavailableState = page.getByTestId('learn-unavailable')
+    await unavailableState.waitFor()
+    assert.match(await unavailableState.getAttribute('class'), /learn-message-unavailable/)
+    assert.doesNotMatch(await unavailableState.getAttribute('class'), /learn-message-empty/)
 
     mode = 'error'
     await page.goto(`${origin}/?view=learn&workspace=tenant-error`)
