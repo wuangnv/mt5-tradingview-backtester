@@ -1,0 +1,77 @@
+{
+  "schema": "feature-timing-fixture-v1",
+  "mode": "PREP_ONLY",
+  "definitions": [
+    {
+      "definition_id": "ict-fvg-v1",
+      "family": "ict",
+      "methodology_version": "ict-fvg-v1",
+      "feature_available_event": "bar_close",
+      "timeframe_seconds": 60,
+      "causal_delay_bars": 0,
+      "definition": "A three-bar fair-value-gap candidate is observed only after the third bar closes."
+    },
+    {
+      "definition_id": "smc-centered-swing-v1",
+      "family": "smc",
+      "methodology_version": "smc-centered-swing-v1",
+      "feature_available_event": "bar_close",
+      "timeframe_seconds": 60,
+      "causal_delay_bars": 2,
+      "definition": "A centered swing candidate becomes observable only after two confirming bars close."
+    },
+    {
+      "definition_id": "price-action-break-retest-v1",
+      "family": "price_action",
+      "methodology_version": "price-action-break-retest-v1",
+      "feature_available_event": "next_bar_open",
+      "timeframe_seconds": 60,
+      "causal_delay_bars": 1,
+      "definition": "A break-retest observation is eligible at the next bar open after the reference bar closes."
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "fvg-at-close",
+      "definition_id": "ict-fvg-v1",
+      "definition_sha256": "2db41956b1c0bb67a5264ddd8831742f7b692f9632e75eaf7779da7ddc3cd347",
+      "observed_at": 1700000000,
+      "available_at": 1700000000,
+      "outcome": "not_triggered",
+      "same_bar": {
+        "stop_hit": false,
+        "take_profit_hit": false
+      },
+      "executable": false,
+      "resolution": "research_only"
+    },
+    {
+      "sample_id": "centered-swing-dual-hit",
+      "definition_id": "smc-centered-swing-v1",
+      "definition_sha256": "a253055fba34ac5de2fc96f427a9ba96b78f79b8925701bde0b3d3c55617a700",
+      "observed_at": 1700000000,
+      "available_at": 1700000120,
+      "outcome": "ambiguous",
+      "same_bar": {
+        "stop_hit": true,
+        "take_profit_hit": true
+      },
+      "executable": false,
+      "resolution": "lower_timeframe_required"
+    },
+    {
+      "sample_id": "break-retest-next-open",
+      "definition_id": "price-action-break-retest-v1",
+      "definition_sha256": "13c593c756dfeb5f562a7b1342ce0e158f8813a3baeb7cef1033b0d33e8602f2",
+      "observed_at": 1700000000,
+      "available_at": 1700000060,
+      "outcome": "take_profit",
+      "same_bar": {
+        "stop_hit": false,
+        "take_profit_hit": true
+      },
+      "executable": false,
+      "resolution": "research_only"
+    }
+  ]
+}

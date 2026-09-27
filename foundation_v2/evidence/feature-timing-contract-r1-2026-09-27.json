@@ -1,0 +1,33 @@
+{
+  "schema": "mt5-feature-timing-contract-receipt-v1",
+  "scope": "foundation_v2 level-1 offline PREP_ONLY feature timing",
+  "source_head_before_change": "e331472",
+  "receipt_commit": "the Git commit containing this receipt",
+  "purpose": "Make causal availability, definition identity, and ambiguous same-bar outcomes explicit before ICT/SMC/price-action execution exists.",
+  "implemented": {
+    "fixture_schema": "feature-timing-fixture-v1",
+    "oracle": "causal-feature-timing-v1",
+    "families_covered": ["ict", "smc"],
+    "timing_rule": "available_at = observed_at + causal_delay_bars * timeframe_seconds",
+    "definition_identity": "canonical sorted-key UTF-8 JSON SHA-256",
+    "ambiguity_rule": "same-bar stop and take-profit hits are ambiguous, non-executable, and require lower-timeframe ordering"
+  },
+  "files": [
+    "trading_workspace_v2/feature_timing_contract.py",
+    "tests/fixtures/feature_timing_contract.json",
+    "tests/test_feature_timing_contract.py"
+  ],
+  "validation": {
+    "command": "PYTHONPATH=.;.. uv run --with pytest python -m pytest -q tests/test_feature_timing_contract.py",
+    "result": "5 passed",
+    "postgres_integration": "not-run: fixture is offline and no service was started",
+    "broker_or_live": "not-run and not reachable from this contract"
+  },
+  "excluded_claims": [
+    "No ICT, SMC, or price-action edge claim",
+    "No deterministic strategy execution engine",
+    "No provider, OAuth, API key, broker, or holdout access",
+    "No lower-timeframe ordering data for the ambiguous sample"
+  ],
+  "rollback": "Revert the coherent commit containing this receipt, source module, fixture, and focused test; existing strategy metadata and engine behavior remain unchanged."
+}
