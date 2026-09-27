@@ -1,0 +1,56 @@
+{
+  "schema": "chart-alert-c6-r2-receipt-v1",
+  "status": "PREP_ONLY",
+  "mode": "PREP_ONLY",
+  "engine": "offline-advisory",
+  "scope": "local-advisory-only",
+  "authority_commits": {
+    "chart_event_kinds": "b6d92c3",
+    "alert_kind_support": "666e8da"
+  },
+  "canonical_event_kinds": [
+    "FVG",
+    "SWING",
+    "BOS",
+    "CHOCH",
+    "LIQUIDITY_SWEEP",
+    "SESSION"
+  ],
+  "focused_validation": {
+    "command": "$env:PYTHONPATH='.'; uv run pytest -q tests/test_chart_alert_contract.py",
+    "result": "14 passed",
+    "compileall": {
+      "command": "uv run python -m compileall -q trading_workspace_v2 tests/test_chart_alert_contract.py",
+      "result": "PASS"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  },
+  "combined_chart_validation": {
+    "command": "$chartTests = Get-ChildItem tests\\test_chart_*.py | ForEach-Object { $_.FullName }; $env:PYTHONPATH='.'; uv run pytest -q @chartTests tests/test_feature_timing_contract.py",
+    "result": "84 passed, 3 failed",
+    "failures": 3,
+    "failure_scope": "concurrent chart_overlay_contract causal-metadata regression outside C6; no C6 claim",
+    "c6_focused_result_remains": "14 passed"
+  },
+  "assertions": {
+    "confirmed_only": true,
+    "rule_and_input_snapshots": true,
+    "reconnect_replay_dedupe": true,
+    "execution_capability": false,
+    "order_effect": "none",
+    "fill_effect": "none",
+    "provider": false,
+    "network": false,
+    "broker": false,
+    "external_delivery": false
+  },
+  "limits": [
+    "No notification worker or external push/email/Telegram delivery",
+    "No provider, network, broker, order or fill route",
+    "No production or M7 acceptance claim",
+    "Combined chart suite remains non-green because of the concurrent overlay metadata regression"
+  ]
+}
