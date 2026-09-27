@@ -325,7 +325,10 @@ class MTFBarMapping:
     ``source_bar`` stays available to a caller that needs OHLC context while
     :meth:`as_dict` exposes only stable IDs/timestamps for JSON or overlays.
     A missing source bar is represented by ``None`` instead of carrying a
-    provisional/future value.
+    provisional/future value.  The default ``higher_closed`` policy includes
+    equality at a closed boundary.  ``pine_offset_first_next_bar`` is an
+    explicit strict-boundary parity mode for Pine's common
+    ``expression[1]`` + ``lookahead_on`` idiom.
     """
 
     display_bar: ChartBar
@@ -345,10 +348,17 @@ class MTFBarMapping:
             raise ChartIntelligenceError(
                 "source_timeframe_seconds must be greater than display_timeframe_seconds for higher_closed mapping"
             )
-        if self.policy != "higher_closed":
-            raise ChartIntelligenceError("MTF mapping policy must be higher_closed")
-        if self.source_bar is not None and self.source_bar.timestamp > self.display_bar.timestamp:
-            raise ChartIntelligenceError("source_bar close must not exceed display_bar close")
+        if self.policy not in {"higher_closed", "pine_offset_first_next_bar"}:
+            raise ChartIntelligenceError(
+                "MTF mapping policy must be higher_closed or pine_offset_first_next_bar"
+            )
+        if self.source_bar is not None:
+            if self.source_bar.timestamp > self.display_bar.timestamp:
+                raise ChartIntelligenceError("source_bar close must not exceed display_bar close")
+            if self.policy == "pine_offset_first_next_bar" and self.source_bar.timestamp >= self.display_bar.timestamp:
+                raise ChartIntelligenceError(
+                    "pine_offset_first_next_bar requires source_bar close before display_bar close"
+                )
 
     @property
     def display_timestamp(self) -> int:

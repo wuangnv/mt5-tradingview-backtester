@@ -1,0 +1,51 @@
+{
+  "schema": "chart-script-parity-mql-time-boundary-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline MQL CopyRates/iBarShift normalization and explicit HTF boundary policies",
+  "rule_version": "smc-core.v1",
+  "changed_files": [
+    "trading_workspace_v2/mql_parity.py",
+    "trading_workspace_v2/chart_intelligence.py",
+    "trading_workspace_v2/__init__.py",
+    "tests/test_mql_parity.py",
+    "evidence/chart-script-parity-mql-time-boundary-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "command": "PYTHONPATH=. uv run pytest -q tests/test_mql_parity.py tests/test_chart_intelligence.py tests/test_chart_script_parity.py",
+    "passed": 28,
+    "failed": 0,
+    "warnings": 0,
+    "compileall": "PASS",
+    "diff_check": "PASS"
+  },
+  "properties": {
+    "copyrates_order_normalized": true,
+    "mql_open_to_utc_close": true,
+    "latest_provisional_default_reject": true,
+    "latest_provisional_explicit_drop": true,
+    "provisional_middle_row_fail_closed": true,
+    "ibarshift_exact_gap_returns_unknown": true,
+    "ibarshift_series_and_oldest_indexing": true,
+    "unknown_timeframe_rejected": true,
+    "dst_fold_and_gap_fail_closed": true,
+    "htf_boundary_policy_named": true,
+    "htf_lookahead_regression": true,
+    "prefix_cutoff_stable": true,
+    "provider": false,
+    "broker_actions": false,
+    "ai_execution_capability": false,
+    "holdout_access": false
+  },
+  "open_gaps": [
+    "MT5Gateway still overwrites the newest row with a live bid and emits no closed/provisional marker.",
+    "Direct MT5/TradingView SDK parity and licensed renderer acceptance remain unverified.",
+    "HTF values are not yet wired into a renderer packet or live connector."
+  ],
+  "not_claimed": [
+    "positive trading edge",
+    "provider or broker integration",
+    "live execution",
+    "whole-gateway parity",
+    "TradingView license acceptance"
+  ]
+}

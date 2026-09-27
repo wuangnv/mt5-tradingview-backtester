@@ -6,6 +6,7 @@ __all__ = [
     "contracts",
     "chart_overlay_contract",
     "chart_intelligence",
+    "mql_parity",
     "chart_ai_contract",
     "chart_explainability_contract",
     "chart_alert_contract",
