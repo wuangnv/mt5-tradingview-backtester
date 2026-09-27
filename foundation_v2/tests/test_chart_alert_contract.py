@@ -78,6 +78,18 @@ def test_rule_is_canonical_and_hash_is_order_independent() -> None:
     assert normalized["execution_capability"] is False
 
 
+def test_new_smc_event_kinds_are_supported_by_alert_contract() -> None:
+    liquidity_rule = rule(event_kinds=["LIQUIDITY_SWEEP"])
+    liquidity_event = event(kind="LIQUIDITY_SWEEP")
+    result = evaluate_chart_alerts(liquidity_rule, [liquidity_event], 1_700_000_120)
+    assert len(result.emitted) == 1
+
+    choch_rule = rule(event_kinds=["CHOCH"])
+    choch_event = event(event_id="evt:choch-1", kind="CHoCH")
+    result = evaluate_chart_alerts(choch_rule, [choch_event], 1_700_000_120)
+    assert len(result.emitted) == 1
+
+
 def test_confirmed_event_emits_receipt_with_rule_and_input_snapshots() -> None:
     result = evaluate_chart_alerts(rule(), [event()], 1_700_000_120)
     assert len(result.emitted) == 1

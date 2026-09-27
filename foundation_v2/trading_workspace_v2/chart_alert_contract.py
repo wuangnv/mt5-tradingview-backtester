@@ -43,6 +43,7 @@ _ALLOWED_KINDS = frozenset(
         "CHOCH",
         "MSS",
         "LIQUIDITY",
+        "LIQUIDITY_SWEEP",
         "SWEEP",
         "ORDER_BLOCK",
         "OTE",
