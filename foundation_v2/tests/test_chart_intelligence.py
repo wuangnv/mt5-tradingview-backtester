@@ -65,6 +65,74 @@ def test_fvg_and_bos_are_closed_bar_events_with_stable_identity() -> None:
     assert bos.parameters["close_break"] is True
 
 
+def test_liquidity_sweep_is_a_reclaimed_closed_bar_event_and_prefix_stable() -> None:
+    start = 1_700_001_500
+    bars = [
+        bar(start + 0, 9.0, 10.0, 8.0, 9.0),
+        bar(start + 1, 12.0, 15.0, 10.0, 14.0),
+        bar(start + 2, 10.0, 11.0, 9.0, 10.0),
+        bar(start + 3, 10.0, 16.0, 9.0, 14.0),
+        bar(start + 4, 14.0, 17.0, 12.0, 16.0),
+    ]
+    config = ChartEngineConfig(
+        instrument_id="EURUSD",
+        timeframe_seconds=60,
+        swing_left=1,
+        swing_right=1,
+        source={"kind": "synthetic", "id": "liquidity-fixture"},
+    )
+
+    prefix = run_chart_intelligence(bars[:4], config)
+    full_cutoff = run_chart_intelligence(bars, config, cutoff_timestamp=bars[3]["timestamp"])
+    sweeps = [event for event in prefix if event.kind == "LIQUIDITY_SWEEP"]
+
+    assert [event.as_dict() for event in prefix] == [event.as_dict() for event in full_cutoff]
+    assert len(sweeps) == 1
+    sweep = sweeps[0]
+    assert sweep.direction == "bearish"
+    assert sweep.anchor_timestamp == bars[3]["timestamp"]
+    assert sweep.known_at == bars[3]["timestamp"]
+    assert sweep.parameters["liquidity_level"] == 15.0
+    assert sweep.parameters["close_reclaimed"] is True
+    assert sweep.source_bar_ids == (f"bar:{start + 1}", f"bar:{start + 3}")
+
+
+def test_liquidity_sweep_requires_strict_reclaim_and_choch_follows_opposite_break() -> None:
+    start = 1_700_001_600
+    bars = [
+        bar(start + 0, 9.0, 10.0, 8.0, 9.0),
+        bar(start + 1, 12.0, 15.0, 10.0, 14.0),
+        bar(start + 2, 10.0, 11.0, 9.0, 10.0),
+        bar(start + 3, 10.0, 12.0, 9.0, 9.0),
+        bar(start + 4, 9.0, 9.0, 5.0, 6.0),
+        bar(start + 5, 10.0, 14.0, 8.0, 13.0),
+    ]
+    config = ChartEngineConfig(
+        instrument_id="EURUSD",
+        timeframe_seconds=60,
+        swing_left=1,
+        swing_right=1,
+        source={"kind": "synthetic", "id": "choch-fixture"},
+    )
+    events = run_chart_intelligence(bars, config)
+
+    bearish_bos = next(event for event in events if event.kind == "BOS" and event.direction == "bearish")
+    choch = next(event for event in events if event.kind == "CHoCH")
+    assert bearish_bos.known_at == bars[4]["timestamp"]
+    assert choch.direction == "bullish"
+    assert choch.known_at == bars[5]["timestamp"]
+    assert choch.parameters["prior_structure"] == "bearish"
+    assert choch.parameters["close_break"] is True
+
+    exact_reclaim = [
+        bar(start + 0, 9.0, 10.0, 8.0, 9.0),
+        bar(start + 1, 12.0, 15.0, 10.0, 14.0),
+        bar(start + 2, 10.0, 11.0, 9.0, 10.0),
+        bar(start + 3, 10.0, 16.0, 9.0, 15.0),
+    ]
+    assert not [event for event in run_chart_intelligence(exact_reclaim, config) if event.kind == "LIQUIDITY_SWEEP"]
+
+
 def test_prefix_replay_matches_full_run_at_cutoff() -> None:
     bars = structure_bars()
     config = ChartEngineConfig(
@@ -118,6 +186,34 @@ def test_overlay_packets_validate_and_keep_events_bounded() -> None:
     packets = build_overlay_packets(config, events)
     assert set(packets) == {"fvg"}
     assert packets["fvg"]["overlays"][0]["status"] == "committed"
+
+
+def test_overlay_separates_delayed_swings_from_zero_delay_structure_changes() -> None:
+    start = 1_700_002_100
+    bars = [
+        bar(start + 0, 9.0, 10.0, 8.0, 9.0),
+        bar(start + 1, 12.0, 15.0, 10.0, 14.0),
+        bar(start + 2, 10.0, 11.0, 9.0, 10.0),
+        bar(start + 3, 10.0, 12.0, 9.0, 9.0),
+        bar(start + 4, 9.0, 9.0, 5.0, 6.0),
+        bar(start + 5, 10.0, 14.0, 8.0, 13.0),
+    ]
+    config = ChartEngineConfig(
+        instrument_id="EURUSD",
+        timeframe_seconds=60,
+        swing_left=1,
+        swing_right=1,
+        source={"kind": "synthetic", "id": "overlay-timing-fixture"},
+    )
+    packets = build_overlay_packets(config, run_chart_intelligence(bars, config))
+
+    assert set(packets) == {"structure", "swing"}
+    assert packets["structure"]["indicator"]["indicator_id"] == "market_structure"
+    assert packets["structure"]["indicator"]["causal_delay_bars"] == 0
+    assert all("BOS" in item["label"] or "CHoCH" in item["label"] for item in packets["structure"]["overlays"])
+    assert packets["swing"]["indicator"]["indicator_id"] == "swing_points"
+    assert packets["swing"]["indicator"]["causal_delay_bars"] == 1
+    assert all(item["label"].startswith("SWING ") for item in packets["swing"]["overlays"])
 
 
 @pytest.mark.parametrize("bad_value", [math.nan, math.inf, -math.inf])

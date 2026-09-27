@@ -3,9 +3,10 @@
 This module intentionally implements a small causal core rather than an
 ``AI-SMC`` indicator.  It consumes validated, UTC-timestamped OHLC bars and
 emits immutable event records for fair-value gaps, confirmed swing points,
-breaks of structure, and explicit session entry/exit boundaries.  Every event
-has a source-bar set and a ``known_at`` timestamp; future bars can therefore
-not change the prefix emitted at a replay cutoff.
+breaks of structure, change-of-character transitions, liquidity sweeps, and
+explicit session entry/exit boundaries.  Every event has a source-bar set and
+a ``known_at`` timestamp; future bars can therefore not change the prefix
+emitted at a replay cutoff.
 
 ``ChartBar.timestamp`` is the **close timestamp** of the bar in UTC epoch
 seconds.  Callers that receive exchange/open timestamps must normalize them
@@ -530,6 +531,9 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
     confirmed_low: tuple[int, ChartBar] | None = None
     broken_high_id: str | None = None
     broken_low_id: str | None = None
+    swept_high_ids: set[int] = set()
+    swept_low_ids: set[int] = set()
+    structure_direction: str | None = None
     for current_index, current in enumerate(bars):
         if current.timestamp > cutoff:
             break
@@ -579,7 +583,38 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
         if confirmed_high is not None:
             pivot_index, pivot = confirmed_high
             swing_id = _bar_id(pivot.timestamp)
+            if (
+                pivot.timestamp not in swept_high_ids
+                and current.high > pivot.high
+                and current.close < pivot.high
+            ):
+                events.append(_event(
+                    config,
+                    kind="LIQUIDITY_SWEEP",
+                    direction="bearish",
+                    anchor_timestamp=current.timestamp,
+                    known_at=current.timestamp,
+                    source_bars=(pivot, current),
+                    price_low=pivot.high,
+                    price_high=current.high,
+                    confirmation_lag_bars=0,
+                    parameters={
+                        "pool": "swing_high",
+                        "sweep_type": "high",
+                        "liquidity_level": pivot.high,
+                        "wick_extreme": current.high,
+                        "close_reclaimed": True,
+                    },
+                    identity={
+                        "pool": "swing_high",
+                        "pivot": pivot.timestamp,
+                        "sweep": current.timestamp,
+                        "direction": "bearish",
+                    },
+                ))
+                swept_high_ids.add(pivot.timestamp)
             if current.close > pivot.high and broken_high_id != swing_id:
+                previous_direction = structure_direction
                 events.append(_event(
                     config,
                     kind="BOS",
@@ -593,11 +628,68 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
                     parameters={"protected_swing": "high", "close_break": True},
                     identity={"protected": pivot.timestamp, "break": current.timestamp, "direction": "bullish"},
                 ))
+                if previous_direction == "bearish":
+                    events.append(_event(
+                        config,
+                        kind="CHoCH",
+                        direction="bullish",
+                        anchor_timestamp=current.timestamp,
+                        known_at=current.timestamp,
+                        source_bars=(pivot, current),
+                        price_low=pivot.high,
+                        price_high=current.close,
+                        confirmation_lag_bars=0,
+                        parameters={
+                            "protected_swing": "high",
+                            "close_break": True,
+                            "break_level": pivot.high,
+                            "prior_structure": previous_direction,
+                            "structure_change": "CHoCH",
+                        },
+                        identity={
+                            "protected": pivot.timestamp,
+                            "break": current.timestamp,
+                            "direction": "bullish",
+                            "prior_structure": previous_direction,
+                        },
+                    ))
+                structure_direction = "bullish"
                 broken_high_id = swing_id
         if confirmed_low is not None:
             pivot_index, pivot = confirmed_low
             swing_id = _bar_id(pivot.timestamp)
+            if (
+                pivot.timestamp not in swept_low_ids
+                and current.low < pivot.low
+                and current.close > pivot.low
+            ):
+                events.append(_event(
+                    config,
+                    kind="LIQUIDITY_SWEEP",
+                    direction="bullish",
+                    anchor_timestamp=current.timestamp,
+                    known_at=current.timestamp,
+                    source_bars=(pivot, current),
+                    price_low=current.low,
+                    price_high=pivot.low,
+                    confirmation_lag_bars=0,
+                    parameters={
+                        "pool": "swing_low",
+                        "sweep_type": "low",
+                        "liquidity_level": pivot.low,
+                        "wick_extreme": current.low,
+                        "close_reclaimed": True,
+                    },
+                    identity={
+                        "pool": "swing_low",
+                        "pivot": pivot.timestamp,
+                        "sweep": current.timestamp,
+                        "direction": "bullish",
+                    },
+                ))
+                swept_low_ids.add(pivot.timestamp)
             if current.close < pivot.low and broken_low_id != swing_id:
+                previous_direction = structure_direction
                 events.append(_event(
                     config,
                     kind="BOS",
@@ -611,6 +703,32 @@ def _detect_structure(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cut
                     parameters={"protected_swing": "low", "close_break": True},
                     identity={"protected": pivot.timestamp, "break": current.timestamp, "direction": "bearish"},
                 ))
+                if previous_direction == "bullish":
+                    events.append(_event(
+                        config,
+                        kind="CHoCH",
+                        direction="bearish",
+                        anchor_timestamp=current.timestamp,
+                        known_at=current.timestamp,
+                        source_bars=(pivot, current),
+                        price_low=current.close,
+                        price_high=pivot.low,
+                        confirmation_lag_bars=0,
+                        parameters={
+                            "protected_swing": "low",
+                            "close_break": True,
+                            "break_level": pivot.low,
+                            "prior_structure": previous_direction,
+                            "structure_change": "CHoCH",
+                        },
+                        identity={
+                            "protected": pivot.timestamp,
+                            "break": current.timestamp,
+                            "direction": "bearish",
+                            "prior_structure": previous_direction,
+                        },
+                    ))
+                structure_direction = "bearish"
                 broken_low_id = swing_id
     return events
 
@@ -726,11 +844,15 @@ def build_overlay_packets(config: ChartEngineConfig, events: Sequence[ChartEvent
     groups: dict[str, tuple[str, str, SessionSpec | None]] = {
         "fvg": ("fvg", "ict", None),
         "structure": ("market_structure", "smc", None),
+        "liquidity": ("liquidity_sweep", "smc", None),
+        # Swing confirmation has a right-bar delay; keep it in its own packet
+        # so a zero-delay BOS/CHoCH packet cannot overclaim timing parity.
+        "swing": ("swing_points", "smc", None),
         "session": ("session_range", "ict", config.session),
     }
     packets: dict[str, dict[str, Any]] = {}
     for group, (indicator_id, family, session) in groups.items():
-        selected = [event for event in events if (group == "fvg" and event.kind == "FVG") or (group == "structure" and event.kind in {"SWING", "BOS"}) or (group == "session" and event.kind == "SESSION")]
+        selected = [event for event in events if (group == "fvg" and event.kind == "FVG") or (group == "structure" and event.kind in {"BOS", "CHoCH"}) or (group == "liquidity" and event.kind == "LIQUIDITY_SWEEP") or (group == "swing" and event.kind == "SWING") or (group == "session" and event.kind == "SESSION")]
         if not selected:
             continue
         indicator = _indicator(
@@ -750,8 +872,15 @@ def build_overlay_packets(config: ChartEngineConfig, events: Sequence[ChartEvent
                     {"timestamp": event.anchor_timestamp, "price": event.price_low},
                 ]
                 kind = "zone"
+            elif event.kind == "LIQUIDITY_SWEEP":
+                anchors = [{"timestamp": event.anchor_timestamp, "price": event.parameters["liquidity_level"]}]
+                kind = "marker"
             else:
-                anchors = [{"timestamp": event.anchor_timestamp, "price": event.price_high if event.kind == "BOS" else event.price_low}]
+                if event.kind in {"BOS", "CHoCH"}:
+                    price = event.price_low if event.direction == "bullish" else event.price_high
+                else:
+                    price = event.price_low
+                anchors = [{"timestamp": event.anchor_timestamp, "price": price}]
                 kind = "marker"
             normalized_source = dict(config.source)
             overlay = {
