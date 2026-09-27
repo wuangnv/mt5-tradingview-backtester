@@ -298,6 +298,8 @@ class AITradeMode(BaseModel):
             blockers.append("account_scope_mismatch")
         if symbol is None or symbol not in self.allowed_symbols:
             blockers.append("symbol_scope_mismatch")
+        if budget is not None and (symbol is None or symbol not in budget.allowed_instruments):
+            blockers.append("risk_budget_instrument_scope_mismatch")
         if action is None or action not in self.allowed_actions:
             blockers.append("action_scope_mismatch")
         return tuple(dict.fromkeys(blockers))

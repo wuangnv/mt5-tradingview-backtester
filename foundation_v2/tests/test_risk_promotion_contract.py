@@ -158,6 +158,7 @@ class AITradeModeTests(unittest.TestCase):
         )
         self.assertIn("account_scope_mismatch", blockers)
         self.assertIn("symbol_scope_mismatch", blockers)
+        self.assertIn("risk_budget_instrument_scope_mismatch", blockers)
         self.assertIn("action_scope_mismatch", blockers)
         self.assertFalse(
             mode.can_execute(
