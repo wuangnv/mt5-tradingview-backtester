@@ -1,0 +1,43 @@
+{
+  "schema": "chart-renderer-c3-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline renderer reconciliation lifecycle, visibility/object budgets and stale cleanup",
+  "changed_files": [
+    "trading_workspace_v2/chart_renderer_contract.py",
+    "trading_workspace_v2/__init__.py",
+    "tests/test_chart_renderer_contract.py",
+    "evidence/chart-renderer-c3-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "command": "PYTHONPATH=. uv run pytest -q tests/test_chart_renderer_contract.py tests/test_chart_overlay_contract.py tests/test_chart_intelligence.py tests/test_chart_intelligence_stress.py tests/test_feature_timing_contract.py",
+    "passed": 37,
+    "failed": 0,
+    "warnings": 0,
+    "compileall": "PASS",
+    "diff_check": "PASS"
+  },
+  "properties": {
+    "full_snapshot_reconcile": true,
+    "preview_accept_undo": true,
+    "revision_conflict_guard": true,
+    "tombstone_cleanup": true,
+    "stale_cleanup": true,
+    "object_cap_default": 256,
+    "visible_cap_default": 256,
+    "viewport_filter": true,
+    "deterministic_eviction": true,
+    "provider": false,
+    "broker_actions": false,
+    "ai_execution_capability": false,
+    "holdout_access": false,
+    "trading_edge_claim": false
+  },
+  "not_claimed": [
+    "TradingView Advanced Charts license or SDK integration",
+    "MQL5 terminal object creation or redraw acceptance",
+    "visual/browser QA",
+    "AI provider quality",
+    "broker or live execution",
+    "positive trading expectancy"
+  ]
+}
