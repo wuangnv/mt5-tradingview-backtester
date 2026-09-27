@@ -1,0 +1,50 @@
+{
+  "schema": "chart-dst-fold-policy-v1",
+  "date": "2026-09-27",
+  "mode": "PREP_ONLY",
+  "scope": "explicit Europe/London autumn-fold policy for deterministic session detection",
+  "changed_files": [
+    "trading_workspace_v2/chart_intelligence.py",
+    "tests/test_chart_intelligence_stress.py",
+    "evidence/chart-dst-fold-policy-r1-2026-09-27.md"
+  ],
+  "policies": {
+    "default": "reject",
+    "supported": ["first", "reject", "second"],
+    "first": "include only datetime.fold=0 for ambiguous local wall-clock bars",
+    "second": "include only datetime.fold=1 for ambiguous local wall-clock bars",
+    "reject": "raise ChartIntelligenceError for an observed ambiguous in-session local time"
+  },
+  "fixture": {
+    "timezone": "Europe/London",
+    "transition_date": "2026-10-25",
+    "session": "01:30-01:45",
+    "first_occurrence_start_utc": "2026-10-25T00:30:00Z",
+    "second_occurrence_start_utc": "2026-10-25T01:30:00Z"
+  },
+  "validation": {
+    "focused_command": "PYTHONPATH=. uv run pytest -q tests/test_chart_intelligence.py tests/test_chart_intelligence_stress.py",
+    "focused_passed": 23,
+    "focused_failed": 0,
+    "integration_command": "PYTHONPATH=. uv run pytest -q tests/test_chart_intelligence.py tests/test_chart_intelligence_stress.py tests/test_chart_overlay_contract.py tests/test_chart_renderer_contract.py tests/test_chart_ai_contract.py",
+    "integration_passed": 46,
+    "integration_failed": 0,
+    "compileall": "PASS"
+  },
+  "properties": {
+    "default_fail_closed": true,
+    "explicit_occurrence_selection": true,
+    "round_trip_validated": true,
+    "event_policy_provenance": true,
+    "indicator_policy_hash_input": true,
+    "provider": false,
+    "broker": false,
+    "renderer": false,
+    "order_route": false
+  },
+  "remaining_limits": [
+    "bars that skip the entire repeated hour cannot expose an unobserved ambiguity",
+    "renderer and alert integration remain separate gates"
+  ],
+  "acceptance": "PREP_ONLY"
+}

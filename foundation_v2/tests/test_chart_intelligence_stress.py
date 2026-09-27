@@ -63,6 +63,61 @@ def test_fall_back_dst_uses_the_post_transition_offset() -> None:
     assert events[1].parameters["session_date"] == "2026-10-25"
 
 
+def _fold_bars() -> list[dict]:
+    """London bars spanning both occurrences of the repeated 01:30 hour."""
+
+    stamp = lambda hour, minute: int(datetime(2026, 10, 25, hour, minute, tzinfo=UTC).timestamp())
+    return [
+        _bar(stamp(0, 29), 1.0, 1.1, 0.9, 1.0),  # 01:29 BST, outside
+        _bar(stamp(0, 30), 1.0, 1.1, 0.9, 1.0),  # 01:30 BST, first occurrence
+        _bar(stamp(0, 45), 1.0, 1.1, 0.9, 1.0),  # 01:45 BST, session end
+        _bar(stamp(1, 29), 1.0, 1.1, 0.9, 1.0),  # 01:29 GMT, outside
+        _bar(stamp(1, 30), 1.0, 1.1, 0.9, 1.0),  # 01:30 GMT, second occurrence
+        _bar(stamp(1, 45), 1.0, 1.1, 0.9, 1.0),  # 01:45 GMT, session end
+        _bar(stamp(2, 0), 1.0, 1.1, 0.9, 1.0),  # 02:00 GMT, outside
+    ]
+
+
+def test_fall_back_fold_defaults_to_fail_closed() -> None:
+    config = ChartEngineConfig(
+        "EURUSD",
+        60,
+        session=SessionSpec("LondonFold", "Europe/London", "01:30", "01:45"),
+    )
+    with pytest.raises(ChartIntelligenceError, match="ambiguous DST fold"):
+        run_chart_intelligence(_fold_bars(), config)
+
+
+@pytest.mark.parametrize(
+    ("policy", "start_timestamp", "end_anchor_timestamp"),
+    [
+        ("first", int(datetime(2026, 10, 25, 0, 30, tzinfo=UTC).timestamp()), int(datetime(2026, 10, 25, 0, 30, tzinfo=UTC).timestamp())),
+        ("second", int(datetime(2026, 10, 25, 1, 30, tzinfo=UTC).timestamp()), int(datetime(2026, 10, 25, 1, 30, tzinfo=UTC).timestamp())),
+    ],
+)
+def test_fall_back_fold_explicit_policy_selects_one_occurrence(
+    policy: str,
+    start_timestamp: int,
+    end_anchor_timestamp: int,
+) -> None:
+    config = ChartEngineConfig(
+        "EURUSD",
+        60,
+        session=SessionSpec("LondonFold", "Europe/London", "01:30", "01:45", policy),
+    )
+    events = [event for event in run_chart_intelligence(_fold_bars(), config) if event.kind == "SESSION"]
+    assert [(event.parameters["boundary"], event.anchor_timestamp) for event in events] == [
+        ("start", start_timestamp),
+        ("end", end_anchor_timestamp),
+    ]
+    assert {event.parameters["dst_fold_policy"] for event in events} == {policy}
+
+
+def test_session_rejects_unknown_dst_fold_policy() -> None:
+    with pytest.raises(ChartIntelligenceError, match="dst_fold_policy"):
+        SessionSpec("LondonFold", "Europe/London", "01:30", "01:45", "continuous")
+
+
 def _monotone_fvg_bars(count: int) -> list[dict]:
     # Every third-bar window has a positive bullish gap.  The count is chosen
     # to exercise both sides of the 256-overlay packet limit.

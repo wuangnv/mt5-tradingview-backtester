@@ -45,6 +45,7 @@ from .chart_overlay_contract import (
 
 RULE_VERSION = "smc-core.v1"
 EVENT_SCHEMA = "chart-event-v1"
+_DST_FOLD_POLICIES = frozenset({"reject", "first", "second"})
 
 
 class ChartIntelligenceError(ValueError):
@@ -141,6 +142,7 @@ class SessionSpec:
     timezone: str
     start: str
     end: str
+    dst_fold_policy: str = "reject"
 
     def __post_init__(self) -> None:
         name = _text(self.name, "session.name", maximum=64)
@@ -156,10 +158,15 @@ class SessionSpec:
                 datetime.strptime(text, "%H:%M")
             except ValueError as exc:
                 raise ChartIntelligenceError(f"session.{field} must be HH:MM") from exc
+        policy = _text(self.dst_fold_policy, "session.dst_fold_policy", maximum=16).lower()
+        if policy not in _DST_FOLD_POLICIES:
+            choices = ", ".join(sorted(_DST_FOLD_POLICIES))
+            raise ChartIntelligenceError(f"session.dst_fold_policy must be one of: {choices}")
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "timezone", zone)
         object.__setattr__(self, "start", datetime.strptime(self.start, "%H:%M").strftime("%H:%M"))
         object.__setattr__(self, "end", datetime.strptime(self.end, "%H:%M").strftime("%H:%M"))
+        object.__setattr__(self, "dst_fold_policy", policy)
 
     @property
     def _start_time(self) -> time:
@@ -169,11 +176,48 @@ class SessionSpec:
     def _end_time(self) -> time:
         return datetime.strptime(self.end, "%H:%M").time()
 
+    @staticmethod
+    def _is_ambiguous_local(local_dt: datetime) -> bool:
+        """Return whether an aware local time has two valid UTC occurrences.
+
+        ``datetime.astimezone`` sets ``fold`` for timestamps obtained from UTC,
+        but checking both candidates here keeps the policy safe for callers
+        that construct aware local datetimes themselves.  A nonexistent local
+        time during a spring-forward gap is not considered a fold: neither
+        candidate round-trips to the same wall-clock value.
+        """
+
+        zone = local_dt.tzinfo
+        if zone is None:
+            return False
+        wall_clock = local_dt.replace(tzinfo=None)
+        candidates = tuple(wall_clock.replace(tzinfo=zone, fold=fold) for fold in (0, 1))
+        if candidates[0].utcoffset() == candidates[1].utcoffset():
+            return False
+        return all(
+            candidate.astimezone(UTC).astimezone(zone).replace(tzinfo=None) == wall_clock
+            for candidate in candidates
+        )
+
     def contains(self, local_dt: datetime) -> bool:
         current = local_dt.timetz().replace(tzinfo=None)
         if self._start_time <= self._end_time:
-            return self._start_time <= current < self._end_time
-        return current >= self._start_time or current < self._end_time
+            in_wall_clock = self._start_time <= current < self._end_time
+        else:
+            in_wall_clock = current >= self._start_time or current < self._end_time
+        if not in_wall_clock:
+            return False
+        if not self._is_ambiguous_local(local_dt):
+            return True
+        if self.dst_fold_policy == "reject":
+            raise ChartIntelligenceError(
+                f"session {self.name!r} encountered an ambiguous DST fold at "
+                f"{local_dt.isoformat()}; set session.dst_fold_policy to 'first' or 'second'"
+            )
+        # For an autumn fold, fold=0 is the first occurrence and fold=1 is
+        # the second.  Unambiguous local times were returned above, so an
+        # explicit policy cannot silently include the wrong occurrence.
+        return local_dt.fold == (0 if self.dst_fold_policy == "first" else 1)
 
     def session_date(self, local_dt: datetime) -> date:
         if self._start_time > self._end_time and local_dt.timetz().replace(tzinfo=None) < self._end_time:
@@ -596,7 +640,7 @@ def _detect_session(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cutof
                 price_low=current.low,
                 price_high=current.high,
                 confirmation_lag_bars=0,
-                parameters={"boundary": "start", "session": session.name, "session_date": session_date, "timezone": session.timezone, "start": session.start, "end": session.end},
+                parameters={"boundary": "start", "session": session.name, "session_date": session_date, "timezone": session.timezone, "start": session.start, "end": session.end, "dst_fold_policy": session.dst_fold_policy},
                 identity={"session": session.name, "date": session_date, "boundary": "start"},
             ))
         elif not inside and previous_inside and previous is not None:
@@ -612,7 +656,7 @@ def _detect_session(config: ChartEngineConfig, bars: tuple[ChartBar, ...], cutof
                 price_low=previous.low,
                 price_high=previous.high,
                 confirmation_lag_bars=1,
-                parameters={"boundary": "end", "session": session.name, "session_date": previous_date, "timezone": session.timezone, "start": session.start, "end": session.end},
+                parameters={"boundary": "end", "session": session.name, "session_date": previous_date, "timezone": session.timezone, "start": session.start, "end": session.end, "dst_fold_policy": session.dst_fold_policy},
                 identity={"session": session.name, "date": previous_date, "boundary": "end"},
             ))
         previous_inside = inside
@@ -667,6 +711,7 @@ def _indicator(config: ChartEngineConfig, indicator_id: str, family: str, *, par
     }
     if session is not None:
         spec["session"] = {"name": session.name, "timezone": session.timezone, "start": session.start, "end": session.end}
+        spec["parameters"]["dst_fold_policy"] = session.dst_fold_policy
     return validate_indicator_spec(spec)
 
 
