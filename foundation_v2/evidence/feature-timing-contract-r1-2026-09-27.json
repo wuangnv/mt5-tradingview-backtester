@@ -7,7 +7,7 @@
   "implemented": {
     "fixture_schema": "feature-timing-fixture-v1",
     "oracle": "causal-feature-timing-v1",
-    "families_covered": ["ict", "smc"],
+    "families_covered": ["ict", "smc", "price_action"],
     "timing_rule": "available_at = observed_at + causal_delay_bars * timeframe_seconds",
     "definition_identity": "canonical sorted-key UTF-8 JSON SHA-256",
     "ambiguity_rule": "same-bar stop and take-profit hits are ambiguous, non-executable, and require lower-timeframe ordering"

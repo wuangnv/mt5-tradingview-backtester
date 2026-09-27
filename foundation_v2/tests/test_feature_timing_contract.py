@@ -48,6 +48,12 @@ class FeatureTimingContractTests(unittest.TestCase):
         with self.assertRaisesRegex(FeatureTimingContractError, "dual-hit"):
             validate_feature_timing_fixture(payload)
 
+    def test_prep_only_single_hit_cannot_be_marked_executable(self):
+        payload = load_fixture()
+        payload["samples"][2]["executable"] = True
+        with self.assertRaisesRegex(FeatureTimingContractError, "PREP_ONLY"):
+            validate_feature_timing_fixture(payload)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -31,9 +31,12 @@ def definition_sha256(definition: dict[str, Any]) -> str:
 
     if not isinstance(definition, dict) or not definition:
         raise FeatureTimingContractError("feature definition must be a non-empty object")
-    canonical = json.dumps(
-        definition, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
+    try:
+        canonical = json.dumps(
+            definition, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    except (TypeError, ValueError) as exc:
+        raise FeatureTimingContractError("feature definition must be JSON-serializable") from exc
     return hashlib.sha256(canonical).hexdigest()
 
 
@@ -83,6 +86,8 @@ def validate_feature_timing_fixture(payload: dict[str, Any]) -> dict[str, Any]:
             raise FeatureTimingContractError(f"{prefix} timing values are invalid")
         if definition.get("feature_available_event") not in {"bar_close", "next_bar_open"}:
             raise FeatureTimingContractError(f"{prefix}.feature_available_event is unsupported")
+        if definition["feature_available_event"] == "next_bar_open" and delay < 1:
+            raise FeatureTimingContractError(f"{prefix}.next_bar_open requires a positive causal delay")
         by_id[definition_id] = (definition, definition_sha256(definition))
 
     seen_samples: set[str] = set()
@@ -120,6 +125,8 @@ def validate_feature_timing_fixture(payload: dict[str, Any]) -> dict[str, Any]:
         if dual_hit:
             if outcome != "ambiguous" or executable or sample.get("resolution") != "lower_timeframe_required":
                 raise FeatureTimingContractError(f"{prefix} dual-hit outcome must fail closed")
+        elif executable:
+            raise FeatureTimingContractError(f"{prefix} PREP_ONLY samples cannot be executable")
         elif outcome == "ambiguous":
             raise FeatureTimingContractError(f"{prefix} ambiguous outcome requires dual-hit evidence")
         elif outcome == "stop_loss" and not same_bar["stop_hit"]:
