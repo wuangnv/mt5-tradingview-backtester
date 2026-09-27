@@ -133,6 +133,40 @@ def test_render_objects_retain_causal_overlay_metadata() -> None:
     assert rendered["known_at"] == known_at
     assert rendered["source_bar_ids"] == [f"bar:{anchor['timestamp']}" for anchor in overlay["anchors"]]
     assert rendered["confirmation_lag_bars"] == 0
+    operation = plan.operations[0]
+    assert operation["op"] == "upsert"
+    assert operation["known_at"] == known_at
+    assert operation["source_bar_ids"] == rendered["source_bar_ids"]
+    assert operation["confirmation_lag_bars"] == 0
+    assert plan.next_state.objects["fvg-1"]["known_at"] == known_at
+
+
+def test_causal_metadata_survives_revision_update_and_removal_operations() -> None:
+    payload = packet()
+    overlay = payload["overlays"][0]
+    known_at = max(anchor["timestamp"] for anchor in overlay["anchors"])
+    overlay.update(
+        {
+            "known_at": known_at,
+            "source_bar_ids": [f"bar:{anchor['timestamp']}" for anchor in overlay["anchors"]],
+            "confirmation_lag_bars": 0,
+        }
+    )
+    first = build_render_plan(payload)
+    accepted = accept_overlay(payload, "fvg-1", expected_revision=1)
+    second = build_render_plan(accepted, previous_state=first.next_state)
+    update = second.operations[0]
+    assert update["reason"] == "revision_update"
+    assert update["known_at"] == known_at
+    # An empty full snapshot is outside the packet contract, so retain the
+    # valid overlay but mark it undone to exercise the removal path.
+    undone = undo_overlay(accepted, "fvg-1", expected_revision=2)
+    third = build_render_plan(undone, previous_state=second.next_state)
+    removal = third.operations[0]
+    assert removal["op"] == "remove"
+    assert removal["known_at"] == known_at
+    assert removal["source_bar_ids"] == overlay["source_bar_ids"]
+    assert removal["confirmation_lag_bars"] == 0
 
 
 def test_missing_overlay_is_stale_and_cleanup_is_explicit() -> None:

@@ -31,6 +31,7 @@ RENDERER_MODE = "PREP_ONLY"
 RENDERER_ENGINE = "offline-reconcile"
 _ACTIVE_STATUSES = {"preview", "committed"}
 _LIFECYCLE_STATUSES = {"preview", "committed", "undone"}
+_CAUSAL_FIELDS = ("known_at", "source_bar_ids", "confirmation_lag_bars")
 
 
 class ChartRendererContractError(ValueError):
@@ -267,7 +268,7 @@ def _render_object(
     # Preserve causal event metadata for browser/MQL adapters.  The renderer
     # may project an object, but it must not erase when the event became known
     # or which source bars justified it.
-    for field in ("known_at", "source_bar_ids", "confirmation_lag_bars"):
+    for field in _CAUSAL_FIELDS:
         if field in overlay:
             result[field] = copy.deepcopy(overlay[field])
     return result
@@ -296,6 +297,7 @@ def _operation(
     *,
     reason: str,
     revision: int | None = None,
+    object_value: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     result: dict[str, Any] = {
         "op": op,
@@ -304,6 +306,12 @@ def _operation(
     }
     if revision is not None:
         result["revision"] = revision
+    # Adapters commonly consume the operation stream without retaining the
+    # object snapshot.  Carry the same causal fields on mutating operations so
+    # they cannot accidentally infer event time from a plotted anchor.
+    if object_value is not None and all(field in object_value for field in _CAUSAL_FIELDS):
+        for field in _CAUSAL_FIELDS:
+            result[field] = copy.deepcopy(object_value[field])
     return result
 
 
@@ -538,6 +546,7 @@ def build_render_plan(
                 object_id,
                 reason=remove_reasons[object_id],
                 revision=old["revision"] if old else None,
+                object_value=old,
             )
         )
     for object_id in sorted(next_objects):
@@ -547,15 +556,33 @@ def build_render_plan(
             if old is None or not old.get("visible"):
                 reason = "new" if old is None else "viewport_visible"
                 operations.append(
-                    _operation("upsert", object_id, reason=reason, revision=item["revision"])
+                    _operation(
+                        "upsert",
+                        object_id,
+                        reason=reason,
+                        revision=item["revision"],
+                        object_value=item,
+                    )
                 )
             elif _identity_without_visibility(old) != _identity_without_visibility(item):
                 operations.append(
-                    _operation("upsert", object_id, reason="revision_update", revision=item["revision"])
+                    _operation(
+                        "upsert",
+                        object_id,
+                        reason="revision_update",
+                        revision=item["revision"],
+                        object_value=item,
+                    )
                 )
         elif old is not None and old.get("visible"):
             operations.append(
-                _operation("hide", object_id, reason="viewport_or_visible_cap", revision=item["revision"])
+                _operation(
+                    "hide",
+                    object_id,
+                    reason="viewport_or_visible_cap",
+                    revision=item["revision"],
+                    object_value=item,
+                )
             )
     operations.sort(key=lambda value: (value["object_id"], value["op"], value["reason"]))
 
