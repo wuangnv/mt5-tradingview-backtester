@@ -12,6 +12,7 @@ __all__ = [
     "chart_alert_contract",
     "chart_ui_contract",
     "feature_timing_contract",
+    "zone_lifecycle",
     "risk_promotion_contracts",
     "research",
     "store",

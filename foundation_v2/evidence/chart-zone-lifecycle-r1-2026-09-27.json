@@ -1,0 +1,24 @@
+{
+  "schema": "chart-zone-lifecycle-receipt-v1",
+  "mode": "PREP_ONLY",
+  "engine": "deterministic-offline",
+  "artifact": "chart-zone-lifecycle-r1-2026-09-27",
+  "scope": "offline synthetic order-block and OTE lifecycle contract",
+  "tests": {
+    "command": "PYTHONPATH=foundation_v2 uv run pytest -q foundation_v2/tests/test_zone_lifecycle.py",
+    "passed": 12,
+    "failed": 0
+  },
+  "states": ["confirmed", "mitigated", "invalidated", "expired"],
+  "zone_kinds": ["ORDER_BLOCK", "OTE"],
+  "execution_capability": false,
+  "provider_access": false,
+  "broker_access": false,
+  "holdout_access": false,
+  "limitations": [
+    "not integrated into run_chart_intelligence",
+    "not a Pine/MQL parity receipt",
+    "not a renderer or alert acceptance",
+    "no edge or profitability claim"
+  ]
+}
