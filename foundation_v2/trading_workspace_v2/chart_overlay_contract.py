@@ -27,7 +27,7 @@ DETERMINISTIC_ENGINE = "deterministic-offline"
 
 _FAMILIES = {"ict", "smc", "price_action"}
 _INDICATORS = {
-    "ict": {"fvg", "liquidity_sweep", "session_range", "premium_discount"},
+    "ict": {"fvg", "liquidity_sweep", "session_range", "premium_discount", "ote"},
     "smc": {
         "market_structure",
         "bos",

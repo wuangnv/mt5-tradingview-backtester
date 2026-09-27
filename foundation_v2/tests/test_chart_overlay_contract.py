@@ -174,6 +174,12 @@ class ChartOverlayContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ChartOverlayContractError, "IANA timezone"):
             validate_indicator_spec(invalid)
 
+    def test_ote_is_a_supported_ict_renderer_indicator(self):
+        spec = indicator(indicator_id="ote", version="smc-zones.v1")
+        normalized = validate_indicator_spec(spec)
+        self.assertEqual(normalized["family"], "ict")
+        self.assertEqual(normalized["indicator_id"], "ote")
+
     def test_repaint_provisional_is_preview_only_and_delay_covers_confirmation(self):
         spec = indicator(
             family="smc",

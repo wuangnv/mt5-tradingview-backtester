@@ -1,0 +1,41 @@
+{
+  "schema": "chart-zone-integration-receipt-v1",
+  "date": "2026-09-27",
+  "mode": "PREP_ONLY",
+  "engine": "deterministic-offline",
+  "scope": {
+    "orchestrator": "run_chart_intelligence_with_zones",
+    "renderer": "build_zone_overlay_packets",
+    "alert_projection": "ZoneAnalysisResult.alert_events",
+    "ote_indicator": "ict.ote"
+  },
+  "semantics": {
+    "existing_chart_event_v1_preserved": true,
+    "existing_alert_matching_and_deduplication_preserved": true,
+    "alert_projected_states": ["confirmed", "invalidated"],
+    "renderer_active_states": ["confirmed", "mitigated"],
+    "terminal_states_omitted_from_renderer": ["invalidated", "expired"]
+  },
+  "capabilities": {
+    "provider": false,
+    "broker": false,
+    "order": false,
+    "fill": false,
+    "live_execution": false,
+    "holdout": false
+  },
+  "verification": {
+    "command": "uv run --project foundation_v2 --with tzdata pytest -q foundation_v2/tests/test_zone_integration.py foundation_v2/tests/test_zone_lifecycle.py foundation_v2/tests/test_chart_overlay_contract.py",
+    "focused_tests_passed": 28,
+    "integration_tests_passed": 5,
+    "lifecycle_tests_passed": 7,
+    "overlay_contract_tests_passed": 16,
+    "compileall": "passed",
+    "git_diff_check": "passed",
+    "tzdata_note": "ephemeral test dependency; persistent environment and lockfile unchanged"
+  },
+  "residual": [
+    "Browser/TradingView renderer must consume validated packets and reconcile terminal omissions.",
+    "OTE leg selection remains explicit; no ambiguous leg inference is performed."
+  ]
+}

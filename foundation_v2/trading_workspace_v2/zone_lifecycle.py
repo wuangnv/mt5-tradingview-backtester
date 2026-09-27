@@ -22,7 +22,20 @@ import json
 import math
 from typing import Any, Iterable, Literal, Mapping, Sequence
 
-from .chart_intelligence import ChartBar
+from .chart_intelligence import (
+    ChartBar,
+    ChartEngineConfig,
+    ChartEvent,
+    run_chart_intelligence,
+)
+from .chart_overlay_contract import (
+    ChartOverlayContractError,
+    OVERLAY_SCHEMA,
+    PACKET_SCHEMA,
+    cache_key,
+    definition_sha256,
+    validate_overlay_packet,
+)
 
 
 ZONE_SPEC_SCHEMA = "chart-zone-v1"
@@ -333,6 +346,39 @@ class ZoneTransition:
             "parameters": dict(self.parameters),
             "identity": dict(self.identity),
         }
+
+
+@dataclass(frozen=True, slots=True)
+class ZoneAnalysisResult:
+    """Chart events plus causal zone projections for one deterministic replay.
+
+    The existing chart detector remains the source of truth for structure
+    events.  Zone failures are retained as explicit rejections so an
+    incomplete origin/leg cannot silently disappear from a chart run.
+    """
+
+    chart_events: tuple[ChartEvent, ...]
+    zone_transitions: tuple[ZoneTransition, ...]
+    rejected_zone_events: tuple[Mapping[str, Any], ...]
+    cutoff_timestamp: int
+
+    def alert_events(self) -> tuple[dict[str, Any], ...]:
+        """Project only alert-schema-compatible lifecycle states.
+
+        The current alert contract accepts ``confirmed`` and
+        ``invalidated`` as event states; ``mitigated`` and ``expired`` remain
+        renderer/history-only states.  No alert rule semantics are changed by
+        this adapter.
+        """
+
+        return tuple(
+            event
+            for event in (
+                zone_transition_to_alert_event(transition)
+                for transition in self.zone_transitions
+            )
+            if event is not None
+        )
 
 
 def _zone_id(*, config: ZoneLifecycleConfig, kind: str, direction: str, identity: Mapping[str, Any]) -> str:
@@ -839,6 +885,354 @@ def build_ote_lifecycle(
     return evaluate_zone_lifecycle(normalized, zone, config, cutoff_timestamp=cutoff_timestamp)
 
 
+_ALERT_EVENT_FIELDS = (
+    "schema",
+    "event_id",
+    "kind",
+    "direction",
+    "instrument_id",
+    "timeframe_seconds",
+    "anchor_timestamp",
+    "known_at",
+    "source_bar_ids",
+    "price_low",
+    "price_high",
+    "state",
+    "confirmation_lag_bars",
+    "rule_version",
+    "parameters",
+    "identity",
+)
+
+
+def zone_transition_to_alert_event(
+    transition: ZoneTransition,
+) -> dict[str, Any] | None:
+    """Convert an alertable zone transition to ``chart-event-v1``.
+
+    ``mitigated`` and ``expired`` are deliberately omitted because the
+    existing alert contract does not define those states.  The projection
+    strips zone-only fields such as ``zone_id``, ``mode`` and ``engine`` so a
+    current alert validator can consume it unchanged.
+    """
+
+    if not isinstance(transition, ZoneTransition):
+        raise ZoneLifecycleError("transition must be a ZoneTransition")
+    if transition.state not in {"confirmed", "invalidated"}:
+        return None
+    raw = transition.as_dict()
+    projected = {field: raw[field] for field in _ALERT_EVENT_FIELDS}
+    projected["schema"] = "chart-event-v1"
+    return projected
+
+
+def _rejection(*, kind: str, reason: str, event_id: str | None = None) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "schema": "chart-zone-rejection-v1",
+        "mode": PREP_ONLY_MODE,
+        "engine": ZONE_ENGINE,
+        "kind": kind,
+        "reason": _text(reason, "reason", maximum=512),
+    }
+    if event_id is not None:
+        payload["event_id"] = _text(event_id, "event_id", maximum=256)
+    return payload
+
+
+def _append_unique_transitions(
+    target: list[ZoneTransition],
+    additions: Iterable[ZoneTransition],
+    *,
+    kind: str,
+    rejected: list[Mapping[str, Any]],
+    event_id: str | None = None,
+) -> None:
+    existing = {item.event_id for item in target}
+    for transition in additions:
+        if transition.event_id in existing:
+            rejected.append(
+                _rejection(
+                    kind=kind,
+                    event_id=event_id,
+                    reason=f"duplicate transition event_id {transition.event_id}",
+                )
+            )
+            continue
+        target.append(transition)
+        existing.add(transition.event_id)
+
+
+def _ote_request(
+    bars: tuple[ChartBar, ...],
+    raw: Mapping[str, Any],
+    config: ZoneLifecycleConfig,
+    *,
+    cutoff_timestamp: int,
+) -> tuple[ZoneTransition, ...]:
+    if not isinstance(raw, Mapping):
+        raise ZoneLifecycleError("OTE request must be an object")
+    request = dict(raw)
+    _walk_forbidden(request, "ote_request")
+    allowed = {
+        "direction",
+        "leg_start_timestamp",
+        "leg_end_timestamp",
+        "retracement_min",
+        "retracement_max",
+        "known_at",
+    }
+    unknown = set(request) - allowed
+    if unknown:
+        raise ZoneLifecycleError(f"OTE request has unsupported fields: {sorted(unknown)}")
+    required = {"direction", "leg_start_timestamp", "leg_end_timestamp"}
+    missing = required - set(request)
+    if missing:
+        raise ZoneLifecycleError(f"OTE request missing fields: {sorted(missing)}")
+    kwargs: dict[str, Any] = {
+        "config": config,
+        "direction": request["direction"],
+        "leg_start_timestamp": request["leg_start_timestamp"],
+        "leg_end_timestamp": request["leg_end_timestamp"],
+        "cutoff_timestamp": cutoff_timestamp,
+    }
+    for field in ("retracement_min", "retracement_max", "known_at"):
+        if field in request:
+            kwargs[field] = request[field]
+    return build_ote_lifecycle(bars, **kwargs)
+
+
+def run_chart_intelligence_with_zones(
+    bars: Iterable[ChartBar | Mapping[str, Any]],
+    chart_config: ChartEngineConfig,
+    zone_config: ZoneLifecycleConfig,
+    *,
+    cutoff_timestamp: int | None = None,
+    ote_legs: Iterable[Mapping[str, Any]] = (),
+) -> ZoneAnalysisResult:
+    """Run the canonical chart detector and additive OB/OTE lifecycle seam.
+
+    Only confirmed BOS events can create automatic OB zones.  OTE zones require
+    an explicit, already-confirmed leg request; no leg is inferred from future
+    bars.  A rejected zone is returned as data while the base chart event stream
+    remains intact, allowing callers to render structure even when a zone has
+    no deterministic origin.
+    """
+
+    normalized = _normalize_bars(bars)
+    if (
+        chart_config.instrument_id != zone_config.instrument_id
+        or chart_config.timeframe_seconds != zone_config.timeframe_seconds
+    ):
+        raise ZoneLifecycleError("chart and zone config scope must match")
+    requested_cutoff = (
+        normalized[-1].timestamp
+        if cutoff_timestamp is None
+        else _strict_int(cutoff_timestamp, "cutoff_timestamp", minimum=1)
+    )
+    if requested_cutoff < normalized[0].timestamp:
+        raise ZoneLifecycleError("cutoff_timestamp precedes first bar")
+    # A future cutoff is harmless in the base detector; the available replay
+    # prefix is still bounded by the latest supplied closed bar.
+    effective_cutoff = min(requested_cutoff, normalized[-1].timestamp)
+    chart_events = run_chart_intelligence(
+        normalized,
+        chart_config,
+        cutoff_timestamp=requested_cutoff,
+    )
+    transitions: list[ZoneTransition] = []
+    rejected: list[Mapping[str, Any]] = []
+
+    for event in chart_events:
+        if event.kind != "BOS" or event.state != "confirmed":
+            continue
+        try:
+            additions = build_order_block_lifecycle(
+                normalized,
+                event,
+                zone_config,
+                cutoff_timestamp=effective_cutoff,
+            )
+        except ZoneLifecycleError as exc:
+            rejected.append(_rejection(kind="ORDER_BLOCK", event_id=event.event_id, reason=str(exc)))
+            continue
+        _append_unique_transitions(
+            transitions,
+            additions,
+            kind="ORDER_BLOCK",
+            rejected=rejected,
+            event_id=event.event_id,
+        )
+
+    try:
+        requested_ote_legs = list(ote_legs)
+    except TypeError as exc:
+        raise ZoneLifecycleError("ote_legs must be an iterable of objects") from exc
+    if len(requested_ote_legs) > 256:
+        raise ZoneLifecycleError("ote_legs cannot exceed 256 items")
+    for index, request in enumerate(requested_ote_legs):
+        try:
+            additions = _ote_request(
+                normalized,
+                request,
+                zone_config,
+                cutoff_timestamp=effective_cutoff,
+            )
+        except ZoneLifecycleError as exc:
+            rejected.append(_rejection(kind="OTE", reason=f"legs[{index}]: {exc}"))
+            continue
+        _append_unique_transitions(
+            transitions,
+            additions,
+            kind="OTE",
+            rejected=rejected,
+        )
+
+    transitions.sort(key=lambda item: (item.known_at, item.kind, item.event_id))
+    rejected.sort(key=lambda item: (str(item.get("kind", "")), str(item.get("event_id", "")), str(item.get("reason", ""))))
+    return ZoneAnalysisResult(
+        chart_events=tuple(chart_events),
+        zone_transitions=tuple(transitions),
+        rejected_zone_events=tuple(dict(item) for item in rejected),
+        cutoff_timestamp=effective_cutoff,
+    )
+
+
+def build_zone_overlay_packets(
+    config: ChartEngineConfig,
+    transitions: Sequence[ZoneTransition],
+    *,
+    cutoff_timestamp: int | None = None,
+) -> dict[str, dict[str, Any]]:
+    """Build validated renderer packets for the latest active zone states.
+
+    Terminal zones are intentionally absent from the returned packet.  A
+    stateful renderer should reconcile by removing an old object when its zone
+    ID disappears; emitting an invalidated rectangle would visually imply that
+    it remains actionable.
+    """
+
+    if not isinstance(transitions, Sequence):
+        raise ZoneLifecycleError("transitions must be a sequence")
+    if not transitions:
+        return {}
+    typed = []
+    for index, transition in enumerate(transitions):
+        if not isinstance(transition, ZoneTransition):
+            raise ZoneLifecycleError(f"transitions[{index}] must be a ZoneTransition")
+        if (
+            transition.instrument_id != config.instrument_id
+            or transition.timeframe_seconds != config.timeframe_seconds
+        ):
+            raise ZoneLifecycleError("zone transition scope does not match chart config")
+        typed.append(transition)
+    cutoff = (
+        max(item.known_at for item in typed)
+        if cutoff_timestamp is None
+        else _strict_int(cutoff_timestamp, "cutoff_timestamp", minimum=1)
+    )
+    visible = [item for item in typed if item.known_at <= cutoff]
+    if not visible:
+        return {}
+    latest_by_zone: dict[str, ZoneTransition] = {}
+    for item in sorted(visible, key=lambda value: (value.known_at, value.event_id)):
+        latest_by_zone[item.zone_id] = item
+    active = [
+        item
+        for item in latest_by_zone.values()
+        if item.state in {"confirmed", "mitigated"}
+    ]
+    if not active:
+        return {}
+    groups = {
+        "ORDER_BLOCK": ("order_block", "smc"),
+        "OTE": ("ote", "ict"),
+    }
+    packets: dict[str, dict[str, Any]] = {}
+    for kind, (indicator_id, family) in groups.items():
+        selected = [item for item in active if item.kind == kind]
+        if not selected:
+            continue
+        rule_versions = {item.rule_version for item in selected}
+        if len(rule_versions) != 1:
+            raise ZoneLifecycleError(f"mixed rule versions in {kind} zone packet")
+        first = selected[0]
+        source = dict(config.source)
+        max_lag = max(max(item.confirmation_lag_bars, 1) for item in selected)
+        indicator = {
+            "schema": "indicator-definition-v1",
+            "mode": PREP_ONLY_MODE,
+            "engine": "deterministic-offline",
+            "family": family,
+            "indicator_id": indicator_id,
+            "version": first.rule_version,
+            "timezone": config.timezone,
+            "display_timeframe_seconds": config.timeframe_seconds,
+            "source_timeframe_seconds": config.timeframe_seconds,
+            "mtf_policy": "same_timeframe",
+            "lookahead": "closed_only",
+            "causal_delay_bars": max_lag,
+            "repaint": {"flag": False, "state": "confirmed", "confirmation_bars": 0},
+            "parameters": {
+                "rule_version": first.rule_version,
+                "lifecycle_states": ["confirmed", "mitigated"],
+                "mitigation_mode": first.parameters.get("mitigation_mode", "touch"),
+                "invalidation_mode": first.parameters.get("invalidation_mode", "close_through"),
+            },
+        }
+        indicator_hash = definition_sha256(indicator)
+        overlays: list[dict[str, Any]] = []
+        for item in sorted(selected, key=lambda value: (value.known_at, value.event_id)):
+            anchors = [
+                {"timestamp": item.anchor_timestamp, "price": item.price_low},
+                {"timestamp": item.anchor_timestamp, "price": item.price_high},
+            ]
+            normalized_source = dict(source)
+            overlays.append(
+                {
+                    "schema": OVERLAY_SCHEMA,
+                    "mode": PREP_ONLY_MODE,
+                    "overlay_id": item.event_id,
+                    "kind": "zone",
+                    "instrument_id": item.instrument_id,
+                    "display_timeframe_seconds": item.timeframe_seconds,
+                    "cutoff_timestamp": cutoff,
+                    "source": normalized_source,
+                    "anchors": anchors,
+                    "confidence": {"state": "known", "value": 1.0},
+                    "repaint": {"flag": False, "state": "confirmed", "confirmation_bars": 0},
+                    "known_at": item.known_at,
+                    "source_bar_ids": list(item.source_bar_ids),
+                    "confirmation_lag_bars": item.confirmation_lag_bars,
+                    "status": "committed",
+                    "revision": 1,
+                    "indicator_sha256": indicator_hash,
+                    "cache_key": cache_key(
+                        indicator=indicator,
+                        source=normalized_source,
+                        instrument_id=item.instrument_id,
+                        display_timeframe_seconds=item.timeframe_seconds,
+                        cutoff_timestamp=cutoff,
+                    ),
+                    "label": f"{item.kind} · {item.state.upper()} · {item.direction} · zone:{item.zone_id[:12]}",
+                }
+            )
+        payload = {
+            "schema": PACKET_SCHEMA,
+            "mode": PREP_ONLY_MODE,
+            "engine": "deterministic-offline",
+            "indicator": indicator,
+            "indicator_sha256": indicator_hash,
+            "source": source,
+            "cutoff_timestamp": cutoff,
+            "overlays": overlays,
+        }
+        try:
+            packets[kind.lower()] = validate_overlay_packet(payload)
+        except ChartOverlayContractError as exc:
+            raise ZoneLifecycleError(f"zone overlay packet validation failed for {kind}") from exc
+    return packets
+
+
 __all__ = [
     "PREP_ONLY_MODE",
     "ZONE_ENGINE",
@@ -847,12 +1241,16 @@ __all__ = [
     "ZONE_TRANSITION_SCHEMA",
     "ZoneLifecycleConfig",
     "ZoneLifecycleError",
+    "ZoneAnalysisResult",
     "ZoneSpec",
     "ZoneTransition",
+    "build_zone_overlay_packets",
     "build_order_block_lifecycle",
     "build_order_block_spec",
     "build_ote_lifecycle",
     "build_ote_spec",
     "evaluate_zone_lifecycle",
+    "run_chart_intelligence_with_zones",
+    "zone_transition_to_alert_event",
     "validate_zone_transition",
 ]
