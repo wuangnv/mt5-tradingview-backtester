@@ -92,6 +92,49 @@ def test_pivot_tie_policy_is_named_and_deterministic_for_equal_right_value() -> 
         ChartEngineConfig("EURUSD", 60, pivot_tie_policy="pine_unknown")
 
 
+def test_pivot_tie_policy_applies_symmetrically_to_equal_lows() -> None:
+    start = 1_700_100_050
+    equal_right = [
+        bar(start, 10.0, 11.0, 10.0, 10.5),
+        bar(start + 1, 14.0, 15.0, 9.0, 14.0),
+        # Equal right low: the earliest candidate remains the pivot.
+        bar(start + 2, 12.0, 14.0, 9.0, 12.0),
+        bar(start + 3, 13.0, 13.0, 10.0, 13.0),
+    ]
+    config = ChartEngineConfig(
+        "EURUSD",
+        60,
+        swing_left=1,
+        swing_right=1,
+        pivot_tie_policy="left_strict_right_inclusive",
+        source={"kind": "synthetic", "id": "parity-low-tie"},
+    )
+
+    right_equal_lows = [
+        event
+        for event in run_chart_intelligence(equal_right, config)
+        if event.kind == "SWING" and event.parameters["swing"] == "low"
+    ]
+    assert [(event.anchor_timestamp, event.parameters["tie_policy"]) for event in right_equal_lows] == [
+        (start + 1, "left_strict_right_inclusive"),
+    ]
+
+    equal_left = [
+        bar(start + 10, 10.0, 11.0, 10.0, 10.5),
+        bar(start + 11, 14.0, 15.0, 9.0, 14.0),
+        # Equal left low: a later candidate is rejected rather than replacing
+        # the already eligible earliest pivot.
+        bar(start + 12, 12.0, 14.0, 9.0, 12.0),
+        bar(start + 13, 13.0, 13.0, 10.0, 13.0),
+    ]
+    left_equal_lows = [
+        event.anchor_timestamp
+        for event in run_chart_intelligence(equal_left, config)
+        if event.kind == "SWING" and event.parameters["swing"] == "low"
+    ]
+    assert left_equal_lows == [start + 11]
+
+
 def test_pivot_plot_backfill_never_becomes_visible_before_confirmation_cutoff() -> None:
     start = 1_700_100_100
     bars = [
