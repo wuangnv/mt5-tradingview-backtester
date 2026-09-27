@@ -4,6 +4,7 @@ __all__ = [
     "api",
     "artifacts",
     "contracts",
+    "chart_overlay_contract",
     "feature_timing_contract",
     "risk_promotion_contracts",
     "research",

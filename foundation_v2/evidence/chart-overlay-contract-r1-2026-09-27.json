@@ -1,0 +1,30 @@
+{
+  "schema": "chart-overlay-contract-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline SMC/ICT indicator metadata and AI-on-chart overlay boundary",
+  "changed_files": [
+    "foundation_v2/trading_workspace_v2/chart_overlay_contract.py",
+    "foundation_v2/trading_workspace_v2/__init__.py",
+    "foundation_v2/tests/test_chart_overlay_contract.py",
+    "foundation_v2/evidence/chart-overlay-contract-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "command": "uv run python -m pytest -q tests/test_chart_overlay_contract.py tests/test_feature_timing_contract.py",
+    "passed": 13,
+    "failed": 0,
+    "warnings": 0
+  },
+  "full_suite": {
+    "status": "not_claimed",
+    "reason": "F7ProductSliceTests requires TW_V2_DATABASE_URL in the current process; this contract is local and does not provision or mutate PostgreSQL"
+  },
+  "capabilities": {
+    "deterministic_engine": "metadata_boundary_only",
+    "smc_ict_calculation": false,
+    "ai_provider": false,
+    "broker_actions": false,
+    "holdout_access": false,
+    "live_execution": false,
+    "overlay_cap": 256
+  }
+}
