@@ -396,9 +396,54 @@ def build_input_snapshot(events: Iterable[Any], cutoff_timestamp: int) -> dict[s
 
 
 def input_snapshot_sha256(snapshot: Mapping[str, Any]) -> str:
-    if not isinstance(snapshot, Mapping) or snapshot.get("schema") != ALERT_INPUT_SCHEMA:
+    normalized = _validate_input_snapshot(snapshot)
+    return _sha256(normalized, maximum=_MAX_INPUT_BYTES)
+
+
+def _validate_input_snapshot(snapshot: Mapping[str, Any]) -> dict[str, Any]:
+    if not isinstance(snapshot, Mapping):
+        raise ChartAlertContractError("input snapshot must be an object")
+    raw = dict(snapshot)
+    _walk_forbidden(raw, "input_snapshot")
+    required = {"schema", "cutoff_timestamp", "event_count", "events"}
+    missing = required - set(raw)
+    if missing:
+        raise ChartAlertContractError(f"input snapshot missing fields: {sorted(missing)}")
+    unknown = set(raw) - required
+    if unknown:
+        raise ChartAlertContractError(f"input snapshot has unsupported fields: {sorted(unknown)}")
+    if raw["schema"] != ALERT_INPUT_SCHEMA:
         raise ChartAlertContractError("input snapshot schema is unsupported")
-    return _sha256(dict(snapshot), maximum=_MAX_INPUT_BYTES)
+    cutoff = _strict_int(raw["cutoff_timestamp"], "input_snapshot.cutoff_timestamp", minimum=1)
+    count = _strict_int(raw["event_count"], "input_snapshot.event_count", minimum=0, maximum=_MAX_EVENTS)
+    fingerprints = raw["events"]
+    if not isinstance(fingerprints, list) or len(fingerprints) != count:
+        raise ChartAlertContractError("input snapshot event_count does not match events")
+    normalized_events: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for index, item in enumerate(fingerprints):
+        if not isinstance(item, Mapping):
+            raise ChartAlertContractError(f"input_snapshot.events[{index}] must be an object")
+        if set(item) != {"event_id", "event_sha256", "known_at"}:
+            raise ChartAlertContractError(f"input_snapshot.events[{index}] has unsupported fields")
+        event_id = _text(item.get("event_id"), f"input_snapshot.events[{index}].event_id", maximum=256)
+        if event_id in seen_ids:
+            raise ChartAlertContractError("input snapshot contains duplicate event IDs")
+        seen_ids.add(event_id)
+        digest = _validate_digest(item.get("event_sha256"), f"input_snapshot.events[{index}].event_sha256")
+        known_at = _strict_int(item.get("known_at"), f"input_snapshot.events[{index}].known_at", minimum=1)
+        if known_at > cutoff:
+            raise ChartAlertContractError("input snapshot contains an event beyond cutoff")
+        normalized_events.append({"event_id": event_id, "event_sha256": digest, "known_at": known_at})
+    expected_order = sorted(normalized_events, key=lambda item: (item["known_at"], item["event_id"]))
+    if normalized_events != expected_order:
+        raise ChartAlertContractError("input snapshot events must be sorted causally")
+    return {
+        "schema": ALERT_INPUT_SCHEMA,
+        "cutoff_timestamp": cutoff,
+        "event_count": count,
+        "events": normalized_events,
+    }
 
 
 def _alert_id(rule_digest: str, event_id: str) -> str:
@@ -445,6 +490,19 @@ class AlertLedger:
     def from_mapping(cls, payload: Mapping[str, Any]) -> "AlertLedger":
         if not isinstance(payload, Mapping):
             raise ChartAlertContractError("ledger must be an object")
+        allowed = {
+            "schema",
+            "mode",
+            "engine",
+            "rule_sha256",
+            "delivered_alert_ids",
+            "expired_alert_ids",
+            "generation",
+            "last_cutoff_timestamp",
+        }
+        unknown = set(payload) - allowed
+        if unknown:
+            raise ChartAlertContractError(f"ledger has unsupported fields: {sorted(unknown)}")
         if payload.get("schema") != ALERT_LEDGER_SCHEMA or payload.get("mode") != PREP_ONLY_MODE or payload.get("engine") != ALERT_ENGINE:
             raise ChartAlertContractError("ledger schema or mode is unsupported")
         return cls(
@@ -626,6 +684,18 @@ def validate_alert_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
     expires = _strict_int(raw["expires_at_timestamp"], "receipt.expires_at_timestamp", minimum=1)
     if event_known_at != event["known_at"] or emitted != event_known_at or event_known_at > cutoff or expires <= event_known_at:
         raise ChartAlertContractError("receipt timestamps violate causal or expiry ordering")
+    if snapshot.get("cutoff_timestamp") != cutoff:
+        raise ChartAlertContractError("receipt input snapshot cutoff mismatch")
+    fingerprints = snapshot.get("events")
+    if not isinstance(fingerprints, list):
+        raise ChartAlertContractError("receipt input snapshot events must be an array")
+    matching_fingerprints = [item for item in fingerprints if isinstance(item, Mapping) and item.get("event_id") == event_id]
+    if len(matching_fingerprints) != 1 or matching_fingerprints[0].get("event_sha256") != _sha256(event):
+        raise ChartAlertContractError("receipt input snapshot does not bind the event snapshot")
+    if snapshot.get("event_count") != len(fingerprints):
+        raise ChartAlertContractError("receipt input snapshot event_count mismatch")
+    if expires != event_known_at + normalized_rule["ttl_seconds"]:
+        raise ChartAlertContractError("receipt expiry does not match rule TTL")
     expected_alert_id = _alert_id(rule_digest, event_id)
     if alert_id != expected_alert_id:
         raise ChartAlertContractError("receipt.alert_id does not match rule/event identity")

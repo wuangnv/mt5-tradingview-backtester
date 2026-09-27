@@ -177,6 +177,26 @@ def test_tampered_receipt_cannot_gain_order_or_fill_effect() -> None:
         validate_alert_receipt(tampered)
 
 
+def test_tampered_receipt_cannot_detach_input_event_or_expiry() -> None:
+    receipt = evaluate_chart_alerts(rule(), [event()], 1_700_000_120).emitted[0]
+    tampered = copy.deepcopy(receipt)
+    tampered["input_snapshot"]["cutoff_timestamp"] += 1
+    tampered["input_snapshot_sha256"] = input_snapshot_sha256(tampered["input_snapshot"])
+    with pytest.raises(ChartAlertContractError, match="cutoff mismatch"):
+        validate_alert_receipt(tampered)
+    tampered = copy.deepcopy(receipt)
+    tampered["expires_at_timestamp"] += 1
+    with pytest.raises(ChartAlertContractError, match="expiry"):
+        validate_alert_receipt(tampered)
+
+
+def test_ledger_rejects_unknown_state_fields() -> None:
+    payload = AlertLedger.empty(rule()).as_dict()
+    payload["execution_capability"] = False
+    with pytest.raises(ChartAlertContractError, match="unsupported fields"):
+        AlertLedger.from_mapping(payload)
+
+
 def test_ledger_round_trip_is_stable_and_empty_ledger_binds_rule() -> None:
     empty = AlertLedger.empty(rule())
     restored = AlertLedger.from_mapping(empty.as_dict())
