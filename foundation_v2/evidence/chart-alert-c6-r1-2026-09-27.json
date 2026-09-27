@@ -1,0 +1,29 @@
+{
+  "assertions": {
+    "broker": false,
+    "confirmed_only": true,
+    "execution_capability": false,
+    "expiry_is_causal_and_bounded": true,
+    "external_delivery": false,
+    "fill_effect": "none",
+    "order_effect": "none",
+    "provider": false,
+    "reconnect_dedupe": true,
+    "replay_dedupe": true,
+    "rule_and_input_snapshots_embedded": true
+  },
+  "engine": "offline-advisory",
+  "focused_validation": {
+    "command": "$env:PYTHONPATH='.'; uv run pytest -q tests/test_chart_alert_contract.py",
+    "result": "10 passed"
+  },
+  "input_snapshot_sha256": "7d949efe4e20cc62393aa037a59041f10a59e338946abb8e379540cdfbf674f1",
+  "mode": "PREP_ONLY",
+  "rule_sha256": "b28cde8e0b77f2ed26333a47d3f32135f5bccb825cb16b9192cd9d027a5d402a",
+  "sample_alert_id": "6c3284e6bbd94e4df6edaf2d30f44dea65bf54fcdaa031a9914fcafcbf981981",
+  "sample_dedupe_key": "b28cde8e0b77f2ed26333a47d3f32135f5bccb825cb16b9192cd9d027a5d402a:evt:fvg-1",
+  "sample_expires_at_timestamp": 1700000420,
+  "schema": "chart-alert-c6-r1-receipt-v1",
+  "scope": "local-advisory-only",
+  "status": "PREP_ONLY"
+}
