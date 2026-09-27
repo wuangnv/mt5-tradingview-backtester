@@ -1,0 +1,61 @@
+{
+  "schema": "PS03-R1-DESCENDANT-RECONCILIATION-v1",
+  "status": "PASS_SCOPED",
+  "scope": "MT5 PS-03/R1 CSV formula-injection hardening on the accepted descendant HEAD",
+  "generated_utc": "2026-09-27T02:35:44Z",
+  "repository": "projects/mt5-tradingview-backtester",
+  "accepted_base": {
+    "commit": "665552177892d50f7df4fab3d5a31a538b8ac403",
+    "message": "fix: harden prop report csv export",
+    "paths": [
+      "foundation_v2/trading_workspace_v2/prop_report.py",
+      "foundation_v2/tests/test_ps03_prop_reports.py"
+    ]
+  },
+  "descendant_head": {
+    "commit": "50a28d7b58088c8ed1ef2f328bc4c37e9be6595a",
+    "message": "feat(ui): pin shared productivity controls"
+  },
+  "targeted_file_hashes": {
+    "foundation_v2/trading_workspace_v2/prop_report.py": {
+      "accepted_base_sha256": "ef13273ec9a93775bc4064a84823c278162d561846b2bd7bf3ec92da7993856d",
+      "descendant_head_sha256": "651600a4bcaa6271038bce10739e5fbefc658541b967fcff0beda2b452f6db66"
+    },
+    "foundation_v2/tests/test_ps03_prop_reports.py": {
+      "accepted_base_sha256": "f7459efc297ee42b283cde9aa744eeb5b42698de0a34454cefec87e06364b836",
+      "descendant_head_sha256": "0a259cc9b131548de34edc4115291f7bb342ccb34573c027257627380d2ff739"
+    }
+  },
+  "targeted_diff_reconciliation": {
+    "paths_changed_since_accepted_base": [
+      "foundation_v2/trading_workspace_v2/prop_report.py",
+      "foundation_v2/tests/test_ps03_prop_reports.py"
+    ],
+    "production_change": "Adds replay_cursor extraction from the persisted cursor only when replay_binding is present, then exposes it under report provenance.",
+    "test_change": "Adds the exact replay_cursor assertion to the hindsight replay report test.",
+    "r1_formula_neutralization_unchanged": true,
+    "numeric_negative_field_preservation_unchanged": true,
+    "replay_cursor_only_for_targeted_paths": true
+  },
+  "validation": {
+    "command": "PYTHONPATH=.;.. uv run --with pytest python -m pytest -q tests/test_ps03_prop_reports.py",
+    "result": "4 passed, 1 skipped, 2 warnings",
+    "database_api_test": "SKIPPED: TW_V2_DATABASE_URL was not set; no PostgreSQL service was started",
+    "formula_injection_cases": ["=", "+", "-", "@", "TAB", "CR"],
+    "numeric_negative_cases": ["balance=-100.25", "equity=-50.5"]
+  },
+  "prior_receipt_metadata_reconciliation": {
+    "receipt": "foundation_v2/evidence/workspace-next-stage-report-replay-r1/receipt.json",
+    "declared_source_head": "665552177892d50f7df4fab3d5a31a538b8ac403",
+    "declared_target_hashes_match": "descendant HEAD (the hashes are not the accepted-base hashes)",
+    "action": "This receipt anchors the actual descendant HEAD and separates the source-head metadata mismatch from the scoped code/test result."
+  },
+  "safety": {
+    "broker_contacted": false,
+    "database_started": false,
+    "state_or_ledger_modified": false,
+    "unrelated_worktree_wip_staged": false
+  },
+  "residual": "This is a focused descendant reconciliation only; disposable PostgreSQL/API/UI acceptance, broker/live, holdout, and broader product gates remain separately scoped."
+}
+
