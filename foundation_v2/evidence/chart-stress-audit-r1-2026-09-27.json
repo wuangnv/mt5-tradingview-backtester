@@ -1,0 +1,51 @@
+{
+  "schema": "chart-stress-audit-v1",
+  "date": "2026-09-27",
+  "mode": "PREP_ONLY",
+  "scope": {
+    "engine": "trading_workspace_v2.chart_intelligence",
+    "contract": "trading_workspace_v2.chart_overlay_contract",
+    "provider": false,
+    "broker": false,
+    "network": false,
+    "renderer": false,
+    "order_route": false
+  },
+  "focused_validation": {
+    "command": "PYTHONPATH=. uv run pytest -q tests/test_chart_intelligence.py tests/test_chart_overlay_contract.py tests/test_chart_intelligence_stress.py",
+    "passed": 22,
+    "failed": 0,
+    "elapsed_seconds": 0.45,
+    "checks": [
+      "malformed timestamps, OHLC bounds, negative volume, and unsupported fields fail closed",
+      "Europe/London post-fallback session boundary uses the correct UTC offset",
+      "256 overlays are accepted and 257 overlays fail closed at the packet cap",
+      "20,000-bar prefix replay matches the full input at the same cutoff"
+    ]
+  },
+  "runtime_probe": {
+    "bars": 100000,
+    "events": 11764,
+    "unique_event_ids": 11764,
+    "elapsed_seconds": 1.007376,
+    "fixture": "synthetic deterministic bars"
+  },
+  "limits": [
+    {
+      "id": "overlay-packet-cap",
+      "status": "explicit",
+      "detail": "One packet is limited to 256 overlays; larger groups must be paginated or windowed."
+    },
+    {
+      "id": "dst-fold-ambiguity",
+      "status": "open",
+      "detail": "Wall-clock sessions crossing an autumn DST fold can emit a close/reopen pair across the repeated local hour; a future slice must choose an explicit fold policy."
+    },
+    {
+      "id": "runtime-capacity",
+      "status": "unclaimed",
+      "detail": "The 100,000-bar probe is a runtime signal only; no production SLO or concurrent-stream capacity claim is made."
+    }
+  ],
+  "acceptance": "NOT_CLAIMED"
+}
