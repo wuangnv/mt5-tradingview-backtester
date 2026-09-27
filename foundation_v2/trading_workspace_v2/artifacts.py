@@ -16,6 +16,23 @@ class ArtifactConflict(RuntimeError):
     pass
 
 
+def _safe_component(value: str, label: str) -> str:
+    """Validate an identifier before using it as one filesystem path component.
+
+    Artifact identifiers originate at API/store boundaries.  Keeping them as a
+    single component prevents traversal, alternate data streams, and Windows
+    name-normalisation collisions while preserving the identifier itself.
+    """
+
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{label} must be a non-empty path component")
+    if value in {".", ".."} or any(character in value for character in ("/", "\\", ":")):
+        raise ValueError(f"{label} must be a single path component")
+    if any(ord(character) < 32 for character in value) or value[-1] in {".", " "}:
+        raise ValueError(f"{label} must be a single path component")
+    return value
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -34,8 +51,9 @@ class ArtifactStore:
         self.root.mkdir(parents=True, exist_ok=True)
 
     def _workspace_dir(self, workspace_id: str, family: str) -> Path:
-        safe = workspace_id.replace("/", "_").replace("\\", "_")
-        path = self.root / safe / family
+        safe = _safe_component(workspace_id, "workspace_id")
+        safe_family = _safe_component(family, "artifact family")
+        path = self.root / safe / safe_family
         path.mkdir(parents=True, exist_ok=True)
         return path
 
@@ -52,7 +70,8 @@ class ArtifactStore:
     ) -> tuple[str, str]:
         if batch_size <= 0:
             raise ValueError("batch_size must be positive")
-        target = self._workspace_dir(workspace_id, "datasets") / f"{dataset_id}.parquet"
+        safe_dataset = _safe_component(dataset_id, "dataset_id")
+        target = self._workspace_dir(workspace_id, "datasets") / f"{safe_dataset}.parquet"
         if target.exists():
             raise ArtifactConflict(f"dataset artifact already exists: {dataset_id}")
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
@@ -92,7 +111,8 @@ class ArtifactStore:
         source = Path(source_path)
         if not source.is_file():
             raise FileNotFoundError(source)
-        target_dir = self._workspace_dir(workspace_id, "raw") / dataset_id
+        safe_dataset = _safe_component(dataset_id, "dataset_id")
+        target_dir = self._workspace_dir(workspace_id, "raw") / safe_dataset
         target = target_dir / "source.csv"
         if target.exists():
             raise ArtifactConflict(f"raw artifact already exists: {dataset_id}")
@@ -145,10 +165,11 @@ class ArtifactStore:
         return rows
 
     def write_result(self, workspace_id: str, job_id: str, payload: dict) -> tuple[str, str]:
+        safe_job = _safe_component(job_id, "job_id")
         results = self._workspace_dir(workspace_id, "results")
-        target = results / f"{job_id}.json"
-        if target.exists() or (results / job_id).exists():
-            raise ArtifactConflict(f"result artifact already exists: {job_id}")
+        target = results / f"{safe_job}.json"
+        if target.exists() or (results / safe_job).exists():
+            raise ArtifactConflict(f"result artifact already exists: {safe_job}")
         data = canonical_json_bytes(payload)
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
         temp.write_bytes(data)
@@ -163,11 +184,12 @@ class ArtifactStore:
         lease_token: str,
         payload: dict,
     ) -> tuple[str, str]:
+        safe_job = _safe_component(job_id, "job_id")
         results = self._workspace_dir(workspace_id, "results")
-        legacy_target = results / f"{job_id}.json"
+        legacy_target = results / f"{safe_job}.json"
         if legacy_target.exists():
-            raise ArtifactConflict(f"result artifact already exists: {job_id}")
-        attempt_dir = results / job_id
+            raise ArtifactConflict(f"result artifact already exists: {safe_job}")
+        attempt_dir = results / safe_job
         attempt_dir.mkdir(parents=True, exist_ok=True)
         token_key = hashlib.sha256(lease_token.encode("utf-8")).hexdigest()[:16]
         target = attempt_dir / f"attempt-{attempt_no:06d}-{token_key}.json"
@@ -191,7 +213,9 @@ class ArtifactStore:
         if len(parts) < 4 or parts[1] != "results" or not source.name.startswith("attempt-"):
             raise ValueError("not a result candidate path")
         workspace_id, _, job_id = parts[:3]
-        quarantine_dir = self.root / workspace_id / "quarantine" / "results" / job_id
+        safe_workspace = _safe_component(workspace_id, "workspace_id")
+        safe_job = _safe_component(job_id, "job_id")
+        quarantine_dir = self.root / safe_workspace / "quarantine" / "results" / safe_job
         quarantine_dir.mkdir(parents=True, exist_ok=True)
         target = quarantine_dir / source.name
         if not source.exists():
@@ -213,8 +237,9 @@ class ArtifactStore:
         return str(target.relative_to(self.root))
 
     def quarantine_job_candidates(self, workspace_id: str, job_id: str) -> list[str]:
-        safe_workspace = workspace_id.replace("/", "_").replace("\\", "_")
-        attempt_dir = (self.root / safe_workspace / "results" / job_id).resolve()
+        safe_workspace = _safe_component(workspace_id, "workspace_id")
+        safe_job = _safe_component(job_id, "job_id")
+        attempt_dir = (self.root / safe_workspace / "results" / safe_job).resolve()
         if self.root not in attempt_dir.parents or not attempt_dir.exists():
             return []
         quarantined = []
