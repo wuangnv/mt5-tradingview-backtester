@@ -1,0 +1,40 @@
+{
+  "schema": "chart-visible-range-adapter-receipt-v1",
+  "mode": "PREP_ONLY",
+  "scope": "offline typed browser visible-range adapter seam",
+  "changed_files": [
+    "trading_workspace_v2/chart_visible_range_adapter.py",
+    "tests/test_chart_visible_range_adapter.py",
+    "evidence/chart-visible-range-adapter-r1-2026-09-27.md"
+  ],
+  "validation": {
+    "focused_command": "PYTHONPATH=. uv run pytest -q tests/test_chart_visible_range_adapter.py",
+    "focused_passed": 6,
+    "focused_failed": 0,
+    "compileall": "PASS",
+    "diff_check": "PASS"
+  },
+  "properties": {
+    "typed_request_response": true,
+    "visible_range_bound_to_source_cutoff": true,
+    "viewport_inclusive_filter_reused": true,
+    "optimistic_generation_guard": true,
+    "scope_mismatch_fail_closed": true,
+    "invalid_packet_fail_closed": true,
+    "provider_called": false,
+    "browser_sdk_called": false,
+    "network_called": false,
+    "broker_called": false,
+    "order_route": false,
+    "execution_capability": false,
+    "visual_browser_qa": false
+  },
+  "not_claimed": [
+    "TradingView Advanced Charts or Lightweight Charts integration",
+    "MQL5 terminal object creation or redraw acceptance",
+    "browser visual correctness or interaction acceptance",
+    "AI/provider quality or trading edge",
+    "broker, demo or live execution"
+  ],
+  "acceptance": "PREP_ONLY"
+}
