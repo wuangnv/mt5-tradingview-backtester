@@ -1,0 +1,62 @@
+{
+  "schema": "mt5-risk-promotion-contract-receipt-v1",
+  "scope": "foundation_v2 level-2 offline PREP_ONLY risk and AI trade-mode capability",
+  "source_head_before_change": "715f62b",
+  "receipt_commit": "the Git commit containing this receipt",
+  "purpose": "Make strategy promotion and AI execution capability explicit and fail-closed before any paper, demo, broker, or live adapter exists.",
+  "implemented": {
+    "risk_budget_schema": "risk-budget-v1",
+    "promotion_state_schema": "promotion-state-v1",
+    "promotion_event_schema": "promotion-event-v1",
+    "promotion_decision_schema": "promotion-decision-v1",
+    "ai_trade_mode_schema": "ai-trade-mode-v1",
+    "states": [
+      "research",
+      "backtest_pass",
+      "paper",
+      "demo",
+      "limited_live",
+      "live_monitored",
+      "paused",
+      "killed",
+      "review"
+    ],
+    "ai_trade_modes": ["configured_deny", "paper", "live"],
+    "ai_execution_scope": [
+      "exact account_id",
+      "allowed symbols",
+      "allowed actions",
+      "risk budget hash",
+      "effective and expiry timestamps",
+      "kill switch",
+      "reconciliation state",
+      "owner approval for live"
+    ],
+    "holdout_access": false,
+    "external_side_effects": false
+  },
+  "validation": {
+    "focused": {
+      "command": "PYTHONPATH=.;.. uv run --with pytest python -m pytest -q tests/test_risk_promotion_contract.py",
+      "result": "11 passed"
+    },
+    "related": {
+      "command": "PYTHONPATH=.;.. uv run --with pytest python -m pytest -q tests/test_contracts.py tests/test_strategy_research_contract.py tests/test_feature_timing_contract.py tests/test_risk_promotion_contract.py",
+      "result": "25 passed, 3 subtests passed"
+    },
+    "compileall": {
+      "command": "uv run python -m compileall -q trading_workspace_v2",
+      "result": "passed"
+    },
+    "postgres_integration": "not-run: no service started",
+    "provider_or_broker": "not-run and not reachable from this contract"
+  },
+  "excluded_claims": [
+    "No broker, exchange, payment, provider, OAuth, API key, or network access",
+    "No live or demo authorization; the reducer is a capability contract, not an adapter",
+    "No profitability, edge, or financial-return claim",
+    "No holdout content access",
+    "No automatic self-update or unattended live execution"
+  ],
+  "rollback": "Revert the coherent commit containing this receipt, source module, and focused test; existing strategy/replay behavior remains unchanged."
+}
