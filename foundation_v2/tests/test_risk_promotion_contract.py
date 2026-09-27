@@ -272,6 +272,19 @@ class PromotionReducerTests(unittest.TestCase):
         self.assertIn("unknown_current_state", decision.blockers)
         self.assertEqual(fail_closed_decision(["bad"]).target_state, "killed")
         self.assertEqual(fail_closed_decision("not-a-state").decision, "deny")
+        malformed_event = PromotionEvent.model_construct(
+            event_type="paper",
+            actor="fixture",
+            reason="malformed",
+            evidence_refs=(),
+            owner_approved=False,
+            risk_budget_hash=None,
+            request_id="malformed-event",
+            at_utc=BASE_TIME + timedelta(minutes=1),
+        )
+        malformed_decision = evaluate_promotion(self.snapshot, malformed_event)
+        self.assertEqual(malformed_decision.target_state, "killed")
+        self.assertEqual(malformed_decision.decision, "deny")
 
 
 if __name__ == "__main__":

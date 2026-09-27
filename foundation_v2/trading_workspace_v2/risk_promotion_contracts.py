@@ -455,7 +455,9 @@ def evaluate_promotion(snapshot: PromotionSnapshot, event: PromotionEvent) -> Pr
         target = _target_for_event(event.event_type)
         blockers = _transition_blockers(snapshot, event, target)
     except PromotionTransitionError as exc:
-        target = event.event_type if event.event_type in KNOWN_PROMOTION_STATES else "killed"
+        # An unknown/malformed event must never be interpreted as a state name.
+        # The safe projection is deny + killed; no mutation happens here.
+        target = "killed"
         blockers = exc.blockers
     if blockers:
         return PromotionDecision(
