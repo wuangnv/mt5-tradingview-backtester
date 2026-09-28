@@ -39,6 +39,7 @@ from .paper_accounting import (
     PaperOrderIntent,
     apply_paper_receipt,
 )
+from .owner_absence_supervisor import OwnerAbsencePaperAdmission
 
 
 PAPER_BRIDGE_SCHEMA = "paper-execution-bridge-v1"
@@ -59,6 +60,7 @@ class PaperExecutionProjection(BaseModel):
     execution_event: ExecutionEvent
     execution_receipt: ExecutionReceipt | None = None
     paper_receipt_fingerprint: str = Field(min_length=8, max_length=128)
+    owner_absence_admission: OwnerAbsencePaperAdmission | None = None
 
     @model_validator(mode="after")
     def validate_projection_binding(self) -> "PaperExecutionProjection":
@@ -71,6 +73,21 @@ class PaperExecutionProjection(BaseModel):
             raise ValueError("execution_event fingerprint does not match execution_ledger")
         if event.evidence_hash != self.paper_receipt_fingerprint:
             raise ValueError("execution_event evidence does not match paper receipt fingerprint")
+        admission = self.owner_absence_admission
+        if admission is not None:
+            intent = self.execution_ledger.intent
+            if intent.mode != "paper":
+                raise ValueError("owner-absence admission requires paper execution mode")
+            if admission.intent_id != intent.intent_id:
+                raise ValueError("owner-absence admission intent_id does not match execution ledger")
+            if admission.intent_fingerprint != self.execution_ledger.intent_fingerprint:
+                raise ValueError("owner-absence admission fingerprint does not match execution ledger")
+            if admission.capability_epoch != intent.capability_epoch:
+                raise ValueError("owner-absence admission capability epoch does not match intent")
+            if admission.risk_budget_hash != intent.risk_budget_hash:
+                raise ValueError("owner-absence admission risk budget does not match intent")
+            if admission.execution_capability is not False:
+                raise ValueError("owner-absence admission cannot grant execution capability")
         if self.account_state.account_id != self.execution_ledger.intent.account_id:
             raise ValueError("account state scope does not match execution ledger")
         if event.event_type == "receipt_observed":
@@ -145,6 +162,7 @@ def _existing_projection(
     ledger: ExecutionLedger,
     state: PaperAccountState,
     receipt: PaperFillReceipt,
+    owner_absence_admission: OwnerAbsencePaperAdmission | None = None,
 ) -> PaperExecutionProjection | None:
     """Return a prior bridge result when the exact paper receipt was replayed."""
 
@@ -164,7 +182,30 @@ def _existing_projection(
         execution_event=event,
         execution_receipt=execution_receipt,
         paper_receipt_fingerprint=receipt.fingerprint(),
+        owner_absence_admission=owner_absence_admission,
     )
+
+
+def _validate_owner_absence_admission(
+    ledger: ExecutionLedger,
+    intent: PaperOrderIntent,
+    admission: OwnerAbsencePaperAdmission,
+) -> None:
+    """Bind the fenced supervisor evidence to the exact paper intent."""
+
+    execution_intent = ledger.intent
+    if execution_intent.mode != "paper":
+        raise PaperExecutionBridgeError("owner_absence_admission_requires_paper_mode")
+    if admission.intent_id != execution_intent.intent_id or admission.intent_id != intent.intent_id:
+        raise PaperExecutionBridgeError("owner_absence_admission_intent_mismatch")
+    if admission.intent_fingerprint != ledger.intent_fingerprint:
+        raise PaperExecutionBridgeError("owner_absence_admission_fingerprint_mismatch")
+    if admission.capability_epoch != execution_intent.capability_epoch:
+        raise PaperExecutionBridgeError("owner_absence_admission_capability_epoch_mismatch")
+    if admission.risk_budget_hash != execution_intent.risk_budget_hash:
+        raise PaperExecutionBridgeError("owner_absence_admission_risk_budget_mismatch")
+    if admission.execution_capability is not False:
+        raise PaperExecutionBridgeError("owner_absence_admission_cannot_grant_execution")
 
 
 def apply_paper_observation(
@@ -176,6 +217,7 @@ def apply_paper_observation(
     event_id: str | None = None,
     actor: str = "paper-bridge",
     reason: str = "paper receipt projected into execution ledger",
+    owner_absence_admission: OwnerAbsencePaperAdmission | None = None,
 ) -> PaperExecutionProjection:
     """Apply one paper receipt atomically to accounting and execution ledgers.
 
@@ -185,8 +227,10 @@ def apply_paper_observation(
     """
 
     _validate_binding(ledger, state, intent, receipt)
+    if owner_absence_admission is not None:
+        _validate_owner_absence_admission(ledger, intent, owner_absence_admission)
     stable_event_id = event_id or _stable_event_id(receipt.receipt_id)
-    prior = _existing_projection(ledger, state, receipt)
+    prior = _existing_projection(ledger, state, receipt, owner_absence_admission)
     if prior is not None:
         return prior
     if receipt.source == "reconciliation" and intent.intent_id not in state.pending_unknown_intent_ids:
@@ -249,6 +293,37 @@ def apply_paper_observation(
         execution_event=event,
         execution_receipt=execution_receipt,
         paper_receipt_fingerprint=receipt.fingerprint(),
+        owner_absence_admission=owner_absence_admission,
+    )
+
+
+def apply_owner_absence_paper_observation(
+    ledger: ExecutionLedger,
+    state: PaperAccountState,
+    intent: PaperOrderIntent,
+    receipt: PaperFillReceipt,
+    admission: OwnerAbsencePaperAdmission,
+    *,
+    event_id: str | None = None,
+    actor: str = "owner-absence-paper-bridge",
+    reason: str = "owner-absence paper receipt projected into execution ledger",
+) -> PaperExecutionProjection:
+    """Apply a paper receipt only with an explicit fenced admission contract.
+
+    The lower-level reducer remains available for already-admitted offline
+    fixtures.  This owner-absence entry point makes the lifecycle/capability
+    boundary explicit and carries its immutable provenance into the result.
+    """
+
+    return apply_paper_observation(
+        ledger,
+        state,
+        intent,
+        receipt,
+        event_id=event_id,
+        actor=actor,
+        reason=reason,
+        owner_absence_admission=admission,
     )
 
 
@@ -256,5 +331,6 @@ __all__ = [
     "PAPER_BRIDGE_SCHEMA",
     "PaperExecutionBridgeError",
     "PaperExecutionProjection",
+    "apply_owner_absence_paper_observation",
     "apply_paper_observation",
 ]

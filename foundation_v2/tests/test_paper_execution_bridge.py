@@ -19,8 +19,18 @@ from trading_workspace_v2.paper_accounting import (
 )
 from trading_workspace_v2.paper_execution_bridge import (
     PaperExecutionBridgeError,
+    apply_owner_absence_paper_observation,
     apply_paper_observation,
 )
+from trading_workspace_v2.owner_absence_safety import OwnerAbsencePolicy
+from trading_workspace_v2.owner_absence_supervisor import (
+    OwnerAbsencePaperAdmission,
+    OwnerAbsenceSupervisorSnapshot,
+    SupervisorIdentity,
+    admit_owner_absence_paper,
+    step_owner_absence_supervisor,
+)
+from trading_workspace_v2.risk_promotion_contracts import AITradeMode, RiskBudget
 
 
 UTC = timezone.utc
@@ -100,6 +110,66 @@ def paper_receipt(
         source=source,
         evidence_hash="evidence-" + hashlib.sha256(receipt_id.encode()).hexdigest(),
         observed_at_utc=at,
+    )
+
+
+def owner_absence_admission(intent: PaperOrderIntent, ledger) -> OwnerAbsencePaperAdmission:
+    policy = OwnerAbsencePolicy(
+        mode="paper",
+        kill_switch_active=False,
+        lease_id="lease-1",
+        lease_owner="offline-worker",
+        lease_expires_at_utc=BASE + timedelta(minutes=5),
+        heartbeat_at_utc=BASE - timedelta(seconds=30),
+        resource_checked_at_utc=BASE - timedelta(seconds=30),
+        data_observed_at_utc=BASE - timedelta(seconds=30),
+    )
+    step = step_owner_absence_supervisor(
+        OwnerAbsenceSupervisorSnapshot(),
+        policy,
+        SupervisorIdentity(run_id="research-run-1", fence_token="fence-1"),
+        now=BASE,
+    )
+    budget = RiskBudget(
+        currency="VND",
+        capital_scope_vnd=Decimal("100000000"),
+        reserve_floor_vnd=Decimal("90000000"),
+        risk_per_trade_vnd=Decimal("100000"),
+        max_open_risk_vnd=Decimal("500000"),
+        max_daily_loss_vnd=Decimal("1000000"),
+        max_weekly_loss_vnd=Decimal("3000000"),
+        max_drawdown_vnd=Decimal("5000000"),
+        max_position_notional_vnd=Decimal("10000000"),
+        max_turnover_vnd=Decimal("50000000"),
+        max_symbol_exposure_pct=Decimal("10"),
+        max_strategy_exposure_pct=Decimal("25"),
+        max_orders_per_day=10,
+        max_slippage_bps=Decimal("20"),
+        stale_data_max_seconds=60,
+        allowed_instruments=(intent.symbol,),
+        effective_from_utc=BASE - timedelta(hours=1),
+        expires_at_utc=BASE + timedelta(days=1),
+        config_hash=intent.risk_budget_hash,
+        approved_by="owner-fixture",
+    )
+    capability = AITradeMode(
+        mode="paper",
+        account_id=intent.account_id,
+        allowed_symbols=(intent.symbol,),
+        allowed_actions=("open", "close"),
+        risk_budget_hash=intent.risk_budget_hash,
+        effective_from_utc=BASE - timedelta(hours=1),
+        expires_at_utc=BASE + timedelta(days=1),
+        kill_switch_active=False,
+        reconciliation_state="ready",
+    )
+    return admit_owner_absence_paper(
+        step,
+        ledger.intent,
+        capability,
+        budget,
+        active_capability_epoch=ledger.intent.capability_epoch,
+        now=BASE,
     )
 
 
@@ -285,5 +355,39 @@ def test_reconciliation_receipt_cannot_bypass_unknown_execution_state() -> None:
                 source="reconciliation",
                 at=BASE + timedelta(seconds=1),
             ),
+        )
+
+
+def test_owner_absence_bridge_carries_fenced_admission_provenance() -> None:
+    intent = paper_intent(quantity="1")
+    ledger = execution_ledger(intent)
+    state = PaperAccountState(account_id=intent.account_id, cash=Decimal("1000"))
+    admission = owner_absence_admission(intent, ledger)
+    projection = apply_owner_absence_paper_observation(
+        ledger,
+        state,
+        intent,
+        paper_receipt(intent, "r-owner", status="filled", quantity="1", at=BASE + timedelta(seconds=1)),
+        admission,
+    )
+    assert projection.owner_absence_admission == admission
+    assert projection.owner_absence_admission is not None
+    assert projection.owner_absence_admission.fingerprint() == admission.fingerprint()
+
+
+def test_owner_absence_bridge_rejects_tampered_intent_provenance() -> None:
+    intent = paper_intent(quantity="1")
+    ledger = execution_ledger(intent)
+    state = PaperAccountState(account_id=intent.account_id, cash=Decimal("1000"))
+    admission = owner_absence_admission(intent, ledger).model_copy(
+        update={"capability_epoch": "stale-epoch"}
+    )
+    with pytest.raises(PaperExecutionBridgeError, match="capability_epoch_mismatch"):
+        apply_owner_absence_paper_observation(
+            ledger,
+            state,
+            intent,
+            paper_receipt(intent, "r-tampered", status="filled", quantity="1", at=BASE + timedelta(seconds=1)),
+            admission,
         )
 
