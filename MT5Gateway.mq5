@@ -429,20 +429,20 @@ void HandleGetSymbols()
 }
 
 //+------------------------------------------------------------------+
-//| Map string timeframe to ENUM_TIMEFRAMES                          |
+//| Resolve string timeframe to ENUM_TIMEFRAMES                      |
 //+------------------------------------------------------------------+
-ENUM_TIMEFRAMES GetTimeframeEnum(string tf)
+bool TryGetTimeframeEnum(string tf, ENUM_TIMEFRAMES &result)
 {
-   if(tf == "M1") return PERIOD_M1;
-   if(tf == "M5") return PERIOD_M5;
-   if(tf == "M15") return PERIOD_M15;
-   if(tf == "M30") return PERIOD_M30;
-   if(tf == "H1") return PERIOD_H1;
-   if(tf == "H4") return PERIOD_H4;
-   if(tf == "D1") return PERIOD_D1;
-   if(tf == "W1") return PERIOD_W1;
-   if(tf == "MN1") return PERIOD_MN1;
-   return PERIOD_CURRENT;
+   if(tf == "M1")  { result = PERIOD_M1;  return true; }
+   if(tf == "M5")  { result = PERIOD_M5;  return true; }
+   if(tf == "M15") { result = PERIOD_M15; return true; }
+   if(tf == "M30") { result = PERIOD_M30; return true; }
+   if(tf == "H1")  { result = PERIOD_H1;  return true; }
+   if(tf == "H4")  { result = PERIOD_H4;  return true; }
+   if(tf == "D1")  { result = PERIOD_D1;  return true; }
+   if(tf == "W1")  { result = PERIOD_W1;  return true; }
+   if(tf == "MN1") { result = PERIOD_MN1; return true; }
+   return false;
 }
 
 //+------------------------------------------------------------------+
@@ -450,7 +450,17 @@ ENUM_TIMEFRAMES GetTimeframeEnum(string tf)
 //+------------------------------------------------------------------+
 void HandleGetData(string symbol, string timeframe, int bars)
 {
-   ENUM_TIMEFRAMES tf = GetTimeframeEnum(timeframe);
+   ENUM_TIMEFRAMES tf;
+   if(!TryGetTimeframeEnum(timeframe, tf))
+   {
+      SendResponse("{\"success\":false,\"message\":\"Unsupported timeframe: " + timeframe + "\",\"data\":[]}");
+      return;
+   }
+   if(bars < 1 || bars > 100000)
+   {
+      SendResponse("{\"success\":false,\"message\":\"bars must be between 1 and 100000,\"data\":[]}");
+      return;
+   }
    
    // Enable symbol in Market Watch if not already there
    if(!SymbolSelect(symbol, true))
@@ -469,7 +479,9 @@ void HandleGetData(string symbol, string timeframe, int bars)
       return;
    }
 
-   // Perfect real-time synchronization: Override the last bar close/high/low with the current bid price
+   // Keep the forming bar explicit.  Its values may be refreshed from the
+   // current bid, but the response marks it provisional so canonical closed-bar
+   // consumers can drop it instead of treating a live tick as history.
    MqlTick tick;
    if(SymbolInfoTick(symbol, tick))
    {
@@ -496,12 +508,15 @@ void HandleGetData(string symbol, string timeframe, int bars)
       string s_low = DoubleToString(rates[i].low, 5);
       string s_close = DoubleToString(rates[i].close, 5);
       
-      json += "{\"time\":" + IntegerToString(rates[i].time) + 
+      bool provisional = (i == copied - 1);
+      json += "{\"time\":" + IntegerToString(rates[i].time) +
               ",\"open\":" + s_open + 
               ",\"high\":" + s_high + 
               ",\"low\":" + s_low + 
               ",\"close\":" + s_close + 
-              ",\"volume\":" + IntegerToString(rates[i].tick_volume) + "}";
+              ",\"volume\":" + IntegerToString(rates[i].tick_volume) +
+              ",\"closed\":" + (provisional ? "false" : "true") +
+              ",\"provisional\":" + (provisional ? "true" : "false") + "}";
    }
    json += "]}";
    
