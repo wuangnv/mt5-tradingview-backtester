@@ -1,0 +1,35 @@
+{
+  "schema": "paper-execution-bridge-receipt-v2",
+  "status": "PREP_ONLY_OFFLINE",
+  "previous_commit": "81fa9d9",
+  "hardening_commit": "4d2d266",
+  "module": "trading_workspace_v2.paper_execution_bridge",
+  "tests": {
+    "focused": "27 passed",
+    "compileall": "pass",
+    "diff_check": "pass"
+  },
+  "coverage": [
+    "upstream_admission_boundary_and_capability_epoch_preservation",
+    "projection_event_ledger_membership",
+    "projection_event_receipt_identity_binding",
+    "projection_receipt_fingerprint_binding",
+    "unknown_projection_receipt_absence",
+    "late_in_flight_receipt_after_expiry",
+    "prepared_intent_late_receipt_rejection"
+  ],
+  "capabilities": {
+    "provider": false,
+    "network": false,
+    "broker": false,
+    "oauth": false,
+    "holdout": false,
+    "execution": false
+  },
+  "known_limits": [
+    "in-memory immutable projection only",
+    "long-only spot open/close paper actions",
+    "no promotion authority",
+    "no profitability or live-readiness claim"
+  ]
+}
