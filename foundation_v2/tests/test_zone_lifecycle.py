@@ -121,6 +121,11 @@ def test_fvg_zone_rejects_forged_range_or_source_shape() -> None:
     with pytest.raises(ZoneLifecycleError, match="three-bar pattern"):
         build_fvg_spec(bullish_fvg_bars(), forged, config)
 
+    delayed = bullish_fvg_event().as_dict()
+    delayed["known_at"] += 60
+    with pytest.raises(ZoneLifecycleError, match="known_at must match"):
+        build_fvg_spec(bullish_fvg_bars(), delayed, config)
+
 
 def test_order_block_is_published_only_after_confirmed_bos_and_keeps_origin_policy() -> None:
     config = ZoneLifecycleConfig("EURUSD", 60, range_mode="wick")

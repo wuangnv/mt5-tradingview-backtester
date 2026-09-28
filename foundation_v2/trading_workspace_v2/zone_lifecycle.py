@@ -703,6 +703,10 @@ def build_fvg_spec(
     known_at = _strict_int(event.get("known_at"), "fvg_event.known_at", minimum=1)
     if known_at < anchor:
         raise ZoneLifecycleError("FVG known_at precedes anchor_timestamp")
+    if known_at != anchor:
+        raise ZoneLifecycleError("FVG known_at must match anchor_timestamp")
+    if known_at > normalized[-1].timestamp:
+        raise ZoneLifecycleError("FVG known_at is outside bar input")
     identity = event.get("identity")
     if not isinstance(identity, Mapping):
         raise ZoneLifecycleError("fvg_event.identity must be an object")
