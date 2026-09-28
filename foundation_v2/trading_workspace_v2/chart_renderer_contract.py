@@ -467,6 +467,12 @@ def build_render_plan(
         previous_state.tombstones if previous_state and not scope_reset else {}
     )
     scope_reset_ids = sorted(previous_state.objects) if scope_reset and previous_state else []
+    # A scope reset intentionally clears the prior objects from reconciliation
+    # and tombstone checks.  Keep a separate cleanup view, though: adapters
+    # still need the old object's causal metadata when removing it from the
+    # previous surface.  Dropping that snapshot would make a scope-reset
+    # ``remove`` operation lose ``known_at`` and its source bars.
+    cleanup_objects = previous_state.objects if previous_state else previous_objects
     for object_id, object_value in active.items():
         old = previous_objects.get(object_id)
         tombstone_revision = previous_tombstones.get(object_id)
@@ -539,7 +545,7 @@ def build_render_plan(
 
     operations: list[dict[str, Any]] = []
     for object_id in sorted(remove_reasons):
-        old = previous_objects.get(object_id)
+        old = cleanup_objects.get(object_id)
         operations.append(
             _operation(
                 "remove",

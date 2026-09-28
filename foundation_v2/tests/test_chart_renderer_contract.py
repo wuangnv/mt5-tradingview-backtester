@@ -183,7 +183,17 @@ def test_missing_overlay_is_stale_and_cleanup_is_explicit() -> None:
 
 
 def test_source_or_cutoff_change_resets_old_surface_scope() -> None:
-    first = build_render_plan(packet(statuses=("committed",)))
+    original = packet(statuses=("committed",))
+    overlay = original["overlays"][0]
+    known_at = max(anchor["timestamp"] for anchor in overlay["anchors"])
+    overlay.update(
+        {
+            "known_at": known_at,
+            "source_bar_ids": [f"bar:{anchor['timestamp']}" for anchor in overlay["anchors"]],
+            "confirmation_lag_bars": 0,
+        }
+    )
+    first = build_render_plan(original)
     changed = build_render_plan(
         packet(statuses=("committed",), source_id="renderer-fixture-next"),
         previous_state=first.next_state,
@@ -194,6 +204,10 @@ def test_source_or_cutoff_change_resets_old_surface_scope() -> None:
         "scope_reset",
         "new",
     }
+    scope_removal = next(item for item in changed.operations if item["reason"] == "scope_reset")
+    assert scope_removal["known_at"] == known_at
+    assert scope_removal["source_bar_ids"] == overlay["source_bar_ids"]
+    assert scope_removal["confirmation_lag_bars"] == 0
     assert changed.next_state.tombstones == {}
 
 
