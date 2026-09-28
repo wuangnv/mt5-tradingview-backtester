@@ -350,6 +350,50 @@ def test_mtf_mapping_accepts_utc_boundary_across_dst_without_local_rebucketing()
     ]
 
 
+def test_mtf_mapping_supports_explicit_pine_strict_boundary_without_lookahead() -> None:
+    start = 1_700_025_000
+    display = [
+        bar(start + offset, 10.0, 11.0, 9.0, 10.0)
+        for offset in (100, 200, 300, 400)
+    ]
+    source = [
+        bar(start + 200, 10.0, 12.0, 9.0, 11.0),
+        bar(start + 400, 11.0, 13.0, 10.0, 12.0),
+    ]
+
+    mappings = map_last_confirmed_htf(
+        display,
+        source,
+        display_timeframe_seconds=60,
+        source_timeframe_seconds=300,
+        boundary_policy="pine_offset_first_next_bar",
+    )
+
+    assert [mapping.source_bar_close_timestamp for mapping in mappings] == [
+        None,
+        None,
+        start + 200,
+        start + 200,
+    ]
+    assert all(mapping.policy == "pine_offset_first_next_bar" for mapping in mappings)
+    assert all(
+        mapping.source_bar_close_timestamp is None
+        or mapping.source_bar_close_timestamp < mapping.display_timestamp
+        for mapping in mappings
+    )
+
+
+def test_mtf_mapping_rejects_unknown_boundary_policy() -> None:
+    with pytest.raises(ChartIntelligenceError, match="boundary_policy"):
+        map_last_confirmed_htf(
+            [bar(1_700_031_000, 10.0, 11.0, 9.0, 10.0)],
+            [bar(1_700_030_900, 10.0, 11.0, 9.0, 10.0)],
+            display_timeframe_seconds=60,
+            source_timeframe_seconds=300,
+            boundary_policy="nearest",
+        )
+
+
 def test_mtf_mapping_rejects_non_higher_timeframe_and_invalid_source_order() -> None:
     display = [bar(1_700_030_000, 10.0, 11.0, 9.0, 10.0)]
     source = [bar(1_700_030_000, 10.0, 11.0, 9.0, 10.0)]

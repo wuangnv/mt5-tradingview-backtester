@@ -48,6 +48,7 @@ RULE_VERSION = "smc-core.v1"
 EVENT_SCHEMA = "chart-event-v1"
 _DST_FOLD_POLICIES = frozenset({"reject", "first", "second"})
 _PIVOT_TIE_POLICIES = frozenset({"left_strict_right_inclusive"})
+_MTF_BOUNDARY_POLICIES = frozenset({"inclusive_closed_boundary", "pine_offset_first_next_bar"})
 
 
 class ChartIntelligenceError(ValueError):
@@ -405,6 +406,7 @@ def map_last_confirmed_htf(
     *,
     display_timeframe_seconds: int,
     source_timeframe_seconds: int,
+    boundary_policy: str = "inclusive_closed_boundary",
     cutoff_timestamp: int | None = None,
 ) -> tuple[MTFBarMapping, ...]:
     """Map each lower/display close to the last confirmed HTF close.
@@ -417,9 +419,12 @@ def map_last_confirmed_htf(
     values.  Missing history before the first source close remains unknown
     (`source_bar is None`), and is never backfilled from a future bar.
 
-    ``cutoff_timestamp`` is inclusive.  Display bars after it are not part of
-    the returned mapping; a cutoff before the first display bar is rejected,
-    consistent with :func:`run_chart_intelligence`.
+    ``boundary_policy`` is explicit so a Pine parity caller can select
+    ``pine_offset_first_next_bar`` (strict ``source_close < display_close``)
+    without silently changing the local default.  ``cutoff_timestamp`` is
+    inclusive.  Display bars after it are not part of the returned mapping; a
+    cutoff before the first display bar is rejected, consistent with
+    :func:`run_chart_intelligence`.
     """
 
     display_tf = _strict_int(display_timeframe_seconds, "display_timeframe_seconds", minimum=1)
@@ -427,6 +432,10 @@ def map_last_confirmed_htf(
     if source_tf <= display_tf:
         raise ChartIntelligenceError(
             "source_timeframe_seconds must be greater than display_timeframe_seconds for higher_closed mapping"
+        )
+    if boundary_policy not in _MTF_BOUNDARY_POLICIES:
+        raise ChartIntelligenceError(
+            "boundary_policy must be one of: inclusive_closed_boundary, pine_offset_first_next_bar"
         )
 
     normalized_display = _normalize_bars(display_bars)
@@ -440,10 +449,15 @@ def map_last_confirmed_htf(
     mappings: list[MTFBarMapping] = []
     source_index = 0
     confirmed: ChartBar | None = None
+    inclusive = boundary_policy == "inclusive_closed_boundary"
     for display_bar in normalized_display:
         if display_bar.timestamp > cutoff:
             break
-        while source_index < len(normalized_source) and normalized_source[source_index].timestamp <= display_bar.timestamp:
+        while source_index < len(normalized_source):
+            source = normalized_source[source_index]
+            eligible = source.timestamp <= display_bar.timestamp if inclusive else source.timestamp < display_bar.timestamp
+            if not eligible:
+                break
             confirmed = normalized_source[source_index]
             source_index += 1
         mappings.append(
@@ -452,6 +466,7 @@ def map_last_confirmed_htf(
                 source_bar=confirmed,
                 display_timeframe_seconds=display_tf,
                 source_timeframe_seconds=source_tf,
+                policy="higher_closed" if inclusive else "pine_offset_first_next_bar",
             )
         )
     return tuple(mappings)
