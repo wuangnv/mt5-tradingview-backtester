@@ -4,6 +4,7 @@ from decimal import Decimal
 import hashlib
 
 import pytest
+from pydantic import ValidationError
 
 from trading_workspace_v2.execution_intent_contract import (
     ExecutionEvent,
@@ -117,6 +118,7 @@ def test_partial_delta_becomes_cumulative_execution_receipt_and_retry_is_atomic(
     assert first.execution_receipt.filled_quantity == Decimal("1")
     assert first.execution_receipt.remaining_quantity == Decimal("2")
     assert first.account_state.intents[0].filled_quantity == Decimal("1")
+    assert first.execution_ledger.intent.capability_epoch == "epoch-1"
 
     replay = apply_paper_observation(
         first.execution_ledger,
@@ -126,6 +128,28 @@ def test_partial_delta_becomes_cumulative_execution_receipt_and_retry_is_atomic(
     )
     assert replay.execution_ledger == first.execution_ledger
     assert replay.account_state == first.account_state
+
+
+def test_projection_rejects_tampered_event_receipt_binding() -> None:
+    intent = paper_intent(quantity="1")
+    ledger = execution_ledger(intent)
+    state = PaperAccountState(account_id=intent.account_id, cash=Decimal("1000"))
+    projection = apply_paper_observation(
+        ledger,
+        state,
+        intent,
+        paper_receipt(intent, "r-bind", status="filled", quantity="1", at=BASE + timedelta(seconds=1)),
+    )
+    assert projection.execution_receipt is not None
+    tampered = projection.model_copy(
+        update={
+            "execution_receipt": projection.execution_receipt.model_copy(
+                update={"evidence_hash": "tampered-evidence"}
+            )
+        }
+    )
+    with pytest.raises(ValidationError, match="does not match execution event receipt"):
+        type(projection).model_validate(tampered.model_dump())
 
 
 def test_default_retry_key_handles_max_length_receipt_ids() -> None:
@@ -175,6 +199,39 @@ def test_unknown_then_reconciliation_fill_links_both_ledgers() -> None:
     assert settled.execution_receipt.source == "reconciliation"
     assert settled.execution_receipt.filled_quantity == Decimal("2")
     assert settled.account_state.pending_unknown_intent_ids == ()
+
+
+def test_late_receipt_can_settle_in_flight_intent_but_not_prepared_intent() -> None:
+    intent = paper_intent(quantity="1")
+    ledger = execution_ledger(intent)
+    state = PaperAccountState(account_id=intent.account_id, cash=Decimal("1000"))
+    late = apply_paper_observation(
+        ledger,
+        state,
+        intent,
+        paper_receipt(
+            intent,
+            "r-late",
+            status="filled",
+            quantity="1",
+            at=intent.expires_at_utc + timedelta(seconds=1),
+        ),
+    )
+    assert late.execution_ledger.status == "filled"
+
+    with pytest.raises(PaperExecutionBridgeError, match="requires_send_started"):
+        apply_paper_observation(
+            prepare_execution_intent(ledger.intent),
+            state,
+            intent,
+            paper_receipt(
+                intent,
+                "r-prepared-late",
+                status="filled",
+                quantity="1",
+                at=intent.expires_at_utc + timedelta(seconds=1),
+            ),
+        )
 
 
 def test_bridge_rejects_live_and_unbound_or_unexpected_reconciliation() -> None:

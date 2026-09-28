@@ -6,6 +6,13 @@ one paper observation is applied to the account projection and projected into
 the matching execution ledger as one append-only event.  It cannot handle a
 live intent, create a broker request, or grant a capability.
 
+Admission is intentionally upstream: the caller must evaluate the exact
+``ExecutionIntent`` with ``AITradeMode``/``RiskBudget`` before creating the
+ledger. The bridge preserves that intent, including ``capability_epoch``, but
+does not re-evaluate or widen the capability contract. Expiry gates sending;
+an observation after expiry may settle only an already in-flight ledger whose
+``send_started`` event was accepted before expiry.
+
 Paper receipts report *delta* fill quantities while execution receipts report
 cumulative filled and remaining quantities.  The bridge derives the latter
 from the post-application paper intent record, so retries cannot accidentally
@@ -17,7 +24,7 @@ from __future__ import annotations
 import hashlib
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .execution_intent_contract import (
     ExecutionEvent,
@@ -52,6 +59,33 @@ class PaperExecutionProjection(BaseModel):
     execution_event: ExecutionEvent
     execution_receipt: ExecutionReceipt | None = None
     paper_receipt_fingerprint: str = Field(min_length=8, max_length=128)
+
+    @model_validator(mode="after")
+    def validate_projection_binding(self) -> "PaperExecutionProjection":
+        event = self.execution_event
+        if event not in self.execution_ledger.events:
+            raise ValueError("execution_event is not present in execution_ledger")
+        if event.intent_id != self.execution_ledger.intent.intent_id:
+            raise ValueError("execution_event intent_id does not match execution_ledger")
+        if event.intent_fingerprint != self.execution_ledger.intent_fingerprint:
+            raise ValueError("execution_event fingerprint does not match execution_ledger")
+        if event.evidence_hash != self.paper_receipt_fingerprint:
+            raise ValueError("execution_event evidence does not match paper receipt fingerprint")
+        if self.account_state.account_id != self.execution_ledger.intent.account_id:
+            raise ValueError("account state scope does not match execution ledger")
+        if event.event_type == "receipt_observed":
+            if event.receipt is None or self.execution_receipt is None:
+                raise ValueError("receipt_observed projection requires an execution receipt")
+            if event.receipt != self.execution_receipt:
+                raise ValueError("execution receipt does not match execution event receipt")
+            if self.execution_receipt.intent_fingerprint != self.execution_ledger.intent_fingerprint:
+                raise ValueError("execution receipt fingerprint does not match execution ledger")
+        elif event.event_type == "send_unknown":
+            if event.receipt is not None or self.execution_receipt is not None:
+                raise ValueError("send_unknown projection cannot carry an execution receipt")
+        else:
+            raise ValueError("unsupported event type in paper execution projection")
+        return self
 
 
 def _stable_event_id(receipt_id: str) -> str:
@@ -157,6 +191,8 @@ def apply_paper_observation(
         return prior
     if receipt.source == "reconciliation" and intent.intent_id not in state.pending_unknown_intent_ids:
         raise PaperExecutionBridgeError("reconciliation_requires_pending_unknown")
+    if ledger.status == "prepared":
+        raise PaperExecutionBridgeError("paper_receipt_requires_send_started")
 
     try:
         next_state = apply_paper_receipt(state, intent, receipt)
