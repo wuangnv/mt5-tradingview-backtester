@@ -1,0 +1,26 @@
+{
+  "schema": "chart-intelligence-mtf-boundary-r1-receipt-v1",
+  "status": "PREP_ONLY",
+  "date": "2026-09-28",
+  "commit": "56d657f",
+  "scope": "explicit causal local/Pine higher-timeframe boundary policy",
+  "policies": {
+    "inclusive_closed_boundary": "source_close <= display_close",
+    "pine_offset_first_next_bar": "source_close < display_close"
+  },
+  "validation": {
+    "focused": "47 passed",
+    "compileall": "pass",
+    "diff_check": "pass"
+  },
+  "capabilities": {
+    "provider": false,
+    "network": false,
+    "oauth": false,
+    "licensed_renderer": false,
+    "broker": false,
+    "holdout": false,
+    "execution": false
+  },
+  "acceptance": "PREP_ONLY"
+}
