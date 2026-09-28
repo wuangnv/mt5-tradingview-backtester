@@ -21,6 +21,7 @@ __all__ = [
     "owner_absence_journal",
     "owner_absence_host",
     "owner_absence_lease",
+    "owner_absence_lease_binding",
     "owner_absence_alerts",
     "execution_intent_contract",
     "research",
