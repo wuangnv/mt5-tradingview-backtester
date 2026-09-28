@@ -1,0 +1,19 @@
+{
+  "schema_version": "research-checkpoint-read-api-receipt-v1",
+  "status": "PREP_ONLY",
+  "mode": "offline-read-only",
+  "route": "GET /api/v2/research/jobs/{job_id}/checkpoint",
+  "tenant_scoped": true,
+  "execution_capability": false,
+  "lease_tokens_exposed": false,
+  "resume_operation": false,
+  "provider_or_broker": false,
+  "holdout_access": false,
+  "verification": {
+    "owner_absence_cli_tests": "3 passed",
+    "compileall": "pass",
+    "diff_check": "pass",
+    "api_integration": "not_run_destructive_database_gate"
+  },
+  "known_gate": "TW_V2_ALLOW_DESTRUCTIVE_TEST_DB=1 is required for the shared PostgreSQL integration fixture"
+}

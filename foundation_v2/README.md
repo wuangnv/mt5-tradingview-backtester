@@ -40,6 +40,13 @@ QA/providers, full renderer/drawing acceptance, tenant-safe Learn progress migra
 real AI provider evaluation, broker demo/live acceptance, Miro update and final user
 acceptance remain separate gates.
 
+The research API also exposes the latest worker checkpoint through the
+read-only `GET /api/v2/research/jobs/{job_id}/checkpoint` route. It is scoped
+by `X-Workspace-Id`, returns `checkpoint_not_found` until a worker has persisted
+one, and never exposes lease tokens or a resume/execute command. The payload is
+progress evidence only (`execution_capability=false`); a future resume workflow
+must remain a separately authorized worker operation.
+
 The U3 backend contract now also makes Playbook lifecycle explicit: new records start
 as drafts, freezing is an optimistic-revision transition, frozen records are immutable,
 and a changed setup is a new draft fork with server-owned parent record/revision

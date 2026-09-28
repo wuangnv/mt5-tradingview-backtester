@@ -222,6 +222,43 @@ class F7ProductSliceTests(unittest.TestCase):
             denied = client.post("/api/v2/execution/intents", headers=headers, json={"side": "buy"})
             self.assertEqual(denied.status_code, 403)
 
+    def test_research_checkpoint_is_read_only_and_workspace_scoped(self):
+        dataset = self.seed_dataset("tenant-a")
+        job = self.research.create_job(
+            workspace_id="tenant-a",
+            dataset_id=dataset.dataset_id,
+            strategy_version="close-delta-v1",
+            starting_balance=10_000,
+        )
+        headers = {"X-Workspace-Id": "tenant-a"}
+        with self.client() as client:
+            before_run = client.get(
+                f"/api/v2/research/jobs/{job.job_id}/checkpoint", headers=headers
+            )
+            self.assertEqual(before_run.status_code, 404)
+            self.assertEqual(before_run.json()["detail"], "checkpoint_not_found")
+
+            self.research.run_one()
+            checkpoint = client.get(
+                f"/api/v2/research/jobs/{job.job_id}/checkpoint", headers=headers
+            )
+            self.assertEqual(checkpoint.status_code, 200)
+            payload = checkpoint.json()
+            self.assertEqual(payload["schema_version"], "research-job-checkpoint-view-v1")
+            self.assertEqual(payload["job_id"], job.job_id)
+            self.assertEqual(payload["workspace_id"], "tenant-a")
+            self.assertEqual(payload["checkpoint"]["schema"], "research-job-checkpoint-v1")
+            self.assertEqual(payload["checkpoint"]["phase"], "candidate-ready")
+            self.assertFalse(payload["execution_capability"])
+            self.assertEqual(payload["progress"], {"phase_count": 4, "phase_index": 4})
+
+            cross_workspace = client.get(
+                f"/api/v2/research/jobs/{job.job_id}/checkpoint",
+                headers={"X-Workspace-Id": "tenant-b"},
+            )
+            self.assertEqual(cross_workspace.status_code, 404)
+            self.assertEqual(cross_workspace.json()["detail"], "job_not_found")
+
     def test_replay_cutoff_branch_and_future_suffix_are_isolated(self):
         headers = {"X-Workspace-Id": "tenant-a"}
         first = self.research.register_dataset(

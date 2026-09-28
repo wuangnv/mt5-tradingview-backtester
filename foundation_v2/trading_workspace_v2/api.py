@@ -454,6 +454,30 @@ def create_app(
             payload["result"] = service.get_result(workspace, job_id)
         return payload
 
+    @app.get("/api/v2/research/jobs/{job_id}/checkpoint")
+    def get_research_checkpoint(job_id: str, workspace: str = Depends(workspace_id)):
+        """Return the latest resumable checkpoint for one workspace job.
+
+        Checkpoints are worker-owned progress evidence, not a command to
+        resume, retry, or execute a job.  Keep this endpoint read-only and
+        tenant-scoped so a UI can show where an unattended run stopped without
+        exposing lease tokens or granting any execution capability.
+        """
+
+        job = store.get_job(workspace, job_id)
+        if job is None:
+            raise HTTPException(status_code=404, detail="job_not_found")
+        checkpoint = store.get_job_checkpoint(workspace, job_id)
+        if checkpoint is None:
+            raise HTTPException(status_code=404, detail="checkpoint_not_found")
+        return {
+            "schema_version": "research-job-checkpoint-view-v1",
+            "job_id": job_id,
+            "workspace_id": workspace,
+            "execution_capability": False,
+            **checkpoint,
+        }
+
     @app.post("/api/v2/research/jobs/{job_id}/cancel")
     def cancel_research_job(job_id: str, workspace: str = Depends(workspace_id)):
         job = service.cancel_job(workspace, job_id)
