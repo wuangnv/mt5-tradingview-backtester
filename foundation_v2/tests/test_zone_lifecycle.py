@@ -10,12 +10,15 @@ from trading_workspace_v2.zone_lifecycle import (
     ZONE_TRANSITION_SCHEMA,
     ZoneLifecycleConfig,
     ZoneLifecycleError,
+    build_fvg_lifecycle,
+    build_fvg_spec,
     build_order_block_lifecycle,
     build_order_block_spec,
     build_ote_lifecycle,
     build_ote_spec,
     validate_zone_transition,
 )
+from trading_workspace_v2.chart_intelligence import ChartEngineConfig, run_chart_intelligence
 
 
 def bar(timestamp: int, opening: float, high: float, low: float, close: float) -> dict:
@@ -58,6 +61,65 @@ def bullish_bos() -> dict:
         "parameters": {"protected_swing": "high", "close_break": True},
         "identity": {"protected": 100, "break": 280, "direction": "bullish"},
     }
+
+
+def bullish_fvg_bars() -> list[dict]:
+    return [
+        bar(100, 9.5, 10.0, 9.0, 9.5),
+        bar(160, 9.6, 10.2, 9.4, 9.9),
+        bar(220, 11.0, 12.0, 11.0, 11.5),  # confirmed bullish FVG [10.0, 11.0]
+        bar(280, 11.5, 12.0, 10.5, 10.6),  # touch/mitigation
+        bar(340, 10.6, 10.8, 9.5, 9.8),  # close-through invalidation
+    ]
+
+
+def bullish_fvg_event() -> object:
+    chart_config = ChartEngineConfig(
+        "EURUSD",
+        60,
+        fvg_min_gap=0.5,
+        source={"kind": "synthetic", "id": "fvg-zone-fixture"},
+    )
+    return next(
+        event for event in run_chart_intelligence(bullish_fvg_bars(), chart_config) if event.kind == "FVG"
+    )
+
+
+def test_fvg_zone_lifecycle_is_causal_and_invalidates_after_mitigation() -> None:
+    config = ZoneLifecycleConfig("EURUSD", 60)
+    event = bullish_fvg_event()
+    spec = build_fvg_spec(bullish_fvg_bars(), event, config)
+
+    assert spec.kind == "FVG"
+    assert spec.direction == "bullish"
+    assert (spec.price_low, spec.price_high) == (10.0, 11.0)
+    assert spec.anchor_timestamp == 220
+    assert spec.known_at == 220
+    assert spec.confirmation_lag_bars == 0
+    assert spec.parameters["standalone_entry"] is False
+
+    transitions = build_fvg_lifecycle(bullish_fvg_bars(), event, config)
+    assert [item.state for item in transitions] == ["confirmed", "mitigated", "invalidated"]
+    assert [item.known_at for item in transitions] == [220, 280, 340]
+    assert all(
+        int(source_id[4:]) <= transition.known_at
+        for transition in transitions
+        for source_id in transition.source_bar_ids
+        if source_id.startswith("bar:")
+    )
+
+
+def test_fvg_zone_rejects_forged_range_or_source_shape() -> None:
+    config = ZoneLifecycleConfig("EURUSD", 60)
+    event = bullish_fvg_event().as_dict()
+    event["price_high"] = 99.0
+    with pytest.raises(ZoneLifecycleError, match="price range"):
+        build_fvg_spec(bullish_fvg_bars(), event, config)
+
+    forged = bullish_fvg_event().as_dict()
+    forged["source_bar_ids"] = forged["source_bar_ids"][:2]
+    with pytest.raises(ZoneLifecycleError, match="three-bar pattern"):
+        build_fvg_spec(bullish_fvg_bars(), forged, config)
 
 
 def test_order_block_is_published_only_after_confirmed_bos_and_keeps_origin_policy() -> None:

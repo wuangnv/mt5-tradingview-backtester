@@ -44,11 +44,11 @@ PREP_ONLY_MODE = "PREP_ONLY"
 ZONE_ENGINE = "deterministic-offline"
 ZONE_RULE_VERSION = "smc-zones.v1"
 
-ZoneKind = Literal["ORDER_BLOCK", "OTE"]
+ZoneKind = Literal["ORDER_BLOCK", "OTE", "FVG"]
 ZoneDirection = Literal["bullish", "bearish"]
 ZoneState = Literal["confirmed", "mitigated", "invalidated", "expired"]
 
-_ZONE_KINDS = frozenset({"ORDER_BLOCK", "OTE"})
+_ZONE_KINDS = frozenset({"ORDER_BLOCK", "OTE", "FVG"})
 _DIRECTIONS = frozenset({"bullish", "bearish"})
 _STATES = frozenset({"confirmed", "mitigated", "invalidated", "expired"})
 _RANGE_MODES = frozenset({"body", "wick"})
@@ -248,7 +248,7 @@ class ZoneSpec:
         anchor = _strict_int(self.anchor_timestamp, "anchor_timestamp", minimum=1)
         known_at = _strict_int(self.known_at, "known_at", minimum=1)
         if kind not in _ZONE_KINDS:
-            raise ZoneLifecycleError("kind must be ORDER_BLOCK or OTE")
+            raise ZoneLifecycleError("kind must be ORDER_BLOCK, OTE, or FVG")
         if direction not in _DIRECTIONS:
             raise ZoneLifecycleError("direction must be bullish or bearish")
         if known_at < anchor:
@@ -488,7 +488,7 @@ def validate_zone_transition(raw: Mapping[str, Any]) -> dict[str, Any]:
     direction = _text(raw["direction"], "direction", maximum=16).lower()
     state = _text(raw["state"], "state", maximum=32).lower()
     if kind not in _ZONE_KINDS:
-        raise ZoneLifecycleError("kind must be ORDER_BLOCK or OTE")
+        raise ZoneLifecycleError("kind must be ORDER_BLOCK, OTE, or FVG")
     if direction not in _DIRECTIONS:
         raise ZoneLifecycleError("direction must be bullish or bearish")
     if state not in _STATES:
@@ -668,6 +668,116 @@ def build_order_block_spec(
     )
 
 
+def build_fvg_spec(
+    bars: Iterable[ChartBar | Mapping[str, Any]],
+    fvg_event: Mapping[str, Any] | Any,
+    config: ZoneLifecycleConfig,
+) -> ZoneSpec:
+    """Build one fair-value-gap zone from a confirmed chart event.
+
+    The canonical detector already establishes the three closed source bars
+    and the gap boundaries.  This adapter rechecks those facts before adding
+    lifecycle semantics, so an untrusted or stale event cannot turn into a
+    renderer zone.  The FVG origin is the first bar of the three-bar pattern;
+    its confirmation/known time is the third bar close.
+    """
+
+    normalized = _normalize_bars(bars)
+    raw_event = fvg_event.as_dict() if hasattr(fvg_event, "as_dict") else fvg_event
+    if not isinstance(raw_event, Mapping):
+        raise ZoneLifecycleError("fvg_event must be an object")
+    event = dict(raw_event)
+    _walk_forbidden(event, "fvg_event")
+    if event.get("schema") != "chart-event-v1":
+        raise ZoneLifecycleError("fvg_event must use chart-event-v1")
+    if event.get("kind") != "FVG" or event.get("state") != "confirmed":
+        raise ZoneLifecycleError("fair-value-gap zone requires a confirmed FVG event")
+    direction = _text(event.get("direction"), "fvg_event.direction", maximum=16).lower()
+    if direction not in _DIRECTIONS:
+        raise ZoneLifecycleError("fvg_event.direction must be bullish or bearish")
+    instrument = _text(event.get("instrument_id"), "fvg_event.instrument_id", maximum=64).upper()
+    timeframe = _strict_int(event.get("timeframe_seconds"), "fvg_event.timeframe_seconds", minimum=1)
+    if instrument != config.instrument_id or timeframe != config.timeframe_seconds:
+        raise ZoneLifecycleError("FVG event scope does not match zone config")
+    anchor = _strict_int(event.get("anchor_timestamp"), "fvg_event.anchor_timestamp", minimum=1)
+    known_at = _strict_int(event.get("known_at"), "fvg_event.known_at", minimum=1)
+    if known_at < anchor:
+        raise ZoneLifecycleError("FVG known_at precedes anchor_timestamp")
+    identity = event.get("identity")
+    if not isinstance(identity, Mapping):
+        raise ZoneLifecycleError("fvg_event.identity must be an object")
+    first_timestamp = _strict_int(identity.get("first"), "fvg_event.identity.first", minimum=1)
+    third_timestamp = _strict_int(identity.get("third"), "fvg_event.identity.third", minimum=1)
+    if third_timestamp != anchor:
+        raise ZoneLifecycleError("FVG identity.third must match anchor_timestamp")
+    try:
+        first_index = next(index for index, value in enumerate(normalized) if value.timestamp == first_timestamp)
+        third_index = next(index for index, value in enumerate(normalized) if value.timestamp == third_timestamp)
+    except StopIteration as exc:
+        raise ZoneLifecycleError("FVG first/third bar is missing from input") from exc
+    if third_index != first_index + 2:
+        raise ZoneLifecycleError("FVG source bars must be three consecutive bars")
+    first = normalized[first_index]
+    middle = normalized[first_index + 1]
+    third = normalized[third_index]
+    if direction == "bullish":
+        gap = third.low - first.high
+        price_low, price_high = first.high, third.low
+    else:
+        gap = first.low - third.high
+        price_low, price_high = third.high, first.low
+    event_parameters = event.get("parameters")
+    if not isinstance(event_parameters, Mapping):
+        raise ZoneLifecycleError("fvg_event.parameters must be an object")
+    minimum_gap = _finite(event_parameters.get("min_gap", 0.0), "fvg_event.parameters.min_gap")
+    if minimum_gap < 0:
+        raise ZoneLifecycleError("fvg_event.parameters.min_gap must be >= 0")
+    if gap <= 0 or gap < minimum_gap:
+        raise ZoneLifecycleError("FVG event does not match the configured gap boundary")
+    event_low = _finite(event.get("price_low"), "fvg_event.price_low", positive=True)
+    event_high = _finite(event.get("price_high"), "fvg_event.price_high", positive=True)
+    if not math.isclose(event_low, price_low, rel_tol=0.0, abs_tol=1e-12) or not math.isclose(event_high, price_high, rel_tol=0.0, abs_tol=1e-12):
+        raise ZoneLifecycleError("FVG event price range does not match source bars")
+    event_source_ids = _source_ids(event.get("source_bar_ids"), "fvg_event.source_bar_ids")
+    expected_source_ids = (_bar_id(first.timestamp), _bar_id(middle.timestamp), _bar_id(third.timestamp))
+    if event_source_ids != expected_source_ids:
+        raise ZoneLifecycleError("FVG source_bar_ids must match the three-bar pattern")
+    identity_payload = {
+        "first_timestamp": first.timestamp,
+        "middle_timestamp": middle.timestamp,
+        "third_timestamp": third.timestamp,
+        "gap": gap,
+        "direction": direction,
+        "range_mode": "gap",
+        "mitigation_mode": config.mitigation_mode,
+        "invalidation_mode": config.invalidation_mode,
+        "expiry_bars": config.expiry_bars,
+        "source_event_id": _text(event.get("event_id"), "fvg_event.event_id", maximum=256),
+    }
+    zone_id = _zone_id(config=config, kind="FVG", direction=direction, identity=identity_payload)
+    parameters = {
+        **identity_payload,
+        "standalone_entry": False,
+        "gap_minimum": minimum_gap,
+    }
+    return ZoneSpec(
+        zone_id=zone_id,
+        kind="FVG",
+        direction=direction,
+        instrument_id=instrument,
+        timeframe_seconds=timeframe,
+        anchor_timestamp=anchor,
+        known_at=known_at,
+        source_bar_ids=expected_source_ids,
+        price_low=price_low,
+        price_high=price_high,
+        confirmation_lag_bars=0,
+        parameters=parameters,
+        identity=identity_payload,
+        rule_version=config.rule_version,
+    )
+
+
 def build_ote_spec(
     bars: Iterable[ChartBar | Mapping[str, Any]],
     *,
@@ -843,6 +953,20 @@ def evaluate_zone_lifecycle(
     return tuple(events)
 
 
+def build_fvg_lifecycle(
+    bars: Iterable[ChartBar | Mapping[str, Any]],
+    fvg_event: Mapping[str, Any] | Any,
+    config: ZoneLifecycleConfig,
+    *,
+    cutoff_timestamp: int | None = None,
+) -> tuple[ZoneTransition, ...]:
+    """Build one FVG and evaluate its causal mitigation lifecycle."""
+
+    normalized = _normalize_bars(bars)
+    zone = build_fvg_spec(normalized, fvg_event, config)
+    return evaluate_zone_lifecycle(normalized, zone, config, cutoff_timestamp=cutoff_timestamp)
+
+
 def build_order_block_lifecycle(
     bars: Iterable[ChartBar | Mapping[str, Any]],
     structure_event: Mapping[str, Any] | Any,
@@ -1011,7 +1135,7 @@ def run_chart_intelligence_with_zones(
 ) -> ZoneAnalysisResult:
     """Run the canonical chart detector and additive OB/OTE lifecycle seam.
 
-    Only confirmed BOS events can create automatic OB zones.  OTE zones require
+    Confirmed BOS and FVG events can create automatic zones.  OTE zones require
     an explicit, already-confirmed leg request; no leg is inferred from future
     bars.  A rejected zone is returned as data while the base chart event stream
     remains intact, allowing callers to render structure even when a zone has
@@ -1043,22 +1167,32 @@ def run_chart_intelligence_with_zones(
     rejected: list[Mapping[str, Any]] = []
 
     for event in chart_events:
-        if event.kind != "BOS" or event.state != "confirmed":
+        if event.kind not in {"BOS", "FVG"} or event.state != "confirmed":
             continue
         try:
-            additions = build_order_block_lifecycle(
-                normalized,
-                event,
-                zone_config,
-                cutoff_timestamp=effective_cutoff,
-            )
+            if event.kind == "BOS":
+                additions = build_order_block_lifecycle(
+                    normalized,
+                    event,
+                    zone_config,
+                    cutoff_timestamp=effective_cutoff,
+                )
+                zone_kind = "ORDER_BLOCK"
+            else:
+                additions = build_fvg_lifecycle(
+                    normalized,
+                    event,
+                    zone_config,
+                    cutoff_timestamp=effective_cutoff,
+                )
+                zone_kind = "FVG"
         except ZoneLifecycleError as exc:
-            rejected.append(_rejection(kind="ORDER_BLOCK", event_id=event.event_id, reason=str(exc)))
+            rejected.append(_rejection(kind=event.kind, event_id=event.event_id, reason=str(exc)))
             continue
         _append_unique_transitions(
             transitions,
             additions,
-            kind="ORDER_BLOCK",
+            kind=zone_kind,
             rejected=rejected,
             event_id=event.event_id,
         )
@@ -1146,6 +1280,7 @@ def build_zone_overlay_packets(
     groups = {
         "ORDER_BLOCK": ("order_block", "smc"),
         "OTE": ("ote", "ict"),
+        "FVG": ("fvg", "ict"),
     }
     packets: dict[str, dict[str, Any]] = {}
     for kind, (indicator_id, family) in groups.items():
@@ -1186,6 +1321,14 @@ def build_zone_overlay_packets(
                 {"timestamp": item.anchor_timestamp, "price": item.price_low},
                 {"timestamp": item.anchor_timestamp, "price": item.price_high},
             ]
+            # A later lifecycle transition is known after the zone anchor even
+            # when the original FVG confirmation had zero delay.  The overlay
+            # contract uses zero lag to mean ``known_at == anchor``; preserve
+            # that invariant without rewriting the zone's immutable origin
+            # metadata.
+            overlay_lag = item.confirmation_lag_bars
+            if overlay_lag == 0 and item.known_at > item.anchor_timestamp:
+                overlay_lag = 1
             normalized_source = dict(source)
             overlays.append(
                 {
@@ -1202,7 +1345,7 @@ def build_zone_overlay_packets(
                     "repaint": {"flag": False, "state": "confirmed", "confirmation_bars": 0},
                     "known_at": item.known_at,
                     "source_bar_ids": list(item.source_bar_ids),
-                    "confirmation_lag_bars": item.confirmation_lag_bars,
+                    "confirmation_lag_bars": overlay_lag,
                     "status": "committed",
                     "revision": 1,
                     "indicator_sha256": indicator_hash,
@@ -1244,6 +1387,8 @@ __all__ = [
     "ZoneAnalysisResult",
     "ZoneSpec",
     "ZoneTransition",
+    "build_fvg_lifecycle",
+    "build_fvg_spec",
     "build_zone_overlay_packets",
     "build_order_block_lifecycle",
     "build_order_block_spec",

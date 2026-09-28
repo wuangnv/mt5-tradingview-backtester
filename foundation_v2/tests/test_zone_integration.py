@@ -30,6 +30,15 @@ def bars() -> list[dict]:
     ]
 
 
+def fvg_bars() -> list[dict]:
+    return [
+        bar(100, 9.5, 10.0, 9.0, 9.5),
+        bar(160, 9.6, 10.2, 9.4, 9.9),
+        bar(220, 11.0, 12.0, 11.0, 11.5),
+        bar(280, 11.5, 12.0, 10.5, 10.6),
+    ]
+
+
 def configs() -> tuple[ChartEngineConfig, ZoneLifecycleConfig]:
     return (
         ChartEngineConfig(
@@ -166,3 +175,23 @@ def test_zone_orchestrator_replay_prefix_is_stable() -> None:
     assert [item.as_dict() for item in prefix.zone_transitions] == [
         item.as_dict() for item in full.zone_transitions
     ]
+
+
+def test_zone_orchestrator_projects_fvg_lifecycle_and_overlay() -> None:
+    chart_config = ChartEngineConfig(
+        "EURUSD",
+        60,
+        fvg_min_gap=0.5,
+        source={"kind": "synthetic", "id": "fvg-zone-integration"},
+    )
+    zone_config = ZoneLifecycleConfig("EURUSD", 60)
+    result = run_chart_intelligence_with_zones(
+        fvg_bars(), chart_config, zone_config, cutoff_timestamp=280
+    )
+
+    assert {item.kind for item in result.zone_transitions} == {"FVG"}
+    assert [item.state for item in result.zone_transitions] == ["confirmed", "mitigated"]
+    packets = build_zone_overlay_packets(chart_config, result.zone_transitions, cutoff_timestamp=280)
+    assert set(packets) == {"fvg"}
+    assert packets["fvg"]["indicator"]["indicator_id"] == "fvg"
+    assert "MITIGATED" in packets["fvg"]["overlays"][0]["label"]
