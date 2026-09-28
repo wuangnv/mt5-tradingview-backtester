@@ -215,6 +215,26 @@ class PaperAccountingTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             receipt(order, "bad", status="unknown", quantity="1", price=None)
 
+    def test_reconciliation_cannot_settle_an_intent_without_unknown_evidence(self):
+        order = intent()
+        rejected = apply_paper_receipt(
+            self.state,
+            order,
+            receipt(order, "r-rejected", status="rejected", quantity="0", price=None, fee="0"),
+        )
+        with self.assertRaisesRegex(PaperAccountingError, "reconciliation_requires_pending_unknown"):
+            apply_paper_receipt(
+                rejected,
+                order,
+                receipt(
+                    order,
+                    "r-reconcile",
+                    status="filled",
+                    source="reconciliation",
+                    at=BASE + timedelta(minutes=2),
+                ),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

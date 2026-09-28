@@ -15,6 +15,7 @@ __all__ = [
     "zone_lifecycle",
     "risk_promotion_contracts",
     "paper_accounting",
+    "paper_execution_bridge",
     "execution_intent_contract",
     "research",
     "store",

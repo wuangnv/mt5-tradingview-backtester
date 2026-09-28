@@ -327,6 +327,9 @@ def apply_paper_receipt(
             raise PaperAccountingError("receipt_id_reused_with_different_content")
         return state
 
+    if receipt.source == "reconciliation" and intent.intent_id not in state.pending_unknown_intent_ids:
+        raise PaperAccountingError("reconciliation_requires_pending_unknown")
+
     intent_values = _intent_map(state)
     existing = intent_values.get(intent.intent_id)
     fingerprint = intent.fingerprint()
