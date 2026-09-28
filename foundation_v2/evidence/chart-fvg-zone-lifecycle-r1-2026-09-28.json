@@ -1,0 +1,38 @@
+{
+  "schema": "chart-fvg-zone-lifecycle-r1-receipt-v1",
+  "status": "PREP_ONLY",
+  "date": "2026-09-28",
+  "scope": "causal ICT FVG zone lifecycle and renderer projection",
+  "commit": "4d6d64b",
+  "files": [
+    "foundation_v2/trading_workspace_v2/zone_lifecycle.py",
+    "foundation_v2/tests/test_zone_lifecycle.py",
+    "foundation_v2/tests/test_zone_integration.py"
+  ],
+  "capabilities": {
+    "fvg_event_revalidation": true,
+    "three_closed_source_bars": true,
+    "causal_mitigation_invalidation_expiry": true,
+    "automatic_zone_orchestrator_projection": true,
+    "validated_fvg_overlay_packet": true,
+    "execution_capability": false,
+    "provider_network_oauth": false,
+    "broker_live": false,
+    "holdout": false
+  },
+  "validation": {
+    "focused_zone_tests": "20 passed",
+    "chart_combined_tests": "104 passed",
+    "compileall": "pass",
+    "diff_check": "pass",
+    "ruff": "unavailable in project environment"
+  },
+  "acceptance": "PREP_ONLY",
+  "remaining_gates": [
+    "licensed TradingView/browser renderer visual acceptance",
+    "provider and external alert delivery acceptance",
+    "direct MQL/terminal parity acceptance",
+    "OOS/stress/data quality validation",
+    "broker/live execution and profitability claims"
+  ]
+}
