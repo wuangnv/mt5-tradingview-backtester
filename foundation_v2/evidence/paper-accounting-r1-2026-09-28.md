@@ -24,12 +24,17 @@ Pydantic JSON round-trippable and include `execution_capability=false`.
 | Item | Value |
 |---|---|
 | Source parent before this slice | `077b3fb` |
+| Implementation commits | `6956045`, `2c643b5` |
 | Module | `trading_workspace_v2/paper_accounting.py` |
 | Tests | `tests/test_paper_accounting.py` |
 | Focused accounting + risk/execution contract tests | `30 passed` |
 | Compile | `uv run python -m compileall -q trading_workspace_v2` — pass |
 | Whitespace | `git diff --check` — pass |
 | External capabilities | provider/network/broker/OAuth/holdout/execution: `false` |
+
+Receipt IDs are bound to their canonical receipt fingerprint as a follow-up
+hardening commit, so reusing an ID with changed status, quantity, price or
+evidence is rejected rather than silently treated as a retry.
 
 The project-wide acceptance state remains unchanged. This slice is a building
 block for the planned fake adapter, paper ledger and reconciliation harness; it

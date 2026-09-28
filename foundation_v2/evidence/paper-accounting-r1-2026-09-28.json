@@ -2,6 +2,7 @@
   "schema": "paper-accounting-receipt-v1",
   "status": "PREP_ONLY_OFFLINE",
   "source_parent": "077b3fb",
+  "implementation_commits": ["6956045", "2c643b5"],
   "module": "trading_workspace_v2.paper_accounting",
   "tests": {
     "focused": "30 passed",
@@ -17,6 +18,7 @@
     "duplicate_receipt_idempotency",
     "terminal_intent_conflict_rejection",
     "atomic_json_snapshot_roundtrip",
+    "receipt_id_fingerprint_conflict_rejection",
     "observed_snapshot_reconciliation"
   ],
   "capabilities": {
