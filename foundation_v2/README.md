@@ -65,6 +65,13 @@ evidence. Midpoint bars plus constant assumed spread use adverse tick rounding;
 slippage is a separate modeled monetary cost. Cost component/net
 rounding differences remain explicit as `rounding_adjustment`. Decimal
 reconciliation and source-fill checks run before immutable result publication.
+
+The offline paper-account seam is separate from the execution transport. The
+`trading_workspace_v2.paper_accounting` module projects immutable paper intents
+and explicit fill observations into long-only spot cash/positions with Decimal
+fees, partial-fill deltas, duplicate receipt idempotency and unknown-to-
+reconciliation handling. It is `PREP_ONLY_OFFLINE`; it does not connect a
+broker, provider or network and does not grant paper/demo/live authority.
 The Nautilus runtime is project-isolated from the control environment, pins its
 lock/runtime identity into the protocol, and runs in a worker-owned Windows Job
 Object lifecycle. The engine process additionally applies a 1-process hard limit

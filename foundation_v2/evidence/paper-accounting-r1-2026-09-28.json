@@ -1,0 +1,37 @@
+{
+  "schema": "paper-accounting-receipt-v1",
+  "status": "PREP_ONLY_OFFLINE",
+  "source_parent": "077b3fb",
+  "module": "trading_workspace_v2.paper_accounting",
+  "tests": {
+    "focused": "30 passed",
+    "compileall": "pass",
+    "diff_check": "pass"
+  },
+  "coverage": [
+    "long_only_spot_cash_and_position_projection",
+    "decimal_fee_and_average_cost_accounting",
+    "partial_fill_delta_then_terminal_fill",
+    "unknown_receipt_quarantine_without_financial_mutation",
+    "reconciliation_settlement",
+    "duplicate_receipt_idempotency",
+    "terminal_intent_conflict_rejection",
+    "atomic_json_snapshot_roundtrip",
+    "observed_snapshot_reconciliation"
+  ],
+  "capabilities": {
+    "provider": false,
+    "network": false,
+    "broker": false,
+    "oauth": false,
+    "holdout": false,
+    "execution": false
+  },
+  "known_limits": [
+    "single-account local projection",
+    "no scheduler or durable database adapter",
+    "no promotion or live authority",
+    "no profitability claim"
+  ]
+}
+
