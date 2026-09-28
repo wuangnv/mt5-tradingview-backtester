@@ -1,0 +1,36 @@
+{
+  "schema": "owner-absence-journal-evidence-v1",
+  "status": "PASS",
+  "scope": "offline_local_persistence",
+  "capability": {
+    "execution_capability": false,
+    "provider_calls": false,
+    "broker_calls": false,
+    "oauth_or_secrets": false,
+    "job12_touched": false
+  },
+  "implementation": {
+    "module": "foundation_v2/trading_workspace_v2/owner_absence_journal.py",
+    "schema": "owner-absence-run-journal-v1",
+    "storage": "UTF-8 JSONL with fsync and OS file lock",
+    "integrity": [
+      "contiguous sequence",
+      "previous-event hash chain",
+      "transition fingerprint",
+      "event hash",
+      "typed lifecycle continuity"
+    ],
+    "cold_start_default": "new snapshot with execution_capability=false",
+    "corrupt_journal_behavior": "fail closed"
+  },
+  "validation": {
+    "command": "PYTHONPATH=. uv run --directory foundation_v2 pytest -q tests/test_owner_absence_journal.py tests/test_owner_absence_supervisor.py",
+    "result": "13 passed",
+    "duration_seconds": 0.29
+  },
+  "known_limits": [
+    "This is a persistence primitive, not a daemon or process supervisor.",
+    "Corrupt journals require explicit operator recovery; no auto-repair is attempted.",
+    "No live execution authority is represented or granted."
+  ]
+}

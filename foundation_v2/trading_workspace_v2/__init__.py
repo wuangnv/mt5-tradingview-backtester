@@ -18,6 +18,7 @@ __all__ = [
     "paper_execution_bridge",
     "owner_absence_safety",
     "owner_absence_supervisor",
+    "owner_absence_journal",
     "execution_intent_contract",
     "research",
     "store",
