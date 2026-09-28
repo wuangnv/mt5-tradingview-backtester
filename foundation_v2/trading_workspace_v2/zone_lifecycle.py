@@ -1292,7 +1292,13 @@ def build_zone_overlay_packets(
             raise ZoneLifecycleError(f"mixed rule versions in {kind} zone packet")
         first = selected[0]
         source = dict(config.source)
-        max_lag = max(max(item.confirmation_lag_bars, 1) for item in selected)
+        def _overlay_causal_lag(item: ZoneTransition) -> int:
+            lag = item.confirmation_lag_bars
+            if lag == 0 and item.known_at > item.anchor_timestamp:
+                return 1
+            return lag
+
+        max_lag = max(_overlay_causal_lag(item) for item in selected)
         indicator = {
             "schema": "indicator-definition-v1",
             "mode": PREP_ONLY_MODE,
@@ -1326,9 +1332,7 @@ def build_zone_overlay_packets(
             # contract uses zero lag to mean ``known_at == anchor``; preserve
             # that invariant without rewriting the zone's immutable origin
             # metadata.
-            overlay_lag = item.confirmation_lag_bars
-            if overlay_lag == 0 and item.known_at > item.anchor_timestamp:
-                overlay_lag = 1
+            overlay_lag = _overlay_causal_lag(item)
             normalized_source = dict(source)
             overlays.append(
                 {
