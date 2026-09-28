@@ -1,0 +1,30 @@
+{
+  "schema": "mt5-gateway-closed-bar-r1-receipt-v1",
+  "status": "PREP_ONLY",
+  "date": "2026-09-28",
+  "commit": "fff5cc1",
+  "scope": "static MT5Gateway GET_DATA closed/provisional metadata and input bounds",
+  "capabilities": {
+    "forming_row_explicit": true,
+    "closed_row_explicit": true,
+    "unknown_timeframe_rejected": true,
+    "bars_request_bounded": true,
+    "broker_order": false,
+    "network": false,
+    "oauth": false,
+    "holdout": false,
+    "live_execution": false
+  },
+  "validation": {
+    "static_gateway_plus_mql_tests": "13 passed",
+    "diff_check": "pass",
+    "metaeditor_compile": "unavailable"
+  },
+  "acceptance": "PREP_ONLY",
+  "remaining_gates": [
+    "MetaEditor compile",
+    "read-only terminal protocol smoke",
+    "direct MQL adapter acceptance",
+    "broker/live gates remain separate"
+  ]
+}
