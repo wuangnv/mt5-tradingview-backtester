@@ -2,7 +2,7 @@
   "schema": "paper-execution-bridge-receipt-v1",
   "status": "PREP_ONLY_OFFLINE",
   "source_parent": "ae0caf3",
-  "implementation_commit": "paired_git_commit_for_this_receipt",
+  "implementation_commit": "81fa9d9",
   "modules": [
     "trading_workspace_v2.paper_execution_bridge",
     "trading_workspace_v2.paper_accounting"

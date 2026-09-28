@@ -26,7 +26,7 @@ hash drift and time-window drift fail closed.
 | Item | Value |
 |---|---|
 | Source parent before this slice | `ae0caf3` |
-| Implementation commit | paired git commit for this receipt |
+| Implementation commit | `81fa9d9` |
 | Modules | `trading_workspace_v2/paper_execution_bridge.py`, `trading_workspace_v2/paper_accounting.py` |
 | Tests | `tests/test_paper_execution_bridge.py`, `tests/test_paper_accounting.py` |
 | Focused bridge/accounting/execution tests | `25 passed` |
