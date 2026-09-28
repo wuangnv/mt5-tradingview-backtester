@@ -16,6 +16,7 @@ __all__ = [
     "risk_promotion_contracts",
     "paper_accounting",
     "paper_execution_bridge",
+    "owner_absence_safety",
     "execution_intent_contract",
     "research",
     "store",

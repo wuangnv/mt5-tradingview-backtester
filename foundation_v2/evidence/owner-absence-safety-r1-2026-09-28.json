@@ -1,0 +1,29 @@
+{
+  "schema_version": "owner-absence-safety-v1",
+  "scope": "offline owner-absence safety contract",
+  "default_absent_mode": "research",
+  "supported_modes": ["research", "paper", "advisory"],
+  "execution_capability": false,
+  "fail_closed_gates": [
+    "kill_switch",
+    "lease_expiry",
+    "heartbeat_freshness",
+    "resource_freshness",
+    "data_freshness",
+    "data_cutoff"
+  ],
+  "validation": {
+    "focused_pytest": "tests/test_owner_absence_safety.py",
+    "result": "10 passed"
+  },
+  "out_of_scope": [
+    "scheduler_or_daemon",
+    "broker_or_live_execution",
+    "provider_or_network",
+    "oauth_or_secrets",
+    "owner_absence_profitability_claim"
+  ]
+}
+
+
+
