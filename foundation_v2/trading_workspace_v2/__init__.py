@@ -20,6 +20,7 @@ __all__ = [
     "owner_absence_supervisor",
     "owner_absence_journal",
     "owner_absence_host",
+    "owner_absence_lease",
     "execution_intent_contract",
     "research",
     "store",
