@@ -22,7 +22,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Iterator
+from typing import TYPE_CHECKING, Iterator
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -34,8 +34,13 @@ from .owner_absence_supervisor import (
     SupervisorState,
 )
 
+if TYPE_CHECKING:
+    from .owner_absence_safety import OwnerAbsencePolicy
+    from .owner_absence_supervisor import SupervisorIdentity
+
 
 OWNER_ABSENCE_JOURNAL_SCHEMA = "owner-absence-run-journal-v1"
+_UNSET = object()
 
 
 def _canonical_json(value: object) -> str:
@@ -58,6 +63,10 @@ class OwnerAbsenceJournalCorrupt(ValueError):
 
 class OwnerAbsenceJournalBusy(RuntimeError):
     """Raised when another host process currently owns the journal lock."""
+
+
+class OwnerAbsenceJournalConflict(RuntimeError):
+    """Raised when a caller tries to append from a stale journal revision."""
 
 
 class OwnerAbsenceJournalEvent(BaseModel):
@@ -168,6 +177,8 @@ def _validate_transition(
             raise OwnerAbsenceJournalCorrupt("journal hash chain is broken")
         if event.previous_state != previous.next_snapshot.state:
             raise OwnerAbsenceJournalCorrupt("journal lifecycle state is not contiguous")
+        if event.evaluated_at_utc < previous.evaluated_at_utc:
+            raise OwnerAbsenceJournalCorrupt("journal event time moved backwards")
 
     expected_state = {
         "start": "running",
@@ -201,6 +212,7 @@ def _exclusive_file_lock(path: Path) -> Iterator[None]:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     handle = path.open("a+b")
+    acquired = False
     try:
         handle.seek(0)
         handle.write(b"\0")
@@ -220,19 +232,23 @@ def _exclusive_file_lock(path: Path) -> Iterator[None]:
                 fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
             except OSError as exc:
                 raise OwnerAbsenceJournalBusy(f"journal lock is busy: {path}") from exc
+        acquired = True
         yield
     finally:
-        try:
-            if os.name == "nt":
-                import msvcrt
+        if acquired:
+            try:
+                if os.name == "nt":
+                    import msvcrt
 
-                handle.seek(0)
-                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
-            else:
-                import fcntl
+                    handle.seek(0)
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
 
-                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
-        finally:
+                    fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+            finally:
+                handle.close()
+        else:
             handle.close()
 
 
@@ -258,6 +274,13 @@ class OwnerAbsenceRunJournal:
         raw = self.path.read_bytes()
         if not raw:
             raise OwnerAbsenceJournalCorrupt("journal exists but is empty")
+        # Every append writes one complete line.  Requiring the final newline
+        # distinguishes a durable event from a crash/torn write immediately
+        # after its JSON bytes; callers must recover explicitly instead of
+        # treating an ambiguous tail as a valid snapshot.
+        if not raw.endswith(b"\n"):
+            line_number = raw.count(b"\n") + 1
+            raise OwnerAbsenceJournalCorrupt(f"journal line {line_number} is truncated")
         try:
             lines = raw.decode("utf-8").splitlines()
         except UnicodeDecodeError as exc:
@@ -297,7 +320,44 @@ class OwnerAbsenceRunJournal:
         with _exclusive_file_lock(self.lock_path):
             return self._load_unlocked()
 
-    def append_step(self, step: OwnerAbsenceSupervisorStep) -> OwnerAbsenceJournalEvent:
+    def _append_step_unlocked(
+        self,
+        step: OwnerAbsenceSupervisorStep,
+        *,
+        expected_previous_event_hash: str | None | object = _UNSET,
+    ) -> OwnerAbsenceJournalEvent:
+        state = self._load_unlocked()
+        candidate = _event_from_step(
+            step,
+            sequence=state.next_sequence,
+            previous_event_hash=state.last_event_hash,
+        )
+        candidate.validate_integrity()
+        # A retry that lost its return value after fsync is safe and should
+        # return the durable event even when its caller still has the old
+        # revision.  Any other stale writer must stop rather than append a
+        # transition computed from an obsolete snapshot.
+        if state.events and state.events[-1].transition_fingerprint == candidate.transition_fingerprint:
+            return state.events[-1]
+        if expected_previous_event_hash is not _UNSET and state.last_event_hash != expected_previous_event_hash:
+            raise OwnerAbsenceJournalConflict(
+                "journal revision changed before append; recompute from the verified snapshot"
+            )
+        _validate_transition(candidate, state.events[-1] if state.events else None)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        encoded = (_canonical_json(candidate.model_dump(mode="json")) + "\n").encode("utf-8")
+        with self.path.open("ab") as handle:
+            handle.write(encoded)
+            handle.flush()
+            os.fsync(handle.fileno())
+        return candidate
+
+    def append_step(
+        self,
+        step: OwnerAbsenceSupervisorStep,
+        *,
+        expected_previous_event_hash: str | None | object = _UNSET,
+    ) -> OwnerAbsenceJournalEvent:
         """Persist one step and return its durable event.
 
         Retrying the exact last transition is idempotent, which covers the
@@ -306,23 +366,34 @@ class OwnerAbsenceRunJournal:
         """
 
         with _exclusive_file_lock(self.lock_path):
-            state = self._load_unlocked()
-            candidate = _event_from_step(
+            return self._append_step_unlocked(
                 step,
-                sequence=state.next_sequence,
-                previous_event_hash=state.last_event_hash,
+                expected_previous_event_hash=expected_previous_event_hash,
             )
-            candidate.validate_integrity()
-            if state.events and state.events[-1].transition_fingerprint == candidate.transition_fingerprint:
-                return state.events[-1]
-            _validate_transition(candidate, state.events[-1] if state.events else None)
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-            encoded = (_canonical_json(candidate.model_dump(mode="json")) + "\n").encode("utf-8")
-            with self.path.open("ab") as handle:
-                handle.write(encoded)
-                handle.flush()
-                os.fsync(handle.fileno())
-            return candidate
+
+    def transition(
+        self,
+        policy: "OwnerAbsencePolicy",
+        identity: "SupervisorIdentity",
+        *,
+        now: datetime | None = None,
+    ) -> OwnerAbsenceJournalEvent:
+        """Reduce and persist one tick under one lock acquisition.
+
+        Keeping replay, reduction, and append in the same critical section is
+        the host-level CAS seam: a second process cannot compute from a stale
+        snapshot and then append a competing transition.  The policy and
+        identity are typed by ``step_owner_absence_supervisor`` at runtime;
+        this method intentionally does not acquire/renew them or start a
+        child process.
+        """
+
+        from .owner_absence_supervisor import step_owner_absence_supervisor
+
+        with _exclusive_file_lock(self.lock_path):
+            state = self._load_unlocked()
+            step = step_owner_absence_supervisor(state.snapshot, policy, identity, now=now)
+            return self._append_step_unlocked(step)
 
     def restore_snapshot(self) -> OwnerAbsenceSupervisorSnapshot:
         """Restore the latest trusted snapshot, or a safe empty snapshot."""
@@ -333,6 +404,7 @@ class OwnerAbsenceRunJournal:
 __all__ = [
     "OWNER_ABSENCE_JOURNAL_SCHEMA",
     "OwnerAbsenceJournalBusy",
+    "OwnerAbsenceJournalConflict",
     "OwnerAbsenceJournalCorrupt",
     "OwnerAbsenceJournalEvent",
     "OwnerAbsenceJournalState",

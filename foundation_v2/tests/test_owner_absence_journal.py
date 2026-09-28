@@ -120,3 +120,19 @@ def test_invalid_transition_is_rejected_before_persisting(tmp_path) -> None:
     with pytest.raises(OwnerAbsenceJournalCorrupt, match="invalid continue transition"):
         journal.append_step(invalid)
     assert not path.exists()
+
+
+def test_clock_rollback_is_rejected_before_persisting(tmp_path) -> None:
+    journal = OwnerAbsenceRunJournal(tmp_path / "runs.jsonl")
+    started = start_step()
+    journal.append_step(started)
+    rolled_back = step_owner_absence_supervisor(
+        started.next_snapshot,
+        ready_policy(),
+        identity(),
+        now=NOW - timedelta(seconds=1),
+    )
+
+    with pytest.raises(OwnerAbsenceJournalCorrupt, match="moved backwards"):
+        journal.append_step(rolled_back)
+    assert len(journal.load().events) == 1

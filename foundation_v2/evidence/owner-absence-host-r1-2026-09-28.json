@@ -1,0 +1,35 @@
+{
+  "schema": "owner-absence-host-evidence-v1",
+  "status": "PASS",
+  "scope": "offline_local_startup_replay",
+  "capability": {
+    "execution_capability": false,
+    "provider_calls": false,
+    "broker_calls": false,
+    "oauth_or_secrets": false,
+    "job12_touched": false,
+    "child_process_spawn": false
+  },
+  "implementation": {
+    "host_module": "foundation_v2/trading_workspace_v2/owner_absence_host.py",
+    "journal_module": "foundation_v2/trading_workspace_v2/owner_absence_journal.py",
+    "storage": "UTF-8 hash-chained JSONL with nonblocking OS lock, flush, and fsync",
+    "startup": "verified replay; missing path is safe new/not-ready; existing corruption fails closed; rebooted running state requires a new fence",
+    "concurrency": "atomic reducer-plus-append seam and stale revision conflict",
+    "retry": "exact last transition is idempotent",
+    "tail_policy": "final newline required; truncated tail rejected",
+    "clock_policy": "event timestamps cannot move backwards"
+  },
+  "validation": {
+    "command": "PYTHONPATH=. uv run --directory foundation_v2 pytest -q tests/test_owner_absence_journal.py tests/test_owner_absence_host.py tests/test_owner_absence_supervisor.py tests/test_paper_execution_bridge.py",
+    "result": "32 passed",
+    "extended_safety_regression": "42 passed",
+    "compileall": "pass",
+    "diff_check": "pass"
+  },
+  "remaining_boundary": [
+    "No process spawning, PID/child ownership, watchdog, or alert delivery",
+    "No cross-project run registry or backup/restore drill",
+    "No paper soak or live execution authority"
+  ]
+}
