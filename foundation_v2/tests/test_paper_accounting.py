@@ -127,6 +127,8 @@ class PaperAccountingTests(unittest.TestCase):
         order = intent()
         applied = apply_paper_receipt(self.state, order, receipt(order, "r-1"))
         self.assertIs(apply_paper_receipt(applied, order, receipt(order, "r-1")), applied)
+        with self.assertRaisesRegex(PaperAccountingError, "receipt_id_reused"):
+            apply_paper_receipt(applied, order, receipt(order, "r-1", price="101"))
         conflicting = receipt(order, "r-2", price="101")
         with self.assertRaisesRegex(PaperAccountingError, "terminal_intent"):
             apply_paper_receipt(applied, order, conflicting)

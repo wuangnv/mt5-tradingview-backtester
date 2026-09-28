@@ -175,6 +175,7 @@ class PaperLedgerEntry(BaseModel):
     schema_version: Literal["paper-ledger-entry-v1"] = PAPER_ENTRY_SCHEMA
     sequence: int = Field(ge=1, strict=True)
     receipt_id: str = Field(min_length=1, max_length=128)
+    receipt_fingerprint: str = Field(min_length=8, max_length=128)
     intent_id: str = Field(min_length=1, max_length=128)
     symbol: str = Field(min_length=1, max_length=64)
     side: PaperSide
@@ -321,6 +322,9 @@ def apply_paper_receipt(
     if receipt.source == "reconciliation" and intent.intent_id not in _intent_map(state):
         raise PaperAccountingError("reconciliation_requires_prepared_intent")
     if receipt.receipt_id in state.applied_receipt_ids:
+        previous = next(entry for entry in state.entries if entry.receipt_id == receipt.receipt_id)
+        if previous.receipt_fingerprint != receipt.fingerprint():
+            raise PaperAccountingError("receipt_id_reused_with_different_content")
         return state
 
     intent_values = _intent_map(state)
@@ -413,6 +417,7 @@ def apply_paper_receipt(
     entry = PaperLedgerEntry(
         sequence=state.sequence + 1,
         receipt_id=receipt.receipt_id,
+        receipt_fingerprint=receipt.fingerprint(),
         intent_id=intent.intent_id,
         symbol=intent.symbol,
         side=intent.side,
