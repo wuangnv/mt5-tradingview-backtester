@@ -152,6 +152,14 @@ class ChartOverlayContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ChartOverlayContractError, "closed_only or next_bar_open"):
             validate_indicator_spec(indicator(lookahead="lookahead_on"))
 
+        with self.assertRaisesRegex(ChartOverlayContractError, "next_bar_open.*causal_delay_bars"):
+            validate_indicator_spec(indicator(lookahead="next_bar_open", causal_delay_bars=0))
+
+        delayed = validate_indicator_spec(
+            indicator(lookahead="next_bar_open", causal_delay_bars=1)
+        )
+        self.assertEqual(delayed["causal_delay_bars"], 1)
+
         payload = packet()
         payload["indicator"]["mtf_policy"] = "same_timeframe"
         with self.assertRaisesRegex(ChartOverlayContractError, "does not match"):

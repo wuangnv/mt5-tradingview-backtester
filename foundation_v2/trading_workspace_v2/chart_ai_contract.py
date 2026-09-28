@@ -174,8 +174,18 @@ def _walk_causal_timestamps(value: Any, cutoff: int, *, path: str = "visible_sli
         if isinstance(current, dict):
             for key, child in current.items():
                 normalized = str(key).strip().lower().replace("-", "_")
-                if normalized in timestamp_keys and type(child) is int and child > cutoff:
-                    raise ChartAIContractError(f"{current_path}.{key} exceeds replay cutoff")
+                if normalized in timestamp_keys:
+                    # Timestamps are part of the causal boundary, not free
+                    # form annotation text.  Requiring a strict integer here
+                    # prevents a float/string (or bool) future timestamp from
+                    # bypassing the ``> cutoff`` comparison in an otherwise
+                    # valid JSON context packet.
+                    if type(child) is not int or child < 1:
+                        raise ChartAIContractError(
+                            f"{current_path}.{key} must be a positive integer timestamp"
+                        )
+                    if child > cutoff:
+                        raise ChartAIContractError(f"{current_path}.{key} exceeds replay cutoff")
                 pending.append((f"{current_path}.{key}", child))
         elif isinstance(current, (list, tuple)):
             pending.extend((f"{current_path}[{index}]", child) for index, child in enumerate(current))

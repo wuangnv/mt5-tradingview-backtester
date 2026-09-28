@@ -251,6 +251,15 @@ def validate_indicator_spec(spec: dict[str, Any]) -> dict[str, Any]:
     if lookahead not in _LOOKAHEAD_POLICIES:
         raise ChartOverlayContractError("indicator.lookahead must be closed_only or next_bar_open")
     delay = _strict_int(spec["causal_delay_bars"], "indicator.causal_delay_bars")
+    # A next-bar-open signal cannot be available on the bar that produced the
+    # observation.  Keep the metadata causal at the contract boundary so a
+    # renderer or research caller cannot accidentally treat a delayed signal
+    # as closed-bar evidence.  This mirrors feature_timing_contract's
+    # ``next_bar_open`` rule and prevents a self-contradictory indicator spec.
+    if lookahead == "next_bar_open" and delay < 1:
+        raise ChartOverlayContractError(
+            "next_bar_open lookahead requires causal_delay_bars >= 1"
+        )
     repaint = _repaint(spec["repaint"])
     if delay < repaint["confirmation_bars"]:
         raise ChartOverlayContractError("causal_delay_bars is shorter than repaint confirmation")

@@ -83,6 +83,14 @@ class ChartAIRequestTests(unittest.TestCase):
         with self.assertRaises(ChartAIContractError):
             validate_chart_ai_request(future)
 
+    def test_timestamp_fields_are_strict_positive_integers(self):
+        for invalid in (1_700_000_180.5, "1700000181", True, 0):
+            with self.subTest(invalid=invalid):
+                payload = request_payload()
+                payload["visible_slice"]["bars"][0]["timestamp"] = invalid
+                with self.assertRaisesRegex(ChartAIContractError, "timestamp"):
+                    validate_chart_ai_request(payload)
+
     def test_forbidden_context_prompt_injection_and_cross_workspace_fail_closed(self):
         forbidden = request_payload()
         forbidden["visible_slice"]["api_key"] = "synthetic-secret"
