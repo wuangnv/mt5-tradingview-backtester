@@ -458,7 +458,7 @@ void HandleGetData(string symbol, string timeframe, int bars)
    }
    if(bars < 1 || bars > 100000)
    {
-      SendResponse("{\"success\":false,\"message\":\"bars must be between 1 and 100000,\"data\":[]}");
+      SendResponse("{\"success\":false,\"message\":\"bars must be between 1 and 100000\",\"data\":[]}");
       return;
    }
    
