@@ -36,6 +36,11 @@ StopReason = Literal[
     "data_timestamp_in_future",
     "data_after_cutoff",
     "cutoff_timestamp_in_future",
+    # Supervisor-owned reasons are kept in the same typed vocabulary so a
+    # persisted stop decision remains machine-readable and lossless.
+    "fence_mismatch",
+    "restart_requires_new_fence",
+    "restart_budget_exhausted",
 ]
 
 

@@ -1,0 +1,30 @@
+{
+  "schema_version": "owner-absence-supervisor-v1",
+  "scope": "offline owner-absence lifecycle reducer",
+  "status": "software_verified",
+  "capability": {
+    "execution_capability": false,
+    "broker_access": false,
+    "provider_access": false,
+    "process_side_effects": false
+  },
+  "invariants": [
+    "exact run and fence identity is required to continue",
+    "a stopped run requires a new fence token before restart",
+    "restart count is bounded",
+    "quarantined state cannot be revived by fresh evidence",
+    "all safety decisions remain execution_capability=false"
+  ],
+  "validation": {
+    "focused_tests": "tests/test_owner_absence_supervisor.py",
+    "focused_result": "5 passed",
+    "combined_result": "31 passed",
+    "compileall": "pass",
+    "diff_check": "pass"
+  },
+  "limitations": [
+    "host persistence and process restart are not implemented here",
+    "alert delivery and owner-controlled quarantine reset remain operational gates",
+    "no profitability or unattended live-trading claim"
+  ]
+}

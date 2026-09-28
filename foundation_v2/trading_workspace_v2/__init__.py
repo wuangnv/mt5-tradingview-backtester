@@ -17,6 +17,7 @@ __all__ = [
     "paper_accounting",
     "paper_execution_bridge",
     "owner_absence_safety",
+    "owner_absence_supervisor",
     "execution_intent_contract",
     "research",
     "store",
