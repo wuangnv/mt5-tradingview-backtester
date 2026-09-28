@@ -90,6 +90,25 @@ still enforced by the supervising worker rather than an OS CPU-time cap; input
 loading remains batch/row bounded. U2 import QA v3 now classifies
 sub-timeframe overlapping bars as review-required without rewriting old manifests.
 
+## Owner-absence host inspection
+
+The owner-absence reducer and hash-chained journal expose a read-only CLI for
+cold-start and backup checks. From this directory, run:
+
+```powershell
+python -m trading_workspace_v2.owner_absence_host_cli status --journal .\runtime\owner-absence.jsonl
+python -m trading_workspace_v2.owner_absence_host_cli cold-start --journal .\runtime\owner-absence.jsonl
+python -m trading_workspace_v2.owner_absence_host_cli verify --journal .\runtime\owner-absence.jsonl
+```
+
+`status` and `cold-start` replay the journal through the host boundary and
+report a persisted running attempt as `ready=false` until a new fence is
+presented after boot. `verify` checks the complete hash chain without applying
+that boot rule. All commands are inspection-only: they never start or restart
+processes, renew leases, contact a provider/broker, send orders, or change the
+literal `execution_capability=false` contract. Corrupt or busy journal state
+returns a non-zero exit code and is never repaired automatically.
+
 The Python environment is project-local and locked by `uv.lock`:
 
 ```powershell
