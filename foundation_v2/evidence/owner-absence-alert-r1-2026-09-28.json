@@ -1,0 +1,33 @@
+{
+  "schema": "owner-absence-alert-evidence-v1",
+  "status": "PASS_OFFLINE_CONTRACT",
+  "scope": "PREP_ONLY_OFFLINE",
+  "implementation": {
+    "module": "foundation_v2/trading_workspace_v2/owner_absence_alerts.py",
+    "dedupe_key": ["run_id", "fence_token", "event_type", "event_id"],
+    "retry_delays_seconds": [0, 60, 300],
+    "heartbeat_stale_seconds": 60,
+    "delivery_boundary": "explicit caller-provided sink receipt only",
+    "escalation": {"P1": "owner", "P0": "owner_and_delegate", "retry_exhausted": "manual_ack"}
+  },
+  "validation": {
+    "command": "PYTHONPATH=. uv run --directory foundation_v2 pytest -q tests/test_owner_absence_alerts.py tests/test_owner_absence_host.py tests/test_owner_absence_lease.py tests/test_owner_absence_journal.py tests/test_owner_absence_supervisor.py",
+    "result": "34 passed",
+    "compileall": "pass",
+    "ruff": "not_available_command_not_found"
+  },
+  "capability": {
+    "execution_capability": false,
+    "provider_calls": false,
+    "broker_calls": false,
+    "oauth_or_secrets": false,
+    "external_delivery": false,
+    "child_process_spawn": false,
+    "job12_touched": false
+  },
+  "remaining_boundary": [
+    "No host watchdog loop, durable alert outbox, or owner/delegate notification channel",
+    "No delivery acknowledgement persistence outside the caller-owned ledger",
+    "No paper soak or live execution authority"
+  ]
+}
