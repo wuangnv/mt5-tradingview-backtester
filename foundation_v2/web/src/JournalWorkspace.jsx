@@ -211,7 +211,7 @@ function JournalRow({ record, selected, onSelect }) {
       </span>
       <span className="ja-row-meta">
         <code>{source.id || 'N/A'}</code>
-        <span>{payload.entry_type === 'no-trade' ? 'Không giao dịch' : Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</span>
+        <span>{[payload.entry_type === 'no-trade' ? 'Không giao dịch' : '', Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'].filter(Boolean).join(' · ')}</span>
       </span>
     </button>
   )
