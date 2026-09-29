@@ -30,6 +30,8 @@
 .fx-app .fx-workspace-name { font-size: var(--fx-type-label); }
 .fx-app .fx-avatar { font-size: var(--fx-type-label); }
 .fx-app .fx-shell-primary { font-size: var(--fx-type-control); }
+.fx-app .fx-shell-toggle { font-size: var(--fx-type-meta); }
+.fx-app .fx-theme-label { font-size: var(--fx-type-label); }
 .fx-app .fx-eyebrow { font-size: var(--fx-type-label); }
 .fx-app .fx-page-heading h1,
 .fx-app .fx-unavailable h1,
