@@ -22,6 +22,7 @@ CONNECTOR_KIND = "notion"
 CONNECTOR_STATUSES = frozenset(
     {"pending", "unknown", "succeeded", "failed", "revoked", "cancelled"}
 )
+_ALLOWED_SCOPES = frozenset({"read", "write", "read_write"})
 _OPAQUE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _DESTINATION_REF = re.compile(r"^user-selected:[A-Za-z0-9][A-Za-z0-9._-]{0,255}$")
 _SHA256 = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -185,6 +186,8 @@ def validate_connection_request(
     normalized_scopes = []
     for scope in scopes:
         scope = _text(scope, "scope", max_length=64)
+        if scope not in _ALLOWED_SCOPES:
+            raise ConnectorLedgerError("unsupported connector scope")
         if scope not in normalized_scopes:
             normalized_scopes.append(scope)
     metadata = json_object(metadata, "metadata")
