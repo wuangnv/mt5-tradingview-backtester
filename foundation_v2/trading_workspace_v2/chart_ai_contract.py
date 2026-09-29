@@ -90,6 +90,17 @@ class ChartAIContractError(ValueError):
     """Raised when a chart AI packet is unsafe, stale or structurally invalid."""
 
 
+def _normalize_key(value: Any) -> str:
+    """Normalize untrusted nested keys before security/causal matching.
+
+    Imported chart metadata is JSON-shaped but its nested keys are not owned by
+    the contract. Treat punctuation and whitespace variants consistently so a
+    key such as ``"api.key"`` cannot bypass the ``api_key`` deny-list.
+    """
+
+    return re.sub(r"[^a-z0-9]+", "_", str(value).strip().lower()).strip("_")
+
+
 def _text(value: Any, name: str, *, maximum: int = 256) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} is required")
@@ -139,7 +150,7 @@ def _walk_json(value: Any, *, reject_prompt_injection: bool = False) -> None:
         path, current = pending.pop()
         if isinstance(current, dict):
             for key, child in current.items():
-                normalized = str(key).strip().lower().replace("-", "_")
+                normalized = _normalize_key(key)
                 if normalized in _FORBIDDEN_KEYS:
                     raise ChartAIContractError(f"{path}.{key} is forbidden")
                 pending.append((f"{path}.{key}", child))
@@ -173,7 +184,7 @@ def _walk_causal_timestamps(value: Any, cutoff: int, *, path: str = "visible_sli
         current_path, current = pending.pop()
         if isinstance(current, dict):
             for key, child in current.items():
-                normalized = str(key).strip().lower().replace("-", "_")
+                normalized = _normalize_key(key)
                 if normalized in timestamp_keys:
                     # Timestamps are part of the causal boundary, not free
                     # form annotation text.  Requiring a strict integer here
