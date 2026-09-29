@@ -91,6 +91,9 @@ let mode = 'happy'
 let holdOverview = true
 let releaseOverview
 const overviewGate = new Promise((resolve) => { releaseOverview = resolve })
+let delayedResourceId = null
+let releaseDelayedResource = null
+let delayedResourceGate = null
 const learnRequests = []
 
 function fulfillJson(route, status, payload) {
@@ -165,10 +168,15 @@ async function main() {
       if (url.pathname.startsWith(prefix)) {
         const resourceId = decodeURIComponent(url.pathname.slice(prefix.length))
         if (!(resourceId in resources)) return fulfillJson(route, 404, { detail: 'learn_resource_not_found' })
+        if (resourceId === delayedResourceId && delayedResourceGate) await delayedResourceGate
         return fulfillJson(route, 200, { resource_id: resourceId, format: 'markdown', content: resources[resourceId] })
       }
       return fulfillJson(route, 404, { detail: 'unknown_fixture_route' })
     })
+    // The shell reads the local dataset catalog for its market-context strip.
+    // Keep this Learn-only fixture self-contained instead of relying on the
+    // optional API proxy at 127.0.0.1:8010.
+    await page.route('**/api/v2/data/datasets', (route) => fulfillJson(route, 200, { items: [] }))
 
     await page.goto(`${origin}/?view=learn&workspace=tenant-ui`)
     await page.getByTestId('learn-loading').waitFor()
@@ -185,6 +193,23 @@ async function main() {
     await page.getByRole('button', { name: 'Tổng quan course' }).click()
     await page.getByTestId('learn-resource-content').waitFor()
     assert.match(await page.getByTestId('learn-resource-content').innerText(), /Course owner giữ nội dung/)
+
+    // A slower response for an earlier click must not overwrite a newer
+    // resource selection. This exercises the reader's request-token guard.
+    delayedResourceId = 'course'
+    delayedResourceGate = new Promise((resolve) => { releaseDelayedResource = resolve })
+    const delayedCourseRequest = page.waitForRequest((request) => request.url().includes('/api/v2/learn/resources/course'))
+    await page.getByRole('button', { name: 'Tổng quan course' }).click()
+    await delayedCourseRequest
+    await page.getByRole('button', { name: 'Workbook' }).click()
+    await page.getByTestId('learn-resource-content').waitFor()
+    assert.match(await page.getByTestId('learn-resource-content').innerText(), /Bài thực hành an toàn/)
+    releaseDelayedResource()
+    await page.waitForTimeout(50)
+    assert.match(await page.getByTestId('learn-resource-content').innerText(), /Bài thực hành an toàn/)
+    delayedResourceId = null
+    delayedResourceGate = null
+    releaseDelayedResource = null
 
     const bodyText = await page.locator('body').innerText()
     assert.equal(/course-checks|entry-check|"answer"|"expected"/i.test(bodyText), false, 'answer-key material leaked into UI')

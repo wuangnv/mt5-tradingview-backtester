@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import './learnIntegration.css'
 
 function normalizeError(response, payload) {
@@ -106,6 +106,16 @@ export default function LearnWorkspace({ workspace, query }) {
   const [glossary, setGlossary] = useState({ status: 'loading', payload: null, error: null })
   const [resource, setResource] = useState({ status: 'idle', payload: null, error: null, id: '', label: '' })
   const [glossaryQuery, setGlossaryQuery] = useState('')
+  const resourceRequestRef = useRef(0)
+
+  // A resource belongs to the workspace that requested it. Clear the reader
+  // and invalidate in-flight requests when the workspace changes so a slower
+  // response cannot paint content from the previous tenant.
+  useEffect(() => {
+    resourceRequestRef.current += 1
+    setResource({ status: 'idle', payload: null, error: null, id: '', label: '' })
+    setGlossaryQuery('')
+  }, [workspace])
 
   useEffect(() => {
     let cancelled = false
@@ -130,9 +140,12 @@ export default function LearnWorkspace({ workspace, query }) {
   }, [workspace])
 
   const openResource = async (resourceId, label) => {
+    const requestId = resourceRequestRef.current + 1
+    resourceRequestRef.current = requestId
     setResource({ status: 'loading', payload: null, error: null, id: resourceId, label })
     try {
       const payload = await fetchLearnJson(`/api/v2/learn/resources/${encodeURIComponent(resourceId)}`, workspace)
+      if (requestId !== resourceRequestRef.current) return
       setResource({
         status: String(payload?.content || '').trim() ? 'ready' : 'empty',
         payload,
@@ -141,6 +154,7 @@ export default function LearnWorkspace({ workspace, query }) {
         label,
       })
     } catch (error) {
+      if (requestId !== resourceRequestRef.current) return
       setResource({ status: error.kind || 'error', payload: null, error: error.message, id: resourceId, label })
     }
   }
