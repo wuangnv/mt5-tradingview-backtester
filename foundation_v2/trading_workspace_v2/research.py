@@ -30,8 +30,10 @@ from .nautilus_worker import (
 )
 from .research_validation import ResearchReconciliationError, validate_engine_result
 from .research_oos import (
+    ResearchValidationPlanError,
     build_bounded_sweep,
     build_cost_fill_stress_plan,
+    build_regime_partition,
     build_walk_forward_plan,
     complete_canceled_sweep_outcomes,
     summarize_sweep_outcomes,
@@ -152,6 +154,53 @@ def _materialize_oos_validation(protocol: dict, rows: list[dict], manifest) -> d
     if stored_plan is not None and stored_plan != plan:
         raise ResearchEngineValidationError("research validation protocol changed after job creation")
     return {**rebuilt_request, "walk_forward": plan}
+
+
+def _materialize_regime_partition(protocol: dict, rows: list[dict], manifest) -> dict | None:
+    """Materialize the caller-pinned regime partition after bounded row load.
+
+    The queue protocol contains only a typed request.  Labels are therefore
+    read from the immutable dataset by the worker and validated at execution
+    time.  The explicit range cutoff is checked here in addition to the
+    partition contract's row/holdout checks so a malformed artifact cannot
+    smuggle a future ``known_at`` value into result metadata.
+    """
+
+    request = protocol.get("regime_partition")
+    if request is None:
+        return None
+    if not isinstance(request, dict) or request.get("schema") != "regime-partition-request-v1":
+        raise ResearchEngineValidationError("regime partition request is invalid")
+    allowed = {"schema", "regime_field", "known_at_field", "max_regimes", "max_segments"}
+    if set(request) != allowed:
+        raise ResearchEngineValidationError("regime partition request changed after job creation")
+    cutoff = int(protocol["range"]["to_utc"])
+    regime_field = request["regime_field"]
+    known_at_field = request["known_at_field"]
+    try:
+        for row in rows:
+            timestamp = row["timestamp"]
+            if timestamp >= cutoff:
+                raise ResearchValidationPlanError("regime row reaches research cutoff")
+            known_at = row.get(known_at_field)
+            if type(known_at) is not int or known_at > cutoff:
+                raise ResearchValidationPlanError("regime known_at exceeds research cutoff")
+        partition = build_regime_partition(
+            rows,
+            timeframe_seconds=int(manifest.timeframe_seconds),
+            regime_field=regime_field,
+            known_at_field=known_at_field,
+            max_regimes=request["max_regimes"],
+            max_segments=request["max_segments"],
+            holdout_policy=manifest.holdout_policy,
+        )
+    except (ResearchValidationPlanError, TypeError, ValueError, KeyError) as exc:
+        raise ResearchEngineValidationError("regime partition cannot be materialized") from exc
+    return {
+        **partition,
+        "cutoff_timestamp": cutoff,
+        "request": {key: request[key] for key in ("regime_field", "known_at_field", "max_regimes", "max_segments")},
+    }
 
 
 def _apply_cost_fill_stress(protocol: dict, scenario: dict) -> dict:
@@ -337,6 +386,11 @@ class ResearchService:
         }
         if payload.get("strategy_spec") is not None:
             protocol["playbook"]["strategy_spec"] = payload["strategy_spec"]
+        if request.regime_partition is not None:
+            protocol["regime_partition"] = {
+                "schema": "regime-partition-request-v1",
+                **request.regime_partition.model_dump(mode="json"),
+            }
         requested_oos = (walk_forward is not None, parameter_space is not None, max_trials is not None)
         if any(requested_oos):
             if not all(requested_oos):
@@ -458,6 +512,7 @@ class ResearchService:
                         raise ResearchEngineInterrupted("research execution interrupted")
 
                 validation = None
+                regime_partition = None
                 terminal_outcomes: list[dict] = []
                 try:
                     rows = self.artifacts.read_dataset_range(
@@ -478,6 +533,7 @@ class ResearchService:
                         {"phase_index": 2, "phase_count": phase_count},
                     ):
                         return None
+                    regime_partition = _materialize_regime_partition(job.protocol, rows, manifest)
                     validation = _materialize_oos_validation(job.protocol, rows, manifest)
                     if validation is not None:
                         if not self.save_checkpoint(
@@ -493,6 +549,12 @@ class ResearchService:
                                 "sweep_truncated": validation["sweep"]["truncated"],
                                 "stress_config_sha256": validation["stress_config_sha256"],
                                 "stress_scenario_count": validation["stress"]["scenario_count"],
+                                **({
+                                    "regime_schema": regime_partition["schema"],
+                                    "regime_label_count": regime_partition["label_count"],
+                                    "regime_segment_count": regime_partition["segment_count"],
+                                    "regime_cutoff_timestamp": regime_partition["cutoff_timestamp"],
+                                } if regime_partition is not None else {}),
                             },
                             {"phase_index": 3, "phase_count": phase_count},
                         ):
@@ -690,6 +752,7 @@ class ResearchService:
                         metrics=engine["metrics"],
                         observed_range={**engine["observed_range"], "elapsed_ms": round(elapsed_ms, 3)},
                         execution=engine.get("execution", {}),
+                        regime_partition=regime_partition,
                         created_at_utc=utc_now_iso(),
                     )
                     result_checkpoint = {"trade_count": len(result.ledger)}
@@ -715,6 +778,7 @@ class ResearchService:
                             "bar_count": len(rows),
                             "elapsed_ms": round(elapsed_ms, 3),
                         },
+                        regime_partition=regime_partition,
                         created_at_utc=utc_now_iso(),
                     )
                     result_checkpoint = {
@@ -722,6 +786,13 @@ class ResearchService:
                         "trial_status_counts": outcome_summary["status_counts"],
                         "trial_count": outcome_summary["trial_count"],
                         "fully_accounted": outcome_summary["fully_accounted"],
+                    }
+                if regime_partition is not None:
+                    result_checkpoint["regime_partition"] = {
+                        "schema": regime_partition["schema"],
+                        "cutoff_timestamp": regime_partition["cutoff_timestamp"],
+                        "label_count": regime_partition["label_count"],
+                        "segment_count": regime_partition["segment_count"],
                     }
                 payload = result.model_dump(mode="json")
                 if not self.save_checkpoint(

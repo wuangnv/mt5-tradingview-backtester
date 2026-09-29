@@ -1,0 +1,32 @@
+{
+  "schema": "U5-REGIME-WIRING-VALIDATION-r1",
+  "task": "U5-REGIME-WIRING-r1",
+  "result": "PASS",
+  "scope": "Synthetic/local bounded regime request -> immutable job protocol -> worker metadata result, pre-holdout only; no per-regime engine metrics, provider, broker or deployment capability",
+  "checks": {
+    "typed_api_request": true,
+    "protocol_hash_pinned": true,
+    "worker_materializes_as_of_partition": true,
+    "result_and_checkpoint_metadata": true,
+    "known_at_cutoff_rejection": true,
+    "holdout_access": false,
+    "broker_execution_capability": false,
+    "provider_access": false
+  },
+  "tests": {
+    "command": ".venv/Scripts/python.exe -m pytest tests/test_u5c_oos.py -q",
+    "tests_run": 26,
+    "subtests_run": 5,
+    "return_code": 0
+  },
+  "source_sha256": {
+    "foundation_v2/trading_workspace_v2/contracts.py": "ade7bba6fecaf90158d1e57a3e55c0ccad7d7c901171f00ab02a72aebed4e56c",
+    "foundation_v2/trading_workspace_v2/research.py": "ddef16b2bee54cf2f43bf7c35a50e50659f2c9303d887807487fe279e229a2bb",
+    "foundation_v2/tests/test_u5c_oos.py": "d9e1db59108a83d6db0cd1189c937700353f9b0658013dbbc7c18580db5592ad"
+  },
+  "residual_scope": [
+    "Per-regime engine outcome metrics and resume checkpoints remain a separate slice; this change reports deterministic partition metadata only",
+    "Licensed real-data OOS and classifier/provider selection remain gated",
+    "Broker/demo/live, paid provider/OAuth and deployment remain out of scope"
+  ]
+}

@@ -16,7 +16,12 @@ for entry in (str(ROOT), str(V2)):
         sys.path.insert(0, entry)
 
 from trading_workspace_v2.artifacts import canonical_json_bytes
-from trading_workspace_v2.contracts import CreateEngineResearchJob, DatasetManifest, DatasetSource
+from trading_workspace_v2.contracts import (
+    CreateEngineResearchJob,
+    DatasetManifest,
+    DatasetSource,
+    RegimePartitionRequest,
+)
 from trading_workspace_v2.research import ResearchService
 from trading_workspace_v2.research_engine import ResearchEngineInterrupted, ResearchEngineValidationError
 from trading_workspace_v2.research_oos import (
@@ -516,6 +521,136 @@ class U5cResearchJobWiringTests(unittest.TestCase):
         )
         self.assertEqual(job.protocol["validation"]["schema"], "research-oos-validation-v1")
         self.assertFalse(job.protocol["validation"]["holdout_access"])
+
+    def test_api_job_protocol_pins_bounded_regime_partition_request(self):
+        regular = engine_request(self.manifest)
+        self.assertIsNone(regular.regime_partition)
+
+        regime_request = regular.model_copy(
+            update={
+                "regime_partition": RegimePartitionRequest(
+                    regime_field="market_regime",
+                    known_at_field="market_regime_known_at",
+                    max_regimes=4,
+                    max_segments=32,
+                )
+            }
+        )
+        job = self.service.create_engine_job(workspace_id="tenant-a", request=regime_request)
+        self.assertEqual(
+            job.protocol["regime_partition"],
+            {
+                "schema": "regime-partition-request-v1",
+                "regime_field": "market_regime",
+                "known_at_field": "market_regime_known_at",
+                "max_regimes": 4,
+                "max_segments": 32,
+            },
+        )
+        self.assertEqual(job.protocol_sha256, hashlib.sha256(canonical_json_bytes(job.protocol)).hexdigest())
+        with self.assertRaisesRegex(ValueError, "must differ"):
+            RegimePartitionRequest(regime_field="state", known_at_field="state")
+        with self.assertRaisesRegex(ValueError, "ASCII letters"):
+            RegimePartitionRequest(regime_field="future.label")
+
+    def test_worker_materializes_regime_metadata_with_replay_cutoff(self):
+        labels = ["trend", "trend", "range", "range", "trend", "trend", "volatile", "volatile"]
+        self.artifacts.rows = [
+            {
+                **row,
+                "market_regime": labels[index % len(labels)],
+                "market_regime_known_at": row["timestamp"],
+            }
+            for index, row in enumerate(self.artifacts.rows)
+        ]
+        request = engine_request(self.manifest).model_copy(
+            update={
+                "regime_partition": RegimePartitionRequest(
+                    regime_field="market_regime",
+                    known_at_field="market_regime_known_at",
+                    max_regimes=4,
+                    max_segments=32,
+                )
+            }
+        )
+        queued = self.service.create_engine_job(workspace_id="tenant-a", request=request)
+        claimed = ClaimedJob(
+            workspace_id=queued.workspace_id,
+            job_id=queued.job_id,
+            dataset_id=queued.dataset_id,
+            strategy_version=queued.strategy_version,
+            starting_balance=queued.starting_balance,
+            protocol=queued.protocol,
+            protocol_sha256=queued.protocol_sha256,
+            attempt_no=1,
+            lease_owner="u5c-worker",
+            lease_token="lease-u5c",
+        )
+
+        def fake_engine(slice_rows, protocol, *, continue_check=None, deadline=None):
+            return {
+                "assumptions": {},
+                "signals": {"long": 0, "short": 0, "no_signal": len(slice_rows), "skipped_overlap": 0},
+                "ledger": [],
+                "metrics": {"metric_schema_version": "metrics-v2"},
+                "observed_range": {
+                    "from_utc": slice_rows[0]["timestamp"],
+                    "to_utc": slice_rows[-1]["timestamp"] + TIMEFRAME,
+                    "bar_count": len(slice_rows),
+                },
+                "execution": {},
+            }
+
+        with (
+            patch("trading_workspace_v2.research.verify_engine_code"),
+            patch("trading_workspace_v2.research.execute_breakout", side_effect=fake_engine),
+            patch("trading_workspace_v2.research.validate_engine_result", return_value={"reconciled": True}),
+        ):
+            result = self.service.execute_claimed(claimed)
+
+        self.assertEqual(result.regime_partition["schema"], "regime-segmentation-v1")
+        self.assertEqual(result.regime_partition["cutoff_timestamp"], self.manifest.row_count * TIMEFRAME)
+        self.assertEqual(result.regime_partition["label_count"], 3)
+        self.assertEqual(result.regime_partition["segment_count"], 8)
+        self.assertEqual(result.regime_partition["holdout"]["access"], False)
+        checkpoint, _progress = next(
+            item for item in self.store.checkpoints if item[0]["phase"] == "result-validated"
+        )
+        self.assertEqual(checkpoint["regime_partition"]["cutoff_timestamp"], self.manifest.row_count * TIMEFRAME)
+
+    def test_worker_rejects_regime_known_at_beyond_cutoff_without_engine_outcome(self):
+        self.artifacts.rows = [
+            {
+                **row,
+                "regime": "trend",
+                "regime_known_at": row["timestamp"] + (TIMEFRAME if index == 3 else 0),
+            }
+            for index, row in enumerate(self.artifacts.rows)
+        ]
+        request = engine_request(self.manifest).model_copy(
+            update={"regime_partition": RegimePartitionRequest()}
+        )
+        queued = self.service.create_engine_job(workspace_id="tenant-a", request=request)
+        claimed = ClaimedJob(
+            workspace_id=queued.workspace_id,
+            job_id=queued.job_id,
+            dataset_id=queued.dataset_id,
+            strategy_version=queued.strategy_version,
+            starting_balance=queued.starting_balance,
+            protocol=queued.protocol,
+            protocol_sha256=queued.protocol_sha256,
+            attempt_no=1,
+            lease_owner="u5c-worker",
+            lease_token="lease-u5c",
+        )
+        with (
+            patch("trading_workspace_v2.research.verify_engine_code"),
+            patch("trading_workspace_v2.research.execute_breakout") as engine,
+        ):
+            with self.assertRaisesRegex(ResearchEngineValidationError, "cannot be materialized"):
+                self.service.execute_claimed(claimed)
+        engine.assert_not_called()
+        self.assertIsNone(self.artifacts.result_payload)
 
     def test_oos_configuration_requires_validation_split(self):
         payload = engine_request(self.manifest).model_dump(mode="python")

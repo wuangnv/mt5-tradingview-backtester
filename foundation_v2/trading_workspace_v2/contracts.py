@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from decimal import Decimal
+import re
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -68,6 +69,35 @@ class CreateResearchJob(BaseModel):
     starting_balance: float = Field(gt=0)
 
 
+class RegimePartitionRequest(BaseModel):
+    """Caller-supplied, bounded as-of regime metadata for an engine job.
+
+    Labels are read from the frozen dataset rows by the worker.  This request
+    only pins the column names and bounds; it never selects a provider or
+    authorizes holdout/broker access.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    regime_field: str = Field(default="regime", min_length=1, max_length=64, pattern=r"[A-Za-z_][A-Za-z0-9_]{0,63}")
+    known_at_field: str = Field(default="regime_known_at", min_length=1, max_length=64, pattern=r"[A-Za-z_][A-Za-z0-9_]{0,63}")
+    max_regimes: int = Field(default=8, ge=1, le=64, strict=True)
+    max_segments: int = Field(default=10_000, ge=1, le=100_000, strict=True)
+
+    @field_validator("regime_field", "known_at_field")
+    @classmethod
+    def safe_field_name(cls, value: str) -> str:
+        if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,63}", value) is None:
+            raise ValueError("field name must contain only ASCII letters, digits and underscore")
+        return value
+
+    @model_validator(mode="after")
+    def fields_must_differ(self):
+        if self.regime_field == self.known_at_field:
+            raise ValueError("regime_field and known_at_field must differ")
+        return self
+
+
 class CreateEngineResearchJob(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
@@ -89,6 +119,7 @@ class CreateEngineResearchJob(BaseModel):
     walk_forward: dict | None = None
     parameter_space: dict | None = None
     max_trials: int | None = Field(default=None, ge=1, le=10_000, strict=True)
+    regime_partition: RegimePartitionRequest | None = None
 
     @model_validator(mode="after")
     def validate_oos_configuration(self):
@@ -158,6 +189,7 @@ class EngineResearchResult(BaseModel):
     observed_range: dict
     execution: dict = Field(default_factory=dict)
     created_at_utc: str
+    regime_partition: dict | None = None
 
 
 class OOSResearchResult(BaseModel):
@@ -184,6 +216,7 @@ class OOSResearchResult(BaseModel):
     outcome_summary: dict
     source_range: dict
     created_at_utc: str
+    regime_partition: dict | None = None
 
 
 class PlaybookDraft(BaseModel):
