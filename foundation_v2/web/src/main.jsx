@@ -152,4 +152,19 @@ function App() {
   return <FxReplayShell workspace={workspace} activeView={activeView} mode={mode}>{content}</FxReplayShell>
 }
 
-createRoot(document.getElementById('root')).render(<App />)
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Trading Workspace root element is missing')
+
+// Vite can re-evaluate this entry module during HMR. Reuse the existing root
+// so a hot update never calls createRoot twice on the same DOM container.
+const rootStateKey = '__tradingWorkspaceReactRoot'
+const appRoot = rootElement[rootStateKey] || createRoot(rootElement)
+rootElement[rootStateKey] = appRoot
+appRoot.render(<App />)
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    appRoot.unmount()
+    delete rootElement[rootStateKey]
+  })
+}
