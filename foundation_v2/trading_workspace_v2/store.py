@@ -634,6 +634,14 @@ class PostgresStore:
             ).fetchone()
         return self._connector_row(row)
 
+    def list_connector_connections(self, workspace_id: str) -> list[dict]:
+        with self.connect() as conn:
+            rows = conn.execute(
+                "SELECT * FROM connector_connections WHERE workspace_id=%s AND connector=%s ORDER BY updated_at_utc DESC,connection_id",
+                (workspace_id, CONNECTOR_KIND),
+            ).fetchall()
+        return [self._connector_row(row) for row in rows]
+
     def update_connector_connection(
         self,
         *,

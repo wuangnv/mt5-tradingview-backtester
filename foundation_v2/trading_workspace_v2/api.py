@@ -7,7 +7,7 @@ from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from psycopg.errors import UniqueViolation
-from pydantic import ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .auth import LocalWorkspaceAuthorization, MissingTrustedIdentity, WorkspaceMembershipDenied
 from .artifacts import ArtifactStore
@@ -53,7 +53,50 @@ from .replay import ReplayService
 from .research import ResearchService
 from .nautilus_worker import runtime_ready
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
+from .connector_ledger import ConnectorIdempotencyConflict, ConnectorLedgerError
 from .store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
+
+
+class ConnectorConnectionCreateRequest(BaseModel):
+    """Local, opaque connector state; never an OAuth credential payload."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    connection_id: str = Field(min_length=1, max_length=128)
+    request_id: str = Field(min_length=1, max_length=128)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    account_ref: str | None = Field(default=None, max_length=128)
+    scopes: list[str] = Field(min_length=1, max_length=16)
+    metadata: dict[str, object] = Field(default_factory=dict)
+
+
+class ConnectorConnectionStateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: str = Field(min_length=1, max_length=32)
+    expected_revision: int = Field(ge=1)
+    error_code: str | None = Field(default=None, max_length=128)
+
+
+class ConnectorIntentCreateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    intent_id: str = Field(min_length=1, max_length=128)
+    request_id: str = Field(min_length=1, max_length=128)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    connection_id: str | None = Field(default=None, max_length=128)
+    intent: dict[str, object]
+
+
+class ConnectorReceiptUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: str = Field(min_length=1, max_length=32)
+    expected_revision: int = Field(ge=1)
+    external_id: str | None = Field(default=None, max_length=256)
+    remote_revision: str | None = Field(default=None, max_length=128)
+    response: dict[str, object] = Field(default_factory=dict)
+    error_code: str | None = Field(default=None, max_length=128)
 
 
 def workspace_id(request: Request, x_workspace_id: str = Header(..., min_length=1)) -> str:
@@ -125,6 +168,118 @@ def create_app(
     @app.get("/api/v2/overview")
     def get_overview(workspace: str = Depends(workspace_id)):
         return product.overview(workspace)
+
+    # M6 connector routes are deliberately local/PREP_ONLY.  They persist a
+    # user-selected opaque handoff for a future Notion adapter; no route below
+    # starts OAuth, opens a provider connection, or dispatches a write.
+    @app.post("/api/v2/connectors/notion/connections", status_code=201)
+    def create_notion_connection(
+        body: ConnectorConnectionCreateRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        store.ensure_workspace(workspace)
+        try:
+            return store.create_connector_connection(
+                workspace_id=workspace,
+                connection_id=body.connection_id,
+                request_id=body.request_id,
+                idempotency_key=body.idempotency_key,
+                account_ref=body.account_ref,
+                scopes=body.scopes,
+                metadata=body.metadata,
+            )
+        except ConnectorIdempotencyConflict as exc:
+            raise HTTPException(status_code=409, detail="connector_idempotency_conflict") from exc
+        except ConnectorLedgerError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get("/api/v2/connectors/notion/connections")
+    def list_notion_connections(workspace: str = Depends(workspace_id)):
+        return {"items": store.list_connector_connections(workspace), "mode": "PREP_ONLY", "cloud_io": False}
+
+    @app.get("/api/v2/connectors/notion/connections/{connection_id}")
+    def get_notion_connection(connection_id: str, workspace: str = Depends(workspace_id)):
+        connection = store.get_connector_connection(workspace, connection_id)
+        if connection is None:
+            raise HTTPException(status_code=404, detail="connector_connection_not_found")
+        return connection
+
+    @app.patch("/api/v2/connectors/notion/connections/{connection_id}")
+    def update_notion_connection(
+        connection_id: str,
+        body: ConnectorConnectionStateRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return store.update_connector_connection(
+                workspace_id=workspace,
+                connection_id=connection_id,
+                status=body.status,
+                expected_revision=body.expected_revision,
+                error_code=body.error_code,
+            )
+        except ConnectorLedgerError as exc:
+            detail = "connector_connection_conflict" if "revision" in str(exc) or "terminal" in str(exc) else str(exc)
+            raise HTTPException(status_code=409 if detail == "connector_connection_conflict" else 422, detail=detail) from exc
+
+    @app.post("/api/v2/connectors/notion/intents", status_code=201)
+    def create_notion_intent(
+        body: ConnectorIntentCreateRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        store.ensure_workspace(workspace)
+        try:
+            return store.create_connector_intent(
+                workspace_id=workspace,
+                intent_id=body.intent_id,
+                request_id=body.request_id,
+                idempotency_key=body.idempotency_key,
+                connection_id=body.connection_id,
+                intent=body.intent,
+            )
+        except ConnectorIdempotencyConflict as exc:
+            raise HTTPException(status_code=409, detail="connector_idempotency_conflict") from exc
+        except ConnectorLedgerError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get("/api/v2/connectors/notion/intents")
+    def list_notion_intents(workspace: str = Depends(workspace_id)):
+        return {"items": store.list_connector_intents(workspace), "mode": "PREP_ONLY", "cloud_io": False}
+
+    @app.get("/api/v2/connectors/notion/intents/{intent_id}")
+    def get_notion_intent(intent_id: str, workspace: str = Depends(workspace_id)):
+        intent = store.get_connector_intent(workspace, intent_id)
+        if intent is None:
+            raise HTTPException(status_code=404, detail="connector_intent_not_found")
+        return intent
+
+    @app.get("/api/v2/connectors/notion/intents/{intent_id}/receipt")
+    def get_notion_receipt(intent_id: str, workspace: str = Depends(workspace_id)):
+        receipt = store.get_connector_receipt(workspace, intent_id)
+        if receipt is None:
+            raise HTTPException(status_code=404, detail="connector_receipt_not_found")
+        return receipt
+
+    @app.patch("/api/v2/connectors/notion/intents/{intent_id}/receipt")
+    def update_notion_receipt(
+        intent_id: str,
+        body: ConnectorReceiptUpdateRequest,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return store.record_connector_receipt(
+                workspace_id=workspace,
+                intent_id=intent_id,
+                status=body.status,
+                expected_revision=body.expected_revision,
+                external_id=body.external_id,
+                remote_revision=body.remote_revision,
+                response=body.response,
+                error_code=body.error_code,
+            )
+        except ConnectorLedgerError as exc:
+            detail = "connector_receipt_conflict" if "revision" in str(exc) or "terminal" in str(exc) else str(exc)
+            raise HTTPException(status_code=409 if detail == "connector_receipt_conflict" else 422, detail=detail) from exc
 
     @app.get("/api/v2/learn/overview")
     def get_learn_overview(workspace: str = Depends(workspace_id)):
