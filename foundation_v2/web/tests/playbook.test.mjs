@@ -13,6 +13,8 @@ test('playbook UI is an explicit read-only version and lineage surface', () => {
   assert.match(source, /Version lineage/i)
   assert.match(source, /RevisionDiff/)
   assert.match(source, /data-testid="playbook-diff"/)
+  assert.match(source, /Mở Journal với setup này/)
+  assert.match(source, /playbook_revision/)
   assert.match(api, /fetchPlaybookRevisions/)
   assert.match(api, /\/api\/v2\/playbooks/)
   assert.doesNotMatch(source, /onClick=.*freeze|onClick=.*fork|OrderSend|submitLive/i)

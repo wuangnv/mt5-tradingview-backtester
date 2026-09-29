@@ -132,11 +132,13 @@ export function recordMatchesContext(record, context) {
   const tradeMatches = !context.tradeId || [source.trade_id, source.tradeId, source.id]
     .some((value) => String(value || '') === context.tradeId)
   const datasetMatches = !context.datasetId || String(source.dataset_id || source.datasetId || '') === context.datasetId
+  const playbookMatches = !context.playbookId || String(source.playbook_id || source.playbookId || '') === context.playbookId
+  const playbookRevisionMatches = !context.playbookRevision || String(source.playbook_revision || source.playbookRevision || '') === String(context.playbookRevision)
   const cursorMatches = context.cursor === null || [source.cursor_index, source.cursor].some((value) => String(value ?? '') === String(context.cursor))
   const cutoffMatches = !context.cutoffTimestamp || [source.cutoff_timestamp, source.cutoff, source.decision_cutoff]
     .some((value) => String(value ?? '') === String(context.cutoffTimestamp))
   const modeMatches = !context.mode || !source.mode || String(source.mode) === String(context.mode)
-  return sessionMatches && tradeMatches && datasetMatches && cursorMatches && cutoffMatches && modeMatches
+  return sessionMatches && tradeMatches && datasetMatches && playbookMatches && playbookRevisionMatches && cursorMatches && cutoffMatches && modeMatches
 }
 
 function sourceIdentity(context) {
@@ -146,6 +148,8 @@ function sourceIdentity(context) {
     ...(isFiniteNumber(context.cursor) ? { cursor_index: context.cursor } : {}),
     ...(context.cutoffTimestamp ? { cutoff_timestamp: context.cutoffTimestamp } : {}),
     ...(context.mode ? { mode: context.mode } : {}),
+    ...(context.playbookId ? { playbook_id: context.playbookId } : {}),
+    ...(context.playbookRevision ? { playbook_revision: Number(context.playbookRevision) } : {}),
   }
   if (context.tradeId) {
     return { kind: 'replay-trade', id: context.tradeId, ...shared, trade_id: context.tradeId }
@@ -178,6 +182,7 @@ function ContextBar({ context, workspace, filtered, onFilterChange, replayHref }
         <strong>{context.sessionId ? `Replay ${context.sessionId}` : context.tradeId ? `Trade ${context.tradeId}` : 'Chưa chọn replay session'}</strong>
         {context.tradeId && <span>Trade <code>{context.tradeId}</code></span>}
         {context.datasetId && <span>Dataset <code>{context.datasetId}</code></span>}
+        {context.playbookId && <span>Setup <code>{context.playbookId}{context.playbookRevision ? ` · r${context.playbookRevision}` : ''}</code></span>}
         {isFiniteNumber(context.cursor) && <span>Cutoff nến <strong>#{context.cursor}</strong></span>}
         {context.cutoffTimestamp && <span>UTC <strong>{formatContextTimestamp(context.cutoffTimestamp)}</strong></span>}
       </div>
@@ -267,6 +272,7 @@ function ProvenancePanel({ record, context }) {
         <div><dt>Cutoff nến</dt><dd>{source.cursor_index ?? context.cursor ?? 'N/A'}</dd></div>
         <div><dt>Cutoff UTC</dt><dd>{source.cutoff_timestamp ? formatContextTimestamp(source.cutoff_timestamp) : context.cutoffTimestamp ? formatContextTimestamp(context.cutoffTimestamp) : 'N/A'}</dd></div>
         <div><dt>Mode</dt><dd>{source.mode || context.mode || 'N/A'}</dd></div>
+        <div><dt>Setup</dt><dd>{source.playbook_id || context.playbookId || 'N/A'}{(source.playbook_revision || context.playbookRevision) ? ` · r${source.playbook_revision || context.playbookRevision}` : ''}</dd></div>
         <div><dt>Source ID</dt><dd><code>{source.id || 'N/A'}</code></dd></div>
         <div><dt>Revision</dt><dd>r{record?.revision ?? 'N/A'}</dd></div>
         <div><dt>Tags</dt><dd>{Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</dd></div>
