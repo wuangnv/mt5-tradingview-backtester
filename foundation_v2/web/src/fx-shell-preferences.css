@@ -165,8 +165,8 @@ body[data-tw-theme='dark'] {
   box-shadow: 0 8px 18px rgba(31, 48, 58, .15);
 }
 
-.fx-app[data-theme='light'] .fx-brand-copy strong,
-.fx-app[data-theme='light'] .fx-breadcrumb strong,
+.fx-app[data-theme='light'] .fx-wordmark,
+.fx-app[data-theme='light'] .fx-wordmark-compact,
 .fx-app[data-theme='light'] .fx-page-heading h1,
 .fx-app[data-theme='light'] .fx-unavailable h1,
 .fx-app[data-theme='light'] .fx-settings h1,
@@ -176,15 +176,6 @@ body[data-tw-theme='dark'] {
   color: #1d2930;
 }
 
-.fx-app[data-theme='light'] .fx-brand-symbol,
-.fx-app[data-theme='light'] .fx-product-mark {
-  border-color: #b58231;
-  background: #ffffff;
-  color: #8b5c10;
-}
-
-.fx-app[data-theme='light'] .fx-brand-copy span,
-.fx-app[data-theme='light'] .fx-breadcrumb-product,
 .fx-app[data-theme='light'] .fx-workspace-name,
 .fx-app[data-theme='light'] .fx-page-heading p,
 .fx-app[data-theme='light'] .fx-session-main > span,
@@ -200,15 +191,9 @@ body[data-tw-theme='dark'] {
   color: #42535d;
 }
 
-.fx-app[data-theme='light'] .fx-context-instrument,
-.fx-app[data-theme='light'] .fx-context-mode,
+.fx-app[data-theme='light'] .fx-context-market,
 .fx-app[data-theme='light'] .fx-context-lock {
   color: #704609;
-}
-
-.fx-app[data-theme='light'] .fx-context-mode {
-  background: #f7f1e6;
-  border-color: #d4b77f;
 }
 
 .fx-app[data-theme='light'] .fx-context-lock {

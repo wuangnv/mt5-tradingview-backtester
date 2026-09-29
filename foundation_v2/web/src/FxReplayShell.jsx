@@ -123,6 +123,21 @@ const NAV_GROUPS = [
 
 const FxReplayContext = createContext(null)
 
+function WMReplayWordmark() {
+  return (
+    <svg className="fx-wordmark-svg" viewBox="0 0 242 30" role="img" aria-label="WMREPLAY" focusable="false">
+      <path d="M0 0h5l4 21 4-11 4 11 4-21h5l-6 30h-5l-4-10-2 10H4L0 0Z" />
+      <path d="M31 30V0h6l6 12 6-12h6v30h-6V10l-4 10h-4L37 10v20h-6Z" />
+      <path fillRule="evenodd" d="M62 30V0h14c8 0 12 4 12 10 0 5-3 8-7 9l8 11h-7l-7-10h-7v10h-6Zm6-25v10h7c5 0 7-2 7-5s-2-5-7-5h-7Z" />
+      <path d="M94 0h23v5h-17v7h14v5h-14v8h17v5H94V0Z" />
+      <path fillRule="evenodd" d="M122 30V0h14c8 0 12 4 12 10s-4 10-12 10h-8v10h-6Zm6-25v10h7c5 0 7-2 7-5s-2-5-7-5h-7Z" />
+      <path d="M153 0h6v25h17v5h-23V0Z" />
+      <path fillRule="evenodd" d="M177 30 188 0h7l12 30h-7l-3-8h-12l-3 8h-7Zm10-13h8l-4-11-4 11Z" />
+      <path d="M209 0h7l7 11 7-11h7l-11 16v14h-6V16L209 0Z" />
+    </svg>
+  )
+}
+
 export function useFxReplayContext() {
   return useContext(FxReplayContext) || { updateMarketContext: () => {} }
 }
@@ -148,29 +163,19 @@ function NavItem({ item, active, workspace, query, copy }) {
   )
 }
 
-function ShellTopbar({ activeItem, mode, workspace, query, marketContext, copy, language, setLanguage, theme, setTheme }) {
-  const [activeLabel] = copy.nav[activeItem?.id] || copy.nav.overview
-  const instrument = marketContext.instrument || copy.emptyInstrument
-  const timeframe = marketContext.timeframe || copy.emptyTimeframe
+function ShellTopbar({ activeItem, workspace, query, marketContext, copy, language, setLanguage, theme, setTheme }) {
+  const marketLabel = [marketContext.instrument, marketContext.timeframe].filter(Boolean).join(' · ')
   const dataStatus = marketContext.dataStatus || copy.unknownData
-  const source = marketContext.source || (marketContext.dataStatus === 'fixture-only' ? 'Fixture / QA only' : copy.unconfirmedSource)
-  const cutoff = marketContext.cutoff || (activeItem?.id === 'replay' ? copy.chartCutoff : copy.unopenedCutoff)
   const statusTone = dataStatus === 'verified' ? 'is-live' : dataStatus ? 'is-warn' : 'is-muted'
   return (
     <header className="fx-topbar">
-      <div className="fx-breadcrumb">
-        <span className="fx-product-mark" aria-hidden="true"><span className="fx-brand-glyph">WM</span></span>
-        <span className="fx-breadcrumb-product">{copy.product}</span>
-        <span className="fx-breadcrumb-separator">/</span>
-        <strong>{activeLabel}</strong>
+      <div className="fx-topbar-brand" aria-label={copy.product} title={copy.product}>
+        <span className="fx-wordmark" aria-hidden="true"><WMReplayWordmark /></span>
+        <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
       </div>
       <div className="fx-context-area">
         <div className="fx-context-strip" aria-label={copy.contextAria}>
-          <span className="fx-context-chip fx-context-instrument" title={`Instrument: ${instrument}`}><i className={`fx-status-dot ${statusTone}`} />{instrument}</span>
-          <span className="fx-context-chip fx-context-timeframe" title={`Timeframe: ${timeframe}`}>{timeframe}</span>
-          <span className="fx-context-chip fx-context-source" title={`Data source: ${source}`}>{copy.sourcePrefix}: {source}</span>
-          <span className="fx-context-chip fx-context-cutoff" title={`Decision cutoff: ${cutoff}`}>{copy.cutoffPrefix}: {cutoff}</span>
-          <span className="fx-context-chip fx-context-mode" title="Current operating mode">{mode}</span>
+          {marketLabel && <span className="fx-context-chip fx-context-market" title={`Instrument and timeframe: ${marketLabel}`}><i className={`fx-status-dot ${statusTone}`} />{marketLabel}</span>}
         </div>
         <span className="fx-context-chip fx-context-lock" title="Broker execution is disabled">{copy.brokerLocked}</span>
       </div>
@@ -266,11 +271,8 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
   return (
     <FxReplayContext.Provider value={contextValue}>
       <div className="fx-app fx-shell-story" data-testid="fxreplay-shell" data-theme={theme} lang={language}>
+        <ShellTopbar activeItem={activeItem} workspace={workspace} query={query} marketContext={marketContext} copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
         <aside className="fx-rail" aria-label={copy.workspaceAria}>
-          <div className="fx-brand" aria-label="WMREPLAY" title="WMREPLAY">
-            <div className="fx-brand-symbol" aria-hidden="true"><span className="fx-brand-glyph">WM</span></div>
-            <div className="fx-brand-copy"><strong>WMREPLAY</strong><span>Market replay</span></div>
-          </div>
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>
               {groupIndex > 0 && <div className="fx-rail-divider" />}
@@ -288,7 +290,6 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
           </div>
         </aside>
         <section className="fx-main" aria-label={copy.contentAria}>
-          <ShellTopbar activeItem={activeItem} mode={mode} workspace={workspace} query={query} marketContext={marketContext} copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
           <div className="fx-content">{children}</div>
         </section>
       </div>
