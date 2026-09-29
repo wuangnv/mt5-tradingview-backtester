@@ -9,6 +9,7 @@
 .fx-app {
   --fx-type-label: 11px;
   --fx-type-meta: 12px;
+  --fx-type-support: 13px;
   --fx-type-body: 14px;
   --fx-type-control: 13px;
   --fx-type-code: 12px;
@@ -64,7 +65,7 @@
 .fx-app .replay-start-kicker,
 .fx-app .story-label { font-size: var(--fx-type-label); }
 .fx-app .replay-start p,
-.fx-app .replay-side p { font-size: var(--fx-type-meta); line-height: 1.55; }
+.fx-app .replay-side p { font-size: var(--fx-type-support); line-height: 1.55; }
 .fx-app .replay-start label { font-size: var(--fx-type-meta); }
 .fx-app .replay-start input { font-size: var(--fx-type-control); }
 .fx-app .primary-action,
@@ -98,7 +99,7 @@
 
 /* Research story. */
 .fx-app .rs-shell { font-size: var(--fx-type-body); }
-.fx-app .rs-topbar p { font-size: var(--fx-type-meta); }
+.fx-app .rs-topbar p { font-size: var(--fx-type-support); }
 .fx-app .rs-eyebrow,
 .fx-app .rs-safety strong,
 .fx-app .rs-field span,
@@ -162,24 +163,18 @@
 .fx-app .ja-story-steps small,
 .fx-app .ja-story-facts span,
 .fx-app .ja-provenance-card dt { font-size: var(--fx-type-label); }
-.fx-app .as-page-header p,
 .fx-app .as-context-value dd,
 .fx-app .as-context-actions a,
 .fx-app .as-inspector-actions a,
-.fx-app .as-story-lead p,
 .fx-app .as-story-metric dt,
 .fx-app .as-chart-empty,
 .fx-app .as-empty-inline,
 .fx-app .as-definition summary,
-.fx-app .as-definition p,
 .fx-app .as-detail-list .as-context-value dd,
 .fx-app .as-provenance-list .as-context-value dd,
-.fx-app .as-inspector-note,
-.fx-app .as-limit-note,
 .fx-app .as-raw-details summary,
 .fx-app .as-inspector-empty,
 .fx-app .as-next-action p,
-.fx-app .as-large-empty p,
 .fx-app .ja-context-copy span:not(.ja-eyebrow),
 .fx-app .ja-text-link,
 .fx-app .ja-filter-toggle,
@@ -191,6 +186,12 @@
 .fx-app .ja-provenance-card dd,
 .fx-app .ja-provenance-card p,
 .fx-app .ja-story-placeholder > span:last-child { font-size: var(--fx-type-meta); }
+.fx-app .as-page-header p,
+.fx-app .as-story-lead p,
+.fx-app .as-definition p,
+.fx-app .as-inspector-note,
+.fx-app .as-limit-note,
+.fx-app .as-large-empty p { font-size: var(--fx-type-support); }
 .fx-app .as-code,
 .fx-app .as-table code,
 .fx-app .as-raw-details pre,
@@ -229,10 +230,6 @@
 .fx-app .risk-metric span,
 .fx-app .risk-assumption-list dt,
 .fx-app .risk-status-chip { font-size: var(--fx-type-label); }
-.fx-app .trade-heading p,
-.fx-app .risk-heading p,
-.fx-app .trade-init-section p,
-.fx-app .trade-message,
 .fx-app .trade-empty span,
 .fx-app .trade-context-strip span,
 .fx-app .trade-context-panel dt,
@@ -241,10 +238,14 @@
 .fx-app .trade-notice,
 .fx-app .risk-form-error,
 .fx-app .risk-side li span,
-.fx-app .risk-result-head p,
-.fx-app .risk-result-blocked p,
 .fx-app .risk-assumption-list dd,
 .fx-app .risk-metric small { font-size: var(--fx-type-meta); }
+.fx-app .trade-heading p,
+.fx-app .risk-heading p,
+.fx-app .trade-init-section p,
+.fx-app .trade-message,
+.fx-app .risk-result-head p,
+.fx-app .risk-result-blocked p { font-size: var(--fx-type-support); }
 .fx-app .trade-init-form label,
 .fx-app .trade-draft-form label,
 .fx-app .risk-form label { font-size: var(--fx-type-label); }
@@ -286,23 +287,23 @@
 
 /* Older utility surfaces use many explicit 9–11px declarations.  Preserve
  * their compact geometry while lifting the readable text floor. */
-.fx-app .learn-topbar p,
-.fx-app .learn-message,
 .fx-app .learn-readonly strong,
 .fx-app .learn-readonly span,
 .fx-app .learn-progress-meta,
 .fx-app .learn-resource-copy,
 .fx-app .learn-glossary-list dd,
-.fx-app .prop-topbar p,
 .fx-app .prop-lock strong,
 .fx-app .prop-lock span,
-.fx-app .prop-message,
 .fx-app .prop-review span,
 .fx-app .prop-report-copy,
+.fx-app .notion-safety span { font-size: var(--fx-type-meta); }
+.fx-app .learn-topbar p,
+.fx-app .learn-message,
+.fx-app .prop-topbar p,
+.fx-app .prop-message,
 .fx-app .notion-provider p,
-.fx-app .notion-safety span,
 .fx-app .notion-step p,
-.fx-app .notion-preview-note { font-size: var(--fx-type-meta); }
+.fx-app .notion-preview-note { font-size: var(--fx-type-support); }
 .fx-app .learn-summary span,
 .fx-app .learn-progress span,
 .fx-app .learn-pane-heading span,
@@ -344,6 +345,25 @@
 .fx-app .notion-step strong,
 .fx-app .notion-preview-grid strong,
 .fx-app .notion-receipt-facts dd { font-size: var(--fx-type-meta); }
+
+/* Paragraph copy is the reading layer of every workspace.  Keep it at the
+ * support size even when a route's legacy stylesheet declared 11–12px. */
+.fx-app .rs-shell p,
+.fx-app .as-page p,
+.fx-app .ja-page p,
+.fx-app .trade-workspace p,
+.fx-app .risk-workspace p,
+.fx-app .rd-shell p,
+.fx-app .settings-shell p,
+.fx-app .learn-shell p,
+.fx-app .prop-shell p { font-size: var(--fx-type-support); }
+.fx-app .settings-shell .settings-note { font-size: var(--fx-type-support); }
+.fx-app .rd-shell small,
+.fx-app .trade-workspace small,
+.fx-app .risk-workspace small,
+.fx-app .settings-shell small,
+.fx-app .learn-shell small,
+.fx-app .prop-shell small { font-size: var(--fx-type-label); }
 
 /* Never shrink the reading floor on narrow layouts.  Headings remain fluid,
  * while labels, controls and table cells keep a stable minimum at 360px. */

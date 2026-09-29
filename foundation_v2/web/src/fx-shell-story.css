@@ -164,6 +164,14 @@
   white-space: nowrap;
 }
 
+.fx-shell-story .fx-context-area {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .fx-shell-story .fx-context-strip {
   flex: 1 1 auto;
   min-width: 0;
@@ -206,9 +214,10 @@
 
 .fx-shell-story .fx-context-lock {
   border-color: #664444;
-  background: rgba(77, 37, 37, .24);
+  background: #21191a;
   color: #e3a4a4;
   font-weight: 650;
+  flex: 0 0 auto;
 }
 
 .fx-shell-story .fx-status-dot {
@@ -365,12 +374,16 @@
     display: none;
   }
 
-  .fx-shell-story .fx-context-strip {
+  .fx-shell-story .fx-context-area {
     grid-column: 1 / -1;
     grid-row: 2;
     width: 100%;
     margin: 0;
     padding-bottom: 2px;
+  }
+
+  .fx-shell-story .fx-context-strip {
+    width: auto;
   }
 
   .fx-shell-story .fx-context-chip {
