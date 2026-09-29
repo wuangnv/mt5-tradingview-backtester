@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
+from fastapi.responses import PlainTextResponse
 from psycopg.errors import UniqueViolation
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
@@ -54,6 +55,7 @@ from .research import ResearchService
 from .nautilus_worker import runtime_ready
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
 from .connector_ledger import ConnectorIdempotencyConflict, ConnectorLedgerError
+from .notion_oauth import NotionOAuthConfig, NotionOAuthError, NotionOAuthService, is_loopback_host
 from .project_session import build_local_demo_session_status
 from .store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
 
@@ -119,6 +121,7 @@ def create_app(
     authorization: LocalWorkspaceAuthorization | None = None,
     data_registry: DataProviderRegistry | None = None,
     learn_roots: Mapping[str, str | Path] | None = None,
+    notion_oauth: NotionOAuthService | None = None,
 ) -> FastAPI:
     dsn = dsn or os.environ["TW_V2_DATABASE_URL"]
     artifact_root = artifact_root or os.environ["TW_V2_ARTIFACT_ROOT"]
@@ -156,6 +159,9 @@ def create_app(
     app.state.data_registry = data_registry
     app.state.learn = learn
     app.state.authorization = authorization
+    if notion_oauth is None:
+        notion_oauth = NotionOAuthService(NotionOAuthConfig.from_environment())
+    app.state.notion_oauth = notion_oauth
 
     @app.get("/health")
     def health():
@@ -187,9 +193,49 @@ def create_app(
     def get_overview(workspace: str = Depends(workspace_id)):
         return product.overview(workspace)
 
-    # M6 connector routes are deliberately local/PREP_ONLY.  They persist a
-    # user-selected opaque handoff for a future Notion adapter; no route below
-    # starts OAuth, opens a provider connection, or dispatches a write.
+    # OAuth connection is separate from the PREP_ONLY export ledger below.
+    # Its token lives only in this process and never enters a JSON response.
+    @app.get("/api/v2/connectors/notion/oauth/status")
+    def notion_oauth_status(request: Request, workspace: str = Depends(workspace_id)):
+        if not is_loopback_host(request.client.host if request.client else None):
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        identity = request.app.state.authorization.identity.resolve()
+        return notion_oauth.status(workspace, identity.subject)
+
+    @app.post("/api/v2/connectors/notion/oauth/start")
+    def notion_oauth_start(request: Request, workspace: str = Depends(workspace_id)):
+        if not is_loopback_host(request.client.host if request.client else None):
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        identity = request.app.state.authorization.identity.resolve()
+        try:
+            return {"authorization_url": notion_oauth.begin(workspace, identity.subject)}
+        except NotionOAuthError as exc:
+            raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    @app.get("/api/v2/connectors/notion/oauth/callback", response_class=PlainTextResponse)
+    def notion_oauth_callback(request: Request, state: str = "", code: str = "", error: str = ""):
+        if not is_loopback_host(request.client.host if request.client else None):
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        if error:
+            raise HTTPException(status_code=400, detail="notion_oauth_provider_denied")
+        try:
+            notion_oauth.complete(state, code, authorize_workspace=authorization.authorize)
+        except NotionOAuthError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        except (MissingTrustedIdentity, WorkspaceMembershipDenied) as exc:
+            raise HTTPException(status_code=403, detail="notion_oauth_workspace_access_denied") from exc
+        return "Notion connected to this local project session. Return to the project tab."
+
+    @app.post("/api/v2/connectors/notion/oauth/disconnect")
+    def notion_oauth_disconnect(request: Request, workspace: str = Depends(workspace_id)):
+        if not is_loopback_host(request.client.host if request.client else None):
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        identity = request.app.state.authorization.identity.resolve()
+        notion_oauth.disconnect(workspace, identity.subject)
+        return notion_oauth.status(workspace, identity.subject)
+
+    # M6 export routes remain local/PREP_ONLY; they persist a user-selected
+    # handoff and do not dispatch a Notion write.
     @app.post("/api/v2/connectors/notion/connections", status_code=201)
     def create_notion_connection(
         body: ConnectorConnectionCreateRequest,
