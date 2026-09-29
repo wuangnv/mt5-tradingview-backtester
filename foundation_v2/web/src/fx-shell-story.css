@@ -135,7 +135,7 @@
 
 .fx-shell-story .fx-breadcrumb {
   flex: 0 0 auto;
-  min-width: 205px;
+  min-width: 190px;
   gap: 8px;
   color: #c4cdd2;
 }
@@ -204,7 +204,13 @@
 .fx-shell-story .fx-context-source,
 .fx-shell-story .fx-context-cutoff {
   color: #9eabb2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.fx-shell-story .fx-context-instrument { max-width: 160px; }
+.fx-shell-story .fx-context-source { max-width: 154px; }
+.fx-shell-story .fx-context-cutoff { max-width: 142px; }
 
 .fx-shell-story .fx-context-mode {
   border-color: #70562d;
