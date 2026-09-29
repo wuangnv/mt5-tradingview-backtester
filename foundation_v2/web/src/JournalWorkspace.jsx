@@ -13,6 +13,7 @@ const ENTRY_TYPES = [
 const STORY_STEPS = [
   ['context', 'Context', 'Phiên / cutoff'],
   ['observation', 'Quan sát', 'Điều thấy trên chart'],
+  ['hypothesis', 'Giả thuyết', 'Điều cần kiểm chứng'],
   ['decision', 'Quyết định', 'Vào / bỏ qua / chờ'],
   ['outcome', 'Kết quả', 'Chưa ghi hoặc đã cập nhật'],
   ['next', 'Bước tiếp', 'Việc cần làm sau đó'],
@@ -206,7 +207,7 @@ function StoryRail({ record, context }) {
       <ol className="ja-story-steps">
         {STORY_STEPS.map(([id, label, hint]) => {
           const active = id === story.activeStep
-          const complete = id === 'context' || (id === 'observation' && story.type !== 'observation') || (id === 'decision' && ['decision', 'no-trade', 'missed-trade'].includes(story.type)) || (id === 'outcome' && Boolean(recordOutcome(record)))
+          const complete = id === 'context' || (id === 'observation' && story.type !== 'observation') || (id === 'hypothesis' && ['decision', 'no-trade', 'missed-trade'].includes(story.type)) || (id === 'decision' && ['decision', 'no-trade', 'missed-trade'].includes(story.type)) || (id === 'outcome' && Boolean(recordOutcome(record)))
           return (
             <li className={`${active ? 'is-active' : ''} ${complete ? 'is-complete' : ''}`} key={id}>
               <span className="ja-story-step-mark" aria-hidden="true">{complete ? '✓' : '·'}</span>
