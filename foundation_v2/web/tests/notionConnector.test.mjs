@@ -84,6 +84,11 @@ test('fails closed on sensitive fields, malformed metrics and implicit destinati
     requested_at_utc: '2026-09-29T10:00:00Z',
     destination_ref: 'guessed-page',
   }), /destination_ref/i)
+  await assert.rejects(() => buildNotionExportIntent(preview, {
+    request_id: 'mt5-notion-ui-001',
+    requested_at_utc: '2026-02-30T10:00:00Z',
+    destination_ref: 'user-selected:notion-page-001',
+  }), /valid UTC timestamp/i)
 })
 
 test('flow state names cover login, OAuth, destination, preview and receipt', () => {

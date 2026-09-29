@@ -241,7 +241,11 @@ export async function buildNotionExportIntent(preview, { request_id, requested_a
   if (preview.schema_version !== NOTION_UI_PREVIEW_SCHEMA || preview.status !== 'PREP_ONLY') fail('preview must be PREP_ONLY')
   const requestIdValue = requestId(request_id)
   const timestamp = text(requested_at_utc, 'requested_at_utc', 64)
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/u.test(timestamp) || Number.isNaN(Date.parse(timestamp))) {
+  const timestampShape = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/u.test(timestamp)
+  const parsedTimestamp = timestampShape ? new Date(timestamp) : null
+  const calendarMatches = parsedTimestamp && !Number.isNaN(parsedTimestamp.getTime())
+    && parsedTimestamp.toISOString().slice(0, 19) === timestamp.slice(0, 19)
+  if (!calendarMatches) {
     fail('requested_at_utc must be a valid UTC timestamp')
   }
   const selected = destination_ref !== undefined && destination_ref !== null
