@@ -428,6 +428,32 @@ async function main() {
 
     await page.getByLabel('Report branch').selectOption('hindsight_exploratory')
     await page.getByTestId('prop-reports-empty').waitFor()
+    await page.getByLabel('Report branch').selectOption('clean')
+    await page.getByTestId('prop-report-list').getByText('attempt-persisted-1', { exact: false }).waitFor()
+
+    await page.getByTestId('prop-notion-tab').click()
+    await page.getByTestId('notion-connector').waitFor()
+    await page.getByRole('button', { name: 'Kết nối Notion' }).click()
+    await page.getByTestId('notion-oauth-pending').waitFor()
+    await page.getByRole('button', { name: 'Mô phỏng callback' }).click()
+    await page.getByTestId('notion-oauth-callback').waitFor()
+    await page.getByRole('button', { name: 'Chọn account & destination' }).click()
+    await page.getByLabel('Notion account').selectOption('owner-selected:notion-demo-account')
+    await page.getByLabel('Notion destination picker').selectOption('user-selected:notion-page-demo')
+    await page.getByRole('button', { name: 'Xem preview an toàn' }).click()
+    await page.getByTestId('notion-preview').waitFor()
+    const notionPreviewText = await page.getByTestId('notion-preview').innerText()
+    assert.match(notionPreviewText, /PREP_ONLY/)
+    assert.match(notionPreviewText, /owner_notes/)
+    assert.match(notionPreviewText, /broker\/account\/holdout\/credential không nằm trong payload/i)
+    await page.getByRole('button', { name: 'Tạo export intent offline' }).click()
+    await page.getByTestId('notion-receipt').waitFor()
+    const notionReceiptText = await page.getByTestId('notion-receipt').innerText()
+    assert.match(notionReceiptText, /pending \/ not_dispatched/i)
+    assert.match(notionReceiptText, /Chưa có — chưa dispatch/)
+    await page.getByRole('button', { name: 'Đánh dấu unknown cần lookup' }).click()
+    assert.match(await page.getByTestId('notion-receipt').innerText(), /unknown.*tra cứu destination/i)
+
     await page.getByRole('button', { name: 'Sessions' }).click()
 
     const screenshots = []
@@ -497,6 +523,7 @@ async function main() {
         'report_to_exact_replay_cursor_link',
         'report_status_and_branch_filters',
         'report_csv_export',
+        'notion_offline_connector_flow',
         'report_failure_does_not_hide_resume_state',
         'mutations_prop_api_only',
         'no_broker_or_credential_payload',

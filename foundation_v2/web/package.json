@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "test:notion-connector": "node --test tests/notionConnector.test.mjs",
     "test:learn-ui": "node run_learn_ui_acceptance.mjs",
     "test:prop-ui": "node run_prop_ui_acceptance.mjs"
   },

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import NotionConnector from './NotionConnector.jsx'
 
 const TERMINAL_STATUSES = new Set(['completed_pass', 'failed_breach', 'expired', 'abandoned'])
 
@@ -218,7 +219,7 @@ export default function PropWorkspace({ workspace }) {
   }, [reportFilters, workspace])
 
   useEffect(() => {
-    if (activeTab === 'reports') loadReports()
+    if (activeTab === 'reports' || activeTab === 'notion') loadReports()
   }, [activeTab, loadReports])
 
   const updateDraft = (field, value) => setDraft((current) => ({ ...current, [field]: value }))
@@ -423,6 +424,13 @@ export default function PropWorkspace({ workspace }) {
           aria-current={activeTab === 'reports' ? 'page' : undefined}
           onClick={() => setActiveTab('reports')}
         >Reports</button>
+        <button
+          type="button"
+          className={activeTab === 'notion' ? 'is-active' : ''}
+          aria-current={activeTab === 'notion' ? 'page' : undefined}
+          data-testid="prop-notion-tab"
+          onClick={() => setActiveTab('notion')}
+        >Notion</button>
         <button type="button" disabled>Dashboard</button>
         <button type="button" disabled>Trades</button>
       </nav>
@@ -697,6 +705,10 @@ export default function PropWorkspace({ workspace }) {
             })}
           </div>
         </section>
+      )}
+
+      {activeTab === 'notion' && (
+        <NotionConnector workspace={workspace} reports={reports} onRefresh={loadReports} />
       )}
     </main>
   )
