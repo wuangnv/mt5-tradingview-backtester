@@ -290,7 +290,7 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
         <section className="as-inspector-selection" aria-label="Trade detail">
           <div className="as-selection-outcome"><span className={'as-outcome-dot is-' + selectedTrade.outcome} />{selectedTrade.outcome === 'win' ? 'Thắng' : selectedTrade.outcome === 'loss' ? 'Thua' : selectedTrade.outcome === 'breakeven' ? 'Hòa vốn' : 'Chưa xác định'}<strong>{formatNumber(selectedTrade.pnl)}</strong></div>
           <dl className="as-detail-list"><ContextValue label="Đóng (UTC)" value={selectedTrade.closeDate} /><ContextValue label="Side" value={selectedTrade.side} /><ContextValue label="Net R" value={formatNumber(selectedTrade.realized_r, 2, 'R')} /><ContextValue label="Risk budget" value={formatNumber(selectedTrade.planned_risk_budget)} /></dl>
-          <p className="as-inspector-note">Trade được đọc nguyên bản từ research ledger. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.</p>
+          <p className="as-inspector-note">{selectedTrade.source === 'closed balance curve' ? 'Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.' : 'Trade được đọc nguyên bản từ research ledger. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.'}</p>
           <details className="as-raw-details"><summary>Xem record gốc</summary><pre>{JSON.stringify(selectedTrade, null, 2)}</pre></details>
         </section>
       ) : <div className="as-inspector-empty">Chọn một điểm trên đường balance hoặc một dòng trade để mở chi tiết.</div>}
@@ -346,7 +346,10 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
 
   const result = state.payload?.result || (state.payload?.ledger ? state.payload : null)
   const model = useMemo(() => buildAnalyticsModel(result), [result])
-  const selectedTrade = model.ledger.find((trade) => trade.tradeId === selectedTradeId) || null
+  const selectedTrade = model.ledger.find((trade) => trade.tradeId === selectedTradeId) || (() => {
+    const point = model.curve.find((item) => item.tradeId === selectedTradeId)
+    return point ? { tradeId: point.tradeId, pnl: null, realized_r: null, planned_risk_budget: null, closeDate: 'N/A', source: 'closed balance curve', outcome: 'unknown', balance: point.value } : null
+  })()
   const replayParams = new URLSearchParams({ workspace, view: 'replay' })
   if (sessionId) replayParams.set('session', sessionId)
   const journalParams = new URLSearchParams({ workspace, view: 'journal' })
