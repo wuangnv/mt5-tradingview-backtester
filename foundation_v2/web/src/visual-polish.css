@@ -1,0 +1,80 @@
+/*
+ * Scoped visual/accessibility polish for the Trading Workspace frame.
+ *
+ * Keep this layer separate from route layout and chart geometry.  It owns the
+ * small details that make the existing flat UI easier to scan and operate:
+ * keyboard focus, readable text wrapping, motion preferences, and scroll
+ * affordances.  All selectors are scoped to the mounted app so the foundation
+ * stylesheet cannot change an embedding page.
+ */
+
+.fx-app {
+  --fx-focus-ring: #f0c878;
+  --fx-focus-ring-light: #704609;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fx-app[data-theme='light'] {
+  --fx-focus-ring: var(--fx-focus-ring-light);
+}
+
+/* Links are keyboard controls too.  The previous global rule only covered
+ * buttons and inputs, which left rail links and compact story actions without
+ * a visible focus state. */
+.fx-app :where(a, button, input, select, textarea, [role='button'][tabindex]):focus-visible {
+  outline: 2px solid var(--fx-focus-ring);
+  outline-offset: 3px;
+}
+
+.fx-app :where(input, select, textarea) {
+  color-scheme: inherit;
+}
+
+/* Keep long dataset IDs, session names and bilingual copy from forcing a
+ * horizontal page scroll.  This is deliberately limited to text-bearing
+ * elements; chart canvases and SVG geometry must retain their dimensions. */
+.fx-app :where(h1, h2, h3, p, li, dt, dd, label, small, span, strong, code, a) {
+  overflow-wrap: anywhere;
+}
+
+.fx-app :where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+.fx-app :where(.fx-context-strip, .as-table-wrap, .ja-table-wrap, .rd-table-wrap, .learn-resource-copy, .learn-glossary-list) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fx-line-strong, #34404a) transparent;
+}
+
+/* When the OS asks for more contrast, retain the flat hierarchy but make
+ * separators and state cues easier to distinguish. */
+@media (prefers-contrast: more) {
+  .fx-app {
+    --fx-focus-ring: #ffffff;
+  }
+
+  .fx-app[data-theme='light'] {
+    --fx-focus-ring: #1d2930;
+  }
+
+  .fx-app :where(a, button, input, select, textarea, [role='button'][tabindex]):focus-visible {
+    outline-width: 3px;
+  }
+
+  .fx-app :where(.fx-nav-item, .fx-context-chip, .fx-shell-toggle, .fx-primary-button, .fx-secondary-button):focus-visible {
+    border-color: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-app *,
+  .fx-app *::before,
+  .fx-app *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
