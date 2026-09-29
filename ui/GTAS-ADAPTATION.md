@@ -1,8 +1,8 @@
 # GTAS → MT5 adaptation record
 
-**Status:** recorded decision for the MT5 UI implementation  
-**Date:** 2026-09-29  
-**Source project:** [`D:/ANNAM/gtas_vpp`](D:/ANNAM/gtas_vpp) (read-only research)  
+**Status:** recorded decision for the MT5 UI implementation
+**Date:** 2026-09-29
+**Source project:** [`D:/ANNAM/gtas_vpp`](D:/ANNAM/gtas_vpp) (read-only research)
 **Consumer contract:** [`DESIGN.md`](DESIGN.md)
 
 This record separates what was observed in the historical GTAS/VPP project from

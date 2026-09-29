@@ -1,8 +1,8 @@
 # MT5 UI contract — chart-first decision workspace
 
-**Status:** candidate under implementation (project scope only)  
-**Version:** `0.2.0-dev`  
-**Owner:** `projects/mt5-tradingview-backtester/ui/`  
+**Status:** candidate under implementation (project scope only)
+**Version:** `0.2.0-dev`
+**Owner:** `projects/mt5-tradingview-backtester/ui/`
 **Updated:** 2026-09-29
 
 This is the agent-facing UI contract for the MT5 TradingView Backtester. It
