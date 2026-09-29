@@ -129,7 +129,8 @@ function StoryMetric({ label, value, detail, source, tone = '' }) {
 }
 
 function ContextValue({ label, value, code = false }) {
-  return <div className="as-context-value"><dt>{label}</dt><dd className={code ? 'as-code' : ''}>{value || 'N/A'}</dd></div>
+  const displayValue = value === null || value === undefined || value === '' ? 'N/A' : value
+  return <div className="as-context-value"><dt>{label}</dt><dd className={code ? 'as-code' : ''}>{displayValue}</dd></div>
 }
 
 function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
