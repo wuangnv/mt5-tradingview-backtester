@@ -57,6 +57,7 @@ from .prop_replay import ReplayPropConnectionError
 from .prop_report import build_prop_attempt_report, prop_attempt_report_csv
 from .replay import ReplayService
 from .research import ResearchService
+from .analytics_read_model import AnalyticsValidationError, analytics_csv, build_analytics_view
 from .nautilus_worker import runtime_ready
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
 from .connector_ledger import ConnectorIdempotencyConflict, ConnectorLedgerError
@@ -817,6 +818,31 @@ def create_app(
         if job.status == "completed":
             payload["result"] = service.get_result(workspace, job_id)
         return payload
+
+    def analytics_view_or_404(job_id: str, workspace: str, *, side: str = "all", outcome: str = "all", from_close_utc: str | None = None, to_close_utc: str | None = None) -> dict:
+        job = store.get_job(workspace, job_id)
+        if job is None:
+            raise HTTPException(status_code=404, detail="job_not_found")
+        if job.status != "completed":
+            raise HTTPException(status_code=409, detail="analytics_requires_completed_job")
+        result = service.get_result(workspace, job_id)
+        if result is None:
+            raise HTTPException(status_code=503, detail="analytics_result_unavailable")
+        try:
+            return build_analytics_view(result, {"side": side, "outcome": outcome, "from_close_utc": from_close_utc, "to_close_utc": to_close_utc})
+        except AnalyticsValidationError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except (TypeError, ValueError) as exc:
+            raise HTTPException(status_code=422, detail="analytics_source_invalid") from exc
+
+    @app.get("/api/v2/research/jobs/{job_id}/analytics")
+    def get_research_analytics(job_id: str, side: str = "all", outcome: str = "all", from_close_utc: str | None = None, to_close_utc: str | None = None, workspace: str = Depends(workspace_id)):
+        return analytics_view_or_404(job_id, workspace, side=side, outcome=outcome, from_close_utc=from_close_utc, to_close_utc=to_close_utc)
+
+    @app.get("/api/v2/research/jobs/{job_id}/analytics.csv")
+    def export_research_analytics(job_id: str, side: str = "all", outcome: str = "all", from_close_utc: str | None = None, to_close_utc: str | None = None, workspace: str = Depends(workspace_id)):
+        view = analytics_view_or_404(job_id, workspace, side=side, outcome=outcome, from_close_utc=from_close_utc, to_close_utc=to_close_utc)
+        return Response(content=analytics_csv(view), media_type="text/csv; charset=utf-8", headers={"Content-Disposition": f"attachment; filename=job-{job_id}-analytics-v1.csv"})
 
     @app.get("/api/v2/research/jobs/{job_id}/checkpoint")
     def get_research_checkpoint(job_id: str, workspace: str = Depends(workspace_id)):
