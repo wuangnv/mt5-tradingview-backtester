@@ -152,7 +152,7 @@ function ContextBar({ context, workspace, filtered, onFilterChange }) {
     <section className="ja-context-bar" aria-label="Ngữ cảnh journal">
       <div className="ja-context-copy">
         <span className="ja-eyebrow">LINKED CONTEXT</span>
-        <strong>{context.sessionId ? `Replay ${context.sessionId}` : 'Chưa chọn replay session'}</strong>
+        <strong>{context.sessionId ? `Replay ${context.sessionId}` : context.tradeId ? `Trade ${context.tradeId}` : 'Chưa chọn replay session'}</strong>
         {context.tradeId && <span>Trade <code>{context.tradeId}</code></span>}
         {isFiniteNumber(context.cursor) && <span>Cutoff nến <strong>#{context.cursor}</strong></span>}
       </div>
@@ -355,8 +355,8 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
       <section className="ja-story-intro" aria-label="Cách dùng Journal">
         <div className="ja-story-intro-copy">
           <span className="ja-eyebrow">WORKFLOW</span>
-          <strong>{context.sessionId ? 'Đang ghi quanh một replay context' : 'Journal chỉ tạo được từ replay context'}</strong>
-          <span>{context.sessionId ? 'Mỗi entry giữ lại cutoff, source và revision để review sau này.' : 'Mở Practice từ một dataset local trước khi ghi để không mất nguồn bằng chứng.'}</span>
+          <strong>{context.sessionId || context.tradeId ? 'Đang ghi quanh một replay context' : 'Journal chỉ tạo được từ replay context'}</strong>
+          <span>{context.sessionId || context.tradeId ? 'Mỗi entry giữ lại cutoff, source và revision để review sau này.' : 'Mở Practice từ một dataset local trước khi ghi để không mất nguồn bằng chứng.'}</span>
         </div>
         <div className="ja-story-intro-actions">
           <a className="ja-button ja-button-quiet" href={replayHref}>Mở replay</a>
