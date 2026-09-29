@@ -218,6 +218,18 @@
 .unsupported-tools button { min-height: 38px; padding: 0 6px; border-radius: 3px; color: #79858d; font-size: 10px; }
 .unsupported-tools button span { display: block; margin-top: 2px; color: #626e75; font-size: 9px; }
 .unsupported-tools button:disabled { opacity: .78; border-color: #3d474e; color: #aeb8be; }
+.annotation-draft {
+  display: grid;
+  gap: 3px;
+  margin-top: 9px;
+  border-left: 2px solid #4a555c;
+  padding: 7px 9px;
+  color: #8d999f;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.annotation-draft strong { color: #d7e1e5; font-size: 10px; }
+.annotation-draft.is-ready { border-left-color: #d5a858; color: #c9d2d7; }
 .next-action-link { display: inline-block; margin-top: 12px; color: #d6b56f; font-size: 10px; text-decoration: none; }
 .next-action-link:hover { color: #f0d18a; text-decoration: underline; text-underline-offset: 3px; }
 

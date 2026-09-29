@@ -119,6 +119,34 @@ export function normalizeAnnotationDraft(value) {
   }
 }
 
+/**
+ * Build the smallest useful local draft from a real chart click.
+ *
+ * A single chart anchor can only describe a horizontal level at this point;
+ * a zone/trendline needs a second gesture and remains deliberately out of
+ * scope.  The draft is still normalized through the same cutoff and numeric
+ * guards as a persisted annotation, but this helper does not write anything.
+ */
+export function buildReplayAnnotationDraft({
+  instrumentId,
+  timeframe,
+  cutoffTimestamp,
+  anchor,
+  source = 'replay',
+  label = null,
+} = {}) {
+  if (!isRecord(anchor)) fail('anchor must be an object')
+  return normalizeAnnotationDraft({
+    annotation_type: 'horizontal-line',
+    instrument_id: instrumentId,
+    timeframe,
+    cutoff_timestamp: cutoffTimestamp,
+    anchors: [{ timestamp: anchor.timestamp, price: anchor.price }],
+    source,
+    label,
+  })
+}
+
 function workspaceHeader(workspace, extra = {}) {
   return {
     'X-Workspace-Id': boundedText(workspace, 'workspace', MAX_ID),

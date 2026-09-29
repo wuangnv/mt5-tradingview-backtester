@@ -170,6 +170,15 @@ async function main() {
     assert.match(await page.getByTestId('replay-lock').innerText(), /Broker locked/)
     assert.equal((await page.locator('body').innerText()).includes('1,081234'), false, 'future price leaked before step')
 
+    const chartBox = await page.getByTestId('replay-chart').boundingBox()
+    assert.ok(chartBox, 'replay chart should expose a clickable surface')
+    await page.getByTestId('replay-chart').click({
+      position: { x: Math.round(chartBox.width * 0.45), y: Math.round(chartBox.height * 0.45) },
+    })
+    await page.waitForFunction(() => document.querySelector('[data-testid="annotation-draft"]')?.classList.contains('is-ready'))
+    assert.match(await page.getByTestId('annotation-draft').innerText(), /Draft horizontal line đã chọn/)
+    assert.equal((await page.getByTestId('annotation-draft').innerText()).includes('1,081234'), false, 'annotation draft exposed future price')
+
     forceConflict = true
     await page.getByTestId('step-1').click()
     await page.getByTestId('revision-conflict').waitFor()

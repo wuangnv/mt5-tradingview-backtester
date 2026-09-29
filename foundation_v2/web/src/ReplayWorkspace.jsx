@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CandlestickSeries, createChart } from 'lightweight-charts'
 import { useFxReplayContext } from './FxReplayShell.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
+import { buildReplayAnnotationDraft } from './chartAnnotations.js'
 import './ReplayWorkspace.css'
 
 function formatTimestamp(timestamp) {
@@ -32,7 +33,7 @@ async function readJson(response) {
   return payload
 }
 
-function ReplayChart({ rows, onCrosshair }) {
+function ReplayChart({ rows, onCrosshair, onAnchorSelect }) {
   const hostRef = useRef(null)
 
   useEffect(() => {
@@ -72,7 +73,21 @@ function ReplayChart({ rows, onCrosshair }) {
       const row = rows.find((item) => Number(item.timestamp) === Number(param.time))
       onCrosshair?.(row ? { row, data } : null)
     }
+    const handleChartClick = (param) => {
+      // Lightweight Charts only gives us a trustworthy anchor when the click
+      // resolves to both a known bar and a finite price coordinate.  Pixel
+      // coordinates without a bar are intentionally ignored.
+      const timestamp = Number(param?.time)
+      const row = rows.find((item) => Number(item.timestamp) === timestamp)
+      const data = param?.seriesData?.get(series)
+      const price = param?.point && typeof series.coordinateToPrice === 'function'
+        ? series.coordinateToPrice(param.point.y)
+        : data?.close
+      if (!row || !Number.isSafeInteger(timestamp) || !Number.isFinite(Number(price))) return
+      onAnchorSelect?.({ timestamp, price: Number(price) })
+    }
     chart.subscribeCrosshairMove(handleCrosshairMove)
+    chart.subscribeClick(handleChartClick)
     chart.timeScale().fitContent()
 
     const observer = new ResizeObserver(() => {
@@ -82,9 +97,10 @@ function ReplayChart({ rows, onCrosshair }) {
     return () => {
       observer.disconnect()
       chart.unsubscribeCrosshairMove(handleCrosshairMove)
+      chart.unsubscribeClick(handleChartClick)
       chart.remove()
     }
-  }, [rows])
+  }, [onAnchorSelect, onCrosshair, rows])
 
   return (
     <div
@@ -92,7 +108,7 @@ function ReplayChart({ rows, onCrosshair }) {
       className="replay-chart"
       data-testid="replay-chart"
       data-visible-row-count={rows.length}
-      aria-label={`Biểu đồ replay với ${rows.length} nến đã được mở`}
+      aria-label={`Biểu đồ replay với ${rows.length} nến đã được mở; bấm vào nến để tạo annotation draft local`}
     />
   )
 }
@@ -138,6 +154,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [speed, setSpeed] = useState('1')
   const [isPlaying, setIsPlaying] = useState(false)
   const [crosshair, setCrosshair] = useState(null)
+  const [annotationDraft, setAnnotationDraft] = useState(null)
 
   const rememberSession = useCallback((nextSessionId, preserveCursor = false, cursor = null, dataset = null) => {
     setSessionId(nextSessionId)
@@ -288,6 +305,37 @@ export default function ReplayWorkspace({ workspace, query }) {
       cutoff: replay?.cutoff_timestamp || payload.cutoff_timestamp || '',
     }
   }, [activeDataset, replay])
+
+  const handleChartAnchor = useCallback((anchor) => {
+    const cutoffTimestamp = Number(replay?.cutoff_timestamp)
+    const instrumentId = String(replayContext.instrument || '')
+    const timeframe = String(replayContext.timeframe || '')
+    const row = visibleRows.find((item) => Number(item.timestamp) === Number(anchor?.timestamp))
+    // Keep the local draft fail-closed even if a renderer/plugin hands us a
+    // timestamp outside the API-visible prefix.  The backend remains the
+    // authority for persisted annotations; this only creates a local draft.
+    if (!row || !Number.isSafeInteger(cutoffTimestamp) || Number(anchor?.timestamp) > cutoffTimestamp) {
+      setAnnotationDraft({ status: 'rejected', message: 'Mốc chart không thuộc cutoff đang hiển thị.' })
+      return
+    }
+    try {
+      const draft = buildReplayAnnotationDraft({
+        instrumentId,
+        timeframe,
+        cutoffTimestamp,
+        anchor,
+        label: `Replay #${visibleRows.findIndex((item) => Number(item.timestamp) === Number(anchor.timestamp))}`,
+      })
+      setAnnotationDraft({ status: 'ready', draft })
+    } catch (error) {
+      setAnnotationDraft({ status: 'unavailable', message: String(error.message || error) })
+    }
+  }, [replay, replayContext.instrument, replayContext.timeframe, visibleRows])
+
+  useEffect(() => {
+    // A cursor/session change invalidates a previously selected chart anchor.
+    setAnnotationDraft(null)
+  }, [sessionId, cursor, revision])
 
   useEffect(() => {
     updateMarketContext({
@@ -543,7 +591,7 @@ export default function ReplayWorkspace({ workspace, query }) {
               </div>
 
               <div className="chart-frame">
-                <ReplayChart rows={visibleRows} onCrosshair={setCrosshair} />
+                <ReplayChart rows={visibleRows} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
                 <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
                 <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
               </div>
@@ -601,8 +649,18 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <small>{formatTimestamp(currentBar?.timestamp)} UTC</small>
                 </div>
                 <div className="unsupported-tools" aria-label="Công cụ đang khóa">
-                  <button type="button" disabled title="Annotation API cần session binding đầy đủ">Vẽ vùng <span>đang khóa · session binding</span></button>
+                  <button type="button" disabled title="Annotation write authority đang khóa; click chart chỉ tạo draft local">Vẽ vùng <span>đang khóa · draft local only</span></button>
                   <button type="button" disabled title="Trade draft cần execution initialization">Trade draft <span>đang khóa · simulator init</span></button>
+                </div>
+                <div className={`annotation-draft ${annotationDraft?.status === 'ready' ? 'is-ready' : ''}`} data-testid="annotation-draft" aria-live="polite">
+                  {!annotationDraft && <span>Bấm vào một nến để tạo annotation draft local. Chưa lưu và không có broker action.</span>}
+                  {annotationDraft?.status === 'ready' && (
+                    <>
+                      <strong>Draft horizontal line đã chọn</strong>
+                      <span>#{visibleRows.findIndex((item) => Number(item.timestamp) === Number(annotationDraft.draft.anchors[0].timestamp))} · {formatTimestamp(annotationDraft.draft.anchors[0].timestamp)} UTC · giá {formatPrice(annotationDraft.draft.anchors[0].price)}</span>
+                    </>
+                  )}
+                  {annotationDraft?.status !== 'ready' && annotationDraft?.message && <span>{annotationDraft.message}</span>}
                 </div>
                 <a className="next-action-link" href={journalHref}>Mở Journal cho cutoff này →</a>
               </section>

@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
   CHART_ANNOTATION_LIMITS,
+  buildReplayAnnotationDraft,
   createChartAnnotation,
   listChartAnnotations,
   normalizeAnnotationDraft,
@@ -38,6 +39,33 @@ test('normalizes chart annotations to safe time/price anchors', () => {
     label: 'London range',
   })
   assert.equal(CHART_ANNOTATION_LIMITS.maxAnchors, 8)
+})
+
+test('builds one local horizontal-line draft from a chart anchor', () => {
+  const draft = buildReplayAnnotationDraft({
+    instrumentId: 'EURUSD',
+    timeframe: 'M1',
+    cutoffTimestamp: 1_700_000_180,
+    anchor: { timestamp: 1_700_000_120, price: 1.10125 },
+    label: 'Click anchor',
+  })
+  assert.deepEqual(draft, {
+    annotation_type: 'horizontal-line',
+    instrument_id: 'EURUSD',
+    timeframe: 'M1',
+    cutoff_timestamp: 1_700_000_180,
+    anchors: [{ timestamp: 1_700_000_120, price: 1.10125 }],
+    source: 'replay',
+    run_id: null,
+    rule_version: null,
+    label: 'Click anchor',
+  })
+  assert.throws(() => buildReplayAnnotationDraft({
+    instrumentId: 'EURUSD',
+    timeframe: 'M1',
+    cutoffTimestamp: 1_700_000_180,
+    anchor: { timestamp: 1_700_000_181, price: 1.10125 },
+  }), /exceeds replay cutoff/)
 })
 
 test('rejects future anchors, malformed numbers, unknown fields and oversized payloads', () => {
