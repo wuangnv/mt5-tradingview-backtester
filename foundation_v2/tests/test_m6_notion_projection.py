@@ -119,6 +119,35 @@ def test_projection_fails_closed_on_account_broker_holdout_or_unsafe_flags(path,
         build_notion_projection(report)
 
 
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        (("phase", "balance"), {"nested": "100500"}),
+        (("phase", "equity"), ["94500"]),
+        (("phase", "qualifying_days"), True),
+        (("phase", "floating_pl"), float("nan")),
+        (("outcome", "terminal"), "true"),
+        (
+            ("outcome", "breaches"),
+            [{"rule": "daily_loss", "current": {"nested": "secret"}, "floor": "95000", "reference": None}],
+        ),
+        (
+            ("outcome", "breaches"),
+            [{"rule": "daily_loss", "current": None, "floor": "95000", "reference": None, "extra": "ignored"}],
+        ),
+    ],
+)
+def test_projection_rejects_nested_or_non_numeric_metric_values(path, value) -> None:
+    report = report_fixture()
+    cursor = report
+    for key in path[:-1]:
+        cursor = cursor[key]
+    cursor[path[-1]] = value
+
+    with pytest.raises(NotionProjectionError):
+        build_notion_projection(report)
+
+
 def test_export_intent_is_prep_only_until_destination_is_user_selected() -> None:
     projection = build_notion_projection(report_fixture())
     intent = build_notion_export_intent(
@@ -152,7 +181,21 @@ def test_export_intent_is_prep_only_until_destination_is_user_selected() -> None
     assert selected["destination"]["ref"] == "user-selected:notion-page-001"
 
 
-def test_export_intent_rejects_implicit_or_malformed_destination_and_time() -> None:
+@pytest.mark.parametrize("destination_ref", ["guessed page", "/tmp/page", "x" * 257])
+def test_export_intent_rejects_implicit_or_malformed_destination(destination_ref) -> None:
+    projection = build_notion_projection(report_fixture())
+
+    with pytest.raises(NotionProjectionError, match="destination_ref"):
+        build_notion_export_intent(
+            projection,
+            request_id="req-001",
+            requested_at_utc="2026-09-29T10:00:00Z",
+            destination_ref=destination_ref,
+            destination_selected=True,
+        )
+
+
+def test_export_intent_rejects_implicit_selection_and_invalid_time_or_flags() -> None:
     projection = build_notion_projection(report_fixture())
 
     with pytest.raises(NotionProjectionError, match="destination selection"):
@@ -166,7 +209,55 @@ def test_export_intent_rejects_implicit_or_malformed_destination_and_time() -> N
         build_notion_export_intent(
             projection,
             request_id="req-001",
-            requested_at_utc="2026-09-29 10:00:00",
+            requested_at_utc="2026-02-30T10:00:00Z",
+        )
+    with pytest.raises(NotionProjectionError, match="destination_selected"):
+        build_notion_export_intent(
+            projection,
+            request_id="req-001",
+            requested_at_utc="2026-09-29T10:00:00Z",
+            destination_selected=1,
+        )
+
+
+def test_export_intent_rejects_tampered_projection_integrity_or_payload() -> None:
+    projection = build_notion_projection(report_fixture())
+
+    tampered_content = deepcopy(projection)
+    tampered_content["generated"]["properties"]["equity"] = "1"
+    with pytest.raises(NotionProjectionError, match="content hash"):
+        build_notion_export_intent(
+            tampered_content,
+            request_id="req-001",
+            requested_at_utc="2026-09-29T10:00:00Z",
+        )
+
+    tampered_source = deepcopy(projection)
+    tampered_source["source"]["attempt_revision"] = 99
+    with pytest.raises(NotionProjectionError, match="source fingerprint"):
+        build_notion_export_intent(
+            tampered_source,
+            request_id="req-001",
+            requested_at_utc="2026-09-29T10:00:00Z",
+        )
+
+    tampered_hash = deepcopy(projection)
+    tampered_hash["integrity"]["content_sha256"] = "sha256:" + "0" * 64
+    with pytest.raises(NotionProjectionError, match="content hash"):
+        build_notion_export_intent(
+            tampered_hash,
+            request_id="req-001",
+            requested_at_utc="2026-09-29T10:00:00Z",
+        )
+
+
+def test_export_intent_rejects_non_opaque_request_id() -> None:
+    projection = build_notion_projection(report_fixture())
+    with pytest.raises(NotionProjectionError, match="opaque identifier"):
+        build_notion_export_intent(
+            projection,
+            request_id="request with spaces",
+            requested_at_utc="2026-09-29T10:00:00Z",
         )
 
 
