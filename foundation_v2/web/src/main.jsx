@@ -11,9 +11,11 @@ import DataDeskWorkspace from './DataDeskWorkspace.jsx'
 import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
+import { useFxReplayContext } from './FxReplayShell.jsx'
 import './styles.css'
 
 function WorkspaceOverview({ workspace, query }) {
+  const { updateMarketContext } = useFxReplayContext()
   const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null })
 
   useEffect(() => {
@@ -28,6 +30,24 @@ function WorkspaceOverview({ workspace, query }) {
       .catch((error) => { if (!cancelled) setOverview({ status: 'error', payload: null, error: String(error.message || error) }) })
     return () => { cancelled = true }
   }, [workspace])
+
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace } })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((payload) => {
+        const dataset = Array.isArray(payload?.items) ? payload.items[0] : null
+        if (!cancelled && dataset) {
+          updateMarketContext({
+            instrument: String(dataset.instrument_id || dataset.dataset_id || ''),
+            timeframe: String(dataset.timeframe || 'TF chưa rõ'),
+            dataStatus: String(dataset.quality_status || 'unverified'),
+          })
+        }
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [updateMarketContext, workspace])
 
   const counts = overview.payload?.counts || {}
   const datasetCount = Number.isFinite(Number(counts.datasets)) ? Number(counts.datasets) : null
