@@ -8,6 +8,7 @@ local/demo state while leaving production authentication as a later boundary.
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, replace
 from datetime import datetime, timedelta, timezone
 from typing import Literal
@@ -50,6 +51,58 @@ def _text(value: str, field: str, *, max_length: int = 128) -> str:
 
 def _iso(value: datetime | None) -> str | None:
     return value.isoformat().replace("+00:00", "Z") if value is not None else None
+
+
+def _stable_session_id(identity_id: str, workspace_id: str) -> str:
+    """Return a bounded, deterministic local-session marker.
+
+    The local/demo adapter has no persisted cookie or bearer token.  A stable
+    opaque marker still lets the UI correlate a reload with the same selected
+    workspace without exposing or storing credential material.  Hashing also
+    keeps the route contract bounded when a caller supplies a long workspace
+    label.
+    """
+
+    digest = hashlib.sha256(f"{identity_id}\x00{workspace_id}".encode("utf-8")).hexdigest()[:24]
+    return f"local-demo-session:{digest}"
+
+
+def build_local_demo_session_status(
+    *,
+    identity_id: str,
+    workspace_id: str,
+    identity_source: str = "local-process",
+    now: datetime | None = None,
+) -> dict[str, object]:
+    """Build the read-only product-session response used by the API.
+
+    This is deliberately a projection of the trusted local/demo boundary.  It
+    does not authenticate, issue a cookie/token, persist state, or contact a
+    provider.  The response includes nested session/workspace/identity markers
+    so product UIs can display the boundary before a real auth service exists.
+    """
+
+    normalized_identity = _text(identity_id, "identity_id")
+    normalized_workspace = _text(workspace_id, "workspace_id")
+    source = _text(identity_source, "identity_source", max_length=64)
+    current = _utc(now or datetime.now(timezone.utc), "now")
+    session = ProjectSession.begin_local_demo(
+        session_id=_stable_session_id(normalized_identity, normalized_workspace),
+        identity_id=normalized_identity,
+        workspace_id=normalized_workspace,
+        now=current,
+        ttl_seconds=None,
+    )
+    snapshot = session.snapshot(current)
+    return {
+        "schema_version": PROJECT_SESSION_SCHEMA_VERSION,
+        "session": snapshot,
+        "workspace": {"id": normalized_workspace},
+        "identity": {"marker": normalized_identity, "source": source},
+        "auth_mode": LOCAL_DEMO_AUTH_MODE,
+        "production_auth": False,
+        "credentials_present": False,
+    }
 
 
 @dataclass(frozen=True)
@@ -261,6 +314,7 @@ class ProviderOAuthConnection:
 
 
 __all__ = [
+    "build_local_demo_session_status",
     "LOCAL_DEMO_AUTH_MODE",
     "PROJECT_SESSION_SCHEMA_VERSION",
     "ProjectSession",

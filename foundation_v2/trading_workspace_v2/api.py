@@ -54,6 +54,7 @@ from .research import ResearchService
 from .nautilus_worker import runtime_ready
 from .retained import AIInvalidRequest, DataContractError, PropProfileValidationError
 from .connector_ledger import ConnectorIdempotencyConflict, ConnectorLedgerError
+from .project_session import build_local_demo_session_status
 from .store import PostgresStore, PropIdempotencyConflict, PropPersistenceConflict
 
 
@@ -164,6 +165,23 @@ def create_app(
             "execution_capability": False,
             "authorization": authorization.status(),
         }
+
+    @app.get("/api/v2/session/status")
+    def get_project_session_status(request: Request, workspace: str = Depends(workspace_id)):
+        """Return the current local/demo product-session boundary.
+
+        Workspace authorization has already run through ``workspace_id``.  The
+        projection below is read-only and intentionally has no OAuth, token,
+        cookie, or provider side effect.  A production login/session service
+        remains a separate, explicitly reviewed boundary.
+        """
+
+        identity = request.app.state.authorization.identity.resolve()
+        return build_local_demo_session_status(
+            identity_id=identity.subject,
+            identity_source=identity.source,
+            workspace_id=workspace,
+        )
 
     @app.get("/api/v2/overview")
     def get_overview(workspace: str = Depends(workspace_id)):

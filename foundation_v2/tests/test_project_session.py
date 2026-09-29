@@ -19,6 +19,7 @@ from trading_workspace_v2.project_session import (
     ProjectSessionError,
     ProviderOAuthConnection,
     SessionInactiveError,
+    build_local_demo_session_status,
 )
 
 
@@ -53,6 +54,33 @@ def test_local_demo_snapshot_is_explicit_and_contains_no_credentials():
         "credentials_present": False,
     }
     assert not any("token" in key.lower() or "secret" in key.lower() for key in snapshot)
+
+
+def test_local_demo_status_projection_is_read_only_and_workspace_scoped():
+    result = build_local_demo_session_status(
+        identity_id="local-owner",
+        workspace_id="workspace-a",
+        now=NOW,
+    )
+
+    assert result["schema_version"] == PROJECT_SESSION_SCHEMA_VERSION
+    assert result["auth_mode"] == LOCAL_DEMO_AUTH_MODE
+    assert result["production_auth"] is False
+    assert result["credentials_present"] is False
+    assert result["workspace"] == {"id": "workspace-a"}
+    assert result["identity"] == {"marker": "local-owner", "source": "local-process"}
+    session = result["session"]
+    assert isinstance(session, dict)
+    assert session["status"] == "signed_in"
+    assert session["workspace_id"] == "workspace-a"
+    assert session["identity_id"] == "local-owner"
+    assert session["credentials_present"] is False
+    assert session["session_id"].startswith("local-demo-session:")
+    assert not any(
+        marker in key.lower()
+        for key in result
+        for marker in ("token", "secret", "password", "cookie")
+    )
 
 
 def test_expiry_is_fail_closed_at_exact_deadline_and_preserves_identity_for_audit():

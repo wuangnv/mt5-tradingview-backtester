@@ -46,6 +46,17 @@ def api_client():
 def test_connector_api_persists_prep_only_connection_intent_and_receipt(api_client) -> None:
     client, workspace_id = api_client
     headers = {"X-Workspace-Id": workspace_id}
+    session = client.get("/api/v2/session/status", headers=headers)
+    assert session.status_code == 200
+    session_payload = session.json()
+    assert session_payload["schema_version"] == "project-session-v1"
+    assert session_payload["auth_mode"] == "local-trusted-demo"
+    assert session_payload["production_auth"] is False
+    assert session_payload["credentials_present"] is False
+    assert session_payload["workspace"] == {"id": workspace_id}
+    assert session_payload["identity"]["marker"] == "local-owner"
+    assert session_payload["session"]["status"] == "signed_in"
+
     connection = client.post(
         "/api/v2/connectors/notion/connections",
         headers=headers,
