@@ -218,10 +218,9 @@ class ProviderOAuthConnection:
         return cls(provider=provider, connection_id=connection_id)
 
     def begin_oauth(
-        self, session: ProjectSession, oauth_state: str, *, now: datetime | None = None
+        self, session: ProjectSession, oauth_state: str, *, now: datetime
     ) -> "ProviderOAuthConnection":
-        check_at = session.issued_at_utc if now is None else _utc(now, "now")
-        if not session.is_active(check_at):
+        if not session.is_active(_utc(now, "now")):
             raise SessionInactiveError("active project session required before provider OAuth")
         return replace(self, status="oauth_pending", oauth_state=_text(oauth_state, "oauth_state"))
 
