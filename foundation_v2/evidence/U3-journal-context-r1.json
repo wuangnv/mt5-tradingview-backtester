@@ -1,0 +1,29 @@
+{
+  "schema": "mt5-u3-journal-context-evidence-v1",
+  "recorded_at_utc": "2026-09-29T00:00:00Z",
+  "commit": "066272f",
+  "status": "local_contract_slice",
+  "scope": {
+    "behavior": [
+      "JournalDraft accepts optional observation, hypothesis, decision, plan, actual_result, next_action and overlay_ids fields.",
+      "Replay journal source keeps dataset, cursor, cutoff and mode context; source remains immutable across revisions.",
+      "No-trade entries are visibly labeled and retain decision rationale without creating a fill.",
+      "Journal editor exposes a structured decision context while actual_result remains user-authored and does not unlock future bars."
+    ],
+    "execution_capability": false,
+    "broker_contacted": false,
+    "provider_or_oauth_contacted": false,
+    "holdout_access": false
+  },
+  "validation": [
+    {"command": "node --test tests/*.test.mjs", "result": "39 passed", "exit_code": 0},
+    {"command": "foundation_v2/.venv/Scripts/python.exe -m pytest foundation_v2/tests/test_contracts.py -q", "result": "4 passed", "exit_code": 0},
+    {"command": "npm run build", "result": "pass; 66 modules; chunk-size warning only", "exit_code": 0},
+    {"command": "git diff --check", "result": "pass", "exit_code": 0}
+  ],
+  "remaining": [
+    "No full supported restart/backup browser journey was added in this slice.",
+    "Real broker/demo/live fills remain outside this local journal contract.",
+    "Production provider/OAuth, holdout and deploy gates remain closed."
+  ]
+}
