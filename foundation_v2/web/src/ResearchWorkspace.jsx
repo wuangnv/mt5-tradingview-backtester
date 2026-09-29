@@ -165,12 +165,16 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
   const metrics = result?.metrics || {}
   const curve = metrics.closed_trade_balance_curve || metrics.equity_curve || []
   const engine = catalog.engines.find((item) => item.id === 'nautilus')
+  const learnParams = new URLSearchParams({ view: 'learn', workspace, from: 'research' })
+  if (job?.job_id || requestedJob) learnParams.set('job', job?.job_id || requestedJob)
+  if (selected?.dataset_id) learnParams.set('dataset', selected.dataset_id)
+  const learnHref = `/?${learnParams.toString()}`
 
   return (
     <main className="rd-shell" data-testid="research-root">
       <header className="rd-topbar">
         <div><div className="eyebrow">MT5 TRADING WORKSPACE / RESEARCH</div><h1>Research</h1><p>Chọn dataset → cố định giả định → tạo run → theo dõi bằng chứng.</p></div>
-        <div className="rd-actions"><a className="rd-context-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}${selected ? `&dataset=${encodeURIComponent(selected.dataset_id)}` : ''}`}>Data Desk</a><a className="rd-context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}${selected ? `&dataset=${encodeURIComponent(selected.dataset_id)}` : ''}`}>Replay</a><div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · không gửi lệnh</span></div></div>
+        <div className="rd-actions"><a className="rd-context-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}${selected ? `&dataset=${encodeURIComponent(selected.dataset_id)}` : ''}`}>Data Desk</a><a className="rd-context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}${selected ? `&dataset=${encodeURIComponent(selected.dataset_id)}` : ''}`}>Replay</a><a className="rd-context-link" href={learnHref}>Học & thuật ngữ</a><div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · không gửi lệnh</span></div></div>
       </header>
       <div className="rd-statusbar" aria-label="Trạng thái Research"><span>Workspace <strong>{workspace}</strong></span><span>Job <code>{job?.job_id || requestedJob || 'Chưa tạo'}</code></span><span className={`rd-status ${statusClass(job?.status)}`} data-testid="research-status">{job ? statusLabel(job.status) : catalog.status === 'loading' ? 'Đang tải catalog' : 'Chưa chạy'}</span><span>Engine <strong>{engine?.available ? 'nautilus sẵn sàng' : 'reference / chưa xác minh'}</strong></span></div>
 
