@@ -238,7 +238,9 @@
   .replay-main { padding-right: 0; }
   .replay-side { border-top: 1px solid #242c31; border-left: 0; padding: 18px 0 0; }
   .decision-panel { max-width: 520px; }
-  .replay-status { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow-x: visible; }
+  /* styles.css owns the desktop flex baseline; force the tablet state into a
+   * real grid so the completion/conflict label gets a full readable row. */
+  .replay-status { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow-x: visible; }
   .replay-status > div { min-width: 0; white-space: normal; }
   .replay-status code { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .replay-status .replay-state { grid-column: 1 / -1; min-width: 0; margin-left: 0; border-top: 1px solid #242c31; padding-top: 10px; text-align: left; white-space: normal; overflow-wrap: anywhere; }
@@ -252,7 +254,7 @@
   .replay-start { grid-template-columns: 1fr; }
   .replay-start > div { grid-column: auto; }
   .replay-start > .primary-action { grid-column: auto; }
-  .replay-status { display: grid; grid-template-columns: 1fr 1fr; padding: 8px 0; }
+  .replay-status { display: grid !important; grid-template-columns: 1fr 1fr; padding: 8px 0; }
   .replay-status > div { min-width: 0; padding: 7px 8px 7px 0; }
   .replay-status > div + div { border-left: 0; padding-left: 0; }
   .replay-status .replay-state { min-width: 0; margin-left: 0; text-align: left; }
@@ -275,7 +277,7 @@
 }
 
 @media (max-width: 420px) {
-  .replay-status { grid-template-columns: 1fr; }
+  .replay-status { display: grid !important; grid-template-columns: 1fr; }
   .replay-status > div { border-top: 1px solid #20272b; }
   .replay-status > div:first-child { border-top: 0; }
   .toolbar-primary { grid-template-columns: 1fr 1fr; }
