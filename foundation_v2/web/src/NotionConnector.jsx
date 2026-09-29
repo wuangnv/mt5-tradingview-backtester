@@ -311,9 +311,12 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
       setLedgerMessage('Đã cập nhật local ledger; chưa có cloud I/O.')
     } catch (ledgerError) {
       setLedger((current) => ({ ...current, status: ledgerError.kind === 'conflict' ? 'conflict' : 'unavailable' }))
-      setLedgerMessage(ledgerError.kind === 'conflict'
+      const message = ledgerError.kind === 'conflict'
         ? 'Local ledger bị conflict; state hiện tại chỉ là hiển thị phiên này.'
-        : 'Không cập nhật được local ledger; state hiện tại chỉ là hiển thị phiên này.')
+        : ledgerError.status === 401 || ledgerError.status === 403
+          ? 'Workspace chưa được cấp quyền cập nhật local ledger; state hiện tại chỉ là hiển thị phiên này.'
+          : 'Không cập nhật được local ledger; state hiện tại chỉ là hiển thị phiên này.'
+      setLedgerMessage(message)
     }
   }
 
@@ -331,9 +334,13 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
         body: JSON.stringify({ status: 'revoked', expected_revision: ledger.connectionRevision }),
       }).then((response) => {
         setLedger((current) => ({ ...current, connectionRevision: response.connection.revision }))
-      }).catch(() => {
+      }).catch((ledgerError) => {
         setLedger((current) => ({ ...current, status: 'unavailable' }))
-        setLedgerMessage('Không cập nhật được connection ledger; state hiện tại chỉ là hiển thị phiên này.')
+        setLedgerMessage(ledgerError.status === 401 || ledgerError.status === 403
+          ? 'Workspace chưa được cấp quyền cập nhật connection ledger; state hiện tại chỉ là hiển thị phiên này.'
+          : ledgerError.kind === 'conflict'
+            ? 'Connection ledger bị conflict; state hiện tại chỉ là hiển thị phiên này.'
+            : 'Không cập nhật được connection ledger; state hiện tại chỉ là hiển thị phiên này.')
       })
     }
     void persistReceiptState('revoked')
