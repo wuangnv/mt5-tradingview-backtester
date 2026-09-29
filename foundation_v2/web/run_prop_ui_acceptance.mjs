@@ -113,6 +113,9 @@ const sessions = [persistedSession]
 const attempts = new Map([[persistedSession.session_id, [persistedAttempt]]])
 const bundles = new Map([[`${persistedSession.session_id}/${persistedAttempt.attempt_id}`, persistedBundle]])
 const propRequests = []
+const connectorConnections = new Map()
+const connectorIntents = new Map()
+const connectorReceipts = new Map()
 let mode = 'happy'
 
 function json(route, status, payload) {
@@ -360,6 +363,111 @@ async function main() {
       return json(route, 404, { detail: 'unknown_prop_fixture_route' })
     })
 
+    await page.route('**/api/v2/connectors/notion/**', async (route) => {
+      const request = route.request()
+      const url = new URL(request.url())
+      const workspace = request.headers()['x-workspace-id'] || ''
+      const connectionPath = '/api/v2/connectors/notion/connections'
+      const intentPath = '/api/v2/connectors/notion/intents'
+
+      if (url.pathname === connectionPath && request.method() === 'GET') {
+        return json(route, 200, {
+          items: [...connectorConnections.values()].filter((item) => item.workspace_id === workspace),
+          mode: 'PREP_ONLY', cloud_io: false,
+        })
+      }
+      if (url.pathname === connectionPath && request.method() === 'POST') {
+        const body = JSON.parse(request.postData() || '{}')
+        const key = `${workspace}/${body.connection_id}`
+        const existing = connectorConnections.get(key)
+        if (existing) return json(route, 201, { duplicate: true, connection: existing })
+        const connection = {
+          workspace_id: workspace,
+          connector: 'notion',
+          connection_id: body.connection_id,
+          request_id: body.request_id,
+          idempotency_key: body.idempotency_key,
+          account_ref: body.account_ref,
+          scopes_json: body.scopes,
+          metadata_json: body.metadata || {},
+          status: 'pending',
+          revision: 1,
+        }
+        connectorConnections.set(key, connection)
+        return json(route, 201, { duplicate: false, connection })
+      }
+      const connectionMatch = url.pathname.match(/^\/api\/v2\/connectors\/notion\/connections\/([^/]+)$/)
+      if (connectionMatch && request.method() === 'PATCH') {
+        const key = `${workspace}/${decodeURIComponent(connectionMatch[1])}`
+        const connection = connectorConnections.get(key)
+        if (!connection) return json(route, 404, { detail: 'connector_connection_not_found' })
+        const body = JSON.parse(request.postData() || '{}')
+        connection.status = body.status
+        connection.revision += 1
+        return json(route, 200, { duplicate: false, connection })
+      }
+
+      if (url.pathname === intentPath && request.method() === 'GET') {
+        return json(route, 200, {
+          items: [...connectorIntents.values()].filter((item) => item.workspace_id === workspace),
+          mode: 'PREP_ONLY', cloud_io: false,
+        })
+      }
+      if (url.pathname === intentPath && request.method() === 'POST') {
+        const body = JSON.parse(request.postData() || '{}')
+        const key = `${workspace}/${body.intent_id}`
+        const existing = connectorIntents.get(key)
+        if (existing) return json(route, 201, { duplicate: true, intent: existing, receipt: connectorReceipts.get(key) })
+        const intent = {
+          workspace_id: workspace,
+          connector: 'notion',
+          intent_id: body.intent_id,
+          request_id: body.request_id,
+          idempotency_key: body.idempotency_key,
+          connection_id: body.connection_id || null,
+          status: 'pending',
+          mode: 'PREP_ONLY',
+          intent_json: body.intent,
+          source_revision_json: {
+            session: body.intent.source.session_revision,
+            attempt: body.intent.source.attempt_revision,
+          },
+          source_content_sha256: body.intent.payload.content_sha256,
+          destination_ref: body.intent.destination.ref,
+        }
+        const receipt = {
+          workspace_id: workspace,
+          connector: 'notion',
+          receipt_id: `receipt:${body.intent_id}`,
+          intent_id: body.intent_id,
+          status: 'pending',
+          revision: 1,
+          external_id: null,
+        }
+        connectorIntents.set(key, intent)
+        connectorReceipts.set(key, receipt)
+        return json(route, 201, { duplicate: false, intent, receipt })
+      }
+      const receiptMatch = url.pathname.match(/^\/api\/v2\/connectors\/notion\/intents\/([^/]+)\/receipt$/)
+      if (receiptMatch && request.method() === 'GET') {
+        const key = `${workspace}/${decodeURIComponent(receiptMatch[1])}`
+        const receipt = connectorReceipts.get(key)
+        return receipt ? json(route, 200, receipt) : json(route, 404, { detail: 'connector_receipt_not_found' })
+      }
+      if (receiptMatch && request.method() === 'PATCH') {
+        const key = `${workspace}/${decodeURIComponent(receiptMatch[1])}`
+        const receipt = connectorReceipts.get(key)
+        const intent = connectorIntents.get(key)
+        if (!receipt || !intent) return json(route, 404, { detail: 'connector_receipt_not_found' })
+        const body = JSON.parse(request.postData() || '{}')
+        receipt.status = body.status
+        receipt.revision += 1
+        intent.status = body.status
+        return json(route, 200, { duplicate: false, receipt })
+      }
+      return json(route, 404, { detail: 'unknown_connector_fixture_route' })
+    })
+
     await page.goto(`${origin}/?view=testing&workspace=tenant-prop-ui`)
     await page.getByTestId('prop-resume-bundle').waitFor()
     assert.match(await page.getByTestId('prop-lock').innerText(), /SIMULATION ONLY/)
@@ -453,6 +561,13 @@ async function main() {
     assert.match(notionReceiptText, /Chưa có — chưa dispatch/)
     await page.getByRole('button', { name: 'Đánh dấu unknown cần lookup' }).click()
     assert.match(await page.getByTestId('notion-receipt').innerText(), /unknown.*tra cứu destination/i)
+
+    await page.reload()
+    await page.getByTestId('prop-resume-bundle').waitFor()
+    await page.getByTestId('prop-notion-tab').click()
+    await page.getByTestId('notion-receipt').waitFor()
+    assert.match(await page.getByTestId('notion-receipt').innerText(), /unknown.*tra cứu destination/i)
+    assert.match(await page.getByTestId('notion-ledger-status').innerText(), /đã khôi phục\/lưu/i)
 
     await page.getByRole('button', { name: 'Sessions' }).click()
 

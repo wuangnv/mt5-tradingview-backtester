@@ -2,7 +2,10 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
   buildNotionExportIntent,
+  buildNotionLedgerIntent,
   buildNotionPreview,
+  hydrateNotionUiIntent,
+  NOTION_LEDGER_INTENT_SCHEMA,
   NOTION_FLOW_STATES,
 } from '../src/notionConnector.js'
 
@@ -95,4 +98,40 @@ test('flow state names cover login, OAuth, destination, preview and receipt', ()
   assert.deepEqual(Object.values(NOTION_FLOW_STATES), [
     'session_ready', 'oauth_pending', 'oauth_callback', 'destination', 'preview', 'intent_ready',
   ])
+})
+
+test('translates the UI mirror to the authoritative durable ledger schema', async () => {
+  const preview = buildNotionPreview(reportFixture())
+  const uiIntent = await buildNotionExportIntent(preview, {
+    request_id: 'mt5-notion-ui-ledger-001',
+    requested_at_utc: '2026-09-29T10:00:00Z',
+    destination_ref: 'user-selected:notion-page-001',
+    account_ref: 'owner-selected:notion-demo-account',
+  })
+  const ledgerIntent = await buildNotionLedgerIntent(uiIntent)
+  assert.equal(ledgerIntent.schema_version, NOTION_LEDGER_INTENT_SCHEMA)
+  assert.equal(ledgerIntent.status, 'PREP_ONLY')
+  assert.equal(ledgerIntent.cloud_io, false)
+  assert.equal(ledgerIntent.destination.ref, 'user-selected:notion-page-001')
+  assert.match(ledgerIntent.payload.content_sha256, /^sha256:[0-9a-f]{64}$/)
+  assert.equal(JSON.stringify(ledgerIntent).includes('notion-demo-account'), false)
+  assert.equal('authorization' in ledgerIntent, false)
+})
+
+test('rehydrates a persisted ledger row without exposing account identifiers', async () => {
+  const preview = buildNotionPreview(reportFixture())
+  const uiIntent = await buildNotionExportIntent(preview, {
+    request_id: 'mt5-notion-ui-ledger-002',
+    requested_at_utc: '2026-09-29T10:00:00Z',
+    destination_ref: 'user-selected:notion-page-001',
+  })
+  const ledgerIntent = await buildNotionLedgerIntent(uiIntent)
+  const restored = hydrateNotionUiIntent(ledgerIntent, {
+    status: 'unknown',
+    external_id: null,
+  }, { accountSelected: true })
+  assert.equal(restored.schema_version, 'mt5-notion-ui-intent-v1')
+  assert.equal(restored.receipt.status, 'unknown')
+  assert.deepEqual(restored.authorization, { provider: 'notion', account_selected: true })
+  assert.equal(restored.cloud_io, false)
 })

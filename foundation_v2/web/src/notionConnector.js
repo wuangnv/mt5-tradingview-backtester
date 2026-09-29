@@ -12,6 +12,8 @@
 export const NOTION_UI_PREVIEW_SCHEMA = 'mt5-notion-ui-preview-v1'
 export const NOTION_UI_INTENT_SCHEMA = 'mt5-notion-ui-intent-v1'
 export const NOTION_UI_RECEIPT_SCHEMA = 'mt5-notion-ui-receipt-v1'
+export const NOTION_LEDGER_INTENT_SCHEMA = 'mt5-notion-export-intent-v1'
+export const NOTION_LEDGER_RECEIPT_SCHEMA = 'mt5-notion-export-receipt-v1'
 
 const BLOCKED_MARKERS = ['broker', 'holdout', 'credential', 'password', 'secret', 'token']
 const BLOCKED_KEYS = new Set([
@@ -281,6 +283,99 @@ export async function buildNotionExportIntent(preview, { request_id, requested_a
       reconcile: 'manual_on_unknown',
     },
     intent_fingerprint: intentFingerprint,
+    cloud_io: false,
+  }
+}
+
+/**
+ * Translate the UI mirror into the backend-owned ledger contract.
+ *
+ * The UI intentionally keeps account selection as a local authorization gate.
+ * It must never be copied into the persisted intent because the backend ledger
+ * treats that field as sensitive.  The selected opaque account is persisted
+ * through the connection record instead.
+ */
+export async function buildNotionLedgerIntent(uiIntent) {
+  record(uiIntent, 'uiIntent')
+  if (uiIntent.schema_version !== NOTION_UI_INTENT_SCHEMA || uiIntent.status !== 'PREP_ONLY') {
+    fail('ui intent must be PREP_ONLY')
+  }
+  if (uiIntent.cloud_io !== false || uiIntent.provider !== 'notion') {
+    fail('ui intent must remain local PREP_ONLY')
+  }
+  const source = record(uiIntent.source, 'uiIntent.source')
+  const destination = record(uiIntent.destination, 'uiIntent.destination')
+  const payload = record(uiIntent.payload, 'uiIntent.payload')
+  const generated = record(payload.generated, 'uiIntent.payload.generated')
+  const destinationValue = destination.ref ?? null
+  if (destination.user_selected !== (destinationValue !== null)) {
+    fail('ui intent destination selection is invalid')
+  }
+  if (destinationValue !== null) destinationRef(destinationValue)
+
+  const contentSha = await fingerprint(generated)
+  const body = {
+    provider: 'notion',
+    source,
+    destination: {
+      kind: 'page_or_database',
+      ref: destinationValue,
+      user_selected: destinationValue !== null,
+    },
+    payload: {
+      generated,
+      content_sha256: contentSha,
+    },
+    write_policy: {
+      preserve_existing_owner_notes: true,
+      managed_area: 'generated.mt5_report',
+      external_id_required_before_dispatch: true,
+    },
+  }
+  const intentFingerprint = await fingerprint(body)
+  const sourceRevision = {
+    session: nonNegativeInteger(source.session_revision, 'uiIntent.source.session_revision'),
+    attempt: nonNegativeInteger(source.attempt_revision, 'uiIntent.source.attempt_revision'),
+  }
+  return {
+    schema_version: NOTION_LEDGER_INTENT_SCHEMA,
+    status: 'PREP_ONLY',
+    request_id: requestId(uiIntent.request_id),
+    requested_at_utc: text(uiIntent.requested_at_utc, 'uiIntent.requested_at_utc', 64),
+    ...body,
+    receipt: {
+      schema_version: NOTION_LEDGER_RECEIPT_SCHEMA,
+      status: 'pending',
+      outcome: 'not_dispatched',
+      external_id: null,
+      source_revision: sourceRevision,
+      intent_fingerprint: intentFingerprint,
+      reconcile: 'manual_on_unknown',
+    },
+    intent_fingerprint: intentFingerprint,
+    cloud_io: false,
+  }
+}
+
+/** Rehydrate a persisted authoritative intent into the UI-only view model. */
+export function hydrateNotionUiIntent(persistedIntent, receipt, { accountSelected = false } = {}) {
+  record(persistedIntent, 'persistedIntent')
+  if (persistedIntent.schema_version !== NOTION_LEDGER_INTENT_SCHEMA || persistedIntent.status !== 'PREP_ONLY') {
+    fail('persisted intent is not a PREP_ONLY Notion intent')
+  }
+  const persistedReceipt = record(receipt, 'receipt')
+  const receiptStatus = text(persistedReceipt.status, 'receipt.status', 32)
+  const externalId = persistedReceipt.external_id ?? null
+  return {
+    ...persistedIntent,
+    schema_version: NOTION_UI_INTENT_SCHEMA,
+    authorization: { provider: 'notion', account_selected: accountSelected === true },
+    receipt: {
+      ...persistedIntent.receipt,
+      schema_version: NOTION_UI_RECEIPT_SCHEMA,
+      status: receiptStatus,
+      external_id: externalId,
+    },
     cloud_io: false,
   }
 }
