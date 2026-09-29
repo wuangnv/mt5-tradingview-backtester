@@ -377,6 +377,8 @@ export default function ReplayWorkspace({ workspace, query }) {
     if (completed) return `Replay đã đi tới nến cuối của dataset; không còn nến tương lai để mở thêm.`
     return `Đang mở ${visibleRowCount ?? 'N/A'} nến; quyết định chỉ nên dựa trên bằng chứng tới cutoff hiện tại.`
   }, [completed, conflict, cursor, historicalView, visibleRowCount])
+  const noDataset = datasetState.status === 'ready' && datasetState.items.length === 0
+  const dataDeskHref = `/?view=data&workspace=${encodeURIComponent(workspace)}`
 
   return (
     <main className="replay-shell">
@@ -396,7 +398,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       </header>
 
       {!replay && state.status !== 'loading' && (
-        <section className="replay-start" aria-label="Mở replay">
+        <section className={`replay-start ${noDataset ? 'is-empty' : ''}`} aria-label="Mở replay">
           <div>
             <div className="replay-start-kicker">CHART-FIRST PRACTICE</div>
             <h2>Mở chart để bắt đầu replay</h2>
@@ -435,7 +437,15 @@ export default function ReplayWorkspace({ workspace, query }) {
           </button>
           {datasetState.status === 'loading' && <div className="replay-inline-status">Đang đọc danh mục dữ liệu…</div>}
           {datasetState.status === 'error' && <div className="replay-inline-status is-error">Không đọc được danh mục: {datasetState.error}</div>}
-          {datasetState.status === 'ready' && !datasetState.items.length && <div className="replay-inline-status is-empty">Chưa có dataset local trong workspace này.</div>}
+          {noDataset && (
+            <>
+              <div className="replay-inline-status is-empty">Chưa có dataset local trong workspace này.</div>
+              <div className="replay-empty-actions" data-testid="replay-empty-actions">
+                <span>Cần một dataset local đã có provenance trước khi mở chart.</span>
+                <a href={dataDeskHref}>Mở Data Desk →</a>
+              </div>
+            </>
+          )}
         </section>
       )}
 

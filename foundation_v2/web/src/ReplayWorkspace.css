@@ -80,6 +80,29 @@
 .replay-inline-status.is-error { color: #dc9090; }
 .replay-inline-status.is-empty { color: #d8b773; }
 
+.replay-start.is-empty {
+  grid-template-columns: minmax(280px, 1.2fr) minmax(300px, 1fr);
+  align-items: start;
+}
+.replay-start.is-empty > label:nth-of-type(2),
+.replay-start.is-empty > .primary-action { display: none; }
+.replay-start.is-empty .replay-inline-status { grid-column: 2; margin-top: 0; }
+.replay-empty-actions {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 8px;
+  border-top: 1px solid #242b30;
+  padding-top: 11px;
+  color: #89959d;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.replay-empty-actions a { color: #d6b56f; text-decoration: none; white-space: nowrap; }
+.replay-empty-actions a:hover { color: #f0d18a; text-decoration: underline; text-underline-offset: 3px; }
+
 .replay-status {
   min-height: 64px;
   overflow-x: auto;
@@ -234,6 +257,9 @@
   .replay-start > div { grid-column: 1 / -1; }
   .replay-start > .primary-action { grid-column: auto; }
   .replay-inline-status { grid-column: 1 / -1; }
+  .replay-start.is-empty { grid-template-columns: 1fr; }
+  .replay-start.is-empty .replay-inline-status,
+  .replay-start.is-empty .replay-empty-actions { grid-column: 1; }
   .replay-workspace { grid-template-columns: 1fr; }
   .replay-main { padding-right: 0; }
   .replay-side { border-top: 1px solid #242c31; border-left: 0; padding: 18px 0 0; }
@@ -254,6 +280,9 @@
   .replay-start { grid-template-columns: 1fr; }
   .replay-start > div { grid-column: auto; }
   .replay-start > .primary-action { grid-column: auto; }
+  .replay-start.is-empty .replay-inline-status,
+  .replay-start.is-empty .replay-empty-actions { grid-column: auto; }
+  .replay-empty-actions { align-items: flex-start; flex-direction: column; }
   .replay-status { display: grid !important; grid-template-columns: 1fr 1fr; padding: 8px 0; }
   .replay-status > div { min-width: 0; padding: 7px 8px 7px 0; }
   .replay-status > div + div { border-left: 0; padding-left: 0; }
