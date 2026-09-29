@@ -19,6 +19,34 @@
 .replay-topbar p { max-width: 680px; font-size: 12px; color: #919da5; }
 .replay-start-kicker { margin-bottom: 7px; color: #d4a554; font-size: 10px; font-weight: 750; letter-spacing: .12em; }
 
+/*
+ * Replay follows the same evidence order as the product's data-story work:
+ * context, takeaway, evidence, then next action. These are deliberately
+ * border-led surfaces so the chart remains the visual anchor instead of a
+ * stack of decorative cards.
+ */
+.replay-story {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(300px, 1.45fr) minmax(250px, .9fr);
+  gap: 0;
+  border-top: 1px solid #242b30;
+  border-bottom: 1px solid #242b30;
+  background: #0d1113;
+}
+
+.replay-story > div { min-width: 0; padding: 15px 18px 16px 0; }
+.replay-story > div + div { border-left: 1px solid #242b30; padding-left: 18px; }
+.story-label { display: block; color: #8c989f; font-size: 9px; font-weight: 750; letter-spacing: .12em; }
+.replay-story strong { display: block; margin-top: 6px; color: #e2e8eb; font-size: 14px; font-weight: 650; line-height: 1.35; }
+.replay-story span:not(.story-label) { display: block; margin-top: 5px; color: #89959d; font-size: 10px; line-height: 1.4; }
+.replay-story-takeaway strong { color: #e4c77f; }
+.replay-story-takeaway b { color: #cbd4d9; font-weight: 650; }
+.replay-story-provenance dl { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; margin: 8px 0 0; }
+.replay-story-provenance dl div { min-width: 0; }
+.replay-story-provenance dt { color: #707c84; font-size: 9px; }
+.replay-story-provenance dd { margin: 2px 0 0; overflow: hidden; color: #bec8ce; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.replay-story-provenance code { color: #aebbc2; }
+
 .replay-start {
   position: relative;
   grid-template-columns: minmax(280px, 1.4fr) minmax(300px, .95fr) 130px auto;
@@ -113,6 +141,22 @@
 .chart-badge-left { left: 10px; }
 .chart-badge-right { right: 10px; color: #d6b56f; }
 
+.replay-evidence-strip {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 48px;
+  padding: 8px 3px;
+  border-bottom: 1px solid #1e2529;
+  color: #7f8b93;
+  font-size: 10px;
+}
+.replay-evidence-strip > div { min-width: 128px; }
+.replay-evidence-strip > div strong { display: block; margin-top: 4px; color: #d6dee2; font-size: 11px; }
+.replay-evidence-strip > span { position: relative; padding-left: 12px; }
+.replay-evidence-strip > span::before { position: absolute; top: 4px; left: 0; width: 4px; height: 4px; border-radius: 50%; background: #68757d; content: ''; }
+.replay-evidence-strip > span:last-child { margin-left: auto; color: #c4a35e; }
+
 .bar-readout {
   min-height: 42px;
   gap: 16px;
@@ -152,6 +196,29 @@
 .unsupported-tools button span { display: block; margin-top: 2px; color: #626e75; font-size: 9px; }
 .unsupported-tools button:disabled { opacity: .78; border-color: #3d474e; color: #aeb8be; }
 
+/* Motion communicates state change only; reduced-motion users keep the same
+ * hierarchy and affordances without interpolation. */
+.replay-story,
+.replay-evidence-strip,
+.replay-state,
+.chart-badge,
+.toolbar-primary button,
+.replay-jump button,
+.secondary-action { transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease, opacity 160ms ease; }
+.toolbar-primary button:hover:not(:disabled),
+.replay-jump button:hover:not(:disabled),
+.secondary-action:hover:not(:disabled) { border-color: #d5a858; }
+
+@media (prefers-reduced-motion: reduce) {
+  .replay-story,
+  .replay-evidence-strip,
+  .replay-state,
+  .chart-badge,
+  .toolbar-primary button,
+  .replay-jump button,
+  .secondary-action { transition: none; }
+}
+
 @media (max-width: 1120px) {
   .replay-shell { padding-inline: 20px; }
   .replay-workspace { grid-template-columns: minmax(0, 1fr) 300px; }
@@ -173,6 +240,8 @@
   .replay-status > div { min-width: 0; white-space: normal; }
   .replay-status code { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .replay-status .replay-state { grid-column: 1 / -1; min-width: 0; margin-left: 0; border-top: 1px solid #242c31; padding-top: 10px; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+  .replay-story { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+  .replay-story-provenance { grid-column: 1 / -1; border-top: 1px solid #242b30; border-left: 0 !important; padding: 11px 0 13px !important; }
 }
 
 @media (max-width: 620px) {
@@ -191,6 +260,13 @@
   .toolbar-speed { align-self: center; }
   .cutoff-readout { min-width: 0; margin-left: 0; text-align: right; }
   .replay-chart { min-height: 320px; height: 400px; }
+  .replay-story { display: block; }
+  .replay-story > div,
+  .replay-story > div + div { padding: 12px 0; border-left: 0; }
+  .replay-story > div + div { border-top: 1px solid #242b30; }
+  .replay-story-provenance { padding-bottom: 14px !important; }
+  .replay-evidence-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+  .replay-evidence-strip > span:last-child { margin-left: 0; }
   .bar-readout-time { width: 100%; margin-left: 0; }
   .replay-jump { grid-template-columns: 1fr; }
   .replay-jump button { width: 100%; }

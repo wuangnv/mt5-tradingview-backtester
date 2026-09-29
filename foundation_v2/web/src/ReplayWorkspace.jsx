@@ -264,6 +264,22 @@ export default function ReplayWorkspace({ workspace, query }) {
     [datasetState.items, replay?.payload?.dataset_id],
   )
 
+  // Keep the story grounded in the same API-visible replay payload. Dataset
+  // metadata is an enhancement when the catalog is available; it must never
+  // become a reason to invent instrument, provider, or quality values.
+  const replayContext = useMemo(() => {
+    const payload = replay?.payload || {}
+    const source = activeDataset?.source || {}
+    return {
+      instrument: activeDataset?.instrument_id || payload.instrument_id || 'Instrument chưa xác định',
+      timeframe: activeDataset?.timeframe || payload.timeframe || 'TF chưa rõ',
+      quality: activeDataset?.quality_status || payload.quality_status || 'unverified',
+      provider: activeDataset?.provider_id || source.provider || payload.provider_id || 'Provider chưa xác định',
+      hash: activeDataset?.artifact_sha256 || replay?.dataset_sha256 || '',
+      rowCount: activeDataset?.row_count || replay?.total_row_count || null,
+    }
+  }, [activeDataset, replay])
+
   useEffect(() => {
     if (!activeDataset) return
     updateMarketContext({
@@ -347,6 +363,13 @@ export default function ReplayWorkspace({ workspace, query }) {
     return 'Tạm dừng'
   }, [completed, conflict, historicalView, state.status])
 
+  const takeaway = useMemo(() => {
+    if (conflict) return 'Session có revision mới; cần tải lại trước khi tiếp tục để giữ đúng lineage.'
+    if (historicalView) return `Đây là cutoff lịch sử #${cursor}; phần dữ liệu sau mốc này đang bị ẩn có chủ đích.`
+    if (completed) return `Replay đã đi tới nến cuối của dataset; không còn nến tương lai để mở thêm.`
+    return `Đang mở ${replay?.visible_row_count || 0} nến; quyết định chỉ nên dựa trên bằng chứng tới cutoff hiện tại.`
+  }, [completed, conflict, cursor, historicalView, replay?.visible_row_count])
+
   return (
     <main className="replay-shell">
       <header className="replay-topbar">
@@ -413,6 +436,27 @@ export default function ReplayWorkspace({ workspace, query }) {
 
       {replay && (
         <>
+          <section className="replay-story" aria-label="Câu chuyện quyết định replay">
+            <div className="replay-story-context">
+              <span className="story-label">01 · CONTEXT</span>
+              <strong>{replayContext.instrument} · {replayContext.timeframe}</strong>
+              <span>{replay.payload.dataset_id} · cutoff {formatTimestamp(replay.cutoff_timestamp)} UTC</span>
+            </div>
+            <div className="replay-story-takeaway">
+              <span className="story-label">02 · TAKEAWAY</span>
+              <strong>{takeaway}</strong>
+              <span>Trạng thái / <b>status: {statusLabel}</b> · broker locked</span>
+            </div>
+            <div className="replay-story-provenance">
+              <span className="story-label">PROVENANCE</span>
+              <dl>
+                <div><dt>Quality</dt><dd>{replayContext.quality}</dd></div>
+                <div><dt>Provider</dt><dd>{replayContext.provider}</dd></div>
+                <div><dt>Rows</dt><dd>{replayContext.rowCount ?? 'N/A'}</dd></div>
+                <div><dt>Hash</dt><dd><code>{replayContext.hash ? String(replayContext.hash).slice(0, 14) : 'Chưa có hash'}</code></dd></div>
+              </dl>
+            </div>
+          </section>
           <section className="replay-status" aria-label="Trạng thái replay">
             <div><span>Workspace</span><strong>{workspace}</strong></div>
             <div><span>Dataset</span><code>{replay.payload.dataset_id}</code></div>
@@ -499,6 +543,13 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
               </div>
 
+              <div className="replay-evidence-strip" aria-label="Bằng chứng chart">
+                <div><span className="story-label">03 · EVIDENCE</span><strong>{crosshair?.row ? 'Nến đang chọn' : 'Nến tại cutoff'}</strong></div>
+                <span>{visibleRows.length} nến được phép hiển thị</span>
+                <span>{replay.has_future_rows ? 'Nến tương lai đang ẩn' : 'Đã ở cuối dữ liệu'}</span>
+                <span>{crosshair?.row ? `Crosshair #${visibleRows.findIndex((item) => item.timestamp === crosshair.row.timestamp)}` : `Cursor #${cursor}`}</span>
+              </div>
+
               <div className="bar-readout" aria-label="OHLC nến hiện tại">
                 <span className="bar-readout-label">{crosshair?.row ? 'Crosshair' : 'Nến hiện tại'} #{crosshair?.row ? visibleRows.findIndex((item) => item.timestamp === crosshair.row.timestamp) : cursor}</span>
                 <span>O <strong>{formatPrice((crosshair?.row || currentBar)?.open)}</strong></span>
@@ -533,20 +584,20 @@ export default function ReplayWorkspace({ workspace, query }) {
               <section className="decision-panel">
                 <div className="side-heading">
                   <div>
-                    <span>Decision workspace</span>
-                    <strong>Ghi quyết định tại nến #{cursor}</strong>
+                    <span>04 · NEXT ACTION</span>
+                    <strong>Quyết định tại nến #{cursor}</strong>
                   </div>
                   <span className="mode-pill">SIM</span>
                 </div>
-                <p>Chart và replay đã sẵn sàng. Các thao tác vẽ/đặt lệnh sẽ chỉ mở khi có contract session tương ứng.</p>
+                <p>Đọc chart và ghi lại hypothesis trước khi mở bước kế tiếp. Replay này chỉ tạo bằng chứng local; không gửi lệnh broker.</p>
                 <div className="decision-readout">
                   <span>Giá đóng hiện tại</span>
                   <strong>{formatPrice(currentBar?.close)}</strong>
                   <small>{formatTimestamp(currentBar?.timestamp)} UTC</small>
                 </div>
                 <div className="unsupported-tools" aria-label="Công cụ đang khóa">
-                  <button type="button" disabled title="Annotation API cần session binding đầy đủ">Vẽ vùng <span>đang khóa</span></button>
-                  <button type="button" disabled title="Trade draft cần execution initialization">Trade draft <span>đang khóa</span></button>
+                  <button type="button" disabled title="Annotation API cần session binding đầy đủ">Vẽ vùng <span>đang khóa · session binding</span></button>
+                  <button type="button" disabled title="Trade draft cần execution initialization">Trade draft <span>đang khóa · simulator init</span></button>
                 </div>
               </section>
               <section>
