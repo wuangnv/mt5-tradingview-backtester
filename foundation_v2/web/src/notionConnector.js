@@ -388,3 +388,12 @@ export const NOTION_FLOW_STATES = Object.freeze({
   PREVIEW: 'preview',
   INTENT_READY: 'intent_ready',
 })
+
+export function notionAuthorizationUrl(value) {
+  const url = new URL(value)
+  if (url.protocol !== 'https:' || url.hostname !== 'api.notion.com'
+    || url.port || url.username || url.password || url.pathname !== '/v1/oauth/authorize') {
+    fail('invalid Notion authorization URL')
+  }
+  return url.href
+}

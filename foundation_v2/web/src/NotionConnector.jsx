@@ -4,10 +4,12 @@ import {
   buildNotionLedgerIntent,
   buildNotionPreview,
   hydrateNotionUiIntent,
+  notionAuthorizationUrl,
   NOTION_FLOW_STATES,
 } from './notionConnector.js'
 
 const NOTION_LEDGER_BASE = '/api/v2/connectors/notion'
+const NOTION_OAUTH_BASE = `${NOTION_LEDGER_BASE}/oauth`
 
 function connectorApiError(response, payload) {
   const detail = String(payload?.detail || `HTTP ${response.status}`)
@@ -84,6 +86,10 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
     receiptRevision: null,
   })
   const [ledgerMessage, setLedgerMessage] = useState(null)
+  const [provider, setProvider] = useState({ status: 'loading', oauth_available: false, connection_id: null })
+  const [providerPending, setProviderPending] = useState(false)
+  const [providerBusy, setProviderBusy] = useState(false)
+  const [providerError, setProviderError] = useState(null)
   const items = reports?.items || []
   const selectedReport = items[selectedIndex] || null
   const isLoading = reports?.status === 'loading'
@@ -96,6 +102,97 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
       source: selectedReport.result_source,
     }
   }, [selectedReport])
+
+  useEffect(() => {
+    let cancelled = false
+    setProvider({ status: 'loading', oauth_available: false, connection_id: null })
+    setProviderPending(false)
+    setProviderError(null)
+    connectorJson(`${NOTION_OAUTH_BASE}/status`, workspace)
+      .then((status) => { if (!cancelled) setProvider(status) })
+      .catch((nextError) => {
+        if (!cancelled) {
+          setProvider((current) => ({ ...current, status: 'unavailable' }))
+          setProviderError(`Không đọc được trạng thái Notion: ${nextError.message}`)
+        }
+      })
+    return () => { cancelled = true }
+  }, [workspace])
+
+  useEffect(() => {
+    if (!providerPending) return undefined
+    let cancelled = false
+    const startedAt = Date.now()
+    const timer = window.setInterval(async () => {
+      if (Date.now() - startedAt >= 10 * 60 * 1000) {
+        setProviderPending(false)
+        setProviderError('Lượt cấp quyền đã hết hạn. Hãy bắt đầu lại nếu cần.')
+        return
+      }
+      try {
+        const status = await connectorJson(`${NOTION_OAUTH_BASE}/status`, workspace)
+        if (cancelled) return
+        setProvider(status)
+        if (status.status === 'connected') {
+          setProviderPending(false)
+          setProviderError(null)
+        }
+      } catch (nextError) {
+        if (cancelled) return
+        setProviderPending(false)
+        setProviderError(`Không kiểm tra được callback: ${nextError.message}`)
+      }
+    }, 2500)
+    return () => { cancelled = true; window.clearInterval(timer) }
+  }, [providerPending, workspace])
+
+  const refreshProvider = async () => {
+    setProviderBusy(true)
+    setProviderError(null)
+    try {
+      const status = await connectorJson(`${NOTION_OAUTH_BASE}/status`, workspace)
+      setProvider(status)
+      if (status.status === 'connected') setProviderPending(false)
+    } catch (nextError) {
+      setProviderError(`Không đọc được trạng thái Notion: ${nextError.message}`)
+    } finally {
+      setProviderBusy(false)
+    }
+  }
+
+  const startProviderOAuth = async () => {
+    // Open synchronously from the click so browsers do not block the OAuth tab.
+    const providerTab = window.open('about:blank', '_blank')
+    if (providerTab) providerTab.opener = null
+    setProviderBusy(true)
+    setProviderError(null)
+    try {
+      const response = await connectorJson(`${NOTION_OAUTH_BASE}/start`, workspace, { method: 'POST' })
+      const authorizationUrl = notionAuthorizationUrl(response.authorization_url)
+      if (!providerTab) throw new Error('Trình duyệt chặn tab cấp quyền. Hãy cho phép popup rồi thử lại.')
+      providerTab.location.replace(authorizationUrl)
+      setProviderPending(true)
+    } catch (nextError) {
+      providerTab?.close()
+      setProviderError(`Không mở được Notion: ${nextError.message}`)
+    } finally {
+      setProviderBusy(false)
+    }
+  }
+
+  const disconnectProvider = async () => {
+    setProviderBusy(true)
+    setProviderError(null)
+    try {
+      const status = await connectorJson(`${NOTION_OAUTH_BASE}/disconnect`, workspace, { method: 'POST' })
+      setProvider(status)
+      setProviderPending(false)
+    } catch (nextError) {
+      setProviderError(`Không ngắt được kết nối Notion: ${nextError.message}`)
+    } finally {
+      setProviderBusy(false)
+    }
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -358,21 +455,49 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
   return (
     <section className="notion-connector" data-testid="notion-connector">
       <div className="prop-section-head">
-        <div><span>M6 / Notion connector</span><strong>Chuẩn bị export report mô phỏng</strong></div>
+        <div><span>M6 / Notion connector</span><strong>Kết nối tài khoản và chuẩn bị export report mô phỏng</strong></div>
         <small data-testid="notion-flow-state">{flow}</small>
       </div>
 
+      <div className="notion-provider" data-testid="notion-provider">
+        <div>
+          <strong>Notion thật · project local</strong>
+          <p data-testid="notion-provider-status">
+            {provider.status === 'connected'
+              ? 'Đã kết nối. Token chỉ nằm trong backend đang chạy; export report vẫn PREP_ONLY.'
+              : providerPending
+                ? 'Đang chờ bạn cấp quyền trên Notion. Trang này sẽ tự cập nhật sau callback.'
+                : provider.status === 'loading'
+                  ? 'Đang kiểm tra trạng thái kết nối…'
+                  : provider.status === 'unavailable'
+                    ? 'Chưa đọc được trạng thái kết nối.'
+                    : provider.oauth_available
+                      ? 'Sẵn sàng mở Notion để bạn đăng nhập và chọn quyền.'
+                      : 'Backend chưa cấu hình Notion OAuth cho project này.'}
+          </p>
+        </div>
+        <div className="notion-destination-actions">
+          {provider.status === 'connected' ? (
+            <button type="button" className="prop-refresh" onClick={disconnectProvider} disabled={providerBusy}>Ngắt kết nối local</button>
+          ) : (
+            <button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={startProviderOAuth} disabled={!provider.oauth_available || providerBusy || providerPending}>Đăng nhập Notion</button>
+          )}
+          <button type="button" className="prop-refresh" onClick={refreshProvider} disabled={providerBusy}>Kiểm tra lại</button>
+        </div>
+      </div>
+      {providerError && <StateMessage kind="error" testId="notion-provider-error">{providerError}</StateMessage>}
+
       <div className="notion-flow" aria-label="Notion connector flow">
-        <div className={flow === NOTION_FLOW_STATES.SESSION_READY ? 'is-current' : ''}><span>1</span><strong>App session</strong><small>{workspace}</small></div>
-        <div className={flow === NOTION_FLOW_STATES.OAUTH_PENDING || flow === NOTION_FLOW_STATES.OAUTH_CALLBACK ? 'is-current' : ''}><span>2</span><strong>Connect</strong><small>OAuth state</small></div>
+        <div className={flow === NOTION_FLOW_STATES.SESSION_READY ? 'is-current' : ''}><span>1</span><strong>Phiên local</strong><small>{workspace}</small></div>
+        <div className={flow === NOTION_FLOW_STATES.OAUTH_PENDING || flow === NOTION_FLOW_STATES.OAUTH_CALLBACK ? 'is-current' : ''}><span>2</span><strong>Demo connect</strong><small>State mô phỏng</small></div>
         <div className={flow === NOTION_FLOW_STATES.DESTINATION ? 'is-current' : ''}><span>3</span><strong>Destination</strong><small>Owner chọn</small></div>
         <div className={flow === NOTION_FLOW_STATES.PREVIEW ? 'is-current' : ''}><span>4</span><strong>Preview</strong><small>Allowlist</small></div>
         <div className={flow === NOTION_FLOW_STATES.INTENT_READY ? 'is-current' : ''}><span>5</span><strong>Receipt</strong><small>PREP_ONLY</small></div>
       </div>
 
       <div className="notion-safety" data-testid="notion-safety">
-        <strong>OFFLINE PREP_ONLY</strong>
-        <span>Không mở OAuth thật, không gọi Notion, không gửi broker. Đây là state để nối connector sau khi có account và quyền rõ ràng.</span>
+        <strong>REPORT EXPORT · PREP_ONLY</strong>
+        <span>Đăng nhập Notion ở trên chỉ tạo kết nối trong backend local. Flow bên dưới mô phỏng account/destination để chuẩn bị report; chưa ghi Notion hoặc gửi broker.</span>
         <span data-testid="notion-ledger-status">
           Local ledger: {ledger.status === 'ready' ? 'đã khôi phục/lưu' : ledger.status === 'loading' ? 'đang khôi phục' : ledger.status === 'unavailable' ? 'chưa kết nối' : ledger.status === 'conflict' ? 'conflict — không tự ghi đè' : 'chưa có intent'}.
         </span>
@@ -383,21 +508,21 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
 
       {flow === NOTION_FLOW_STATES.SESSION_READY && (
         <div className="notion-step" data-testid="notion-session-step">
-          <div><strong>Đã có phiên đăng nhập của sản phẩm</strong><p>Workspace hiện tại là <code>{workspace}</code>. Login này chỉ là login vào app; Notion sẽ có bước cấp quyền riêng.</p></div>
-          <button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={beginConnect}>Kết nối Notion</button>
+          <div><strong>Phiên project local</strong><p>Workspace hiện tại là <code>{workspace}</code>. Phần này chỉ chuẩn bị report mô phỏng; nút đăng nhập Notion thật nằm phía trên.</p></div>
+          <button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={beginConnect}>Mô phỏng kết nối cho report</button>
         </div>
       )}
 
       {flow === NOTION_FLOW_STATES.OAUTH_PENDING && (
         <div className="notion-step" data-testid="notion-oauth-pending">
-          <div><strong>OAuth đang chờ callback</strong><p>Provider: <code>{oauth.provider}</code> · state: <code>{oauth.state}</code>. UI chỉ mô phỏng trạng thái chuyển sang trang Notion; chưa mở popup và chưa lưu token.</p></div>
+          <div><strong>Callback mô phỏng đang chờ</strong><p>Provider: <code>{oauth.provider}</code> · state: <code>{oauth.state}</code>. Bước này không mở Notion và không lưu token.</p></div>
           <div className="notion-destination-actions"><button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={continueOAuth}>Mô phỏng callback</button><button type="button" className="prop-refresh" onClick={cancelOAuth}>Hủy</button></div>
         </div>
       )}
 
       {flow === NOTION_FLOW_STATES.OAUTH_CALLBACK && (
         <div className="notion-step" data-testid="notion-oauth-callback">
-          <div><strong>Callback hợp lệ ở mức UI</strong><p>Provider: <code>{oauth.provider}</code> · state đã đối chiếu. Connector thật chưa được expose trong runtime, nên bước này chỉ giữ state và không biến callback thành quyền ghi.</p></div>
+          <div><strong>Callback mô phỏng hợp lệ</strong><p>Provider: <code>{oauth.provider}</code> · state đã đối chiếu trong UI. Kết nối Notion thật phía trên cũng không cấp quyền ghi report.</p></div>
           <div className="notion-destination-actions"><button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={openDestinationPicker}>Chọn account & destination</button><button type="button" className="prop-refresh" onClick={cancelOAuth}>Hủy</button></div>
         </div>
       )}

@@ -114,6 +114,8 @@ const attempts = new Map([[persistedSession.session_id, [persistedAttempt]]])
 const bundles = new Map([[`${persistedSession.session_id}/${persistedAttempt.attempt_id}`, persistedBundle]])
 const propRequests = []
 const connectorConnections = new Map()
+let oauthConnected = false
+let oauthAvailable = true
 const connectorIntents = new Map()
 const connectorReceipts = new Map()
 let mode = 'happy'
@@ -230,6 +232,10 @@ async function main() {
     await waitForServer()
     browser = await chromium.launch({ headless: true })
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })
+    await page.context().route('https://api.notion.com/v1/oauth/authorize**', async (route) => {
+      oauthConnected = true
+      await route.fulfill({ status: 200, contentType: 'text/html', body: '<p>Local OAuth callback fixture</p>' })
+    })
     const consoleErrors = []
     page.on('console', (message) => {
       if (message.type() === 'error') consoleErrors.push(message.text())
@@ -369,6 +375,27 @@ async function main() {
       const workspace = request.headers()['x-workspace-id'] || ''
       const connectionPath = '/api/v2/connectors/notion/connections'
       const intentPath = '/api/v2/connectors/notion/intents'
+
+      if (url.pathname === '/api/v2/connectors/notion/oauth/status' && request.method() === 'GET') {
+        return json(route, 200, {
+          provider: 'notion', oauth_available: oauthAvailable,
+          status: oauthConnected ? 'connected' : 'disconnected',
+          connection_id: oauthConnected ? 'notion-fixture-connection' : null,
+          token_persistence: 'process_memory_only', export_mode: 'PREP_ONLY', cloud_write: false,
+        })
+      }
+      if (url.pathname === '/api/v2/connectors/notion/oauth/start' && request.method() === 'POST') {
+        return oauthAvailable
+          ? json(route, 200, { authorization_url: 'https://api.notion.com/v1/oauth/authorize?client_id=fixture&state=opaque' })
+          : json(route, 503, { detail: 'notion_oauth_not_configured' })
+      }
+      if (url.pathname === '/api/v2/connectors/notion/oauth/disconnect' && request.method() === 'POST') {
+        oauthConnected = false
+        return json(route, 200, {
+          provider: 'notion', oauth_available: oauthAvailable, status: 'disconnected', connection_id: null,
+          token_persistence: 'process_memory_only', export_mode: 'PREP_ONLY', cloud_write: false,
+        })
+      }
 
       if (url.pathname === connectionPath && request.method() === 'GET') {
         return json(route, 200, {
@@ -541,7 +568,23 @@ async function main() {
 
     await page.getByTestId('prop-notion-tab').click()
     await page.getByTestId('notion-connector').waitFor()
-    await page.getByRole('button', { name: 'Kết nối Notion' }).click()
+    await page.getByRole('button', { name: 'Đăng nhập Notion' }).waitFor()
+    assert.match(await page.getByTestId('notion-provider-status').innerText(), /Sẵn sàng mở Notion/)
+    const popupPromise = page.waitForEvent('popup')
+    await page.getByRole('button', { name: 'Đăng nhập Notion' }).click()
+    const oauthPopup = await popupPromise
+    await oauthPopup.getByText('Local OAuth callback fixture').waitFor()
+    await oauthPopup.close()
+    await page.getByRole('button', { name: 'Ngắt kết nối local' }).waitFor()
+    assert.match(await page.getByTestId('notion-provider-status').innerText(), /export report vẫn PREP_ONLY/)
+    await page.getByRole('button', { name: 'Ngắt kết nối local' }).click()
+    await page.getByRole('button', { name: 'Đăng nhập Notion' }).waitFor()
+    oauthAvailable = false
+    await page.getByRole('button', { name: 'Kiểm tra lại' }).click()
+    await page.getByText('Backend chưa cấu hình Notion OAuth cho project này.').waitFor()
+    assert.equal(await page.getByRole('button', { name: 'Đăng nhập Notion' }).isDisabled(), true)
+    assert.match(await page.getByTestId('notion-provider-status').innerText(), /chưa cấu hình Notion OAuth/)
+    await page.getByRole('button', { name: 'Mô phỏng kết nối cho report' }).click()
     await page.getByTestId('notion-oauth-pending').waitFor()
     await page.getByRole('button', { name: 'Mô phỏng callback' }).click()
     await page.getByTestId('notion-oauth-callback').waitFor()
@@ -568,6 +611,14 @@ async function main() {
     await page.getByTestId('notion-receipt').waitFor()
     assert.match(await page.getByTestId('notion-receipt').innerText(), /unknown.*tra cứu destination/i)
     assert.match(await page.getByTestId('notion-ledger-status').innerText(), /đã khôi phục\/lưu/i)
+
+    for (const width of [1440, 360]) {
+      await page.setViewportSize({ width, height: 1000 })
+      await page.screenshot({ path: path.join(evidenceDir, `notion-oauth-ui-fixture-${width}.png`), fullPage: true })
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+      assert.ok(overflow <= 2, `Notion UI horizontal overflow at ${width}px: ${overflow}px`)
+    }
+    await page.setViewportSize({ width: 1440, height: 1000 })
 
     await page.getByRole('button', { name: 'Sessions' }).click()
 
@@ -638,7 +689,7 @@ async function main() {
         'report_to_exact_replay_cursor_link',
         'report_status_and_branch_filters',
         'report_csv_export',
-        'notion_offline_connector_flow',
+        'notion_local_oauth_and_offline_connector_flow',
         'report_failure_does_not_hide_resume_state',
         'mutations_prop_api_only',
         'no_broker_or_credential_payload',

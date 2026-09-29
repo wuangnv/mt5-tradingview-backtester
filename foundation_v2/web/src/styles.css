@@ -361,6 +361,10 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 .prop-report-row-actions { display: flex; gap: 10px; align-items: center; justify-content: flex-end; }
 
 .notion-connector { min-width: 0; padding: 18px 0 28px; }
+.notion-provider { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 14px 0; border-top: 1px solid #293036; border-bottom: 1px solid #293036; }
+.notion-provider strong { color: #dce1e5; font-size: 13px; }
+.notion-provider p { max-width: 700px; margin: 6px 0 0; color: #98a2aa; font-size: 11px; line-height: 1.55; }
+.notion-provider .notion-destination-actions { flex-wrap: wrap; justify-content: flex-end; }
 .notion-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #293036; border-bottom: 1px solid #293036; margin: 8px 0 16px; }
 .notion-flow > div { min-width: 0; display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: center; padding: 11px 12px 11px 0; color: #7f8992; }
 .notion-flow > div + div { border-left: 1px solid #242a2f; padding-left: 12px; }
@@ -440,6 +444,8 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
   .notion-flow { grid-template-columns: 1fr; }
   .notion-flow > div + div { border-left: 0; border-top: 1px solid #242a2f; padding-left: 0; }
   .notion-step { align-items: flex-start; flex-direction: column; }
+  .notion-provider { align-items: flex-start; flex-direction: column; }
+  .notion-provider .notion-destination-actions { width: 100%; justify-content: flex-start; }
   .notion-destination, .notion-preview-grid, .notion-receipt-facts { grid-template-columns: 1fr; }
   .notion-destination-actions { align-items: stretch; flex-direction: column; }
   .notion-preview-grid > div + div, .notion-receipt-facts div + div { border-left: 0; border-top: 1px solid #242a2f; padding-left: 0; }

@@ -5,6 +5,7 @@ import {
   buildNotionLedgerIntent,
   buildNotionPreview,
   hydrateNotionUiIntent,
+  notionAuthorizationUrl,
   NOTION_LEDGER_INTENT_SCHEMA,
   NOTION_FLOW_STATES,
 } from '../src/notionConnector.js'
@@ -45,6 +46,17 @@ test('builds an allowlisted preview and keeps owner notes separate', () => {
   assert.equal(preview.generated.owner_notes_policy.user_notes_area, 'owner_notes')
   assert.equal(preview.safety.account_fields_excluded, true)
   assert.equal('objectives' in preview.generated, false)
+})
+
+test('accepts only the Notion OAuth authorization endpoint', () => {
+  const url = 'https://api.notion.com/v1/oauth/authorize?client_id=public&state=opaque'
+  assert.equal(notionAuthorizationUrl(url), url)
+  for (const invalid of [
+    'http://api.notion.com/v1/oauth/authorize',
+    'https://api.notion.com.evil.test/v1/oauth/authorize',
+    'https://api.notion.com/v1/oauth/token',
+    'https://user@api.notion.com/v1/oauth/authorize',
+  ]) assert.throws(() => notionAuthorizationUrl(invalid), /invalid Notion authorization URL/)
 })
 
 test('builds a pending local receipt only after explicit destination selection', async () => {
