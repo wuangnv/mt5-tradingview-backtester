@@ -169,7 +169,7 @@ function ShellTopbar({ activeItem, workspace, query, marketContext, copy, langua
   const statusTone = dataStatus === 'verified' ? 'is-live' : dataStatus ? 'is-warn' : 'is-muted'
   return (
     <header className="fx-topbar">
-      <div className="fx-topbar-brand" aria-label={copy.product} title={copy.product}>
+      <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
         <span className="fx-wordmark" aria-hidden="true"><WMReplayWordmark /></span>
         <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
       </div>

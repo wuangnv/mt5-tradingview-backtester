@@ -20,7 +20,7 @@
   --fx-shell-warn: #d5a45a;
   --fx-shell-danger: #dc7777;
   grid-template-columns: 224px minmax(0, 1fr);
-  grid-template-rows: 68px minmax(0, 1fr);
+  grid-template-rows: 80px minmax(0, 1fr);
   background: var(--fx-shell-bg);
   color: var(--fx-shell-text);
 }
@@ -113,7 +113,7 @@
   grid-column: 1 / -1;
   grid-row: 1;
   display: flex;
-  min-height: 68px;
+  min-height: 80px;
   gap: 0;
   border-bottom-color: var(--fx-shell-line);
   padding: 0 26px 0 0;
@@ -130,7 +130,7 @@
 
 .fx-wordmark {
   display: inline-block;
-  width: 108px;
+  width: 128px;
   color: #f2f4f5;
   line-height: 0;
   white-space: nowrap;

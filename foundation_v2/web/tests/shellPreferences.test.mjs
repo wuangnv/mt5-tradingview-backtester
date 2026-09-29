@@ -26,6 +26,7 @@ test('shell exposes truthful EN/VI and theme controls with persisted preference 
   assert.match(source, /routeContext/, 'shell exposes canonical route context to child workspaces')
   assert.match(source, /product:\s*['"]WMREPLAY['"]/, 'shell uses the WMREPLAY product wordmark')
   assert.match(source, /fx-topbar-brand/, 'brand lives in the global header')
+  assert.match(source, /role="img" aria-label=\{copy\.product\}/, 'wordmark has an accessible label')
   assert.match(source, /fx-wordmark/, 'shell renders the WMREPLAY wordmark')
   assert.match(source, /viewBox="0 0 242 30"/, 'wordmark uses a stable vector geometry')
   assert.doesNotMatch(source, /Market replay/, 'brand has no extra descriptor text')
