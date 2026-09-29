@@ -17,6 +17,7 @@ __all__ = [
     "paper_accounting",
     "paper_execution_bridge",
     "notion_projection",
+    "connector_ledger",
     "owner_absence_safety",
     "owner_absence_supervisor",
     "owner_absence_journal",
@@ -30,4 +31,3 @@ __all__ = [
     "store",
     "strategy_contracts",
 ]
-

@@ -10,6 +10,16 @@ import psycopg
 from psycopg.rows import dict_row
 
 from .contracts import DatasetManifest, ResearchJobView, utc_now_iso
+from .connector_ledger import (
+    CONNECTOR_KIND,
+    CONNECTOR_LEDGER_SCHEMA,
+    ConnectorIdempotencyConflict,
+    ConnectorLedgerError,
+    json_object,
+    validate_connection_request,
+    validate_intent_request,
+    validate_receipt_status,
+)
 from .prop_replay import (
     ReplayPropConnectionError,
     replay_event_operation_id,
@@ -388,6 +398,79 @@ CREATE INDEX IF NOT EXISTS idx_workspace_records_kind_updated
 ALTER TABLE workspace_records DROP CONSTRAINT IF EXISTS workspace_records_kind_check;
 ALTER TABLE workspace_records ADD CONSTRAINT workspace_records_kind_check
     CHECK (kind IN ('playbook','journal','annotation','replay'));
+
+-- Connector state is an application-owned ledger, not a provider client.
+-- These tables intentionally contain opaque references and sanitized
+-- PREP_ONLY payloads only; OAuth credentials and broker/account data never
+-- belong here.
+CREATE TABLE IF NOT EXISTS connector_connections (
+    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
+    connector text NOT NULL CHECK (connector = 'notion'),
+    connection_id text NOT NULL,
+    request_id text NOT NULL,
+    idempotency_key text NOT NULL,
+    fingerprint text NOT NULL,
+    account_ref text,
+    scopes_json jsonb NOT NULL,
+    metadata_json jsonb NOT NULL DEFAULT '{}'::jsonb,
+    status text NOT NULL CHECK (status IN ('pending','unknown','succeeded','failed','revoked','cancelled')),
+    revision integer NOT NULL CHECK (revision >= 1),
+    error_code text,
+    created_at_utc text NOT NULL,
+    updated_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, connector, connection_id),
+    UNIQUE (workspace_id, connector, idempotency_key)
+);
+
+CREATE TABLE IF NOT EXISTS connector_intents (
+    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
+    connector text NOT NULL CHECK (connector = 'notion'),
+    intent_id text NOT NULL,
+    request_id text NOT NULL,
+    idempotency_key text NOT NULL,
+    fingerprint text NOT NULL,
+    connection_id text,
+    source_revision_json jsonb NOT NULL,
+    source_content_sha256 text NOT NULL,
+    destination_ref text,
+    intent_json jsonb NOT NULL,
+    status text NOT NULL CHECK (status IN ('pending','unknown','succeeded','failed','revoked','cancelled')),
+    mode text NOT NULL CHECK (mode = 'PREP_ONLY'),
+    error_code text,
+    created_at_utc text NOT NULL,
+    updated_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, connector, intent_id),
+    UNIQUE (workspace_id, connector, idempotency_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_connector_intents_workspace_updated
+    ON connector_intents(workspace_id, connector, updated_at_utc DESC, intent_id);
+
+CREATE TABLE IF NOT EXISTS connector_receipts (
+    workspace_id text NOT NULL REFERENCES workspaces(workspace_id),
+    connector text NOT NULL CHECK (connector = 'notion'),
+    receipt_id text NOT NULL,
+    intent_id text NOT NULL,
+    status text NOT NULL CHECK (status IN ('pending','unknown','succeeded','failed','revoked','cancelled')),
+    revision integer NOT NULL DEFAULT 1 CHECK (revision >= 1),
+    source_revision_json jsonb NOT NULL,
+    source_content_sha256 text NOT NULL,
+    external_id text,
+    remote_revision text,
+    response_json jsonb NOT NULL DEFAULT '{}'::jsonb,
+    error_code text,
+    created_at_utc text NOT NULL,
+    updated_at_utc text NOT NULL,
+    PRIMARY KEY (workspace_id, connector, receipt_id),
+    UNIQUE (workspace_id, connector, intent_id),
+    FOREIGN KEY (workspace_id, connector, intent_id)
+        REFERENCES connector_intents(workspace_id, connector, intent_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_connector_receipts_workspace_updated
+    ON connector_receipts(workspace_id, connector, updated_at_utc DESC, receipt_id);
+
+ALTER TABLE connector_receipts ADD COLUMN IF NOT EXISTS revision integer NOT NULL DEFAULT 1;
 """
 
 
@@ -448,6 +531,355 @@ class PostgresStore:
                 (workspace_id, now),
             )
             conn.commit()
+
+    # ------------------------------------------------------------------
+    # Offline connector ledger (M6 / Notion)
+    # ------------------------------------------------------------------
+    # These methods persist the product-owned handoff boundary.  They do not
+    # perform OAuth, contact Notion, or dispatch a broker action.  A future
+    # adapter may consume a PREP_ONLY intent after its own explicit gate and
+    # write a sanitized receipt back through ``record_connector_receipt``.
+
+    @staticmethod
+    def _connector_row(row: dict | None) -> dict | None:
+        if row is None:
+            return None
+        normalized = dict(row)
+        for key in ("scopes_json", "metadata_json", "source_revision_json", "intent_json", "response_json"):
+            if key in normalized and isinstance(normalized[key], str):
+                normalized[key] = json.loads(normalized[key])
+        return normalized
+
+    def create_connector_connection(
+        self,
+        *,
+        workspace_id: str,
+        connection_id: str,
+        request_id: str,
+        idempotency_key: str,
+        account_ref: str | None,
+        scopes: list[str] | tuple[str, ...],
+        metadata: dict,
+    ) -> dict:
+        """Create or idempotently restore an opaque Notion connection.
+
+        ``account_ref`` is an opaque user-selected reference only.  Tokens,
+        authorization codes and broker/account fields are rejected by the
+        validator before anything reaches durable storage.
+        """
+
+        request = validate_connection_request(
+            workspace_id=workspace_id,
+            connector=CONNECTOR_KIND,
+            connection_id=connection_id,
+            request_id=request_id,
+            idempotency_key=idempotency_key,
+            account_ref=account_ref,
+            scopes=scopes,
+            metadata=metadata,
+        )
+        now = utc_now_iso()
+        with self.connect() as conn:
+            insert_result = conn.execute(
+                """
+                INSERT INTO connector_connections(
+                    workspace_id,connector,connection_id,request_id,idempotency_key,
+                    fingerprint,account_ref,scopes_json,metadata_json,status,revision,
+                    created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s::jsonb,%s::jsonb,'pending',1,%s,%s)
+                ON CONFLICT DO NOTHING
+                """,
+                (
+                    request["workspace_id"],
+                    request["connector"],
+                    request["connection_id"],
+                    request["request_id"],
+                    request["idempotency_key"],
+                    request["fingerprint"],
+                    request["account_ref"],
+                    json.dumps(request["scopes"], sort_keys=True),
+                    json.dumps(request["metadata"], sort_keys=True),
+                    now,
+                    now,
+                ),
+            )
+            row = conn.execute(
+                """
+                SELECT * FROM connector_connections
+                WHERE workspace_id=%s AND connector=%s
+                  AND (connection_id=%s OR idempotency_key=%s)
+                ORDER BY connection_id
+                LIMIT 1
+                """,
+                (
+                    request["workspace_id"],
+                    request["connector"],
+                    request["connection_id"],
+                    request["idempotency_key"],
+                ),
+            ).fetchone()
+            if row is None:
+                raise ConnectorLedgerError("connector connection was not persisted")
+            if row["fingerprint"] != request["fingerprint"]:
+                raise ConnectorIdempotencyConflict("connector connection request key was reused with different content")
+            conn.commit()
+        return {"duplicate": insert_result.rowcount != 1, "connection": self._connector_row(row)}
+
+    def get_connector_connection(self, workspace_id: str, connection_id: str) -> dict | None:
+        request_workspace = workspace_id
+        with self.connect() as conn:
+            row = conn.execute(
+                "SELECT * FROM connector_connections WHERE workspace_id=%s AND connector=%s AND connection_id=%s",
+                (request_workspace, CONNECTOR_KIND, connection_id),
+            ).fetchone()
+        return self._connector_row(row)
+
+    def update_connector_connection(
+        self,
+        *,
+        workspace_id: str,
+        connection_id: str,
+        status: str,
+        expected_revision: int,
+        error_code: str | None = None,
+    ) -> dict:
+        """Advance connection state without contacting the provider."""
+
+        status = validate_receipt_status(status)
+        if isinstance(expected_revision, bool) or not isinstance(expected_revision, int) or expected_revision < 1:
+            raise ConnectorLedgerError("expected_revision must be a positive integer")
+        if error_code is not None and (not isinstance(error_code, str) or not error_code or len(error_code) > 128):
+            raise ConnectorLedgerError("error_code must be a bounded non-empty string")
+        now = utc_now_iso()
+        with self.connect() as conn:
+            current = conn.execute(
+                "SELECT * FROM connector_connections WHERE workspace_id=%s AND connector=%s AND connection_id=%s FOR UPDATE",
+                (workspace_id, CONNECTOR_KIND, connection_id),
+            ).fetchone()
+            if current is None:
+                raise ConnectorLedgerError("connector connection does not exist")
+            if current["revision"] != expected_revision:
+                raise ConnectorLedgerError("connector connection revision is stale")
+            if current["status"] in {"succeeded", "revoked", "cancelled"} and status != current["status"]:
+                raise ConnectorLedgerError("terminal connector connection cannot be rewritten")
+            updated = conn.execute(
+                """
+                UPDATE connector_connections
+                SET status=%s, error_code=%s, revision=revision+1, updated_at_utc=%s
+                WHERE workspace_id=%s AND connector=%s AND connection_id=%s AND revision=%s
+                RETURNING *
+                """,
+                (status, error_code, now, workspace_id, CONNECTOR_KIND, connection_id, expected_revision),
+            ).fetchone()
+            if updated is None:
+                raise ConnectorLedgerError("connector connection update lost its revision race")
+            conn.commit()
+        return {"duplicate": False, "connection": self._connector_row(updated)}
+
+    def create_connector_intent(
+        self,
+        *,
+        workspace_id: str,
+        intent_id: str,
+        request_id: str,
+        idempotency_key: str,
+        connection_id: str | None,
+        intent: dict,
+    ) -> dict:
+        """Persist a sanitized PREP_ONLY intent and its pending receipt."""
+
+        request = validate_intent_request(
+            workspace_id=workspace_id,
+            intent_id=intent_id,
+            request_id=request_id,
+            idempotency_key=idempotency_key,
+            connection_id=connection_id,
+            intent=intent,
+        )
+        now = utc_now_iso()
+        receipt_id = f"receipt:{request['intent_id']}"
+        with self.connect() as conn:
+            if request["connection_id"] is not None:
+                connection = conn.execute(
+                    "SELECT status FROM connector_connections WHERE workspace_id=%s AND connector=%s AND connection_id=%s",
+                    (request["workspace_id"], CONNECTOR_KIND, request["connection_id"]),
+                ).fetchone()
+                if connection is None:
+                    raise ConnectorLedgerError("connector connection does not exist")
+                if connection["status"] in {"revoked", "cancelled"}:
+                    raise ConnectorLedgerError("connector connection is not usable")
+            insert_result = conn.execute(
+                """
+                INSERT INTO connector_intents(
+                    workspace_id,connector,intent_id,request_id,idempotency_key,fingerprint,
+                    connection_id,source_revision_json,source_content_sha256,destination_ref,
+                    intent_json,status,mode,created_at_utc,updated_at_utc
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s::jsonb,%s,%s,%s::jsonb,'pending','PREP_ONLY',%s,%s)
+                ON CONFLICT DO NOTHING
+                """,
+                (
+                    request["workspace_id"],
+                    CONNECTOR_KIND,
+                    request["intent_id"],
+                    request["request_id"],
+                    request["idempotency_key"],
+                    request["fingerprint"],
+                    request["connection_id"],
+                    json.dumps(request["source_revision"], sort_keys=True),
+                    request["content_sha256"],
+                    request["destination_ref"],
+                    json.dumps(request["intent"], sort_keys=True),
+                    now,
+                    now,
+                ),
+            )
+            row = conn.execute(
+                """
+                SELECT * FROM connector_intents
+                WHERE workspace_id=%s AND connector=%s
+                  AND (intent_id=%s OR idempotency_key=%s)
+                ORDER BY intent_id LIMIT 1
+                """,
+                (request["workspace_id"], CONNECTOR_KIND, request["intent_id"], request["idempotency_key"]),
+            ).fetchone()
+            if row is None:
+                raise ConnectorLedgerError("connector intent was not persisted")
+            if row["fingerprint"] != request["fingerprint"]:
+                raise ConnectorIdempotencyConflict("connector intent request key was reused with different content")
+            receipt = conn.execute(
+                "SELECT * FROM connector_receipts WHERE workspace_id=%s AND connector=%s AND intent_id=%s",
+                (request["workspace_id"], CONNECTOR_KIND, row["intent_id"]),
+            ).fetchone()
+            if receipt is None:
+                conn.execute(
+                    """
+                    INSERT INTO connector_receipts(
+                        workspace_id,connector,receipt_id,intent_id,status,revision,
+                        source_revision_json,source_content_sha256,created_at_utc,updated_at_utc
+                    ) VALUES(%s,%s,%s,%s,'pending',1,%s::jsonb,%s,%s,%s)
+                    """,
+                    (
+                        request["workspace_id"],
+                        CONNECTOR_KIND,
+                        receipt_id,
+                        row["intent_id"],
+                        json.dumps(request["source_revision"], sort_keys=True),
+                        request["content_sha256"],
+                        now,
+                        now,
+                    ),
+                )
+                receipt = conn.execute(
+                    "SELECT * FROM connector_receipts WHERE workspace_id=%s AND connector=%s AND intent_id=%s",
+                    (request["workspace_id"], CONNECTOR_KIND, row["intent_id"]),
+                ).fetchone()
+            conn.commit()
+        return {
+            "duplicate": insert_result.rowcount != 1,
+            "intent": self._connector_row(row),
+            "receipt": self._connector_row(receipt),
+        }
+
+    def get_connector_intent(self, workspace_id: str, intent_id: str) -> dict | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                "SELECT * FROM connector_intents WHERE workspace_id=%s AND connector=%s AND intent_id=%s",
+                (workspace_id, CONNECTOR_KIND, intent_id),
+            ).fetchone()
+        return self._connector_row(row)
+
+    def list_connector_intents(self, workspace_id: str) -> list[dict]:
+        with self.connect() as conn:
+            rows = conn.execute(
+                "SELECT * FROM connector_intents WHERE workspace_id=%s AND connector=%s ORDER BY updated_at_utc DESC,intent_id",
+                (workspace_id, CONNECTOR_KIND),
+            ).fetchall()
+        return [self._connector_row(row) for row in rows]
+
+    def get_connector_receipt(self, workspace_id: str, intent_id: str) -> dict | None:
+        with self.connect() as conn:
+            row = conn.execute(
+                "SELECT * FROM connector_receipts WHERE workspace_id=%s AND connector=%s AND intent_id=%s",
+                (workspace_id, CONNECTOR_KIND, intent_id),
+            ).fetchone()
+        return self._connector_row(row)
+
+    def record_connector_receipt(
+        self,
+        *,
+        workspace_id: str,
+        intent_id: str,
+        status: str,
+        expected_revision: int,
+        external_id: str | None = None,
+        remote_revision: str | None = None,
+        response: dict | None = None,
+        error_code: str | None = None,
+    ) -> dict:
+        """Persist a provider outcome supplied by a future adapter.
+
+        This method only writes a receipt supplied by a caller; it never
+        dispatches anything.  ``succeeded`` requires an opaque external ID,
+        while all response data passes the same sensitive-key rejection as an
+        intent.
+        """
+
+        status = validate_receipt_status(status)
+        if isinstance(expected_revision, bool) or not isinstance(expected_revision, int) or expected_revision < 1:
+            raise ConnectorLedgerError("expected_revision must be a positive integer")
+        if external_id is not None:
+            if not isinstance(external_id, str) or not external_id or len(external_id) > 256 or any(ord(c) < 0x20 for c in external_id):
+                raise ConnectorLedgerError("external_id must be a bounded opaque reference")
+        if remote_revision is not None:
+            if not isinstance(remote_revision, str) or not remote_revision or len(remote_revision) > 128 or any(ord(c) < 0x20 for c in remote_revision):
+                raise ConnectorLedgerError("remote_revision must be a bounded reference")
+        if status == "succeeded" and not external_id:
+            raise ConnectorLedgerError("succeeded receipts require external_id")
+        response = {} if response is None else response
+        response = json_object(response, "response")
+        if error_code is not None and (not isinstance(error_code, str) or not error_code or len(error_code) > 128):
+            raise ConnectorLedgerError("error_code must be a bounded non-empty string")
+        now = utc_now_iso()
+        with self.connect() as conn:
+            current = conn.execute(
+                "SELECT * FROM connector_receipts WHERE workspace_id=%s AND connector=%s AND intent_id=%s FOR UPDATE",
+                (workspace_id, CONNECTOR_KIND, intent_id),
+            ).fetchone()
+            if current is None:
+                raise ConnectorLedgerError("connector receipt does not exist")
+            if current["revision"] != expected_revision:
+                raise ConnectorLedgerError("connector receipt revision is stale")
+            if current["status"] in {"succeeded", "revoked", "cancelled"} and status != current["status"]:
+                raise ConnectorLedgerError("terminal connector receipt cannot be rewritten")
+            updated = conn.execute(
+                """
+                UPDATE connector_receipts
+                SET status=%s,external_id=%s,remote_revision=%s,response_json=%s::jsonb,
+                    error_code=%s,revision=revision+1,updated_at_utc=%s
+                WHERE workspace_id=%s AND connector=%s AND intent_id=%s AND revision=%s
+                RETURNING *
+                """,
+                (
+                    status,
+                    external_id,
+                    remote_revision,
+                    json.dumps(response, sort_keys=True),
+                    error_code,
+                    now,
+                    workspace_id,
+                    CONNECTOR_KIND,
+                    intent_id,
+                    expected_revision,
+                ),
+            ).fetchone()
+            if updated is None:
+                raise ConnectorLedgerError("connector receipt update lost its revision race")
+            conn.execute(
+                "UPDATE connector_intents SET status=%s,updated_at_utc=%s WHERE workspace_id=%s AND connector=%s AND intent_id=%s",
+                (status, now, workspace_id, CONNECTOR_KIND, intent_id),
+            )
+            conn.commit()
+        return {"duplicate": False, "receipt": self._connector_row(updated)}
 
     def put_dataset(self, manifest: DatasetManifest) -> None:
         with self.connect() as conn:
