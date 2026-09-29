@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import LearnWorkspace from './LearnWorkspace.jsx'
 import PropWorkspace from './PropWorkspace.jsx'
@@ -13,6 +14,26 @@ import RiskWorkspace from './RiskWorkspace.jsx'
 import './styles.css'
 
 function WorkspaceOverview({ workspace }) {
+  const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null })
+
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/v2/overview', { headers: { 'X-Workspace-Id': workspace } })
+      .then(async (response) => {
+        const payload = await response.json().catch(() => ({}))
+        if (!response.ok) throw new Error(String(payload.detail || `HTTP ${response.status}`))
+        return payload
+      })
+      .then((payload) => { if (!cancelled) setOverview({ status: 'ready', payload, error: null }) })
+      .catch((error) => { if (!cancelled) setOverview({ status: 'error', payload: null, error: String(error.message || error) }) })
+    return () => { cancelled = true }
+  }, [workspace])
+
+  const counts = overview.payload?.counts || {}
+  const datasetCount = Number.isFinite(Number(counts.datasets)) ? Number(counts.datasets) : null
+  const completedResearch = Number(counts.research_jobs?.completed || 0)
+  const replayCount = Number(counts.records?.replay || 0)
+
   return (
     <section className="fx-overview" aria-labelledby="overview-title">
       <div className="fx-page-heading">
@@ -27,11 +48,11 @@ function WorkspaceOverview({ workspace }) {
       <section className="fx-session-banner" aria-label="Phiên hiện tại">
         <div className="fx-session-main">
           <div className="fx-session-kicker"><i className="fx-status-dot is-live" /> REPLAY SESSION · LOCAL</div>
-          <strong>EURUSD · default</strong>
-          <span>Dataset practice chưa mở · nạp session để bắt đầu xem nến</span>
+          <strong>{datasetCount === null ? 'EURUSD · default' : `${datasetCount} dataset trong workspace`}</strong>
+          <span>{overview.status === 'ready' ? `${completedResearch} research hoàn tất · ${replayCount} replay record` : overview.status === 'error' ? `Không đọc được overview: ${overview.error}` : 'Đang đọc trạng thái workspace…'}</span>
         </div>
         <div className="fx-session-fact"><span>Broker</span><strong>Locked</strong></div>
-        <div className="fx-session-fact"><span>Data</span><strong>Local cache</strong></div>
+        <div className="fx-session-fact"><span>Data</span><strong>{datasetCount === null ? 'Chưa xác định' : `${datasetCount} catalog`}</strong></div>
         <div className="fx-session-fact"><span>Risk</span><strong>Chưa cấu hình</strong></div>
       </section>
 
@@ -56,7 +77,8 @@ function WorkspaceOverview({ workspace }) {
             <div><dt>Mode</dt><dd><span className="fx-pill fx-pill-warn">Replay / Simulation</span></dd></div>
             <div><dt>Broker send</dt><dd><span className="fx-pill fx-pill-locked">Locked</span></dd></div>
             <div><dt>Holdout</dt><dd>Chưa mở</dd></div>
-            <div><dt>Provenance</dt><dd>Local cache · unverified</dd></div>
+            <div><dt>Provenance</dt><dd>{datasetCount === null ? 'Chưa xác định' : 'Catalog local · kiểm tra ở Data Desk'}</dd></div>
+            <div><dt>Overview API</dt><dd>{overview.status === 'ready' ? 'Đã đọc' : overview.status === 'loading' ? 'Đang đọc' : 'Unavailable'}</dd></div>
           </dl>
         </section>
       </div>
