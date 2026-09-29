@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import './journal-analytics.css'
 import './journal-story.css'
+import { buildWorkspaceHref, readWorkspaceContext } from './workspaceContext.js'
 
 const ENTRY_TYPES = [
   ['observation', 'Quan sát'],
@@ -48,13 +49,16 @@ const STORY_COPY = {
 }
 
 function contextFromQuery(query) {
-  const sessionId = query?.get('session') || query?.get('replay_session') || ''
+  const shared = readWorkspaceContext(query)
+  const sessionId = shared.sessionId
   const tradeId = query?.get('trade') || query?.get('trade_id') || ''
-  const cursorValue = query?.get('cursor') ?? query?.get('cursor_index')
-  const cursor = cursorValue !== null && cursorValue !== '' && Number.isInteger(Number(cursorValue))
-    ? Number(cursorValue)
-    : null
-  return { sessionId, tradeId, cursor }
+  return {
+    ...shared,
+    sessionId,
+    tradeId,
+    cursor: shared.cursorIndex,
+    cutoffTimestamp: shared.decisionCutoff,
+  }
 }
 
 function isFiniteNumber(value) {
@@ -66,6 +70,15 @@ function formatDate(value) {
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) return 'Chưa có thời gian'
   return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
+}
+
+function formatContextTimestamp(value) {
+  if (value === null || value === undefined || value === '') return 'Chưa có thời gian'
+  const numeric = Number(value)
+  if (Number.isFinite(numeric)) {
+    return formatDate(Math.abs(numeric) < 1e12 ? numeric * 1000 : numeric)
+  }
+  return formatDate(value)
 }
 
 function labelForType(value) {
@@ -113,25 +126,34 @@ function storyForRecord(record, context) {
 
 export function recordMatchesContext(record, context) {
   const source = sourceForRecord(record)
-  if (!context.sessionId && !context.tradeId) return true
+  if (!context.sessionId && !context.tradeId && !context.datasetId && context.cursor === null && !context.cutoffTimestamp) return true
   const sessionMatches = !context.sessionId || [source.session_id, source.replay_session_id, source.sessionId, source.id]
     .some((value) => String(value || '') === context.sessionId)
   const tradeMatches = !context.tradeId || [source.trade_id, source.tradeId, source.id]
     .some((value) => String(value || '') === context.tradeId)
-  return sessionMatches && tradeMatches
+  const datasetMatches = !context.datasetId || String(source.dataset_id || source.datasetId || '') === context.datasetId
+  const cursorMatches = context.cursor === null || [source.cursor_index, source.cursor].some((value) => String(value ?? '') === String(context.cursor))
+  const cutoffMatches = !context.cutoffTimestamp || [source.cutoff_timestamp, source.cutoff, source.decision_cutoff]
+    .some((value) => String(value ?? '') === String(context.cutoffTimestamp))
+  return sessionMatches && tradeMatches && datasetMatches && cursorMatches && cutoffMatches
 }
 
 function sourceIdentity(context) {
+  const shared = {
+    ...(context.sessionId ? { session_id: context.sessionId } : {}),
+    ...(context.datasetId ? { dataset_id: context.datasetId } : {}),
+    ...(isFiniteNumber(context.cursor) ? { cursor_index: context.cursor } : {}),
+    ...(context.cutoffTimestamp ? { cutoff_timestamp: context.cutoffTimestamp } : {}),
+  }
   if (context.tradeId) {
-    return { kind: 'replay-trade', id: context.tradeId, session_id: context.sessionId || undefined, trade_id: context.tradeId }
+    return { kind: 'replay-trade', id: context.tradeId, ...shared, trade_id: context.tradeId }
   }
   if (context.sessionId) {
     const suffix = isFiniteNumber(context.cursor) ? `:cursor:${context.cursor}` : ''
     return {
       kind: 'replay-decision',
       id: `${context.sessionId}${suffix}`,
-      session_id: context.sessionId,
-      ...(isFiniteNumber(context.cursor) ? { cursor_index: context.cursor } : {}),
+      ...shared,
     }
   }
   return null
@@ -146,16 +168,16 @@ async function readJson(response) {
   return payload
 }
 
-function ContextBar({ context, workspace, filtered, onFilterChange }) {
-  const replayParams = new URLSearchParams({ workspace, view: 'replay' })
-  if (context.sessionId) replayParams.set('session', context.sessionId)
+function ContextBar({ context, workspace, filtered, onFilterChange, replayHref }) {
   return (
     <section className="ja-context-bar" aria-label="Ngữ cảnh journal">
       <div className="ja-context-copy">
         <span className="ja-eyebrow">LINKED CONTEXT</span>
         <strong>{context.sessionId ? `Replay ${context.sessionId}` : context.tradeId ? `Trade ${context.tradeId}` : 'Chưa chọn replay session'}</strong>
         {context.tradeId && <span>Trade <code>{context.tradeId}</code></span>}
+        {context.datasetId && <span>Dataset <code>{context.datasetId}</code></span>}
         {isFiniteNumber(context.cursor) && <span>Cutoff nến <strong>#{context.cursor}</strong></span>}
+        {context.cutoffTimestamp && <span>UTC <strong>{formatContextTimestamp(context.cutoffTimestamp)}</strong></span>}
       </div>
       <div className="ja-context-actions">
         {(context.sessionId || context.tradeId) && (
@@ -164,7 +186,7 @@ function ContextBar({ context, workspace, filtered, onFilterChange }) {
             Chỉ ngữ cảnh này
           </label>
         )}
-        {context.sessionId && <a className="ja-text-link" href={`/?${replayParams.toString()}`}>Mở lại replay</a>}
+        {context.sessionId && <a className="ja-text-link" href={replayHref}>Mở lại replay</a>}
       </div>
     </section>
   )
@@ -236,7 +258,9 @@ function ProvenancePanel({ record, context }) {
       <dl>
         <div><dt>Replay session</dt><dd>{source.session_id || source.replay_session_id || context.sessionId || 'N/A'}</dd></div>
         <div><dt>Trade</dt><dd>{source.trade_id || context.tradeId || 'N/A'}</dd></div>
-        <div><dt>Cutoff</dt><dd>{source.cursor_index ?? context.cursor ?? 'N/A'}</dd></div>
+        <div><dt>Dataset</dt><dd><code>{source.dataset_id || context.datasetId || 'N/A'}</code></dd></div>
+        <div><dt>Cutoff nến</dt><dd>{source.cursor_index ?? context.cursor ?? 'N/A'}</dd></div>
+        <div><dt>Cutoff UTC</dt><dd>{source.cutoff_timestamp ? formatContextTimestamp(source.cutoff_timestamp) : context.cutoffTimestamp ? formatContextTimestamp(context.cutoffTimestamp) : 'N/A'}</dd></div>
         <div><dt>Source ID</dt><dd><code>{source.id || 'N/A'}</code></dd></div>
         <div><dt>Revision</dt><dd>r{record?.revision ?? 'N/A'}</dd></div>
         <div><dt>Tags</dt><dd>{Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</dd></div>
@@ -336,10 +360,8 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
   const title = selected && !editing ? 'Chi tiết ghi chú' : selected ? 'Sửa ghi chú' : 'Ghi chú mới'
   const selectedSource = sourceForRecord(selected)
   const selectedStory = selected ? storyForRecord(selected, context) : null
-  const replayHref = context.sessionId
-    ? `/?${new URLSearchParams({ workspace, view: 'replay', session: context.sessionId, ...(isFiniteNumber(context.cursor) ? { cursor: String(context.cursor) } : {}) }).toString()}`
-    : `/?${new URLSearchParams({ workspace, view: 'replay' }).toString()}`
-  const analyticsHref = `/?${new URLSearchParams({ workspace, view: 'analytics', ...(context.sessionId ? { session: context.sessionId } : {}), ...(context.tradeId ? { trade: context.tradeId } : {}) }).toString()}`
+  const replayHref = buildWorkspaceHref('replay', workspace, query, { trade: null, job: null })
+  const analyticsHref = buildWorkspaceHref('analytics', workspace, query, { trade: context.tradeId || null })
   return (
     <main className="ja-page journal-page ja-story-page" data-testid="journal-workspace" aria-busy={state.status === 'loading'}>
       <header className="ja-page-header">
@@ -351,7 +373,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
         <div className="ja-header-status"><span className="ja-status-dot" />Local workspace · broker locked</div>
       </header>
 
-      <ContextBar context={context} workspace={workspace} filtered={filtered} onFilterChange={setFiltered} />
+      <ContextBar context={context} workspace={workspace} filtered={filtered} onFilterChange={setFiltered} replayHref={replayHref} />
 
       <section className="ja-story-intro" aria-label="Cách dùng Journal">
         <div className="ja-story-intro-copy">
