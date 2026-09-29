@@ -40,17 +40,25 @@
   height: 30px;
   border-color: #8a6a35;
   border-radius: 6px;
+  background: #151b1f;
   color: var(--fx-shell-accent);
+}
+
+.fx-shell-story .fx-brand-glyph {
+  font-size: 10px;
+  letter-spacing: -.13em;
 }
 
 .fx-shell-story .fx-brand-copy strong {
   color: var(--fx-shell-text);
   font-size: 12px;
+  letter-spacing: .11em;
 }
 
 .fx-shell-story .fx-brand-copy span {
   color: var(--fx-shell-muted);
   font-size: 10px;
+  letter-spacing: .02em;
 }
 
 .fx-shell-story .fx-rail-caption {
@@ -145,7 +153,12 @@
   height: 24px;
   border-color: #53616b;
   border-radius: 5px;
+  background: #151b1f;
   color: #dce3e7;
+}
+
+.fx-shell-story .fx-product-mark .fx-brand-glyph {
+  font-size: 8px;
 }
 
 .fx-shell-story .fx-breadcrumb-product {

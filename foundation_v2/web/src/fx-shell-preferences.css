@@ -176,6 +176,13 @@ body[data-tw-theme='dark'] {
   color: #1d2930;
 }
 
+.fx-app[data-theme='light'] .fx-brand-symbol,
+.fx-app[data-theme='light'] .fx-product-mark {
+  border-color: #b58231;
+  background: #ffffff;
+  color: #8b5c10;
+}
+
 .fx-app[data-theme='light'] .fx-brand-copy span,
 .fx-app[data-theme='light'] .fx-breadcrumb-product,
 .fx-app[data-theme='light'] .fx-workspace-name,

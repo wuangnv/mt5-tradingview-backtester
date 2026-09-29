@@ -196,9 +196,10 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 }
 .fx-rail { display: flex; min-height: 100vh; flex-direction: column; border-right: 1px solid var(--fx-line); background: #0d1114; padding: 18px 12px 14px; }
 .fx-brand { display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 8px 20px; }
-.fx-brand-symbol { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #806435; border-radius: 5px; color: var(--fx-accent); font-size: 10px; font-weight: 800; letter-spacing: .05em; }
+.fx-brand-symbol { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #806435; border-radius: 5px; background: #151b1f; color: var(--fx-accent); font-size: 10px; font-weight: 800; letter-spacing: .05em; overflow: hidden; }
+.fx-brand-glyph { display: block; color: currentColor; font-family: "Lato", "Nunito Sans", Inter, ui-sans-serif, sans-serif; font-size: .82em; font-weight: 900; letter-spacing: -.12em; line-height: 1; transform: translateX(-.04em); }
 .fx-brand-copy { display: grid; gap: 1px; line-height: 1; }
-.fx-brand-copy strong { color: #e5e9eb; font-size: 12px; letter-spacing: .02em; }
+.fx-brand-copy strong { color: #e5e9eb; font-family: "Lato", "Nunito Sans", Inter, ui-sans-serif, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: .1em; line-height: 1; white-space: nowrap; }
 .fx-brand-copy span { color: var(--fx-muted); font-size: 10px; }
 .fx-rail-caption { margin: 8px 8px 7px; color: #58636b; font-size: 9px; font-weight: 700; letter-spacing: .14em; }
 .fx-nav { display: grid; gap: 2px; }
@@ -221,7 +222,7 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 .fx-main { min-width: 0; background: var(--fx-bg); }
 .fx-topbar { display: flex; min-height: 58px; align-items: center; gap: 18px; border-bottom: 1px solid var(--fx-line); padding: 0 24px; }
 .fx-breadcrumb { display: flex; align-items: center; gap: 9px; min-width: 180px; color: #b7c0c6; font-size: 12px; }
-.fx-product-mark { display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid #4d5961; border-radius: 4px; color: #d7dde1; font-size: 8px; font-weight: 800; }
+.fx-product-mark { display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid #4d5961; border-radius: 4px; background: #151b1f; color: #d7dde1; font-size: 8px; font-weight: 800; overflow: hidden; }
 .fx-breadcrumb-separator { color: #526069; }
 .fx-context-strip { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .fx-context-chip { display: inline-flex; align-items: center; gap: 7px; min-height: 24px; border: 1px solid var(--fx-line); border-radius: 3px; color: #aeb8be; padding: 0 8px; font-size: 10px; white-space: nowrap; }

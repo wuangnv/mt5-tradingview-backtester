@@ -18,9 +18,9 @@ const SHELL_COPY = {
     themeLightName: 'Giao diện sáng',
     themeDarkShort: 'Tối',
     themeLightShort: 'Sáng',
-    product: 'Trading Workspace',
-    workspaceAria: 'Điều hướng Trading Workspace',
-    contentAria: 'Nội dung Trading Workspace',
+    product: 'WMREPLAY',
+    workspaceAria: 'Điều hướng WMREPLAY',
+    contentAria: 'Nội dung WMREPLAY',
     contextAria: 'Ngữ cảnh workspace',
     brokerLocked: 'Broker khóa',
     sourcePrefix: 'Nguồn',
@@ -61,9 +61,9 @@ const SHELL_COPY = {
     themeLightName: 'Light theme',
     themeDarkShort: 'Dark',
     themeLightShort: 'Light',
-    product: 'Trading Workspace',
-    workspaceAria: 'Trading Workspace navigation',
-    contentAria: 'Trading Workspace content',
+    product: 'WMREPLAY',
+    workspaceAria: 'WMREPLAY navigation',
+    contentAria: 'WMREPLAY content',
     contextAria: 'Workspace context',
     brokerLocked: 'Broker locked',
     sourcePrefix: 'Source',
@@ -159,7 +159,7 @@ function ShellTopbar({ activeItem, mode, workspace, query, marketContext, copy, 
   return (
     <header className="fx-topbar">
       <div className="fx-breadcrumb">
-        <span className="fx-product-mark">TW</span>
+        <span className="fx-product-mark" aria-hidden="true"><span className="fx-brand-glyph">WM</span></span>
         <span className="fx-breadcrumb-product">{copy.product}</span>
         <span className="fx-breadcrumb-separator">/</span>
         <strong>{activeLabel}</strong>
@@ -267,9 +267,9 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
     <FxReplayContext.Provider value={contextValue}>
       <div className="fx-app fx-shell-story" data-testid="fxreplay-shell" data-theme={theme} lang={language}>
         <aside className="fx-rail" aria-label={copy.workspaceAria}>
-          <div className="fx-brand">
-            <div className="fx-brand-symbol">TW</div>
-            <div className="fx-brand-copy"><strong>Trading</strong><span>Workspace</span></div>
+          <div className="fx-brand" aria-label="WMREPLAY" title="WMREPLAY">
+            <div className="fx-brand-symbol" aria-hidden="true"><span className="fx-brand-glyph">WM</span></div>
+            <div className="fx-brand-copy"><strong>WMREPLAY</strong><span>Market replay</span></div>
           </div>
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>
