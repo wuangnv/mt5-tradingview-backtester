@@ -100,7 +100,8 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
   const y = (value) => 92 - ((value - min) / span) * 76
   const x = (index) => (index / Math.max(1, points.length - 1)) * 100
   const line = points.map((point, index) => `${x(index)},${y(point.value)}`).join(' ')
-  const maxDrawdown = Math.max(1, ...model.drawdown.map((point) => Number(point.drawdown) || 0))
+  const knownDrawdowns = model.drawdown.map((point) => Number(point.drawdown)).filter(Number.isFinite)
+  const maxDrawdown = knownDrawdowns.length ? Math.max(1, ...knownDrawdowns) : null
   return (
     <div className="as-chart-frame">
       <svg className="as-balance-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Closed-trade balance evidence">
@@ -115,7 +116,11 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
       </svg>
       <div className="as-chart-axis"><span>{formatNumber(min)}</span><span>{formatNumber(max)}</span></div>
       <div className="as-drawdown-strip" aria-label="Closed-trade drawdown">
-        {model.drawdown.map((point) => <span key={point.index} className="as-drawdown-bar" style={{ '--as-dd-height': `${Math.max(2, ((Number(point.drawdown) || 0) / maxDrawdown) * 100)}%` }} title={`DD ${formatNumber(point.drawdown)}`} />)}
+        {model.drawdown.map((point) => {
+          const drawdown = Number(point.drawdown)
+          if (!Number.isFinite(drawdown) || maxDrawdown === null) return <span key={point.index} className="as-drawdown-bar is-unknown" title="DD N/A" aria-label="Drawdown chưa có dữ liệu" />
+          return <span key={point.index} className="as-drawdown-bar" style={{ '--as-dd-height': `${Math.max(2, (drawdown / maxDrawdown) * 100)}%` }} title={`DD ${formatNumber(drawdown)}`} />
+        })}
       </div>
       <div className="as-chart-legend"><span><i className="as-legend-line" /> Balance sau trade đóng</span><span><i className="as-legend-dd" /> Drawdown đóng</span><small>Không phải floating equity · scope UTC</small></div>
     </div>

@@ -29,8 +29,15 @@ const DEFAULT_COST_MODEL = {
 }
 
 function numberOr(value, fallback = 0) {
+  if (value === null || value === undefined || value === '') return fallback
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : fallback
+}
+
+function optionalNumber(value) {
+  if (value === null || value === undefined || value === '') return null
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
 }
 
 function formatMoney(value, currency = 'USD') {
@@ -69,9 +76,9 @@ function initialDraft(replay) {
 }
 
 function validateDraft(draft, entry) {
-  const quantity = numberOr(draft.quantity, NaN)
-  const stopLoss = numberOr(draft.stopLoss, NaN)
-  const takeProfit = numberOr(draft.takeProfit, NaN)
+  const quantity = optionalNumber(draft.quantity)
+  const stopLoss = optionalNumber(draft.stopLoss)
+  const takeProfit = optionalNumber(draft.takeProfit)
   if (![quantity, stopLoss, takeProfit].every(Number.isFinite) || quantity <= 0 || stopLoss <= 0 || takeProfit <= 0) {
     return 'Khối lượng, SL và TP phải là số dương.'
   }
@@ -85,20 +92,24 @@ function validateDraft(draft, entry) {
 }
 
 function RiskPreview({ draft, entry, instrument, costModel }) {
-  const quantity = numberOr(draft.quantity)
-  const stop = numberOr(draft.stopLoss)
-  const target = numberOr(draft.takeProfit)
-  const contract = numberOr(instrument?.contract_size)
-  const rate = numberOr(costModel?.quote_to_account_rate, 1)
-  const risk = Math.abs(entry - stop) * quantity * contract * rate
-  const reward = Math.abs(target - entry) * quantity * contract * rate
-  const fees = (numberOr(costModel?.commission_per_side_account) * 2) + numberOr(costModel?.minimum_fee_account)
-  const netRisk = risk + fees
-  const rMultiple = risk > 0 ? reward / risk : NaN
+  const quantity = optionalNumber(draft.quantity)
+  const stop = optionalNumber(draft.stopLoss)
+  const target = optionalNumber(draft.takeProfit)
+  const contract = optionalNumber(instrument?.contract_size)
+  const rate = optionalNumber(costModel?.quote_to_account_rate)
+  const commission = optionalNumber(costModel?.commission_per_side_account)
+  const minimumFee = optionalNumber(costModel?.minimum_fee_account)
+  const complete = [entry, quantity, stop, target, contract, rate, commission, minimumFee].every(Number.isFinite)
+  const risk = complete ? Math.abs(entry - stop) * quantity * contract * rate : null
+  const reward = complete ? Math.abs(target - entry) * quantity * contract * rate : null
+  const fees = complete ? (commission * 2) + minimumFee : null
+  const netRisk = risk !== null && fees !== null ? risk + fees : null
+  const netReward = reward !== null && fees !== null ? reward - fees : null
+  const rMultiple = risk > 0 && reward !== null ? reward / risk : NaN
   return (
     <div className="trade-risk-preview" data-testid="trade-risk-preview">
       <div><span>Risk tới SL</span><strong>{formatMoney(netRisk, costModel?.account_ccy || 'USD')}</strong><small>gross {formatMoney(risk, costModel?.account_ccy || 'USD')} + phí {formatMoney(fees, costModel?.account_ccy || 'USD')}</small></div>
-      <div><span>Reward tới TP</span><strong>{formatMoney(reward - fees, costModel?.account_ccy || 'USD')}</strong><small>ước tính theo giá tham chiếu</small></div>
+      <div><span>Reward tới TP</span><strong>{formatMoney(netReward, costModel?.account_ccy || 'USD')}</strong><small>ước tính theo giá tham chiếu</small></div>
       <div><span>Planned R</span><strong>{Number.isFinite(rMultiple) ? `${rMultiple.toFixed(2)}R` : 'N/A'}</strong><small>chưa phải kết quả thực tế</small></div>
     </div>
   )
@@ -175,6 +186,12 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const initialize = useCallback(async (event) => {
     event.preventDefault()
     if (!replay?.record_id || !instrument) return
+    const spreadValue = optionalNumber(spread)
+    const startingBalanceValue = optionalNumber(startingBalance)
+    if (![spreadValue, startingBalanceValue].every(Number.isFinite) || startingBalanceValue <= 0 || spreadValue < 0) {
+      setNotice({ kind: 'error', text: 'Spread và starting balance phải được nhập đầy đủ; giá trị rỗng không được đổi thành 0.' })
+      return
+    }
     setPending('initialize')
     setNotice(null)
     try {
@@ -185,9 +202,9 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
           expected_revision: revision,
           instrument_spec: instrument,
           cost_model: costModel,
-          spread_price: String(numberOr(spread)),
+          spread_price: String(spreadValue),
           timeframe_seconds: Number(manifest?.timeframe_seconds || 3600),
-          starting_balance: String(numberOr(startingBalance, 10000)),
+          starting_balance: String(startingBalanceValue),
         }),
       })
       applyReplay(await readJson(response))

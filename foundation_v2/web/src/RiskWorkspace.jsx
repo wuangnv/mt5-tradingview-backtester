@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import './RiskWorkspace.css'
 
-function numberOr(value, fallback = 0) {
+function optionalNumber(value) {
+  if (value === null || value === undefined || value === '') return null
   const parsed = Number(value)
-  return Number.isFinite(parsed) ? parsed : fallback
+  return Number.isFinite(parsed) ? parsed : null
 }
 
 function formatMoney(value) {
@@ -68,14 +69,14 @@ export default function RiskWorkspace({ workspace, initialSnapshot = null }) {
 
   const update = (field, value) => setForm((current) => ({ ...current, [field]: value }))
   const snapshot = useMemo(() => ({
-    starting_balance: numberOr(initialSnapshot?.starting_balance, numberOr(form.startingBalance)),
-    balance: numberOr(initialSnapshot?.balance, numberOr(form.balance)),
-    equity: numberOr(initialSnapshot?.equity, numberOr(form.equity)),
-    high_water_mark: numberOr(initialSnapshot?.high_water_mark, numberOr(form.highWaterMark)),
-    daily_start_equity: numberOr(initialSnapshot?.daily_start_equity, numberOr(form.dailyStart)),
-    daily_start_balance: numberOr(initialSnapshot?.daily_start_balance, numberOr(form.dailyStart)),
-    costs_total: numberOr(initialSnapshot?.costs_total, numberOr(form.costsTotal)),
-    costs_today: numberOr(initialSnapshot?.costs_today, numberOr(form.costsToday)),
+    starting_balance: optionalNumber(initialSnapshot?.starting_balance ?? form.startingBalance),
+    balance: optionalNumber(initialSnapshot?.balance ?? form.balance),
+    equity: optionalNumber(initialSnapshot?.equity ?? form.equity),
+    high_water_mark: optionalNumber(initialSnapshot?.high_water_mark ?? form.highWaterMark),
+    daily_start_equity: optionalNumber(initialSnapshot?.daily_start_equity ?? form.dailyStart),
+    daily_start_balance: optionalNumber(initialSnapshot?.daily_start_balance ?? form.dailyStart),
+    costs_total: optionalNumber(initialSnapshot?.costs_total ?? form.costsTotal),
+    costs_today: optionalNumber(initialSnapshot?.costs_today ?? form.costsToday),
   }), [form, initialSnapshot])
 
   const profile = useMemo(() => ({
@@ -83,14 +84,23 @@ export default function RiskWorkspace({ workspace, initialSnapshot = null }) {
     terms_version: form.termsVersion.trim() || 'ui-practice-v1',
     effective_from: form.effectiveFrom,
     reset_timezone: 'UTC',
-    total_drawdown: { type: form.totalType, amount: numberOr(form.totalAmount), basis: form.totalBasis },
-    daily_loss: { amount: numberOr(form.dailyAmount), basis: form.dailyBasis },
+    total_drawdown: { type: form.totalType, amount: optionalNumber(form.totalAmount), basis: form.totalBasis },
+    daily_loss: { amount: optionalNumber(form.dailyAmount), basis: form.dailyBasis },
     cost_basis: form.costBasis,
     breach_at_boundary: Boolean(form.breachAtBoundary),
   }), [form])
 
   const evaluate = async (event) => {
     event.preventDefault()
+    const missingProfile = [
+      ['missing_total_drawdown_amount', profile.total_drawdown.amount],
+      ['missing_daily_loss_amount', profile.daily_loss.amount],
+    ].filter(([, value]) => !Number.isFinite(value)).map(([key]) => key)
+    if (missingProfile.length) {
+      setResult({ status: 'blocked_by_data', blocked_by_data: missingProfile })
+      setState({ status: 'ready', error: null })
+      return
+    }
     setState({ status: 'loading', error: null })
     try {
       const response = await fetch('/api/v2/analytics/prop/evaluate', {

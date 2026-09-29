@@ -26,6 +26,9 @@ test('trade workspace exposes fail-closed side and risk calculations', () => {
   assert.ok(code.includes("draft.side === 'SELL'"))
   assert.ok(code.includes('commission_per_side_account'))
   assert.ok(code.includes('Planned R'))
+  assert.match(code, /function optionalNumber\(value\)/)
+  assert.match(code, /value === null \|\| value === undefined \|\| value === ''/)
+  assert.match(code, /Spread và starting balance phải được nhập đầy đủ/)
 })
 
 test('risk workspace uses the existing prop evaluator and surfaces blocked data', () => {
@@ -37,4 +40,7 @@ test('risk workspace uses the existing prop evaluator and surfaces blocked data'
     'breach_at_boundary',
     'risk-result',
   ]) assert.ok(code.includes(marker), `missing ${marker}`)
+  assert.match(code, /function optionalNumber\(value\)/)
+  assert.match(code, /missing_total_drawdown_amount/)
+  assert.match(code, /status: 'blocked_by_data'/)
 })

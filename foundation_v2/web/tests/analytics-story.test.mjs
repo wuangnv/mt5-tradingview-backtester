@@ -35,6 +35,8 @@ test('analytics preserves source truth and closed-balance semantics', () => {
   assert.match(source, /not floating equity|Không phải floating equity/i)
   assert.match(source, /broker locked/i)
   assert.match(source, /TRADE LEDGER/)
+  assert.doesNotMatch(source, /Number\(point\.drawdown\) \|\| 0/)
+  assert.match(source, /as-drawdown-bar is-unknown/)
 })
 
 test('analytics keeps provenance and trade drilldown linked', () => {

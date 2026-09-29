@@ -258,6 +258,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const historicalView = Boolean(replay?.historical_view)
   const revision = Number(replay?.revision ?? 0)
   const visibleRows = replay?.visible_rows || []
+  const visibleRowCount = replay?.visible_row_count ?? (replay ? visibleRows.length : null)
   const currentBar = visibleRows.length ? visibleRows[visibleRows.length - 1] : null
   const activeDataset = useMemo(
     () => datasetState.items.find((item) => item.dataset_id === replay?.payload?.dataset_id) || null,
@@ -276,18 +277,20 @@ export default function ReplayWorkspace({ workspace, query }) {
       quality: activeDataset?.quality_status || payload.quality_status || 'unverified',
       provider: activeDataset?.provider_id || source.provider || payload.provider_id || 'Provider chưa xác định',
       hash: activeDataset?.artifact_sha256 || replay?.dataset_sha256 || '',
-      rowCount: activeDataset?.row_count || replay?.total_row_count || null,
+      rowCount: activeDataset?.row_count ?? replay?.total_row_count ?? null,
+      cutoff: replay?.cutoff_timestamp || payload.cutoff_timestamp || '',
     }
   }, [activeDataset, replay])
 
   useEffect(() => {
-    if (!activeDataset) return
     updateMarketContext({
-      instrument: String(activeDataset.instrument_id || activeDataset.dataset_id || ''),
-      timeframe: String(activeDataset.timeframe || 'TF chưa rõ'),
-      dataStatus: String(activeDataset.quality_status || 'unverified'),
+      instrument: String(replayContext.instrument || ''),
+      timeframe: String(replayContext.timeframe || ''),
+      dataStatus: String(replayContext.quality || 'unverified'),
+      source: String(replayContext.provider || ''),
+      cutoff: String(replayContext.cutoff || ''),
     })
-  }, [activeDataset?.dataset_id, activeDataset?.instrument_id, activeDataset?.quality_status, activeDataset?.timeframe, updateMarketContext])
+  }, [replayContext, updateMarketContext])
 
   const completed = replay?.payload?.status === 'completed' || replay?.has_future_rows === false
   const lineage = replay?.payload?.parent_session_id
@@ -372,8 +375,8 @@ export default function ReplayWorkspace({ workspace, query }) {
     if (conflict) return 'Session có revision mới; cần tải lại trước khi tiếp tục để giữ đúng lineage.'
     if (historicalView) return `Đây là cutoff lịch sử #${cursor}; phần dữ liệu sau mốc này đang bị ẩn có chủ đích.`
     if (completed) return `Replay đã đi tới nến cuối của dataset; không còn nến tương lai để mở thêm.`
-    return `Đang mở ${replay?.visible_row_count || 0} nến; quyết định chỉ nên dựa trên bằng chứng tới cutoff hiện tại.`
-  }, [completed, conflict, cursor, historicalView, replay?.visible_row_count])
+    return `Đang mở ${visibleRowCount ?? 'N/A'} nến; quyết định chỉ nên dựa trên bằng chứng tới cutoff hiện tại.`
+  }, [completed, conflict, cursor, historicalView, visibleRowCount])
 
   return (
     <main className="replay-shell">
@@ -467,7 +470,7 @@ export default function ReplayWorkspace({ workspace, query }) {
             <div><span>Dataset</span><code>{replay.payload.dataset_id}</code></div>
             <div><span>Data status</span><strong>{activeDataset?.quality_status || 'unverified'}</strong></div>
             <div><span>Revision</span><strong>r{revision}</strong></div>
-            <div><span>Đã mở</span><strong>{replay.visible_row_count} nến</strong></div>
+            <div><span>Đã mở</span><strong>{visibleRowCount ?? 'N/A'} nến</strong></div>
             <div className={`replay-state ${completed ? 'is-complete' : ''} ${conflict ? 'is-conflict' : ''}`} data-testid="replay-status">
               {statusLabel}
             </div>
@@ -552,11 +555,11 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div><span className="story-label">03 · EVIDENCE</span><strong>{crosshair?.row ? 'Nến đang chọn' : 'Nến tại cutoff'}</strong></div>
                 <span>{visibleRows.length} nến được phép hiển thị</span>
                 <span>{replay.has_future_rows ? 'Nến tương lai đang ẩn' : 'Đã ở cuối dữ liệu'}</span>
-                <span>{crosshair?.row ? `Crosshair #${visibleRows.findIndex((item) => item.timestamp === crosshair.row.timestamp)}` : `Cursor #${cursor}`}</span>
+                <span>{crosshair?.row ? `Crosshair #${visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp))}` : `Cursor #${cursor}`}</span>
               </div>
 
               <div className="bar-readout" aria-label="OHLC nến hiện tại">
-                <span className="bar-readout-label">{crosshair?.row ? 'Crosshair' : 'Nến hiện tại'} #{crosshair?.row ? visibleRows.findIndex((item) => item.timestamp === crosshair.row.timestamp) : cursor}</span>
+                <span className="bar-readout-label">{crosshair?.row ? 'Crosshair' : 'Nến hiện tại'} #{crosshair?.row ? visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp)) : cursor}</span>
                 <span>O <strong>{formatPrice((crosshair?.row || currentBar)?.open)}</strong></span>
                 <span>H <strong>{formatPrice((crosshair?.row || currentBar)?.high)}</strong></span>
                 <span>L <strong>{formatPrice((crosshair?.row || currentBar)?.low)}</strong></span>

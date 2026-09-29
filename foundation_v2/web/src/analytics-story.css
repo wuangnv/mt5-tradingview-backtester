@@ -63,6 +63,7 @@
 .as-chart-axis { display: flex; justify-content: space-between; color: #74828a; font-size: 10px; font-variant-numeric: tabular-nums; padding-top: 7px; }
 .as-drawdown-strip { display: flex; align-items: flex-end; gap: 3px; height: 38px; margin-top: 10px; border-bottom: 1px solid #303a40; }
 .as-drawdown-bar { flex: 1 1 0; min-width: 2px; height: var(--as-dd-height); background: #805d46; opacity: .78; }
+.as-drawdown-bar.is-unknown { height: 3px; background: transparent; border-top: 1px dashed #66747d; opacity: .65; }
 .as-chart-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 13px; padding-top: 11px; color: #87949c; font-size: 10px; }
 .as-chart-legend small { margin-left: auto; color: #65727a; }
 .as-legend-line, .as-legend-dd { display: inline-block; width: 18px; height: 2px; margin-right: 5px; vertical-align: middle; background: var(--as-gold); }
