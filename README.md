@@ -286,7 +286,7 @@ The Flask backend and MT5 EA communicate with newline-terminated text commands:
 ## Development Notes
 
 - `workspace_app.py` is the supported integrated entrypoint. The P1-P5 modules are factories and do not create default stores merely by being imported.
-- U2 data foundations live in `data_contracts.py`, `data_import.py`, `data_costs.py`, `data_news.py`, and `workspace_data.py`. The workspace currently exposes metadata-only Data Desk APIs; CSV import helpers are not wired to a user-facing write route yet.
+- U2 data foundations live in `data_contracts.py`, `data_import.py`, `data_costs.py`, `data_news.py`, and `workspace_data.py`. The legacy `workspace_app.py` Data Desk remains metadata-only; the PATH-2 `foundation_v2` API exposes bounded local CSV preview/import routes backed by the same immutable ingest contract.
 - U4 chart state lives in `chart_store.py` / `workspace_chart.py`; store time/price/source/cutoff data there rather than pixel coordinates or renderer-specific objects.
 - U5 local automatic research lives in `research_engine.py`; only strategy versions explicitly marked `engine-supported` with matching rule-engine metadata may execute.
 - U6 research reconciliation/analytics lives in `research_validation.py`; generic versioned prop-rule evaluation lives in `prop_profile.py`. Missing floating-equity, MAE/MFE, exposure, session/setup or prop inputs must remain `blocked_by_data`, not zero-filled.

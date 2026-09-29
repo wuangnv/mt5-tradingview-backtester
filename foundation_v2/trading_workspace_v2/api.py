@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import os
+import tempfile
 from collections.abc import Mapping
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
@@ -20,6 +22,7 @@ from .contracts import (
     CostPreviewRequest,
     CreateEngineResearchJob,
     CreateResearchJob,
+    DatasetSource,
     InstrumentValidationRequest,
     JournalDraft,
     NewsVisibilityRequest,
@@ -36,6 +39,7 @@ from .contracts import (
     RevisionRequest,
 )
 from .data_sources import DataProviderRegistry, LocalCatalogProvider
+from .data_ingest import DataImportError, DataIngestService, preview_csv
 from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .prop_session import (
@@ -103,6 +107,53 @@ class ConnectorReceiptUpdateRequest(BaseModel):
     error_code: str | None = Field(default=None, max_length=128)
 
 
+class CsvDataImportRequest(BaseModel):
+    """Bounded local CSV payload for the Data Desk import seam.
+
+    The browser sends text rather than a server-side path.  This keeps the
+    endpoint local and avoids turning an API request into arbitrary filesystem
+    access.  ``csv_text`` is intentionally bounded before it reaches the
+    streaming ingest implementation.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    csv_text: str = Field(min_length=1, max_length=10_000_000)
+    source: DatasetSource
+    instrument: dict
+    timeframe_seconds: int = Field(gt=0, le=31_536_000, strict=True)
+    holdout_policy: dict | None = None
+
+
+CSV_PAYLOAD_MAX_BYTES = 10 * 1024 * 1024
+
+
+@contextmanager
+def _materialize_csv_payload(csv_text: str):
+    """Materialize one bounded request payload and remove it on exit."""
+
+    try:
+        payload = csv_text.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise ValueError("csv_text must be valid UTF-8") from exc
+    if len(payload) > CSV_PAYLOAD_MAX_BYTES:
+        raise ValueError("csv_text exceeds the 10 MiB import limit")
+    temporary = tempfile.NamedTemporaryFile(
+        mode="wb",
+        suffix=".csv",
+        prefix="tw-data-desk-",
+        delete=False,
+    )
+    path = Path(temporary.name)
+    try:
+        with temporary:
+            temporary.write(payload)
+            temporary.flush()
+        yield path
+    finally:
+        path.unlink(missing_ok=True)
+
+
 def workspace_id(request: Request, x_workspace_id: str = Header(..., min_length=1)) -> str:
     requested_workspace = x_workspace_id.strip()
     try:
@@ -130,6 +181,7 @@ def create_app(
     store.initialize()
     artifacts = ArtifactStore(artifact_root)
     service = ResearchService(store, artifacts)
+    ingest = DataIngestService(store, artifacts)
     replay = ReplayService(store, artifacts)
     product = ProductService(store, ai_service=ai_service)
     data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store)])
@@ -155,6 +207,7 @@ def create_app(
     app = FastAPI(title="Trading Workspace Foundation v2", version=CONTRACT_VERSION)
     app.state.store = store
     app.state.service = service
+    app.state.ingest = ingest
     app.state.product = product
     app.state.replay = replay
     app.state.data_registry = data_registry
@@ -421,6 +474,58 @@ def create_app(
     @app.get("/api/v2/data/providers")
     def list_data_providers(workspace: str = Depends(workspace_id)):
         return {"items": data_registry.capabilities()}
+
+    @app.post("/api/v2/data/csv/preview")
+    def preview_csv_payload(body: CsvDataImportRequest, workspace: str = Depends(workspace_id)):
+        """Return a deterministic quality/provenance report without importing.
+
+        This is deliberately a JSON text contract so the local UI does not
+        need a multipart dependency.  The content is parsed through the same
+        streaming ingest code used by import, so preview and import cannot
+        silently disagree about hashes, timestamps, or quality disposition.
+        """
+
+        try:
+            with _materialize_csv_payload(body.csv_text) as path:
+                preview = preview_csv(
+                    path,
+                    body.source,
+                    body.instrument,
+                    body.timeframe_seconds,
+                    holdout_policy=body.holdout_policy,
+                )
+        except (DataImportError, ValueError) as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        return {
+            "schema_version": "u2-data-desk-preview-view-v1",
+            "workspace_id": workspace,
+            "execution_capability": False,
+            "preview": preview,
+        }
+
+    @app.post("/api/v2/data/csv/import", status_code=201)
+    def import_csv_payload(body: CsvDataImportRequest, workspace: str = Depends(workspace_id)):
+        """Import one validated local CSV as an immutable dataset artifact."""
+
+        try:
+            with _materialize_csv_payload(body.csv_text) as path:
+                manifest = ingest.import_csv(
+                    workspace_id=workspace,
+                    path=path,
+                    source=body.source,
+                    instrument=body.instrument,
+                    timeframe_seconds=body.timeframe_seconds,
+                    holdout_policy=body.holdout_policy,
+                )
+        except DataImportError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        return {
+            "schema_version": "u2-data-desk-import-view-v1",
+            "execution_capability": False,
+            "dataset": manifest.model_dump(mode="json"),
+        }
 
     @app.post("/api/v2/data/instruments/validate")
     def validate_instrument(body: InstrumentValidationRequest, workspace: str = Depends(workspace_id)):

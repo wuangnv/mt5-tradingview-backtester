@@ -96,13 +96,16 @@ def _normalize_row(row: dict[str, str], row_number: int) -> dict:
 
 
 def _read_rows(path: Path):
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
-        reader = csv.DictReader(handle)
-        missing = [name for name in REQUIRED_COLUMNS if name not in (reader.fieldnames or [])]
-        if missing:
-            raise DataImportError(f"missing required columns: {', '.join(missing)}")
-        for row_number, row in enumerate(reader, start=2):
-            yield _normalize_row(row, row_number)
+    try:
+        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+            reader = csv.DictReader(handle)
+            missing = [name for name in REQUIRED_COLUMNS if name not in (reader.fieldnames or [])]
+            if missing:
+                raise DataImportError(f"missing required columns: {', '.join(missing)}")
+            for row_number, row in enumerate(reader, start=2):
+                yield _normalize_row(row, row_number)
+    except csv.Error as exc:
+        raise DataImportError(f"invalid CSV: {exc}") from exc
 
 
 def _parquet_rows(path: Path):

@@ -14,6 +14,15 @@ and foreign keys are scoped by `workspace_id`; the internal worker scheduler
 claims queued jobs across workspaces and carries the claimed `workspace_id`
 through execution. The worker has no MT5 or broker capability.
 
+The Data Desk now has a bounded local CSV seam in addition to the read-only
+catalog: `POST /api/v2/data/csv/preview` returns the deterministic quality,
+range, normalized hash, dataset identity and holdout report without writing an
+artifact, while `POST /api/v2/data/csv/import` persists the same validated
+payload as an immutable raw-source plus normalized Parquet dataset. Both routes
+accept CSV text in JSON (10 MiB UTF-8 limit), never accept a server-side path,
+and remain workspace-scoped through `X-Workspace-Id`; importing does not enable
+broker or holdout access.
+
 Selective PATH-2 reuse is explicit in `retained.py`: the existing pure
 `data_contracts` and `evidence_metrics` modules remain the semantic source for
 this slice while the new runtime, storage, process and API boundaries are built
