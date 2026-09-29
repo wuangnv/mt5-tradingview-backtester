@@ -38,3 +38,8 @@ test('invalid cursor values are never emitted into a deep link', () => {
   const href = buildWorkspaceHref('replay', 'desk-1', '?session=abc&cursor=-1')
   assert.equal(href, '/?workspace=desk-1&view=replay&session=abc')
 })
+
+test('unsafe cutoff values are omitted from a deep link', () => {
+  const href = buildWorkspaceHref('journal', 'desk-1', '?session=abc&cutoff=bar%2012')
+  assert.equal(href, '/?workspace=desk-1&view=journal&session=abc')
+})

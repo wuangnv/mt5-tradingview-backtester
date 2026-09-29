@@ -39,6 +39,15 @@ function normalizedCursor(value) {
   return Number.isInteger(numeric) && numeric >= 0 ? String(numeric) : ''
 }
 
+function normalizedCutoff(value) {
+  if (value === null || value === undefined || value === '') return ''
+  const text = String(value).trim()
+  // Cutoff may be an API timestamp or a short opaque bar/token identifier.
+  // Reject whitespace/control characters so a copied deep link cannot carry
+  // an accidental multi-value query fragment.
+  return /^[A-Za-z0-9_.:+-]+$/.test(text) ? text : ''
+}
+
 /**
  * Read the canonical context while accepting aliases emitted by older routes.
  * The returned object is display/state data, not an authority for broker or
@@ -47,7 +56,7 @@ function normalizedCursor(value) {
 export function readWorkspaceContext(queryLike) {
   const params = asSearchParams(queryLike)
   const cursor = normalizedCursor(firstValue(params, ['cursor', 'cursor_index']))
-  const cutoff = firstValue(params, ['cutoff', 'decision_cutoff'])
+  const cutoff = normalizedCutoff(firstValue(params, ['cutoff', 'decision_cutoff']))
   return {
     workspaceId: firstValue(params, ['workspace']),
     sessionId: firstValue(params, ['session', 'replay_session']),
