@@ -1,0 +1,375 @@
+/*
+ * Trading Workspace typography scale.
+ *
+ * The screens intentionally use a compact, flat layout, but compact must not
+ * mean hard to read.  Keep the scale local to the product shell so chart
+ * labels, provenance and controls stay readable without changing the shared
+ * UI-system snapshot or browser defaults.
+ */
+.fx-app {
+  --fx-type-label: 11px;
+  --fx-type-meta: 12px;
+  --fx-type-body: 14px;
+  --fx-type-control: 13px;
+  --fx-type-code: 12px;
+}
+
+/* Stable shell and overview. */
+.fx-app .fx-brand-copy strong { font-size: 13px; }
+.fx-app .fx-brand-copy span,
+.fx-app .fx-rail-caption,
+.fx-app .fx-rail-footer-label { font-size: var(--fx-type-label); }
+.fx-app .fx-nav-item { font-size: var(--fx-type-control); }
+.fx-app .fx-nav-icon { font-size: 10px; }
+.fx-app .fx-rail-footer strong { font-size: var(--fx-type-meta); }
+.fx-app .fx-rail-footer small { font-size: var(--fx-type-meta); }
+.fx-app .fx-breadcrumb-product,
+.fx-app .fx-breadcrumb strong { font-size: var(--fx-type-meta); }
+.fx-app .fx-product-mark { font-size: 9px; }
+.fx-app .fx-context-chip { font-size: var(--fx-type-meta); }
+.fx-app .fx-workspace-name { font-size: var(--fx-type-label); }
+.fx-app .fx-avatar { font-size: var(--fx-type-label); }
+.fx-app .fx-shell-primary { font-size: var(--fx-type-control); }
+.fx-app .fx-eyebrow { font-size: var(--fx-type-label); }
+.fx-app .fx-page-heading h1,
+.fx-app .fx-unavailable h1,
+.fx-app .fx-settings h1 { line-height: 1.2; }
+.fx-app .fx-page-heading p,
+.fx-app .fx-unavailable p { font-size: var(--fx-type-body); line-height: 1.55; }
+.fx-app .fx-primary-button,
+.fx-app .fx-secondary-button { font-size: var(--fx-type-control); }
+.fx-app .fx-session-kicker { font-size: var(--fx-type-label); }
+.fx-app .fx-session-main > strong { font-size: 16px; }
+.fx-app .fx-session-main > span { font-size: var(--fx-type-meta); }
+.fx-app .fx-session-fact span { font-size: var(--fx-type-label); }
+.fx-app .fx-session-fact strong { font-size: var(--fx-type-body); }
+.fx-app .fx-muted-label { font-size: var(--fx-type-meta); }
+.fx-app .fx-queue-index { font-size: var(--fx-type-meta); }
+.fx-app .fx-queue-row strong { font-size: var(--fx-type-body); }
+.fx-app .fx-queue-row small { font-size: var(--fx-type-meta); line-height: 1.45; }
+.fx-app .fx-context-list dt { font-size: var(--fx-type-meta); }
+.fx-app .fx-context-list dd { font-size: var(--fx-type-meta); }
+.fx-app .fx-context-list code { font-size: var(--fx-type-code); }
+.fx-app .fx-pill { font-size: var(--fx-type-meta); }
+.fx-app .fx-unavailable-state strong { font-size: var(--fx-type-body); }
+.fx-app .fx-unavailable-state small { font-size: var(--fx-type-meta); }
+
+/* Practice / replay.  Keep chart geometry unchanged; only its surrounding
+ * reading chrome grows so the cutoff and decision evidence are legible. */
+.fx-app .replay-topbar p { font-size: var(--fx-type-body); }
+.fx-app .replay-lock strong,
+.fx-app .replay-lock span { font-size: var(--fx-type-meta); }
+.fx-app .replay-start-kicker,
+.fx-app .story-label { font-size: var(--fx-type-label); }
+.fx-app .replay-start p,
+.fx-app .replay-side p { font-size: var(--fx-type-meta); line-height: 1.55; }
+.fx-app .replay-start label { font-size: var(--fx-type-meta); }
+.fx-app .replay-start input { font-size: var(--fx-type-control); }
+.fx-app .primary-action,
+.fx-app .secondary-action,
+.fx-app .toolbar-group button { font-size: var(--fx-type-control); }
+.fx-app .replay-status span,
+.fx-app .cutoff-readout span,
+.fx-app .session-facts dt { font-size: var(--fx-type-label); }
+.fx-app .replay-status strong,
+.fx-app .replay-status code,
+.fx-app .cutoff-readout strong,
+.fx-app .session-facts dd { font-size: var(--fx-type-meta); }
+.fx-app .replay-story strong { font-size: 15px; }
+.fx-app .replay-story span:not(.story-label),
+.fx-app .replay-story-provenance dd { font-size: var(--fx-type-meta); }
+.fx-app .replay-story-provenance dt { font-size: var(--fx-type-label); }
+.fx-app .toolbar-speed,
+.fx-app .toolbar-speed select,
+.fx-app .cutoff-readout small,
+.fx-app .bar-readout,
+.fx-app .replay-jump-heading,
+.fx-app .replay-jump button,
+.fx-app .decision-readout span,
+.fx-app .decision-readout small,
+.fx-app .next-action-link { font-size: var(--fx-type-meta); }
+.fx-app .replay-evidence-strip > div strong { font-size: var(--fx-type-meta); }
+.fx-app .bar-readout-label { font-size: var(--fx-type-control); }
+.fx-app .mode-pill,
+.fx-app .unsupported-tools button { font-size: var(--fx-type-meta) !important; }
+.fx-app .unsupported-tools button span { font-size: var(--fx-type-label); }
+
+/* Research story. */
+.fx-app .rs-shell { font-size: var(--fx-type-body); }
+.fx-app .rs-topbar p { font-size: var(--fx-type-meta); }
+.fx-app .rs-eyebrow,
+.fx-app .rs-safety strong,
+.fx-app .rs-field span,
+.fx-app .rs-facts dt,
+.fx-app .rs-job-strip span,
+.fx-app .rs-result-grid span,
+.fx-app .rs-provenance-grid dt { font-size: var(--fx-type-label); }
+.fx-app .rs-safety small,
+.fx-app .rs-link,
+.fx-app .rs-statusbar,
+.fx-app .rs-section-head p,
+.fx-app .rs-context-line span,
+.fx-app .rs-facts dd,
+.fx-app .rs-disclosure summary,
+.fx-app .rs-disclosure-body,
+.fx-app .rs-takeaway-row,
+.fx-app .rs-warning-list,
+.fx-app .rs-field small,
+.fx-app .rs-progress-label,
+.fx-app .rs-checkpoint-note,
+.fx-app .rs-result-takeaway span,
+.fx-app .rs-empty-inline,
+.fx-app .rs-next-action > p,
+.fx-app .rs-action-list a { font-size: var(--fx-type-meta); }
+.fx-app .rs-step strong { font-size: var(--fx-type-meta); }
+.fx-app .rs-step small,
+.fx-app .rs-facts code,
+.fx-app .rs-pill,
+.fx-app .rs-provenance-grid dd,
+.fx-app .rs-spark text,
+.fx-app .rs-equity-figure figcaption { font-size: var(--fx-type-label); }
+.fx-app .rs-button,
+.fx-app .rs-field input,
+.fx-app .rs-field select { font-size: var(--fx-type-control); }
+.fx-app .rs-empty-state strong { font-size: var(--fx-type-body); }
+.fx-app .rs-empty-state small { font-size: var(--fx-type-meta); }
+.fx-app .rs-job-strip strong,
+.fx-app .rs-job-strip code { font-size: var(--fx-type-meta); }
+.fx-app .rs-result-takeaway strong,
+.fx-app .rs-next-action > strong { font-size: 15px; }
+.fx-app .rs-result-grid strong { font-size: 18px; }
+
+/* Analytics story and journal story. */
+.fx-app .as-page,
+.fx-app .ja-page,
+.fx-app .ja-story-page { font-size: var(--fx-type-body); }
+.fx-app .as-eyebrow,
+.fx-app .ja-eyebrow,
+.fx-app .as-context-value dt,
+.fx-app .as-source-note,
+.fx-app .as-inspector-state,
+.fx-app .as-story-metric small,
+.fx-app .as-story-metric em,
+.fx-app .as-chart-axis,
+.fx-app .as-chart-legend,
+.fx-app .as-secondary-metrics span,
+.fx-app .as-secondary-metrics small,
+.fx-app .as-detail-list .as-context-value dt,
+.fx-app .as-provenance-list .as-context-value dt,
+.fx-app .ja-section-subtitle,
+.fx-app .ja-story-steps small,
+.fx-app .ja-story-facts span,
+.fx-app .ja-provenance-card dt { font-size: var(--fx-type-label); }
+.fx-app .as-page-header p,
+.fx-app .as-context-value dd,
+.fx-app .as-context-actions a,
+.fx-app .as-inspector-actions a,
+.fx-app .as-story-lead p,
+.fx-app .as-story-metric dt,
+.fx-app .as-chart-empty,
+.fx-app .as-empty-inline,
+.fx-app .as-definition summary,
+.fx-app .as-definition p,
+.fx-app .as-detail-list .as-context-value dd,
+.fx-app .as-provenance-list .as-context-value dd,
+.fx-app .as-inspector-note,
+.fx-app .as-limit-note,
+.fx-app .as-raw-details summary,
+.fx-app .as-inspector-empty,
+.fx-app .as-next-action p,
+.fx-app .as-large-empty p,
+.fx-app .ja-context-copy span:not(.ja-eyebrow),
+.fx-app .ja-text-link,
+.fx-app .ja-filter-toggle,
+.fx-app .ja-source-note,
+.fx-app .ja-row-main small,
+.fx-app .ja-row-meta span,
+.fx-app .ja-story-intro-copy > span:last-child,
+.fx-app .ja-story-facts strong,
+.fx-app .ja-provenance-card dd,
+.fx-app .ja-provenance-card p,
+.fx-app .ja-story-placeholder > span:last-child { font-size: var(--fx-type-meta); }
+.fx-app .as-code,
+.fx-app .as-table code,
+.fx-app .as-raw-details pre,
+.fx-app .ja-context-copy code,
+.fx-app .ja-source-box code,
+.fx-app .ja-row-meta code,
+.fx-app .ja-provenance-card dd code { font-size: var(--fx-type-code); }
+.fx-app .as-story-badge,
+.fx-app .as-selection-outcome,
+.fx-app .as-primary-button,
+.fx-app .as-secondary-button,
+.fx-app .as-inline-button,
+.fx-app .ja-button,
+.fx-app .ja-readonly-badge,
+.fx-app .ja-story-status { font-size: var(--fx-type-control); }
+.fx-app .as-section-head h2,
+.fx-app .as-next-action h2,
+.fx-app .ja-story-rail-head strong,
+.fx-app .ja-provenance-card-head strong,
+.fx-app .ja-story-placeholder strong { font-size: 16px; }
+.fx-app .as-table th { font-size: var(--fx-type-label); }
+.fx-app .as-table td { font-size: var(--fx-type-control); }
+.fx-app .as-secondary-metrics strong { font-size: 16px; }
+.fx-app .ja-row-kicker { font-size: var(--fx-type-label); }
+.fx-app .ja-row-main strong { font-size: 14px; }
+.fx-app .ja-story-steps strong { font-size: var(--fx-type-meta); }
+.fx-app .ja-story-step-mark { font-size: var(--fx-type-label); }
+.fx-app .ja-next-action strong { font-size: var(--fx-type-meta); }
+
+/* Trade, risk, data and settings surfaces. */
+.fx-app .trade-eyebrow,
+.fx-app .risk-eyebrow,
+.fx-app .trade-context-strip b,
+.fx-app .trade-account-strip span,
+.fx-app .trade-risk-preview span,
+.fx-app .risk-metric span,
+.fx-app .risk-assumption-list dt,
+.fx-app .risk-status-chip { font-size: var(--fx-type-label); }
+.fx-app .trade-heading p,
+.fx-app .risk-heading p,
+.fx-app .trade-init-section p,
+.fx-app .trade-message,
+.fx-app .trade-empty span,
+.fx-app .trade-context-strip span,
+.fx-app .trade-context-panel dt,
+.fx-app .trade-context-panel dd,
+.fx-app .trade-safety-note span,
+.fx-app .trade-notice,
+.fx-app .risk-form-error,
+.fx-app .risk-side li span,
+.fx-app .risk-result-head p,
+.fx-app .risk-result-blocked p,
+.fx-app .risk-assumption-list dd,
+.fx-app .risk-metric small { font-size: var(--fx-type-meta); }
+.fx-app .trade-init-form label,
+.fx-app .trade-draft-form label,
+.fx-app .risk-form label { font-size: var(--fx-type-label); }
+.fx-app .trade-init-form input,
+.fx-app .trade-draft-form input,
+.fx-app .risk-form input,
+.fx-app .risk-form select { font-size: var(--fx-type-control); }
+.fx-app .trade-primary,
+.fx-app .risk-primary,
+.fx-app .trade-side-toggle button,
+.fx-app .trade-link { font-size: var(--fx-type-control); }
+.fx-app .trade-empty strong,
+.fx-app .trade-section-title,
+.fx-app .risk-form h2,
+.fx-app .risk-side h2,
+.fx-app .risk-result h2 { font-size: 16px; }
+.fx-app .trade-account-strip strong,
+.fx-app .trade-risk-preview strong,
+.fx-app .risk-metric strong { font-size: 17px; }
+
+.fx-app .rd-shell,
+.fx-app .settings-shell,
+.fx-app .learn-shell,
+.fx-app .prop-shell { font-size: var(--fx-type-body); }
+.fx-app .rd-shell [class*="label"],
+.fx-app .rd-shell [class*="meta"],
+.fx-app .settings-shell [class*="label"],
+.fx-app .settings-shell [class*="meta"] { font-size: var(--fx-type-label); }
+.fx-app .rd-shell .rd-message,
+.fx-app .rd-shell .rd-provenance,
+.fx-app .rd-shell .rd-detail,
+.fx-app .settings-shell .settings-message,
+.fx-app .settings-shell .settings-note,
+.fx-app .settings-shell .settings-footnote { font-size: var(--fx-type-meta); line-height: 1.5; }
+.fx-app .rd-shell .rd-button,
+.fx-app .settings-shell button,
+.fx-app .learn-resource-button,
+.fx-app .prop-refresh { font-size: var(--fx-type-control); }
+
+/* Older utility surfaces use many explicit 9–11px declarations.  Preserve
+ * their compact geometry while lifting the readable text floor. */
+.fx-app .learn-topbar p,
+.fx-app .learn-message,
+.fx-app .learn-readonly strong,
+.fx-app .learn-readonly span,
+.fx-app .learn-progress-meta,
+.fx-app .learn-resource-copy,
+.fx-app .learn-glossary-list dd,
+.fx-app .prop-topbar p,
+.fx-app .prop-lock strong,
+.fx-app .prop-lock span,
+.fx-app .prop-message,
+.fx-app .prop-review span,
+.fx-app .prop-report-copy,
+.fx-app .notion-provider p,
+.fx-app .notion-safety span,
+.fx-app .notion-step p,
+.fx-app .notion-preview-note { font-size: var(--fx-type-meta); }
+.fx-app .learn-summary span,
+.fx-app .learn-progress span,
+.fx-app .learn-pane-heading span,
+.fx-app .learn-module-head span,
+.fx-app .learn-search span,
+.fx-app .learn-footnote,
+.fx-app .prop-section-head span,
+.fx-app .prop-section-head small,
+.fx-app .prop-session-list span,
+.fx-app .prop-session-list small,
+.fx-app .prop-field span,
+.fx-app .prop-resume-strip span,
+.fx-app .prop-report-summary span,
+.fx-app .prop-report-copy > strong,
+.fx-app .prop-report-row span,
+.fx-app .prop-report-row small,
+.fx-app .notion-selection-summary,
+.fx-app .notion-preview-grid span,
+.fx-app .notion-receipt-facts dt { font-size: var(--fx-type-label); }
+.fx-app .learn-summary strong,
+.fx-app .learn-progress strong,
+.fx-app .learn-pane-heading strong,
+.fx-app .learn-module-head strong,
+.fx-app .learn-module li,
+.fx-app .learn-glossary-list dt,
+.fx-app .prop-tabs button,
+.fx-app .prop-section-head strong,
+.fx-app .prop-session-list strong,
+.fx-app .prop-review strong,
+.fx-app .prop-resume-strip strong,
+.fx-app .prop-metrics span,
+.fx-app .prop-metrics strong,
+.fx-app .prop-facts dt,
+.fx-app .prop-facts dd,
+.fx-app .prop-report-summary strong,
+.fx-app .prop-report-row strong,
+.fx-app .notion-flow strong,
+.fx-app .notion-flow small,
+.fx-app .notion-step strong,
+.fx-app .notion-preview-grid strong,
+.fx-app .notion-receipt-facts dd { font-size: var(--fx-type-meta); }
+
+/* Never shrink the reading floor on narrow layouts.  Headings remain fluid,
+ * while labels, controls and table cells keep a stable minimum at 360px. */
+@media (max-width: 520px) {
+  .fx-app .fx-page-heading h1,
+  .fx-app .fx-unavailable h1,
+  .fx-app .fx-settings h1,
+  .fx-app .replay-topbar h1,
+  .fx-app .rs-topbar h1 { font-size: clamp(24px, 7vw, 30px); }
+  .fx-app .as-page-header h1 { font-size: clamp(26px, 8vw, 34px); }
+  .fx-app .fx-context-chip,
+  .fx-app .fx-nav-item,
+  .fx-app .fx-primary-button,
+  .fx-app .fx-secondary-button,
+  .fx-app .primary-action,
+  .fx-app .secondary-action,
+  .fx-app .toolbar-group button,
+  .fx-app .rs-button,
+  .fx-app .ja-button,
+  .fx-app .as-primary-button,
+  .fx-app .as-secondary-button { font-size: 13px; }
+  .fx-app .fx-eyebrow,
+  .fx-app .story-label,
+  .fx-app .rs-eyebrow,
+  .fx-app .as-eyebrow,
+  .fx-app .ja-eyebrow,
+  .fx-app .trade-eyebrow,
+  .fx-app .risk-eyebrow { font-size: 11px; }
+  .fx-app .as-table th,
+  .fx-app .as-table td { font-size: 12px; }
+}
