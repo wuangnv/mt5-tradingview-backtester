@@ -1,0 +1,396 @@
+/*
+ * Trading shell story layer.
+ *
+ * The existing workspace styles own each screen. This file owns only the
+ * stable product frame: navigation hierarchy, context visibility, and the
+ * fail-closed capability cues that should survive every route.
+ */
+
+.fx-shell-story {
+  --fx-shell-rail: #0d1114;
+  --fx-shell-bg: #0a0d10;
+  --fx-shell-surface: #11171b;
+  --fx-shell-line: #252d33;
+  --fx-shell-line-strong: #3b4851;
+  --fx-shell-text: #e8edf0;
+  --fx-shell-muted: #8c979f;
+  --fx-shell-subtle: #68747c;
+  --fx-shell-accent: #e1ad54;
+  --fx-shell-safe: #6dc18b;
+  --fx-shell-warn: #d5a45a;
+  --fx-shell-danger: #dc7777;
+  grid-template-columns: 224px minmax(0, 1fr);
+  background: var(--fx-shell-bg);
+  color: var(--fx-shell-text);
+}
+
+.fx-shell-story .fx-rail {
+  background: var(--fx-shell-rail);
+  border-right-color: var(--fx-shell-line);
+  padding: 20px 14px 16px;
+}
+
+.fx-shell-story .fx-brand {
+  min-height: 40px;
+  padding: 0 8px 22px;
+}
+
+.fx-shell-story .fx-brand-symbol {
+  width: 30px;
+  height: 30px;
+  border-color: #8a6a35;
+  border-radius: 6px;
+  color: var(--fx-shell-accent);
+}
+
+.fx-shell-story .fx-brand-copy strong {
+  color: var(--fx-shell-text);
+  font-size: 12px;
+}
+
+.fx-shell-story .fx-brand-copy span {
+  color: var(--fx-shell-muted);
+  font-size: 10px;
+}
+
+.fx-shell-story .fx-rail-caption {
+  margin: 10px 8px 8px;
+  color: #65717a;
+  font-size: 9px;
+  letter-spacing: .16em;
+}
+
+.fx-shell-story .fx-nav {
+  gap: 3px;
+}
+
+.fx-shell-story .fx-nav-item {
+  min-height: 38px;
+  border-left-width: 2px;
+  border-radius: 4px;
+  color: #9aa5ad;
+  padding: 0 9px;
+  transition: background-color .14s ease, border-color .14s ease, color .14s ease;
+}
+
+.fx-shell-story .fx-nav-item:hover,
+.fx-shell-story .fx-nav-item:focus-visible {
+  background: #151c20;
+  color: #eef2f4;
+}
+
+.fx-shell-story .fx-nav-item.is-active {
+  border-left-color: var(--fx-shell-accent);
+  background: #1a1b1a;
+  color: #f1d8a7;
+}
+
+.fx-shell-story .fx-nav-icon {
+  color: #74818a;
+  font-size: 9px;
+}
+
+.fx-shell-story .fx-nav-item.is-active .fx-nav-icon {
+  color: var(--fx-shell-accent);
+}
+
+.fx-shell-story .fx-rail-divider {
+  margin: 14px 8px 5px;
+  background: var(--fx-shell-line);
+}
+
+.fx-shell-story .fx-rail-footer {
+  gap: 6px;
+  border-top-color: var(--fx-shell-line);
+  padding: 14px 8px 0;
+}
+
+.fx-shell-story .fx-rail-footer-label {
+  color: #65717a;
+  font-size: 9px;
+  letter-spacing: .14em;
+}
+
+.fx-shell-story .fx-rail-footer strong {
+  color: #c7d0d5;
+  font-size: 10px;
+  text-transform: none;
+}
+
+.fx-shell-story .fx-rail-footer small {
+  color: #78848c;
+  line-height: 1.4;
+}
+
+.fx-shell-story .fx-main {
+  background: var(--fx-shell-bg);
+}
+
+.fx-shell-story .fx-topbar {
+  min-height: 68px;
+  gap: 18px;
+  border-bottom-color: var(--fx-shell-line);
+  padding: 0 26px;
+}
+
+.fx-shell-story .fx-breadcrumb {
+  flex: 0 0 auto;
+  min-width: 205px;
+  gap: 8px;
+  color: #c4cdd2;
+}
+
+.fx-shell-story .fx-product-mark {
+  width: 24px;
+  height: 24px;
+  border-color: #53616b;
+  border-radius: 5px;
+  color: #dce3e7;
+}
+
+.fx-shell-story .fx-breadcrumb-product {
+  color: #aeb9bf;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.fx-shell-story .fx-breadcrumb-separator {
+  color: #596770;
+}
+
+.fx-shell-story .fx-breadcrumb strong {
+  color: #edf1f3;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.fx-shell-story .fx-context-strip {
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.fx-shell-story .fx-context-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.fx-shell-story .fx-context-chip {
+  display: inline-flex;
+  min-height: 28px;
+  border-color: var(--fx-shell-line);
+  border-radius: 4px;
+  background: rgba(17, 23, 27, .72);
+  color: #b5c0c6;
+  padding: 0 9px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.fx-shell-story .fx-context-instrument {
+  color: #e3e9ec;
+  font-weight: 650;
+}
+
+.fx-shell-story .fx-context-source,
+.fx-shell-story .fx-context-cutoff {
+  color: #9eabb2;
+}
+
+.fx-shell-story .fx-context-mode {
+  border-color: #70562d;
+  background: rgba(66, 49, 19, .26);
+  color: #e5bd72;
+}
+
+.fx-shell-story .fx-context-lock {
+  border-color: #664444;
+  background: rgba(77, 37, 37, .24);
+  color: #e3a4a4;
+  font-weight: 650;
+}
+
+.fx-shell-story .fx-status-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+}
+
+.fx-shell-story .fx-topbar-actions {
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.fx-shell-story .fx-workspace-name {
+  color: #839099;
+  font-size: 10px;
+}
+
+.fx-shell-story .fx-avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  min-height: 28px;
+  border: 1px solid #45525b;
+  border-radius: 50%;
+  background: #182026;
+  color: #d6dee2;
+  font-size: 10px;
+}
+
+.fx-shell-story .fx-shell-primary {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--fx-shell-accent);
+  border-radius: 4px;
+  background: var(--fx-shell-accent);
+  color: #1d160a;
+  padding: 0 11px;
+  font-size: 10px;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .14s ease, border-color .14s ease;
+}
+
+.fx-shell-story .fx-shell-primary:hover,
+.fx-shell-story .fx-shell-primary:focus-visible {
+  border-color: #efc26b;
+  background: #efc26b;
+}
+
+.fx-shell-story .fx-content {
+  min-width: 0;
+  padding-right: 28px;
+  padding-left: 28px;
+}
+
+/* Keep the full context visible on touch layouts; the rail is compact, not
+ * silent. Users can scroll this strip horizontally without losing the lock. */
+@media (max-width: 1180px) {
+  .fx-shell-story {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .fx-shell-story .fx-rail {
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  .fx-shell-story .fx-brand {
+    justify-content: center;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .fx-shell-story .fx-brand-copy,
+  .fx-shell-story .fx-rail-caption,
+  .fx-shell-story .fx-nav-label,
+  .fx-shell-story .fx-rail-footer {
+    display: none;
+  }
+
+  .fx-shell-story .fx-nav-item {
+    position: relative;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    min-height: 42px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .fx-shell-story .fx-nav-item:hover::after,
+  .fx-shell-story .fx-nav-item:focus-visible::after {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    left: calc(100% + 10px);
+    min-width: max-content;
+    border: 1px solid var(--fx-shell-line-strong);
+    border-radius: 4px;
+    background: #151c20;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .28);
+    color: #eef2f4;
+    content: attr(data-nav-label);
+    padding: 7px 9px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .fx-shell-story .fx-rail-divider {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .fx-shell-story .fx-topbar {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .fx-shell-story .fx-content {
+    padding-right: 19px;
+    padding-left: 19px;
+  }
+
+  .fx-shell-story .fx-context-timeframe,
+  .fx-shell-story .fx-context-mode,
+  .fx-shell-story .fx-context-lock {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 760px) {
+  .fx-shell-story .fx-topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    min-height: auto;
+    align-items: center;
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+
+  .fx-shell-story .fx-breadcrumb {
+    min-width: 0;
+  }
+
+  .fx-shell-story .fx-breadcrumb-product,
+  .fx-shell-story .fx-breadcrumb strong,
+  .fx-shell-story .fx-workspace-name {
+    display: none;
+  }
+
+  .fx-shell-story .fx-context-strip {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 2px;
+  }
+
+  .fx-shell-story .fx-context-chip {
+    display: inline-flex;
+    min-height: 30px;
+  }
+
+  .fx-shell-story .fx-topbar-actions {
+    margin-left: auto;
+  }
+
+  .fx-shell-story .fx-content {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-shell-story .fx-nav-item,
+  .fx-shell-story .fx-shell-primary {
+    transition-duration: 0s;
+  }
+}
