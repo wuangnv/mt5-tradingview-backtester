@@ -220,6 +220,110 @@ def build_walk_forward_plan(
     }
 
 
+def build_regime_partition(
+    rows: list[dict],
+    *,
+    timeframe_seconds: int,
+    regime_field: str = "regime",
+    known_at_field: str = "regime_known_at",
+    max_regimes: int = 8,
+    max_segments: int = 10_000,
+    holdout_policy: dict | None = None,
+) -> dict:
+    """Build a bounded, as-of regime partition without opening holdout data.
+
+    Regime labels are supplied by a caller-owned, precomputed source.  The
+    planner deliberately does not infer labels from future prices: every row
+    must carry an integer ``known_at_field`` that is no later than that row's
+    timestamp.  This keeps segmentation useful for sensitivity reporting while
+    making an accidental look-ahead fail closed at the contract boundary.
+    """
+
+    timeframe_seconds = _positive_int(timeframe_seconds, "timeframe_seconds")
+    max_regimes = _positive_int(max_regimes, "max_regimes", maximum=64)
+    max_segments = _positive_int(max_segments, "max_segments", maximum=100_000)
+    for field_name, value in (("regime_field", regime_field), ("known_at_field", known_at_field)):
+        if not isinstance(value, str) or re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,63}", value) is None:
+            raise ResearchValidationPlanError(f"{field_name} must be a safe field name")
+    if regime_field == known_at_field:
+        raise ResearchValidationPlanError("regime_field and known_at_field must differ")
+
+    timestamps = _validate_rows(rows, timeframe_seconds)
+    holdout_from = _closed_holdout_boundary(holdout_policy)
+    if holdout_from is not None:
+        for timestamp in timestamps:
+            if timestamp + timeframe_seconds > holdout_from:
+                raise ResearchValidationPlanError("source rows reach locked holdout data")
+
+    labels: list[str] = []
+    known_at: list[int] = []
+    for row, timestamp in zip(rows, timestamps):
+        label = row.get(regime_field)
+        if (
+            not isinstance(label, str)
+            or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}", label) is None
+        ):
+            raise ResearchValidationPlanError(
+                f"{regime_field} must contain a 1-64 character regime label"
+            )
+        published_at = row.get(known_at_field)
+        if type(published_at) is not int or published_at < 0:
+            raise ResearchValidationPlanError(
+                f"{known_at_field} must contain a nonnegative integer timestamp"
+            )
+        if published_at > timestamp:
+            raise ResearchValidationPlanError(
+                f"{known_at_field} cannot be later than the observed row timestamp"
+            )
+        labels.append(label)
+        known_at.append(published_at)
+
+    unique_labels = sorted(set(labels))
+    if len(unique_labels) > max_regimes:
+        raise ResearchValidationPlanError("regime label count exceeds max_regimes")
+
+    segments: list[dict] = []
+    start = 0
+    while start < len(labels):
+        stop = start + 1
+        while stop < len(labels) and labels[stop] == labels[start]:
+            stop += 1
+        if len(segments) >= max_segments:
+            raise ResearchValidationPlanError("regime segment count exceeds max_segments")
+        segment_range = _range(timestamps, start, stop, timeframe_seconds)
+        segments.append(
+            {
+                "segment_id": f"segment-{len(segments) + 1:05d}",
+                "label": labels[start],
+                "known_at_utc": known_at[start],
+                **segment_range,
+            }
+        )
+        start = stop
+
+    summaries = []
+    for label in unique_labels:
+        matching = [segment for segment in segments if segment["label"] == label]
+        summaries.append(
+            {
+                "label": label,
+                "bar_count": sum(segment["bar_count"] for segment in matching),
+                "segment_count": len(matching),
+            }
+        )
+    return {
+        "schema": "regime-segmentation-v1",
+        "causal_status": "as-of",
+        "source": {"regime_field": regime_field, "known_at_field": known_at_field},
+        "timeframe_seconds": timeframe_seconds,
+        "holdout": {"access": False, "from_utc": holdout_from},
+        "label_count": len(unique_labels),
+        "segment_count": len(segments),
+        "labels": summaries,
+        "segments": segments,
+    }
+
+
 def build_bounded_sweep(parameter_space: dict[str, list], *, max_trials: int) -> dict:
     """Deterministically enumerate a finite prefix of a parameter grid."""
 

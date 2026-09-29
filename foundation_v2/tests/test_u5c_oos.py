@@ -23,6 +23,7 @@ from trading_workspace_v2.research_oos import (
     ResearchValidationPlanError,
     build_bounded_sweep,
     build_cost_fill_stress_plan,
+    build_regime_partition,
     build_walk_forward_plan,
     complete_canceled_sweep_outcomes,
     summarize_sweep_outcomes,
@@ -310,6 +311,83 @@ class U5cWalkForwardTests(unittest.TestCase):
                 timeframe_seconds=TIMEFRAME,
                 train_bars=8,
                 oos_bars=4,
+            )
+
+
+class U5cRegimePartitionTests(unittest.TestCase):
+    def regime_rows(self, count=8):
+        labels = ["trend", "trend", "range", "range", "trend", "trend", "volatile", "volatile"]
+        return [
+            {
+                "timestamp": index * TIMEFRAME,
+                "close": 100 + index,
+                "regime": labels[index],
+                "regime_known_at": index * TIMEFRAME,
+            }
+            for index in range(count)
+        ]
+
+    def test_partition_is_deterministic_bounded_and_as_of(self):
+        fixture = self.regime_rows()
+        first = build_regime_partition(
+            fixture,
+            timeframe_seconds=TIMEFRAME,
+            holdout_policy={"mode": "metadata_only", "from_utc": len(fixture) * TIMEFRAME},
+        )
+        second = build_regime_partition(
+            copy.deepcopy(fixture),
+            timeframe_seconds=TIMEFRAME,
+            holdout_policy={"mode": "metadata_only", "from_utc": len(fixture) * TIMEFRAME},
+        )
+
+        self.assertEqual(first, second)
+        self.assertEqual(first["schema"], "regime-segmentation-v1")
+        self.assertEqual(first["causal_status"], "as-of")
+        self.assertEqual(first["holdout"]["access"], False)
+        self.assertEqual(first["label_count"], 3)
+        self.assertEqual(first["segment_count"], 4)
+        self.assertEqual(
+            [(segment["label"], segment["start_index"], segment["stop_index"])
+             for segment in first["segments"]],
+            [("trend", 0, 2), ("range", 2, 4), ("trend", 4, 6), ("volatile", 6, 8)],
+        )
+        self.assertEqual(first["labels"], [
+            {"label": "range", "bar_count": 2, "segment_count": 1},
+            {"label": "trend", "bar_count": 4, "segment_count": 2},
+            {"label": "volatile", "bar_count": 2, "segment_count": 1},
+        ])
+
+    def test_future_known_at_and_missing_metadata_fail_closed(self):
+        future = self.regime_rows()
+        future[3]["regime_known_at"] = future[3]["timestamp"] + TIMEFRAME
+        with self.assertRaisesRegex(ResearchValidationPlanError, "later than"):
+            build_regime_partition(future, timeframe_seconds=TIMEFRAME)
+
+        missing = self.regime_rows()
+        del missing[2]["regime_known_at"]
+        with self.assertRaisesRegex(ResearchValidationPlanError, "nonnegative integer"):
+            build_regime_partition(missing, timeframe_seconds=TIMEFRAME)
+
+    def test_partition_rejects_unbounded_labels_segments_and_locked_rows(self):
+        too_many_labels = self.regime_rows()
+        too_many_labels[0]["regime"] = "r0"
+        too_many_labels[1]["regime"] = "r1"
+        too_many_labels[2]["regime"] = "r2"
+        with self.assertRaisesRegex(ResearchValidationPlanError, "label count"):
+            build_regime_partition(too_many_labels, timeframe_seconds=TIMEFRAME, max_regimes=2)
+
+        too_many_segments = self.regime_rows()
+        for index, row in enumerate(too_many_segments):
+            row["regime"] = f"r{index % 2}"
+        with self.assertRaisesRegex(ResearchValidationPlanError, "segment count"):
+            build_regime_partition(too_many_segments, timeframe_seconds=TIMEFRAME, max_segments=2)
+
+        locked = self.regime_rows()
+        with self.assertRaisesRegex(ResearchValidationPlanError, "locked holdout"):
+            build_regime_partition(
+                locked,
+                timeframe_seconds=TIMEFRAME,
+                holdout_policy={"mode": "metadata_only", "from_utc": 7 * TIMEFRAME},
             )
 
 

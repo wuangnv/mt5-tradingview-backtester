@@ -1,0 +1,37 @@
+{
+  "schema": "U5-REGIME-SEGMENTATION-VALIDATION-r1",
+  "task": "U5-REGIME-SEGMENTATION-r1",
+  "result": "PASS",
+  "scope": "Bounded pre-holdout regime partition contract over an offline synthetic fixture; no production dataset, holdout content, broker, provider, or deployment access",
+  "checks": {
+    "deterministic_partition": true,
+    "as_of_known_at_fencing": true,
+    "bounded_label_and_segment_counts": true,
+    "locked_holdout_fails_closed": true,
+    "no_future_price_inference": true,
+    "production_worker_wiring": false,
+    "holdout_access": false,
+    "broker_execution_capability": false
+  },
+  "tests": {
+    "command": "uv run --project . --with pytest python -m pytest tests/test_u5c_oos.py -q",
+    "tests_run": 23,
+    "subtests_run": 5,
+    "return_code": 0
+  },
+  "source_sha256": {
+    "foundation_v2/trading_workspace_v2/research_oos.py": "e61cb076db6e8744d2600686446c91e78cdf892067a763b1a3a02394719678b9",
+    "foundation_v2/tests/test_u5c_oos.py": "a441d92750a30e6d3897f77dbc3cccae9a13bd841fa7dfea1b99f5d29f2ac3de"
+  },
+  "accepted_scope": [
+    "Caller-supplied regime labels are validated against a safe label grammar and bounded unique-label count",
+    "Every label carries a non-future integer known_at timestamp no later than its observed bar timestamp",
+    "Contiguous regime segments and per-label counts are deterministic and chronologically indexed",
+    "Metadata-only holdout boundary is enforced before partitioning and never grants holdout access"
+  ],
+  "residual_scope": [
+    "Research API/job protocol and worker integration that runs or reports per-regime engine outcomes",
+    "Regime classifier/provider selection and licensed real-data OOS evidence",
+    "Stress scenario ranking, edge claims, holdout evaluation, broker/demo/live, provider and deployment acceptance"
+  ]
+}
