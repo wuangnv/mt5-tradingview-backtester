@@ -135,6 +135,23 @@ async function main() {
       return fulfillJson(route, 404, { detail: 'unknown_action' })
     })
 
+    // Keep the replay acceptance fixture self-contained. The product only
+    // needs the catalog to render its dataset context; no real backend or
+    // broker service should be required for this browser contract test.
+    await page.route('**/api/v2/data/datasets**', async (route) => {
+      if (route.request().method() !== 'GET') return fulfillJson(route, 405, { detail: 'method_not_allowed' })
+      return fulfillJson(route, 200, {
+        datasets: [{
+          dataset_id: 'ui-replay-fixture',
+          instrument_id: 'EURUSD',
+          timeframe: 'M1',
+          quality_status: 'verified',
+          holdout_status: 'locked',
+          row_count: rows.length,
+        }],
+      })
+    })
+
     await page.goto(`${origin}/?view=replay&workspace=tenant-ui&session=replay-fixture&cursor=1&from=prop-report`)
     await page.getByTestId('replay-history-view').waitFor()
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '2')
