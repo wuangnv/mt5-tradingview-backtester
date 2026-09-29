@@ -467,7 +467,12 @@ def create_app(
         job = store.get_job(workspace, job_id)
         if job is None:
             raise HTTPException(status_code=404, detail="job_not_found")
-        checkpoint = store.get_job_checkpoint(workspace, job_id)
+        try:
+            checkpoint = store.get_job_checkpoint(workspace, job_id)
+        except ValueError as exc:
+            # A corrupt/stale row must never be presented as trusted progress
+            # evidence or leak forbidden lease/provider/broker fields.
+            raise HTTPException(status_code=503, detail="checkpoint_untrusted") from exc
         if checkpoint is None:
             raise HTTPException(status_code=404, detail="checkpoint_not_found")
         return {

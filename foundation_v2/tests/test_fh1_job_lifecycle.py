@@ -510,7 +510,11 @@ class FH1JobLifecycleTests(unittest.TestCase):
         self.assertFalse(
             self.store.update_job_checkpoint(
                 first,
-                checkpoint={"schema": "research-job-checkpoint-v1", "phase": "stale"},
+                checkpoint={
+                    "schema": "research-job-checkpoint-v1",
+                    "phase": "stale",
+                    "attempt_no": first.attempt_no,
+                },
             )
         )
         self.assertTrue(

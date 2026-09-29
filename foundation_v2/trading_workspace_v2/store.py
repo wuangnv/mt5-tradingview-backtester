@@ -41,6 +41,133 @@ from .research_oos import complete_canceled_sweep_outcomes
 RESEARCH_JOB_ADMISSION_LOCK_KEY = 0x52534A41
 
 
+_RESEARCH_CHECKPOINT_FORBIDDEN_KEYS = frozenset(
+    {
+        "lease_owner",
+        "lease_token",
+        "lease_expires_at_utc",
+        "provider_credentials",
+        "broker_state",
+        "holdout_data",
+        "resume_command",
+    }
+)
+_RESEARCH_CHECKPOINT_PUBLIC_FIELDS = frozenset(
+    {
+        "schema",
+        "phase",
+        "attempt_no",
+        "dataset_id",
+        "protocol_sha256",
+        "validation_schema",
+        "trial_outcomes",
+        "trial_status_counts",
+        "trial_count",
+        "fully_accounted",
+        "row_count",
+        "trade_count",
+        "result_sha256",
+        "from_utc",
+        "to_utc",
+        "holdout_access",
+        "fold_count",
+        "sweep_truncated",
+        "stress_config_sha256",
+        "stress_scenario_count",
+    }
+)
+_RESEARCH_PROGRESS_PUBLIC_FIELDS = frozenset(
+    {"phase_index", "phase_count", "trial_index", "trial_count"}
+)
+
+
+def _reject_forbidden_checkpoint_keys(value: object, *, path: str = "checkpoint") -> None:
+    """Reject persisted checkpoint data that could cross the read-only boundary.
+
+    Checkpoints are worker progress evidence.  A compromised or stale row must
+    fail closed instead of allowing lease/provider/broker/holdout material to
+    escape through the inspection endpoint.  The recursive check also covers
+    trial outcome details added by future worker phases.
+    """
+
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key in _RESEARCH_CHECKPOINT_FORBIDDEN_KEYS:
+                raise ValueError(f"{path}.{key} is not allowed in a research checkpoint")
+            _reject_forbidden_checkpoint_keys(child, path=f"{path}.{key}")
+    elif isinstance(value, (list, tuple)):
+        for index, child in enumerate(value):
+            _reject_forbidden_checkpoint_keys(child, path=f"{path}[{index}]")
+
+
+def validate_research_checkpoint_view(checkpoint: object, progress: object) -> tuple[dict, dict | None]:
+    """Validate and project persisted worker progress for a read-only view.
+
+    Unknown fields are intentionally dropped for forward compatibility.  The
+    recursive forbidden-key check runs before projection so a corrupt row is
+    still rejected rather than silently hiding a lease/provider/broker leak.
+    """
+
+    if not isinstance(checkpoint, dict):
+        raise ValueError("research checkpoint must be an object")
+    if checkpoint.get("schema") != "research-job-checkpoint-v1":
+        raise ValueError("research checkpoint schema is invalid")
+    if not isinstance(checkpoint.get("phase"), str) or not checkpoint["phase"].strip():
+        raise ValueError("research checkpoint phase is invalid")
+    attempt_no = checkpoint.get("attempt_no")
+    if type(attempt_no) is not int or attempt_no < 0:
+        raise ValueError("research checkpoint attempt_no is invalid")
+    if progress is not None and not isinstance(progress, dict):
+        raise ValueError("research checkpoint progress is invalid")
+    _reject_forbidden_checkpoint_keys(checkpoint)
+    if progress is not None:
+        _reject_forbidden_checkpoint_keys(progress, path="progress")
+    projected = {
+        key: checkpoint[key]
+        for key in _RESEARCH_CHECKPOINT_PUBLIC_FIELDS
+        if key in checkpoint
+    }
+    trial_outcomes = projected.get("trial_outcomes")
+    if trial_outcomes is not None:
+        if not isinstance(trial_outcomes, list):
+            raise ValueError("research checkpoint trial_outcomes is invalid")
+        normalized_outcomes: list[dict[str, object]] = []
+        for outcome in trial_outcomes:
+            if not isinstance(outcome, dict):
+                raise ValueError("research checkpoint trial_outcomes is invalid")
+            trial_id = outcome.get("trial_id")
+            status = outcome.get("status")
+            if not isinstance(trial_id, str) or not trial_id.strip() or status not in {
+                "completed", "failed", "canceled"
+            }:
+                raise ValueError("research checkpoint trial_outcomes is invalid")
+            normalized_outcomes.append({"trial_id": trial_id, "status": status})
+        projected["trial_outcomes"] = normalized_outcomes
+    if "holdout_access" in projected and projected["holdout_access"] is not False:
+        raise ValueError("research checkpoint cannot expose holdout access")
+    status_counts = projected.get("trial_status_counts")
+    if status_counts is not None:
+        if not isinstance(status_counts, dict) or set(status_counts) - {
+            "canceled", "completed", "failed"
+        }:
+            raise ValueError("research checkpoint trial_status_counts is invalid")
+        if any(type(value) is not int or value < 0 for value in status_counts.values()):
+            raise ValueError("research checkpoint trial_status_counts is invalid")
+        projected["trial_status_counts"] = {
+            key: status_counts[key]
+            for key in ("canceled", "completed", "failed")
+            if key in status_counts
+        }
+    projected_progress = None
+    if progress is not None:
+        projected_progress = {
+            key: progress[key]
+            for key in _RESEARCH_PROGRESS_PUBLIC_FIELDS
+            if key in progress
+        }
+    return projected, projected_progress
+
+
 def _oos_cancellation_state(row: dict) -> tuple[dict, dict] | None:
     protocol = row.get("protocol_json")
     validation = protocol.get("validation") if isinstance(protocol, dict) else None
@@ -410,12 +537,7 @@ class PostgresStore:
         progress: dict | None = None,
     ) -> bool:
         """Persist resumable worker state only for the current lease owner."""
-        if not isinstance(checkpoint, dict):
-            raise ValueError("checkpoint must be an object")
-        if checkpoint.get("schema") != "research-job-checkpoint-v1" or not isinstance(checkpoint.get("phase"), str):
-            raise ValueError("checkpoint schema/phase is invalid")
-        if progress is not None and not isinstance(progress, dict):
-            raise ValueError("progress must be an object")
+        checkpoint, progress = validate_research_checkpoint_view(checkpoint, progress)
         now = utc_now_iso()
         with self.connect() as conn:
             updated = conn.execute(
@@ -454,9 +576,12 @@ class PostgresStore:
             ).fetchone()
         if not row or row["checkpoint_json"] is None:
             return None
+        checkpoint, progress = validate_research_checkpoint_view(
+            row["checkpoint_json"], row["progress_json"]
+        )
         return {
-            "checkpoint": row["checkpoint_json"],
-            "progress": row["progress_json"],
+            "checkpoint": checkpoint,
+            "progress": progress,
             "current_attempt_no": int(row["attempt_no"]),
             "status": row["status"],
             "updated_at_utc": row["updated_at_utc"],
