@@ -134,6 +134,51 @@ function reportReplayHref(report, workspace) {
   return { href: `/?${params.toString()}`, cursorIndex }
 }
 
+function objectiveStateLabel(value) {
+  if (value === true) return 'Đạt'
+  if (value === false) return 'Chưa đạt'
+  return 'Chưa rõ'
+}
+
+function objectiveNumber(value, currency = 'USD') {
+  return value === null || value === undefined ? 'N/A' : formatMoney(value, currency)
+}
+
+function objectiveSummary(objectives, phase, currency) {
+  if (!objectives || typeof objectives !== 'object') return null
+  const money = objectives.money && typeof objectives.money === 'object' ? objectives.money : null
+  const calendar = objectives.calendar && typeof objectives.calendar === 'object' ? objectives.calendar : null
+  return {
+    technicalStatus: objectives.technical_status || 'unknown',
+    passReady: objectives.pass_ready === true,
+    positionsReady: objectives.positions_ready === true,
+    profitTarget: money?.profit_target ? {
+      status: objectiveStateLabel(money.profit_target.hit),
+      current: objectiveNumber(money.profit_target.current, currency),
+      target: objectiveNumber(money.profit_target.target, currency),
+    } : null,
+    dailyLoss: money?.daily_loss ? {
+      status: money.daily_loss.breached ? 'Breached' : 'Trong giới hạn',
+      current: objectiveNumber(money.daily_loss.current, currency),
+      floor: objectiveNumber(money.daily_loss.floor, currency),
+    } : null,
+    overallDrawdown: money?.overall_drawdown ? {
+      status: money.overall_drawdown.breached ? 'Breached' : 'Trong giới hạn',
+      current: objectiveNumber(money.overall_drawdown.current, currency),
+      floor: objectiveNumber(money.overall_drawdown.floor, currency),
+      kind: money.overall_drawdown.kind || 'static',
+    } : null,
+    calendar: calendar ? {
+      qualifyingDays: calendar.qualifying_days,
+      minDaysSatisfied: calendar.min_qualifying_days_satisfied === true,
+      elapsedDays: calendar.elapsed_calendar_days,
+      expired: calendar.expired === true,
+      deadline: calendar.deadline_utc,
+    } : null,
+    phaseIndex: objectives.phase_index || phase?.phase_index || null,
+  }
+}
+
 export default function PropWorkspace({ workspace }) {
   const [draft, setDraft] = useState(initialDraft)
   const [sessions, setSessions] = useState({ status: 'loading', items: [], error: null })
@@ -351,6 +396,47 @@ export default function PropWorkspace({ workspace }) {
     }
   }, [draft, loadBundle, loadSessions, workspace])
 
+  const transitionAttempt = useCallback(async (action) => {
+    const session = selected.session
+    const attempt = selected.bundle?.attempt
+    const phase = selected.bundle?.phase
+    if (!session || !attempt || !phase) return
+    const pendingKey = `transition:${action}`
+    setPendingAction(pendingKey)
+    setConflict(null)
+    try {
+      const payload = await propJson(
+        `/api/v2/prop/sessions/${encodeURIComponent(session.session_id)}/attempts/${encodeURIComponent(attempt.attempt_id)}/transitions`,
+        workspace,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            workspace_id: workspace,
+            session_id: session.session_id,
+            attempt_id: attempt.attempt_id,
+            profile_hash: attempt.profile_hash,
+            intent_id: `ui-${action}-${attempt.attempt_id}-${attempt.revision}-${Date.now().toString(36)}`,
+            expected_revision: attempt.revision,
+            event_sequence: phase.last_event_sequence,
+            action,
+          }),
+        },
+      )
+      const updatedSession = payload.session || session
+      setSessions((current) => ({
+        ...current,
+        items: current.items.map((item) => item.session_id === updatedSession.session_id ? updatedSession : item),
+      }))
+      await loadBundle(updatedSession, [payload.attempt])
+    } catch (error) {
+      if (error.kind === 'conflict') setConflict(`Lifecycle chưa đổi được: ${error.message}`)
+      else if (error.kind === 'denied') setSelected((current) => ({ ...current, status: 'denied', error: error.message }))
+      else setConflict(`Lifecycle chưa đổi được: ${error.message}`)
+    } finally {
+      setPendingAction('')
+    }
+  }, [loadBundle, selected.bundle, selected.session, workspace])
+
   const exportReport = useCallback(async (report) => {
     const sessionId = report?.session?.session_id
     const attemptId = report?.attempt?.attempt_id
@@ -387,8 +473,10 @@ export default function PropWorkspace({ workspace }) {
   const phase = bundle?.phase
   const attempt = bundle?.attempt
   const report = selected.report
-  const selectedReplayTarget = reportReplayHref(report, workspace)
   const currency = selected.session?.profile?.phases?.[0]?.currency || draft.currency
+  const lifecycleObjectives = bundle?.resume_state?.prop_lifecycle?.last_objectives || report?.objectives || null
+  const objectives = objectiveSummary(lifecycleObjectives, phase, currency)
+  const selectedReplayTarget = reportReplayHref(report, workspace)
   const cursor = bundle?.resume_state?.cursor
   const selectedTerminal = TERMINAL_STATUSES.has(attempt?.status)
   const sessionCountLabel = useMemo(() => `${sessions.items.length} session`, [sessions.items.length])
@@ -577,7 +665,30 @@ export default function PropWorkspace({ workspace }) {
                   <div><dt>Evaluation quality</dt><dd>{phase.evaluation_quality}</dd></div>
                 </dl>
                 <div className="prop-resume-note" data-testid="prop-resume-note">
-                  “Mở tiếp tục” ở PS-01 chỉ khôi phục state đã persist. UI không tự chạy clock, fill lệnh hay transition phase.
+                  Resume chỉ khôi phục state đã persist. Các nút lifecycle gửi lệnh rõ ràng tới backend; UI không tự chạy clock hoặc fill lệnh.
+                </div>
+
+                <section className="prop-objectives" data-testid="prop-objectives" aria-label="Challenge objectives">
+                  <div className="prop-section-head">
+                    <div><span>Challenge objectives</span><strong>{objectives ? `Phase ${objectives.phaseIndex} · ${objectives.technicalStatus}` : 'Chưa có snapshot evaluator'}</strong></div>
+                    <small>{objectives ? (objectives.passReady ? 'Pass ready' : 'Đang theo dõi') : 'Chờ event mô phỏng'}</small>
+                  </div>
+                  {!objectives && <p className="prop-objectives-empty">Chưa có lifecycle event đủ dữ liệu để tính objective. Resume state và provenance vẫn được giữ nguyên.</p>}
+                  {objectives && (
+                    <div className="prop-objective-grid">
+                      {objectives.profitTarget && <article><span>Profit target</span><strong>{objectives.profitTarget.status}</strong><small>{objectives.profitTarget.current} / {objectives.profitTarget.target}</small></article>}
+                      {objectives.dailyLoss && <article><span>Daily loss</span><strong className={objectives.dailyLoss.status === 'Breached' ? 'is-breach' : ''}>{objectives.dailyLoss.status}</strong><small>{objectives.dailyLoss.current} · floor {objectives.dailyLoss.floor}</small></article>}
+                      {objectives.overallDrawdown && <article><span>Overall drawdown · {objectives.overallDrawdown.kind}</span><strong className={objectives.overallDrawdown.status === 'Breached' ? 'is-breach' : ''}>{objectives.overallDrawdown.status}</strong><small>{objectives.overallDrawdown.current} · floor {objectives.overallDrawdown.floor}</small></article>}
+                      {objectives.calendar && <article><span>Calendar / quality</span><strong>{objectives.calendar.minDaysSatisfied ? 'Days ready' : `${objectives.calendar.qualifyingDays ?? 0} qualifying day`}</strong><small>{objectives.calendar.elapsedDays ?? 0} elapsed · {objectives.calendar.expired ? 'expired' : 'within cutoff'} · positions {objectives.positionsReady ? 'flat' : 'not ready'}</small></article>}
+                    </div>
+                  )}
+                </section>
+
+                <div className="prop-lifecycle-actions" data-testid="prop-lifecycle-actions">
+                  {attempt.status === 'ready' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-start" disabled={pendingAction === 'transition:start'} onClick={() => transitionAttempt('start')}>{pendingAction === 'transition:start' ? 'Đang bắt đầu…' : 'Bắt đầu mô phỏng'}</button>}
+                  {attempt.status === 'running' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-pause" disabled={pendingAction === 'transition:pause'} onClick={() => transitionAttempt('pause')}>{pendingAction === 'transition:pause' ? 'Đang tạm dừng…' : 'Tạm dừng'}</button>}
+                  {attempt.status === 'paused' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-resume" disabled={pendingAction === 'transition:resume'} onClick={() => transitionAttempt('resume')}>{pendingAction === 'transition:resume' ? 'Đang tiếp tục…' : 'Tiếp tục mô phỏng'}</button>}
+                  {['ready', 'running', 'paused', 'phase_passed', 'next_phase_ready'].includes(attempt.status) && <button type="button" className="prop-refresh" data-testid="prop-transition-abandon" disabled={pendingAction === 'transition:abandon'} onClick={() => transitionAttempt('abandon')}>{pendingAction === 'transition:abandon' ? 'Đang bỏ…' : 'Bỏ attempt'}</button>}
                 </div>
 
                 {selected.reportError && (

@@ -301,6 +301,37 @@ async function main() {
         return json(route, 201, bundle)
       }
 
+      const transitionMatch = url.pathname.match(/^\/api\/v2\/prop\/sessions\/([^/]+)\/attempts\/([^/]+)\/transitions$/)
+      if (transitionMatch && request.method() === 'POST') {
+        const sessionId = decodeURIComponent(transitionMatch[1])
+        const attemptId = decodeURIComponent(transitionMatch[2])
+        const body = JSON.parse(request.postData() || '{}')
+        assert.equal(body.workspace_id, workspace)
+        assert.equal(body.session_id, sessionId)
+        assert.equal(body.attempt_id, attemptId)
+        assert.equal(body.mode, undefined)
+        const key = `${sessionId}/${attemptId}`
+        const current = bundles.get(key)
+        if (!current) return json(route, 404, { detail: 'prop_attempt_not_found' })
+        assert.equal(body.expected_revision, current.attempt.revision)
+        assert.equal(body.event_sequence, current.phase.last_event_sequence)
+        const targets = {
+          ready: { start: 'running', abandon: 'abandoned' },
+          running: { pause: 'paused', abandon: 'abandoned' },
+          paused: { resume: 'running', abandon: 'abandoned' },
+        }
+        const nextStatus = targets[current.attempt.status]?.[body.action]
+        if (!nextStatus) return json(route, 409, { detail: `transition ${body.action} is invalid from ${current.attempt.status}` })
+        const attempt = { ...current.attempt, status: nextStatus, revision: current.attempt.revision + 1 }
+        const session = { ...current.session, status: nextStatus, revision: current.session.revision + 1 }
+        const updated = { ...current, session, attempt }
+        bundles.set(key, updated)
+        attempts.set(sessionId, [attempt])
+        const index = sessions.findIndex((item) => item.session_id === sessionId)
+        if (index >= 0) sessions[index] = session
+        return json(route, 200, { ...updated, duplicate: false })
+      }
+
       const attemptsMatch = url.pathname.match(/^\/api\/v2\/prop\/sessions\/([^/]+)\/attempts$/)
       if (attemptsMatch) {
         const sessionId = decodeURIComponent(attemptsMatch[1])
@@ -503,6 +534,8 @@ async function main() {
     assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /#412/)
     assert.match(await page.getByTestId('prop-resume-note').innerText(), /không tự chạy clock/i)
     assert.match(await page.getByTestId('prop-report').innerText(), /Daily loss đã bị breach/)
+    assert.match(await page.getByTestId('prop-objectives').innerText(), /Daily loss/i)
+    assert.match(await page.getByTestId('prop-objectives').innerText(), /Breached/i)
 
     await page.getByLabel('Tên session').fill('Custom UI acceptance')
     await page.getByLabel('Profile').selectOption('custom')
@@ -510,6 +543,12 @@ async function main() {
     await page.getByRole('button', { name: 'Tạo session mô phỏng' }).click()
     await page.getByTestId('prop-resume-bundle').getByText('dataset-created-v2', { exact: true }).waitFor()
     assert.match(await page.getByTestId('prop-resume-bundle').innerText(), /dataset-created-v2/)
+    await page.getByTestId('prop-transition-start').click()
+    await page.getByTestId('prop-resume-bundle').locator('.prop-resume-strip').getByText('running', { exact: true }).waitFor()
+    await page.getByTestId('prop-transition-pause').click()
+    await page.getByTestId('prop-resume-bundle').locator('.prop-resume-strip').getByText('paused', { exact: true }).waitFor()
+    await page.getByTestId('prop-transition-resume').click()
+    await page.getByTestId('prop-resume-bundle').locator('.prop-resume-strip').getByText('running', { exact: true }).waitFor()
     assert.equal(sessions.length, 2)
     const createdSession = sessions[1]
     assert.equal(createdSession.profile.source_kind, 'custom')
@@ -685,6 +724,8 @@ async function main() {
         'create_session_and_attempt',
         'persisted_id_reload_resume',
         'cursor_and_money_resume_state',
+        'objective_snapshot_visibility',
+        'simulation_lifecycle_start_pause_resume',
         'attempt_report_reason_explanation',
         'report_to_exact_replay_cursor_link',
         'report_status_and_branch_filters',

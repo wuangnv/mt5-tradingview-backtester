@@ -487,6 +487,16 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 .prop-facts dt { color: #7f8992; font-size: 10px; text-transform: uppercase; }
 .prop-facts dd { margin: 3px 0 0; color: #bfc7cd; font-size: 11px; overflow-wrap: anywhere; }
 .prop-resume-note { margin-top: 14px; max-width: 760px; border-left: 2px solid #d7a64c; padding-left: 10px; color: #98a2aa; font-size: 11px; line-height: 1.55; }
+.prop-objectives { margin-top: 22px; border-top: 1px solid #293036; padding-top: 16px; }
+.prop-objectives-empty { margin: 10px 0 0; color: #8e999f; font-size: 11px; line-height: 1.55; }
+.prop-objective-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #242a2f; border-bottom: 1px solid #242a2f; }
+.prop-objective-grid article { min-width: 0; padding: 12px 14px 12px 0; }
+.prop-objective-grid article + article { border-left: 1px solid #242a2f; padding-left: 14px; }
+.prop-objective-grid span { display: block; color: #7f8992; font-size: 10px; text-transform: uppercase; overflow-wrap: anywhere; }
+.prop-objective-grid strong { display: block; margin-top: 4px; color: #dce1e5; font-size: 12px; }
+.prop-objective-grid strong.is-breach { color: #ef9c9c; }
+.prop-objective-grid small { display: block; margin-top: 4px; color: #8e999f; font-size: 10px; line-height: 1.45; overflow-wrap: anywhere; }
+.prop-lifecycle-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-top: 14px; }
 .prop-report { margin-top: 22px; border-top: 1px solid #293036; padding-top: 16px; }
 .prop-report-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #242a2f; border-bottom: 1px solid #242a2f; }
 .prop-report-summary > div { min-width: 0; padding: 12px 14px 12px 0; }
@@ -572,6 +582,9 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
   .prop-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prop-metrics article:nth-child(3) { border-left: 0; border-top: 1px solid #242a2f; }
   .prop-metrics article:nth-child(4) { border-top: 1px solid #242a2f; }
+  .prop-objective-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prop-objective-grid article:nth-child(3) { border-left: 0; border-top: 1px solid #242a2f; }
+  .prop-objective-grid article:nth-child(4) { border-top: 1px solid #242a2f; }
   .prop-report-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .prop-report-row-actions { justify-content: flex-start; }
   .notion-destination { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -588,6 +601,8 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
   .prop-facts div:nth-child(even) { border-left: 0; padding-left: 0; }
   .prop-resume-strip, .prop-metrics { grid-template-columns: 1fr; }
   .prop-resume-strip > div + div, .prop-resume-strip > div:nth-child(3), .prop-metrics article + article, .prop-metrics article:nth-child(3) { border-left: 0; border-top: 1px solid #242a2f; padding-left: 0; }
+  .prop-objective-grid { grid-template-columns: 1fr; }
+  .prop-objective-grid article + article { border-left: 0; border-top: 1px solid #242a2f; padding-left: 0; }
   .prop-report-summary, .prop-report-filters, .prop-report-row { grid-template-columns: 1fr; }
   .prop-report-summary > div + div { border-left: 0; border-top: 1px solid #242a2f; padding-left: 0; }
   .prop-report-actions, .prop-report-row-actions { align-items: flex-start; flex-direction: column; }
