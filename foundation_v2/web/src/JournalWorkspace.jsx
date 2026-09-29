@@ -208,6 +208,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
   }
 
   const title = selected && !editing ? 'Chi tiết ghi chú' : selected ? 'Sửa ghi chú' : 'Ghi chú mới'
+  const selectedSource = sourceForRecord(selected)
   return (
     <main className="ja-page journal-page" data-testid="journal-workspace">
       <header className="ja-page-header">
@@ -266,7 +267,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
           </label>
           <div className="ja-source-box">
             <span className="ja-eyebrow">IMMUTABLE SOURCE</span>
-            <code>{sourceForRecord(selected) .kind || source?.kind || 'N/A'}:{sourceForRecord(selected).id || source?.id || 'N/A'}</code>
+            <code>{selectedSource.kind || source?.kind || 'N/A'}:{selectedSource.id || source?.id || 'N/A'}</code>
             <small>Source gắn với session/trade và không đổi khi sửa revision.</small>
           </div>
           {formError && <div className="ja-form-error" role="alert">{formError}</div>}

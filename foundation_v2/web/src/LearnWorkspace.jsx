@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import './learnIntegration.css'
 
 function normalizeError(response, payload) {
   const detail = String(payload?.detail || `HTTP ${response.status}`)
@@ -62,6 +63,29 @@ function returnTarget(query, workspace) {
   }
 
   return { href: `/?${params.toString()}`, label: 'Research' }
+}
+
+function LearnUtilityLinks({ workspace, query, returnLink }) {
+  const practiceParams = new URLSearchParams({ workspace, view: 'replay' })
+  const from = query?.get('from')
+  if (from === 'replay') {
+    const sessionId = query.get('session')
+    const datasetId = query.get('dataset')
+    const start = query.get('start')
+    if (sessionId) practiceParams.set('session', sessionId)
+    else if (datasetId) {
+      practiceParams.set('dataset', datasetId)
+      if (start) practiceParams.set('start', start)
+    }
+  }
+  const settingsParams = new URLSearchParams({ workspace, view: 'settings', from: 'learn' })
+  return (
+    <div className="learn-utility-links" aria-label="Điều hướng workspace">
+      <a className="context-link" href={returnLink.href}>{returnLink.label}</a>
+      <a className="context-link" href={`/?${practiceParams.toString()}`}>Practice</a>
+      <a className="context-link" href={`/?${settingsParams.toString()}`}>Settings</a>
+    </div>
+  )
 }
 
 function ResourceButton({ resourceId, label, selectedResourceId, onOpen }) {
@@ -160,7 +184,7 @@ export default function LearnWorkspace({ workspace, query }) {
       <main className="learn-shell">
         <header className="learn-topbar">
           <div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div>
-          <a className="context-link" href={returnLink.href}>{returnLink.label}</a>
+          <LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} />
         </header>
         <StateMessage kind="loading" testId="learn-loading">Đang đọc course và tiến độ thật…</StateMessage>
       </main>
@@ -170,7 +194,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (overview.status === 'denied') {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} /></header>
         <StateMessage kind="denied" testId="learn-denied">Workspace này không có quyền đọc Learn.</StateMessage>
       </main>
     )
@@ -179,7 +203,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (overview.status === 'unavailable') {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} /></header>
         <StateMessage kind="unavailable" testId="learn-unavailable">Learn chưa được cấu hình cho workspace này.</StateMessage>
       </main>
     )
@@ -188,7 +212,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (overview.status === 'error') {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} /></header>
         <StateMessage kind="error" testId="learn-error">Không đọc được Learn: {overview.error}</StateMessage>
       </main>
     )
@@ -197,7 +221,7 @@ export default function LearnWorkspace({ workspace, query }) {
   if (safety?.read_only !== true || safety?.answer_keys_exposed !== false || safety?.auto_completion_enabled !== false) {
     return (
       <main className="learn-shell">
-        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><a className="context-link" href={returnLink.href}>{returnLink.label}</a></header>
+        <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} /></header>
         <StateMessage kind="error" testId="learn-safety-error">Learn đang trả về safety contract không hợp lệ nên nội dung đã được khóa.</StateMessage>
       </main>
     )
@@ -212,13 +236,20 @@ export default function LearnWorkspace({ workspace, query }) {
           <p>Tiến độ lấy trực tiếp từ course hiện có, không tự thay đổi khi mở bài.</p>
         </div>
         <div className="learn-topbar-actions">
-          <a className="context-link" href={returnLink.href}>{returnLink.label}</a>
+          <LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} />
           <div className="learn-readonly" data-testid="learn-readonly">
             <strong>READ ONLY</strong>
             <span>Không ghi tiến độ · không lộ answer key</span>
           </div>
         </div>
       </header>
+
+      <div className="learn-context-strip" data-testid="learn-context-strip" aria-label="Trạng thái Learn">
+        <span><strong>Local course</strong> · đọc từ workspace</span>
+        <span>Progress owner <code>{safety?.progress_owner || 'education/progress.json'}</code></span>
+        <span>OAuth <strong className="is-warn">PREP_ONLY</strong></span>
+        <span>Broker <strong className="is-warn">Locked</strong></span>
+      </div>
 
       <section className="learn-summary" aria-label="Tổng quan course">
         <div><span>Course</span><strong>{course?.title || 'Chưa có tên'}</strong></div>
@@ -347,6 +378,7 @@ export default function LearnWorkspace({ workspace, query }) {
         <span>Workspace <strong>{workspace}</strong></span>
         <span>Progress owner <code>{safety?.progress_owner || 'education/progress.json'}</code></span>
         <span>Auto completion <strong>{safety?.auto_completion_enabled ? 'Bật' : 'Tắt'}</strong></span>
+        <span>Provider sync <strong className="is-warn">PREP_ONLY</strong></span>
       </footer>
     </main>
   )

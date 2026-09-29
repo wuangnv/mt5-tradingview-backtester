@@ -1,0 +1,10 @@
+.learn-utility-links { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.learn-context-strip { display: flex; align-items: center; gap: 18px; min-height: 42px; flex-wrap: wrap; border-bottom: 1px solid #293036; color: #7f8992; font-size: 10px; }
+.learn-context-strip span { overflow-wrap: anywhere; }
+.learn-context-strip strong { color: #cbd2d8; }
+.learn-context-strip code { color: #aeb7be; }
+.learn-context-strip .is-warn, .learn-footnote .is-warn { color: #f0c878 !important; }
+
+@media (max-width: 520px) {
+  .learn-utility-links { gap: 10px 14px; }
+}
