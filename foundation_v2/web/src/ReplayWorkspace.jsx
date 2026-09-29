@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CandlestickSeries, createChart } from 'lightweight-charts'
+import './ReplayWorkspace.css'
 
 function formatTimestamp(timestamp) {
   if (!Number.isFinite(Number(timestamp))) return 'Chưa có dữ liệu'
@@ -29,7 +30,7 @@ async function readJson(response) {
   return payload
 }
 
-function ReplayChart({ rows }) {
+function ReplayChart({ rows, onCrosshair }) {
   const hostRef = useRef(null)
 
   useEffect(() => {
@@ -60,6 +61,16 @@ function ReplayChart({ rows }) {
       low: Number(row.low),
       close: Number(row.close),
     })))
+    const handleCrosshairMove = (param) => {
+      if (!param?.time) {
+        onCrosshair?.(null)
+        return
+      }
+      const data = param.seriesData?.get(series)
+      const row = rows.find((item) => Number(item.timestamp) === Number(param.time))
+      onCrosshair?.(row ? { row, data } : null)
+    }
+    chart.subscribeCrosshairMove(handleCrosshairMove)
     chart.timeScale().fitContent()
 
     const observer = new ResizeObserver(() => {
@@ -68,6 +79,7 @@ function ReplayChart({ rows }) {
     observer.observe(host)
     return () => {
       observer.disconnect()
+      chart.unsubscribeCrosshairMove(handleCrosshairMove)
       chart.remove()
     }
   }, [rows])
@@ -109,11 +121,16 @@ export default function ReplayWorkspace({ workspace, query }) {
   const requestedCursorValid = requestedCursor === null || (Number.isInteger(requestedCursor) && requestedCursor >= 0)
   const [sessionId, setSessionId] = useState(requestedSession)
   const [state, setState] = useState({ status: 'idle', payload: null, error: null })
+  const [datasetState, setDatasetState] = useState({ status: 'loading', items: [], error: null })
   const [pendingAction, setPendingAction] = useState('')
   const [conflict, setConflict] = useState(false)
   const [branchCursor, setBranchCursor] = useState(0)
   const [datasetDraft, setDatasetDraft] = useState(requestedDataset)
   const [startDraft, setStartDraft] = useState(Number.isFinite(requestedStart) ? Math.max(0, requestedStart) : 0)
+  const [jumpDraft, setJumpDraft] = useState(0)
+  const [speed, setSpeed] = useState('1')
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [crosshair, setCrosshair] = useState(null)
 
   const rememberSession = useCallback((nextSessionId, preserveCursor = false) => {
     setSessionId(nextSessionId)
@@ -134,6 +151,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       rememberSession(payload.record_id, targetCursor !== null)
       const viewCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
       setBranchCursor(payload.historical_view ? Math.max(0, viewCursor) : Math.max(0, viewCursor - 1))
+      setJumpDraft(Math.max(0, viewCursor))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       setState({ status: 'error', payload: null, error: String(error.message || error) })
@@ -157,6 +175,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       const payload = await readJson(response)
       rememberSession(payload.record_id)
       setBranchCursor(Math.max(0, Number(payload.payload.cursor_index) - 1))
+      setJumpDraft(Math.max(0, Number(payload.payload.cursor_index)))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       setState({ status: 'error', payload: null, error: String(error.message || error) })
@@ -164,6 +183,24 @@ export default function ReplayWorkspace({ workspace, query }) {
       setPendingAction('')
     }
   }, [datasetDraft, rememberSession, startDraft, workspace])
+
+  const loadDatasets = useCallback(async () => {
+    setDatasetState({ status: 'loading', items: [], error: null })
+    try {
+      const response = await fetch('/api/v2/data/datasets', {
+        headers: { 'X-Workspace-Id': workspace },
+      })
+      const payload = await readJson(response)
+      const items = Array.isArray(payload.items) ? payload.items : []
+      setDatasetState({ status: 'ready', items, error: null })
+      if (!datasetDraft && !requestedDataset && items.length) {
+        const preferred = items.find((item) => /EURUSD/i.test(String(item.instrument_id || item.dataset_id))) || items[0]
+        setDatasetDraft(String(preferred.dataset_id))
+      }
+    } catch (error) {
+      setDatasetState({ status: 'error', items: [], error: String(error.message || error) })
+    }
+  }, [datasetDraft, requestedDataset, workspace])
 
   useEffect(() => {
     if (requestedSession) {
@@ -179,6 +216,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       loadSession(persisted)
       return
     }
+    loadDatasets()
     if (requestedDataset) createSession()
   }, []) // Resolve the initial resume once from URL -> persisted session -> dataset.
 
@@ -198,6 +236,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       else replaceSessionInUrl(payload.record_id)
       const nextCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
       setBranchCursor(Math.max(0, nextCursor - 1))
+      setJumpDraft(Math.max(0, nextCursor))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       if (error.code === 'revision_conflict') {
@@ -222,6 +261,26 @@ export default function ReplayWorkspace({ workspace, query }) {
   const canBranch = Boolean(replay) && !conflict && (
     historicalView ? cursor < canonicalCursor : cursor > 0 && branchCursor < cursor
   )
+
+  const jumpToCursor = useCallback(() => {
+    if (!sessionId || !replay) return
+    const target = Math.max(0, Math.min(Number(jumpDraft) || 0, canonicalCursor))
+    setIsPlaying(false)
+    loadSession(sessionId, target)
+  }, [canonicalCursor, jumpDraft, loadSession, replay, sessionId])
+
+  useEffect(() => {
+    if (!isPlaying || !replay || historicalView || completed || conflict || pendingAction) return undefined
+    const delay = Math.max(180, 1100 / Math.max(1, Number(speed) || 1))
+    const timer = window.setInterval(() => {
+      mutate('step', { expected_revision: Number(replay.revision || 0), steps: 1 })
+    }, delay)
+    return () => window.clearInterval(timer)
+  }, [completed, conflict, historicalView, isPlaying, mutate, pendingAction, replay, speed])
+
+  useEffect(() => {
+    if (completed || historicalView || conflict || state.status === 'error') setIsPlaying(false)
+  }, [completed, conflict, historicalView, state.status])
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -291,17 +350,28 @@ export default function ReplayWorkspace({ workspace, query }) {
       {!replay && state.status !== 'loading' && (
         <section className="replay-start" aria-label="Mở replay">
           <div>
-            <h2>Mở một replay session</h2>
-            <p>Nhập dataset đã có trong Workspace. Session được lưu để tải lại tiếp tục đúng vị trí.</p>
+            <div className="replay-start-kicker">CHART-FIRST PRACTICE</div>
+            <h2>Mở chart để bắt đầu replay</h2>
+            <p>Chọn dữ liệu local đã được đăng ký trong Workspace. Màn hình này chỉ mở phần dữ liệu đã tới cutoff; không gửi lệnh broker.</p>
           </div>
           <label>
-            Dataset ID
-            <input
+            Dataset
+            <select
               value={datasetDraft}
               onChange={(event) => setDatasetDraft(event.target.value)}
-              placeholder="dataset-id"
               data-testid="dataset-id"
-            />
+              disabled={datasetState.status === 'loading'}
+            >
+              {!datasetDraft && <option value="">Chọn dataset…</option>}
+              {datasetState.items.map((item) => (
+                <option key={item.dataset_id} value={item.dataset_id}>
+                  {item.instrument_id || item.dataset_id} · {item.timeframe || 'TF chưa rõ'} · {item.quality_status || 'unverified'}
+                </option>
+              ))}
+              {datasetDraft && !datasetState.items.some((item) => item.dataset_id === datasetDraft) && (
+                <option value={datasetDraft}>{datasetDraft} · đang kiểm tra</option>
+              )}
+            </select>
           </label>
           <label>
             Start index
@@ -312,9 +382,12 @@ export default function ReplayWorkspace({ workspace, query }) {
               onChange={(event) => setStartDraft(Math.max(0, Number(event.target.value) || 0))}
             />
           </label>
-          <button className="primary-action" type="button" onClick={createSession} disabled={pendingAction === 'create'}>
+          <button className="primary-action" type="button" onClick={createSession} disabled={pendingAction === 'create' || !datasetDraft.trim() || datasetState.status === 'loading'}>
             {pendingAction === 'create' ? 'Đang tạo…' : 'Bắt đầu replay'}
           </button>
+          {datasetState.status === 'loading' && <div className="replay-inline-status">Đang đọc danh mục dữ liệu…</div>}
+          {datasetState.status === 'error' && <div className="replay-inline-status is-error">Không đọc được danh mục: {datasetState.error}</div>}
+          {datasetState.status === 'ready' && !datasetState.items.length && <div className="replay-inline-status is-empty">Chưa có dataset local trong workspace này.</div>}
         </section>
       )}
 
@@ -326,6 +399,7 @@ export default function ReplayWorkspace({ workspace, query }) {
           <section className="replay-status" aria-label="Trạng thái replay">
             <div><span>Workspace</span><strong>{workspace}</strong></div>
             <div><span>Dataset</span><code>{replay.payload.dataset_id}</code></div>
+            <div><span>Data status</span><strong>{datasetState.items.find((item) => item.dataset_id === replay.payload.dataset_id)?.quality_status || 'unverified'}</strong></div>
             <div><span>Revision</span><strong>r{revision}</strong></div>
             <div><span>Đã mở</span><strong>{replay.visible_row_count} nến</strong></div>
             <div className={`replay-state ${completed ? 'is-complete' : ''} ${conflict ? 'is-conflict' : ''}`} data-testid="replay-status">
@@ -356,7 +430,17 @@ export default function ReplayWorkspace({ workspace, query }) {
           <section className="replay-workspace">
             <div className="replay-main">
               <div className="replay-toolbar" aria-label="Điều khiển replay">
-                <div className="toolbar-group">
+                <div className="toolbar-group toolbar-primary">
+                  <button
+                    type="button"
+                    className="play-button"
+                    data-testid="play-toggle"
+                    onClick={() => setIsPlaying((current) => !current)}
+                    disabled={historicalView || completed || conflict || Boolean(pendingAction)}
+                    aria-pressed={isPlaying}
+                  >
+                    {isPlaying ? 'Tạm dừng' : 'Phát replay'}
+                  </button>
                   <button
                     type="button"
                     data-testid="step-1"
@@ -376,6 +460,15 @@ export default function ReplayWorkspace({ workspace, query }) {
                     +10 nến
                   </button>
                 </div>
+                <div className="toolbar-speed" aria-label="Tốc độ replay">
+                  <span>Tốc độ</span>
+                  <select value={speed} onChange={(event) => setSpeed(event.target.value)} disabled={Boolean(pendingAction)}>
+                    <option value="0.5">0.5×</option>
+                    <option value="1">1×</option>
+                    <option value="2">2×</option>
+                    <option value="4">4×</option>
+                  </select>
+                </div>
                 <div className="cutoff-readout">
                   <span>Decision cutoff</span>
                   <strong>{formatTimestamp(replay.cutoff_timestamp)} UTC</strong>
@@ -383,18 +476,62 @@ export default function ReplayWorkspace({ workspace, query }) {
                 </div>
               </div>
 
-              <ReplayChart rows={visibleRows} />
+              <div className="chart-frame">
+                <ReplayChart rows={visibleRows} onCrosshair={setCrosshair} />
+                <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
+                <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
+              </div>
 
               <div className="bar-readout" aria-label="OHLC nến hiện tại">
-                <span>Nến #{cursor}</span>
-                <span>O <strong>{formatPrice(currentBar?.open)}</strong></span>
-                <span>H <strong>{formatPrice(currentBar?.high)}</strong></span>
-                <span>L <strong>{formatPrice(currentBar?.low)}</strong></span>
-                <span>C <strong>{formatPrice(currentBar?.close)}</strong></span>
+                <span className="bar-readout-label">{crosshair?.row ? 'Crosshair' : 'Nến hiện tại'} #{crosshair?.row ? visibleRows.findIndex((item) => item.timestamp === crosshair.row.timestamp) : cursor}</span>
+                <span>O <strong>{formatPrice((crosshair?.row || currentBar)?.open)}</strong></span>
+                <span>H <strong>{formatPrice((crosshair?.row || currentBar)?.high)}</strong></span>
+                <span>L <strong>{formatPrice((crosshair?.row || currentBar)?.low)}</strong></span>
+                <span>C <strong>{formatPrice((crosshair?.row || currentBar)?.close)}</strong></span>
+                {crosshair?.row && <span className="bar-readout-time">{formatTimestamp(crosshair.row.timestamp)} UTC</span>}
+              </div>
+
+              <div className="replay-jump" aria-label="Đi tới nến">
+                <div className="replay-jump-heading">
+                  <span>Đi tới nến đã có trong session</span>
+                  <strong>#{jumpDraft} / #{canonicalCursor}</strong>
+                </div>
+                <input
+                  data-testid="replay-jump"
+                  type="range"
+                  min="0"
+                  max={Math.max(0, canonicalCursor)}
+                  value={Math.min(jumpDraft, Math.max(0, canonicalCursor))}
+                  onChange={(event) => setJumpDraft(Number(event.target.value))}
+                  disabled={historicalView || conflict || Boolean(pendingAction) || canonicalCursor <= 0}
+                  aria-label="Chọn nến replay"
+                />
+                <button type="button" onClick={jumpToCursor} disabled={historicalView || conflict || Boolean(pendingAction) || Number(jumpDraft) === cursor}>
+                  Mở cutoff này
+                </button>
               </div>
             </div>
 
             <aside className="replay-side">
+              <section className="decision-panel">
+                <div className="side-heading">
+                  <div>
+                    <span>Decision workspace</span>
+                    <strong>Ghi quyết định tại nến #{cursor}</strong>
+                  </div>
+                  <span className="mode-pill">SIM</span>
+                </div>
+                <p>Chart và replay đã sẵn sàng. Các thao tác vẽ/đặt lệnh sẽ chỉ mở khi có contract session tương ứng.</p>
+                <div className="decision-readout">
+                  <span>Giá đóng hiện tại</span>
+                  <strong>{formatPrice(currentBar?.close)}</strong>
+                  <small>{formatTimestamp(currentBar?.timestamp)} UTC</small>
+                </div>
+                <div className="unsupported-tools" aria-label="Công cụ đang khóa">
+                  <button type="button" disabled title="Annotation API cần session binding đầy đủ">Vẽ vùng <span>đang khóa</span></button>
+                  <button type="button" disabled title="Trade draft cần execution initialization">Trade draft <span>đang khóa</span></button>
+                </div>
+              </section>
               <section>
                 <div className="side-heading">
                   <div>
