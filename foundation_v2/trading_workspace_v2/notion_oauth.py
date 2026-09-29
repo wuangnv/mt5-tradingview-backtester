@@ -29,6 +29,19 @@ class NotionOAuthConfig:
     client_secret: str
     redirect_uri: str
 
+    def __post_init__(self) -> None:
+        parsed = urlparse(self.redirect_uri)
+        if parsed.scheme != "http" or parsed.hostname not in {"127.0.0.1", "localhost"} or parsed.username or parsed.password:
+            raise NotionOAuthError("notion_oauth_redirect_must_be_loopback")
+        try:
+            port = parsed.port
+        except ValueError as exc:
+            raise NotionOAuthError("notion_oauth_redirect_port_invalid") from exc
+        if port is None:
+            raise NotionOAuthError("notion_oauth_redirect_port_invalid")
+        if parsed.path != "/api/v2/connectors/notion/oauth/callback" or parsed.query or parsed.fragment:
+            raise NotionOAuthError("notion_oauth_redirect_path_invalid")
+
     @classmethod
     def from_environment(cls) -> NotionOAuthConfig | None:
         names = ("TW_V2_NOTION_CLIENT_ID", "TW_V2_NOTION_CLIENT_SECRET", "TW_V2_NOTION_REDIRECT_URI")
@@ -37,11 +50,6 @@ class NotionOAuthConfig:
             return None
         if not all(values):
             raise NotionOAuthError("notion_oauth_configuration_incomplete")
-        parsed = urlparse(values[2])
-        if parsed.scheme != "http" or parsed.hostname not in {"127.0.0.1", "localhost"}:
-            raise NotionOAuthError("notion_oauth_redirect_must_be_loopback")
-        if parsed.path != "/api/v2/connectors/notion/oauth/callback" or parsed.query or parsed.fragment:
-            raise NotionOAuthError("notion_oauth_redirect_path_invalid")
         return cls(*values)
 
 
@@ -58,7 +66,9 @@ class _Connection:
     workspace_id: str
     identity_id: str
     access_token: str
+    refresh_token: str | None
     connected_at: datetime
+    expires_at: datetime | None
 
 
 class NotionOAuthService:
@@ -123,28 +133,45 @@ class NotionOAuthService:
             if self._client is None:
                 client.close()
         token = payload.get("access_token") if isinstance(payload, dict) else None
-        if not isinstance(token, str) or not token:
+        if not _valid_token(token):
             raise NotionOAuthError("notion_oauth_token_missing")
+        refresh_token = payload.get("refresh_token")
+        if refresh_token is not None and not _valid_token(refresh_token):
+            raise NotionOAuthError("notion_oauth_token_invalid")
+        expires_in = payload.get("expires_in")
+        if expires_in is not None and (type(expires_in) is not int or not 0 < expires_in <= 31_536_000):
+            raise NotionOAuthError("notion_oauth_token_invalid")
         connection = _Connection(
             connection_id=f"notion-{secrets.token_urlsafe(18)}",
             workspace_id=pending.workspace_id,
             identity_id=pending.identity_id,
             access_token=token,
+            refresh_token=refresh_token,
             connected_at=now,
+            expires_at=now + timedelta(seconds=expires_in) if expires_in is not None else None,
         )
         with self._lock:
             self._connections[(pending.workspace_id, pending.identity_id)] = connection
         return {"status": "connected", "connection_id": connection.connection_id}
 
-    def status(self, workspace_id: str, identity_id: str) -> dict[str, object]:
+    def status(self, workspace_id: str, identity_id: str, *, now: datetime | None = None) -> dict[str, object]:
+        now = now or datetime.now(timezone.utc)
         with self._lock:
             connection = self._connections.get((workspace_id, identity_id))
+        state = "disconnected"
+        if connection:
+            if connection.expires_at is not None and connection.expires_at <= now:
+                state = "reconnect_required" if connection.refresh_token else "expired"
+            else:
+                state = "connected"
         return {
             "provider": "notion",
             "oauth_available": self.available,
-            "status": "connected" if connection else "disconnected",
+            "status": state,
             "connection_id": connection.connection_id if connection else None,
             "token_persistence": "process_memory_only",
+            "provider_identity_verified": False,
+            "provider_permission_verified": False,
             "export_mode": "PREP_ONLY",
             "cloud_write": False,
         }
@@ -161,3 +188,7 @@ def is_loopback_host(host: str | None) -> bool:
         return bool(host and ipaddress.ip_address(host).is_loopback)
     except ValueError:
         return False
+
+
+def _valid_token(value: object) -> bool:
+    return isinstance(value, str) and 0 < len(value) <= 16_384 and all(33 <= ord(char) <= 126 for char in value)

@@ -465,6 +465,10 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
           <p data-testid="notion-provider-status">
             {provider.status === 'connected'
               ? 'Đã kết nối. Token chỉ nằm trong backend đang chạy; export report vẫn PREP_ONLY.'
+              : provider.status === 'reconnect_required'
+                ? 'Phiên Notion đã hết hạn; cần đăng nhập lại. Export report vẫn PREP_ONLY.'
+                : provider.status === 'expired'
+                  ? 'Token Notion đã hết hạn; hãy đăng nhập lại. Export report vẫn PREP_ONLY.'
               : providerPending
                 ? 'Đang chờ bạn cấp quyền trên Notion. Trang này sẽ tự cập nhật sau callback.'
                 : provider.status === 'loading'

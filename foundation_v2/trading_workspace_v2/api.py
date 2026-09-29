@@ -4,6 +4,7 @@ import os
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Literal
+from urllib.parse import urlparse
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import PlainTextResponse
@@ -163,6 +164,49 @@ def create_app(
         notion_oauth = NotionOAuthService(NotionOAuthConfig.from_environment())
     app.state.notion_oauth = notion_oauth
 
+    @app.middleware("http")
+    async def protect_notion_oauth_response(request: Request, call_next):
+        response = await call_next(request)
+        if request.url.path.startswith("/api/v2/connectors/notion/oauth/"):
+            response.headers["Cache-Control"] = "no-store"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'"
+            response.headers["Referrer-Policy"] = "no-referrer"
+            response.headers["X-Content-Type-Options"] = "nosniff"
+        return response
+
+    def require_local_notion_request(request: Request, *, callback: bool = False, mutation: bool = False) -> None:
+        client_host = request.client.host if request.client else None
+        try:
+            request_url = urlparse(str(request.url))
+        except ValueError as exc:
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only") from exc
+        if not is_loopback_host(client_host) or not is_loopback_host(request_url.hostname) or request_url.scheme != "http":
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        try:
+            request_port = request_url.port
+        except ValueError as exc:
+            raise HTTPException(status_code=403, detail="notion_oauth_local_only") from exc
+        if callback:
+            if notion_oauth.config is None:
+                raise HTTPException(status_code=503, detail="notion_oauth_not_configured")
+            redirect = urlparse(notion_oauth.config.redirect_uri)
+            if request_url.hostname != redirect.hostname or request_port != redirect.port:
+                raise HTTPException(status_code=403, detail="notion_oauth_callback_origin_invalid")
+        if mutation:
+            origin = request.headers.get("origin")
+            if not origin:
+                raise HTTPException(status_code=403, detail="notion_oauth_origin_required")
+            try:
+                parsed_origin = urlparse(origin)
+                origin_port = parsed_origin.port
+            except ValueError as exc:
+                raise HTTPException(status_code=403, detail="notion_oauth_origin_invalid") from exc
+            if (parsed_origin.scheme, parsed_origin.hostname, origin_port, parsed_origin.path, parsed_origin.query, parsed_origin.fragment, parsed_origin.username) != (
+                request_url.scheme, request_url.hostname, request_port, "", "", "", None
+            ):
+                raise HTTPException(status_code=403, detail="notion_oauth_origin_invalid")
+
     @app.get("/health")
     def health():
         return {
@@ -197,15 +241,13 @@ def create_app(
     # Its token lives only in this process and never enters a JSON response.
     @app.get("/api/v2/connectors/notion/oauth/status")
     def notion_oauth_status(request: Request, workspace: str = Depends(workspace_id)):
-        if not is_loopback_host(request.client.host if request.client else None):
-            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        require_local_notion_request(request)
         identity = request.app.state.authorization.identity.resolve()
         return notion_oauth.status(workspace, identity.subject)
 
     @app.post("/api/v2/connectors/notion/oauth/start")
     def notion_oauth_start(request: Request, workspace: str = Depends(workspace_id)):
-        if not is_loopback_host(request.client.host if request.client else None):
-            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        require_local_notion_request(request, mutation=True)
         identity = request.app.state.authorization.identity.resolve()
         try:
             return {"authorization_url": notion_oauth.begin(workspace, identity.subject)}
@@ -214,8 +256,7 @@ def create_app(
 
     @app.get("/api/v2/connectors/notion/oauth/callback", response_class=PlainTextResponse)
     def notion_oauth_callback(request: Request, state: str = "", code: str = "", error: str = ""):
-        if not is_loopback_host(request.client.host if request.client else None):
-            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        require_local_notion_request(request, callback=True)
         if error:
             raise HTTPException(status_code=400, detail="notion_oauth_provider_denied")
         try:
@@ -228,8 +269,7 @@ def create_app(
 
     @app.post("/api/v2/connectors/notion/oauth/disconnect")
     def notion_oauth_disconnect(request: Request, workspace: str = Depends(workspace_id)):
-        if not is_loopback_host(request.client.host if request.client else None):
-            raise HTTPException(status_code=403, detail="notion_oauth_local_only")
+        require_local_notion_request(request, mutation=True)
         identity = request.app.state.authorization.identity.resolve()
         notion_oauth.disconnect(workspace, identity.subject)
         return notion_oauth.status(workspace, identity.subject)

@@ -35,7 +35,7 @@ disabled unless `TW_V2_NOTION_CLIENT_ID`, `TW_V2_NOTION_CLIENT_SECRET`, and
 `TW_V2_NOTION_REDIRECT_URI` are all set in the backend process environment.
 The redirect must be an `http://127.0.0.1` or `http://localhost` URL with path
 `/api/v2/connectors/notion/oauth/callback`, and must match the URI registered
-for the owner's Notion public integration. Never place the secret in the web
+for the owner's Notion public integration. An explicit port is required. Never place the secret in the web
 bundle or repository.
 
 The authorized workspace calls `POST /api/v2/connectors/notion/oauth/start`
@@ -47,8 +47,18 @@ and call `POST /api/v2/connectors/notion/oauth/disconnect`. These routes accept
 only loopback clients. Responses expose only an opaque connection ID and
 status, never a credential or provider workspace details.
 
-The access token is held only in process memory and is lost on restart. The
-disconnect route removes this local token; it does not revoke it at Notion.
+The callback also checks that the browser's loopback host and port match the
+configured redirect exactly. Start and disconnect require a same-origin POST.
+OAuth responses, including errors, carry no-store, restrictive CSP,
+no-referrer, and nosniff headers. Provider identity and granted permissions
+remain unverified in status until a separate provider-read validation exists.
+
+Access and optional refresh tokens are validated and held only in process
+memory; both are lost on restart. If the provider supplies an access-token
+expiry, status changes to `expired` at that boundary, or
+`reconnect_required` when a refresh token exists but no refresh adapter is
+enabled. The disconnect route removes this local token; it does not revoke it
+at Notion.
 The existing Notion report ledger and export flow remain `PREP_ONLY` with
 `cloud_write=false`. OAuth completion grants no report-write authority.
 

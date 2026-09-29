@@ -70,11 +70,52 @@ def test_oauth_callback_consumes_state_and_keeps_token_out_of_status():
         assert result["status"] == status["status"] == "connected"
         assert status["export_mode"] == "PREP_ONLY"
         assert status["cloud_write"] is False
+        assert status["provider_identity_verified"] is False
+        assert status["provider_permission_verified"] is False
         assert "notion-secret-token" not in json.dumps(result) + json.dumps(status)
         with pytest.raises(NotionOAuthError, match="state_invalid_or_expired"):
             service.complete(state, "one-time-code", authorize_workspace=_authorize, now=NOW)
         assert len(requests) == 1
         service.disconnect("owner-workspace", "local-owner")
+        assert service.status("owner-workspace", "local-owner")["status"] == "disconnected"
+
+
+def test_token_expiry_requires_reconnection_without_leaking_refresh_token():
+    with httpx.Client(transport=httpx.MockTransport(
+        lambda _: httpx.Response(200, json={
+            "access_token": "private-access", "refresh_token": "private-refresh", "expires_in": 30,
+        })
+    )) as client:
+        service = NotionOAuthService(CONFIG, client=client)
+        state = _state(service.begin("owner-workspace", "local-owner", now=NOW))
+        service.complete(state, "code", authorize_workspace=_authorize, now=NOW)
+        assert service.status("owner-workspace", "local-owner", now=NOW + timedelta(seconds=29))["status"] == "connected"
+        expired = service.status("owner-workspace", "local-owner", now=NOW + timedelta(seconds=30))
+        assert expired["status"] == "reconnect_required"
+        assert "private-access" not in json.dumps(expired)
+        assert "private-refresh" not in json.dumps(expired)
+
+    with httpx.Client(transport=httpx.MockTransport(
+        lambda _: httpx.Response(200, json={"access_token": "private-access", "expires_in": 30})
+    )) as client:
+        service = NotionOAuthService(CONFIG, client=client)
+        state = _state(service.begin("owner-workspace", "local-owner", now=NOW))
+        service.complete(state, "code", authorize_workspace=_authorize, now=NOW)
+        assert service.status("owner-workspace", "local-owner", now=NOW + timedelta(seconds=30))["status"] == "expired"
+
+
+@pytest.mark.parametrize("payload", [
+    {"access_token": "bad token"},
+    {"access_token": "valid", "refresh_token": ""},
+    {"access_token": "valid", "expires_in": True},
+    {"access_token": "valid", "expires_in": -1},
+])
+def test_malformed_token_response_never_creates_connection(payload):
+    with httpx.Client(transport=httpx.MockTransport(lambda _: httpx.Response(200, json=payload))) as client:
+        service = NotionOAuthService(CONFIG, client=client)
+        state = _state(service.begin("owner-workspace", "local-owner", now=NOW))
+        with pytest.raises(NotionOAuthError, match="notion_oauth_token_"):
+            service.complete(state, "code", authorize_workspace=_authorize, now=NOW)
         assert service.status("owner-workspace", "local-owner")["status"] == "disconnected"
 
 
@@ -99,6 +140,8 @@ def test_oauth_requires_loopback_redirect_and_request_host(monkeypatch):
     monkeypatch.setenv("TW_V2_NOTION_REDIRECT_URI", "https://example.com/api/v2/connectors/notion/oauth/callback")
     with pytest.raises(NotionOAuthError, match="redirect_must_be_loopback"):
         NotionOAuthConfig.from_environment()
+    with pytest.raises(NotionOAuthError, match="redirect_port_invalid"):
+        NotionOAuthConfig("id", "secret", "http://127.0.0.1/api/v2/connectors/notion/oauth/callback")
     assert is_loopback_host("127.0.0.1")
     assert is_loopback_host("::1")
     assert not is_loopback_host("example.com")
@@ -125,21 +168,39 @@ def test_api_oauth_status_start_callback_and_disconnect(monkeypatch):
                 authorization=LocalWorkspaceAuthorization.for_local_owner(["owner-workspace"]),
                 notion_oauth=service,
             )
-            with TestClient(app, client=("127.0.0.1", 50000)) as browser:
-                headers = {"X-Workspace-Id": "owner-workspace"}
+            with TestClient(app, base_url="http://127.0.0.1:8010", client=("127.0.0.1", 50000)) as browser:
+                headers = {"X-Workspace-Id": "owner-workspace", "Origin": "http://127.0.0.1:8010"}
                 assert browser.get("/api/v2/connectors/notion/oauth/status", headers=headers).json()["status"] == "disconnected"
+                assert browser.post("/api/v2/connectors/notion/oauth/start", headers={"X-Workspace-Id": "owner-workspace", "Origin": "https://evil.test"}).status_code == 403
+                assert browser.post("/api/v2/connectors/notion/oauth/start", headers={"X-Workspace-Id": "owner-workspace"}).status_code == 403
                 started = browser.post("/api/v2/connectors/notion/oauth/start", headers=headers)
                 assert started.status_code == 200
+                assert started.headers["Cache-Control"] == "no-store"
+                assert started.headers["Referrer-Policy"] == "no-referrer"
+                assert started.headers["X-Content-Type-Options"] == "nosniff"
                 state = _state(started.json()["authorization_url"])
+                with TestClient(app, base_url="http://127.0.0.1:8011", client=("127.0.0.1", 50000)) as wrong_port:
+                    rejected = wrong_port.get("/api/v2/connectors/notion/oauth/callback", params={"state": state, "code": "code"})
+                    assert rejected.status_code == 403
+                    assert rejected.headers["Content-Security-Policy"].startswith("default-src 'none'")
+                with TestClient(app, base_url="http://localhost:8010", client=("127.0.0.1", 50000)) as wrong_host:
+                    assert wrong_host.get(
+                        "/api/v2/connectors/notion/oauth/callback", params={"state": state, "code": "code"}
+                    ).status_code == 403
                 callback = browser.get(
                     "/api/v2/connectors/notion/oauth/callback", params={"state": state, "code": "code"}
                 )
                 assert callback.status_code == 200
+                assert callback.headers["Cache-Control"] == "no-store"
                 status = browser.get("/api/v2/connectors/notion/oauth/status", headers=headers).json()
                 assert status["status"] == "connected"
                 assert "secret-never-in-response" not in json.dumps(status)
+                assert browser.post("/api/v2/connectors/notion/oauth/disconnect", headers={
+                    "X-Workspace-Id": "owner-workspace", "Origin": "http://evil.test",
+                }).status_code == 403
+                assert service.status("owner-workspace", "local-owner")["status"] == "connected"
                 assert browser.post("/api/v2/connectors/notion/oauth/disconnect", headers=headers).json()["status"] == "disconnected"
-            with TestClient(app, client=("192.0.2.1", 50000)) as remote:
+            with TestClient(app, base_url="http://127.0.0.1:8010", client=("192.0.2.1", 50000)) as remote:
                 assert remote.post("/api/v2/connectors/notion/oauth/start", headers=headers).status_code == 403
                 assert remote.get("/api/v2/connectors/notion/oauth/status", headers=headers).status_code == 403
                 assert remote.post("/api/v2/connectors/notion/oauth/disconnect", headers=headers).status_code == 403
