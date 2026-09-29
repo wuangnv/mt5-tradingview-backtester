@@ -175,6 +175,8 @@ def _walk_causal_timestamps(value: Any, cutoff: int, *, path: str = "visible_sli
     timestamp_keys = {
         "timestamp",
         "timestamp_utc",
+        "anchor_timestamp",
+        "anchor_timestamp_utc",
         "close_timestamp",
         "close_timestamp_utc",
         "known_at",
@@ -535,6 +537,158 @@ class OfflineChartAIAdvisor:
         return fail_closed_chart_ai_response(normalized, "provider_unavailable")
 
 
+def _evidence_identifier(value: Mapping[str, Any], *keys: str) -> str | None:
+    """Return one bounded evidence identifier without inventing an ID."""
+
+    for key in keys:
+        candidate = value.get(key)
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    return None
+
+
+def _display_token(value: Any, fallback: str, *, maximum: int = 96) -> str:
+    """Make trusted, validated metadata safe for a plain-text explanation."""
+
+    if not isinstance(value, str) or not value.strip():
+        return fallback
+    # Context strings have already passed the prompt-injection guard.  Keep a
+    # second, presentation-only bound so a provider/UI cannot receive a very
+    # large line if a future contract expands the metadata fields.
+    token = " ".join(value.strip().split())
+    return token[:maximum] or fallback
+
+
+class OfflineGroundedChartAIAdvisor:
+    """Produce a small, local explanation from already validated chart evidence.
+
+    This is intentionally a template adapter rather than a language model. It
+    is useful when AI is disabled: the user can ask *what is visible at this
+    cutoff?* and receive a source-bound description, while missing evidence,
+    stale context, and unsupported jobs remain fail-closed. No provider,
+    network, persistence, broker or annotation write path is reachable here.
+    """
+
+    provider_id = OFFLINE_PROVIDER
+    model_id = OFFLINE_MODEL
+    _SUPPORTED_JOBS = frozenset({"chart_explanation"})
+
+    @staticmethod
+    def _rows(value: Any, key: str) -> tuple[Mapping[str, Any], ...]:
+        if not isinstance(value, Mapping):
+            return ()
+        rows = value.get(key)
+        if not isinstance(rows, (list, tuple)):
+            return ()
+        return tuple(row for row in rows if isinstance(row, Mapping))
+
+    @classmethod
+    def _grounded_evidence(cls, request: Mapping[str, Any]) -> tuple[tuple[str, ...], tuple[str, ...], tuple[Mapping[str, Any], ...], tuple[Mapping[str, Any], ...]]:
+        visible_slice = request.get("visible_slice")
+        visible_events = cls._rows(visible_slice, "events")
+        visible_bars = cls._rows(visible_slice, "bars")
+        event_rows = tuple(request.get("evidence_events") or ()) + visible_events
+        bar_rows = tuple(request.get("evidence_bars") or ()) + visible_bars
+
+        # A request's evidence IDs are the authority for citations.  A row is
+        # usable only when its own ID matches one of those declared refs; this
+        # prevents a template from citing an unlabelled or unrelated row.
+        declared_event_ids = tuple(request.get("evidence_event_ids") or ())
+        declared_bar_ids = tuple(request.get("evidence_bar_ids") or ())
+        event_rows_by_id = {
+            identifier: row
+            for row in event_rows
+            if (identifier := _evidence_identifier(row, "event_id", "id")) is not None
+        }
+        bar_rows_by_id = {
+            identifier: row
+            for row in bar_rows
+            if (identifier := _evidence_identifier(row, "bar_id", "id")) is not None
+        }
+        event_ids = tuple(identifier for identifier in declared_event_ids if identifier in event_rows_by_id)
+        bar_ids = tuple(identifier for identifier in declared_bar_ids if identifier in bar_rows_by_id)
+        return event_ids, bar_ids, tuple(event_rows_by_id[item] for item in event_ids), tuple(bar_rows_by_id[item] for item in bar_ids)
+
+    def request(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+        try:
+            normalized = validate_chart_ai_request(payload)
+        except ChartAIContractError as exc:
+            message = str(exc)
+            known_reasons = (
+                "prompt_injection_blocked",
+                "cross_workspace_source",
+                "context_hash_mismatch",
+                "stale_context",
+                "provider_unavailable",
+            )
+            reason = next((candidate for candidate in known_reasons if candidate in message), "invalid_context")
+            return fail_closed_chart_ai_response(payload, reason)
+
+        if normalized["job"] not in self._SUPPORTED_JOBS:
+            return fail_closed_chart_ai_response(
+                normalized,
+                "provider_unavailable",
+                detail="Offline grounded explanation does not implement this chart AI job.",
+            )
+
+        event_ids, bar_ids, event_rows, bar_rows = self._grounded_evidence(normalized)
+        if not event_ids and not bar_ids:
+            return fail_closed_chart_ai_response(
+                normalized,
+                "insufficient_evidence",
+                detail="Không đủ event/bar evidence đã gắn ID trong cutoff để tạo giải thích grounded.",
+            )
+
+        event = event_rows[0] if event_rows else {}
+        kind = _display_token(event.get("kind"), "visible_price_snapshot")
+        direction = _display_token(event.get("direction"), "không xác định")
+        anchor = event.get("anchor_timestamp") or event.get("timestamp")
+        anchor_text = str(anchor) if type(anchor) is int else "chưa có mốc"
+        instrument = _display_token(normalized.get("instrument_id"), "instrument chưa xác định")
+        cutoff = normalized["cursor_or_cutoff"]
+        summary = (
+            f"{instrument}: {kind} ({direction}) được ghi nhận tại mốc {anchor_text}; "
+            f"giải thích chỉ dùng {len(event_ids)} event và {len(bar_ids)} bar đã khai báo "
+            f"trong cutoff {cutoff}. Đây là mô tả quan sát local, không phải tín hiệu vào lệnh."
+        )
+        result = {
+            "schema_version": RESULT_SCHEMA,
+            "claim": "grounded_chart_observation",
+            "summary": summary[:4_000],
+            "uncertainty": "medium" if event_ids else "high",
+            "action": "observe",
+            "invalid_if": (
+                "replay cutoff changes",
+                "source revision changes",
+                "declared evidence is withdrawn",
+            ),
+        }
+        response = {
+            "schema_version": RESPONSE_SCHEMA,
+            "mode": ADVISORY_MODE,
+            "request_id": normalized["request_id"],
+            "status": "ok",
+            "provider": self.provider_id,
+            "model": self.model_id,
+            "context_hash": normalized["context_hash"],
+            "result": result,
+            "evidence_event_ids": list(event_ids),
+            "evidence_bar_ids": list(bar_ids),
+            "usage": None,
+            "latency_ms": 0.0,
+            "reason_code": "grounded_offline",
+            "execution_capability": False,
+            "write_authority": False,
+        }
+        # Validate the generated packet against the same response boundary the
+        # UI uses.  This catches future contract changes before a template can
+        # accidentally bypass them.
+        try:
+            return validate_chart_ai_response(response, normalized)
+        except (ChartAIContractError, TypeError, ValueError) as exc:
+            return fail_closed_chart_ai_response(normalized, "invalid_context", detail=str(exc))
+
+
 __all__ = [
     "ADVISORY_MODE",
     "ChartAIRequest",
@@ -543,6 +697,7 @@ __all__ = [
     "ChartAIUsage",
     "ChartAIContractError",
     "OfflineChartAIAdvisor",
+    "OfflineGroundedChartAIAdvisor",
     "compute_context_hash",
     "fail_closed_chart_ai_response",
     "validate_chart_ai_request",

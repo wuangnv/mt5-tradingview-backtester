@@ -8,6 +8,7 @@ from trading_workspace_v2.chart_ai_contract import (
     ChartAIContractError,
     ChartAIRequest,
     OfflineChartAIAdvisor,
+    OfflineGroundedChartAIAdvisor,
     compute_context_hash,
     fail_closed_chart_ai_response,
     validate_chart_ai_request,
@@ -221,6 +222,39 @@ class ChartAIFailClosedTests(unittest.TestCase):
         self.assertEqual(response["status"], "invalid_context")
         self.assertEqual(response["reason_code"], "prompt_injection_blocked")
         self.assertFalse(response["execution_capability"])
+
+
+class OfflineGroundedChartAIAdvisorTests(unittest.TestCase):
+    def test_grounded_advisor_returns_source_bound_observation(self):
+        request = request_payload()
+        response = OfflineGroundedChartAIAdvisor().request(request)
+        self.assertEqual(response["status"], "ok")
+        self.assertEqual(response["provider"], "offline")
+        self.assertEqual(response["result"]["claim"], "grounded_chart_observation")
+        self.assertIn("FVG", response["result"]["summary"])
+        self.assertEqual(response["evidence_event_ids"], ["evt:fvg-1"])
+        self.assertEqual(response["evidence_bar_ids"], ["bar:1700000060", "bar:1700000120"])
+        self.assertFalse(response["execution_capability"])
+        self.assertFalse(response["write_authority"])
+        self.assertEqual(validate_chart_ai_response(response, request)["context_hash"], request["context_hash"])
+
+    def test_grounded_advisor_fails_closed_when_declared_refs_are_not_present(self):
+        request = request_payload(
+            evidence_event_ids=["evt:missing"],
+            evidence_bar_ids=["bar:missing"],
+        )
+        response = OfflineGroundedChartAIAdvisor().request(request)
+        self.assertEqual(response["status"], "uncertain")
+        self.assertEqual(response["reason_code"], "insufficient_evidence")
+        self.assertEqual(response["result"]["uncertainty"], "unknown")
+        self.assertFalse(response["execution_capability"])
+
+    def test_grounded_advisor_rejects_future_anchor_without_leaking_it(self):
+        request = request_payload()
+        request["visible_slice"]["events"][0]["anchor_timestamp"] = request["cursor_or_cutoff"] + 1
+        response = OfflineGroundedChartAIAdvisor().request(request)
+        self.assertEqual(response["status"], "invalid_context")
+        self.assertNotIn(str(request["cursor_or_cutoff"] + 1), response["result"]["summary"])
 
 
 if __name__ == "__main__":
