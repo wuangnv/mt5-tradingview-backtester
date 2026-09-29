@@ -14,6 +14,49 @@ DEFAULT_CAPABILITIES = {
     "holdout_content": False,
 }
 
+# This is deliberately a separate contract from ``capabilities``.  A provider
+# may expose metadata while still being unsuitable for a production run (for
+# example a local fixture or a dataset whose license has not been verified).
+# Keep the defaults fail-closed so adding a provider cannot accidentally make
+# network, OAuth, or entitlement authority appear available.
+DEFAULT_READINESS = {
+    "source_kind": "unknown",
+    "connection_mode": "offline",
+    "network_access": False,
+    "oauth_required": False,
+    "entitlement_status": "unverified",
+    "production_ready": False,
+}
+
+
+def _provider_readiness(provider) -> dict:
+    """Return a bounded, non-secret readiness profile for one provider.
+
+    The profile is descriptive only.  It never contains credentials, URLs, or
+    account identifiers and it does not grant access to a provider.  Unknown
+    provider implementations inherit fail-closed defaults until they declare a
+    reviewed profile explicitly.
+    """
+
+    declared = getattr(provider, "readiness", {})
+    if not isinstance(declared, Mapping):
+        declared = {}
+    declared = dict(declared)
+    profile = {
+        key: declared.get(key, default)
+        for key, default in DEFAULT_READINESS.items()
+    }
+    profile["source_kind"] = str(profile["source_kind"])
+    profile["connection_mode"] = str(profile["connection_mode"])
+    profile["network_access"] = bool(profile["network_access"])
+    profile["oauth_required"] = bool(profile["oauth_required"])
+    profile["entitlement_status"] = str(profile["entitlement_status"])
+    # Production readiness is never inferred from capabilities or from a
+    # provider name.  A future real connector must opt in through a separately
+    # reviewed implementation and entitlement check.
+    profile["production_ready"] = bool(profile["production_ready"])
+    return profile
+
 
 class DataProviderRegistry:
     def __init__(self, providers):
@@ -29,6 +72,7 @@ class DataProviderRegistry:
             {
                 "provider_id": provider_id,
                 "capabilities": dict(provider.capabilities),
+                "readiness": _provider_readiness(provider),
             }
             for provider_id, provider in sorted(self._providers.items())
         ]
@@ -46,6 +90,14 @@ class DataProviderRegistry:
 class LocalCatalogProvider:
     provider_id = "local-catalog"
     capabilities = dict(DEFAULT_CAPABILITIES)
+    readiness = {
+        "source_kind": "local_catalog",
+        "connection_mode": "offline_local",
+        "network_access": False,
+        "oauth_required": False,
+        "entitlement_status": "dataset_metadata_only",
+        "production_ready": False,
+    }
 
     def __init__(self, store: PostgresStore):
         self.store = store
@@ -65,6 +117,15 @@ class LocalCatalogProvider:
 
 class StaticMetadataProvider:
     """Offline provider used to verify connector replacement without network access."""
+
+    readiness = {
+        "source_kind": "offline_fixture",
+        "connection_mode": "offline_fixture",
+        "network_access": False,
+        "oauth_required": False,
+        "entitlement_status": "fixture_only",
+        "production_ready": False,
+    }
 
     def __init__(self, provider_id: str, datasets_by_workspace: Mapping[str, list[dict]], capabilities=None):
         self.provider_id = str(provider_id)

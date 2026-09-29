@@ -393,11 +393,21 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
               <div className="rd-provider-list">
                 {providers.map((provider) => {
                   const capabilities = provider.capabilities || {}
+                  const readiness = provider.readiness || {}
                   const available = Object.entries(capabilities).filter(([, value]) => value === true).map(([key]) => key)
                   const blocked = Object.entries(capabilities).filter(([, value]) => value !== true).map(([key]) => key)
+                  const readinessLabel = readiness.production_ready ? 'Production đã xác minh' : 'Chưa đủ điều kiện production'
                   return (
                     <div className="rd-provider-row" key={provider.provider_id}>
-                      <div><strong>{provider.provider_id}</strong><small>{available.length ? `Có: ${available.join(', ')}` : 'Không có capability đọc được khai báo'}</small></div>
+                      <div>
+                        <strong>{provider.provider_id}</strong>
+                        <small>{available.length ? `Có: ${available.join(', ')}` : 'Không có capability đọc được khai báo'}</small>
+                        <small className="rd-provider-readiness">{readiness.connection_mode || 'offline'} · entitlement: {readiness.entitlement_status || 'unverified'}</small>
+                      </div>
+                      <div className={`rd-provider-state ${readiness.production_ready ? 'is-ready' : 'is-blocked'}`}>
+                        <span>{readinessLabel}</span>
+                        <small>{readiness.network_access ? 'Network declared' : 'Offline / no network'}</small>
+                      </div>
                       <div className={`rd-capability ${blocked.length ? 'is-blocked' : ''}`}>{blocked.length ? `Khóa: ${blocked.join(', ')}` : 'Đã khai báo'}</div>
                     </div>
                   )
