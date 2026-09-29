@@ -94,6 +94,8 @@ class ProjectSession:
             raise ProjectSessionError("signed-in session cannot have signed_out_at_utc")
         if self.status == "signed_out" and self.signed_out_at_utc is None:
             raise ProjectSessionError("signed-out session requires signed_out_at_utc")
+        if self.status == "expired" and self.expires_at_utc is None:
+            raise ProjectSessionError("expired session requires expires_at_utc")
         if self.auth_mode != LOCAL_DEMO_AUTH_MODE or self.production_auth is not False:
             raise ProjectSessionError("project session is local-trusted-demo only")
 

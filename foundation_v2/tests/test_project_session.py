@@ -111,6 +111,15 @@ def test_malformed_or_secret_like_values_are_rejected_without_token_storage():
     with pytest.raises(ProjectSessionError):
         make_session(ttl_seconds=0)
     with pytest.raises(ProjectSessionError):
+        ProjectSession(
+            session_id="expired-without-deadline",
+            identity_id="owner",
+            workspace_id="workspace",
+            issued_at_utc=NOW,
+            expires_at_utc=None,
+            status="expired",
+        )
+    with pytest.raises(ProjectSessionError):
         ProjectSession.begin_local_demo(
             session_id="x",
             identity_id="owner",
