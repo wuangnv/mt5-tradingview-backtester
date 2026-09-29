@@ -53,6 +53,21 @@ test('analytics does not add broker execution controls', () => {
   assert.match(source, /Research \/ local · broker locked/)
 })
 
+test('analytics reads the bounded U6 read model, filters by ledger fields, and exports through the workspace header', () => {
+  assert.match(source, /\/api\/v2\/research\/jobs\/\$\{encodeURIComponent\(jobId\)\}\/analytics/)
+  assert.match(source, /analytics\.csv/)
+  assert.match(source, /X-Workspace-Id/)
+  assert.match(source, /side.*buy.*sell/s)
+  assert.match(source, /outcome.*win.*loss.*breakeven/s)
+  assert.match(source, /from_close_utc/)
+  assert.match(source, /to_close_utc/)
+  assert.match(source, /blocked_by_data/)
+  assert.match(source, /data-testid="analytics-filters"/)
+  assert.match(source, /data-testid="analytics-empty"/)
+  assert.match(source, /data-testid="analytics-blocked"/)
+  assert.match(source, /freshness === 'stale'/)
+})
+
 test('analytics story CSS has desktop, tablet, mobile and reduced-motion contracts', () => {
   assert.match(css, /\.as-evidence-grid/)
   assert.match(css, /\.as-metric-strip/)
