@@ -24,6 +24,11 @@ test('research story keeps the evidence-first flow and truthful safety boundary'
   assert.match(source, /data-testid="research-next-actions"/)
   assert.match(source, /getResearchCheckpoint\(workspace, jobId, signal\)/)
   assert.match(source, /cancelResearchJob\(workspace, jobState\.job\.job_id\)/)
+  assert.match(source, /fallbackKind=\{job\?\.dataset_id \? 'job' : requestedDataset \? 'query' : 'none'\}/)
+  assert.match(source, /Dataset chưa được xác nhận trong catalog/)
+  assert.match(source, /research-terminal-result/)
+  assert.match(source, /Không dựng kết quả thay thế/)
+  assert.doesNotMatch(source, /catalog\.datasets\[0\] \|\| null/)
 })
 
 test('research story styles provide stable geometry and responsive states', async () => {
