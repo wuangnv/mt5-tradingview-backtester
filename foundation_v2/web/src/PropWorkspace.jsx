@@ -415,7 +415,8 @@ export default function PropWorkspace({ workspace }) {
             session_id: session.session_id,
             attempt_id: attempt.attempt_id,
             profile_hash: attempt.profile_hash,
-            intent_id: `ui-${action}-${attempt.attempt_id}-${attempt.revision}-${Date.now().toString(36)}`,
+            // Revision-scoped IDs make a retried click idempotent after a lost response.
+            intent_id: `ui-${action}-${attempt.attempt_id}-${attempt.revision}`,
             expected_revision: attempt.revision,
             event_sequence: phase.last_event_sequence,
             action,
