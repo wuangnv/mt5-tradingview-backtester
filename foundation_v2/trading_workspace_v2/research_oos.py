@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from bisect import bisect_right
 from decimal import Decimal, InvalidOperation
 from itertools import islice, product
 from math import prod
 import re
+
+from .retained import compute_metrics_v2
 
 
 class ResearchValidationPlanError(ValueError):
@@ -321,6 +324,135 @@ def build_regime_partition(
         "segment_count": len(segments),
         "labels": summaries,
         "segments": segments,
+    }
+
+
+def build_regime_metrics(
+    partition: dict,
+    ledger: list[dict],
+    starting_balance: float,
+    *,
+    entry_time_field: str = "open_time_utc",
+    close_time_field: str = "close_time_utc",
+) -> dict:
+    """Compute bounded, entry-regime metrics for a closed-trade ledger.
+
+    A regime partition describes bars while an engine ledger describes trades;
+    the two timelines therefore need an explicit join policy.  This helper
+    assigns each trade to the segment containing its entry/open timestamp and
+    keeps a count for trades whose close crosses a later segment.  It does not
+    infer a regime from trade P/L, mutate the ledger, or read any holdout
+    content.  Each label receives the canonical ``metrics-v2`` view over its
+    selected trades, anchored to the run starting balance.  The result makes
+    that balance-path scope explicit because a label's trades need not be
+    contiguous in the full run.
+    """
+
+    if not isinstance(partition, dict) or partition.get("schema") != "regime-segmentation-v1":
+        raise ResearchValidationPlanError("regime partition is invalid")
+    if not isinstance(ledger, list):
+        raise ResearchValidationPlanError("ledger must be a list")
+    if not isinstance(entry_time_field, str) or not entry_time_field:
+        raise ResearchValidationPlanError("entry_time_field must be a non-empty string")
+    if not isinstance(close_time_field, str) or not close_time_field:
+        raise ResearchValidationPlanError("close_time_field must be a non-empty string")
+
+    segments = partition.get("segments")
+    if not isinstance(segments, list) or not segments:
+        raise ResearchValidationPlanError("regime partition requires segments")
+    validated_segments: list[dict] = []
+    starts: list[int] = []
+    previous_to: int | None = None
+    labels: list[str] = []
+    for index, segment in enumerate(segments):
+        if not isinstance(segment, dict):
+            raise ResearchValidationPlanError(f"regime segment {index} is invalid")
+        label = segment.get("label")
+        from_utc = segment.get("from_utc")
+        to_utc = segment.get("to_utc")
+        if (
+            not isinstance(label, str)
+            or type(from_utc) is not int
+            or type(to_utc) is not int
+            or from_utc < 0
+            or to_utc <= from_utc
+        ):
+            raise ResearchValidationPlanError(f"regime segment {index} has an invalid range")
+        if previous_to is not None and from_utc != previous_to:
+            raise ResearchValidationPlanError("regime segments must be contiguous and chronological")
+        if label not in labels:
+            labels.append(label)
+        starts.append(from_utc)
+        validated_segments.append(segment)
+        previous_to = to_utc
+
+    grouped: dict[str, list[dict]] = {label: [] for label in labels}
+    cross_segment_counts: dict[str, int] = {label: 0 for label in labels}
+    cutoff = partition.get("cutoff_timestamp")
+    if type(cutoff) is not int:
+        cutoff = validated_segments[-1]["to_utc"]
+    if cutoff < validated_segments[-1]["to_utc"]:
+        raise ResearchValidationPlanError("regime cutoff precedes partition range")
+
+    for index, trade in enumerate(ledger):
+        if not isinstance(trade, dict):
+            raise ResearchValidationPlanError(f"ledger[{index}] must be an object")
+        open_time = trade.get(entry_time_field)
+        if type(open_time) is not int or open_time < 0:
+            raise ResearchValidationPlanError(
+                f"ledger[{index}].{entry_time_field} must be a nonnegative integer timestamp"
+            )
+        segment_index = bisect_right(starts, open_time) - 1
+        if (
+            segment_index < 0
+            or open_time >= validated_segments[segment_index]["to_utc"]
+            or open_time >= cutoff
+        ):
+            raise ResearchValidationPlanError(
+                f"ledger[{index}] entry timestamp is outside the regime partition"
+            )
+        close_time = trade.get(close_time_field)
+        if close_time is not None:
+            if type(close_time) is not int or close_time < open_time:
+                raise ResearchValidationPlanError(
+                    f"ledger[{index}].{close_time_field} must be an integer no earlier than entry"
+                )
+            if close_time > cutoff:
+                raise ResearchValidationPlanError(
+                    f"ledger[{index}] close timestamp exceeds the regime cutoff"
+                )
+            if close_time >= validated_segments[segment_index]["to_utc"]:
+                cross_segment_counts[validated_segments[segment_index]["label"]] += 1
+        label = validated_segments[segment_index]["label"]
+        grouped[label].append(trade)
+
+    metrics_by_label = []
+    for label in labels:
+        selected = grouped[label]
+        metrics_by_label.append(
+            {
+                "label": label,
+                "trade_count": len(selected),
+                "cross_segment_trade_count": cross_segment_counts[label],
+                "metrics": compute_metrics_v2(selected, starting_balance),
+            }
+        )
+    return {
+        "schema": "regime-metrics-v1",
+        "assignment": {
+            "policy": "entry_timestamp_segment",
+            "entry_time_field": entry_time_field,
+            "close_time_field": close_time_field,
+            "cross_segment_policy": "assigned_to_entry_regime_and_counted",
+        },
+        "metrics_scope": "entry_regime_trade_subset",
+        "starting_balance_scope": "run_starting_balance",
+        "holdout_access": False,
+        "cutoff_timestamp": cutoff,
+        "trade_count": len(ledger),
+        "unassigned_trade_count": 0,
+        "cross_segment_trade_count": sum(cross_segment_counts.values()),
+        "labels": metrics_by_label,
     }
 
 

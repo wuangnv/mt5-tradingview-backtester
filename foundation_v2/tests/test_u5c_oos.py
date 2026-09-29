@@ -29,6 +29,7 @@ from trading_workspace_v2.research_oos import (
     build_bounded_sweep,
     build_cost_fill_stress_plan,
     build_regime_partition,
+    build_regime_metrics,
     build_walk_forward_plan,
     complete_canceled_sweep_outcomes,
     summarize_sweep_outcomes,
@@ -394,6 +395,71 @@ class U5cRegimePartitionTests(unittest.TestCase):
                 timeframe_seconds=TIMEFRAME,
                 holdout_policy={"mode": "metadata_only", "from_utc": 7 * TIMEFRAME},
             )
+
+    def test_regime_metrics_assigns_entries_and_counts_cross_segment_trades(self):
+        partition = build_regime_partition(self.regime_rows(), timeframe_seconds=TIMEFRAME)
+        partition["cutoff_timestamp"] = len(self.regime_rows()) * TIMEFRAME
+        ledger = [
+            {
+                "trade_id": "t-1",
+                "open_time_utc": 0,
+                "close_time_utc": 2 * TIMEFRAME,
+                "net_pnl": 10.0,
+                "gross_pnl": 11.0,
+                "fees": 1.0,
+                "planned_risk_budget": 10.0,
+            },
+            {
+                "trade_id": "t-2",
+                "open_time_utc": 2 * TIMEFRAME,
+                "close_time_utc": 3 * TIMEFRAME,
+                "net_pnl": -4.0,
+                "gross_pnl": -3.0,
+                "fees": 1.0,
+                "planned_risk_budget": 8.0,
+            },
+            {
+                "trade_id": "t-3",
+                "open_time_utc": 4 * TIMEFRAME,
+                "close_time_utc": 5 * TIMEFRAME,
+                "net_pnl": 2.0,
+                "gross_pnl": 2.0,
+                "fees": 0.0,
+                "planned_risk_budget": 10.0,
+            },
+        ]
+
+        first = build_regime_metrics(partition, ledger, 100.0)
+        second = build_regime_metrics(copy.deepcopy(partition), copy.deepcopy(ledger), 100.0)
+        self.assertEqual(first, second)
+        self.assertEqual(first["schema"], "regime-metrics-v1")
+        self.assertFalse(first["holdout_access"])
+        self.assertEqual(first["assignment"]["policy"], "entry_timestamp_segment")
+        self.assertEqual(first["trade_count"], 3)
+        self.assertEqual(first["cross_segment_trade_count"], 1)
+        by_label = {item["label"]: item for item in first["labels"]}
+        self.assertEqual(by_label["trend"]["trade_count"], 2)
+        self.assertEqual(by_label["trend"]["cross_segment_trade_count"], 1)
+        self.assertEqual(by_label["trend"]["metrics"]["net_pnl"], 12.0)
+        self.assertEqual(by_label["range"]["metrics"]["closed_trade_count"], 1)
+        self.assertEqual(by_label["volatile"]["metrics"]["closed_trade_count"], 0)
+        self.assertEqual(first["metrics_scope"], "entry_regime_trade_subset")
+
+    def test_regime_metrics_rejects_future_or_unassigned_trade_timestamps(self):
+        partition = build_regime_partition(self.regime_rows(), timeframe_seconds=TIMEFRAME)
+        partition["cutoff_timestamp"] = len(self.regime_rows()) * TIMEFRAME
+        base_trade = {
+            "trade_id": "future",
+            "open_time_utc": partition["cutoff_timestamp"],
+            "close_time_utc": partition["cutoff_timestamp"],
+            "net_pnl": 1.0,
+        }
+        with self.assertRaisesRegex(ResearchValidationPlanError, "outside"):
+            build_regime_metrics(partition, [base_trade], 100.0)
+
+        malformed = {**base_trade, "open_time_utc": 0, "close_time_utc": partition["cutoff_timestamp"] + 1}
+        with self.assertRaisesRegex(ResearchValidationPlanError, "exceeds"):
+            build_regime_metrics(partition, [malformed], 100.0)
 
 
 class U5cBoundedSweepTests(unittest.TestCase):

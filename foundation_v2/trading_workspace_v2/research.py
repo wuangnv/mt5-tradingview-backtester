@@ -34,6 +34,7 @@ from .research_oos import (
     build_bounded_sweep,
     build_cost_fill_stress_plan,
     build_regime_partition,
+    build_regime_metrics,
     build_walk_forward_plan,
     complete_canceled_sweep_outcomes,
     summarize_sweep_outcomes,
@@ -603,6 +604,12 @@ class ResearchService:
                             rows=slice_rows,
                             continue_check=check_budget,
                         )
+                        if regime_partition is not None:
+                            engine_result["regime_metrics"] = build_regime_metrics(
+                                regime_partition,
+                                engine_result["ledger"],
+                                job.starting_balance,
+                            )
                         check_budget()
                         return engine_result
 
@@ -648,6 +655,9 @@ class ResearchService:
                                             scenario_result[segment_name] = {
                                                 "status": "completed",
                                                 "metrics": engine_result["metrics"],
+                                                **({
+                                                    "regime_metrics": engine_result["regime_metrics"],
+                                                } if regime_partition is not None else {}),
                                                 "signals": engine_result["signals"],
                                                 "trade_count": len(engine_result["ledger"]),
                                                 "observed_range": engine_result["observed_range"],
@@ -752,7 +762,14 @@ class ResearchService:
                         metrics=engine["metrics"],
                         observed_range={**engine["observed_range"], "elapsed_ms": round(elapsed_ms, 3)},
                         execution=engine.get("execution", {}),
-                        regime_partition=regime_partition,
+                        regime_partition=(
+                            {
+                                **regime_partition,
+                                "engine_metrics": engine["regime_metrics"],
+                            }
+                            if regime_partition is not None
+                            else None
+                        ),
                         created_at_utc=utc_now_iso(),
                     )
                     result_checkpoint = {"trade_count": len(result.ledger)}
