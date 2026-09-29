@@ -1,0 +1,34 @@
+{
+  "schema": "u7-grounded-offline-explanation-evidence-v1",
+  "scope": "bounded local chart explanation from validated replay evidence",
+  "implementation": {
+    "commit": "9af29c9",
+    "adapter": "OfflineGroundedChartAIAdvisor",
+    "supported_job": "chart_explanation",
+    "provider": "offline",
+    "model": "chart-advisory-offline-v1",
+    "engine": "deterministic-template",
+    "provider_calls": false,
+    "network_io": false,
+    "persistence": false,
+    "broker_execution_capability": false,
+    "annotation_write_authority": false
+  },
+  "validation": {
+    "command": "foundation_v2/.venv/Scripts/python.exe -m pytest tests/test_chart_ai_contract.py tests/test_chart_ui_contract.py tests/test_chart_renderer_contract.py -q",
+    "passed": 26,
+    "subtests_passed": 8
+  },
+  "guards": [
+    "context hash is validated before explanation",
+    "declared evidence IDs must match visible/evidence rows",
+    "anchor and event/bar timestamps cannot exceed replay cutoff",
+    "missing or unsupported evidence returns fail-closed status",
+    "execution_capability and write_authority remain false"
+  ],
+  "limitations": [
+    "This is a local grounded template, not a real provider acceptance.",
+    "It does not create or persist chart overlays; overlay preview/undo remains in the renderer contract.",
+    "A full U7 gate still needs UI acceptance on a real run and a separately approved provider evaluation."
+  ]
+}
