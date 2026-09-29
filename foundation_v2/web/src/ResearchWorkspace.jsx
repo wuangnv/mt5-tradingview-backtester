@@ -53,7 +53,15 @@ function Sparkline({ points }) {
   return <svg className="rd-spark" viewBox="0 0 100 120" preserveAspectRatio="none" aria-label="Đường vốn research"><polyline points={coords} /><text x="2" y="14">{formatNumber(max)}</text><text x="2" y="113">{formatNumber(min)}</text></svg>
 }
 
-function DatasetContext({ dataset, workspace }) {
+function DatasetContext({ dataset, workspace, fallbackDatasetId = '' }) {
+  if (!dataset && fallbackDatasetId) {
+    return (
+      <section className="rd-panel" aria-label="Research job data context" data-testid="research-data-context">
+        <div className="rd-panel-head"><div><h2>Dữ liệu gắn với job</h2><p>Job đã khóa dataset từ lúc tạo; catalog không được thay thế bằng dữ liệu khác.</p></div><a className="rd-context-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}&dataset=${encodeURIComponent(fallbackDatasetId)}`}>Mở Data Desk →</a></div>
+        <dl className="rd-detail-grid"><div><dt>Dataset</dt><dd><strong>{fallbackDatasetId}</strong></dd></div><div><dt>Provenance</dt><dd>Đọc từ research job</dd></div><div><dt>Holdout</dt><dd>Không suy ra từ job</dd></div></dl>
+      </section>
+    )
+  }
   if (!dataset) return <div className="rd-empty-callout">Chưa có dataset. Mở <a className="rd-context-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}`}>Data Desk</a> để chọn dữ liệu.</div>
   const range = datasetRange(dataset)
   const warnings = datasetWarnings(dataset)
@@ -85,6 +93,13 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
   const [pending, setPending] = useState('')
 
   useEffect(() => {
+    // A deep link to an existing job only needs the job endpoint. Avoid an
+    // unrelated catalog request so a result link remains usable when the
+    // catalog provider is unavailable or the job is already archived.
+    if (requestedJob) {
+      setCatalog({ status: 'ready', datasets: [], engines: [], error: null })
+      return undefined
+    }
     const controller = new AbortController()
     Promise.all([fetchDatasets(workspace, controller.signal), fetchResearchEngines(workspace, controller.signal)])
       .then(([datasets, engines]) => {
@@ -95,7 +110,7 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
         if (error.name !== 'AbortError') setCatalog({ status: 'error', datasets: [], engines: [], error: String(error.message || error) })
       })
     return () => controller.abort()
-  }, [workspace])
+  }, [requestedJob, workspace])
 
   const selected = catalog.datasets.find((dataset) => dataset.dataset_id === selectedId) || catalog.datasets[0] || null
 
@@ -159,6 +174,7 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
 
   const job = jobState.job
   const result = job?.result
+  const contextDatasetId = selected?.dataset_id || job?.dataset_id || requestedDataset
   const progress = checkpointProgress(jobState.checkpoint)
   const active = job && ['queued', 'running'].includes(job.status)
   const errors = job?.error_code ? [job.error_code] : []
@@ -167,14 +183,14 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
   const engine = catalog.engines.find((item) => item.id === 'nautilus')
   const learnParams = new URLSearchParams({ view: 'learn', workspace, from: 'research' })
   if (job?.job_id || requestedJob) learnParams.set('job', job?.job_id || requestedJob)
-  if (selected?.dataset_id) learnParams.set('dataset', selected.dataset_id)
+  if (contextDatasetId) learnParams.set('dataset', contextDatasetId)
   const learnHref = `/?${learnParams.toString()}`
 
   return (
     <main className="rd-shell" data-testid="research-root">
       <header className="rd-topbar">
         <div><div className="eyebrow">MT5 TRADING WORKSPACE / RESEARCH</div><h1>Research</h1><p>Chọn dataset → cố định giả định → tạo run → theo dõi bằng chứng.</p></div>
-        <div className="rd-actions"><a className="rd-context-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}${selected ? `&dataset=${encodeURIComponent(selected.dataset_id)}` : ''}`}>Data Desk</a><a className="rd-context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}${selected ? `&dataset=${encodeURIComponent(selected.dataset_id)}` : ''}`}>Replay</a><a className="rd-context-link" href={learnHref}>Học & thuật ngữ</a><div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · không gửi lệnh</span></div></div>
+        <div className="rd-actions"><a className="rd-context-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}${contextDatasetId ? `&dataset=${encodeURIComponent(contextDatasetId)}` : ''}`}>Data Desk</a><a className="rd-context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}${contextDatasetId ? `&dataset=${encodeURIComponent(contextDatasetId)}` : ''}`}>Replay</a><a className="rd-context-link" href={learnHref}>Học & thuật ngữ</a><div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · không gửi lệnh</span></div></div>
       </header>
       <div className="rd-statusbar" aria-label="Trạng thái Research"><span>Workspace <strong>{workspace}</strong></span><span>Job <code>{job?.job_id || requestedJob || 'Chưa tạo'}</code></span><span className={`rd-status ${statusClass(job?.status)}`} data-testid="research-status">{job ? statusLabel(job.status) : catalog.status === 'loading' ? 'Đang tải catalog' : 'Chưa chạy'}</span><span>Engine <strong>{engine?.available ? 'nautilus sẵn sàng' : 'reference / chưa xác minh'}</strong></span></div>
 
@@ -185,10 +201,10 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
       {catalog.status === 'ready' && (
         <div className="rd-main-grid">
           <div>
-            <DatasetContext dataset={selected} workspace={workspace} />
+            <DatasetContext dataset={selected} workspace={workspace} fallbackDatasetId={contextDatasetId} />
             <section className="rd-panel" aria-label="Tạo research run" data-testid="research-run-form">
               <div className="rd-panel-head"><div><h2>Tạo run</h2><p>Run cơ bản chỉ dùng dataset và strategy contract hiện có; không mở broker.</p></div></div>
-              {catalog.datasets.length === 0 ? <div className="rd-empty-callout">Không có dataset trong workspace. Mở Data Desk để kiểm tra catalog; không thể tạo run.</div> : (
+              {catalog.datasets.length === 0 ? <div className="rd-empty-callout">{requestedJob ? 'Đang xem lại job hiện tại. Muốn tạo run mới, mở Data Desk để chọn dataset.' : 'Không có dataset trong workspace. Mở Data Desk để kiểm tra catalog; không thể tạo run.'}</div> : (
                 <form className="rd-toolbar" onSubmit={runResearch}>
                   <label className="rd-field is-wide"><span>Dataset</span><select aria-label="Research dataset" value={selected?.dataset_id || ''} onChange={(event) => { setSelectedId(event.target.value); setQuery({ dataset: event.target.value, job: null }) }}><option value="" disabled>Chọn dataset</option>{catalog.datasets.map((dataset) => <option key={dataset.dataset_id} value={dataset.dataset_id}>{dataset.dataset_id} · {dataset.instrument_id || 'instrument?'}</option>)}</select></label>
                   <label className="rd-field"><span>Starting balance</span><input aria-label="Starting balance" inputMode="decimal" value={form.startingBalance} onChange={(event) => setForm((current) => ({ ...current, startingBalance: event.target.value }))} /></label>

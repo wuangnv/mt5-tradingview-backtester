@@ -36,7 +36,7 @@ function NavItem({ item, active, workspace }) {
   )
 }
 
-function ShellTopbar({ activeItem, mode }) {
+function ShellTopbar({ activeItem, mode, workspace }) {
   return (
     <header className="fx-topbar">
       <div className="fx-breadcrumb">
@@ -45,13 +45,13 @@ function ShellTopbar({ activeItem, mode }) {
         <strong>{activeItem?.label || 'Tổng quan'}</strong>
       </div>
       <div className="fx-context-strip" aria-label="Ngữ cảnh workspace">
-        <span className="fx-context-chip"><i className="fx-status-dot is-live" />EURUSD</span>
-        <span className="fx-context-chip">H1</span>
+        <span className="fx-context-chip"><i className="fx-status-dot is-warn" />EURUSD · default</span>
+        <span className="fx-context-chip">TF chưa chọn</span>
         <span className="fx-context-chip fx-context-mode">{mode}</span>
         <span className="fx-context-chip fx-context-lock">Broker locked</span>
       </div>
       <div className="fx-topbar-actions">
-        <span className="fx-workspace-name">tenant-a</span>
+        <span className="fx-workspace-name">{workspace || 'tenant-a'}</span>
         <button type="button" className="fx-avatar" aria-label="Workspace owner">A</button>
       </div>
     </header>
@@ -84,7 +84,7 @@ export default function FxReplayShell({ children, workspace, activeView = 'overv
         </div>
       </aside>
       <section className="fx-main">
-        <ShellTopbar activeItem={activeItem} mode={mode} />
+        <ShellTopbar activeItem={activeItem} mode={mode} workspace={workspace} />
         <div className="fx-content">{children}</div>
       </section>
     </div>

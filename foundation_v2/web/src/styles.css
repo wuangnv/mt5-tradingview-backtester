@@ -304,7 +304,7 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 @media (max-width: 680px) {
   .fx-topbar { min-height: 52px; gap: 10px; }
   .fx-breadcrumb { min-width: auto; }
-  .fx-breadcrumb strong, .fx-context-chip:nth-child(2), .fx-workspace-name { display: none; }
+  .fx-breadcrumb strong, .fx-context-chip:nth-child(2), .fx-context-mode, .fx-workspace-name { display: none; }
   .fx-context-strip { margin-left: auto; }
   .fx-content { padding-left: 13px; padding-right: 13px; }
   .fx-page-heading { align-items: flex-start; flex-direction: column; gap: 16px; padding-top: 22px; }
