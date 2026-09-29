@@ -14,6 +14,10 @@ test('journal UI stays linked to replay/trade context and uses revision endpoint
   assert.match(journalSource, /sourceIdentity/)
   assert.match(journalSource, /IMMUTABLE SOURCE/i)
   assert.match(journalSource, /data-testid="journal-workspace"/)
+  assert.match(journalSource, /DECISION CONTEXT/)
+  assert.match(journalSource, /actual_result/)
+  assert.match(journalSource, /overlay_ids/)
+  assert.match(journalSource, /context\.mode/)
 })
 
 test('analytics UI preserves unknown values and exposes result provenance', () => {

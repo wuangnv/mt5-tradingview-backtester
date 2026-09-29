@@ -135,7 +135,8 @@ export function recordMatchesContext(record, context) {
   const cursorMatches = context.cursor === null || [source.cursor_index, source.cursor].some((value) => String(value ?? '') === String(context.cursor))
   const cutoffMatches = !context.cutoffTimestamp || [source.cutoff_timestamp, source.cutoff, source.decision_cutoff]
     .some((value) => String(value ?? '') === String(context.cutoffTimestamp))
-  return sessionMatches && tradeMatches && datasetMatches && cursorMatches && cutoffMatches
+  const modeMatches = !context.mode || !source.mode || String(source.mode) === String(context.mode)
+  return sessionMatches && tradeMatches && datasetMatches && cursorMatches && cutoffMatches && modeMatches
 }
 
 function sourceIdentity(context) {
@@ -144,6 +145,7 @@ function sourceIdentity(context) {
     ...(context.datasetId ? { dataset_id: context.datasetId } : {}),
     ...(isFiniteNumber(context.cursor) ? { cursor_index: context.cursor } : {}),
     ...(context.cutoffTimestamp ? { cutoff_timestamp: context.cutoffTimestamp } : {}),
+    ...(context.mode ? { mode: context.mode } : {}),
   }
   if (context.tradeId) {
     return { kind: 'replay-trade', id: context.tradeId, ...shared, trade_id: context.tradeId }
@@ -209,7 +211,7 @@ function JournalRow({ record, selected, onSelect }) {
       </span>
       <span className="ja-row-meta">
         <code>{source.id || 'N/A'}</code>
-        <span>{Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</span>
+        <span>{payload.entry_type === 'no-trade' ? 'Không giao dịch' : Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</span>
       </span>
     </button>
   )
@@ -217,6 +219,7 @@ function JournalRow({ record, selected, onSelect }) {
 
 function StoryRail({ record, context }) {
   const story = storyForRecord(record, context)
+  const payload = record?.payload || record || {}
   return (
     <section className="ja-story-rail" aria-label="Decision story">
       <div className="ja-story-rail-head">
@@ -239,6 +242,8 @@ function StoryRail({ record, context }) {
         })}
       </ol>
       <div className="ja-story-facts">
+        {payload.decision && <div><span>Quyết định đã ghi</span><strong>{payload.decision}</strong></div>}
+        {payload.plan && <div><span>Plan dự kiến</span><strong>{payload.plan}</strong></div>}
         <div><span>Kết quả thực tế</span><strong className={recordOutcome(record) ? 'is-known' : 'is-unknown'}>{story.outcome}</strong></div>
         <div><span>Bước tiếp</span><strong>{story.next}</strong></div>
       </div>
@@ -261,11 +266,13 @@ function ProvenancePanel({ record, context }) {
         <div><dt>Dataset</dt><dd><code>{source.dataset_id || context.datasetId || 'N/A'}</code></dd></div>
         <div><dt>Cutoff nến</dt><dd>{source.cursor_index ?? context.cursor ?? 'N/A'}</dd></div>
         <div><dt>Cutoff UTC</dt><dd>{source.cutoff_timestamp ? formatContextTimestamp(source.cutoff_timestamp) : context.cutoffTimestamp ? formatContextTimestamp(context.cutoffTimestamp) : 'N/A'}</dd></div>
+        <div><dt>Mode</dt><dd>{source.mode || context.mode || 'N/A'}</dd></div>
         <div><dt>Source ID</dt><dd><code>{source.id || 'N/A'}</code></dd></div>
         <div><dt>Revision</dt><dd>r{record?.revision ?? 'N/A'}</dd></div>
         <div><dt>Tags</dt><dd>{Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</dd></div>
+        <div><dt>Overlay</dt><dd>{Array.isArray(payload.overlay_ids) && payload.overlay_ids.length ? payload.overlay_ids.join(' · ') : 'N/A'}</dd></div>
       </dl>
-      <p>Source được giữ nguyên qua các revision để bạn luôn biết ghi chú này dựa trên snapshot nào.</p>
+      <p>Source, cutoff và mode được giữ nguyên qua các revision để bạn luôn biết ghi chú này dựa trên snapshot nào. Actual là nội dung người dùng ghi sau review; app không tự mở nến tương lai.</p>
     </section>
   )
 }
@@ -278,6 +285,13 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
   const [entryType, setEntryType] = useState('observation')
   const [note, setNote] = useState('')
   const [tags, setTags] = useState('')
+  const [observation, setObservation] = useState('')
+  const [hypothesis, setHypothesis] = useState('')
+  const [decision, setDecision] = useState('')
+  const [plan, setPlan] = useState('')
+  const [actualResult, setActualResult] = useState('')
+  const [nextAction, setNextAction] = useState('')
+  const [overlayIds, setOverlayIds] = useState('')
   const [editing, setEditing] = useState(false)
   const [pending, setPending] = useState(false)
   const [formError, setFormError] = useState('')
@@ -308,6 +322,13 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
     setEntryType(payload.entry_type || 'observation')
     setNote(payload.note || '')
     setTags(Array.isArray(payload.tags) ? payload.tags.join(', ') : '')
+    setObservation(payload.observation || '')
+    setHypothesis(payload.hypothesis || '')
+    setDecision(payload.decision || '')
+    setPlan(payload.plan || '')
+    setActualResult(payload.actual_result || '')
+    setNextAction(payload.next_action || '')
+    setOverlayIds(Array.isArray(payload.overlay_ids) ? payload.overlay_ids.join(', ') : '')
     setEditing(false)
     setFormError('')
   }
@@ -318,6 +339,13 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
     setEntryType('observation')
     setNote('')
     setTags('')
+    setObservation('')
+    setHypothesis('')
+    setDecision('')
+    setPlan('')
+    setActualResult('')
+    setNextAction('')
+    setOverlayIds('')
     setFormError('')
   }
 
@@ -330,6 +358,13 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
       entry_type: entryType,
       note: cleanNote,
       tags: tags.split(',').map((tag) => tag.trim()).filter(Boolean).slice(0, 32),
+      observation: observation.trim() || null,
+      hypothesis: hypothesis.trim() || null,
+      decision: decision.trim() || null,
+      plan: plan.trim() || null,
+      actual_result: actualResult.trim() || null,
+      next_action: nextAction.trim() || null,
+      overlay_ids: overlayIds.split(',').map((id) => id.trim()).filter(Boolean).slice(0, 16),
       source: selected ? sourceForRecord(selected) : source,
     }
     setPending(true)
@@ -350,6 +385,13 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
       setEntryType(updated.payload?.entry_type || payload.entry_type)
       setNote(updated.payload?.note || payload.note)
       setTags(Array.isArray(updated.payload?.tags) ? updated.payload.tags.join(', ') : payload.tags.join(', '))
+      setObservation(updated.payload?.observation || payload.observation || '')
+      setHypothesis(updated.payload?.hypothesis || payload.hypothesis || '')
+      setDecision(updated.payload?.decision || payload.decision || '')
+      setPlan(updated.payload?.plan || payload.plan || '')
+      setActualResult(updated.payload?.actual_result || payload.actual_result || '')
+      setNextAction(updated.payload?.next_action || payload.next_action || '')
+      setOverlayIds(Array.isArray(updated.payload?.overlay_ids) ? updated.payload.overlay_ids.join(', ') : payload.overlay_ids.join(', '))
     } catch (error) {
       setFormError(String(error.message || error))
     } finally {
@@ -437,8 +479,32 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
           <label className="ja-field">Nội dung
             <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Ví dụ: giá phá range nhưng chưa đóng trên vùng…" rows={8} disabled={Boolean(selected && !editing)} maxLength={10000} />
           </label>
+          <div className="ja-decision-fields" aria-label="Decision context">
+            <span className="ja-eyebrow">DECISION CONTEXT</span>
+            <label className="ja-field">Điều đã quan sát <span className="ja-field-hint">chỉ dữ kiện tới cutoff</span>
+              <textarea value={observation} onChange={(event) => setObservation(event.target.value)} placeholder="Ví dụ: nến H1 đóng trong range…" rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />
+            </label>
+            <label className="ja-field">Giả thuyết
+              <textarea value={hypothesis} onChange={(event) => setHypothesis(event.target.value)} placeholder="Điều bạn nghĩ sẽ xảy ra và lý do…" rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />
+            </label>
+            <label className="ja-field">Quyết định / lý do bỏ qua
+              <textarea value={decision} onChange={(event) => setDecision(event.target.value)} placeholder={entryType === 'no-trade' ? 'Ví dụ: Không vào vì chưa đủ điều kiện…' : 'Vào, chờ hay bỏ qua?'} rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />
+            </label>
+            <label className="ja-field">Plan dự kiến
+              <textarea value={plan} onChange={(event) => setPlan(event.target.value)} placeholder="Điều kiện tiếp theo, risk hoặc invalidation…" rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />
+            </label>
+            <label className="ja-field">Actual / kết quả đã biết <span className="ja-field-hint">do người dùng ghi sau khi review</span>
+              <textarea value={actualResult} onChange={(event) => setActualResult(event.target.value)} placeholder="Chưa biết thì để trống…" rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />
+            </label>
+            <label className="ja-field">Bước tiếp theo
+              <textarea value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="Việc cần kiểm chứng tiếp…" rows={2} disabled={Boolean(selected && !editing)} maxLength={4000} />
+            </label>
+          </div>
           <label className="ja-field">Tags <span className="ja-field-hint">phân tách bằng dấu phẩy</span>
             <input value={tags} onChange={(event) => setTags(event.target.value)} placeholder="discipline, breakout" disabled={Boolean(selected && !editing)} />
+          </label>
+          <label className="ja-field">Overlay liên quan <span className="ja-field-hint">ID, phân tách bằng dấu phẩy</span>
+            <input value={overlayIds} onChange={(event) => setOverlayIds(event.target.value)} placeholder="annotation-7" disabled={Boolean(selected && !editing)} />
           </label>
           <div className="ja-source-box">
             <span className="ja-eyebrow">IMMUTABLE SOURCE</span>

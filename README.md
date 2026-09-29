@@ -322,6 +322,19 @@ python scripts/portability_smoke.py
 
 The smoke copies the project and the minimum education owner files to a temporary `TradingWorkspace` layout, installs only `requirements.txt`, starts the app through the Flask test client with the local simulator, and verifies workspace/Learn/execution status without connecting to MT5.
 
+For a read-only C0/C2 packaging inventory (manifests, supported entrypoint,
+tracked generated/private candidates, and the current checkout state), run:
+
+```bash
+python scripts/package_readiness.py
+```
+
+The command emits deterministic JSON and never deletes, moves, installs,
+starts, contacts a broker, reads holdout data, or changes the checkout. Use
+`--require-clean` only on a fresh clone when the clean-clone gate itself is
+being checked; an in-progress developer checkout is reported as dirty rather
+than overwritten.
+
 ## Troubleshooting
 
 ### MT5 status stays disconnected

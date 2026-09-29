@@ -254,6 +254,16 @@ class JournalDraft(BaseModel):
     note: str = Field(min_length=1, max_length=10_000)
     source: dict
     tags: list[str] = Field(default_factory=list, max_length=32)
+    # These fields keep the decision story structured without making the
+    # journal a second fill ledger. They are optional so records created by
+    # the earlier note-only contract remain readable and revisionable.
+    observation: str | None = Field(default=None, max_length=4_000)
+    hypothesis: str | None = Field(default=None, max_length=4_000)
+    decision: str | None = Field(default=None, max_length=4_000)
+    plan: str | None = Field(default=None, max_length=4_000)
+    actual_result: str | None = Field(default=None, max_length=4_000)
+    next_action: str | None = Field(default=None, max_length=4_000)
+    overlay_ids: list[str] = Field(default_factory=list, max_length=16)
 
     @field_validator("source")
     @classmethod

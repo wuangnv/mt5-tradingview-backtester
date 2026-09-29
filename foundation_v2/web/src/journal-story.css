@@ -118,6 +118,27 @@
   line-height: 1.45;
 }
 
+.ja-decision-fields {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 2px;
+  padding: 13px 14px 2px;
+  border: 1px solid #263136;
+  background: #0e1315;
+}
+
+.ja-decision-fields > .ja-eyebrow {
+  color: #d6a64b;
+}
+
+.ja-decision-fields .ja-field {
+  gap: 6px;
+}
+
+.ja-decision-fields textarea {
+  min-height: 58px;
+}
+
 .ja-story-rail {
   display: grid;
   gap: 16px;

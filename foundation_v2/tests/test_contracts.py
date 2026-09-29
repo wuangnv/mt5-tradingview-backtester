@@ -13,7 +13,7 @@ if str(ROOT) not in sys.path:
 if str(V2) not in sys.path:
     sys.path.insert(0, str(V2))
 
-from trading_workspace_v2.contracts import DatasetSource
+from trading_workspace_v2.contracts import DatasetSource, JournalDraft
 from trading_workspace_v2.retained import SourceSpec
 
 
@@ -64,6 +64,37 @@ class ContractTests(unittest.TestCase):
         )
         retained = SourceSpec.from_mapping(source.model_dump())
         self.assertEqual(retained.source_id, source.source_id)
+
+    def test_journal_decision_story_fields_are_optional_and_bounded(self):
+        record = JournalDraft(
+            entry_type="no-trade",
+            note="Không vào lệnh vì nến chưa đóng ngoài vùng.",
+            source={"kind": "replay-decision", "id": "session-1:cursor:12"},
+            observation="Giá vẫn nằm trong range.",
+            hypothesis="Breakout chưa được xác nhận.",
+            decision="Bỏ qua tại cutoff.",
+            plan="Chờ nến H1 đóng ngoài range.",
+            actual_result=None,
+            next_action="Review sau khi replay tiếp.",
+            overlay_ids=["annotation-1"],
+        )
+        self.assertEqual(record.entry_type, "no-trade")
+        self.assertIsNone(record.actual_result)
+        self.assertEqual(record.overlay_ids, ["annotation-1"])
+
+        legacy = JournalDraft(
+            entry_type="observation",
+            note="Legacy note",
+            source={"kind": "replay-decision", "id": "legacy"},
+        )
+        self.assertIsNone(legacy.observation)
+        with self.assertRaises(ValueError):
+            JournalDraft(
+                entry_type="decision",
+                note="x",
+                source={"kind": "replay-decision", "id": "bounded"},
+                plan="x" * 4001,
+            )
 
 
 if __name__ == "__main__":
