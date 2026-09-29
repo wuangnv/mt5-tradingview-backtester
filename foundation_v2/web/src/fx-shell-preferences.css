@@ -449,6 +449,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rs-topbar h1,
 .fx-app[data-theme='light'] .rs-step.active strong,
 .fx-app[data-theme='light'] .rs-step.done strong,
+.fx-app[data-theme='light'] .rs-step.is-terminal strong,
 .fx-app[data-theme='light'] .rs-step strong,
 .fx-app[data-theme='light'] .rs-section-head h2,
 .fx-app[data-theme='light'] .rs-context-line strong,
@@ -471,6 +472,14 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-provenance-grid strong {
   color: #1d2930;
 }
+
+.fx-app[data-theme='light'] .rs-step.is-terminal .rs-step-index {
+  border-color: #b35b52;
+  background: #fff0ed;
+  color: #963d35;
+}
+
+.fx-app[data-theme='light'] .rs-step.is-terminal strong { color: #963d35; }
 
 .fx-app[data-theme='light'] .rs-step,
 .fx-app[data-theme='light'] .rs-step small,

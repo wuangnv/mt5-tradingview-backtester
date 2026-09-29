@@ -28,6 +28,10 @@ test('research story keeps the evidence-first flow and truthful safety boundary'
   assert.match(source, /Dataset chưa được xác nhận trong catalog/)
   assert.match(source, /research-terminal-result/)
   assert.match(source, /Không dựng kết quả thay thế/)
+  assert.match(source, /const contextReady = Boolean\(selected \|\| job\?\.dataset_id\)/)
+  assert.match(source, /data-flow-state=\{isTerminal \? 'terminal' : state \|\| 'pending'\}/)
+  assert.match(source, /aria-current=\{step\.id === current \? 'step' : undefined\}/)
+  assert.doesNotMatch(source, /selected \|\| Boolean\(contextDatasetId\)/)
   assert.doesNotMatch(source, /catalog\.datasets\[0\] \|\| null/)
 })
 

@@ -24,6 +24,8 @@
 .rs-step.done strong { color: #bac9c9; }
 .rs-step.active .rs-step-index { border-color: #72c7ca; background: #173234; color: #d0f6f6; box-shadow: 0 0 0 3px rgba(112, 197, 200, .08); }
 .rs-step.active strong { color: #e1f2f3; }
+.rs-step.is-terminal .rs-step-index { border-color: #a65b5b; background: #321d20; color: #ffc0b8; }
+.rs-step.is-terminal strong { color: #f3b5af; }
 .rs-message { padding: 15px 0; color: #9ea9b0; font-size: 12px; line-height: 1.5; }
 .rs-message.is-error { color: #ef9999; }
 .rs-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); gap: 34px; padding-top: 22px; }

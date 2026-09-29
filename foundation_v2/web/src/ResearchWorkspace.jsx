@@ -79,7 +79,17 @@ function Sparkline({ points }) {
 
 function FlowStepper({ selected, job, result }) {
   const current = result ? 'result' : job && ['queued', 'running'].includes(job.status) ? 'checkpoint' : job ? 'result' : selected ? 'run' : 'context'
-  return <ol className="rs-stepper" aria-label="Research flow" data-testid="research-flow-stepper">{FLOW_STEPS.map((step, index) => { const currentIndex = FLOW_STEPS.findIndex((item) => item.id === current); const stepIndex = FLOW_STEPS.findIndex((item) => item.id === step.id); const state = stepIndex < currentIndex || (step.id === 'context' && selected) || (step.id === 'quality' && selected) ? 'done' : step.id === current ? 'active' : ''; return <li className={`rs-step ${state}`} key={step.id} data-step={step.id}><span className="rs-step-index">{state === 'done' ? '✓' : String(index + 1).padStart(2, '0')}</span><span><strong>{step.label}</strong><small>{step.note}</small></span></li> })}</ol>
+  const contextReady = Boolean(selected || job?.dataset_id)
+  const terminal = Boolean(job && ['failed', 'canceled'].includes(job.status))
+  return <ol className="rs-stepper" aria-label="Research flow" data-testid="research-flow-stepper">{FLOW_STEPS.map((step, index) => {
+    const currentIndex = FLOW_STEPS.findIndex((item) => item.id === current)
+    const stepIndex = FLOW_STEPS.findIndex((item) => item.id === step.id)
+    const isTerminal = terminal && step.id === 'result'
+    const state = stepIndex < currentIndex || (step.id === 'context' && contextReady) || (step.id === 'quality' && contextReady) ? 'done' : step.id === current ? 'active' : ''
+    const className = ['rs-step', state, isTerminal ? 'is-terminal' : ''].filter(Boolean).join(' ')
+    const marker = isTerminal ? '!' : state === 'done' ? '✓' : String(index + 1).padStart(2, '0')
+    return <li className={className} key={step.id} data-step={step.id} data-flow-state={isTerminal ? 'terminal' : state || 'pending'} aria-current={step.id === current ? 'step' : undefined}><span className="rs-step-index">{marker}</span><span><strong>{step.label}</strong><small>{isTerminal ? 'Run kết thúc nhưng chưa có result' : step.note}</small></span></li>
+  })}</ol>
 }
 
 function DatasetContext({ dataset, workspace, fallbackDatasetId = '', fallbackKind = 'none' }) {
@@ -158,7 +168,7 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
   return <main className="rs-shell" data-testid="research-root">
     <header className="rs-topbar"><div><span className="rs-eyebrow">TRADING WORKSPACE / RESEARCH</span><h1>Research theo bằng chứng</h1><p>Context → quality gate → run → checkpoint → result. Mỗi bước giữ nguyên phạm vi dữ liệu và trạng thái thật.</p></div><div className="rs-top-actions"><span className="rs-safety"><strong>RESEARCH / SIMULATION</strong><small>Broker locked · không gửi lệnh</small></span><a className="rs-link" href={`/?view=data&workspace=${encodeURIComponent(workspace)}${contextDatasetId ? `&dataset=${encodeURIComponent(contextDatasetId)}` : ''}`}>Data Desk →</a></div></header>
     <div className="rs-statusbar" aria-label="Trạng thái Research"><span>Workspace <strong>{workspace}</strong></span><span>Job <code>{job?.job_id || requestedJob || 'Chưa tạo'}</code></span><span className={`rs-status ${statusClass(job?.status)}`} data-testid="research-status">{job ? statusLabel(job.status) : catalog.status === 'loading' ? 'Đang tải catalog' : 'Chưa chạy'}</span><span>Engine <strong>{engine?.available ? 'nautilus sẵn sàng' : 'reference / chưa xác minh'}</strong></span></div>
-    <FlowStepper selected={selected || Boolean(contextDatasetId)} job={job} result={result} />
+    <FlowStepper selected={selected} job={job} result={result} />
     {catalog.status === 'loading' && <div className="rs-message" role="status">Đang đọc dataset và research engines…</div>}
     {catalog.status === 'error' && <div className="rs-message is-error" role="alert">Không đọc được catalog: {catalog.error}</div>}
     {jobState.status === 'error' && <div className="rs-message is-error" role="alert">Research không hoàn tất: {jobState.error}</div>}
