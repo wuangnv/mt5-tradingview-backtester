@@ -353,6 +353,11 @@ export default function ReplayWorkspace({ workspace, query }) {
     }
     return `/?${params.toString()}`
   }, [datasetDraft, sessionId, startDraft, workspace])
+  const journalHref = useMemo(() => {
+    const params = new URLSearchParams({ view: 'journal', workspace })
+    if (sessionId) params.set('session', sessionId)
+    return `/?${params.toString()}`
+  }, [sessionId, workspace])
 
   const statusLabel = useMemo(() => {
     if (conflict) return 'Xung đột phiên'
@@ -599,6 +604,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <button type="button" disabled title="Annotation API cần session binding đầy đủ">Vẽ vùng <span>đang khóa · session binding</span></button>
                   <button type="button" disabled title="Trade draft cần execution initialization">Trade draft <span>đang khóa · simulator init</span></button>
                 </div>
+                <a className="next-action-link" href={journalHref}>Mở Journal cho cutoff này →</a>
               </section>
               <section>
                 <div className="side-heading">

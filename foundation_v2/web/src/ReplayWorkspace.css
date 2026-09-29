@@ -195,6 +195,8 @@
 .unsupported-tools button { min-height: 38px; padding: 0 6px; border-radius: 3px; color: #79858d; font-size: 10px; }
 .unsupported-tools button span { display: block; margin-top: 2px; color: #626e75; font-size: 9px; }
 .unsupported-tools button:disabled { opacity: .78; border-color: #3d474e; color: #aeb8be; }
+.next-action-link { display: inline-block; margin-top: 12px; color: #d6b56f; font-size: 10px; text-decoration: none; }
+.next-action-link:hover { color: #f0d18a; text-decoration: underline; text-underline-offset: 3px; }
 
 /* Motion communicates state change only; reduced-motion users keep the same
  * hierarchy and affordances without interpolation. */
