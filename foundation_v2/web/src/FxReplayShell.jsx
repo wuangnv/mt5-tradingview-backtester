@@ -1,6 +1,9 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import './fx-shell-story.css'
 import './fx-shell-preferences.css'
+import { buildWorkspaceHref, readWorkspaceContext } from './workspaceContext.js'
+
+export { buildWorkspaceHref, readWorkspaceContext }
 
 const LANGUAGE_STORAGE_KEY = 'tw-language'
 const THEME_STORAGE_KEY = 'tw-theme'
@@ -121,18 +124,16 @@ export function useFxReplayContext() {
   return useContext(FxReplayContext) || { updateMarketContext: () => {} }
 }
 
-function hrefFor(id, workspace) {
-  const params = new URLSearchParams({ workspace: workspace || 'tenant-a' })
-  params.set('view', id)
-  return `/?${params.toString()}`
+function hrefFor(id, workspace, query) {
+  return buildWorkspaceHref(id, workspace, query)
 }
 
-function NavItem({ item, active, workspace, copy }) {
+function NavItem({ item, active, workspace, query, copy }) {
   const [label, description] = copy.nav[item.id]
   return (
     <a
       className={`fx-nav-item ${active ? 'is-active' : ''}`}
-      href={hrefFor(item.id, workspace)}
+      href={hrefFor(item.id, workspace, query)}
       aria-current={active ? 'page' : undefined}
       aria-label={`${label}: ${description}`}
       data-nav-label={label}
@@ -144,7 +145,7 @@ function NavItem({ item, active, workspace, copy }) {
   )
 }
 
-function ShellTopbar({ activeItem, mode, workspace, marketContext, copy, language, setLanguage, theme, setTheme }) {
+function ShellTopbar({ activeItem, mode, workspace, query, marketContext, copy, language, setLanguage, theme, setTheme }) {
   const [activeLabel] = copy.nav[activeItem?.id] || copy.nav.overview
   const instrument = marketContext.instrument || copy.emptyInstrument
   const timeframe = marketContext.timeframe || copy.emptyTimeframe
@@ -172,7 +173,7 @@ function ShellTopbar({ activeItem, mode, workspace, marketContext, copy, languag
       </div>
       <div className="fx-topbar-actions">
         {activeItem?.id !== 'overview' && activeItem?.id !== 'replay' && (
-          <a className="fx-shell-primary" href={hrefFor('replay', workspace)}>{copy.openPractice}</a>
+          <a className="fx-shell-primary" href={hrefFor('replay', workspace, query)}>{copy.openPractice}</a>
         )}
         <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">
           {language === 'vi' ? 'EN' : 'VI'}
@@ -188,8 +189,13 @@ function ShellTopbar({ activeItem, mode, workspace, marketContext, copy, languag
   )
 }
 
-export default function FxReplayShell({ children, workspace, activeView = 'overview', mode = 'Replay' }) {
+function currentQuery() {
+  return typeof window === 'undefined' ? new URLSearchParams() : new URLSearchParams(window.location.search)
+}
+
+export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
   const activeItem = [...NAV_ITEMS, ...UTILITY_ITEMS].find((item) => item.id === activeView) || NAV_ITEMS[0]
+  const routeContext = useMemo(() => readWorkspaceContext(query), [query])
   const [language, setLanguage] = useState(() => {
     try {
       return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'en' ? 'en' : 'vi'
@@ -218,7 +224,11 @@ export default function FxReplayShell({ children, workspace, activeView = 'overv
   const updateMarketContext = useCallback((next) => {
     setMarketContext((current) => ({ ...current, ...next }))
   }, [])
-  const contextValue = useMemo(() => ({ updateMarketContext }), [updateMarketContext])
+  const contextValue = useMemo(() => ({
+    updateMarketContext,
+    routeContext,
+    buildHref: (view, overrides) => buildWorkspaceHref(view, workspace, query, overrides),
+  }), [query, routeContext, updateMarketContext, workspace])
   const copy = SHELL_COPY[language]
   const handleLanguage = useCallback((next) => {
     setLanguage(next)
@@ -263,7 +273,7 @@ export default function FxReplayShell({ children, workspace, activeView = 'overv
               {groupIndex > 0 && <div className="fx-rail-divider" />}
               <div className="fx-rail-caption">{copy.groups[group.id]}</div>
               <nav className="fx-nav" aria-label={copy.groups[group.id]}>
-                {group.items.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} copy={copy} />)}
+                {group.items.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} query={query} copy={copy} />)}
               </nav>
             </React.Fragment>
           ))}
@@ -275,7 +285,7 @@ export default function FxReplayShell({ children, workspace, activeView = 'overv
           </div>
         </aside>
         <section className="fx-main" aria-label={copy.contentAria}>
-          <ShellTopbar activeItem={activeItem} mode={mode} workspace={workspace} marketContext={marketContext} copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
+          <ShellTopbar activeItem={activeItem} mode={mode} workspace={workspace} query={query} marketContext={marketContext} copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
           <div className="fx-content">{children}</div>
         </section>
       </div>

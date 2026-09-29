@@ -12,6 +12,7 @@ import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
 import { useFxReplayContext } from './FxReplayShell.jsx'
+import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 
 function WorkspaceOverview({ workspace, query }) {
@@ -55,39 +56,40 @@ function WorkspaceOverview({ workspace, query }) {
   const replayCount = Number(counts.records?.replay || 0)
   const sessionId = query?.get('session') || ''
   const jobId = query?.get('job') || ''
+  const routeHref = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, overrides)
   const queueItems = [
     replayCount > 0
       ? {
           title: sessionId ? 'Tiếp tục replay session' : 'Mở Practice để xem replay',
           detail: sessionId ? 'Giữ nguyên dataset và decision cutoff hiện tại' : `${replayCount} replay record đã có trong workspace`,
-          href: `/?workspace=${encodeURIComponent(workspace)}&view=replay${sessionId ? `&session=${encodeURIComponent(sessionId)}` : ''}`,
+          href: routeHref('replay', sessionId ? {} : { session: null, dataset: null, cursor: null, cutoff: null }),
         }
       : {
           title: 'Mở một replay session',
           detail: 'Chọn dataset local trước khi đưa ra quyết định',
-          href: `/?workspace=${encodeURIComponent(workspace)}&view=replay`,
+          href: routeHref('replay'),
         },
     completedResearch > 0
       ? {
           title: 'Xem research đã hoàn tất',
           detail: jobId ? 'Mở lại result với provenance của job hiện tại' : `${completedResearch} research job đã hoàn tất`,
-          href: `/?workspace=${encodeURIComponent(workspace)}&view=${jobId ? `research&job=${encodeURIComponent(jobId)}` : 'research'}`,
+          href: routeHref('research', jobId ? { job: jobId } : {}),
         }
       : {
           title: 'Chuẩn bị research run',
           detail: datasetCount > 0 ? 'Chọn dataset và kiểm tra provenance trước khi chạy' : 'Cần dataset local trước khi chạy',
-          href: `/?workspace=${encodeURIComponent(workspace)}&view=${datasetCount > 0 ? 'research' : 'data'}`,
+          href: routeHref(datasetCount > 0 ? 'research' : 'data'),
         },
     datasetCount > 0
       ? {
           title: 'Ôn glossary trước phiên',
           detail: 'Learn đọc course local ở chế độ read-only',
-          href: `/?workspace=${encodeURIComponent(workspace)}&view=learn`,
+          href: routeHref('learn'),
         }
       : {
           title: 'Nạp dataset local',
           detail: 'Data Desk là điểm bắt đầu của workflow trading',
-          href: `/?workspace=${encodeURIComponent(workspace)}&view=data`,
+          href: routeHref('data'),
         },
   ]
 
@@ -99,7 +101,7 @@ function WorkspaceOverview({ workspace, query }) {
           <h1 id="overview-title">Tiếp tục phiên của bạn</h1>
           <p>Chart, replay và quyết định nằm trong cùng một context. Chọn Practice để mở đúng vòng lặp FXReplay.</p>
         </div>
-        <a className="fx-primary-button" href={`/?workspace=${encodeURIComponent(workspace)}&view=replay`}>Mở Practice</a>
+        <a className="fx-primary-button" href={routeHref('replay')}>Mở Practice</a>
       </div>
 
       <section className="fx-session-banner" aria-label="Phiên hiện tại">
@@ -161,7 +163,7 @@ function App() {
   const isLearn = activeView === 'learn'
   const isProp = requestedView === 'testing' || requestedView === 'prop'
   let content
-  let mode = activeView === 'research' ? 'Research' : activeView === 'learn' ? 'Learn' : 'Replay'
+  let mode = query.get('mode') || (activeView === 'research' ? 'Research' : activeView === 'learn' ? 'Learn' : 'Replay')
 
   if (isLearn) {
     content = <LearnWorkspace workspace={workspace} query={query} />
@@ -199,10 +201,10 @@ function App() {
       analytics: ['ANALYTICS / SESSION METRICS', 'Analytics', 'Analytics sẽ đọc từ session, trade ledger và research result có provenance.', 'Chưa có session hoặc result để tính số liệu.'],
       trade: ['TRADE DESK / DEMO ONLY', 'Trade desk', 'Trade draft chỉ có ý nghĩa khi được tạo từ chart tại một decision cutoff cụ thể.', 'Broker send đang khóa; hãy bắt đầu từ Practice.'],
     }[activeView] || ['WORKSPACE', 'Khu vực chưa chọn', 'Chọn một khu vực trong rail để tiếp tục.', 'Mở Practice để bắt đầu.']
-    content = <UnavailableWorkspace eyebrow={copy[0]} title={copy[1]} description={copy[2]} next={copy[3]} href={`/?workspace=${encodeURIComponent(workspace)}&view=replay`} />
+    content = <UnavailableWorkspace eyebrow={copy[0]} title={copy[1]} description={copy[2]} next={copy[3]} href={buildWorkspaceHref('replay', workspace, query)} />
   }
 
-  return <FxReplayShell workspace={workspace} activeView={activeView} mode={mode}>{content}</FxReplayShell>
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{content}</FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')
