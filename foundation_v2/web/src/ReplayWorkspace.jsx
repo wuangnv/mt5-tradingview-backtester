@@ -92,6 +92,13 @@ function replaceSessionInUrl(sessionId, preserveCursor = false) {
   window.history.replaceState(null, '', url)
 }
 
+function isEditableTarget(target) {
+  if (!target || typeof target !== 'object') return false
+  if (target.isContentEditable) return true
+  const tagName = String(target.tagName || '').toUpperCase()
+  return tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT' || tagName === 'BUTTON'
+}
+
 export default function ReplayWorkspace({ workspace, query }) {
   const storageKey = `tw:replay:last:${workspace}`
   const requestedSession = query.get('session') || ''
@@ -215,6 +222,35 @@ export default function ReplayWorkspace({ workspace, query }) {
   const canBranch = Boolean(replay) && !conflict && (
     historicalView ? cursor < canonicalCursor : cursor > 0 && branchCursor < cursor
   )
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Keep native text/range controls usable. ArrowRight is a replay shortcut only
+      // when the page itself owns focus, so adjusting the branch range never steps bars.
+      if (
+        event.defaultPrevented
+        || event.metaKey
+        || event.ctrlKey
+        || event.altKey
+        || isEditableTarget(event.target)
+        || event.key !== 'ArrowRight'
+        || !replay
+        || historicalView
+        || completed
+        || conflict
+        || pendingAction
+      ) return
+
+      event.preventDefault()
+      mutate('step', {
+        expected_revision: revision,
+        steps: event.shiftKey ? 10 : 1,
+      })
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [completed, conflict, historicalView, mutate, pendingAction, replay, revision])
   const learnHref = useMemo(() => {
     const params = new URLSearchParams({ view: 'learn', workspace, from: 'replay' })
     if (sessionId) {
@@ -324,6 +360,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <button
                     type="button"
                     data-testid="step-1"
+                    aria-keyshortcuts="ArrowRight"
                     onClick={() => mutate('step', { expected_revision: revision, steps: 1 })}
                     disabled={historicalView || completed || conflict || Boolean(pendingAction)}
                   >
@@ -332,6 +369,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <button
                     type="button"
                     data-testid="step-10"
+                    aria-keyshortcuts="Shift+ArrowRight"
                     onClick={() => mutate('step', { expected_revision: revision, steps: 10 })}
                     disabled={historicalView || completed || conflict || Boolean(pendingAction)}
                   >
@@ -341,6 +379,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="cutoff-readout">
                   <span>Decision cutoff</span>
                   <strong>{formatTimestamp(replay.cutoff_timestamp)} UTC</strong>
+                  <small data-testid="replay-shortcuts">Phím tắt: → +1 nến · Shift + → +10 nến</small>
                 </div>
               </div>
 

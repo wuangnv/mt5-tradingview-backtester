@@ -171,8 +171,12 @@ async function main() {
     await page.goto(`${origin}/?view=replay&workspace=tenant-ui`)
     await page.waitForURL(/session=branch-fixture-1/)
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '2', 'persisted resume failed')
+    assert.match(await page.getByTestId('replay-shortcuts').innerText(), /Shift.*\+10 nến/i)
 
-    await page.getByTestId('step-10').click()
+    // Keyboard stepping is intentionally available only when the page owns focus;
+    // the branch range above remains a native range control and is not hijacked.
+    await page.getByTestId('replay-chart').click()
+    await page.keyboard.press('Shift+ArrowRight')
     await page.getByText('Hoàn tất dataset', { exact: true }).waitFor()
     assert.equal(await page.getByTestId('step-1').isDisabled(), true)
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), String(rows.length))
@@ -189,7 +193,7 @@ async function main() {
     console.log(JSON.stringify({
       status: 'PASS',
       fixture: 'ui-labeled-controlled-replay',
-      checks: ['report_exact_cursor_historical_view', 'historical_view_read_only', 'visible_rows_only', 'broker_locked', '409_reload', 'branch_lineage', 'persisted_resume', 'completed', 'responsive_1440_768_360'],
+      checks: ['report_exact_cursor_historical_view', 'historical_view_read_only', 'visible_rows_only', 'broker_locked', '409_reload', 'branch_lineage', 'persisted_resume', 'keyboard_step_shortcuts', 'completed', 'responsive_1440_768_360'],
       screenshots: [1440, 768, 360].map((width) => path.join(evidenceDir, `replay-ui-${width}.png`)),
     }, null, 2))
   } finally {
