@@ -160,6 +160,31 @@ def validate_research_checkpoint_view(checkpoint: object, progress: object) -> t
         }
     projected_progress = None
     if progress is not None:
+        # Progress is persisted worker evidence, but it is still part of the
+        # public read-only contract.  Do not let a malformed row expose bools,
+        # negative counters, or an impossible cursor just because unknown
+        # fields are otherwise dropped for forward compatibility.
+        for key in _RESEARCH_PROGRESS_PUBLIC_FIELDS:
+            if key in progress:
+                value = progress[key]
+                if type(value) is not int or value < 0:
+                    raise ValueError(f"research checkpoint progress.{key} is invalid")
+        phase_index = progress.get("phase_index")
+        phase_count = progress.get("phase_count")
+        if (
+            phase_index is not None
+            and phase_count is not None
+            and phase_index > phase_count
+        ):
+            raise ValueError("research checkpoint progress phase cursor is invalid")
+        trial_index = progress.get("trial_index")
+        trial_count = progress.get("trial_count")
+        if (
+            trial_index is not None
+            and trial_count is not None
+            and trial_index > trial_count
+        ):
+            raise ValueError("research checkpoint progress trial cursor is invalid")
         projected_progress = {
             key: progress[key]
             for key in _RESEARCH_PROGRESS_PUBLIC_FIELDS

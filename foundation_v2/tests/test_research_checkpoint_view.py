@@ -63,3 +63,19 @@ def test_checkpoint_view_rejects_forbidden_progress_fields() -> None:
         validate_research_checkpoint_view(
             checkpoint(), {"phase_index": 1, "lease_owner": "worker-a"}
         )
+
+
+@pytest.mark.parametrize(
+    "progress",
+    [
+        {"phase_index": True, "phase_count": 4},
+        {"phase_index": -1, "phase_count": 4},
+        {"phase_index": 5, "phase_count": 4},
+        {"trial_index": True, "trial_count": 3},
+        {"trial_index": -1, "trial_count": 3},
+        {"trial_index": 4, "trial_count": 3},
+    ],
+)
+def test_checkpoint_view_rejects_invalid_public_progress_cursors(progress) -> None:
+    with pytest.raises(ValueError, match="progress|cursor"):
+        validate_research_checkpoint_view(checkpoint(), progress)
