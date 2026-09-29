@@ -480,6 +480,7 @@ export default function PropWorkspace({ workspace }) {
   const selectedReplayTarget = reportReplayHref(report, workspace)
   const cursor = bundle?.resume_state?.cursor
   const selectedTerminal = TERMINAL_STATUSES.has(attempt?.status)
+  const canOpenNextPhase = attempt?.status === 'phase_passed' && Boolean(phase) && (selected.session?.profile?.phases?.length || 0) > phase.phase_index
   const sessionCountLabel = useMemo(() => `${sessions.items.length} session`, [sessions.items.length])
 
   return (
@@ -689,7 +690,7 @@ export default function PropWorkspace({ workspace }) {
                   {attempt.status === 'ready' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-start" disabled={pendingAction === 'transition:start'} onClick={() => transitionAttempt('start')}>{pendingAction === 'transition:start' ? 'Đang bắt đầu…' : 'Bắt đầu mô phỏng'}</button>}
                   {attempt.status === 'running' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-pause" disabled={pendingAction === 'transition:pause'} onClick={() => transitionAttempt('pause')}>{pendingAction === 'transition:pause' ? 'Đang tạm dừng…' : 'Tạm dừng'}</button>}
                   {attempt.status === 'paused' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-resume" disabled={pendingAction === 'transition:resume'} onClick={() => transitionAttempt('resume')}>{pendingAction === 'transition:resume' ? 'Đang tiếp tục…' : 'Tiếp tục mô phỏng'}</button>}
-                  {attempt.status === 'phase_passed' && selected.session.profile.phases.length > phase.phase_index && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-next-phase" disabled={pendingAction === 'transition:next_phase'} onClick={() => transitionAttempt('next_phase')}>{pendingAction === 'transition:next_phase' ? 'Đang mở phase…' : 'Mở phase tiếp theo'}</button>}
+                  {canOpenNextPhase && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-next-phase" disabled={pendingAction === 'transition:next_phase'} onClick={() => transitionAttempt('next_phase')}>{pendingAction === 'transition:next_phase' ? 'Đang mở phase…' : 'Mở phase tiếp theo'}</button>}
                   {['ready', 'running', 'paused', 'phase_passed', 'next_phase_ready'].includes(attempt.status) && <button type="button" className="prop-refresh" data-testid="prop-transition-abandon" disabled={pendingAction === 'transition:abandon'} onClick={() => transitionAttempt('abandon')}>{pendingAction === 'transition:abandon' ? 'Đang bỏ…' : 'Bỏ attempt'}</button>}
                 </div>
 
