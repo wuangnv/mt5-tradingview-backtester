@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CandlestickSeries, createChart } from 'lightweight-charts'
 import { useFxReplayContext } from './FxReplayShell.jsx'
+import { buildWorkspaceHref } from './workspaceContext.js'
 import './ReplayWorkspace.css'
 
 function formatTimestamp(timestamp) {
@@ -96,12 +97,16 @@ function ReplayChart({ rows, onCrosshair }) {
   )
 }
 
-function replaceSessionInUrl(sessionId, preserveCursor = false) {
+function replaceSessionInUrl(sessionId, preserveCursor = false, cursor = null, dataset = null) {
   const url = new URL(window.location.href)
   url.searchParams.set('view', 'replay')
   url.searchParams.set('session', sessionId)
-  url.searchParams.delete('dataset')
-  if (!preserveCursor) url.searchParams.delete('cursor')
+  if (dataset !== null && dataset !== undefined && dataset !== '') url.searchParams.set('dataset', String(dataset))
+  // Keep dataset/mode/cutoff context so a copied deep link remains useful
+  // outside the current React instance. The backend session remains the
+  // authority; these values are navigation context only.
+  if (Number.isInteger(Number(cursor)) && Number(cursor) >= 0) url.searchParams.set('cursor', String(Number(cursor)))
+  else if (!preserveCursor) url.searchParams.delete('cursor')
   window.history.replaceState(null, '', url)
 }
 
@@ -134,10 +139,10 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [crosshair, setCrosshair] = useState(null)
 
-  const rememberSession = useCallback((nextSessionId, preserveCursor = false) => {
+  const rememberSession = useCallback((nextSessionId, preserveCursor = false, cursor = null, dataset = null) => {
     setSessionId(nextSessionId)
     window.localStorage.setItem(storageKey, nextSessionId)
-    replaceSessionInUrl(nextSessionId, preserveCursor)
+    replaceSessionInUrl(nextSessionId, preserveCursor, cursor, dataset)
   }, [storageKey])
 
   const loadSession = useCallback(async (targetSessionId, targetCursor = null) => {
@@ -150,8 +155,8 @@ export default function ReplayWorkspace({ workspace, query }) {
         headers: { 'X-Workspace-Id': workspace },
       })
       const payload = await readJson(response)
-      rememberSession(payload.record_id, targetCursor !== null)
       const viewCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
+      rememberSession(payload.record_id, true, viewCursor, payload.payload?.dataset_id)
       setBranchCursor(payload.historical_view ? Math.max(0, viewCursor) : Math.max(0, viewCursor - 1))
       setJumpDraft(Math.max(0, viewCursor))
       setState({ status: 'ready', payload, error: null })
@@ -175,9 +180,10 @@ export default function ReplayWorkspace({ workspace, query }) {
         body: JSON.stringify({ dataset_id: datasetId, start_index: Number(startDraft) }),
       })
       const payload = await readJson(response)
-      rememberSession(payload.record_id)
-      setBranchCursor(Math.max(0, Number(payload.payload.cursor_index) - 1))
-      setJumpDraft(Math.max(0, Number(payload.payload.cursor_index)))
+      const viewCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
+      rememberSession(payload.record_id, false, viewCursor, datasetId)
+      setBranchCursor(Math.max(0, viewCursor - 1))
+      setJumpDraft(Math.max(0, viewCursor))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       setState({ status: 'error', payload: null, error: String(error.message || error) })
@@ -235,9 +241,10 @@ export default function ReplayWorkspace({ workspace, query }) {
         body: JSON.stringify(body),
       })
       const payload = await readJson(response)
-      if (kind === 'branch') rememberSession(payload.record_id)
-      else replaceSessionInUrl(payload.record_id)
       const nextCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
+      const payloadDataset = payload.payload?.dataset_id || state.payload?.payload?.dataset_id
+      if (kind === 'branch') rememberSession(payload.record_id, false, nextCursor, payloadDataset)
+      else replaceSessionInUrl(payload.record_id, false, nextCursor, payloadDataset)
       setBranchCursor(Math.max(0, nextCursor - 1))
       setJumpDraft(Math.max(0, nextCursor))
       setState({ status: 'ready', payload, error: null })
@@ -346,21 +353,19 @@ export default function ReplayWorkspace({ workspace, query }) {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [completed, conflict, historicalView, mutate, pendingAction, replay, revision])
+  const routeContext = useMemo(() => ({
+    session: sessionId || undefined,
+    dataset: replay?.payload?.dataset_id || datasetDraft.trim() || undefined,
+    cursor: replay && Number.isInteger(cursor) && cursor >= 0 ? cursor : undefined,
+    cutoff: replay?.cutoff_timestamp || replay?.payload?.cutoff_timestamp || undefined,
+  }), [cursor, datasetDraft, replay, sessionId])
+  const routeHref = useCallback((view, extras = {}) => (
+    buildWorkspaceHref(view, workspace, query, { ...routeContext, ...extras })
+  ), [query, routeContext, workspace])
   const learnHref = useMemo(() => {
-    const params = new URLSearchParams({ view: 'learn', workspace, from: 'replay' })
-    if (sessionId) {
-      params.set('session', sessionId)
-    } else if (datasetDraft.trim()) {
-      params.set('dataset', datasetDraft.trim())
-      params.set('start', String(startDraft))
-    }
-    return `/?${params.toString()}`
-  }, [datasetDraft, sessionId, startDraft, workspace])
-  const journalHref = useMemo(() => {
-    const params = new URLSearchParams({ view: 'journal', workspace })
-    if (sessionId) params.set('session', sessionId)
-    return `/?${params.toString()}`
-  }, [sessionId, workspace])
+    return routeHref('learn', { from: 'replay', ...(sessionId ? {} : { start: String(startDraft) }) })
+  }, [routeHref, sessionId, startDraft])
+  const journalHref = useMemo(() => routeHref('journal'), [routeHref])
 
   const statusLabel = useMemo(() => {
     if (conflict) return 'Xung đột phiên'
@@ -378,15 +383,15 @@ export default function ReplayWorkspace({ workspace, query }) {
     return `Đang mở ${visibleRowCount ?? 'N/A'} nến; quyết định chỉ nên dựa trên bằng chứng tới cutoff hiện tại.`
   }, [completed, conflict, cursor, historicalView, visibleRowCount])
   const noDataset = datasetState.status === 'ready' && datasetState.items.length === 0
-  const dataDeskHref = `/?view=data&workspace=${encodeURIComponent(workspace)}`
+  const dataDeskHref = routeHref('data')
 
   return (
     <main className="replay-shell">
       <header className="replay-topbar">
         <div>
-          <div className="eyebrow">THỰC HÀNH / REPLAY VIEWER V1</div>
-          <h1>Replay thị trường</h1>
-          <p>Chỉ hiển thị phần dữ liệu đã mở tới decision cutoff hiện tại.</p>
+          <div className="eyebrow">THỰC HÀNH / CHART-FIRST REPLAY</div>
+          <h1>Practice · Replay</h1>
+          <p>Chart là trung tâm. Chỉ dữ liệu tới decision cutoff hiện tại được render.</p>
         </div>
         <div className="replay-topbar-actions">
           <a className="context-link" href={learnHref}>Học & thuật ngữ</a>
@@ -454,33 +459,15 @@ export default function ReplayWorkspace({ workspace, query }) {
 
       {replay && (
         <>
-          <section className="replay-story" aria-label="Câu chuyện quyết định replay">
-            <div className="replay-story-context">
-              <span className="story-label">01 · CONTEXT</span>
+          <section className="replay-status replay-contextbar" aria-label="Ngữ cảnh replay">
+            <div className="replay-context-primary">
+              <span>Practice context</span>
               <strong>{replayContext.instrument} · {replayContext.timeframe}</strong>
-              <span>{replay.payload.dataset_id} · cutoff {formatTimestamp(replay.cutoff_timestamp)} UTC</span>
+              <small>{workspace} · broker locked</small>
             </div>
-            <div className="replay-story-takeaway">
-              <span className="story-label">02 · TAKEAWAY</span>
-              <strong>{takeaway}</strong>
-              <span>Trạng thái / <b>status: {statusLabel}</b> · broker locked</span>
-            </div>
-            <div className="replay-story-provenance">
-              <span className="story-label">PROVENANCE</span>
-              <dl>
-                <div><dt>Quality</dt><dd>{replayContext.quality}</dd></div>
-                <div><dt>Provider</dt><dd>{replayContext.provider}</dd></div>
-                <div><dt>Rows</dt><dd>{replayContext.rowCount ?? 'N/A'}</dd></div>
-                <div><dt>Hash</dt><dd><code>{replayContext.hash ? String(replayContext.hash).slice(0, 14) : 'Chưa có hash'}</code></dd></div>
-              </dl>
-            </div>
-          </section>
-          <section className="replay-status" aria-label="Trạng thái replay">
-            <div><span>Workspace</span><strong>{workspace}</strong></div>
             <div><span>Dataset</span><code>{replay.payload.dataset_id}</code></div>
-            <div><span>Data status</span><strong>{activeDataset?.quality_status || 'unverified'}</strong></div>
-            <div><span>Revision</span><strong>r{revision}</strong></div>
-            <div><span>Đã mở</span><strong>{visibleRowCount ?? 'N/A'} nến</strong></div>
+            <div><span>Decision cutoff</span><strong>#{cursor}</strong><small>{formatTimestamp(replay.cutoff_timestamp)} UTC</small></div>
+            <div><span>Visible rows</span><strong>{visibleRowCount ?? 'N/A'} nến</strong><small>revision r{revision}</small></div>
             <div className={`replay-state ${completed ? 'is-complete' : ''} ${conflict ? 'is-conflict' : ''}`} data-testid="replay-status">
               {statusLabel}
             </div>
@@ -619,6 +606,26 @@ export default function ReplayWorkspace({ workspace, query }) {
                 </div>
                 <a className="next-action-link" href={journalHref}>Mở Journal cho cutoff này →</a>
               </section>
+              <details className="replay-inspect-panel" data-testid="replay-inspect">
+                <summary>
+                  <span>Inspect</span>
+                  <strong>Context & provenance</strong>
+                </summary>
+                <div className="replay-inspect-body">
+                  <div className="replay-inspect-takeaway">
+                    <span>Decision note</span>
+                    <p>{takeaway}</p>
+                  </div>
+                  <dl>
+                    <div><dt>Instrument</dt><dd>{replayContext.instrument}</dd></div>
+                    <div><dt>Timeframe</dt><dd>{replayContext.timeframe}</dd></div>
+                    <div><dt>Quality</dt><dd>{replayContext.quality}</dd></div>
+                    <div><dt>Provider</dt><dd>{replayContext.provider}</dd></div>
+                    <div><dt>Rows</dt><dd>{replayContext.rowCount ?? 'N/A'}</dd></div>
+                    <div><dt>Dataset hash</dt><dd><code>{replayContext.hash ? String(replayContext.hash).slice(0, 14) : 'Chưa có hash'}</code></dd></div>
+                  </dl>
+                </div>
+              </details>
               <section>
                 <div className="side-heading">
                   <div>

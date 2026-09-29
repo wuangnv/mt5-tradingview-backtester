@@ -313,3 +313,206 @@
   .toolbar-primary .play-button { grid-column: 1 / -1; }
   .cutoff-readout { text-align: left; }
 }
+
+/*
+ * P6.1 chart-first shell.
+ *
+ * The global shell already owns navigation and the compact instrument/data
+ * context. Practice therefore keeps only the local replay facts above the
+ * workbench and moves the longer decision story into Inspect in the dock.
+ * High-specificity selectors intentionally win over the legacy replay
+ * defaults in styles.css without changing other screens.
+ */
+.fx-app .fx-content > .replay-shell {
+  width: 100%;
+  min-height: calc(100vh - 68px);
+  padding: 0 18px 24px;
+}
+
+.fx-app .fx-content > .replay-shell > .replay-topbar {
+  min-height: 58px;
+  padding: 7px 0;
+  border-bottom-color: var(--fx-shell-line);
+}
+
+.fx-app .fx-content > .replay-shell .replay-topbar h1 {
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+.fx-app .fx-content > .replay-shell .replay-topbar p {
+  margin-top: 4px;
+  color: var(--fx-shell-muted);
+  font-size: 11px;
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.35fr) minmax(145px, 1fr) minmax(150px, .85fr) minmax(125px, .7fr) auto;
+  align-items: stretch;
+  min-height: 52px;
+  border-bottom: 1px solid var(--fx-shell-line);
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar > div {
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  padding: 7px 14px 7px 0;
+  border-left: 0;
+  white-space: nowrap;
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar > div + div {
+  border-left: 1px solid var(--fx-shell-line);
+  padding-left: 14px;
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar span {
+  color: var(--fx-shell-subtle);
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar strong,
+.fx-app .fx-content > .replay-shell .replay-contextbar code {
+  min-width: 0;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--fx-shell-text);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar small {
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--fx-shell-muted);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fx-app .fx-content > .replay-shell .replay-context-primary strong {
+  color: var(--fx-shell-accent);
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar .replay-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 128px;
+  margin: 9px 0 9px 14px;
+  border: 1px solid var(--fx-shell-line-strong);
+  border-radius: 3px;
+  padding: 0 10px;
+  color: var(--fx-shell-muted);
+  font-size: 10px;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar .replay-state.is-complete {
+  border-color: var(--fx-shell-safe);
+  color: var(--fx-shell-safe);
+}
+
+.fx-app .fx-content > .replay-shell .replay-contextbar .replay-state.is-conflict {
+  border-color: var(--fx-shell-danger);
+  color: var(--fx-shell-danger);
+}
+
+.fx-app .fx-content > .replay-shell .replay-workspace {
+  min-height: calc(100vh - 190px);
+  grid-template-columns: minmax(0, 1fr) 320px;
+}
+
+.fx-app .fx-content > .replay-shell .replay-main {
+  padding: 10px 18px 0 0;
+}
+
+.fx-app .fx-content > .replay-shell .replay-toolbar {
+  min-height: 42px;
+  padding-bottom: 8px;
+}
+
+.fx-app .fx-content > .replay-shell .chart-frame {
+  margin-top: 10px;
+}
+
+.fx-app .fx-content > .replay-shell .replay-chart {
+  height: clamp(420px, 66vh, 760px);
+  min-height: 420px;
+}
+
+.fx-app .fx-content > .replay-shell .replay-side {
+  min-width: 0;
+  max-height: calc(100vh - 190px);
+  overflow-y: auto;
+  padding-top: 10px;
+}
+
+.replay-inspect-panel {
+  border-bottom: 1px solid var(--fx-shell-line);
+  padding: 12px 0 14px;
+}
+
+.replay-inspect-panel summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--fx-shell-muted);
+  cursor: pointer;
+  list-style: none;
+}
+
+.replay-inspect-panel summary::-webkit-details-marker { display: none; }
+.replay-inspect-panel summary::after { color: var(--fx-shell-subtle); content: '+'; font-size: 16px; line-height: 1; }
+.replay-inspect-panel[open] summary::after { content: '−'; }
+.replay-inspect-panel summary span { color: var(--fx-shell-subtle); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.replay-inspect-panel summary strong { color: var(--fx-shell-text); font-size: 12px; font-weight: 650; }
+.replay-inspect-panel summary:focus-visible { outline: 2px solid var(--fx-shell-accent); outline-offset: 3px; }
+
+.replay-inspect-body { padding-top: 11px; }
+.replay-inspect-takeaway { border-left: 2px solid var(--fx-shell-accent); padding-left: 10px; }
+.replay-inspect-takeaway span { color: var(--fx-shell-subtle); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.replay-inspect-takeaway p { margin: 5px 0 0; color: var(--fx-shell-muted); font-size: 11px; line-height: 1.45; }
+.replay-inspect-body dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin: 13px 0 0; }
+.replay-inspect-body dt { color: var(--fx-shell-subtle); font-size: 9px; }
+.replay-inspect-body dd { margin: 3px 0 0; overflow: hidden; color: var(--fx-shell-text); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.replay-inspect-body code { color: var(--fx-shell-muted); }
+
+@media (max-width: 1120px) {
+  .fx-app .fx-content > .replay-shell .replay-contextbar {
+    grid-template-columns: minmax(175px, 1.2fr) minmax(120px, .9fr) minmax(135px, .8fr) auto;
+  }
+  .fx-app .fx-content > .replay-shell .replay-contextbar > div:nth-child(4) { display: none; }
+}
+
+@media (max-width: 900px) {
+  .fx-app .fx-content > .replay-shell .replay-workspace { min-height: 0; grid-template-columns: 1fr; }
+  .fx-app .fx-content > .replay-shell .replay-side { max-height: none; overflow: visible; padding-top: 16px; }
+  .fx-app .fx-content > .replay-shell .replay-main { padding-right: 0; }
+  .fx-app .fx-content > .replay-shell .replay-chart { height: clamp(380px, 58vh, 620px); min-height: 360px; }
+}
+
+@media (max-width: 620px) {
+  .fx-app .fx-content > .replay-shell { padding-inline: 12px; }
+  .fx-app .fx-content > .replay-shell > .replay-topbar { min-height: 0; padding: 12px 0; }
+  .fx-app .fx-content > .replay-shell .replay-topbar h1 { font-size: 17px; }
+  .fx-app .fx-content > .replay-shell .replay-contextbar {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 4px 0;
+  }
+  .fx-app .fx-content > .replay-shell .replay-contextbar > div,
+  .fx-app .fx-content > .replay-shell .replay-contextbar > div + div { border-left: 0; padding: 6px 8px 6px 0; }
+  .fx-app .fx-content > .replay-shell .replay-contextbar > div:nth-child(3) { border-top: 1px solid var(--fx-shell-line); }
+  .fx-app .fx-content > .replay-shell .replay-contextbar > div:nth-child(4) { display: grid; border-top: 1px solid var(--fx-shell-line); }
+  .fx-app .fx-content > .replay-shell .replay-contextbar .replay-state { min-height: 29px; margin: 6px 0 6px 8px; }
+  .fx-app .fx-content > .replay-shell .replay-chart { height: 420px; min-height: 320px; }
+}
