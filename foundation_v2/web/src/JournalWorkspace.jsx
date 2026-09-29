@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import './journal-analytics.css'
+import './journal-story.css'
 
 const ENTRY_TYPES = [
   ['observation', 'Quan sát'],
@@ -8,6 +9,42 @@ const ENTRY_TYPES = [
   ['no-trade', 'Không giao dịch'],
   ['missed-trade', 'Bỏ lỡ giao dịch'],
 ]
+
+const STORY_STEPS = [
+  ['context', 'Context', 'Phiên / cutoff'],
+  ['observation', 'Quan sát', 'Điều thấy trên chart'],
+  ['decision', 'Quyết định', 'Vào / bỏ qua / chờ'],
+  ['outcome', 'Kết quả', 'Chưa ghi hoặc đã cập nhật'],
+  ['next', 'Bước tiếp', 'Việc cần làm sau đó'],
+]
+
+const STORY_COPY = {
+  observation: {
+    takeaway: 'Bạn đang lưu bằng chứng quan sát trước khi kết luận.',
+    result: 'Chưa có kết quả thực tế trong journal contract.',
+    next: 'Chạy tiếp replay để kiểm tra giả thuyết rồi ghi lại kết quả.',
+  },
+  hypothesis: {
+    takeaway: 'Bạn đang lưu một giả thuyết để kiểm chứng tại cutoff này.',
+    result: 'Chưa có kết quả thực tế trong journal contract.',
+    next: 'Replay qua vùng quyết định, sau đó ghi lại điều thực sự xảy ra.',
+  },
+  decision: {
+    takeaway: 'Bạn đã lưu quyết định giao dịch cùng replay context.',
+    result: 'Chưa có kết quả thực tế trong journal contract.',
+    next: 'Giữ nguyên cutoff và cập nhật kết quả sau khi replay đủ dữ liệu.',
+  },
+  'no-trade': {
+    takeaway: 'Bạn đã ghi rõ lý do không giao dịch tại cutoff.',
+    result: 'Chưa có kết quả thực tế trong journal contract.',
+    next: 'Mở lại replay để xem quyết định này còn đúng khi có thêm nến hay không.',
+  },
+  'missed-trade': {
+    takeaway: 'Bạn đang ghi lại một cơ hội đã bỏ lỡ để review kỷ luật.',
+    result: 'Chưa có kết quả thực tế trong journal contract.',
+    next: 'Đối chiếu lại trigger và risk trước khi tạo một playbook mới.',
+  },
+}
 
 function contextFromQuery(query) {
   const sessionId = query?.get('session') || query?.get('replay_session') || ''
@@ -34,8 +71,43 @@ function labelForType(value) {
   return ENTRY_TYPES.find(([key]) => key === value)?.[1] || value || 'Chưa phân loại'
 }
 
+function typeMeta(value) {
+  return STORY_COPY[value] || {
+    takeaway: 'Ghi chú này chưa có loại được nhận diện.',
+    result: 'Chưa có kết quả thực tế trong journal contract.',
+    next: 'Mở replay context để tiếp tục kiểm chứng.',
+  }
+}
+
 function sourceForRecord(record) {
   return record?.payload?.source || record?.source || {}
+}
+
+function recordOutcome(record) {
+  const payload = record?.payload || record || {}
+  const value = payload.actual_result || payload.outcome || payload.result
+  return typeof value === 'string' && value.trim() ? value.trim() : ''
+}
+
+function sourceLabel(source) {
+  if (!source?.kind && !source?.id) return 'Chưa có source'
+  return `${source.kind || 'source'} · ${source.id || 'N/A'}`
+}
+
+function storyForRecord(record, context) {
+  const payload = record?.payload || record || {}
+  const type = payload.entry_type || 'observation'
+  const outcome = recordOutcome(record)
+  const copy = typeMeta(type)
+  return {
+    type,
+    label: labelForType(type),
+    takeaway: copy.takeaway,
+    outcome: outcome || copy.result,
+    next: payload.next_action || copy.next,
+    activeStep: outcome ? 'outcome' : (type === 'observation' || type === 'hypothesis' ? type : 'decision'),
+    contextLabel: context.sessionId ? `Replay ${context.sessionId}` : 'Chưa chọn replay session',
+  }
 }
 
 export function recordMatchesContext(record, context) {
@@ -110,13 +182,66 @@ function JournalRow({ record, selected, onSelect }) {
       <span className="ja-row-main">
         <span className="ja-row-kicker">{labelForType(payload.entry_type)}</span>
         <strong>{payload.note}</strong>
-        <small>{formatDate(record.updated_at_utc || record.created_at_utc)} · r{record.revision ?? 'N/A'}</small>
+        <small>{formatDate(record.updated_at_utc || record.created_at_utc)} · r{record.revision ?? 'N/A'} · {sourceLabel(source)}</small>
       </span>
       <span className="ja-row-meta">
         <code>{source.id || 'N/A'}</code>
         <span>{Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</span>
       </span>
     </button>
+  )
+}
+
+function StoryRail({ record, context }) {
+  const story = storyForRecord(record, context)
+  return (
+    <section className="ja-story-rail" aria-label="Decision story">
+      <div className="ja-story-rail-head">
+        <div>
+          <span className="ja-eyebrow">DECISION STORY</span>
+          <strong>{story.takeaway}</strong>
+        </div>
+        <span className="ja-story-status">{story.label}</span>
+      </div>
+      <ol className="ja-story-steps">
+        {STORY_STEPS.map(([id, label, hint]) => {
+          const active = id === story.activeStep
+          const complete = id === 'context' || (id === 'observation' && story.type !== 'observation') || (id === 'decision' && ['decision', 'no-trade', 'missed-trade'].includes(story.type)) || (id === 'outcome' && Boolean(recordOutcome(record)))
+          return (
+            <li className={`${active ? 'is-active' : ''} ${complete ? 'is-complete' : ''}`} key={id}>
+              <span className="ja-story-step-mark" aria-hidden="true">{complete ? '✓' : '·'}</span>
+              <span><strong>{label}</strong><small>{hint}</small></span>
+            </li>
+          )
+        })}
+      </ol>
+      <div className="ja-story-facts">
+        <div><span>Kết quả thực tế</span><strong className={recordOutcome(record) ? 'is-known' : 'is-unknown'}>{story.outcome}</strong></div>
+        <div><span>Bước tiếp</span><strong>{story.next}</strong></div>
+      </div>
+    </section>
+  )
+}
+
+function ProvenancePanel({ record, context }) {
+  const source = sourceForRecord(record)
+  const payload = record?.payload || record || {}
+  return (
+    <section className="ja-provenance-card" aria-label="Provenance ghi chú">
+      <div className="ja-provenance-card-head">
+        <div><span className="ja-eyebrow">PROVENANCE</span><strong>Evidence scope</strong></div>
+        <span className="ja-readonly-badge">read-only source</span>
+      </div>
+      <dl>
+        <div><dt>Replay session</dt><dd>{source.session_id || source.replay_session_id || context.sessionId || 'N/A'}</dd></div>
+        <div><dt>Trade</dt><dd>{source.trade_id || context.tradeId || 'N/A'}</dd></div>
+        <div><dt>Cutoff</dt><dd>{source.cursor_index ?? context.cursor ?? 'N/A'}</dd></div>
+        <div><dt>Source ID</dt><dd><code>{source.id || 'N/A'}</code></dd></div>
+        <div><dt>Revision</dt><dd>r{record?.revision ?? 'N/A'}</dd></div>
+        <div><dt>Tags</dt><dd>{Array.isArray(payload.tags) && payload.tags.length ? payload.tags.join(' · ') : 'Không có tag'}</dd></div>
+      </dl>
+      <p>Source được giữ nguyên qua các revision để bạn luôn biết ghi chú này dựa trên snapshot nào.</p>
+    </section>
   )
 }
 
@@ -209,18 +334,35 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
 
   const title = selected && !editing ? 'Chi tiết ghi chú' : selected ? 'Sửa ghi chú' : 'Ghi chú mới'
   const selectedSource = sourceForRecord(selected)
+  const selectedStory = selected ? storyForRecord(selected, context) : null
+  const replayHref = context.sessionId
+    ? `/?${new URLSearchParams({ workspace, view: 'replay', session: context.sessionId, ...(isFiniteNumber(context.cursor) ? { cursor: String(context.cursor) } : {}) }).toString()}`
+    : `/?${new URLSearchParams({ workspace, view: 'replay' }).toString()}`
+  const analyticsHref = `/?${new URLSearchParams({ workspace, view: 'analytics', ...(context.sessionId ? { session: context.sessionId } : {}), ...(context.tradeId ? { trade: context.tradeId } : {}) }).toString()}`
   return (
-    <main className="ja-page journal-page" data-testid="journal-workspace">
+    <main className="ja-page journal-page ja-story-page" data-testid="journal-workspace" aria-busy={state.status === 'loading'}>
       <header className="ja-page-header">
         <div>
           <span className="ja-eyebrow">FXREPLAY / DECISION JOURNAL</span>
           <h1>Journal</h1>
-          <p>Ghi lại điều bạn thấy, quyết định và lý do ngay tại replay cutoff.</p>
+          <p>Biến một replay cutoff thành câu chuyện có bằng chứng: điều thấy → quyết định → kết quả → bước tiếp theo.</p>
         </div>
         <div className="ja-header-status"><span className="ja-status-dot" />Local workspace · broker locked</div>
       </header>
 
       <ContextBar context={context} workspace={workspace} filtered={filtered} onFilterChange={setFiltered} />
+
+      <section className="ja-story-intro" aria-label="Cách dùng Journal">
+        <div className="ja-story-intro-copy">
+          <span className="ja-eyebrow">WORKFLOW</span>
+          <strong>{context.sessionId ? 'Đang ghi quanh một replay context' : 'Journal chỉ tạo được từ replay context'}</strong>
+          <span>{context.sessionId ? 'Mỗi entry giữ lại cutoff, source và revision để review sau này.' : 'Mở Practice từ một dataset local trước khi ghi để không mất nguồn bằng chứng.'}</span>
+        </div>
+        <div className="ja-story-intro-actions">
+          <a className="ja-button ja-button-quiet" href={replayHref}>Mở replay</a>
+          <a className="ja-button ja-button-quiet" href={analyticsHref}>Xem analytics</a>
+        </div>
+      </section>
 
       {state.status === 'loading' && <div className="ja-message" role="status">Đang tải journal…</div>}
       {state.status === 'error' && (
@@ -229,10 +371,10 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
         </div>
       )}
 
-      <section className="ja-journal-grid">
+      <section className="ja-journal-grid ja-story-grid">
         <div className="ja-list-panel">
           <div className="ja-section-head">
-            <div><span className="ja-eyebrow">ENTRIES</span><strong>{visibleItems.length} ghi chú</strong></div>
+            <div><span className="ja-eyebrow">ENTRIES</span><strong>{visibleItems.length} ghi chú</strong><small className="ja-section-subtitle">{filtered ? 'Đang lọc theo context hiện tại' : 'Toàn bộ workspace'}</small></div>
             <button type="button" className="ja-button ja-button-primary" onClick={resetForm} disabled={!source}>+ Ghi chú</button>
           </div>
           {!visibleItems.length && state.status === 'ready' && (
@@ -248,7 +390,17 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
           </div>
         </div>
 
-        <form className="ja-editor-panel" onSubmit={submit}>
+        <div className="ja-editor-column">
+          {selected && <StoryRail record={selected} context={context} />}
+          {!selected && (
+            <section className="ja-story-placeholder" aria-label="Decision story preview">
+              <span className="ja-eyebrow">DECISION STORY</span>
+              <strong>Chọn một entry để xem điều gì đã được biết tại cutoff.</strong>
+              <span>Journal tách phần tóm tắt khỏi note gốc để bạn đọc nhanh trước khi mở provenance.</span>
+            </section>
+          )}
+          {selected && <ProvenancePanel record={selected} context={context} />}
+          <form className="ja-editor-panel" onSubmit={submit}>
           <div className="ja-section-head">
             <div><span className="ja-eyebrow">{selected ? `REVISION ${selected.revision ?? 'N/A'}` : 'NEW ENTRY'}</span><strong>{title}</strong></div>
             {selected && !editing && <button type="button" className="ja-button" onClick={() => setEditing(true)}>Sửa</button>}
@@ -276,7 +428,14 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
               {pending ? 'Đang lưu…' : selected ? 'Lưu revision' : 'Lưu ghi chú'}
             </button>
           )}
-        </form>
+          </form>
+          {selectedStory && (
+            <div className="ja-next-action">
+              <div><span className="ja-eyebrow">NEXT ACTION</span><strong>{selectedStory.next}</strong></div>
+              <a className="ja-text-link" href={replayHref}>Tiếp tục replay →</a>
+            </div>
+          )}
+        </div>
       </section>
     </main>
   )
