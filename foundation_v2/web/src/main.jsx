@@ -11,6 +11,7 @@ import DataDeskWorkspace from './DataDeskWorkspace.jsx'
 import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
+import PlaybookWorkspace from './PlaybookWorkspace.jsx'
 import { useFxReplayContext } from './FxReplayShell.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
@@ -192,6 +193,9 @@ function App() {
   } else if (activeView === 'risk') {
     content = <RiskWorkspace workspace={workspace} query={query} />
     mode = 'Risk lab'
+  } else if (activeView === 'playbook') {
+    content = <PlaybookWorkspace workspace={workspace} query={query} />
+    mode = 'Playbook'
   } else if (activeView === 'settings') {
     content = <SettingsWorkspace workspace={workspace} query={query} />
     mode = 'Workspace'

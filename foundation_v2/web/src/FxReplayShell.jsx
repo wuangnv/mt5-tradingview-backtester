@@ -46,6 +46,7 @@ const SHELL_COPY = {
       journal: ['Journal', 'Ghi chú theo phiên'],
       analytics: ['Analytics', 'Hiệu suất và thống kê'],
       risk: ['Risk', 'Giới hạn và mô phỏng rủi ro'],
+      playbook: ['Playbook', 'Version và lineage của setup'],
       trade: ['Trade desk', 'Demo simulator'],
       learn: ['Learn', 'Course và glossary'],
       settings: ['Settings', 'Workspace và kết nối'],
@@ -88,6 +89,7 @@ const SHELL_COPY = {
       journal: ['Journal', 'Session notes'],
       analytics: ['Analytics', 'Performance and statistics'],
       risk: ['Risk', 'Limits and risk simulation'],
+      playbook: ['Playbook', 'Setup versions and lineage'],
       trade: ['Trade desk', 'Demo simulator'],
       learn: ['Learn', 'Course and glossary'],
       settings: ['Settings', 'Workspace and connections'],
@@ -103,6 +105,7 @@ const NAV_ITEMS = [
   { id: 'journal', short: 'JR', group: 'review' },
   { id: 'analytics', short: 'AN', group: 'review' },
   { id: 'risk', short: 'RK', group: 'review' },
+  { id: 'playbook', short: 'PB', group: 'review' },
   { id: 'trade', short: 'TD', group: 'review' },
 ]
 
