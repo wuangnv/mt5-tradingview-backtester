@@ -150,6 +150,7 @@
 .unsupported-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding-top: 11px; }
 .unsupported-tools button { min-height: 38px; padding: 0 6px; border-radius: 3px; color: #79858d; font-size: 10px; }
 .unsupported-tools button span { display: block; margin-top: 2px; color: #626e75; font-size: 9px; }
+.unsupported-tools button:disabled { opacity: .78; border-color: #3d474e; color: #aeb8be; }
 
 @media (max-width: 1120px) {
   .replay-shell { padding-inline: 20px; }
@@ -168,6 +169,10 @@
   .replay-main { padding-right: 0; }
   .replay-side { border-top: 1px solid #242c31; border-left: 0; padding: 18px 0 0; }
   .decision-panel { max-width: 520px; }
+  .replay-status { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow-x: visible; }
+  .replay-status > div { min-width: 0; white-space: normal; }
+  .replay-status code { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .replay-status .replay-state { grid-column: 1 / -1; min-width: 0; margin-left: 0; border-top: 1px solid #242c31; padding-top: 10px; text-align: left; white-space: normal; overflow-wrap: anywhere; }
 }
 
 @media (max-width: 620px) {

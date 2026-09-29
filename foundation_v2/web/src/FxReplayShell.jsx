@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
 
 const NAV_ITEMS = [
   { id: 'overview', label: 'Tổng quan', short: 'OV', description: 'Phiên đang làm và điểm tiếp theo' },
@@ -16,6 +16,12 @@ const UTILITY_ITEMS = [
   { id: 'settings', label: 'Settings', short: 'SE', description: 'Workspace và kết nối' },
 ]
 
+const FxReplayContext = createContext(null)
+
+export function useFxReplayContext() {
+  return useContext(FxReplayContext) || { updateMarketContext: () => {} }
+}
+
 function hrefFor(id, workspace) {
   const params = new URLSearchParams({ workspace })
   params.set('view', id)
@@ -28,6 +34,8 @@ function NavItem({ item, active, workspace }) {
       className={`fx-nav-item ${active ? 'is-active' : ''}`}
       href={hrefFor(item.id, workspace)}
       aria-current={active ? 'page' : undefined}
+      aria-label={item.label}
+      data-nav-label={item.label}
       title={item.description}
     >
       <span className="fx-nav-icon" aria-hidden="true">{item.short}</span>
@@ -36,7 +44,10 @@ function NavItem({ item, active, workspace }) {
   )
 }
 
-function ShellTopbar({ activeItem, mode, workspace }) {
+function ShellTopbar({ activeItem, mode, workspace, marketContext }) {
+  const instrument = marketContext.instrument || 'Chưa chọn instrument'
+  const timeframe = marketContext.timeframe || 'TF chưa chọn'
+  const dataStatus = marketContext.dataStatus || 'Chưa xác định'
   return (
     <header className="fx-topbar">
       <div className="fx-breadcrumb">
@@ -45,8 +56,8 @@ function ShellTopbar({ activeItem, mode, workspace }) {
         <strong>{activeItem?.label || 'Tổng quan'}</strong>
       </div>
       <div className="fx-context-strip" aria-label="Ngữ cảnh workspace">
-        <span className="fx-context-chip"><i className="fx-status-dot is-warn" />EURUSD · default</span>
-        <span className="fx-context-chip">TF chưa chọn</span>
+        <span className="fx-context-chip"><i className={`fx-status-dot ${dataStatus === 'fixture-only' ? 'is-warn' : 'is-muted'}`} />{instrument}</span>
+        <span className="fx-context-chip">{timeframe}</span>
         <span className="fx-context-chip fx-context-mode">{mode}</span>
         <span className="fx-context-chip fx-context-lock">Broker locked</span>
       </div>
@@ -60,34 +71,46 @@ function ShellTopbar({ activeItem, mode, workspace }) {
 
 export default function FxReplayShell({ children, workspace, activeView = 'overview', mode = 'Replay' }) {
   const activeItem = [...NAV_ITEMS, ...UTILITY_ITEMS].find((item) => item.id === activeView) || NAV_ITEMS[0]
+  const [marketContext, setMarketContext] = useState({
+    instrument: '',
+    timeframe: '',
+    dataStatus: '',
+  })
+  const updateMarketContext = useCallback((next) => {
+    setMarketContext((current) => ({ ...current, ...next }))
+  }, [])
+  const contextValue = useMemo(() => ({ updateMarketContext }), [updateMarketContext])
+
   return (
-    <div className="fx-app" data-testid="fxreplay-shell">
-      <aside className="fx-rail" aria-label="Điều hướng Trading Workspace">
-        <div className="fx-brand">
-          <div className="fx-brand-symbol">TW</div>
-          <div className="fx-brand-copy"><strong>Trading</strong><span>Workspace</span></div>
-        </div>
-        <div className="fx-rail-caption">WORKSPACE</div>
-        <nav className="fx-nav" aria-label="Khu vực chính">
-          {NAV_ITEMS.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} />)}
-        </nav>
-        <div className="fx-rail-divider" />
-        <div className="fx-rail-caption">TOOLS</div>
-        <nav className="fx-nav" aria-label="Công cụ">
-          {UTILITY_ITEMS.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} />)}
-        </nav>
-        <div className="fx-rail-spacer" />
-        <div className="fx-rail-footer">
-          <span className="fx-rail-footer-label">DATA STATUS</span>
-          <strong><i className="fx-status-dot is-warn" /> Local cache</strong>
-          <small>Verified range chưa bật</small>
-        </div>
-      </aside>
-      <section className="fx-main">
-        <ShellTopbar activeItem={activeItem} mode={mode} workspace={workspace} />
-        <div className="fx-content">{children}</div>
-      </section>
-    </div>
+    <FxReplayContext.Provider value={contextValue}>
+      <div className="fx-app" data-testid="fxreplay-shell">
+        <aside className="fx-rail" aria-label="Điều hướng Trading Workspace">
+          <div className="fx-brand">
+            <div className="fx-brand-symbol">TW</div>
+            <div className="fx-brand-copy"><strong>Trading</strong><span>Workspace</span></div>
+          </div>
+          <div className="fx-rail-caption">WORKSPACE</div>
+          <nav className="fx-nav" aria-label="Khu vực chính">
+            {NAV_ITEMS.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} />)}
+          </nav>
+          <div className="fx-rail-divider" />
+          <div className="fx-rail-caption">TOOLS</div>
+          <nav className="fx-nav" aria-label="Công cụ">
+            {UTILITY_ITEMS.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} />)}
+          </nav>
+          <div className="fx-rail-spacer" />
+          <div className="fx-rail-footer">
+            <span className="fx-rail-footer-label">DATA STATUS</span>
+            <strong><i className="fx-status-dot is-warn" /> Local cache</strong>
+            <small>Verified range chưa bật</small>
+          </div>
+        </aside>
+        <section className="fx-main">
+          <ShellTopbar activeItem={activeItem} mode={mode} workspace={workspace} marketContext={marketContext} />
+          <div className="fx-content">{children}</div>
+        </section>
+      </div>
+    </FxReplayContext.Provider>
   )
 }
 

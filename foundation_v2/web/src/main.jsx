@@ -13,7 +13,7 @@ import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
 import './styles.css'
 
-function WorkspaceOverview({ workspace }) {
+function WorkspaceOverview({ workspace, query }) {
   const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null })
 
   useEffect(() => {
@@ -33,6 +33,43 @@ function WorkspaceOverview({ workspace }) {
   const datasetCount = Number.isFinite(Number(counts.datasets)) ? Number(counts.datasets) : null
   const completedResearch = Number(counts.research_jobs?.completed || 0)
   const replayCount = Number(counts.records?.replay || 0)
+  const sessionId = query?.get('session') || ''
+  const jobId = query?.get('job') || ''
+  const queueItems = [
+    replayCount > 0
+      ? {
+          title: sessionId ? 'Tiếp tục replay session' : 'Mở Practice để xem replay',
+          detail: sessionId ? 'Giữ nguyên dataset và decision cutoff hiện tại' : `${replayCount} replay record đã có trong workspace`,
+          href: `/?workspace=${encodeURIComponent(workspace)}&view=replay${sessionId ? `&session=${encodeURIComponent(sessionId)}` : ''}`,
+        }
+      : {
+          title: 'Mở một replay session',
+          detail: 'Chọn dataset local trước khi đưa ra quyết định',
+          href: `/?workspace=${encodeURIComponent(workspace)}&view=replay`,
+        },
+    completedResearch > 0
+      ? {
+          title: 'Xem research đã hoàn tất',
+          detail: jobId ? 'Mở lại result với provenance của job hiện tại' : `${completedResearch} research job đã hoàn tất`,
+          href: `/?workspace=${encodeURIComponent(workspace)}&view=${jobId ? `research&job=${encodeURIComponent(jobId)}` : 'research'}`,
+        }
+      : {
+          title: 'Chuẩn bị research run',
+          detail: datasetCount > 0 ? 'Chọn dataset và kiểm tra provenance trước khi chạy' : 'Cần dataset local trước khi chạy',
+          href: `/?workspace=${encodeURIComponent(workspace)}&view=${datasetCount > 0 ? 'research' : 'data'}`,
+        },
+    datasetCount > 0
+      ? {
+          title: 'Ôn glossary trước phiên',
+          detail: 'Learn đọc course local ở chế độ read-only',
+          href: `/?workspace=${encodeURIComponent(workspace)}&view=learn`,
+        }
+      : {
+          title: 'Nạp dataset local',
+          detail: 'Data Desk là điểm bắt đầu của workflow trading',
+          href: `/?workspace=${encodeURIComponent(workspace)}&view=data`,
+        },
+  ]
 
   return (
     <section className="fx-overview" aria-labelledby="overview-title">
@@ -58,16 +95,12 @@ function WorkspaceOverview({ workspace }) {
 
       <div className="fx-overview-grid">
         <section className="fx-work-queue" aria-labelledby="queue-title">
-          <div className="fx-section-heading"><div><span className="fx-eyebrow">NEXT ACTION</span><h2 id="queue-title">Việc cần làm</h2></div><span className="fx-muted-label">3 bước</span></div>
-          <a className="fx-queue-row is-primary" href={`/?workspace=${encodeURIComponent(workspace)}&view=replay`}>
-            <span className="fx-queue-index">01</span><span><strong>Mở một replay session</strong><small>Chọn dataset, symbol và decision cutoff</small></span><b>→</b>
-          </a>
-          <a className="fx-queue-row" href={`/?workspace=${encodeURIComponent(workspace)}&view=research`}>
-            <span className="fx-queue-index">02</span><span><strong>Kiểm tra research run</strong><small>Kết quả chỉ hiển thị khi có job ID hợp lệ</small></span><b>→</b>
-          </a>
-          <a className="fx-queue-row" href={`/?workspace=${encodeURIComponent(workspace)}&view=learn`}>
-            <span className="fx-queue-index">03</span><span><strong>Ôn glossary trước phiên</strong><small>Learn đọc từ course local, không tự ghi tiến độ</small></span><b>→</b>
-          </a>
+          <div className="fx-section-heading"><div><span className="fx-eyebrow">NEXT ACTION</span><h2 id="queue-title">Việc cần làm</h2></div><span className="fx-muted-label">{queueItems.length} mục theo workspace</span></div>
+          {queueItems.map((item, index) => (
+            <a className={`fx-queue-row ${index === 0 ? 'is-primary' : ''}`} href={item.href} key={`${item.title}-${index}`}>
+              <span className="fx-queue-index">{String(index + 1).padStart(2, '0')}</span><span><strong>{item.title}</strong><small>{item.detail}</small></span><b>→</b>
+            </a>
+          ))}
         </section>
 
         <section className="fx-context-panel" aria-labelledby="context-title">
@@ -124,7 +157,7 @@ function App() {
     content = <DataDeskWorkspace workspace={workspace} query={query} />
     mode = 'Data'
   } else if (activeView === 'overview') {
-    content = <WorkspaceOverview workspace={workspace} />
+    content = <WorkspaceOverview workspace={workspace} query={query} />
   } else if (activeView === 'journal') {
     content = <JournalWorkspace workspace={workspace} query={query} />
     mode = 'Journal'

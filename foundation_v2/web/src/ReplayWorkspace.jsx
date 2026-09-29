@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CandlestickSeries, createChart } from 'lightweight-charts'
+import { useFxReplayContext } from './FxReplayShell.jsx'
 import './ReplayWorkspace.css'
 
 function formatTimestamp(timestamp) {
@@ -112,6 +113,7 @@ function isEditableTarget(target) {
 }
 
 export default function ReplayWorkspace({ workspace, query }) {
+  const { updateMarketContext } = useFxReplayContext()
   const storageKey = `tw:replay:last:${workspace}`
   const requestedSession = query.get('session') || ''
   const requestedDataset = query.get('dataset') || ''
@@ -204,6 +206,7 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   useEffect(() => {
     if (requestedSession) {
+      loadDatasets()
       if (!requestedCursorValid) {
         setState({ status: 'error', payload: null, error: 'Cursor replay trong URL không hợp lệ.' })
         return
@@ -256,6 +259,20 @@ export default function ReplayWorkspace({ workspace, query }) {
   const revision = Number(replay?.revision ?? 0)
   const visibleRows = replay?.visible_rows || []
   const currentBar = visibleRows.length ? visibleRows[visibleRows.length - 1] : null
+  const activeDataset = useMemo(
+    () => datasetState.items.find((item) => item.dataset_id === replay?.payload?.dataset_id) || null,
+    [datasetState.items, replay?.payload?.dataset_id],
+  )
+
+  useEffect(() => {
+    if (!activeDataset) return
+    updateMarketContext({
+      instrument: String(activeDataset.instrument_id || activeDataset.dataset_id || ''),
+      timeframe: String(activeDataset.timeframe || 'TF chưa rõ'),
+      dataStatus: String(activeDataset.quality_status || 'unverified'),
+    })
+  }, [activeDataset?.dataset_id, activeDataset?.instrument_id, activeDataset?.quality_status, activeDataset?.timeframe, updateMarketContext])
+
   const completed = replay?.payload?.status === 'completed' || replay?.has_future_rows === false
   const lineage = replay?.payload?.parent_session_id
   const canBranch = Boolean(replay) && !conflict && (
@@ -399,7 +416,7 @@ export default function ReplayWorkspace({ workspace, query }) {
           <section className="replay-status" aria-label="Trạng thái replay">
             <div><span>Workspace</span><strong>{workspace}</strong></div>
             <div><span>Dataset</span><code>{replay.payload.dataset_id}</code></div>
-            <div><span>Data status</span><strong>{datasetState.items.find((item) => item.dataset_id === replay.payload.dataset_id)?.quality_status || 'unverified'}</strong></div>
+            <div><span>Data status</span><strong>{activeDataset?.quality_status || 'unverified'}</strong></div>
             <div><span>Revision</span><strong>r{revision}</strong></div>
             <div><span>Đã mở</span><strong>{replay.visible_row_count} nến</strong></div>
             <div className={`replay-state ${completed ? 'is-complete' : ''} ${conflict ? 'is-conflict' : ''}`} data-testid="replay-status">
