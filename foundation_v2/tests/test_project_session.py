@@ -22,8 +22,7 @@ from trading_workspace_v2.project_session import (
 )
 
 
-UTC = timezone.utc
-NOW = datetime(2026, 9, 29, 12, 0, tzinfo=UTC)
+NOW = datetime(2026, 9, 29, 12, 0, tzinfo=timezone.utc)
 
 
 def make_session(*, ttl_seconds: int | None = 60) -> ProjectSession:
