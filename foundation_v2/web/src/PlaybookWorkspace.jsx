@@ -56,7 +56,7 @@ function PlaybookList({ items, selectedId, onSelect }) {
   )
 }
 
-function PlaybookSummary({ record }) {
+function PlaybookSummary({ record, journalHref }) {
   const payload = record?.payload || {}
   const ruleKeys = Object.keys(payload.rules || {}).sort()
   return (
@@ -72,6 +72,7 @@ function PlaybookSummary({ record }) {
         <div><dt>Parent</dt><dd>{payload.parent_playbook_id ? <code>{payload.parent_playbook_id} · r{payload.parent_revision || '?'}</code> : 'Root record'}</dd></div>
       </dl>
       <div className="pb-rules"><span className="pb-eyebrow">RULE SURFACE</span>{ruleKeys.length ? <div className="pb-rule-chips">{ruleKeys.map((key) => <span key={key}>{key}</span>)}</div> : <span className="pb-muted">Chưa có rule key</span>}</div>
+      {journalHref && <a className="pb-journal-link" href={journalHref}>Mở Journal với setup này →</a>}
     </section>
   )
 }
@@ -125,9 +126,14 @@ export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new 
   const selected = catalog.items.find((item) => item.record_id === selectedId) || null
   const selectPlaybook = (recordId) => {
     setSelectedId(recordId)
-    const href = buildWorkspaceHref('playbook', workspace, query, { playbook: recordId })
+    const record = catalog.items.find((item) => item.record_id === recordId)
+    const href = buildWorkspaceHref('playbook', workspace, query, { playbook: recordId, playbook_revision: record?.revision || null })
     window.history.replaceState({}, '', href)
   }
+
+  const journalHref = selected
+    ? buildWorkspaceHref('journal', workspace, query, { playbook: selected.record_id, playbook_revision: selected.revision })
+    : ''
 
   return (
     <main className="pb-page" data-testid="playbook-root">
@@ -136,7 +142,7 @@ export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new 
       {catalog.status === 'error' && <div className="pb-message is-error" role="alert">Không đọc được playbook: {catalog.error}</div>}
       <div className="pb-layout">
         <aside className="pb-sidebar"><div className="pb-section-heading"><div><span className="pb-eyebrow">CATALOG</span><h2>Setups</h2></div><span className="pb-count">{catalog.items.length}</span></div><PlaybookList items={catalog.items} selectedId={selectedId} onSelect={selectPlaybook} /></aside>
-        <div className="pb-content">{selected ? <PlaybookSummary record={selected} /> : catalog.status === 'ready' ? <div className="pb-empty"><strong>Chọn một playbook</strong><span>Chọn record bên trái để đọc metadata và version history.</span></div> : null}{history.status === 'loading' && <div className="pb-message" role="status">Đang đọc revision history…</div>}{history.status === 'error' && <div className="pb-message is-error" role="alert">Không đọc được revision history: {history.error}</div>}{history.status === 'ready' && <RevisionDiff revisions={history.items} leftRevision={leftRevision} rightRevision={rightRevision} setLeftRevision={setLeftRevision} setRightRevision={setRightRevision} />}</div>
+        <div className="pb-content">{selected ? <PlaybookSummary record={selected} journalHref={journalHref} /> : catalog.status === 'ready' ? <div className="pb-empty"><strong>Chọn một playbook</strong><span>Chọn record bên trái để đọc metadata và version history.</span></div> : null}{history.status === 'loading' && <div className="pb-message" role="status">Đang đọc revision history…</div>}{history.status === 'error' && <div className="pb-message is-error" role="alert">Không đọc được revision history: {history.error}</div>}{history.status === 'ready' && <RevisionDiff revisions={history.items} leftRevision={leftRevision} rightRevision={rightRevision} setLeftRevision={setLeftRevision} setRightRevision={setRightRevision} />}</div>
       </div>
     </main>
   )

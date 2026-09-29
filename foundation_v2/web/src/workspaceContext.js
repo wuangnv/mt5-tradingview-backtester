@@ -12,6 +12,8 @@ export const WORKSPACE_CONTEXT_KEYS = Object.freeze([
   'cursor',
   'cutoff',
   'mode',
+  'playbook',
+  'playbook_revision',
 ])
 
 function asSearchParams(queryLike) {
@@ -48,6 +50,12 @@ function normalizedCutoff(value) {
   return /^[A-Za-z0-9_.:+-]+$/.test(text) ? text : ''
 }
 
+function normalizedRevision(value) {
+  if (value === null || value === undefined || value === '') return ''
+  const numeric = Number(value)
+  return Number.isInteger(numeric) && numeric >= 1 ? String(numeric) : ''
+}
+
 /**
  * Read the canonical context while accepting aliases emitted by older routes.
  * The returned object is display/state data, not an authority for broker or
@@ -64,6 +72,8 @@ export function readWorkspaceContext(queryLike) {
     cursorIndex: cursor === '' ? null : Number(cursor),
     decisionCutoff: cutoff,
     mode: firstValue(params, ['mode']),
+    playbookId: firstValue(params, ['playbook', 'playbook_id']),
+    playbookRevision: normalizedRevision(firstValue(params, ['playbook_revision'])),
   }
 }
 
@@ -87,13 +97,16 @@ export function buildWorkspaceHref(view, workspace, queryLike, overrides = {}) {
     cursor: context.cursorIndex === null ? '' : String(context.cursorIndex),
     cutoff: context.decisionCutoff,
     mode: context.mode,
+    playbook: context.playbookId,
+    playbook_revision: context.playbookRevision,
   }
-  for (const key of ['session', 'dataset', 'cursor', 'cutoff', 'mode']) {
+  for (const key of ['session', 'dataset', 'cursor', 'cutoff', 'mode', 'playbook', 'playbook_revision']) {
     const hasOverride = Object.prototype.hasOwnProperty.call(overrides, key)
     const value = hasOverride && overrides[key] !== undefined ? overrides[key] : values[key]
     if (value === null || value === undefined || value === '') continue
     if (key === 'cursor' && normalizedCursor(value) === '') continue
-    params.set(key, key === 'cursor' ? normalizedCursor(value) : String(value))
+    if (key === 'playbook_revision' && normalizedRevision(value) === '') continue
+    params.set(key, key === 'cursor' ? normalizedCursor(value) : key === 'playbook_revision' ? normalizedRevision(value) : String(value))
   }
 
   // Keep destination-specific values explicit. Do not copy arbitrary source

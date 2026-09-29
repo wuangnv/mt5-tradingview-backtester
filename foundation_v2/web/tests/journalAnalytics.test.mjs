@@ -18,6 +18,7 @@ test('journal UI stays linked to replay/trade context and uses revision endpoint
   assert.match(journalSource, /actual_result/)
   assert.match(journalSource, /overlay_ids/)
   assert.match(journalSource, /context\.mode/)
+  assert.match(journalSource, /playbook_id/)
 })
 
 test('analytics UI preserves unknown values and exposes result provenance', () => {

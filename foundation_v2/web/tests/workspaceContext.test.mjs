@@ -11,6 +11,8 @@ test('readWorkspaceContext normalizes canonical values and legacy aliases', () =
     cursorIndex: 12,
     decisionCutoff: '2026-09-29T12:00:00Z',
     mode: 'Practice',
+    playbookId: '',
+    playbookRevision: '',
   })
 })
 
@@ -42,4 +44,17 @@ test('invalid cursor values are never emitted into a deep link', () => {
 test('unsafe cutoff values are omitted from a deep link', () => {
   const href = buildWorkspaceHref('journal', 'desk-1', '?session=abc&cutoff=bar%2012')
   assert.equal(href, '/?workspace=desk-1&view=journal&session=abc')
+})
+
+test('playbook context survives the journal deep link and rejects unsafe revisions', () => {
+  const href = buildWorkspaceHref(
+    'journal',
+    'desk-1',
+    '?session=abc&playbook=breakout&playbook_revision=3',
+  )
+  assert.equal(href, '/?workspace=desk-1&view=journal&session=abc&playbook=breakout&playbook_revision=3')
+  assert.equal(
+    buildWorkspaceHref('journal', 'desk-1', '?playbook=breakout&playbook_revision=0'),
+    '/?workspace=desk-1&view=journal&playbook=breakout',
+  )
 })
