@@ -16,6 +16,7 @@ __all__ = [
     "risk_promotion_contracts",
     "paper_accounting",
     "paper_execution_bridge",
+    "notion_projection",
     "owner_absence_safety",
     "owner_absence_supervisor",
     "owner_absence_journal",
