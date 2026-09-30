@@ -12,6 +12,7 @@ import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
 import PlaybookWorkspace from './PlaybookWorkspace.jsx'
+import LiveWorkspace from './LiveWorkspace.jsx'
 import SessionPicker from './SessionPicker.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
@@ -209,6 +210,9 @@ function App() {
   } else if (activeView === 'playbook') {
     content = <PlaybookWorkspace workspace={workspace} query={query} />
     mode = 'Playbook'
+  } else if (activeView === 'live') {
+    content = <LiveWorkspace workspace={workspace} query={query} />
+    mode = 'Read only'
   } else if (activeView === 'settings') {
     content = <SettingsWorkspace workspace={workspace} query={query} />
     mode = 'Workspace'
