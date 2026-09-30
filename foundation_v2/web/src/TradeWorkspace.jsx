@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './TradeWorkspace.css'
 
 const DEFAULT_INSTRUMENT = {
@@ -127,7 +127,11 @@ function SimulatorBanner() {
 export default function TradeWorkspace({ workspace, query, replay: controlledReplay = null, onReplayChange }) {
   const sessionId = query?.get('session') || ''
   const [state, setState] = useState({ status: controlledReplay ? 'ready' : sessionId ? 'loading' : 'idle', replay: controlledReplay, error: null })
-  const [datasets, setDatasets] = useState([])
+  const [datasetState, setDatasetState] = useState({ status: 'loading', items: [], error: null })
+  const replayRequestRef = useRef(0)
+  const replayAbortRef = useRef(null)
+  const datasetRequestRef = useRef(0)
+  const datasetAbortRef = useRef(null)
   const [draft, setDraft] = useState(() => initialDraft(controlledReplay))
   const [startingBalance, setStartingBalance] = useState('10000')
   const [spread, setSpread] = useState('0.0002')
@@ -141,38 +145,66 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const currentBar = rows[rows.length - 1]
   const entryReference = numberOr(currentBar?.close, NaN)
   const datasetId = payload?.dataset_id || ''
-  const manifest = datasets.find((item) => item.dataset_id === datasetId)
+  const manifest = datasetState.items.find((item) => item.dataset_id === datasetId)
   const instrument = execution?.instrument_spec || manifest?.instrument_spec || DEFAULT_INSTRUMENT
   const costModel = execution?.cost_model || DEFAULT_COST_MODEL
   const revision = numberOr(replay?.revision, 0)
   const hasSession = Boolean(sessionId || replay?.record_id)
 
   const fetchReplay = useCallback(async () => {
-    const id = sessionId || replay?.record_id
+    const id = sessionId
     if (!id || controlledReplay) return
+    const requestId = replayRequestRef.current + 1
+    replayRequestRef.current = requestId
+    replayAbortRef.current?.abort()
+    const controller = new AbortController()
+    replayAbortRef.current = controller
     setState((current) => ({ ...current, status: 'loading', error: null }))
     try {
-      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(id)}`, { headers: { 'X-Workspace-Id': workspace } })
+      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(id)}`, { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal })
       const next = await readJson(response)
+      if (requestId !== replayRequestRef.current) return
       setState({ status: 'ready', replay: next, error: null })
       setDraft((current) => ({ ...initialDraft(next), ...current }))
     } catch (error) {
+      if (error?.name === 'AbortError' || requestId !== replayRequestRef.current) return
       setState({ status: 'error', replay: null, error: error.message })
     }
-  }, [controlledReplay, replay?.record_id, sessionId, workspace])
+  }, [controlledReplay, sessionId, workspace])
 
   useEffect(() => {
     if (!controlledReplay && sessionId) fetchReplay()
+    return () => {
+      replayAbortRef.current?.abort()
+      replayRequestRef.current += 1
+    }
   }, [controlledReplay, fetchReplay, sessionId])
 
-  useEffect(() => {
-    let cancelled = false
-    fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace } })
-      .then(readJson)
-      .then((value) => { if (!cancelled) setDatasets(value.items || []) })
-      .catch(() => {})
-    return () => { cancelled = true }
+  const fetchDatasets = useCallback(async () => {
+    const requestId = datasetRequestRef.current + 1
+    datasetRequestRef.current = requestId
+    datasetAbortRef.current?.abort()
+    const controller = new AbortController()
+    datasetAbortRef.current = controller
+    setDatasetState((current) => ({ ...current, status: 'loading', error: null }))
+    try {
+      const response = await fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal })
+      const value = await readJson(response)
+      if (requestId !== datasetRequestRef.current) return
+      setDatasetState({ status: 'ready', items: Array.isArray(value.items) ? value.items : [], error: null })
+    } catch (error) {
+      if (error?.name === 'AbortError' || requestId !== datasetRequestRef.current) return
+      setDatasetState((current) => ({ ...current, status: 'error', error: error.message }))
+    }
   }, [workspace])
+
+  useEffect(() => {
+    fetchDatasets()
+    return () => {
+      datasetAbortRef.current?.abort()
+      datasetRequestRef.current += 1
+    }
+  }, [fetchDatasets])
 
   useEffect(() => {
     if (replay) setDraft((current) => ({ ...initialDraft(replay), ...current }))
@@ -253,11 +285,12 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
       </div>
       <SimulatorBanner />
       {state.status === 'loading' && <div className="trade-message">Đang tải replay session…</div>}
-      {state.status === 'error' && <div className="trade-message is-error">Không đọc được replay: {state.error}</div>}
+      {state.status === 'error' && <div className="trade-message is-error" role="alert">Không đọc được replay: {state.error}<button className="trade-inline-retry" type="button" onClick={fetchReplay}>Thử lại</button></div>}
+      {datasetState.status === 'error' && <div className="trade-message is-error" role="alert">Không đọc được catalog dataset: {datasetState.error}<button className="trade-inline-retry" type="button" onClick={fetchDatasets}>Thử lại</button></div>}
       {!hasSession && state.status !== 'loading' && <div className="trade-empty"><strong>Mở Practice trước</strong><span>Trade draft cần session, dataset và decision cutoff. Hãy mở một replay session rồi quay lại Trade desk.</span><a className="trade-link" href={`/?workspace=${encodeURIComponent(workspace)}&view=replay`}>Mở Practice →</a></div>}
       {replay && (
         <>
-          <div className="trade-context-strip"><span><b>Instrument</b>{instrument.instrument_id || 'N/A'}</span><span><b>Cutoff</b>{replay.cutoff_timestamp ? new Date(Number(replay.cutoff_timestamp) * 1000).toISOString().replace('T', ' ').slice(0, 16) : 'N/A'} UTC</span><span><b>Revision</b>r{revision}</span><span><b>Giá tham chiếu</b>{formatPrice(entryReference)}</span></div>
+          <div className="trade-context-strip"><span><b>Instrument</b>{instrument.instrument_id || 'N/A'}</span><span><b>Dataset catalog</b>{datasetState.status === 'loading' ? 'Đang tải…' : datasetState.status === 'error' ? 'Unavailable' : manifest ? 'Verified' : datasetId ? 'N/A' : 'Không cần'}</span><span><b>Cutoff</b>{replay.cutoff_timestamp ? new Date(Number(replay.cutoff_timestamp) * 1000).toISOString().replace('T', ' ').slice(0, 16) : 'N/A'} UTC</span><span><b>Revision</b>r{revision}</span><span><b>Giá tham chiếu</b>{formatPrice(entryReference)}</span></div>
           {!execution && (
             <section className="trade-init-section" aria-labelledby="trade-init-title">
               <div><span className="trade-eyebrow">STEP 01</span><h2 id="trade-init-title">Khởi tạo simulator state</h2><p>Execution state được gắn vào session và giữ cùng provenance. Chi phí dưới đây là fixture/model, chưa phải báo giá broker.</p></div>
@@ -280,7 +313,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
                     <div className="trade-active-state"><strong>{execution.position ? 'Đang có vị thế trong simulator' : 'Đã có market order đang chờ fill'}</strong><span>{execution.position ? `${execution.position.side} ${execution.position.quantity} · SL ${formatPrice(execution.position.stop_loss)} · TP ${formatPrice(execution.position.take_profit)}` : `${execution.pending_market_order.side} ${execution.pending_market_order.quantity} · sẽ fill ở bar kế tiếp`}</span></div>
                   ) : (
                     <form className="trade-draft-form" onSubmit={queueOrder}>
-                      <div className="trade-side-toggle" role="group" aria-label="Hướng lệnh"><button className={draft.side === 'BUY' ? 'is-buy' : ''} type="button" onClick={() => setDraft((current) => ({ ...current, side: 'BUY' }))}>BUY</button><button className={draft.side === 'SELL' ? 'is-sell' : ''} type="button" onClick={() => setDraft((current) => ({ ...current, side: 'SELL' }))}>SELL</button></div>
+                      <div className="trade-side-toggle" role="group" aria-label="Hướng lệnh"><button className={draft.side === 'BUY' ? 'is-buy' : ''} type="button" aria-pressed={draft.side === 'BUY'} onClick={() => setDraft((current) => ({ ...current, side: 'BUY' }))}>BUY</button><button className={draft.side === 'SELL' ? 'is-sell' : ''} type="button" aria-pressed={draft.side === 'SELL'} onClick={() => setDraft((current) => ({ ...current, side: 'SELL' }))}>SELL</button></div>
                       <label>Quantity<input type="number" min={instrument.quantity_min || 0.01} step={instrument.quantity_step || 0.01} value={draft.quantity} onChange={(event) => setDraft((current) => ({ ...current, quantity: event.target.value }))} /></label>
                       <label>Stop loss<input type="number" min="0" step={instrument.tick_size || 0.0001} value={draft.stopLoss} onChange={(event) => setDraft((current) => ({ ...current, stopLoss: event.target.value }))} /></label>
                       <label>Take profit<input type="number" min="0" step={instrument.tick_size || 0.0001} value={draft.takeProfit} onChange={(event) => setDraft((current) => ({ ...current, takeProfit: event.target.value }))} /></label>

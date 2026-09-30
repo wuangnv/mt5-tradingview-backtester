@@ -31,6 +31,18 @@ test('trade workspace exposes fail-closed side and risk calculations', () => {
   assert.match(code, /Spread và starting balance phải được nhập đầy đủ/)
 })
 
+test('trade workspace exposes recoverable read-only loading states and selected side semantics', () => {
+  const code = source('TradeWorkspace.jsx')
+  assert.match(code, /new AbortController\(\)/)
+  assert.match(code, /requestId !== replayRequestRef\.current/)
+  assert.match(code, /requestId !== datasetRequestRef\.current/)
+  assert.match(code, /Không đọc được catalog dataset/)
+  assert.match(code, /onClick=\{fetchDatasets\}/)
+  assert.match(code, /onClick=\{fetchReplay\}/)
+  assert.match(code, /aria-pressed=\{draft\.side === 'BUY'\}/)
+  assert.match(code, /aria-pressed=\{draft\.side === 'SELL'\}/)
+})
+
 test('risk workspace uses the existing prop evaluator and surfaces blocked data', () => {
   const code = source('RiskWorkspace.jsx')
   for (const marker of [
