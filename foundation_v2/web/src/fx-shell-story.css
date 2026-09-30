@@ -756,3 +756,235 @@
   .fx-chart-tool-button { font-size: 10px; padding: 0 4px; }
   .fx-chart-topbar .fx-language-toggle { display: none; }
 }
+
+/* WMREPLAY shell pass: keep the product frame simple while the workspace
+ * screens are rebuilt. The rail owns only the five top-level areas; each
+ * area's children live in the content subheader. */
+.fx-app.fx-shell-story:not(.is-chart-workspace) {
+  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-rows: 64px minmax(0, 1fr);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar {
+  min-height: 64px;
+  height: 64px;
+  padding-right: 18px;
+  border-bottom: 1px solid var(--fx-shell-line);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar-brand {
+  flex-basis: 248px;
+  gap: 14px;
+  padding: 0 22px;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-menu-button {
+  display: inline-grid !important;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark {
+  width: 132px;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail {
+  grid-column: 1;
+  grid-row: 2;
+  gap: 0;
+  padding: 18px 12px 16px;
+  border-right: 1px solid var(--fx-shell-line);
+  background: var(--fx-shell-rail);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-primary,
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-utility {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading {
+  display: grid;
+  min-height: 42px;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  border-left: 0;
+  border-radius: 8px;
+  color: var(--fx-shell-muted);
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .14s ease, color .14s ease;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading:hover,
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading:focus-visible {
+  background: #151a1e;
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading.is-active {
+  background: #202225;
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading.is-active .fx-nav-icon {
+  color: var(--fx-shell-accent);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-divider {
+  height: 1px;
+  margin: 12px 8px;
+  background: var(--fx-shell-line);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-spacer {
+  flex: 1 1 auto;
+  min-height: 24px;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-utility {
+  padding-top: 12px;
+  border-top: 1px solid var(--fx-shell-line);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail .fx-nav-icon {
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: currentColor;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail .fx-nav-icon-svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-main {
+  grid-column: 2;
+  grid-row: 2;
+  overflow: hidden;
+  background: var(--fx-shell-bg);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-shell-hero {
+  display: none !important;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav {
+  min-height: 52px;
+  gap: 26px;
+  padding: 0 30px;
+  border-bottom: 1px solid var(--fx-shell-line);
+  background: var(--fx-shell-bg);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav.is-empty {
+  min-height: 52px;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav-link {
+  min-height: 52px;
+  border-bottom-width: 2px;
+  color: var(--fx-shell-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav-link.is-active {
+  border-bottom-color: #2c7bfd;
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+}
+
+.fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) {
+  grid-template-columns: 74px minmax(0, 1fr);
+}
+
+.fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-topbar-brand {
+  flex-basis: 74px;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+}
+
+.fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-wordmark {
+  display: none;
+}
+
+.fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-wordmark-compact {
+  display: inline-block;
+}
+
+.fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-rail-section-label {
+  display: none;
+}
+
+.fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-rail-section-heading {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 0;
+}
+
+/* The new shell can be expanded again at tablet widths; the menu button is
+ * deliberately present in both states so the control never lies about its
+ * availability. */
+@media (max-width: 1180px) {
+  .fx-app.fx-shell-story:not(.is-chart-workspace) {
+    grid-template-columns: 74px minmax(0, 1fr);
+    grid-template-rows: 64px minmax(0, 1fr);
+  }
+
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) {
+    grid-template-columns: 248px minmax(0, 1fr);
+  }
+
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar-brand {
+    flex-basis: 74px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-topbar-brand {
+    flex-basis: 248px;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 0 22px;
+  }
+
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark { display: none; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark-compact { display: inline-block; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark { display: inline-block; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark-compact { display: none; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-label { display: none; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-rail-section-label { display: inline; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading { grid-template-columns: 1fr; justify-items: center; padding: 0; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-rail-section-heading { grid-template-columns: 24px minmax(0, 1fr); justify-items: stretch; padding: 0 12px; }
+}
+
+@media (max-width: 760px) {
+  .fx-app.fx-shell-story:not(.is-chart-workspace) {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar-brand { flex-basis: 58px; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-topbar-brand { flex-basis: 220px; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { gap: 20px; padding: 0 18px; }
+}
+
+/* The chart has its own full-bleed toolbar and must not inherit the shell
+ * subheader introduced for normal pages. */
+.fx-app.fx-shell-story.is-chart-workspace .fx-main > .fx-subnav { display: none; }

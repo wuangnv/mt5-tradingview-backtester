@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import LearnWorkspace from './LearnWorkspace.jsx'
 import PropWorkspace from './PropWorkspace.jsx'
 import ReplayWorkspace from './ReplayWorkspace.jsx'
-import FxReplayShell from './FxReplayShell.jsx'
+import FxReplayShell, { SHELL_SKELETON_MODE } from './FxReplayShell.jsx'
 import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
 import JournalWorkspace from './JournalWorkspace.jsx'
 import SettingsWorkspace from './SettingsWorkspace.jsx'
@@ -177,7 +177,9 @@ function App() {
     content = <UnavailableWorkspace eyebrow={copy[0]} title={copy[1]} description={copy[2]} next={copy[3]} href={buildWorkspaceHref('replay', workspace, query)} />
   }
 
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{content}</FxReplayShell>
+  const chartWorkspace = activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
+  const renderedContent = SHELL_SKELETON_MODE && !chartWorkspace ? null : content
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{renderedContent}</FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')

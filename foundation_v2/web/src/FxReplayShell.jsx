@@ -8,6 +8,12 @@ export { buildWorkspaceHref, readWorkspaceContext }
 const LANGUAGE_STORAGE_KEY = 'tw-language'
 const THEME_STORAGE_KEY = 'tw-theme'
 
+// The shell is being rebuilt before the workspace content. Keep the existing
+// content routes in source so their contracts remain available for the next
+// pass, but render them only for the chart workspace until the new shell is
+// approved visually.
+export const SHELL_SKELETON_MODE = true
+
 const SHELL_COPY = {
   vi: {
     language: 'VI',
@@ -26,8 +32,18 @@ const SHELL_COPY = {
     subnavAria: 'Điều hướng workspace',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
+      testing: ['Testing', 'Backtesting workspace'],
+      sessions: ['Sessions', 'Chọn một phiên replay'],
       replay: ['Testing', 'Replay và backtest'],
-      trade: ['Live', 'Mô phỏng và read-only'],
+      live: ['Live', 'Theo dõi thị trường và tài khoản'],
+      calendar: ['Calendar', 'Lịch thị trường'],
+      liveTrades: ['Trades', 'Giao dịch live read-only'],
+      notes: ['Notes', 'Ghi chú thị trường'],
+      tagAnalytics: ['Tag analytics', 'Phân tích theo tag'],
+      tradingAccounts: ['Trading accounts', 'Tài khoản giao dịch'],
+      strategies: ['Strategies', 'Quản lý chiến lược'],
+      myStrategies: ['My strategies', 'Chiến lược của tôi'],
+      trade: ['Trades', 'Giao dịch trong phiên replay'],
       playbook: ['Strategies', 'Strategy và playbook'],
       learn: ['Education', 'Course và glossary'],
       settings: ['Settings', 'Workspace và kết nối'],
@@ -56,8 +72,18 @@ const SHELL_COPY = {
     subnavAria: 'Workspace navigation',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
+      testing: ['Testing', 'Backtesting workspace'],
+      sessions: ['Sessions', 'Choose a replay session'],
       replay: ['Testing', 'Replay and backtesting'],
-      trade: ['Live', 'Demo simulator and read-only'],
+      live: ['Live', 'Market and account workspace'],
+      calendar: ['Calendar', 'Market calendar'],
+      liveTrades: ['Trades', 'Read-only live trades'],
+      notes: ['Notes', 'Market notes'],
+      tagAnalytics: ['Tag analytics', 'Tag-based analytics'],
+      tradingAccounts: ['Trading accounts', 'Trading accounts'],
+      strategies: ['Strategies', 'Strategy workspace'],
+      myStrategies: ['My strategies', 'Your strategies'],
+      trade: ['Trades', 'Trades in a replay session'],
       playbook: ['Strategies', 'Strategies and playbooks'],
       learn: ['Education', 'Course and glossary'],
       settings: ['Settings', 'Workspace and connections'],
@@ -71,41 +97,70 @@ const SHELL_COPY = {
   },
 }
 
-const NAV_ITEMS = [
-  // Testing opens the FXReplay-style dashboard. Sessions is a subnav surface
-  // and must be chosen explicitly instead of hijacking the rail entry.
-  { id: 'replay', route: 'overview', short: '⌁', group: 'primary' },
-  { id: 'trade', short: '◉', group: 'primary', picker: true },
-  { id: 'playbook', short: '◈', group: 'primary' },
+const SIDEBAR_SECTIONS = [
+  {
+    id: 'testing',
+    copyKey: 'testing',
+    icon: 'testing',
+    defaultRoute: 'overview',
+    defaultSection: 'dashboard',
+    items: [
+      { id: 'testing-dashboard', copyKey: 'overview', icon: 'dashboard', route: 'overview', activeViews: ['overview'], section: 'dashboard' },
+      { id: 'testing-sessions', copyKey: 'sessions', icon: 'sessions', route: 'replay', picker: true, activeViews: ['replay'], section: 'sessions' },
+      { id: 'testing-trades', copyKey: 'trade', icon: 'trades', route: 'trade', picker: true, activeViews: ['trade'], section: 'trades' },
+      { id: 'testing-analytics', copyKey: 'analytics', icon: 'analytics', route: 'analytics', picker: true, activeViews: ['analytics'], section: 'analytics' },
+    ],
+  },
+  {
+    id: 'live',
+    copyKey: 'live',
+    icon: 'live',
+    defaultRoute: 'live',
+    defaultSection: 'calendar',
+    items: [
+      { id: 'live-calendar', copyKey: 'calendar', icon: 'calendar', route: 'live', activeViews: ['live'], section: 'calendar' },
+      { id: 'live-trades', copyKey: 'liveTrades', icon: 'trades', route: 'live', activeViews: ['live'], section: 'trades' },
+      { id: 'live-notes', copyKey: 'notes', icon: 'notes', route: 'live', activeViews: ['live'], section: 'notes' },
+      { id: 'live-tag-analytics', copyKey: 'tagAnalytics', icon: 'tags', route: 'live', activeViews: ['live'], section: 'tag-analytics' },
+      { id: 'live-accounts', copyKey: 'tradingAccounts', icon: 'accounts', route: 'live', activeViews: ['live'], section: 'trading-accounts' },
+    ],
+  },
+  {
+    id: 'strategies',
+    copyKey: 'strategies',
+    icon: 'strategies',
+    defaultRoute: 'playbook',
+    defaultSection: 'my-strategies',
+    items: [
+      { id: 'my-strategies', copyKey: 'myStrategies', icon: 'my-strategies', route: 'playbook', activeViews: ['playbook'], section: 'my-strategies' },
+    ],
+  },
+  { id: 'education', copyKey: 'learn', icon: 'education', defaultRoute: 'learn', items: [] },
+  { id: 'settings', copyKey: 'settings', icon: 'settings', defaultRoute: 'settings', items: [] },
 ]
 
-const UTILITY_ITEMS = [
-  { id: 'learn', short: '⌂', group: 'utility' },
-  { id: 'settings', short: '⚙', group: 'utility' },
-]
-
-const NAV_GROUPS = [
-  { id: 'primary', items: NAV_ITEMS },
-  { id: 'utility', items: UTILITY_ITEMS },
-]
-
-const SUBNAV_ITEMS = [
-  { id: 'overview', route: 'overview' },
-  { id: 'replay', route: 'replay', picker: true },
-  { id: 'trade', route: 'trade', picker: true },
-  { id: 'analytics', route: 'analytics', picker: true },
-]
-
-const RAIL_ACTIVE_VIEWS = {
-  replay: ['overview', 'replay', 'data'],
-  trade: ['trade'],
-  playbook: ['playbook', 'research', 'journal', 'risk'],
-  learn: ['learn'],
-  settings: ['settings'],
+const SUBNAV_GROUPS = {
+  testing: SIDEBAR_SECTIONS[0].items,
+  live: SIDEBAR_SECTIONS[1].items,
+  strategies: SIDEBAR_SECTIONS[2].items,
 }
 
-function isRailActive(itemId, activeView) {
-  return RAIL_ACTIVE_VIEWS[itemId]?.includes(activeView) || false
+function activeSectionId(activeView, query) {
+  const area = query?.get('area')
+  if (area && SIDEBAR_SECTIONS.some((section) => section.id === area)) return area
+  if (['overview', 'replay', 'trade', 'analytics'].includes(activeView)) return 'testing'
+  if (activeView === 'live') return 'live'
+  if (activeView === 'playbook') return 'strategies'
+  if (activeView === 'learn') return 'education'
+  if (activeView === 'settings') return 'settings'
+  return ''
+}
+
+function isNavItemActive(item, activeView, query, sectionId) {
+  if (!item.activeViews?.includes(activeView)) return false
+  if (sectionId !== 'testing' && query?.get('section') !== item.section) return false
+  if (sectionId === 'testing' && query?.get('area') === 'live') return false
+  return !query?.get('section') || query.get('section') === item.section || sectionId === 'testing'
 }
 
 const FxReplayContext = createContext(null)
@@ -149,40 +204,83 @@ function RailIcon({ id }) {
     strokeLinejoin: 'round',
     focusable: 'false',
   }
+  if (id === 'dashboard') return <svg {...common}><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></svg>
+  if (id === 'sessions') return <svg {...common}><path d="M5 6h14M5 12h14M5 18h14" /><path d="M3 6h.01M3 12h.01M3 18h.01" /></svg>
+  if (id === 'trades') return <svg {...common}><path d="M5 8h12M15 5l3 3-3 3M19 16H7M9 13l-3 3 3 3" /></svg>
+  if (id === 'analytics' || id === 'testing') return <svg {...common}><path d="M4 19V9M10 19V5M16 19v-7M22 19V3" /><path d="M3 21h20" /></svg>
+  if (id === 'live') return <svg {...common}><path d="M3 12h4l2-5 4 10 2-5h6" /><path d="M5 4a10 10 0 0 0 0 16M19 4a10 10 0 0 1 0 16" /></svg>
+  if (id === 'calendar') return <svg {...common}><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4M16 3v4M4 10h16M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01" /></svg>
+  if (id === 'notes') return <svg {...common}><path d="M6 3h9l3 3v15H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" /><path d="M14 3v4h4M8 11h8M8 15h6" /></svg>
+  if (id === 'tags') return <svg {...common}><path d="m4 5 7-1 9 9-6 6-9-9 1-7Z" /><circle cx="8" cy="8" r="1.2" /></svg>
+  if (id === 'accounts') return <svg {...common}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 9h18M16 14h3" /><circle cx="16" cy="14" r=".7" /></svg>
+  if (id === 'strategies') return <svg {...common}><circle cx="12" cy="12" r="8.5" /><path d="m15.7 8.3-2.2 5.2-5.2 2.2 2.2-5.2 5.2-2.2Z" /></svg>
+  if (id === 'my-strategies') return <svg {...common}><path d="M5 6h14M5 12h14M5 18h9" /><path d="m17 16 2 2 3-4" /></svg>
+  if (id === 'education' || id === 'learn') return <svg {...common}><path d="m3 9 9-4 9 4-9 4-9-4Z" /><path d="M7 11v4c2 2 8 2 10 0v-4M21 9v6" /></svg>
   if (id === 'trade') return <svg {...common}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M8 9h.01M12 9h.01M16 9h.01M8 13h.01M12 13h.01M16 13h.01M8 17h8" /></svg>
   if (id === 'playbook') return <svg {...common}><circle cx="12" cy="12" r="8.5" /><path d="m15.7 8.3-2.2 5.2-5.2 2.2 2.2-5.2 5.2-2.2Z" /></svg>
-  if (id === 'learn') return <svg {...common}><path d="m3 9 9-4 9 4-9 4-9-4Z" /><path d="M7 11v4c2 2 8 2 10 0v-4M21 9v6" /></svg>
   if (id === 'settings') return <svg {...common}><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18" /><circle cx="12" cy="12" r="3.3" /></svg>
   return <svg {...common}><path d="M4 17V7M10 17V4M16 17V9M22 17V2" /><path d="M3 20h20" /></svg>
 }
 
-function NavItem({ item, active, workspace, query, copy }) {
-  const [label, description] = copy.nav[item.id]
+function ShellRail({ activeView, workspace, query, copy }) {
+  const activeArea = activeSectionId(activeView, query)
+  const primary = SIDEBAR_SECTIONS.slice(0, 3)
+  const utility = SIDEBAR_SECTIONS.slice(3)
+  const renderSectionLink = (section) => {
+    const [label, description] = copy.nav[section.copyKey] || [section.id, '']
+    const active = activeArea === section.id
+    return (
+      <a
+        className={`fx-rail-section-heading fx-rail-top-level-item ${active ? 'is-active' : ''}`}
+        key={section.id}
+        href={hrefFor(section.defaultRoute, workspace, query, {
+          area: section.id,
+          ...(section.defaultSection ? { section: section.defaultSection } : {}),
+        })}
+        aria-current={active ? 'page' : undefined}
+        aria-label={`${label}: ${description}`}
+        title={description}
+      >
+        <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={section.icon} /></span>
+        <span className="fx-rail-section-label">{label}</span>
+      </a>
+    )
+  }
   return (
-    <a
-      className={`fx-nav-item ${active ? 'is-active' : ''}`}
-      href={hrefFor(item.route || item.id, workspace, query, item.picker ? { select: '1' } : {})}
-      aria-current={active ? 'page' : undefined}
-      aria-label={`${label}: ${description}`}
-      data-nav-label={label}
-      title={description}
-    >
-      <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={item.id} /></span>
-      <span className="fx-nav-label">{label}</span>
-    </a>
+    <aside className="fx-rail" aria-label={copy.workspaceAria}>
+      <div className="fx-rail-primary">
+        {primary.map((section, index) => (
+          <React.Fragment key={section.id}>
+            {index > 0 && <div className="fx-rail-divider" />}
+            {renderSectionLink(section)}
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="fx-rail-spacer" />
+      <div className="fx-rail-utility">
+        {utility.map(renderSectionLink)}
+      </div>
+    </aside>
   )
 }
 
 function ShellSubnav({ activeView, workspace, query, copy }) {
+  const sectionId = activeSectionId(activeView, query)
+  const items = SUBNAV_GROUPS[sectionId] || []
+  if (items.length === 0) return null
   return (
     <nav className="fx-subnav" aria-label={copy.subnavAria}>
-      {SUBNAV_ITEMS.map((item) => {
-        const label = copy.subnav[item.id]
-        const active = activeView === item.id
+      {items.map((item) => {
+        const label = copy.nav[item.copyKey || item.id]?.[0] || item.id
+        const active = isNavItemActive(item, activeView, query, sectionId)
         return (
           <a
             className={`fx-subnav-link ${active ? 'is-active' : ''}`}
-            href={hrefFor(item.route, workspace, query, item.picker ? { select: '1' } : {})}
+            href={hrefFor(item.route, workspace, query, {
+              area: sectionId,
+              section: item.section,
+              ...(item.picker ? { select: '1' } : {}),
+            })}
             aria-current={active ? 'page' : undefined}
             key={item.id}
           >
@@ -191,20 +289,6 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
         )
       })}
     </nav>
-  )
-}
-
-function ShellHero({ activeView, workspace, query, copy }) {
-  const title = ['overview', 'replay', 'trade', 'analytics'].includes(activeView)
-    ? 'Testing'
-    : (copy.nav[activeView]?.[0] || 'Workspace')
-  return (
-    <div className="fx-shell-hero">
-      <div className="fx-shell-hero-title">
-        <h1>{title}</h1>
-      </div>
-      <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
-    </div>
   )
 }
 
@@ -255,8 +339,6 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
         <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle">
           <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span>
         </button>
-        <button className="fx-shell-toggle fx-utility-icon" type="button" aria-label="Help" title="Help">?</button>
-        <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title="Fullscreen">⛶</button>
       </div>
     </header>
   )
@@ -334,19 +416,9 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
     <FxReplayContext.Provider value={contextValue}>
       <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
         <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={() => setRailCollapsed((value) => !value)} chartWorkspace={chartWorkspace} query={query} workspace={workspace} />
-        <aside className="fx-rail" aria-label={copy.workspaceAria}>
-          {NAV_GROUPS.map((group, groupIndex) => (
-            <React.Fragment key={group.id}>
-              {groupIndex > 0 && <div className="fx-rail-divider" />}
-              <nav className="fx-nav" aria-label={group.id === 'primary' ? copy.primaryNavAria : copy.utilityNavAria}>
-                {group.items.map((item) => <NavItem key={item.id} item={item} active={isRailActive(item.id, activeView)} workspace={workspace} query={query} copy={copy} />)}
-              </nav>
-              {groupIndex === 0 && <div className="fx-rail-spacer" />}
-            </React.Fragment>
-          ))}
-        </aside>
+        <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} />
         <section className="fx-main" aria-label={copy.contentAria}>
-          <ShellHero activeView={activeView} workspace={workspace} query={query} copy={copy} />
+          <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
           <div className="fx-content">{children}</div>
         </section>
       </div>
