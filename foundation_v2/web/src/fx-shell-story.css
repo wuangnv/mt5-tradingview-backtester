@@ -367,7 +367,7 @@
 
 .fx-shell-story .fx-topbar-brand {
   flex-basis: 256px;
-  gap: 28px;
+  gap: 18px;
   padding: 0 24px;
   border-right: 0;
 }
@@ -387,7 +387,7 @@
 }
 .fx-menu-button:hover { border: 0; background: transparent; color: #fff; }
 
-.fx-shell-story .fx-wordmark { width: 142px; }
+.fx-shell-story .fx-wordmark { width: 128px; }
 .fx-shell-story .fx-topbar-actions { gap: 14px; }
 .fx-shell-story .fx-shell-toggle {
   min-height: 32px;
@@ -470,10 +470,31 @@
 .fx-shell-story .fx-content { padding: 0 38px 48px; }
 
 .fx-app.fx-shell-story.is-rail-collapsed { grid-template-columns: 74px minmax(0, 1fr); }
-.fx-app.fx-shell-story.is-rail-collapsed .fx-topbar-brand { flex-basis: 74px; gap: 0; padding: 0; justify-content: center; }
-.fx-app.fx-shell-story.is-rail-collapsed .fx-menu-button { display: none; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-topbar-brand {
+  position: relative;
+  flex-basis: 74px;
+  gap: 0;
+  padding: 0;
+  justify-content: center;
+}
+/* Keep the collapse control visible after collapsing. The compact WM mark
+ * shares the 74px brand cell without sitting underneath the button. */
+.fx-app.fx-shell-story.is-rail-collapsed .fx-menu-button {
+  display: inline-grid;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 7px;
+  width: 28px;
+  height: 28px;
+  transform: translateY(-50%);
+}
 .fx-app.fx-shell-story.is-rail-collapsed .fx-wordmark { display: none; }
-.fx-app.fx-shell-story.is-rail-collapsed .fx-wordmark-compact { display: inline-block; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-wordmark-compact {
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+}
 .fx-app.fx-shell-story.is-rail-collapsed .fx-rail { padding-right: 8px; padding-left: 8px; }
 .fx-app.fx-shell-story.is-rail-collapsed .fx-nav-label { display: none; }
 .fx-app.fx-shell-story.is-rail-collapsed .fx-nav-item { grid-template-columns: 1fr; justify-items: center; padding: 0; }
@@ -481,11 +502,16 @@
 @media (max-width: 1180px) {
   .fx-app.fx-shell-story { grid-template-columns: 74px minmax(0, 1fr); grid-template-rows: 72px minmax(0, 1fr); }
   .fx-shell-story .fx-topbar { min-height: 72px; padding-right: 18px; }
-  .fx-shell-story .fx-topbar-brand { flex-basis: 74px; gap: 0; padding: 0; justify-content: center; }
-  .fx-shell-story .fx-menu-button { display: none; }
+  .fx-shell-story .fx-topbar-brand { position: relative; flex-basis: 74px; gap: 0; padding: 0; justify-content: center; }
   .fx-shell-story .fx-rail { padding: 12px 8px; }
   .fx-shell-story .fx-nav-label { display: none; }
   .fx-shell-story .fx-nav-item { grid-template-columns: 1fr; justify-items: center; padding: 0; }
+  .fx-shell-story .fx-wordmark { display: none; }
+  .fx-shell-story .fx-wordmark-compact {
+    display: inline-block;
+    position: absolute;
+    right: 5px;
+  }
   .fx-shell-hero { min-height: 144px; }
   .fx-shell-hero-title { min-height: 96px; padding: 0 24px; }
   .fx-shell-story .fx-subnav { padding: 0 24px; }
@@ -494,6 +520,9 @@
 
 @media (max-width: 760px) {
   .fx-app.fx-shell-story { grid-template-columns: 58px minmax(0, 1fr); }
+  /* Keep the compact brand in the rail cell.  A fluid first grid track lets
+   * the short WM mark drift into the middle of the mobile header. */
+  .fx-shell-story .fx-topbar { grid-template-columns: 88px minmax(0, 1fr); }
   .fx-shell-story .fx-topbar { padding-right: 10px; }
   .fx-shell-story .fx-topbar-actions { gap: 6px; }
   .fx-fullscreen-icon { display: none; }
@@ -510,6 +539,20 @@
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 10px;
   letter-spacing: -.01em;
+}
+
+/* Compact rails are intentionally icon-only at tablet and phone widths. The
+ * menu control is hidden there because the rail has no expanded drawer state;
+ * this avoids presenting a button that only changes aria state without
+ * changing the visible layout. Desktop keeps the real collapse affordance. */
+@media (max-width: 1180px) {
+  .fx-app.fx-shell-story .fx-menu-button,
+  .fx-app.fx-shell-story.is-rail-collapsed .fx-menu-button { display: none; }
+  .fx-app.fx-shell-story.is-rail-collapsed { grid-template-columns: 74px minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .fx-app.fx-shell-story.is-rail-collapsed { grid-template-columns: 58px minmax(0, 1fr); }
 }
 
 .fx-shell-story .fx-nav-icon {

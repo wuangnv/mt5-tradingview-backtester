@@ -257,7 +257,10 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
       return 'dark'
     }
   })
-  const [railCollapsed, setRailCollapsed] = useState(false)
+  const [railCollapsed, setRailCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 1180px)').matches
+  })
   // Kept as a stable compatibility hook for workspaces that report market
   // context. The global header intentionally does not render that metadata.
   const updateMarketContext = useCallback(() => {}, [])

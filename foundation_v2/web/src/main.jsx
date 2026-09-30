@@ -70,7 +70,7 @@ function DashboardMetric({ title, value, unit, extra, detail, icon, tone = '' })
     <article className={`fx-dashboard-metric ${tone ? `is-${tone}` : ''}`}>
       <span className="fx-dashboard-metric-title">
         {icon && <MetricIcon type={icon} />}
-        {title}
+        <span className="fx-dashboard-metric-label">{title}</span>
         <span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span>
       </span>
       <strong>{value}{unit && <small>{unit}</small>}{extra && <small className="fx-dashboard-metric-extra">{extra}</small>}</strong>

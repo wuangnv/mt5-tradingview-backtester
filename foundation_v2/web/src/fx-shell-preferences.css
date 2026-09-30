@@ -202,6 +202,42 @@ body[data-tw-theme='dark'] {
   color: #1d2930;
 }
 
+/* The source-aligned shell layer owns a few intentionally high-contrast dark
+ * literals. Rebind those primitives here so the light toggle remains a real
+ * readable theme instead of a pale surface with white logo/title text. */
+.fx-app[data-theme='light'] .fx-topbar {
+  background: #ffffff;
+  border-bottom-color: #d6dde1;
+}
+.fx-app[data-theme='light'] .fx-wordmark-svg {
+  color: #1d2930;
+  fill: currentColor;
+}
+.fx-app[data-theme='light'] .fx-shell-hero {
+  border-bottom-color: #d6dde1;
+  background: linear-gradient(110deg, #f5f7f8 12%, #eef3f8 56%, #dceaff 100%);
+}
+.fx-app[data-theme='light'] .fx-shell-hero-title h1 {
+  color: #1d2930;
+}
+.fx-app[data-theme='light'] .fx-subnav-link {
+  color: #53636d;
+}
+.fx-app[data-theme='light'] .fx-subnav-link:hover,
+.fx-app[data-theme='light'] .fx-subnav-link.is-active {
+  color: #1d2930;
+}
+.fx-app[data-theme='light'] .fx-dashboard-metric-icon {
+  color: #30434d;
+}
+.fx-app[data-theme='light'] .fx-dashboard-metric > strong small {
+  color: #53636d;
+}
+.fx-app[data-theme='light'] .fx-dashboard-info {
+  border-color: #7c8d97;
+  color: #53636d;
+}
+
 .fx-app[data-theme='light'] .fx-page-heading p,
 .fx-app[data-theme='light'] .fx-session-main > span,
 .fx-app[data-theme='light'] .fx-queue-row small,
