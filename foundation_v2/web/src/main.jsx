@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import LearnWorkspace from './LearnWorkspace.jsx'
 import PropWorkspace from './PropWorkspace.jsx'
 import ReplayWorkspace from './ReplayWorkspace.jsx'
-import FxReplayShell, { SHELL_SKELETON_MODE } from './FxReplayShell.jsx'
+import FxReplayShell from './FxReplayShell.jsx'
 import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
 import JournalWorkspace from './JournalWorkspace.jsx'
 import SettingsWorkspace from './SettingsWorkspace.jsx'
@@ -16,7 +17,50 @@ import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 import './dashboard.css'
 
+async function readWorkspaceOverview(workspace, signal) {
+  const response = await fetch('/api/v2/overview', {
+    headers: { 'X-Workspace-Id': workspace },
+    signal,
+  })
+  const payload = await response.json().catch(() => ({}))
+  if (!response.ok) throw new Error(String(payload?.detail || `HTTP ${response.status}`))
+  if (!payload || typeof payload !== 'object') throw new Error('invalid_overview_payload')
+  return payload
+}
+
+function safeCount(value) {
+  const numeric = Number(value)
+  return Number.isSafeInteger(numeric) && numeric >= 0 ? numeric : null
+}
+
+function sumCounts(value) {
+  if (!value || typeof value !== 'object') return null
+  const values = Object.values(value).map(safeCount)
+  if (values.some((item) => item === null)) return null
+  return values.reduce((total, item) => total + item, 0)
+}
+
+function formatCount(value) {
+  const count = safeCount(value)
+  return count === null ? '—' : new Intl.NumberFormat('vi-VN').format(count)
+}
+
 function WorkspaceOverview({ workspace, query }) {
+  const [scope, setScope] = useState('backtesting')
+  const [reloadToken, setReloadToken] = useState(0)
+  const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null })
+
+  useEffect(() => {
+    const controller = new AbortController()
+    setOverview({ status: 'loading', payload: null, error: null })
+    readWorkspaceOverview(workspace, controller.signal)
+      .then((payload) => setOverview({ status: 'ready', payload, error: null }))
+      .catch((error) => {
+        if (error.name !== 'AbortError') setOverview({ status: 'error', payload: null, error: String(error.message || error) })
+      })
+    return () => controller.abort()
+  }, [reloadToken, workspace])
+
   const routeHref = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, overrides)
   const backtestingHref = routeHref('replay', { select: '1' })
   const cards = [
@@ -44,19 +88,29 @@ function WorkspaceOverview({ workspace, query }) {
         <div className="fx-dashboard-performance-head">
           <h2>Performance</h2>
           <div className="fx-dashboard-filters" aria-label="Performance filters">
-            <button type="button" className="fx-dashboard-filter">▥&nbsp; Backtesting <span aria-hidden="true">⌄</span></button>
-            <button type="button" className="fx-dashboard-filter">▣&nbsp; Lifetime <span aria-hidden="true">⌄</span></button>
+            <button type="button" className="fx-dashboard-filter" aria-pressed={scope === 'backtesting'} onClick={() => setScope('backtesting')}>▥&nbsp; Backtesting <span aria-hidden="true">⌄</span></button>
+            <button type="button" className="fx-dashboard-filter" aria-pressed={scope === 'lifetime'} onClick={() => setScope('lifetime')}>▣&nbsp; Lifetime <span aria-hidden="true">⌄</span></button>
           </div>
         </div>
-        <div className="fx-dashboard-performance" data-testid="dashboard-performance">
-          <DashboardMetric title="Time Invested" value="6" unit="hr" extra="4 min" icon="bars" />
-          <DashboardMetric title="Historical time replayed" value="1" unit="mo" extra="7 d 22 hr" icon="clock" />
-          <DashboardChart />
-          <DashboardMetric title="Trades taken" value="17" detail="58.82% buys · 41.18% sells" tone="trades" />
-          <DashboardMetric title="Overall win rate" value="41.18%" icon="ring" />
-          <DashboardChart title="Win Rate" className="is-wide is-wide-left" empty />
-          <DashboardChart title="Trades by symbol" className="is-wide is-wide-right" empty />
+        <div className="fx-dashboard-data-state" data-testid="dashboard-data-state" role={overview.status === 'error' ? 'alert' : 'status'} aria-live="polite">
+          {overview.status === 'loading' && <span>Đang tải dữ liệu workspace cho phạm vi {scope === 'backtesting' ? 'Backtesting' : 'Lifetime'}…</span>}
+          {overview.status === 'ready' && <span>Chưa có performance ledger cho phạm vi {scope === 'backtesting' ? 'Backtesting' : 'Lifetime'}; các chỉ số sẽ xuất hiện sau khi session có dữ liệu trade.</span>}
+          {overview.status === 'error' && <><span>Không tải được trạng thái workspace ({overview.error}).</span><button type="button" onClick={() => setReloadToken((value) => value + 1)}>Thử lại</button></>}
         </div>
+        <div className="fx-dashboard-performance" data-testid="dashboard-performance">
+          <DashboardMetric title="Time Invested" value="—" icon="bars" />
+          <DashboardMetric title="Historical time replayed" value="—" icon="clock" />
+          <DashboardChart />
+          <DashboardMetric title="Trades taken" value="—" detail="Chưa có trade ledger" tone="trades" />
+          <DashboardMetric title="Overall win rate" value="—" icon="ring" />
+          <DashboardChart title="Win Rate" className="is-wide is-wide-left" />
+          <DashboardChart title="Trades by symbol" className="is-wide is-wide-right" />
+        </div>
+        {overview.status === 'ready' && <div className="fx-dashboard-inventory" data-testid="dashboard-inventory" aria-label="Workspace inventory">
+          <span>{formatCount(overview.payload?.counts?.datasets)} datasets</span>
+          <span>{formatCount(sumCounts(overview.payload?.counts?.research_jobs))} research jobs</span>
+          <span>{formatCount(sumCounts(overview.payload?.counts?.records))} saved records</span>
+        </div>}
       </div>
     </section>
   )
@@ -82,21 +136,11 @@ function MetricIcon({ type }) {
   return <span className="fx-dashboard-metric-icon fx-dashboard-ring" aria-hidden="true">◉</span>
 }
 
-function DashboardChart({ title = 'Time Invested', className = '', empty = false }) {
-  if (empty) {
-    return <article className={`fx-dashboard-chart fx-dashboard-chart-empty ${className}`}>
-      <h3>{title}<span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span></h3>
-      <div className="fx-dashboard-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div>
-      <p>No {title.toLowerCase()} yet.</p>
-    </article>
-  }
-  return <article className={`fx-dashboard-chart ${className}`}>
-    <h3>{title}<span className="fx-dashboard-info" aria-label="About Time Invested">i</span></h3>
-    <div className="fx-dashboard-chart-grid" aria-label="Six hours invested over one period">
-      {[0, 2, 4, 6, 8].map((tick) => <span className="fx-dashboard-chart-tick" key={tick} style={{ bottom: `${tick * 12.5}%` }}>{tick} hrs</span>)}
-      <div className="fx-dashboard-chart-bars"><span style={{ height: '72%' }} /></div>
-      <span className="fx-dashboard-chart-label">Sep 2026</span>
-    </div>
+function DashboardChart({ title = 'Time Invested', className = '' }) {
+  return <article className={`fx-dashboard-chart fx-dashboard-chart-empty ${className}`}>
+    <h3>{title}<span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span></h3>
+    <div className="fx-dashboard-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div>
+    <p>No {title.toLowerCase()} yet.</p>
   </article>
 }
 
@@ -177,8 +221,7 @@ function App() {
     content = <UnavailableWorkspace eyebrow={copy[0]} title={copy[1]} description={copy[2]} next={copy[3]} href={buildWorkspaceHref('replay', workspace, query)} />
   }
 
-  const renderedContent = SHELL_SKELETON_MODE ? null : content
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{renderedContent}</FxReplayShell>
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{content}</FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')
