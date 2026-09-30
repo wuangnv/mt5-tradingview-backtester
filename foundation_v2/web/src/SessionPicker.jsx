@@ -27,27 +27,47 @@ function NewSessionLink({ href, children }) {
   return <a className="fxr-button fxr-button-primary" href={href}><span aria-hidden="true">＋</span>{children}</a>
 }
 
+function sessionMarket(query) {
+  const requested = query?.get?.('symbol') || query?.get?.('instrument') || ''
+  return requested.trim() || 'EURUSD'
+}
+
+function SessionSelect({ kind, selected, query, onSelect, compact = false }) {
+  const id = `fxr-${kind}-session-select`
+  const market = sessionMarket(query)
+  const dataset = query?.get?.('dataset') || ''
+  const selectedLabel = selected || 'Select session'
+
+  return (
+    <div className={`fxr-session-control ${compact ? 'is-compact' : ''}`}>
+      <label htmlFor={id}>{compact ? 'Sessions' : 'Select session'}</label>
+      <div className="fxr-session-select-card">
+        <select
+          id={id}
+          value={selected || '__new__'}
+          onChange={(event) => onSelect?.(event.target.value === '__new__' ? '' : event.target.value)}
+          aria-label={compact ? 'Select session' : 'Select backtesting session'}
+        >
+          {selected && <option value={selected}>{selected}</option>}
+          <option value="__new__">New backtesting session</option>
+        </select>
+        <div className="fxr-session-select-details" aria-hidden="true">
+          <strong>{selectedLabel}</strong>
+          <span>{selected ? market : 'Local backtesting'}</span>
+          {selected && dataset && <span>{dataset}</span>}
+        </div>
+        <span className="fxr-select-chevron" aria-hidden="true">⌄</span>
+      </div>
+    </div>
+  )
+}
+
 function SessionToolbar({ kind, selected, workspace, query, newHref, onSelect }) {
   const copy = COPY[kind] || COPY.replay
   const analyticsHref = buildWorkspaceHref('analytics', workspace, query, { surface: 'workspace', session: selected || null })
   return (
     <div className="fxr-session-toolbar">
-      <div className="fxr-session-control">
-        <label htmlFor={`${kind}-session-select`}>Select session</label>
-        <div className="fxr-session-select-card">
-          <select id={`${kind}-session-select`} value={selected || '__new__'} onChange={(event) => onSelect?.(event.target.value === '__new__' ? '' : event.target.value)} aria-label="Select session">
-            {selected && <option value={selected}>{selected}</option>}
-            <option value="__new__">New backtesting session</option>
-          </select>
-          <div className="fxr-session-select-details">
-            <strong>{selected || 'No session selected'}</strong>
-            <span>EURUSD · Local paper session</span>
-            <span>Current balance —</span>
-            <span>Session date range unavailable</span>
-          </div>
-          <span className="fxr-select-chevron" aria-hidden="true">⌄</span>
-        </div>
-      </div>
+      <SessionSelect kind={kind} selected={selected} query={query} onSelect={onSelect} />
       <div className="fxr-session-actions">
         <NewSessionLink href={newHref}>{copy.newAction}</NewSessionLink>
         <a className="fxr-button fxr-button-secondary" href={analyticsHref}>Analytics <span aria-hidden="true">⌄</span></a>
@@ -65,9 +85,9 @@ function SessionsSurface({ selected, workspace, query, newHref, onSelect }) {
       <div className="fxr-session-cards">
         <article className="fxr-session-card fxr-session-summary-card">
           <div>
-            <h2>{selected || 'No session selected'}</h2>
-            <p>No strategy · EURUSD</p>
-            <div className="fxr-session-date">Session date range unavailable <span className="fxr-muted-pill">Local</span></div>
+            <h2>{selected || 'Select a session'}</h2>
+            <p>{selected ? `${sessionMarket(query)} · local session` : 'Choose a local session to begin.'}</p>
+            <div className="fxr-session-date">{query.get('dataset') || 'Dataset not selected'} <span className="fxr-muted-pill">Local</span></div>
             <a className="fxr-button fxr-button-primary fxr-chart-button" href={selected ? sessionHref('replay', workspace, query, selected) : newHref}>Go to chart <span aria-hidden="true">▶</span></a>
           </div>
           <div className="fxr-balance">
@@ -95,13 +115,10 @@ function SessionsSurface({ selected, workspace, query, newHref, onSelect }) {
   )
 }
 
-function CompactTradeToolbar({ selected, onSelect, newHref }) {
+function CompactTradeToolbar({ kind = 'trade', selected, query, onSelect, newHref }) {
   return (
     <div className="fxr-table-toolbar fxr-compact-session-toolbar">
-      <select className="fxr-filter-select" value={selected || '__new__'} onChange={(event) => onSelect?.(event.target.value === '__new__' ? '' : event.target.value)} aria-label="Sessions">
-        {selected && <option value={selected}>Sessions</option>}
-        <option value="__new__">New session</option>
-      </select>
+      <SessionSelect kind={kind} selected={selected} query={query} onSelect={onSelect} compact />
       <div><button className="fxr-round-button" type="button" aria-label="Refresh">↻</button><button className="fxr-round-button" type="button" aria-label="Edit">⌕</button><span className="fxr-filter-label">Filter by</span><button className="fxr-filter-button" type="button">Basic</button><button className="fxr-filter-button" type="button">Tags</button>{!selected && <a className="fxr-button fxr-button-primary fxr-compact-new" href={newHref}>＋ New session</a>}</div>
     </div>
   )
@@ -120,7 +137,7 @@ function TradesSurface({ selected, workspace, query, newHref, onSelect }) {
   const showDemoRows = query.get('dataset') === 'ui-replay-fixture' || selected === 'replay-fixture'
   return (
     <div className="fxr-trades-surface" data-testid="trade-session-dashboard">
-      <CompactTradeToolbar selected={selected} onSelect={onSelect} newHref={newHref} />
+      <CompactTradeToolbar selected={selected} query={query} onSelect={onSelect} newHref={newHref} />
       <div className="fxr-table-wrap"><table className="fxr-trades-table"><thead><tr>{TRADE_COLUMNS.map((column) => <th key={column}>{column}</th>)}</tr></thead><tbody>{showDemoRows ? DEMO_TRADES.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex} className={cell === 'Buy' ? 'fxr-buy' : cell === 'Sell' ? 'fxr-sell' : cell.includes('↗') ? 'fxr-positive' : cell.includes('↙') ? 'fxr-negative' : ''}>{cellIndex === 2 ? <span className="fxr-status-badge">{cell}</span> : cellIndex === 7 ? <span className={`fxr-side-badge ${cell === 'Buy' ? 'is-buy' : 'is-sell'}`}>{cell}</span> : cellIndex === 8 ? <span className="fxr-type-badge">{cell}</span> : cell}</td>)}</tr>) : <tr><td colSpan={TRADE_COLUMNS.length}><div className="fxr-table-empty">No trades recorded for this session.</div></td></tr>}</tbody></table></div>
       <div className="fxr-table-pagination"><span>‹‹</span><span>‹</span><strong>1</strong><span>2</span><span>›</span><span>››</span><select aria-label="Rows per page"><option>10</option></select></div>
     </div>
@@ -131,6 +148,10 @@ function AnalyticsSurface({ selected, workspace, query, newHref, onSelect }) {
   const filters = ['Type', 'Assets', 'Side', 'Outcome', 'Tags', 'Session', 'Strategy', 'Day', 'Time', 'Timezone', 'Backtesting Date']
   return (
     <div className="fxr-analytics-surface" data-testid="analytics-session-dashboard">
+      <div className="fxr-analytics-session-toolbar">
+        <SessionSelect kind="analytics" selected={selected} query={query} onSelect={onSelect} compact />
+        <div className="fxr-session-actions"><NewSessionLink href={newHref}>New session</NewSessionLink></div>
+      </div>
       <div className="fxr-analytics-subtabs" role="tablist"><button className="is-active" type="button" role="tab" aria-selected="true">Sessions</button><button type="button" role="tab" aria-selected="false">Prop firm</button></div>
       <div className="fxr-filter-panel"><div className="fxr-filter-row">{filters.map((filter) => <button className="fxr-filter-pill" type="button" key={filter}>{filter}<span aria-hidden="true">⌄</span></button>)}<button className="fxr-apply-button" type="button">Apply</button><button className="fxr-round-button" type="button" aria-label="Download">⇩</button><button className="fxr-share-button" type="button">♧ Share</button></div><div className="fxr-applied-chips"><span>long, short</span><span>wins, losses</span><span>Asia/Ho_Chi_Minh</span><span>00:00 - 23:59</span><span>Backtesting, Battles, &amp; Prop Firm</span><button type="button">♲ Clear filters</button></div></div>
       <div className="fxr-analytics-empty" data-testid="analytics-empty"><div className="fxr-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div><h2>No session analytics yet!</h2><p>Start applying filters to generate your first performance<br className="fxr-desktop-only" /> insights and track your trading progress.</p><NewSessionLink href={newHref}>New session</NewSessionLink><a href={newHref}>Show demo data</a></div>

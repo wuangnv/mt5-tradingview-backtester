@@ -192,7 +192,6 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
         <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
       </div>
       <div className="fx-topbar-actions">
-        <span className="fx-pro-badge" aria-label="Pro plan">ϟ Pro</span>
         <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">
           {language === 'vi' ? 'EN⌄' : 'VI⌄'}
         </button>
@@ -275,11 +274,6 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
       <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
         <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={() => setRailCollapsed((value) => !value)} />
         <aside className="fx-rail" aria-label={copy.workspaceAria}>
-          <div className="fx-rail-profile" aria-label="Workspace profile">
-            <div className="fx-profile-avatar" aria-hidden="true">W</div>
-            <span className="fx-profile-tier">Free</span>
-            <strong>WMREPLAY</strong>
-          </div>
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>
               {groupIndex > 0 && <div className="fx-rail-divider" />}

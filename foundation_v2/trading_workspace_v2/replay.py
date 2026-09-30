@@ -65,6 +65,8 @@ class ReplayService:
 
         items: list[dict] = []
         for record in self.store.list_records(workspace_id, "replay"):
+            if not isinstance(record, dict):
+                raise RuntimeError("replay catalog record is invalid")
             payload = record.get("payload")
             if not isinstance(payload, dict):
                 raise RuntimeError("replay catalog record payload is invalid")

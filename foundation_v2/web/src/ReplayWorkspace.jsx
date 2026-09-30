@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { CandlestickSeries, createChart } from 'lightweight-charts'
+import {
+  AreaSeries,
+  BarSeries,
+  BaselineSeries,
+  CandlestickSeries,
+  LineSeries,
+  createChart,
+} from 'lightweight-charts'
 import { useFxReplayContext } from './FxReplayShell.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import { buildReplayAnnotationDraft } from './chartAnnotations.js'
@@ -33,7 +40,82 @@ async function readJson(response) {
   return payload
 }
 
-function ReplayChart({ rows, onCrosshair, onAnchorSelect }) {
+const CHART_TYPES = [
+  { id: 'candles', label: 'Candles' },
+  { id: 'bars', label: 'Bars' },
+  { id: 'hollow', label: 'Hollow candles' },
+  { id: 'line', label: 'Line' },
+  { id: 'area', label: 'Area' },
+  { id: 'baseline', label: 'Baseline' },
+  { id: 'heikin', label: 'Heikin Ashi' },
+  { id: 'renko', label: 'Renko' },
+]
+
+const INTERVAL_GROUPS = [
+  { label: 'Seconds', options: ['5 seconds', '10 seconds', '15 seconds', '30 seconds'] },
+  { label: 'Minutes', options: ['1 minute', '2 minutes', '3 minutes', '5 minutes', '10 minutes', '15 minutes', '30 minutes', '45 minutes'] },
+  { label: 'Hours', options: ['1 hour', '2 hours', '3 hours', '4 hours', '12 hours'] },
+  { label: 'Days', options: ['1 day', '1 week', '1 month', '3 months', '6 months', '12 months'] },
+]
+const INDICATOR_OPTIONS = ['Moving Average', 'Exponential Moving Average', 'RSI', 'MACD', 'Bollinger Bands', 'Volume']
+const TIMEZONE_OPTIONS = ['UTC', 'Exchange', 'Ho Chi Minh (UTC+7)', 'London (UTC+0)', 'New York (UTC-4)', 'Tokyo (UTC+9)']
+const DRAWING_GROUPS = {
+  Cursors: ['Cross', 'Dot', 'Arrow', 'Eraser'],
+  Lines: ['Trendline', 'Ray', 'Horizontal line', 'Vertical line', 'Crossline'],
+  Fibonacci: ['Fib retracement', 'Fib extension', 'Fib channel', 'Fib time zone'],
+  Shapes: ['Rectangle', 'Circle', 'Triangle', 'Polyline', 'Brush'],
+  Notes: ['Text', 'Note', 'Callout', 'Price label'],
+}
+
+function heikinAshiRows(rows) {
+  let previousOpen = null
+  let previousClose = null
+  return rows.map((row) => {
+    const open = Number(row.open)
+    const high = Number(row.high)
+    const low = Number(row.low)
+    const close = Number(row.close)
+    const haClose = (open + high + low + close) / 4
+    const haOpen = previousOpen === null ? (open + close) / 2 : (previousOpen + previousClose) / 2
+    const haHigh = Math.max(high, haOpen, haClose)
+    const haLow = Math.min(low, haOpen, haClose)
+    previousOpen = haOpen
+    previousClose = haClose
+    return { ...row, open: haOpen, high: haHigh, low: haLow, close: haClose }
+  })
+}
+
+function ChartMenu({ id, label, value, openMenu, setOpenMenu, children, testId }) {
+  const open = openMenu === id
+  return (
+    <div className="chart-control-menu">
+      <button
+        type="button"
+        className={`chart-control-button ${open ? 'is-open' : ''}`}
+        data-testid={testId}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpenMenu(open ? '' : id)}
+      >
+        <span>{label}</span>
+        {value && <strong>{value}</strong>}
+        <span className="chart-control-chevron" aria-hidden="true">⌄</span>
+      </button>
+      {open && <div className="chart-control-popover" role="menu">{children}</div>}
+    </div>
+  )
+}
+
+function ChartMenuItem({ active = false, disabled = false, children, onClick }) {
+  return (
+    <button type="button" role="menuitem" className={`chart-menu-item ${active ? 'is-active' : ''}`} disabled={disabled} onClick={onClick}>
+      <span>{children}</span>
+      {active && <span className="chart-menu-check" aria-hidden="true">✓</span>}
+    </button>
+  )
+}
+
+function ReplayChart({ rows, chartType = 'candles', onCrosshair, onAnchorSelect }) {
   const hostRef = useRef(null)
 
   useEffect(() => {
@@ -48,22 +130,46 @@ function ReplayChart({ rows, onCrosshair, onAnchorSelect }) {
       timeScale: { borderColor: '#30383e', timeVisible: true, secondsVisible: false },
       crosshair: { mode: 0 },
     })
-    const series = chart.addSeries(CandlestickSeries, {
-      upColor: '#63b982',
-      downColor: '#df7676',
-      borderVisible: false,
-      wickUpColor: '#63b982',
-      wickDownColor: '#df7676',
-    })
-
-    // The chart accepts only the API-visible prefix. Dataset suffix rows never reach this component.
-    series.setData(rows.map((row) => ({
+    const sourceRows = chartType === 'heikin' ? heikinAshiRows(rows) : rows
+    const chartRows = sourceRows.map((row) => ({
       time: Number(row.timestamp),
       open: Number(row.open),
       high: Number(row.high),
       low: Number(row.low),
       close: Number(row.close),
-    })))
+    }))
+    const isCandle = chartType === 'candles' || chartType === 'hollow' || chartType === 'heikin' || chartType === 'renko'
+    const seriesType = chartType === 'bars' ? BarSeries
+      : chartType === 'line' ? LineSeries
+        : chartType === 'area' ? AreaSeries
+          : chartType === 'baseline' ? BaselineSeries
+            : CandlestickSeries
+    const series = chart.addSeries(seriesType, isCandle ? {
+      upColor: chartType === 'hollow' ? '#63b982' : '#63b982',
+      downColor: '#df7676',
+      borderVisible: chartType === 'hollow',
+      borderUpColor: '#63b982',
+      borderDownColor: '#df7676',
+      wickUpColor: '#63b982',
+      wickDownColor: '#df7676',
+    } : chartType === 'baseline' ? {
+      baseValue: { type: 'price', price: chartRows[0]?.close || 0 },
+      topLineColor: '#63b982',
+      topFillColor1: 'rgba(99,185,130,.22)',
+      topFillColor2: 'rgba(99,185,130,.02)',
+      bottomLineColor: '#df7676',
+      bottomFillColor1: 'rgba(223,118,118,.02)',
+      bottomFillColor2: 'rgba(223,118,118,.16)',
+    } : {
+      color: chartType === 'area' ? '#63b982' : '#d6b56f',
+      lineColor: '#63b982',
+      topColor: 'rgba(99,185,130,.20)',
+      bottomColor: 'rgba(99,185,130,.02)',
+      lineWidth: 2,
+    })
+
+    // The chart accepts only the API-visible prefix. Dataset suffix rows never reach this component.
+    series.setData(isCandle || chartType === 'bars' ? chartRows : chartRows.map((row) => ({ time: row.time, value: row.close })))
     const handleCrosshairMove = (param) => {
       if (!param?.time) {
         onCrosshair?.(null)
@@ -100,7 +206,7 @@ function ReplayChart({ rows, onCrosshair, onAnchorSelect }) {
       chart.unsubscribeClick(handleChartClick)
       chart.remove()
     }
-  }, [onAnchorSelect, onCrosshair, rows])
+  }, [chartType, onAnchorSelect, onCrosshair, rows])
 
   return (
     <div
@@ -108,7 +214,7 @@ function ReplayChart({ rows, onCrosshair, onAnchorSelect }) {
       className="replay-chart"
       data-testid="replay-chart"
       data-visible-row-count={rows.length}
-      aria-label={`Biểu đồ replay với ${rows.length} nến đã được mở; bấm vào nến để tạo annotation draft local`}
+      aria-label={`Biểu đồ replay ${chartType} với ${rows.length} nến đã được mở; bấm vào nến để tạo annotation draft local`}
     />
   )
 }
@@ -156,6 +262,18 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [crosshair, setCrosshair] = useState(null)
   const [annotationDraft, setAnnotationDraft] = useState(null)
+  // Chart controls stay local to this replay view.  They deliberately do not
+  // mutate the session or call a broker/provider API; the session payload is
+  // still the only source of replay data and cutoff authority.
+  const [chartInterval, setChartInterval] = useState('1 minute')
+  const [chartType, setChartType] = useState('candles')
+  const [openChartMenu, setOpenChartMenu] = useState('')
+  const [activeIndicators, setActiveIndicators] = useState([])
+  const [compareSymbol, setCompareSymbol] = useState('')
+  const [timezone, setTimezone] = useState('UTC')
+  const [drawingTool, setDrawingTool] = useState('Cross')
+  const [goToDateDraft, setGoToDateDraft] = useState('')
+  const [chartNotice, setChartNotice] = useState('')
 
   const rememberSession = useCallback((nextSessionId, preserveCursor = false, cursor = null, dataset = null) => {
     setSessionId(nextSessionId)
@@ -406,6 +524,32 @@ export default function ReplayWorkspace({ workspace, query }) {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [completed, conflict, historicalView, mutate, pendingAction, replay, revision])
+
+  useEffect(() => {
+    if (!openChartMenu) return undefined
+    const closeMenu = (event) => {
+      if (!event.target?.closest?.('.chart-control-menu') && !event.target?.closest?.('.chart-date-popover')) setOpenChartMenu('')
+    }
+    document.addEventListener('pointerdown', closeMenu)
+    return () => document.removeEventListener('pointerdown', closeMenu)
+  }, [openChartMenu])
+
+  const selectedChartType = CHART_TYPES.find((item) => item.id === chartType)?.label || 'Candles'
+  const toggleIndicator = useCallback((indicator) => {
+    setActiveIndicators((current) => current.includes(indicator)
+      ? current.filter((item) => item !== indicator)
+      : [...current, indicator])
+  }, [])
+  const selectDrawingTool = useCallback((tool) => {
+    setDrawingTool(tool)
+    setChartNotice(`${tool} đã chọn · bản vẽ local sẽ được nối ở bước tiếp theo.`)
+    setOpenChartMenu('')
+  }, [])
+  const selectChartOption = useCallback((setter, value, notice = '') => {
+    setter(value)
+    if (notice) setChartNotice(notice)
+    setOpenChartMenu('')
+  }, [])
   const routeContext = useMemo(() => ({
     session: sessionId || undefined,
     dataset: replay?.payload?.dataset_id || datasetDraft.trim() || undefined,
@@ -579,6 +723,100 @@ export default function ReplayWorkspace({ workspace, query }) {
                     +10 nến
                   </button>
                 </div>
+                <div className="chart-controls" aria-label="Chart controls">
+                  <ChartMenu
+                    id="interval"
+                    label="Interval"
+                    value={chartInterval.replace(' minute', 'm').replace(' minutes', 'm').replace(' hour', 'h').replace(' hours', 'h').replace(' seconds', 's').replace(' day', 'D').replace(' week', 'W').replace(' month', 'M').replace(' months', 'M')}
+                    openMenu={openChartMenu}
+                    setOpenMenu={setOpenChartMenu}
+                    testId="chart-interval"
+                  >
+                    <button type="button" className="chart-menu-custom" onClick={() => selectChartOption(setChartInterval, 'Custom interval', 'Custom interval chỉ là cấu hình local cho fixture.')}>Add custom interval…</button>
+                    {INTERVAL_GROUPS.map((group) => (
+                      <React.Fragment key={group.label}>
+                        <span className="chart-menu-heading">{group.label}</span>
+                        {group.options.map((option) => (
+                          <ChartMenuItem key={option} active={chartInterval === option} onClick={() => selectChartOption(setChartInterval, option)}>{option}</ChartMenuItem>
+                        ))}
+                      </React.Fragment>
+                    ))}
+                  </ChartMenu>
+
+                  <ChartMenu
+                    id="chart-type"
+                    label="Chart"
+                    value={selectedChartType}
+                    openMenu={openChartMenu}
+                    setOpenMenu={setOpenChartMenu}
+                    testId="chart-type"
+                  >
+                    {CHART_TYPES.map((option) => (
+                      <ChartMenuItem key={option.id} active={chartType === option.id} onClick={() => selectChartOption(setChartType, option.id)}>{option.label}</ChartMenuItem>
+                    ))}
+                  </ChartMenu>
+
+                  <ChartMenu
+                    id="indicators"
+                    label="Indicators"
+                    value={activeIndicators.length ? `${activeIndicators.length}` : ''}
+                    openMenu={openChartMenu}
+                    setOpenMenu={setOpenChartMenu}
+                    testId="chart-indicators"
+                  >
+                    <label className="chart-menu-search">
+                      <span className="sr-only">Tìm indicator</span>
+                      <input type="search" placeholder="Search the library…" aria-label="Tìm indicator" />
+                    </label>
+                    <span className="chart-menu-heading">Favorites · Discover · Personal</span>
+                    {INDICATOR_OPTIONS.map((indicator) => (
+                      <ChartMenuItem key={indicator} active={activeIndicators.includes(indicator)} onClick={() => toggleIndicator(indicator)}>{indicator}</ChartMenuItem>
+                    ))}
+                    <span className="chart-menu-footnote">Local preview · chưa tính toán trên dataset</span>
+                  </ChartMenu>
+
+                  <ChartMenu
+                    id="compare"
+                    label="Compare"
+                    value={compareSymbol || ''}
+                    openMenu={openChartMenu}
+                    setOpenMenu={setOpenChartMenu}
+                    testId="chart-compare"
+                  >
+                    <span className="chart-menu-heading">Available symbols</span>
+                    <ChartMenuItem active={compareSymbol === ''} onClick={() => selectChartOption(setCompareSymbol, '', 'Compare đã tắt.')}>Không so sánh</ChartMenuItem>
+                    <ChartMenuItem active={compareSymbol === 'OANDA:EURUSD'} onClick={() => selectChartOption(setCompareSymbol, 'OANDA:EURUSD', 'Compare local với OANDA:EURUSD.')}>OANDA:EURUSD</ChartMenuItem>
+                    <span className="chart-menu-footnote">Chỉ hiển thị symbol local có trong fixture.</span>
+                  </ChartMenu>
+
+                  <ChartMenu id="drawing" label="Draw" value={drawingTool} openMenu={openChartMenu} setOpenMenu={setOpenChartMenu} testId="chart-drawing">
+                    {Object.entries(DRAWING_GROUPS).map(([group, tools]) => (
+                      <React.Fragment key={group}>
+                        <span className="chart-menu-heading">{group}</span>
+                        {tools.map((tool) => <ChartMenuItem key={tool} active={drawingTool === tool} onClick={() => selectDrawingTool(tool)}>{tool}</ChartMenuItem>)}
+                      </React.Fragment>
+                    ))}
+                  </ChartMenu>
+
+                  <ChartMenu id="timezone" label="TZ" value={timezone} openMenu={openChartMenu} setOpenMenu={setOpenChartMenu} testId="chart-timezone">
+                    {TIMEZONE_OPTIONS.map((option) => (
+                      <ChartMenuItem key={option} active={timezone === option} onClick={() => selectChartOption(setTimezone, option, `Timezone ${option} đã chọn cho chart local.`)}>{option}</ChartMenuItem>
+                    ))}
+                  </ChartMenu>
+
+                  <ChartMenu id="more" label="More" openMenu={openChartMenu} setOpenMenu={setOpenChartMenu} testId="chart-more">
+                    <ChartMenuItem onClick={() => { setOpenChartMenu('go-to-date'); setChartNotice('Chọn ngày trong session hiện tại; chưa thay đổi cutoff.') }}>Go to Date…</ChartMenuItem>
+                    <ChartMenuItem onClick={() => setChartNotice('Layout control local-only; chưa lưu server.')}>Layout options…</ChartMenuItem>
+                    <ChartMenuItem onClick={() => setChartNotice('Keyboard shortcuts: → +1 nến · Shift + → +10 nến')}>Keyboard shortcuts</ChartMenuItem>
+                  </ChartMenu>
+
+                  {openChartMenu === 'go-to-date' && (
+                    <div className="chart-control-popover chart-date-popover" role="dialog" aria-label="Go to Date">
+                      <label>Go to Date<input type="date" value={goToDateDraft} onChange={(event) => setGoToDateDraft(event.target.value)} /></label>
+                      <div className="chart-date-actions"><button type="button" onClick={() => setOpenChartMenu('')}>Cancel</button><button type="button" className="is-primary" onClick={() => { setChartNotice(goToDateDraft ? `Ngày ${goToDateDraft} đã chọn trong fixture.` : 'Chưa chọn ngày.'); setOpenChartMenu('') }}>Go to</button></div>
+                    </div>
+                  )}
+                </div>
                 <div className="toolbar-speed" aria-label="Tốc độ replay">
                   <span>Tốc độ</span>
                   <select value={speed} onChange={(event) => setSpeed(event.target.value)} disabled={Boolean(pendingAction)}>
@@ -596,10 +834,17 @@ export default function ReplayWorkspace({ workspace, query }) {
               </div>
 
               <div className="chart-frame">
-                <ReplayChart rows={visibleRows} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
+                <ReplayChart rows={visibleRows} chartType={chartType} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
                 <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
                 <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
+                <div className="chart-floating-context" aria-live="polite">
+                  <span>{chartInterval}</span>
+                  {compareSymbol && <span>+ {compareSymbol}</span>}
+                  {activeIndicators.length > 0 && <span>{activeIndicators.length} indicator{activeIndicators.length > 1 ? 's' : ''}</span>}
+                </div>
               </div>
+
+              {chartNotice && <div className="chart-notice" role="status">{chartNotice}<button type="button" aria-label="Đóng thông báo" onClick={() => setChartNotice('')}>×</button></div>}
 
               <div className="replay-evidence-strip" aria-label="Bằng chứng chart">
                 <div><span className="story-label">03 · EVIDENCE</span><strong>{crosshair?.row ? 'Nến đang chọn' : 'Nến tại cutoff'}</strong></div>

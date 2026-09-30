@@ -15,6 +15,13 @@
 .fxr-session-select-details strong { color: #f6f6f6; font-size: 22px; line-height: 1.15; }
 .fxr-session-select-details span { color: #b0b1b4; font-size: 15px; line-height: 1.25; }
 .fxr-select-chevron { position: absolute; top: 50%; right: 16px; display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: #414347; color: #fff; font-size: 23px; line-height: 1; transform: translateY(-50%); pointer-events: none; }
+.fxr-session-control.is-compact { width: min(320px, 42vw); flex: 0 1 320px; }
+.fxr-session-control.is-compact > label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; clip-path: inset(50%); }
+.fxr-session-control.is-compact .fxr-session-select-card { min-height: 58px; border-radius: 10px; }
+.fxr-session-control.is-compact .fxr-session-select-details { gap: 2px; padding: 9px 48px 9px 13px; }
+.fxr-session-control.is-compact .fxr-session-select-details strong { font-size: 15px; }
+.fxr-session-control.is-compact .fxr-session-select-details span { font-size: 12px; }
+.fxr-session-control.is-compact .fxr-select-chevron { right: 11px; width: 28px; height: 28px; font-size: 18px; }
 .fxr-session-actions { display: flex; align-items: center; justify-content: flex-end; gap: 18px; flex-wrap: wrap; }
 .fxr-button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 22px; padding: 0 17px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .fxr-button-primary { background: #0260fd; color: #fff; }
@@ -61,6 +68,7 @@
 .fxr-trades-surface .fxr-session-toolbar, .fxr-analytics-surface .fxr-session-toolbar { min-height: 134px; }
 .fxr-table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid #414347; }
 .fxr-table-toolbar > div { display: flex; align-items: center; gap: 10px; }
+.fxr-compact-session-toolbar { align-items: flex-end; }
 .fxr-filter-select, .fxr-filter-button, .fxr-round-button, .fxr-share-button { min-height: 40px; border: 1px solid #414347; border-radius: 9px; background: #030303; color: #fff; padding: 0 13px; font-size: 14px; }
 .fxr-filter-select { min-width: 128px; display: flex; align-items: center; justify-content: space-between; }
 select.fxr-filter-select { appearance: auto; }
@@ -85,6 +93,8 @@ select.fxr-filter-select { appearance: auto; }
 
 .fxr-filter-panel { border-bottom: 1px solid #414347; padding: 21px 0 25px; }
 .fxr-analytics-subtabs { display: flex; align-items: center; gap: 4px; border-bottom: 1px solid #414347; padding: 0 0 10px; }
+.fxr-analytics-session-toolbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; padding: 7px 0 15px; }
+.fxr-analytics-session-toolbar .fxr-session-actions { flex-wrap: nowrap; }
 .fxr-analytics-subtabs button { min-height: 36px; border: 1px solid transparent; border-radius: 18px; background: transparent; color: #b0b1b4; padding: 0 20px; font-size: 14px; font-weight: 700; }
 .fxr-analytics-subtabs button.is-active { border-color: #414347; background: #131415; color: #fff; }
 .fxr-filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -114,6 +124,7 @@ select.fxr-filter-select { appearance: auto; }
   .fxr-session-toolbar { align-items: stretch; flex-direction: column; gap: 18px; }
   .fxr-session-control { width: 100%; }
   .fxr-session-actions { justify-content: flex-start; }
+  .fxr-session-control.is-compact { width: min(360px, 100%); flex-basis: 100%; }
   .fxr-session-cards { grid-template-columns: 1fr; }
   .fxr-metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fxr-apply-button { margin-left: 0; }
@@ -127,6 +138,8 @@ select.fxr-filter-select { appearance: auto; }
   .fxr-balance strong { font-size: 29px; }
   .fxr-metrics-grid { grid-template-columns: 1fr; }
   .fxr-table-toolbar { align-items: flex-start; flex-direction: column; }
+  .fxr-analytics-session-toolbar { align-items: flex-start; flex-direction: column; }
+  .fxr-analytics-session-toolbar .fxr-session-actions { width: 100%; }
   .fxr-table-toolbar > div { flex-wrap: wrap; }
   .fxr-applied-chips button { margin-left: 0; }
   .fxr-analytics-empty { min-height: 380px; }
