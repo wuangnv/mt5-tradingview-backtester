@@ -29,7 +29,7 @@
   grid-column: 1;
   grid-row: 2;
   background: var(--fx-shell-rail);
-  border-right: 0;
+  border-right: 1px solid var(--fx-shell-line);
   padding: 20px 14px 16px;
   min-height: 0;
 }
@@ -182,18 +182,6 @@
 .fx-shell-story .fx-topbar-actions {
   flex: 0 0 auto;
   gap: 10px;
-}
-
-.fx-shell-story .fx-avatar {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  min-height: 28px;
-  border: 1px solid #45525b;
-  border-radius: 50%;
-  background: #182026;
-  color: #d6dee2;
-  font-size: 10px;
 }
 
 .fx-shell-story .fx-shell-primary {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import LearnWorkspace from './LearnWorkspace.jsx'
 import PropWorkspace from './PropWorkspace.jsx'
@@ -12,133 +11,41 @@ import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
 import PlaybookWorkspace from './PlaybookWorkspace.jsx'
-import { useFxReplayContext } from './FxReplayShell.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 
 function WorkspaceOverview({ workspace, query }) {
-  const { updateMarketContext } = useFxReplayContext()
-  const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null })
-
-  useEffect(() => {
-    let cancelled = false
-    fetch('/api/v2/overview', { headers: { 'X-Workspace-Id': workspace } })
-      .then(async (response) => {
-        const payload = await response.json().catch(() => ({}))
-        if (!response.ok) throw new Error(String(payload.detail || `HTTP ${response.status}`))
-        return payload
-      })
-      .then((payload) => { if (!cancelled) setOverview({ status: 'ready', payload, error: null }) })
-      .catch((error) => { if (!cancelled) setOverview({ status: 'error', payload: null, error: String(error.message || error) }) })
-    return () => { cancelled = true }
-  }, [workspace])
-
-  useEffect(() => {
-    let cancelled = false
-    fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace } })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((payload) => {
-        const dataset = Array.isArray(payload?.items) ? payload.items[0] : null
-        if (!cancelled && dataset) {
-          updateMarketContext({
-            instrument: String(dataset.instrument_id || dataset.dataset_id || ''),
-            timeframe: String(dataset.timeframe || 'TF chưa rõ'),
-            dataStatus: String(dataset.quality_status || 'unverified'),
-          })
-        }
-      })
-      .catch(() => {})
-    return () => { cancelled = true }
-  }, [updateMarketContext, workspace])
-
-  const counts = overview.payload?.counts || {}
-  const datasetCount = Number.isFinite(Number(counts.datasets)) ? Number(counts.datasets) : null
-  const completedResearch = Number(counts.research_jobs?.completed || 0)
-  const replayCount = Number(counts.records?.replay || 0)
-  const sessionId = query?.get('session') || ''
-  const jobId = query?.get('job') || ''
   const routeHref = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, overrides)
-  const queueItems = [
-    replayCount > 0
-      ? {
-          title: sessionId ? 'Tiếp tục replay session' : 'Mở Practice để xem replay',
-          detail: sessionId ? 'Giữ nguyên dataset và decision cutoff hiện tại' : `${replayCount} replay record đã có trong workspace`,
-          href: routeHref('replay', sessionId ? {} : { session: null, dataset: null, cursor: null, cutoff: null }),
-        }
-      : {
-          title: 'Mở một replay session',
-          detail: 'Chọn dataset local trước khi đưa ra quyết định',
-          href: routeHref('replay'),
-        },
-    completedResearch > 0
-      ? {
-          title: 'Xem research đã hoàn tất',
-          detail: jobId ? 'Mở lại result với provenance của job hiện tại' : `${completedResearch} research job đã hoàn tất`,
-          href: routeHref('research', jobId ? { job: jobId } : {}),
-        }
-      : {
-          title: 'Chuẩn bị research run',
-          detail: datasetCount > 0 ? 'Chọn dataset và kiểm tra provenance trước khi chạy' : 'Cần dataset local trước khi chạy',
-          href: routeHref(datasetCount > 0 ? 'research' : 'data'),
-        },
-    datasetCount > 0
-      ? {
-          title: 'Ôn glossary trước phiên',
-          detail: 'Learn đọc course local ở chế độ read-only',
-          href: routeHref('learn'),
-        }
-      : {
-          title: 'Nạp dataset local',
-          detail: 'Data Desk là điểm bắt đầu của workflow trading',
-          href: routeHref('data'),
-        },
+  const cards = [
+    { id: 'backtesting', title: 'Backtesting session', subtitle: 'Start a session', icon: 'plus', href: routeHref('replay'), primary: true },
+    { id: 'prop', title: 'Prop firm session', subtitle: 'Start a challenge', icon: 'trophy', href: routeHref('testing'), primary: true },
+    { id: 'tutorials', title: 'Tutorials', subtitle: 'Learn more', icon: 'education', href: routeHref('learn'), primary: false },
   ]
 
   return (
-    <section className="fx-overview" aria-labelledby="overview-title">
-      <div className="fx-page-heading">
-        <div>
-          <span className="fx-eyebrow">TRADING WORKSPACE / SESSION CONTROL</span>
-          <h1 id="overview-title">Tiếp tục phiên của bạn</h1>
-          <p>Chart, replay và quyết định nằm trong cùng một context. Chọn Practice để mở đúng vòng lặp FXReplay.</p>
-        </div>
-        <a className="fx-primary-button" href={routeHref('replay')}>Mở Practice</a>
-      </div>
-
-      <section className="fx-session-banner" aria-label="Phiên hiện tại">
-        <div className="fx-session-main">
-          <div className="fx-session-kicker"><i className="fx-status-dot is-live" /> REPLAY SESSION · LOCAL</div>
-          <strong>{datasetCount === null ? 'EURUSD · default' : `${datasetCount} dataset trong workspace`}</strong>
-          <span>{overview.status === 'ready' ? `${completedResearch} research hoàn tất · ${replayCount} replay record` : overview.status === 'error' ? `Không đọc được overview: ${overview.error}` : 'Đang đọc trạng thái workspace…'}</span>
-        </div>
-        <div className="fx-session-fact"><span>Broker</span><strong>Locked</strong></div>
-        <div className="fx-session-fact"><span>Data</span><strong>{datasetCount === null ? 'Chưa xác định' : `${datasetCount} catalog`}</strong></div>
-        <div className="fx-session-fact"><span>Risk</span><strong>Chưa cấu hình</strong></div>
-      </section>
-
-      <div className="fx-overview-grid">
-        <section className="fx-work-queue" aria-labelledby="queue-title">
-          <div className="fx-section-heading"><div><span className="fx-eyebrow">NEXT ACTION</span><h2 id="queue-title">Việc cần làm</h2></div><span className="fx-muted-label">{queueItems.length} mục theo workspace</span></div>
-          {queueItems.map((item, index) => (
-            <a className={`fx-queue-row ${index === 0 ? 'is-primary' : ''}`} href={item.href} key={`${item.title}-${index}`}>
-              <span className="fx-queue-index">{String(index + 1).padStart(2, '0')}</span><span><strong>{item.title}</strong><small>{item.detail}</small></span><b>→</b>
-            </a>
-          ))}
-        </section>
-
-        <section className="fx-context-panel" aria-labelledby="context-title">
-          <div className="fx-section-heading"><div><span className="fx-eyebrow">SESSION CONTEXT</span><h2 id="context-title">Phạm vi đang dùng</h2></div></div>
-          <dl className="fx-context-list">
-            <div><dt>Mode</dt><dd><span className="fx-pill fx-pill-warn">Replay / Simulation</span></dd></div>
-            <div><dt>Broker send</dt><dd><span className="fx-pill fx-pill-locked">Locked</span></dd></div>
-            <div><dt>Holdout</dt><dd>Chưa mở</dd></div>
-            <div><dt>Provenance</dt><dd>{datasetCount === null ? 'Chưa xác định' : 'Catalog local · kiểm tra ở Data Desk'}</dd></div>
-            <div><dt>Overview API</dt><dd>{overview.status === 'ready' ? 'Đã đọc' : overview.status === 'loading' ? 'Đang đọc' : 'Unavailable'}</dd></div>
-          </dl>
-        </section>
+    <section className="fx-dashboard" aria-label="Dashboard">
+      <div className="fx-dashboard-cards">
+        {cards.map((card) => (
+          <a className={`fx-dashboard-card ${card.primary ? 'is-primary' : ''}`} href={card.href} key={card.id}>
+            <span className="fx-dashboard-card-icon" aria-hidden="true">
+              <DashboardIcon type={card.icon} />
+            </span>
+            <span className="fx-dashboard-card-copy">
+              <strong>{card.title} <span className="fx-dashboard-card-info" aria-hidden="true">ⓘ</span></strong>
+              <small>{card.subtitle}</small>
+            </span>
+          </a>
+        ))}
       </div>
     </section>
   )
+}
+
+function DashboardIcon({ type }) {
+  const common = { className: 'fx-dashboard-icon-svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: '1.7', strokeLinecap: 'round', strokeLinejoin: 'round', focusable: 'false' }
+  if (type === 'trophy') return <svg {...common}><path d="M8 4h8v4a4 4 0 0 1-8 0V4Z" /><path d="M8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 12v4M8 20h8M9 16h6" /></svg>
+  if (type === 'education') return <svg {...common}><path d="m3 9 9-4 9 4-9 4-9-4Z" /><path d="M7 11v4c2 2 8 2 10 0v-4M21 9v6" /></svg>
+  return <svg {...common}><path d="M12 5v14M5 12h14" /></svg>
 }
 
 function UnavailableWorkspace({ title, eyebrow, description, next, href }) {

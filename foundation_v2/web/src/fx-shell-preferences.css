@@ -156,6 +156,33 @@ body[data-tw-theme='dark'] {
   color: #704609;
 }
 
+.fx-app[data-theme='light'] .fx-dashboard-card {
+  border-color: #c4d0d6;
+  background: #ffffff;
+  color: #1d2930;
+}
+
+.fx-app[data-theme='light'] .fx-dashboard-card.is-primary {
+  border-color: #236bd0;
+}
+
+.fx-app[data-theme='light'] .fx-dashboard-card:hover,
+.fx-app[data-theme='light'] .fx-dashboard-card:focus-visible,
+.fx-app[data-theme='light'] .fx-dashboard-card:not(.is-primary):hover,
+.fx-app[data-theme='light'] .fx-dashboard-card:not(.is-primary):focus-visible {
+  border-color: #236bd0;
+  background: #f6f9fb;
+}
+
+.fx-app[data-theme='light'] .fx-dashboard-card-copy strong {
+  color: #1d2930;
+}
+
+.fx-app[data-theme='light'] .fx-dashboard-card-copy small,
+.fx-app[data-theme='light'] .fx-dashboard-card-info {
+  color: #5c6c76;
+}
+
 .fx-app[data-theme='light'] .fx-nav-item:hover::after,
 .fx-app[data-theme='light'] .fx-nav-item:focus-visible::after {
   border-color: var(--fx-shell-line-strong);
@@ -181,12 +208,6 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .fx-context-list dt,
 .fx-app[data-theme='light'] .fx-settings-list small {
   color: #5c6c76;
-}
-
-.fx-app[data-theme='light'] .fx-avatar {
-  border-color: #aebbc2;
-  background: #ffffff;
-  color: #30434d;
 }
 
 .fx-app[data-theme='light'] .fx-secondary-button,

@@ -23,7 +23,6 @@ const SHELL_COPY = {
     contentAria: 'Nội dung WMREPLAY',
     primaryNavAria: 'Khu vực chính',
     utilityNavAria: 'Công cụ',
-    workspaceOwner: 'Chủ workspace',
     subnavAria: 'Điều hướng workspace',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
@@ -54,7 +53,6 @@ const SHELL_COPY = {
     contentAria: 'WMREPLAY content',
     primaryNavAria: 'Primary workspace',
     utilityNavAria: 'Utilities',
-    workspaceOwner: 'Workspace owner',
     subnavAria: 'Workspace navigation',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
@@ -186,7 +184,6 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme }) {
           <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
           <span className="fx-theme-label">{theme === 'dark' ? copy.themeLightShort : copy.themeDarkShort}</span>
         </button>
-        <span className="fx-avatar" aria-label={copy.workspaceOwner}>A</span>
       </div>
     </header>
   )
