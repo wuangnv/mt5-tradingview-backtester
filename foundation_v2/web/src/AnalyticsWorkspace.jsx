@@ -32,6 +32,21 @@ function formatNumber(value, digits = 2, suffix = '') {
   return `${new Intl.NumberFormat('vi-VN', { maximumFractionDigits: digits }).format(Number(value))}${suffix}`
 }
 
+const MAX_CHART_POINTS = 240
+const LEDGER_PAGE_SIZE = 50
+
+function sampleSeries(values, maxPoints = MAX_CHART_POINTS, isPriority = () => false) {
+  if (!Array.isArray(values) || values.length <= maxPoints) return values || []
+  const indexes = new Set([0, values.length - 1])
+  const regularSlots = Math.max(0, maxPoints - 2)
+  for (let slot = 0; slot < regularSlots; slot += 1) {
+    const ratio = regularSlots <= 1 ? 0 : slot / (regularSlots - 1)
+    indexes.add(Math.round(1 + ratio * Math.max(0, values.length - 3)))
+  }
+  values.forEach((value, index) => { if (isPriority(value, index)) indexes.add(index) })
+  return [...indexes].sort((left, right) => left - right).map((index) => values[index])
+}
+
 function netFromLedger(ledger) {
   if (!Array.isArray(ledger) || !ledger.length || !ledger.every((trade) => finite(trade?.net_pnl))) return null
   return ledger.reduce((total, trade) => total + Number(trade.net_pnl), 0)
@@ -208,13 +223,15 @@ function AnalyticsFilters({ filters, onChange, csvUrl, onExport, exportPending }
 function BalanceEvidence({ model, selectedTradeId, onSelect }) {
   const points = model.curve
   if (points.length < 2) return <div className="as-chart-empty">Chưa có đường balance đóng đủ dữ liệu để vẽ.</div>
-  const values = points.map((point) => point.value)
+  const renderPoints = sampleSeries(points, MAX_CHART_POINTS, (point) => point.tradeId === selectedTradeId)
+  const renderDrawdown = sampleSeries(model.drawdown, MAX_CHART_POINTS)
+  const values = renderPoints.map((point) => point.value)
   const min = Math.min(...values)
   const max = Math.max(...values)
   const span = max - min || 1
   const y = (value) => 92 - ((value - min) / span) * 76
-  const x = (index) => (index / Math.max(1, points.length - 1)) * 100
-  const line = points.map((point, index) => `${x(index)},${y(point.value)}`).join(' ')
+  const x = (index) => (index / Math.max(1, renderPoints.length - 1)) * 100
+  const line = renderPoints.map((point, index) => `${x(index)},${y(point.value)}`).join(' ')
   const knownDrawdowns = model.drawdown.map((point) => Number(point.drawdown)).filter(Number.isFinite)
   const maxDrawdown = knownDrawdowns.length ? Math.max(1, ...knownDrawdowns) : null
   return (
@@ -222,8 +239,8 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
       <svg className="as-balance-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Closed-trade balance evidence">
         {[20, 44, 68, 92].map((grid) => <line className="as-chart-grid" key={grid} x1="0" x2="100" y1={grid} y2={grid} />)}
         <polyline className="as-balance-line" points={line} />
-        {points.map((point, index) => {
-          const trade = model.ledger[index - 1]
+        {renderPoints.map((point, index) => {
+          const trade = model.ledger[point.index - 1]
           const tradeId = point.tradeId || trade?.tradeId || null
           const selected = tradeId && tradeId === selectedTradeId
           return <circle key={`${point.index}-${tradeId || 'start'}`} className={`as-chart-point ${selected ? 'is-selected' : ''}`} cx={x(index)} cy={y(point.value)} r={selected ? 2.2 : 1.4} tabIndex="0" role={tradeId ? 'button' : undefined} aria-label={tradeId ? `${tradeId}, balance ${formatNumber(point.value)}` : `Starting balance ${formatNumber(point.value)}`} onClick={() => tradeId && onSelect(tradeId)} onKeyDown={(event) => { if (tradeId && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onSelect(tradeId) } }} />
@@ -231,13 +248,13 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
       </svg>
       <div className="as-chart-axis"><span>{formatNumber(min)}</span><span>{formatNumber(max)}</span></div>
       <div className="as-drawdown-strip" aria-label="Closed-trade drawdown">
-        {model.drawdown.map((point) => {
+        {renderDrawdown.map((point) => {
           const drawdown = Number(point.drawdown)
           if (!Number.isFinite(drawdown) || maxDrawdown === null) return <span key={point.index} className="as-drawdown-bar is-unknown" title="DD N/A" aria-label="Drawdown chưa có dữ liệu" />
           return <span key={point.index} className="as-drawdown-bar" style={{ '--as-dd-height': `${Math.max(2, (drawdown / maxDrawdown) * 100)}%` }} title={`DD ${formatNumber(drawdown)}`} />
         })}
       </div>
-      <div className="as-chart-legend"><span><i className="as-legend-line" /> Balance sau trade đóng</span><span><i className="as-legend-dd" /> Drawdown đóng</span><small>Không phải floating equity · scope UTC</small></div>
+      <div className="as-chart-legend"><span><i className="as-legend-line" /> Balance sau trade đóng</span><span><i className="as-legend-dd" /> Drawdown đóng</span><small>{points.length > renderPoints.length ? `Hiển thị ${renderPoints.length}/${points.length} điểm đại diện · ` : ''}Không phải floating equity · scope UTC</small></div>
     </div>
   )
 }
@@ -273,7 +290,18 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
 }
 
 function TradeLedger({ model, selectedTradeId, onSelect }) {
-  return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><span className="as-eyebrow">TRADE LEDGER</span><h2>{model.ledger.length ? model.ledger.length + ' trade đóng' : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Research result không có ledger để drill-down.</div> : <div className="as-table-wrap"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{model.ledger.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} tabIndex="0" role="button" onClick={() => onSelect(trade.tradeId)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(trade.tradeId) } }}><td><code>{trade.tradeId}</code></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div>}</section>
+  const [page, setPage] = useState(0)
+  const pageCount = Math.max(1, Math.ceil(model.ledger.length / LEDGER_PAGE_SIZE))
+  const selectedIndex = model.ledger.findIndex((trade) => trade.tradeId === selectedTradeId)
+  useEffect(() => {
+    setPage((current) => Math.min(current, pageCount - 1))
+  }, [pageCount])
+  useEffect(() => {
+    if (selectedIndex >= 0) setPage(Math.floor(selectedIndex / LEDGER_PAGE_SIZE))
+  }, [selectedIndex])
+  const start = page * LEDGER_PAGE_SIZE
+  const visibleRows = model.ledger.slice(start, start + LEDGER_PAGE_SIZE)
+  return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><span className="as-eyebrow">TRADE LEDGER</span><h2>{model.ledger.length ? `${model.ledger.length} trade đóng` : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Research result không có ledger để drill-down.</div> : <><div className="as-table-wrap"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{visibleRows.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} tabIndex="0" role="button" aria-label={`Chọn trade ${trade.tradeId}`} onClick={() => onSelect(trade.tradeId)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(trade.tradeId) } }}><td><code>{trade.tradeId}</code></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div><nav className="as-ledger-pagination" aria-label="Trade ledger pagination" data-testid="analytics-ledger-pagination"><button type="button" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label="Trang trước">←</button><span aria-live="polite">Trang {page + 1}/{pageCount} · hiển thị {start + 1}–{Math.min(start + LEDGER_PAGE_SIZE, model.ledger.length)} / {model.ledger.length}</span><button type="button" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1} aria-label="Trang sau">→</button></nav></>}</section>
 }
 
 function AnalyticsMetricDisclosure({ model }) {

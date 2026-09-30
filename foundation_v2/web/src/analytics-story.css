@@ -132,6 +132,10 @@
 .as-outcome-text.is-win { color: var(--as-green); }
 .as-outcome-text.is-loss { color: var(--as-red); }
 .as-outcome-text.is-breakeven { color: #dfbc6e; }
+.as-ledger-pagination { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; border-top: 1px solid var(--as-border-soft); color: var(--as-muted); font-size: 10px; }
+.as-ledger-pagination button { min-width: 32px; min-height: 30px; border: 1px solid var(--as-border); background: transparent; color: #d8e0e5; cursor: pointer; }
+.as-ledger-pagination button:disabled { cursor: not-allowed; opacity: .45; }
+.as-ledger-pagination button:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
 
 .as-next-action { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 23px; padding: 19px 0 0; border-top: 1px solid var(--as-border); }
 .as-next-action h2 { margin: 7px 0 5px; color: #e3eaed; font-size: 15px; }
@@ -174,6 +178,7 @@
   .as-secondary-metrics > div:nth-child(2n) { padding-left: 10px; border-right: 0; }
   .as-chart-legend small { width: 100%; margin-left: 0; }
   .as-next-links { justify-content: flex-start; }
+  .as-ledger-pagination { justify-content: space-between; padding: 0 12px; }
 }
 
 @media (max-width: 380px) {

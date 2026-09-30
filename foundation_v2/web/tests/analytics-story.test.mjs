@@ -76,3 +76,12 @@ test('analytics story CSS has desktop, tablet, mobile and reduced-motion contrac
   assert.match(css, /prefers-reduced-motion/)
   assert.doesNotMatch(css, /donut|glassmorphism|gradient\(/i)
 })
+
+test('analytics bounds large result rendering while preserving drilldown semantics', () => {
+  assert.match(source, /MAX_CHART_POINTS = 240/)
+  assert.match(source, /LEDGER_PAGE_SIZE = 50/)
+  assert.match(source, /sampleSeries\(points, MAX_CHART_POINTS/)
+  assert.match(source, /data-testid="analytics-ledger-pagination"/)
+  assert.match(source, /aria-label=\{`Chọn trade/)
+  assert.match(css, /\.as-ledger-pagination/)
+})
