@@ -747,14 +747,22 @@
 .fx-chart-topbar .fx-shell-toggle { min-height: 30px; }
 
 @media (max-width: 900px) {
-  .fx-app.fx-shell-story.is-chart-workspace .fx-topbar { gap: 4px; padding: 0 5px; }
-  .fx-chart-topbar { grid-template-columns: minmax(0, 1fr) auto !important; }
-  .fx-chart-session-title { display: none; }
-  .fx-chart-topbar-left { gap: 2px; overflow-x: auto; scrollbar-width: none; }
-  .fx-chart-topbar-left::-webkit-scrollbar { display: none; }
-  .fx-chart-topbar-actions { gap: 2px; }
-  .fx-chart-tool-button { font-size: 10px; padding: 0 4px; }
-  .fx-chart-topbar .fx-language-toggle { display: none; }
+  .fx-app.fx-shell-story.is-chart-workspace { grid-template-rows: auto minmax(0, 1fr); }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-topbar {
+    height: auto;
+    min-height: 46px;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 2px;
+    padding: 4px 6px;
+  }
+  .fx-app.is-chart-workspace .fx-chart-session-title { display: none; }
+  .fx-app.is-chart-workspace .fx-chart-topbar-left {
+    flex-wrap: wrap;
+    gap: 2px;
+    overflow: visible;
+  }
+  .fx-app.is-chart-workspace .fx-chart-topbar-actions { justify-content: flex-start; gap: 2px; }
+  .fx-app.is-chart-workspace .fx-chart-tool-button { font-size: 10px; padding: 0 4px; }
 }
 
 /* WMREPLAY shell pass: keep the product frame simple while the workspace

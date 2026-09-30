@@ -916,14 +916,41 @@
 }
 
 .fx-app.is-chart-workspace .replay-topbar,
-.fx-app.is-chart-workspace .replay-contextbar,
-.fx-app.is-chart-workspace .conflict-banner,
-.fx-app.is-chart-workspace .replay-history-banner,
 .fx-app.is-chart-workspace .replay-evidence-strip,
 .fx-app.is-chart-workspace .bar-readout,
 .fx-app.is-chart-workspace .replay-jump,
 .fx-app.is-chart-workspace .replay-side {
   display: none !important;
+}
+
+/* A chart-only view still needs its decision boundary and execution status.
+ * Keep the wider review fields out of this compact strip. */
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  min-height: 52px;
+  flex: 0 0 auto;
+  overflow: visible;
+  gap: 12px;
+  padding: 5px 12px;
+  border-bottom: 1px solid #1d2024;
+}
+.fx-app.is-chart-workspace .replay-contextbar > div:nth-child(2),
+.fx-app.is-chart-workspace .replay-contextbar > div:nth-child(4) { display: none !important; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar > div,
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar > div + div {
+  min-width: 0;
+  padding: 2px 0;
+  border-left: 0;
+}
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar .replay-state {
+  min-width: 0;
+  min-height: 28px;
+  grid-column: auto;
+  align-self: center;
+  margin: 0;
+  padding: 0 8px;
+  white-space: normal;
 }
 
 .fx-app.is-chart-workspace .replay-workspace,
@@ -984,7 +1011,7 @@
 
 .fx-app.is-chart-workspace .chart-bottom-bar {
   min-height: 46px;
-  flex: 0 0 46px;
+  flex: 0 0 auto;
   border: 0;
   border-top: 1px solid #1d2024;
   background: #030303;
@@ -993,17 +1020,27 @@
 @media (max-width: 900px) {
   .fx-app.is-chart-workspace .replay-toolbar { min-height: 36px; flex-basis: 36px; padding-inline: 5px; }
   .fx-app.is-chart-workspace .replay-toolbar .chart-controls { gap: 4px; }
-  .fx-app.is-chart-workspace .chart-frame { grid-template-columns: 44px minmax(0, 1fr) 50px; }
-  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame { grid-template-columns: 44px minmax(0, 1fr) 50px !important; }
+  .fx-app.is-chart-workspace .chart-frame { grid-template-columns: 44px minmax(0, 1fr); }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame { grid-template-columns: 44px minmax(0, 1fr) !important; }
   .fx-app.is-chart-workspace .chart-tool-rail button { width: 32px; }
   .fx-app.is-chart-workspace .chart-utility-rail button { width: 42px; min-height: 38px; font-size: 13px; }
   .fx-app.is-chart-workspace .chart-utility-rail small { font-size: 7px; }
   .fx-app.is-chart-workspace .chart-symbol-strip { top: 8px; left: 10px; }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  }
+  .fx-app.is-chart-workspace .chart-bottom-bar {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+  .fx-app.is-chart-workspace .chart-bottom-replay { flex-wrap: wrap; }
+  .fx-app.is-chart-workspace .chart-bottom-replay button { min-height: 34px; }
 }
 
 @media (max-width: 620px) {
-  .fx-app.is-chart-workspace .chart-frame { grid-template-columns: 38px minmax(0, 1fr) 46px; }
-  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame { grid-template-columns: 38px minmax(0, 1fr) 46px !important; }
+  .fx-app.is-chart-workspace .chart-frame { grid-template-columns: 38px minmax(0, 1fr); }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame { grid-template-columns: 38px minmax(0, 1fr) !important; }
   .fx-app.is-chart-workspace .chart-tool-rail { padding-inline: 2px; }
   .fx-app.is-chart-workspace .chart-tool-rail button { width: 30px; min-height: 32px; }
   .fx-app.is-chart-workspace .chart-utility-rail { padding-inline: 1px; }
@@ -1011,9 +1048,20 @@
   .fx-app.is-chart-workspace .chart-symbol-strip { max-width: calc(100% - 16px); }
   .fx-app.is-chart-workspace .chart-symbol-strip span:nth-child(2) { display: none; }
   .fx-app.is-chart-workspace .chart-symbol-ohlc { display: none; }
-  .fx-app.is-chart-workspace .chart-bottom-bar { min-height: 52px; flex-basis: 52px; grid-template-columns: 1fr auto; }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2px 8px;
+    padding: 5px 8px;
+  }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar .replay-state {
+    grid-column: 1 / -1;
+    justify-self: start;
+    min-height: 24px;
+    margin: 0;
+  }
+  .fx-app.is-chart-workspace .chart-bottom-bar { min-height: 0; flex-basis: auto; grid-template-columns: minmax(0, 1fr); }
   .fx-app.is-chart-workspace .chart-bottom-range { display: none; }
   .fx-app.is-chart-workspace .chart-bottom-replay { grid-column: 1 / -1; }
   .fx-app.is-chart-workspace .chart-bottom-status { display: none; }
-  .fx-app.is-chart-workspace .chart-bottom-cursor { display: none; }
+  .fx-app.is-chart-workspace .chart-bottom-cursor { display: block; }
 }
