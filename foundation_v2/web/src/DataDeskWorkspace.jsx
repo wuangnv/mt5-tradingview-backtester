@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   datasetRange,
   fetchDatasets,
@@ -294,20 +294,27 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const [selectedId, setSelectedId] = useState(requestedDataset)
   const [providerFilter, setProviderFilter] = useState('all')
   const [catalogRevision, setCatalogRevision] = useState(0)
+  const catalogRequestSeq = useRef(0)
 
   useEffect(() => {
     const controller = new AbortController()
+    const requestSeq = ++catalogRequestSeq.current
     setState((current) => ({ ...current, status: 'loading', error: null }))
     Promise.all([fetchDatasets(workspace, controller.signal), fetchProviders(workspace, controller.signal)])
       .then(([datasets, providers]) => {
+        if (requestSeq !== catalogRequestSeq.current) return
         setState({ status: 'ready', datasets, providers, error: null })
         setSelectedId((current) => current || datasets[0]?.dataset_id || '')
       })
       .catch((error) => {
-        if (error.name !== 'AbortError') setState({ status: 'error', datasets: [], providers: [], error: String(error.message || error) })
+        if (error.name !== 'AbortError' && requestSeq === catalogRequestSeq.current) {
+          setState({ status: 'error', datasets: [], providers: [], error: String(error.message || error) })
+        }
       })
     return () => controller.abort()
   }, [catalogRevision, workspace])
+
+  const retryCatalog = () => setCatalogRevision((current) => current + 1)
 
   const providers = state.providers
   const filteredDatasets = useMemo(() => state.datasets.filter((item) => providerFilter === 'all' || item.provider_id === providerFilter), [providerFilter, state.datasets])
@@ -344,7 +351,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       />
 
       {state.status === 'loading' && <div className="rd-message" role="status">Đang đọc catalog và capability provider…</div>}
-      {state.status === 'error' && <div className="rd-message is-error" role="alert">Không đọc được Data Desk: {state.error}</div>}
+      {state.status === 'error' && <div className="rd-message is-error" role="alert">Không đọc được Data Desk: {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog}>Thử lại</button></div>}
 
       {state.status === 'ready' && (
         <div className="rd-main-grid">

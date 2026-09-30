@@ -28,6 +28,9 @@
 .rs-step.is-terminal strong { color: #f3b5af; }
 .rs-message { padding: 15px 0; color: #9ea9b0; font-size: 12px; line-height: 1.5; }
 .rs-message.is-error { color: #ef9999; }
+.rs-inline-button { margin-left: 8px; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit; padding: 0 1px; cursor: pointer; font: inherit; font-weight: 600; text-decoration: none; }
+.rs-inline-button:hover { text-decoration: underline; }
+.rs-inline-button:focus-visible { outline: 2px solid #70c5c8; outline-offset: 3px; }
 .rs-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); gap: 34px; padding-top: 22px; }
 .rs-primary-column, .rs-secondary-column { min-width: 0; }
 .rs-section, .rs-result-section { min-width: 0; border-top: 1px solid #2a3238; }

@@ -22,6 +22,9 @@
 .rd-message { padding: 16px 0; color: #9ea9b0; font-size: 12px; line-height: 1.5; }
 .rd-message.is-error { color: #ef9999; }
 .rd-message.is-empty { color: #8d989f; border-top: 1px solid #242c31; border-bottom: 1px solid #242c31; }
+.rd-inline-button { margin-left: 8px; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: inherit; padding: 0 1px; cursor: pointer; font: inherit; font-weight: 600; text-decoration: none; }
+.rd-inline-button:hover { text-decoration: underline; }
+.rd-inline-button:focus-visible { outline: 2px solid #70c5c8; outline-offset: 3px; }
 .rd-table-wrap { overflow-x: auto; border-top: 1px solid #252d32; border-bottom: 1px solid #252d32; }
 .rd-table { width: 100%; border-collapse: collapse; min-width: 720px; }
 .rd-table th { padding: 9px 10px 8px 0; color: #7e8991; font-size: 10px; font-weight: 500; text-align: left; text-transform: uppercase; white-space: nowrap; }
