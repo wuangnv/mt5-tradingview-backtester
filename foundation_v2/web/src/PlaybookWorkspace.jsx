@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import { diffPayloads, fetchPlaybookRevisions, fetchPlaybooks } from './playbookApi.js'
 import './playbook-story.css'
@@ -8,6 +8,8 @@ const CAPABILITY_LABELS = {
   'engine-supported': 'Engine supported',
   'needs-definition': 'Needs definition',
 }
+
+const MAX_GET_RETRIES = 3
 
 function statusLabel(status) {
   return status === 'frozen' ? 'Frozen' : status === 'draft' ? 'Draft' : 'Unknown'
@@ -45,6 +47,7 @@ function PlaybookList({ items, selectedId, onSelect }) {
             key={record.record_id}
             type="button"
             onClick={() => onSelect(record.record_id)}
+            aria-current={selectedId === record.record_id ? 'page' : undefined}
             data-testid={`playbook-row-${record.record_id}`}
           >
             <span className="pb-list-main"><strong>{recordName(record)}</strong><small>{record.record_id}</small></span>
@@ -100,28 +103,70 @@ export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new 
   const requestedId = query.get('playbook') || ''
   const [catalog, setCatalog] = useState({ status: 'loading', items: [], error: null })
   const [selectedId, setSelectedId] = useState(requestedId)
-  const [history, setHistory] = useState({ status: 'idle', items: [], error: null })
+  const [history, setHistory] = useState({ status: 'idle', items: [], error: null, selectedId: '' })
   const [leftRevision, setLeftRevision] = useState(1)
   const [rightRevision, setRightRevision] = useState(1)
+  const [catalogRetryToken, setCatalogRetryToken] = useState(0)
+  const [catalogRetryCount, setCatalogRetryCount] = useState(0)
+  const [historyRetryToken, setHistoryRetryToken] = useState(0)
+  const [historyRetryCount, setHistoryRetryCount] = useState(0)
+  const catalogRequestSeq = useRef(0)
+  const historyRequestSeq = useRef(0)
+  const catalogWorkspaceRef = useRef(workspace)
+
+  useEffect(() => { setCatalogRetryCount(0) }, [workspace])
+  useEffect(() => { setHistoryRetryCount(0) }, [selectedId, workspace])
 
   useEffect(() => {
+    const requestSeq = ++catalogRequestSeq.current
     const controller = new AbortController()
-    setCatalog({ status: 'loading', items: [], error: null })
+    const workspaceChanged = catalogWorkspaceRef.current !== workspace
+    catalogWorkspaceRef.current = workspace
+    setCatalog((current) => ({ status: 'loading', items: workspaceChanged ? [] : current.items, error: null }))
     fetchPlaybooks(workspace, controller.signal)
-      .then((items) => { setCatalog({ status: 'ready', items, error: null }); setSelectedId((current) => current || items[0]?.record_id || '') })
-      .catch((error) => { if (error.name !== 'AbortError') setCatalog({ status: 'error', items: [], error: String(error.message || error) }) })
-    return () => controller.abort()
-  }, [workspace])
+      .then((items) => {
+        if (requestSeq !== catalogRequestSeq.current) return
+        setCatalog({ status: 'ready', items, error: null })
+        setCatalogRetryCount(0)
+        setSelectedId((current) => current || items[0]?.record_id || '')
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError' && requestSeq === catalogRequestSeq.current) {
+          setCatalog((current) => ({ ...current, status: 'error', error: String(error.message || error) }))
+        }
+      })
+    return () => {
+      controller.abort()
+      if (requestSeq === catalogRequestSeq.current) catalogRequestSeq.current += 1
+    }
+  }, [catalogRetryToken, workspace])
 
   useEffect(() => {
-    if (!selectedId) { setHistory({ status: 'idle', items: [], error: null }); return undefined }
+    const requestSeq = ++historyRequestSeq.current
+    if (!selectedId) {
+      setHistory({ status: 'idle', items: [], error: null, selectedId: '' })
+      return () => { if (requestSeq === historyRequestSeq.current) historyRequestSeq.current += 1 }
+    }
     const controller = new AbortController()
-    setHistory({ status: 'loading', items: [], error: null })
+    setHistory((current) => ({ status: 'loading', items: current.selectedId === selectedId ? current.items : [], error: null, selectedId }))
     fetchPlaybookRevisions(workspace, selectedId, controller.signal)
-      .then((items) => { setHistory({ status: 'ready', items, error: null }); setLeftRevision(items[0]?.revision || 1); setRightRevision(items[items.length - 1]?.revision || 1) })
-      .catch((error) => { if (error.name !== 'AbortError') setHistory({ status: 'error', items: [], error: String(error.message || error) }) })
-    return () => controller.abort()
-  }, [selectedId, workspace])
+      .then((items) => {
+        if (requestSeq !== historyRequestSeq.current) return
+        setHistory({ status: 'ready', items, error: null, selectedId })
+        setHistoryRetryCount(0)
+        setLeftRevision(items[0]?.revision || 1)
+        setRightRevision(items[items.length - 1]?.revision || 1)
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError' && requestSeq === historyRequestSeq.current) {
+          setHistory((current) => ({ ...current, status: 'error', error: String(error.message || error) }))
+        }
+      })
+    return () => {
+      controller.abort()
+      if (requestSeq === historyRequestSeq.current) historyRequestSeq.current += 1
+    }
+  }, [historyRetryToken, selectedId, workspace])
 
   const selected = catalog.items.find((item) => item.record_id === selectedId) || null
   const selectPlaybook = (recordId) => {
@@ -134,15 +179,27 @@ export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new 
   const journalHref = selected
     ? buildWorkspaceHref('journal', workspace, query, { playbook: selected.record_id, playbook_revision: selected.revision })
     : ''
+  const retryCatalog = () => {
+    if (catalogRetryCount >= MAX_GET_RETRIES || catalog.status === 'loading') return
+    setCatalogRetryCount((current) => current + 1)
+    setCatalogRetryToken((current) => current + 1)
+  }
+  const retryHistory = () => {
+    if (historyRetryCount >= MAX_GET_RETRIES || history.status === 'loading') return
+    setHistoryRetryCount((current) => current + 1)
+    setHistoryRetryToken((current) => current + 1)
+  }
+  const catalogRetryExhausted = catalogRetryCount >= MAX_GET_RETRIES
+  const historyRetryExhausted = historyRetryCount >= MAX_GET_RETRIES
 
   return (
     <main className="pb-page" data-testid="playbook-root">
       <header className="pb-topbar"><div><span className="pb-eyebrow">TRADING WORKSPACE / PLAYBOOK</span><h1>Playbook versions</h1><p>Đọc lineage và diff của setup mà không làm thay đổi record backend.</p></div><span className="pb-safety"><strong>READ ONLY</strong><small>Broker locked · không freeze / fork</small></span></header>
       {catalog.status === 'loading' && <div className="pb-message" role="status">Đang đọc playbook catalog…</div>}
-      {catalog.status === 'error' && <div className="pb-message is-error" role="alert">Không đọc được playbook: {catalog.error}</div>}
+      {catalog.status === 'error' && <div className="pb-message is-error" role="alert"><span>Không đọc được playbook: {catalog.error}</span><button type="button" className="pb-retry-button" data-testid="playbook-catalog-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'playbook-catalog-retry-note' : undefined}>{catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{catalogRetryExhausted && <small id="playbook-catalog-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small>}</div>}
       <div className="pb-layout">
-        <aside className="pb-sidebar"><div className="pb-section-heading"><div><span className="pb-eyebrow">CATALOG</span><h2>Setups</h2></div><span className="pb-count">{catalog.items.length}</span></div><PlaybookList items={catalog.items} selectedId={selectedId} onSelect={selectPlaybook} /></aside>
-        <div className="pb-content">{selected ? <PlaybookSummary record={selected} journalHref={journalHref} /> : catalog.status === 'ready' ? <div className="pb-empty"><strong>Chọn một playbook</strong><span>Chọn record bên trái để đọc metadata và version history.</span></div> : null}{history.status === 'loading' && <div className="pb-message" role="status">Đang đọc revision history…</div>}{history.status === 'error' && <div className="pb-message is-error" role="alert">Không đọc được revision history: {history.error}</div>}{history.status === 'ready' && <RevisionDiff revisions={history.items} leftRevision={leftRevision} rightRevision={rightRevision} setLeftRevision={setLeftRevision} setRightRevision={setRightRevision} />}</div>
+        <aside className="pb-sidebar" aria-busy={catalog.status === 'loading'}><div className="pb-section-heading"><div><span className="pb-eyebrow">CATALOG</span><h2>Setups</h2></div><span className="pb-count">{catalog.items.length}</span></div><PlaybookList items={catalog.items} selectedId={selectedId} onSelect={selectPlaybook} /></aside>
+        <div className="pb-content" aria-busy={history.status === 'loading'}>{selected ? <PlaybookSummary record={selected} journalHref={journalHref} /> : catalog.status === 'ready' ? <div className="pb-empty"><strong>Chọn một playbook</strong><span>Chọn record bên trái để đọc metadata và version history.</span></div> : null}{history.status === 'loading' && <div className="pb-message" role="status">Đang đọc revision history…</div>}{history.status === 'error' && <div className="pb-message is-error" role="alert"><span>Không đọc được revision history: {history.error}</span><button type="button" className="pb-retry-button" data-testid="playbook-history-retry" onClick={retryHistory} disabled={historyRetryExhausted} aria-describedby={historyRetryExhausted ? 'playbook-history-retry-note' : undefined}>{historyRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{historyRetryExhausted && <small id="playbook-history-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small>}</div>}{history.status === 'ready' && <RevisionDiff revisions={history.items} leftRevision={leftRevision} rightRevision={rightRevision} setLeftRevision={setLeftRevision} setRightRevision={setRightRevision} />}</div>
       </div>
     </main>
   )

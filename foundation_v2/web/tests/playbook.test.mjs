@@ -40,3 +40,15 @@ test('playbook diff is deterministic and responsive', () => {
   assert.doesNotMatch(css, /gradient\(|glassmorphism/i)
 })
 
+test('playbook GET recovery is bounded and fences stale responses', () => {
+  assert.match(source, /MAX_GET_RETRIES\s*=\s*3/)
+  assert.match(source, /data-testid="playbook-catalog-retry"/)
+  assert.match(source, /data-testid="playbook-history-retry"/)
+  assert.match(source, /catalogRequestSeq\s*=\s*useRef/)
+  assert.match(source, /historyRequestSeq\s*=\s*useRef/)
+  assert.match(source, /requestSeq !== catalogRequestSeq\.current/)
+  assert.match(source, /requestSeq !== historyRequestSeq\.current/)
+  assert.match(source, /aria-current=\{selectedId === record\.record_id \? 'page' : undefined\}/)
+  assert.match(css, /\.pb-retry-button/)
+})
+
