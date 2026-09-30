@@ -266,9 +266,9 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
               <nav className="fx-nav" aria-label={group.id === 'primary' ? copy.primaryNavAria : copy.utilityNavAria}>
                 {group.items.map((item) => <NavItem key={item.id} item={item} active={isRailActive(item.id, activeView)} workspace={workspace} query={query} copy={copy} />)}
               </nav>
+              {groupIndex === 0 && <div className="fx-rail-spacer" />}
             </React.Fragment>
           ))}
-          <div className="fx-rail-spacer" />
         </aside>
         <section className="fx-main" aria-label={copy.contentAria}>
           <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />

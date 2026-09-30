@@ -36,6 +36,7 @@ test('shell exposes truthful EN/VI and theme controls with persisted preference 
   assert.match(source, /Mô phỏng và read-only|Demo simulator and read-only/, 'Live label retains the simulator safety cue')
   assert.match(source, /playbook: \['Strategies'/, 'rail labels the playbook as Strategies')
   assert.match(source, /learn: \['Education'/, 'rail labels Learn as Education')
+  assert.match(source, /groupIndex === 0 && <div className="fx-rail-spacer" \/>/, 'utility links are rendered after the flexible rail spacer')
   assert.doesNotMatch(source, /Market replay/, 'brand has no extra descriptor text')
   assert.doesNotMatch(source, /fx-context-market|fx-context-lock|fx-context-source|fx-context-cutoff|fx-context-mode/, 'header does not render market or safety chips')
   assert.doesNotMatch(source, /tenant-a/, 'header does not render the internal workspace fixture name')
