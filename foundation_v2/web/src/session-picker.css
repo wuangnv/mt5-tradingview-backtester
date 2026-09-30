@@ -1,0 +1,40 @@
+.fx-session-picker {
+  max-width: 980px;
+  padding: 38px 0 56px;
+}
+
+.fx-session-picker-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--fx-line);
+  padding-bottom: 24px;
+}
+
+.fx-session-picker h1 { margin: 8px 0 0; color: #eef2f4; font-size: 26px; line-height: 1.1; }
+.fx-session-picker p { margin: 8px 0 0; color: #7e8a92; font-size: 12px; }
+.fx-session-picker-new { color: #d7a54f; font-size: 11px; text-decoration: none; white-space: nowrap; }
+.fx-session-picker-new:hover { color: #f0c878; text-decoration: underline; text-underline-offset: 3px; }
+
+.fx-session-picker-panel { max-width: 620px; padding-top: 28px; }
+.fx-session-picker-label { display: block; margin-bottom: 8px; color: #6f7b83; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.fx-session-picker select { width: 100%; min-height: 40px; border: 1px solid #3b4850; border-radius: 4px; background: #0d1216; color: #e7edf0; padding: 0 12px; font: inherit; font-size: 12px; }
+.fx-session-picker select:focus-visible { outline: 2px solid #d5a858; outline-offset: 2px; }
+
+.fx-session-picker-card { display: flex; align-items: center; gap: 14px; min-height: 92px; margin-top: 14px; border: 1px solid #242e35; border-radius: 9px; background: #0b0f12; padding: 18px; }
+.fx-session-picker-card.is-ready { border-color: #1764d2; }
+.fx-session-picker-mark { display: grid; flex: 0 0 30px; place-items: center; width: 30px; height: 30px; border: 1px solid #46535b; border-radius: 50%; color: #2d82f4; font-size: 20px; }
+.fx-session-picker-card.is-ready .fx-session-picker-mark { border-color: #2d82f4; font-size: 15px; }
+.fx-session-picker-copy { min-width: 0; }
+.fx-session-picker-copy strong { display: block; overflow: hidden; color: #edf2f4; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.fx-session-picker-copy small { display: block; margin-top: 6px; color: #7e8a92; font-size: 11px; }
+.fx-session-picker-action { margin-left: auto; border: 1px solid #2d82f4; border-radius: 4px; background: #1d65c1; color: white; padding: 10px 14px; font-size: 11px; text-decoration: none; white-space: nowrap; }
+.fx-session-picker-action:hover { background: #2b7be0; }
+
+@media (max-width: 680px) {
+  .fx-session-picker { padding-top: 24px; }
+  .fx-session-picker-head { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .fx-session-picker-card { align-items: flex-start; flex-wrap: wrap; }
+  .fx-session-picker-action { width: 100%; margin-left: 44px; text-align: center; }
+}

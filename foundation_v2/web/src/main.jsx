@@ -11,6 +11,7 @@ import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
 import PlaybookWorkspace from './PlaybookWorkspace.jsx'
+import SessionPicker from './SessionPicker.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 
@@ -67,6 +68,10 @@ function App() {
   const requestedView = query.get('view')
   // Preserve deep links emitted by the research/learn flows while keeping a bare root on the overview.
   const activeView = requestedView || (query.has('job') ? 'research' : query.has('session') || query.has('dataset') ? 'replay' : 'overview')
+  // The first visual pass opens the FXReplay-style selector from the Practice
+  // context. The existing workspaces remain available through the explicit
+  // `surface=workspace` deep link so their data/state contracts stay intact.
+  const showSessionPicker = query.get('surface') !== 'workspace' && (query.get('select') === '1' || query.get('mode') === 'Practice')
   const isLearn = activeView === 'learn'
   const isProp = requestedView === 'testing' || requestedView === 'prop'
   let content
@@ -79,7 +84,7 @@ function App() {
     content = <PropWorkspace workspace={workspace} query={query} />
     mode = 'Practice'
   } else if (activeView === 'replay') {
-    content = <ReplayWorkspace workspace={workspace} query={query} />
+    content = showSessionPicker ? <SessionPicker kind="replay" workspace={workspace} query={query} /> : <ReplayWorkspace workspace={workspace} query={query} />
   } else if (activeView === 'research') {
     content = <ResearchWorkspaceV2 workspace={workspace} query={query} />
   } else if (activeView === 'data') {
@@ -91,10 +96,10 @@ function App() {
     content = <JournalWorkspace workspace={workspace} query={query} />
     mode = 'Journal'
   } else if (activeView === 'analytics') {
-    content = <AnalyticsWorkspace workspace={workspace} query={query} />
+    content = showSessionPicker ? <SessionPicker kind="analytics" workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
     mode = 'Analytics'
   } else if (activeView === 'trade') {
-    content = <TradeWorkspace workspace={workspace} query={query} />
+    content = showSessionPicker ? <SessionPicker kind="trade" workspace={workspace} query={query} /> : <TradeWorkspace workspace={workspace} query={query} />
     mode = 'Simulator'
   } else if (activeView === 'risk') {
     content = <RiskWorkspace workspace={workspace} query={query} />

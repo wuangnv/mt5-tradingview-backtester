@@ -72,8 +72,8 @@ const SHELL_COPY = {
 }
 
 const NAV_ITEMS = [
-  { id: 'replay', short: 'TE', group: 'primary' },
-  { id: 'trade', short: 'LI', group: 'primary' },
+  { id: 'replay', short: 'TE', group: 'primary', picker: true },
+  { id: 'trade', short: 'LI', group: 'primary', picker: true },
   { id: 'playbook', short: 'ST', group: 'primary' },
 ]
 
@@ -89,9 +89,9 @@ const NAV_GROUPS = [
 
 const SUBNAV_ITEMS = [
   { id: 'overview', route: 'overview' },
-  { id: 'replay', route: 'replay' },
-  { id: 'trade', route: 'trade' },
-  { id: 'analytics', route: 'analytics' },
+  { id: 'replay', route: 'replay', picker: true },
+  { id: 'trade', route: 'trade', picker: true },
+  { id: 'analytics', route: 'analytics', picker: true },
 ]
 
 const RAIL_ACTIVE_VIEWS = {
@@ -127,8 +127,8 @@ export function useFxReplayContext() {
   return useContext(FxReplayContext) || { updateMarketContext: () => {} }
 }
 
-function hrefFor(id, workspace, query) {
-  return buildWorkspaceHref(id, workspace, query)
+function hrefFor(id, workspace, query, overrides = {}) {
+  return buildWorkspaceHref(id, workspace, query, overrides)
 }
 
 function NavItem({ item, active, workspace, query, copy }) {
@@ -136,7 +136,7 @@ function NavItem({ item, active, workspace, query, copy }) {
   return (
     <a
       className={`fx-nav-item ${active ? 'is-active' : ''}`}
-      href={hrefFor(item.id, workspace, query)}
+      href={hrefFor(item.id, workspace, query, item.picker ? { select: '1' } : {})}
       aria-current={active ? 'page' : undefined}
       aria-label={`${label}: ${description}`}
       data-nav-label={label}
@@ -157,7 +157,7 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
         return (
           <a
             className={`fx-subnav-link ${active ? 'is-active' : ''}`}
-            href={hrefFor(item.route, workspace, query)}
+            href={hrefFor(item.route, workspace, query, item.picker ? { select: '1' } : {})}
             aria-current={active ? 'page' : undefined}
             key={item.id}
           >

@@ -138,6 +138,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const storageKey = `tw:replay:last:${workspace}`
   const requestedSession = query.get('session') || ''
   const requestedDataset = query.get('dataset') || ''
+  const freshStart = query.get('fresh') === '1'
   const requestedStart = Number(query.get('start') || 0)
   const requestedCursorParam = query.get('cursor')
   const requestedCursor = requestedCursorParam === null ? null : Number(requestedCursorParam)
@@ -235,6 +236,10 @@ export default function ReplayWorkspace({ workspace, query }) {
         return
       }
       loadSession(requestedSession, requestedCursor)
+      return
+    }
+    if (freshStart) {
+      loadDatasets()
       return
     }
     const persisted = window.localStorage.getItem(storageKey)
