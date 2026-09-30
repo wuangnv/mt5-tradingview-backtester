@@ -385,6 +385,11 @@ function currentQuery() {
 
 export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
   const chartWorkspace = !SHELL_SKELETON_MODE && activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
+  // Keep the skeleton shell branch truthful while giving a loaded replay a
+  // compact mobile rail.  This class is a layout hint only: it does not flip
+  // the full-bleed workspace flag, mutate the persisted rail preference, or
+  // alter replay/API state.
+  const chartRoute = activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
   const routeContext = useMemo(() => readWorkspaceContext(query), [query])
   const [language, setLanguage] = useState(() => {
     try {
@@ -504,7 +509,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
 
   return (
     <FxReplayContext.Provider value={contextValue}>
-      <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
+      <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''} ${chartRoute ? 'is-chart-route' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
         <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" />
         <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" />
         <section className="fx-main" aria-label={copy.contentAria}>

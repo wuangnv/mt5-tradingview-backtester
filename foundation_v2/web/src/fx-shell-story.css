@@ -1163,3 +1163,55 @@
   background: #e0e7ea;
   color: #1d2930;
 }
+
+/*
+ * Loaded replay fallback while SHELL_SKELETON_MODE keeps the dedicated
+ * full-bleed chart branch disabled. The normal mobile shell otherwise keeps
+ * its expanded 220px rail, leaving only 114px for the chart at 390px. Keep
+ * the rail in the document for navigation and accessibility, but make it
+ * icon-only for this route so the chart receives a usable canvas. This is a
+ * responsive layout hint; it does not change the user's persisted rail
+ * preference or the replay/full-bleed state contract.
+ */
+@media (max-width: 900px) {
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) .fx-topbar-brand {
+    flex-basis: 74px;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+  }
+
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) .fx-wordmark {
+    display: none;
+  }
+
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) .fx-wordmark-compact {
+    display: inline-block;
+    position: absolute;
+    right: 5px;
+  }
+
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) .fx-rail-section-label {
+    display: none;
+  }
+
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) .fx-rail-section-heading {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .fx-app.fx-shell-story.is-chart-route:not(.is-chart-workspace) .fx-topbar-brand {
+    flex-basis: 58px;
+  }
+}
