@@ -667,3 +667,92 @@
 .fx-app.fx-shell-story[data-theme='light'] .fx-nav-item.is-active .fx-nav-icon {
   color: #704609;
 }
+
+/* A loaded replay is a chart workspace, not a shell page. Match FXReplay's
+ * full-bleed canvas by removing the product rail and giving the chart its own
+ * compact header. Dashboard/session-picker routes keep the normal WMREPLAY
+ * shell and its pinned utilities. */
+.fx-app.fx-shell-story.is-chart-workspace {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 46px minmax(0, 1fr);
+}
+
+.fx-app.fx-shell-story.is-chart-workspace .fx-topbar {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 46px;
+  height: 46px;
+  padding: 0 10px;
+  border-bottom: 1px solid #202226;
+}
+
+.fx-app.fx-shell-story.is-chart-workspace .fx-rail,
+.fx-app.fx-shell-story.is-chart-workspace .fx-shell-hero {
+  display: none;
+}
+
+.fx-app.fx-shell-story.is-chart-workspace .fx-main {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.fx-app.fx-shell-story.is-chart-workspace .fx-content {
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+}
+
+.fx-chart-topbar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+  gap: 12px;
+  background: #030303;
+  color: #d8dce3;
+}
+
+.fx-chart-topbar-left,
+.fx-chart-topbar-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.fx-chart-topbar-actions { justify-content: flex-end; }
+.fx-chart-brand { color: #f7f8fa; font-size: 13px; font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
+.fx-chart-session-title { max-width: 280px; overflow: hidden; color: #e7ebf2; font-size: 12px; font-style: italic; text-overflow: ellipsis; white-space: nowrap; }
+.fx-chart-icon-button,
+.fx-chart-tool-button,
+.fx-chart-timeframe {
+  min-height: 30px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #b9bec8;
+  padding: 0 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.fx-chart-icon-button { min-width: 28px; padding: 0 5px; font-size: 18px; line-height: 1; }
+.fx-chart-icon-button:hover,
+.fx-chart-tool-button:hover,
+.fx-chart-timeframe:hover { background: #17191d; color: #fff; }
+.fx-chart-timeframe { min-width: 34px; background: #17191d; color: #fff; font-weight: 700; }
+.fx-chart-icon-button.is-muted { color: #858b96; }
+.fx-chart-topbar .fx-shell-toggle { min-height: 30px; }
+
+@media (max-width: 900px) {
+  .fx-app.fx-shell-story.is-chart-workspace .fx-topbar { gap: 4px; padding: 0 5px; }
+  .fx-chart-topbar { grid-template-columns: minmax(0, 1fr) auto !important; }
+  .fx-chart-session-title { display: none; }
+  .fx-chart-topbar-left { gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .fx-chart-topbar-left::-webkit-scrollbar { display: none; }
+  .fx-chart-topbar-actions { gap: 2px; }
+  .fx-chart-tool-button { font-size: 10px; padding: 0 4px; }
+  .fx-chart-topbar .fx-language-toggle { display: none; }
+}

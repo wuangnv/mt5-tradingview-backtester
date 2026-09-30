@@ -208,7 +208,34 @@ function ShellHero({ activeView, workspace, query, copy }) {
   )
 }
 
-function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail }) {
+function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace }) {
+  if (chartWorkspace) {
+    const sessionLabel = query?.get('dataset') || query?.get('session') || 'WMReplay scan'
+    const backHref = buildWorkspaceHref('replay', workspace, query, { select: '1', surface: '' })
+    return (
+      <header className="fx-topbar fx-chart-topbar">
+        <div className="fx-chart-topbar-left">
+          <a className="fx-chart-icon-button" href={backHref} aria-label="Quay lại Sessions" title="Quay lại Sessions">←</a>
+          <span className="fx-chart-brand" aria-label={copy.product}>{copy.product}</span>
+          <button className="fx-chart-icon-button" type="button" aria-label="Tiến nhanh" title="Tiến nhanh">≫</button>
+          <button className="fx-chart-icon-button" type="button" aria-label="Thêm chart" title="Thêm chart">＋</button>
+          <button className="fx-chart-timeframe" type="button" aria-label="Khung thời gian">{query?.get('timeframe') || '1m'}</button>
+          <button className="fx-chart-tool-button" type="button" aria-label="Indicators">☷&nbsp; Indicators</button>
+          <button className="fx-chart-tool-button" type="button" aria-label="Order flow">☷&nbsp; Order flow</button>
+          <button className="fx-chart-tool-button" type="button" aria-label="Analytics">▥&nbsp; Analytics</button>
+        </div>
+        <div className="fx-chart-session-title" title={sessionLabel}>WMReplay · {sessionLabel}</div>
+        <div className="fx-chart-topbar-actions">
+          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Undo" title="Undo">↶</button>
+          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Redo" title="Redo">↷</button>
+          <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN⌄' : 'VI⌄'}</button>
+          <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span></button>
+          <button className="fx-shell-toggle fx-utility-icon" type="button" aria-label="Help" title="Help">?</button>
+          <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title="Fullscreen">⛶</button>
+        </div>
+      </header>
+    )
+  }
   return (
     <header className="fx-topbar">
       <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
@@ -240,6 +267,7 @@ function currentQuery() {
 }
 
 export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
+  const chartWorkspace = activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
   const routeContext = useMemo(() => readWorkspaceContext(query), [query])
   const [language, setLanguage] = useState(() => {
     try {
@@ -304,8 +332,8 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
 
   return (
     <FxReplayContext.Provider value={contextValue}>
-      <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
-        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={() => setRailCollapsed((value) => !value)} />
+      <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
+        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={() => setRailCollapsed((value) => !value)} chartWorkspace={chartWorkspace} query={query} workspace={workspace} />
         <aside className="fx-rail" aria-label={copy.workspaceAria}>
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>

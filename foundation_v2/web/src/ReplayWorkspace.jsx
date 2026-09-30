@@ -26,6 +26,11 @@ function formatPrice(value) {
   return new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 8 }).format(Number(value))
 }
 
+function formatVolume(value) {
+  if (!Number.isFinite(Number(value))) return 'N/A'
+  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(Number(value))
+}
+
 async function readJson(response) {
   const payload = await response.json().catch(() => ({}))
   if (response.status === 409) {
@@ -169,10 +174,10 @@ function ReplayChart({ rows, chartType = 'candles', onCrosshair, onAnchorSelect 
     const chart = createChart(host, {
       width: host.clientWidth,
       height: host.clientHeight,
-      layout: { background: { color: '#0d1012' }, textColor: '#b8c0c8' },
-      grid: { vertLines: { color: '#20262a' }, horzLines: { color: '#20262a' } },
-      rightPriceScale: { borderColor: '#30383e' },
-      timeScale: { borderColor: '#30383e', timeVisible: true, secondsVisible: false },
+      layout: { background: { color: '#030303' }, textColor: '#b8c0c8' },
+      grid: { vertLines: { color: '#1a1a1a' }, horzLines: { color: '#1a1a1a' } },
+      rightPriceScale: { borderColor: '#252525' },
+      timeScale: { borderColor: '#252525', timeVisible: true, secondsVisible: false },
       crosshair: { mode: 0 },
     })
     const sourceRows = chartType === 'heikin' ? heikinAshiRows(rows) : rows
@@ -886,8 +891,8 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="chart-canvas">
                   <div className="chart-symbol-strip" aria-label="Thông tin symbol">
                     <strong>{replayContext.instrument}</strong>
-                    <span>{chartInterval} · local replay</span>
-                    <span className="chart-symbol-ohlc">O {formatPrice((crosshair?.row || currentBar)?.open)} · H {formatPrice((crosshair?.row || currentBar)?.high)} · L {formatPrice((crosshair?.row || currentBar)?.low)} · C {formatPrice((crosshair?.row || currentBar)?.close)}</span>
+                    <span>{chartInterval}</span>
+                    <span className="chart-symbol-ohlc">O {formatPrice((crosshair?.row || currentBar)?.open)} · H {formatPrice((crosshair?.row || currentBar)?.high)} · L {formatPrice((crosshair?.row || currentBar)?.low)} · C {formatPrice((crosshair?.row || currentBar)?.close)} · V {formatVolume((crosshair?.row || currentBar)?.volume ?? (crosshair?.row || currentBar)?.tick_volume)}</span>
                   </div>
                   <ReplayChart rows={visibleRows} chartType={chartType} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
                   <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>

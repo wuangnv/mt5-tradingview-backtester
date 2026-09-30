@@ -681,9 +681,9 @@
 }
 
 /* Chart-first workbench: keep the canvas visually dominant while preserving
- * the existing replay API, cutoff facts and decision dock.  The narrow rails
- * mirror FXReplay's drawing/utility affordances without pretending to send
- * broker orders or persist chart objects. */
+ * the existing replay API and cutoff state. The narrow rails mirror
+ * FXReplay's drawing/utility affordances without pretending to send broker
+ * orders or persist chart objects. */
 .fx-app .fx-content > .replay-shell .chart-frame {
   display: grid;
   grid-template-columns: 38px minmax(0, 1fr) 38px;
@@ -904,4 +904,117 @@
 
 @media (max-width: 900px) {
   .fx-app .fx-content > .replay-shell .replay-side { display: block; }
+}
+
+/* Loaded chart mode intentionally strips the review narrative. Keep the
+ * replay state/API mounted, but present only the FXReplay-style chart stage. */
+.fx-app.is-chart-workspace .replay-shell {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  padding: 0;
+}
+
+.fx-app.is-chart-workspace .replay-topbar,
+.fx-app.is-chart-workspace .replay-contextbar,
+.fx-app.is-chart-workspace .conflict-banner,
+.fx-app.is-chart-workspace .replay-history-banner,
+.fx-app.is-chart-workspace .replay-evidence-strip,
+.fx-app.is-chart-workspace .bar-readout,
+.fx-app.is-chart-workspace .replay-jump,
+.fx-app.is-chart-workspace .replay-side {
+  display: none !important;
+}
+
+.fx-app.is-chart-workspace .replay-workspace,
+.fx-app.is-chart-workspace .replay-main {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.fx-app.is-chart-workspace .replay-workspace { grid-template-columns: minmax(0, 1fr); }
+.fx-app.is-chart-workspace .replay-main { padding: 0; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell {
+  min-height: 0;
+  padding: 0 !important;
+}
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-workspace {
+  min-height: 0 !important;
+}
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-main {
+  padding: 0 !important;
+}
+.fx-app.is-chart-workspace .replay-toolbar { display: none !important; }
+
+.fx-app.is-chart-workspace .chart-frame {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: 50px minmax(0, 1fr) 54px;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #1d2024;
+  border-radius: 0;
+}
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame {
+  grid-template-columns: 50px minmax(0, 1fr) 54px !important;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #1d2024;
+  border-radius: 0;
+}
+.fx-app.is-chart-workspace .chart-tool-rail,
+.fx-app.is-chart-workspace .chart-utility-rail { padding: 8px 4px; }
+.fx-app.is-chart-workspace .chart-tool-rail { border-right-color: #1d2024; }
+.fx-app.is-chart-workspace .chart-utility-rail { border-left-color: #1d2024; }
+.fx-app.is-chart-workspace .chart-utility-rail small { display: block; }
+.fx-app.is-chart-workspace .chart-canvas { min-height: 0; }
+.fx-app.is-chart-workspace .chart-frame .replay-chart { height: 100%; min-height: 0; border: 0; border-radius: 0; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame .replay-chart {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+.fx-app.is-chart-workspace .chart-badge,
+.fx-app.is-chart-workspace .chart-floating-context { display: none; }
+.fx-app.is-chart-workspace .chart-symbol-strip { top: 12px; left: 16px; }
+.fx-app.is-chart-workspace .chart-symbol-strip span:nth-child(2) { color: #8b929d; }
+
+.fx-app.is-chart-workspace .chart-bottom-bar {
+  min-height: 46px;
+  flex: 0 0 46px;
+  border: 0;
+  border-top: 1px solid #1d2024;
+  background: #030303;
+}
+
+@media (max-width: 900px) {
+  .fx-app.is-chart-workspace .replay-toolbar { min-height: 36px; flex-basis: 36px; padding-inline: 5px; }
+  .fx-app.is-chart-workspace .replay-toolbar .chart-controls { gap: 4px; }
+  .fx-app.is-chart-workspace .chart-frame { grid-template-columns: 44px minmax(0, 1fr) 50px; }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame { grid-template-columns: 44px minmax(0, 1fr) 50px !important; }
+  .fx-app.is-chart-workspace .chart-tool-rail button { width: 32px; }
+  .fx-app.is-chart-workspace .chart-utility-rail button { width: 42px; min-height: 38px; font-size: 13px; }
+  .fx-app.is-chart-workspace .chart-utility-rail small { font-size: 7px; }
+  .fx-app.is-chart-workspace .chart-symbol-strip { top: 8px; left: 10px; }
+}
+
+@media (max-width: 620px) {
+  .fx-app.is-chart-workspace .chart-frame { grid-template-columns: 38px minmax(0, 1fr) 46px; }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame { grid-template-columns: 38px minmax(0, 1fr) 46px !important; }
+  .fx-app.is-chart-workspace .chart-tool-rail { padding-inline: 2px; }
+  .fx-app.is-chart-workspace .chart-tool-rail button { width: 30px; min-height: 32px; }
+  .fx-app.is-chart-workspace .chart-utility-rail { padding-inline: 1px; }
+  .fx-app.is-chart-workspace .chart-utility-rail button { width: 42px; }
+  .fx-app.is-chart-workspace .chart-symbol-strip { max-width: calc(100% - 16px); }
+  .fx-app.is-chart-workspace .chart-symbol-strip span:nth-child(2) { display: none; }
+  .fx-app.is-chart-workspace .chart-symbol-ohlc { display: none; }
+  .fx-app.is-chart-workspace .chart-bottom-bar { min-height: 52px; flex-basis: 52px; grid-template-columns: 1fr auto; }
+  .fx-app.is-chart-workspace .chart-bottom-range { display: none; }
+  .fx-app.is-chart-workspace .chart-bottom-replay { grid-column: 1 / -1; }
+  .fx-app.is-chart-workspace .chart-bottom-status { display: none; }
+  .fx-app.is-chart-workspace .chart-bottom-cursor { display: none; }
 }
