@@ -165,7 +165,10 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
       const next = await readJson(response)
       if (requestId !== replayRequestRef.current) return
       setState({ status: 'ready', replay: next, error: null })
-      setDraft((current) => ({ ...initialDraft(next), ...current }))
+      // The draft is not visible until the replay has loaded. Resetting it to
+      // the loaded cutoff avoids carrying the placeholder 1.1 price created
+      // before the async response arrived into the real session.
+      setDraft(initialDraft(next))
     } catch (error) {
       if (error?.name === 'AbortError' || requestId !== replayRequestRef.current) return
       setState({ status: 'error', replay: null, error: error.message })
@@ -207,7 +210,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   }, [fetchDatasets])
 
   useEffect(() => {
-    if (replay) setDraft((current) => ({ ...initialDraft(replay), ...current }))
+    if (replay) setDraft(initialDraft(replay))
   }, [replay?.record_id])
 
   const applyReplay = useCallback((next) => {

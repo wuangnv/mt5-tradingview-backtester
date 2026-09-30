@@ -43,6 +43,16 @@ test('trade workspace exposes recoverable read-only loading states and selected 
   assert.match(code, /aria-pressed=\{draft\.side === 'SELL'\}/)
 })
 
+test('async replay hydration derives risk defaults from the loaded cutoff', () => {
+  const code = source('TradeWorkspace.jsx')
+  // The initial state has no rows and therefore uses the placeholder 1.1
+  // price. Once the GET resolves, defaults must come from the replay bars so
+  // the first queue attempt is validated against the actual session price.
+  assert.match(code, /setDraft\(initialDraft\(next\)\)/)
+  assert.match(code, /if \(replay\) setDraft\(initialDraft\(replay\)\)/)
+  assert.doesNotMatch(code, /\.\.\.initialDraft\(next\), \.\.\.current/)
+})
+
 test('risk workspace uses the existing prop evaluator and surfaces blocked data', () => {
   const code = source('RiskWorkspace.jsx')
   for (const marker of [
