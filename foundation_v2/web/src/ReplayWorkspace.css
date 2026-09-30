@@ -556,8 +556,50 @@
 }
 
 .fx-app .fx-content > .replay-shell .replay-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 12px;
+  row-gap: 8px;
   min-height: 42px;
   padding-bottom: 8px;
+}
+
+/* Keep the primary replay actions and status readout stable while the
+ * chart menu row absorbs width.  At intermediate widths the menus move to a
+ * dedicated full-width row instead of colliding with the cutoff readout. */
+.fx-app .fx-content > .replay-shell .toolbar-primary {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.fx-app .fx-content > .replay-shell .chart-controls {
+  display: flex;
+  flex: 1 1 280px;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 0;
+  margin-left: 0;
+  row-gap: 4px;
+}
+
+.fx-app .fx-content > .replay-shell .toolbar-speed {
+  flex: 0 0 auto;
+}
+
+.fx-app .fx-content > .replay-shell .cutoff-readout {
+  flex: 0 0 190px;
+  min-width: 190px;
+  margin-left: auto;
+}
+
+@media (max-width: 1180px) {
+  .fx-app .fx-content > .replay-shell .chart-controls {
+    order: 3;
+    flex: 1 1 100%;
+    width: 100%;
+  }
 }
 
 .fx-app .fx-content > .replay-shell .chart-frame {

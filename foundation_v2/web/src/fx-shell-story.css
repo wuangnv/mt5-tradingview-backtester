@@ -339,8 +339,8 @@
   }
 }
 
-/* Source-aligned desktop shell. The captured FXReplay shell uses a 100px
- * navbar, a wide 320px sidebar and a route-owned hero. Keep this as a shell
+/* Source-aligned desktop shell. The captured FXReplay shell uses an 80px
+ * navbar, a 256px sidebar and a route-owned hero. Keep this as a shell
  * layer so domain workspaces can continue to own their data contracts. */
 .fx-app.fx-shell-story {
   --fx-shell-bg: #030303;
@@ -351,24 +351,24 @@
   --fx-shell-text: #fff;
   --fx-shell-muted: #b0b1b4;
   --fx-shell-accent: #2c7bfd;
-  grid-template-columns: 320px minmax(0, 1fr);
-  grid-template-rows: 100px minmax(0, 1fr);
+  grid-template-columns: 256px minmax(0, 1fr);
+  grid-template-rows: 80px minmax(0, 1fr);
   min-height: 100vh;
   background: #030303;
   font-family: "Nunito Sans", Inter, ui-sans-serif, system-ui, sans-serif;
 }
 
 .fx-shell-story .fx-topbar {
-  min-height: 100px;
-  padding: 0 32px 0 0;
+  min-height: 80px;
+  padding: 0 24px 0 0;
   border-bottom: 1px solid #414347;
   background: #030303;
 }
 
 .fx-shell-story .fx-topbar-brand {
-  flex-basis: 320px;
-  gap: 26px;
-  padding: 0 32px;
+  flex-basis: 256px;
+  gap: 28px;
+  padding: 0 24px;
   border-right: 0;
 }
 
@@ -414,11 +414,11 @@
 }
 .fx-shell-story .fx-nav { gap: 7px; }
 .fx-shell-story .fx-nav-item {
-  min-height: 44px;
+  min-height: 40px;
   border-left: 0;
   border-radius: 12px;
   color: #b0b1b4;
-  padding: 0 14px;
+  padding: 0 12px;
   font-size: 15px;
 }
 .fx-shell-story .fx-nav-item:hover,
@@ -431,30 +431,35 @@
 
 .fx-shell-story .fx-main { background: #030303; }
 .fx-shell-hero {
-  min-height: 180px;
+  min-height: 143px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   border-bottom: 1px solid #414347;
   background: linear-gradient(110deg, #030303 12%, #05080e 56%, #051b4b 100%);
 }
-.fx-shell-hero-title { padding: 28px 38px 18px; }
+.fx-shell-hero-title {
+  display: flex;
+  min-height: 94px;
+  align-items: flex-end;
+  padding: 0 32px;
+}
 .fx-shell-hero-title h1 {
   margin: 0;
   color: #fff;
-  font-size: clamp(32px, 3vw, 42px);
+  font-size: 36px;
   font-weight: 800;
   letter-spacing: -.02em;
-  line-height: 1.1;
+  line-height: 62px;
 }
 .fx-shell-story .fx-subnav {
-  min-height: 52px;
+  min-height: 49px;
   gap: 26px;
   border-bottom: 0;
-  padding: 0 38px;
+  padding: 0 32px;
 }
 .fx-shell-story .fx-subnav-link {
-  min-height: 52px;
+  min-height: 49px;
   border-bottom: 3px solid transparent;
   color: #8f9297;
   font-size: 14px;
@@ -482,7 +487,7 @@
   .fx-shell-story .fx-nav-label { display: none; }
   .fx-shell-story .fx-nav-item { grid-template-columns: 1fr; justify-items: center; padding: 0; }
   .fx-shell-hero { min-height: 144px; }
-  .fx-shell-hero-title { padding: 22px 24px 12px; }
+  .fx-shell-hero-title { min-height: 96px; padding: 0 24px; }
   .fx-shell-story .fx-subnav { padding: 0 24px; }
   .fx-shell-story .fx-content { padding-right: 24px; padding-left: 24px; }
 }
@@ -492,9 +497,121 @@
   .fx-shell-story .fx-topbar { padding-right: 10px; }
   .fx-shell-story .fx-topbar-actions { gap: 6px; }
   .fx-fullscreen-icon { display: none; }
-  .fx-shell-hero-title { padding-right: 16px; padding-left: 16px; }
+  .fx-shell-hero-title { min-height: 96px; padding-right: 16px; padding-left: 16px; }
   .fx-shell-hero-title h1 { font-size: 30px; }
   .fx-shell-story .fx-subnav { gap: 16px; padding-right: 16px; padding-left: 16px; }
   .fx-shell-story .fx-subnav-link { font-size: 12px; }
   .fx-shell-story .fx-content { padding-right: 16px; padding-left: 16px; }
+}
+
+/* Final source-aligned icon and control pass.  The shell deliberately uses
+ * inline SVGs instead of an icon font so the rail stays stable across OSes. */
+.fx-shell-story .fx-nav-item {
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  letter-spacing: -.01em;
+}
+
+.fx-shell-story .fx-nav-icon {
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #9ea2a8;
+  font-size: 15px;
+}
+
+.fx-shell-story .fx-nav-icon-svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.fx-shell-story .fx-nav-item.is-active .fx-nav-icon-svg {
+  filter: drop-shadow(0 0 4px rgba(44, 123, 253, .18));
+}
+
+.fx-shell-story .fx-menu-button {
+  flex: 0 0 28px;
+}
+
+.fx-shell-story .fx-menu-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+@media (max-width: 1180px) {
+  .fx-shell-story .fx-nav-item {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .fx-shell-story .fx-nav-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .fx-shell-story .fx-topbar-actions { align-self: center; }
+  .fx-shell-story .fx-shell-toggle { min-height: 31px; }
+}
+
+/* The dark capture is the primary reference, but the user-facing theme
+ * toggle must recolour the frame as a whole. These selectors intentionally
+ * outrank the source-aligned dark defaults above. */
+.fx-app.fx-shell-story[data-theme='light'] {
+  background: var(--fx-shell-bg);
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-topbar,
+.fx-app.fx-shell-story[data-theme='light'] .fx-main {
+  background: var(--fx-shell-bg);
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-rail {
+  background: var(--fx-shell-rail);
+  border-right-color: var(--fx-shell-line);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-shell-hero {
+  background: linear-gradient(110deg, #f5f7f8 12%, #eef3f6 56%, #dceaff 100%);
+  border-bottom-color: var(--fx-shell-line);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-subnav-link {
+  color: var(--fx-shell-muted);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-subnav-link:hover,
+.fx-app.fx-shell-story[data-theme='light'] .fx-subnav-link.is-active {
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-shell-toggle {
+  border-color: var(--fx-shell-line-strong);
+  background: transparent;
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-nav-item {
+  color: var(--fx-shell-muted);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-nav-item:hover,
+.fx-app.fx-shell-story[data-theme='light'] .fx-nav-item:focus-visible {
+  background: #e0e7ea;
+  color: var(--fx-shell-text);
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-nav-item.is-active {
+  background: #f0e6d1;
+  color: #704609;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-nav-item.is-active .fx-nav-icon {
+  color: #704609;
 }

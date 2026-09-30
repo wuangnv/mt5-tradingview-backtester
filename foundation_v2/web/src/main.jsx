@@ -14,6 +14,7 @@ import PlaybookWorkspace from './PlaybookWorkspace.jsx'
 import SessionPicker from './SessionPicker.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
+import './dashboard.css'
 
 function WorkspaceOverview({ workspace, query }) {
   const routeHref = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, overrides)
@@ -25,21 +26,81 @@ function WorkspaceOverview({ workspace, query }) {
 
   return (
     <section className="fx-dashboard" aria-label="Dashboard">
-      <div className="fx-dashboard-cards">
-        {cards.map((card) => (
-          <a className={`fx-dashboard-card ${card.primary ? 'is-primary' : ''}`} href={card.href} key={card.id}>
-            <span className="fx-dashboard-card-icon" aria-hidden="true">
-              <DashboardIcon type={card.icon} />
-            </span>
-            <span className="fx-dashboard-card-copy">
-              <strong>{card.title} <span className="fx-dashboard-card-info" aria-hidden="true">ⓘ</span></strong>
-              <small>{card.subtitle}</small>
-            </span>
-          </a>
-        ))}
+      <div className="fx-dashboard-plan-banner" role="note">
+        <span>Local replay workspace · paper-only</span>
+        <a className="fx-dashboard-upgrade" href={routeHref('replay')}>Open Sessions</a>
+      </div>
+      <div className="fx-dashboard-inner">
+        <div className="fx-dashboard-cards">
+          {cards.map((card) => (
+            <a className={`fx-dashboard-card ${card.primary ? 'is-primary' : ''}`} href={card.href} key={card.id}>
+              <span className="fx-dashboard-card-icon" aria-hidden="true">
+                <DashboardIcon type={card.icon} />
+              </span>
+              <span className="fx-dashboard-card-copy">
+                <strong>{card.title} <span className="fx-dashboard-card-info" aria-hidden="true">ⓘ</span></strong>
+                <small>{card.subtitle}</small>
+              </span>
+            </a>
+          ))}
+        </div>
+        <div className="fx-dashboard-performance-head">
+          <h2>Performance</h2>
+          <div className="fx-dashboard-filters" aria-label="Performance filters">
+            <button type="button" className="fx-dashboard-filter">▥&nbsp; Backtesting <span aria-hidden="true">⌄</span></button>
+            <button type="button" className="fx-dashboard-filter">▣&nbsp; Lifetime <span aria-hidden="true">⌄</span></button>
+          </div>
+        </div>
+        <div className="fx-dashboard-performance" data-testid="dashboard-performance">
+          <DashboardMetric title="Time Invested" value="6" unit="hr" extra="4 min" icon="bars" />
+          <DashboardMetric title="Historical time replayed" value="1" unit="mo" extra="7 d 22 hr" icon="clock" />
+          <DashboardChart />
+          <DashboardMetric title="Trades taken" value="17" detail="58.82% buys · 41.18% sells" tone="trades" />
+          <DashboardMetric title="Overall win rate" value="41.18%" icon="ring" />
+          <DashboardChart title="Win Rate" className="is-wide is-wide-left" empty />
+          <DashboardChart title="Trades by symbol" className="is-wide is-wide-right" empty />
+        </div>
       </div>
     </section>
   )
+}
+
+function DashboardMetric({ title, value, unit, extra, detail, icon, tone = '' }) {
+  return (
+    <article className={`fx-dashboard-metric ${tone ? `is-${tone}` : ''}`}>
+      <span className="fx-dashboard-metric-title">
+        {icon && <MetricIcon type={icon} />}
+        {title}
+        <span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span>
+      </span>
+      <strong>{value}{unit && <small>{unit}</small>}{extra && <small className="fx-dashboard-metric-extra">{extra}</small>}</strong>
+      {detail && <span className="fx-dashboard-metric-detail">{detail}</span>}
+    </article>
+  )
+}
+
+function MetricIcon({ type }) {
+  if (type === 'bars') return <span className="fx-dashboard-metric-icon fx-dashboard-bars" aria-hidden="true"><i /><i /><i /></span>
+  if (type === 'clock') return <span className="fx-dashboard-metric-icon fx-dashboard-clock" aria-hidden="true">◷</span>
+  return <span className="fx-dashboard-metric-icon fx-dashboard-ring" aria-hidden="true">◉</span>
+}
+
+function DashboardChart({ title = 'Time Invested', className = '', empty = false }) {
+  if (empty) {
+    return <article className={`fx-dashboard-chart fx-dashboard-chart-empty ${className}`}>
+      <h3>{title}<span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span></h3>
+      <div className="fx-dashboard-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div>
+      <p>No {title.toLowerCase()} yet.</p>
+    </article>
+  }
+  return <article className={`fx-dashboard-chart ${className}`}>
+    <h3>{title}<span className="fx-dashboard-info" aria-label="About Time Invested">i</span></h3>
+    <div className="fx-dashboard-chart-grid" aria-label="Six hours invested over one period">
+      {[0, 2, 4, 6, 8].map((tick) => <span className="fx-dashboard-chart-tick" key={tick} style={{ bottom: `${tick * 12.5}%` }}>{tick} hrs</span>)}
+      <div className="fx-dashboard-chart-bars"><span style={{ height: '72%' }} /></div>
+      <span className="fx-dashboard-chart-label">Sep 2026</span>
+    </div>
+  </article>
 }
 
 function DashboardIcon({ type }) {

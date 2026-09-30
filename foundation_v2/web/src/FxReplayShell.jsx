@@ -131,6 +131,29 @@ function hrefFor(id, workspace, query, overrides = {}) {
   return buildWorkspaceHref(id, workspace, query, overrides)
 }
 
+/*
+ * The source reference uses small, high-contrast line icons in the rail. Keep
+ * them inline so the shell does not depend on an icon font (which would make
+ * the first paint and visual QA vary with the host machine's installed fonts).
+ */
+function RailIcon({ id }) {
+  const common = {
+    className: 'fx-nav-icon-svg',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: '1.8',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    focusable: 'false',
+  }
+  if (id === 'trade') return <svg {...common}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M8 9h.01M12 9h.01M16 9h.01M8 13h.01M12 13h.01M16 13h.01M8 17h8" /></svg>
+  if (id === 'playbook') return <svg {...common}><circle cx="12" cy="12" r="8.5" /><path d="m15.7 8.3-2.2 5.2-5.2 2.2 2.2-5.2 5.2-2.2Z" /></svg>
+  if (id === 'learn') return <svg {...common}><path d="m3 9 9-4 9 4-9 4-9-4Z" /><path d="M7 11v4c2 2 8 2 10 0v-4M21 9v6" /></svg>
+  if (id === 'settings') return <svg {...common}><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18" /><circle cx="12" cy="12" r="3.3" /></svg>
+  return <svg {...common}><path d="M4 17V7M10 17V4M16 17V9M22 17V2" /><path d="M3 20h20" /></svg>
+}
+
 function NavItem({ item, active, workspace, query, copy }) {
   const [label, description] = copy.nav[item.id]
   return (
@@ -142,7 +165,7 @@ function NavItem({ item, active, workspace, query, copy }) {
       data-nav-label={label}
       title={description}
     >
-      <span className="fx-nav-icon" aria-hidden="true">{item.short}</span>
+      <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={item.id} /></span>
       <span className="fx-nav-label">{label}</span>
     </a>
   )
@@ -187,7 +210,12 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
   return (
     <header className="fx-topbar">
       <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
-        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-label="Toggle navigation" title="Toggle navigation">☰</button>
+        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-label="Toggle navigation" title="Toggle navigation">
+          <svg className="fx-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+            <path d="M4 7h8M4 12h16M4 17h8" />
+            <path d="m8 4-4 3 4 3" />
+          </svg>
+        </button>
         <span className="fx-wordmark" aria-hidden="true"><WMReplayWordmark /></span>
         <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
       </div>
