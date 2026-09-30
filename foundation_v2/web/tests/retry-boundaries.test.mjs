@@ -16,6 +16,7 @@ test('Data Desk catalog has explicit retry and stale-response fencing', () => {
   assert.match(source, /requestSeq !== catalogRequestSeq\.current/)
   assert.match(source, /error\.name !== 'AbortError' && requestSeq === catalogRequestSeq\.current/)
   assert.match(css, /\.rd-inline-button:focus-visible/)
+  assert.match(css, /@media \(max-width: 460px\)[\s\S]*\.rd-panel-head,[\s\S]*\.rd-import-report-head[\s\S]*display: grid/)
 })
 
 test('Research catalog and job reads expose retry and reject stale responses', () => {

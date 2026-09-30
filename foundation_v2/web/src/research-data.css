@@ -139,6 +139,18 @@
 @media (max-width: 1000px) { .rd-import-grid { grid-template-columns: 1fr; gap: 16px; } .rd-import-report-column { border-left: 0; border-top: 1px solid #20272c; padding: 16px 0 0; } }
 @media (max-width: 460px) { .rd-import-fields, .rd-import-facts { grid-template-columns: 1fr; } .rd-import-facts > div + div { border-left: 0; border-top: 1px solid #20272c; padding-left: 0; } .rd-import-actions { display: grid; grid-template-columns: 1fr; } .rd-import-actions .rd-button { width: 100%; } }
 
+/* Keep the safety badge from squeezing the title into character-width columns
+ * when the shell rail leaves a narrow content viewport on mobile. */
+@media (max-width: 460px) {
+  .rd-panel-head,
+  .rd-import-report-head {
+    display: grid;
+    align-items: start;
+    justify-content: initial;
+    gap: 10px;
+  }
+}
+
 /* W2 foundation contract: Data Desk keeps its teal readiness semantics but
  * exposes shared token/focus/state hooks for future primitives. */
 .rd-shell {
