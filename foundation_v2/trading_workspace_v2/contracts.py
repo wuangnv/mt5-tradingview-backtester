@@ -339,15 +339,15 @@ class ReplaySessionCatalogItem(BaseModel):
 
     record_id: str = Field(min_length=1, max_length=128)
     revision: int = Field(ge=1, strict=True)
-    dataset_id: str | None = Field(default=None, max_length=256)
-    instrument_id: str | None = Field(default=None, max_length=128)
-    timeframe: str | None = Field(default=None, max_length=32)
+    dataset_id: str | None = Field(default=None, min_length=1, max_length=256)
+    instrument_id: str | None = Field(default=None, min_length=1, max_length=128)
+    timeframe: str | None = Field(default=None, min_length=1, max_length=32)
     timeframe_seconds: int | None = Field(default=None, gt=0, strict=True)
     row_count: int | None = Field(default=None, ge=2, strict=True)
     cursor_index: int = Field(ge=0, strict=True)
     status: str = Field(min_length=1, max_length=32)
-    branch_id: str | None = Field(default=None, max_length=128)
-    parent_session_id: str | None = Field(default=None, max_length=128)
+    branch_id: str | None = Field(default=None, min_length=1, max_length=128)
+    parent_session_id: str | None = Field(default=None, min_length=1, max_length=128)
     parent_revision: int | None = Field(default=None, ge=1, strict=True)
     dataset_available: bool
     has_execution: bool
