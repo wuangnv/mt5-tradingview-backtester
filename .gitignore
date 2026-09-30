@@ -71,6 +71,14 @@ data/
 # MetaTrader compiled artifacts are generated locally by MetaEditor.
 *.ex5
 
+# Account-specific MT5 terminal presets. These can contain login, server and
+# execution settings and must stay local to the operator's machine.
+p5b-exness-trial-demo.ini*
+p5c-live-check.ini
+
+# Disposable local foundation runtime state.
+/foundation_v2/runtime/
+
 # TradingView Advanced Charts is proprietary.
 # Download it from TradingView with your own license and place it here locally.
 static/charting_library/

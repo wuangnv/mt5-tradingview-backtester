@@ -4,6 +4,13 @@ Manual backtesting, bar replay, and guarded MT5 demo trade control in a TradingV
 
 The supported daily entrypoint is `workspace_app.py`. It combines Evidence, Research, Practice & Journal, Demo Trade Desk, and read-only live readiness in one local Flask workspace. The older `app.py` UI remains for legacy replay compatibility, but the launchers no longer use it.
 
+For the current PATH-2 product UI and the Figma Make design handoff, start with
+[`DESIGN_CONTEXT.md`](./DESIGN_CONTEXT.md), then inspect
+[`foundation_v2/web/`](./foundation_v2/web/) and
+[`foundation_v2/README.md`](./foundation_v2/README.md). The root Flask app and
+its UI remain useful legacy/domain references but are not the visual authority
+for this design exploration.
+
 This project connects a Flask web app to MetaTrader 5 through a local TCP socket bridge. It is designed for traders who want a fast TradingView-like interface while still using an MT5 demo or live account.
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
