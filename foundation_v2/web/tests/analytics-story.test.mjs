@@ -85,3 +85,9 @@ test('analytics bounds large result rendering while preserving drilldown semanti
   assert.match(source, /aria-label=\{`Chọn trade/)
   assert.match(css, /\.as-ledger-pagination/)
 })
+
+test('analytics reuses date formatters for large ledgers', () => {
+  assert.match(source, /const DATE_FORMATTER_VI_UTC = new Intl\.DateTimeFormat/)
+  assert.match(source, /const SHORT_DATE_FORMATTER_VI_UTC = new Intl\.DateTimeFormat/)
+  assert.doesNotMatch(source, /ledger\.map\([\s\S]*new Intl\.DateTimeFormat/)
+})

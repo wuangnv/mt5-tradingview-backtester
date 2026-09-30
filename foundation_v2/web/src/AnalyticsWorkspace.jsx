@@ -9,6 +9,10 @@ function firstKnown(...values) {
   return values.find((value) => finite(value))
 }
 
+const DATE_TIME_FORMATTER_VI = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' })
+const DATE_FORMATTER_VI_UTC = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' })
+const SHORT_DATE_FORMATTER_VI_UTC = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeZone: 'UTC' })
+
 function dateFromValue(value) {
   if (value === null || value === undefined || value === '') return null
   const numericInput = typeof value === 'number' || (typeof value === 'string' && /^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(value.trim()))
@@ -24,7 +28,7 @@ function dateFromValue(value) {
 
 function formatDate(value) {
   const parsed = dateFromValue(value)
-  return !parsed ? 'N/A' : new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
+  return !parsed ? 'N/A' : DATE_TIME_FORMATTER_VI.format(parsed)
 }
 
 function formatNumber(value, digits = 2, suffix = '') {
@@ -81,8 +85,8 @@ export function buildAnalyticsModel(result) {
   const observedStart = observedRange.start_utc || observedRange.start || observedRange.from_utc || observedRange.from
   const observedEnd = observedRange.end_utc || observedRange.end || observedRange.to_utc || observedRange.to
   const ledgerDates = ledger.flatMap((trade) => [trade?.open_time_utc, trade?.close_time_utc]).map(dateFromValue).filter(Boolean).sort((a, b) => a - b)
-  const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' }).format(date) }
-  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeZone: 'UTC' }).format(date) : 'N/A' } })
+  const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : DATE_FORMATTER_VI_UTC.format(date) }
+  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? SHORT_DATE_FORMATTER_VI_UTC.format(date) : 'N/A' } })
   const realizedRValues = (Array.isArray(metrics.realized_r_values) ? metrics.realized_r_values : rows.map((trade) => trade.realized_r)).filter(finite).map(Number)
   const metricDefinitions = metrics.definitions && typeof metrics.definitions === 'object'
     ? Object.entries(metrics.definitions).slice(0, 16).reduce((out, [key, value]) => {
