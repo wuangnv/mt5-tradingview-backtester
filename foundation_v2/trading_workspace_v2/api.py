@@ -35,6 +35,7 @@ from .contracts import (
     ReplayExecutionInitialize,
     ReplayMarketOrderRequest,
     ReplayPropFeedRequest,
+    ReplaySessionCatalogItem,
     ReplayStep,
     RevisionRequest,
 )
@@ -888,6 +889,17 @@ def create_app(
             raise HTTPException(status_code=404, detail="dataset_not_found")
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc))
+
+    @app.get("/api/v2/replay/sessions", response_model=dict[str, list[ReplaySessionCatalogItem]])
+    def list_replay_sessions(workspace: str = Depends(workspace_id)):
+        """List replay metadata for the authenticated local workspace only."""
+
+        try:
+            return {"items": replay.list_sessions(workspace)}
+        except RuntimeError as exc:
+            # A corrupt record must never be rendered as trusted session
+            # metadata.  The caller can repair/inspect the store explicitly.
+            raise HTTPException(status_code=503, detail="replay_catalog_untrusted") from exc
 
     @app.get("/api/v2/replay/sessions/{session_id}")
     def get_replay(
