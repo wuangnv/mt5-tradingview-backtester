@@ -130,7 +130,6 @@ body[data-tw-theme='dark'] {
 
 .fx-app[data-theme='light'] .fx-topbar,
 .fx-app[data-theme='light'] .fx-rail-divider,
-.fx-app[data-theme='light'] .fx-rail-footer,
 .fx-app[data-theme='light'] .fx-page-heading,
 .fx-app[data-theme='light'] .fx-session-banner,
 .fx-app[data-theme='light'] .fx-session-fact,
@@ -176,30 +175,12 @@ body[data-tw-theme='dark'] {
   color: #1d2930;
 }
 
-.fx-app[data-theme='light'] .fx-workspace-name,
 .fx-app[data-theme='light'] .fx-page-heading p,
 .fx-app[data-theme='light'] .fx-session-main > span,
 .fx-app[data-theme='light'] .fx-queue-row small,
 .fx-app[data-theme='light'] .fx-context-list dt,
 .fx-app[data-theme='light'] .fx-settings-list small {
   color: #5c6c76;
-}
-
-.fx-app[data-theme='light'] .fx-context-chip {
-  background: rgba(255, 255, 255, .78);
-  border-color: var(--fx-shell-line);
-  color: #42535d;
-}
-
-.fx-app[data-theme='light'] .fx-context-market,
-.fx-app[data-theme='light'] .fx-context-lock {
-  color: #704609;
-}
-
-.fx-app[data-theme='light'] .fx-context-lock {
-  background: #faeeee;
-  border-color: #d9aaaa;
-  color: #873535;
 }
 
 .fx-app[data-theme='light'] .fx-avatar {

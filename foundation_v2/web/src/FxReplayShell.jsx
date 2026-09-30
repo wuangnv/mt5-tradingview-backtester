@@ -21,22 +21,7 @@ const SHELL_COPY = {
     product: 'WMREPLAY',
     workspaceAria: 'Điều hướng WMREPLAY',
     contentAria: 'Nội dung WMREPLAY',
-    contextAria: 'Ngữ cảnh workspace',
-    brokerLocked: 'Broker khóa',
-    sourcePrefix: 'Nguồn',
-    cutoffPrefix: 'Cutoff',
-    emptyInstrument: 'Chưa chọn instrument',
-    emptyTimeframe: 'TF chưa chọn',
-    unknownData: 'Chưa xác định',
-    unconfirmedSource: 'Chưa xác nhận',
-    chartCutoff: 'Xem trong chart',
-    unopenedCutoff: 'Chưa mở',
-    openPractice: 'Mở Practice',
     workspaceOwner: 'Chủ workspace',
-    dataContract: 'HỢP ĐỒNG DỮ LIỆU',
-    sourcePending: 'Đang chờ nguồn',
-    dataQuality: 'Trạng thái chất lượng từ dataset hiện tại',
-    noDataset: 'Chưa có dataset trong context',
     groups: { workspace: 'KHU VỰC', workflow: 'QUY TRÌNH', review: 'ĐÁNH GIÁ', tools: 'CÔNG CỤ' },
     nav: {
       overview: ['Tổng quan', 'Phiên đang làm và điểm tiếp theo'],
@@ -64,22 +49,7 @@ const SHELL_COPY = {
     product: 'WMREPLAY',
     workspaceAria: 'WMREPLAY navigation',
     contentAria: 'WMREPLAY content',
-    contextAria: 'Workspace context',
-    brokerLocked: 'Broker locked',
-    sourcePrefix: 'Source',
-    cutoffPrefix: 'Cutoff',
-    emptyInstrument: 'No instrument selected',
-    emptyTimeframe: 'No timeframe selected',
-    unknownData: 'Unknown',
-    unconfirmedSource: 'Unconfirmed',
-    chartCutoff: 'See chart',
-    unopenedCutoff: 'Not opened',
-    openPractice: 'Open Practice',
     workspaceOwner: 'Workspace owner',
-    dataContract: 'DATA CONTRACT',
-    sourcePending: 'Source pending',
-    dataQuality: 'Quality status from the current dataset',
-    noDataset: 'No dataset in context',
     groups: { workspace: 'WORKSPACE', workflow: 'WORKFLOW', review: 'REVIEW', tools: 'TOOLS' },
     nav: {
       overview: ['Overview', 'Current session and next action'],
@@ -163,26 +133,14 @@ function NavItem({ item, active, workspace, query, copy }) {
   )
 }
 
-function ShellTopbar({ activeItem, workspace, query, marketContext, copy, language, setLanguage, theme, setTheme }) {
-  const marketLabel = [marketContext.instrument, marketContext.timeframe].filter(Boolean).join(' · ')
-  const dataStatus = marketContext.dataStatus || copy.unknownData
-  const statusTone = dataStatus === 'verified' ? 'is-live' : dataStatus ? 'is-warn' : 'is-muted'
+function ShellTopbar({ copy, language, setLanguage, theme, setTheme }) {
   return (
     <header className="fx-topbar">
       <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
         <span className="fx-wordmark" aria-hidden="true"><WMReplayWordmark /></span>
         <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
       </div>
-      <div className="fx-context-area">
-        <div className="fx-context-strip" aria-label={copy.contextAria}>
-          {marketLabel && <span className="fx-context-chip fx-context-market" title={`Instrument and timeframe: ${marketLabel}`}><i className={`fx-status-dot ${statusTone}`} />{marketLabel}</span>}
-        </div>
-        <span className="fx-context-chip fx-context-lock" title="Broker execution is disabled">{copy.brokerLocked}</span>
-      </div>
       <div className="fx-topbar-actions">
-        {activeItem?.id !== 'overview' && activeItem?.id !== 'replay' && (
-          <a className="fx-shell-primary" href={hrefFor('replay', workspace, query)}>{copy.openPractice}</a>
-        )}
         <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">
           {language === 'vi' ? 'EN' : 'VI'}
         </button>
@@ -190,7 +148,6 @@ function ShellTopbar({ activeItem, workspace, query, marketContext, copy, langua
           <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
           <span className="fx-theme-label">{theme === 'dark' ? copy.themeLightShort : copy.themeDarkShort}</span>
         </button>
-        <span className="fx-workspace-name">{workspace || 'tenant-a'}</span>
         <span className="fx-avatar" aria-label={copy.workspaceOwner}>A</span>
       </div>
     </header>
@@ -222,16 +179,9 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
       return 'dark'
     }
   })
-  const [marketContext, setMarketContext] = useState({
-    instrument: '',
-    timeframe: '',
-    dataStatus: '',
-    source: '',
-    cutoff: '',
-  })
-  const updateMarketContext = useCallback((next) => {
-    setMarketContext((current) => ({ ...current, ...next }))
-  }, [])
+  // Kept as a stable compatibility hook for workspaces that report market
+  // context. The global header intentionally does not render that metadata.
+  const updateMarketContext = useCallback(() => {}, [])
   const contextValue = useMemo(() => ({
     updateMarketContext,
     routeContext,
@@ -271,7 +221,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
   return (
     <FxReplayContext.Provider value={contextValue}>
       <div className="fx-app fx-shell-story" data-testid="fxreplay-shell" data-theme={theme} lang={language}>
-        <ShellTopbar activeItem={activeItem} workspace={workspace} query={query} marketContext={marketContext} copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
+        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
         <aside className="fx-rail" aria-label={copy.workspaceAria}>
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>
@@ -283,11 +233,6 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
             </React.Fragment>
           ))}
           <div className="fx-rail-spacer" />
-          <div className="fx-rail-footer">
-            <span className="fx-rail-footer-label">{copy.dataContract}</span>
-            <strong><i className={`fx-status-dot ${marketContext.dataStatus === 'verified' ? 'is-live' : marketContext.dataStatus ? 'is-warn' : 'is-muted'}`} /> {marketContext.dataStatus || copy.sourcePending}</strong>
-            <small>{marketContext.dataStatus ? copy.dataQuality : copy.noDataset}</small>
-          </div>
         </aside>
         <section className="fx-main" aria-label={copy.contentAria}>
           <div className="fx-content">{children}</div>

@@ -129,7 +129,6 @@ function WorkspaceOverview({ workspace, query }) {
         <section className="fx-context-panel" aria-labelledby="context-title">
           <div className="fx-section-heading"><div><span className="fx-eyebrow">SESSION CONTEXT</span><h2 id="context-title">Phạm vi đang dùng</h2></div></div>
           <dl className="fx-context-list">
-            <div><dt>Workspace</dt><dd><code>{workspace}</code></dd></div>
             <div><dt>Mode</dt><dd><span className="fx-pill fx-pill-warn">Replay / Simulation</span></dd></div>
             <div><dt>Broker send</dt><dd><span className="fx-pill fx-pill-locked">Locked</span></dd></div>
             <div><dt>Holdout</dt><dd>Chưa mở</dd></div>

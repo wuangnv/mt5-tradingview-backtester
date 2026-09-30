@@ -79,29 +79,6 @@
   background: var(--fx-shell-line);
 }
 
-.fx-shell-story .fx-rail-footer {
-  gap: 6px;
-  border-top-color: var(--fx-shell-line);
-  padding: 14px 8px 0;
-}
-
-.fx-shell-story .fx-rail-footer-label {
-  color: #65717a;
-  font-size: 9px;
-  letter-spacing: .14em;
-}
-
-.fx-shell-story .fx-rail-footer strong {
-  color: #c7d0d5;
-  font-size: 10px;
-  text-transform: none;
-}
-
-.fx-shell-story .fx-rail-footer small {
-  color: #78848c;
-  line-height: 1.4;
-}
-
 .fx-shell-story .fx-main {
   grid-column: 2;
   grid-row: 2;
@@ -154,51 +131,6 @@
   line-height: 1;
 }
 
-.fx-shell-story .fx-context-area {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.fx-shell-story .fx-context-strip {
-  flex: 1 1 auto;
-  min-width: 0;
-  gap: 7px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.fx-shell-story .fx-context-strip::-webkit-scrollbar {
-  display: none;
-}
-
-.fx-shell-story .fx-context-chip {
-  display: inline-flex;
-  min-height: 28px;
-  border-color: var(--fx-shell-line);
-  border-radius: 4px;
-  background: rgba(17, 23, 27, .72);
-  color: #b5c0c6;
-  padding: 0 9px;
-  font-size: 10px;
-  line-height: 1;
-}
-
-.fx-shell-story .fx-context-market {
-  color: #e3e9ec;
-  font-weight: 700;
-}
-
-.fx-shell-story .fx-context-lock {
-  border-color: #664444;
-  background: #21191a;
-  color: #e3a4a4;
-  font-weight: 650;
-  flex: 0 0 auto;
-}
-
 .fx-shell-story .fx-status-dot {
   flex: 0 0 auto;
   width: 7px;
@@ -208,11 +140,6 @@
 .fx-shell-story .fx-topbar-actions {
   flex: 0 0 auto;
   gap: 10px;
-}
-
-.fx-shell-story .fx-workspace-name {
-  color: #839099;
-  font-size: 10px;
 }
 
 .fx-shell-story .fx-avatar {
@@ -256,8 +183,7 @@
   padding-left: 28px;
 }
 
-/* Keep the full context visible on touch layouts; the rail is compact, not
- * silent. Users can scroll this strip horizontally without losing the lock. */
+/* Keep the compact header and rail usable on touch layouts. */
 @media (max-width: 1180px) {
   .fx-app.fx-shell-story {
     grid-template-columns: 72px minmax(0, 1fr);
@@ -269,8 +195,7 @@
   }
 
   .fx-shell-story .fx-rail-caption,
-  .fx-shell-story .fx-nav-label,
-  .fx-shell-story .fx-rail-footer {
+  .fx-shell-story .fx-nav-label {
     display: none;
   }
 
@@ -332,13 +257,10 @@
     padding-left: 19px;
   }
 
-  .fx-shell-story .fx-context-lock {
-    display: inline-flex;
-  }
 }
 
 @media (max-width: 760px) {
-  .fx-shell-story {
+  .fx-app.fx-shell-story {
     grid-template-rows: auto minmax(0, 1fr);
   }
 
@@ -350,27 +272,6 @@
     align-items: center;
     padding-top: 11px;
     padding-bottom: 11px;
-  }
-
-  .fx-shell-story .fx-workspace-name {
-    display: none;
-  }
-
-  .fx-shell-story .fx-context-area {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: 100%;
-    margin: 0;
-    padding-bottom: 2px;
-  }
-
-  .fx-shell-story .fx-context-strip {
-    width: auto;
-  }
-
-  .fx-shell-story .fx-context-chip {
-    display: inline-flex;
-    min-height: 30px;
   }
 
   .fx-shell-story .fx-topbar-actions {
