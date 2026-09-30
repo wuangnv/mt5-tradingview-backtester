@@ -10,8 +10,8 @@ const THEME_STORAGE_KEY = 'tw-theme'
 
 // The shell is being rebuilt before the workspace content. Keep the existing
 // content routes in source so their contracts remain available for the next
-// pass, but render them only for the chart workspace until the new shell is
-// approved visually.
+// pass. The first shell pass intentionally renders no workspace content; the
+// route components can be re-enabled once the frame is approved visually.
 export const SHELL_SKELETON_MODE = true
 
 const SHELL_COPY = {
@@ -349,7 +349,7 @@ function currentQuery() {
 }
 
 export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
-  const chartWorkspace = activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
+  const chartWorkspace = !SHELL_SKELETON_MODE && activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
   const routeContext = useMemo(() => readWorkspaceContext(query), [query])
   const [language, setLanguage] = useState(() => {
     try {

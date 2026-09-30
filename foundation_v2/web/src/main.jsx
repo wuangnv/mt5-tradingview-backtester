@@ -177,8 +177,7 @@ function App() {
     content = <UnavailableWorkspace eyebrow={copy[0]} title={copy[1]} description={copy[2]} next={copy[3]} href={buildWorkspaceHref('replay', workspace, query)} />
   }
 
-  const chartWorkspace = activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
-  const renderedContent = SHELL_SKELETON_MODE && !chartWorkspace ? null : content
+  const renderedContent = SHELL_SKELETON_MODE ? null : content
   return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{renderedContent}</FxReplayShell>
 }
 
