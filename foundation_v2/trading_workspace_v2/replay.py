@@ -3,7 +3,10 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from uuid import uuid4
 
+from pydantic import ValidationError
+
 from .artifacts import ArtifactStore
+from .contracts import ReplaySessionCatalogItem
 from .prop_replay import (
     ReplayPropConnectionError,
     replay_event_operation_id,
@@ -49,6 +52,54 @@ class ReplayService:
         }
         record = self.store.create_record(workspace_id, "replay", payload)
         return self.view(workspace_id, record["record_id"])
+
+    def list_sessions(self, workspace_id: str) -> list[dict]:
+        """Return a tenant-scoped catalog projection for replay sessions.
+
+        This is deliberately metadata-only.  In particular, it does not call
+        :meth:`view`, read the artifact rows, or include the execution ledger.
+        A missing dataset is retained as an unavailable catalog item so a
+        picker can explain why a session cannot be opened instead of silently
+        dropping the user's record.
+        """
+
+        items: list[dict] = []
+        for record in self.store.list_records(workspace_id, "replay"):
+            payload = record.get("payload")
+            if not isinstance(payload, dict):
+                raise RuntimeError("replay catalog record payload is invalid")
+
+            dataset_id = payload.get("dataset_id")
+            if dataset_id is not None and not isinstance(dataset_id, str):
+                raise RuntimeError("replay catalog dataset id is invalid")
+            manifest = (
+                self.store.get_dataset(workspace_id, dataset_id)
+                if dataset_id
+                else None
+            )
+            try:
+                item = ReplaySessionCatalogItem(
+                    record_id=record["record_id"],
+                    revision=record["revision"],
+                    dataset_id=dataset_id,
+                    instrument_id=manifest.instrument_id if manifest else None,
+                    timeframe=manifest.timeframe if manifest else None,
+                    timeframe_seconds=manifest.timeframe_seconds if manifest else None,
+                    row_count=manifest.row_count if manifest else None,
+                    cursor_index=payload.get("cursor_index", 0),
+                    status=payload.get("status", "unknown"),
+                    branch_id=payload.get("branch_id"),
+                    parent_session_id=payload.get("parent_session_id"),
+                    parent_revision=payload.get("parent_revision"),
+                    dataset_available=manifest is not None,
+                    has_execution=payload.get("execution") is not None,
+                    created_at_utc=record["created_at_utc"],
+                    updated_at_utc=record["updated_at_utc"],
+                )
+            except (KeyError, TypeError, ValueError, ValidationError) as exc:
+                raise RuntimeError("replay catalog record is invalid") from exc
+            items.append(item.model_dump(mode="json"))
+        return items
 
     @staticmethod
     def _execution_snapshot(payload: dict) -> ReplayExecutionSnapshot | None:

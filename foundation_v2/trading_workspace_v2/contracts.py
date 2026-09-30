@@ -326,6 +326,35 @@ class ReplayCreate(BaseModel):
     start_index: int = Field(default=0, ge=0)
 
 
+class ReplaySessionCatalogItem(BaseModel):
+    """Small, read-only projection used by the session picker.
+
+    The canonical replay record can contain an execution ledger and other
+    state that is intentionally not part of a list response.  Keeping this
+    projection typed makes the catalog safe to consume without exposing
+    execution details or the visible bar prefix.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    record_id: str = Field(min_length=1, max_length=128)
+    revision: int = Field(ge=1, strict=True)
+    dataset_id: str | None = Field(default=None, max_length=256)
+    instrument_id: str | None = Field(default=None, max_length=128)
+    timeframe: str | None = Field(default=None, max_length=32)
+    timeframe_seconds: int | None = Field(default=None, gt=0, strict=True)
+    row_count: int | None = Field(default=None, ge=2, strict=True)
+    cursor_index: int = Field(ge=0, strict=True)
+    status: str = Field(min_length=1, max_length=32)
+    branch_id: str | None = Field(default=None, max_length=128)
+    parent_session_id: str | None = Field(default=None, max_length=128)
+    parent_revision: int | None = Field(default=None, ge=1, strict=True)
+    dataset_available: bool
+    has_execution: bool
+    created_at_utc: str = Field(min_length=1, max_length=64)
+    updated_at_utc: str = Field(min_length=1, max_length=64)
+
+
 class ReplayStep(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
