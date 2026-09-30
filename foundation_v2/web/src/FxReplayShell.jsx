@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import './fx-shell-story.css'
 import './fx-shell-preferences.css'
 import { buildWorkspaceHref, readWorkspaceContext } from './workspaceContext.js'
@@ -7,6 +7,7 @@ export { buildWorkspaceHref, readWorkspaceContext }
 
 const LANGUAGE_STORAGE_KEY = 'tw-language'
 const THEME_STORAGE_KEY = 'tw-theme'
+const RAIL_COLLAPSED_STORAGE_KEY = 'tw-shell-rail-collapsed'
 
 // The shell is being rebuilt before the workspace content. Keep the existing
 // content routes in source so their contracts remain available for the next
@@ -24,6 +25,13 @@ const SHELL_COPY = {
     themeLightName: 'Giao diện sáng',
     themeDarkShort: 'Tối',
     themeLightShort: 'Sáng',
+    toggleNavigation: 'Mở hoặc thu gọn điều hướng',
+    help: 'Mở phím tắt và trợ giúp',
+    closeHelp: 'Đóng trợ giúp',
+    shortcutsTitle: 'Phím tắt WMREPLAY',
+    shortcutHelp: 'Mở trợ giúp',
+    shortcutEscape: 'Đóng bảng trợ giúp',
+    shortcutsHint: 'Các phím tắt chỉ điều khiển giao diện shell.',
     product: 'WMREPLAY',
     workspaceAria: 'Điều hướng chính WMREPLAY',
     contentAria: 'Nội dung WMREPLAY',
@@ -64,6 +72,13 @@ const SHELL_COPY = {
     themeLightName: 'Light theme',
     themeDarkShort: 'Dark',
     themeLightShort: 'Light',
+    toggleNavigation: 'Expand or collapse navigation',
+    help: 'Open shortcuts and help',
+    closeHelp: 'Close help',
+    shortcutsTitle: 'WMREPLAY keyboard shortcuts',
+    shortcutHelp: 'Open help',
+    shortcutEscape: 'Close help panel',
+    shortcutsHint: 'Shortcuts only control the workspace shell.',
     product: 'WMREPLAY',
     workspaceAria: 'WMREPLAY main navigation',
     contentAria: 'WMREPLAY content',
@@ -222,7 +237,7 @@ function RailIcon({ id }) {
   return <svg {...common}><path d="M4 17V7M10 17V4M16 17V9M22 17V2" /><path d="M3 20h20" /></svg>
 }
 
-function ShellRail({ activeView, workspace, query, copy }) {
+function ShellRail({ activeView, workspace, query, copy, railId }) {
   const activeArea = activeSectionId(activeView, query)
   const primary = SIDEBAR_SECTIONS.slice(0, 3)
   const utility = SIDEBAR_SECTIONS.slice(3)
@@ -240,6 +255,7 @@ function ShellRail({ activeView, workspace, query, copy }) {
         aria-current={active ? 'page' : undefined}
         aria-label={`${label}: ${description}`}
         title={description}
+        data-nav-label={label}
       >
         <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={section.icon} /></span>
         <span className="fx-rail-section-label">{label}</span>
@@ -247,7 +263,7 @@ function ShellRail({ activeView, workspace, query, copy }) {
     )
   }
   return (
-    <aside className="fx-rail" aria-label={copy.workspaceAria}>
+    <aside className="fx-rail" id={railId} aria-label={copy.workspaceAria}>
       <div className="fx-rail-primary">
         {primary.map((section, index) => (
           <React.Fragment key={section.id}>
@@ -292,7 +308,7 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
   )
 }
 
-function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace }) {
+function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace, helpOpen, onToggleHelp, helpButtonRef, railId }) {
   if (chartWorkspace) {
     const sessionLabel = query?.get('dataset') || query?.get('session') || 'WMReplay scan'
     const backHref = buildWorkspaceHref('replay', workspace, query, { select: '1', surface: '' })
@@ -314,7 +330,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
           <button className="fx-chart-icon-button is-muted" type="button" aria-label="Redo" title="Redo">↷</button>
           <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN⌄' : 'VI⌄'}</button>
           <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span></button>
-          <button className="fx-shell-toggle fx-utility-icon" type="button" aria-label="Help" title="Help">?</button>
+          <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls="fx-shell-help" aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
           <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title="Fullscreen">⛶</button>
         </div>
       </header>
@@ -323,7 +339,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
   return (
     <header className="fx-topbar">
       <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
-        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-label="Toggle navigation" title="Toggle navigation">
+        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-label={copy.toggleNavigation} title={copy.toggleNavigation}>
           <svg className="fx-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
             <path d="M4 7h8M4 12h16M4 17h8" />
             <path d="m8 4-4 3 4 3" />
@@ -339,8 +355,27 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
         <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle">
           <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span>
         </button>
+        <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls="fx-shell-help" aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
       </div>
     </header>
+  )
+}
+
+function ShellHelp({ copy, helpCloseRef, onClose }) {
+  return (
+    <div className="fx-shell-help-layer" onMouseDown={onClose}>
+      <section className="fx-shell-help" id="fx-shell-help" role="dialog" aria-modal="true" aria-labelledby="fx-shell-help-title" aria-describedby="fx-shell-help-hint" onMouseDown={(event) => event.stopPropagation()}>
+        <div className="fx-shell-help-header">
+          <h2 id="fx-shell-help-title">{copy.shortcutsTitle}</h2>
+          <button className="fx-shell-help-close" type="button" onClick={onClose} aria-label={copy.closeHelp} title={copy.closeHelp} data-testid="help-close" ref={helpCloseRef}>×</button>
+        </div>
+        <dl className="fx-shell-shortcuts">
+          <div><dt><kbd>?</kbd></dt><dd>{copy.shortcutHelp}</dd></div>
+          <div><dt><kbd>Esc</kbd></dt><dd>{copy.shortcutEscape}</dd></div>
+        </dl>
+        <p className="fx-shell-help-hint" id="fx-shell-help-hint">{copy.shortcutsHint}</p>
+      </section>
+    </div>
   )
 }
 
@@ -371,8 +406,17 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
   })
   const [railCollapsed, setRailCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false
+    try {
+      const saved = window.localStorage.getItem(RAIL_COLLAPSED_STORAGE_KEY)
+      if (saved === 'true' || saved === 'false') return saved === 'true'
+    } catch {
+      // Private browsing can deny storage; use the responsive default below.
+    }
     return window.matchMedia('(max-width: 1180px)').matches
   })
+  const [helpOpen, setHelpOpen] = useState(false)
+  const helpButtonRef = useRef(null)
+  const helpCloseRef = useRef(null)
   // Kept as a stable compatibility hook for workspaces that report market
   // context. The global header intentionally does not render that metadata.
   const updateMarketContext = useCallback(() => {}, [])
@@ -389,6 +433,13 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
   const handleTheme = useCallback((next) => {
     setTheme(next)
     try { window.localStorage.setItem(THEME_STORAGE_KEY, next) } catch { /* private browsing */ }
+  }, [])
+  const handleRail = useCallback(() => {
+    setRailCollapsed((value) => {
+      const next = !value
+      try { window.localStorage.setItem(RAIL_COLLAPSED_STORAGE_KEY, String(next)) } catch { /* private browsing */ }
+      return next
+    })
   }, [])
   useEffect(() => {
     const root = document.documentElement
@@ -411,14 +462,54 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
       root.style.removeProperty('color-scheme')
     }
   }, [theme])
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      const target = event.target
+      const isEditable = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
+      if (event.key === '?' && !isEditable) {
+        event.preventDefault()
+        setHelpOpen((value) => !value)
+        return
+      }
+      if (!helpOpen) return
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setHelpOpen(false)
+      }
+      if (event.key === 'Tab') {
+        const dialog = document.getElementById('fx-shell-help')
+        const focusable = dialog ? [...dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter((element) => !element.hasAttribute('disabled')) : []
+        if (focusable.length > 0) {
+          const first = focusable[0]
+          const last = focusable[focusable.length - 1]
+          if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) {
+            event.preventDefault()
+            const next = event.shiftKey ? last : first
+            next.focus()
+          }
+        }
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [helpOpen])
+  useEffect(() => {
+    if (helpOpen) helpCloseRef.current?.focus()
+  }, [helpOpen])
+  const wasHelpOpen = useRef(false)
+  useEffect(() => {
+    if (!helpOpen && wasHelpOpen.current) helpButtonRef.current?.focus()
+    wasHelpOpen.current = helpOpen
+  }, [helpOpen])
 
   return (
     <FxReplayContext.Provider value={contextValue}>
       <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
-        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={() => setRailCollapsed((value) => !value)} chartWorkspace={chartWorkspace} query={query} workspace={workspace} />
-        <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} />
+        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" />
+        <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" />
         <section className="fx-main" aria-label={copy.contentAria}>
           <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
+          {helpOpen && <ShellHelp copy={copy} helpCloseRef={helpCloseRef} onClose={() => setHelpOpen(false)} />}
           <div className="fx-content">{children}</div>
         </section>
       </div>

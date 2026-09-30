@@ -798,3 +798,16 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-panel {
   background: #ffffff;
 }
+
+.fx-app[data-theme='light'] .fx-shell-help-layer {
+  background: rgba(28, 40, 47, .18);
+}
+
+.fx-app[data-theme='light'] .fx-shell-help {
+  background: #ffffff;
+  box-shadow: 0 18px 48px rgba(31, 48, 58, .18);
+}
+
+.fx-app[data-theme='light'] .fx-shell-shortcuts kbd {
+  background: #f0f3f4;
+}
