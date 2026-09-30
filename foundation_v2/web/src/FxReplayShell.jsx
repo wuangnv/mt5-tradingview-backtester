@@ -8,6 +8,7 @@ export { buildWorkspaceHref, readWorkspaceContext }
 const LANGUAGE_STORAGE_KEY = 'tw-language'
 const THEME_STORAGE_KEY = 'tw-theme'
 const RAIL_COLLAPSED_STORAGE_KEY = 'tw-shell-rail-collapsed'
+const CHART_SHELL_UNAVAILABLE_TITLE = 'Chưa khả dụng trong chart shell'
 
 // The shell is being rebuilt before the workspace content. Keep the existing
 // content routes in source so their contracts remain available for the next
@@ -317,21 +318,21 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
         <div className="fx-chart-topbar-left">
           <a className="fx-chart-icon-button" href={backHref} aria-label="Quay lại Sessions" title="Quay lại Sessions">←</a>
           <span className="fx-chart-brand" aria-label={copy.product}>{copy.product}</span>
-          <button className="fx-chart-icon-button" type="button" aria-label="Tiến nhanh" title="Tiến nhanh">≫</button>
-          <button className="fx-chart-icon-button" type="button" aria-label="Thêm chart" title="Thêm chart">＋</button>
-          <button className="fx-chart-timeframe" type="button" aria-label="Khung thời gian">{query?.get('timeframe') || '1m'}</button>
-          <button className="fx-chart-tool-button" type="button" aria-label="Indicators">☷&nbsp; Indicators</button>
-          <button className="fx-chart-tool-button" type="button" aria-label="Order flow">☷&nbsp; Order flow</button>
-          <button className="fx-chart-tool-button" type="button" aria-label="Analytics">▥&nbsp; Analytics</button>
+          <button className="fx-chart-icon-button" type="button" aria-label="Tiến nhanh" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>≫</button>
+          <button className="fx-chart-icon-button" type="button" aria-label="Thêm chart" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>＋</button>
+          <button className="fx-chart-timeframe" type="button" aria-label="Khung thời gian" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>{query?.get('timeframe') || '1m'}</button>
+          <button className="fx-chart-tool-button" type="button" aria-label="Indicators" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>☷&nbsp; Indicators</button>
+          <button className="fx-chart-tool-button" type="button" aria-label="Order flow" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>☷&nbsp; Order flow</button>
+          <button className="fx-chart-tool-button" type="button" aria-label="Analytics" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>▥&nbsp; Analytics</button>
         </div>
         <div className="fx-chart-session-title" title={sessionLabel}>WMReplay · {sessionLabel}</div>
         <div className="fx-chart-topbar-actions">
-          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Undo" title="Undo">↶</button>
-          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Redo" title="Redo">↷</button>
+          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Undo" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>↶</button>
+          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Redo" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>↷</button>
           <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN⌄' : 'VI⌄'}</button>
           <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span></button>
           <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls="fx-shell-help" aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
-          <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title="Fullscreen">⛶</button>
+          <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>⛶</button>
         </div>
       </header>
     )
