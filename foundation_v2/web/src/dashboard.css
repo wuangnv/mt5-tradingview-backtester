@@ -222,3 +222,94 @@
 .fx-app[data-theme='light'] .fx-dashboard-metric,
 .fx-app[data-theme='light'] .fx-dashboard-chart { border-color: #c8d0dc; background: #fff; }
 .fx-app[data-theme='light'] .fx-dashboard-metric > strong { color: #152033; }
+
+/* W2 foundation contract: keep dashboard primitives on semantic values so
+ * shell/theme changes do not require changing fixture markup.  The fallback
+ * values preserve the existing dark candidate when the shell has no token. */
+.fx-dashboard {
+  --wm-canvas: var(--fx-bg, #0a0d10);
+  --wm-surface: var(--fx-surface, #0f1317);
+  --wm-surface-raised: var(--fx-surface-raised, #13191e);
+  --wm-content: var(--fx-text, #e8edf0);
+  --wm-content-muted: var(--fx-muted, #8c979f);
+  --wm-content-subtle: var(--fx-subtle, #69747c);
+  --wm-border: var(--fx-line, #252d33);
+  --wm-border-strong: var(--fx-line-strong, #34404a);
+  --wm-focus: #f0b65f;
+  --wm-primary: #2c7bfd;
+  --wm-positive: var(--fx-green, #6dc18b);
+  --wm-negative: var(--fx-red, #dc7777);
+  --wm-warning: var(--fx-accent, #e1ad54);
+  --wm-radius-control: 4px;
+  --wm-radius-panel: 8px;
+  --wm-motion-fast: 160ms;
+  --wm-ease-standard: cubic-bezier(.2, .7, .2, 1);
+  --wm-space-1: 4px;
+  --wm-space-2: 8px;
+  --wm-space-3: 12px;
+  --wm-space-4: 16px;
+  --wm-space-5: 24px;
+  --wm-space-6: 32px;
+  font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  /* The shell owns the content inset.  A second negative bleed clips the
+   * page heading under the rail at wide viewports, so the foundation keeps
+   * the dashboard inside that measured content box. */
+  width: 100%;
+  margin-left: 0;
+}
+
+.fx-dashboard :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--wm-focus);
+  outline-offset: 2px;
+}
+
+.fx-dashboard :where(a, button, input, select, textarea) {
+  transition-duration: var(--wm-motion-fast);
+  transition-timing-function: var(--wm-ease-standard);
+}
+
+.fx-dashboard-card {
+  border-color: var(--wm-border-strong);
+  background: var(--wm-canvas);
+  color: var(--wm-content);
+  transition-property: border-color, background-color, transform;
+}
+.fx-dashboard-card.is-primary { border-color: var(--wm-primary); }
+.fx-dashboard-card:focus-visible { outline-color: var(--wm-focus); }
+.fx-dashboard-card-copy strong { color: var(--wm-content); }
+.fx-dashboard-card-copy small,
+.fx-dashboard-filter span,
+.fx-dashboard-chart-tick,
+.fx-dashboard-chart-label,
+.fx-dashboard-chart-empty p { color: var(--wm-content-muted); }
+.fx-dashboard-card-info,
+.fx-dashboard-info { color: var(--wm-content-muted); }
+.fx-dashboard-filter {
+  border-color: var(--wm-border-strong);
+  background: var(--wm-canvas);
+  color: var(--wm-content);
+  border-radius: 999px;
+}
+.fx-dashboard-filter:disabled { cursor: not-allowed; opacity: .55; }
+.fx-dashboard-metric,
+.fx-dashboard-chart { border-color: var(--wm-border-strong); background: var(--wm-surface); border-radius: var(--wm-radius-panel); }
+.fx-dashboard-metric-title,
+.fx-dashboard-chart h3,
+.fx-dashboard-performance-head h2 { color: var(--wm-content); }
+.fx-dashboard-metric-detail { color: var(--wm-positive); }
+.fx-dashboard-metric > strong { color: var(--wm-content); font-variant-numeric: tabular-nums; }
+.fx-dashboard-empty-chart { color: var(--wm-content-subtle); }
+
+/* Unknown/empty data stays visually quiet without looking like a zero value. */
+.fx-dashboard-chart-empty { border-color: var(--wm-border); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-dashboard *,
+  .fx-dashboard *::before,
+  .fx-dashboard *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

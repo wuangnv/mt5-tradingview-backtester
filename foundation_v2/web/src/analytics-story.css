@@ -196,3 +196,172 @@
 @media (prefers-reduced-motion: reduce) {
   .as-page *, .as-page *::before, .as-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+/* W2 foundation contract.  Analytics keeps its page-local story tokens, but
+ * aliases them to the shell vocabulary so typography, focus and state cues
+ * remain reusable across WMREPLAY surfaces. */
+.as-page {
+  --wm-canvas: var(--fx-bg, #0a0d10);
+  --wm-surface: var(--fx-surface, #0f1317);
+  --wm-surface-raised: var(--fx-surface-raised, #13191e);
+  --wm-content: var(--fx-text, #e8edf0);
+  --wm-content-muted: var(--fx-muted, #8c979f);
+  --wm-content-subtle: var(--fx-subtle, #69747c);
+  --wm-border: var(--fx-line, #252d33);
+  --wm-border-strong: var(--fx-line-strong, #34404a);
+  --wm-focus: #f0b65f;
+  --wm-primary: var(--fx-accent, #e1ad54);
+  --wm-positive: var(--fx-green, #6dc18b);
+  --wm-negative: var(--fx-red, #dc7777);
+  --wm-warning: #d6a64b;
+  --wm-radius-control: 4px;
+  --wm-radius-panel: 8px;
+  --wm-motion-fast: 160ms;
+  --wm-ease-standard: cubic-bezier(.2, .7, .2, 1);
+  font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  color: var(--wm-content);
+}
+
+.as-page :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--wm-focus);
+  outline-offset: 2px;
+}
+.as-page :where(a, button, input, select, textarea) {
+  transition-duration: var(--wm-motion-fast);
+  transition-timing-function: var(--wm-ease-standard);
+}
+.as-page :where(button, input, select, textarea):disabled,
+.as-page [aria-disabled='true'] { cursor: not-allowed; opacity: .56; }
+.as-page :where(.as-filter-controls select, .as-filter-controls input) {
+  border-color: var(--wm-border-strong);
+  background: var(--wm-canvas);
+  color: var(--wm-content);
+}
+.as-page :where(.as-filter-reset, .as-export-link, .as-primary-button, .as-secondary-button, .as-inline-button) {
+  min-height: 34px;
+  border-radius: var(--wm-radius-control);
+}
+.as-page .as-primary-button { border-color: var(--wm-primary); background: var(--wm-primary); }
+.as-page .as-error { color: var(--wm-negative); }
+.as-page .as-status-dot { background: var(--wm-warning); }
+.as-page .as-story-metric.is-positive dd,
+.as-page .as-outcome-text.is-win,
+.as-page .as-table td.is-positive { color: var(--wm-positive); }
+.as-page .as-story-metric.is-negative dd,
+.as-page .as-outcome-text.is-loss,
+.as-page .as-table td.is-negative { color: var(--wm-negative); }
+.as-page .as-chart-point:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 3px; }
+.as-page .as-table tbody tr:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: -2px; }
+.as-page .as-empty-state,
+.as-page .as-inspector-empty,
+.as-page .as-chart-empty,
+.as-page .as-empty-inline { color: var(--wm-content-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .as-page *, .as-page *::before, .as-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Keep the same semantic states readable when the shell switches to light.
+ * These selectors cover the story's direct colour declarations that cannot
+ * inherit from the shell token aliases alone. */
+.fx-app[data-theme='light'] .as-page .as-page-header h1,
+.fx-app[data-theme='light'] .as-page .as-story-lead h2,
+.fx-app[data-theme='light'] .as-page .as-section-head h2,
+.fx-app[data-theme='light'] .as-page .as-story-metric dd,
+.fx-app[data-theme='light'] .as-page .as-secondary-metrics strong,
+.fx-app[data-theme='light'] .as-page .as-context-value dd,
+.fx-app[data-theme='light'] .as-page .as-table td { color: var(--wm-content); }
+.fx-app[data-theme='light'] .as-page .as-page-header p,
+.fx-app[data-theme='light'] .as-page .as-story-lead p,
+.fx-app[data-theme='light'] .as-page .as-inspector-note,
+.fx-app[data-theme='light'] .as-page .as-limit-note,
+.fx-app[data-theme='light'] .as-page .as-large-empty p,
+.fx-app[data-theme='light'] .as-page .as-inspector-empty,
+.fx-app[data-theme='light'] .as-page .as-chart-empty,
+.fx-app[data-theme='light'] .as-page .as-empty-inline { color: var(--wm-content-muted); }
+.fx-app[data-theme='light'] .as-page .as-context-actions a,
+.fx-app[data-theme='light'] .as-page .as-inspector-actions a { color: var(--wm-primary); }
+.fx-app[data-theme='light'] .as-page .as-evidence-panel,
+.fx-app[data-theme='light'] .as-page .as-inspector,
+.fx-app[data-theme='light'] .as-page .as-ledger-section,
+.fx-app[data-theme='light'] .as-page .as-large-empty,
+.fx-app[data-theme='light'] .as-page .as-balance-chart { background: var(--wm-surface); border-color: var(--wm-border); }
+.fx-app[data-theme='light'] .as-page .as-filter-controls select,
+.fx-app[data-theme='light'] .as-page .as-filter-controls input { background: var(--wm-surface); color: var(--wm-content); }
+
+/* W5 metric disclosure: definition copy stays scannable beside the compact
+ * realized-R distribution, then stacks cleanly at tablet/mobile widths. */
+.as-metric-disclosure { margin-top: 16px; }
+.as-metric-disclosure > details > summary {
+  min-height: 32px;
+  padding-top: 12px;
+  color: var(--wm-content);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+}
+.as-r-distribution {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 12px 0 0;
+  border-top: 1px solid var(--wm-border);
+  border-bottom: 1px solid var(--wm-border);
+}
+.as-r-distribution > div {
+  min-width: 0;
+  padding: 12px 12px 11px 0;
+  border-right: 1px solid var(--wm-border);
+}
+.as-r-distribution > div + div { padding-left: 12px; }
+.as-r-distribution > div:last-child { border-right: 0; }
+.as-r-distribution span,
+.as-r-distribution small { color: var(--wm-content-muted); font-size: 10px; }
+.as-r-distribution strong {
+  display: block;
+  margin: 4px 0;
+  color: var(--wm-content);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.as-metric-definitions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 18px;
+  margin: 12px 0 0;
+  border-top: 1px solid var(--wm-border);
+}
+.as-metric-definitions > div {
+  min-width: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--wm-border);
+}
+.as-metric-definitions dt {
+  color: var(--wm-content-subtle);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+.as-metric-definitions dd {
+  margin: 4px 0 0;
+  color: var(--wm-content-muted);
+  font-size: 11px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.fx-app[data-theme='light'] .as-page .as-metric-disclosure > details > summary,
+.fx-app[data-theme='light'] .as-page .as-r-distribution strong { color: var(--wm-content); }
+
+@media (max-width: 768px) {
+  .as-r-distribution { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .as-r-distribution > div:nth-child(2n) { border-right: 0; }
+  .as-r-distribution > div:nth-child(n + 3) { border-top: 1px solid var(--wm-border); }
+}
+
+@media (max-width: 380px) {
+  .as-metric-definitions { grid-template-columns: 1fr; gap: 0; }
+  .as-r-distribution strong { font-size: 14px; }
+}

@@ -135,3 +135,88 @@
 @media (max-width: 460px) { .rd-shell { padding: 0 12px 20px; } .rd-topbar h1 { font-size: 23px; } .rd-statusbar { gap: 10px 18px; } .rd-toolbar { display: grid; grid-template-columns: 1fr; align-items: stretch; } .rd-field, .rd-field.is-wide { min-width: 0; } .rd-button { width: 100%; } .rd-detail-grid, .rd-job-strip, .rd-result-grid { grid-template-columns: 1fr; } .rd-detail-grid > div:nth-child(even), .rd-job-strip > div + div, .rd-result-grid > div + div { border-left: 0; border-top: 1px solid #20272c; padding-left: 0; } .rd-job-strip > div:nth-child(3), .rd-job-strip > div:nth-child(4), .rd-result-grid > div:nth-child(3), .rd-result-grid > div:nth-child(4) { border-top: 1px solid #20272c; } }
 @media (max-width: 1000px) { .rd-import-grid { grid-template-columns: 1fr; gap: 16px; } .rd-import-report-column { border-left: 0; border-top: 1px solid #20272c; padding: 16px 0 0; } }
 @media (max-width: 460px) { .rd-import-fields, .rd-import-facts { grid-template-columns: 1fr; } .rd-import-facts > div + div { border-left: 0; border-top: 1px solid #20272c; padding-left: 0; } .rd-import-actions { display: grid; grid-template-columns: 1fr; } .rd-import-actions .rd-button { width: 100%; } }
+
+/* W2 foundation contract: Data Desk keeps its teal readiness semantics but
+ * exposes shared token/focus/state hooks for future primitives. */
+.rd-shell {
+  --wm-canvas: var(--fx-bg, #0a0d10);
+  --wm-surface: var(--fx-surface, #0f1317);
+  --wm-surface-raised: var(--fx-surface-raised, #13191e);
+  --wm-content: var(--fx-text, #e8edf0);
+  --wm-content-muted: var(--fx-muted, #8c979f);
+  --wm-content-subtle: var(--fx-subtle, #69747c);
+  --wm-border: var(--fx-line, #252d33);
+  --wm-border-strong: var(--fx-line-strong, #34404a);
+  --wm-focus: #70c5c8;
+  --wm-primary: #6ebfc2;
+  --wm-positive: var(--fx-green, #6dc18b);
+  --wm-negative: var(--fx-red, #dc7777);
+  --wm-warning: #d5a452;
+  --wm-radius-control: 4px;
+  --wm-radius-panel: 8px;
+  --wm-motion-fast: 160ms;
+  --wm-ease-standard: cubic-bezier(.2, .7, .2, 1);
+  font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  color: var(--wm-content);
+}
+
+.rd-shell :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--wm-focus);
+  outline-offset: 2px;
+}
+.rd-shell :where(a, button, input, select, textarea) {
+  transition-duration: var(--wm-motion-fast);
+  transition-timing-function: var(--wm-ease-standard);
+}
+.rd-shell :where(button, input, select, textarea):disabled,
+.rd-shell [aria-disabled='true'] { cursor: not-allowed; opacity: .56; }
+.rd-shell :where(.rd-field input, .rd-field select) {
+  border-color: var(--wm-border-strong);
+  background: var(--wm-canvas);
+  color: var(--wm-content);
+}
+.rd-shell .rd-button { border-radius: var(--wm-radius-control); }
+.rd-shell .rd-button.is-primary { border-color: var(--wm-primary); background: color-mix(in srgb, var(--wm-primary) 22%, var(--wm-surface)); }
+.rd-shell .rd-message.is-error { color: var(--wm-negative); }
+.rd-shell .rd-status.is-ready,
+.rd-shell .rd-capability:not(.is-blocked),
+.rd-shell .rd-provider-state.is-ready { color: var(--wm-positive); }
+.rd-shell .rd-status.is-error { color: var(--wm-negative); }
+.rd-shell .rd-status,
+.rd-shell .rd-status:not(.is-ready):not(.is-error),
+.rd-shell .rd-capability.is-blocked { color: var(--wm-warning); }
+.rd-shell .rd-table button:focus-visible { outline-offset: 2px; }
+.rd-shell .rd-import-empty,
+.rd-shell .rd-empty-callout,
+.rd-shell .rd-message.is-empty { color: var(--wm-content-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-shell *, .rd-shell *::before, .rd-shell *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Light theme overrides the direct dark candidates used by the Data Desk's
+ * empty, warning and capability states while retaining their meaning. */
+.fx-app[data-theme='light'] .rd-shell .rd-topbar h1,
+.fx-app[data-theme='light'] .rd-shell .rd-panel-head h2,
+.fx-app[data-theme='light'] .rd-shell .rd-table td,
+.fx-app[data-theme='light'] .rd-shell .rd-import-empty strong { color: var(--wm-content); }
+.fx-app[data-theme='light'] .rd-shell .rd-topbar p,
+.fx-app[data-theme='light'] .rd-shell .rd-panel-head p,
+.fx-app[data-theme='light'] .rd-shell .rd-import-empty,
+.fx-app[data-theme='light'] .rd-shell .rd-empty-callout,
+.fx-app[data-theme='light'] .rd-shell .rd-message.is-empty,
+.fx-app[data-theme='light'] .rd-shell .rd-field span,
+.fx-app[data-theme='light'] .rd-shell .rd-table small { color: var(--wm-content-muted); }
+.fx-app[data-theme='light'] .rd-shell .rd-panel,
+.fx-app[data-theme='light'] .rd-shell .rd-result,
+.fx-app[data-theme='light'] .rd-shell .rd-provenance,
+.fx-app[data-theme='light'] .rd-shell .rd-import-empty { border-color: var(--wm-border); }
+.fx-app[data-theme='light'] .rd-shell .rd-import-empty { background: var(--wm-surface); }
+.fx-app[data-theme='light'] .rd-shell .rd-field input,
+.fx-app[data-theme='light'] .rd-shell .rd-field select { background: var(--wm-surface); color: var(--wm-content); }
+.fx-app[data-theme='light'] .rd-shell .rd-context-link { color: var(--wm-primary); }

@@ -109,3 +109,93 @@
   .ja-metric strong { font-size: 22px; }
 }
 
+/* W2 foundation contract: the journal uses the same semantic vocabulary as
+ * the shell while retaining its intentionally compact editor/list density. */
+.ja-page {
+  --wm-canvas: var(--fx-bg, #0a0d10);
+  --wm-surface: var(--fx-surface, #0f1317);
+  --wm-surface-raised: var(--fx-surface-raised, #13191e);
+  --wm-content: var(--fx-text, #e8edf0);
+  --wm-content-muted: var(--fx-muted, #8c979f);
+  --wm-content-subtle: var(--fx-subtle, #69747c);
+  --wm-border: var(--fx-line, #252d33);
+  --wm-border-strong: var(--fx-line-strong, #34404a);
+  --wm-focus: #f0b65f;
+  --wm-primary: var(--fx-accent, #e1ad54);
+  --wm-positive: var(--fx-green, #6dc18b);
+  --wm-negative: var(--fx-red, #dc7777);
+  --wm-warning: #d6a64b;
+  --wm-radius-control: 4px;
+  --wm-radius-panel: 8px;
+  --wm-motion-fast: 160ms;
+  --wm-ease-standard: cubic-bezier(.2, .7, .2, 1);
+  font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  color: var(--wm-content);
+}
+
+.ja-page :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--wm-focus);
+  outline-offset: 2px;
+}
+.ja-page :where(a, button, input, select, textarea) {
+  transition-duration: var(--wm-motion-fast);
+  transition-timing-function: var(--wm-ease-standard);
+}
+.ja-page :where(button, input, select, textarea):disabled,
+.ja-page [aria-disabled='true'] { cursor: not-allowed; opacity: .56; }
+.ja-page :where(.ja-field input, .ja-field select, .ja-field textarea) {
+  border-color: var(--wm-border-strong);
+  background: var(--wm-canvas);
+  color: var(--wm-content);
+}
+.ja-page .ja-button { border-radius: var(--wm-radius-control); }
+.ja-page .ja-button-primary { border-color: var(--wm-primary); background: var(--wm-primary); }
+.ja-page .ja-message-error,
+.ja-page .ja-form-error,
+.ja-page .ja-table .is-negative { color: var(--wm-negative); }
+.ja-page .ja-table .is-positive { color: var(--wm-positive); }
+.ja-page .ja-status-dot { background: var(--wm-warning); }
+.ja-page .ja-journal-row:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: -2px; }
+.ja-page .ja-empty-state,
+.ja-page .ja-empty-inline,
+.ja-page .ja-chart-empty { color: var(--wm-content-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ja-page *, .ja-page *::before, .ja-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Light theme keeps journal content and empty/error states above the shell's
+ * contrast floor instead of inheriting the dark story colours. */
+.fx-app[data-theme='light'] .ja-page .ja-page-header h1,
+.fx-app[data-theme='light'] .ja-page .ja-context-copy strong,
+.fx-app[data-theme='light'] .ja-page .ja-section-head strong,
+.fx-app[data-theme='light'] .ja-page .ja-row-main strong,
+.fx-app[data-theme='light'] .ja-page .ja-empty-state strong,
+.fx-app[data-theme='light'] .ja-page .ja-metric strong { color: var(--wm-content); }
+.fx-app[data-theme='light'] .ja-page .ja-page-header p,
+.fx-app[data-theme='light'] .ja-page .ja-context-copy span:not(.ja-eyebrow),
+.fx-app[data-theme='light'] .ja-page .ja-row-main small,
+.fx-app[data-theme='light'] .ja-page .ja-row-meta span,
+.fx-app[data-theme='light'] .ja-page .ja-empty-state,
+.fx-app[data-theme='light'] .ja-page .ja-source-note,
+.fx-app[data-theme='light'] .ja-page .ja-panel-note,
+.fx-app[data-theme='light'] .ja-page .ja-metric > span,
+.fx-app[data-theme='light'] .ja-page .ja-metric small,
+.fx-app[data-theme='light'] .ja-page .ja-metric em { color: var(--wm-content-muted); }
+.fx-app[data-theme='light'] .ja-page .ja-list-panel,
+.fx-app[data-theme='light'] .ja-page .ja-editor-panel,
+.fx-app[data-theme='light'] .ja-page .ja-panel,
+.fx-app[data-theme='light'] .ja-page .ja-metric { background: var(--wm-surface); border-color: var(--wm-border); }
+.fx-app[data-theme='light'] .ja-page .ja-field input,
+.fx-app[data-theme='light'] .ja-page .ja-field select,
+.fx-app[data-theme='light'] .ja-page .ja-field textarea { background: var(--wm-surface); color: var(--wm-content); }
+.fx-app[data-theme='light'] .ja-page .ja-text-link { color: var(--wm-primary); }
+.fx-app[data-theme='light'] .ja-page .ja-message-error,
+.fx-app[data-theme='light'] .ja-page .ja-form-error,
+.fx-app[data-theme='light'] .ja-page .ja-table .is-negative { color: var(--wm-negative); }
+

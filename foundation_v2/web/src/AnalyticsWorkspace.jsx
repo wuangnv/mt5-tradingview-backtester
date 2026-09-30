@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './analytics-story.css'
 
 function finite(value) {
@@ -9,10 +9,22 @@ function firstKnown(...values) {
   return values.find((value) => finite(value))
 }
 
-function formatDate(value) {
-  if (!value) return 'N/A'
+function dateFromValue(value) {
+  if (value === null || value === undefined || value === '') return null
+  const numericInput = typeof value === 'number' || (typeof value === 'string' && /^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(value.trim()))
+  if (numericInput && finite(value)) {
+    const numeric = Number(value)
+    const milliseconds = Math.abs(numeric) >= 100000000000 ? numeric : numeric * 1000
+    const parsed = new Date(milliseconds)
+    return Number.isNaN(parsed.getTime()) ? null : parsed
+  }
   const parsed = new Date(value)
-  return Number.isNaN(parsed.getTime()) ? 'N/A' : new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+function formatDate(value) {
+  const parsed = dateFromValue(value)
+  return !parsed ? 'N/A' : new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
 }
 
 function formatNumber(value, digits = 2, suffix = '') {
@@ -32,11 +44,15 @@ export function buildAnalyticsModel(result) {
   const netPnl = providedNet ?? netFromLedger(ledger)
   const providedTradeCount = firstKnown(result?.trade_count, metrics.trade_count, metrics.closed_trade_count)
   const tradeCount = providedTradeCount ?? (Array.isArray(result?.ledger) ? ledger.length : null)
-  const wins = finite(firstKnown(metrics.wins, metrics.winning_trades)) ? Number(firstKnown(metrics.wins, metrics.winning_trades)) : ledger.filter((trade) => finite(trade?.net_pnl) && Number(trade.net_pnl) > 0).length
-  const losses = finite(firstKnown(metrics.losses, metrics.losing_trades)) ? Number(firstKnown(metrics.losses, metrics.losing_trades)) : ledger.filter((trade) => finite(trade?.net_pnl) && Number(trade.net_pnl) < 0).length
-  const breakeven = finite(firstKnown(metrics.breakeven, metrics.breakeven_trades)) ? Number(firstKnown(metrics.breakeven, metrics.breakeven_trades)) : (ledger.length ? Math.max(0, ledger.length - wins - losses) : null)
+  const ledgerHasCompletePnl = ledger.length > 0 && ledger.every((trade) => finite(trade?.net_pnl))
+  const providedWins = firstKnown(metrics.wins, metrics.winning_trades)
+  const providedLosses = firstKnown(metrics.losses, metrics.losing_trades)
+  const providedBreakeven = firstKnown(metrics.breakeven, metrics.breakeven_trades)
+  const wins = finite(providedWins) ? Number(providedWins) : (ledgerHasCompletePnl ? ledger.filter((trade) => Number(trade.net_pnl) > 0).length : null)
+  const losses = finite(providedLosses) ? Number(providedLosses) : (ledgerHasCompletePnl ? ledger.filter((trade) => Number(trade.net_pnl) < 0).length : null)
+  const breakeven = finite(providedBreakeven) ? Number(providedBreakeven) : (ledgerHasCompletePnl ? ledger.filter((trade) => Number(trade.net_pnl) === 0).length : null)
   const providedWinRate = firstKnown(metrics.win_rate_pct, metrics.win_rate, result?.win_rate_pct)
-  const winRate = providedWinRate ?? (ledger.length ? (wins / ledger.length) * 100 : null)
+  const winRate = providedWinRate ?? (ledgerHasCompletePnl ? (wins / ledger.length) * 100 : null)
   const providedExpectancy = firstKnown(metrics.expectancy, metrics.expectancy_account, metrics.expectancy_net_per_trade)
   const expectancy = providedExpectancy ?? (finite(netPnl) && finite(tradeCount) && Number(tradeCount) > 0 ? Number(netPnl) / Number(tradeCount) : null)
   const rawCurve = Array.isArray(metrics.closed_trade_balance_curve) ? metrics.closed_trade_balance_curve : Array.isArray(metrics.equity_curve) ? metrics.equity_curve : []
@@ -44,13 +60,25 @@ export function buildAnalyticsModel(result) {
   const rawDrawdown = Array.isArray(metrics.closed_trade_balance_drawdown_curve) ? metrics.closed_trade_balance_drawdown_curve : []
   let peak = null
   const drawdown = rawDrawdown.length ? rawDrawdown.map((point, index) => ({ index, drawdown: finite(point?.drawdown) ? Number(point.drawdown) : null, drawdownPct: finite(point?.drawdown_pct) ? Number(point.drawdown_pct) : null })) : curve.map((point, index) => { peak = peak === null ? point.value : Math.max(peak, point.value); const value = Math.max(0, peak - point.value); return { index, drawdown: value, drawdownPct: peak ? (value / peak) * 100 : null } })
-  const maxDrawdown = firstKnown(metrics.closed_trade_balance_max_drawdown, metrics.max_drawdown, metrics.max_dd) ?? (drawdown.length ? Math.max(...drawdown.map((point) => point.drawdown).filter(Number.isFinite)) : null)
+  const knownDrawdown = drawdown.map((point) => point.drawdown).filter(Number.isFinite)
+  const maxDrawdown = firstKnown(metrics.closed_trade_balance_max_drawdown, metrics.max_drawdown, metrics.max_dd) ?? (knownDrawdown.length ? Math.max(...knownDrawdown) : null)
   const observedRange = result?.observed_range || result?.range || {}
   const observedStart = observedRange.start_utc || observedRange.start || observedRange.from_utc || observedRange.from
   const observedEnd = observedRange.end_utc || observedRange.end || observedRange.to_utc || observedRange.to
-  const ledgerDates = ledger.flatMap((trade) => [trade?.open_time_utc, trade?.close_time_utc]).filter((value) => finite(value)).map((value) => new Date(Number(value) > 100000000000 ? Number(value) : Number(value) * 1000)).filter((date) => !Number.isNaN(date.getTime())).sort((a, b) => a - b)
-  const dateLabel = (value) => { if (!value) return 'N/A'; const date = new Date(value); return Number.isNaN(date.getTime()) ? 'N/A' : new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' }).format(date) }
-  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const dateValue = finite(trade?.close_time_utc) ? Number(trade.close_time_utc) : null; const date = dateValue === null ? null : new Date(dateValue > 100000000000 ? dateValue : dateValue * 1000); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date && !Number.isNaN(date.getTime()) ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeZone: 'UTC' }).format(date) : 'N/A' } })
+  const ledgerDates = ledger.flatMap((trade) => [trade?.open_time_utc, trade?.close_time_utc]).map(dateFromValue).filter(Boolean).sort((a, b) => a - b)
+  const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' }).format(date) }
+  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeZone: 'UTC' }).format(date) : 'N/A' } })
+  const realizedRValues = (Array.isArray(metrics.realized_r_values) ? metrics.realized_r_values : rows.map((trade) => trade.realized_r)).filter(finite).map(Number)
+  const metricDefinitions = metrics.definitions && typeof metrics.definitions === 'object'
+    ? Object.entries(metrics.definitions).slice(0, 16).reduce((out, [key, value]) => {
+      if (typeof value === 'string' && value.trim()) out[key] = value.trim().slice(0, 240)
+      else if (value && typeof value === 'object') {
+        const detail = [value.question, value.unit && `unit=${value.unit}`, value.formula && `formula=${value.formula}`, value.source && `source=${value.source}`, value.version && `v=${value.version}`].filter((item) => typeof item === 'string' && item.trim()).join(' · ')
+        if (detail) out[key] = detail.slice(0, 240)
+      }
+      return out
+    }, {})
+    : {}
   const startBalance = firstKnown(metrics.starting_balance, result?.starting_balance, curve[0]?.value)
   const endingBalance = firstKnown(metrics.ending_closed_trade_balance, metrics.ending_balance, curve[curve.length - 1]?.value)
   const strategy = result?.strategy_version || result?.playbook_id || result?.engine_version || 'N/A'
@@ -72,11 +100,13 @@ export function buildAnalyticsModel(result) {
     breakeven,
     curve,
     drawdown,
+    realizedRValues,
+    metricDefinitions,
     startBalance,
     endingBalance,
     observed: range,
     strategy,
-    sourceHash: result?.dataset_sha256 || result?.artifact_sha256 || 'N/A',
+    sourceHash: result?.artifact_sha256 || 'N/A',
     derivedNet: !finite(providedNet) && finite(netPnl),
     derivedWinRate: !finite(providedWinRate) && finite(winRate),
     derivedExpectancy: !finite(providedExpectancy) && finite(expectancy),
@@ -141,6 +171,7 @@ function analyticsViewResult(view) {
     ledger: Array.isArray(view.ledger) ? view.ledger : [],
     analytics_available: view.analytics_available,
     blocked_by_data: Array.isArray(view.blocked_by_data) ? view.blocked_by_data : [],
+    filters: view.filters && typeof view.filters === 'object' ? view.filters : {},
     scope,
   }
 }
@@ -148,8 +179,9 @@ function analyticsViewResult(view) {
 function analyticsViewStatus(view) {
   if (!view) return 'empty'
   if (Array.isArray(view.blocked_by_data) && view.blocked_by_data.length) return 'blocked_by_data'
-  if (view.stale === true || view.freshness === 'stale' || view.provenance?.freshness === 'stale' || view.provenance?.status === 'stale') return 'stale'
   if (view.analytics_available === false) return 'blocked_by_data'
+  if (view.stale === true || view.freshness === 'stale' || view.provenance?.freshness === 'stale' || view.provenance?.status === 'stale') return 'stale'
+  if (view.partial === true || view.freshness === 'partial' || view.provenance?.status === 'partial') return 'partial'
   if (view.scope?.selected_trade_count === 0) return 'empty'
   return 'ready'
 }
@@ -233,7 +265,7 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
           <details className="as-raw-details"><summary>Xem record gốc</summary><pre>{JSON.stringify(selectedTrade, null, 2)}</pre></details>
         </section>
       ) : <div className="as-inspector-empty">Chọn một điểm trên đường balance hoặc một dòng trade để mở chi tiết.</div>}
-      <dl className="as-provenance-list"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Artifact SHA" value={model.sourceHash} code /><ContextValue label="Strategy / engine" value={model.strategy} /><ContextValue label="Split" value={model.result?.split} /><ContextValue label="Metric schema" value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label="Observed range" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Journal context" value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
+      <dl className="as-provenance-list"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Dataset SHA" value={model.result?.dataset_sha256} code /><ContextValue label="Protocol SHA" value={model.result?.protocol_sha256} code /><ContextValue label="Artifact SHA" value={model.sourceHash} code /><ContextValue label="Strategy / engine" value={model.strategy} /><ContextValue label="Split" value={model.result?.split} /><ContextValue label="Metric schema" value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label="Observed range" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Journal context" value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
       <p className="as-limit-note">N/A nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Research/simulation đang broker locked; không có đường nào gửi lệnh.</p>
       <div className="as-inspector-actions"><a href={links.journal}>Mở Journal →</a>{links.replay && <a href={links.replay}>Mở Replay →</a>}</div>
     </aside>
@@ -242,6 +274,30 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
 
 function TradeLedger({ model, selectedTradeId, onSelect }) {
   return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><span className="as-eyebrow">TRADE LEDGER</span><h2>{model.ledger.length ? model.ledger.length + ' trade đóng' : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Research result không có ledger để drill-down.</div> : <div className="as-table-wrap"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{model.ledger.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} tabIndex="0" role="button" onClick={() => onSelect(trade.tradeId)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(trade.tradeId) } }}><td><code>{trade.tradeId}</code></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div>}</section>
+}
+
+function AnalyticsMetricDisclosure({ model }) {
+  const values = model.realizedRValues || []
+  const distribution = {
+    positive: values.filter((value) => value > 0).length,
+    negative: values.filter((value) => value < 0).length,
+    breakeven: values.filter((value) => value === 0).length,
+  }
+  const definitionEntries = Object.entries(model.metricDefinitions || {})
+  return (
+    <section className="as-definition as-metric-disclosure" data-testid="analytics-metric-disclosure">
+      <details open={definitionEntries.length > 0}>
+        <summary>Định nghĩa metrics và phân phối R</summary>
+        <div className="as-secondary-metrics as-r-distribution" aria-label="Phân phối realized R">
+          <div><span>R dương</span><strong>{values.length ? distribution.positive : 'N/A'}</strong><small>realized R &gt; 0</small></div>
+          <div><span>R âm</span><strong>{values.length ? distribution.negative : 'N/A'}</strong><small>realized R &lt; 0</small></div>
+          <div><span>Hòa vốn</span><strong>{values.length ? distribution.breakeven : 'N/A'}</strong><small>realized R = 0</small></div>
+          <div><span>Mẫu R</span><strong>{values.length || 'N/A'}</strong><small>nguồn metrics-v2/ledger</small></div>
+        </div>
+        {definitionEntries.length > 0 ? <dl className="as-metric-definitions">{definitionEntries.map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl> : <p>Backend chưa cung cấp metric dictionary cho result này; các label trên chỉ mô tả phạm vi hiển thị và không thay thế công thức nguồn.</p>}
+      </details>
+    </section>
+  )
 }
 
 function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams() }) {
@@ -253,6 +309,8 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   const [journalCount, setJournalCount] = useState(null)
   const [selectedTradeId, setSelectedTradeId] = useState(tradeId)
   const [exportPending, setExportPending] = useState(false)
+  const [exportError, setExportError] = useState('')
+  const requestSequence = useRef(0)
 
   const filterParams = useMemo(() => analyticsQuery(filters), [filters])
   const analyticsPath = useMemo(() => {
@@ -264,27 +322,47 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     return `/api/v2/research/jobs/${encodeURIComponent(jobId)}/analytics.csv${suffix ? `?${suffix}` : ''}`
   }, [filterParams, jobId])
 
-  const load = useCallback(async () => {
-    if (!jobId) return
+  const load = useCallback(async ({ signal } = {}) => {
+    const requestId = ++requestSequence.current
+    if (!jobId) {
+      setState({ status: 'idle', payload: null, error: null })
+      return
+    }
     const controller = new AbortController()
     setState((current) => ({ ...current, status: 'loading', error: null }))
     try {
-      const response = await fetch(analyticsPath, { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal })
+      const requestSignal = signal || controller.signal
+      const response = await fetch(analyticsPath, { headers: { 'X-Workspace-Id': workspace }, signal: requestSignal })
       const payload = await readJson(response)
+      if (requestSignal?.aborted || requestId !== requestSequence.current) return
+      const selectedCount = payload?.scope?.selected_trade_count
+      const totalCount = payload?.scope?.total_trade_count
+      const metricTradeCount = payload?.metrics?.closed_trade_count
+      const countConsistent = metricTradeCount === undefined || (typeof metricTradeCount === 'number' && Number.isSafeInteger(metricTradeCount) && metricTradeCount === selectedCount)
+      const hasReadyShape = payload?.analytics_available === false || (payload?.provenance && typeof payload.provenance === 'object' && payload?.metrics && typeof payload.metrics === 'object' && Array.isArray(payload.ledger) && typeof selectedCount === 'number' && Number.isSafeInteger(selectedCount) && selectedCount >= 0 && selectedCount === payload.ledger.length && typeof totalCount === 'number' && Number.isSafeInteger(totalCount) && totalCount >= selectedCount && countConsistent)
+      if (payload?.schema_version !== 'analytics-read-model-v1' || typeof payload.analytics_available !== 'boolean' || !payload.scope || typeof payload.scope !== 'object' || !hasReadyShape) {
+        const schemaError = new Error('analytics_read_model_invalid')
+        schemaError.status = 422
+        schemaError.payload = payload
+        throw schemaError
+      }
       setState({ status: analyticsViewStatus(payload), payload, error: null })
     } catch (error) {
-      if (error?.name === 'AbortError') return
+      if (error?.name === 'AbortError' || requestId !== requestSequence.current) return
       const status = error?.status === 409 || error?.status === 503 ? 'blocked_by_data' : 'error'
       setState({ status, payload: error?.payload || null, error: String(error.message || error) })
     }
-    return () => controller.abort()
   }, [analyticsPath, jobId, workspace])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    const controller = new AbortController()
+    load({ signal: controller.signal })
+    return () => controller.abort()
+  }, [load])
   useEffect(() => {
     if (typeof window === 'undefined' || !jobId) return
     const next = new URL(window.location.href)
-    for (const key of ['side', 'outcome', 'from', 'to']) next.searchParams.delete(key)
+    for (const key of ['side', 'outcome', 'from', 'to', 'from_close_utc', 'to_close_utc']) next.searchParams.delete(key)
     if (filters.side !== 'all') next.searchParams.set('side', filters.side)
     if (filters.outcome !== 'all') next.searchParams.set('outcome', filters.outcome)
     if (filters.from) next.searchParams.set('from', filters.from)
@@ -292,30 +370,34 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     window.history.replaceState({}, '', next)
   }, [filters, jobId])
   useEffect(() => {
-    let cancelled = false
-    fetch('/api/v2/journal', { headers: { 'X-Workspace-Id': workspace } })
+    const controller = new AbortController()
+    fetch('/api/v2/journal', { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal })
       .then((response) => readJson(response))
       .then((payload) => {
-        if (!cancelled) {
-          const items = Array.isArray(payload.items) ? payload.items : []
-          const matching = items.filter((record) => {
-            const source = record.payload?.source || {}
-            return (!sessionId || [source.session_id, source.replay_session_id, source.id].includes(sessionId)) && (!tradeId || [source.trade_id, source.id].includes(tradeId))
-          })
-          setJournalCount(sessionId || tradeId ? matching.length : items.length)
-        }
+        const items = Array.isArray(payload.items) ? payload.items : []
+        const matching = items.filter((record) => {
+          const source = record.payload?.source || {}
+          return (!sessionId || [source.session_id, source.replay_session_id, source.id].includes(sessionId)) && (!selectedTradeId || [source.trade_id, source.id].includes(selectedTradeId))
+        })
+        setJournalCount(sessionId || selectedTradeId ? matching.length : items.length)
       })
-      .catch(() => { if (!cancelled) setJournalCount(null) })
-    return () => { cancelled = true }
-  }, [sessionId, tradeId, workspace])
+      .catch((error) => { if (error?.name !== 'AbortError') setJournalCount(null) })
+    return () => controller.abort()
+  }, [sessionId, selectedTradeId, workspace])
 
   const result = useMemo(() => state.payload?.schema_version === 'analytics-read-model-v1' ? analyticsViewResult(state.payload) : null, [state.payload])
   const model = useMemo(() => buildAnalyticsModel(result), [result])
+  useEffect(() => {
+    if (!selectedTradeId) return
+    const isKnown = model.ledger.some((trade) => trade.tradeId === selectedTradeId) || model.curve.some((point) => point.tradeId === selectedTradeId)
+    if (!isKnown) setSelectedTradeId('')
+  }, [model, selectedTradeId])
   const updateFilters = useCallback((patch) => setFilters((current) => ({ ...current, ...patch })), [])
   const exportCsv = useCallback(async (event) => {
     event.preventDefault()
     if (!jobId || exportPending) return
     setExportPending(true)
+    setExportError('')
     try {
       const response = await fetch(csvPath, { headers: { 'X-Workspace-Id': workspace } })
       const blob = await response.blob()
@@ -329,7 +411,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
       link.remove()
       URL.revokeObjectURL(objectUrl)
     } catch (error) {
-      setState((current) => ({ ...current, error: `Không tạo được CSV: ${String(error.message || error)}` }))
+      setExportError(`Không tạo được CSV: ${String(error.message || error)}`)
     } finally {
       setExportPending(false)
     }
@@ -352,19 +434,22 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     <section className="as-context-bar" aria-label="Ngữ cảnh analytics"><dl className="as-context-grid"><ContextValue label="Research job" value={jobId || 'Chưa chọn'} code /><ContextValue label="Replay" value={sessionId || 'Không gắn session'} code /><ContextValue label="Trade focus" value={selectedTradeId || 'Chưa chọn'} code /></dl><div className="as-context-actions"><a href={'/?' + researchParams.toString()}>Mở Research</a>{sessionId && <a href={'/?' + replayParams.toString()}>Mở Replay</a>}<a href={'/?' + journalParams.toString()}>Mở Journal</a></div></section>
 
     {jobId && <AnalyticsFilters filters={filters} onChange={updateFilters} csvUrl={csvPath} onExport={exportCsv} exportPending={exportPending} />}
+    {exportError && <div className="as-message as-error" role="alert" data-testid="analytics-export-error">{exportError}</div>}
     {!jobId && <section className="as-empty-state as-large-empty"><span className="as-eyebrow">START WITH CONTEXT</span><h2>Chưa có research job được chọn</h2><p>Mở Analytics từ một kết quả Research để xem metric, đường balance đóng và trade ledger. Không có dữ liệu thì không dựng số 0 thay thế.</p><a className="as-primary-button" href={'/?' + researchParams.toString()}>Đi tới Research</a></section>}
     {state.status === 'loading' && <div className="as-message" role="status">Đang tải research result…</div>}
-    {state.status === 'error' && <div className="as-message as-error" role="alert">Không đọc được research result: {state.error}<button className="as-inline-button" type="button" onClick={load}>Thử lại</button></div>}
-    {state.status === 'blocked_by_data' && <section className="as-empty-state as-large-empty as-blocked-state" data-testid="analytics-blocked"><span className="as-eyebrow">BLOCKED BY DATA</span><h2>Chưa đủ dữ liệu để tính analytics</h2><p>{Array.isArray(state.payload?.blocked_by_data) && state.payload.blocked_by_data.length ? state.payload.blocked_by_data.join(', ') : state.error || 'Job chưa hoàn tất hoặc research result chưa được phát hành.'}</p><button className="as-inline-button" type="button" onClick={load}>Kiểm tra lại</button></section>}
+    {state.status === 'error' && <div className="as-message as-error" role="alert">Không đọc được research result: {state.error}<button className="as-inline-button" type="button" onClick={() => load()}>Thử lại</button></div>}
+    {state.status === 'blocked_by_data' && <section className="as-empty-state as-large-empty as-blocked-state" data-testid="analytics-blocked"><span className="as-eyebrow">BLOCKED BY DATA</span><h2>Chưa đủ dữ liệu để tính analytics</h2><p>{Array.isArray(state.payload?.blocked_by_data) && state.payload.blocked_by_data.length ? state.payload.blocked_by_data.join(', ') : state.error || 'Job chưa hoàn tất hoặc research result chưa được phát hành.'}</p><button className="as-inline-button" type="button" onClick={() => load()}>Kiểm tra lại</button></section>}
     {state.status === 'empty' && <section className="as-empty-state as-large-empty" data-testid="analytics-empty"><span className="as-eyebrow">NO SELECTED TRADES</span><h2>Bộ lọc không còn trade đóng</h2><p>Không có dòng ledger nào khớp bộ lọc hiện tại. Xóa lọc hoặc chọn khoảng UTC rộng hơn; không dựng metric thay thế.</p></section>}
-    {state.status === 'stale' && <div className="as-stale-banner" role="status"><strong>Dữ liệu có thể đã cũ.</strong> Provenance vẫn được giữ nguyên; tải lại để kiểm tra result mới nhất.<button className="as-inline-button" type="button" onClick={load}>Tải lại</button></div>}
+    {state.status === 'stale' && <div className="as-stale-banner" role="status"><strong>Dữ liệu có thể đã cũ.</strong> Provenance vẫn được giữ nguyên; tải lại để kiểm tra result mới nhất.<button className="as-inline-button" type="button" onClick={() => load()}>Tải lại</button></div>}
+    {state.status === 'partial' && <div className="as-stale-banner" role="status"><strong>Kết quả mới chỉ một phần.</strong> Các metric không có bằng chứng vẫn giữ N/A; kiểm tra provenance trước khi dùng làm kết luận.</div>}
 
-    {result && (state.status === 'ready' || state.status === 'stale') && <>
+    {result && (state.status === 'ready' || state.status === 'stale' || state.status === 'partial') && <>
       <section className="as-story-lead" aria-labelledby="analytics-takeaway"><div><span className="as-eyebrow">TAKEAWAY / ONE CLEAR READ</span><h2 id="analytics-takeaway">{model.takeaway}</h2><p>Phạm vi: {model.result?.dataset_id || 'N/A'} · {model.strategy} · {model.result?.split || 'split N/A'} · {model.observed.start} → {model.observed.end}. Đây là research result, không phải broker performance.</p></div><span className="as-story-badge">N = {finite(model.tradeCount) ? formatNumber(model.tradeCount, 0) : 'N/A'}</span></section>
-      <section className="as-scope-strip" aria-label="Phạm vi kết quả"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Strategy / playbook" value={model.strategy} /><ContextValue label="Observed UTC" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Mode" value="Research / simulation" /><ContextValue label="Broker" value="Locked" /></section>
+      <section className="as-scope-strip" aria-label="Phạm vi kết quả"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Instrument" value={model.result?.instrument_id || model.result?.instrument} /><ContextValue label="Timeframe" value={model.result?.timeframe} /><ContextValue label="Strategy / playbook" value={model.strategy} /><ContextValue label="Observed UTC" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Timezone" value={model.result?.timezone || 'UTC'} /><ContextValue label="Data quality" value={model.result?.data_quality || model.result?.quality} /><ContextValue label="Trades in scope" value={model.result?.scope?.selected_trade_count} /><ContextValue label="Trades total" value={model.result?.scope?.total_trade_count} /><ContextValue label="Balance basis" value={model.result?.scope?.balance_curve_scope} /><ContextValue label="Mode" value="Research / simulation" /><ContextValue label="Broker" value="Locked" /></section>
       <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail="account units · net" source={model.derivedNet ? 'derived from ledger' : 'research result'} tone={model.netPnl > 0 ? 'is-positive' : model.netPnl < 0 ? 'is-negative' : ''} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} detail={formatNumber(model.wins, 0) + ' thắng · ' + formatNumber(model.losses, 0) + ' thua · ' + formatNumber(model.breakeven, 0) + ' hòa'} source={model.derivedWinRate ? 'derived from ledger' : 'research result'} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} detail="closed-trade ledger" source="research result" /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail="closed-trade balance" source="research result / derived" /></section>
       <section className="as-evidence-grid"><article className="as-evidence-panel"><div className="as-section-head"><div><span className="as-eyebrow">EVIDENCE / BALANCE PATH</span><h2>Closed-trade balance</h2></div><span className="as-source-note">{model.curve.length ? model.curve.length + ' points' : 'N/A'}</span></div><BalanceEvidence model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} /><div className="as-secondary-metrics"><div><span>Starting balance</span><strong>{formatNumber(model.startBalance)}</strong></div><div><span>Ending balance</span><strong>{formatNumber(model.endingBalance)}</strong></div><div><span>Expectancy</span><strong>{formatNumber(model.expectancy)}</strong><small>{model.derivedExpectancy ? 'derived from ledger' : 'research result'}</small></div><div><span>Profit factor</span><strong>{formatNumber(model.profitFactor)}</strong><small>gross profit / loss</small></div></div><details className="as-definition"><summary>Cách đọc đường này</summary><p>Đường chỉ nối balance sau từng trade đóng. Dataset hiện tại không cung cấp floating path, nên không gọi đây là equity curve hay intratrade drawdown.</p></details></article><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></section>
       <TradeLedger model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} />
+      <AnalyticsMetricDisclosure model={model} />
       <section className="as-next-action" aria-label="Next action"><div><span className="as-eyebrow">NEXT ACTION</span><h2>{selectedTrade ? 'Review ' + selectedTrade.tradeId + ' trong context' : 'Chọn một điểm để tiếp tục review'}</h2><p>{selectedTrade ? 'Đối chiếu ledger với Journal hoặc Replay nếu result có session tương ứng.' : 'Bắt đầu từ một trade hoặc một điểm trên đường balance; số liệu chi tiết mở sau phần takeaway.'}</p></div><div className="as-next-links"><a className="as-primary-button" href={selectedTrade ? links.journal : links.research}>{selectedTrade ? 'Mở Journal' : 'Về Research'}</a>{sessionId && <a className="as-secondary-button" href={links.replay}>Mở Replay</a>}</div></section>
     </>}
   </main>

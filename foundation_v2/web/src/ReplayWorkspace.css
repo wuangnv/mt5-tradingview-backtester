@@ -882,8 +882,7 @@
 /* Opening a session is a chart workspace, so the shell's Testing hero/subnav
  * gives way to the chart toolbar.  Session pickers keep the regular hero. */
 .fx-app.fx-shell-story:has(.replay-chart) .fx-shell-hero { display: none; }
-.fx-app:has(.replay-chart) .fx-content > .replay-shell > .replay-topbar,
-.fx-app:has(.replay-chart) .fx-content > .replay-shell > .replay-contextbar { display: none !important; }
+.fx-app:has(.replay-chart) .fx-content > .replay-shell > .replay-topbar { display: none !important; }
 
 @media (min-width: 901px) {
   .fx-app .fx-content > .replay-shell .replay-workspace { grid-template-columns: minmax(0, 1fr); }
