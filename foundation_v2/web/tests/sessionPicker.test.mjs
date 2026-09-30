@@ -7,7 +7,7 @@ import { dirname, resolve } from 'node:path'
 const testsDir = dirname(fileURLToPath(import.meta.url))
 const sourceDir = resolve(testsDir, '..', 'src')
 
-test('session picker is shared across Sessions, Trades and Analytics without inventing a catalog', async () => {
+test('session picker is shared across Sessions, Trades and Analytics and reads the safe catalog projection', async () => {
   const picker = await readFile(resolve(sourceDir, 'SessionPicker.jsx'), 'utf8')
   const main = await readFile(resolve(sourceDir, 'main.jsx'), 'utf8')
 
@@ -16,6 +16,10 @@ test('session picker is shared across Sessions, Trades and Analytics without inv
   assert.match(picker, /tw:replay:last:/, 'picker can resume the last local session')
   assert.match(picker, /surface: 'workspace'/, 'opening a session returns to the existing workspace surface')
   assert.match(picker, /fresh: '1'/, 'new session bypasses the persisted last-session resume')
+  assert.match(picker, /fetch\('\/api\/v2\/replay\/sessions'/, 'picker reads the v2 session catalog route')
+  assert.match(picker, /X-Workspace-Id/, 'catalog request stays tenant-scoped')
+  assert.match(picker, /dataset_available/, 'picker surfaces unavailable datasets explicitly')
+  assert.match(picker, /dataset: selectedItem \? \(selectedItem\.dataset_id \|\| null\) : undefined/, 'session links update dataset context while preserving fallback links')
   assert.match(picker, /fxr-session-toolbar/, 'Sessions keeps the source-aligned selector and action toolbar')
   assert.match(picker, /fxr-metrics-grid/, 'Sessions exposes the six-card performance strip')
   assert.match(picker, /fxr-trades-table/, 'Trades keeps the source-aligned wide table surface')

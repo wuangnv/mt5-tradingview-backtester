@@ -5,6 +5,9 @@
   color: #fff;
   font-family: "Nunito Sans", Inter, ui-sans-serif, system-ui, sans-serif;
 }
+.fxr-session-catalog-status { min-height: 18px; margin: 0 0 8px; color: #888; font-size: 12px; line-height: 1.5; text-align: right; }
+.fxr-session-catalog-status.is-loading { color: #b0b1b4; }
+.fxr-session-catalog-status.is-error { color: #ff9a91; }
 .fxr-inline-icon { width: 16px; height: 16px; flex: 0 0 16px; }
 .fxr-session-toolbar { position: relative; display: flex; min-height: 142px; align-items: flex-end; justify-content: space-between; gap: 28px; padding: 0 0 26px; border-bottom: 1px solid #414347; }
 .fxr-session-control { width: min(610px, 46%); }

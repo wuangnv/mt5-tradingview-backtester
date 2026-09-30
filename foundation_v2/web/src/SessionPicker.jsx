@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './session-picker.css'
 
@@ -13,11 +13,57 @@ function safeLastSession(workspace) {
   try { return window.localStorage.getItem(`tw:replay:last:${workspace}`) || '' } catch { return '' }
 }
 
-function sessionHref(kind, workspace, query, selected) {
+function unknownValue(value, fallback = 'Unknown') {
+  if (value === null || value === undefined || String(value).trim() === '') return fallback
+  return String(value)
+}
+
+function datasetAvailabilityLabel(value) {
+  if (value === true) return 'Dataset available'
+  if (value === false) return 'Dataset unavailable'
+  return 'Dataset unknown'
+}
+
+function timeframeLabel(item) {
+  const timeframe = unknownValue(item?.timeframe, '')
+  if (timeframe) return timeframe
+  const seconds = Number(item?.timeframe_seconds)
+  if (Number.isFinite(seconds) && seconds > 0) return `${seconds}s`
+  return 'Timeframe unknown'
+}
+
+function sessionOptionLabel(item) {
+  const instrument = unknownValue(item?.instrument_id, 'Instrument unknown')
+  const timeframe = timeframeLabel(item)
+  const dataset = unknownValue(item?.dataset_id, 'Dataset unknown')
+  const status = unknownValue(item?.status)
+  return `${unknownValue(item?.record_id, 'Session unknown')} · ${instrument} ${timeframe} · ${dataset} · ${status} · ${datasetAvailabilityLabel(item?.dataset_available)}`
+}
+
+function normalizeSessionCatalog(payload) {
+  const items = Array.isArray(payload?.items) ? payload.items : []
+  return items.filter((item) => item && typeof item === 'object' && unknownValue(item.record_id, '') !== '')
+}
+
+async function fetchReplaySessions(workspace, signal) {
+  const response = await fetch('/api/v2/replay/sessions', {
+    headers: { 'X-Workspace-Id': workspace },
+    signal,
+  })
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`)
+  }
+  return normalizeSessionCatalog(await response.json())
+}
+
+function sessionHref(kind, workspace, query, selected, selectedItem = null) {
   const view = kind === 'replay' ? 'replay' : kind
   return buildWorkspaceHref(view, workspace, query, {
     surface: 'workspace',
     session: selected,
+    // Keep a deep link's dataset when the catalog is unavailable and the
+    // selected session is being rendered through the safe local fallback.
+    dataset: selectedItem ? (selectedItem.dataset_id || null) : undefined,
     cursor: null,
     cutoff: null,
   })
@@ -32,11 +78,15 @@ function sessionMarket(query) {
   return requested.trim() || 'EURUSD'
 }
 
-function SessionSelect({ kind, selected, query, onSelect, compact = false }) {
+function SessionSelect({ kind, selected, query, onSelect, compact = false, catalog }) {
   const id = `fxr-${kind}-session-select`
   const market = sessionMarket(query)
   const dataset = query?.get?.('dataset') || ''
-  const selectedLabel = selected || 'Select session'
+  const selectedItem = catalog.items.find((item) => item.record_id === selected) || (selected ? { record_id: selected } : null)
+  const selectedLabel = selectedItem ? unknownValue(selectedItem.record_id) : 'Select session'
+  const selectedInstrument = selectedItem ? unknownValue(selectedItem.instrument_id, market) : 'Local backtesting'
+  const selectedTimeframe = selectedItem ? timeframeLabel(selectedItem) : ''
+  const selectedDataset = selectedItem ? unknownValue(selectedItem.dataset_id, dataset || 'Dataset unknown') : ''
 
   return (
     <div className={`fxr-session-control ${compact ? 'is-compact' : ''}`}>
@@ -48,13 +98,14 @@ function SessionSelect({ kind, selected, query, onSelect, compact = false }) {
           onChange={(event) => onSelect?.(event.target.value === '__new__' ? '' : event.target.value)}
           aria-label={compact ? 'Select session' : 'Select backtesting session'}
         >
-          {selected && <option value={selected}>{selected}</option>}
+          {catalog.items.map((item) => <option key={item.record_id} value={item.record_id}>{sessionOptionLabel(item)}</option>)}
+          {selected && !catalog.items.some((item) => item.record_id === selected) && <option value={selected}>{sessionOptionLabel(selectedItem)}</option>}
           <option value="__new__">New backtesting session</option>
         </select>
         <div className="fxr-session-select-details" aria-hidden="true">
           <strong>{selectedLabel}</strong>
-          <span>{selected ? market : 'Local backtesting'}</span>
-          {selected && dataset && <span>{dataset}</span>}
+          <span>{selected ? `${selectedInstrument} · ${selectedTimeframe || 'Timeframe unknown'} · ${unknownValue(selectedItem.status)}` : 'Local backtesting'}</span>
+          {selected && <span>{selectedDataset} · {datasetAvailabilityLabel(selectedItem.dataset_available)}</span>}
         </div>
         <span className="fxr-select-chevron" aria-hidden="true">⌄</span>
       </div>
@@ -62,12 +113,12 @@ function SessionSelect({ kind, selected, query, onSelect, compact = false }) {
   )
 }
 
-function SessionToolbar({ kind, selected, workspace, query, newHref, onSelect }) {
+function SessionToolbar({ kind, selected, workspace, query, newHref, onSelect, catalog }) {
   const copy = COPY[kind] || COPY.replay
   const analyticsHref = buildWorkspaceHref('analytics', workspace, query, { surface: 'workspace', session: selected || null })
   return (
     <div className="fxr-session-toolbar">
-      <SessionSelect kind={kind} selected={selected} query={query} onSelect={onSelect} />
+      <SessionSelect kind={kind} selected={selected} query={query} onSelect={onSelect} catalog={catalog} />
       <div className="fxr-session-actions">
         <NewSessionLink href={newHref}>{copy.newAction}</NewSessionLink>
         <a className="fxr-button fxr-button-secondary" href={analyticsHref}>Analytics <span aria-hidden="true">⌄</span></a>
@@ -78,17 +129,19 @@ function SessionToolbar({ kind, selected, workspace, query, newHref, onSelect })
   )
 }
 
-function SessionsSurface({ selected, workspace, query, newHref, onSelect }) {
+function SessionsSurface({ selected, workspace, query, newHref, onSelect, catalog }) {
+  const selectedCatalogItem = catalog.items.find((item) => item.record_id === selected) || null
+  const selectedItem = selectedCatalogItem || (selected ? { record_id: selected } : null)
   return (
     <div className="fxr-sessions-surface" data-testid="replay-session-dashboard">
-      <SessionToolbar kind="replay" selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={onSelect} />
+      <SessionToolbar kind="replay" selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={onSelect} catalog={catalog} />
       <div className="fxr-session-cards">
         <article className="fxr-session-card fxr-session-summary-card">
           <div>
             <h2>{selected || 'Select a session'}</h2>
-            <p>{selected ? `${sessionMarket(query)} · local session` : 'Choose a local session to begin.'}</p>
-            <div className="fxr-session-date">{query.get('dataset') || 'Dataset not selected'} <span className="fxr-muted-pill">Local</span></div>
-            <a className="fxr-button fxr-button-primary fxr-chart-button" href={selected ? sessionHref('replay', workspace, query, selected) : newHref}>Go to chart <span aria-hidden="true">▶</span></a>
+            <p>{selected ? `${unknownValue(selectedItem?.instrument_id, sessionMarket(query))} · ${timeframeLabel(selectedItem || {})} · ${unknownValue(selectedItem?.status)}` : 'Choose a local session to begin.'}</p>
+            <div className="fxr-session-date">{unknownValue(selectedItem?.dataset_id, query.get('dataset') || 'Dataset unknown')} <span className={`fxr-muted-pill ${selectedItem?.dataset_available === false ? 'is-unavailable' : ''}`}>{selectedItem ? datasetAvailabilityLabel(selectedItem.dataset_available) : 'Dataset unknown'}</span></div>
+            <a className="fxr-button fxr-button-primary fxr-chart-button" href={selected ? sessionHref('replay', workspace, query, selected, selectedCatalogItem) : newHref}>Go to chart <span aria-hidden="true">▶</span></a>
           </div>
           <div className="fxr-balance">
             <span>Account balance</span>
@@ -109,16 +162,16 @@ function SessionsSurface({ selected, workspace, query, newHref, onSelect }) {
       </div>
       <div className="fxr-recent-trades">
         <div className="fxr-section-title"><h2>Recent Trades</h2><button className="fxr-button fxr-button-secondary" type="button" disabled>▤ Journal</button></div>
-        <div className="fxr-empty-state"><div className="fxr-empty-glyph" aria-hidden="true">▤</div><strong>No trades taken yet</strong><span>Get started by placing some orders</span><a className="fxr-button fxr-button-primary" href={selected ? sessionHref('replay', workspace, query, selected) : newHref}>Go to chart <span aria-hidden="true">→</span></a></div>
+        <div className="fxr-empty-state"><div className="fxr-empty-glyph" aria-hidden="true">▤</div><strong>No trades taken yet</strong><span>Get started by placing some orders</span><a className="fxr-button fxr-button-primary" href={selected ? sessionHref('replay', workspace, query, selected, selectedCatalogItem) : newHref}>Go to chart <span aria-hidden="true">→</span></a></div>
       </div>
     </div>
   )
 }
 
-function CompactTradeToolbar({ kind = 'trade', selected, query, onSelect, newHref }) {
+function CompactTradeToolbar({ kind = 'trade', selected, query, onSelect, newHref, catalog }) {
   return (
     <div className="fxr-table-toolbar fxr-compact-session-toolbar">
-      <SessionSelect kind={kind} selected={selected} query={query} onSelect={onSelect} compact />
+      <SessionSelect kind={kind} selected={selected} query={query} onSelect={onSelect} compact catalog={catalog} />
       <div><button className="fxr-round-button" type="button" aria-label="Refresh">↻</button><button className="fxr-round-button" type="button" aria-label="Edit">⌕</button><span className="fxr-filter-label">Filter by</span><button className="fxr-filter-button" type="button">Basic</button><button className="fxr-filter-button" type="button">Tags</button>{!selected && <a className="fxr-button fxr-button-primary fxr-compact-new" href={newHref}>＋ New session</a>}</div>
     </div>
   )
@@ -133,23 +186,24 @@ const DEMO_TRADES = [
   ['▣', 'MK-02', 'Closed', '—', '9/17/26, 10:26:54 AM', '1/3/26, 1:14:55 AM', 'OANDA:EURUSD', 'Buy', 'market', '↗ 214,03', '2.14%', '2.15', '—', '1.75478', '81,000', '1.75662', '1.75082', '1/3/26, 3:57:55 AM', '1.75082', '↗ 214,03', '0'],
 ]
 
-function TradesSurface({ selected, workspace, query, newHref, onSelect }) {
+function TradesSurface({ selected, workspace, query, newHref, onSelect, catalog }) {
+  const selectedCatalogItem = catalog.items.find((item) => item.record_id === selected) || null
   const showDemoRows = query.get('dataset') === 'ui-replay-fixture' || selected === 'replay-fixture'
   return (
     <div className="fxr-trades-surface" data-testid="trade-session-dashboard">
-      <CompactTradeToolbar selected={selected} query={query} onSelect={onSelect} newHref={newHref} />
+      <CompactTradeToolbar selected={selected} query={query} onSelect={onSelect} newHref={newHref} catalog={catalog} />
       <div className="fxr-table-wrap"><table className="fxr-trades-table"><thead><tr>{TRADE_COLUMNS.map((column) => <th key={column}>{column}</th>)}</tr></thead><tbody>{showDemoRows ? DEMO_TRADES.map((row, rowIndex) => <tr key={rowIndex}>{row.map((cell, cellIndex) => <td key={cellIndex} className={cell === 'Buy' ? 'fxr-buy' : cell === 'Sell' ? 'fxr-sell' : cell.includes('↗') ? 'fxr-positive' : cell.includes('↙') ? 'fxr-negative' : ''}>{cellIndex === 2 ? <span className="fxr-status-badge">{cell}</span> : cellIndex === 7 ? <span className={`fxr-side-badge ${cell === 'Buy' ? 'is-buy' : 'is-sell'}`}>{cell}</span> : cellIndex === 8 ? <span className="fxr-type-badge">{cell}</span> : cell}</td>)}</tr>) : <tr><td colSpan={TRADE_COLUMNS.length}><div className="fxr-table-empty">No trades recorded for this session.</div></td></tr>}</tbody></table></div>
       <div className="fxr-table-pagination"><span>‹‹</span><span>‹</span><strong>1</strong><span>2</span><span>›</span><span>››</span><select aria-label="Rows per page"><option>10</option></select></div>
     </div>
   )
 }
 
-function AnalyticsSurface({ selected, workspace, query, newHref, onSelect }) {
+function AnalyticsSurface({ selected, workspace, query, newHref, onSelect, catalog }) {
   const filters = ['Type', 'Assets', 'Side', 'Outcome', 'Tags', 'Session', 'Strategy', 'Day', 'Time', 'Timezone', 'Backtesting Date']
   return (
     <div className="fxr-analytics-surface" data-testid="analytics-session-dashboard">
       <div className="fxr-analytics-session-toolbar">
-        <SessionSelect kind="analytics" selected={selected} query={query} onSelect={onSelect} compact />
+        <SessionSelect kind="analytics" selected={selected} query={query} onSelect={onSelect} compact catalog={catalog} />
         <div className="fxr-session-actions"><NewSessionLink href={newHref}>New session</NewSessionLink></div>
       </div>
       <div className="fxr-analytics-subtabs" role="tablist"><button className="is-active" type="button" role="tab" aria-selected="true">Sessions</button><button type="button" role="tab" aria-selected="false">Prop firm</button></div>
@@ -164,11 +218,43 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   const lastSession = safeLastSession(workspace)
   const initialSession = requestedSession || lastSession
   const [selectedSession, setSelectedSession] = useState(initialSession || '')
+  const [catalog, setCatalog] = useState({ status: 'loading', items: [], error: null })
   const newHref = useMemo(() => buildWorkspaceHref('replay', workspace, query, { surface: 'workspace', fresh: '1', session: null, dataset: null, cursor: null, cutoff: null }), [query, workspace])
   const selected = selectedSession
+
+  useEffect(() => {
+    const controller = new AbortController()
+    setCatalog({ status: 'loading', items: [], error: null })
+    fetchReplaySessions(workspace, controller.signal)
+      .then((items) => setCatalog({ status: 'ready', items, error: null }))
+      .catch((error) => {
+        if (error.name !== 'AbortError') setCatalog({ status: 'error', items: [], error: String(error.message || error) })
+      })
+    return () => controller.abort()
+  }, [workspace])
+
+  const selectSession = (nextSession) => {
+    setSelectedSession(nextSession)
+    const selectedItem = catalog.items.find((item) => item.record_id === nextSession)
+    const href = nextSession
+      ? sessionHref(kind, workspace, query, nextSession, selectedItem)
+      : newHref
+    if (typeof window !== 'undefined') window.history.replaceState({}, '', href)
+  }
+
+  const catalogNotice = catalog.status === 'loading'
+    ? 'Loading sessions…'
+    : catalog.status === 'error'
+      ? `Session catalog unavailable (${catalog.error}). Showing local fallback.`
+      : catalog.items.length
+        ? `${catalog.items.length} session${catalog.items.length === 1 ? '' : 's'} found`
+        : 'No saved sessions found'
   return (
     <section className={`fx-session-picker fxr-${kind}-picker`} aria-label={`${kind} session selector`} data-testid={`${kind}-session-picker`}>
-      {kind === 'replay' ? <SessionsSurface selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={setSelectedSession} /> : kind === 'trade' ? <TradesSurface selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={setSelectedSession} /> : <AnalyticsSurface selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={setSelectedSession} />}
+      <p className={`fxr-session-catalog-status is-${catalog.status}`} role={catalog.status === 'error' ? 'alert' : 'status'} data-testid="session-catalog-status">{catalogNotice}</p>
+      {kind === 'replay' ? <SessionsSurface selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={selectSession} catalog={catalog} /> : kind === 'trade' ? <TradesSurface selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={selectSession} catalog={catalog} /> : <AnalyticsSurface selected={selected} workspace={workspace} query={query} newHref={newHref} onSelect={selectSession} catalog={catalog} />}
     </section>
   )
 }
+
+export { datasetAvailabilityLabel, fetchReplaySessions, normalizeSessionCatalog, sessionOptionLabel, timeframeLabel }
