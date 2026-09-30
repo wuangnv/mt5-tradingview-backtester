@@ -19,22 +19,25 @@ const SHELL_COPY = {
     themeDarkShort: 'Tối',
     themeLightShort: 'Sáng',
     product: 'WMREPLAY',
-    workspaceAria: 'Điều hướng WMREPLAY',
+    workspaceAria: 'Điều hướng chính WMREPLAY',
     contentAria: 'Nội dung WMREPLAY',
+    primaryNavAria: 'Khu vực chính',
+    utilityNavAria: 'Công cụ',
     workspaceOwner: 'Chủ workspace',
-    groups: { workspace: 'KHU VỰC', workflow: 'QUY TRÌNH', review: 'ĐÁNH GIÁ', tools: 'CÔNG CỤ' },
+    subnavAria: 'Điều hướng workspace',
+    subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
-      overview: ['Tổng quan', 'Phiên đang làm và điểm tiếp theo'],
+      replay: ['Testing', 'Replay và backtest'],
+      trade: ['Live', 'Mô phỏng và read-only'],
+      playbook: ['Strategies', 'Strategy và playbook'],
+      learn: ['Education', 'Course và glossary'],
+      settings: ['Settings', 'Workspace và kết nối'],
+      overview: ['Dashboard', 'Phiên đang làm và điểm tiếp theo'],
       data: ['Data desk', 'Dataset, provenance và QA'],
-      replay: ['Practice', 'Replay chart và quyết định'],
       research: ['Research', 'Backtest và kết quả'],
       journal: ['Journal', 'Ghi chú theo phiên'],
       analytics: ['Analytics', 'Hiệu suất và thống kê'],
       risk: ['Risk', 'Giới hạn và mô phỏng rủi ro'],
-      playbook: ['Playbook', 'Version và lineage của setup'],
-      trade: ['Trade desk', 'Demo simulator'],
-      learn: ['Learn', 'Course và glossary'],
-      settings: ['Settings', 'Workspace và kết nối'],
     },
   },
   en: {
@@ -47,49 +50,63 @@ const SHELL_COPY = {
     themeDarkShort: 'Dark',
     themeLightShort: 'Light',
     product: 'WMREPLAY',
-    workspaceAria: 'WMREPLAY navigation',
+    workspaceAria: 'WMREPLAY main navigation',
     contentAria: 'WMREPLAY content',
+    primaryNavAria: 'Primary workspace',
+    utilityNavAria: 'Utilities',
     workspaceOwner: 'Workspace owner',
-    groups: { workspace: 'WORKSPACE', workflow: 'WORKFLOW', review: 'REVIEW', tools: 'TOOLS' },
+    subnavAria: 'Workspace navigation',
+    subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
-      overview: ['Overview', 'Current session and next action'],
+      replay: ['Testing', 'Replay and backtesting'],
+      trade: ['Live', 'Demo simulator and read-only'],
+      playbook: ['Strategies', 'Strategies and playbooks'],
+      learn: ['Education', 'Course and glossary'],
+      settings: ['Settings', 'Workspace and connections'],
+      overview: ['Dashboard', 'Current session and next action'],
       data: ['Data desk', 'Dataset, provenance and QA'],
-      replay: ['Practice', 'Replay chart and decisions'],
       research: ['Research', 'Backtest and results'],
       journal: ['Journal', 'Session notes'],
       analytics: ['Analytics', 'Performance and statistics'],
       risk: ['Risk', 'Limits and risk simulation'],
-      playbook: ['Playbook', 'Setup versions and lineage'],
-      trade: ['Trade desk', 'Demo simulator'],
-      learn: ['Learn', 'Course and glossary'],
-      settings: ['Settings', 'Workspace and connections'],
     },
   },
 }
 
 const NAV_ITEMS = [
-  { id: 'overview', short: 'OV', group: 'workspace' },
-  { id: 'data', short: 'DT', group: 'workflow' },
-  { id: 'replay', short: 'RP', group: 'workflow' },
-  { id: 'research', short: 'RS', group: 'review' },
-  { id: 'journal', short: 'JR', group: 'review' },
-  { id: 'analytics', short: 'AN', group: 'review' },
-  { id: 'risk', short: 'RK', group: 'review' },
-  { id: 'playbook', short: 'PB', group: 'review' },
-  { id: 'trade', short: 'TD', group: 'review' },
+  { id: 'replay', short: 'TE', group: 'primary' },
+  { id: 'trade', short: 'LI', group: 'primary' },
+  { id: 'playbook', short: 'ST', group: 'primary' },
 ]
 
 const UTILITY_ITEMS = [
-  { id: 'learn', short: 'LE', group: 'tools' },
-  { id: 'settings', short: 'SE', group: 'tools' },
+  { id: 'learn', short: 'ED', group: 'utility' },
+  { id: 'settings', short: 'SE', group: 'utility' },
 ]
 
 const NAV_GROUPS = [
-  { id: 'workspace', items: NAV_ITEMS.filter((item) => item.group === 'workspace') },
-  { id: 'workflow', items: NAV_ITEMS.filter((item) => item.group === 'workflow') },
-  { id: 'review', items: NAV_ITEMS.filter((item) => item.group === 'review') },
-  { id: 'tools', items: UTILITY_ITEMS },
+  { id: 'primary', items: NAV_ITEMS },
+  { id: 'utility', items: UTILITY_ITEMS },
 ]
+
+const SUBNAV_ITEMS = [
+  { id: 'overview', route: 'overview' },
+  { id: 'replay', route: 'replay' },
+  { id: 'trade', route: 'trade' },
+  { id: 'analytics', route: 'analytics' },
+]
+
+const RAIL_ACTIVE_VIEWS = {
+  replay: ['replay', 'data'],
+  trade: ['trade'],
+  playbook: ['playbook', 'research', 'journal', 'risk'],
+  learn: ['learn'],
+  settings: ['settings'],
+}
+
+function isRailActive(itemId, activeView) {
+  return RAIL_ACTIVE_VIEWS[itemId]?.includes(activeView) || false
+}
 
 const FxReplayContext = createContext(null)
 
@@ -133,6 +150,27 @@ function NavItem({ item, active, workspace, query, copy }) {
   )
 }
 
+function ShellSubnav({ activeView, workspace, query, copy }) {
+  return (
+    <nav className="fx-subnav" aria-label={copy.subnavAria}>
+      {SUBNAV_ITEMS.map((item) => {
+        const label = copy.subnav[item.id]
+        const active = activeView === item.id
+        return (
+          <a
+            className={`fx-subnav-link ${active ? 'is-active' : ''}`}
+            href={hrefFor(item.route, workspace, query)}
+            aria-current={active ? 'page' : undefined}
+            key={item.id}
+          >
+            {label}
+          </a>
+        )
+      })}
+    </nav>
+  )
+}
+
 function ShellTopbar({ copy, language, setLanguage, theme, setTheme }) {
   return (
     <header className="fx-topbar">
@@ -159,7 +197,6 @@ function currentQuery() {
 }
 
 export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
-  const activeItem = [...NAV_ITEMS, ...UTILITY_ITEMS].find((item) => item.id === activeView) || NAV_ITEMS[0]
   const routeContext = useMemo(() => readWorkspaceContext(query), [query])
   const [language, setLanguage] = useState(() => {
     try {
@@ -226,15 +263,15 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>
               {groupIndex > 0 && <div className="fx-rail-divider" />}
-              <div className="fx-rail-caption">{copy.groups[group.id]}</div>
-              <nav className="fx-nav" aria-label={copy.groups[group.id]}>
-                {group.items.map((item) => <NavItem key={item.id} item={item} active={activeView === item.id} workspace={workspace} query={query} copy={copy} />)}
+              <nav className="fx-nav" aria-label={group.id === 'primary' ? copy.primaryNavAria : copy.utilityNavAria}>
+                {group.items.map((item) => <NavItem key={item.id} item={item} active={isRailActive(item.id, activeView)} workspace={workspace} query={query} copy={copy} />)}
               </nav>
             </React.Fragment>
           ))}
           <div className="fx-rail-spacer" />
         </aside>
         <section className="fx-main" aria-label={copy.contentAria}>
+          <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
           <div className="fx-content">{children}</div>
         </section>
       </div>

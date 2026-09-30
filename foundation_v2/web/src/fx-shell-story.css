@@ -29,7 +29,7 @@
   grid-column: 1;
   grid-row: 2;
   background: var(--fx-shell-rail);
-  border-right-color: var(--fx-shell-line);
+  border-right: 0;
   padding: 20px 14px 16px;
   min-height: 0;
 }
@@ -82,8 +82,50 @@
 .fx-shell-story .fx-main {
   grid-column: 2;
   grid-row: 2;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
   min-height: 0;
   background: var(--fx-shell-bg);
+}
+
+.fx-shell-story .fx-subnav {
+  display: flex;
+  min-height: 48px;
+  align-items: stretch;
+  gap: 22px;
+  border-bottom: 1px solid var(--fx-shell-line);
+  padding: 0 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.fx-shell-story .fx-subnav::-webkit-scrollbar {
+  display: none;
+}
+
+.fx-shell-story .fx-subnav-link {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  color: #77848c;
+  padding: 0 1px;
+  font-size: 11px;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color .14s ease, border-color .14s ease;
+}
+
+.fx-shell-story .fx-subnav-link:hover,
+.fx-shell-story .fx-subnav-link:focus-visible {
+  color: #e9eef1;
+}
+
+.fx-shell-story .fx-subnav-link.is-active {
+  border-bottom-color: var(--fx-shell-accent);
+  color: #f1d8a7;
 }
 
 .fx-shell-story .fx-topbar {
@@ -101,7 +143,7 @@
   flex: 0 0 224px;
   align-items: center;
   align-self: stretch;
-  border-right: 1px solid var(--fx-shell-line);
+  border-right: 0;
   padding: 0 26px;
 }
 
@@ -252,6 +294,12 @@
     padding-right: 18px;
   }
 
+  .fx-shell-story .fx-subnav {
+    gap: 18px;
+    padding-right: 19px;
+    padding-left: 19px;
+  }
+
   .fx-shell-story .fx-content {
     padding-right: 19px;
     padding-left: 19px;
@@ -278,6 +326,18 @@
     margin-left: auto;
   }
 
+  .fx-shell-story .fx-subnav {
+    min-height: 44px;
+    gap: 16px;
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .fx-shell-story .fx-subnav-link {
+    min-height: 44px;
+    font-size: 10px;
+  }
+
   .fx-shell-story .fx-content {
     padding-right: 13px;
     padding-left: 13px;
@@ -286,7 +346,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fx-shell-story .fx-nav-item,
-  .fx-shell-story .fx-shell-primary {
+  .fx-shell-story .fx-subnav-link {
     transition-duration: 0s;
   }
 }
