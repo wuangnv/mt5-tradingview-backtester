@@ -72,14 +72,14 @@ const SHELL_COPY = {
 }
 
 const NAV_ITEMS = [
-  { id: 'replay', short: 'TE', group: 'primary', picker: true },
-  { id: 'trade', short: 'LI', group: 'primary', picker: true },
-  { id: 'playbook', short: 'ST', group: 'primary' },
+  { id: 'replay', short: '⌁', group: 'primary', picker: true },
+  { id: 'trade', short: '◉', group: 'primary', picker: true },
+  { id: 'playbook', short: '◈', group: 'primary' },
 ]
 
 const UTILITY_ITEMS = [
-  { id: 'learn', short: 'ED', group: 'utility' },
-  { id: 'settings', short: 'SE', group: 'utility' },
+  { id: 'learn', short: '⌂', group: 'utility' },
+  { id: 'settings', short: '⚙', group: 'utility' },
 ]
 
 const NAV_GROUPS = [
@@ -169,21 +169,38 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
   )
 }
 
-function ShellTopbar({ copy, language, setLanguage, theme, setTheme }) {
+function ShellHero({ activeView, workspace, query, copy }) {
+  const title = ['overview', 'replay', 'trade', 'analytics'].includes(activeView)
+    ? 'Testing'
+    : (copy.nav[activeView]?.[0] || 'Workspace')
+  return (
+    <div className="fx-shell-hero">
+      <div className="fx-shell-hero-title">
+        <h1>{title}</h1>
+      </div>
+      <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
+    </div>
+  )
+}
+
+function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail }) {
   return (
     <header className="fx-topbar">
       <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
+        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-label="Toggle navigation" title="Toggle navigation">☰</button>
         <span className="fx-wordmark" aria-hidden="true"><WMReplayWordmark /></span>
         <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
       </div>
       <div className="fx-topbar-actions">
+        <span className="fx-pro-badge" aria-label="Pro plan">ϟ Pro</span>
         <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">
-          {language === 'vi' ? 'EN' : 'VI'}
+          {language === 'vi' ? 'EN⌄' : 'VI⌄'}
         </button>
         <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle">
-          <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
-          <span className="fx-theme-label">{theme === 'dark' ? copy.themeLightShort : copy.themeDarkShort}</span>
+          <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span>
         </button>
+        <button className="fx-shell-toggle fx-utility-icon" type="button" aria-label="Help" title="Help">?</button>
+        <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title="Fullscreen">⛶</button>
       </div>
     </header>
   )
@@ -213,6 +230,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
       return 'dark'
     }
   })
+  const [railCollapsed, setRailCollapsed] = useState(false)
   // Kept as a stable compatibility hook for workspaces that report market
   // context. The global header intentionally does not render that metadata.
   const updateMarketContext = useCallback(() => {}, [])
@@ -254,9 +272,14 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
 
   return (
     <FxReplayContext.Provider value={contextValue}>
-      <div className="fx-app fx-shell-story" data-testid="fxreplay-shell" data-theme={theme} lang={language}>
-        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} />
+      <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
+        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={() => setRailCollapsed((value) => !value)} />
         <aside className="fx-rail" aria-label={copy.workspaceAria}>
+          <div className="fx-rail-profile" aria-label="Workspace profile">
+            <div className="fx-profile-avatar" aria-hidden="true">W</div>
+            <span className="fx-profile-tier">Free</span>
+            <strong>WMREPLAY</strong>
+          </div>
           {NAV_GROUPS.map((group, groupIndex) => (
             <React.Fragment key={group.id}>
               {groupIndex > 0 && <div className="fx-rail-divider" />}
@@ -268,7 +291,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
           ))}
         </aside>
         <section className="fx-main" aria-label={copy.contentAria}>
-          <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
+          <ShellHero activeView={activeView} workspace={workspace} query={query} copy={copy} />
           <div className="fx-content">{children}</div>
         </section>
       </div>

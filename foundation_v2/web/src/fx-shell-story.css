@@ -338,3 +338,211 @@
     transition-duration: 0s;
   }
 }
+
+/* Source-aligned desktop shell. The captured FXReplay shell uses a 100px
+ * navbar, a wide 320px sidebar and a route-owned hero. Keep this as a shell
+ * layer so domain workspaces can continue to own their data contracts. */
+.fx-app.fx-shell-story {
+  --fx-shell-bg: #030303;
+  --fx-shell-rail: #030303;
+  --fx-shell-surface: #131415;
+  --fx-shell-line: #414347;
+  --fx-shell-line-soft: rgba(255,255,255,.08);
+  --fx-shell-text: #fff;
+  --fx-shell-muted: #b0b1b4;
+  --fx-shell-accent: #2c7bfd;
+  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-rows: 100px minmax(0, 1fr);
+  min-height: 100vh;
+  background: #030303;
+  font-family: "Nunito Sans", Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.fx-shell-story .fx-topbar {
+  min-height: 100px;
+  padding: 0 32px 0 0;
+  border-bottom: 1px solid #414347;
+  background: #030303;
+}
+
+.fx-shell-story .fx-topbar-brand {
+  flex-basis: 320px;
+  gap: 26px;
+  padding: 0 32px;
+  border-right: 0;
+}
+
+.fx-menu-button {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #b0b1b4;
+  padding: 0;
+  font-size: 20px;
+  line-height: 1;
+}
+.fx-menu-button:hover { border: 0; background: transparent; color: #fff; }
+
+.fx-shell-story .fx-wordmark { width: 142px; }
+.fx-shell-story .fx-topbar-actions { gap: 14px; }
+.fx-pro-badge {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: 5px;
+  background: #0c2d5e;
+  color: #65a0ff;
+  padding: 0 9px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.fx-shell-story .fx-shell-toggle {
+  min-height: 32px;
+  border: 1px solid #414347;
+  border-radius: 5px;
+  background: transparent;
+  color: #e7e8ea;
+  padding: 0 10px;
+  font-size: 12px;
+}
+.fx-shell-story .fx-shell-toggle:hover { border-color: #73767b; background: #131415; }
+.fx-shell-story .fx-theme-toggle { padding: 0 9px; }
+.fx-shell-story .fx-theme-label { display: none; }
+.fx-utility-icon { width: 32px; padding: 0 !important; font-size: 15px !important; }
+
+.fx-shell-story .fx-rail {
+  padding: 16px 20px 14px;
+  border-right: 1px solid #414347;
+  background: #030303;
+}
+.fx-rail-profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #414347;
+  margin: 0 0 16px;
+  padding: 0 0 20px;
+}
+.fx-profile-avatar {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4c5560, #131415 70%);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+}
+.fx-profile-tier {
+  position: absolute;
+  top: 43px;
+  left: calc(50% + 20px);
+  border-radius: 4px;
+  background: #0c2d5e;
+  color: #65a0ff;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 800;
+}
+.fx-rail-profile strong { color: #fff; font-size: 16px; font-weight: 700; }
+.fx-shell-story .fx-nav { gap: 7px; }
+.fx-shell-story .fx-nav-item {
+  min-height: 44px;
+  border-left: 0;
+  border-radius: 12px;
+  color: #b0b1b4;
+  padding: 0 14px;
+  font-size: 15px;
+}
+.fx-shell-story .fx-nav-item:hover,
+.fx-shell-story .fx-nav-item:focus-visible { background: #202124; color: #fff; }
+.fx-shell-story .fx-nav-item.is-active { border-left: 0; background: #414347; color: #fff; }
+.fx-shell-story .fx-nav-icon { color: #b0b1b4; font-size: 15px; }
+.fx-shell-story .fx-nav-item.is-active .fx-nav-icon { color: #fff; }
+.fx-shell-story .fx-rail-divider { margin: 18px 0 12px; background: #414347; }
+.fx-shell-story .fx-rail-spacer { min-height: 28px; }
+
+.fx-shell-story .fx-main { background: #030303; }
+.fx-shell-hero {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 1px solid #414347;
+  background: linear-gradient(110deg, #030303 12%, #05080e 56%, #051b4b 100%);
+}
+.fx-shell-hero-title { padding: 28px 38px 18px; }
+.fx-shell-hero-title h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(32px, 3vw, 42px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+.fx-shell-story .fx-subnav {
+  min-height: 52px;
+  gap: 26px;
+  border-bottom: 0;
+  padding: 0 38px;
+}
+.fx-shell-story .fx-subnav-link {
+  min-height: 52px;
+  border-bottom: 3px solid transparent;
+  color: #8f9297;
+  font-size: 14px;
+  font-weight: 700;
+}
+.fx-shell-story .fx-subnav-link:hover { color: #fff; }
+.fx-shell-story .fx-subnav-link.is-active { border-bottom-color: #2c7bfd; color: #fff; }
+.fx-shell-story .fx-content { padding: 0 38px 48px; }
+
+.fx-app.fx-shell-story.is-rail-collapsed { grid-template-columns: 74px minmax(0, 1fr); }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-topbar-brand { flex-basis: 74px; gap: 0; padding: 0; justify-content: center; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-menu-button { display: none; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-wordmark { display: none; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-wordmark-compact { display: inline-block; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-rail { padding-right: 8px; padding-left: 8px; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-rail-profile { padding-bottom: 12px; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-profile-avatar { width: 40px; height: 40px; font-size: 16px; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-profile-tier,
+.fx-app.fx-shell-story.is-rail-collapsed .fx-rail-profile strong,
+.fx-app.fx-shell-story.is-rail-collapsed .fx-nav-label { display: none; }
+.fx-app.fx-shell-story.is-rail-collapsed .fx-nav-item { grid-template-columns: 1fr; justify-items: center; padding: 0; }
+
+@media (max-width: 1180px) {
+  .fx-app.fx-shell-story { grid-template-columns: 74px minmax(0, 1fr); grid-template-rows: 72px minmax(0, 1fr); }
+  .fx-shell-story .fx-topbar { min-height: 72px; padding-right: 18px; }
+  .fx-shell-story .fx-topbar-brand { flex-basis: 74px; gap: 0; padding: 0; justify-content: center; }
+  .fx-shell-story .fx-menu-button { display: none; }
+  .fx-shell-story .fx-rail { padding: 12px 8px; }
+  .fx-rail-profile { padding-bottom: 12px; }
+  .fx-profile-avatar { width: 40px; height: 40px; font-size: 16px; }
+  .fx-profile-tier, .fx-rail-profile strong { display: none; }
+  .fx-shell-story .fx-nav-label { display: none; }
+  .fx-shell-story .fx-nav-item { grid-template-columns: 1fr; justify-items: center; padding: 0; }
+  .fx-shell-hero { min-height: 144px; }
+  .fx-shell-hero-title { padding: 22px 24px 12px; }
+  .fx-shell-story .fx-subnav { padding: 0 24px; }
+  .fx-shell-story .fx-content { padding-right: 24px; padding-left: 24px; }
+}
+
+@media (max-width: 760px) {
+  .fx-app.fx-shell-story { grid-template-columns: 58px minmax(0, 1fr); }
+  .fx-shell-story .fx-topbar { padding-right: 10px; }
+  .fx-shell-story .fx-topbar-actions { gap: 6px; }
+  .fx-pro-badge, .fx-fullscreen-icon { display: none; }
+  .fx-shell-hero-title { padding-right: 16px; padding-left: 16px; }
+  .fx-shell-hero-title h1 { font-size: 30px; }
+  .fx-shell-story .fx-subnav { gap: 16px; padding-right: 16px; padding-left: 16px; }
+  .fx-shell-story .fx-subnav-link { font-size: 12px; }
+  .fx-shell-story .fx-content { padding-right: 16px; padding-left: 16px; }
+}
