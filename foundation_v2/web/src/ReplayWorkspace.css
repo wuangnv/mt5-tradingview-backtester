@@ -679,3 +679,229 @@
   .fx-app .fx-content > .replay-shell .replay-contextbar .replay-state { min-height: 29px; margin: 6px 0 6px 8px; }
   .fx-app .fx-content > .replay-shell .replay-chart { height: 420px; min-height: 320px; }
 }
+
+/* Chart-first workbench: keep the canvas visually dominant while preserving
+ * the existing replay API, cutoff facts and decision dock.  The narrow rails
+ * mirror FXReplay's drawing/utility affordances without pretending to send
+ * broker orders or persist chart objects. */
+.fx-app .fx-content > .replay-shell .chart-frame {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  align-items: stretch;
+  gap: 0;
+  min-height: 0;
+  margin-top: 10px;
+  border: 1px solid var(--fx-shell-line);
+  background: #050607;
+}
+
+.fx-app .fx-content > .replay-shell .chart-canvas {
+  position: relative;
+  min-width: 0;
+  background: #050607;
+}
+
+.fx-app .fx-content > .replay-shell .chart-symbol-strip {
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  z-index: 4;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: calc(100% - 32px);
+  color: var(--fx-shell-muted);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.fx-app .fx-content > .replay-shell .chart-symbol-strip strong {
+  color: var(--fx-shell-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.fx-app .fx-content > .replay-shell .chart-symbol-strip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fx-app .fx-content > .replay-shell .chart-symbol-ohlc {
+  color: var(--fx-shell-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.fx-app .fx-content > .replay-shell .chart-tool-rail,
+.fx-app .fx-content > .replay-shell .chart-utility-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  padding: 9px 3px;
+  background: #07090a;
+}
+
+.fx-app .fx-content > .replay-shell .chart-tool-rail { border-right: 1px solid var(--fx-shell-line); }
+.fx-app .fx-content > .replay-shell .chart-utility-rail { border-left: 1px solid var(--fx-shell-line); }
+
+.fx-app .fx-content > .replay-shell .chart-tool-rail button,
+.fx-app .fx-content > .replay-shell .chart-utility-rail button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  min-height: 30px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--fx-shell-muted);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.fx-app .fx-content > .replay-shell .chart-tool-rail button:hover,
+.fx-app .fx-content > .replay-shell .chart-tool-rail button:focus-visible,
+.fx-app .fx-content > .replay-shell .chart-utility-rail button:hover:not(:disabled),
+.fx-app .fx-content > .replay-shell .chart-utility-rail button:focus-visible {
+  border-color: var(--fx-shell-line-strong);
+  background: color-mix(in srgb, var(--fx-shell-accent) 12%, transparent);
+  color: var(--fx-shell-text);
+}
+
+.fx-app .fx-content > .replay-shell .chart-utility-rail button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.fx-app .fx-content > .replay-shell .chart-utility-rail small {
+  display: none;
+  color: inherit;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.fx-app .fx-content > .replay-shell .chart-frame .replay-chart {
+  height: clamp(460px, 66vh, 760px);
+  min-height: 420px;
+  border: 0;
+  border-radius: 0;
+}
+
+.fx-app .fx-content > .replay-shell .chart-frame .chart-badge-left { top: 34px; left: 10px; }
+.fx-app .fx-content > .replay-shell .chart-frame .chart-badge-right { right: 10px; }
+
+.fx-app .fx-content > .replay-shell .chart-bottom-bar {
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) auto minmax(170px, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  border: 1px solid var(--fx-shell-line);
+  border-top: 0;
+  background: #07090a;
+  padding: 6px 10px;
+}
+
+.fx-app .fx-content > .replay-shell .chart-bottom-range,
+.fx-app .fx-content > .replay-shell .chart-bottom-replay,
+.fx-app .fx-content > .replay-shell .chart-bottom-status {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 4px;
+}
+
+.fx-app .fx-content > .replay-shell .chart-bottom-range button,
+.fx-app .fx-content > .replay-shell .chart-bottom-replay button {
+  min-width: 29px;
+  min-height: 28px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--fx-shell-muted);
+  padding: 0 6px;
+  cursor: pointer;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.fx-app .fx-content > .replay-shell .chart-bottom-range button:hover,
+.fx-app .fx-content > .replay-shell .chart-bottom-range button.is-active,
+.fx-app .fx-content > .replay-shell .chart-bottom-replay button:hover:not(:disabled),
+.fx-app .fx-content > .replay-shell .chart-bottom-replay button:focus-visible {
+  border-color: var(--fx-shell-line-strong);
+  color: var(--fx-shell-text);
+}
+
+.fx-app .fx-content > .replay-shell .chart-bottom-replay {
+  justify-content: center;
+  gap: 5px;
+}
+
+.fx-app .fx-content > .replay-shell .chart-bottom-replay button.is-primary {
+  min-width: 90px;
+  border-color: var(--fx-shell-accent);
+  background: var(--fx-shell-accent);
+  color: #071018;
+  font-weight: 700;
+}
+
+.fx-app .fx-content > .replay-shell .chart-bottom-replay button:disabled { cursor: not-allowed; opacity: .45; }
+.fx-app .fx-content > .replay-shell .chart-bottom-cursor { margin-left: 6px; color: var(--fx-shell-subtle); font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.fx-app .fx-content > .replay-shell .chart-bottom-status { justify-content: flex-end; color: var(--fx-shell-subtle); font-size: 10px; white-space: nowrap; }
+.fx-app .fx-content > .replay-shell .chart-bottom-status strong { margin-left: 4px; color: var(--fx-shell-muted); font-weight: 650; }
+.fx-app .fx-content > .replay-shell .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fx-shell-safe); }
+
+@media (max-width: 900px) {
+  .fx-app .fx-content > .replay-shell .chart-frame { grid-template-columns: 34px minmax(0, 1fr); }
+  .fx-app .fx-content > .replay-shell .chart-utility-rail { display: none; }
+  .fx-app .fx-content > .replay-shell .chart-frame .replay-chart { height: clamp(390px, 58vh, 620px); min-height: 360px; }
+  .fx-app .fx-content > .replay-shell .chart-bottom-bar { grid-template-columns: 1fr; gap: 5px; padding: 6px 8px; }
+  .fx-app .fx-content > .replay-shell .chart-bottom-range,
+  .fx-app .fx-content > .replay-shell .chart-bottom-replay,
+  .fx-app .fx-content > .replay-shell .chart-bottom-status { justify-content: center; }
+  .fx-app .fx-content > .replay-shell .chart-bottom-status { display: none; }
+  .fx-app .fx-content > .replay-shell .chart-symbol-ohlc { display: none; }
+}
+
+@media (max-width: 620px) {
+  .fx-app .fx-content > .replay-shell .chart-frame { grid-template-columns: 30px minmax(0, 1fr); }
+  .fx-app .fx-content > .replay-shell .chart-tool-rail { padding-inline: 1px; }
+  .fx-app .fx-content > .replay-shell .chart-tool-rail button { width: 27px; min-height: 29px; font-size: 14px; }
+  .fx-app .fx-content > .replay-shell .chart-symbol-strip { top: 8px; left: 8px; }
+  .fx-app .fx-content > .replay-shell .chart-symbol-strip span { max-width: 115px; }
+  .fx-app .fx-content > .replay-shell .chart-frame .replay-chart { height: 390px; min-height: 320px; }
+  .fx-app .fx-content > .replay-shell .chart-bottom-range { overflow-x: auto; justify-content: flex-start; }
+  .fx-app .fx-content > .replay-shell .chart-bottom-replay { flex-wrap: wrap; }
+  .fx-app .fx-content > .replay-shell .chart-bottom-cursor { width: 100%; margin: 0; text-align: center; }
+}
+
+/* Opening a session is a chart workspace, so the shell's Testing hero/subnav
+ * gives way to the chart toolbar.  Session pickers keep the regular hero. */
+.fx-app.fx-shell-story:has(.replay-chart) .fx-shell-hero { display: none; }
+.fx-app:has(.replay-chart) .fx-content > .replay-shell > .replay-topbar,
+.fx-app:has(.replay-chart) .fx-content > .replay-shell > .replay-contextbar { display: none !important; }
+
+@media (min-width: 901px) {
+  .fx-app .fx-content > .replay-shell .replay-workspace { grid-template-columns: minmax(0, 1fr); }
+  .fx-app .fx-content > .replay-shell .replay-main { padding-right: 0; }
+  .fx-app .fx-content > .replay-shell .replay-side {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.35fr) minmax(250px, .9fr) minmax(250px, .9fr);
+    align-items: start;
+    gap: 22px;
+    max-height: none;
+    overflow: visible;
+    border-left: 0;
+    border-top: 1px solid var(--fx-shell-line);
+    padding: 16px 0 0;
+  }
+  .fx-app .fx-content > .replay-shell .replay-side .session-facts { grid-column: 1 / -1; }
+}
+
+@media (max-width: 900px) {
+  .fx-app .fx-content > .replay-shell .replay-side { display: block; }
+}

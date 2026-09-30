@@ -18,18 +18,15 @@ import './dashboard.css'
 
 function WorkspaceOverview({ workspace, query }) {
   const routeHref = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, overrides)
+  const backtestingHref = routeHref('replay', { select: '1' })
   const cards = [
-    { id: 'backtesting', title: 'Backtesting session', subtitle: 'Start a session', icon: 'plus', href: routeHref('replay'), primary: true },
+    { id: 'backtesting', title: 'Backtesting session', subtitle: 'Start a session', icon: 'plus', href: backtestingHref, primary: true },
     { id: 'prop', title: 'Prop firm session', subtitle: 'Start a challenge', icon: 'trophy', href: routeHref('testing'), primary: true },
     { id: 'tutorials', title: 'Tutorials', subtitle: 'Learn more', icon: 'education', href: routeHref('learn'), primary: false },
   ]
 
   return (
     <section className="fx-dashboard" aria-label="Dashboard">
-      <div className="fx-dashboard-plan-banner" role="note">
-        <span>Local replay workspace · paper-only</span>
-        <a className="fx-dashboard-upgrade" href={routeHref('replay')}>Open Sessions</a>
-      </div>
       <div className="fx-dashboard-inner">
         <div className="fx-dashboard-cards">
           {cards.map((card) => (

@@ -115,6 +115,51 @@ function ChartMenuItem({ active = false, disabled = false, children, onClick }) 
   )
 }
 
+// The chart surface keeps the same local-only contract as the rest of the
+// replay view.  These rails are visual affordances for the FXReplay-style
+// workspace; selecting one only changes the local drawing/context state.
+const CHART_TOOL_RAIL = [
+  { id: 'cross', label: 'Crosshair', icon: '＋' },
+  { id: 'trend', label: 'Trend line', icon: '／' },
+  { id: 'levels', label: 'Horizontal line', icon: '＝' },
+  { id: 'shapes', label: 'Shapes', icon: '◇' },
+  { id: 'text', label: 'Text annotation', icon: 'T' },
+  { id: 'measure', label: 'Measure', icon: '⌁' },
+]
+
+const CHART_UTILITY_RAIL = [
+  { id: 'orders', label: 'Orders (locked)', icon: '＋' },
+  { id: 'objects', label: 'Object tree', icon: '▤' },
+  { id: 'watchlist', label: 'Watchlist', icon: '☷' },
+  { id: 'journal', label: 'Journal', icon: '▣' },
+  { id: 'news', label: 'News', icon: 'N' },
+]
+
+function ChartToolRail({ onSelect }) {
+  return (
+    <nav className="chart-tool-rail" aria-label="Công cụ vẽ chart">
+      {CHART_TOOL_RAIL.map((tool) => (
+        <button key={tool.id} type="button" aria-label={tool.label} title={tool.label} onClick={() => onSelect(tool.label)}>
+          <span aria-hidden="true">{tool.icon}</span>
+        </button>
+      ))}
+    </nav>
+  )
+}
+
+function ChartUtilityRail({ onSelect }) {
+  return (
+    <nav className="chart-utility-rail" aria-label="Tiện ích chart">
+      {CHART_UTILITY_RAIL.map((tool) => (
+        <button key={tool.id} type="button" aria-label={tool.label} title={tool.label} disabled={tool.id === 'orders'} onClick={() => onSelect(tool.label)}>
+          <span aria-hidden="true">{tool.icon}</span>
+          <small>{tool.label.split(' ')[0]}</small>
+        </button>
+      ))}
+    </nav>
+  )
+}
+
 function ReplayChart({ rows, chartType = 'candles', onCrosshair, onAnchorSelect }) {
   const hostRef = useRef(null)
 
@@ -545,6 +590,9 @@ export default function ReplayWorkspace({ workspace, query }) {
     setChartNotice(`${tool} đã chọn · bản vẽ local sẽ được nối ở bước tiếp theo.`)
     setOpenChartMenu('')
   }, [])
+  const selectChartRailTool = useCallback((tool) => {
+    setChartNotice(`${tool} đã chọn · thao tác chỉ áp dụng cho chart local.`)
+  }, [])
   const selectChartOption = useCallback((setter, value, notice = '') => {
     setter(value)
     if (notice) setChartNotice(notice)
@@ -834,14 +882,37 @@ export default function ReplayWorkspace({ workspace, query }) {
               </div>
 
               <div className="chart-frame">
-                <ReplayChart rows={visibleRows} chartType={chartType} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
-                <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
-                <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
-                <div className="chart-floating-context" aria-live="polite">
-                  <span>{chartInterval}</span>
-                  {compareSymbol && <span>+ {compareSymbol}</span>}
-                  {activeIndicators.length > 0 && <span>{activeIndicators.length} indicator{activeIndicators.length > 1 ? 's' : ''}</span>}
+                <ChartToolRail onSelect={selectChartRailTool} />
+                <div className="chart-canvas">
+                  <div className="chart-symbol-strip" aria-label="Thông tin symbol">
+                    <strong>{replayContext.instrument}</strong>
+                    <span>{chartInterval} · local replay</span>
+                    <span className="chart-symbol-ohlc">O {formatPrice((crosshair?.row || currentBar)?.open)} · H {formatPrice((crosshair?.row || currentBar)?.high)} · L {formatPrice((crosshair?.row || currentBar)?.low)} · C {formatPrice((crosshair?.row || currentBar)?.close)}</span>
+                  </div>
+                  <ReplayChart rows={visibleRows} chartType={chartType} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
+                  <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
+                  <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
+                  <div className="chart-floating-context" aria-live="polite">
+                    {compareSymbol && <span>+ {compareSymbol}</span>}
+                    {activeIndicators.length > 0 && <span>{activeIndicators.length} indicator{activeIndicators.length > 1 ? 's' : ''}</span>}
+                  </div>
                 </div>
+                <ChartUtilityRail onSelect={selectChartRailTool} />
+              </div>
+
+              <div className="chart-bottom-bar" aria-label="Điều khiển replay phía dưới chart">
+                <div className="chart-bottom-range" aria-label="Khoảng thời gian chart">
+                  {['1D', '5D', '1M', '3M', '6M', '1Y', 'All'].map((range) => <button key={range} type="button" className={range === 'All' ? 'is-active' : ''} onClick={() => setChartNotice(`${range} · phạm vi hiển thị local.`)}>{range}</button>)}
+                </div>
+                <div className="chart-bottom-replay">
+                  <button type="button" aria-label="Về nến đầu tiên" title="Về nến đầu tiên" onClick={() => { setIsPlaying(false); setJumpDraft(0); loadSession(sessionId, 0) }} disabled={historicalView || conflict || Boolean(pendingAction) || cursor <= 0}>|‹</button>
+                  <button type="button" aria-label="Lùi một nến" title="Lùi một nến" onClick={() => { setIsPlaying(false); setJumpDraft(Math.max(0, cursor - 1)); loadSession(sessionId, Math.max(0, cursor - 1)) }} disabled={historicalView || conflict || Boolean(pendingAction) || cursor <= 0}>‹</button>
+                  <button type="button" className="is-primary" onClick={() => setIsPlaying((current) => !current)} disabled={historicalView || completed || conflict || Boolean(pendingAction)}>{isPlaying ? 'Tạm dừng' : 'Phát replay'}</button>
+                  <button type="button" aria-label="Tiến một nến" title="Tiến một nến" onClick={() => mutate('step', { expected_revision: revision, steps: 1 })} disabled={historicalView || completed || conflict || Boolean(pendingAction)}>›</button>
+                  <button type="button" aria-label="Tiến mười nến" title="Tiến mười nến" onClick={() => mutate('step', { expected_revision: revision, steps: 10 })} disabled={historicalView || completed || conflict || Boolean(pendingAction)}>››</button>
+                  <span className="chart-bottom-cursor">#{cursor} / #{canonicalCursor}</span>
+                </div>
+                <div className="chart-bottom-status"><span className="status-dot" /> Paper replay <strong>{replayContext.instrument}</strong></div>
               </div>
 
               {chartNotice && <div className="chart-notice" role="status">{chartNotice}<button type="button" aria-label="Đóng thông báo" onClick={() => setChartNotice('')}>×</button></div>}

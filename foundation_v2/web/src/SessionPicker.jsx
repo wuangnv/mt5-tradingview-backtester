@@ -200,6 +200,9 @@ function TradesSurface({ selected, workspace, query, newHref, onSelect, catalog 
 
 function AnalyticsSurface({ selected, workspace, query, newHref, onSelect, catalog }) {
   const filters = ['Type', 'Assets', 'Side', 'Outcome', 'Tags', 'Session', 'Strategy', 'Day', 'Time', 'Timezone', 'Backtesting Date']
+  const selectedItem = catalog.items.find((item) => item.record_id === selected)
+  const showDemo = query.get('dataset') === 'ui-replay-fixture' || query.get('demo') === '1' || selectedItem?.dataset_id === 'ui-replay-fixture'
+  const demoHref = buildWorkspaceHref('analytics', workspace, query, { select: '1', demo: '1' })
   return (
     <div className="fxr-analytics-surface" data-testid="analytics-session-dashboard">
       <div className="fxr-analytics-session-toolbar">
@@ -208,9 +211,79 @@ function AnalyticsSurface({ selected, workspace, query, newHref, onSelect, catal
       </div>
       <div className="fxr-analytics-subtabs" role="tablist"><button className="is-active" type="button" role="tab" aria-selected="true">Sessions</button><button type="button" role="tab" aria-selected="false">Prop firm</button></div>
       <div className="fxr-filter-panel"><div className="fxr-filter-row">{filters.map((filter) => <button className="fxr-filter-pill" type="button" key={filter}>{filter}<span aria-hidden="true">⌄</span></button>)}<button className="fxr-apply-button" type="button">Apply</button><button className="fxr-round-button" type="button" aria-label="Download">⇩</button><button className="fxr-share-button" type="button">♧ Share</button></div><div className="fxr-applied-chips"><span>long, short</span><span>wins, losses</span><span>Asia/Ho_Chi_Minh</span><span>00:00 - 23:59</span><span>Backtesting, Battles, &amp; Prop Firm</span><button type="button">♲ Clear filters</button></div></div>
-      <div className="fxr-analytics-empty" data-testid="analytics-empty"><div className="fxr-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div><h2>No session analytics yet!</h2><p>Start applying filters to generate your first performance<br className="fxr-desktop-only" /> insights and track your trading progress.</p><NewSessionLink href={newHref}>New session</NewSessionLink><a href={newHref}>Show demo data</a></div>
+      {showDemo ? <AnalyticsDemoReport /> : <div className="fxr-analytics-empty" data-testid="analytics-empty"><div className="fxr-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div><h2>No session analytics yet!</h2><p>Start applying filters to generate your first performance<br className="fxr-desktop-only" /> insights and track your trading progress.</p><NewSessionLink href={newHref}>New session</NewSessionLink><a href={demoHref}>Show demo data</a></div>}
     </div>
   )
+}
+
+function AnalyticsDemoReport() {
+  const premiumSections = [
+    ['Performance by time', 'Spot your Most Profitable Hours'],
+    ['Performance by day', 'Know Which Days Work Best'],
+    ['Performance by month', 'Track Your Growth Month After Month'],
+    ['Performance calendar', 'Your Trading Day By Day'],
+    ['Average trade frequency', 'See When You Trade — And How Often'],
+  ]
+  return (
+    <section className="fxr-analytics-demo" data-testid="analytics-demo" aria-label="Demo analytics">
+      <div className="fxr-demo-tabs" role="tablist" aria-label="Analytics view">
+        <button className="is-active" type="button" role="tab" aria-selected="true">Performance</button>
+        <button type="button" role="tab" aria-selected="false">Drawdown</button>
+        <button type="button" role="tab" aria-selected="false">Simulation</button>
+      </div>
+
+      <article className="fxr-demo-card fxr-demo-profit-card">
+        <div className="fxr-demo-card-head"><h2>Profit and Loss</h2><span className="fxr-demo-filter">All&nbsp;&nbsp; Day&nbsp;&nbsp; 1 Hour&nbsp;&nbsp; 15 Min</span></div>
+        <div className="fxr-demo-summary-grid">
+          <div><span>Total P&amp;L</span><strong>$8,500.00</strong><em>↑ 8.50%</em></div>
+          <div><span>Account Balance</span><strong>$108,500.00</strong></div>
+          <div><span>Win Rate</span><strong>75%</strong></div>
+          <div><span>Total Trades</span><strong>4</strong></div>
+          <div><span>Profit Factor</span><strong>19.47</strong></div>
+          <div><span>Max Drawdown</span><strong>0%</strong></div>
+        </div>
+        <div className="fxr-demo-line-chart" aria-label="Demo profit and loss curve">
+          <span className="fxr-demo-gridline grid-1" /><span className="fxr-demo-gridline grid-2" /><span className="fxr-demo-gridline grid-3" />
+          <svg viewBox="0 0 900 220" preserveAspectRatio="none" role="img" aria-hidden="true"><defs><linearGradient id="wm-demo-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#1675ff" stopOpacity=".36" /><stop offset="1" stopColor="#1675ff" stopOpacity=".02" /></linearGradient></defs><path d="M0 198 C70 177 98 169 157 142 S270 64 338 90 S442 130 508 104 S620 122 691 72 S805 60 900 32 V220 H0 Z" fill="url(#wm-demo-fill)" /><path d="M0 198 C70 177 98 169 157 142 S270 64 338 90 S442 130 508 104 S620 122 691 72 S805 60 900 32" fill="none" stroke="#277dff" strokeWidth="4" vectorEffect="non-scaling-stroke" /></svg>
+          <div className="fxr-demo-axis"><span>10 am</span><span>11 am</span><span>12 pm</span><span>13 pm</span><span>14 pm</span><span>15 pm</span><span>16 pm</span><span>17 pm</span></div>
+        </div>
+      </article>
+
+      <div className="fxr-demo-stat-grid">
+        {[['Average RR', '3.65'], ['Max RR', '3.65'], ['Ideal Average', '7.11'], ['Max Ideal', '7.11'], ['Could have profited', '0']].map(([label, value]) => <article className="fxr-demo-card fxr-demo-stat-card" key={label}><span>{label}</span><strong>{value}</strong><div className="fxr-demo-sparkline" aria-hidden="true" /></article>)}
+      </div>
+
+      <article className="fxr-demo-card fxr-demo-wide-card"><div className="fxr-demo-card-head"><h2>Expectancy &amp; Profit Factor</h2><span className="fxr-demo-info">i</span></div><div className="fxr-demo-dual-metric"><div><span>Expectancy</span><strong>$1,699.60</strong><em>+ $8,500.00 total</em></div><div><span>Profit factor</span><strong>19.47</strong><em className="is-green">+ 1.47</em></div><b className="fxr-demo-progress-ring" aria-hidden="true" /></div></article>
+
+      <div className="fxr-demo-two-col">
+        <DemoOutcomeCard title="Winners" tone="positive" value="4" lines={['Total winners 4', 'Best win 2,424.26', 'Average win 2,125.00', 'Average duration 1h 29m']} />
+        <DemoOutcomeCard title="Losers" tone="negative" value="1" lines={['Total losers 1', 'Worst loss -100.19', 'Average loss -100.19', 'Average duration 0h 0m']} />
+      </div>
+
+      <h2 className="fxr-demo-section-title">Performance by side <span className="fxr-demo-info">i</span></h2>
+      <div className="fxr-demo-two-col">
+        <DemoDonut title="Total Trades" labels={['Buy 60%', 'Sell 40%']} />
+        <DemoDonut title="Win Rate" labels={['Wins 75%', 'Losses 25%']} />
+      </div>
+
+      <h2 className="fxr-demo-section-title">Performance by session <span className="fxr-demo-info">i</span></h2>
+      <div className="fxr-demo-four-col">{['Win Rate', 'Total Trades', 'Avg RR', 'Profit'].map((title) => <DemoRadar key={title} title={title} />)}</div>
+
+      {premiumSections.map(([title, subtitle]) => <div className="fxr-demo-premium" key={title}><h2>{title} <span className="fxr-demo-info">i</span></h2><div className="fxr-demo-locked"><span className="fxr-lock-mark">Lock</span><strong>{subtitle}</strong><small>Unlock full trade frequency insights and deeper performance data.</small><button type="button">Upgrade</button></div></div>)}
+    </section>
+  )
+}
+
+function DemoOutcomeCard({ title, tone, value, lines }) {
+  return <article className={`fxr-demo-card fxr-demo-outcome-card is-${tone}`}><h3>{title}</h3><strong>{value}</strong>{lines.map((line) => <span key={line}>{line}</span>)}</article>
+}
+
+function DemoDonut({ title, labels }) {
+  return <article className="fxr-demo-card fxr-demo-donut-card"><h3>{title}</h3><div className="fxr-demo-donut" aria-hidden="true"><span /></div><div className="fxr-demo-legend">{labels.map((label, index) => <span key={label}><i className={`is-${index}`} />{label}</span>)}</div></article>
+}
+
+function DemoRadar({ title }) {
+  return <article className="fxr-demo-card fxr-demo-radar-card"><h3>{title}</h3><svg viewBox="0 0 200 120" aria-hidden="true"><polygon points="100,6 188,43 154,110 46,110 12,43" fill="none" stroke="#424650" /><polygon points="100,28 153,50 133,89 67,89 47,50" fill="rgba(21,105,246,.24)" stroke="#3383ff" /></svg><span>Out of session</span></article>
 }
 
 export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a', query = new URLSearchParams() }) {

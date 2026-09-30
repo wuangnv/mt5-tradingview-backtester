@@ -72,7 +72,9 @@ const SHELL_COPY = {
 }
 
 const NAV_ITEMS = [
-  { id: 'replay', short: '⌁', group: 'primary', picker: true },
+  // Testing opens the FXReplay-style dashboard. Sessions is a subnav surface
+  // and must be chosen explicitly instead of hijacking the rail entry.
+  { id: 'replay', route: 'overview', short: '⌁', group: 'primary' },
   { id: 'trade', short: '◉', group: 'primary', picker: true },
   { id: 'playbook', short: '◈', group: 'primary' },
 ]
@@ -95,7 +97,7 @@ const SUBNAV_ITEMS = [
 ]
 
 const RAIL_ACTIVE_VIEWS = {
-  replay: ['replay', 'data'],
+  replay: ['overview', 'replay', 'data'],
   trade: ['trade'],
   playbook: ['playbook', 'research', 'journal', 'risk'],
   learn: ['learn'],
@@ -159,7 +161,7 @@ function NavItem({ item, active, workspace, query, copy }) {
   return (
     <a
       className={`fx-nav-item ${active ? 'is-active' : ''}`}
-      href={hrefFor(item.id, workspace, query, item.picker ? { select: '1' } : {})}
+      href={hrefFor(item.route || item.id, workspace, query, item.picker ? { select: '1' } : {})}
       aria-current={active ? 'page' : undefined}
       aria-label={`${label}: ${description}`}
       data-nav-label={label}

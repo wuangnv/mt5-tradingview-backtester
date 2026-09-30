@@ -11,40 +11,6 @@
   margin: 0 auto;
 }
 
-.fx-dashboard-plan-banner {
-  width: 100%;
-  display: flex;
-  min-height: 58px;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  border: 1px solid rgba(68, 125, 235, .5);
-  background: linear-gradient(105deg, #08142b 0%, #0c234c 60%, #132f63 100%);
-  color: #f4f6ff;
-  padding: 0 22px;
-  font-size: 14px;
-  font-weight: 650;
-  text-align: center;
-}
-
-.fx-dashboard-upgrade {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  border: 1px solid rgba(255,255,255,.55);
-  border-radius: 20px;
-  color: #fff;
-  padding: 0 17px;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.fx-dashboard-upgrade:hover,
-.fx-dashboard-upgrade:focus-visible {
-  border-color: #fff;
-  background: rgba(255,255,255,.1);
-}
-
 .fx-dashboard-cards {
   display: grid;
   width: min(752px, 100%);
@@ -228,8 +194,6 @@
     padding-bottom: 42px;
   }
   .fx-dashboard-inner { width: calc(100% - 32px); }
-  .fx-dashboard-plan-banner { align-items: stretch; flex-direction: column; gap: 10px; padding: 13px 15px; font-size: 12px; }
-  .fx-dashboard-upgrade { align-self: center; }
   .fx-dashboard-cards { grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
   .fx-dashboard-card { min-height: 70px; }
   .fx-dashboard-performance-head { align-items: flex-start; flex-direction: column; margin-top: 23px; }
@@ -245,8 +209,6 @@
 
 /* The light theme keeps the same information hierarchy without changing the
  * fixture semantics. */
-.fx-app[data-theme='light'] .fx-dashboard-plan-banner { border-color: #b6cdf8; background: linear-gradient(105deg, #e8f1ff, #d9e8ff); color: #132b52; }
-.fx-app[data-theme='light'] .fx-dashboard-upgrade { border-color: #4878c8; color: #17427f; }
 .fx-app[data-theme='light'] .fx-dashboard-card { border-color: #c8d0dc; background: #fff; color: #152033; }
 .fx-app[data-theme='light'] .fx-dashboard-card.is-primary { border-color: #2c7bfd; }
 .fx-app[data-theme='light'] .fx-dashboard-card:hover { background: #f1f6ff; }

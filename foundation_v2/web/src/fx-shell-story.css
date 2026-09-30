@@ -353,7 +353,12 @@
   --fx-shell-accent: #2c7bfd;
   grid-template-columns: 256px minmax(0, 1fr);
   grid-template-rows: 80px minmax(0, 1fr);
+  /* Keep the product frame pinned to the viewport. Route content scrolls in
+   * the main pane so the rail utilities stay reachable without page-level
+   * scrolling. */
+  height: 100vh;
   min-height: 100vh;
+  overflow: hidden;
   background: #030303;
   font-family: "Nunito Sans", Inter, ui-sans-serif, system-ui, sans-serif;
 }
@@ -429,7 +434,11 @@
 .fx-shell-story .fx-rail-divider { margin: 18px 0 12px; background: #414347; }
 .fx-shell-story .fx-rail-spacer { min-height: 28px; }
 
-.fx-shell-story .fx-main { background: #030303; }
+.fx-shell-story .fx-main {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #030303;
+}
 .fx-shell-hero {
   min-height: 143px;
   display: flex;
