@@ -1148,4 +1148,18 @@
 .fx-app.fx-shell-story[data-theme='light'] .fx-menu-button:hover,
 .fx-app.fx-shell-story[data-theme='light'] .fx-menu-button:focus-visible {
   color: #1d2930;
-}\n
+}
+
+.fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading {
+  color: #47535b;
+}
+
+.fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading .fx-nav-icon {
+  color: #47535b;
+}
+
+.fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading:hover,
+.fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading:focus-visible {
+  background: #e0e7ea;
+  color: #1d2930;
+}
