@@ -1129,3 +1129,23 @@
     white-space: nowrap;
   }
 }
+
+/* The source-aligned rail rules above are intentionally dark. Keep the two
+ * measured light-theme controls legible after all shell layers are loaded. */
+.fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading.is-active {
+  background: #f0e6d1;
+  color: #5a3a06;
+}
+
+.fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading.is-active .fx-nav-icon {
+  color: #5a3a06;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-menu-button {
+  color: #47535b;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-menu-button:hover,
+.fx-app.fx-shell-story[data-theme='light'] .fx-menu-button:focus-visible {
+  color: #1d2930;
+}\n
