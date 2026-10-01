@@ -105,6 +105,24 @@ class AIFoundationTests(WorkspaceAppTests):
         self.assertEqual(response.json["ai"]["status"], "unavailable")
         self.assertEqual(client.get("/api/runs").status_code, 200)
 
+    def test_nested_sensitive_and_holdout_fields_are_rejected_before_provider_call(self):
+        fake = FakeProvider()
+        app = create_app(self.data_root, ai_provider=fake, ai_enabled_jobs={"playbook_search"})
+        app.config["TESTING"] = True
+        client = app.test_client()
+        for field in ("api-key", "authorization", "holdout_content"):
+            with self.subTest(field=field):
+                response = client.post(
+                    "/api/ai/request",
+                    json={
+                        "job": "playbook_search",
+                        "context_version": "v1",
+                        "state": {"packet": [{"nested": {field: "synthetic-secret"}}]},
+                    },
+                )
+                self.assertEqual(response.status_code, 422)
+        self.assertEqual(fake.calls, [])
+
 
 if __name__ == "__main__":
     unittest.main()

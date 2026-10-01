@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from collections import deque
 
 from ai_provider import AIProviderError, AIProviderUnavailable
 
@@ -79,14 +80,38 @@ class AIService:
     def _validate_state(self, state):
         if not isinstance(state, dict):
             raise AIInvalidRequest("state must be an object")
-        for key, value in state.items():
-            if isinstance(value, list) and len(value) > self.max_input_items:
-                raise AIInvalidRequest(f"state.{key} exceeds max_input_items")
-        forbidden = {"api_key", "password", "secret", "broker_credentials", "holdout_bars"}
-        present = sorted(forbidden.intersection(str(key).lower() for key in state))
-        if present:
-            raise AIInvalidRequest("state contains forbidden sensitive or holdout fields")
-        return json.loads(json.dumps(state, ensure_ascii=True, allow_nan=False))
+        forbidden = {
+            "api_key",
+            "access_token",
+            "authorization",
+            "broker_credentials",
+            "holdout_bars",
+            "holdout_content",
+            "password",
+            "private_key",
+            "secret",
+        }
+        # Context packets can contain nested read-models and candidate lists. A
+        # top-level-only check would let a credential or holdout field hide in a
+        # nested object and reach a provider. Walk the JSON-shaped value without
+        # recursion so adversarial nesting cannot consume the Python call stack.
+        pending = deque([("state", state)])
+        while pending:
+            path, value = pending.pop()
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    normalized = str(key).strip().lower().replace("-", "_")
+                    if normalized in forbidden:
+                        raise AIInvalidRequest("state contains forbidden sensitive or holdout fields")
+                    pending.append((f"{path}.{key}", child))
+            elif isinstance(value, list):
+                if len(value) > self.max_input_items:
+                    raise AIInvalidRequest(f"{path} exceeds max_input_items")
+                pending.extend((f"{path}[{index}]", child) for index, child in enumerate(value))
+        try:
+            return json.loads(json.dumps(state, ensure_ascii=True, allow_nan=False))
+        except (TypeError, ValueError, RecursionError) as exc:
+            raise AIInvalidRequest("AI state must be JSON serializable") from exc
 
     def request(self, envelope):
         if not isinstance(envelope, dict):
