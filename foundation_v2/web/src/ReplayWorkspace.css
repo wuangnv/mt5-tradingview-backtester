@@ -546,6 +546,107 @@
   color: var(--fx-shell-danger);
 }
 
+/* Contrast repair for replay metadata and historical-cutoff warnings.  Keep
+ * the correction local to Replay so shared shell tokens keep their existing
+ * visual contract on the other workspaces.  The darker metadata token stays
+ * restrained on the chart surface, while the light token is dark enough for
+ * the small uppercase labels and chevrons used by the replay toolbar. */
+.fx-app.fx-shell-story:not([data-theme='light']) .fx-content > .replay-shell {
+  --fx-shell-subtle: #7f8b94;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell {
+  --fx-shell-subtle: #47535b;
+}
+
+.fx-app.fx-shell-story:not([data-theme='light']) .fx-content > .replay-shell .cutoff-readout small {
+  color: #7f8b94;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .replay-context-primary strong {
+  color: #704609;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .replay-history-banner {
+  border-bottom-color: #9a630f;
+  color: #704609;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .replay-history-banner span {
+  color: #704609;
+}
+
+/* Replay has two different surfaces in one route: the light shell and the
+ * dark chart canvas. Keep their metadata tokens separate so a shell contrast
+ * fix cannot make chart labels unreadable. */
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .bar-readout strong,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .cutoff-readout > strong,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .session-facts dd,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .session-facts dd code {
+  color: #1d2930;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .cutoff-readout small {
+  color: #47535b;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .replay-evidence-strip > span:last-child {
+  color: #704609;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .story-label,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .side-heading > span,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .side-heading > div > span,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .toolbar-speed > span,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .cutoff-readout > span,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .session-facts dt {
+  color: #47535b;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .replay-side p,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .annotation-draft {
+  color: #47535b;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .mode-pill,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .next-action-link {
+  color: #704609 !important;
+}
+
+/* Chart labels stay light even when the surrounding replay shell is light. */
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-symbol-strip > strong,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-range button.is-active {
+  color: #d6dee2;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-symbol-strip > span:not(.chart-symbol-ohlc),
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-status strong {
+  color: #b0b1b4;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-symbol-ohlc,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-cursor,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-status {
+  color: #7f8b94;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-tool-rail button,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-tool-rail button span,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-utility-rail button,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-utility-rail button span,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-range button,
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-replay button {
+  color: #b0b1b4;
+}
+
+.fx-app.fx-shell-story[data-theme='light'] .fx-content > .replay-shell .chart-bottom-replay button.is-primary {
+  color: #000000;
+}
+
+.fx-app.fx-shell-story .fx-content > .replay-shell .unsupported-tools button:disabled span {
+  color: #aeb8be;
+}
+
 .fx-app .fx-content > .replay-shell .replay-workspace {
   min-height: calc(100vh - 190px);
   grid-template-columns: minmax(0, 1fr) 320px;
