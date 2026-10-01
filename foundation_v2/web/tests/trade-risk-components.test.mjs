@@ -33,23 +33,30 @@ test('trade workspace exposes fail-closed side and risk calculations', () => {
 
 test('trade workspace exposes recoverable read-only loading states and selected side semantics', () => {
   const code = source('TradeWorkspace.jsx')
+  assert.match(code, /const MAX_GET_RETRIES = 3/)
   assert.match(code, /new AbortController\(\)/)
   assert.match(code, /requestId !== replayRequestRef\.current/)
   assert.match(code, /requestId !== datasetRequestRef\.current/)
   assert.match(code, /Không đọc được catalog dataset/)
-  assert.match(code, /onClick=\{fetchDatasets\}/)
-  assert.match(code, /onClick=\{fetchReplay\}/)
+  assert.match(code, /data-testid="trade-dataset-retry"/)
+  assert.match(code, /data-testid="trade-replay-retry"/)
+  assert.match(code, /retryDatasets/)
+  assert.match(code, /retryReplay/)
+  assert.match(code, /trade-context-unknown/)
+  assert.match(code, /datasetState\.status === 'ready'/)
   assert.match(code, /aria-pressed=\{draft\.side === 'BUY'\}/)
   assert.match(code, /aria-pressed=\{draft\.side === 'SELL'\}/)
 })
 
 test('async replay hydration derives risk defaults from the loaded cutoff', () => {
   const code = source('TradeWorkspace.jsx')
-  // The initial state has no rows and therefore uses the placeholder 1.1
-  // price. Once the GET resolves, defaults must come from the replay bars so
-  // the first queue attempt is validated against the actual session price.
+  // The initial state has no rows and therefore keeps draft values unknown.
+  // Once the GET resolves, defaults must come from the replay bars so the
+  // first queue attempt is validated against the actual session price.
   assert.match(code, /setDraft\(initialDraft\(next\)\)/)
   assert.match(code, /if \(replay\) setDraft\(initialDraft\(replay\)\)/)
+  assert.match(code, /const price = optionalNumber\(current\?\.close\)/)
+  assert.doesNotMatch(code, /numberOr\(current\?\.close, 1\.1\)/)
   assert.doesNotMatch(code, /\.\.\.initialDraft\(next\), \.\.\.current/)
 })
 
