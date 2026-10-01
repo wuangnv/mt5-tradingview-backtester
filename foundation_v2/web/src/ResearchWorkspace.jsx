@@ -50,6 +50,54 @@ function checkpointProgress(checkpoint) {
   return numeric <= 1 ? Math.max(0, Math.min(100, numeric * 100)) : Math.max(0, Math.min(100, numeric))
 }
 
+// Read-only requests may recover from a short backend/network blip; writes never use this path.
+const GET_RETRY_DELAYS_MS = [250, 750]
+
+function abortError() {
+  const error = new Error('The operation was aborted.')
+  error.name = 'AbortError'
+  return error
+}
+
+function delayWithAbort(delayMs, signal) {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(abortError())
+      return
+    }
+    let timer
+    const onAbort = () => {
+      if (timer) globalThis.clearTimeout(timer)
+      signal?.removeEventListener('abort', onAbort)
+      reject(abortError())
+    }
+    timer = globalThis.setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort)
+      resolve()
+    }, delayMs)
+    signal?.addEventListener('abort', onAbort, { once: true })
+  })
+}
+
+function isRetryableGetError(error) {
+  if (!error || error.name === 'AbortError') return false
+  const status = Number(error.status)
+  return !Number.isFinite(status) || status === 408 || status === 425 || status === 429 || status >= 500
+}
+
+async function readWithBoundedRetry(read, signal, delays = GET_RETRY_DELAYS_MS) {
+  let retryIndex = 0
+  while (true) {
+    try {
+      return await read(signal)
+    } catch (error) {
+      if (!isRetryableGetError(error) || retryIndex >= delays.length) throw error
+      await delayWithAbort(delays[retryIndex], signal)
+      retryIndex += 1
+    }
+  }
+}
+
 function qualityTone(dataset) {
   if (!dataset) return 'blocked'
   if (dataset.quality_status === 'verified' || dataset.quality?.status === 'verified') return 'ready'
@@ -125,7 +173,10 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
     const requestSeq = ++catalogRequestSeq.current
     if (requestedJob) { setCatalog({ status: 'ready', datasets: [], engines: [], error: null }); return undefined }
     const controller = new AbortController()
-    Promise.all([fetchDatasets(workspace, controller.signal), fetchResearchEngines(workspace, controller.signal)]).then(([datasets, engines]) => {
+    Promise.all([
+      readWithBoundedRetry((signal) => fetchDatasets(workspace, signal), controller.signal),
+      readWithBoundedRetry((signal) => fetchResearchEngines(workspace, signal), controller.signal),
+    ]).then(([datasets, engines]) => {
       if (requestSeq !== catalogRequestSeq.current) return
       setCatalog({ status: 'ready', datasets, engines: engines?.items || [], error: null })
       setSelectedId((current) => current || datasets[0]?.dataset_id || '')
@@ -139,10 +190,12 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
   useEffect(() => { if (selected) updateMarketContext({ instrument: String(selected.instrument_id || selected.dataset_id || ''), timeframe: String(selected.timeframe || 'TF chưa rõ'), dataStatus: String(selected.quality_status || 'unverified') }) }, [selected, updateMarketContext])
 
   const refreshJob = useCallback(async (jobId, signal, requestSeq) => {
-    const job = await getResearchJob(workspace, jobId, signal)
+    const job = await readWithBoundedRetry((retrySignal) => getResearchJob(workspace, jobId, retrySignal), signal)
     if (requestSeq !== jobRequestSeq.current) return null
     let checkpoint = null
-    if (job.status === 'queued' || job.status === 'running') checkpoint = await getResearchCheckpoint(workspace, jobId, signal)
+    if (job.status === 'queued' || job.status === 'running') {
+      checkpoint = await readWithBoundedRetry((retrySignal) => getResearchCheckpoint(workspace, jobId, retrySignal), signal)
+    }
     if (requestSeq !== jobRequestSeq.current) return null
     setJobState({ status: 'ready', job, checkpoint, error: null })
     return job
@@ -200,10 +253,10 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
     <div className="rs-statusbar" aria-label="Trạng thái Research"><span>Workspace <strong>{workspace}</strong></span><span>Job <code>{job?.job_id || requestedJob || 'Chưa tạo'}</code></span><span className={`rs-status ${statusClass(job?.status)}`} data-testid="research-status">{job ? statusLabel(job.status) : catalog.status === 'loading' ? 'Đang tải catalog' : 'Chưa chạy'}</span><span>Engine <strong>{engine?.available ? 'nautilus sẵn sàng' : 'reference / chưa xác minh'}</strong></span></div>
     <FlowStepper selected={selected} job={job} result={result} />
     {catalog.status === 'loading' && <div className="rs-message" role="status">Đang đọc dataset và research engines…</div>}
-    {catalog.status === 'error' && <div className="rs-message is-error" role="alert">Không đọc được catalog: {catalog.error} <button type="button" className="rs-inline-button" data-testid="research-catalog-retry" onClick={() => setCatalogRetryToken((current) => current + 1)}>Thử lại</button></div>}
-    {jobState.status === 'error' && <div className="rs-message is-error" role="alert">Research không hoàn tất: {jobState.error} <button type="button" className="rs-inline-button" data-testid="research-job-retry" onClick={() => setJobRetryToken((current) => current + 1)}>Thử lại</button></div>}
+    {catalog.status === 'error' && <div className="rs-message is-error" role="alert">Không đọc được catalog: {catalog.error} <button type="button" className="rs-inline-button" data-testid="research-catalog-retry" onClick={() => { setCatalog({ status: 'loading', datasets: [], engines: [], error: null }); setCatalogRetryToken((current) => current + 1) }}>Thử lại</button></div>}
+    {jobState.status === 'error' && <div className="rs-message is-error" role="alert">Research không hoàn tất: {jobState.error} <button type="button" className="rs-inline-button" data-testid="research-job-retry" onClick={() => { setJobState((current) => ({ ...current, status: 'loading', error: null })); setJobRetryToken((current) => current + 1) }}>Thử lại</button></div>}
     <div className="rs-layout"><div className="rs-primary-column"><DatasetContext dataset={selected} workspace={workspace} fallbackDatasetId={contextDatasetId} fallbackKind={job?.dataset_id ? 'job' : requestedDataset ? 'query' : 'none'} /><QualityTakeaway dataset={selected} />{catalog.status === 'ready' && <section className="rs-section rs-run-section" aria-label="Tạo research run" data-testid="research-run-form"><div className="rs-section-head"><div><span className="rs-eyebrow">03 / RUN CONFIG</span><h2>Cố định giả định</h2><p>Chỉ gửi dataset, strategy contract và starting balance đến local research backend.</p></div></div>{catalog.datasets.length === 0 ? <div className="rs-empty-state"><span className="rs-state-mark">i</span><span><strong>Đang mở lại job hiện tại</strong><small>Muốn tạo run mới, mở Data Desk để chọn một dataset khác.</small></span></div> : <form className="rs-run-form" onSubmit={runResearch}><label className="rs-field rs-field-wide"><span>Dataset</span><select aria-label="Research dataset" value={selected?.dataset_id || ''} onChange={(event) => { setSelectedId(event.target.value); setQuery({ dataset: event.target.value, job: null }) }}><option value="" disabled>Chọn dataset</option>{catalog.datasets.map((dataset) => <option key={dataset.dataset_id} value={dataset.dataset_id}>{dataset.dataset_id} · {dataset.instrument_id || 'instrument?'}</option>)}</select><small>Dataset là anchor của provenance và không tự đổi theo catalog.</small></label><label className="rs-field"><span>Starting balance</span><input aria-label="Starting balance" inputMode="decimal" value={form.startingBalance} onChange={(event) => setForm((current) => ({ ...current, startingBalance: event.target.value }))} /><small>Đơn vị theo contract engine.</small></label><label className="rs-field"><span>Strategy contract</span><select aria-label="Strategy version" value={form.strategyVersion} onChange={(event) => setForm((current) => ({ ...current, strategyVersion: event.target.value }))}><option value="close-delta-v1">close-delta-v1</option></select><small>Chỉ engine đã được backend công bố.</small></label><button className="rs-button is-primary" type="submit" data-testid="research-run-submit" disabled={pending === 'create' || Boolean(active) || !selected}>{pending === 'create' ? 'Đang tạo…' : active ? 'Run đang chạy…' : 'Tạo research run'}</button></form>}{selected && <div className="rs-run-guard"><strong>Guard trước khi chạy</strong><span>{qualityLabel(selected)} · {holdoutLabel(selected)} · {selected.instrument_spec ? 'instrument cost metadata có sẵn' : 'instrument spec chưa xác định'}.</span></div>}</section>}{job && <section className="rs-section rs-checkpoint-section" aria-label="Research job" data-testid="research-job-panel"><div className="rs-section-head"><div><span className="rs-eyebrow">04 / CHECKPOINT</span><h2>{active ? 'Run đang tạo bằng chứng' : 'Run đã có trạng thái cuối'}</h2><p>Backend là authority; checkpoint chỉ mô tả tiến độ, không biến thành kết quả giả.</p></div>{active && <button className="rs-button is-danger" type="button" data-testid="research-cancel" onClick={cancel} disabled={pending === 'cancel'}>{pending === 'cancel' ? 'Đang hủy…' : 'Hủy run'}</button>}</div><div className="rs-job-strip"><div><span>Status</span><strong className={statusClass(job.status)}>{statusLabel(job.status)}</strong></div><div><span>Dataset</span><code>{job.dataset_id}</code></div><div><span>Attempt</span><strong>{job.attempt_no ?? 'Chưa có'}</strong></div><div><span>Cập nhật</span><strong>{formatUtc(job.updated_at_utc)}</strong></div></div>{active && <div className="rs-checkpoint-body">{progress !== null ? <div className="rs-progress-wrap"><div className="rs-progress-label"><span>Tiến độ backend</span><strong>{formatNumber(progress, 0)}%</strong></div><div className="rs-progress" aria-label={`Tiến độ ${formatNumber(progress, 0)}%`}><span style={{ width: `${progress}%` }} /></div></div> : <div className="rs-message">Backend chưa cung cấp phần trăm tiến độ; run vẫn đang hoạt động.</div>}{jobState.checkpoint && <div className="rs-checkpoint-note" data-testid="research-checkpoint"><strong>Checkpoint:</strong> {jobState.checkpoint.checkpoint?.phase || jobState.checkpoint.phase || 'đang cập nhật'} · attempt {jobState.checkpoint.checkpoint?.attempt_no || jobState.checkpoint.attempt_no || 'N/A'}</div>}</div>}{errors.length > 0 && <div className="rs-message is-error">Backend error: {errors.join(', ')}</div>}</section>}</div><aside className="rs-secondary-column">{result ? <section className="rs-result-section" aria-label="Research result" data-testid="research-result"><div className="rs-section-head"><div><span className="rs-eyebrow">05 / RESULT</span><h2>Kết quả có provenance</h2><p>Đọc takeaway trước, mở số liệu chi tiết sau.</p></div><span className="rs-pill is-ready">Completed</span></div><div className="rs-result-takeaway"><strong>{result.trade_count === 0 ? 'Chưa có trade để kết luận' : `Đã đóng ${formatNumber(result.trade_count, 0)} trade`}</strong><span>{metrics.net_pnl === null || metrics.net_pnl === undefined ? 'Net P/L chưa có dữ liệu' : `Net P/L ${formatNumber(metrics.net_pnl)}`}. Không suy diễn từ metric bị thiếu.</span></div><div className="rs-result-grid"><div><span>Trades</span><strong>{formatNumber(result.trade_count, 0)}</strong></div><div><span>Net P/L</span><strong>{formatNumber(metrics.net_pnl)}</strong></div><div><span>Win rate</span><strong>{metrics.win_rate_pct === null || metrics.win_rate_pct === undefined ? 'N/A' : `${formatNumber(metrics.win_rate_pct)}%`}</strong></div><div><span>Max DD</span><strong>{formatNumber(metrics.closed_trade_balance_max_drawdown)}</strong></div></div><Sparkline points={curve} /><details className="rs-disclosure rs-provenance"><summary>Result provenance</summary><dl className="rs-provenance-grid"><div><dt>Dataset SHA</dt><dd><code>{result.dataset_sha256 || 'Chưa có hash'}</code></dd></div><div><dt>Metrics schema</dt><dd><code>{result.metrics_schema_version || 'Chưa xác định'}</code></dd></div><div><dt>Job</dt><dd><code>{result.job_id}</code></dd></div></dl></details><div className="rs-next-action" data-testid="research-next-actions"><span className="rs-eyebrow">NEXT ACTION</span><strong>Đưa kết quả về vòng lặp trading</strong><p>Result chỉ có giá trị khi bạn biết bước review tiếp theo.</p><div className="rs-action-list"><a href={replayHref}>Mở lại Practice ↗</a><a href={analyticsHref}>Xem Analytics ↗</a><a href={learnHref}>Ôn glossary ↗</a></div></div></section> : job && ['failed', 'canceled'].includes(job.status) ? <section className="rs-result-section rs-result-terminal" data-testid="research-terminal-result"><div className="rs-section-head"><div><span className="rs-eyebrow">05 / RESULT</span><h2>{statusLabel(job.status)} — chưa có result</h2><p>Backend đã kết thúc run nhưng không phát hành metrics. Không dựng kết quả thay thế.</p></div><span className="rs-pill is-warn">{statusLabel(job.status)}</span></div><div className="rs-empty-state"><span className="rs-state-mark">!</span><span><strong>{job.error_code || 'Không có error code'}</strong><small>Giữ nguyên trạng thái terminal và mở lại workflow khi đã xác định nguyên nhân.</small></span></div><div className="rs-action-list"><a href={learnHref}>Học &amp; thuật ngữ</a><a href={replayHref}>Mở Practice</a></div></section> : !job ? <section className="rs-result-section rs-result-placeholder" aria-label="Research result placeholder"><div className="rs-section-head"><div><span className="rs-eyebrow">05 / RESULT</span><h2>Kết quả sẽ xuất hiện ở đây</h2><p>Không có run thì không hiển thị số giả.</p></div></div><div className="rs-empty-state"><span className="rs-state-mark">○</span><span><strong>Chưa có result</strong><small>Hoàn tất context và run config ở cột bên trái trước.</small></span></div><div className="rs-action-list"><a href={learnHref}>Học &amp; thuật ngữ</a></div></section> : null}</aside></div>
   </main>
 }
 
-export { checkpointProgress, qualityStory, qualityTone, statusLabel }
+export { checkpointProgress, qualityStory, qualityTone, statusLabel, isRetryableGetError, readWithBoundedRetry }

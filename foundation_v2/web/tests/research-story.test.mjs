@@ -22,7 +22,7 @@ test('research story keeps the evidence-first flow and truthful safety boundary'
   assert.match(source, /Không hiển thị placeholder metrics/)
   assert.match(source, /data-testid="research-quality-takeaway"/)
   assert.match(source, /data-testid="research-next-actions"/)
-  assert.match(source, /getResearchCheckpoint\(workspace, jobId, signal\)/)
+  assert.match(source, /getResearchCheckpoint\(workspace, jobId, retrySignal\)/)
   assert.match(source, /cancelResearchJob\(workspace, jobState\.job\.job_id\)/)
   assert.match(source, /fallbackKind=\{job\?\.dataset_id \? 'job' : requestedDataset \? 'query' : 'none'\}/)
   assert.match(source, /Dataset chưa được xác nhận trong catalog/)

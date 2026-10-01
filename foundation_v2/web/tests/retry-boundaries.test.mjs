@@ -9,6 +9,12 @@ const read = (name) => fs.readFileSync(path.join(root, name), 'utf8')
 test('Data Desk catalog has explicit retry and stale-response fencing', () => {
   const source = read('DataDeskWorkspace.jsx')
   const css = read('research-data.css')
+  assert.match(source, /MAX_GET_RETRIES\s*=\s*3/)
+  assert.match(source, /catalogRetryCount/)
+  assert.match(source, /catalogRetryExhausted/)
+  assert.match(source, /aria-describedby=\{catalogRetryExhausted \? 'data-desk-retry-note' : undefined\}/)
+  assert.match(source, /Đã thử lại \{MAX_GET_RETRIES\} lần/)
+  assert.match(source, /if \(catalogRetryCountRef\.current >= MAX_GET_RETRIES \|\| state\.status === 'loading'\) return/)
   assert.match(source, /useRef/)
   assert.match(source, /catalogRequestSeq/)
   assert.match(source, /new AbortController\(\)/)
@@ -22,6 +28,11 @@ test('Data Desk catalog has explicit retry and stale-response fencing', () => {
 test('Research catalog and job reads expose retry and reject stale responses', () => {
   const source = read('ResearchWorkspace.jsx')
   const css = read('research-story.css')
+  assert.match(source, /GET_RETRY_DELAYS_MS = \[250, 750\]/)
+  assert.match(source, /readWithBoundedRetry\(\(signal\) => fetchDatasets\(workspace, signal\)/)
+  assert.match(source, /readWithBoundedRetry\(\(signal\) => fetchResearchEngines\(workspace, signal\)/)
+  assert.match(source, /readWithBoundedRetry\(\(retrySignal\) => getResearchJob\(workspace, jobId, retrySignal\)/)
+  assert.match(source, /readWithBoundedRetry\(\(retrySignal\) => getResearchCheckpoint\(workspace, jobId, retrySignal\)/)
   assert.match(source, /catalogRetryToken/)
   assert.match(source, /jobRetryToken/)
   assert.match(source, /catalogRequestSeq/)
@@ -31,4 +42,27 @@ test('Research catalog and job reads expose retry and reject stale responses', (
   assert.match(source, /requestSeq !== jobRequestSeq\.current/)
   assert.match(source, /error\.name !== 'AbortError' && requestSeq === jobRequestSeq\.current/)
   assert.match(css, /\.rs-inline-button:focus-visible/)
+})
+
+test('Research bounded GET retry recovers from one transient 503 and does not retry 404', async () => {
+  const source = read('ResearchWorkspace.jsx')
+  const start = source.indexOf('const GET_RETRY_DELAYS_MS')
+  const end = source.indexOf('\nfunction qualityTone', start)
+  assert.ok(start >= 0 && end > start, 'retry helper block must remain directly testable')
+  const helpers = new Function(`${source.slice(start, end)}; return { isRetryableGetError, readWithBoundedRetry }`)()
+
+  let attempts = 0
+  const payload = await helpers.readWithBoundedRetry(async () => {
+    attempts += 1
+    if (attempts === 1) {
+      const error = new Error('HTTP 503')
+      error.status = 503
+      throw error
+    }
+    return { items: ['fixture-dataset'] }
+  }, undefined, [0])
+  assert.deepEqual(payload, { items: ['fixture-dataset'] })
+  assert.equal(attempts, 2, 'a transient 503 should receive one bounded retry')
+  assert.equal(helpers.isRetryableGetError({ status: 404 }), false)
+  assert.equal(helpers.isRetryableGetError({ status: 503 }), true)
 })
