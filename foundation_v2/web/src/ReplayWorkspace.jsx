@@ -872,7 +872,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 </div>
                 <div className="toolbar-speed" aria-label="Tốc độ replay">
                   <span>Tốc độ</span>
-                  <select value={speed} onChange={(event) => setSpeed(event.target.value)} disabled={Boolean(pendingAction)}>
+                  <select aria-label="Tốc độ replay" value={speed} onChange={(event) => setSpeed(event.target.value)} disabled={Boolean(pendingAction)}>
                     <option value="0.5">0.5×</option>
                     <option value="1">1×</option>
                     <option value="2">2×</option>
