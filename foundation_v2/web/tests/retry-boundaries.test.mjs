@@ -41,6 +41,8 @@ test('Research catalog and job reads expose retry and reject stale responses', (
   assert.match(source, /data-testid="research-job-retry"/)
   assert.match(source, /requestSeq !== jobRequestSeq\.current/)
   assert.match(source, /error\.name !== 'AbortError' && requestSeq === jobRequestSeq\.current/)
+  assert.match(source, /const canRetryJobRead = Boolean\(pollJobId\)/)
+  assert.match(source, /canRetryJobRead \? <button[\s\S]*research-job-retry/)
   assert.match(css, /\.rs-inline-button:focus-visible/)
 })
 
