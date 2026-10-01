@@ -5,7 +5,7 @@ description: Verify Trading Workspace web UI with scoped Playwright CLI/tests, s
 
 # Trading UI QA
 
-Use the canonical [Product Plan](../../../../../planning/mt5-tradingview-backtester/PRODUCT-COMPLETION-PLAN.md) and its entrypoint. They own scope and current tasks; a screenshot or this skill never grants broker/data/provider permissions. User delegated UI aesthetics to agents on 23/09: review and choose without asking owner for each screen, but do not claim untested UI accepted.
+Use the canonical [Product Plan](../../../../../planning/mt5-tradingview-backtester/PRODUCT-COMPLETION-PLAN.md) and its [entrypoint](../../../../../planning/mt5-tradingview-backtester/EXECUTION-ENTRYPOINT.md) for product scope and task/state routing. [WMREPLAY](../../../../../planning/mt5-tradingview-backtester/WMREPLAY-UI-MASTER-PLAN.md) owns the UI quality contract. A screenshot or this skill never grants broker/data/provider permissions. The owner delegated UI aesthetics to agents: review and choose without asking owner for each screen, but do not claim untested UI accepted.
 
 ## Start from the existing kit
 
@@ -15,7 +15,7 @@ Read [worker-kit README](../../../../../tooling/ui-qa/README.md). From TradingWo
 node tooling/ui-qa/qa.mjs doctor --plan D:/ANNAM/TradingWorkspace/planning/mt5-tradingview-backtester/PRODUCT-COMPLETION-PLAN.md
 ```
 
-Doctor is read-only. Load only the relevant U/Y packet and operational RESUME/receipts linked by the entrypoint; do not rediscover the whole repo or reset accepted work. If working from another cwd, resolve the kit from this file rather than depending on `D:\ANNAM\RoadMap`.
+Doctor is read-only. Load only the assigned U/Y/W packet and operational state/receipts linked by the entrypoint or WMREPLAY; do not rediscover the whole repo or reset accepted work. Verify the main repo's `foundation_v2` UI using its README and closest AGENTS. Old static U1 previews and retired design checkouts are not the default test target. Resolve the kit from this file when working from another cwd.
 
 ## Choose the smallest useful check
 

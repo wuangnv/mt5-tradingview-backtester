@@ -4,15 +4,19 @@ Parent workspace instructions in `D:\ANNAM\TradingWorkspace\AGENTS.md` apply.
 
 ## Authoritative context
 
+- Start/run instructions: `README.md`; current product source is `foundation_v2/`.
 - Product completion plan: `D:\ANNAM\TradingWorkspace\planning\mt5-tradingview-backtester\PRODUCT-COMPLETION-PLAN.md`
-- Existing design baseline: `D:\ANNAM\TradingWorkspace\planning\mt5-tradingview-backtester\DESIGN-SYSTEM.md`
-- Current U1 checkpoint: `D:\ANNAM\TradingWorkspace\planning\mt5-tradingview-backtester\U1-DESIGN-CHECKPOINT-2026-09-19.md`
-- New UI exploration plan: `D:\ANNAM\TradingWorkspace\planning\mt5-tradingview-backtester\MT5-UI-EXPLORATION-PLAN.md`
+- Start/resume and state ownership: `EXECUTION-ENTRYPOINT.md` beside that plan, then its current ledger/receipts. Generated `STATE.json` and narrative `RESUME.md` do not replace the ledger.
+- UI scope/quality: `D:\ANNAM\TradingWorkspace\planning\mt5-tradingview-backtester\WMREPLAY-UI-MASTER-PLAN.md`
 - Project UI contract/config: `ui/`
+
+U1 checkpoints and old design/exploration prompts are historical references. Open them only for relevant decisions or regressions; do not restart accepted work from an old status snapshot.
 
 ## Current UI gate
 
-On 23/09/2026 the owner delegated UI direction and acceptance to agents. Use independent review + runnable visual/interaction QA; do not wait for owner aesthetic approval or treat the existing preview as already accepted. The authoritative rubric/scope is `planning/mt5-tradingview-backtester/UI-AUTONOMY-FIGMA-PROP-PLAN.md` under the parent workspace. Broker/data/cost/deploy gates remain separate.
+The owner delegated UI direction and acceptance to agents. Continue the chosen WMREPLAY direction with independent review + runnable visual/interaction QA; do not wait for owner aesthetic approval or treat implementation/build success as accepted UI. Product Plan owns scope; WMREPLAY owns its UI quality contract. Broker/data/cost/deploy gates remain separate.
+
+The owner retired `projects/mt5-tradingview-backtester-figma-make` and `projects/mt5-tradingview-backtester-gemini-sketch` on 01/10/2026. Do not use or recreate these checkouts as a prerequisite for product work. New design exploration requires an explicit task; ordinary UI work stays in the main repo.
 
 ## UI worker preparation
 

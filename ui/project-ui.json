@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "exploration",
+  "status": "implementation-in-progress",
   "globalUiSystem": null,
   "globalUiSystemVersion": null,
   "theme": null,
@@ -8,24 +8,26 @@
   "domain": "trading",
   "domainUiVersion": "0.1.0-dev",
   "representativeScreens": [
-    "research",
+    "overview",
+    "replay",
     "analytics",
-    "chart-practice"
+    "prop"
   ],
-  "explorationArtifact": "static/u1-design-preview.html",
-  "activeReviewArtifact": "static/u1-fxreplay-preview.html",
-  "reviewMode": "fxreplay-inspired-fast-track",
+  "activeReviewArtifact": "foundation_v2/web/index.html",
+  "legacyExplorationArtifacts": [
+    "static/u1-design-preview.html",
+    "static/u1-fxreplay-preview.html"
+  ],
+  "reviewMode": "wmreplay-implementation-qa",
   "referenceProduct": "FX Replay",
   "referenceUse": "layout-and-workflow-only",
   "reviewSequence": [
     "shell",
     "overview",
-    "strategies",
-    "data",
-    "research",
-    "analytics",
-    "chart-practice",
+    "replay",
     "trade",
+    "analytics",
+    "playbook",
     "learn",
     "settings"
   ],
@@ -33,12 +35,10 @@
   "imageOnlyCandidatesApprovable": false,
   "previewScreens": [
     "overview",
-    "strategies",
-    "data",
-    "research",
-    "analytics",
-    "chart-practice",
+    "replay",
     "trade",
+    "analytics",
+    "playbook",
     "learn",
     "settings"
   ],
@@ -53,5 +53,13 @@
       ]
     }
   ],
-  "approvedForProductionPropagation": false
+  "approvedForProductionPropagation": false,
+  "acceptanceStatus": "partial-local-validation",
+  "pendingAcceptanceGates": [
+    "native-browser-zoom",
+    "axe-wcag",
+    "canonical-golden",
+    "long-duration-memory",
+    "full-bleed-promotion"
+  ]
 }

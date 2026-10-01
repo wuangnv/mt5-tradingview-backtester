@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 echo
 echo "============================================================"
-echo " WuangVibeTrading - macOS Launcher"
+echo " WuangVibeTrading - Legacy Flask macOS Launcher"
 echo "============================================================"
 echo
 

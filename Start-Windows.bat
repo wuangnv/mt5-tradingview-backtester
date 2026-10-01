@@ -1,12 +1,12 @@
 @echo off
 setlocal
-title WuangVibeTrading Launcher
+title WuangVibeTrading Legacy Flask Launcher
 
 cd /d "%~dp0"
 
 echo.
 echo ============================================================
-echo  WuangVibeTrading - Windows Launcher
+echo  WuangVibeTrading - Legacy Flask Windows Launcher
 echo ============================================================
 echo.
 

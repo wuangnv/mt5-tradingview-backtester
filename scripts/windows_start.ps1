@@ -38,7 +38,7 @@ function Find-Python {
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Magenta
-Write-Host " WuangVibeTrading - Windows Launcher" -ForegroundColor Magenta
+Write-Host " WuangVibeTrading - Legacy Flask Windows Launcher" -ForegroundColor Magenta
 Write-Host "============================================================" -ForegroundColor Magenta
 
 if (!(Test-Path $AppFile)) {
@@ -59,7 +59,7 @@ Write-Step "Upgrading pip"
 Write-Step "Installing Python dependencies"
 & $VenvPython -m pip install -r $Requirements
 
-Write-Step "Starting local web app"
+Write-Step "Starting legacy Flask workspace"
 Write-Host "Browser will open at $Url when the server is ready." -ForegroundColor Green
 Write-Host "Keep this window open while using the app." -ForegroundColor Yellow
 Write-Host "Press Ctrl+C here to stop." -ForegroundColor Yellow

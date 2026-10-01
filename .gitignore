@@ -168,3 +168,8 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Local runtime journals and one-off browser diagnostics
+/foundation_v2/runtime/
+/foundation_v2/web/tmp-*.cjs
+/foundation_v2/web/.wmgeom.mjs

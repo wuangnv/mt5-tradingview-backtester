@@ -1,8 +1,11 @@
-# Foundation v2 reference slice
+# Foundation v2 — PATH-2 development
 
-This directory is the F6 PATH-2 reference slice. It is intentionally isolated
-from the current Flask runtime while that runtime remains a read-only reference
-for capability and semantic comparison.
+This is the current development foundation approved by PATH-2. It started with
+the F6 reference slice and now contains the FastAPI/PostgreSQL services, research
+engine integration and React WMReplay UI. The legacy Flask runtime remains a
+reference for capability and semantic comparison, not the development entrypoint.
+See the [root README](../README.md) for setup, current UI gates and the canonical
+workspace plans. The capability notes below do not claim full product acceptance.
 
 The first slice proves one complete local workflow:
 
@@ -29,8 +32,9 @@ this slice while the new runtime, storage, process and API boundaries are built
 around them. Acceptance tests guard that those retained modules do not acquire
 Flask or SQLite imports.
 
-Nothing here enables live execution, reads holdout data, deploys to cloud, or
-replaces the supported legacy launcher yet.
+This foundation does not enable live execution, read holdout data or deploy to
+cloud. Existing root launch scripts still start Flask legacy; they do not launch
+PATH-2. Follow the root README when developing this foundation.
 
 F7 now has a first software-baseline slice on top of the same foundation:
 

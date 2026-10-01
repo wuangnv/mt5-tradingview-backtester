@@ -48,7 +48,7 @@ else
     step "Python dependencies already installed"
 fi
 
-step "Starting local web app"
+step "Starting legacy Flask workspace"
 echo "Browser will open at $URL when the server is ready."
 echo "Keep this Terminal window open while using the app."
 echo "Press Ctrl+C here to stop."
