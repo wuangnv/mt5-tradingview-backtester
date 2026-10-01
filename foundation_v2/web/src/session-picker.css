@@ -34,7 +34,7 @@
 .fxr-button-secondary:hover { background: #131415; border-color: #6a6d73; }
 .fxr-button-danger { background: #fb6a5f; color: #fff; }
 .fxr-button-danger:hover:not(:disabled) { background: #ff8075; }
-.fxr-button:disabled, .fx-text-button:disabled { cursor: not-allowed; opacity: .45; }
+.fxr-button:disabled, .fxr-text-button:disabled { cursor: not-allowed; opacity: .45; }
 .fxr-text-button { min-height: 42px; border: 0; background: transparent; color: #f6f6f6; padding: 0 2px; font-size: 14px; font-weight: 700; }
 .fxr-text-button:hover:not(:disabled) { background: transparent; color: #6fa6ff; }
 .fxr-session-open-link { position: absolute; left: 0; bottom: 3px; color: #5695fe; font-size: 12px; text-decoration: none; }

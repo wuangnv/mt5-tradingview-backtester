@@ -122,8 +122,8 @@ function SessionToolbar({ kind, selected, workspace, query, newHref, onSelect, c
       <div className="fxr-session-actions">
         <NewSessionLink href={newHref}>{copy.newAction}</NewSessionLink>
         <a className="fxr-button fxr-button-secondary" href={analyticsHref}>Analytics <span aria-hidden="true">⌄</span></a>
-        <button className="fxr-text-button" type="button" disabled={!selected}>Session Settings</button>
-        <button className="fxr-button fxr-button-danger" type="button" disabled={!selected}>Delete session</button>
+        <button className="fxr-text-button" type="button" disabled title="Chưa khả dụng trong Sessions shell">Session Settings</button>
+        <button className="fxr-button fxr-button-danger" type="button" disabled title="Chưa khả dụng trong Sessions shell">Delete session</button>
       </div>
     </div>
   )
