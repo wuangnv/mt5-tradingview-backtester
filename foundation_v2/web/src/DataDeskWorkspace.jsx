@@ -13,6 +13,7 @@ import { importLocalCsv, previewLocalCsv } from './dataDeskApi.js'
 import './research-data.css'
 
 const CSV_LIMIT_BYTES = 10 * 1024 * 1024
+const MAX_GET_RETRIES = 3
 
 const DEFAULT_IMPORT_FORM = {
   sourceId: 'local-csv-upload',
@@ -294,7 +295,14 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const [selectedId, setSelectedId] = useState(requestedDataset)
   const [providerFilter, setProviderFilter] = useState('all')
   const [catalogRevision, setCatalogRevision] = useState(0)
+  const [catalogRetryCount, setCatalogRetryCount] = useState(0)
   const catalogRequestSeq = useRef(0)
+  const catalogRetryCountRef = useRef(0)
+
+  useEffect(() => {
+    catalogRetryCountRef.current = 0
+    setCatalogRetryCount(0)
+  }, [workspace])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -304,6 +312,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       .then(([datasets, providers]) => {
         if (requestSeq !== catalogRequestSeq.current) return
         setState({ status: 'ready', datasets, providers, error: null })
+        catalogRetryCountRef.current = 0
+        setCatalogRetryCount(0)
         setSelectedId((current) => current || datasets[0]?.dataset_id || '')
       })
       .catch((error) => {
@@ -314,7 +324,14 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     return () => controller.abort()
   }, [catalogRevision, workspace])
 
-  const retryCatalog = () => setCatalogRevision((current) => current + 1)
+  const retryCatalog = () => {
+    if (catalogRetryCountRef.current >= MAX_GET_RETRIES || state.status === 'loading') return
+    catalogRetryCountRef.current += 1
+    setCatalogRetryCount(catalogRetryCountRef.current)
+    setCatalogRevision((current) => current + 1)
+  }
+
+  const catalogRetryExhausted = catalogRetryCount >= MAX_GET_RETRIES
 
   const providers = state.providers
   const filteredDatasets = useMemo(() => state.datasets.filter((item) => providerFilter === 'all' || item.provider_id === providerFilter), [providerFilter, state.datasets])
@@ -351,7 +368,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       />
 
       {state.status === 'loading' && <div className="rd-message" role="status">Đang đọc catalog và capability provider…</div>}
-      {state.status === 'error' && <div className="rd-message is-error" role="alert">Không đọc được Data Desk: {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog}>Thử lại</button></div>}
+      {state.status === 'error' && <div className="rd-message is-error" role="alert">Không đọc được Data Desk: {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{catalogRetryExhausted && <small id="data-desk-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small>}</div>}
 
       {state.status === 'ready' && (
         <div className="rd-main-grid">
