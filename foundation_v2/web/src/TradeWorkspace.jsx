@@ -157,6 +157,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const catalogManifest = datasetState.status === 'ready' ? manifest : null
   const instrument = execution?.instrument_spec || catalogManifest?.instrument_spec || null
   const costModel = execution?.cost_model || (catalogManifest ? DEFAULT_COST_MODEL : null)
+  const timeframeSeconds = optionalNumber(catalogManifest?.timeframe_seconds)
   const revision = numberOr(replay?.revision, 0)
   const hasSession = Boolean(sessionId || replay?.record_id)
 
@@ -272,7 +273,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
           instrument_spec: instrument,
           cost_model: costModel,
           spread_price: String(spreadValue),
-          timeframe_seconds: Number(catalogManifest.timeframe_seconds || 3600),
+          timeframe_seconds: timeframeSeconds,
           starting_balance: String(startingBalanceValue),
         }),
       })
@@ -283,7 +284,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
     } catch (error) {
       setNotice({ kind: 'error', text: `Không khởi tạo được: ${error.message}` })
     } finally { setPending('') }
-  }, [applyReplay, catalogManifest, costModel, datasetId, datasetState.status, instrument, replay?.record_id, revision, spread, startingBalance, workspace])
+  }, [applyReplay, catalogManifest, costModel, datasetId, datasetState.status, instrument, replay?.record_id, revision, spread, startingBalance, timeframeSeconds, workspace])
 
   const queueOrder = useCallback(async (event) => {
     event.preventDefault()
@@ -315,7 +316,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
 
   const stateLabel = state.status === 'loading' ? 'Đang tải session' : state.status === 'error' ? 'Có lỗi' : !hasSession ? 'Chưa chọn session' : execution ? 'Execution sẵn sàng' : datasetState.status === 'loading' ? 'Đang tải context' : datasetState.status === 'error' ? 'Context unavailable' : datasetId && !catalogManifest ? 'Dataset chưa xác nhận' : 'Chưa khởi tạo execution'
   const catalogContextLabel = datasetState.status === 'loading' ? 'Đang tải…' : datasetState.status === 'error' ? 'Unavailable' : datasetId && !catalogManifest ? 'Chưa xác nhận' : catalogManifest ? 'Verified' : 'Không cần'
-  const canInitialize = Boolean(replay?.record_id && datasetId && datasetState.status === 'ready' && catalogManifest && instrument && costModel)
+  const canInitialize = Boolean(replay?.record_id && datasetId && datasetState.status === 'ready' && catalogManifest && instrument && costModel && Number.isFinite(timeframeSeconds) && timeframeSeconds > 0)
   const replayRetryExhausted = replayRetryCount >= MAX_GET_RETRIES
   const datasetRetryExhausted = datasetRetryCount >= MAX_GET_RETRIES
   const account = execution ? { balance: execution.balance, equity: execution.equity, floating: execution.floating_pl } : null
