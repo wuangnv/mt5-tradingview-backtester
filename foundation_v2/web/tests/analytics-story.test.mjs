@@ -71,6 +71,7 @@ test('analytics reads the bounded U6 read model, filters by ledger fields, and e
 test('analytics story CSS has desktop, tablet, mobile and reduced-motion contracts', () => {
   assert.match(css, /\.as-evidence-grid/)
   assert.match(css, /\.as-metric-strip/)
+  assert.match(css, /\.fx-app\[data-theme='light'\] \.as-page \.as-large-empty h2/, 'light empty-state heading uses the readable content token')
   assert.match(css, /@media \(max-width: 768px\)/)
   assert.match(css, /@media \(max-width: 380px\)/)
   assert.match(css, /prefers-reduced-motion/)
