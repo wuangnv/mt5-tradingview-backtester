@@ -234,4 +234,4 @@
 .fx-app[data-theme='light'] .rd-shell .rd-import-empty { background: var(--wm-surface); }
 .fx-app[data-theme='light'] .rd-shell .rd-field input,
 .fx-app[data-theme='light'] .rd-shell .rd-field select { background: var(--wm-surface); color: var(--wm-content); }
-.fx-app[data-theme='light'] .rd-shell .rd-context-link { color: var(--wm-primary); }
+.fx-app[data-theme='light'] .rd-shell .rd-context-link { color: #1d5860; }

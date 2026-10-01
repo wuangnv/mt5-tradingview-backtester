@@ -331,7 +331,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
           <button className="fx-chart-icon-button is-muted" type="button" aria-label="Redo" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>↷</button>
           <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN⌄' : 'VI⌄'}</button>
           <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span></button>
-          <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls="fx-shell-help" aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
+          <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls={helpOpen ? 'fx-shell-help' : undefined} aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
           <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>⛶</button>
         </div>
       </header>
@@ -356,7 +356,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
         <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle">
           <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span>
         </button>
-        <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls="fx-shell-help" aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
+        <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls={helpOpen ? 'fx-shell-help' : undefined} aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
       </div>
     </header>
   )

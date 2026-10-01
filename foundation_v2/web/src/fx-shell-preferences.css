@@ -811,3 +811,42 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .fx-shell-shortcuts kbd {
   background: #f0f3f4;
 }
+
+/* W7-B measured contrast repairs stay route-scoped. They do not alter the
+ * dark chart canvas or the unrelated ReplayWorkspace.css working tree. */
+.fx-app[data-theme='light'] .rd-shell .rd-context-link,
+.fx-app[data-theme='light'] .rs-shell .rs-link,
+.fx-app[data-theme='light'] .trade-workspace .trade-link {
+  color: #1d5860;
+}
+.fx-app[data-theme='light'] .rd-shell .rd-warning-block strong { color: #765000; }
+.fx-app[data-theme='light'] .rd-shell .rd-table tr.is-selected td {
+  background: #e7f0f0;
+  color: #1d2930;
+}
+.fx-app[data-theme='light'] .rs-shell .rs-statusbar strong,
+.fx-app[data-theme='light'] .rs-shell .rs-statusbar code {
+  color: #1d2930;
+}
+.fx-app[data-theme='light'] .ja-story-page .ja-story-placeholder strong,
+.fx-app[data-theme='light'] .trade-workspace .trade-empty strong {
+  color: #1d2930;
+}
+.fx-app[data-theme='light'] .trade-workspace .trade-empty span,
+.fx-app[data-theme='light'] .trade-workspace .trade-message,
+.fx-app[data-theme='light'] .risk-workspace .risk-side li span,
+.fx-app[data-theme='light'] .risk-workspace .risk-result-head p,
+.fx-app[data-theme='light'] .risk-workspace .risk-safety-banner span,
+.fx-app[data-theme='light'] .risk-workspace .risk-mode-lock span {
+  color: #53636d;
+}
+.fx-app[data-theme='light'] .risk-workspace .risk-side li strong { color: #1d2930; }
+.fx-app[data-theme='light'] .risk-workspace .risk-safety-banner strong,
+.fx-app[data-theme='light'] .risk-workspace .risk-mode-lock strong {
+  color: #7a3434;
+}
+.fx-app[data-theme='light'] .risk-workspace .risk-result-blocked p { color: #5b4a2d; }
+.fx-app[data-theme='light'] .risk-workspace .risk-result-blocked li { color: #6a4b14; }
+.fx-app[data-theme='dark'] .rs-shell .rs-step small,
+.fx-app[data-theme='dark'] .pb-empty span,
+.fx-app[data-theme='dark'] .pb-message span { color: #aab7bd; }

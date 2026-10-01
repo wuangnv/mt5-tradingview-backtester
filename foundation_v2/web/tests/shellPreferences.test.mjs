@@ -16,6 +16,7 @@ test('shell exposes truthful EN/VI and theme controls with persisted preference 
   assert.match(source, /THEME_STORAGE_KEY\s*=\s*['"]tw-theme['"]/, 'theme preference key is stable')
   assert.match(source, /data-testid="language-toggle"/, 'language control is discoverable')
   assert.match(source, /data-testid="theme-toggle"/, 'theme control is discoverable')
+  assert.ok(source.includes("aria-controls={helpOpen ? 'fx-shell-help' : undefined}"), 'help control only references the dialog while it is mounted')
   assert.match(source, /localStorage\.setItem\(LANGUAGE_STORAGE_KEY/, 'language selection persists')
   assert.match(source, /localStorage\.setItem\(THEME_STORAGE_KEY/, 'theme selection persists')
   assert.match(source, /document\.documentElement[\s\S]*setAttribute\('lang', language\)/, 'document locale follows shell locale')
