@@ -6,7 +6,7 @@ import math
 from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_UP
 
 from .replay_analytics import build_replay_analytics_view
-from .replay_execution import ReplayExecutionSnapshot
+from .replay_execution import ReplayResearchMargin, parse_replay_execution_snapshot, replay_event_for_snapshot
 from .retained import CostModel, InstrumentSpec
 
 
@@ -91,7 +91,7 @@ def compare_replay_engine_execution(*, replay_view: dict, research_result: dict,
         )
         validate_engine_result(research_result, rows=rows)
         payload = replay_view["payload"]
-        snapshot = ReplayExecutionSnapshot.model_validate(payload["execution"])
+        snapshot = parse_replay_execution_snapshot(payload["execution"])
         rules = protocol["playbook"]["rules"]
         if rules.get("exit_mode", "fixed_horizon") != "protective":
             raise ResearchReconciliationError("replay parity supports protective exits only")
@@ -119,6 +119,45 @@ def compare_replay_engine_execution(*, replay_view: dict, research_result: dict,
         if any(event["virtual_time_utc"] > protocol["range"]["to_utc"] for event in snapshot.ledger):
             raise ResearchReconciliationError("replay execution event exceeds research cutoff")
         manual = build_replay_analytics_view(replay_view)["ledger"]
+        margin_comparison = None
+        if snapshot.schema_version == "replay-execution-v2":
+            margin = ReplayResearchMargin.model_validate(protocol["parameters"].get("research_margin"))
+            if margin != snapshot.research_margin:
+                raise ResearchReconciliationError("replay and engine frozen margin assumptions differ")
+            instrument = InstrumentSpec.from_mapping(snapshot.instrument_spec)
+            costs = CostModel.from_mapping(snapshot.cost_model)
+            expected_outcomes = []
+            _signal_source_oracle(
+                bars=rows[:cutoff["visible_row_count"]], rules=rules, protocol=protocol,
+                tick=instrument.tick_size, spread=snapshot.spread_price,
+                units=_number(rules["quantity"], "quantity") * instrument.contract_size,
+                rate=costs.quote_to_account_rate, timeframe=snapshot.timeframe_seconds,
+                admission_records=expected_outcomes,
+            )
+            actual_outcomes = [replay_event_for_snapshot(snapshot, raw) for raw in snapshot.ledger
+                               if raw.get("kind") in {"market_fill", "order_rejected"}]
+            if len(actual_outcomes) != len(expected_outcomes):
+                raise ResearchReconciliationError("declared replay margin outcome count differs from source oracle")
+            for event, expected in zip(actual_outcomes, expected_outcomes, strict=True):
+                detail = event.details
+                admission = detail["margin_admission"]
+                if (event.kind != expected["kind"] or event.cursor_index != expected["cursor_index"]
+                        or event.virtual_time_utc != expected["virtual_time_utc"]
+                        or detail["side"] != expected["side"]
+                        or detail.get("reason") != expected.get("reason")
+                        or admission["submitted_cursor_index"] != expected["submitted_cursor_index"]):
+                    raise ResearchReconciliationError("replay margin reason/side/cursor/time differs from source oracle")
+                for key, actual in (("quantity", detail["quantity"]), ("fill_price", detail["fill_price"]),
+                                    ("required_account", admission["required_account"])):
+                    if _number(actual, key) != expected[key]:
+                        raise ResearchReconciliationError(f"replay margin {key} differs from source oracle")
+            margin_comparison = {
+                "scope": "DECLARED_MARKET_ORDER_OUTCOMES", "reconciled": True,
+                "outcome_count": len(actual_outcomes),
+                "rejected_count": sum(event.kind == "order_rejected" for event in actual_outcomes),
+                "assumption": snapshot.research_margin.model_dump(mode="json"),
+                "oracle": "independent_source_signal_next_open_margin_v1",
+            }
         automated = research_result["ledger"]
         if len(manual) != len(automated):
             raise ResearchReconciliationError("replay and engine closed trade counts differ")
@@ -141,7 +180,7 @@ def compare_replay_engine_execution(*, replay_view: dict, research_result: dict,
         _expect(snapshot.equity, snapshot.balance, "replay.flat_equity")
     except (KeyError, TypeError, ValueError) as exc:
         raise ResearchReconciliationError(f"replay parity input is invalid: {exc}") from exc
-    return {
+    comparison = {
         "schema": "replay-engine-parity-v1",
         "scope": "OFFLINE_COMPLETED_PROTECTIVE_TRADES",
         "reconciled": True,
@@ -154,6 +193,12 @@ def compare_replay_engine_execution(*, replay_view: dict, research_result: dict,
         "not_compared": ["manual_no_signal_decisions", "horizon_closes", "margin_admission", "floating_equity_path"],
         "execution_capability": False,
     }
+    if margin_comparison is not None:
+        comparison["schema"] = "replay-engine-parity-v2"
+        comparison["margin_admission"] = margin_comparison
+        comparison["not_compared"] = ["manual_no_signal_decisions", "horizon_closes",
+                                      "undeclared_manual_margin_decisions", "floating_equity_path"]
+    return comparison
 
 
 def _number(value, name):
@@ -250,7 +295,7 @@ def _protective_source_oracle(*, bars, entry_index, side, rules, protocol, tick,
     )
 
 
-def _signal_source_oracle(*, bars, rules, protocol, tick, spread, units, rate, timeframe):
+def _signal_source_oracle(*, bars, rules, protocol, tick, spread, units, rate, timeframe, admission_records=None):
     lookback = int(rules["lookback"])
     hold_bars = int(rules["hold_bars"])
     direction = str(rules.get("direction") or "both").lower()
@@ -297,6 +342,21 @@ def _signal_source_oracle(*, bars, rules, protocol, tick, spread, units, rate, t
             entry_bid, entry_ask = _quote_sides(bars[entry_index]["open"], spread, tick)
             entry = entry_ask if side == "BUY" else entry_bid
             margin_required = entry * units * rate / leverage
+            if admission_records is not None:
+                rejected = margin_required > starting_balance
+                outcome = {
+                    "kind": "order_rejected" if rejected else "market_fill",
+                    "cursor_index": entry_index,
+                    "virtual_time_utc": int(bars[entry_index]["timestamp"]),
+                    "submitted_cursor_index": i,
+                    "side": side,
+                    "quantity": _number(rules["quantity"], "quantity"),
+                    "fill_price": entry,
+                    "required_account": margin_required,
+                }
+                if rejected:
+                    outcome["reason"] = "insufficient_research_margin"
+                admission_records.append(outcome)
             if margin_required > starting_balance:
                 signals["skipped_margin"] += 1
                 i += 1

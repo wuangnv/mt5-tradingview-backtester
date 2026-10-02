@@ -1,0 +1,76 @@
+{
+  "schema": "margin-v2-diff-aware-lint-v1",
+  "rules": "E9,F,B isolated",
+  "files": [
+    {
+      "path": "foundation_v2/trading_workspace_v2/api.py",
+      "baseline_errors": 39,
+      "current_errors": 39,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/contracts.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/prop_replay.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/replay.py",
+      "baseline_errors": 1,
+      "current_errors": 1,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/replay_analytics.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/replay_execution.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/research_validation.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/trading_workspace_v2/store.py",
+      "baseline_errors": 1,
+      "current_errors": 1,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/tests/test_replay_margin_v2.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/tests/test_replay_margin_v2_service.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    },
+    {
+      "path": "foundation_v2/tests/test_u5b_margin_parity_v2.py",
+      "baseline_errors": 0,
+      "current_errors": 0,
+      "new_errors": 0
+    }
+  ],
+  "new_errors": [],
+  "existing_errors": 41,
+  "owned_tests_format_exit": 0,
+  "status": "PASS_NO_NEW_DIAGNOSTICS"
+}

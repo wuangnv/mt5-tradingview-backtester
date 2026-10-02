@@ -1046,6 +1046,7 @@ def create_app(
                 spread_price=body.spread_price,
                 timeframe_seconds=body.timeframe_seconds,
                 starting_balance=body.starting_balance,
+                research_margin=body.research_margin,
             )
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")

@@ -1,0 +1,275 @@
+FFFFFFF.                                                                 [100%]
+================================== FAILURES ===================================
+______ test_independent_decimal_threshold[-0.000001-True-BUY-12.406725] _______
+
+side = 'BUY', required = '12.406725', delta = '-0.000001', rejected = True
+
+    @pytest.mark.parametrize("side,required", [("BUY", "12.406725"), ("SELL", "12.345")])
+    @pytest.mark.parametrize("delta,rejected", [("-0.000001", True), ("0", False), ("0.000001", False)])
+    def test_independent_decimal_threshold(side, required, delta, rejected):
+        balance = Decimal(required) + Decimal(delta)
+        result = advance_replay_execution(
+>           queued(initial(balance=balance, margin=MARGIN), side),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            bar=OPEN_BAR,
+            cursor_index=3,
+        )
+
+foundation_v2\tests\test_replay_margin_v2.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = Decimal('12.406724')
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+_______ test_independent_decimal_threshold[-0.000001-True-SELL-12.345] ________
+
+side = 'SELL', required = '12.345', delta = '-0.000001', rejected = True
+
+    @pytest.mark.parametrize("side,required", [("BUY", "12.406725"), ("SELL", "12.345")])
+    @pytest.mark.parametrize("delta,rejected", [("-0.000001", True), ("0", False), ("0.000001", False)])
+    def test_independent_decimal_threshold(side, required, delta, rejected):
+        balance = Decimal(required) + Decimal(delta)
+        result = advance_replay_execution(
+>           queued(initial(balance=balance, margin=MARGIN), side),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            bar=OPEN_BAR,
+            cursor_index=3,
+        )
+
+foundation_v2\tests\test_replay_margin_v2.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = Decimal('12.344999')
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+__________ test_independent_decimal_threshold[0-False-BUY-12.406725] __________
+
+side = 'BUY', required = '12.406725', delta = '0', rejected = False
+
+    @pytest.mark.parametrize("side,required", [("BUY", "12.406725"), ("SELL", "12.345")])
+    @pytest.mark.parametrize("delta,rejected", [("-0.000001", True), ("0", False), ("0.000001", False)])
+    def test_independent_decimal_threshold(side, required, delta, rejected):
+        balance = Decimal(required) + Decimal(delta)
+        result = advance_replay_execution(
+>           queued(initial(balance=balance, margin=MARGIN), side),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            bar=OPEN_BAR,
+            cursor_index=3,
+        )
+
+foundation_v2\tests\test_replay_margin_v2.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = Decimal('12.406725')
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+___________ test_independent_decimal_threshold[0-False-SELL-12.345] ___________
+
+side = 'SELL', required = '12.345', delta = '0', rejected = False
+
+    @pytest.mark.parametrize("side,required", [("BUY", "12.406725"), ("SELL", "12.345")])
+    @pytest.mark.parametrize("delta,rejected", [("-0.000001", True), ("0", False), ("0.000001", False)])
+    def test_independent_decimal_threshold(side, required, delta, rejected):
+        balance = Decimal(required) + Decimal(delta)
+        result = advance_replay_execution(
+>           queued(initial(balance=balance, margin=MARGIN), side),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            bar=OPEN_BAR,
+            cursor_index=3,
+        )
+
+foundation_v2\tests\test_replay_margin_v2.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = Decimal('12.345')
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+______ test_independent_decimal_threshold[0.000001-False-BUY-12.406725] _______
+
+side = 'BUY', required = '12.406725', delta = '0.000001', rejected = False
+
+    @pytest.mark.parametrize("side,required", [("BUY", "12.406725"), ("SELL", "12.345")])
+    @pytest.mark.parametrize("delta,rejected", [("-0.000001", True), ("0", False), ("0.000001", False)])
+    def test_independent_decimal_threshold(side, required, delta, rejected):
+        balance = Decimal(required) + Decimal(delta)
+        result = advance_replay_execution(
+>           queued(initial(balance=balance, margin=MARGIN), side),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            bar=OPEN_BAR,
+            cursor_index=3,
+        )
+
+foundation_v2\tests\test_replay_margin_v2.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = Decimal('12.406726')
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+_______ test_independent_decimal_threshold[0.000001-False-SELL-12.345] ________
+
+side = 'SELL', required = '12.345', delta = '0.000001', rejected = False
+
+    @pytest.mark.parametrize("side,required", [("BUY", "12.406725"), ("SELL", "12.345")])
+    @pytest.mark.parametrize("delta,rejected", [("-0.000001", True), ("0", False), ("0.000001", False)])
+    def test_independent_decimal_threshold(side, required, delta, rejected):
+        balance = Decimal(required) + Decimal(delta)
+        result = advance_replay_execution(
+>           queued(initial(balance=balance, margin=MARGIN), side),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            bar=OPEN_BAR,
+            cursor_index=3,
+        )
+
+foundation_v2\tests\test_replay_margin_v2.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = Decimal('12.345001')
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+______ test_next_open_admission_is_causal_and_queue_has_no_future_quote _______
+
+    def test_next_open_admission_is_causal_and_queue_has_no_future_quote():
+>       snapshot = initial(balance="12.43", margin=MARGIN)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+foundation_v2\tests\test_replay_margin_v2.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+balance = '12.43'
+margin = {'version': 'fixed-starting-balance-leverage-v1', 'leverage': '30'}
+
+    def initial(*, balance="1", margin=OMITTED):
+        kwargs = {} if margin is OMITTED else {"research_margin": margin}
+>       return initialize_replay_execution(
+            replay_session_id="margin-v2",
+            branch_id="margin-v2-branch",
+            dataset_id="margin-v2-source",
+            dataset_sha256="d" * 64,
+            instrument_spec=oracle.instrument_fixture(),
+            cost_model=oracle.cost_model_fixture(),
+            spread_price="0.02",
+            timeframe_seconds=3600,
+            starting_balance=balance,
+            cursor_index=2,
+            **kwargs,
+        )
+E       TypeError: initialize_replay_execution() got an unexpected keyword argument 'research_margin'
+
+foundation_v2\tests\test_replay_margin_v2.py:32: TypeError
+=========================== short test summary info ===========================
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_independent_decimal_threshold[-0.000001-True-BUY-12.406725]
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_independent_decimal_threshold[-0.000001-True-SELL-12.345]
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_independent_decimal_threshold[0-False-BUY-12.406725]
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_independent_decimal_threshold[0-False-SELL-12.345]
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_independent_decimal_threshold[0.000001-False-BUY-12.406725]
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_independent_decimal_threshold[0.000001-False-SELL-12.345]
+FAILED foundation_v2\tests\test_replay_margin_v2.py::test_next_open_admission_is_causal_and_queue_has_no_future_quote
+7 failed, 1 passed in 0.69s

@@ -14,14 +14,15 @@ from .prop_replay import (
     validate_replay_prop_binding,
 )
 from .replay_execution import (
-    ReplayExecutionEvent,
     ReplayExecutionError,
     ReplayExecutionSnapshot,
     advance_replay_execution,
     fork_replay_execution_checkpoint,
     initialize_replay_execution,
+    parse_replay_execution_snapshot,
     queue_market_order,
     reconstruct_replay_execution_checkpoint,
+    replay_event_for_snapshot,
 )
 from .store import PostgresStore
 
@@ -121,7 +122,7 @@ class ReplayService:
     @staticmethod
     def _execution_snapshot(payload: dict) -> ReplayExecutionSnapshot | None:
         raw = payload.get("execution")
-        return ReplayExecutionSnapshot.model_validate(raw) if raw is not None else None
+        return parse_replay_execution_snapshot(raw) if raw is not None else None
 
     @staticmethod
     def _iso_utc(timestamp: int) -> str:
@@ -138,6 +139,7 @@ class ReplayService:
         spread_price,
         timeframe_seconds: int,
         starting_balance,
+        research_margin=None,
     ) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
@@ -161,6 +163,7 @@ class ReplayService:
             timeframe_seconds=timeframe_seconds,
             starting_balance=starting_balance,
             cursor_index=int(payload["cursor_index"]),
+            research_margin=research_margin,
         )
         if snapshot.instrument_spec["instrument_id"] != manifest.instrument_id:
             raise ValueError("instrument_spec does not match the replay dataset instrument")
@@ -320,8 +323,9 @@ class ReplayService:
                 if checkpoint is None:
                     raise ValueError("historical analytics checkpoint is unavailable")
             for field in ("replay_session_id", "branch_id", "dataset_id", "dataset_sha256",
-                          "instrument_spec", "cost_model", "spread_price", "timeframe_seconds", "starting_balance"):
-                if getattr(checkpoint, field) != getattr(snapshot, field):
+                          "instrument_spec", "cost_model", "spread_price", "timeframe_seconds", "starting_balance",
+                          "schema_version", "research_margin"):
+                if getattr(checkpoint, field, None) != getattr(snapshot, field, None):
                     raise ValueError("historical analytics checkpoint lineage is inconsistent")
             if checkpoint.cursor_index != selected_cursor:
                 raise ValueError("historical analytics checkpoint cursor is inconsistent")
@@ -392,9 +396,11 @@ class ReplayService:
                 "spread_price",
                 "timeframe_seconds",
                 "starting_balance",
+                "schema_version",
+                "research_margin",
             )
             for field in immutable_fields:
-                if getattr(checkpoint, field) != getattr(current_execution, field):
+                if getattr(checkpoint, field, None) != getattr(current_execution, field, None):
                     raise RuntimeError("historical replay execution checkpoint is inconsistent with current lineage")
             try:
                 forked_execution = fork_replay_execution_checkpoint(
@@ -479,7 +485,7 @@ class ReplayService:
             raise ReplayPropConnectionError("prop phase index is outside the frozen profile")
 
         marks = [
-            ReplayExecutionEvent.model_validate(item)
+            replay_event_for_snapshot(snapshot, item)
             for item in snapshot.ledger
             if item.get("kind") == "price_mark"
         ]

@@ -4,7 +4,7 @@ from decimal import Decimal, InvalidOperation
 from math import isfinite
 
 from .analytics_read_model import AnalyticsValidationError, build_analytics_view
-from .replay_execution import ReplayExecutionEvent, ReplayExecutionSnapshot
+from .replay_execution import parse_replay_execution_snapshot, replay_event_for_snapshot
 
 
 def _decimal(value, name, *, positive=False):
@@ -53,7 +53,7 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
         result = build_analytics_view(base, filters)
         result["blocked_by_data"] = ["replay_execution_not_initialized"]
     else:
-        snapshot = ReplayExecutionSnapshot.model_validate(raw)
+        snapshot = parse_replay_execution_snapshot(raw)
         if (snapshot.replay_session_id != session_id
                 or snapshot.dataset_id != payload["dataset_id"]
                 or snapshot.branch_id != payload.get("branch_id")
@@ -72,8 +72,10 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
         last_event = None
         phase_transitions = 0
         phase_initial_balance = snapshot.starting_balance
+        rejections = []
+        consumed_operations = set()
         for sequence, raw_event in enumerate(snapshot.ledger, start=1):
-            event = ReplayExecutionEvent.model_validate(raw_event)
+            event = replay_event_for_snapshot(snapshot, raw_event)
             if (event.sequence != sequence
                     or event.replay_session_id != session_id
                     or event.branch_id != snapshot.branch_id
@@ -87,6 +89,11 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
             cutoff = max(cutoff or 0, event.virtual_time_utc)
             detail = event.details
             position_id = detail.get("position_id")
+            if snapshot.schema_version == "replay-execution-v2" and event.kind in {"market_fill", "order_rejected"}:
+                operation_id = detail.get("operation_id")
+                if operation_id in consumed_operations:
+                    raise AnalyticsValidationError("replay order outcome is duplicated")
+                consumed_operations.add(operation_id)
             if event.kind == "market_fill":
                 if (not isinstance(position_id, str) or not position_id.strip()
                         or position_id in position_ids or opened
@@ -127,6 +134,9 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
                     "realized_r": None,
                     "exit_reason": detail.get("reason"),
                 })
+            elif event.kind == "order_rejected":
+                rejections.append({"event_sequence": event.sequence, "cursor_index": event.cursor_index,
+                                   "virtual_time_utc": event.virtual_time_utc, **detail})
             elif event.kind == "phase_transition":
                 if (detail.get("from_phase_index") != phase_transitions + 1
                         or detail.get("to_phase_index") != phase_transitions + 2
@@ -190,6 +200,10 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
             "protocol": {"starting_balance": _number(snapshot.starting_balance, "starting balance", positive=True)},
             "ledger": trades,
         }, filters)
+        if snapshot.schema_version == "replay-execution-v2":
+            result["order_rejections"] = rejections
+            result["rejected_order_count"] = len(rejections)
+            result["research_margin"] = snapshot.research_margin.model_dump(mode="json")
         if phase_transitions:
             result["scope"]["balance_curve_scope"] += "; phase balance resets excluded"
     result["provenance"].update(base)

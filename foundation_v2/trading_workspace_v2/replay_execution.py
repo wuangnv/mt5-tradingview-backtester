@@ -3,7 +3,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .execution_semantics import (
     IntrabarAmbiguityError,
@@ -16,6 +16,26 @@ from .retained import CostModel, InstrumentSpec, calculate_round_trip_cost
 
 class ReplayExecutionError(ValueError):
     pass
+
+
+class ReplayResearchMargin(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False, frozen=True)
+
+    version: Literal["fixed-starting-balance-leverage-v1"]
+    leverage: Decimal = Field(ge=1, le=1000)
+
+    @field_validator("leverage", mode="before")
+    @classmethod
+    def reject_boolean(cls, value):
+        if isinstance(value, bool):
+            raise ValueError("research leverage cannot be boolean")
+        return value
+
+
+class ReplayMarginAdmission(ReplayResearchMargin):
+    required_account: Decimal = Field(gt=0)
+    available_account: Decimal = Field(gt=0)
+    submitted_cursor_index: int = Field(ge=0, strict=True)
 
 
 def _decimal(value, label: str, *, positive: bool = False) -> Decimal:
@@ -113,18 +133,102 @@ class ReplayExecutionEvent(BaseModel):
         return self
 
 
+class ReplayExecutionEventV2(ReplayExecutionEvent):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    schema_version: Literal["replay-execution-event-v2"] = "replay-execution-event-v2"
+    kind: Literal["market_fill", "order_rejected", "protective_fill", "price_mark", "phase_transition"]
+
+    @model_validator(mode="after")
+    def margin_outcome_is_consistent(self):
+        if self.kind not in {"market_fill", "order_rejected"}:
+            return self
+        admission = ReplayMarginAdmission.model_validate(self.details.get("margin_admission"))
+        if (not isinstance(self.details.get("operation_id"), str) or not self.details["operation_id"].strip()
+                or self.details.get("side") not in {"BUY", "SELL"}
+                or admission.submitted_cursor_index != self.cursor_index - 1):
+            raise ValueError("margin outcome lacks a prior closed-bar order")
+        _decimal(self.details.get("quantity"), "margin quantity", positive=True)
+        _decimal(self.details.get("fill_price"), "margin fill", positive=True)
+        rejected = self.kind == "order_rejected"
+        if rejected != (admission.required_account > admission.available_account):
+            raise ValueError("margin admission outcome differs from its threshold")
+        if rejected and (self.details.get("reason") != "insufficient_research_margin"
+                         or "position_id" in self.details or self.open_positions or self.pending_orders
+                         or self.floating_pl != 0):
+            raise ValueError("margin rejection account state/reason is inconsistent")
+        if not rejected and (not isinstance(self.details.get("position_id"), str)
+                             or not self.details["position_id"].strip()
+                             or self.open_positions != 1 or self.pending_orders
+                             or "reason" in self.details):
+            raise ValueError("margin opening fill account state is inconsistent")
+        return self
+
+
+class ReplayExecutionSnapshotV2(ReplayExecutionSnapshot):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    schema_version: Literal["replay-execution-v2"] = "replay-execution-v2"
+    research_margin: ReplayResearchMargin = Field(frozen=True)
+
+    @model_validator(mode="after")
+    def margin_ledger_is_consistent(self):
+        for raw in self.ledger:
+            replay_event_for_snapshot(self, raw)
+        return self
+
+
+def parse_replay_execution_snapshot(raw: dict) -> ReplayExecutionSnapshot | ReplayExecutionSnapshotV2:
+    if not isinstance(raw, dict):
+        raise ReplayExecutionError("replay execution snapshot must be structured")
+    version = raw.get("schema_version", "replay-execution-v1")
+    if version == "replay-execution-v1":
+        snapshot = ReplayExecutionSnapshot.model_validate(raw)
+        for event in snapshot.ledger:
+            replay_event_for_snapshot(snapshot, event)
+        return snapshot
+    if version == "replay-execution-v2":
+        return ReplayExecutionSnapshotV2.model_validate(raw)
+    raise ReplayExecutionError("unsupported replay execution snapshot version")
+
+
+def replay_event_for_snapshot(snapshot: ReplayExecutionSnapshot, raw: dict) -> ReplayExecutionEvent:
+    if isinstance(snapshot, ReplayExecutionSnapshotV2):
+        if raw.get("schema_version") != "replay-execution-event-v2":
+            raise ReplayExecutionError("v2 replay requires explicitly versioned v2 events")
+        event = ReplayExecutionEventV2.model_validate(raw)
+        if event.kind in {"market_fill", "order_rejected"}:
+            admission = ReplayMarginAdmission.model_validate(event.details["margin_admission"])
+            instrument = InstrumentSpec.from_mapping(snapshot.instrument_spec)
+            costs = CostModel.from_mapping(snapshot.cost_model)
+            quantity = _decimal(event.details["quantity"], "margin quantity", positive=True)
+            _validate_quantity(quantity, instrument)
+            required = (_decimal(event.details["fill_price"], "margin fill", positive=True)
+                        * quantity * instrument.contract_size * costs.quote_to_account_rate
+                        / snapshot.research_margin.leverage)
+            if (admission.version != snapshot.research_margin.version
+                    or admission.leverage != snapshot.research_margin.leverage
+                    or admission.required_account != required
+                    or admission.available_account != snapshot.starting_balance):
+                raise ReplayExecutionError("margin outcome differs from frozen assumption/calculation")
+        return event
+    return ReplayExecutionEvent.model_validate(raw)
+
+
+def _event_type(snapshot: ReplayExecutionSnapshot):
+    return ReplayExecutionEventV2 if isinstance(snapshot, ReplayExecutionSnapshotV2) else ReplayExecutionEvent
+
+
 class ReplayExecutionAdvance(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    snapshot: ReplayExecutionSnapshot
-    events: list[ReplayExecutionEvent]
+    snapshot: ReplayExecutionSnapshot | ReplayExecutionSnapshotV2
+    events: list[ReplayExecutionEvent | ReplayExecutionEventV2]
 
 
 class ReplayPhaseTransition(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    snapshot: ReplayExecutionSnapshot
-    event: ReplayExecutionEvent
+    snapshot: ReplayExecutionSnapshot | ReplayExecutionSnapshotV2
+    event: ReplayExecutionEvent | ReplayExecutionEventV2
 
 
 def reconstruct_replay_execution_checkpoint(
@@ -147,7 +251,7 @@ def reconstruct_replay_execution_checkpoint(
     phase_index = 1
     phase_initial_balance = snapshot.starting_balance
     for raw in snapshot.ledger:
-        event = ReplayExecutionEvent.model_validate(raw)
+        event = replay_event_for_snapshot(snapshot, raw)
         if event.sequence != expected_sequence:
             raise ReplayExecutionError("replay execution ledger sequence is not contiguous")
         expected_sequence += 1
@@ -222,7 +326,7 @@ def fork_replay_execution_checkpoint(
         raise ReplayExecutionError("replay execution ledger length does not match event_sequence")
     remapped_ledger: list[dict] = []
     for expected_sequence, raw in enumerate(snapshot.ledger, start=1):
-        event = ReplayExecutionEvent.model_validate(raw)
+        event = replay_event_for_snapshot(snapshot, raw)
         if event.sequence != expected_sequence:
             raise ReplayExecutionError("replay execution ledger sequence is not contiguous")
         if (
@@ -289,6 +393,7 @@ def initialize_replay_execution(
     timeframe_seconds: int,
     starting_balance,
     cursor_index: int,
+    research_margin: ReplayResearchMargin | dict | None = None,
 ) -> ReplayExecutionSnapshot:
     balance = _decimal(starting_balance, "starting_balance", positive=True)
     instrument = InstrumentSpec.from_mapping(instrument_spec)
@@ -300,7 +405,10 @@ def initialize_replay_execution(
         raise ReplayExecutionError("spread_price must be nonnegative")
     if isinstance(timeframe_seconds, bool) or not isinstance(timeframe_seconds, int) or timeframe_seconds <= 0:
         raise ReplayExecutionError("timeframe_seconds must be a positive integer")
-    return ReplayExecutionSnapshot(
+    margin = ReplayResearchMargin.model_validate(research_margin) if research_margin is not None else None
+    snapshot_type = ReplayExecutionSnapshotV2 if margin is not None else ReplayExecutionSnapshot
+    extra = {"research_margin": margin} if margin is not None else {}
+    return snapshot_type(
         replay_session_id=replay_session_id,
         branch_id=branch_id,
         dataset_id=dataset_id,
@@ -315,6 +423,7 @@ def initialize_replay_execution(
         balance=balance,
         equity=balance,
         cursor_index=cursor_index,
+        **extra,
     )
 
 
@@ -397,7 +506,7 @@ def transition_replay_phase(
         balance = snapshot.balance
         floating = snapshot.floating_pl
 
-    event = ReplayExecutionEvent(
+    event = _event_type(snapshot)(
         sequence=snapshot.event_sequence + 1,
         kind="phase_transition",
         replay_session_id=snapshot.replay_session_id,
@@ -494,10 +603,10 @@ def advance_replay_execution(
     events: list[ReplayExecutionEvent] = []
     next_sequence = snapshot.event_sequence
 
-    def record_event(kind: Literal["market_fill", "protective_fill", "price_mark"], virtual_time_utc: int, details: dict) -> None:
+    def record_event(kind: Literal["market_fill", "order_rejected", "protective_fill", "price_mark"], virtual_time_utc: int, details: dict) -> None:
         nonlocal next_sequence
         next_sequence += 1
-        event = ReplayExecutionEvent(
+        event = _event_type(snapshot)(
             sequence=next_sequence,
             kind=kind,
             replay_session_id=snapshot.replay_session_id,
@@ -541,33 +650,62 @@ def advance_replay_execution(
             raise ReplayExecutionError("BUY bracket must satisfy stop < fill < take-profit")
         if pending.side == "SELL" and not pending.take_profit < entry_fill < pending.stop_loss:
             raise ReplayExecutionError("SELL bracket must satisfy take-profit < fill < stop")
-        position = ReplayOpenPosition(
-            position_id=f"replay-pos-{snapshot.event_sequence + 1}",
-            source_operation_id=pending.operation_id,
-            side=pending.side,
-            quantity=pending.quantity,
-            entry_bid=entry_bid,
-            entry_ask=entry_ask,
-            entry_fill=entry_fill,
-            stop_loss=pending.stop_loss,
-            take_profit=pending.take_profit,
-            opened_cursor_index=cursor_index,
-            opened_time_utc=timestamp,
-        )
+        order = pending
+        margin_details = {}
+        rejected = False
+        if isinstance(snapshot, ReplayExecutionSnapshotV2):
+            required = (entry_fill * order.quantity * instrument.contract_size
+                        * cost_model.quote_to_account_rate / snapshot.research_margin.leverage)
+            admission = ReplayMarginAdmission(
+                **snapshot.research_margin.model_dump(),
+                required_account=required,
+                available_account=snapshot.starting_balance,
+                submitted_cursor_index=order.submitted_cursor_index,
+            )
+            margin_details = {"margin_admission": admission.model_dump(mode="json")}
+            rejected = required > snapshot.starting_balance
         pending = None
-        had_position_exposure = True
-        record_event(
-            "market_fill",
-            timestamp,
-            {
-                "operation_id": position.source_operation_id,
-                "position_id": position.position_id,
-                "side": position.side,
-                "quantity": str(position.quantity),
-                "fill_price": str(position.entry_fill),
-            },
-        )
-        opened_now = True
+        if rejected:
+            record_event(
+                "order_rejected",
+                timestamp,
+                {
+                    "operation_id": order.operation_id,
+                    "reason": "insufficient_research_margin",
+                    "side": order.side,
+                    "quantity": str(order.quantity),
+                    "fill_price": str(entry_fill),
+                    **margin_details,
+                },
+            )
+        else:
+            position = ReplayOpenPosition(
+                position_id=f"replay-pos-{snapshot.event_sequence + 1}",
+                source_operation_id=order.operation_id,
+                side=order.side,
+                quantity=order.quantity,
+                entry_bid=entry_bid,
+                entry_ask=entry_ask,
+                entry_fill=entry_fill,
+                stop_loss=order.stop_loss,
+                take_profit=order.take_profit,
+                opened_cursor_index=cursor_index,
+                opened_time_utc=timestamp,
+            )
+            had_position_exposure = True
+            record_event(
+                "market_fill",
+                timestamp,
+                {
+                    "operation_id": position.source_operation_id,
+                    "position_id": position.position_id,
+                    "side": position.side,
+                    "quantity": str(position.quantity),
+                    "fill_price": str(position.entry_fill),
+                    **margin_details,
+                },
+            )
+            opened_now = True
 
     if position is not None:
         try:
@@ -623,7 +761,7 @@ def advance_replay_execution(
 
     mark_time = timestamp + timeframe_seconds
     next_sequence += 1
-    mark_event = ReplayExecutionEvent(
+    mark_event = _event_type(snapshot)(
         sequence=next_sequence,
         kind="price_mark",
         replay_session_id=snapshot.replay_session_id,
@@ -648,27 +786,16 @@ def advance_replay_execution(
     ledger.append(mark_event.model_dump(mode="json"))
 
     return ReplayExecutionAdvance(
-        snapshot=ReplayExecutionSnapshot(
-            replay_session_id=snapshot.replay_session_id,
-            branch_id=snapshot.branch_id,
-            dataset_id=snapshot.dataset_id,
-            dataset_sha256=snapshot.dataset_sha256,
-            instrument_spec=snapshot.instrument_spec,
-            cost_model=snapshot.cost_model,
-            spread_price=snapshot.spread_price,
-            timeframe_seconds=snapshot.timeframe_seconds,
-            starting_balance=snapshot.starting_balance,
-            phase_index=snapshot.phase_index,
-            phase_initial_balance=snapshot.phase_initial_balance,
-            balance=balance,
-            floating_pl=floating,
-            equity=balance + floating,
-            cursor_index=cursor_index,
-            event_sequence=next_sequence,
-            pending_market_order=pending,
-            position=position,
-            ledger=ledger,
-            evaluation_quality="full_for_declared_model",
-        ),
+        snapshot=snapshot.model_copy(update={
+            "balance": balance,
+            "floating_pl": floating,
+            "equity": balance + floating,
+            "cursor_index": cursor_index,
+            "event_sequence": next_sequence,
+            "pending_market_order": pending,
+            "position": position,
+            "ledger": ledger,
+            "evaluation_quality": "full_for_declared_model",
+        }),
         events=events,
     )

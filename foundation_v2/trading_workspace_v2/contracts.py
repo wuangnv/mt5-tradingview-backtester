@@ -5,9 +5,10 @@ from decimal import Decimal
 import re
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_serializer, model_validator
 
 from .strategy_contracts import StrategyResearchSpec
+from .replay_execution import ReplayResearchMargin
 
 
 CONTRACT_VERSION = "foundation-v2.1"
@@ -396,6 +397,14 @@ class ReplayExecutionInitialize(BaseModel):
     spread_price: Decimal = Field(ge=0)
     timeframe_seconds: int = Field(gt=0, strict=True)
     starting_balance: Decimal = Field(gt=0)
+    research_margin: ReplayResearchMargin | None = None
+
+    @model_serializer(mode="wrap")
+    def omit_legacy_margin(self, handler):
+        result = handler(self)
+        if self.research_margin is None:
+            result.pop("research_margin", None)
+        return result
 
 
 class ReplayMarketOrderRequest(BaseModel):

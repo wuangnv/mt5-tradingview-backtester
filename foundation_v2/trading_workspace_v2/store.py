@@ -41,8 +41,8 @@ from .prop_session import (
 )
 from .replay_execution import (
     ReplayExecutionError,
-    ReplayExecutionEvent,
-    ReplayExecutionSnapshot,
+    parse_replay_execution_snapshot,
+    replay_event_for_snapshot,
     transition_replay_phase,
 )
 from .research_oos import complete_canceled_sweep_outcomes
@@ -1975,8 +1975,8 @@ class PostgresStore:
             parent_execution = parent_replay_row["payload_json"].get("execution")
             if not isinstance(child_execution, dict) or not isinstance(parent_execution, dict):
                 raise ReplayPropConnectionError("Replay branch execution checkpoint is unavailable")
-            child_snapshot = ReplayExecutionSnapshot.model_validate(child_execution)
-            parent_snapshot = ReplayExecutionSnapshot.model_validate(parent_execution)
+            child_snapshot = parse_replay_execution_snapshot(child_execution)
+            parent_snapshot = parse_replay_execution_snapshot(parent_execution)
             if child_snapshot.replay_session_id != replay_session_id:
                 raise ReplayPropConnectionError("Replay branch execution lineage is inconsistent")
 
@@ -2003,7 +2003,7 @@ class PostgresStore:
                 (workspace_id, prop_session_id, parent_attempt_id),
             ).fetchall()
             try:
-                checkpoint_event = ReplayExecutionEvent.model_validate(child_snapshot.ledger[-1])
+                checkpoint_event = replay_event_for_snapshot(child_snapshot, child_snapshot.ledger[-1])
             except (IndexError, ValueError) as exc:
                 raise ReplayPropConnectionError("Replay branch checkpoint event is invalid") from exc
             if checkpoint_event.sequence != child_snapshot.event_sequence:
@@ -2011,7 +2011,7 @@ class PostgresStore:
             parent_checkpoint_event = None
             for item in reversed(parent_snapshot.ledger):
                 try:
-                    candidate_event = ReplayExecutionEvent.model_validate(item)
+                    candidate_event = replay_event_for_snapshot(parent_snapshot, item)
                 except ValueError as exc:
                     raise ReplayPropConnectionError("parent Replay checkpoint ledger is invalid") from exc
                 if candidate_event.sequence == checkpoint_event.sequence:
@@ -2809,7 +2809,7 @@ class PostgresStore:
                 if receipt_revision is None:
                     raise PropPersistenceConflict("idempotency receipt points to a missing attempt revision")
                 try:
-                    current_replay = ReplayExecutionSnapshot.model_validate(
+                    current_replay = parse_replay_execution_snapshot(
                         dict(replay_row["payload_json"] or {}).get("execution")
                     )
                 except ValueError as exc:
@@ -2863,7 +2863,7 @@ class PostgresStore:
             if raw_execution is None:
                 raise PropPersistenceConflict("canonical replay execution is not initialized")
             try:
-                replay_snapshot = ReplayExecutionSnapshot.model_validate(raw_execution)
+                replay_snapshot = parse_replay_execution_snapshot(raw_execution)
             except ValueError as exc:
                 raise PropPersistenceConflict("canonical replay execution snapshot is invalid") from exc
 

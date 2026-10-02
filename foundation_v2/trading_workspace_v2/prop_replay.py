@@ -9,7 +9,7 @@ from .prop_session import (
     PropLifecycleEvent,
     PropPhaseSpec,
 )
-from .replay_execution import ReplayExecutionEvent, ReplayExecutionSnapshot
+from .replay_execution import ReplayExecutionEvent, ReplayExecutionSnapshot, replay_event_for_snapshot
 
 
 class ReplayPropConnectionError(ValueError):
@@ -27,8 +27,9 @@ def validate_replay_prop_binding(
     attempt: ChallengeAttemptSnapshot,
     phase: PhaseStateSnapshot,
 ) -> None:
-    if attempt.engine_version != "replay-v1":
-        raise ReplayPropConnectionError("prop attempt engine_version must be replay-v1")
+    expected_engine = "replay-v2" if snapshot.schema_version == "replay-execution-v2" else "replay-v1"
+    if attempt.engine_version != expected_engine:
+        raise ReplayPropConnectionError(f"prop attempt engine_version must be {expected_engine}")
     if not _data_version_matches(attempt.data_version, snapshot.dataset_sha256):
         raise ReplayPropConnectionError("prop attempt data_version must pin the replay dataset sha256")
     if attempt.cost_version != str(snapshot.cost_model.get("version") or ""):
@@ -72,6 +73,8 @@ def validate_replay_prop_branch_checkpoint(
         or child_snapshot.instrument_spec != parent_snapshot.instrument_spec
         or child_snapshot.cost_model != parent_snapshot.cost_model
         or child_snapshot.starting_balance != parent_snapshot.starting_balance
+        or child_snapshot.schema_version != parent_snapshot.schema_version
+        or getattr(child_snapshot, "research_margin", None) != getattr(parent_snapshot, "research_margin", None)
     ):
         raise ReplayPropConnectionError("replay branch immutable execution pins diverged from its parent")
 
@@ -102,7 +105,7 @@ def validate_replay_prop_branch_checkpoint(
     checkpoint_event = None
     for item in reversed(child_snapshot.ledger):
         try:
-            candidate = ReplayExecutionEvent.model_validate(item)
+            candidate = replay_event_for_snapshot(child_snapshot, item)
         except ValueError as exc:
             raise ReplayPropConnectionError("replay branch checkpoint ledger is invalid") from exc
         if candidate.sequence == child_snapshot.event_sequence:
@@ -183,7 +186,7 @@ def validate_replay_prop_transition_boundary(
         if item_sequence != snapshot.event_sequence:
             continue
         try:
-            boundary_event = ReplayExecutionEvent.model_validate(item)
+            boundary_event = replay_event_for_snapshot(snapshot, item)
         except ValueError as exc:
             raise ReplayPropConnectionError("canonical replay boundary event is invalid") from exc
         break

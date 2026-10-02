@@ -1,0 +1,61 @@
+{
+  "schema": "replay-margin-v2-offline-validation-v1",
+  "status": "PASS_FROZEN_OFFLINE",
+  "pytest_exit_code": 0,
+  "pytest_args": [
+    "-q",
+    "foundation_v2/tests/test_replay_margin_v2.py",
+    "foundation_v2/tests/test_replay_margin_v2_service.py",
+    "foundation_v2/tests/test_u5b_margin_parity_v2.py",
+    "foundation_v2/tests/test_u5b_manual_sequence_parity.py",
+    "foundation_v2/tests/test_u5b_manual_execution_parity.py",
+    "foundation_v2/tests/test_u5b_replay_compare.py",
+    "foundation_v2/tests/test_replay_execution_core.py",
+    "foundation_v2/tests/test_replay_analytics.py",
+    "foundation_v2/tests/test_u5_engine_oracle.py",
+    "foundation_v2/tests/test_u5b_protective_margin.py",
+    "foundation_v2/tests/test_ps02_replay_prop_connection.py",
+    "foundation_v2/tests/test_replay_session_catalog.py",
+    "-k",
+    "not PostgresIntegration and not U5BProtectiveIntegrationTests"
+  ],
+  "elapsed_seconds": 90.076,
+  "source_before": {
+    "foundation_v2/trading_workspace_v2/api.py": "32bf3c529f70a480a923c93d96bf14b4964cf6b2740f9fc1a7564889cc5b40b1",
+    "foundation_v2/trading_workspace_v2/contracts.py": "3837fa3636657013509ff88803eeed6edf6b370e93d3a2fab36d3f3cb4be6f76",
+    "foundation_v2/trading_workspace_v2/prop_replay.py": "2e44f20716da199d6aeaabbb6a00854f71c3d9707c7e19a614f2de1c894cb848",
+    "foundation_v2/trading_workspace_v2/replay.py": "4e51134e2512f534ba9d68c94e7f0edb2555984a69934c8668051157def4fddc",
+    "foundation_v2/trading_workspace_v2/replay_analytics.py": "ee07e16ec036a9c40ebdba450741e8cf86e72cf62951df38b3892e6238253dc2",
+    "foundation_v2/trading_workspace_v2/replay_execution.py": "88af6e1bcd2cd3192d2f97ca3da9c877f8b10c1852a0f400a81385c786cef448",
+    "foundation_v2/trading_workspace_v2/research_validation.py": "c3719c10139835b6120f0a1a15a50d0d2f0dd2f423c255a79b679e97b0a9c797",
+    "foundation_v2/trading_workspace_v2/store.py": "e13621fd928332dbb396a84de086a49fb3a402c11ba9c45f48eb484731af9988",
+    "foundation_v2/tests/test_replay_margin_v2.py": "f10c88c37a13156ae48bdb083dff9392c1444de36f44d0f385f06d834dbff3cb",
+    "foundation_v2/tests/test_replay_margin_v2_service.py": "2646b8d81248e71a12972ec8f99ada3f43ba9c5382d700f41853166e13b5eff2",
+    "foundation_v2/tests/test_u5b_margin_parity_v2.py": "06dd81bbbf640d72ba7d2e31bce7131d2faada8a59c906600c82b77913884009"
+  },
+  "source_after": {
+    "foundation_v2/trading_workspace_v2/api.py": "32bf3c529f70a480a923c93d96bf14b4964cf6b2740f9fc1a7564889cc5b40b1",
+    "foundation_v2/trading_workspace_v2/contracts.py": "3837fa3636657013509ff88803eeed6edf6b370e93d3a2fab36d3f3cb4be6f76",
+    "foundation_v2/trading_workspace_v2/prop_replay.py": "2e44f20716da199d6aeaabbb6a00854f71c3d9707c7e19a614f2de1c894cb848",
+    "foundation_v2/trading_workspace_v2/replay.py": "4e51134e2512f534ba9d68c94e7f0edb2555984a69934c8668051157def4fddc",
+    "foundation_v2/trading_workspace_v2/replay_analytics.py": "ee07e16ec036a9c40ebdba450741e8cf86e72cf62951df38b3892e6238253dc2",
+    "foundation_v2/trading_workspace_v2/replay_execution.py": "88af6e1bcd2cd3192d2f97ca3da9c877f8b10c1852a0f400a81385c786cef448",
+    "foundation_v2/trading_workspace_v2/research_validation.py": "c3719c10139835b6120f0a1a15a50d0d2f0dd2f423c255a79b679e97b0a9c797",
+    "foundation_v2/trading_workspace_v2/store.py": "e13621fd928332dbb396a84de086a49fb3a402c11ba9c45f48eb484731af9988",
+    "foundation_v2/tests/test_replay_margin_v2.py": "f10c88c37a13156ae48bdb083dff9392c1444de36f44d0f385f06d834dbff3cb",
+    "foundation_v2/tests/test_replay_margin_v2_service.py": "2646b8d81248e71a12972ec8f99ada3f43ba9c5382d700f41853166e13b5eff2",
+    "foundation_v2/tests/test_u5b_margin_parity_v2.py": "06dd81bbbf640d72ba7d2e31bce7131d2faada8a59c906600c82b77913884009"
+  },
+  "source_unchanged": true,
+  "network_guard": {
+    "application_socket_blocks": 2,
+    "stdlib_socketpair_exemptions": 1
+  },
+  "network_scope": "Parent validation denies all application sockets including QA8020. Only exact caller code of Python stdlib socket.socketpair plus loopback may connect for Windows asyncio internal self-pipe. Native subprocess uses existing pinned offline backtest adapter; parent Python monkeypatch is not a child-process OS firewall.",
+  "inherited_database_environment_removed": true,
+  "database_integration_explicitly_deselected": true,
+  "python": "3.12.10",
+  "pydantic": "2.13.5",
+  "active_qa_mutations": false,
+  "broker_provider_holdout": false
+}
