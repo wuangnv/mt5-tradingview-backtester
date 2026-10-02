@@ -5,6 +5,10 @@ import json
 import math
 from decimal import Decimal, ROUND_CEILING, ROUND_FLOOR, ROUND_HALF_UP
 
+from .replay_analytics import build_replay_analytics_view
+from .replay_execution import ReplayExecutionSnapshot
+from .retained import CostModel, InstrumentSpec
+
 
 class ResearchReconciliationError(RuntimeError):
     pass
@@ -70,6 +74,85 @@ def compare_replay_research_cutoff(*, replay_view: dict, research_protocol: dict
         "cutoff_timestamp": cutoff,
         "future_rows_hidden": has_future,
         "visible_row_count": len(visible),
+    }
+
+
+def compare_replay_engine_execution(*, replay_view: dict, research_result: dict, rows: list[dict]) -> dict:
+    """Compare declared manual protective trades with a validated engine result.
+
+    This is an offline comparison of completed protective trades on the same
+    immutable prefix. It does not grant execution or infer a manual strategy's
+    no-signal, horizon-close or margin decisions from an engine run.
+    """
+    try:
+        protocol = research_result["protocol"]
+        cutoff = compare_replay_research_cutoff(
+            replay_view=replay_view, research_protocol=protocol, rows=rows,
+        )
+        validate_engine_result(research_result, rows=rows)
+        payload = replay_view["payload"]
+        snapshot = ReplayExecutionSnapshot.model_validate(payload["execution"])
+        rules = protocol["playbook"]["rules"]
+        if rules.get("exit_mode", "fixed_horizon") != "protective":
+            raise ResearchReconciliationError("replay parity supports protective exits only")
+        if (snapshot.position is not None or snapshot.pending_market_order is not None
+                or snapshot.phase_index != 1 or snapshot.evaluation_quality != "full_for_declared_model"):
+            raise ResearchReconciliationError("replay parity requires a flat, complete single-phase snapshot")
+        if snapshot.cursor_index != cutoff["visible_row_count"] - 1:
+            raise ResearchReconciliationError("replay execution cursor differs from source cutoff")
+        if (replay_view.get("workspace_id") != research_result.get("workspace_id")
+                or not replay_view.get("workspace_id")):
+            raise ResearchReconciliationError("replay and engine workspace differ")
+        if (snapshot.dataset_id != protocol["dataset"]["dataset_id"]
+                or research_result.get("dataset_id") != snapshot.dataset_id):
+            raise ResearchReconciliationError("replay and engine dataset identity differ")
+        if snapshot.timeframe_seconds != protocol["dataset"]["timeframe_seconds"]:
+            raise ResearchReconciliationError("replay and engine timeframe differ")
+        if (InstrumentSpec.from_mapping(snapshot.instrument_spec)
+                != InstrumentSpec.from_mapping(protocol["dataset"]["instrument_spec"])):
+            raise ResearchReconciliationError("replay and engine instrument differ")
+        if (CostModel.from_mapping(snapshot.cost_model)
+                != CostModel.from_mapping(protocol["parameters"]["cost_model"])):
+            raise ResearchReconciliationError("replay and engine cost model differ")
+        _expect(snapshot.spread_price, _number(protocol["parameters"]["spread_price"], "spread"), "replay.spread")
+        _expect(snapshot.starting_balance, _number(protocol["starting_balance"], "starting balance"), "replay.start")
+        if any(event["virtual_time_utc"] > protocol["range"]["to_utc"] for event in snapshot.ledger):
+            raise ResearchReconciliationError("replay execution event exceeds research cutoff")
+        manual = build_replay_analytics_view(replay_view)["ledger"]
+        automated = research_result["ledger"]
+        if len(manual) != len(automated):
+            raise ResearchReconciliationError("replay and engine closed trade counts differ")
+        for index, (replay_trade, engine_trade) in enumerate(zip(manual, automated, strict=True)):
+            label = f"replay.trade[{index}]"
+            for field in ("symbol", "side", "open_time_utc", "close_time_utc", "exit_reason"):
+                if replay_trade[field] != engine_trade[field]:
+                    raise ResearchReconciliationError(f"{label}.{field} differs from engine")
+            for field in ("quantity", "price_open", "price_close", "net_pnl"):
+                _expect(replay_trade[field], _number(engine_trade[field], field), label + "." + field)
+            decision_index = replay_trade["open_cursor_index"] - 1
+            if decision_index < 0:
+                raise ResearchReconciliationError("replay entry has no prior closed-bar decision")
+            decision_time = rows[decision_index]["timestamp"] + snapshot.timeframe_seconds
+            if engine_trade["signal_time_utc"] != decision_time:
+                raise ResearchReconciliationError(f"{label}.decision differs from prior closed bar")
+            if engine_trade["exit_reason"] == "horizon":
+                raise ResearchReconciliationError("replay parity cannot infer a horizon close")
+        _expect(snapshot.balance, _number(research_result["metrics"]["ending_closed_trade_balance"], "ending balance"), "replay.balance")
+        _expect(snapshot.equity, snapshot.balance, "replay.flat_equity")
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ResearchReconciliationError(f"replay parity input is invalid: {exc}") from exc
+    return {
+        "schema": "replay-engine-parity-v1",
+        "scope": "OFFLINE_COMPLETED_PROTECTIVE_TRADES",
+        "reconciled": True,
+        "trade_count": len(manual),
+        "dataset_sha256": snapshot.dataset_sha256,
+        "protocol_sha256": research_result["protocol_sha256"],
+        "cutoff_timestamp": cutoff["cutoff_timestamp"],
+        "engine_backend": protocol["engine"].get("backend", "reference"),
+        "native_timing": "engine nanosecond ordering is validated separately; replay timestamps use seconds",
+        "not_compared": ["manual_no_signal_decisions", "horizon_closes", "margin_admission", "floating_equity_path"],
+        "execution_capability": False,
     }
 
 

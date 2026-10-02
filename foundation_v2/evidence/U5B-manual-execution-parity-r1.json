@@ -1,0 +1,90 @@
+{
+  "schema": "u5b-manual-execution-parity-evidence-v1",
+  "recorded_date_local": "2026-10-02",
+  "status": "PASS_OFFLINE_PROTECTIVE_SUBSET",
+  "scope": "Completed predeclared manual protective trades versus the accepted reference and primary Nautilus adapters on synthetic immutable OHLC fixtures",
+  "base_head": "03f89ac76c35674f1873a00c245a7856d3ba96d9",
+  "authority": {
+    "plan": "planning/mt5-tradingview-backtester/PRODUCT-COMPLETION-PLAN.md",
+    "requirement": "U5b: manual/replay versus automatic on the same segment with execution-model/slippage differences explicit",
+    "ledger_snapshot_revision": 389,
+    "reused_accepted_tasks": [
+      "U5-NAUTILUS-ADAPTER-r1",
+      "U5B-PROTECTIVE-MARGIN-r1",
+      "U5B-REPLAY-CUTOFF-r1"
+    ],
+    "ledger_promotion": "not performed; independent root review remains separate"
+  },
+  "sources": {
+    "hash_basis": "SHA-256 of local raw file bytes; hashes do not include unrelated frontend changes",
+    "foundation_v2/trading_workspace_v2/research_validation.py": "dba1fa87a4174b2c0c8ac29b5d4ae457ca85117fbe1351dd2eecede394dd48b2",
+    "foundation_v2/tests/test_u5b_manual_execution_parity.py": "cfe865b4945e230286a830e807262a1a0d523411337bfed8a03649619a4cbf94",
+    "foundation_v2/engine_runtime/uv.lock": "d4cb4e843100b712a2d35fc05f1df1da36676aaa6baa354a985e831f5e5a699d",
+    "foundation_v2/engine_runtime/adapter.py": "fadd7d63f80e6736ce85c9d32a016cf41159844875a360c8e49c795c8945d386",
+    "engine_code_sha256": "379fc441de9d8ca59e96f00f8bee24a9854cf1c9182fa1098ecd5431040c1c69",
+    "adapter_sha256": "4aa00e42248f5c2f9fd1a282ddb938e5613964ee9eafc1d076b7d5a602d54e1b"
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "pyarrow": "25.0.1",
+    "nautilus_trader": "1.231.0",
+    "memory_limit_mb": 512,
+    "process_ownership": "existing worker-owned Windows Job Object; no persistent worker launched"
+  },
+  "fixture_contract": {
+    "decision": "BUY or SELL declared from the visible three-bar prefix; absolute brackets are fixed before stepping; no engine fills copied into replay",
+    "lookback": 2,
+    "hold_bars": [1, 2],
+    "quantity": "0.03",
+    "tick_size": "0.05",
+    "contract_size": "1000",
+    "starting_balance": "10000",
+    "spread_price": "0.02",
+    "commission_per_side_account": "0.333",
+    "slippage_price_per_side": "0.0023",
+    "financing_account": "0.0049",
+    "quote_to_account_rate": "1.2345",
+    "rounding_decimals": 2,
+    "cost_model_version": "u5-oracle-cost-v1",
+    "native_ordering": "entry at open +1ns; intrabar protective fill at close -1ns; gap protective fill at open +1ns; replay records equivalent integer UTC seconds"
+  },
+  "validation": {
+    "command": "foundation_v2/.venv/Scripts/python.exe -m pytest -q foundation_v2/tests/test_u5b_manual_execution_parity.py foundation_v2/tests/test_u5b_replay_compare.py foundation_v2/tests/test_replay_execution_core.py foundation_v2/tests/test_replay_analytics.py foundation_v2/tests/test_u5_engine_oracle.py foundation_v2/tests/test_u5b_protective_margin.py -k 'not U5BProtectiveIntegrationTests'",
+    "passed": 92,
+    "subtests_passed": 20,
+    "deselected_db_integration": 1,
+    "new_parity_cases": 30,
+    "new_primary_nautilus_cases": 8,
+    "duration_seconds": 44.65,
+    "lint": "Ruff E9/F/B checks passed on the two owned source/test files",
+    "compile": "py_compile passed on the two owned source/test files",
+    "diff": "owned-file git diff --check passed",
+    "warnings": "existing Starlette/httpx TestClient and AnyIO alias deprecations",
+    "initial_validation_repairs": [
+      "The standalone test first relied on another fixture module's sys.path mutation; explicit project/foundation path preparation repaired collection after import ordering.",
+      "An initial combined selection reached the existing destructive DB fixture guard and failed before creating a store or issuing TRUNCATE. The final offline command explicitly deselects that integration class; the guard remains unchanged."
+    ]
+  },
+  "verified": [
+    "Long and short stop-loss, take-profit, gap-stop and gap-take-profit fills match for eight declared cases against both adapters",
+    "Same immutable dataset prefix, tenant, dataset identity/hash, instrument, timeframe, cost model and cutoff are required",
+    "Matched trades agree on side, quantity, prior closed-bar decision time, opening/closing times, fill prices, exit reason and net P/L",
+    "Ending flat balance/equity agree; native source/fill/runtime provenance passes the existing independent oracle",
+    "Thirteen lineage/cutoff/fill/protocol mismatch cases and tampered native runtime identity reject",
+    "Unresolved horizon positions and same-bar dual-hit ambiguity remain fail-closed"
+  ],
+  "not_verified": [
+    "Full manual no-signal/skip/margin admission parity",
+    "Manual fixed-horizon closes, multiple trades/phases and floating equity path parity",
+    "Replay ledger gross/fees/R breakdown; these remain unavailable in the existing read model",
+    "Real licensed data, unseen empirical segments, browser manual order interaction or full U5b acceptance",
+    "U5a true mid-computation engine cursor/cache resume and multi-instance capacity",
+    "Provider, broker, holdout, account, deployment or external integration acceptance"
+  ],
+  "execution_capability": false,
+  "provider_calls": false,
+  "broker_calls": false,
+  "holdout_access": false,
+  "database_operations": false,
+  "rollback": "Revert only the commit containing research_validation.py, test_u5b_manual_execution_parity.py and this receipt; preserve concurrent UI work."
+}
