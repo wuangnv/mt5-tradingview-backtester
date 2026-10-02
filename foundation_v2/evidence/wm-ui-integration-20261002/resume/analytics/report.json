@@ -1,0 +1,19 @@
+{
+  "scope": "synthetic dataset through real API and PostgreSQL; read-only browser checks",
+  "cases": [
+    "real ledger pagination, keyboard action, trade deep link reload and candle cursor",
+    "filter request, empty state, reload persistence and clear filters",
+    "workspace-scoped CSV export carries actual metrics and full ledger",
+    "historical cursor/cutoff survives reload and bounds metrics, ledger and CSV; initial cursor stays empty",
+    "future cursor fails visibly without latest-data fallback or canonical session mutation",
+    "uninitialized execution does not fabricate zero metrics",
+    "dark 1440 real analytics rendered without page overflow",
+    "dark 768 real analytics rendered without page overflow",
+    "dark 390 real analytics rendered without page overflow",
+    "light 1440 real analytics rendered without page overflow",
+    "light 768 real analytics rendered without page overflow",
+    "light 390 real analytics rendered without page overflow"
+  ],
+  "errors": [],
+  "status": "PASS"
+}

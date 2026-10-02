@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "scope": "synthetic-data-real-API-Postgres-local-UI-only",
+  "ownId": "06d2fd6ac63f41e78bb91fdef917d99e",
+  "checks": [
+    "horizontal line trendline zone and text draw and persist through real API",
+    "measurement shows price change and candle distance as explicitly local tool",
+    "saved shapes survive reload while unsaved measure clears and visibility lock preferences persist",
+    "rename writes revision and stale delete returns conflict then reload permits tombstone deletion",
+    "external tombstone returns 404 without false success and reload reconciles objects",
+    "rewind hides annotations created after cutoff and local catalog selection clears session scope",
+    "mobile and landscape details follow footer without overlap; chart height remains bounded and close control is reachable"
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "height": 900,
+      "page": 0,
+      "content": 0,
+      "footerBottom": 900,
+      "detailTop": 108,
+      "chartHeight": 693
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "page": 0,
+      "content": 0,
+      "footerBottom": 751,
+      "detailTop": 751,
+      "chartHeight": 430
+    },
+    {
+      "width": 360,
+      "height": 900,
+      "page": 0,
+      "content": 0,
+      "footerBottom": 883,
+      "detailTop": 883,
+      "chartHeight": 430
+    },
+    {
+      "width": 720,
+      "height": 450,
+      "page": 0,
+      "content": 0,
+      "footerBottom": 390,
+      "detailTop": 390,
+      "chartHeight": 320
+    }
+  ],
+  "errors": []
+}

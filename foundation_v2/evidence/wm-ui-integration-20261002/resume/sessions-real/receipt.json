@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "scope": "synthetic-data-real-API-Postgres-local-UI-only",
+  "productAcceptance": "SCOPED_ONLY",
+  "broker": "NOT_CONTACTED",
+  "baseline": "39b1d068edd64e75864f692f27237852",
+  "baselineRevision": 123,
+  "created": [
+    "5b84db59a5d84a5e94902d5fdb716cb0",
+    "a70ee596383445d29e650175d505639a"
+  ],
+  "checks": [
+    "real branch keeps lineage and dashboard deduplicates 60 inherited closures",
+    "real 409 retains draft then explicit save persists across reload",
+    "archive and restore counts match API while historical dashboard and analytics remain available",
+    "UI duplicate branches at exact saved cutoff and navigates to persisted child",
+    "persisted child ledger has 60 trades and page two detail survives reload",
+    "real session metadata and report render at 1440 768 390 in dark and light without horizontal overflow",
+    "uninitialized real session has explicit unavailable analytics instead of fabricated zero"
+  ],
+  "screenshots": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "filename": "sessions-real-dark-1440.png",
+      "documentOverflow": 0,
+      "contentWidth": 1192,
+      "contentOverflow": 0
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "filename": "sessions-real-dark-768.png",
+      "documentOverflow": 0,
+      "contentWidth": 694,
+      "contentOverflow": 0
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "filename": "sessions-real-dark-390.png",
+      "documentOverflow": 0,
+      "contentWidth": 332,
+      "contentOverflow": 0
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "filename": "sessions-real-light-1440.png",
+      "documentOverflow": 0,
+      "contentWidth": 1192,
+      "contentOverflow": 0
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "filename": "sessions-real-light-768.png",
+      "documentOverflow": 0,
+      "contentWidth": 694,
+      "contentOverflow": 0
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "filename": "sessions-real-light-390.png",
+      "documentOverflow": 0,
+      "contentWidth": 332,
+      "contentOverflow": 0
+    }
+  ],
+  "browserErrors": []
+}

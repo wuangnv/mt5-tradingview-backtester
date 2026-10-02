@@ -6,7 +6,7 @@ import path from 'node:path'
 import { chromium } from 'playwright'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
-const evidenceDir = path.resolve(here, '..', 'evidence')
+const evidenceDir = process.env.TW_REPLAY_EVIDENCE_DIR || path.resolve(here, '..', 'evidence')
 const viteBin = path.join(here, 'node_modules', 'vite', 'bin', 'vite.js')
 const origin = 'http://127.0.0.1:4173'
 
@@ -138,10 +138,11 @@ async function main() {
     // Keep the replay acceptance fixture self-contained. The product only
     // needs the catalog to render its dataset context; no real backend or
     // broker service should be required for this browser contract test.
+    await page.route('**/api/v2/chart/annotations', route => fulfillJson(route, 200, { items: [] }))
     await page.route('**/api/v2/data/datasets**', async (route) => {
       if (route.request().method() !== 'GET') return fulfillJson(route, 405, { detail: 'method_not_allowed' })
       return fulfillJson(route, 200, {
-        datasets: [{
+        items: [{
           dataset_id: 'ui-replay-fixture',
           instrument_id: 'EURUSD',
           timeframe: 'M1',
@@ -152,7 +153,7 @@ async function main() {
       })
     })
 
-    await page.goto(`${origin}/?view=replay&workspace=tenant-ui&session=replay-fixture&cursor=1&from=prop-report`)
+    await page.goto(`${origin}/?view=replay&surface=workspace&workspace=tenant-ui&session=replay-fixture&cursor=1&from=prop-report`)
     await page.getByTestId('replay-history-view').waitFor()
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '2')
     assert.match(await page.getByTestId('replay-history-view').innerText(), /cutoff report ở nến #1/i)
@@ -163,13 +164,14 @@ async function main() {
     assert.match(await page.getByTestId('branch-replay').innerText(), /Tạo branch từ report #1/)
     await page.screenshot({ path: path.join(evidenceDir, 'replay-report-cutoff-ui.png'), fullPage: true })
 
-    await page.goto(`${origin}/?view=replay&workspace=tenant-ui&session=replay-fixture`)
+    await page.goto(`${origin}/?view=replay&surface=workspace&workspace=tenant-ui&session=replay-fixture`)
     await page.getByTestId('replay-chart').waitFor()
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '4')
     assert.match(await page.getByTestId('replay-lock').innerText(), /REPLAY \/ SIMULATION/)
     assert.match(await page.getByTestId('replay-lock').innerText(), /Broker locked/)
     assert.equal((await page.locator('body').innerText()).includes('1,081234'), false, 'future price leaked before step')
 
+    await page.getByRole('button', { name: 'Vừa toàn bộ nến đã mở' }).click()
     const chartBox = await page.getByTestId('replay-chart').boundingBox()
     assert.ok(chartBox, 'replay chart should expose a clickable surface')
     await page.getByTestId('replay-chart').click({
@@ -186,6 +188,7 @@ async function main() {
     await page.getByRole('button', { name: 'Tải trạng thái mới' }).click()
     await page.getByTestId('revision-conflict').waitFor({ state: 'detached' })
 
+    await page.getByRole('button', { name: 'Chi tiết & nhánh' }).click()
     await page.getByTestId('branch-cursor').focus()
     await page.getByTestId('branch-cursor').press('Home')
     await page.getByTestId('branch-cursor').press('ArrowRight')
@@ -194,7 +197,7 @@ async function main() {
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '2')
     assert.match(await page.locator('.session-facts').innerText(), /replay-fixture/)
 
-    await page.goto(`${origin}/?view=replay&workspace=tenant-ui`)
+    await page.goto(`${origin}/?view=replay&surface=workspace&workspace=tenant-ui`)
     await page.waitForURL(/session=branch-fixture-1/)
     assert.equal(await page.getByTestId('replay-chart').getAttribute('data-visible-row-count'), '2', 'persisted resume failed')
     assert.match(await page.getByTestId('replay-shortcuts').innerText(), /Shift.*\+10 nến/i)

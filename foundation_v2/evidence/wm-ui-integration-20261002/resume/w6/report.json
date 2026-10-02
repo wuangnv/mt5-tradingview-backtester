@@ -1,0 +1,66 @@
+{
+  "status": "SCOPED_PASS",
+  "scope": "intercepted API component regression; not product integration acceptance",
+  "checks": [
+    "Settings uses verified API state and preserves replay context",
+    "Delayed prior workspace response cannot replace current identity",
+    "Refresh denied clears prior identity and does not claim local permission",
+    "Learn Research return and Learn Settings roundtrip preserve source context",
+    "Learn newer resource remains selected after old resource resolves",
+    "Learn service error retries from keyboard and restores real response",
+    "Learn keeps unknown progress separate from zero and uses observed module count",
+    "Learn ready fixture passes scoped axe at both themes and three widths"
+  ],
+  "accessibility": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "violations": [],
+      "incomplete": [
+        "aria-prohibited-attr"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "violations": [],
+      "incomplete": [
+        "aria-prohibited-attr"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "violations": [],
+      "incomplete": [
+        "aria-prohibited-attr"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "violations": [],
+      "incomplete": [
+        "aria-prohibited-attr"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "violations": [],
+      "incomplete": [
+        "aria-prohibited-attr"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "violations": [],
+      "incomplete": [
+        "aria-prohibited-attr"
+      ]
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

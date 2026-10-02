@@ -1,0 +1,2635 @@
+{
+  "scope": "Explicit synthetic UI comparison fixture captured from isolated QA engine data",
+  "session": "39b1d068edd64e75864f692f27237852",
+  "catalog": {
+    "items": [
+      {
+        "record_id": "39b1d068edd64e75864f692f27237852",
+        "name": "Fixture UI — 60 lệnh mô phỏng",
+        "description": "Dữ liệu tổng hợp cố định để so sánh giao diện. Không phải hiệu suất thị trường.",
+        "archived": false,
+        "revision": 123,
+        "dataset_id": "dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6",
+        "instrument_id": "EURUSD",
+        "timeframe": "60s",
+        "timeframe_seconds": 60,
+        "row_count": 300,
+        "cursor_index": 60,
+        "status": "paused",
+        "branch_id": "42c04ae295b444aaad4450c05f761878",
+        "parent_session_id": null,
+        "parent_revision": null,
+        "dataset_available": true,
+        "has_execution": true,
+        "created_at_utc": "2026-10-01T11:41:36.850178Z",
+        "updated_at_utc": "2026-10-01T11:42:47.600679Z"
+      }
+    ]
+  },
+  "analytics": {
+    "schema_version": "analytics-read-model-v1",
+    "analytics_available": true,
+    "blocked_by_data": [],
+    "filters": {
+      "side": "all",
+      "outcome": "all",
+      "from_close_utc": null,
+      "to_close_utc": null
+    },
+    "scope": {
+      "selected_trade_count": 60,
+      "total_trade_count": 60,
+      "active_filters": false,
+      "observed_range": {
+        "first_close_utc": "2024-01-01T07:02:00+07:00",
+        "last_close_utc": "2024-01-01T08:01:00+07:00"
+      },
+      "balance_curve_scope": "all closed trades replayed from result starting balance; floating P/L and cashflow unavailable"
+    },
+    "metrics": {
+      "metric_schema_version": "metrics-v2",
+      "closed_trade_count": 60,
+      "wins": 60,
+      "losses": 0,
+      "breakeven": 0,
+      "win_rate_pct": 100.0,
+      "loss_rate_pct": 0.0,
+      "gross_pnl": null,
+      "fees": null,
+      "net_pnl": 75.0,
+      "profit_factor_after_cost": null,
+      "payoff_ratio_after_cost": null,
+      "expectancy_net_per_trade": 1.25,
+      "average_realized_r": null,
+      "realized_r_known_count": 0,
+      "gross_pnl_known_count": 0,
+      "fees_known_count": 0,
+      "closed_trade_balance_max_drawdown": 0.0,
+      "closed_trade_balance_max_drawdown_pct": 0.0,
+      "max_loss_streak": 0,
+      "starting_balance": 100000.0,
+      "ending_closed_trade_balance": 100075.0,
+      "closed_trade_balance_curve": [
+        {
+          "sequence": 0,
+          "trade_id": null,
+          "closed_trade_balance": 100000.0
+        },
+        {
+          "sequence": 1,
+          "trade_id": "replay-pos-1",
+          "closed_trade_balance": 100001.0
+        },
+        {
+          "sequence": 2,
+          "trade_id": "replay-pos-4",
+          "closed_trade_balance": 100002.5
+        },
+        {
+          "sequence": 3,
+          "trade_id": "replay-pos-7",
+          "closed_trade_balance": 100003.5
+        },
+        {
+          "sequence": 4,
+          "trade_id": "replay-pos-10",
+          "closed_trade_balance": 100005.0
+        },
+        {
+          "sequence": 5,
+          "trade_id": "replay-pos-13",
+          "closed_trade_balance": 100006.0
+        },
+        {
+          "sequence": 6,
+          "trade_id": "replay-pos-16",
+          "closed_trade_balance": 100007.5
+        },
+        {
+          "sequence": 7,
+          "trade_id": "replay-pos-19",
+          "closed_trade_balance": 100008.5
+        },
+        {
+          "sequence": 8,
+          "trade_id": "replay-pos-22",
+          "closed_trade_balance": 100010.0
+        },
+        {
+          "sequence": 9,
+          "trade_id": "replay-pos-25",
+          "closed_trade_balance": 100011.0
+        },
+        {
+          "sequence": 10,
+          "trade_id": "replay-pos-28",
+          "closed_trade_balance": 100012.5
+        },
+        {
+          "sequence": 11,
+          "trade_id": "replay-pos-31",
+          "closed_trade_balance": 100013.5
+        },
+        {
+          "sequence": 12,
+          "trade_id": "replay-pos-34",
+          "closed_trade_balance": 100015.0
+        },
+        {
+          "sequence": 13,
+          "trade_id": "replay-pos-37",
+          "closed_trade_balance": 100016.0
+        },
+        {
+          "sequence": 14,
+          "trade_id": "replay-pos-40",
+          "closed_trade_balance": 100017.5
+        },
+        {
+          "sequence": 15,
+          "trade_id": "replay-pos-43",
+          "closed_trade_balance": 100018.5
+        },
+        {
+          "sequence": 16,
+          "trade_id": "replay-pos-46",
+          "closed_trade_balance": 100020.0
+        },
+        {
+          "sequence": 17,
+          "trade_id": "replay-pos-49",
+          "closed_trade_balance": 100021.0
+        },
+        {
+          "sequence": 18,
+          "trade_id": "replay-pos-52",
+          "closed_trade_balance": 100022.5
+        },
+        {
+          "sequence": 19,
+          "trade_id": "replay-pos-55",
+          "closed_trade_balance": 100023.5
+        },
+        {
+          "sequence": 20,
+          "trade_id": "replay-pos-58",
+          "closed_trade_balance": 100025.0
+        },
+        {
+          "sequence": 21,
+          "trade_id": "replay-pos-61",
+          "closed_trade_balance": 100026.0
+        },
+        {
+          "sequence": 22,
+          "trade_id": "replay-pos-64",
+          "closed_trade_balance": 100027.5
+        },
+        {
+          "sequence": 23,
+          "trade_id": "replay-pos-67",
+          "closed_trade_balance": 100028.5
+        },
+        {
+          "sequence": 24,
+          "trade_id": "replay-pos-70",
+          "closed_trade_balance": 100030.0
+        },
+        {
+          "sequence": 25,
+          "trade_id": "replay-pos-73",
+          "closed_trade_balance": 100031.0
+        },
+        {
+          "sequence": 26,
+          "trade_id": "replay-pos-76",
+          "closed_trade_balance": 100032.5
+        },
+        {
+          "sequence": 27,
+          "trade_id": "replay-pos-79",
+          "closed_trade_balance": 100033.5
+        },
+        {
+          "sequence": 28,
+          "trade_id": "replay-pos-82",
+          "closed_trade_balance": 100035.0
+        },
+        {
+          "sequence": 29,
+          "trade_id": "replay-pos-85",
+          "closed_trade_balance": 100036.0
+        },
+        {
+          "sequence": 30,
+          "trade_id": "replay-pos-88",
+          "closed_trade_balance": 100037.5
+        },
+        {
+          "sequence": 31,
+          "trade_id": "replay-pos-91",
+          "closed_trade_balance": 100038.5
+        },
+        {
+          "sequence": 32,
+          "trade_id": "replay-pos-94",
+          "closed_trade_balance": 100040.0
+        },
+        {
+          "sequence": 33,
+          "trade_id": "replay-pos-97",
+          "closed_trade_balance": 100041.0
+        },
+        {
+          "sequence": 34,
+          "trade_id": "replay-pos-100",
+          "closed_trade_balance": 100042.5
+        },
+        {
+          "sequence": 35,
+          "trade_id": "replay-pos-103",
+          "closed_trade_balance": 100043.5
+        },
+        {
+          "sequence": 36,
+          "trade_id": "replay-pos-106",
+          "closed_trade_balance": 100045.0
+        },
+        {
+          "sequence": 37,
+          "trade_id": "replay-pos-109",
+          "closed_trade_balance": 100046.0
+        },
+        {
+          "sequence": 38,
+          "trade_id": "replay-pos-112",
+          "closed_trade_balance": 100047.5
+        },
+        {
+          "sequence": 39,
+          "trade_id": "replay-pos-115",
+          "closed_trade_balance": 100048.5
+        },
+        {
+          "sequence": 40,
+          "trade_id": "replay-pos-118",
+          "closed_trade_balance": 100050.0
+        },
+        {
+          "sequence": 41,
+          "trade_id": "replay-pos-121",
+          "closed_trade_balance": 100051.0
+        },
+        {
+          "sequence": 42,
+          "trade_id": "replay-pos-124",
+          "closed_trade_balance": 100052.5
+        },
+        {
+          "sequence": 43,
+          "trade_id": "replay-pos-127",
+          "closed_trade_balance": 100053.5
+        },
+        {
+          "sequence": 44,
+          "trade_id": "replay-pos-130",
+          "closed_trade_balance": 100055.0
+        },
+        {
+          "sequence": 45,
+          "trade_id": "replay-pos-133",
+          "closed_trade_balance": 100056.0
+        },
+        {
+          "sequence": 46,
+          "trade_id": "replay-pos-136",
+          "closed_trade_balance": 100057.5
+        },
+        {
+          "sequence": 47,
+          "trade_id": "replay-pos-139",
+          "closed_trade_balance": 100058.5
+        },
+        {
+          "sequence": 48,
+          "trade_id": "replay-pos-142",
+          "closed_trade_balance": 100060.0
+        },
+        {
+          "sequence": 49,
+          "trade_id": "replay-pos-145",
+          "closed_trade_balance": 100061.0
+        },
+        {
+          "sequence": 50,
+          "trade_id": "replay-pos-148",
+          "closed_trade_balance": 100062.5
+        },
+        {
+          "sequence": 51,
+          "trade_id": "replay-pos-151",
+          "closed_trade_balance": 100063.5
+        },
+        {
+          "sequence": 52,
+          "trade_id": "replay-pos-154",
+          "closed_trade_balance": 100065.0
+        },
+        {
+          "sequence": 53,
+          "trade_id": "replay-pos-157",
+          "closed_trade_balance": 100066.0
+        },
+        {
+          "sequence": 54,
+          "trade_id": "replay-pos-160",
+          "closed_trade_balance": 100067.5
+        },
+        {
+          "sequence": 55,
+          "trade_id": "replay-pos-163",
+          "closed_trade_balance": 100068.5
+        },
+        {
+          "sequence": 56,
+          "trade_id": "replay-pos-166",
+          "closed_trade_balance": 100070.0
+        },
+        {
+          "sequence": 57,
+          "trade_id": "replay-pos-169",
+          "closed_trade_balance": 100071.0
+        },
+        {
+          "sequence": 58,
+          "trade_id": "replay-pos-172",
+          "closed_trade_balance": 100072.5
+        },
+        {
+          "sequence": 59,
+          "trade_id": "replay-pos-175",
+          "closed_trade_balance": 100073.5
+        },
+        {
+          "sequence": 60,
+          "trade_id": "replay-pos-178",
+          "closed_trade_balance": 100075.0
+        }
+      ],
+      "closed_trade_balance_drawdown_curve": [
+        {
+          "sequence": 0,
+          "trade_id": null,
+          "closed_trade_balance": 100000.0,
+          "peak_closed_trade_balance": 100000.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 1,
+          "trade_id": "replay-pos-1",
+          "closed_trade_balance": 100001.0,
+          "peak_closed_trade_balance": 100001.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 2,
+          "trade_id": "replay-pos-4",
+          "closed_trade_balance": 100002.5,
+          "peak_closed_trade_balance": 100002.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 3,
+          "trade_id": "replay-pos-7",
+          "closed_trade_balance": 100003.5,
+          "peak_closed_trade_balance": 100003.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 4,
+          "trade_id": "replay-pos-10",
+          "closed_trade_balance": 100005.0,
+          "peak_closed_trade_balance": 100005.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 5,
+          "trade_id": "replay-pos-13",
+          "closed_trade_balance": 100006.0,
+          "peak_closed_trade_balance": 100006.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 6,
+          "trade_id": "replay-pos-16",
+          "closed_trade_balance": 100007.5,
+          "peak_closed_trade_balance": 100007.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 7,
+          "trade_id": "replay-pos-19",
+          "closed_trade_balance": 100008.5,
+          "peak_closed_trade_balance": 100008.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 8,
+          "trade_id": "replay-pos-22",
+          "closed_trade_balance": 100010.0,
+          "peak_closed_trade_balance": 100010.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 9,
+          "trade_id": "replay-pos-25",
+          "closed_trade_balance": 100011.0,
+          "peak_closed_trade_balance": 100011.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 10,
+          "trade_id": "replay-pos-28",
+          "closed_trade_balance": 100012.5,
+          "peak_closed_trade_balance": 100012.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 11,
+          "trade_id": "replay-pos-31",
+          "closed_trade_balance": 100013.5,
+          "peak_closed_trade_balance": 100013.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 12,
+          "trade_id": "replay-pos-34",
+          "closed_trade_balance": 100015.0,
+          "peak_closed_trade_balance": 100015.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 13,
+          "trade_id": "replay-pos-37",
+          "closed_trade_balance": 100016.0,
+          "peak_closed_trade_balance": 100016.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 14,
+          "trade_id": "replay-pos-40",
+          "closed_trade_balance": 100017.5,
+          "peak_closed_trade_balance": 100017.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 15,
+          "trade_id": "replay-pos-43",
+          "closed_trade_balance": 100018.5,
+          "peak_closed_trade_balance": 100018.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 16,
+          "trade_id": "replay-pos-46",
+          "closed_trade_balance": 100020.0,
+          "peak_closed_trade_balance": 100020.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 17,
+          "trade_id": "replay-pos-49",
+          "closed_trade_balance": 100021.0,
+          "peak_closed_trade_balance": 100021.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 18,
+          "trade_id": "replay-pos-52",
+          "closed_trade_balance": 100022.5,
+          "peak_closed_trade_balance": 100022.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 19,
+          "trade_id": "replay-pos-55",
+          "closed_trade_balance": 100023.5,
+          "peak_closed_trade_balance": 100023.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 20,
+          "trade_id": "replay-pos-58",
+          "closed_trade_balance": 100025.0,
+          "peak_closed_trade_balance": 100025.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 21,
+          "trade_id": "replay-pos-61",
+          "closed_trade_balance": 100026.0,
+          "peak_closed_trade_balance": 100026.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 22,
+          "trade_id": "replay-pos-64",
+          "closed_trade_balance": 100027.5,
+          "peak_closed_trade_balance": 100027.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 23,
+          "trade_id": "replay-pos-67",
+          "closed_trade_balance": 100028.5,
+          "peak_closed_trade_balance": 100028.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 24,
+          "trade_id": "replay-pos-70",
+          "closed_trade_balance": 100030.0,
+          "peak_closed_trade_balance": 100030.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 25,
+          "trade_id": "replay-pos-73",
+          "closed_trade_balance": 100031.0,
+          "peak_closed_trade_balance": 100031.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 26,
+          "trade_id": "replay-pos-76",
+          "closed_trade_balance": 100032.5,
+          "peak_closed_trade_balance": 100032.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 27,
+          "trade_id": "replay-pos-79",
+          "closed_trade_balance": 100033.5,
+          "peak_closed_trade_balance": 100033.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 28,
+          "trade_id": "replay-pos-82",
+          "closed_trade_balance": 100035.0,
+          "peak_closed_trade_balance": 100035.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 29,
+          "trade_id": "replay-pos-85",
+          "closed_trade_balance": 100036.0,
+          "peak_closed_trade_balance": 100036.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 30,
+          "trade_id": "replay-pos-88",
+          "closed_trade_balance": 100037.5,
+          "peak_closed_trade_balance": 100037.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 31,
+          "trade_id": "replay-pos-91",
+          "closed_trade_balance": 100038.5,
+          "peak_closed_trade_balance": 100038.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 32,
+          "trade_id": "replay-pos-94",
+          "closed_trade_balance": 100040.0,
+          "peak_closed_trade_balance": 100040.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 33,
+          "trade_id": "replay-pos-97",
+          "closed_trade_balance": 100041.0,
+          "peak_closed_trade_balance": 100041.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 34,
+          "trade_id": "replay-pos-100",
+          "closed_trade_balance": 100042.5,
+          "peak_closed_trade_balance": 100042.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 35,
+          "trade_id": "replay-pos-103",
+          "closed_trade_balance": 100043.5,
+          "peak_closed_trade_balance": 100043.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 36,
+          "trade_id": "replay-pos-106",
+          "closed_trade_balance": 100045.0,
+          "peak_closed_trade_balance": 100045.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 37,
+          "trade_id": "replay-pos-109",
+          "closed_trade_balance": 100046.0,
+          "peak_closed_trade_balance": 100046.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 38,
+          "trade_id": "replay-pos-112",
+          "closed_trade_balance": 100047.5,
+          "peak_closed_trade_balance": 100047.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 39,
+          "trade_id": "replay-pos-115",
+          "closed_trade_balance": 100048.5,
+          "peak_closed_trade_balance": 100048.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 40,
+          "trade_id": "replay-pos-118",
+          "closed_trade_balance": 100050.0,
+          "peak_closed_trade_balance": 100050.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 41,
+          "trade_id": "replay-pos-121",
+          "closed_trade_balance": 100051.0,
+          "peak_closed_trade_balance": 100051.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 42,
+          "trade_id": "replay-pos-124",
+          "closed_trade_balance": 100052.5,
+          "peak_closed_trade_balance": 100052.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 43,
+          "trade_id": "replay-pos-127",
+          "closed_trade_balance": 100053.5,
+          "peak_closed_trade_balance": 100053.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 44,
+          "trade_id": "replay-pos-130",
+          "closed_trade_balance": 100055.0,
+          "peak_closed_trade_balance": 100055.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 45,
+          "trade_id": "replay-pos-133",
+          "closed_trade_balance": 100056.0,
+          "peak_closed_trade_balance": 100056.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 46,
+          "trade_id": "replay-pos-136",
+          "closed_trade_balance": 100057.5,
+          "peak_closed_trade_balance": 100057.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 47,
+          "trade_id": "replay-pos-139",
+          "closed_trade_balance": 100058.5,
+          "peak_closed_trade_balance": 100058.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 48,
+          "trade_id": "replay-pos-142",
+          "closed_trade_balance": 100060.0,
+          "peak_closed_trade_balance": 100060.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 49,
+          "trade_id": "replay-pos-145",
+          "closed_trade_balance": 100061.0,
+          "peak_closed_trade_balance": 100061.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 50,
+          "trade_id": "replay-pos-148",
+          "closed_trade_balance": 100062.5,
+          "peak_closed_trade_balance": 100062.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 51,
+          "trade_id": "replay-pos-151",
+          "closed_trade_balance": 100063.5,
+          "peak_closed_trade_balance": 100063.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 52,
+          "trade_id": "replay-pos-154",
+          "closed_trade_balance": 100065.0,
+          "peak_closed_trade_balance": 100065.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 53,
+          "trade_id": "replay-pos-157",
+          "closed_trade_balance": 100066.0,
+          "peak_closed_trade_balance": 100066.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 54,
+          "trade_id": "replay-pos-160",
+          "closed_trade_balance": 100067.5,
+          "peak_closed_trade_balance": 100067.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 55,
+          "trade_id": "replay-pos-163",
+          "closed_trade_balance": 100068.5,
+          "peak_closed_trade_balance": 100068.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 56,
+          "trade_id": "replay-pos-166",
+          "closed_trade_balance": 100070.0,
+          "peak_closed_trade_balance": 100070.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 57,
+          "trade_id": "replay-pos-169",
+          "closed_trade_balance": 100071.0,
+          "peak_closed_trade_balance": 100071.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 58,
+          "trade_id": "replay-pos-172",
+          "closed_trade_balance": 100072.5,
+          "peak_closed_trade_balance": 100072.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 59,
+          "trade_id": "replay-pos-175",
+          "closed_trade_balance": 100073.5,
+          "peak_closed_trade_balance": 100073.5,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        },
+        {
+          "sequence": 60,
+          "trade_id": "replay-pos-178",
+          "closed_trade_balance": 100075.0,
+          "peak_closed_trade_balance": 100075.0,
+          "drawdown": 0.0,
+          "drawdown_pct": 0.0
+        }
+      ],
+      "realized_r_values": [],
+      "basis": {
+        "pnl": "net_pnl from normalized closed-trade ledger",
+        "costs": "incomplete_or_unknown",
+        "realized_r": "incomplete_or_unknown",
+        "drawdown": "closed_trade_balance_only",
+        "floating_pnl": "not_available",
+        "cashflow": "not_available"
+      },
+      "definitions": {
+        "closed_trade_count": {
+          "question": "How many selected closed trades are in the denominator?",
+          "unit": "trades",
+          "formula": "count(selected closed trades)",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "net_pnl": {
+          "question": "What did the selected closed trades make or lose after recorded costs?",
+          "unit": "account_currency",
+          "formula": "sum(net_pnl_i)",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "win_rate_pct": {
+          "question": "What share of selected closed trades finished net positive?",
+          "unit": "percent",
+          "formula": "wins / closed_trade_count * 100",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "expectancy_net_per_trade": {
+          "question": "What was average net P/L per selected closed trade?",
+          "unit": "account_currency_per_trade",
+          "formula": "sum(net_pnl_i) / closed_trade_count",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "profit_factor_after_cost": {
+          "question": "How much net-positive P/L was observed per unit of net-negative P/L?",
+          "unit": "ratio",
+          "formula": "sum(net positive) / abs(sum(net negative))",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "payoff_ratio_after_cost": {
+          "question": "How large was the mean net winner relative to the mean net loser?",
+          "unit": "ratio",
+          "formula": "mean(net winners) / abs(mean(net losers))",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "average_realized_r": {
+          "question": "What was average realized R when every selected trade has planned risk?",
+          "unit": "R",
+          "formula": "mean(net_pnl_i / planned_risk_budget_i)",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "closed_trade_balance_max_drawdown": {
+          "question": "What was the largest peak-to-trough drop in the closed-trade balance path?",
+          "unit": "account_currency",
+          "formula": "max_t(peak_closed_balance_t - closed_balance_t)",
+          "source": "closed-trade balance path; no floating P/L or cashflow",
+          "version": "metrics-v2"
+        },
+        "closed_trade_balance_max_drawdown_pct": {
+          "question": "What was the largest closed-trade balance drawdown as a percent of its prior peak?",
+          "unit": "percent",
+          "formula": "max_t(drawdown_t / peak_closed_balance_t * 100)",
+          "source": "closed-trade balance path; no floating P/L or cashflow",
+          "version": "metrics-v2"
+        },
+        "max_loss_streak": {
+          "question": "What was the longest consecutive net-loss streak in sequence order?",
+          "unit": "trades",
+          "formula": "max consecutive net_pnl_i < 0; breakeven resets streak",
+          "source": "normalized closed-trade ledger",
+          "version": "metrics-v2"
+        },
+        "starting_balance": {
+          "question": "What run starting balance anchors this closed-trade balance path?",
+          "unit": "account_currency",
+          "formula": "persisted run starting_balance",
+          "source": "run artifact",
+          "version": "metrics-v2"
+        },
+        "ending_closed_trade_balance": {
+          "question": "What is starting balance plus selected closed-trade net P/L?",
+          "unit": "account_currency",
+          "formula": "starting_balance + sum(selected net_pnl_i)",
+          "source": "run artifact + normalized closed-trade ledger",
+          "version": "metrics-v2"
+        }
+      }
+    },
+    "ledger": [
+      {
+        "trade_id": "replay-pos-1",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-1",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-0",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067260,
+        "close_time_utc": 1704067320,
+        "open_cursor_index": 1,
+        "close_cursor_index": 1,
+        "price_open": 1.1002,
+        "price_close": 1.1005,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-4",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-4",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-1",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067320,
+        "close_time_utc": 1704067380,
+        "open_cursor_index": 2,
+        "close_cursor_index": 2,
+        "price_open": 1.1002,
+        "price_close": 1.10055,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-7",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-7",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-2",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067380,
+        "close_time_utc": 1704067440,
+        "open_cursor_index": 3,
+        "close_cursor_index": 3,
+        "price_open": 1.1003,
+        "price_close": 1.1006,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-10",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-10",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-3",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067440,
+        "close_time_utc": 1704067500,
+        "open_cursor_index": 4,
+        "close_cursor_index": 4,
+        "price_open": 1.1003,
+        "price_close": 1.10065,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-13",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-13",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-4",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067500,
+        "close_time_utc": 1704067560,
+        "open_cursor_index": 5,
+        "close_cursor_index": 5,
+        "price_open": 1.1004,
+        "price_close": 1.1007,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-16",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-16",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-5",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067560,
+        "close_time_utc": 1704067620,
+        "open_cursor_index": 6,
+        "close_cursor_index": 6,
+        "price_open": 1.1004,
+        "price_close": 1.10075,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-19",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-19",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-6",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067620,
+        "close_time_utc": 1704067680,
+        "open_cursor_index": 7,
+        "close_cursor_index": 7,
+        "price_open": 1.1005,
+        "price_close": 1.1008,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-22",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-22",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-7",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067680,
+        "close_time_utc": 1704067740,
+        "open_cursor_index": 8,
+        "close_cursor_index": 8,
+        "price_open": 1.1005,
+        "price_close": 1.10085,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-25",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-25",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-8",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067740,
+        "close_time_utc": 1704067800,
+        "open_cursor_index": 9,
+        "close_cursor_index": 9,
+        "price_open": 1.1006,
+        "price_close": 1.1009,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-28",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-28",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-9",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067800,
+        "close_time_utc": 1704067860,
+        "open_cursor_index": 10,
+        "close_cursor_index": 10,
+        "price_open": 1.1006,
+        "price_close": 1.10095,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-31",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-31",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-10",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067860,
+        "close_time_utc": 1704067920,
+        "open_cursor_index": 11,
+        "close_cursor_index": 11,
+        "price_open": 1.1007,
+        "price_close": 1.101,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-34",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-34",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-11",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067920,
+        "close_time_utc": 1704067980,
+        "open_cursor_index": 12,
+        "close_cursor_index": 12,
+        "price_open": 1.1007,
+        "price_close": 1.10105,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-37",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-37",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-12",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704067980,
+        "close_time_utc": 1704068040,
+        "open_cursor_index": 13,
+        "close_cursor_index": 13,
+        "price_open": 1.1008,
+        "price_close": 1.1011,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-40",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-40",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-13",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068040,
+        "close_time_utc": 1704068100,
+        "open_cursor_index": 14,
+        "close_cursor_index": 14,
+        "price_open": 1.1008,
+        "price_close": 1.10115,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-43",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-43",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-14",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068100,
+        "close_time_utc": 1704068160,
+        "open_cursor_index": 15,
+        "close_cursor_index": 15,
+        "price_open": 1.1009,
+        "price_close": 1.1012,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-46",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-46",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-15",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068160,
+        "close_time_utc": 1704068220,
+        "open_cursor_index": 16,
+        "close_cursor_index": 16,
+        "price_open": 1.1009,
+        "price_close": 1.10125,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-49",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-49",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-16",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068220,
+        "close_time_utc": 1704068280,
+        "open_cursor_index": 17,
+        "close_cursor_index": 17,
+        "price_open": 1.101,
+        "price_close": 1.1013,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-52",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-52",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-17",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068280,
+        "close_time_utc": 1704068340,
+        "open_cursor_index": 18,
+        "close_cursor_index": 18,
+        "price_open": 1.101,
+        "price_close": 1.10135,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-55",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-55",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-18",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068340,
+        "close_time_utc": 1704068400,
+        "open_cursor_index": 19,
+        "close_cursor_index": 19,
+        "price_open": 1.1011,
+        "price_close": 1.1014,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-58",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-58",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-19",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068400,
+        "close_time_utc": 1704068460,
+        "open_cursor_index": 20,
+        "close_cursor_index": 20,
+        "price_open": 1.1011,
+        "price_close": 1.10145,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-61",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-61",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-20",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068460,
+        "close_time_utc": 1704068520,
+        "open_cursor_index": 21,
+        "close_cursor_index": 21,
+        "price_open": 1.1012,
+        "price_close": 1.1015,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-64",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-64",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-21",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068520,
+        "close_time_utc": 1704068580,
+        "open_cursor_index": 22,
+        "close_cursor_index": 22,
+        "price_open": 1.1012,
+        "price_close": 1.10155,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-67",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-67",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-22",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068580,
+        "close_time_utc": 1704068640,
+        "open_cursor_index": 23,
+        "close_cursor_index": 23,
+        "price_open": 1.1013,
+        "price_close": 1.1016,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-70",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-70",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-23",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068640,
+        "close_time_utc": 1704068700,
+        "open_cursor_index": 24,
+        "close_cursor_index": 24,
+        "price_open": 1.1013,
+        "price_close": 1.10165,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-73",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-73",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-24",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068700,
+        "close_time_utc": 1704068760,
+        "open_cursor_index": 25,
+        "close_cursor_index": 25,
+        "price_open": 1.1014,
+        "price_close": 1.1017,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-76",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-76",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-25",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068760,
+        "close_time_utc": 1704068820,
+        "open_cursor_index": 26,
+        "close_cursor_index": 26,
+        "price_open": 1.1014,
+        "price_close": 1.10175,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-79",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-79",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-26",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068820,
+        "close_time_utc": 1704068880,
+        "open_cursor_index": 27,
+        "close_cursor_index": 27,
+        "price_open": 1.1015,
+        "price_close": 1.1018,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-82",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-82",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-27",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068880,
+        "close_time_utc": 1704068940,
+        "open_cursor_index": 28,
+        "close_cursor_index": 28,
+        "price_open": 1.1015,
+        "price_close": 1.10185,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-85",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-85",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-28",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704068940,
+        "close_time_utc": 1704069000,
+        "open_cursor_index": 29,
+        "close_cursor_index": 29,
+        "price_open": 1.1016,
+        "price_close": 1.1019,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-88",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-88",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-29",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069000,
+        "close_time_utc": 1704069060,
+        "open_cursor_index": 30,
+        "close_cursor_index": 30,
+        "price_open": 1.1016,
+        "price_close": 1.10195,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-91",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-91",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-30",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069060,
+        "close_time_utc": 1704069120,
+        "open_cursor_index": 31,
+        "close_cursor_index": 31,
+        "price_open": 1.1017,
+        "price_close": 1.102,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-94",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-94",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-31",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069120,
+        "close_time_utc": 1704069180,
+        "open_cursor_index": 32,
+        "close_cursor_index": 32,
+        "price_open": 1.1017,
+        "price_close": 1.10205,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-97",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-97",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-32",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069180,
+        "close_time_utc": 1704069240,
+        "open_cursor_index": 33,
+        "close_cursor_index": 33,
+        "price_open": 1.1018,
+        "price_close": 1.1021,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-100",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-100",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-33",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069240,
+        "close_time_utc": 1704069300,
+        "open_cursor_index": 34,
+        "close_cursor_index": 34,
+        "price_open": 1.1018,
+        "price_close": 1.10215,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-103",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-103",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-34",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069300,
+        "close_time_utc": 1704069360,
+        "open_cursor_index": 35,
+        "close_cursor_index": 35,
+        "price_open": 1.1019,
+        "price_close": 1.1022,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-106",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-106",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-35",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069360,
+        "close_time_utc": 1704069420,
+        "open_cursor_index": 36,
+        "close_cursor_index": 36,
+        "price_open": 1.1019,
+        "price_close": 1.10225,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-109",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-109",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-36",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069420,
+        "close_time_utc": 1704069480,
+        "open_cursor_index": 37,
+        "close_cursor_index": 37,
+        "price_open": 1.102,
+        "price_close": 1.1023,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-112",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-112",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-37",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069480,
+        "close_time_utc": 1704069540,
+        "open_cursor_index": 38,
+        "close_cursor_index": 38,
+        "price_open": 1.102,
+        "price_close": 1.10235,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-115",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-115",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-38",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069540,
+        "close_time_utc": 1704069600,
+        "open_cursor_index": 39,
+        "close_cursor_index": 39,
+        "price_open": 1.1021,
+        "price_close": 1.1024,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-118",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-118",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-39",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069600,
+        "close_time_utc": 1704069660,
+        "open_cursor_index": 40,
+        "close_cursor_index": 40,
+        "price_open": 1.1021,
+        "price_close": 1.10245,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-121",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-121",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-40",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069660,
+        "close_time_utc": 1704069720,
+        "open_cursor_index": 41,
+        "close_cursor_index": 41,
+        "price_open": 1.1022,
+        "price_close": 1.1025,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-124",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-124",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-41",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069720,
+        "close_time_utc": 1704069780,
+        "open_cursor_index": 42,
+        "close_cursor_index": 42,
+        "price_open": 1.1022,
+        "price_close": 1.10255,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-127",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-127",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-42",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069780,
+        "close_time_utc": 1704069840,
+        "open_cursor_index": 43,
+        "close_cursor_index": 43,
+        "price_open": 1.1023,
+        "price_close": 1.1026,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-130",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-130",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-43",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069840,
+        "close_time_utc": 1704069900,
+        "open_cursor_index": 44,
+        "close_cursor_index": 44,
+        "price_open": 1.1023,
+        "price_close": 1.10265,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-133",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-133",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-44",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069900,
+        "close_time_utc": 1704069960,
+        "open_cursor_index": 45,
+        "close_cursor_index": 45,
+        "price_open": 1.1024,
+        "price_close": 1.1027,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-136",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-136",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-45",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704069960,
+        "close_time_utc": 1704070020,
+        "open_cursor_index": 46,
+        "close_cursor_index": 46,
+        "price_open": 1.1024,
+        "price_close": 1.10275,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-139",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-139",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-46",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070020,
+        "close_time_utc": 1704070080,
+        "open_cursor_index": 47,
+        "close_cursor_index": 47,
+        "price_open": 1.1025,
+        "price_close": 1.1028,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-142",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-142",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-47",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070080,
+        "close_time_utc": 1704070140,
+        "open_cursor_index": 48,
+        "close_cursor_index": 48,
+        "price_open": 1.1025,
+        "price_close": 1.10285,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-145",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-145",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-48",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070140,
+        "close_time_utc": 1704070200,
+        "open_cursor_index": 49,
+        "close_cursor_index": 49,
+        "price_open": 1.1026,
+        "price_close": 1.1029,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-148",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-148",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-49",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070200,
+        "close_time_utc": 1704070260,
+        "open_cursor_index": 50,
+        "close_cursor_index": 50,
+        "price_open": 1.1026,
+        "price_close": 1.10295,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-151",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-151",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-50",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070260,
+        "close_time_utc": 1704070320,
+        "open_cursor_index": 51,
+        "close_cursor_index": 51,
+        "price_open": 1.1027,
+        "price_close": 1.103,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-154",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-154",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-51",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070320,
+        "close_time_utc": 1704070380,
+        "open_cursor_index": 52,
+        "close_cursor_index": 52,
+        "price_open": 1.1027,
+        "price_close": 1.10305,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-157",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-157",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-52",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070380,
+        "close_time_utc": 1704070440,
+        "open_cursor_index": 53,
+        "close_cursor_index": 53,
+        "price_open": 1.1028,
+        "price_close": 1.1031,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-160",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-160",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-53",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070440,
+        "close_time_utc": 1704070500,
+        "open_cursor_index": 54,
+        "close_cursor_index": 54,
+        "price_open": 1.1028,
+        "price_close": 1.10315,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-163",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-163",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-54",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070500,
+        "close_time_utc": 1704070560,
+        "open_cursor_index": 55,
+        "close_cursor_index": 55,
+        "price_open": 1.1029,
+        "price_close": 1.1032,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-166",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-166",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-55",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070560,
+        "close_time_utc": 1704070620,
+        "open_cursor_index": 56,
+        "close_cursor_index": 56,
+        "price_open": 1.1029,
+        "price_close": 1.10325,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-169",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-169",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-56",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070620,
+        "close_time_utc": 1704070680,
+        "open_cursor_index": 57,
+        "close_cursor_index": 57,
+        "price_open": 1.103,
+        "price_close": 1.1033,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-172",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-172",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-57",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070680,
+        "close_time_utc": 1704070740,
+        "open_cursor_index": 58,
+        "close_cursor_index": 58,
+        "price_open": 1.103,
+        "price_close": 1.10335,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-175",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-175",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-58",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070740,
+        "close_time_utc": 1704070800,
+        "open_cursor_index": 59,
+        "close_cursor_index": 59,
+        "price_open": 1.1031,
+        "price_close": 1.1034,
+        "net_pnl": 1.0,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      },
+      {
+        "trade_id": "replay-pos-178",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "source_position_id": "replay-pos-178",
+        "source_operation_id": "qa-39b1d068edd64e75864f692f27237852-59",
+        "source": {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123
+        },
+        "symbol": "EURUSD",
+        "side": "BUY",
+        "quantity": 0.1,
+        "open_time_utc": 1704070800,
+        "close_time_utc": 1704070860,
+        "open_cursor_index": 60,
+        "close_cursor_index": 60,
+        "price_open": 1.1031,
+        "price_close": 1.10345,
+        "net_pnl": 1.5,
+        "gross_pnl": null,
+        "fees": null,
+        "planned_risk_budget": null,
+        "realized_r": null,
+        "exit_reason": "take_profit"
+      }
+    ],
+    "provenance": {
+      "job_id": null,
+      "workspace_id": "tenant-a",
+      "dataset_id": "dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6",
+      "dataset_sha256": "c432b9eb5f4e47fcbcf97737bfa746fe40286a89ceebd2b05711a6f86d41d046",
+      "protocol_sha256": null,
+      "metrics_schema_version": null,
+      "split": null,
+      "playbook_id": null,
+      "playbook_revision": null,
+      "created_at_utc": "2026-10-01T11:42:47.600679Z",
+      "session_id": "39b1d068edd64e75864f692f27237852",
+      "revision": 123,
+      "branch_id": "42c04ae295b444aaad4450c05f761878",
+      "parent_session_id": null,
+      "cursor_index": 60,
+      "cutoff_timestamp": 1704070860,
+      "mode": "replay",
+      "timezone": "UTC",
+      "instrument_id": "EURUSD",
+      "timeframe": "60s",
+      "timeframe_seconds": 60,
+      "account_currency": "USD",
+      "open_position_count": 0,
+      "pending_order_count": 0,
+      "phase_transition_count": 0,
+      "data_quality": "full_for_declared_model"
+    },
+    "session_id": "39b1d068edd64e75864f692f27237852",
+    "workspace_id": "tenant-a",
+    "dataset_id": "dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6",
+    "dataset_sha256": "c432b9eb5f4e47fcbcf97737bfa746fe40286a89ceebd2b05711a6f86d41d046",
+    "revision": 123,
+    "branch_id": "42c04ae295b444aaad4450c05f761878",
+    "parent_session_id": null,
+    "cursor_index": 60,
+    "cutoff_timestamp": 1704070860,
+    "created_at_utc": "2026-10-01T11:42:47.600679Z",
+    "mode": "replay",
+    "timezone": "UTC",
+    "instrument_id": "EURUSD",
+    "timeframe": "60s",
+    "timeframe_seconds": 60,
+    "account_currency": "USD",
+    "open_position_count": 0,
+    "pending_order_count": 0,
+    "phase_transition_count": 0,
+    "data_quality": "full_for_declared_model"
+  },
+  "overview": {
+    "counts": {
+      "records": {
+        "replay": 1
+      },
+      "datasets": 1,
+      "research_jobs": {}
+    },
+    "ai": {
+      "provider": "offline",
+      "model": null,
+      "provider_health": {
+        "available": false,
+        "reason": "AI provider is disabled"
+      },
+      "enabled_jobs": [],
+      "capabilities": {
+        "playbook_search": false,
+        "research_rule_draft": false,
+        "journal_review": false,
+        "chart_overlay": false,
+        "broker_actions": false
+      },
+      "limits": {
+        "max_payload_bytes": 16384,
+        "max_input_items": 64
+      },
+      "execution_capability": false
+    },
+    "execution": {
+      "mode": "locked",
+      "preview": false,
+      "place": false,
+      "modify": false,
+      "cancel": false,
+      "close": false,
+      "broker_execution_capability": false,
+      "reason": "F7 foundation software slice has no broker execution authority"
+    },
+    "blocked_reasons": [
+      "u1_owner_visual_approval",
+      "real_data_qa",
+      "real_ai_provider_approval",
+      "demo_broker_acceptance",
+      "live_execution_authorization",
+      "miro_update_permission"
+    ],
+    "performance": {
+      "schema_version": "dashboard-replay-performance-v1",
+      "status": "ready",
+      "as_of_utc": "2026-10-01T00:00:00Z",
+      "scope": {
+        "source": "persisted_replay_execution",
+        "session_id": "39b1d068edd64e75864f692f27237852",
+        "session_count": 1,
+        "readable_session_count": 1,
+        "filters": {
+          "side": "all",
+          "outcome": "all",
+          "from_close_utc": null,
+          "to_close_utc": null
+        },
+        "includes_archived": true,
+        "duplicate_trade_count": 0,
+        "aggregation": "unique_closed_fills_within_root_lineage",
+        "timezone": "UTC"
+      },
+      "metrics": {
+        "closed_trade_count": 60,
+        "wins": 60,
+        "losses": 0,
+        "breakeven": 0,
+        "win_rate_pct": 100.0
+      },
+      "months": [
+        {
+          "month": "2024-01",
+          "closed_trade_count": 60,
+          "wins": 60,
+          "losses": 0,
+          "breakeven": 0,
+          "win_rate_pct": 100.0
+        }
+      ],
+      "symbols": [
+        {
+          "symbol": "EURUSD",
+          "closed_trade_count": 60,
+          "wins": 60,
+          "losses": 0,
+          "breakeven": 0,
+          "win_rate_pct": 100.0
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "name": "Fixture UI — 60 lệnh mô phỏng",
+          "instrument_id": "EURUSD",
+          "dataset_id": "dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6",
+          "revision": 123,
+          "archived": false
+        }
+      ],
+      "sources": [
+        {
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "revision": 123,
+          "dataset_id": "dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6",
+          "dataset_sha256": "c432b9eb5f4e47fcbcf97737bfa746fe40286a89ceebd2b05711a6f86d41d046",
+          "cutoff_timestamp": 1704070860,
+          "closed_trade_count": 60
+        }
+      ],
+      "excluded": [],
+      "time_invested_seconds": null,
+      "historical_time_replayed_seconds": null
+    }
+  }
+}

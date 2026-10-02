@@ -1,0 +1,447 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "c26c725692264f4f714b88d57ec3266e74cab3a37507166a09665cef882466a5",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "journal",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Journal",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".ja-decision-fields"
+                ],
+                "html": "<div class=\"ja-decision-fields\" aria-label=\"Decision context\">",
+                "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "textarea[rows=\"8\"]"
+                ],
+                "html": "<textarea placeholder=\"Ví dụ: giá phá range nhưng chưa đóng trên vùng…\" rows=\"8\" maxlength=\"10000\"></textarea>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 28
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-integration-20261002-resume\\journal-repair\\journal-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "journal",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "mainHeading": "Journal",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".ja-decision-fields"
+                ],
+                "html": "<div class=\"ja-decision-fields\" aria-label=\"Decision context\">",
+                "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "textarea[rows=\"8\"]"
+                ],
+                "html": "<textarea placeholder=\"Ví dụ: giá phá range nhưng chưa đóng trên vùng…\" rows=\"8\" maxlength=\"10000\" style=\"\"></textarea>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 28
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-integration-20261002-resume\\journal-repair\\journal-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "journal",
+      "theme": "dark",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "mainHeading": "Journal",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".ja-decision-fields"
+                ],
+                "html": "<div class=\"ja-decision-fields\" aria-label=\"Decision context\">",
+                "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-valid-attr-value?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-menu-button"
+                ],
+                "html": "<button class=\"fx-menu-button\" type=\"button\" aria-expanded=\"false\" aria-controls=\"fxreplay-rail\" aria-label=\"Mở điều hướng\" title=\"Mở điều hướng\" aria-haspopup=\"dialog\">",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"fxreplay-rail\""
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "textarea[rows=\"8\"]"
+                ],
+                "html": "<textarea placeholder=\"Ví dụ: giá phá range nhưng chưa đóng trên vùng…\" rows=\"8\" maxlength=\"10000\" style=\"\"></textarea>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 28
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-integration-20261002-resume\\journal-repair\\journal-dark-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "journal",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Journal",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".ja-decision-fields"
+                ],
+                "html": "<div class=\"ja-decision-fields\" aria-label=\"Decision context\">",
+                "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "textarea[rows=\"8\"]"
+                ],
+                "html": "<textarea placeholder=\"Ví dụ: giá phá range nhưng chưa đóng trên vùng…\" rows=\"8\" maxlength=\"10000\"></textarea>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 28
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-integration-20261002-resume\\journal-repair\\journal-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "journal",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "mainHeading": "Journal",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".ja-decision-fields"
+                ],
+                "html": "<div class=\"ja-decision-fields\" aria-label=\"Decision context\">",
+                "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "textarea[rows=\"8\"]"
+                ],
+                "html": "<textarea placeholder=\"Ví dụ: giá phá range nhưng chưa đóng trên vùng…\" rows=\"8\" maxlength=\"10000\" style=\"\"></textarea>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 28
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-integration-20261002-resume\\journal-repair\\journal-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "journal",
+      "theme": "light",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "mainHeading": "Journal",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "impact": "serious",
+            "help": "Elements must only use permitted ARIA attributes",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".ja-decision-fields"
+                ],
+                "html": "<div class=\"ja-decision-fields\" aria-label=\"Decision context\">",
+                "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+              }
+            ]
+          },
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "help": "ARIA attributes must conform to valid values",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-valid-attr-value?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-menu-button"
+                ],
+                "html": "<button class=\"fx-menu-button\" type=\"button\" aria-expanded=\"false\" aria-controls=\"fxreplay-rail\" aria-label=\"Mở điều hướng\" title=\"Mở điều hướng\" aria-haspopup=\"dialog\">",
+                "failureSummary": "Fix all of the following:\n  Unable to determine if aria-controls referenced ID exists on the page while using aria-haspopup: aria-controls=\"fxreplay-rail\""
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "textarea[rows=\"8\"]"
+                ],
+                "html": "<textarea placeholder=\"Ví dụ: giá phá range nhưng chưa đóng trên vùng…\" rows=\"8\" maxlength=\"10000\" style=\"\"></textarea>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 28
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-integration-20261002-resume\\journal-repair\\journal-light-360.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "c26c725692264f4f714b88d57ec3266e74cab3a37507166a09665cef882466a5",
+  "status": "SCOPED_PASS"
+}

@@ -1,0 +1,17 @@
+...............................................................................................                                               [100%]
+============================== warnings summary ===============================
+foundation_v2\.venv\Lib\site-packages\fastapi\testclient.py:1
+  D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+foundation_v2\.venv\Lib\site-packages\starlette\testclient.py:53
+  D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\.venv\Lib\site-packages\starlette\testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_ps02_replay_prop_connection.py::ReplayPropPostgresIntegrationTests::test_replay_bound_carry_balance_preserves_realized_balance_in_both_domains
+  D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\.venv\Lib\site-packages\pydantic\main.py:475: UserWarning: Pydantic serializer warnings:
+    PydanticSerializationUnexpectedValue(Expected `decimal` - serialized value may not be as expected [field_name='floating_pl', input_value=0, input_type=int])
+    return self.__pydantic_serializer__.to_python(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+95 passed, 3 warnings, 3 subtests passed in 61.29s (0:01:01)

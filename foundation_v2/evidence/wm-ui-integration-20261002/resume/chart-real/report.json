@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "scope": "synthetic-data-real-API-Postgres-local-UI-only",
+  "baselineUnchanged": true,
+  "ownId": "c3a6000eacff4b6b937a7925c21417c0",
+  "branchId": "9d977e4c9ec346dbacb8d4260e7a79c8",
+  "observedViewCount": 7,
+  "checks": [
+    "real API step preserves chart canvas and historical pan/zoom",
+    "keyboard step works and native range keys do not step replay",
+    "real revision conflict reload and historical deep link locks mutations",
+    "branch persists parent lineage and cursor while parent stays unchanged",
+    "chart CTA opens simulator order draft with session and cursor scope",
+    "real API chart renders both themes at 1440 768 and 360 without page overflow",
+    "each observed API view is a strictly ordered prefix ending at the advertised cutoff"
+  ],
+  "screenshots": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "bounds": {
+        "x": 42,
+        "y": 160,
+        "width": 1356,
+        "height": 693
+      },
+      "filename": "chart-dark-1440.png"
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "bounds": {
+        "x": 38,
+        "y": 242,
+        "width": 730,
+        "height": 579
+      },
+      "filename": "chart-dark-768.png"
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "bounds": {
+        "x": 38,
+        "y": 353,
+        "width": 322,
+        "height": 447
+      },
+      "filename": "chart-dark-360.png"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "bounds": {
+        "x": 42,
+        "y": 160,
+        "width": 1356,
+        "height": 693
+      },
+      "filename": "chart-light-1440.png"
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "bounds": {
+        "x": 38,
+        "y": 242,
+        "width": 730,
+        "height": 579
+      },
+      "filename": "chart-light-768.png"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "bounds": {
+        "x": 38,
+        "y": 353,
+        "width": 322,
+        "height": 447
+      },
+      "filename": "chart-light-360.png"
+    }
+  ],
+  "errors": [],
+  "badResponses": []
+}

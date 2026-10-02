@@ -1,0 +1,12 @@
+{
+  "scope": "read-only real PostgreSQL and API journey across Dashboard, Analytics, Sessions, chart, Trades and local Settings preferences",
+  "checks": [
+    "Dashboard filtered totals match persisted analytics; drilldown retains workspace and session",
+    "Sessions selects the same persisted record; chart opens and reloads at its persisted cursor",
+    "Chart return, Trades and Analytics preserve selection and agree on the persisted 60-trade ledger",
+    "Settings draft/cancel/save, reload persistence and real cross-tab storage events agree with the shell",
+    "blocked preference storage reports volatile application, allows retry and does not claim persistence"
+  ],
+  "errors": [],
+  "status": "PASS"
+}
