@@ -18,6 +18,7 @@ from .artifacts import ArtifactStore
 from .contracts import (
     AIRequest,
     CONTRACT_VERSION,
+    ChartAnnotationDelete,
     ChartAnnotationDraft,
     CostPreviewRequest,
     CreateEngineResearchJob,
@@ -34,6 +35,7 @@ from .contracts import (
     ReplayCreate,
     ReplayExecutionInitialize,
     ReplayMarketOrderRequest,
+    ReplayMetadataUpdate,
     ReplayPropFeedRequest,
     ReplaySessionCatalogItem,
     ReplayStep,
@@ -43,6 +45,7 @@ from .data_sources import DataProviderRegistry, LocalCatalogProvider
 from .data_ingest import DataImportError, DataIngestService, preview_csv
 from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
+from .dashboard_read_model import build_dashboard_performance
 from .prop_session import (
     AttemptStatus,
     PropAttemptCreateRequest,
@@ -57,6 +60,7 @@ from .prop_session import (
 from .prop_replay import ReplayPropConnectionError
 from .prop_report import build_prop_attempt_report, prop_attempt_report_csv
 from .replay import ReplayService
+from .replay_analytics import build_replay_analytics_view
 from .research import ResearchService
 from .analytics_read_model import AnalyticsValidationError, analytics_csv, build_analytics_view
 from .nautilus_worker import runtime_ready
@@ -289,8 +293,27 @@ def create_app(
         )
 
     @app.get("/api/v2/overview")
-    def get_overview(workspace: str = Depends(workspace_id)):
-        return product.overview(workspace)
+    def get_overview(
+        session_id: str | None = None,
+        from_close_utc: str | None = None,
+        to_close_utc: str | None = None,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            performance = build_dashboard_performance(
+                store.list_records(workspace, "replay"),
+                workspace,
+                session_id=session_id,
+                from_close_utc=from_close_utc,
+                to_close_utc=to_close_utc,
+            )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except AnalyticsValidationError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except (KeyError, TypeError, ValueError) as exc:
+            raise HTTPException(status_code=503, detail="dashboard_source_invalid") from exc
+        return {**product.overview(workspace), "performance": performance}
 
     # OAuth connection is separate from the PREP_ONLY export ledger below.
     # Its token lives only in this process and never enters a JSON response.
@@ -964,6 +987,49 @@ def create_app(
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
+    @app.patch("/api/v2/replay/sessions/{session_id}")
+    def update_replay_metadata(session_id: str, body: ReplayMetadataUpdate, workspace: str = Depends(workspace_id)):
+        try:
+            return replay.update_metadata(workspace, session_id, body.expected_revision,
+                                          body.model_dump(exclude={"expected_revision"}, exclude_none=True))
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail="record_revision_conflict") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    def replay_analytics_view(session_id, workspace, side, outcome, from_close_utc, to_close_utc,
+                              cursor_index=None, cutoff_timestamp=None):
+        try:
+            record = replay.analytics_record(workspace, session_id, cursor_index, cutoff_timestamp)
+            return build_replay_analytics_view({**record, "workspace_id": workspace}, {
+                "side": side, "outcome": outcome,
+                "from_close_utc": from_close_utc, "to_close_utc": to_close_utc,
+            })
+        except (TypeError, KeyError, ValueError) as exc:
+            raise HTTPException(status_code=422, detail="replay_analytics_invalid_source_or_filter") from exc
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+
+    @app.get("/api/v2/replay/sessions/{session_id}/analytics")
+    def get_replay_analytics(session_id: str, side: str = "all", outcome: str = "all",
+                             from_close_utc: str | None = None, to_close_utc: str | None = None,
+                             cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+                             workspace: str = Depends(workspace_id)):
+        return replay_analytics_view(session_id, workspace, side, outcome, from_close_utc, to_close_utc,
+                                     cursor_index, cutoff_timestamp)
+
+    @app.get("/api/v2/replay/sessions/{session_id}/analytics.csv")
+    def export_replay_analytics(session_id: str, side: str = "all", outcome: str = "all",
+                                from_close_utc: str | None = None, to_close_utc: str | None = None,
+                                cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+                                workspace: str = Depends(workspace_id)):
+        view = replay_analytics_view(session_id, workspace, side, outcome, from_close_utc, to_close_utc,
+                                     cursor_index, cutoff_timestamp)
+        return PlainTextResponse(content=analytics_csv(view), media_type="text/csv; charset=utf-8",
+                                 headers={"Content-Disposition": 'attachment; filename="replay-analytics-v1.csv"'})
+
     @app.post("/api/v2/replay/sessions/{session_id}/execution")
     def initialize_replay_execution(
         session_id: str,
@@ -1222,6 +1288,15 @@ def create_app(
             raise HTTPException(status_code=409, detail="revision_conflict")
         except ValidationError as exc:
             raise HTTPException(status_code=422, detail=exc.errors())
+
+    @app.post("/api/v2/chart/annotations/{record_id}/delete")
+    def delete_annotation(record_id: str, body: ChartAnnotationDelete, workspace: str = Depends(workspace_id)):
+        try:
+            return product.delete_annotation(workspace, record_id, body.expected_revision)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="annotation_not_found") from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail="revision_conflict") from exc
 
     @app.get("/api/v2/ai/status")
     def ai_status(workspace: str = Depends(workspace_id)):

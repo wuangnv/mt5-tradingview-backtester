@@ -1496,16 +1496,20 @@ class PostgresStore:
 
     def update_record(self, workspace_id: str, kind: str, record_id: str, expected_revision: int, payload: dict) -> dict:
         now = utc_now_iso()
+        payload_json = json.dumps(payload, sort_keys=True)
         with self.connect() as conn:
             current = conn.execute(
                 """
-                SELECT current_revision FROM workspace_records
-                WHERE workspace_id=%s AND kind=%s AND record_id=%s
-                FOR UPDATE
+                SELECT r.current_revision,r.source_key,r.created_at_utc,v.deleted FROM workspace_records r
+                JOIN workspace_record_revisions v
+                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                 AND v.revision=r.current_revision
+                WHERE r.workspace_id=%s AND r.kind=%s AND r.record_id=%s
+                FOR UPDATE OF r
                 """,
                 (workspace_id, kind, record_id),
             ).fetchone()
-            if not current:
+            if not current or current["deleted"]:
                 raise LookupError("record not found")
             if int(current["current_revision"]) != int(expected_revision):
                 raise RuntimeError("record revision conflict")
@@ -1516,7 +1520,7 @@ class PostgresStore:
                     workspace_id,kind,record_id,revision,payload_json,deleted,created_at_utc
                 ) VALUES(%s,%s,%s,%s,%s::jsonb,false,%s)
                 """,
-                (workspace_id, kind, record_id, revision, json.dumps(payload, sort_keys=True), now),
+                (workspace_id, kind, record_id, revision, payload_json, now),
             )
             conn.execute(
                 """
@@ -1526,7 +1530,56 @@ class PostgresStore:
                 (revision, now, workspace_id, kind, record_id),
             )
             conn.commit()
-        return self.get_record(workspace_id, kind, record_id)
+        # A second writer may commit after our lock is released. Return our
+        # immutable revision receipt, not whichever revision is current later.
+        return {
+            "record_id": record_id,
+            "source_key": current["source_key"],
+            "revision": revision,
+            "payload": json.loads(payload_json),
+            "deleted": False,
+            "created_at_utc": current["created_at_utc"],
+            "updated_at_utc": now,
+        }
+
+    def delete_annotation(self, workspace_id: str, record_id: str, expected_revision: int) -> dict:
+        if isinstance(expected_revision, bool) or not isinstance(expected_revision, int) or expected_revision < 1:
+            raise ValueError("expected_revision must be a positive integer")
+        now = utc_now_iso()
+        with self.connect() as conn:
+            current = conn.execute(
+                """
+                SELECT r.current_revision,v.deleted,v.payload_json FROM workspace_records r
+                JOIN workspace_record_revisions v
+                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                 AND v.revision=r.current_revision
+                WHERE r.workspace_id=%s AND r.kind='annotation' AND r.record_id=%s
+                FOR UPDATE OF r
+                """,
+                (workspace_id, record_id),
+            ).fetchone()
+            if current is None or current["deleted"]:
+                raise LookupError("annotation not found")
+            if current["current_revision"] != expected_revision:
+                raise RuntimeError("record revision conflict")
+            revision = expected_revision + 1
+            conn.execute(
+                """
+                INSERT INTO workspace_record_revisions(
+                    workspace_id,kind,record_id,revision,payload_json,deleted,created_at_utc
+                ) VALUES(%s,'annotation',%s,%s,%s::jsonb,true,%s)
+                """,
+                (workspace_id, record_id, revision, json.dumps(current["payload_json"], sort_keys=True), now),
+            )
+            conn.execute(
+                """
+                UPDATE workspace_records SET current_revision=%s,updated_at_utc=%s
+                WHERE workspace_id=%s AND kind='annotation' AND record_id=%s
+                """,
+                (revision, now, workspace_id, record_id),
+            )
+            conn.commit()
+        return self.get_record(workspace_id, "annotation", record_id)
 
     def create_prop_session(self, session: PropSessionSnapshot) -> PropSessionSnapshot:
         if session.revision != 1:

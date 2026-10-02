@@ -160,6 +160,8 @@ def reconstruct_replay_execution_checkpoint(
             raise ReplayExecutionError("replay execution ledger lineage is inconsistent")
         if event.cursor_index > snapshot.cursor_index:
             raise ReplayExecutionError("replay execution ledger cursor exceeds the snapshot cursor")
+        if event.cursor_index > cursor_index:
+            break
         prefix.append(event)
         if event.kind == "phase_transition":
             details = event.details or {}
@@ -173,9 +175,10 @@ def reconstruct_replay_execution_checkpoint(
                 "next_phase_initial_balance",
                 positive=True,
             )
-        if event.kind == "price_mark" and event.cursor_index == cursor_index:
+        # A phase transition can follow the bar's price mark without advancing
+        # the cursor. Preserve that entire checkpoint before the next bar.
+        if event.kind in {"price_mark", "phase_transition"} and event.cursor_index == cursor_index:
             selected = event
-            break
 
     if selected is None:
         raise ReplayExecutionError("execution branch cursor has no canonical checkpoint")

@@ -201,6 +201,9 @@ class ProductService:
             workspace_id, "annotation", record_id, expected_revision, validated.model_dump(mode="json")
         )
 
+    def delete_annotation(self, workspace_id: str, record_id: str, expected_revision: int) -> dict:
+        return self.store.delete_annotation(workspace_id, record_id, expected_revision)
+
     def overview(self, workspace_id: str) -> dict:
         return {
             "counts": self.store.overview_counts(workspace_id),

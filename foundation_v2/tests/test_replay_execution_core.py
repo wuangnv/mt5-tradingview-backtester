@@ -375,6 +375,26 @@ class ReplayExecutionCoreTests(unittest.TestCase):
         self.assertEqual(result.snapshot.equity, Decimal("104500"))
         self.assertEqual(result.snapshot.phase_initial_balance, Decimal("50000"))
 
+    def test_historical_checkpoint_keeps_all_phase_transitions_at_the_same_cursor(self):
+        state = advance_replay_execution(
+            initial_state(),
+            bar={"timestamp": 60, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000},
+            cursor_index=1,
+        ).snapshot
+        for phase, balance in ((2, "50000"), (3, "25000")):
+            state = transition_replay_phase(
+                state, intent_id=f"phase-{phase}", intent_fingerprint=f"phase-fingerprint-{phase}",
+                from_phase_index=phase - 1, to_phase_index=phase, carry_policy="reset",
+                position_policy="must_be_flat", next_phase_initial_balance=balance, virtual_time_utc=120,
+            ).snapshot
+            advanced = advance_replay_execution(
+                state,
+                bar={"timestamp": 120, "open": 1.1000, "high": 1.1010, "low": 1.0990, "close": 1.1000},
+                cursor_index=2,
+            ).snapshot
+            reconstructed = reconstruct_replay_execution_checkpoint(advanced, cursor_index=1)
+            self.assertEqual(reconstructed.model_dump(mode="json"), state.model_dump(mode="json"))
+
     def test_phase_carry_all_preserves_exact_live_position_and_rejects_close_by_simulator(self):
         queued = queue_market_order(
             initial_state(),

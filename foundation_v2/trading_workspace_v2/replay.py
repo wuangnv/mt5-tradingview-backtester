@@ -82,6 +82,9 @@ class ReplayService:
             try:
                 item = ReplaySessionCatalogItem(
                     record_id=record["record_id"],
+                    name=payload.get("name", ""),
+                    description=payload.get("description", ""),
+                    archived=payload.get("archived", False),
                     revision=record["revision"],
                     dataset_id=dataset_id,
                     instrument_id=manifest.instrument_id if manifest else None,
@@ -102,6 +105,18 @@ class ReplayService:
                 raise RuntimeError("replay catalog record is invalid") from exc
             items.append(item.model_dump(mode="json"))
         return items
+
+    def update_metadata(self, workspace_id: str, session_id: str, expected_revision: int, changes: dict) -> dict:
+        record = self.store.get_record(workspace_id, "replay", session_id)
+        if record is None:
+            raise LookupError("replay session not found")
+        if record["revision"] != expected_revision:
+            raise RuntimeError("record revision conflict")
+        if not changes or set(changes) - {"name", "description", "archived"}:
+            raise ValueError("only replay metadata can be updated")
+        payload = dict(record["payload"])
+        payload.update(changes)
+        return self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
 
     @staticmethod
     def _execution_snapshot(payload: dict) -> ReplayExecutionSnapshot | None:
@@ -260,6 +275,60 @@ class ReplayService:
         result = self.view(workspace_id, session_id)
         result["execution_events"] = execution_events
         return result
+
+    def analytics_record(
+        self, workspace_id: str, session_id: str,
+        cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+    ) -> dict:
+        record = self.store.get_record(workspace_id, "replay", session_id)
+        if record is None:
+            raise LookupError("replay session not found")
+        canonical_cursor = int(record["payload"]["cursor_index"])
+        if cursor_index is not None and (isinstance(cursor_index, bool) or not isinstance(cursor_index, int)):
+            raise ValueError("analytics cursor must be an integer")
+        if cutoff_timestamp is not None:
+            if isinstance(cutoff_timestamp, bool) or not isinstance(cutoff_timestamp, int):
+                raise ValueError("analytics cutoff must be an integer bar timestamp")
+            _, rows = self._dataset_rows(workspace_id, record["payload"]["dataset_id"])
+            visible = rows[:canonical_cursor + 1]
+            if not visible or not int(visible[0]["timestamp"]) <= cutoff_timestamp <= int(visible[-1]["timestamp"]):
+                raise ValueError("analytics cutoff is outside the visible replay range")
+            cutoff_cursor = max(index for index, row in enumerate(visible) if int(row["timestamp"]) <= cutoff_timestamp)
+            if cursor_index is not None and cursor_index != cutoff_cursor:
+                raise ValueError("analytics cursor and cutoff disagree")
+            cursor_index = cutoff_cursor
+        selected_cursor = canonical_cursor if cursor_index is None else cursor_index
+        if (isinstance(selected_cursor, bool) or not isinstance(selected_cursor, int)
+                or not 0 <= selected_cursor <= canonical_cursor):
+            raise ValueError("analytics cursor is outside the visible replay range")
+        payload = dict(record["payload"])
+        snapshot = self._execution_snapshot(payload)
+        if selected_cursor < canonical_cursor and snapshot is not None:
+            try:
+                checkpoint = reconstruct_replay_execution_checkpoint(snapshot, cursor_index=selected_cursor)
+            except ReplayExecutionError as exc:
+                if str(exc) != "execution branch cursor has no canonical checkpoint":
+                    raise ValueError(str(exc)) from exc
+                # Initialization has no price-mark event. Its immutable revision
+                # is the only valid fallback; never substitute the current state.
+                checkpoint = None
+                for prior in reversed(self.store.list_record_revisions(workspace_id, "replay", session_id)):
+                    if prior["revision"] <= record["revision"] and prior["payload"].get("cursor_index") == selected_cursor:
+                        checkpoint = self._execution_snapshot(prior["payload"])
+                        if checkpoint is not None:
+                            break
+                if checkpoint is None:
+                    raise ValueError("historical analytics checkpoint is unavailable")
+            for field in ("replay_session_id", "branch_id", "dataset_id", "dataset_sha256",
+                          "instrument_spec", "cost_model", "spread_price", "timeframe_seconds", "starting_balance"):
+                if getattr(checkpoint, field) != getattr(snapshot, field):
+                    raise ValueError("historical analytics checkpoint lineage is inconsistent")
+            if checkpoint.cursor_index != selected_cursor:
+                raise ValueError("historical analytics checkpoint cursor is inconsistent")
+            payload["execution"] = checkpoint.model_dump(mode="json")
+        payload["cursor_index"] = selected_cursor
+        return {**record, "payload": payload, "view_cursor_index": selected_cursor,
+                "canonical_cursor_index": canonical_cursor, "historical_view": selected_cursor < canonical_cursor}
 
     def branch(self, workspace_id: str, session_id: str, expected_revision: int, cursor_index: int) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)

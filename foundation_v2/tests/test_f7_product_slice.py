@@ -329,6 +329,89 @@ class F7ProductSliceTests(unittest.TestCase):
             self.assertEqual(branched.json()["payload"]["parent_session_id"], session_id)
             self.assertNotEqual(branched.json()["payload"]["branch_id"], stepped.json()["payload"]["branch_id"])
 
+    def test_replay_metadata_analytics_and_dashboard_use_tenant_scoped_revisions(self):
+        from test_replay_analytics import closed_trade_record
+        from trading_workspace_v2.replay_execution import ReplayExecutionSnapshot, fork_replay_execution_checkpoint
+
+        source = closed_trade_record()
+        saved = self.store.create_record("tenant-a", "replay", source["payload"])
+        snapshot = fork_replay_execution_checkpoint(
+            ReplayExecutionSnapshot.model_validate(source["payload"]["execution"]),
+            replay_session_id=saved["record_id"], branch_id=source["payload"]["branch_id"],
+        )
+        payload = {**source["payload"], "execution": snapshot.model_dump(mode="json")}
+        self.store.update_record("tenant-a", "replay", saved["record_id"], 1, payload)
+        route = f"/api/v2/replay/sessions/{saved['record_id']}"
+        headers = {"X-Workspace-Id": "tenant-a"}
+        with self.client() as client:
+            updated = client.patch(route, headers=headers, json={
+                "expected_revision": 2, "name": "Phiên kiểm chứng", "description": "Replay offline", "archived": True,
+            })
+            self.assertEqual(updated.status_code, 200)
+            self.assertEqual(updated.json()["revision"], 3)
+            self.assertEqual(updated.json()["payload"]["execution"], payload["execution"])
+            self.assertEqual(client.patch(route, headers=headers, json={"expected_revision": 2, "name": "stale"}).status_code, 409)
+            for body in ({"expected_revision": 3}, {"expected_revision": True, "name": "bad"},
+                         {"expected_revision": 3, "cursor_index": 9}):
+                self.assertEqual(client.patch(route, headers=headers, json=body).status_code, 422)
+            foreign = {"X-Workspace-Id": "tenant-b"}
+            self.assertEqual(client.patch(route, headers=foreign, json={"expected_revision": 3, "name": "foreign"}).status_code, 404)
+            self.assertEqual(client.get(route + "/analytics", headers=foreign).status_code, 404)
+            analytics = client.get(route + "/analytics", headers=headers)
+            self.assertEqual(analytics.status_code, 200)
+            self.assertEqual(analytics.json()["provenance"]["revision"], 3)
+            self.assertEqual(analytics.json()["metrics"]["closed_trade_count"], 1)
+            self.assertNotIn("visible_rows", analytics.json())
+            self.assertEqual(client.get(route + "/analytics?side=invalid", headers=headers).status_code, 422)
+            exported = client.get(route + "/analytics.csv", headers=headers)
+            self.assertEqual(exported.status_code, 200)
+            self.assertIn(saved["record_id"], exported.text)
+            overview = client.get("/api/v2/overview", headers=headers, params={"session_id": saved["record_id"]})
+            self.assertEqual(overview.status_code, 200)
+            self.assertEqual(overview.json()["performance"]["metrics"]["closed_trade_count"], 1)
+            self.assertTrue(overview.json()["performance"]["sessions"][0]["archived"])
+            self.assertEqual(client.get("/api/v2/overview", headers=foreign,
+                                       params={"session_id": saved["record_id"]}).status_code, 404)
+
+    def test_historical_replay_analytics_bounds_json_csv_and_preserves_revision(self):
+        from test_replay_analytics import initial_state, record, two_trade_record
+        from trading_workspace_v2.replay_execution import ReplayExecutionSnapshot, fork_replay_execution_checkpoint
+
+        initial = record(initial_state())
+        saved = self.store.create_record("tenant-a", "replay", initial["payload"])
+        route = f"/api/v2/replay/sessions/{saved['record_id']}"
+        headers = {"X-Workspace-Id": "tenant-a"}
+        for revision, source in [(1, initial), (2, two_trade_record())]:
+            snapshot = fork_replay_execution_checkpoint(
+                ReplayExecutionSnapshot.model_validate(source["payload"]["execution"]),
+                replay_session_id=saved["record_id"], branch_id=source["payload"]["branch_id"],
+            )
+            self.store.update_record("tenant-a", "replay", saved["record_id"], revision,
+                                     {**source["payload"], "execution": snapshot.model_dump(mode="json")})
+        before = self.store.get_record("tenant-a", "replay", saved["record_id"])
+        with self.client() as client:
+            historical = client.get(route + "/analytics?cursor_index=1", headers=headers)
+            self.assertEqual(historical.status_code, 200)
+            self.assertEqual(historical.json()["metrics"]["net_pnl"], 17)
+            self.assertEqual(historical.json()["metrics"]["closed_trade_count"], 1)
+            self.assertEqual(historical.json()["canonical_cursor_index"], 2)
+            self.assertTrue(historical.json()["historical_view"])
+            exported = client.get(route + "/analytics.csv?cursor_index=1", headers=headers)
+            self.assertEqual(exported.status_code, 200)
+            self.assertIn("metrics,net_pnl,17", exported.text)
+            initial_view = client.get(route + "/analytics?cursor_index=0", headers=headers)
+            self.assertEqual(initial_view.status_code, 200)
+            self.assertEqual(initial_view.json()["metrics"]["closed_trade_count"], 0)
+            latest = client.get(route + "/analytics", headers=headers)
+            self.assertEqual(latest.json()["metrics"]["net_pnl"], 53)
+            for cursor in ("-1", "3", "true", "invalid"):
+                for suffix in ("analytics", "analytics.csv"):
+                    self.assertEqual(client.get(route + f"/{suffix}?cursor_index={cursor}",
+                                                headers=headers).status_code, 422)
+            self.assertEqual(client.get(route + "/analytics?cursor_index=1",
+                                        headers={"X-Workspace-Id": "tenant-b"}).status_code, 404)
+        self.assertEqual(self.store.get_record("tenant-a", "replay", saved["record_id"]), before)
+
     def test_research_cancel_is_durable_and_produces_no_result(self):
         dataset = self.seed_dataset("tenant-a")
         job = self.research.create_job(

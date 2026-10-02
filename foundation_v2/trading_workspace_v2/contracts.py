@@ -310,6 +310,12 @@ class RevisionRequest(BaseModel):
     payload: dict
 
 
+class ChartAnnotationDelete(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int = Field(ge=1, strict=True)
+
+
 class AIRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -338,6 +344,9 @@ class ReplaySessionCatalogItem(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     record_id: str = Field(min_length=1, max_length=128)
+    name: str = Field(default="", max_length=160)
+    description: str = Field(default="", max_length=2000)
+    archived: bool = False
     revision: int = Field(ge=1, strict=True)
     dataset_id: str | None = Field(default=None, min_length=1, max_length=256)
     instrument_id: str | None = Field(default=None, min_length=1, max_length=128)
@@ -353,6 +362,15 @@ class ReplaySessionCatalogItem(BaseModel):
     has_execution: bool
     created_at_utc: str = Field(min_length=1, max_length=64)
     updated_at_utc: str = Field(min_length=1, max_length=64)
+
+
+class ReplayMetadataUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int = Field(ge=1, strict=True)
+    name: str | None = Field(default=None, max_length=160)
+    description: str | None = Field(default=None, max_length=2000)
+    archived: bool | None = Field(default=None, strict=True)
 
 
 class ReplayStep(BaseModel):
