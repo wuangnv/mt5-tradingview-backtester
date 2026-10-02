@@ -1,0 +1,310 @@
+{
+  "artifacts": [
+    {
+      "path": "primitive_probe.py",
+      "sha256": "9ebc4aaebf0ba9d85349ad8823bc046dda9acdccf7ff95c0bbf2efa16d34e1c1"
+    },
+    {
+      "path": "probe-output.json",
+      "sha256": "a5aadc6276d3c1848a3c0917bb571a31a4602896ec959a39a328aabb073aa223"
+    },
+    {
+      "path": "probe-stderr.txt",
+      "sha256": "8565af240cb1ef72c4170f80d21b78dde6df484c9452710d9df4b92b444d2d02"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d60410876a694eb2f4a8f4bee0def9719e4db011c0c9a2b3bb01c30ab6a43b56"
+    }
+  ],
+  "authority": "feasibility evidence only; coordinator owns ledger/acceptance",
+  "command": "& .\\foundation_v2\\engine_runtime\\.venv\\Scripts\\python.exe -I .\\foundation_v2\\evidence\\U5A-native-resume-feasibility-20261002\\primitive_probe.py",
+  "decision": "retain U5a durable mid-computation resume open; no product implementation",
+  "execution_exit_code": 0,
+  "gates_preserved": [
+    "no Redis/database/service added",
+    "no product source/config changed",
+    "no provider/model/broker or real dataset/holdout accessed",
+    "no runtime ledger/STATE/accepted receipt edited",
+    "streaming equality does not close durable resume or full U5"
+  ],
+  "next_decision": "Any crash-resume implementation needs supported full-runtime primitives or an explicitly reviewed adapter-boundary contract plus fresh-process oracle; account-only reconstruction is insufficient.",
+  "project_head_at_receipt": "8bde8fe145f375fb37101ec1ecff3b0e379094f2",
+  "recorded_at_utc": "2026-10-02T13:08:26.433000+00:00",
+  "required_resume_invariants": [
+    "immutable workspace/job/protocol/data/cost/source/runtime identity",
+    "atomic checkpoint at a settled event cursor",
+    "current lease/attempt writer fencing and cancel/deadline precedence",
+    "strategy warmup/actions/history and account/cache restoration",
+    "exchange matching/contingent state, quote context, clock/timers and deterministic IDs/RNG",
+    "killed worker and fresh-process oracle skipping prefix engine events",
+    "exact normalized ledger/cost/signal/metric and native evidence parity",
+    "unsupported state fails closed"
+  ],
+  "runtime_probe": "probe-output.json",
+  "schema": "u5a-native-resume-feasibility-receipt-v1",
+  "source_references": [
+    {
+      "finding": "full modeled source generation, strategy-owned state, native initialization/run/fill reconciliation",
+      "line_ranges": [
+        [
+          136,
+          216
+        ],
+        [
+          217,
+          364
+        ],
+        [
+          366,
+          391
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/adapter.py",
+      "sha256": "fadd7d63f80e6736ce85c9d32a016cf41159844875a360c8e49c795c8945d386"
+    },
+    {
+      "finding": "input-only serialization, in-memory streaming, fresh account lifecycle, private deterministic venue/fill IDs",
+      "line_ranges": [
+        [
+          1063,
+          1096
+        ],
+        [
+          1313,
+          1389
+        ],
+        [
+          1594,
+          1636
+        ],
+        [
+          1757,
+          1763
+        ],
+        [
+          3005,
+          3010
+        ],
+        [
+          3893,
+          3921
+        ],
+        [
+          8037,
+          8112
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/backtest/engine.pyx",
+      "sha256": "eb404e3558cf00ab9a13e3a1c67b05aab1d1d02647ac67409faa8350d33a1fbb"
+    },
+    {
+      "finding": "private matching/quote context and position/order/execution counters",
+      "line_ranges": [
+        [
+          425,
+          444
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/backtest/engine.pxd",
+      "sha256": "04418742e8e2459419195246590d923aeeb0022ac1f18e339256306dab7866b6"
+    },
+    {
+      "finding": "user strategy save/load hooks only",
+      "line_ranges": [
+        [
+          208,
+          243
+        ],
+        [
+          878,
+          941
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/common/actor.pyx",
+      "sha256": "9b3ef1db633508094098107562954e796f429c920a57660ea93b705a50a615ff"
+    },
+    {
+      "finding": "strategy factory counter setters explicitly system-only",
+      "line_ranges": [
+        [
+          102,
+          154
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/common/factories.pyx",
+      "sha256": "bcaf9dbfb381e299d90590efafdd052f1b7f4dae5d916c95341e8b2c252b03eb"
+    },
+    {
+      "finding": "strategy startup restores counters from cached historical IDs",
+      "line_ranges": [
+        [
+          356,
+          385
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/trading/strategy.pyx",
+      "sha256": "c8c72a2b4796fa2c70fd1d8ec2c82172c8693e8274e3e397f8e8756707177246"
+    },
+    {
+      "finding": "save/load delegates actors and strategies to cache",
+      "line_ranges": [
+        [
+          817,
+          835
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/trading/trader.py",
+      "sha256": "00b02d7cd5ff013185c4f64d1c142ed4bc3335a36a2400db0c819e127a9ea98f"
+    },
+    {
+      "finding": "database-backed cache loading and strategy snapshots; not full matching runtime",
+      "line_ranges": [
+        [
+          366,
+          411
+        ],
+        [
+          449,
+          477
+        ],
+        [
+          1554,
+          1576
+        ],
+        [
+          2512,
+          2574
+        ],
+        [
+          2759,
+          2774
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/cache/cache.pyx",
+      "sha256": "078236a445ec27cc88d9dfd5332d51c4bd6e57e8db5d85685c967ea5458db7cf"
+    },
+    {
+      "finding": "only Redis backing accepted here; cache and strategy lifecycle",
+      "line_ranges": [
+        [
+          310,
+          328
+        ],
+        [
+          465,
+          467
+        ],
+        [
+          538,
+          539
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/.venv/Lib/site-packages/nautilus_trader/system/kernel.py",
+      "sha256": "d1e634827ecb32c52ee4960c7c55c5f79d22b4ede11195320c4cf86d6b4b6cc9"
+    },
+    {
+      "finding": "worker-owned Job Object termination and temporary input/output process protocol",
+      "line_ranges": [
+        [
+          23,
+          92
+        ],
+        [
+          134,
+          185
+        ]
+      ],
+      "path": "foundation_v2/trading_workspace_v2/nautilus_worker.py",
+      "sha256": "f866e55c6132bac42ca4bbe943acf7244787391782fcc8f200a0b4a7c39204db"
+    },
+    {
+      "finding": "one-shot JSON input/final atomic output; no internal durable checkpoint",
+      "line_ranges": [
+        [
+          14,
+          46
+        ]
+      ],
+      "path": "foundation_v2/engine_runtime/run.py",
+      "sha256": "902821f90b9f0b74b689e316ae0082b09be46e4bf65d74e676adc4f4a275fcf9"
+    },
+    {
+      "finding": "phase checkpoints and attempt/lease renewal; checkpoint inspection is not engine restoration",
+      "line_ranges": [
+        [
+          465,
+          553
+        ],
+        [
+          954,
+          958
+        ],
+        [
+          965,
+          1013
+        ]
+      ],
+      "path": "foundation_v2/trading_workspace_v2/research.py",
+      "sha256": "5f03b451c19f88058a44e144115ae3c74d38e3f09485089f7550cfe6fdfb728b"
+    },
+    {
+      "finding": "existing child-kill and deadline/cancel tests; not rerun or claimed as fresh-process resume",
+      "line_ranges": [
+        [
+          155,
+          200
+        ],
+        [
+          249,
+          299
+        ]
+      ],
+      "path": "foundation_v2/tests/test_u5_nautilus.py",
+      "sha256": "dfc2882cc3ead0d8f5ef7cfda2a9f626eee810d5f14edbde6104695b01d724f2"
+    },
+    {
+      "finding": "existing service restart and fenced phase-checkpoint tests; not rerun",
+      "line_ranges": [
+        [
+          433,
+          471
+        ],
+        [
+          492,
+          530
+        ]
+      ],
+      "path": "foundation_v2/tests/test_fh1_job_lifecycle.py",
+      "sha256": "448bdedf6e20149c05ed1285a7372451d0bcb444a803c24c27109141ace78840"
+    },
+    {
+      "finding": "runtime declaration",
+      "line_ranges": [],
+      "path": "foundation_v2/engine_runtime/pyproject.toml",
+      "sha256": "bbc1e6cbe78ac702893fb7c7a819f1ef1a3247036436a6ec42fa0d651bac3d09"
+    },
+    {
+      "finding": "pinned dependency lock",
+      "line_ranges": [],
+      "path": "foundation_v2/engine_runtime/uv.lock",
+      "sha256": "d4cb4e843100b712a2d35fc05f1df1da36676aaa6baa354a985e831f5e5a699d"
+    }
+  ],
+  "stderr": "probe-stderr.txt",
+  "supported_slice": {
+    "kind": "same-process non-durable streaming",
+    "native_events_prefix": 8,
+    "native_events_suffix": 10,
+    "native_events_total": 18,
+    "native_fills": 4,
+    "oracle": "exact accepted-adapter dict and canonical SHA-256 equality"
+  },
+  "unsupported_resume": {
+    "fresh_process_oracle_run": false,
+    "populated_execution_cache_serialization": false,
+    "product_checkpoint_cursor_added": false,
+    "public_matching_counter_restore_api_found": false,
+    "whole_engine_serialization": false
+  }
+}

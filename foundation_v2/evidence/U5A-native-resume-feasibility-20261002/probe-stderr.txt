@@ -1,0 +1,4 @@
+D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\evidence\U5A-native-resume-feasibility-20261002\primitive_probe.py:141: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  self.native.run(streaming=True)
+D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\evidence\U5A-native-resume-feasibility-20261002\primitive_probe.py:180: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  self.native.end()

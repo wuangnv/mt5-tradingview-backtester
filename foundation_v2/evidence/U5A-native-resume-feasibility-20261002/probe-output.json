@@ -1,0 +1,197 @@
+{
+  "cache_general_roundtrip": {
+    "bytes": 350,
+    "general_value": "offline-only",
+    "restored_type": "Cache",
+    "success": true
+  },
+  "duration_seconds": 0.2668,
+  "effects": {
+    "database": "no cache/message-bus database or external client configured",
+    "input": "nine synthetic bars, eighteen modeled quote events, no real dataset or holdout",
+    "network_limit": "Python socket denial is not a C-extension network sandbox",
+    "pickle": "only objects generated in this probe; no externally supplied pickle input",
+    "product_source_or_config_writes": false,
+    "python_socket_connections": "connect/connect_ex/create_connection denied before native import"
+  },
+  "empty_dump_pickled_data": {
+    "decoded_length": 0,
+    "decoded_type": "list"
+  },
+  "empty_serialization": {
+    "cache": {
+      "bytes": 319,
+      "general_value": null,
+      "restored_type": "Cache",
+      "success": true
+    },
+    "engine": {
+      "message": "self._accumulator cannot be converted to a Python object for pickling",
+      "repr": "TypeError('self._accumulator cannot be converted to a Python object for pickling')",
+      "success": false,
+      "type": "TypeError"
+    },
+    "kernel": {
+      "message": "self._mem cannot be converted to a Python object for pickling",
+      "repr": "TypeError('self._mem cannot be converted to a Python object for pickling')",
+      "success": false,
+      "type": "TypeError"
+    }
+  },
+  "engine_public_persistence_methods": [
+    "dump_pickled_data",
+    "load_pickled_data"
+  ],
+  "fixture_sha256": "03c41b2a86fb2c80fe745a73072d20653bf9887bc707a25725a70d5857b3a48d",
+  "limits": [
+    "Same engine/process only; no crash/fresh-process restore oracle was performed.",
+    "The accepted adapter still generates all bars/plans/quotes before quote batching.",
+    "Fixed-horizon long fixture only; protective/open-position/queue/RNG/multiple-instrument resume unproven.",
+    "No durable engine cursor, native state export or product job checkpoint integration was added.",
+    "Streaming equality is not U5a durable mid-computation resume acceptance."
+  ],
+  "loaded_module_hashes": {
+    "engine_runtime\\.venv\\Lib\\site-packages\\nautilus_trader\\backtest\\engine.cp312-win_amd64.pyd": "ba830575c96c2abf66e6df223ea94788bcf60d3b6a029e94265eea1e18bb5d72",
+    "engine_runtime\\.venv\\Lib\\site-packages\\nautilus_trader\\cache\\cache.cp312-win_amd64.pyd": "76335a9ede0ed2f12fb17fd4140763da56bfdd14d4bf4f971c30865d3cdad200",
+    "engine_runtime\\adapter.py": "fadd7d63f80e6736ce85c9d32a016cf41159844875a360c8e49c795c8945d386"
+  },
+  "matching_engine_public_restore_methods": [],
+  "oracle": {
+    "chunked_sha256": "12c78640b12da2a0e435e1c14b250f1e6185778388cdc08140f8216fc8ec2af1",
+    "native_trade_ids": [
+      "T-55a2dfdc8ebfe07a-001",
+      "T-110a937df1dfe926-002",
+      "T-b39b8cc16925607b-003",
+      "T-a8cbd3d72962dabf-004"
+    ],
+    "result": {
+      "adapter_version": "nautilus-breakout-v1",
+      "fills": [
+        {
+          "bar_index": 3,
+          "client_order_id": "O-19700101-030000-001-000-1",
+          "native_trade_id": "T-55a2dfdc8ebfe07a-001",
+          "order_type": "MARKET",
+          "price": "10.05",
+          "role": "entry",
+          "side": "BUY",
+          "signal_time_utc": 10800,
+          "timestamp_ns": 10800000000001,
+          "units": "30"
+        },
+        {
+          "bar_index": 3,
+          "client_order_id": "O-19700101-040000-001-000-2",
+          "native_trade_id": "T-110a937df1dfe926-002",
+          "order_type": "MARKET",
+          "price": "10.20",
+          "role": "exit",
+          "side": "SELL",
+          "signal_time_utc": 10800,
+          "timestamp_ns": 14400000000000,
+          "units": "30"
+        },
+        {
+          "bar_index": 6,
+          "client_order_id": "O-19700101-060000-001-000-3",
+          "native_trade_id": "T-b39b8cc16925607b-003",
+          "order_type": "MARKET",
+          "price": "10.55",
+          "role": "entry",
+          "side": "BUY",
+          "signal_time_utc": 21600,
+          "timestamp_ns": 21600000000001,
+          "units": "30"
+        },
+        {
+          "bar_index": 6,
+          "client_order_id": "O-19700101-070000-001-000-4",
+          "native_trade_id": "T-a8cbd3d72962dabf-004",
+          "order_type": "MARKET",
+          "price": "10.35",
+          "role": "exit",
+          "side": "SELL",
+          "signal_time_utc": 21600,
+          "timestamp_ns": 25200000000000,
+          "units": "30"
+        }
+      ],
+      "native_version": "1.231.0",
+      "observed_range": {
+        "bar_count": 9,
+        "from_utc": 0,
+        "to_utc": 32400
+      },
+      "quote_model": "midpoint OHLC open/close only; close t before next open t+1ns; adverse ticks; unlimited modeled top-of-book size",
+      "signals": {
+        "long": 2,
+        "no_signal": 4,
+        "short": 0,
+        "skipped_overlap": 0
+      }
+    },
+    "same_process_chunked_equals_uninterrupted": true,
+    "total_fills": 4,
+    "uninterrupted_sha256": "12c78640b12da2a0e435e1c14b250f1e6185778388cdc08140f8216fc8ec2af1"
+  },
+  "prefix": {
+    "active_side": null,
+    "client_order_count": 2,
+    "clock_timer_count": 0,
+    "dump_pickled_data_decoded_length": 8,
+    "fills": 2,
+    "inflight_orders": 0,
+    "last_timestamp_ns": 14400000000000,
+    "native_balances": [
+      {
+        "free": "10004.50 USD",
+        "locked": "0.00 USD",
+        "total": "10004.50 USD"
+      }
+    ],
+    "open_orders": 0,
+    "open_positions": 0,
+    "order_list_count": 0,
+    "pending": null,
+    "processed_engine_events": 8,
+    "signals": {
+      "long": 1,
+      "no_signal": 1,
+      "short": 0,
+      "skipped_overlap": 0
+    },
+    "strategy_save": {}
+  },
+  "prefix_serialization": {
+    "cache": {
+      "message": "Pickling of struct members such as self._mem must be explicitly requested with @auto_pickle(True)",
+      "repr": "TypeError('Pickling of struct members such as self._mem must be explicitly requested with @auto_pickle(True)')",
+      "success": false,
+      "type": "TypeError"
+    },
+    "engine": {
+      "message": "self._accumulator cannot be converted to a Python object for pickling",
+      "repr": "TypeError('self._accumulator cannot be converted to a Python object for pickling')",
+      "success": false,
+      "type": "TypeError"
+    },
+    "kernel": {
+      "message": "self._mem cannot be converted to a Python object for pickling",
+      "repr": "TypeError('self._mem cannot be converted to a Python object for pickling')",
+      "success": false,
+      "type": "TypeError"
+    }
+  },
+  "runtime": {
+    "nautilus": "1.231.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "pyarrow": "25.0.1",
+    "python": "3.12.10"
+  },
+  "schema": "u5a-native-resume-primitive-probe-v1",
+  "suffix": {
+    "first_timestamp_ns": 14400000000001,
+    "processed_suffix_events": 10,
+    "total_engine_events": 18
+  }
+}
