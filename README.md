@@ -21,11 +21,11 @@ có giới hạn → result bất biến → API theo workspace → UI. Replay c
 
 ## Trạng thái hiện tại
 
-Tại ngày **01/10/2026**, các lát chức năng và UI local đã có kiểm chứng, nhưng
+Tại ngày **02/10/2026**, các lát chức năng và UI local đã có kiểm chứng, nhưng
 **sản phẩm chưa hoàn tất** (`SAFE_SLICES_EXECUTED / FULL_PRODUCT_NOT_COMPLETE`).
 
 - Shell vẫn bật `SHELL_SKELETON_MODE = true` trong [`FxReplayShell.jsx`](foundation_v2/web/src/FxReplayShell.jsx); chưa quảng bá giao diện replay full-bleed thành bản hoàn tất.
-- Các gate UI còn mở gồm native zoom, axe/WCAG, bộ ảnh chuẩn được duyệt và nghiệm thu bộ nhớ chạy dài. Test/build hoặc một bộ ảnh pass không tự đóng các gate này.
+- Native zoom, automated axe/reflow và bộ ảnh chuẩn Dashboard/Sessions/Trades/Analytics/chart đã có bằng chứng theo scope. Manual WCAG, các chart states còn thiếu và nghiệm thu bộ nhớ chạy dài vẫn mở; xem [checkpoint UI](foundation_v2/evidence/wm-all-plan-20261002/ui/CHECKPOINT.md).
 - Nghiệm thu dữ liệu thực, provider/AI, broker demo/live, holdout và deploy là các phạm vi riêng. UI local không phải bằng chứng sẵn sàng giao dịch thật.
 
 Dùng các tài liệu trong repo **TradingWorkspace** làm nguồn tiến độ; README này
@@ -48,7 +48,7 @@ Vite trong lockfile; môi trường local hiện dùng Node 24. Không cần cà
 TradingView Advanced Charts để build UI PATH-2.
 
 ```powershell
-uv sync --project foundation_v2 --python 3.12
+uv sync --locked --project foundation_v2 --python 3.12
 Push-Location .\foundation_v2\web
 npm ci
 node --test tests/*.test.mjs
@@ -59,6 +59,16 @@ Pop-Location
 Dependency Python và web được khóa riêng trong [`foundation_v2/uv.lock`](foundation_v2/uv.lock)
 và [`foundation_v2/web/package-lock.json`](foundation_v2/web/package-lock.json).
 Build output `foundation_v2/web/dist/` là file sinh lại được.
+
+Để dùng engine Nautilus local, cài runtime tách riêng:
+
+```powershell
+uv sync --locked --project foundation_v2/engine_runtime --python 3.12
+```
+
+[Clean setup rehearsal](foundation_v2/evidence/wm-all-plan-20261002/clean-setup/CHECKPOINT.md)
+đã kiểm trên Windows từ Git-tracked source, Python 3.12.10, Node 24.19.0 và
+cache dependency local. Đây là warm-cache setup; chưa xác nhận máy mới không có cache.
 
 Để xem UI bằng dev server, sau khi cài dependency, chạy trong `foundation_v2/web/`:
 

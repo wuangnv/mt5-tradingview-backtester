@@ -1,0 +1,97 @@
+{
+  "status": "PASS_WARM_CACHE_WINDOWS_SETUP",
+  "source_head": "8bde8fe145f375fb37101ec1ecff3b0e379094f2",
+  "source_tree": "cdaabc517fc13cd1906c792757cb5f0526a9dd8e",
+  "tracked_files": 684,
+  "archive_bytes": 14305280,
+  "tools": {
+    "python": "3.12.10",
+    "node": "24.19.0",
+    "uv": "0.12.5",
+    "nautilus_trader": "1.231.0",
+    "pyarrow": "25.0.1"
+  },
+  "checks": {
+    "locked_control_sync": true,
+    "locked_engine_sync": true,
+    "web_test_passed": 76,
+    "web_test_failed": 0,
+    "build_modules": 77,
+    "backend_smoke_passed": 44,
+    "backend_smoke_warnings": 2,
+    "runtime_ready": true
+  },
+  "locks": [
+    {
+      "path": "foundation_v2/uv.lock",
+      "sha256": "f34b02af4b60dcaf9cc32657ba800dd1dfd170289066cc75c8fdad78c28fe2e6"
+    },
+    {
+      "path": "foundation_v2/engine_runtime/uv.lock",
+      "sha256": "8d4f6093c6118501d78ba415416ac77d9946719555c8247c0fd042f2aef68be2"
+    },
+    {
+      "path": "foundation_v2/web/package-lock.json",
+      "sha256": "e87a0f8086738ad78fd3e7468af2d5815822ac1b1922d4a5fd37edbce4435360"
+    }
+  ],
+  "logs": [
+    {
+      "path": "source.json",
+      "sha256": "15be18b4fe8a50c97879fd96707aca21143b1b8cb6d3a6db1d4060aba150c9a8",
+      "bytes": 192
+    },
+    {
+      "path": "uv-sync.txt",
+      "sha256": "222188ffa044aaf569e142adf5dace597fd96effaffb323fa218a00434aec404",
+      "bytes": 1079
+    },
+    {
+      "path": "uv-sync-locked.txt",
+      "sha256": "f3d4cbaa7777c15db722d3326d15bfd7f5a67e8c9be494d7ed63f789f8aa1d85",
+      "bytes": 57
+    },
+    {
+      "path": "engine-sync.txt",
+      "sha256": "465238eb8f57ede514aa86d14964e3d9f983bfcb0b755da6f5008d987335aafa",
+      "bytes": 882
+    },
+    {
+      "path": "npm-ci.txt",
+      "sha256": "334c2589e1ac00f083cf98146d18e59fa4864a7ebe0a282f5478b2a915181d13",
+      "bytes": 27
+    },
+    {
+      "path": "build.txt",
+      "sha256": "fb942082cb5d6a3cee40394b48e7726d5421149c829c7a436d531d5a3a9ceda9",
+      "bytes": 696
+    },
+    {
+      "path": "web-tests.txt",
+      "sha256": "e89a70a8d9cc15af35394547deadcfaf414d2628478e9606f9fb8b4cc9cc7d90",
+      "bytes": 6701
+    },
+    {
+      "path": "backend-smoke.txt",
+      "sha256": "bd3f3f9ed1c9a1f041c485b89363472634d90adfadff514a8efbe1f8dee86126",
+      "bytes": 1082
+    },
+    {
+      "path": "imports.txt",
+      "sha256": "101999f4bb094f8bdb768e79d1fb869f02fa8914f00fed2b7943a58d626f200f",
+      "bytes": 142
+    },
+    {
+      "path": "imports-native-root-path.txt",
+      "sha256": "0bcc84ba2e20020287f413684b222d465d7df80a473e0b52f1668c289e03aeff",
+      "bytes": 110
+    }
+  ],
+  "limitations": [
+    "Windows warm-cache Git archive; not cold new-machine or git submodule clone",
+    "npm install scripts disabled",
+    "existing Vite chunk warning",
+    "no database/runtime service or user data",
+    "full U9/M7 not accepted"
+  ]
+}

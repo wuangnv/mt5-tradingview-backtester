@@ -1,0 +1,1 @@
+{"runtime_ready": true, "runtime": {"nautilus_trader": "1.231.0", "pyarrow": "25.0.1", "python": "3.12.10"}}

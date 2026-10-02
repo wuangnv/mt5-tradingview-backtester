@@ -1,0 +1,22 @@
+Using CPython 3.12.10 interpreter at: C:\Users\MIIKEY\AppData\Local\Programs\Python\Python312\python.exe
+Creating virtual environment at: foundation_v2\engine_runtime\.venv
+Resolved 17 packages in 1ms
+warning: Failed to hardlink files; falling back to full copy. This may lead to degraded performance.
+         If the cache and target directories are on different filesystems, hardlinking may not be supported.
+         If this is intentional, set `export UV_LINK_MODE=copy` or use `--link-mode=copy` to suppress this warning.
+Installed 15 packages in 4.25s
+ + click==8.5.0
+ + colorama==0.4.6
+ + fsspec==2026.2.0
+ + msgspec==0.21.1
+ + nautilus-trader==1.231.0
+ + numpy==2.5.3
+ + pandas==3.0.6
+ + portion==2.6.2
+ + pyarrow==25.0.1
+ + python-dateutil==2.9.0.post0
+ + pytz==2026.3.post1
+ + six==1.17.0
+ + sortedcontainers==2.4.0
+ + tqdm==4.70.1
+ + tzdata==2026.4
