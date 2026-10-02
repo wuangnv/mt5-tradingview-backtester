@@ -1,0 +1,1479 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\MIIKEY\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\node.exe",
+      "D:\\ANNAM\\TradingWorkspace\\tooling\\ui-qa\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual/playwright.config.mjs"
+    ],
+    "configFile": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\playwright.config.mjs",
+    "rootDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1440x900",
+        "name": "dark-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1280x800",
+        "name": "dark-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-768x1024",
+        "name": "dark-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-390x844",
+        "name": "dark-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1440x900",
+        "name": "light-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1280x800",
+        "name": "light-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-768x1024",
+        "name": "light-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-comparison/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-390x844",
+        "name": "light-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.visual.spec.mjs"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\visual-comparison\\report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "wmreplay.visual.spec.mjs",
+      "file": "wmreplay.visual.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1029,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:16.566Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xNDQweDkwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTQ0MCwKICAgICJoZWlnaHQiOiA5MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-0e53f1f206e636b6db65",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:17.776Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xNDQweDkwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTQ0MCwKICAgICJoZWlnaHQiOiA5MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-1cd3e9cf1ac07d7ab129",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1120,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:18.646Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xNDQweDkwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTQ0MCwKICAgICJoZWlnaHQiOiA5MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-634112dbed9ec06ba5c0",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1350,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:19.776Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xNDQweDkwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTQ0MCwKICAgICJoZWlnaHQiOiA5MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-dbdb0231f185ae67ad29",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 862,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:21.773Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xMjgweDgwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTI4MCwKICAgICJoZWlnaHQiOiA4MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-f9799a742b0421e3e870",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 768,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:22.799Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xMjgweDgwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTI4MCwKICAgICJoZWlnaHQiOiA4MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-0d6f56fea81db9a5f79d",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:23.578Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xMjgweDgwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTI4MCwKICAgICJoZWlnaHQiOiA4MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-55fce9d8f1656d9c231f",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:24.618Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0xMjgweDgwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTI4MCwKICAgICJoZWlnaHQiOiA4MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-4bf7e61446d70a604f3f",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 971,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:26.468Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay03Njh4MTAyNCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogNzY4LAogICAgImhlaWdodCI6IDEwMjQKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-c191348908f96c6f261e",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 858,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:27.611Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay03Njh4MTAyNCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogNzY4LAogICAgImhlaWdodCI6IDEwMjQKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-f7720dc40183141ebcb9",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 984,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:28.481Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay03Njh4MTAyNCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogNzY4LAogICAgImhlaWdodCI6IDEwMjQKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-659165dfc3ed7fc9073e",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:29.475Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay03Njh4MTAyNCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogNzY4LAogICAgImhlaWdodCI6IDEwMjQKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJzY29wZSI6ICJFeHBsaWNpdCBzeW50aGV0aWMgVUkgY29tcGFyaXNvbiBmaXh0dXJlIGNhcHR1cmVkIGZyb20gaXNvbGF0ZWQgUUEgZW5naW5lIGRhdGEiLAogICJjYXB0dXJlcyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-6be1e32a04f36a37df37",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 807,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:31.281Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0zOTB4ODQ0IiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAzOTAsCiAgICAiaGVpZ2h0IjogODQ0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-7fecc1cac81a9aac1083",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 811,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:32.260Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0zOTB4ODQ0IiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAzOTAsCiAgICAiaGVpZ2h0IjogODQ0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-a5d9104be0fabb582a31",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 907,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:33.082Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0zOTB4ODQ0IiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAzOTAsCiAgICAiaGVpZ2h0IjogODQ0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-8617c043ae926505213d",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1038,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:34.000Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAiZGFyay0zOTB4ODQ0IiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAzOTAsCiAgICAiaGVpZ2h0IjogODQ0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-1bac8e3a1564d295d33f",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 887,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:35.639Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTQ0MHg5MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDE0NDAsCiAgICAiaGVpZ2h0IjogOTAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-4a7695c8d66c08e420f0",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 882,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:36.690Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTQ0MHg5MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDE0NDAsCiAgICAiaGVpZ2h0IjogOTAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-295c5122ee32501e89c6",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1179,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:37.583Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTQ0MHg5MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDE0NDAsCiAgICAiaGVpZ2h0IjogOTAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-28c0a993221da0aee051",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1372,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:38.772Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTQ0MHg5MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDE0NDAsCiAgICAiaGVpZ2h0IjogOTAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-932d4e2e9980e8cb9a41",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 853,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:40.754Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTI4MHg4MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDEyODAsCiAgICAiaGVpZ2h0IjogODAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-79d9157002d6872c0ef3",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 922,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:41.781Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTI4MHg4MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDEyODAsCiAgICAiaGVpZ2h0IjogODAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-d909804f98bcb1381760",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:42.714Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTI4MHg4MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDEyODAsCiAgICAiaGVpZ2h0IjogODAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-48399b72b5d64e19cfe0",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1239,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:43.796Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMTI4MHg4MDAiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDEyODAsCiAgICAiaGVpZ2h0IjogODAwCiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-a7c83c8ae8f166a114df",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 808,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:45.640Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtNzY4eDEwMjQiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDc2OCwKICAgICJoZWlnaHQiOiAxMDI0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-5485a76fa57e75c205a0",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 746,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:46.609Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtNzY4eDEwMjQiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDc2OCwKICAgICJoZWlnaHQiOiAxMDI0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-ddee89c4f416f4e009a6",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 994,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:47.366Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtNzY4eDEwMjQiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDc2OCwKICAgICJoZWlnaHQiOiAxMDI0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-5b84087eca21e2187228",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1214,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:48.370Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtNzY4eDEwMjQiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDc2OCwKICAgICJoZWlnaHQiOiAxMDI0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAic2NvcGUiOiAiRXhwbGljaXQgc3ludGhldGljIFVJIGNvbXBhcmlzb24gZml4dHVyZSBjYXB0dXJlZCBmcm9tIGlzb2xhdGVkIFFBIGVuZ2luZSBkYXRhIiwKICAiY2FwdHVyZXMiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-bdb15c5a1f216e3ef05f",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "overview explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 931,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:50.211Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMzkweDg0NCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMzkwLAogICAgImhlaWdodCI6IDg0NAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBVSSBjb21wYXJpc29uIGZpeHR1cmUgY2FwdHVyZWQgZnJvbSBpc29sYXRlZCBRQSBlbmdpbmUgZGF0YSIsCiAgImNhcHR1cmVzIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-8cd94c8b9956f5ef4e47",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "replay explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 790,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:51.318Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMzkweDg0NCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMzkwLAogICAgImhlaWdodCI6IDg0NAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBVSSBjb21wYXJpc29uIGZpeHR1cmUgY2FwdHVyZWQgZnJvbSBpc29sYXRlZCBRQSBlbmdpbmUgZGF0YSIsCiAgImNhcHR1cmVzIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-2e10a3aa5f4b64a5d42e",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "trade explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 917,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:52.119Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMzkweDg0NCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMzkwLAogICAgImhlaWdodCI6IDg0NAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBVSSBjb21wYXJpc29uIGZpeHR1cmUgY2FwdHVyZWQgZnJvbSBpc29sYXRlZCBRQSBlbmdpbmUgZGF0YSIsCiAgImNhcHR1cmVzIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-2dab578f50367b627234",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        },
+        {
+          "title": "analytics explicit synthetic comparison fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1023,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T12:56:53.047Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNvdXJjZUhhc2giOiAiNzEzNzNjM2E0YTAyZTFkM2NkNjhmZjNlNmJmZmJkOTJhOGRmZGIxNTNhNWYzYzhkMzlhYTNhYzVjYzgwMzBmYSIsCiAgImZpeHR1cmVTaGEyNTYiOiAiYTJiNzg0YmJjNmRkMWI5ZDI2MjI0NWJlNWFhOGJlNWJmZjJhZjIxMTE0MjcwZGExMmI3NzI0Y2FmYzljOGNjMCIsCiAgInByb2plY3QiOiAibGlnaHQtMzkweDg0NCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMzkwLAogICAgImhlaWdodCI6IDg0NAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBVSSBjb21wYXJpc29uIGZpeHR1cmUgY2FwdHVyZWQgZnJvbSBpc29sYXRlZCBRQSBlbmdpbmUgZGF0YSIsCiAgImNhcHR1cmVzIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9735819f0ab3ae8b4fc1-4743a6020437793a4997",
+          "file": "wmreplay.visual.spec.mjs",
+          "line": 24,
+          "column": 66
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-02T12:56:15.985Z",
+    "duration": 38174.975,
+    "expected": 32,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

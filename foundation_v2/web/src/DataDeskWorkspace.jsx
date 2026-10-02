@@ -352,7 +352,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           <div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · holdout không mở</span></div>
         </div>
       </header>
-      <div className="rd-statusbar" aria-label="Trạng thái Data Desk">
+      <div className="rd-statusbar" role="group" aria-label="Trạng thái Data Desk">
         <span>Workspace <strong>{workspace}</strong></span>
         <span>Datasets <strong>{state.datasets.length}</strong></span>
         <span>Providers <strong>{providers.length}</strong></span>

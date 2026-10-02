@@ -1,0 +1,709 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_REVIEWER_APPROVED_FOR_BASELINE_PROMOTION",
+  "reviewer": "/root/mt5_independent_review",
+  "reviewedAt": "2026-10-02T12:54:34.578Z",
+  "scope": "Exactly 56 synthetic Testing Dashboard/Sessions/Trades/Analytics images, two themes and four viewports; independent visual approval only",
+  "sourceHash": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "fixtureSha256": "a2b784bbc6dd1b9d262245be5aa8be5bff2af21114270da12b7724cafc9c8cc0",
+  "origin": "http://127.0.0.1:5180",
+  "browser": "153.0.8010.12",
+  "locale": "vi-VN",
+  "timezone": "UTC",
+  "authority": "Root may promote the exact approved image hashes after its own gate checks; reviewer does not modify baselines or completion ledger.",
+  "images": [
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/overview-top.png",
+      "project": "dark-1440x900",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "886b6663ff4419ada69060b01298426c01384db2c50015ce0a683cbe040be3c9",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/replay-top.png",
+      "project": "dark-1440x900",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "59e2244fe7ccbcb3ec298b0a01467c9ed0170fad075b1e36ce63db74bb842a0e",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/trade-top.png",
+      "project": "dark-1440x900",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "2380868b1f740a93c707659f3fcb656eee771c5135b1d469efdbec6791bdbab3",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/trade-ledger.png",
+      "project": "dark-1440x900",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "ec4697fb4292ccf758938154bc3b551dfc6199fc56ab38ce78cb2566bd474097",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/analytics-top.png",
+      "project": "dark-1440x900",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "1ceb0ba1c1ed6866a954927319af14651c3f9e96e9ec54112509cbe18cd15b4d",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/analytics-metrics.png",
+      "project": "dark-1440x900",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "1ceb0ba1c1ed6866a954927319af14651c3f9e96e9ec54112509cbe18cd15b4d",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/analytics-ledger.png",
+      "project": "dark-1440x900",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "c5479f7c4d7eeee1efde27a870ba430faadc4dc4322699671bc8dcfdfce2fda0",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/overview-top.png",
+      "project": "dark-1280x800",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "98d0173166b5ac79e3b60a551b62d842c3900c495f222b39adf3300a133911ea",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/replay-top.png",
+      "project": "dark-1280x800",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "1696a046c52d4e1dcbbcd5307f1a49bd327bb4cd2898fdebca0dec02cb8dc392",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/trade-top.png",
+      "project": "dark-1280x800",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "938bba02e110d1d7a78301b6b728978005fc5f3dd8619ab0501afb018671c291",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/trade-ledger.png",
+      "project": "dark-1280x800",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "2bb1f4d0e2d307b1b7b46bd05f891e6bd84d4532f9994519223954b5186090e7",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/analytics-top.png",
+      "project": "dark-1280x800",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "05ac07272ea62177dd5b251206e6d84b5083a2c0a873506387220af86e4a9982",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/analytics-metrics.png",
+      "project": "dark-1280x800",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "6d7210fa1b30126d7740887cc4200d13f28bea3339cc7cdd381d0b88799d0b23",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/analytics-ledger.png",
+      "project": "dark-1280x800",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "c127a31e01209f2f049ed879347f4ccdcb593de0199043c739343bb16c35ff22",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/overview-top.png",
+      "project": "dark-768x1024",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "a18e3e4533a7c8f20498857da59fbca60f09047e0c1ebc8230db8bd00a1e4c34",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/replay-top.png",
+      "project": "dark-768x1024",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "3252f9aca0f5d450be9d829228d6aa21e95a85a0c5e19314062f6c6daa3c5dc4",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/trade-top.png",
+      "project": "dark-768x1024",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "3e51179ea4ecf6510f510445ac82d2c5f2c94eae5d1ec6ee3d3a155380905c57",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/trade-ledger.png",
+      "project": "dark-768x1024",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "192440378f05d8ae0238653f8393ff83c2f6abeeada338bc27fbe328d8329b5e",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/analytics-top.png",
+      "project": "dark-768x1024",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "5eaadb69080bc7ab05874e46bf737481665fb284845b266cc13a41e28945182a",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/analytics-metrics.png",
+      "project": "dark-768x1024",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "6994c5dd7c437151da863900027a08ff646dae11ec5a49f3a5f7d6a09c32a5e8",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/analytics-ledger.png",
+      "project": "dark-768x1024",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "0481ba1a726ca22821cbf53202e3ff60dd9b906b37d8602172123d716352834f",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/overview-top.png",
+      "project": "dark-390x844",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "1e11fa3841cd96be60e439ac41f2135e2ab2646500354325def1c5da302a6212",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/replay-top.png",
+      "project": "dark-390x844",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "9a82eb1f7574f7915fb3dfd3694b3e6f560c2ff5046857e7467f279b4a158d3e",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/trade-top.png",
+      "project": "dark-390x844",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "02d5b5b1db74f8cef3e84bfa86fa552b6f42ba99ce13128b7151ef7263cce670",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/trade-ledger.png",
+      "project": "dark-390x844",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "87a94310743cb9456cea26421cfc1cc1c13b0d4f5893901a0e71b0b3a8f98334",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/analytics-top.png",
+      "project": "dark-390x844",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "ea40a4e3faa69271cccd48af52b7cfa58611d3c8155678edc12666dec395a1b1",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/analytics-metrics.png",
+      "project": "dark-390x844",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "796b10f70a5f97ce125a5c7e0194f00883584a58d55e5ea1b424bd81920565c4",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/analytics-ledger.png",
+      "project": "dark-390x844",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "6a5f417653cc7b0e245bf5c7cfbaa556b4cecfb83d0028b0c8d0018c328f08f8",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/overview-top.png",
+      "project": "light-1440x900",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "4c9d324091d7cba68ab5082a5eaf388b04da5b446132dd948fe62b88f8dfcee7",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/replay-top.png",
+      "project": "light-1440x900",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "25f72b5d6e6f7b945d973d891ba2410cafc70b219cb08c95ff0fafaae8e9be6f",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/trade-top.png",
+      "project": "light-1440x900",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "6d2c11fea8a6989b1afb8bbad8749c7a634ef3e37108df5efe4b94815f9c970e",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/trade-ledger.png",
+      "project": "light-1440x900",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "7f9340bdb70ebe21726b2903f30222ffab54997adcaab70573662b6dc7054bd2",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/analytics-top.png",
+      "project": "light-1440x900",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "ffe03f2d9cf0484dd713deea81213aed22c64f45668d8b9c75e171bbe23715b9",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/analytics-metrics.png",
+      "project": "light-1440x900",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "ffe03f2d9cf0484dd713deea81213aed22c64f45668d8b9c75e171bbe23715b9",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/analytics-ledger.png",
+      "project": "light-1440x900",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "1fa83555224ffe1dda8d6c9e9acc589e6bcdc2d9a632b2c72c38dc0dbb2e3ce2",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/overview-top.png",
+      "project": "light-1280x800",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "4329e109307794235506b2fa9792e3c2e299ca78f0f25fb899e4ece5f0733de1",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/replay-top.png",
+      "project": "light-1280x800",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "226239d0c665616419c0863a24da59aa9c40f9033adc5f2ceb194c856cc1614d",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/trade-top.png",
+      "project": "light-1280x800",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "5f55490173153e10871fdc57569b9056ba64bf2e0cf74464402c4dfc7cb2945b",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/trade-ledger.png",
+      "project": "light-1280x800",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "2da61bb959e76be3a2279717fdf29f80c1a530462a886043d9d19b3c6fed3920",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/analytics-top.png",
+      "project": "light-1280x800",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "cde4545cbdf790f396d3582907c88d5db5e79cd58a3410b1bbaccd5f04b1af16",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/analytics-metrics.png",
+      "project": "light-1280x800",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "2c192e792c8dc54d6dcf5bf23fb60d639dd893acb2f483c06b36ea561977fd6f",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/analytics-ledger.png",
+      "project": "light-1280x800",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "a59b85603491566d699e9baaf873fef5b596b80615e9dfbcddeb253ad3f6a0a9",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/overview-top.png",
+      "project": "light-768x1024",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "3ee69a4f5a025cb9656e0fecf448ad6cc79de86bb99a9d58b757aca796a58d21",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/replay-top.png",
+      "project": "light-768x1024",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "67e5c156df3a326e803042774ae030d56be6ec5fb21d177d18ab133c611fa326",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/trade-top.png",
+      "project": "light-768x1024",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "49c13334e76122c1b81410a3bbcfb9ca479e80fdd62492a3782fbc12505e36a4",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/trade-ledger.png",
+      "project": "light-768x1024",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "611ea87d939f577c940572bd5f0e062f062ec7b0de3f1533685589f3bffbc962",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/analytics-top.png",
+      "project": "light-768x1024",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "86e4cda717c18a6ea6590d05679ec258950b651ee006d33d88efa9e4ae43102c",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/analytics-metrics.png",
+      "project": "light-768x1024",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "3b98277fed345e8cac451ed685dd0306bc364755380a9b6f979e15911fee4ee0",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/analytics-ledger.png",
+      "project": "light-768x1024",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "d48e75b31679d6c39987fa7002e3e271bdabc81120dabb2907702ddbf4b8c9ea",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/overview-top.png",
+      "project": "light-390x844",
+      "name": "overview-top.png",
+      "route": "Dashboard",
+      "sha256": "76004749f1845d62ac6762a443a1e0ccc92d89ef73eee70ed6c88fb90461d725",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/replay-top.png",
+      "project": "light-390x844",
+      "name": "replay-top.png",
+      "route": "Sessions",
+      "sha256": "c765a3830d1fd0b459cc2fec9d54ec74d55523d68bbc2a551467c1d7dc486069",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/trade-top.png",
+      "project": "light-390x844",
+      "name": "trade-top.png",
+      "route": "Trades",
+      "sha256": "ee7224f40eb960d489669dc7fd734b1e8359d89153254f93962fa3add4809000",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/trade-ledger.png",
+      "project": "light-390x844",
+      "name": "trade-ledger.png",
+      "route": "Trades",
+      "sha256": "c892d8f6d5e8cea8396e69ba43b53ed7d50d590d69997763515489bea09b3475",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/analytics-top.png",
+      "project": "light-390x844",
+      "name": "analytics-top.png",
+      "route": "Analytics",
+      "sha256": "cfdd9f0d4668ee9379a60fe0a622341df0e439d2363b3fde481d66370ee7f30c",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/analytics-metrics.png",
+      "project": "light-390x844",
+      "name": "analytics-metrics.png",
+      "route": "Analytics",
+      "sha256": "42baf679a3b0515bbe72322bbeda90512714781737b30f9dd614381e039bccd4",
+      "reviewMethod": "Byte-identical to directly inspected first-round image; r2 provenance and repeat rechecked"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/analytics-ledger.png",
+      "project": "light-390x844",
+      "name": "analytics-ledger.png",
+      "route": "Analytics",
+      "sha256": "5e49ec0c9b7f054c9a3df48630ddc0531696ab76df60aca244b5b7bdeb666365",
+      "reviewMethod": "Direct visual inspection of changed r2 image"
+    }
+  ],
+  "receiptFiles": [
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/overview.json",
+      "sha256": "3b4c038f972b8d6ba842768bce1ece15d3fb566b6e9af37084c837ed4e1f8cca"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/replay.json",
+      "sha256": "c9ed566ac0dec6bf49bda8f92b29b4ed51a617384001c0811f668f6ddfe8bef5"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/trade.json",
+      "sha256": "0d09d5a2c3613318c41cc080a42edde6c3cfb3012358313c95737e02e8547f78"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1440x900/analytics.json",
+      "sha256": "83daace2f6ea4a517982fba66d8d74aa440e9595b5f52cdb2ee7e4986c0ded7c"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/overview.json",
+      "sha256": "352f15f0738b0caa3f3112ce45ba2f70d93b6983f3201ad471addac4c66ef185"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/replay.json",
+      "sha256": "7814f835cdd52f67e30f7b86d4a8e7d2586f9085f58fefeedcbfafef317b1628"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/trade.json",
+      "sha256": "348256479a58cde2be1cd34edf9006a0d6403ab847b2b9d8614d1251fc8e036f"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-1280x800/analytics.json",
+      "sha256": "ee368a5412a63ac8337bb74fcc601749ae623421240cbc7fa7444febf0d95915"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/overview.json",
+      "sha256": "0cc31bd613318331b4a5dcff856fca74912f2fe062a0a824f732e8fd0d4071f3"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/replay.json",
+      "sha256": "c5925505a16a6154eb472ad6128461db23e0f71547ab310ff6c211c66daa3017"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/trade.json",
+      "sha256": "6799ce5f545b842df8aebd21d34d361829cf7b66790545075c401ef6659731db"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-768x1024/analytics.json",
+      "sha256": "1e25e45a5d9e5428ab7ecc2dc75b93111f1d0eb167a010c85e6ceb79b9a8182a"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/overview.json",
+      "sha256": "3e8901b7f06abfd93bdee619d7cee25d52d3b80c73875615b166e09f27f587ca"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/replay.json",
+      "sha256": "29a3e2b685e8611fcc4f05afbb8846d65ee733b6d35b7db0d64766750cca7fa4"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/trade.json",
+      "sha256": "63ea17ad1198a54bb667011944a290ff015049b225ebfc3ceb17462751ceae5d"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/dark-390x844/analytics.json",
+      "sha256": "a9df31400206c2ec0f587c187f5c59bc698b44e77accaafa88743e93ffb2db99"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/overview.json",
+      "sha256": "831e166191108f960e2125f856ca5681845a4d5261f41b8103bbcd8052d888ba"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/replay.json",
+      "sha256": "5c0ef1aae942a96dea6c7d0d639b80ff77584fffb7fe8302687e3f4cd6262948"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/trade.json",
+      "sha256": "d818327a58a50dfbb8b0597e0968638081be723f2c08cbcc9d35867cda82cb79"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1440x900/analytics.json",
+      "sha256": "840a0374554d27cf3d76bd216bff7eebde433f153f24d5f04e106f2a7cd9f91e"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/overview.json",
+      "sha256": "a59faa53353d167a350da9202c95f5e72aee4d883b14d9228731935a303c1dc3"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/replay.json",
+      "sha256": "edbd47ee7dca2428be4edf7b4a85af4365759640989850d443ea8657edb8469c"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/trade.json",
+      "sha256": "865425a957ebd3664314ca21b1a30564f890ef5f9bb9ae651a4edc84656cce52"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-1280x800/analytics.json",
+      "sha256": "75cb5c63bb02e08112ae72e4191e572b11862ad406abcdd992d6e7c725fd5b4f"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/overview.json",
+      "sha256": "0e14fd1a8bafb374766501bd503e0e7eb83d225c7ec1f1ef98b44f7c888d3527"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/replay.json",
+      "sha256": "52823490c75cc678c68f8aacfb2838c8cc57655c98e826700e2297712abcf107"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/trade.json",
+      "sha256": "62c1202fb1e11160dfef03e3c444a624856232d2baa51253d53699c3f969e32a"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-768x1024/analytics.json",
+      "sha256": "71d89baf4d8cbdd7906e7f7129fc29ad7b848763035f4b530e1edf0362db0eec"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/overview.json",
+      "sha256": "a245b07fcc823c6cd1eebbe75d2524585caf641d230adbd30466743d14bedf2f"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/replay.json",
+      "sha256": "42d4403949887c018513a01399968eeb22430e6322f020d63de004bb988cc816"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/trade.json",
+      "sha256": "94c36a6e33af4c324b0ea4a3a6039cc8d5be173befd884d971579d8c7b8ae2d9"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-candidate/light-390x844/analytics.json",
+      "sha256": "e01d62db9bf84fb299fa07eda905db8a885220f1c0e1a4bf2e63f9ef20303cb1"
+    }
+  ],
+  "reviewCoverage": {
+    "exactImageCount": 56,
+    "firstRoundIdenticalReused": 37,
+    "changedR2DirectlyInspected": 19,
+    "repeatsMatch": 56,
+    "visualCases": 32
+  },
+  "rubric": [
+    {
+      "criterion": "Workflow and next action",
+      "score": 4,
+      "evidence": "Dashboard/Sessions/Trades/Analytics headings, selected session, source links and primary action remain readable across the eight visual projects. Related persisted navigation journeys recorded in the integration packet."
+    },
+    {
+      "criterion": "Numbers, units, time, precision and source",
+      "score": 4,
+      "evidence": "Synthetic 60 closed trades / USD75 clearly labelled; unknown risk remains N/A; replay/local broker-locked mode and UTC retained. P/L and R cells now right-aligned."
+    },
+    {
+      "criterion": "Chart/table density",
+      "score": 4,
+      "evidence": "All 16 ledger captures show actual rows; desktop columns scan cleanly; 390/768 tables use contained horizontal scrolling. Independent mobile ArrowRight checks reveal numeric columns."
+    },
+    {
+      "criterion": "Component/token reuse",
+      "score": 4,
+      "evidence": "Shared shell, route tabs, controls, semantic theme tokens and table styling remain consistent; source diff uses existing groups and table wrapper."
+    },
+    {
+      "criterion": "State/error/permission clarity",
+      "score": 4,
+      "evidence": "Fixture context and replay/local broker-locked label are explicit; N/A is retained. Automated full scan treats missing Learn/Live endpoints as unavailable states, without implying those backends complete."
+    },
+    {
+      "criterion": "Keyboard/focus/contrast/responsive",
+      "score": 4,
+      "evidence": "12 focused and 144 full automated cases pass with no axe violations, ignored ARIA names, page errors or page/content horizontal overflow. Two independent mobile native keyboard/menu regressions pass. Contrast incompletes remain manual-review limitations."
+    },
+    {
+      "criterion": "Hierarchy/alignment/spacing/typography/flat-first",
+      "score": 4,
+      "evidence": "All 32 top captures plus distinct metrics and ledger captures reviewed; reusable flat shell and readable Vietnamese glyphs retained. No observed new clipping or layout regression in approved exact images."
+    },
+    {
+      "criterion": "Short interactions and retained context",
+      "score": 4,
+      "evidence": "Independent keyboard scroll/menu checks and prior persisted navigation/reload receipts show no observed short interaction regression. Long-duration heap/frame acceptance is expressly excluded and remains open."
+    }
+  ],
+  "repairedFindings": [
+    {
+      "finding": "Ignored aria-label on generic div/span",
+      "result": "Named semantic groups added; current focused/full scans contain no unresolved ARIA; chart summary preserves focusable descendants."
+    },
+    {
+      "finding": "Ledger P/L and R left-aligned",
+      "result": "Header/data columns aligned right; asserted by capture harness and independent mobile keyboard readout."
+    },
+    {
+      "finding": "Ledger golden scrolled heading without visible rows",
+      "result": "Actual table scroll target; first row visibility asserted and all 16 ledger screenshots inspected."
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "visual-capture",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/visual-capture/report.json",
+      "sha256": "cc5bd8ec0d40b4684d13512dc06daff38f0ef2f146133f29456cd26a7fb6e140",
+      "result": "32 expected; zero unexpected/skipped/flaky/errors"
+    },
+    {
+      "kind": "a11y-focused-r2",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/a11y-focused-r2/report.json",
+      "sha256": "0196b0f3c382ae364d0e450d7ed7d5718b85386f7b79320208d9f43269f17708",
+      "result": "SCOPED_PASS 12 cases"
+    },
+    {
+      "kind": "a11y-full-r2",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/a11y-full/report.json",
+      "sha256": "8ef9c762392ec8fae3e86f99ca01cd15d4ec9fb904fe66a40035b0f6c58d1fb3",
+      "result": "SCOPED_PASS 144 cases; 0 violations/unresolved ARIA/page errors/page-content overflow; 144 color-contrast incompletes"
+    },
+    {
+      "kind": "independent-keyboard",
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/review/keyboard-readonly-report.json",
+      "sha256": "0b715896aae13681484700baae38ff0aa4040887d901e0b9d98749d206530ba0",
+      "result": "PASS 2 mobile cases; scroll/focus/menu/Escape; no writes, page errors or blocked requests"
+    },
+    {
+      "kind": "independent-keyboard-screenshot",
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/review/keyboard-ledger-dark-390.png",
+      "sha256": "082d6d0e99f21f2df9e74dc65f379231d3022feda25beaccc9ffcc659223da90",
+      "result": "dark mobile horizontal-scroll context; supplemental, not approved golden"
+    },
+    {
+      "kind": "independent-keyboard-screenshot",
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/review/keyboard-ledger-light-390.png",
+      "sha256": "4959a339dbeb44bc0e828b3e5135ac997125ae29423ec4d67ff7cfaf0b254f20",
+      "result": "light mobile horizontal-scroll context; supplemental, not approved golden"
+    }
+  ],
+  "exclusions": [
+    "Whole W8 or whole-product completion; this is a scoped four-route visual baseline approval only.",
+    "Full manual WCAG and unresolved automated contrast incompletes (glyph-only/canvas/unknown backgrounds).",
+    "Canonical chart golden: replay filenames in this fixture mean Sessions (select=1), not the chart.",
+    "Long-duration heap/frame/performance acceptance; root-owned long job remains separate.",
+    "W6 backend feature acceptance: Learn/Live 404 unavailable states are not completed features.",
+    "Real market/provider/broker/OAuth/deploy or owner acceptance."
+  ],
+  "notes": [
+    "37 images are byte-identical to the previously directly inspected complete first-round set. The 19 changed images were directly inspected at r2; remaining distinct metrics views were inspected separately.",
+    "No candidate metadata was rewritten. Original CANDIDATE_NOT_APPROVED records remain historical capture output, with this separate reviewer receipt supplying approval.",
+    "Mobile rail aria-haspopup incomplete was not established as a violation. The actual open rail is a modal dialog with focus loop/Escape/restoration, which passes the independent check.",
+    "Supplemental keyboard screenshots are not font/layout golden artifacts; they establish the scroll result alongside DOM assertions."
+  ]
+}

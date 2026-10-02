@@ -111,7 +111,7 @@ function WorkspaceOverview({ workspace, query }) {
           <div><h2>Hiệu suất replay</h2><p>Giao dịch đã đóng trong các phiên đã lưu · thời gian UTC</p></div>
           <button type="button" className="fx-dashboard-filter" disabled={pending || Boolean(filterError)} onClick={() => setReloadToken((value) => value + 1)}>{pending ? 'Đang tải…' : 'Làm mới'}</button>
         </div>
-        <div className="fx-dashboard-filters" aria-label="Bộ lọc hiệu suất">
+        <div className="fx-dashboard-filters" role="group" aria-label="Bộ lọc hiệu suất">
           <label><span>Phiên replay</span><select aria-label="Phiên replay" value={filters.session} onChange={(event) => changeFilters({ session: event.target.value })}>
             <option value="">Tất cả phiên, gồm đã lưu trữ</option>
             {filters.session && !sessions.some((item) => item.session_id === filters.session) && <option value={filters.session}>{filters.session}</option>}
@@ -145,7 +145,7 @@ function WorkspaceOverview({ workspace, query }) {
           {performance.excluded.length > 0 && <p data-testid="dashboard-excluded">{performance.excluded.length} phiên chưa được tính: {performance.excluded.map((item) => `${item.session_id} (${item.reason})`).join('; ')}.</p>}
           <ul>{performance.sources.map((item) => <li key={item.session_id}><a href={routeHref('analytics', { session: item.session_id, dataset: item.dataset_id, cursor: null, cutoff: null, mode: null, surface: 'workspace', from: filters.from, to: filters.to })}>Xem Analytics · {sessions.find((session) => session.session_id === item.session_id)?.name || item.session_id}</a><span>revision {item.revision} · {item.closed_trade_count} trade trong khoảng ngày</span></li>)}</ul>
         </details>}
-        {payload && <div className="fx-dashboard-inventory" data-testid="dashboard-inventory" aria-label="Dữ liệu trong workspace">
+        {payload && <div className="fx-dashboard-inventory" data-testid="dashboard-inventory" role="group" aria-label="Dữ liệu trong workspace">
           <span>{formatCount(payload.counts?.datasets)} dataset</span>
           <span>{formatCount(sumCounts(payload.counts?.research_jobs))} research job</span>
           <span>{formatCount(sumCounts(payload.counts?.records))} bản ghi đã lưu</span>

@@ -137,9 +137,10 @@ try {
           const metrics = await measure(page)
           const screenshot = path.join(out, `${routeId}-${theme}-${width}.png`)
           await page.screenshot({ path: screenshot, fullPage: true })
-          const pass = audit.violations.length === 0 && metrics.overflowX <= 2 && metrics.contentOverflowX <= 2 && metrics.contentWidth >= Math.min(320, metrics.innerWidth * .8) && pageErrors.length === 0
-          report.results.push({ routeId, theme, width, metrics, audit, pageErrors: [...pageErrors], httpErrors: [...httpErrors], screenshot, pass })
-          if (!pass) report.failures.push({ routeId, theme, width, violationIds: audit.violations.map((item) => item.id), overflowX: metrics.overflowX, contentWidth: metrics.contentWidth, contentOverflowX: metrics.contentOverflowX, pageErrors: [...pageErrors] })
+          const unresolvedAria = audit.incomplete.filter((item) => item.id.startsWith('aria-'))
+          const pass = audit.violations.length === 0 && unresolvedAria.length === 0 && metrics.overflowX <= 2 && metrics.contentOverflowX <= 2 && metrics.contentWidth >= Math.min(320, metrics.innerWidth * .8) && pageErrors.length === 0
+          report.results.push({ routeId, theme, width, metrics, audit, unresolvedAria, pageErrors: [...pageErrors], httpErrors: [...httpErrors], screenshot, pass })
+          if (!pass) report.failures.push({ routeId, theme, width, violationIds: audit.violations.map((item) => item.id), unresolvedAriaIds: unresolvedAria.map((item) => item.id), overflowX: metrics.overflowX, contentWidth: metrics.contentWidth, contentOverflowX: metrics.contentOverflowX, pageErrors: [...pageErrors] })
         }
       }
     } catch (error) {

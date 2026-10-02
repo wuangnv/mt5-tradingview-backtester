@@ -1,0 +1,825 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\overview-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\overview-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fxr-select-chevron"
+                ],
+                "html": "<span class=\"fxr-select-chevron\" aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\analytics-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fxr-select-chevron"
+                ],
+                "html": "<span class=\"fxr-select-chevron\" aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 35
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\analytics-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "replay",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1440,
+        "contentOverflowX": 0,
+        "mainHeading": "Practice · Replay",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-chart-icon-button"
+                ],
+                "html": "<a class=\"fx-chart-icon-button\" href=\"/?workspace=tenant-a&amp;view=replay&amp;session=39b1d068edd64e75864f692f27237852&amp;select=1\" aria-label=\"Quay lại Sessions\" title=\"Quay lại Sessions\">←</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ đường xu hướng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ đường xu hướng\" title=\"Vẽ đường xu hướng bằng hai mốc\" aria-pressed=\"false\">╱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ vùng giá\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ vùng giá\" title=\"Vẽ vùng giá bằng hai mốc\" aria-pressed=\"false\">▱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Mở danh sách đối tượng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Mở danh sách đối tượng\" title=\"Đối tượng: lưu, ẩn, khóa, xóa\">☷</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vừa toàn bộ nến đã mở\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vừa toàn bộ nến đã mở\" title=\"Vừa toàn bộ nến đã mở\">⛶</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > strong"
+                ],
+                "html": "<strong>EURUSD</strong>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > span:nth-child(2)"
+                ],
+                "html": "<span>60s · UTC</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  ".chart-symbol-ohlc"
+                ],
+                "html": "<span class=\"chart-symbol-ohlc\">O 1,103 · H 1,1038 · L 1,1027 · C 1,1032 · V 100</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "a[aria-label=\"Journal tại cutoff này\"]"
+                ],
+                "html": "<a aria-label=\"Journal tại cutoff này\" title=\"Journal tại cutoff này\" href=\"/?workspace=tenant-a&amp;view=journal&amp;session=39b1d068edd64e75864f692f27237852&amp;dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&amp;cursor=60&amp;cutoff=1704070800\">▣</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "a[aria-label=\"Analytics của session\"]"
+                ],
+                "html": "<a aria-label=\"Analytics của session\" title=\"Analytics của session\" href=\"/?workspace=tenant-a&amp;view=analytics&amp;session=39b1d068edd64e75864f692f27237852&amp;dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&amp;cursor=60&amp;cutoff=1704070800&amp;surface=workspace\">",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\replay-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "replay",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 390,
+        "contentOverflowX": 0,
+        "mainHeading": "Practice · Replay",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-chart-icon-button"
+                ],
+                "html": "<a class=\"fx-chart-icon-button\" href=\"/?workspace=tenant-a&amp;view=replay&amp;session=39b1d068edd64e75864f692f27237852&amp;select=1\" aria-label=\"Quay lại Sessions\" title=\"Quay lại Sessions\">←</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☼</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ đường xu hướng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ đường xu hướng\" title=\"Vẽ đường xu hướng bằng hai mốc\" aria-pressed=\"false\">╱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ vùng giá\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ vùng giá\" title=\"Vẽ vùng giá bằng hai mốc\" aria-pressed=\"false\">▱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Mở danh sách đối tượng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Mở danh sách đối tượng\" title=\"Đối tượng: lưu, ẩn, khóa, xóa\">☷</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vừa toàn bộ nến đã mở\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vừa toàn bộ nến đã mở\" title=\"Vừa toàn bộ nến đã mở\">⛶</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > strong"
+                ],
+                "html": "<strong>EURUSD</strong>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > span:nth-child(2)"
+                ],
+                "html": "<span>60s · UTC</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\replay-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\overview-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\overview-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fxr-select-chevron"
+                ],
+                "html": "<span class=\"fxr-select-chevron\" aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\analytics-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fxr-select-chevron"
+                ],
+                "html": "<span class=\"fxr-select-chevron\" aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 35
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\analytics-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "replay",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1440,
+        "contentOverflowX": 0,
+        "mainHeading": "Practice · Replay",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-chart-icon-button"
+                ],
+                "html": "<a class=\"fx-chart-icon-button\" href=\"/?workspace=tenant-a&amp;view=replay&amp;session=39b1d068edd64e75864f692f27237852&amp;select=1\" aria-label=\"Quay lại Sessions\" title=\"Quay lại Sessions\">←</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ đường xu hướng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ đường xu hướng\" title=\"Vẽ đường xu hướng bằng hai mốc\" aria-pressed=\"false\">╱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ vùng giá\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ vùng giá\" title=\"Vẽ vùng giá bằng hai mốc\" aria-pressed=\"false\">▱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Mở danh sách đối tượng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Mở danh sách đối tượng\" title=\"Đối tượng: lưu, ẩn, khóa, xóa\">☷</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vừa toàn bộ nến đã mở\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vừa toàn bộ nến đã mở\" title=\"Vừa toàn bộ nến đã mở\">⛶</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > strong"
+                ],
+                "html": "<strong>EURUSD</strong>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > span:nth-child(2)"
+                ],
+                "html": "<span>60s · UTC</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  ".chart-symbol-ohlc"
+                ],
+                "html": "<span class=\"chart-symbol-ohlc\">O 1,103 · H 1,1038 · L 1,1027 · C 1,1032 · V 100</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "a[aria-label=\"Journal tại cutoff này\"]"
+                ],
+                "html": "<a aria-label=\"Journal tại cutoff này\" title=\"Journal tại cutoff này\" href=\"/?workspace=tenant-a&amp;view=journal&amp;session=39b1d068edd64e75864f692f27237852&amp;dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&amp;cursor=60&amp;cutoff=1704070800\">▣</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "a[aria-label=\"Analytics của session\"]"
+                ],
+                "html": "<a aria-label=\"Analytics của session\" title=\"Analytics của session\" href=\"/?workspace=tenant-a&amp;view=analytics&amp;session=39b1d068edd64e75864f692f27237852&amp;dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&amp;cursor=60&amp;cutoff=1704070800&amp;surface=workspace\">",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\replay-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "replay",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 390,
+        "contentOverflowX": 0,
+        "mainHeading": "Practice · Replay",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-chart-icon-button"
+                ],
+                "html": "<a class=\"fx-chart-icon-button\" href=\"/?workspace=tenant-a&amp;view=replay&amp;session=39b1d068edd64e75864f692f27237852&amp;select=1\" aria-label=\"Quay lại Sessions\" title=\"Quay lại Sessions\">←</a>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "html": "<span class=\"fx-theme-icon\" aria-hidden=\"true\">☾</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ đường xu hướng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ đường xu hướng\" title=\"Vẽ đường xu hướng bằng hai mốc\" aria-pressed=\"false\">╱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vẽ vùng giá\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vẽ vùng giá\" title=\"Vẽ vùng giá bằng hai mốc\" aria-pressed=\"false\">▱</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Mở danh sách đối tượng\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Mở danh sách đối tượng\" title=\"Đối tượng: lưu, ẩn, khóa, xóa\">☷</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "button[aria-label=\"Vừa toàn bộ nến đã mở\"]"
+                ],
+                "html": "<button type=\"button\" aria-label=\"Vừa toàn bộ nến đã mở\" title=\"Vừa toàn bộ nến đã mở\">⛶</button>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > strong"
+                ],
+                "html": "<strong>EURUSD</strong>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  ".chart-symbol-strip > span:nth-child(2)"
+                ],
+                "html": "<span>60s · UTC</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\a11y-focused-r2\\replay-light-390.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "status": "SCOPED_PASS"
+}

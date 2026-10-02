@@ -191,7 +191,8 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
     }
   }, [viewportRequest])
 
-  return <div ref={hostRef} className="replay-chart" data-testid="replay-chart" data-visible-row-count={rows.length} data-visible-object-count={drawings.filter(record => !record.hidden).length} aria-label={`Biểu đồ replay với ${rows.length} nến đã mở. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá.`} />
+  const lastBar = rows.at(-1)
+  return <div ref={hostRef} className="replay-chart" role="group" data-testid="replay-chart" data-visible-row-count={rows.length} data-visible-object-count={drawings.filter(record => !record.hidden).length} aria-label={`Biểu đồ replay với ${rows.length} nến đã mở. Nến cuối: ${formatTimestamp(lastBar?.timestamp)} UTC, mở ${formatPrice(lastBar?.open)}, cao ${formatPrice(lastBar?.high)}, thấp ${formatPrice(lastBar?.low)}, đóng ${formatPrice(lastBar?.close)}. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.`} />
 }
 
 function replaceSessionInUrl(sessionId, preserveCursor = false, cursor = null, dataset = null) {
@@ -706,7 +707,7 @@ export default function ReplayWorkspace({ workspace, query }) {
 
           <section className="replay-workspace">
             <div className="replay-main">
-              <div className="replay-toolbar" aria-label="Điều khiển replay">
+              <div className="replay-toolbar" role="group" aria-label="Điều khiển replay">
                 <div className="toolbar-group toolbar-primary">
                   <button
                     type="button"
@@ -737,14 +738,14 @@ export default function ReplayWorkspace({ workspace, query }) {
                     +10 nến
                   </button>
                 </div>
-                <div className="chart-controls" aria-label="Hiển thị chart">
+                <div className="chart-controls" role="group" aria-label="Hiển thị chart">
                   <label>Chart <select aria-label="Kiểu chart" value={chartType} onChange={(event) => setChartType(event.target.value)}>{CHART_TYPES.map((type) => <option key={type.id} value={type.id}>{type.label}</option>)}</select></label>
                   <label><input type="checkbox" checked={showVolume} onChange={(event) => setShowVolume(event.target.checked)} /> Volume</label>
                   <label title="Trung bình giá đóng của 20 nến đã mở"><input type="checkbox" checked={showAverage} onChange={(event) => setShowAverage(event.target.checked)} /> SMA 20</label>
                   {drawingTool === 'text' && <label>Ghi chú<input aria-label="Nội dung ghi chú chart" maxLength={256} value={drawingLabel} onChange={event => setDrawingLabel(event.target.value)} placeholder="Nội dung tại mốc đã chọn" /></label>}
                   <button type="button" ref={sideToggleRef} aria-expanded={sideOpen} aria-controls="replay-context-panel" onClick={() => setSideOpen((current) => !current)}>Chi tiết & nhánh</button>
                 </div>
-                <div className="toolbar-speed" aria-label="Tốc độ replay">
+                <div className="toolbar-speed" role="group" aria-label="Tốc độ replay">
                   <span>Tốc độ</span>
                   <select aria-label="Tốc độ replay" value={speed} onChange={(event) => setSpeed(event.target.value)} disabled={Boolean(pendingAction)}>
                     <option value="0.5">0.5×</option>
@@ -772,7 +773,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <button type="button" aria-label="Vừa toàn bộ nến đã mở" title="Vừa toàn bộ nến đã mở" onClick={() => requestViewport('fit')}>⛶</button>
                 </nav>
                 <div className="chart-canvas">
-                  <div className="chart-symbol-strip" aria-label="Thông tin symbol">
+                  <div className="chart-symbol-strip" role="group" aria-label="Thông tin symbol">
                     <strong>{replayContext.instrument}</strong>
                     <span>{replayContext.timeframe} · UTC</span>
                     <span className="chart-symbol-ohlc">O {formatPrice((crosshair?.row || currentBar)?.open)} · H {formatPrice((crosshair?.row || currentBar)?.high)} · L {formatPrice((crosshair?.row || currentBar)?.low)} · C {formatPrice((crosshair?.row || currentBar)?.close)} · V {formatVolume((crosshair?.row || currentBar)?.volume ?? (crosshair?.row || currentBar)?.tick_volume)}</span>
@@ -790,8 +791,8 @@ export default function ReplayWorkspace({ workspace, query }) {
                 </nav>
               </div>
 
-              <div className="chart-bottom-bar" aria-label="Điều khiển replay phía dưới chart">
-                <div className="chart-bottom-range" aria-label="Khoảng thời gian chart">
+              <div className="chart-bottom-bar" role="group" aria-label="Điều khiển replay phía dưới chart">
+                <div className="chart-bottom-range" role="group" aria-label="Khoảng thời gian chart">
                   {[['1D', 1], ['5D', 5], ['1M', 30], ['All', null]].map(([range, days]) => <button key={range} type="button" aria-pressed={chartRange === range} className={chartRange === range ? 'is-active' : ''} onClick={() => { setChartRange(range); requestViewport(days ? 'range' : 'fit', { days }) }}>{range}</button>)}
                   <button type="button" onClick={() => requestViewport('latest')}>Tới cutoff</button>
                 </div>
@@ -806,14 +807,14 @@ export default function ReplayWorkspace({ workspace, query }) {
 
               {chartNotice && <div className="chart-notice" role="status">{chartNotice}<button type="button" aria-label="Đóng thông báo" onClick={() => setChartNotice('')}>×</button></div>}
 
-              <div className="replay-evidence-strip" aria-label="Bằng chứng chart">
+              <div className="replay-evidence-strip" role="group" aria-label="Bằng chứng chart">
                 <div><span className="story-label">03 · EVIDENCE</span><strong>{crosshair?.row ? 'Nến đang chọn' : 'Nến tại cutoff'}</strong></div>
                 <span>{visibleRows.length} nến được phép hiển thị</span>
                 <span>{replay.has_future_rows ? 'Nến tương lai đang ẩn' : 'Đã ở cuối dữ liệu'}</span>
                 <span>{crosshair?.row ? `Crosshair #${visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp))}` : `Cursor #${cursor}`}</span>
               </div>
 
-              <div className="bar-readout" aria-label="OHLC nến hiện tại">
+              <div className="bar-readout" role="group" aria-label="OHLC nến hiện tại">
                 <span className="bar-readout-label">{crosshair?.row ? 'Crosshair' : 'Nến hiện tại'} #{crosshair?.row ? visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp)) : cursor}</span>
                 <span>O <strong>{formatPrice((crosshair?.row || currentBar)?.open)}</strong></span>
                 <span>H <strong>{formatPrice((crosshair?.row || currentBar)?.high)}</strong></span>
@@ -822,7 +823,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 {crosshair?.row && <span className="bar-readout-time">{formatTimestamp(crosshair.row.timestamp)} UTC</span>}
               </div>
 
-              <div className="replay-jump" aria-label="Đi tới nến">
+              <div className="replay-jump" role="group" aria-label="Đi tới nến">
                 <div className="replay-jump-heading">
                   <span>Đi tới nến đã có trong session</span>
                   <strong>#{jumpDraft} / #{canonicalCursor}</strong>

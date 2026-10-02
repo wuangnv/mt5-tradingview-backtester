@@ -318,7 +318,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
       <header className="fx-topbar fx-chart-topbar">
         <div className="fx-chart-topbar-left">
           <a className="fx-chart-icon-button" href={backHref} aria-label="Quay lại Sessions" title="Quay lại Sessions">←</a>
-          <span className="fx-chart-brand" aria-label={copy.product}>{copy.product}</span>
+          <span className="fx-chart-brand">{copy.product}</span>
         </div>
         <div className="fx-chart-session-title" title={sessionLabel}>WMReplay · {sessionLabel}</div>
         <div className="fx-chart-topbar-actions">
@@ -332,7 +332,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
   return (
     <header className="fx-topbar" inert={drawerOpen}>
       <div className="fx-topbar-brand" title={copy.product}>
-        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-haspopup={mobileNavigation ? 'dialog' : undefined} aria-label={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} title={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} ref={menuButtonRef}>
+        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-label={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} title={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} ref={menuButtonRef}>
           <svg className="fx-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
             <path d="M4 7h8M4 12h16M4 17h8" />
             <path d="m8 4-4 3 4 3" />

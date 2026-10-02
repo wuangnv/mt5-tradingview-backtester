@@ -485,7 +485,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
           <label className="ja-field">Nội dung
             <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Ví dụ: giá phá range nhưng chưa đóng trên vùng…" rows={8} disabled={Boolean(selected && !editing)} maxLength={10000} />
           </label>
-          <div className="ja-decision-fields" aria-label="Decision context">
+          <div className="ja-decision-fields" role="group" aria-label="Decision context">
             <span className="ja-eyebrow">DECISION CONTEXT</span>
             <label className="ja-field">Điều đã quan sát <span className="ja-field-hint">chỉ dữ kiện tới cutoff</span>
               <textarea value={observation} onChange={(event) => setObservation(event.target.value)} placeholder="Ví dụ: nến H1 đóng trong range…" rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />

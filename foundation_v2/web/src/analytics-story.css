@@ -123,7 +123,8 @@
 .as-table { width: 100%; min-width: 720px; border-collapse: collapse; }
 .as-table th, .as-table td { padding: 12px 14px; border-bottom: 1px solid var(--as-border-soft); color: #c9d2d7; font-size: 11px; text-align: left; white-space: nowrap; }
 .as-table th { color: #78858d; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.as-table td:nth-child(4), .as-table td:nth-child(5) { font-variant-numeric: tabular-nums; }
+.as-table th:nth-child(4), .as-table th:nth-child(5),
+.as-table td:nth-child(4), .as-table td:nth-child(5) { text-align: right; font-variant-numeric: tabular-nums; }
 .as-table tbody tr { outline: none; cursor: pointer; }
 .as-table tbody tr:hover, .as-table tbody tr:focus, .as-table tbody tr.is-selected { background: #192126; }
 .as-table td.is-positive { color: var(--as-green); }

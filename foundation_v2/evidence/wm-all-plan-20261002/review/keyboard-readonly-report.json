@@ -1,0 +1,86 @@
+{
+  "reviewer": "/root/mt5_independent_review",
+  "scope": "Independent read-only native keyboard horizontal scrolling and mobile menu regression on isolated QA API; no fixtures or writes",
+  "origin": "http://127.0.0.1:5180",
+  "sourceBefore": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "cases": [
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "initial": {
+        "scrollLeft": 0,
+        "clientWidth": 298,
+        "scrollWidth": 720,
+        "outline": "rgb(240, 182, 95) solid 2px",
+        "role": "region"
+      },
+      "after": {
+        "scrollLeft": 422,
+        "clientWidth": 298,
+        "scrollWidth": 720,
+        "numericCells": [
+          {
+            "text": "1",
+            "align": "right",
+            "visible": true
+          },
+          {
+            "text": "N/A",
+            "align": "right",
+            "visible": true
+          }
+        ]
+      },
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\review\\keyboard-ledger-dark-390.png",
+      "menu": {
+        "focusLoop": true,
+        "escape": true,
+        "focusRestored": true
+      }
+    },
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "initial": {
+        "scrollLeft": 0,
+        "clientWidth": 298,
+        "scrollWidth": 720,
+        "outline": "rgb(240, 182, 95) solid 2px",
+        "role": "region"
+      },
+      "after": {
+        "scrollLeft": 422,
+        "clientWidth": 298,
+        "scrollWidth": 720,
+        "numericCells": [
+          {
+            "text": "1",
+            "align": "right",
+            "visible": true
+          },
+          {
+            "text": "N/A",
+            "align": "right",
+            "visible": true
+          }
+        ]
+      },
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\review\\keyboard-ledger-light-390.png",
+      "menu": {
+        "focusLoop": true,
+        "escape": true,
+        "focusRestored": true
+      }
+    }
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "status": "PASS",
+  "sourceAfter": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa"
+}
