@@ -1,0 +1,20 @@
+{
+  "status": "PASS_SCOPED_CHART_COMPARISON",
+  "tests": 8,
+  "approved_images": 24,
+  "max_diff_pixels": 0,
+  "source_hash": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "approval_sha256": "aa368b3ad24409054d4663e6514b4da58b9c83c4f2c1c08595461b51acf52f49",
+  "promotion_sha256": "3d63619187fb85c7f43fabbe4af0679aff84ff2ddf47283f8fdb74b1ec07223a",
+  "report_sha256": "bb6acf5fe4a9cedde4249eb8ad9d51a0b6d2cc49aa4f55f2534902f4e8d8981b",
+  "report_locator": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-r1\\report.json",
+  "stats": {
+    "startTime": "2026-10-02T13:18:35.392Z",
+    "duration": 29303.793,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "whole_product_accepted": false
+}

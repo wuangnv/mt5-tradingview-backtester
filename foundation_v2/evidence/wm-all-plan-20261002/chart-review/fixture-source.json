@@ -1,0 +1,155 @@
+{
+  "status": "READ_ONLY_CAPTURE_VERIFIED",
+  "scope": "Explicit synthetic chart visual fixture from read-only isolated QA session; transformed drawing identity/cutoff only; no API writes",
+  "capturedAt": "2026-10-02T13:06:12.371Z",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/replay/sessions/39b1d068edd64e75864f692f27237852",
+      "status": 200,
+      "responseSha256": "571daf47ba4b4bb001e41edb410122af1827f55c5cce595c5a083925ec9febfe"
+    },
+    {
+      "method": "GET",
+      "path": "/replay/sessions/39b1d068edd64e75864f692f27237852?cursor_index=20",
+      "status": 200,
+      "responseSha256": "2b0d4886df256f16877490ccc84d576fc3643d899c069dd9431e5e3bc9db9c4e"
+    },
+    {
+      "method": "GET",
+      "path": "/data/datasets",
+      "status": 200,
+      "responseSha256": "013b9ddd616a999e594a53aa005ab35ac3471df2140ab00e1bc4e506eb0ed593"
+    },
+    {
+      "method": "GET",
+      "path": "/chart/annotations",
+      "status": 200,
+      "responseSha256": "4a55b142c44d54d34b40ba43fb8083ab68a18042b527990ad285c748db59c820"
+    },
+    {
+      "method": "GET",
+      "path": "/replay/sessions/39b1d068edd64e75864f692f27237852",
+      "status": 200,
+      "responseSha256": "571daf47ba4b4bb001e41edb410122af1827f55c5cce595c5a083925ec9febfe"
+    }
+  ],
+  "canonicalSession": "39b1d068edd64e75864f692f27237852",
+  "revision": 123,
+  "sourceDataset": "dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6",
+  "sourceDatasetSha256": "c432b9eb5f4e47fcbcf97737bfa746fe40286a89ceebd2b05711a6f86d41d046",
+  "canonicalUnchanged": true,
+  "templates": [
+    {
+      "record_id": "7095bbdd477049e19f9fc2e615285e7d",
+      "source_key": null,
+      "revision": 1,
+      "payload": {
+        "label": "Đường giá",
+        "run_id": "7c9bf7144fa34d8ca006ac094db5e91a",
+        "source": "replay",
+        "anchors": [
+          {
+            "price": 1.1032734036174676,
+            "timestamp": 1704068700
+          }
+        ],
+        "timeframe": "60s",
+        "rule_version": null,
+        "instrument_id": "EURUSD",
+        "annotation_type": "horizontal-line",
+        "cutoff_timestamp": 1704071940
+      },
+      "deleted": false,
+      "created_at_utc": "2026-10-01T12:04:12.866640Z",
+      "updated_at_utc": "2026-10-01T12:04:12.866640Z"
+    },
+    {
+      "record_id": "5c2a6e6a631c4254b5894f1e9e3a4237",
+      "source_key": null,
+      "revision": 1,
+      "payload": {
+        "label": "Đường xu hướng",
+        "run_id": "7c9bf7144fa34d8ca006ac094db5e91a",
+        "source": "replay",
+        "anchors": [
+          {
+            "price": 1.100459998001399,
+            "timestamp": 1704068460
+          },
+          {
+            "price": 1.1024659688218246,
+            "timestamp": 1704070500
+          }
+        ],
+        "timeframe": "60s",
+        "rule_version": null,
+        "instrument_id": "EURUSD",
+        "annotation_type": "trendline",
+        "cutoff_timestamp": 1704071940
+      },
+      "deleted": false,
+      "created_at_utc": "2026-10-01T12:04:13.369162Z",
+      "updated_at_utc": "2026-10-01T12:04:13.369162Z"
+    },
+    {
+      "record_id": "2757637caf6841e28f1a875d5104e1d1",
+      "source_key": null,
+      "revision": 1,
+      "payload": {
+        "label": "Vùng giá",
+        "run_id": "be41bcfec78244f39087797bf87f4c25",
+        "source": "replay",
+        "anchors": [
+          {
+            "price": 1.102062251424003,
+            "timestamp": 1704068700
+          },
+          {
+            "price": 1.1008637153992205,
+            "timestamp": 1704069960
+          }
+        ],
+        "timeframe": "60s",
+        "rule_version": null,
+        "instrument_id": "EURUSD",
+        "annotation_type": "zone",
+        "cutoff_timestamp": 1704071940
+      },
+      "deleted": false,
+      "created_at_utc": "2026-10-02T04:49:43.601671Z",
+      "updated_at_utc": "2026-10-02T04:49:43.601671Z"
+    },
+    {
+      "record_id": "11414c1c20d2451ca1fa66db1f459a97",
+      "source_key": null,
+      "revision": 1,
+      "payload": {
+        "label": "Ghi chú QA tại cutoff",
+        "run_id": "06d2fd6ac63f41e78bb91fdef917d99e",
+        "source": "replay",
+        "anchors": [
+          {
+            "price": 1.1036587750982683,
+            "timestamp": 1704070260
+          }
+        ],
+        "timeframe": "60s",
+        "rule_version": null,
+        "instrument_id": "EURUSD",
+        "annotation_type": "text",
+        "cutoff_timestamp": 1704071940
+      },
+      "deleted": false,
+      "created_at_utc": "2026-10-02T11:49:23.446771Z",
+      "updated_at_utc": "2026-10-02T11:49:23.446771Z"
+    }
+  ],
+  "fixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
+  "transformations": [
+    "Stable fixture session/dataset/branch identities and timestamps; explicit synthetic names",
+    "Execution ledger omitted because this chart-only fixture makes no financial claims",
+    "OHLC/volume/timestamps/prefix/cutoff/dataset SHA preserved",
+    "Four real annotation API templates retain exact time/price anchors; run_id and creation cutoff remapped to the synthetic canonical prefix, labels explicitly Fixture"
+  ]
+}

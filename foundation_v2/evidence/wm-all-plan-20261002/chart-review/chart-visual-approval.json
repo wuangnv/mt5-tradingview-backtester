@@ -1,0 +1,843 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_REVIEWER_APPROVED_FOR_CHART_BASELINE_PROMOTION",
+  "reviewer": "/root/mt5_independent_review",
+  "reviewedAt": "2026-10-02T13:15:45.463Z",
+  "scope": "Exactly24 current/history chart images at8theme/viewports; synthetic isolated canonical fixture only",
+  "sourceHash": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "fixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
+  "origin": "http://127.0.0.1:5180",
+  "browser": "153.0.8010.12",
+  "locale": "vi-VN",
+  "timezone": "UTC",
+  "images": [
+    {
+      "project": "dark-1440x900",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1440x900/chart-top.png",
+      "sha256": "616f4634092e3c5efd6b10271b38db424d9bcb5a08d0c557454e85ff5341aeee",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-1440x900",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1440x900/chart-pane.png",
+      "sha256": "45cc90582f25335658c34868ca812ed78163d1d657f0195754fe2a7db254f041",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-1440x900",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1440x900/chart-history-pane.png",
+      "sha256": "7e4f7b57683dd90d5191d9d621a9176f954d8c7995dee147631f5abe01bd46cf",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "dark-1280x800",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1280x800/chart-top.png",
+      "sha256": "de8dbf0d31391ebac832bbf0e102deb7c4952b82e86fc55c7baf8419f8abad11",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-1280x800",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1280x800/chart-pane.png",
+      "sha256": "9a03b869650cdf960089ec04f35a0fb8a3762bb8d4362683d01ef147a6ddeeb4",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-1280x800",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1280x800/chart-history-pane.png",
+      "sha256": "6a6a72c47b76fb6dd956c0f394c1a5a97cea8f8144be3016789e087e29e6f163",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "dark-768x1024",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-768x1024/chart-top.png",
+      "sha256": "13db455e1be8732c55a57949656babada81200727d451e139bb4ad9f4702943d",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-768x1024",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-768x1024/chart-pane.png",
+      "sha256": "5ebcbfc766f1353cec81df3a7552df0f6bc57a4bc5dbc8351087d95e63a93b87",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-768x1024",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-768x1024/chart-history-pane.png",
+      "sha256": "e8bf5783b5063a43c0e85341cdbca6c1efbd78b1295a2aa266712568275f1749",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "dark-390x844",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-390x844/chart-top.png",
+      "sha256": "e24b2216d54446d8b3b72f85cd3c6e9f03aceeb2c5dc4dff25c408bbc298094e",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-390x844",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-390x844/chart-pane.png",
+      "sha256": "340273c9b06d17300db5c6614182d7c3f696623ddf33cc4ec4893511e7e2639e",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "dark-390x844",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-390x844/chart-history-pane.png",
+      "sha256": "6d539067353c6e71ec35ee686936bb64e54f02b01c86b3e591e6becfcd63d4f3",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "light-1440x900",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1440x900/chart-top.png",
+      "sha256": "e2637e1c687652a7d99a70dd3f3730609d7eaf88cc074c44d92532a4e6732244",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-1440x900",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1440x900/chart-pane.png",
+      "sha256": "ff5c55f2cdae3c51f23a2a9da787dbbf8af364cc750fd1ea5b84ef3ed7a50b4b",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-1440x900",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1440x900/chart-history-pane.png",
+      "sha256": "ea5bbfc118fa76b0f129a173b90116d5f0518520cdb86c6a56d00fbd80c8188a",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "light-1280x800",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1280x800/chart-top.png",
+      "sha256": "2ac908dc35628590979b723d12b54d218facad785427233d7a8146dd528c103c",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-1280x800",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1280x800/chart-pane.png",
+      "sha256": "57508914457b9185aea496948b5e8c27b70d9b22067de1f9643a426b76094732",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-1280x800",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1280x800/chart-history-pane.png",
+      "sha256": "2fe6b33c5e1ec5b23821371761fd7cbd8566e893cedfc18cd04dc338fd448635",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "light-768x1024",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-768x1024/chart-top.png",
+      "sha256": "fb60f201adad0864d70e54a148ddedbc9090eac87f68a66e8863f0232e358a59",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-768x1024",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-768x1024/chart-pane.png",
+      "sha256": "3f4539463f092f094160dce5edeabb9314671eb6abc77f29f124616cf6c727f1",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-768x1024",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-768x1024/chart-history-pane.png",
+      "sha256": "5c0244cbbb351d7b984f56df8fd8b78981fbd2fe122b8687a498bcfdd6983ead",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    },
+    {
+      "project": "light-390x844",
+      "name": "chart-top.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-390x844/chart-top.png",
+      "sha256": "4942f474925a075b2a17396b3896e48376dc2190140bdd7ecffde32576c425ab",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-390x844",
+      "name": "chart-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-390x844/chart-pane.png",
+      "sha256": "2b230fee1746b9ee088b90e43b58fe374d2c7f8e74ff8102bd566f51c5e0ee8d",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Canonical cursor60 /61candles /4derived fixture objects"
+    },
+    {
+      "project": "light-390x844",
+      "name": "chart-history-pane.png",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-390x844/chart-history-pane.png",
+      "sha256": "debfd97fc323f8b97af5b490cb01128a04de923dfbe8b0c4ec16dbd72d13e6d1",
+      "reviewMethod": "Direct visual inspection of final r3 image",
+      "scope": "Historical cursor20 /21candles /0objects"
+    }
+  ],
+  "receiptFiles": [
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1440x900/chart.json",
+      "sha256": "08a8f5df61b9140ee9736bc201c43fb240bfa59add4fdc34ae7ae1ed20f40484",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1356,
+        "chartHeight": 628
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-1280x800/chart.json",
+      "sha256": "ed087fbb3b4e1e9c882f1a7f2495f1e59cb4fc7ffc0bcd949a3ecfa73f6f2274",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1196,
+        "chartHeight": 528
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-768x1024/chart.json",
+      "sha256": "fff86085559092e0c31426059aa9c2221b55259ad607384565b92c9b76d29e04",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": -7.105427357601002e-15,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 730,
+        "chartHeight": 622
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/dark-390x844/chart.json",
+      "sha256": "de9c03b1b58352d98a27c51a3a2149250f2b847f71b3d80d76b92351542b7340",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 352,
+        "chartHeight": 320
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1440x900/chart.json",
+      "sha256": "121e3313fa146f33e08e955aadb964310a1a49e4b32d0de25b722b6eefe017af",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1356,
+        "chartHeight": 628
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-1280x800/chart.json",
+      "sha256": "c5fafee58c36efe9599de41e218e276eda8d6cc31de703cca17fe4d731c89c10",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1196,
+        "chartHeight": 528
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-768x1024/chart.json",
+      "sha256": "a80492233bd3353d01d46f72baa5b5dac7d27eb9a340b9e872160fbbb3629108",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": -7.105427357601002e-15,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 730,
+        "chartHeight": 622
+      }
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-candidate-r3/light-390x844/chart.json",
+      "sha256": "668593c7ea0d96a5a20988fbe736251cef53d6e3f357448594d978a759db2872",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 352,
+        "chartHeight": 320
+      }
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Workflow and next action",
+      "score": 4,
+      "evidence": "Actual chart route is independent of Sessions; back link, broker-locked paper context, cutoff, toolbar/rails/footer visible at required viewports."
+    },
+    {
+      "criterion": "Numbers, units, time, precision and source",
+      "score": 4,
+      "evidence": "Exact UTC/OHLC summary and rendered crosshair index30/10 readback asserted. Price scales/Fixture labels inspected. Narrow visual OHLC omission remains a limitation."
+    },
+    {
+      "criterion": "Chart/table density",
+      "score": 4,
+      "evidence": "61/21bar fitted ranges0..60/0..20; candles/wicks/volume/scales readable. Canonical all-rising fixture does not cover down-candle fidelity."
+    },
+    {
+      "criterion": "Component/token reuse",
+      "score": 4,
+      "evidence": "Existing chart/primitive/shell/controls reused without src edits; separate harness imports pinned project configuration."
+    },
+    {
+      "criterion": "State/error/permission clarity",
+      "score": 4,
+      "evidence": "Synthetic Fixture labels, broker-locked context, canonical/historical cutoff, disabled historical forward controls; unsupported API routes and writes rejected."
+    },
+    {
+      "criterion": "Keyboard/focus/contrast/responsive",
+      "score": 4,
+      "evidence": "Current full144/focused12 scan and independent mobile navigation support remain scoped. Accessible chart summary/no overflow; full manual WCAG and narrow OHLC/gestures excluded."
+    },
+    {
+      "criterion": "Hierarchy/alignment/spacing/typography/flat-first",
+      "score": 4,
+      "evidence": "All24 final images inspected directly: chart dominant, scales/labels/annotations separated; no observed unexpected clipping/overlap."
+    },
+    {
+      "criterion": "Short interactions and retained context",
+      "score": 4,
+      "evidence": "Fit, actual crosshair, details open/close, historical deep link/reload pass8projects with no page errors/unexpected/writing requests. Sustained performance excluded."
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual/capture-chart-fixture.mjs",
+      "sha256": "05784af52b5ac16a3a6db194b1475e960d0ddf5fa351dadee4e7597a3260fbce"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual/chart-fixture.json",
+      "sha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual/playwright.chart.config.mjs",
+      "sha256": "84e1423fd82b7a2ee1ab6ee5602580bda47ac437fad42322c30489fbf7fd99cd"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual/wmreplay.chart.visual.spec.mjs",
+      "sha256": "88a14dcf6c126c1fc3417e9703def57ee69ddb57dfcd5f9ee9537bfbb496f6dc"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual/CHART-README.md",
+      "sha256": "7c2b1024ea1628f2955e8c1f825f59bc85fc9ae9795459aeb283337e1dba5d17"
+    }
+  ],
+  "evidence": [
+    {
+      "kind": "fixture-source",
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/chart-review/fixture-source.json",
+      "sha256": "54350d65d344027619c4dc3a8f0b86063c24501bcdfb93070b2a4b976687d61d",
+      "result": "GET-only5requests, canonical revision123/cursor60 unchanged; actual4drawing templates/transforms recorded"
+    },
+    {
+      "kind": "chart-capture-r3",
+      "path": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-capture-r3/report.json",
+      "sha256": "4bcf0bd6a9fd295b54047d325f9c8c41e23c064376574c9aa31d81f458eccfcc",
+      "result": "8expected,0unexpected/skipped/flaky/errors;24images/repeats;16actual crosshair samples; causal prefix/range/OHLC/objects; historical reload"
+    }
+  ],
+  "authority": "Root may promote ONLY these exact24 hashes into separate tests/visual/chart-baselines folders, then compare; reviewer does not write baseline/ledger.",
+  "exclusions": [
+    "Only Candles/all-rising canonical synthetic OHLC/fixed volume100; alternative chart types, down candles, SMA and empty/error/stale states not golden-approved.",
+    "Manual WCAG/canvas contrast incompletes/gesture/touch/assistive-technology coverage remain separate; mobile hides visual OHLC strip but named chart summary retains exact OHLC.",
+    "Shared dark plotting palette under both shell themes is current behavior; a light plotting palette is not established.",
+    "Four drawings are fixture-derived actual API templates; this does not prove persistence in the canonical session or drawing write lifecycle.",
+    "Long heap/frame gate, whole W4/W7/W8 and product completion remain outside approval.",
+    "No real market/provider/broker/OAuth/deploy, financial authority or owner acceptance."
+  ],
+  "diagnostics": [
+    {
+      "attempt": "chart-capture",
+      "result": "Smoke selector failed because role query excluded CSS-hidden readout; supporting DOM readout now verified separately from primary accessible chart summary. Failure/trace preserved."
+    },
+    {
+      "attempt": "chart-capture-smoke-r2",
+      "result": "1/1pass selector repair"
+    },
+    {
+      "attempt": "chart-capture-r2",
+      "result": "8/8pass; r3 adds actual crosshair renderer oracle"
+    }
+  ],
+  "notes": [
+    "Browser APIs all intercepted; raw source capture GET-only existing isolated QA endpoints; external/WebSocket/write/unimplemented requests rejected.",
+    "No bare nonempty-canvas oracle: actual rendered crosshair/OHLC/time, exact prefixes/range and scoped drawing counts asserted.",
+    "No src or old four-route fixture/test/baseline/promotion files edited by chart lane."
+  ]
+}

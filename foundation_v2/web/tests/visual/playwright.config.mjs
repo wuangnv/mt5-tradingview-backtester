@@ -4,6 +4,7 @@ import { createRequire } from 'node:module'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const workspace = path.resolve(here, '../../../../../..')
+const outputRoot = path.resolve(process.env.TW_VISUAL_OUTPUT_ROOT || path.join(workspace, '.artifacts/wm-visual-comparison'))
 const { defineConfig } = createRequire(path.join(workspace, 'tooling/ui-qa/package.json'))('@playwright/test')
 if (process.argv.some(arg => arg.startsWith('--update-snapshots'))) throw new Error('Snapshot update is disabled. Review candidate images and explicitly copy approved images into baselines; preserve the review receipt.')
 export default defineConfig({
@@ -14,8 +15,8 @@ export default defineConfig({
   retries: 0,
   timeout: 30000,
   updateSnapshots: 'none',
-  outputDir: path.join(workspace, '.artifacts/wm-visual-comparison/results'),
-  reporter: [['list'], ['json', { outputFile: path.join(workspace, '.artifacts/wm-visual-comparison/report.json') }]],
+  outputDir: path.join(outputRoot, 'results'),
+  reporter: [['list'], ['json', { outputFile: path.join(outputRoot, 'report.json') }]],
   snapshotPathTemplate: path.join(here, 'baselines', '{projectName}', '{arg}{ext}'),
   use: { browserName: 'chromium', headless: true, locale: 'vi-VN', timezoneId: 'UTC', deviceScaleFactor: 1, reducedMotion: 'reduce', trace: 'retain-on-failure', screenshot: 'only-on-failure', launchOptions: { executablePath: process.env.TW_UI_QA_CHROMIUM || 'C:/Users/MIIKEY/AppData/Local/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-win64/chrome-headless-shell.exe' } },
   expect: { timeout: 10000, toHaveScreenshot: { animations: 'disabled', caret: 'hide', scale: 'css', maxDiffPixels: 0 } },

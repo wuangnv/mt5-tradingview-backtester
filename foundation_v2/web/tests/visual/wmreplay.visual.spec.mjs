@@ -14,7 +14,7 @@ const fixture = JSON.parse(fixtureBytes)
 const origin = process.env.TW_VISUAL_ORIGIN || 'http://127.0.0.1:5180'
 if (new URL(origin).hostname !== '127.0.0.1') throw new Error('Only isolated loopback app origins are allowed')
 const candidate = process.env.TW_VISUAL_CANDIDATE === '1'
-const candidateRoot = path.join(workspace, '.artifacts/wm-visual-comparison/candidate')
+const candidateRoot = path.resolve(process.env.TW_VISUAL_CANDIDATE_ROOT || path.join(workspace, '.artifacts/wm-visual-comparison/candidate'))
 const sha = bytes => createHash('sha256').update(bytes).digest('hex')
 function sourceHash() {
   const root = path.resolve(here, '../../src'), hash = createHash('sha256')
@@ -63,7 +63,18 @@ for (const view of ['overview', 'replay', 'trade', 'analytics']) test(`${view} e
   await page.locator('.fx-content').evaluate(element => { element.scrollTop = 0 })
   await capture('top')
   if (view === 'analytics') { await page.getByRole('region', { name: 'Metrics chính' }).scrollIntoViewIfNeeded(); await capture('metrics') }
-  if (view === 'trade' || view === 'analytics') { await page.getByRole('heading', { name: '60 trade đóng', exact: true }).scrollIntoViewIfNeeded(); await capture('ledger') }
+  if (view === 'trade' || view === 'analytics') {
+    await page.locator('.as-table-wrap').evaluate(table => {
+      const content = document.querySelector('.fx-content')
+      content.scrollTop += table.getBoundingClientRect().top - content.getBoundingClientRect().top - 24
+    })
+    const firstRow = page.locator('.as-table tbody tr').first()
+    await expect(firstRow).toBeInViewport()
+    await expect(page.locator('.as-table th').nth(3)).toHaveCSS('text-align', 'right')
+    await expect(firstRow.locator('td').nth(3)).toHaveCSS('text-align', 'right')
+    await expect(firstRow.locator('td').nth(4)).toHaveCSS('text-align', 'right')
+    await capture('ledger')
+  }
   expect(errors).toEqual([])
   expect(unexpected).toEqual([])
   expect(sourceHash(), 'Source must remain unchanged during each capture').toBe(before)

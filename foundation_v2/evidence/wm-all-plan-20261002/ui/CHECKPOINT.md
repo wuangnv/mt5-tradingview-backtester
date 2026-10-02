@@ -25,6 +25,8 @@ Frontend raw source fingerprint: `71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c
 
 ## Remaining gates and resume
 
-Chart golden is a separate actual-chart fixture lane: the four-route filename `replay-top` represents Sessions. Full-bleed promotion, complete manual WCAG, Learn/Live backend, whole W8 and product U/Y acceptance remain open. The precise one-hour analytics heap diagnostic is detached at `.artifacts/wm-all-plan-20261002/heap-long`, PID 24164, started 19:46:04 +07; do not start a second worker or change frontend source while it is sampling. The historical failed soak remains intact.
+Chart golden is a separate actual-chart fixture lane: the four-route filename `replay-top` represents Sessions. The independent chart review approved exactly 24 images across eight theme/viewport cases. Root verified each hash, promoted only those images and compared with zero pixel tolerance: **8/8 PASS**. Exact crosshair OHLC/time, 61/21-bar prefixes, 4/0 fixture objects and historical reload/disabled mutation controls are checked. See `../chart-review/CHART-VISUAL-REVIEW.md` and `comparison.json`; alternative chart types/down candles and full chart workflow acceptance remain outside this packet.
+
+Full-bleed promotion, complete manual WCAG, Learn/Live backend, whole W8 and product U/Y acceptance remain open. The precise one-hour analytics heap diagnostic is detached at `.artifacts/wm-all-plan-20261002/heap-long`, PID 24164, started 19:46:04 +07; do not start a second worker or change frontend source while it is sampling. The historical failed soak remains intact.
 
 Rollback: revert this coherent UI repair; preserve evidence and later unrelated work. Backend session authority, broker/provider/OAuth/holdout/deploy and retained user data were not changed.
