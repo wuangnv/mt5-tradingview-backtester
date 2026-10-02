@@ -1,0 +1,233 @@
+{
+  "status": "EXACT_REVIEWED_IMAGES_PROMOTED",
+  "sourceHash": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "fixtureSha256": "a2b784bbc6dd1b9d262245be5aa8be5bff2af21114270da12b7724cafc9c8cc0",
+  "reviewSha256": "45a91423945fce242a492f62dd4dc9448575b7b4dbb326d7f4a3793dafd0dbff",
+  "images": [
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/overview-top.png",
+      "sha256": "886b6663ff4419ada69060b01298426c01384db2c50015ce0a683cbe040be3c9"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/replay-top.png",
+      "sha256": "59e2244fe7ccbcb3ec298b0a01467c9ed0170fad075b1e36ce63db74bb842a0e"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/trade-top.png",
+      "sha256": "2380868b1f740a93c707659f3fcb656eee771c5135b1d469efdbec6791bdbab3"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/trade-ledger.png",
+      "sha256": "ec4697fb4292ccf758938154bc3b551dfc6199fc56ab38ce78cb2566bd474097"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/analytics-top.png",
+      "sha256": "1ceb0ba1c1ed6866a954927319af14651c3f9e96e9ec54112509cbe18cd15b4d"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/analytics-metrics.png",
+      "sha256": "1ceb0ba1c1ed6866a954927319af14651c3f9e96e9ec54112509cbe18cd15b4d"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1440x900/analytics-ledger.png",
+      "sha256": "c5479f7c4d7eeee1efde27a870ba430faadc4dc4322699671bc8dcfdfce2fda0"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/overview-top.png",
+      "sha256": "98d0173166b5ac79e3b60a551b62d842c3900c495f222b39adf3300a133911ea"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/replay-top.png",
+      "sha256": "1696a046c52d4e1dcbbcd5307f1a49bd327bb4cd2898fdebca0dec02cb8dc392"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/trade-top.png",
+      "sha256": "938bba02e110d1d7a78301b6b728978005fc5f3dd8619ab0501afb018671c291"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/trade-ledger.png",
+      "sha256": "2bb1f4d0e2d307b1b7b46bd05f891e6bd84d4532f9994519223954b5186090e7"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/analytics-top.png",
+      "sha256": "05ac07272ea62177dd5b251206e6d84b5083a2c0a873506387220af86e4a9982"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/analytics-metrics.png",
+      "sha256": "6d7210fa1b30126d7740887cc4200d13f28bea3339cc7cdd381d0b88799d0b23"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-1280x800/analytics-ledger.png",
+      "sha256": "c127a31e01209f2f049ed879347f4ccdcb593de0199043c739343bb16c35ff22"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/overview-top.png",
+      "sha256": "a18e3e4533a7c8f20498857da59fbca60f09047e0c1ebc8230db8bd00a1e4c34"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/replay-top.png",
+      "sha256": "3252f9aca0f5d450be9d829228d6aa21e95a85a0c5e19314062f6c6daa3c5dc4"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/trade-top.png",
+      "sha256": "3e51179ea4ecf6510f510445ac82d2c5f2c94eae5d1ec6ee3d3a155380905c57"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/trade-ledger.png",
+      "sha256": "192440378f05d8ae0238653f8393ff83c2f6abeeada338bc27fbe328d8329b5e"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/analytics-top.png",
+      "sha256": "5eaadb69080bc7ab05874e46bf737481665fb284845b266cc13a41e28945182a"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/analytics-metrics.png",
+      "sha256": "6994c5dd7c437151da863900027a08ff646dae11ec5a49f3a5f7d6a09c32a5e8"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-768x1024/analytics-ledger.png",
+      "sha256": "0481ba1a726ca22821cbf53202e3ff60dd9b906b37d8602172123d716352834f"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/overview-top.png",
+      "sha256": "1e11fa3841cd96be60e439ac41f2135e2ab2646500354325def1c5da302a6212"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/replay-top.png",
+      "sha256": "9a82eb1f7574f7915fb3dfd3694b3e6f560c2ff5046857e7467f279b4a158d3e"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/trade-top.png",
+      "sha256": "02d5b5b1db74f8cef3e84bfa86fa552b6f42ba99ce13128b7151ef7263cce670"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/trade-ledger.png",
+      "sha256": "87a94310743cb9456cea26421cfc1cc1c13b0d4f5893901a0e71b0b3a8f98334"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/analytics-top.png",
+      "sha256": "ea40a4e3faa69271cccd48af52b7cfa58611d3c8155678edc12666dec395a1b1"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/analytics-metrics.png",
+      "sha256": "796b10f70a5f97ce125a5c7e0194f00883584a58d55e5ea1b424bd81920565c4"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/dark-390x844/analytics-ledger.png",
+      "sha256": "6a5f417653cc7b0e245bf5c7cfbaa556b4cecfb83d0028b0c8d0018c328f08f8"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/overview-top.png",
+      "sha256": "4c9d324091d7cba68ab5082a5eaf388b04da5b446132dd948fe62b88f8dfcee7"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/replay-top.png",
+      "sha256": "25f72b5d6e6f7b945d973d891ba2410cafc70b219cb08c95ff0fafaae8e9be6f"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/trade-top.png",
+      "sha256": "6d2c11fea8a6989b1afb8bbad8749c7a634ef3e37108df5efe4b94815f9c970e"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/trade-ledger.png",
+      "sha256": "7f9340bdb70ebe21726b2903f30222ffab54997adcaab70573662b6dc7054bd2"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/analytics-top.png",
+      "sha256": "ffe03f2d9cf0484dd713deea81213aed22c64f45668d8b9c75e171bbe23715b9"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/analytics-metrics.png",
+      "sha256": "ffe03f2d9cf0484dd713deea81213aed22c64f45668d8b9c75e171bbe23715b9"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1440x900/analytics-ledger.png",
+      "sha256": "1fa83555224ffe1dda8d6c9e9acc589e6bcdc2d9a632b2c72c38dc0dbb2e3ce2"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/overview-top.png",
+      "sha256": "4329e109307794235506b2fa9792e3c2e299ca78f0f25fb899e4ece5f0733de1"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/replay-top.png",
+      "sha256": "226239d0c665616419c0863a24da59aa9c40f9033adc5f2ceb194c856cc1614d"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/trade-top.png",
+      "sha256": "5f55490173153e10871fdc57569b9056ba64bf2e0cf74464402c4dfc7cb2945b"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/trade-ledger.png",
+      "sha256": "2da61bb959e76be3a2279717fdf29f80c1a530462a886043d9d19b3c6fed3920"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/analytics-top.png",
+      "sha256": "cde4545cbdf790f396d3582907c88d5db5e79cd58a3410b1bbaccd5f04b1af16"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/analytics-metrics.png",
+      "sha256": "2c192e792c8dc54d6dcf5bf23fb60d639dd893acb2f483c06b36ea561977fd6f"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-1280x800/analytics-ledger.png",
+      "sha256": "a59b85603491566d699e9baaf873fef5b596b80615e9dfbcddeb253ad3f6a0a9"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/overview-top.png",
+      "sha256": "3ee69a4f5a025cb9656e0fecf448ad6cc79de86bb99a9d58b757aca796a58d21"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/replay-top.png",
+      "sha256": "67e5c156df3a326e803042774ae030d56be6ec5fb21d177d18ab133c611fa326"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/trade-top.png",
+      "sha256": "49c13334e76122c1b81410a3bbcfb9ca479e80fdd62492a3782fbc12505e36a4"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/trade-ledger.png",
+      "sha256": "611ea87d939f577c940572bd5f0e062f062ec7b0de3f1533685589f3bffbc962"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/analytics-top.png",
+      "sha256": "86e4cda717c18a6ea6590d05679ec258950b651ee006d33d88efa9e4ae43102c"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/analytics-metrics.png",
+      "sha256": "3b98277fed345e8cac451ed685dd0306bc364755380a9b6f979e15911fee4ee0"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-768x1024/analytics-ledger.png",
+      "sha256": "d48e75b31679d6c39987fa7002e3e271bdabc81120dabb2907702ddbf4b8c9ea"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/overview-top.png",
+      "sha256": "76004749f1845d62ac6762a443a1e0ccc92d89ef73eee70ed6c88fb90461d725"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/replay-top.png",
+      "sha256": "c765a3830d1fd0b459cc2fec9d54ec74d55523d68bbc2a551467c1d7dc486069"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/trade-top.png",
+      "sha256": "ee7224f40eb960d489669dc7fd734b1e8359d89153254f93962fa3add4809000"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/trade-ledger.png",
+      "sha256": "c892d8f6d5e8cea8396e69ba43b53ed7d50d590d69997763515489bea09b3475"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/analytics-top.png",
+      "sha256": "cfdd9f0d4668ee9379a60fe0a622341df0e439d2363b3fde481d66370ee7f30c"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/analytics-metrics.png",
+      "sha256": "42baf679a3b0515bbe72322bbeda90512714781737b30f9dd614381e039bccd4"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/baselines/light-390x844/analytics-ledger.png",
+      "sha256": "5e49ec0c9b7f054c9a3df48630ddc0531696ab76df60aca244b5b7bdeb666365"
+    }
+  ],
+  "scope": "Exactly 56 synthetic Testing Dashboard/Sessions/Trades/Analytics images, two themes and four viewports; independent visual approval only"
+}
