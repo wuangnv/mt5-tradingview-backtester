@@ -68,6 +68,8 @@
 .trade-notice.is-error { color: #e09a9a; }
 
 .risk-heading { align-items: flex-start; }
+.risk-workspace .risk-eyebrow, .risk-workspace .risk-form label { color: var(--fx-shell-muted, #9ba4ac); }
+.risk-workspace .risk-checkbox { color: var(--fx-shell-muted, #9ba4ac) !important; }
 .risk-mode-lock { display: grid; gap: 4px; border-left: 2px solid #8b5a5a; padding: 8px 0 8px 11px; }
 .risk-mode-lock strong { color: #e09a9a; font-size: 10px; }
 .risk-mode-lock span { color: #9b8585; font-size: 10px; }

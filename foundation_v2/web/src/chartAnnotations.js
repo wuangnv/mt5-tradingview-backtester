@@ -203,4 +203,26 @@ export async function reviseChartAnnotation(workspace, recordId, expectedRevisio
   return readResponse(response)
 }
 
+/** Soft deletion creates a tombstone revision; it never rewrites history. */
+export async function deleteChartAnnotation(workspace, recordId, expectedRevision, { fetchImpl } = {}) {
+  const id = boundedText(recordId, 'record_id')
+  const revision = safeInteger(expectedRevision, 'expected_revision', { minimum: 1 })
+  const response = await fetcher(fetchImpl)(`/api/v2/chart/annotations/${encodeURIComponent(id)}/delete`, {
+    method: 'POST',
+    headers: workspaceHeader(workspace, { 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ expected_revision: revision }),
+  })
+  return readResponse(response)
+}
+
+export function drawingIsVisibleAt(record, { sessionId, instrument, timeframe, cutoff, timestamps }) {
+  const draft = record?.payload
+  return Boolean(draft && !record.deleted && draft.run_id === sessionId
+    && draft.instrument_id === instrument && draft.timeframe === timeframe
+    && Number.isSafeInteger(draft.cutoff_timestamp) && draft.cutoff_timestamp <= cutoff
+    && Array.isArray(draft.anchors) && draft.anchors.length > 0
+    && draft.anchors.every(anchor => Number.isSafeInteger(anchor.timestamp) && anchor.timestamp <= cutoff
+      && timestamps.has(anchor.timestamp) && Number.isFinite(anchor.price)))
+}
+
 export const CHART_ANNOTATION_LIMITS = Object.freeze({ maxAnchors: MAX_ANCHORS, maxLabelLength: MAX_TEXT })

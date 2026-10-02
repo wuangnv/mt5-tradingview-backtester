@@ -105,7 +105,7 @@ function EmptySurface({ section, workspace, query }) {
   const action = section === 'notes' ? 'Mở Journal local' : 'Mở Data Desk'
   return (
     <section className="live-surface" aria-labelledby="live-surface-title" data-testid="live-surface">
-      <div className="live-surface-heading"><div><span className="live-eyebrow">LIVE / {LIVE_SECTIONS[section].label.toUpperCase()}</span><h1 id="live-surface-title">{LIVE_SECTIONS[section].title}</h1><p>{LIVE_SECTIONS[section].description}</p></div><span className="live-readonly">READ ONLY</span></div>
+      <div className="live-surface-heading"><div><span className="live-eyebrow">LIVE / {LIVE_SECTIONS[section].label.toUpperCase()}</span><h2 id="live-surface-title">{LIVE_SECTIONS[section].title}</h2><p>{LIVE_SECTIONS[section].description}</p></div><span className="live-readonly">READ ONLY</span></div>
       <div className="live-empty" data-testid="live-empty"><span className="live-empty-mark" aria-hidden="true">—</span><div><strong>{LIVE_SECTIONS[section].emptyTitle}</strong><p>{LIVE_SECTIONS[section].emptyCopy}</p></div></div>
       <a className="live-secondary-button" href={href}>{action} <span aria-hidden="true">→</span></a>
     </section>
@@ -133,7 +133,7 @@ export default function LiveWorkspace({ workspace = 'tenant-a', query = new URLS
   return (
     <main className="live-workspace" data-testid="live-workspace">
       <header className="live-topbar"><div><span className="live-eyebrow">WORKSPACE / LIVE</span><h1>Live workspace</h1><p>Kiểm tra capability và snapshot read-only trước khi đưa bất kỳ dữ liệu nào vào workflow.</p></div><span className="live-topbar-lock">BROKER LOCKED</span></header>
-      <div className="live-context" aria-label="Live context"><span>Workspace <strong>{workspace}</strong></span><span>Surface <strong>{LIVE_SECTIONS[section].label}</strong></span><span>Mode <strong>Read only</strong></span><span>External write <strong>PREP_ONLY</strong></span></div>
+      <section className="live-context" aria-label="Live context"><span>Workspace <strong>{workspace}</strong></span><span>Surface <strong>{LIVE_SECTIONS[section].label}</strong></span><span>Mode <strong>Read only</strong></span><span>External write <strong>PREP_ONLY</strong></span></section>
       <LiveState state={state} onRetry={() => setReloadToken((value) => value + 1)} />
       <PermissionBoundary />
       {surface}

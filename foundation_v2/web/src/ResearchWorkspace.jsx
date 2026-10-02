@@ -129,7 +129,7 @@ function FlowStepper({ selected, job, result }) {
   const current = result ? 'result' : job && ['queued', 'running'].includes(job.status) ? 'checkpoint' : job ? 'result' : selected ? 'run' : 'context'
   const contextReady = Boolean(selected || job?.dataset_id)
   const terminal = Boolean(job && ['failed', 'canceled'].includes(job.status))
-  return <ol className="rs-stepper" aria-label="Research flow" data-testid="research-flow-stepper">{FLOW_STEPS.map((step, index) => {
+  return <ol className="rs-stepper" aria-label="Research flow" data-testid="research-flow-stepper" tabIndex={0}>{FLOW_STEPS.map((step, index) => {
     const currentIndex = FLOW_STEPS.findIndex((item) => item.id === current)
     const stepIndex = FLOW_STEPS.findIndex((item) => item.id === step.id)
     const isTerminal = terminal && step.id === 'result'

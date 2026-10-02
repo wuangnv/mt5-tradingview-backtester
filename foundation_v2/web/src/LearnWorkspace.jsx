@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { buildWorkspaceHref } from './workspaceContext.js'
 import './learnIntegration.css'
 
 function normalizeError(response, payload) {
@@ -10,10 +11,11 @@ function normalizeError(response, payload) {
   return error
 }
 
-async function fetchLearnJson(url, workspace) {
+async function fetchLearnJson(url, workspace, signal) {
   const response = await fetch(url, {
     method: 'GET',
     headers: { 'X-Workspace-Id': workspace },
+    signal,
   })
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) throw normalizeError(response, payload)
@@ -40,51 +42,24 @@ function resourceIdFromHref(href) {
 
 function returnTarget(query, workspace) {
   const from = query?.get('from')
-  const params = new URLSearchParams({ workspace })
-
   if (from === 'research') {
-    const jobId = query.get('job')
-    if (jobId) params.set('job', jobId)
-    return { href: `/?${params.toString()}`, label: 'Về Research' }
+    return { href: buildWorkspaceHref('research', workspace, query, { job: query.get('job') }), label: 'Về Research' }
   }
-
   if (from === 'replay') {
-    params.set('view', 'replay')
-    const sessionId = query.get('session')
-    const datasetId = query.get('dataset')
-    const start = query.get('start')
-    if (sessionId) {
-      params.set('session', sessionId)
-    } else if (datasetId) {
-      params.set('dataset', datasetId)
-      if (start) params.set('start', start)
-    }
-    return { href: `/?${params.toString()}`, label: 'Về Replay' }
+    return { href: buildWorkspaceHref('replay', workspace, query, { start: query.get('start') }), label: 'Về Replay' }
   }
-
-  return { href: `/?${params.toString()}`, label: 'Research' }
+  return { href: buildWorkspaceHref('research', workspace, query), label: 'Research' }
 }
 
 function LearnUtilityLinks({ workspace, query, returnLink }) {
-  const practiceParams = new URLSearchParams({ workspace, view: 'replay' })
-  const from = query?.get('from')
-  if (from === 'replay') {
-    const sessionId = query.get('session')
-    const datasetId = query.get('dataset')
-    const start = query.get('start')
-    if (sessionId) practiceParams.set('session', sessionId)
-    else if (datasetId) {
-      practiceParams.set('dataset', datasetId)
-      if (start) practiceParams.set('start', start)
-    }
-  }
-  const settingsParams = new URLSearchParams({ workspace, view: 'settings', from: 'learn' })
+  const practiceHref = buildWorkspaceHref('replay', workspace, query, { start: query?.get('start') })
+  const settingsHref = buildWorkspaceHref('settings', workspace, query, { from: 'learn', return_from: query?.get('from'), job: query?.get('job'), start: query?.get('start') })
   return (
-    <div className="learn-utility-links" aria-label="Điều hướng workspace">
+    <nav className="learn-utility-links" aria-label="Điều hướng workspace">
       <a className="context-link" href={returnLink.href}>{returnLink.label}</a>
-      <a className="context-link" href={`/?${practiceParams.toString()}`}>Practice</a>
-      <a className="context-link" href={`/?${settingsParams.toString()}`}>Settings</a>
-    </div>
+      <a className="context-link" href={practiceHref}>Practice</a>
+      <a className="context-link" href={settingsHref}>Settings</a>
+    </nav>
   )
 }
 
@@ -106,45 +81,58 @@ export default function LearnWorkspace({ workspace, query }) {
   const [glossary, setGlossary] = useState({ status: 'loading', payload: null, error: null })
   const [resource, setResource] = useState({ status: 'idle', payload: null, error: null, id: '', label: '' })
   const [glossaryQuery, setGlossaryQuery] = useState('')
+  const [reloadToken, setReloadToken] = useState(0)
   const resourceRequestRef = useRef(0)
+  const resourceControllerRef = useRef(null)
 
   // A resource belongs to the workspace that requested it. Clear the reader
   // and invalidate in-flight requests when the workspace changes so a slower
   // response cannot paint content from the previous tenant.
   useEffect(() => {
     resourceRequestRef.current += 1
+    resourceControllerRef.current?.abort()
     setResource({ status: 'idle', payload: null, error: null, id: '', label: '' })
     setGlossaryQuery('')
-  }, [workspace])
+    return () => {
+      resourceRequestRef.current += 1
+      resourceControllerRef.current?.abort()
+    }
+  }, [workspace, reloadToken])
 
   useEffect(() => {
     let cancelled = false
+    const controller = new AbortController()
+    setOverview({ status: 'loading', payload: null, error: null })
+    setGlossary({ status: 'loading', payload: null, error: null })
 
-    fetchLearnJson('/api/v2/learn/overview', workspace)
+    fetchLearnJson('/api/v2/learn/overview', workspace, controller.signal)
       .then((payload) => {
         if (!cancelled) setOverview({ status: 'ready', payload, error: null })
       })
       .catch((error) => {
-        if (!cancelled) setOverview({ status: error.kind || 'error', payload: null, error: error.message })
+        if (!cancelled && error.name !== 'AbortError') setOverview({ status: error.kind || 'error', payload: null, error: error.message })
       })
 
-    fetchLearnJson('/api/v2/learn/glossary', workspace)
+    fetchLearnJson('/api/v2/learn/glossary', workspace, controller.signal)
       .then((payload) => {
         if (!cancelled) setGlossary({ status: 'ready', payload, error: null })
       })
       .catch((error) => {
-        if (!cancelled) setGlossary({ status: error.kind || 'error', payload: null, error: error.message })
+        if (!cancelled && error.name !== 'AbortError') setGlossary({ status: error.kind || 'error', payload: null, error: error.message })
       })
 
-    return () => { cancelled = true }
-  }, [workspace])
+    return () => { cancelled = true; controller.abort() }
+  }, [workspace, reloadToken])
 
   const openResource = async (resourceId, label) => {
+    resourceControllerRef.current?.abort()
+    const controller = new AbortController()
+    resourceControllerRef.current = controller
     const requestId = resourceRequestRef.current + 1
     resourceRequestRef.current = requestId
     setResource({ status: 'loading', payload: null, error: null, id: resourceId, label })
     try {
-      const payload = await fetchLearnJson(`/api/v2/learn/resources/${encodeURIComponent(resourceId)}`, workspace)
+      const payload = await fetchLearnJson(`/api/v2/learn/resources/${encodeURIComponent(resourceId)}`, workspace, controller.signal)
       if (requestId !== resourceRequestRef.current) return
       setResource({
         status: String(payload?.content || '').trim() ? 'ready' : 'empty',
@@ -154,7 +142,7 @@ export default function LearnWorkspace({ workspace, query }) {
         label,
       })
     } catch (error) {
-      if (requestId !== resourceRequestRef.current) return
+      if (requestId !== resourceRequestRef.current || error.name === 'AbortError') return
       setResource({ status: error.kind || 'error', payload: null, error: error.message, id: resourceId, label })
     }
   }
@@ -162,9 +150,10 @@ export default function LearnWorkspace({ workspace, query }) {
   const course = overview.payload?.course
   const progress = overview.payload?.progress
   const safety = overview.payload?.safety
-  const completedLessons = progress?.completed_lessons?.length || 0
-  const lessonCount = Number(course?.lesson_count || 0)
-  const completionPercent = lessonCount > 0 ? Math.round((completedLessons / lessonCount) * 100) : 0
+  const completedLessons = Array.isArray(progress?.completed_lessons) ? progress.completed_lessons.length : null
+  const lessonCount = Number.isSafeInteger(course?.lesson_count) && course.lesson_count >= 0 ? course.lesson_count : null
+  const moduleCount = Number.isSafeInteger(course?.module_count) && course.module_count >= 0 ? course.module_count : Array.isArray(course?.modules) ? course.modules.length : null
+  const completionPercent = lessonCount > 0 && completedLessons !== null ? Math.round((completedLessons / lessonCount) * 100) : null
   const currentLesson = useMemo(() => {
     const id = progress?.current_lesson_id
     if (!id) return null
@@ -227,7 +216,7 @@ export default function LearnWorkspace({ workspace, query }) {
     return (
       <main className="learn-shell">
         <header className="learn-topbar"><div><div className="eyebrow">HỌC / COURSE OWNER</div><h1>Học & thuật ngữ</h1></div><LearnUtilityLinks workspace={workspace} query={query} returnLink={returnLink} /></header>
-        <StateMessage kind="error" testId="learn-error">Không đọc được Learn: {overview.error}</StateMessage>
+        <StateMessage kind="error" testId="learn-error">Không đọc được Learn: {overview.error} <button type="button" className="learn-resource-button" onClick={() => setReloadToken((value) => value + 1)}>Thử lại</button></StateMessage>
       </main>
     )
   }
@@ -268,7 +257,7 @@ export default function LearnWorkspace({ workspace, query }) {
       <section className="learn-summary" aria-label="Tổng quan course">
         <div><span>Course</span><strong>{course?.title || 'Chưa có tên'}</strong></div>
         <div><span>Version</span><strong>{course?.version || 'N/A'}</strong></div>
-        <div><span>Tiến độ</span><strong>{completedLessons}/{lessonCount || 0} bài</strong></div>
+        <div><span>Tiến độ</span><strong>{completedLessons ?? '—'}/{lessonCount ?? '—'} bài</strong></div>
         <div><span>Trạng thái</span><strong>{progress?.status || progress?.phase || 'Chưa rõ'}</strong></div>
       </section>
 
@@ -278,9 +267,9 @@ export default function LearnWorkspace({ workspace, query }) {
           <strong>{currentLesson?.id || 'Chưa có'}</strong>
           <small>{currentLesson?.title || currentLesson?.moduleTitle || 'Không có tiêu đề'}</small>
         </div>
-        <progress max="100" value={completionPercent} aria-label={`Đã hoàn thành ${completionPercent}% course`} />
+        <progress max="100" value={completionPercent ?? undefined} aria-label={completionPercent === null ? 'Chưa có số liệu tiến độ course' : `Đã hoàn thành ${completionPercent}% course`} />
         <div className="learn-progress-meta">
-          <span>{completionPercent}%</span>
+          <span>{completionPercent === null ? '—' : `${completionPercent}%`}</span>
           <span>Cập nhật {progress?.updated_on || 'chưa rõ'}</span>
         </div>
       </section>
@@ -288,7 +277,7 @@ export default function LearnWorkspace({ workspace, query }) {
       <section className="learn-workspace">
         <aside className="learn-course" aria-label="Nội dung course">
           <div className="learn-pane-heading">
-            <div><span>Course map</span><strong>{course?.module_count || 0} module</strong></div>
+            <div><span>Course map</span><strong>{moduleCount ?? '—'} module</strong></div>
           </div>
 
           <nav className="learn-quick-resources" aria-label="Tài liệu course">
@@ -348,7 +337,7 @@ export default function LearnWorkspace({ workspace, query }) {
           {resource.status === 'unavailable' && <StateMessage kind="unavailable" testId="learn-resource-unavailable">Tài liệu này không có trong danh mục Learn được phép.</StateMessage>}
           {resource.status === 'error' && <StateMessage kind="error" testId="learn-resource-error">Không đọc được tài liệu: {resource.error}</StateMessage>}
           {resource.status === 'ready' && (
-            <pre className="learn-resource-copy" data-testid="learn-resource-content">{resource.payload?.content}</pre>
+            <pre className="learn-resource-copy" data-testid="learn-resource-content" tabIndex={0} role="region" aria-label={resource.label}>{resource.payload?.content}</pre>
           )}
         </article>
 
@@ -376,7 +365,7 @@ export default function LearnWorkspace({ workspace, query }) {
             </StateMessage>
           )}
           {glossary.status === 'ready' && glossaryItems.length > 0 && (
-            <dl className="learn-glossary-list" data-testid="learn-glossary-list">
+            <dl className="learn-glossary-list" data-testid="learn-glossary-list" tabIndex={0} aria-label="Thuật ngữ">
               {glossaryItems.map((item) => (
                 <div key={`${item.term}-${item.meaning_vi}`}>
                   <dt>{item.term}</dt>

@@ -38,7 +38,7 @@ function PlaybookList({ items, selectedId, onSelect }) {
     return <div className="pb-empty" data-testid="playbook-empty"><strong>Chưa có playbook</strong><span>Backend chưa có record để đọc. UI này không tự tạo bản ghi.</span></div>
   }
   return (
-    <div className="pb-list" aria-label="Playbook list" data-testid="playbook-list">
+    <nav className="pb-list" aria-label="Playbook list" data-testid="playbook-list">
       {items.map((record) => {
         const payload = record.payload || {}
         return (
@@ -55,7 +55,7 @@ function PlaybookList({ items, selectedId, onSelect }) {
           </button>
         )
       })}
-    </div>
+    </nav>
   )
 }
 
@@ -93,7 +93,7 @@ function RevisionDiff({ revisions, leftRevision, rightRevision, setLeftRevision,
         <span aria-hidden="true">→</span>
         <label>Compare<select aria-label="Compare revision" value={right?.revision || ''} onChange={(event) => setRightRevision(Number(event.target.value))}>{revisions.map((item) => <option key={item.revision} value={item.revision}>r{item.revision}</option>)}</select></label>
       </div>
-      {!diff.length ? <div className="pb-no-diff" data-testid="playbook-no-diff">Hai revision có cùng payload.</div> : <div className="pb-diff-table" role="table" aria-label="Changed playbook fields"><div className="pb-diff-head" role="row"><span>Field</span><span>Base r{left.revision}</span><span>Compare r{right.revision}</span></div>{diff.map((item) => <div className="pb-diff-row" key={item.path} role="row"><code>{item.path}</code><span className="is-old">{item.leftDisplay}</span><span className="is-new">{item.rightDisplay}</span></div>)}</div>}
+      {!diff.length ? <div className="pb-no-diff" data-testid="playbook-no-diff">Hai revision có cùng payload.</div> : <div className="pb-diff-table" role="table" aria-label="Changed playbook fields" tabIndex={0}><div className="pb-diff-head" role="row"><span role="columnheader">Field</span><span role="columnheader">Base r{left.revision}</span><span role="columnheader">Compare r{right.revision}</span></div>{diff.map((item) => <div className="pb-diff-row" key={item.path} role="row"><code role="cell">{item.path}</code><span role="cell" className="is-old">{item.leftDisplay}</span><span role="cell" className="is-new">{item.rightDisplay}</span></div>)}</div>}
       <p className="pb-diff-note">Diff chỉ hiển thị các field thay đổi; payload gốc vẫn thuộc backend record và không bị sửa từ màn này.</p>
     </section>
   )

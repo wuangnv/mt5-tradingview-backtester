@@ -9,7 +9,7 @@ function firstKnown(...values) {
   return values.find((value) => finite(value))
 }
 
-const DATE_TIME_FORMATTER_VI = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' })
+const DATE_TIME_FORMATTER_VI = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'medium', timeZone: 'UTC' })
 const DATE_FORMATTER_VI_UTC = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' })
 const SHORT_DATE_FORMATTER_VI_UTC = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeZone: 'UTC' })
 
@@ -86,7 +86,7 @@ export function buildAnalyticsModel(result) {
   const observedEnd = observedRange.end_utc || observedRange.end || observedRange.to_utc || observedRange.to
   const ledgerDates = ledger.flatMap((trade) => [trade?.open_time_utc, trade?.close_time_utc]).map(dateFromValue).filter(Boolean).sort((a, b) => a - b)
   const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : DATE_FORMATTER_VI_UTC.format(date) }
-  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? SHORT_DATE_FORMATTER_VI_UTC.format(date) : 'N/A' } })
+  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? DATE_TIME_FORMATTER_VI.format(date) : 'N/A' } })
   const realizedRValues = (Array.isArray(metrics.realized_r_values) ? metrics.realized_r_values : rows.map((trade) => trade.realized_r)).filter(finite).map(Number)
   const metricDefinitions = metrics.definitions && typeof metrics.definitions === 'object'
     ? Object.entries(metrics.definitions).slice(0, 16).reduce((out, [key, value]) => {
@@ -102,7 +102,7 @@ export function buildAnalyticsModel(result) {
   const endingBalance = firstKnown(metrics.ending_closed_trade_balance, metrics.ending_balance, curve[curve.length - 1]?.value)
   const strategy = result?.strategy_version || result?.playbook_id || result?.engine_version || 'N/A'
   const range = { start: dateLabel(observedStart || ledgerDates[0]?.toISOString()), end: dateLabel(observedEnd || ledgerDates[ledgerDates.length - 1]?.toISOString()) }
-  const takeaway = !tradeCount ? 'Chưa có trade đóng để kể kết quả.' : !finite(netPnl) ? `Đã có ${formatNumber(tradeCount, 0)} trade đóng, nhưng Net P/L chưa được cung cấp nên chưa thể kết luận hiệu suất.` : `Kết quả đang ${Number(netPnl) > 0 ? 'dương' : Number(netPnl) < 0 ? 'âm' : 'đi ngang'} ${formatNumber(netPnl)} sau ${formatNumber(tradeCount, 0)} trade đóng.${finite(maxDrawdown) ? ` Drawdown balance đóng lớn nhất là ${formatNumber(maxDrawdown)}.` : ' Drawdown balance đóng chưa có trong nguồn.'}`
+  const takeaway = !tradeCount ? 'Chưa có giao dịch đóng.' : !finite(netPnl) ? `${formatNumber(tradeCount, 0)} giao dịch đóng · Net P/L chưa có dữ liệu.` : `${formatNumber(tradeCount, 0)} giao dịch đóng · Net P/L ${formatNumber(netPnl, 2, result?.account_currency || 'account units')}`
   return {
     result: result || null,
     metrics,
@@ -234,27 +234,27 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
   const max = Math.max(...values)
   const span = max - min || 1
   const y = (value) => 92 - ((value - min) / span) * 76
-  const x = (index) => (index / Math.max(1, renderPoints.length - 1)) * 100
-  const line = renderPoints.map((point, index) => `${x(index)},${y(point.value)}`).join(' ')
-  const knownDrawdowns = model.drawdown.map((point) => Number(point.drawdown)).filter(Number.isFinite)
+  const x = (index) => (index / Math.max(1, points.length - 1)) * 100
+  const line = renderPoints.map((point) => `${x(point.index)},${y(point.value)}`).join(' ')
+  const knownDrawdowns = model.drawdown.map((point) => point.drawdown).filter(finite).map(Number)
   const maxDrawdown = knownDrawdowns.length ? Math.max(1, ...knownDrawdowns) : null
   return (
     <div className="as-chart-frame">
-      <svg className="as-balance-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Closed-trade balance evidence">
+      <svg className="as-balance-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="group" aria-label="Closed-trade balance evidence">
         {[20, 44, 68, 92].map((grid) => <line className="as-chart-grid" key={grid} x1="0" x2="100" y1={grid} y2={grid} />)}
         <polyline className="as-balance-line" points={line} />
         {renderPoints.map((point, index) => {
           const trade = model.ledger[point.index - 1]
           const tradeId = point.tradeId || trade?.tradeId || null
           const selected = tradeId && tradeId === selectedTradeId
-          return <circle key={`${point.index}-${tradeId || 'start'}`} className={`as-chart-point ${selected ? 'is-selected' : ''}`} cx={x(index)} cy={y(point.value)} r={selected ? 2.2 : 1.4} tabIndex="0" role={tradeId ? 'button' : undefined} aria-pressed={tradeId ? selected : undefined} aria-label={tradeId ? `${tradeId}, balance ${formatNumber(point.value)}` : `Starting balance ${formatNumber(point.value)}`} onClick={() => tradeId && onSelect(tradeId)} onKeyDown={(event) => { if (tradeId && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onSelect(tradeId) } }} />
+          return <circle key={`${point.index}-${tradeId || 'start'}`} className={`as-chart-point ${selected ? 'is-selected' : ''}`} cx={x(point.index)} cy={y(point.value)} r={selected ? 2.2 : 1.4} tabIndex={tradeId ? 0 : undefined} role={tradeId ? 'button' : 'img'} aria-pressed={tradeId ? selected : undefined} aria-label={tradeId ? `${tradeId}, balance ${formatNumber(point.value)}` : `Starting balance ${formatNumber(point.value)}`} onClick={() => tradeId && onSelect(tradeId)} onKeyDown={(event) => { if (tradeId && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onSelect(tradeId) } }} />
         })}
       </svg>
       <div className="as-chart-axis"><span>{formatNumber(min)}</span><span>{formatNumber(max)}</span></div>
       <div className="as-drawdown-strip" aria-label="Closed-trade drawdown">
         {renderDrawdown.map((point) => {
-          const drawdown = Number(point.drawdown)
-          if (!Number.isFinite(drawdown) || maxDrawdown === null) return <span key={point.index} className="as-drawdown-bar is-unknown" title="DD N/A" aria-label="Drawdown chưa có dữ liệu" />
+          const drawdown = finite(point.drawdown) ? Number(point.drawdown) : null
+          if (drawdown === null || maxDrawdown === null) return <span key={point.index} className="as-drawdown-bar is-unknown" title="DD N/A" aria-label="Drawdown chưa có dữ liệu" />
           return <span key={point.index} className="as-drawdown-bar" style={{ '--as-dd-height': `${Math.max(2, (drawdown / maxDrawdown) * 100)}%` }} title={`DD ${formatNumber(drawdown)}`} />
         })}
       </div>
@@ -263,10 +263,8 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
   )
 }
 
-// Kept as a compatibility helper for the legacy route body below while the
-// data-story workspace is introduced. It is never used by the exported view.
 function StoryMetric({ label, value, detail, source, tone = '' }) {
-  return <div className={'as-story-metric ' + tone}><dt>{label}</dt><dd>{value}</dd><small>{detail}</small><em>{source}</em></div>
+  return <dl className={'as-story-metric ' + tone}><dt>{label}</dt><dd>{value}</dd><dd className="as-metric-detail"><small>{detail}</small><em>{source}</em></dd></dl>
 }
 
 function ContextValue({ label, value, code = false }) {
@@ -281,12 +279,12 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
       {selectedTrade ? (
         <section className="as-inspector-selection" aria-label="Trade detail">
           <div className="as-selection-outcome"><span className={'as-outcome-dot is-' + selectedTrade.outcome} />{selectedTrade.outcome === 'win' ? 'Thắng' : selectedTrade.outcome === 'loss' ? 'Thua' : selectedTrade.outcome === 'breakeven' ? 'Hòa vốn' : 'Chưa xác định'}<strong>{formatNumber(selectedTrade.pnl)}</strong></div>
-          <dl className="as-detail-list"><ContextValue label="Đóng (UTC)" value={selectedTrade.closeDate} /><ContextValue label="Side" value={selectedTrade.side} /><ContextValue label="Net R" value={formatNumber(selectedTrade.realized_r, 2, 'R')} /><ContextValue label="Risk budget" value={formatNumber(selectedTrade.planned_risk_budget)} /></dl>
-          <p className="as-inspector-note">{selectedTrade.source === 'closed balance curve' ? 'Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.' : 'Trade được đọc nguyên bản từ research ledger. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.'}</p>
+          <dl className="as-detail-list"><ContextValue label="Đóng (UTC)" value={selectedTrade.closeDate} /><ContextValue label="Side" value={selectedTrade.side} /><ContextValue label="Symbol" value={selectedTrade.symbol} /><ContextValue label="Khối lượng" value={formatNumber(selectedTrade.quantity, 4)} /><ContextValue label="Giá mở" value={formatNumber(selectedTrade.price_open, 6)} /><ContextValue label="Giá đóng" value={formatNumber(selectedTrade.price_close, 6)} /><ContextValue label="Net R" value={formatNumber(selectedTrade.realized_r, 2, 'R')} /><ContextValue label="Risk budget" value={formatNumber(selectedTrade.planned_risk_budget)} /></dl>
+          <p className="as-inspector-note">{selectedTrade.source === 'closed balance curve' ? 'Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.' : 'Trade được đọc từ ledger đã lưu theo phiên hoặc research job. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.'}</p>
           <details className="as-raw-details"><summary>Xem record gốc</summary><pre>{JSON.stringify(selectedTrade, null, 2)}</pre></details>
         </section>
       ) : <div className="as-inspector-empty">Chọn một điểm trên đường balance hoặc một dòng trade để mở chi tiết.</div>}
-      <dl className="as-provenance-list"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Dataset SHA" value={model.result?.dataset_sha256} code /><ContextValue label="Protocol SHA" value={model.result?.protocol_sha256} code /><ContextValue label="Artifact SHA" value={model.sourceHash} code /><ContextValue label="Strategy / engine" value={model.strategy} /><ContextValue label="Split" value={model.result?.split} /><ContextValue label="Metric schema" value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label="Observed range" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Journal context" value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
+      <dl className="as-provenance-list"><ContextValue label="Session revision" value={model.result?.revision} /><ContextValue label="Cutoff UTC" value={formatDate(model.result?.cutoff_timestamp)} /><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Dataset SHA" value={model.result?.dataset_sha256} code /><ContextValue label="Protocol SHA" value={model.result?.protocol_sha256} code /><ContextValue label="Artifact SHA" value={model.sourceHash} code /><ContextValue label="Strategy / engine" value={model.strategy} /><ContextValue label="Split" value={model.result?.split} /><ContextValue label="Metric schema" value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label="Observed range" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Journal context" value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
       <p className="as-limit-note">N/A nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Research/simulation đang broker locked; không có đường nào gửi lệnh.</p>
       <div className="as-inspector-actions"><a href={links.journal}>Mở Journal →</a>{links.replay && <a href={links.replay}>Mở Replay →</a>}</div>
     </aside>
@@ -305,7 +303,7 @@ function TradeLedger({ model, selectedTradeId, onSelect }) {
   }, [selectedIndex])
   const start = page * LEDGER_PAGE_SIZE
   const visibleRows = model.ledger.slice(start, start + LEDGER_PAGE_SIZE)
-  return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><span className="as-eyebrow">TRADE LEDGER</span><h2>{model.ledger.length ? `${model.ledger.length} trade đóng` : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Research result không có ledger để drill-down.</div> : <><div className="as-table-wrap"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{visibleRows.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} tabIndex="0" role="button" aria-selected={trade.tradeId === selectedTradeId} aria-label={`Chọn trade ${trade.tradeId}`} onClick={() => onSelect(trade.tradeId)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(trade.tradeId) } }}><td><code>{trade.tradeId}</code></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div><nav className="as-ledger-pagination" aria-label="Trade ledger pagination" data-testid="analytics-ledger-pagination"><button type="button" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label="Trang trước">←</button><span aria-live="polite">Trang {page + 1}/{pageCount} · hiển thị {start + 1}–{Math.min(start + LEDGER_PAGE_SIZE, model.ledger.length)} / {model.ledger.length}</span><button type="button" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1} aria-label="Trang sau">→</button></nav></>}</section>
+  return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><span className="as-eyebrow">TRADE LEDGER</span><h2>{model.ledger.length ? `${model.ledger.length} trade đóng` : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Phạm vi này chưa có giao dịch đóng để xem chi tiết.</div> : <><div className="as-table-wrap"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{visibleRows.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} onClick={() => onSelect(trade.tradeId)}><td><button type="button" className="as-trade-select" aria-label={`Chọn trade ${trade.tradeId}`} aria-pressed={trade.tradeId === selectedTradeId} onClick={() => onSelect(trade.tradeId)}><code>{trade.tradeId}</code></button></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div><nav className="as-ledger-pagination" aria-label="Trade ledger pagination" data-testid="analytics-ledger-pagination"><button type="button" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label="Trang trước">←</button><span aria-live="polite">Trang {page + 1}/{pageCount} · hiển thị {start + 1}–{Math.min(start + LEDGER_PAGE_SIZE, model.ledger.length)} / {model.ledger.length}</span><button type="button" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1} aria-label="Trang sau">→</button></nav></>}</section>
 }
 
 function AnalyticsMetricDisclosure({ model }) {
@@ -332,31 +330,41 @@ function AnalyticsMetricDisclosure({ model }) {
   )
 }
 
-function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams() }) {
+function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(), ledgerOnly = false, summaryOnly = false }) {
   const jobId = query?.get('job') || query?.get('job_id') || ''
   const sessionId = query?.get('session') || query?.get('replay_session') || ''
+  const resourceId = jobId || sessionId
+  const resourceKind = jobId ? 'research/jobs' : 'replay/sessions'
+  const sourceLabel = jobId ? 'Research' : 'Replay'
+  const replayCursor = jobId ? null : query?.get('cursor') ?? query?.get('cursor_index')
+  const replayCutoff = jobId ? null : query?.get('cutoff') ?? query?.get('decision_cutoff')
   const tradeId = query?.get('trade') || query?.get('trade_id') || ''
   const [filters, setFilters] = useState(() => readAnalyticsFilters(query))
-  const [state, setState] = useState({ status: jobId ? 'loading' : 'idle', payload: null, error: null })
+  const [state, setState] = useState({ status: resourceId ? 'loading' : 'idle', payload: null, error: null })
   const [journalCount, setJournalCount] = useState(null)
   const [selectedTradeId, setSelectedTradeId] = useState(tradeId)
   const [exportPending, setExportPending] = useState(false)
   const [exportError, setExportError] = useState('')
   const requestSequence = useRef(0)
 
-  const filterParams = useMemo(() => analyticsQuery(filters), [filters])
+  const filterParams = useMemo(() => {
+    const params = analyticsQuery(filters)
+    if (replayCursor !== null && replayCursor !== undefined) params.set('cursor_index', replayCursor)
+    if (replayCutoff !== null && replayCutoff !== undefined) params.set('cutoff_timestamp', replayCutoff)
+    return params
+  }, [filters, replayCursor, replayCutoff])
   const analyticsPath = useMemo(() => {
     const suffix = filterParams.toString()
-    return `/api/v2/research/jobs/${encodeURIComponent(jobId)}/analytics${suffix ? `?${suffix}` : ''}`
-  }, [filterParams, jobId])
+    return `/api/v2/${resourceKind}/${encodeURIComponent(resourceId)}/analytics${suffix ? `?${suffix}` : ''}`
+  }, [filterParams, resourceId, resourceKind])
   const csvPath = useMemo(() => {
     const suffix = filterParams.toString()
-    return `/api/v2/research/jobs/${encodeURIComponent(jobId)}/analytics.csv${suffix ? `?${suffix}` : ''}`
-  }, [filterParams, jobId])
+    return `/api/v2/${resourceKind}/${encodeURIComponent(resourceId)}/analytics.csv${suffix ? `?${suffix}` : ''}`
+  }, [filterParams, resourceId, resourceKind])
 
   const load = useCallback(async ({ signal } = {}) => {
     const requestId = ++requestSequence.current
-    if (!jobId) {
+    if (!resourceId) {
       setState({ status: 'idle', payload: null, error: null })
       return
     }
@@ -384,7 +392,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
       const status = error?.status === 409 || error?.status === 503 ? 'blocked_by_data' : 'error'
       setState({ status, payload: error?.payload || null, error: String(error.message || error) })
     }
-  }, [analyticsPath, jobId, workspace])
+  }, [analyticsPath, resourceId, workspace])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -392,7 +400,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     return () => controller.abort()
   }, [load])
   useEffect(() => {
-    if (typeof window === 'undefined' || !jobId) return
+    if (typeof window === 'undefined' || !resourceId || summaryOnly) return
     const next = new URL(window.location.href)
     for (const key of ['side', 'outcome', 'from', 'to', 'from_close_utc', 'to_close_utc']) next.searchParams.delete(key)
     if (filters.side !== 'all') next.searchParams.set('side', filters.side)
@@ -400,7 +408,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     if (filters.from) next.searchParams.set('from', filters.from)
     if (filters.to) next.searchParams.set('to', filters.to)
     window.history.replaceState({}, '', next)
-  }, [filters, jobId])
+  }, [filters, resourceId, summaryOnly])
   useEffect(() => {
     const controller = new AbortController()
     fetch('/api/v2/journal', { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal })
@@ -420,14 +428,22 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   const result = useMemo(() => state.payload?.schema_version === 'analytics-read-model-v1' ? analyticsViewResult(state.payload) : null, [state.payload])
   const model = useMemo(() => buildAnalyticsModel(result), [result])
   useEffect(() => {
-    if (!selectedTradeId) return
+    if (!selectedTradeId || !result) return
     const isKnown = model.ledger.some((trade) => trade.tradeId === selectedTradeId) || model.curve.some((point) => point.tradeId === selectedTradeId)
     if (!isKnown) setSelectedTradeId('')
-  }, [model, selectedTradeId])
+  }, [model, result, selectedTradeId])
   const updateFilters = useCallback((patch) => setFilters((current) => ({ ...current, ...patch })), [])
+  useEffect(() => {
+    if (!result || summaryOnly || typeof window === 'undefined') return
+    const next = new URL(window.location.href)
+    next.searchParams.delete('trade_id')
+    if (selectedTradeId) next.searchParams.set('trade', selectedTradeId)
+    else next.searchParams.delete('trade')
+    window.history.replaceState({}, '', next)
+  }, [result, selectedTradeId, summaryOnly])
   const exportCsv = useCallback(async (event) => {
     event.preventDefault()
-    if (!jobId || exportPending) return
+    if (!resourceId || exportPending) return
     setExportPending(true)
     setExportError('')
     try {
@@ -437,7 +453,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
       const objectUrl = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = objectUrl
-      link.download = `job-${jobId}-analytics-v1.csv`
+      link.download = `analytics-${resourceId}.csv`
       document.body.appendChild(link)
       link.click()
       link.remove()
@@ -447,13 +463,16 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     } finally {
       setExportPending(false)
     }
-  }, [csvPath, exportPending, jobId, workspace])
+  }, [csvPath, exportPending, resourceId, workspace])
   const selectedTrade = model.ledger.find((trade) => trade.tradeId === selectedTradeId) || (() => {
     const point = model.curve.find((item) => item.tradeId === selectedTradeId)
     return point ? { tradeId: point.tradeId, pnl: null, realized_r: null, planned_risk_budget: null, closeDate: 'N/A', source: 'closed balance curve', outcome: 'unknown', balance: point.value } : null
   })()
-  const replayParams = new URLSearchParams({ workspace, view: 'replay' })
+  const replayParams = new URLSearchParams({ workspace, view: 'replay', surface: 'workspace' })
   if (sessionId) replayParams.set('session', sessionId)
+  if (result?.dataset_id) replayParams.set('dataset', result.dataset_id)
+  if (Number.isInteger(selectedTrade?.close_cursor_index)) replayParams.set('cursor', String(selectedTrade.close_cursor_index))
+  else if (Number.isInteger(result?.cursor_index)) replayParams.set('cursor', String(result.cursor_index))
   const journalParams = new URLSearchParams({ workspace, view: 'journal' })
   if (sessionId) journalParams.set('session', sessionId)
   if (selectedTradeId) journalParams.set('trade', selectedTradeId)
@@ -461,30 +480,32 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   if (jobId) researchParams.set('job', jobId)
   const links = { journal: '/?' + journalParams.toString(), replay: sessionId ? '/?' + replayParams.toString() : '', research: '/?' + researchParams.toString() }
 
-  return <main className="as-page" data-testid="analytics-workspace">
-    <header className="as-page-header"><div><span className="as-eyebrow">ANALYTICS / DATA STORY</span><h1>Analytics</h1><p>Đọc từ context → takeaway → bằng chứng → drill-down. Dữ liệu thiếu vẫn giữ nguyên là N/A.</p></div><div className="as-header-status"><span className="as-status-dot" />Research / local · broker locked</div></header>
-    <section className="as-context-bar" aria-label="Ngữ cảnh analytics"><dl className="as-context-grid"><ContextValue label="Research job" value={jobId || 'Chưa chọn'} code /><ContextValue label="Replay" value={sessionId || 'Không gắn session'} code /><ContextValue label="Trade focus" value={selectedTradeId || 'Chưa chọn'} code /></dl><div className="as-context-actions"><a href={'/?' + researchParams.toString()}>Mở Research</a>{sessionId && <a href={'/?' + replayParams.toString()}>Mở Replay</a>}<a href={'/?' + journalParams.toString()}>Mở Journal</a></div></section>
+  return <section className="as-page" data-testid="analytics-workspace">
+    <header className="as-page-header"><div><span className="as-eyebrow">{ledgerOnly ? 'GIAO DỊCH ĐÃ ĐÓNG' : 'KẾT QUẢ MÔ PHỎNG'}</span>{summaryOnly ? <h2>Kết quả phiên</h2> : <h1>{ledgerOnly ? 'Trades' : 'Analytics'}</h1>}<p>{summaryOnly ? 'Giao dịch đã đóng của phiên đang chọn.' : 'Lọc giao dịch đã đóng, xem kết quả và đối chiếu từng lệnh.'}</p></div><div className="as-header-status"><span className="as-status-dot" />{sourceLabel} / local · broker locked</div></header>
+    <section hidden={summaryOnly || !jobId} className="as-context-bar" aria-label="Ngữ cảnh analytics"><dl className="as-context-grid">{jobId && <ContextValue label="Research job" value={jobId} code />}<ContextValue label="Replay" value={sessionId || 'Không gắn session'} code /><ContextValue label="Trade focus" value={selectedTradeId || 'Chưa chọn'} code /></dl><div className="as-context-actions">{jobId && <a href={'/?' + researchParams.toString()}>Mở Research</a>}{sessionId && <a href={'/?' + replayParams.toString()}>Mở Replay</a>}<a href={'/?' + journalParams.toString()}>Mở Journal</a></div></section>
 
-    {jobId && <AnalyticsFilters filters={filters} onChange={updateFilters} csvUrl={csvPath} onExport={exportCsv} exportPending={exportPending} />}
+    {resourceId && !summaryOnly && <AnalyticsFilters filters={filters} onChange={updateFilters} csvUrl={csvPath} onExport={exportCsv} exportPending={exportPending} />}
     {exportError && <div className="as-message as-error" role="alert" data-testid="analytics-export-error">{exportError}</div>}
-    {!jobId && <section className="as-empty-state as-large-empty"><span className="as-eyebrow">START WITH CONTEXT</span><h2>Chưa có research job được chọn</h2><p>Mở Analytics từ một kết quả Research để xem metric, đường balance đóng và trade ledger. Không có dữ liệu thì không dựng số 0 thay thế.</p><a className="as-primary-button" href={'/?' + researchParams.toString()}>Đi tới Research</a></section>}
-    {state.status === 'loading' && <div className="as-message" role="status">Đang tải research result…</div>}
-    {state.status === 'error' && <div className="as-message as-error" role="alert">Không đọc được research result: {state.error}<button className="as-inline-button" type="button" onClick={() => load()}>Thử lại</button></div>}
+    {result?.historical_view && <p className="as-message" data-testid="analytics-historical-scope">Kết quả tới nến #{result.cursor_index}. Phiên hiện ở nến #{result.canonical_cursor_index}; bảng và CSV không gồm giao dịch sau mốc đang xem.</p>}
+    {!resourceId && <section className="as-empty-state as-large-empty"><span className="as-eyebrow">START WITH CONTEXT</span><h2>Chưa chọn phiên hoặc research job</h2><p>Chọn một phiên replay hoặc mở Analytics từ kết quả Research để xem metric, đường balance đóng và trade ledger. Không có dữ liệu thì không dựng số 0 thay thế.</p><a className="as-primary-button" href={'/?' + researchParams.toString()}>Đi tới Research</a></section>}
+    {state.status === 'loading' && <div className="as-message" role="status">Đang tải kết quả…</div>}
+    {state.status === 'error' && <div className="as-message as-error" role="alert">Không đọc được kết quả: {state.error}<button className="as-inline-button" type="button" onClick={() => load()}>Thử lại</button></div>}
     {state.status === 'blocked_by_data' && <section className="as-empty-state as-large-empty as-blocked-state" data-testid="analytics-blocked"><span className="as-eyebrow">BLOCKED BY DATA</span><h2>Chưa đủ dữ liệu để tính analytics</h2><p>{Array.isArray(state.payload?.blocked_by_data) && state.payload.blocked_by_data.length ? state.payload.blocked_by_data.join(', ') : state.error || 'Job chưa hoàn tất hoặc research result chưa được phát hành.'}</p><button className="as-inline-button" type="button" onClick={() => load()}>Kiểm tra lại</button></section>}
     {state.status === 'empty' && <section className="as-empty-state as-large-empty" data-testid="analytics-empty"><span className="as-eyebrow">NO SELECTED TRADES</span><h2>Bộ lọc không còn trade đóng</h2><p>Không có dòng ledger nào khớp bộ lọc hiện tại. Xóa lọc hoặc chọn khoảng UTC rộng hơn; không dựng metric thay thế.</p></section>}
     {state.status === 'stale' && <div className="as-stale-banner" role="status"><strong>Dữ liệu có thể đã cũ.</strong> Provenance vẫn được giữ nguyên; tải lại để kiểm tra result mới nhất.<button className="as-inline-button" type="button" onClick={() => load()}>Tải lại</button></div>}
     {state.status === 'partial' && <div className="as-stale-banner" role="status"><strong>Kết quả mới chỉ một phần.</strong> Các metric không có bằng chứng vẫn giữ N/A; kiểm tra provenance trước khi dùng làm kết luận.</div>}
 
-    {result && (state.status === 'ready' || state.status === 'stale' || state.status === 'partial') && <>
-      <section className="as-story-lead" aria-labelledby="analytics-takeaway"><div><span className="as-eyebrow">TAKEAWAY / ONE CLEAR READ</span><h2 id="analytics-takeaway">{model.takeaway}</h2><p>Phạm vi: {model.result?.dataset_id || 'N/A'} · {model.strategy} · {model.result?.split || 'split N/A'} · {model.observed.start} → {model.observed.end}. Đây là research result, không phải broker performance.</p></div><span className="as-story-badge">N = {finite(model.tradeCount) ? formatNumber(model.tradeCount, 0) : 'N/A'}</span></section>
-      <section className="as-scope-strip" aria-label="Phạm vi kết quả"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Instrument" value={model.result?.instrument_id || model.result?.instrument} /><ContextValue label="Timeframe" value={model.result?.timeframe} /><ContextValue label="Strategy / playbook" value={model.strategy} /><ContextValue label="Observed UTC" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Timezone" value={model.result?.timezone || 'UTC'} /><ContextValue label="Data quality" value={model.result?.data_quality || model.result?.quality} /><ContextValue label="Trades in scope" value={model.result?.scope?.selected_trade_count} /><ContextValue label="Trades total" value={model.result?.scope?.total_trade_count} /><ContextValue label="Balance basis" value={model.result?.scope?.balance_curve_scope} /><ContextValue label="Mode" value="Research / simulation" /><ContextValue label="Broker" value="Locked" /></section>
-      <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail="account units · net" source={model.derivedNet ? 'derived from ledger' : 'research result'} tone={model.netPnl > 0 ? 'is-positive' : model.netPnl < 0 ? 'is-negative' : ''} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} detail={formatNumber(model.wins, 0) + ' thắng · ' + formatNumber(model.losses, 0) + ' thua · ' + formatNumber(model.breakeven, 0) + ' hòa'} source={model.derivedWinRate ? 'derived from ledger' : 'research result'} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} detail="closed-trade ledger" source="research result" /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail="closed-trade balance" source="research result / derived" /></section>
-      <section className="as-evidence-grid"><article className="as-evidence-panel"><div className="as-section-head"><div><span className="as-eyebrow">EVIDENCE / BALANCE PATH</span><h2>Closed-trade balance</h2></div><span className="as-source-note">{model.curve.length ? model.curve.length + ' points' : 'N/A'}</span></div><BalanceEvidence model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} /><div className="as-secondary-metrics"><div><span>Starting balance</span><strong>{formatNumber(model.startBalance)}</strong></div><div><span>Ending balance</span><strong>{formatNumber(model.endingBalance)}</strong></div><div><span>Expectancy</span><strong>{formatNumber(model.expectancy)}</strong><small>{model.derivedExpectancy ? 'derived from ledger' : 'research result'}</small></div><div><span>Profit factor</span><strong>{formatNumber(model.profitFactor)}</strong><small>gross profit / loss</small></div></div><details className="as-definition"><summary>Cách đọc đường này</summary><p>Đường chỉ nối balance sau từng trade đóng. Dataset hiện tại không cung cấp floating path, nên không gọi đây là equity curve hay intratrade drawdown.</p></details></article><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></section>
-      <TradeLedger model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} />
-      <AnalyticsMetricDisclosure model={model} />
-      <section className="as-next-action" aria-label="Next action"><div><span className="as-eyebrow">NEXT ACTION</span><h2>{selectedTrade ? 'Review ' + selectedTrade.tradeId + ' trong context' : 'Chọn một điểm để tiếp tục review'}</h2><p>{selectedTrade ? 'Đối chiếu ledger với Journal hoặc Replay nếu result có session tương ứng.' : 'Bắt đầu từ một trade hoặc một điểm trên đường balance; số liệu chi tiết mở sau phần takeaway.'}</p></div><div className="as-next-links"><a className="as-primary-button" href={selectedTrade ? links.journal : links.research}>{selectedTrade ? 'Mở Journal' : 'Về Research'}</a>{sessionId && <a className="as-secondary-button" href={links.replay}>Mở Replay</a>}</div></section>
+    {result && (state.status === 'ready' || state.status === 'stale' || state.status === 'partial' || state.status === 'empty') && <>
+      {!ledgerOnly && !summaryOnly && <section className="as-story-lead" aria-labelledby="analytics-takeaway"><div><span className="as-eyebrow">KẾT QUẢ TRONG PHẠM VI ĐÃ CHỌN</span><h2 id="analytics-takeaway">{model.takeaway}</h2><p>{model.observed.start} → {model.observed.end} · UTC · Kết quả mô phỏng.</p></div></section>}
+      {!summaryOnly && <details className="as-scope-details"><summary>Phạm vi và nguồn dữ liệu</summary><dl className="as-scope-strip" aria-label="Phạm vi kết quả"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Instrument" value={model.result?.instrument_id || model.result?.instrument} /><ContextValue label="Timeframe" value={model.result?.timeframe} /><ContextValue label="Strategy / playbook" value={model.strategy} /><ContextValue label="Observed UTC" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Timezone" value={model.result?.timezone || 'UTC'} /><ContextValue label="Data quality" value={model.result?.data_quality || model.result?.quality} /><ContextValue label="Trades in scope" value={model.result?.scope?.selected_trade_count} /><ContextValue label="Trades total" value={model.result?.scope?.total_trade_count} /><ContextValue label="Balance basis" value={model.result?.scope?.balance_curve_scope} /><ContextValue label="Mode" value={sourceLabel + " / simulation"} /><ContextValue label="Broker" value="Locked" /></dl></details>}
+      <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail={(result?.account_currency || 'account units') + ' · net'} source={model.derivedNet ? 'derived from ledger' : sourceLabel} tone={model.netPnl > 0 ? 'is-positive' : model.netPnl < 0 ? 'is-negative' : ''} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} detail={formatNumber(model.wins, 0) + ' thắng · ' + formatNumber(model.losses, 0) + ' thua · ' + formatNumber(model.breakeven, 0) + ' hòa'} source={model.derivedWinRate ? 'derived from ledger' : sourceLabel} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} detail="closed-trade ledger" source={sourceLabel} /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail="closed-trade balance" source={sourceLabel + " / ledger"} /></section>
+      {!summaryOnly && !ledgerOnly && <section className="as-evidence-grid"><article className="as-evidence-panel"><div className="as-section-head"><div><span className="as-eyebrow">EVIDENCE / BALANCE PATH</span><h2>Closed-trade balance</h2></div><span className="as-source-note">{model.curve.length ? model.curve.length + ' points' : 'N/A'}</span></div><BalanceEvidence model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} /><div className="as-secondary-metrics"><div><span>Starting balance</span><strong>{formatNumber(model.startBalance)}</strong></div><div><span>Ending balance</span><strong>{formatNumber(model.endingBalance)}</strong></div><div><span>Expectancy</span><strong>{formatNumber(model.expectancy)}</strong><small>{model.derivedExpectancy ? 'derived from ledger' : sourceLabel}</small></div><div><span>Profit factor</span><strong>{formatNumber(model.profitFactor)}</strong><small>gross profit / loss</small></div></div><details className="as-definition"><summary>Cách đọc đường này</summary><p>Đường chỉ nối balance sau từng trade đóng. Dataset hiện tại không cung cấp floating path, nên không gọi đây là equity curve hay intratrade drawdown.</p></details></article><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></section>}
+      {!summaryOnly && <TradeLedger model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} />}
+      {ledgerOnly && <ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} />}
+      {!summaryOnly && !ledgerOnly && <AnalyticsMetricDisclosure model={model} />}
+      {!summaryOnly && <section className="as-next-action" aria-label="Next action"><div><span className="as-eyebrow">NEXT ACTION</span><h2>{selectedTrade ? 'Review ' + selectedTrade.tradeId + ' trong context' : 'Chọn một điểm để tiếp tục review'}</h2><p>{selectedTrade ? 'Đối chiếu ledger với Journal hoặc Replay nếu result có session tương ứng.' : 'Bắt đầu từ một trade hoặc một điểm trên đường balance; số liệu chi tiết mở sau phần takeaway.'}</p></div><div className="as-next-links"><a className="as-primary-button" href={selectedTrade ? links.journal : sessionId ? links.replay : links.research}>{selectedTrade ? 'Mở Journal' : sessionId ? 'Về Replay' : 'Về Research'}</a>{sessionId && <a className="as-secondary-button" href={links.replay}>Mở Replay</a>}</div></section>}
     </>}
-  </main>
+  </section>
 }
 
 export default AnalyticsStoryWorkspace

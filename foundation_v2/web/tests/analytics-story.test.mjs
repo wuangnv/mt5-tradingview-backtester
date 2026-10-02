@@ -6,12 +6,12 @@ import path from 'node:path'
 const root = path.resolve(process.cwd(), 'src')
 const source = fs.readFileSync(path.join(root, 'AnalyticsWorkspace.jsx'), 'utf8')
 const css = fs.readFileSync(path.join(root, 'analytics-story.css'), 'utf8')
-const renderedStory = source.slice(source.indexOf('return <main className=\"as-page\"'))
+const renderedStory = source.slice(source.indexOf('return <section className=\"as-page\"'))
 
 test('analytics follows context to takeaway, evidence, drilldown and next action', () => {
   const markers = [
     'as-context-bar',
-    'TAKEAWAY / ONE CLEAR READ',
+    'KẾT QUẢ TRONG PHẠM VI ĐÃ CHỌN',
     'EVIDENCE / BALANCE PATH',
     'ProvenanceInspector model',
     'TradeLedger model',
@@ -27,7 +27,7 @@ test('analytics follows context to takeaway, evidence, drilldown and next action
 })
 
 test('analytics preserves source truth and closed-balance semantics', () => {
-  assert.match(source, /\/api\/v2\/research\/jobs\//)
+  assert.match(source, /resourceKind = jobId \? 'research\/jobs' : 'replay\/sessions'/)
   assert.match(source, /return 'N\/A'/)
   assert.match(source, /derived from ledger/)
   assert.match(source, /closed_trade_balance_curve/)
@@ -50,11 +50,11 @@ test('analytics keeps provenance and trade drilldown linked', () => {
 
 test('analytics does not add broker execution controls', () => {
   assert.doesNotMatch(source, /OrderSend|sendOrder|submitLive|\/api\/trade\/send/i)
-  assert.match(source, /Research \/ local · broker locked/)
+  assert.match(source, /sourceLabel\} \/ local · broker locked/)
 })
 
 test('analytics reads the bounded U6 read model, filters by ledger fields, and exports through the workspace header', () => {
-  assert.match(source, /\/api\/v2\/research\/jobs\/\$\{encodeURIComponent\(jobId\)\}\/analytics/)
+  assert.match(source, /\/api\/v2\/\$\{resourceKind\}\/\$\{encodeURIComponent\(resourceId\)\}\/analytics/)
   assert.match(source, /analytics\.csv/)
   assert.match(source, /X-Workspace-Id/)
   assert.match(source, /side.*buy.*sell/s)

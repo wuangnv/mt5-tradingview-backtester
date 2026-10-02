@@ -8,14 +8,6 @@ export { buildWorkspaceHref, readWorkspaceContext }
 const LANGUAGE_STORAGE_KEY = 'tw-language'
 const THEME_STORAGE_KEY = 'tw-theme'
 const RAIL_COLLAPSED_STORAGE_KEY = 'tw-shell-rail-collapsed'
-const CHART_SHELL_UNAVAILABLE_TITLE = 'Chưa khả dụng trong chart shell'
-
-// The shell is being rebuilt before the workspace content. Keep the existing
-// content routes in source so their contracts remain available for the next
-// pass. The first shell pass intentionally renders no workspace content; the
-// route components can be re-enabled once the frame is approved visually.
-export const SHELL_SKELETON_MODE = true
-
 const SHELL_COPY = {
   vi: {
     language: 'VI',
@@ -27,6 +19,8 @@ const SHELL_COPY = {
     themeDarkShort: 'Tối',
     themeLightShort: 'Sáng',
     toggleNavigation: 'Mở hoặc thu gọn điều hướng',
+    openNavigation: 'Mở điều hướng',
+    closeNavigation: 'Đóng điều hướng',
     help: 'Mở phím tắt và trợ giúp',
     closeHelp: 'Đóng trợ giúp',
     shortcutsTitle: 'Phím tắt WMREPLAY',
@@ -74,6 +68,8 @@ const SHELL_COPY = {
     themeDarkShort: 'Dark',
     themeLightShort: 'Light',
     toggleNavigation: 'Expand or collapse navigation',
+    openNavigation: 'Open navigation',
+    closeNavigation: 'Close navigation',
     help: 'Open shortcuts and help',
     closeHelp: 'Close help',
     shortcutsTitle: 'WMREPLAY keyboard shortcuts',
@@ -238,7 +234,7 @@ function RailIcon({ id }) {
   return <svg {...common}><path d="M4 17V7M10 17V4M16 17V9M22 17V2" /><path d="M3 20h20" /></svg>
 }
 
-function ShellRail({ activeView, workspace, query, copy, railId }) {
+function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onClose, closeButtonRef }) {
   const activeArea = activeSectionId(activeView, query)
   const primary = SIDEBAR_SECTIONS.slice(0, 3)
   const utility = SIDEBAR_SECTIONS.slice(3)
@@ -257,6 +253,7 @@ function ShellRail({ activeView, workspace, query, copy, railId }) {
         aria-label={`${label}: ${description}`}
         title={description}
         data-nav-label={label}
+        onClick={drawerOpen ? onClose : undefined}
       >
         <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={section.icon} /></span>
         <span className="fx-rail-section-label">{label}</span>
@@ -264,7 +261,11 @@ function ShellRail({ activeView, workspace, query, copy, railId }) {
     )
   }
   return (
-    <aside className="fx-rail" id={railId} aria-label={copy.workspaceAria}>
+    <aside className="fx-rail" id={railId} aria-label={copy.workspaceAria} role={drawerOpen ? 'dialog' : undefined} aria-modal={drawerOpen ? 'true' : undefined}>
+      {drawerOpen && <div className="fx-mobile-nav-header">
+        <span>{copy.product}</span>
+        <button className="fx-shell-help-close" type="button" onClick={onClose} aria-label={copy.closeNavigation} ref={closeButtonRef}>×</button>
+      </div>}
       <div className="fx-rail-primary">
         {primary.map((section, index) => (
           <React.Fragment key={section.id}>
@@ -309,45 +310,36 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
   )
 }
 
-function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace, helpOpen, onToggleHelp, helpButtonRef, railId }) {
+function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace, helpOpen, onToggleHelp, helpButtonRef, railId, mobileNavigation, drawerOpen, menuButtonRef }) {
   if (chartWorkspace) {
-    const sessionLabel = query?.get('dataset') || query?.get('session') || 'WMReplay scan'
+    const sessionLabel = query?.get('dataset') || query?.get('session') || 'Phiên replay mới'
     const backHref = buildWorkspaceHref('replay', workspace, query, { select: '1', surface: '' })
     return (
       <header className="fx-topbar fx-chart-topbar">
         <div className="fx-chart-topbar-left">
           <a className="fx-chart-icon-button" href={backHref} aria-label="Quay lại Sessions" title="Quay lại Sessions">←</a>
           <span className="fx-chart-brand" aria-label={copy.product}>{copy.product}</span>
-          <button className="fx-chart-icon-button" type="button" aria-label="Tiến nhanh" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>≫</button>
-          <button className="fx-chart-icon-button" type="button" aria-label="Thêm chart" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>＋</button>
-          <button className="fx-chart-timeframe" type="button" aria-label="Khung thời gian" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>{query?.get('timeframe') || '1m'}</button>
-          <button className="fx-chart-tool-button" type="button" aria-label="Indicators" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>☷&nbsp; Indicators</button>
-          <button className="fx-chart-tool-button" type="button" aria-label="Order flow" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>☷&nbsp; Order flow</button>
-          <button className="fx-chart-tool-button" type="button" aria-label="Analytics" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>▥&nbsp; Analytics</button>
         </div>
         <div className="fx-chart-session-title" title={sessionLabel}>WMReplay · {sessionLabel}</div>
         <div className="fx-chart-topbar-actions">
-          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Undo" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>↶</button>
-          <button className="fx-chart-icon-button is-muted" type="button" aria-label="Redo" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>↷</button>
           <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN⌄' : 'VI⌄'}</button>
           <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span></button>
           <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls={helpOpen ? 'fx-shell-help' : undefined} aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
-          <button className="fx-shell-toggle fx-utility-icon fx-fullscreen-icon" type="button" aria-label="Fullscreen" title={CHART_SHELL_UNAVAILABLE_TITLE} disabled>⛶</button>
         </div>
       </header>
     )
   }
   return (
-    <header className="fx-topbar">
-      <div className="fx-topbar-brand" role="img" aria-label={copy.product} title={copy.product}>
-        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-label={copy.toggleNavigation} title={copy.toggleNavigation}>
+    <header className="fx-topbar" inert={drawerOpen}>
+      <div className="fx-topbar-brand" title={copy.product}>
+        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-haspopup={mobileNavigation ? 'dialog' : undefined} aria-label={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} title={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} ref={menuButtonRef}>
           <svg className="fx-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
             <path d="M4 7h8M4 12h16M4 17h8" />
             <path d="m8 4-4 3 4 3" />
           </svg>
         </button>
-        <span className="fx-wordmark" aria-hidden="true"><WMReplayWordmark /></span>
-        <span className="fx-wordmark-compact" aria-hidden="true">WM</span>
+        <span className="fx-wordmark"><WMReplayWordmark /></span>
+        <span className="fx-wordmark-compact" role="img" aria-label={copy.product}>WM</span>
       </div>
       <div className="fx-topbar-actions">
         <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">
@@ -385,12 +377,8 @@ function currentQuery() {
 }
 
 export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
-  const chartWorkspace = !SHELL_SKELETON_MODE && activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
-  // Keep the skeleton shell branch truthful while giving a loaded replay a
-  // compact mobile rail.  This class is a layout hint only: it does not flip
-  // the full-bleed workspace flag, mutate the persisted rail preference, or
-  // alter replay/API state.
-  const chartRoute = activeView === 'replay' && query.get('surface') === 'workspace' && Boolean(query.get('session'))
+  const chartWorkspace = activeView === 'replay' && query.get('select') !== '1' && (query.get('surface') === 'workspace' || Boolean(query.get('session')) || Boolean(query.get('dataset')))
+  const chartRoute = chartWorkspace
   const routeContext = useMemo(() => readWorkspaceContext(query), [query])
   const [language, setLanguage] = useState(() => {
     try {
@@ -421,32 +409,83 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
     return window.matchMedia('(max-width: 1180px)').matches
   })
   const [helpOpen, setHelpOpen] = useState(false)
+  const [mobileNavigation, setMobileNavigation] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 760px)').matches)
+  const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false)
+  const drawerOpen = mobileNavigation && mobileNavigationOpen && !chartWorkspace
+  // Mobile navigation is transient; resizing must not rewrite the desktop preference.
+  const displayedRailCollapsed = mobileNavigation ? !drawerOpen : railCollapsed
+  const menuButtonRef = useRef(null)
+  const navigationCloseRef = useRef(null)
   const helpButtonRef = useRef(null)
   const helpCloseRef = useRef(null)
   // Kept as a stable compatibility hook for workspaces that report market
   // context. The global header intentionally does not render that metadata.
   const updateMarketContext = useCallback(() => {}, [])
-  const contextValue = useMemo(() => ({
-    updateMarketContext,
-    routeContext,
-    buildHref: (view, overrides) => buildWorkspaceHref(view, workspace, query, overrides),
-  }), [query, routeContext, updateMarketContext, workspace])
   const copy = SHELL_COPY[language]
   const handleLanguage = useCallback((next) => {
     setLanguage(next)
-    try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next) } catch { /* private browsing */ }
+    try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next); return true } catch { return false }
   }, [])
   const handleTheme = useCallback((next) => {
     setTheme(next)
-    try { window.localStorage.setItem(THEME_STORAGE_KEY, next) } catch { /* private browsing */ }
+    try { window.localStorage.setItem(THEME_STORAGE_KEY, next); return true } catch { return false }
   }, [])
+  const applyAppearance = useCallback((next) => {
+    const themeSaved = handleTheme(next.theme)
+    const languageSaved = handleLanguage(next.language)
+    return themeSaved && languageSaved
+  }, [handleLanguage, handleTheme])
+  useEffect(() => {
+    const syncAppearance = (event) => {
+      if (event.storageArea !== window.localStorage) return
+      if (event.key === THEME_STORAGE_KEY || event.key === null) {
+        const value = window.localStorage.getItem(THEME_STORAGE_KEY)
+        setTheme(value === 'light' ? 'light' : 'dark')
+      }
+      if (event.key === LANGUAGE_STORAGE_KEY || event.key === null) {
+        const value = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
+        setLanguage(value === 'en' ? 'en' : 'vi')
+      }
+    }
+    window.addEventListener('storage', syncAppearance)
+    return () => window.removeEventListener('storage', syncAppearance)
+  }, [])
+  const contextValue = useMemo(() => ({
+    updateMarketContext,
+    routeContext,
+    appearance: { theme, language },
+    applyAppearance,
+    buildHref: (view, overrides) => buildWorkspaceHref(view, workspace, query, overrides),
+  }), [query, routeContext, updateMarketContext, workspace, theme, language, applyAppearance])
   const handleRail = useCallback(() => {
+    if (mobileNavigation) {
+      setHelpOpen(false)
+      setMobileNavigationOpen((value) => !value)
+      return
+    }
     setRailCollapsed((value) => {
       const next = !value
       try { window.localStorage.setItem(RAIL_COLLAPSED_STORAGE_KEY, String(next)) } catch { /* private browsing */ }
       return next
     })
+  }, [mobileNavigation])
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px)')
+    const onChange = () => {
+      setMobileNavigation(media.matches)
+      setMobileNavigationOpen(false)
+    }
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
   }, [])
+  const routeKey = query.toString()
+  useEffect(() => { setMobileNavigationOpen(false) }, [activeView, routeKey])
+  const wasDrawerOpen = useRef(false)
+  useEffect(() => {
+    if (drawerOpen) navigationCloseRef.current?.focus()
+    else if (wasDrawerOpen.current) menuButtonRef.current?.focus()
+    wasDrawerOpen.current = drawerOpen
+  }, [drawerOpen])
   useEffect(() => {
     const root = document.documentElement
     const previous = root.getAttribute('lang')
@@ -470,6 +509,25 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
   }, [theme])
   useEffect(() => {
     const onKeyDown = (event) => {
+      if (drawerOpen) {
+        if (event.key === 'Escape') {
+          event.preventDefault()
+          setMobileNavigationOpen(false)
+        }
+        if (event.key === 'Tab') {
+          const focusable = [...document.getElementById('fxreplay-rail').querySelectorAll('button, [href]')]
+          const first = focusable[0]
+          const last = focusable[focusable.length - 1]
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last.focus()
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first.focus()
+          }
+        }
+        return
+      }
       const target = event.target
       const isEditable = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
       if (event.key === '?' && !isEditable) {
@@ -498,7 +556,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [helpOpen])
+  }, [helpOpen, drawerOpen])
   useEffect(() => {
     if (helpOpen) helpCloseRef.current?.focus()
   }, [helpOpen])
@@ -510,13 +568,14 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
 
   return (
     <FxReplayContext.Provider value={contextValue}>
-      <div className={`fx-app fx-shell-story ${railCollapsed ? 'is-rail-collapsed' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''} ${chartRoute ? 'is-chart-route' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
-        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={railCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" />
-        <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" />
-        <section className="fx-main" aria-label={copy.contentAria}>
+      <div className={`fx-app fx-shell-story ${displayedRailCollapsed ? 'is-rail-collapsed' : ''} ${drawerOpen ? 'is-mobile-nav-open' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''} ${chartRoute ? 'is-chart-route' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
+        <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={displayedRailCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" mobileNavigation={mobileNavigation} drawerOpen={drawerOpen} menuButtonRef={menuButtonRef} />
+        {drawerOpen && <div className="fx-mobile-nav-backdrop" aria-hidden="true" onClick={() => setMobileNavigationOpen(false)} />}
+        {!chartWorkspace && <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" drawerOpen={drawerOpen} onClose={() => setMobileNavigationOpen(false)} closeButtonRef={navigationCloseRef} />}
+        <section className="fx-main" aria-label={copy.contentAria} inert={drawerOpen}>
           <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
           {helpOpen && <ShellHelp copy={copy} helpCloseRef={helpCloseRef} onClose={() => setHelpOpen(false)} />}
-          <div className="fx-content">{children}</div>
+          <div className="fx-content" tabIndex={0}>{children}</div>
         </section>
       </div>
     </FxReplayContext.Provider>

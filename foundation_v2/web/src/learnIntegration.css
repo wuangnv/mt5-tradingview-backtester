@@ -1,10 +1,19 @@
+.fx-app .fx-content > .learn-shell { padding-left: 24px; padding-right: 24px; }
 .learn-utility-links { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .learn-context-strip { display: flex; align-items: center; gap: 18px; min-height: 42px; flex-wrap: wrap; border-bottom: 1px solid #293036; color: #7f8992; font-size: 10px; }
 .learn-context-strip span { overflow-wrap: anywhere; }
-.learn-context-strip strong { color: #cbd2d8; }
-.learn-context-strip code { color: #aeb7be; }
-.learn-context-strip .is-warn, .learn-footnote .is-warn { color: #f0c878 !important; }
+.learn-context-strip strong { color: var(--fx-shell-text, #cbd2d8); }
+.learn-context-strip code { color: var(--fx-shell-muted, #aeb7be); }
+.learn-context-strip .is-warn, .learn-footnote .is-warn { color: var(--fx-shell-warn, #f0c878) !important; }
+.fx-app .learn-shell .learn-readonly strong, .fx-app .learn-shell .learn-module li.is-current span, .fx-app .learn-shell .learn-module li.is-current strong { color: var(--fx-shell-warn, #f0c878); }
+.fx-app .learn-shell .learn-pane-heading code { color: var(--fx-shell-muted, #9ba4ac); }
+.learn-shell .eyebrow { color: var(--fx-shell-muted, #9ba4ac); }
+.learn-shell .context-link { color: var(--fx-shell-text, #e0e5e9); }
+.learn-shell .learn-message { color: var(--fx-shell-muted, #9ba4ac); }
+.learn-shell .learn-message-error, .learn-shell .learn-message-denied { color: var(--fx-shell-danger, #ef9c9c); }
+.learn-shell .learn-message-unavailable { color: var(--fx-shell-warn, #f0c878); }
 
 @media (max-width: 520px) {
+  .fx-app .fx-content > .learn-shell { padding-left: 14px; padding-right: 14px; }
   .learn-utility-links { gap: 10px 14px; }
 }

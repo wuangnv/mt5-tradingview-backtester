@@ -1,6 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
+  deleteChartAnnotation,
+  drawingIsVisibleAt,
   CHART_ANNOTATION_LIMITS,
   buildReplayAnnotationDraft,
   createChartAnnotation,
@@ -113,4 +115,26 @@ test('surfaces API errors without turning them into successful drafts', async ()
     createChartAnnotation('tenant-a', draft(), { fetchImpl }),
     (error) => error.message === 'revision_conflict' && error.status === 409,
   )
+})
+
+test('drawing visibility requires matching replay scope, known candle anchors and causal creation cutoff', () => {
+  const payload = normalizeAnnotationDraft(draft({ run_id: 'session-a' }))
+  const scope = { sessionId: 'session-a', instrument: 'EURUSD', timeframe: 'H1', cutoff: 1_700_000_180, timestamps: new Set([1_700_000_120, 1_700_000_180]) }
+  assert.equal(drawingIsVisibleAt({ payload }, scope), true)
+  assert.equal(drawingIsVisibleAt({ payload }, { ...scope, sessionId: 'session-b' }), false)
+  assert.equal(drawingIsVisibleAt({ payload }, { ...scope, cutoff: 1_700_000_179 }), false)
+  assert.equal(drawingIsVisibleAt({ payload }, { ...scope, timeframe: 'M1' }), false)
+  assert.equal(drawingIsVisibleAt({ payload, deleted: true }, scope), false)
+  assert.equal(drawingIsVisibleAt({ payload: { ...payload, cutoff_timestamp: 1_700_000_181 } }, scope), false)
+  assert.equal(drawingIsVisibleAt({ payload: { ...payload, anchors: [{ timestamp: 1_700_000_110, price: 1.1 }] } }, scope), false)
+})
+
+test('annotation delete preserves workspace and revision and exposes conflict or missing record errors', async () => {
+  let request
+  const fetchImpl = async (url, options) => { request = { url, options }; return { ok: true, json: async () => ({ deleted: true, revision: 3 }) } }
+  assert.deepEqual(await deleteChartAnnotation('tenant-a', 'a b', 2, { fetchImpl }), { deleted: true, revision: 3 })
+  assert.equal(request.url, '/api/v2/chart/annotations/a%20b/delete')
+  assert.equal(request.options.headers['X-Workspace-Id'], 'tenant-a')
+  assert.deepEqual(JSON.parse(request.options.body), { expected_revision: 2 })
+  for (const status of [404, 409]) await assert.rejects(deleteChartAnnotation('tenant-a', 'ann', 2, { fetchImpl: async () => ({ ok: false, status, json: async () => ({ detail: 'annotation failure' }) }) }), error => error.status === status)
 })

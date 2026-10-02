@@ -1,34 +1,74 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
-import { dirname, resolve } from 'node:path'
+import { duplicateSession, fetchReplaySessions, normalizeSessionCatalog, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from '../src/sessionCatalog.js'
 
-const testsDir = dirname(fileURLToPath(import.meta.url))
-const sourceDir = resolve(testsDir, '..', 'src')
+const item = { record_id: 'session-2', revision: 7, dataset_id: 'dataset-2', cursor_index: 12 }
 
-test('session picker is shared across Sessions, Trades and Analytics and reads the safe catalog projection', async () => {
-  const picker = await readFile(resolve(sourceDir, 'SessionPicker.jsx'), 'utf8')
-  const main = await readFile(resolve(sourceDir, 'main.jsx'), 'utf8')
+test('session selection clears stale research and historical context while keeping workspace', () => {
+  const query = new URLSearchParams('workspace=old&job=job-1&dataset=dataset-1&session=session-1&cursor=80&cutoff=123&side=buy&playbook=old&playbook_revision=9')
+  const next = new URL(sessionNavigationHref('analytics', 'tenant-b', query, item), 'http://localhost').searchParams
+  assert.equal(next.get('workspace'), 'tenant-b')
+  assert.equal(next.get('view'), 'analytics')
+  assert.equal(next.get('session'), 'session-2')
+  assert.equal(next.get('dataset'), 'dataset-2')
+  assert.equal(next.get('select'), '1')
+  for (const key of ['job', 'cursor', 'cutoff', 'side', 'playbook', 'playbook_revision', 'surface']) assert.equal(next.has(key), false, key)
+  const chart = new URL(sessionNavigationHref('replay', 'tenant-b', query, item, { surface: 'workspace', select: null }), 'http://localhost').searchParams
+  assert.equal(chart.get('surface'), 'workspace')
+  assert.equal(chart.has('select'), false)
+})
 
-  assert.match(picker, /Select session/, 'picker uses the compact FXReplay-style title')
-  assert.match(picker, /New backtesting session/, 'picker exposes a new-session option')
-  assert.match(picker, /tw:replay:last:/, 'picker can resume the last local session')
-  assert.match(picker, /surface: 'workspace'/, 'opening a session returns to the existing workspace surface')
-  assert.match(picker, /fresh: '1'/, 'new session bypasses the persisted last-session resume')
-  assert.match(picker, /fetch\('\/api\/v2\/replay\/sessions'/, 'picker reads the v2 session catalog route')
-  assert.match(picker, /X-Workspace-Id/, 'catalog request stays tenant-scoped')
-  assert.match(picker, /dataset_available/, 'picker surfaces unavailable datasets explicitly')
-  assert.match(picker, /dataset: selectedItem \? \(selectedItem\.dataset_id \|\| null\) : undefined/, 'session links update dataset context while preserving fallback links')
-  assert.match(picker, /fxr-session-toolbar/, 'Sessions keeps the source-aligned selector and action toolbar')
-  assert.match(picker, /fxr-metrics-grid/, 'Sessions exposes the six-card performance strip')
-  assert.match(picker, /fxr-trades-table/, 'Trades keeps the source-aligned wide table surface')
-  assert.match(picker, /fxr-filter-panel/, 'Analytics keeps the source-aligned filter surface')
-  assert.match(main, /SessionPicker kind="replay"/, 'Sessions uses the shared picker')
-  assert.match(main, /SessionPicker kind="trade"/, 'Trades uses the shared picker')
-  assert.match(main, /SessionPicker kind="analytics"/, 'Analytics uses the shared picker')
-  assert.match(main, /query\.get\('surface'\) !== 'workspace'/, 'legacy data surfaces remain available through an explicit deep link')
+test('session analytics receives the selected session rather than a stale job; summary clears filters', () => {
+  const query = new URLSearchParams('job=old&job_id=older&session=old&replay_session=old&cursor=9&cutoff=23&trade=t1&side=sell&from=2026-01-01')
+  const scoped = sessionAnalyticsQuery(query, item)
+  assert.equal(scoped.get('session'), 'session-2')
+  assert.equal(scoped.get('side'), 'sell')
+  for (const key of ['job', 'job_id', 'replay_session', 'cursor', 'cutoff', 'trade']) assert.equal(scoped.has(key), false, key)
+  const summary = sessionAnalyticsQuery(query, item, { summary: true })
+  assert.equal(summary.has('side'), false)
+  assert.equal(summary.has('from'), false)
+  assert.equal(query.get('job'), 'old', 'input is immutable')
+})
 
-  const replay = await readFile(resolve(sourceDir, 'ReplayWorkspace.jsx'), 'utf8')
-  assert.match(replay, /query\.get\('fresh'\) === '1'/, 'Replay honors an explicit fresh-session start')
+test('malformed catalog never turns into a trustworthy empty session list', () => {
+  for (const payload of [{}, { items: null }, { items: [null] }, { items: [{ record_id: 'x', revision: 0 }] }]) assert.throws(() => normalizeSessionCatalog(payload))
+  assert.deepEqual(normalizeSessionCatalog({ items: [] }), [])
+  assert.deepEqual(normalizeSessionCatalog({ items: [item] }), [item])
+})
+
+test('catalog and mutations use workspace scope and exact revision/cursor without automatic retries', async (t) => {
+  const calls = []
+  t.mock.method(globalThis, 'fetch', async (path, options) => {
+    calls.push({ path, options })
+    return new Response(JSON.stringify(path.endsWith('/sessions') ? { items: [item] } : { record_id: item.record_id }), { status: 200, headers: { 'Content-Type': 'application/json' } })
+  })
+  const controller = new AbortController()
+  assert.deepEqual(await fetchReplaySessions('tenant-a', controller.signal), [item])
+  await updateSessionMetadata('tenant-a', item, { name: 'Phiên mới', description: 'Mô tả', archived: true })
+  await duplicateSession('tenant-a', item)
+  assert.equal(calls.length, 3)
+  assert.equal(calls[0].options.signal, controller.signal)
+  for (const call of calls) assert.equal(call.options.headers['X-Workspace-Id'], 'tenant-a')
+  assert.equal(calls[1].options.method, 'PATCH')
+  assert.deepEqual(JSON.parse(calls[1].options.body), { name: 'Phiên mới', description: 'Mô tả', archived: true, expected_revision: 7 })
+  assert.match(calls[2].path, /session-2\/branch$/)
+  assert.deepEqual(JSON.parse(calls[2].options.body), { expected_revision: 7, cursor_index: 12 })
+})
+
+test('revision conflicts and authorization failures keep HTTP status for recovery UI', async (t) => {
+  let count = 0
+  t.mock.method(globalThis, 'fetch', async () => { count++; return new Response(JSON.stringify({ detail: 'revision_conflict' }), { status: 409 }) })
+  await assert.rejects(updateSessionMetadata('tenant-a', item, { name: 'Draft' }), (error) => error.status === 409 && error.message === 'revision_conflict')
+  assert.equal(count, 1)
+})
+
+test('an explicit same-session trade and historical cutoff survive analytics composition', () => {
+  const query = new URLSearchParams('session=session-2&trade=t5&cursor=6&cutoff=123&side=sell')
+  const scoped = sessionAnalyticsQuery(query, item)
+  assert.equal(scoped.get('trade'), 't5')
+  assert.equal(scoped.get('cursor'), '6')
+  assert.equal(scoped.get('cutoff'), '123')
+  const summary = sessionAnalyticsQuery(query, item, { summary: true })
+  assert.equal(summary.has('cursor'), false)
+  assert.equal(summary.has('trade'), false)
 })

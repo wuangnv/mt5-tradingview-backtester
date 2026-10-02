@@ -1,4 +1,4 @@
-.live-workspace { width: min(1180px, 100%); margin: 0 auto; padding: 0 24px 34px; }
+.live-workspace { --fx-shell-subtle: var(--fx-shell-muted, #9ba4ac); width: min(1180px, 100%); margin: 0 auto; padding: 0 24px 34px; }
 .live-topbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 118px; border-bottom: 1px solid var(--fx-shell-line, var(--fx-line)); }
 .live-topbar h1 { margin: 7px 0 0; color: var(--fx-shell-text, var(--fx-text)); font-size: 25px; line-height: 1.16; }
 .live-topbar p { max-width: 660px; margin: 9px 0 0; color: var(--fx-shell-muted, var(--fx-muted)); font-size: 12px; line-height: 1.55; }
@@ -17,7 +17,7 @@
 .live-retry { min-height: 31px; margin-left: auto; border: 1px solid currentColor; background: transparent; color: inherit; padding: 0 11px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 .live-permission { margin-top: 18px; border-top: 1px solid var(--fx-shell-line, var(--fx-line)); border-bottom: 1px solid var(--fx-shell-line, var(--fx-line)); padding: 18px 0 20px; }
 .live-section-heading, .live-surface-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
-.live-section-heading h2, .live-surface-heading h1 { margin: 5px 0 0; color: var(--fx-shell-text, var(--fx-text)); font-size: 16px; }
+.live-section-heading h2, .live-surface-heading h2 { margin: 5px 0 0; color: var(--fx-shell-text, var(--fx-text)); font-size: 16px; }
 .live-permission p { max-width: 760px; margin: 10px 0 16px; color: var(--fx-shell-muted, var(--fx-muted)); font-size: 11px; line-height: 1.55; }
 .live-permission-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--fx-shell-line, var(--fx-line)); }
 .live-permission-grid > div { min-width: 0; padding: 11px 12px 0 0; }.live-permission-grid > div + div { border-left: 1px solid var(--fx-shell-line, var(--fx-line)); padding-left: 12px; }

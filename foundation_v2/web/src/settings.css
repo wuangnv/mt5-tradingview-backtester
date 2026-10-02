@@ -1,5 +1,12 @@
-/* Settings is a flat, read-only boundary: it explains state and permissions
-   without offering fake provider or broker actions. */
+/* Appearance is local to the browser; connection and execution facts are read only. */
+.settings-appearance { padding: 20px 0; border-bottom: 1px solid var(--fx-shell-border); }
+.settings-appearance .settings-heading h2 { color: var(--fx-shell-text); }
+.settings-appearance .settings-note { color: var(--fx-shell-muted); }
+.settings-appearance-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin-top: 16px; }
+.settings-appearance-form label { display: grid; gap: 8px; min-width: 160px; color: var(--fx-shell-text); font-size: 13px; }
+.settings-appearance-form select, .settings-appearance-form button { min-height: 36px; padding: 6px 12px; font-size: 13px; }
+.settings-appearance-form select { color: var(--fx-shell-text); background: var(--fx-shell-surface); border: 1px solid var(--fx-shell-border); }
+.settings-appearance-form button:disabled { cursor: default; }
 .settings-shell { width: min(1280px, 100%); margin: 0 auto; padding: 0 22px 28px; }
 .settings-topbar { min-height: 96px; display: flex; align-items: center; justify-content: space-between; gap: 28px; border-bottom: 1px solid #293036; }
 .settings-topbar h1 { font-size: 26px; }
@@ -38,11 +45,15 @@
 .settings-note { max-width: 700px; margin: 14px 0 0; color: #8f99a2; font-size: 11px; line-height: 1.55; }
 .settings-permissions { list-style: none; margin: 0; padding: 0; border-top: 1px solid #242a2f; }
 .settings-permissions li { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 36px; border-bottom: 1px solid #242a2f; color: #aeb7be; font-size: 11px; }
-.settings-permissions strong { font-size: 10px; white-space: nowrap; }
+.settings-permissions strong { font-size: 10px; text-align: right; overflow-wrap: anywhere; }
 .settings-permissions .is-good { color: #8ece9c; }
 .settings-permissions .is-warn { color: #f0c878; }
 .settings-footnote { min-height: 44px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; color: #7f8992; font-size: 10px; }
 .settings-footnote strong { color: #b9c1c7; }
+.settings-shell .eyebrow { color: var(--fx-shell-muted, #9ba4ac); }
+.settings-shell .context-link { color: var(--fx-shell-text, #e0e5e9); }
+.settings-permissions .is-good { color: var(--fx-green, #8ece9c); }
+.settings-permissions .is-warn { color: var(--fx-shell-warn, #f0c878); }
 
 @media (max-width: 760px) {
   .settings-shell { padding: 0 14px 22px; }

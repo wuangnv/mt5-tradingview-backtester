@@ -5,15 +5,18 @@ import {
   BaselineSeries,
   CandlestickSeries,
   LineSeries,
+  HistogramSeries,
   createChart,
 } from 'lightweight-charts'
 import { useFxReplayContext } from './FxReplayShell.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { buildReplayAnnotationDraft } from './chartAnnotations.js'
+import { ReplayDrawingPrimitive } from './replayDrawingPrimitive.js'
+import { DRAWING_LABELS, useReplayDrawings } from './useReplayDrawings.js'
+import ReplayObjects from './ReplayObjects.jsx'
 import './ReplayWorkspace.css'
 
 function formatTimestamp(timestamp) {
-  if (!Number.isFinite(Number(timestamp))) return 'Chưa có dữ liệu'
+  if (timestamp === null || timestamp === undefined || !Number.isFinite(Number(timestamp))) return 'Chưa có dữ liệu'
   return new Intl.DateTimeFormat('vi-VN', {
     dateStyle: 'short',
     timeStyle: 'medium',
@@ -22,12 +25,12 @@ function formatTimestamp(timestamp) {
 }
 
 function formatPrice(value) {
-  if (!Number.isFinite(Number(value))) return 'N/A'
+  if (value === null || value === undefined || !Number.isFinite(Number(value))) return 'N/A'
   return new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 8 }).format(Number(value))
 }
 
 function formatVolume(value) {
-  if (!Number.isFinite(Number(value))) return 'N/A'
+  if (value === null || value === undefined || !Number.isFinite(Number(value))) return 'N/A'
   return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(Number(value))
 }
 
@@ -48,230 +51,155 @@ async function readJson(response) {
 const CHART_TYPES = [
   { id: 'candles', label: 'Candles' },
   { id: 'bars', label: 'Bars' },
-  { id: 'hollow', label: 'Hollow candles' },
   { id: 'line', label: 'Line' },
   { id: 'area', label: 'Area' },
   { id: 'baseline', label: 'Baseline' },
-  { id: 'heikin', label: 'Heikin Ashi' },
-  { id: 'renko', label: 'Renko' },
 ]
 
-const INTERVAL_GROUPS = [
-  { label: 'Seconds', options: ['5 seconds', '10 seconds', '15 seconds', '30 seconds'] },
-  { label: 'Minutes', options: ['1 minute', '2 minutes', '3 minutes', '5 minutes', '10 minutes', '15 minutes', '30 minutes', '45 minutes'] },
-  { label: 'Hours', options: ['1 hour', '2 hours', '3 hours', '4 hours', '12 hours'] },
-  { label: 'Days', options: ['1 day', '1 week', '1 month', '3 months', '6 months', '12 months'] },
-]
-const INDICATOR_OPTIONS = ['Moving Average', 'Exponential Moving Average', 'RSI', 'MACD', 'Bollinger Bands', 'Volume']
-const TIMEZONE_OPTIONS = ['UTC', 'Exchange', 'Ho Chi Minh (UTC+7)', 'London (UTC+0)', 'New York (UTC-4)', 'Tokyo (UTC+9)']
-const DRAWING_GROUPS = {
-  Cursors: ['Cross', 'Dot', 'Arrow', 'Eraser'],
-  Lines: ['Trendline', 'Ray', 'Horizontal line', 'Vertical line', 'Crossline'],
-  Fibonacci: ['Fib retracement', 'Fib extension', 'Fib channel', 'Fib time zone'],
-  Shapes: ['Rectangle', 'Circle', 'Triangle', 'Polyline', 'Brush'],
-  Notes: ['Text', 'Note', 'Callout', 'Price label'],
-}
-
-function heikinAshiRows(rows) {
-  let previousOpen = null
-  let previousClose = null
-  return rows.map((row) => {
-    const open = Number(row.open)
-    const high = Number(row.high)
-    const low = Number(row.low)
-    const close = Number(row.close)
-    const haClose = (open + high + low + close) / 4
-    const haOpen = previousOpen === null ? (open + close) / 2 : (previousOpen + previousClose) / 2
-    const haHigh = Math.max(high, haOpen, haClose)
-    const haLow = Math.min(low, haOpen, haClose)
-    previousOpen = haOpen
-    previousClose = haClose
-    return { ...row, open: haOpen, high: haHigh, low: haLow, close: haClose }
-  })
-}
-
-function ChartMenu({ id, label, value, openMenu, setOpenMenu, children, testId }) {
-  const open = openMenu === id
-  return (
-    <div className="chart-control-menu">
-      <button
-        type="button"
-        className={`chart-control-button ${open ? 'is-open' : ''}`}
-        data-testid={testId}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={() => setOpenMenu(open ? '' : id)}
-      >
-        <span>{label}</span>
-        {value && <strong>{value}</strong>}
-        <span className="chart-control-chevron" aria-hidden="true">⌄</span>
-      </button>
-      {open && <div className="chart-control-popover" role="menu">{children}</div>}
-    </div>
-  )
-}
-
-function ChartMenuItem({ active = false, disabled = false, children, onClick }) {
-  return (
-    <button type="button" role="menuitem" className={`chart-menu-item ${active ? 'is-active' : ''}`} disabled={disabled} onClick={onClick}>
-      <span>{children}</span>
-      {active && <span className="chart-menu-check" aria-hidden="true">✓</span>}
-    </button>
-  )
-}
-
-// The chart surface keeps the same local-only contract as the rest of the
-// replay view.  These rails are visual affordances for the FXReplay-style
-// workspace; selecting one only changes the local drawing/context state.
-const CHART_TOOL_RAIL = [
-  { id: 'cross', label: 'Crosshair', icon: '＋' },
-  { id: 'trend', label: 'Trend line', icon: '／' },
-  { id: 'levels', label: 'Horizontal line', icon: '＝' },
-  { id: 'shapes', label: 'Shapes', icon: '◇' },
-  { id: 'text', label: 'Text annotation', icon: 'T' },
-  { id: 'measure', label: 'Measure', icon: '⌁' },
-]
-
-const CHART_UTILITY_RAIL = [
-  { id: 'orders', label: 'Orders (locked)', icon: '＋' },
-  { id: 'objects', label: 'Object tree', icon: '▤' },
-  { id: 'watchlist', label: 'Watchlist', icon: '☷' },
-  { id: 'journal', label: 'Journal', icon: '▣' },
-  { id: 'news', label: 'News', icon: 'N' },
-]
-
-function ChartToolRail({ onSelect }) {
-  return (
-    <nav className="chart-tool-rail" aria-label="Công cụ vẽ chart">
-      {CHART_TOOL_RAIL.map((tool) => (
-        <button key={tool.id} type="button" aria-label={tool.label} title={tool.label} onClick={() => onSelect(tool.label)}>
-          <span aria-hidden="true">{tool.icon}</span>
-        </button>
-      ))}
-    </nav>
-  )
-}
-
-function ChartUtilityRail({ onSelect }) {
-  return (
-    <nav className="chart-utility-rail" aria-label="Tiện ích chart">
-      {CHART_UTILITY_RAIL.map((tool) => (
-        <button key={tool.id} type="button" aria-label={tool.label} title={tool.label} disabled={tool.id === 'orders'} onClick={() => onSelect(tool.label)}>
-          <span aria-hidden="true">{tool.icon}</span>
-          <small>{tool.label.split(' ')[0]}</small>
-        </button>
-      ))}
-    </nav>
-  )
-}
-
-function ReplayChart({ rows, chartType = 'candles', onCrosshair, onAnchorSelect }) {
+function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, viewportRequest, drawings, onCrosshair, onAnchorSelect }) {
   const hostRef = useRef(null)
+  const chartRef = useRef(null)
+  const latestRef = useRef({ rows, onCrosshair, onAnchorSelect })
+  latestRef.current = { rows, onCrosshair, onAnchorSelect }
+  const previousSessionRef = useRef(null)
+  const rangeRef = useRef(null)
+  const previousRowCountRef = useRef(0)
 
   useEffect(() => {
-    if (!hostRef.current || !rows.length) return undefined
     const host = hostRef.current
+    if (!host) return undefined
     const chart = createChart(host, {
-      width: host.clientWidth,
-      height: host.clientHeight,
+      width: host.clientWidth, height: host.clientHeight,
       layout: { background: { color: '#030303' }, textColor: '#b8c0c8' },
       grid: { vertLines: { color: '#1a1a1a' }, horzLines: { color: '#1a1a1a' } },
-      rightPriceScale: { borderColor: '#252525' },
-      timeScale: { borderColor: '#252525', timeVisible: true, secondsVisible: false },
+      rightPriceScale: { borderColor: '#252525', scaleMargins: { top: 0.12, bottom: 0.22 } },
+      timeScale: { borderColor: '#252525', timeVisible: true, secondsVisible: false, lockVisibleTimeRangeOnResize: true },
       crosshair: { mode: 0 },
     })
-    const sourceRows = chartType === 'heikin' ? heikinAshiRows(rows) : rows
-    const chartRows = sourceRows.map((row) => ({
-      time: Number(row.timestamp),
-      open: Number(row.open),
-      high: Number(row.high),
-      low: Number(row.low),
-      close: Number(row.close),
-    }))
-    const isCandle = chartType === 'candles' || chartType === 'hollow' || chartType === 'heikin' || chartType === 'renko'
-    const seriesType = chartType === 'bars' ? BarSeries
-      : chartType === 'line' ? LineSeries
-        : chartType === 'area' ? AreaSeries
-          : chartType === 'baseline' ? BaselineSeries
-            : CandlestickSeries
-    const series = chart.addSeries(seriesType, isCandle ? {
-      upColor: chartType === 'hollow' ? '#63b982' : '#63b982',
-      downColor: '#df7676',
-      borderVisible: chartType === 'hollow',
-      borderUpColor: '#63b982',
-      borderDownColor: '#df7676',
-      wickUpColor: '#63b982',
-      wickDownColor: '#df7676',
-    } : chartType === 'baseline' ? {
-      baseValue: { type: 'price', price: chartRows[0]?.close || 0 },
-      topLineColor: '#63b982',
-      topFillColor1: 'rgba(99,185,130,.22)',
-      topFillColor2: 'rgba(99,185,130,.02)',
-      bottomLineColor: '#df7676',
-      bottomFillColor1: 'rgba(223,118,118,.02)',
-      bottomFillColor2: 'rgba(223,118,118,.16)',
-    } : {
-      color: chartType === 'area' ? '#63b982' : '#d6b56f',
-      lineColor: '#63b982',
-      topColor: 'rgba(99,185,130,.20)',
-      bottomColor: 'rgba(99,185,130,.02)',
-      lineWidth: 2,
+    const seriesType = chartType === 'bars' ? BarSeries : chartType === 'line' ? LineSeries : chartType === 'area' ? AreaSeries : chartType === 'baseline' ? BaselineSeries : CandlestickSeries
+    const series = chart.addSeries(seriesType, {
+      upColor: '#63b982', downColor: '#df7676', borderVisible: false,
+      wickUpColor: '#63b982', wickDownColor: '#df7676', color: '#d6b56f',
+      lineColor: '#63b982', topColor: 'rgba(99,185,130,.20)', bottomColor: 'rgba(99,185,130,.02)',
+      topLineColor: '#63b982', bottomLineColor: '#df7676', lineWidth: 2,
     })
-
-    // The chart accepts only the API-visible prefix. Dataset suffix rows never reach this component.
-    series.setData(isCandle || chartType === 'bars' ? chartRows : chartRows.map((row) => ({ time: row.time, value: row.close })))
-    const handleCrosshairMove = (param) => {
-      if (!param?.time) {
-        onCrosshair?.(null)
-        return
-      }
-      const data = param.seriesData?.get(series)
-      const row = rows.find((item) => Number(item.timestamp) === Number(param.time))
-      onCrosshair?.(row ? { row, data } : null)
+    const volume = chart.addSeries(HistogramSeries, { priceFormat: { type: 'volume' }, priceScaleId: 'volume', lastValueVisible: false, priceLineVisible: false })
+    volume.priceScale().applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } })
+    const average = chart.addSeries(LineSeries, { color: '#e3ba69', lineWidth: 1, lastValueVisible: false, priceLineVisible: false })
+    const drawingPrimitive = new ReplayDrawingPrimitive()
+    series.attachPrimitive(drawingPrimitive)
+    const lookup = (time) => latestRef.current.rows.find((row) => Number(row.timestamp) === Number(time))
+    const crosshair = (event) => latestRef.current.onCrosshair?.(event?.time && lookup(event.time) ? { row: lookup(event.time) } : null)
+    let pointerStart = null
+    const pointerDown = event => {
+      pointerStart = event.button === 0 && event.isPrimary ? { x: event.clientX, y: event.clientY, id: event.pointerId } : null
     }
-    const handleChartClick = (param) => {
-      // Lightweight Charts only gives us a trustworthy anchor when the click
-      // resolves to both a known bar and a finite price coordinate.  Pixel
-      // coordinates without a bar are intentionally ignored.
-      const timestamp = Number(param?.time)
-      const row = rows.find((item) => Number(item.timestamp) === timestamp)
-      const data = param?.seriesData?.get(series)
-      const price = param?.point && typeof series.coordinateToPrice === 'function'
-        ? series.coordinateToPrice(param.point.y)
-        : data?.close
-      if (!row || !Number.isSafeInteger(timestamp) || !Number.isFinite(Number(price))) return
-      onAnchorSelect?.({ timestamp, price: Number(price) })
+    const cancelPointer = () => { pointerStart = null }
+    const pointerUp = event => {
+      const start = pointerStart
+      pointerStart = null
+      if (!start || start.id !== event.pointerId || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 4) return
+      const bounds = host.getBoundingClientRect()
+      const x = event.clientX - bounds.left
+      const y = event.clientY - bounds.top
+      if (x < 0 || x >= chart.timeScale().width() || y < 0 || y >= chart.panes()[0].getHeight()) return
+      const row = lookup(chart.timeScale().coordinateToTime(x))
+      const price = series.coordinateToPrice(y)
+      if (row && Number.isFinite(price)) latestRef.current.onAnchorSelect?.({ timestamp: Number(row.timestamp), price })
     }
-    chart.subscribeCrosshairMove(handleCrosshairMove)
-    chart.subscribeClick(handleChartClick)
-    chart.timeScale().fitContent()
-
-    const observer = new ResizeObserver(() => {
-      chart.applyOptions({ width: host.clientWidth, height: host.clientHeight })
+    chart.timeScale().subscribeVisibleLogicalRangeChange((range) => {
+      if (range) { host.dataset.rangeFrom = String(range.from); host.dataset.rangeTo = String(range.to) }
     })
-    observer.observe(host)
+    chart.subscribeCrosshairMove(crosshair)
+    // Native pointer-up preserves rapid two-point drawings: the engine's
+    // double-click recognizer otherwise drops a second distant click.
+    host.addEventListener('pointerdown', pointerDown)
+    host.addEventListener('pointerup', pointerUp)
+    host.addEventListener('pointercancel', cancelPointer)
+    chartRef.current = { chart, series, volume, average, drawingPrimitive }
+    const resize = new ResizeObserver(() => chart.applyOptions({ width: host.clientWidth, height: host.clientHeight }))
+    resize.observe(host)
     return () => {
-      observer.disconnect()
-      chart.unsubscribeCrosshairMove(handleCrosshairMove)
-      chart.unsubscribeClick(handleChartClick)
+      rangeRef.current = chart.timeScale().getVisibleLogicalRange()
+      resize.disconnect()
+      chart.unsubscribeCrosshairMove(crosshair)
+      host.removeEventListener('pointerdown', pointerDown)
+      host.removeEventListener('pointerup', pointerUp)
+      host.removeEventListener('pointercancel', cancelPointer)
       chart.remove()
+      chartRef.current = null
     }
-  }, [chartType, onAnchorSelect, onCrosshair, rows])
+  }, [chartType])
 
-  return (
-    <div
-      ref={hostRef}
-      className="replay-chart"
-      data-testid="replay-chart"
-      data-visible-row-count={rows.length}
-      aria-label={`Biểu đồ replay ${chartType} với ${rows.length} nến đã được mở; bấm vào nến để tạo annotation draft local`}
-    />
-  )
+  useEffect(() => {
+    const instance = chartRef.current
+    if (!instance) return
+    const { chart, series, volume, average } = instance
+    const previousRange = chart.timeScale().getVisibleLogicalRange() || rangeRef.current
+    const sameSession = previousSessionRef.current === sessionId
+    const data = rows.map((row) => ({ time: Number(row.timestamp), open: Number(row.open), high: Number(row.high), low: Number(row.low), close: Number(row.close) }))
+    const prices = data.flatMap((row) => [row.open, row.high, row.low, row.close])
+    const precision = prices.reduce((max, price) => {
+      let digits = 2
+      while (digits < 8 && Math.abs(Number(price.toFixed(digits)) - price) > 1e-10) digits += 1
+      return Math.max(max, digits)
+    }, 2)
+    series.applyOptions({ priceFormat: { type: 'price', precision, minMove: 10 ** -precision } })
+    series.setData(chartType === 'candles' || chartType === 'bars' ? data : data.map((row) => ({ time: row.time, value: row.close })))
+    if (chartType === 'baseline' && data.length) series.applyOptions({ baseValue: { type: 'price', price: data[0].close } })
+    volume.setData(rows.filter((row) => (row.volume ?? row.tick_volume) !== null && (row.volume ?? row.tick_volume) !== undefined && Number.isFinite(Number(row.volume ?? row.tick_volume))).map((row) => ({ time: Number(row.timestamp), value: Number(row.volume ?? row.tick_volume), color: Number(row.close) >= Number(row.open) ? '#264c39' : '#603737' })))
+    let sum = 0
+    const sma = []
+    data.forEach((row, index) => {
+      sum += row.close
+      if (index >= 20) sum -= data[index - 20].close
+      if (index >= 19) sma.push({ time: row.time, value: sum / 20 })
+    })
+    average.setData(sma)
+    // A replay step updates this instance instead of destroying its pan/zoom and canvas.
+    // The server-visible prefix is the only dataset ever handed to the renderer.
+    if (sameSession && previousRange && previousRange.from < rows.length) {
+      const added = Math.max(0, rows.length - previousRowCountRef.current)
+      const follow = previousRange.to >= previousRowCountRef.current - 1
+      chart.timeScale().setVisibleLogicalRange(follow && added ? { from: previousRange.from + added, to: previousRange.to + added } : previousRange)
+    } else if (rows.length < 60) chart.timeScale().setVisibleLogicalRange({ from: rows.length - 60, to: rows.length + 2 })
+    else chart.timeScale().fitContent()
+    previousRowCountRef.current = rows.length
+    previousSessionRef.current = sessionId
+    rangeRef.current = null
+  }, [chartType, rows, sessionId])
+
+  useEffect(() => {
+    chartRef.current?.volume.applyOptions({ visible: showVolume })
+    chartRef.current?.average.applyOptions({ visible: showAverage })
+  }, [chartType, showAverage, showVolume])
+
+  useEffect(() => {
+    chartRef.current?.drawingPrimitive.setDrawings(drawings)
+  }, [drawings, chartType])
+
+  useEffect(() => {
+    const instance = chartRef.current
+    if (!instance || !viewportRequest || !rows.length) return
+    const scale = instance.chart.timeScale()
+    if (viewportRequest.kind === 'fit') scale.fitContent()
+    else if (viewportRequest.kind === 'latest') scale.setVisibleLogicalRange({ from: Math.max(-1, rows.length - 80), to: rows.length + 2 })
+    else if (viewportRequest.kind === 'range') {
+      const cutoff = Number(rows.at(-1).timestamp) - viewportRequest.days * 86400
+      const index = rows.findIndex((row) => Number(row.timestamp) >= cutoff)
+      scale.setVisibleLogicalRange({ from: Math.max(-1, index - 1), to: rows.length + 1 })
+    }
+  }, [viewportRequest])
+
+  return <div ref={hostRef} className="replay-chart" data-testid="replay-chart" data-visible-row-count={rows.length} data-visible-object-count={drawings.filter(record => !record.hidden).length} aria-label={`Biểu đồ replay với ${rows.length} nến đã mở. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá.`} />
 }
 
 function replaceSessionInUrl(sessionId, preserveCursor = false, cursor = null, dataset = null) {
   const url = new URL(window.location.href)
   url.searchParams.set('view', 'replay')
+  url.searchParams.set('surface', 'workspace')
+  url.searchParams.delete('select')
+  url.searchParams.delete('fresh')
   url.searchParams.set('session', sessionId)
   if (dataset !== null && dataset !== undefined && dataset !== '') url.searchParams.set('dataset', String(dataset))
   // Keep dataset/mode/cutoff context so a copied deep link remains useful
@@ -312,18 +240,22 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [crosshair, setCrosshair] = useState(null)
   const [annotationDraft, setAnnotationDraft] = useState(null)
-  // Chart controls stay local to this replay view.  They deliberately do not
-  // mutate the session or call a broker/provider API; the session payload is
-  // still the only source of replay data and cutoff authority.
-  const [chartInterval, setChartInterval] = useState('1 minute')
   const [chartType, setChartType] = useState('candles')
-  const [openChartMenu, setOpenChartMenu] = useState('')
-  const [activeIndicators, setActiveIndicators] = useState([])
-  const [compareSymbol, setCompareSymbol] = useState('')
-  const [timezone, setTimezone] = useState('UTC')
-  const [drawingTool, setDrawingTool] = useState('Cross')
+  const [showVolume, setShowVolume] = useState(true)
+  const [showAverage, setShowAverage] = useState(false)
+  const [sideOpen, setSideOpen] = useState(false)
+  const [drawingTool, setDrawingTool] = useState('level')
+  const [pendingAnchor, setPendingAnchor] = useState(null)
+  const [drawingLabel, setDrawingLabel] = useState('')
+  const [viewportRequest, setViewportRequest] = useState(null)
+  const [chartRange, setChartRange] = useState('All')
   const [goToDateDraft, setGoToDateDraft] = useState('')
   const [chartNotice, setChartNotice] = useState('')
+  const actionLock = useRef(false)
+  const sessionRequest = useRef(null)
+  const sideToggleRef = useRef(null)
+  const sideRef = useRef(null)
+  const requestViewport = (kind, extras = {}) => setViewportRequest({ kind, ...extras, id: Date.now() })
 
   const rememberSession = useCallback((nextSessionId, preserveCursor = false, cursor = null, dataset = null) => {
     setSessionId(nextSessionId)
@@ -333,21 +265,27 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   const loadSession = useCallback(async (targetSessionId, targetCursor = null) => {
     if (!targetSessionId) return
+    sessionRequest.current?.abort()
+    const controller = new AbortController()
+    sessionRequest.current = controller
+    setIsPlaying(false)
     setState((current) => ({ status: 'loading', payload: current.payload, error: null }))
     setConflict(false)
     try {
       const suffix = targetCursor === null ? '' : `?cursor_index=${encodeURIComponent(targetCursor)}`
       const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(targetSessionId)}${suffix}`, {
+        signal: controller.signal,
         headers: { 'X-Workspace-Id': workspace },
       })
       const payload = await readJson(response)
+      if (controller.signal.aborted) return
       const viewCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
       rememberSession(payload.record_id, true, viewCursor, payload.payload?.dataset_id)
       setBranchCursor(payload.historical_view ? Math.max(0, viewCursor) : Math.max(0, viewCursor - 1))
       setJumpDraft(Math.max(0, viewCursor))
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
-      setState({ status: 'error', payload: null, error: String(error.message || error) })
+      if (!controller.signal.aborted) setState({ status: 'error', payload: null, error: String(error.message || error) })
     }
   }, [rememberSession, workspace])
 
@@ -374,6 +312,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     } catch (error) {
       setState({ status: 'error', payload: null, error: String(error.message || error) })
     } finally {
+      actionLock.current = false
       setPendingAction('')
     }
   }, [datasetDraft, rememberSession, startDraft, workspace])
@@ -412,6 +351,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     }
     const persisted = window.localStorage.getItem(storageKey)
     if (persisted) {
+      loadDatasets()
       loadSession(persisted)
       return
     }
@@ -419,8 +359,11 @@ export default function ReplayWorkspace({ workspace, query }) {
     if (requestedDataset) createSession()
   }, []) // Resolve the initial resume once from URL -> persisted session -> dataset.
 
+  useEffect(() => () => sessionRequest.current?.abort(), [])
+
   const mutate = useCallback(async (kind, body) => {
-    if (!sessionId || !state.payload) return
+    if (!sessionId || !state.payload || state.status !== 'ready' || actionLock.current) return
+    actionLock.current = true
     setPendingAction(kind)
     setConflict(false)
     const suffix = kind === 'branch' ? 'branch' : 'step'
@@ -445,9 +388,10 @@ export default function ReplayWorkspace({ workspace, query }) {
         setState((current) => ({ ...current, status: 'error', error: String(error.message || error) }))
       }
     } finally {
+      actionLock.current = false
       setPendingAction('')
     }
-  }, [rememberSession, sessionId, state.payload, workspace])
+  }, [rememberSession, sessionId, state.payload, state.status, workspace])
 
   const replay = state.payload
   const cursor = Number(replay?.view_cursor_index ?? replay?.payload?.cursor_index ?? 0)
@@ -479,10 +423,16 @@ export default function ReplayWorkspace({ workspace, query }) {
     }
   }, [activeDataset, replay])
 
+  const drawings = useReplayDrawings({ workspace, sessionId, rows: visibleRows, cutoff: Number(replay?.cutoff_timestamp), instrument: replayContext.instrument, timeframe: replayContext.timeframe })
+  const chooseDrawingTool = tool => {
+    setDrawingTool(tool)
+    setPendingAnchor(null)
+    setChartNotice(tool === 'cross' ? '' : ['trendline', 'zone', 'measure'].includes(tool) ? 'Bấm hai nến để chọn hai mốc thời gian và giá.' : 'Bấm một nến để chọn mốc thời gian và giá.')
+  }
+
   const handleChartAnchor = useCallback((anchor) => {
+    if (drawingTool === 'cross' || state.status !== 'ready' || pendingAction) return
     const cutoffTimestamp = Number(replay?.cutoff_timestamp)
-    const instrumentId = String(replayContext.instrument || '')
-    const timeframe = String(replayContext.timeframe || '')
     const row = visibleRows.find((item) => Number(item.timestamp) === Number(anchor?.timestamp))
     // Keep the local draft fail-closed even if a renderer/plugin hands us a
     // timestamp outside the API-visible prefix.  The backend remains the
@@ -492,23 +442,46 @@ export default function ReplayWorkspace({ workspace, query }) {
       return
     }
     try {
-      const draft = buildReplayAnnotationDraft({
-        instrumentId,
-        timeframe,
-        cutoffTimestamp,
-        anchor,
-        label: `Replay #${visibleRows.findIndex((item) => Number(item.timestamp) === Number(anchor.timestamp))}`,
-      })
-      setAnnotationDraft({ status: 'ready', draft })
+      const twoAnchors = ['trendline', 'zone', 'measure'].includes(drawingTool)
+      if (twoAnchors && !pendingAnchor) {
+        setPendingAnchor(anchor)
+        setChartNotice('Đã chọn mốc thứ nhất. Bấm nến thứ hai để hoàn tất; Escape để hủy.')
+        return
+      }
+      const anchors = twoAnchors ? [pendingAnchor, anchor] : [anchor]
+      const type = drawingTool === 'level' ? 'horizontal-line' : drawingTool
+      let label = drawingLabel.trim() || DRAWING_LABELS[type]
+      if (type === 'measure') {
+        const delta = anchor.price - pendingAnchor.price
+        const percent = pendingAnchor.price === 0 ? 'N/A' : `${(delta / pendingAnchor.price * 100).toFixed(2)}%`
+        const bars = Math.abs(visibleRows.findIndex(row => row.timestamp === anchor.timestamp) - visibleRows.findIndex(row => row.timestamp === pendingAnchor.timestamp))
+        label = `${delta >= 0 ? '+' : ''}${delta.toFixed(5)} (${percent}) · ${bars} nến`
+      }
+      const record = drawings.add(type, anchors, label)
+      setAnnotationDraft({ status: 'ready', draft: record.payload, recordId: record.record_id })
+      setPendingAnchor(null)
+      setChartNotice(type === 'measure' ? `Đo local: ${label}` : `${DRAWING_LABELS[type]} đã tạo dạng nháp. Mở Chi tiết & nhánh để lưu.`)
     } catch (error) {
       setAnnotationDraft({ status: 'unavailable', message: String(error.message || error) })
     }
-  }, [replay, replayContext.instrument, replayContext.timeframe, visibleRows])
+  }, [drawingLabel, drawingTool, drawings.add, pendingAction, pendingAnchor, replay, replayContext.instrument, replayContext.timeframe, state.status, visibleRows])
 
   useEffect(() => {
     // A cursor/session change invalidates a previously selected chart anchor.
-    setAnnotationDraft(null)
+    setAnnotationDraft((current) => current?.draft?.cutoff_timestamp <= Number(replay?.cutoff_timestamp) ? current : null)
+    setPendingAnchor(null)
+    setCrosshair(null)
   }, [sessionId, cursor, revision])
+
+  useEffect(() => { setAnnotationDraft(null) }, [sessionId])
+
+  useEffect(() => {
+    const cancelDrawing = event => {
+      if (event.key === 'Escape') { setPendingAnchor(null); setChartNotice('') }
+    }
+    window.addEventListener('keydown', cancelDrawing)
+    return () => window.removeEventListener('keydown', cancelDrawing)
+  }, [])
 
   useEffect(() => {
     updateMarketContext({
@@ -521,6 +494,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   }, [replayContext, updateMarketContext])
 
   const completed = replay?.payload?.status === 'completed' || replay?.has_future_rows === false
+  const canOpenOrder = Boolean(replay) && state.status === 'ready' && !historicalView && !conflict && !pendingAction
   const lineage = replay?.payload?.parent_session_id
   const canBranch = Boolean(replay) && !conflict && (
     historicalView ? cursor < canonicalCursor : cursor > 0 && branchCursor < cursor
@@ -535,7 +509,7 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   useEffect(() => {
     if (!isPlaying || !replay || historicalView || completed || conflict || pendingAction) return undefined
-    const delay = Math.max(180, 1100 / Math.max(1, Number(speed) || 1))
+    const delay = Math.max(180, 1100 / Math.max(0.5, Number(speed) || 1))
     const timer = window.setInterval(() => {
       mutate('step', { expected_revision: Number(replay.revision || 0), steps: 1 })
     }, delay)
@@ -576,33 +550,20 @@ export default function ReplayWorkspace({ workspace, query }) {
   }, [completed, conflict, historicalView, mutate, pendingAction, replay, revision])
 
   useEffect(() => {
-    if (!openChartMenu) return undefined
-    const closeMenu = (event) => {
-      if (!event.target?.closest?.('.chart-control-menu') && !event.target?.closest?.('.chart-date-popover')) setOpenChartMenu('')
+    if (sideOpen) sideRef.current?.focus()
+  }, [sideOpen])
+  const closeSide = () => { setSideOpen(false); sideToggleRef.current?.focus() }
+  const goToDate = () => {
+    const timestamp = Date.parse(goToDateDraft + 'Z') / 1000
+    if (!Number.isFinite(timestamp) || timestamp > Number(replay?.cutoff_timestamp)) {
+      setChartNotice('Chọn thời điểm UTC không vượt quá cutoff đang xem.')
+      return
     }
-    document.addEventListener('pointerdown', closeMenu)
-    return () => document.removeEventListener('pointerdown', closeMenu)
-  }, [openChartMenu])
-
-  const selectedChartType = CHART_TYPES.find((item) => item.id === chartType)?.label || 'Candles'
-  const toggleIndicator = useCallback((indicator) => {
-    setActiveIndicators((current) => current.includes(indicator)
-      ? current.filter((item) => item !== indicator)
-      : [...current, indicator])
-  }, [])
-  const selectDrawingTool = useCallback((tool) => {
-    setDrawingTool(tool)
-    setChartNotice(`${tool} đã chọn · bản vẽ local sẽ được nối ở bước tiếp theo.`)
-    setOpenChartMenu('')
-  }, [])
-  const selectChartRailTool = useCallback((tool) => {
-    setChartNotice(`${tool} đã chọn · thao tác chỉ áp dụng cho chart local.`)
-  }, [])
-  const selectChartOption = useCallback((setter, value, notice = '') => {
-    setter(value)
-    if (notice) setChartNotice(notice)
-    setOpenChartMenu('')
-  }, [])
+    const index = visibleRows.findIndex((row) => Number(row.timestamp) >= timestamp)
+    if (index < 0) { setChartNotice('Không có nến ở thời điểm này trong phần dữ liệu đã mở.'); return }
+    setChartNotice('')
+    loadSession(sessionId, index)
+  }
   const routeContext = useMemo(() => ({
     session: sessionId || undefined,
     dataset: replay?.payload?.dataset_id || datasetDraft.trim() || undefined,
@@ -623,8 +584,8 @@ export default function ReplayWorkspace({ workspace, query }) {
     if (completed) return 'Hoàn tất dataset'
     if (state.status === 'loading') return 'Đang tải'
     if (state.status === 'error') return 'Có lỗi'
-    return 'Tạm dừng'
-  }, [completed, conflict, historicalView, state.status])
+    return isPlaying ? 'Đang phát' : 'Tạm dừng'
+  }, [completed, conflict, historicalView, isPlaying, state.status])
 
   const takeaway = useMemo(() => {
     if (conflict) return 'Session có revision mới; cần tải lại trước khi tiếp tục để giữ đúng lineage.'
@@ -636,7 +597,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const dataDeskHref = routeHref('data')
 
   return (
-    <main className="replay-shell">
+    <main className={`replay-shell ${sideOpen ? 'is-panel-open' : ''} ${replay ? 'has-replay' : ''}`}>
       <header className="replay-topbar">
         <div>
           <div className="eyebrow">THỰC HÀNH / CHART-FIRST REPLAY</div>
@@ -705,7 +666,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       )}
 
       {state.status === 'loading' && <div className="replay-message">Đang tải trạng thái replay…</div>}
-      {state.status === 'error' && <div className="replay-message replay-error">Không đọc được replay: {state.error}</div>}
+      {state.status === 'error' && <div className="replay-message replay-error" role="alert">Không đọc được replay: {state.error} <button type="button" onClick={() => sessionId ? loadSession(sessionId) : loadDatasets()}>Thử lại</button></div>}
 
       {replay && (
         <>
@@ -752,7 +713,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     className="play-button"
                     data-testid="play-toggle"
                     onClick={() => setIsPlaying((current) => !current)}
-                    disabled={historicalView || completed || conflict || Boolean(pendingAction)}
+                    disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}
                     aria-pressed={isPlaying}
                   >
                     {isPlaying ? 'Tạm dừng' : 'Phát replay'}
@@ -762,7 +723,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     data-testid="step-1"
                     aria-keyshortcuts="ArrowRight"
                     onClick={() => mutate('step', { expected_revision: revision, steps: 1 })}
-                    disabled={historicalView || completed || conflict || Boolean(pendingAction)}
+                    disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}
                   >
                     +1 nến
                   </button>
@@ -771,104 +732,17 @@ export default function ReplayWorkspace({ workspace, query }) {
                     data-testid="step-10"
                     aria-keyshortcuts="Shift+ArrowRight"
                     onClick={() => mutate('step', { expected_revision: revision, steps: 10 })}
-                    disabled={historicalView || completed || conflict || Boolean(pendingAction)}
+                    disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}
                   >
                     +10 nến
                   </button>
                 </div>
-                <div className="chart-controls" aria-label="Chart controls">
-                  <ChartMenu
-                    id="interval"
-                    label="Interval"
-                    value={chartInterval.replace(' minute', 'm').replace(' minutes', 'm').replace(' hour', 'h').replace(' hours', 'h').replace(' seconds', 's').replace(' day', 'D').replace(' week', 'W').replace(' month', 'M').replace(' months', 'M')}
-                    openMenu={openChartMenu}
-                    setOpenMenu={setOpenChartMenu}
-                    testId="chart-interval"
-                  >
-                    <button type="button" className="chart-menu-custom" onClick={() => selectChartOption(setChartInterval, 'Custom interval', 'Custom interval chỉ là cấu hình local cho fixture.')}>Add custom interval…</button>
-                    {INTERVAL_GROUPS.map((group) => (
-                      <React.Fragment key={group.label}>
-                        <span className="chart-menu-heading">{group.label}</span>
-                        {group.options.map((option) => (
-                          <ChartMenuItem key={option} active={chartInterval === option} onClick={() => selectChartOption(setChartInterval, option)}>{option}</ChartMenuItem>
-                        ))}
-                      </React.Fragment>
-                    ))}
-                  </ChartMenu>
-
-                  <ChartMenu
-                    id="chart-type"
-                    label="Chart"
-                    value={selectedChartType}
-                    openMenu={openChartMenu}
-                    setOpenMenu={setOpenChartMenu}
-                    testId="chart-type"
-                  >
-                    {CHART_TYPES.map((option) => (
-                      <ChartMenuItem key={option.id} active={chartType === option.id} onClick={() => selectChartOption(setChartType, option.id)}>{option.label}</ChartMenuItem>
-                    ))}
-                  </ChartMenu>
-
-                  <ChartMenu
-                    id="indicators"
-                    label="Indicators"
-                    value={activeIndicators.length ? `${activeIndicators.length}` : ''}
-                    openMenu={openChartMenu}
-                    setOpenMenu={setOpenChartMenu}
-                    testId="chart-indicators"
-                  >
-                    <label className="chart-menu-search">
-                      <span className="sr-only">Tìm indicator</span>
-                      <input type="search" placeholder="Search the library…" aria-label="Tìm indicator" />
-                    </label>
-                    <span className="chart-menu-heading">Favorites · Discover · Personal</span>
-                    {INDICATOR_OPTIONS.map((indicator) => (
-                      <ChartMenuItem key={indicator} active={activeIndicators.includes(indicator)} onClick={() => toggleIndicator(indicator)}>{indicator}</ChartMenuItem>
-                    ))}
-                    <span className="chart-menu-footnote">Local preview · chưa tính toán trên dataset</span>
-                  </ChartMenu>
-
-                  <ChartMenu
-                    id="compare"
-                    label="Compare"
-                    value={compareSymbol || ''}
-                    openMenu={openChartMenu}
-                    setOpenMenu={setOpenChartMenu}
-                    testId="chart-compare"
-                  >
-                    <span className="chart-menu-heading">Available symbols</span>
-                    <ChartMenuItem active={compareSymbol === ''} onClick={() => selectChartOption(setCompareSymbol, '', 'Compare đã tắt.')}>Không so sánh</ChartMenuItem>
-                    <ChartMenuItem active={compareSymbol === 'OANDA:EURUSD'} onClick={() => selectChartOption(setCompareSymbol, 'OANDA:EURUSD', 'Compare local với OANDA:EURUSD.')}>OANDA:EURUSD</ChartMenuItem>
-                    <span className="chart-menu-footnote">Chỉ hiển thị symbol local có trong fixture.</span>
-                  </ChartMenu>
-
-                  <ChartMenu id="drawing" label="Draw" value={drawingTool} openMenu={openChartMenu} setOpenMenu={setOpenChartMenu} testId="chart-drawing">
-                    {Object.entries(DRAWING_GROUPS).map(([group, tools]) => (
-                      <React.Fragment key={group}>
-                        <span className="chart-menu-heading">{group}</span>
-                        {tools.map((tool) => <ChartMenuItem key={tool} active={drawingTool === tool} onClick={() => selectDrawingTool(tool)}>{tool}</ChartMenuItem>)}
-                      </React.Fragment>
-                    ))}
-                  </ChartMenu>
-
-                  <ChartMenu id="timezone" label="TZ" value={timezone} openMenu={openChartMenu} setOpenMenu={setOpenChartMenu} testId="chart-timezone">
-                    {TIMEZONE_OPTIONS.map((option) => (
-                      <ChartMenuItem key={option} active={timezone === option} onClick={() => selectChartOption(setTimezone, option, `Timezone ${option} đã chọn cho chart local.`)}>{option}</ChartMenuItem>
-                    ))}
-                  </ChartMenu>
-
-                  <ChartMenu id="more" label="More" openMenu={openChartMenu} setOpenMenu={setOpenChartMenu} testId="chart-more">
-                    <ChartMenuItem onClick={() => { setOpenChartMenu('go-to-date'); setChartNotice('Chọn ngày trong session hiện tại; chưa thay đổi cutoff.') }}>Go to Date…</ChartMenuItem>
-                    <ChartMenuItem onClick={() => setChartNotice('Layout control local-only; chưa lưu server.')}>Layout options…</ChartMenuItem>
-                    <ChartMenuItem onClick={() => setChartNotice('Keyboard shortcuts: → +1 nến · Shift + → +10 nến')}>Keyboard shortcuts</ChartMenuItem>
-                  </ChartMenu>
-
-                  {openChartMenu === 'go-to-date' && (
-                    <div className="chart-control-popover chart-date-popover" role="dialog" aria-label="Go to Date">
-                      <label>Go to Date<input type="date" value={goToDateDraft} onChange={(event) => setGoToDateDraft(event.target.value)} /></label>
-                      <div className="chart-date-actions"><button type="button" onClick={() => setOpenChartMenu('')}>Cancel</button><button type="button" className="is-primary" onClick={() => { setChartNotice(goToDateDraft ? `Ngày ${goToDateDraft} đã chọn trong fixture.` : 'Chưa chọn ngày.'); setOpenChartMenu('') }}>Go to</button></div>
-                    </div>
-                  )}
+                <div className="chart-controls" aria-label="Hiển thị chart">
+                  <label>Chart <select aria-label="Kiểu chart" value={chartType} onChange={(event) => setChartType(event.target.value)}>{CHART_TYPES.map((type) => <option key={type.id} value={type.id}>{type.label}</option>)}</select></label>
+                  <label><input type="checkbox" checked={showVolume} onChange={(event) => setShowVolume(event.target.checked)} /> Volume</label>
+                  <label title="Trung bình giá đóng của 20 nến đã mở"><input type="checkbox" checked={showAverage} onChange={(event) => setShowAverage(event.target.checked)} /> SMA 20</label>
+                  {drawingTool === 'text' && <label>Ghi chú<input aria-label="Nội dung ghi chú chart" maxLength={256} value={drawingLabel} onChange={event => setDrawingLabel(event.target.value)} placeholder="Nội dung tại mốc đã chọn" /></label>}
+                  <button type="button" ref={sideToggleRef} aria-expanded={sideOpen} aria-controls="replay-context-panel" onClick={() => setSideOpen((current) => !current)}>Chi tiết & nhánh</button>
                 </div>
                 <div className="toolbar-speed" aria-label="Tốc độ replay">
                   <span>Tốc độ</span>
@@ -887,35 +761,45 @@ export default function ReplayWorkspace({ workspace, query }) {
               </div>
 
               <div className="chart-frame">
-                <ChartToolRail onSelect={selectChartRailTool} />
+                <nav className="chart-tool-rail" aria-label="Công cụ chart">
+                  <button type="button" aria-label="Chỉ xem crosshair" title="Chỉ xem crosshair" aria-pressed={drawingTool === 'cross'} onClick={() => chooseDrawingTool('cross')}>＋</button>
+                  <button type="button" aria-label="Chọn đường giá local" title="Bấm nến để chọn đường giá local" aria-pressed={drawingTool === 'level'} onClick={() => chooseDrawingTool('level')}>＝</button>
+                  <button type="button" aria-label="Vẽ đường xu hướng" title="Vẽ đường xu hướng bằng hai mốc" aria-pressed={drawingTool === 'trendline'} onClick={() => chooseDrawingTool('trendline')}>╱</button>
+                  <button type="button" aria-label="Vẽ vùng giá" title="Vẽ vùng giá bằng hai mốc" aria-pressed={drawingTool === 'zone'} onClick={() => chooseDrawingTool('zone')}>▱</button>
+                  <button type="button" aria-label="Thêm ghi chú chart" title="Ghi chú tại mốc giá" aria-pressed={drawingTool === 'text'} onClick={() => chooseDrawingTool('text')}>T</button>
+                  <button type="button" aria-label="Đo giá giữa hai mốc" title="Đo thay đổi giá và số nến giữa hai mốc" aria-pressed={drawingTool === 'measure'} onClick={() => chooseDrawingTool('measure')}>↔</button>
+                  <button type="button" aria-label="Mở danh sách đối tượng" title="Đối tượng: lưu, ẩn, khóa, xóa" onClick={() => setSideOpen(true)}>☷</button>
+                  <button type="button" aria-label="Vừa toàn bộ nến đã mở" title="Vừa toàn bộ nến đã mở" onClick={() => requestViewport('fit')}>⛶</button>
+                </nav>
                 <div className="chart-canvas">
                   <div className="chart-symbol-strip" aria-label="Thông tin symbol">
                     <strong>{replayContext.instrument}</strong>
-                    <span>{chartInterval}</span>
+                    <span>{replayContext.timeframe} · UTC</span>
                     <span className="chart-symbol-ohlc">O {formatPrice((crosshair?.row || currentBar)?.open)} · H {formatPrice((crosshair?.row || currentBar)?.high)} · L {formatPrice((crosshair?.row || currentBar)?.low)} · C {formatPrice((crosshair?.row || currentBar)?.close)} · V {formatVolume((crosshair?.row || currentBar)?.volume ?? (crosshair?.row || currentBar)?.tick_volume)}</span>
                   </div>
-                  <ReplayChart rows={visibleRows} chartType={chartType} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
+                  <ReplayChart rows={visibleRows} sessionId={sessionId} chartType={chartType} showVolume={showVolume} showAverage={showAverage} viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
                   <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
                   <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
-                  <div className="chart-floating-context" aria-live="polite">
-                    {compareSymbol && <span>+ {compareSymbol}</span>}
-                    {activeIndicators.length > 0 && <span>{activeIndicators.length} indicator{activeIndicators.length > 1 ? 's' : ''}</span>}
-                  </div>
                 </div>
-                <ChartUtilityRail onSelect={selectChartRailTool} />
+                <nav className="chart-utility-rail" aria-label="Tiện ích replay">
+                  {canOpenOrder
+                    ? <a aria-label="Trade draft trong simulator" title="Trade draft trong simulator" href={routeHref('trade', { surface: 'workspace', intent: 'order' })}>＋</a>
+                    : <button type="button" aria-label="Trade draft trong simulator" title="Chỉ mở lệnh mô phỏng tại cursor hiện tại của phiên đã tải." disabled>＋</button>}
+                  <a aria-label="Journal tại cutoff này" title="Journal tại cutoff này" href={journalHref}>▣</a>
+                  <a aria-label="Analytics của session" title="Analytics của session" href={routeHref('analytics', { surface: 'workspace' })}>▥</a>
+                </nav>
               </div>
 
               <div className="chart-bottom-bar" aria-label="Điều khiển replay phía dưới chart">
                 <div className="chart-bottom-range" aria-label="Khoảng thời gian chart">
-                  {['1D', '5D', '1M', '3M', '6M', '1Y', 'All'].map((range) => <button key={range} type="button" className={range === 'All' ? 'is-active' : ''} onClick={() => setChartNotice(`${range} · phạm vi hiển thị local.`)}>{range}</button>)}
+                  {[['1D', 1], ['5D', 5], ['1M', 30], ['All', null]].map(([range, days]) => <button key={range} type="button" aria-pressed={chartRange === range} className={chartRange === range ? 'is-active' : ''} onClick={() => { setChartRange(range); requestViewport(days ? 'range' : 'fit', { days }) }}>{range}</button>)}
+                  <button type="button" onClick={() => requestViewport('latest')}>Tới cutoff</button>
                 </div>
                 <div className="chart-bottom-replay">
-                  <button type="button" aria-label="Về nến đầu tiên" title="Về nến đầu tiên" onClick={() => { setIsPlaying(false); setJumpDraft(0); loadSession(sessionId, 0) }} disabled={historicalView || conflict || Boolean(pendingAction) || cursor <= 0}>|‹</button>
-                  <button type="button" aria-label="Lùi một nến" title="Lùi một nến" onClick={() => { setIsPlaying(false); setJumpDraft(Math.max(0, cursor - 1)); loadSession(sessionId, Math.max(0, cursor - 1)) }} disabled={historicalView || conflict || Boolean(pendingAction) || cursor <= 0}>‹</button>
-                  <button type="button" className="is-primary" onClick={() => setIsPlaying((current) => !current)} disabled={historicalView || completed || conflict || Boolean(pendingAction)}>{isPlaying ? 'Tạm dừng' : 'Phát replay'}</button>
-                  <button type="button" aria-label="Tiến một nến" title="Tiến một nến" onClick={() => mutate('step', { expected_revision: revision, steps: 1 })} disabled={historicalView || completed || conflict || Boolean(pendingAction)}>›</button>
-                  <button type="button" aria-label="Tiến mười nến" title="Tiến mười nến" onClick={() => mutate('step', { expected_revision: revision, steps: 10 })} disabled={historicalView || completed || conflict || Boolean(pendingAction)}>››</button>
-                  <span className="chart-bottom-cursor">#{cursor} / #{canonicalCursor}</span>
+                  <button type="button" className="chart-bottom-step" aria-label="Về nến đầu tiên" onClick={() => loadSession(sessionId, 0)} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}>|‹</button>
+                  <button type="button" className="chart-bottom-step" aria-label="Lùi một nến" onClick={() => loadSession(sessionId, Math.max(0, cursor - 1))} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}>‹</button>
+                  {historicalView && <button type="button" onClick={() => loadSession(sessionId)} disabled={state.status !== 'ready'}>Về cursor mới nhất</button>}
+                  <span className="chart-bottom-cursor">#{cursor} / #{canonicalCursor} · UTC</span>
                 </div>
                 <div className="chart-bottom-status"><span className="status-dot" /> Paper replay <strong>{replayContext.instrument}</strong></div>
               </div>
@@ -950,16 +834,17 @@ export default function ReplayWorkspace({ workspace, query }) {
                   max={Math.max(0, canonicalCursor)}
                   value={Math.min(jumpDraft, Math.max(0, canonicalCursor))}
                   onChange={(event) => setJumpDraft(Number(event.target.value))}
-                  disabled={historicalView || conflict || Boolean(pendingAction) || canonicalCursor <= 0}
+                  disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || canonicalCursor <= 0}
                   aria-label="Chọn nến replay"
                 />
-                <button type="button" onClick={jumpToCursor} disabled={historicalView || conflict || Boolean(pendingAction) || Number(jumpDraft) === cursor}>
+                <button type="button" onClick={jumpToCursor} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || Number(jumpDraft) === cursor}>
                   Mở cutoff này
                 </button>
               </div>
             </div>
 
-            <aside className="replay-side">
+            <aside className="replay-side" id="replay-context-panel" aria-label="Chi tiết replay và nhánh" ref={sideRef} tabIndex={-1} onKeyDown={(event) => { if (event.key === 'Escape') closeSide() }}>
+              <button type="button" className="replay-panel-close" onClick={closeSide}>Đóng chi tiết</button>
               <section className="decision-panel">
                 <div className="side-heading">
                   <div>
@@ -974,22 +859,36 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <strong>{formatPrice(currentBar?.close)}</strong>
                   <small>{formatTimestamp(currentBar?.timestamp)} UTC</small>
                 </div>
-                <div className="unsupported-tools" aria-label="Công cụ đang khóa">
-                  <button type="button" disabled title="Annotation write authority đang khóa; click chart chỉ tạo draft local">Vẽ vùng <span>đang khóa · draft local only</span></button>
-                  <button type="button" disabled title="Trade draft cần execution initialization">Trade draft <span>đang khóa · simulator init</span></button>
-                </div>
+                {canOpenOrder
+                  ? <a className="next-action-link" href={routeHref('trade', { surface: 'workspace', intent: 'order' })}>Mở Trade draft / risk preview →</a>
+                  : <p>Về cursor mới nhất hoặc tạo nhánh từ cutoff này để mở lệnh mô phỏng.</p>}
                 <div className={`annotation-draft ${annotationDraft?.status === 'ready' ? 'is-ready' : ''}`} data-testid="annotation-draft" aria-live="polite">
                   {!annotationDraft && <span>Bấm vào một nến để tạo annotation draft local. Chưa lưu và không có broker action.</span>}
                   {annotationDraft?.status === 'ready' && (
                     <>
-                      <strong>Draft horizontal line đã chọn</strong>
+                      <strong>{annotationDraft.draft.annotation_type === 'horizontal-line' ? 'Draft horizontal line đã chọn' : `${DRAWING_LABELS[annotationDraft.draft.annotation_type]} đã chọn`}</strong>
                       <span>#{visibleRows.findIndex((item) => Number(item.timestamp) === Number(annotationDraft.draft.anchors[0].timestamp))} · {formatTimestamp(annotationDraft.draft.anchors[0].timestamp)} UTC · giá {formatPrice(annotationDraft.draft.anchors[0].price)}</span>
                     </>
                   )}
                   {annotationDraft?.status !== 'ready' && annotationDraft?.message && <span>{annotationDraft.message}</span>}
                 </div>
                 <a className="next-action-link" href={journalHref}>Mở Journal cho cutoff này →</a>
+                <a className="next-action-link" href={routeHref('analytics', { surface: 'workspace' })}>Analytics của session →</a>
               </section>
+              <ReplayObjects drawings={drawings} />
+              <section className="replay-watchlist" aria-label="Danh sách dữ liệu local">
+                <h2>Dữ liệu local</h2>
+                <p>Đổi instrument hoặc timeframe bằng dataset đã đăng ký. Mỗi lựa chọn mở phiên mới, không đổi phiên hiện tại.</p>
+                {datasetState.status === 'error' && <p role="alert">{datasetState.error}<button type="button" onClick={loadDatasets}>Tải lại catalog</button></p>}
+                <ul>{datasetState.items.map(item => <li key={item.dataset_id}>
+                  <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {item.timeframe || `${item.timeframe_seconds || '?'}s`}</a>
+                  <small>{item.quality_status || 'unverified'} · {item.row_count ?? 'N/A'} nến</small>
+                </li>)}</ul>
+              </section>
+              <form className="replay-date-jump" onSubmit={(event) => { event.preventDefault(); goToDate() }}>
+                <label>Đi tới thời điểm UTC đã mở<input type="datetime-local" aria-label="Thời điểm replay UTC" value={goToDateDraft} onChange={(event) => setGoToDateDraft(event.target.value)} /></label>
+                <button type="submit" disabled={!goToDateDraft || Boolean(pendingAction) || state.status !== 'ready'}>Mở cutoff theo thời điểm</button>
+              </form>
               <details className="replay-inspect-panel" data-testid="replay-inspect">
                 <summary>
                   <span>Inspect</span>
@@ -1027,14 +926,14 @@ export default function ReplayWorkspace({ workspace, query }) {
                   max={historicalView ? cursor : Math.max(0, cursor - 1)}
                   value={historicalView ? cursor : Math.min(branchCursor, Math.max(0, cursor - 1))}
                   onChange={(event) => setBranchCursor(Number(event.target.value))}
-                  disabled={historicalView || cursor <= 0 || conflict || Boolean(pendingAction)}
+                  disabled={historicalView || cursor <= 0 || conflict || Boolean(pendingAction) || state.status !== 'ready'}
                   aria-label="Nến bắt đầu branch"
                 />
                 <button
                   className="secondary-action"
                   type="button"
                   data-testid="branch-replay"
-                  disabled={!canBranch || Boolean(pendingAction)}
+                  disabled={!canBranch || Boolean(pendingAction) || state.status !== 'ready'}
                   onClick={() => mutate('branch', { expected_revision: revision, cursor_index: branchCursor })}
                 >
                   {historicalView ? `Tạo branch từ report #${cursor}` : `Tạo branch từ nến #${branchCursor}`}

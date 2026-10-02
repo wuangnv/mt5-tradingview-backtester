@@ -178,6 +178,12 @@
 .fx-app[data-theme='light'] .ja-page .ja-empty-state strong,
 .fx-app[data-theme='light'] .ja-page .ja-metric strong { color: var(--wm-content); }
 .fx-app[data-theme='light'] .ja-page .ja-page-header p,
+.fx-app[data-theme='light'] .ja-page .ja-eyebrow,
+.fx-app[data-theme='light'] .ja-page .ja-header-status,
+.fx-app[data-theme='light'] .ja-page .ja-filter-toggle,
+.fx-app[data-theme='light'] .ja-page .ja-field,
+.fx-app[data-theme='light'] .ja-page .ja-field-hint,
+.fx-app[data-theme='light'] .ja-page .ja-story-placeholder > span,
 .fx-app[data-theme='light'] .ja-page .ja-context-copy span:not(.ja-eyebrow),
 .fx-app[data-theme='light'] .ja-page .ja-row-main small,
 .fx-app[data-theme='light'] .ja-page .ja-row-meta span,

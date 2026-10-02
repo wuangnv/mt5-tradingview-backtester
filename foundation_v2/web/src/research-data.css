@@ -1,4 +1,10 @@
 .rd-shell { width: min(1500px, 100%); margin: 0 auto; padding: 0 24px 34px; color: #dce3e8; }
+.fx-app .rd-shell .eyebrow, .fx-app .rd-shell .rd-safety span, .fx-app .rd-shell .rd-import-kicker, .fx-app .rd-shell .rd-badge.is-muted, .fx-app .rd-shell .rd-import-advanced summary { color: var(--fx-shell-muted, #9ba4ac); }
+.fx-app .rd-shell .rd-safety strong, .fx-app .rd-shell .rd-status, .fx-app .rd-shell .rd-badge.is-warn, .fx-app .rd-shell .rd-provider-state, .fx-app .rd-shell .rd-capability.is-blocked { color: var(--fx-shell-warn, #f0c878); }
+.fx-app .rd-shell .rd-status.is-ready, .fx-app .rd-shell .rd-provider-state.is-ready { color: var(--fx-green, #8dce9c); }
+.fx-app .rd-shell .rd-status.is-error { color: var(--fx-shell-danger, #ef9999); }
+.fx-app[data-theme='light'] .rd-shell .rd-statusbar .rd-status,
+.fx-app[data-theme='light'] .rd-shell .rd-badge.is-warn { color: #80520b; }
 .rd-topbar { min-height: 98px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid #2a3238; }
 .rd-topbar h1 { margin: 5px 0 0; font-size: 26px; letter-spacing: -0.02em; }
 .rd-topbar p { margin: 7px 0 0; color: #9ca7af; font-size: 12px; }

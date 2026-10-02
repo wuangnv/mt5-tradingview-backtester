@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { buildWorkspaceHref } from './workspaceContext.js'
+import { useFxReplayContext } from './FxReplayShell.jsx'
 import './settings.css'
 
 const NOTION_STATUS_URL = '/api/v2/connectors/notion/oauth/status'
@@ -10,8 +12,8 @@ function apiError(response, payload) {
   return error
 }
 
-async function readJson(url, workspace) {
-  const response = await fetch(url, { method: 'GET', headers: { 'X-Workspace-Id': workspace } })
+async function readJson(url, workspace, signal) {
+  const response = await fetch(url, { method: 'GET', headers: { 'X-Workspace-Id': workspace }, signal })
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) throw apiError(response, payload)
   return payload
@@ -63,54 +65,78 @@ function StatusBadge({ status, children }) {
   return <span className={`settings-status ${statusTone(status)}`}><i aria-hidden="true" />{children || statusLabel(status)}</span>
 }
 
-function hrefFor(view, workspace) {
-  const params = new URLSearchParams({ workspace })
-  if (view) params.set('view', view)
-  return `/?${params.toString()}`
-}
-
 export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
+  const { appearance, applyAppearance } = useFxReplayContext()
+  const [appearanceDraft, setAppearanceDraft] = useState(() => appearance || { theme: 'dark', language: 'vi' })
+  const [appearanceStatus, setAppearanceStatus] = useState('')
+  useEffect(() => {
+    if (appearance) setAppearanceDraft(appearance)
+  }, [appearance?.theme, appearance?.language])
+  const appearanceDirty = appearanceDraft.theme !== appearance?.theme || appearanceDraft.language !== appearance?.language
+  function changeAppearance(key, value) {
+    setAppearanceDraft((current) => ({ ...current, [key]: value }))
+    setAppearanceStatus('')
+  }
+  function saveAppearance(event) {
+    event.preventDefault()
+    setAppearanceStatus(applyAppearance(appearanceDraft) ? 'saved' : 'volatile')
+  }
   const [session, setSession] = useState({ status: 'loading', payload: null, error: null })
   const [notion, setNotion] = useState({ status: 'loading', payload: null, error: null })
+  const [execution, setExecution] = useState({ status: 'loading', payload: null, error: null })
+  const [reloadToken, setReloadToken] = useState(0)
+  const requestSeq = useRef(0)
 
-  const load = useCallback(() => {
-    let cancelled = false
+  useEffect(() => {
+    const requestId = ++requestSeq.current
+    const controller = new AbortController()
     setSession({ status: 'loading', payload: null, error: null })
     setNotion({ status: 'loading', payload: null, error: null })
+    setExecution({ status: 'loading', payload: null, error: null })
 
-    readJson('/api/v2/session/status', workspace)
-      .then((payload) => { if (!cancelled) setSession({ status: 'ready', payload, error: null }) })
-      .catch((error) => { if (!cancelled) setSession({ status: error.kind || 'error', payload: null, error }) })
+    for (const [url, update] of [
+      ['/api/v2/session/status', setSession],
+      [NOTION_STATUS_URL, setNotion],
+      ['/api/v2/execution/capabilities', setExecution],
+    ]) {
+      readJson(url, workspace, controller.signal)
+        .then((payload) => { if (requestId === requestSeq.current) update({ status: 'ready', payload, error: null }) })
+        .catch((error) => {
+          if (error.name !== 'AbortError' && requestId === requestSeq.current) update({ status: error.kind || 'error', payload: null, error })
+        })
+    }
+    return () => {
+      controller.abort()
+      if (requestId === requestSeq.current) requestSeq.current += 1
+    }
+  }, [reloadToken, workspace])
 
-    readJson(NOTION_STATUS_URL, workspace)
-      .then((payload) => { if (!cancelled) setNotion({ status: 'ready', payload, error: null }) })
-      .catch((error) => { if (!cancelled) setNotion({ status: error.kind || 'error', payload: null, error }) })
-
-    return () => { cancelled = true }
-  }, [workspace])
-
-  useEffect(() => load(), [load])
-
-  const returnView = query?.get('from') === 'replay' ? 'replay' : ''
+  const requestedReturn = query?.get('from')
+  const returnView = ['replay', 'learn', 'research'].includes(requestedReturn) ? requestedReturn : 'replay'
   const sessionPayload = session.payload || {}
   const sessionSnapshot = sessionPayload.session || {}
   const identity = sessionPayload.identity || {}
   const notionPayload = notion.payload || {}
   const notionStatus = notion.status === 'ready' ? notionPayload.status || 'disconnected' : notion.status
   const canShowFacts = session.status === 'ready'
-  const mode = query?.get('mode') || 'Replay / Simulation'
-  const dataStatus = query?.get('data') || 'Local cache'
-  const nextLink = returnView ? hrefFor(returnView, workspace) : hrefFor('replay', workspace)
+  const sessionVerified = canShowFacts && sessionSnapshot.status === 'signed_in' && sessionSnapshot.workspace_id === workspace
+  const mode = sessionVerified ? display(sessionPayload.auth_mode) : 'Chưa xác minh session'
+  const nextLink = buildWorkspaceHref(returnView, workspace, query, {
+    from: returnView === 'learn' ? query?.get('return_from') : null,
+    job: query?.get('job'), start: query?.get('start'),
+  })
+  const returnLabel = requestedReturn === returnView ? `Về ${returnView === 'replay' ? 'Replay' : returnView === 'learn' ? 'Learn' : 'Research'}` : 'Mở Practice'
+  const learnFrom = returnView === 'learn' ? query?.get('return_from') : returnView
+  const learnHref = buildWorkspaceHref('learn', workspace, query, { from: learnFrom, job: learnFrom === 'research' ? query?.get('job') : null, start: query?.get('start') })
+  const brokerCapability = execution.status === 'ready' ? execution.payload?.broker_execution_capability : undefined
+  const brokerStatus = brokerCapability === false ? 'Đã khóa' : brokerCapability === true ? 'API báo có capability' : 'Chưa xác minh · Đã khóa tại UI'
 
-  const permissions = useMemo(() => [
-    ['Replay & practice', 'Cho phép', 'is-good'],
-    ['Research local', 'Cho phép', 'is-good'],
-    ['Demo simulator', 'Cho phép', 'is-good'],
-    ['Gửi lệnh broker', 'Đã khóa', 'is-warn'],
-    ['Live execution', 'Đã khóa', 'is-warn'],
-    ['Holdout data', 'Đã khóa', 'is-warn'],
-    ['Cloud write / export', 'PREP_ONLY', 'is-warn'],
-  ], [])
+  const permissions = [
+    ['Session workspace', sessionVerified ? 'Đã xác minh local' : 'Chưa xác minh', sessionVerified ? 'is-good' : 'is-warn'],
+    ['Gửi lệnh broker', brokerStatus, 'is-warn'],
+    ['Holdout data', 'Chưa có quyền từ màn này', 'is-warn'],
+    ['Cloud write / export', notion.status === 'ready' ? display(notionPayload.export_mode) : 'Chưa xác minh', 'is-warn'],
+  ]
 
   return (
     <main className="settings-shell" data-testid="settings-workspace">
@@ -118,23 +144,34 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         <div>
           <div className="eyebrow">WORKSPACE / SETTINGS</div>
           <h1>Settings</h1>
-          <p>Kiểm tra ngữ cảnh, dữ liệu và quyền trước khi quay lại phiên replay.</p>
+          <p>Chọn giao diện và kiểm tra trạng thái workspace.</p>
         </div>
         <div className="settings-topbar-actions">
-          <a className="context-link" href={nextLink}>{returnView ? 'Về Replay' : 'Mở Practice'}</a>
-          <a className="context-link" href={hrefFor('learn', workspace)}>Learn</a>
-          <button type="button" className="settings-refresh" onClick={load} disabled={session.status === 'loading' || notion.status === 'loading'}>Làm mới</button>
+          <a className="context-link" href={nextLink}>{returnLabel}</a>
+          <a className="context-link" href={learnHref}>Learn</a>
+          <button type="button" className="settings-refresh" onClick={() => setReloadToken((token) => token + 1)} disabled={[session, notion, execution].some((state) => state.status === 'loading')}>Làm mới</button>
         </div>
       </header>
+
+      {applyAppearance && <section className="settings-appearance" aria-labelledby="settings-appearance-title">
+        <div className="settings-heading"><div><h2 id="settings-appearance-title">Giao diện</h2><p className="settings-note">Lưu trên trình duyệt này. Ngôn ngữ áp dụng cho thanh điều hướng; nội dung nghiệp vụ giữ ngôn ngữ hiện có.</p></div></div>
+        <form className="settings-appearance-form" onSubmit={saveAppearance}>
+          <label><span>Chế độ màu</span><select value={appearanceDraft.theme} onChange={(event) => changeAppearance('theme', event.target.value)}><option value="dark">Tối</option><option value="light">Sáng</option></select></label>
+          <label><span>Ngôn ngữ điều hướng</span><select value={appearanceDraft.language} onChange={(event) => changeAppearance('language', event.target.value)}><option value="vi">Tiếng Việt</option><option value="en">English</option></select></label>
+          <button type="submit" disabled={!appearanceDirty && appearanceStatus !== 'volatile'}>Lưu giao diện</button>
+          <button type="button" disabled={!appearanceDirty} onClick={() => { setAppearanceDraft(appearance); setAppearanceStatus('') }}>Hủy thay đổi</button>
+        </form>
+        <p className="settings-note" role="status" data-testid="settings-appearance-status">{appearanceStatus === 'saved' ? 'Đã lưu giao diện trên trình duyệt này.' : appearanceStatus === 'volatile' ? 'Đã áp dụng trong phiên này. Trình duyệt đang chặn lưu tùy chọn; bạn có thể thử lưu lại.' : appearanceDirty ? 'Có thay đổi chưa lưu.' : ''}</p>
+      </section>}
 
       <section className="settings-context" aria-label="Ngữ cảnh hiện tại">
         <div><span>Workspace</span><strong>{workspace}</strong></div>
         <div><span>Mode</span><strong>{mode}</strong></div>
-        <div><span>Data</span><strong>{dataStatus}</strong></div>
-        <div><span>Broker</span><strong className="is-warn">Locked</strong></div>
+        <div><span>Dataset được chọn</span><strong>{display(query?.get('dataset'), 'Chưa chọn')}</strong></div>
+        <div><span>Broker capability</span><strong className="is-warn">{brokerStatus}</strong></div>
       </section>
 
-      <SettingState state={session.status} testId="settings-session-loading" />
+      {session.status === 'loading' && <SettingState state="loading" testId="settings-session-loading" />}
       {session.status === 'error' && <SettingState state="error" testId="settings-session-error">Không đọc được project session: {session.error?.message}</SettingState>}
       {session.status === 'denied' && <SettingState state="denied" testId="settings-session-denied" />}
       {session.status === 'unavailable' && <SettingState state="unavailable" testId="settings-session-unavailable">Project session chưa được cấu hình cho workspace này.</SettingState>}
@@ -160,11 +197,13 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         </article>
 
         <article className="settings-section" aria-labelledby="settings-permissions-title">
-          <div className="settings-heading"><div><span>Safety boundary</span><h2 id="settings-permissions-title">Quyền đang áp dụng</h2></div><StatusBadge status="is-warn">Fail-closed</StatusBadge></div>
+          <div className="settings-heading"><div><span>Safety boundary</span><h2 id="settings-permissions-title">Trạng thái truy cập</h2></div><StatusBadge status="is-warn">Read only</StatusBadge></div>
           <ul className="settings-permissions" data-testid="settings-permissions">
             {permissions.map(([label, value, tone]) => <li key={label}><span>{label}</span><strong className={tone}>{value}</strong></li>)}
           </ul>
-          <p className="settings-note">Replay, research và demo simulator có thể dùng local. Live, holdout và cloud write vẫn bị khóa ở lớp sản phẩm.</p>
+          {execution.status !== 'ready' && <SettingState state={execution.status} testId="settings-execution-state">Chưa đọc được capability execution. Không suy ra quyền từ session hoặc URL.</SettingState>}
+          {execution.status === 'ready' && <dl className="settings-facts" data-testid="settings-execution-facts">{[['Đặt lệnh', 'place'], ['Sửa lệnh', 'modify'], ['Hủy lệnh', 'cancel'], ['Đóng lệnh', 'close']].map(([label, key]) => <Fact key={key} label={label} value={execution.payload?.[key] === true ? 'API báo có capability' : execution.payload?.[key] === false ? 'Đã khóa' : 'Chưa xác minh'} tone="is-warn" />)}</dl>}
+          <p className="settings-note">Trạng thái được đọc từ session, execution API và connector. Màn này không cấp quyền hay gửi lệnh.</p>
         </article>
 
         <article className="settings-section settings-connector" aria-labelledby="settings-connector-title">
@@ -203,8 +242,8 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
       <footer className="settings-footnote">
         <span>Workspace <strong>{workspace}</strong></span>
         <span>Mode <strong>{mode}</strong></span>
-        <span>Live <strong className="is-warn">Locked</strong></span>
-        <span>Provider write <strong className="is-warn">PREP_ONLY</strong></span>
+        <span>Broker <strong className="is-warn">{brokerStatus}</strong></span>
+        <span>Provider export <strong className="is-warn">{notion.status === 'ready' ? display(notionPayload.export_mode) : 'Chưa xác minh'}</strong></span>
       </footer>
     </main>
   )

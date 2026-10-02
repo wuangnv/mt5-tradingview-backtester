@@ -15,21 +15,12 @@ import PlaybookWorkspace from './PlaybookWorkspace.jsx'
 import LiveWorkspace from './LiveWorkspace.jsx'
 import SessionPicker from './SessionPicker.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
+import { dashboardFilters, dashboardFilterError, dashboardNumber, readDashboardOverview } from './dashboardModel.js'
 import './styles.css'
 import './dashboard.css'
 
-async function readWorkspaceOverview(workspace, signal) {
-  const response = await fetch('/api/v2/overview', {
-    headers: { 'X-Workspace-Id': workspace },
-    signal,
-  })
-  const payload = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(String(payload?.detail || `HTTP ${response.status}`))
-  if (!payload || typeof payload !== 'object') throw new Error('invalid_overview_payload')
-  return payload
-}
-
 function safeCount(value) {
+  if (value === null || value === undefined || value === '' || typeof value === 'boolean') return null
   const numeric = Number(value)
   return Number.isSafeInteger(numeric) && numeric >= 0 ? numeric : null
 }
@@ -47,27 +38,57 @@ function formatCount(value) {
 }
 
 function WorkspaceOverview({ workspace, query }) {
-  const [scope, setScope] = useState('backtesting')
+  const [filters, setFilters] = useState(() => dashboardFilters(query))
   const [reloadToken, setReloadToken] = useState(0)
-  const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null })
+  const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null, key: '' })
+  const [sessions, setSessions] = useState([])
+  const filterError = dashboardFilterError(filters)
+  const requestKey = `${workspace}:${JSON.stringify(filters)}`
 
   useEffect(() => {
+    if (filterError) return
     const controller = new AbortController()
-    setOverview({ status: 'loading', payload: null, error: null })
-    readWorkspaceOverview(workspace, controller.signal)
-      .then((payload) => setOverview({ status: 'ready', payload, error: null }))
-      .catch((error) => {
-        if (error.name !== 'AbortError') setOverview({ status: 'error', payload: null, error: String(error.message || error) })
+    let current = true
+    setOverview((previous) => ({ status: 'loading', payload: previous.key === requestKey ? previous.payload : null, error: null, key: requestKey }))
+    readDashboardOverview(workspace, filters, controller.signal)
+      .then((payload) => {
+        if (!current) return
+        setOverview({ status: 'ready', payload, error: null, key: requestKey })
+        setSessions(payload.performance.sessions || [])
       })
-    return () => controller.abort()
-  }, [reloadToken, workspace])
+      .catch((error) => {
+        if (current && error.name !== 'AbortError') setOverview((previous) => ({ ...previous, status: 'error', error: String(error.message || error) }))
+      })
+    return () => { current = false; controller.abort() }
+  }, [reloadToken, workspace, filters, filterError, requestKey])
+
+  const changeFilters = (patch) => {
+    const next = { ...filters, ...patch }
+    setFilters(next)
+    const url = new URL(window.location.href)
+    for (const [key, value] of Object.entries(next)) {
+      const name = `dashboard_${key}`
+      if (value) url.searchParams.set(name, value)
+      else url.searchParams.delete(name)
+    }
+    window.history.replaceState(null, '', url)
+  }
+  const payload = !filterError && overview.key === requestKey ? overview.payload : null
+  const performance = payload?.performance
+  const metrics = performance?.metrics
+  const partial = performance?.status === 'partial'
+  const pending = overview.status === 'loading'
+  const scope = performance?.scope
+  const months = (performance?.months || []).slice(-12)
+  const symbols = performance?.symbols || []
+  const largestSymbol = Math.max(1, ...symbols.map((item) => item.closed_trade_count))
 
   const routeHref = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, overrides)
-  const backtestingHref = routeHref('replay', { select: '1' })
+  const backtestingHref = routeHref('replay', { select: '1', session: null, cursor: null, cutoff: null })
   const cards = [
-    { id: 'backtesting', title: 'Backtesting session', subtitle: 'Start a session', icon: 'plus', href: backtestingHref, primary: true },
-    { id: 'prop', title: 'Prop firm session', subtitle: 'Start a challenge', icon: 'trophy', href: routeHref('testing'), primary: true },
-    { id: 'tutorials', title: 'Tutorials', subtitle: 'Learn more', icon: 'education', href: routeHref('learn'), primary: false },
+    { id: 'backtesting', title: 'Backtesting session', subtitle: 'Mở hoặc tạo phiên replay', icon: 'plus', href: backtestingHref, primary: true },
+    { id: 'prop', title: 'Prop firm session', subtitle: 'Luyện tập challenge', icon: 'trophy', href: routeHref('testing'), primary: true },
+    { id: 'tutorials', title: 'Tutorials', subtitle: 'Mở bài học', icon: 'education', href: routeHref('learn'), primary: false },
   ]
 
   return (
@@ -80,69 +101,70 @@ function WorkspaceOverview({ workspace, query }) {
                 <DashboardIcon type={card.icon} />
               </span>
               <span className="fx-dashboard-card-copy">
-                <strong>{card.title} <span className="fx-dashboard-card-info" aria-hidden="true">ⓘ</span></strong>
+                <strong>{card.title}</strong>
                 <small>{card.subtitle}</small>
               </span>
             </a>
           ))}
         </div>
         <div className="fx-dashboard-performance-head">
-          <h2>Performance</h2>
-          <div className="fx-dashboard-filters" aria-label="Performance filters">
-            <button type="button" className="fx-dashboard-filter" aria-pressed={scope === 'backtesting'} onClick={() => setScope('backtesting')}>▥&nbsp; Backtesting <span aria-hidden="true">⌄</span></button>
-            <button type="button" className="fx-dashboard-filter" aria-pressed={scope === 'lifetime'} onClick={() => setScope('lifetime')}>▣&nbsp; Lifetime <span aria-hidden="true">⌄</span></button>
-          </div>
+          <div><h2>Hiệu suất replay</h2><p>Giao dịch đã đóng trong các phiên đã lưu · thời gian UTC</p></div>
+          <button type="button" className="fx-dashboard-filter" disabled={pending || Boolean(filterError)} onClick={() => setReloadToken((value) => value + 1)}>{pending ? 'Đang tải…' : 'Làm mới'}</button>
         </div>
-        <div className="fx-dashboard-data-state" data-testid="dashboard-data-state" role={overview.status === 'error' ? 'alert' : 'status'} aria-live="polite">
-          {overview.status === 'loading' && <span>Đang tải dữ liệu workspace cho phạm vi {scope === 'backtesting' ? 'Backtesting' : 'Lifetime'}…</span>}
-          {overview.status === 'ready' && <span>Chưa có performance ledger cho phạm vi {scope === 'backtesting' ? 'Backtesting' : 'Lifetime'}; các chỉ số sẽ xuất hiện sau khi session có dữ liệu trade.</span>}
-          {overview.status === 'error' && <><span>Không tải được trạng thái workspace ({overview.error}).</span><button type="button" onClick={() => setReloadToken((value) => value + 1)}>Thử lại</button></>}
+        <div className="fx-dashboard-filters" aria-label="Bộ lọc hiệu suất">
+          <label><span>Phiên replay</span><select aria-label="Phiên replay" value={filters.session} onChange={(event) => changeFilters({ session: event.target.value })}>
+            <option value="">Tất cả phiên, gồm đã lưu trữ</option>
+            {filters.session && !sessions.some((item) => item.session_id === filters.session) && <option value={filters.session}>{filters.session}</option>}
+            {sessions.map((item) => <option value={item.session_id} key={item.session_id}>{item.name}{item.instrument_id ? ` · ${item.instrument_id}` : ''}{item.archived ? ' · đã lưu trữ' : ''}</option>)}
+          </select></label>
+          <label><span>Từ ngày đóng (UTC)</span><input type="date" value={filters.from} onChange={(event) => changeFilters({ from: event.target.value })} /></label>
+          <label><span>Đến ngày đóng (UTC)</span><input type="date" value={filters.to} onChange={(event) => changeFilters({ to: event.target.value })} /></label>
+          <button type="button" className="fx-dashboard-filter" onClick={() => changeFilters({ session: '', from: '', to: '' })}>Xóa lọc</button>
         </div>
-        <div className="fx-dashboard-performance" data-testid="dashboard-performance">
-          <DashboardMetric title="Time Invested" value="—" icon="bars" />
-          <DashboardMetric title="Historical time replayed" value="—" icon="clock" />
-          <DashboardChart />
-          <DashboardMetric title="Trades taken" value="—" detail="Chưa có trade ledger" tone="trades" />
-          <DashboardMetric title="Overall win rate" value="—" icon="ring" />
-          <DashboardChart title="Win Rate" className="is-wide is-wide-left" />
-          <DashboardChart title="Trades by symbol" className="is-wide is-wide-right" />
+        <div className={`fx-dashboard-data-state ${partial || overview.status === 'error' ? 'is-warning' : ''}`} data-testid="dashboard-data-state" role={overview.status === 'error' || filterError ? 'alert' : 'status'} aria-live="polite">
+          {filterError ? <span>{filterError}</span> : pending ? <span>{payload ? 'Đang cập nhật; số liệu bên dưới là lần đọc trước.' : 'Đang tải đúng phạm vi đã chọn…'}</span> : overview.status === 'error' ? <>
+            <span>{payload ? 'Chưa cập nhật được. Đang hiển thị số liệu cũ; hãy thử lại.' : 'Không tải được hiệu suất. Hãy thử lại.'} <small>({overview.error})</small></span>
+            <button type="button" onClick={() => setReloadToken((value) => value + 1)}>Thử lại</button>
+          </> : performance && <span>{scope.session_count === 0 ? 'Chưa có phiên replay. Tạo phiên từ dataset để bắt đầu.' : partial ? `Đọc được ${scope.readable_session_count}/${scope.session_count} phiên; các chỉ số chỉ phản ánh phần dữ liệu đọc được.` : metrics.closed_trade_count === 0 ? 'Chưa có giao dịch đóng trong phạm vi này. Mở phiên để tiếp tục hoặc đổi khoảng ngày.' : `Đã tổng hợp ${scope.readable_session_count} phiên từ ledger đã lưu.`}</span>}
         </div>
-        {overview.status === 'ready' && <div className="fx-dashboard-inventory" data-testid="dashboard-inventory" aria-label="Workspace inventory">
-          <span>{formatCount(overview.payload?.counts?.datasets)} datasets</span>
-          <span>{formatCount(sumCounts(overview.payload?.counts?.research_jobs))} research jobs</span>
-          <span>{formatCount(sumCounts(overview.payload?.counts?.records))} saved records</span>
+        <div className="fx-dashboard-performance" data-testid="dashboard-performance" aria-busy={pending}>
+          <DashboardMetric title="Giao dịch đã đóng" value={dashboardNumber(metrics?.closed_trade_count)} detail={scope?.duplicate_trade_count ? `Đã bỏ ${scope.duplicate_trade_count} bản sao lịch sử branch` : 'Mỗi lần đóng lệnh được tính một lần'} />
+          <DashboardMetric title="Tỷ lệ thắng" value={dashboardNumber(metrics?.win_rate_pct, '%')} detail={metrics?.closed_trade_count > 0 ? `${metrics.wins} thắng · ${metrics.losses} thua · ${metrics.breakeven} hòa` : 'Chưa có trade đóng để tính tỷ lệ'} />
+          <DashboardMetric title="Phiên trong phạm vi" value={dashboardNumber(scope?.session_count)} detail={scope ? `${scope.readable_session_count} phiên có execution ledger hợp lệ` : 'Chờ dữ liệu từ workspace'} />
+        </div>
+        <div className="fx-dashboard-distributions">
+          <section className="fx-dashboard-distribution" aria-label="Tỷ lệ thắng theo tháng"><h3>Tỷ lệ thắng theo tháng</h3><p>Tháng đóng lệnh theo UTC · tối đa 12 tháng có giao dịch gần nhất</p>
+            {months.length ? <ul tabIndex={0} aria-label="Danh sách tỷ lệ thắng theo tháng">{months.map((item) => <li key={item.month}><span>{item.month}</span><div className="fx-dashboard-bar-track" aria-hidden="true"><i style={{ width: `${item.win_rate_pct}%` }} /></div><strong>{dashboardNumber(item.win_rate_pct, '%')}<small>{item.wins}/{item.closed_trade_count} thắng</small></strong></li>)}</ul> : <div className="fx-dashboard-empty-chart">Chưa có giao dịch đóng để phân nhóm theo tháng.</div>}
+          </section>
+          <section className="fx-dashboard-distribution" aria-label="Giao dịch theo symbol"><h3>Giao dịch theo symbol</h3><p>Số lệnh đã đóng · không cộng P/L khác đơn vị tiền</p>
+            {symbols.length ? <ul tabIndex={0} aria-label="Danh sách giao dịch theo symbol">{symbols.map((item) => <li key={item.symbol}><span>{item.symbol}</span><div className="fx-dashboard-bar-track" aria-hidden="true"><i style={{ width: `${item.closed_trade_count / largestSymbol * 100}%` }} /></div><strong>{dashboardNumber(item.closed_trade_count)}<small>{dashboardNumber(item.win_rate_pct, '%')} thắng</small></strong></li>)}</ul> : <div className="fx-dashboard-empty-chart">Chưa có giao dịch đóng để phân nhóm theo symbol.</div>}
+          </section>
+        </div>
+        <div className="fx-dashboard-time-note"><strong>Thời gian sử dụng và thời lượng replay: chưa ghi nhận.</strong><span>Không suy ra từ ngày tạo phiên hoặc vị trí cursor. Xem P/L, balance và từng trade trong Analytics của phiên.</span></div>
+        {performance && <details className="fx-dashboard-provenance"><summary>Nguồn dữ liệu và phạm vi tổng hợp</summary><p>Replay mô phỏng, gồm các phiên đã lưu trữ; không gồm research jobs hoặc giao dịch broker. Các lần đóng lệnh giống nhau được loại trùng trong cùng cây branch. Tỷ lệ thắng = số lệnh net P/L dương / tổng số lệnh đóng, gồm lệnh hòa vốn.</p><p>Lần đọc: {new Date(performance.as_of_utc).toLocaleString('vi-VN', { timeZone: 'UTC' })} UTC. Mỗi phiên giữ revision riêng; bấm Làm mới sau khi tiếp tục replay.</p>
+          {performance.excluded.length > 0 && <p data-testid="dashboard-excluded">{performance.excluded.length} phiên chưa được tính: {performance.excluded.map((item) => `${item.session_id} (${item.reason})`).join('; ')}.</p>}
+          <ul>{performance.sources.map((item) => <li key={item.session_id}><a href={routeHref('analytics', { session: item.session_id, dataset: item.dataset_id, cursor: null, cutoff: null, mode: null, surface: 'workspace', from: filters.from, to: filters.to })}>Xem Analytics · {sessions.find((session) => session.session_id === item.session_id)?.name || item.session_id}</a><span>revision {item.revision} · {item.closed_trade_count} trade trong khoảng ngày</span></li>)}</ul>
+        </details>}
+        {payload && <div className="fx-dashboard-inventory" data-testid="dashboard-inventory" aria-label="Dữ liệu trong workspace">
+          <span>{formatCount(payload.counts?.datasets)} dataset</span>
+          <span>{formatCount(sumCounts(payload.counts?.research_jobs))} research job</span>
+          <span>{formatCount(sumCounts(payload.counts?.records))} bản ghi đã lưu</span>
         </div>}
       </div>
     </section>
   )
 }
 
-function DashboardMetric({ title, value, unit, extra, detail, icon, tone = '' }) {
+function DashboardMetric({ title, value, detail }) {
   return (
-    <article className={`fx-dashboard-metric ${tone ? `is-${tone}` : ''}`}>
+    <article className="fx-dashboard-metric">
       <span className="fx-dashboard-metric-title">
-        {icon && <MetricIcon type={icon} />}
         <span className="fx-dashboard-metric-label">{title}</span>
-        <span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span>
       </span>
-      <strong>{value}{unit && <small>{unit}</small>}{extra && <small className="fx-dashboard-metric-extra">{extra}</small>}</strong>
+      <strong>{value}</strong>
       {detail && <span className="fx-dashboard-metric-detail">{detail}</span>}
     </article>
   )
-}
-
-function MetricIcon({ type }) {
-  if (type === 'bars') return <span className="fx-dashboard-metric-icon fx-dashboard-bars" aria-hidden="true"><i /><i /><i /></span>
-  if (type === 'clock') return <span className="fx-dashboard-metric-icon fx-dashboard-clock" aria-hidden="true">◷</span>
-  return <span className="fx-dashboard-metric-icon fx-dashboard-ring" aria-hidden="true">◉</span>
-}
-
-function DashboardChart({ title = 'Time Invested', className = '' }) {
-  return <article className={`fx-dashboard-chart fx-dashboard-chart-empty ${className}`}>
-    <h3>{title}<span className="fx-dashboard-info" aria-label={`About ${title}`}>i</span></h3>
-    <div className="fx-dashboard-empty-chart" aria-hidden="true"><span /><span /><span /><span /><span /></div>
-    <p>No {title.toLowerCase()} yet.</p>
-  </article>
 }
 
 function DashboardIcon({ type }) {
@@ -171,10 +193,10 @@ function App() {
   const requestedView = query.get('view')
   // Preserve deep links emitted by the research/learn flows while keeping a bare root on the overview.
   const activeView = requestedView || (query.has('job') ? 'research' : query.has('session') || query.has('dataset') ? 'replay' : 'overview')
-  // The first visual pass opens the FXReplay-style selector from the Practice
-  // context. The existing workspaces remain available through the explicit
-  // `surface=workspace` deep link so their data/state contracts stay intact.
+  // Trading tabs open persisted reports. Order entry is an explicit chart action.
   const showSessionPicker = query.get('surface') !== 'workspace' && (query.get('select') === '1' || query.get('mode') === 'Practice')
+  const showTradeLedger = query.get('intent') !== 'order'
+  const showSessionAnalytics = !query.get('job') && !query.get('job_id')
   const isLearn = activeView === 'learn'
   const isProp = requestedView === 'testing' || requestedView === 'prop'
   let content
@@ -199,10 +221,10 @@ function App() {
     content = <JournalWorkspace workspace={workspace} query={query} />
     mode = 'Journal'
   } else if (activeView === 'analytics') {
-    content = showSessionPicker ? <SessionPicker kind="analytics" workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
+    content = showSessionAnalytics ? <SessionPicker kind="analytics" workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
     mode = 'Analytics'
   } else if (activeView === 'trade') {
-    content = showSessionPicker ? <SessionPicker kind="trade" workspace={workspace} query={query} /> : <TradeWorkspace workspace={workspace} query={query} />
+    content = showTradeLedger ? <SessionPicker kind="trade" workspace={workspace} query={query} /> : <TradeWorkspace workspace={workspace} query={query} />
     mode = 'Simulator'
   } else if (activeView === 'risk') {
     content = <RiskWorkspace workspace={workspace} query={query} />

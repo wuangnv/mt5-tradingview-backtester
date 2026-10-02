@@ -1,0 +1,29 @@
+.fx-app .fx-content > .prop-shell { padding-left: 24px; padding-right: 24px; }
+.fx-app[data-theme='light'] .prop-shell .prop-field input,
+.fx-app[data-theme='light'] .prop-shell .prop-field select { background: #fff; color: var(--fx-shell-text, #1d2930); border-color: var(--fx-shell-line, #cdd6dd); }
+
+@media (max-width: 520px) {
+  .fx-app .fx-content > .prop-shell { padding-left: 14px; padding-right: 14px; }
+}
+
+.fx-app .prop-shell .eyebrow,
+.fx-app .prop-shell .prop-topbar p,
+.fx-app .prop-shell .prop-lock span,
+.fx-app .prop-shell .prop-section-head span,
+.fx-app .prop-shell .prop-section-head small,
+.fx-app .prop-shell .prop-field span,
+.fx-app .prop-shell .prop-review span,
+.fx-app .prop-shell .prop-message,
+.fx-app .prop-shell .prop-session-list span,
+.fx-app .prop-shell .prop-session-list small { color: var(--fx-shell-muted, #9ba4ac); }
+
+.fx-app .prop-shell .prop-section-head strong,
+.fx-app .prop-shell .context-link,
+.fx-app .prop-shell .prop-tabs button,
+.fx-app .prop-shell .prop-review strong,
+.fx-app .prop-shell .prop-session-list strong { color: var(--fx-shell-text, #e0e5e9); }
+
+.fx-app .prop-shell .prop-lock strong { color: var(--fx-shell-warn, #f0c878); }
+.fx-app .prop-shell .prop-message-error,
+.fx-app .prop-shell .prop-message-denied,
+.fx-app .prop-shell .prop-message-conflict { color: var(--fx-shell-danger, #ef9c9c); }
