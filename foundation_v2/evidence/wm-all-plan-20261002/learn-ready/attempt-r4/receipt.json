@@ -1,0 +1,21 @@
+{
+  "schema": "learn-ready-attempt-reconciliation-v1",
+  "attempt": "r4",
+  "status": "HARNESS_ORACLE_FAILURE",
+  "raw_status": "FAIL_REAL_READY_SCOPED",
+  "product_defect": false,
+  "failure": "Harness compared payload.cursor_index to historical cursor20. Replay.view intentionally preserves canonical payload60 and exposes historical view_cursor_index20 separately.",
+  "source_contract": "trading_workspace_v2/replay.py:224-251",
+  "verified_expected_read_model": {
+    "payload_cursor_index": 60,
+    "canonical_cursor_index": 60,
+    "view_cursor_index": 20,
+    "visible_rows": 21,
+    "historical_view": true
+  },
+  "loaded_chart_cta": "Failure DOM already shows visible chart-bottom Learn CTA carrying session/cursor20/cutoff/from=replay; no frontend patch required for r4 assertion.",
+  "raw_evidence_preserved": true,
+  "superseded_by": "attempt-r5/report.json",
+  "whole_y11_accepted": false,
+  "whole_product_accepted": false
+}

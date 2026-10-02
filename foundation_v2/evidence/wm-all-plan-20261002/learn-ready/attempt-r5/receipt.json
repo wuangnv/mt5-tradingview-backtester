@@ -1,0 +1,53 @@
+{
+  "schema": "learn-ready-scoped-receipt-v1",
+  "attempt": "r5",
+  "status": "PASS_REAL_READY_SCOPED",
+  "raw_report_sha256": "48b11820d8aa9112c0d2ec27d0b36b9b1a294e2897b69ad1edb84911f80bad79",
+  "source_before_after": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
+  "executed_browser_harness_sha256": "ee04473d798a8ab025b2270e22f330d55e758f31612b47e5825fd718e51833ae",
+  "executed_browser_harness_snapshot": "attempt-r5/executed-run_learn_ready.mjs; byte-for-byte copy verified against raw report hash. Run from original learn-ready directory to preserve relative path resolution; snapshot is provenance only.",
+  "command": "PowerShell from MT5 repo: & .\\foundation_v2\\evidence\\wm-all-plan-20261002\\learn-ready\\run_learn_ready.ps1 -Attempt attempt-r5",
+  "effects": "Short own API8030; task-child-only dbname substitution to existing disposable QA DB trading_workspace_v2_ui_20261001 after read-only actual DB/server verification; idempotent create_app schema initialization; GET-only Learn/browser traffic; owned evidence/screenshots. Existing8020/5180 unchanged; no provider, broker, assessment access or learner progress writes.",
+  "forwarding": "Only browser Learn GETs go to actual isolated API8030 preserving path/query/headers. Replay/chart local GETs use existing5180/8020. No fixture response payloads; writes/external origins blocked.",
+  "functional": {
+    "status": "PASS",
+    "real_api_checks": 10,
+    "course": "Actual version1.1;8modules/24lessons;M08-L03;22glossary terms;read-only progress owner education/progress.json;pending learner application unchanged",
+    "reader": "Course/currentM08 resource content matched actual API content exactly; resource hashes recorded without whole content",
+    "interaction": "Glossary search/empty state and reader/glossary keyboard focus pass; no answer-key content or auto-completion",
+    "tenant_isolation": "tenant-b member is unconfigured404; unauthorized tenant403; unsupported tutor/answer-resource requests404; no reader leak",
+    "loaded_chart_roundtrips": 6,
+    "historical_read_model": "view20/canonical60/payload60/21visible rows/cutoff1704068400; actual chart awaited before visible keyboard-focusable Learn CTA click; return/reload preserve session/cursor/theme/progress context",
+    "page_errors": 0,
+    "unexpected_console_errors": 0,
+    "mutation_requests": 0,
+    "external_requests": 0
+  },
+  "ui": {
+    "status": "SCOPED_PASS",
+    "matrix": "dark/light at1440/768/390;6cases pass",
+    "axe_violations": 0,
+    "aria_incompletes": 0,
+    "known_manual_axe_observation": "Each case retains icon-only theme glyph color-contrast incomplete; no text contrast violation. This is not a WCAG certification.",
+    "horizontal_overflow_pixels": 0,
+    "visual_review": "Learn light768/390 and loaded-chart CTA dark1440/light390 inspected: summary reflows, context/read-only labels readable, CTA visible and focused. Stable CSS transition-completion gate used before axe."
+  },
+  "integrity": {
+    "course_sha256_before_after": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+    "progress_sha256_before_after": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008",
+    "source_unchanged": true
+  },
+  "teardown": {
+    "actual_service_pid": 12572,
+    "windows_venv_launcher_pid": 10888,
+    "clarification": "Raw lifecycle calls Start-Process launcher PID servicePid. Actual PID is service.json os.getpid(). Raw lifecycle unchanged; teardown-verification.json independently checks both absent and no8030 listener.",
+    "actual_pid_and_launcher_absent": true,
+    "listener8030_absent": true,
+    "future_harness": "Attempt/PID health, launcher-child relation and exact service teardown improved after r5; Node/PowerShell syntax and Python Ruff checks pass. New lifecycle semantics not runtime-rerun; no browser suite repeated for this metadata clarification."
+  },
+  "prior_attempts": "r1 functional pass/UI fail; initial roundtrip was a pre-chart-load race, not loaded-chart proof. r2 stable contrast/ARIA pass but tablet overflow and journey timeout. r3 matrix pass but loaded chart hid sole Learn CTA. r4 was harness canonical/view cursor assertion error. All raw failures preserved; r5 supersedes only this scoped ready/journey validation.",
+  "active_api8020_binding": "Live GET /api/v2/learn/overview with tenant-a still404 learn_not_configured after r5. Isolated QA success does not activate paired education binding or alter active config.",
+  "whole_y11_accepted": false,
+  "whole_product_accepted": false,
+  "remaining_scope": "Broader contextual playbook/lesson links and wholeY11/product acceptance remain with canonical plan/ledger owner. Root independent review required for scoped promotion."
+}

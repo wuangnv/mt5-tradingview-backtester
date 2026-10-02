@@ -929,6 +929,16 @@
   white-space: nowrap;
 }
 
+.fx-app .fx-content > .replay-shell .chart-bottom-range .context-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 6px;
+  color: #c7d0d7;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
 .fx-app .fx-content > .replay-shell .chart-bottom-range button:hover,
 .fx-app .fx-content > .replay-shell .chart-bottom-range button.is-active,
 .fx-app .fx-content > .replay-shell .chart-bottom-replay button:hover:not(:disabled),

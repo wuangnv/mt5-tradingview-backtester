@@ -1,0 +1,18 @@
+{
+  "database": "trading_workspace_v2_ui_20261001",
+  "server_loopback": true,
+  "server_port": 5432,
+  "api_port": 8030,
+  "pid": 25404,
+  "configured_learn_workspaces": [
+    "tenant-a"
+  ],
+  "unconfigured_member": "tenant-b",
+  "course_progress_before": {
+    "course.json": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+    "progress.json": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008"
+  },
+  "schema_initialization": "create_app idempotent schema initialization on named disposable QA DB only",
+  "request_scope": "GET Learn plus QA health; writes and other routes denied before handlers",
+  "dsn_printed": false
+}

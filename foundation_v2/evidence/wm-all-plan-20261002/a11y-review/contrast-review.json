@@ -1,0 +1,1859 @@
+{
+  "status": "PARTIAL_WCAG_REVIEW_FINDINGS_OPEN",
+  "reviewer": "/root/mt5_independent_review",
+  "sourceBefore": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "sourceAfter": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "scope": "Manual rendered triage of18 unique axe color-contrast incompletes,48 route/theme observations at1440, plus8 focused Data layouts and2 Research status contexts; preserved original failures. No source/baseline/ledger edits.",
+  "automatedReceipt": {
+    "status": "SCOPED_PASS",
+    "caseCount": 144,
+    "claim": "No reported automated violations in this scoped matrix; manual incompletes required classification."
+  },
+  "inputs": [
+    {
+      "path": "contrast-measurements.json",
+      "sha256": "2c9992377ff8f92524616520d9bbca1b81c2844d76fdcd0387209a8145deb716"
+    },
+    {
+      "path": "layout-context-measurements.json",
+      "sha256": "f1b85d3414e6006059b575a1c528f35b3d52d2766afcf45424d19a5dd1eb84ae"
+    },
+    {
+      "path": "../review/keyboard-readonly-report.json",
+      "sha256": "0b715896aae13681484700baae38ff0aa4040887d901e0b9d98749d206530ba0"
+    },
+    {
+      "path": "../ui/a11y-full.json",
+      "sha256": "8ef9c762392ec8fae3e86f99ca01cd15d4ec9fb904fe66a40035b0f6c58d1fb3"
+    }
+  ],
+  "summary": {
+    "uniqueTargets": 18,
+    "observations": 48,
+    "measuredContrastResolved": 16,
+    "decorativeException": 1,
+    "contrastFindingOpen": 1,
+    "additionalLayoutFindingOpen": 1,
+    "sourceUnchanged": true,
+    "fullWcagConformance": "NOT_EVALUATED",
+    "productAcceptance": "NOT_EVALUATED",
+    "broker": "NOT_CONTACTED"
+  },
+  "targets": [
+    {
+      "selector": ".fx-theme-icon",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "overview",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "dark",
+          "route": "sessions",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "dark",
+          "route": "live",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "dark",
+          "route": "data",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "data-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "dark",
+          "route": "research",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "dark",
+          "route": "journal",
+          "text": "☼",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            231,
+            232,
+            234,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 16.822173549434776,
+          "applicableContrastRatio": 16.822173549434776,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "journal-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "overview",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "sessions",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "live",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "data",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "data-light-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "research",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "journal",
+          "text": "☾",
+          "fontSize": "14px",
+          "fontWeight": "750",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "journal-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": ".fxr-select-chevron",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "sessions",
+          "text": "⌄",
+          "fontSize": "23px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "background": [
+            65,
+            67,
+            71,
+            1
+          ],
+          "computedAncestorRatio": 9.912150693246275,
+          "applicableContrastRatio": 9.912150693246275,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "sessions",
+          "text": "⌄",
+          "fontSize": "23px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "background": [
+            65,
+            67,
+            71,
+            1
+          ],
+          "computedAncestorRatio": 9.912150693246275,
+          "applicableContrastRatio": 9.912150693246275,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": []
+        }
+      ]
+    },
+    {
+      "selector": ".fx-chart-icon-button",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "←",
+          "fontSize": "18px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            185,
+            190,
+            200,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 11.0608303581945,
+          "applicableContrastRatio": 11.0608303581945,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "←",
+          "fontSize": "18px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "button[aria-label=\"Vẽ đường xu hướng\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "╱",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "╱",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "button[aria-label=\"Vẽ vùng giá\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "▱",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "▱",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "button[aria-label=\"Mở danh sách đối tượng\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "☷",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "☷",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "button[aria-label=\"Vừa toàn bộ nến đã mở\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "⛶",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "⛶",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 9.30547253335037,
+          "applicableContrastRatio": 9.30547253335037,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": ".chart-symbol-strip > strong",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "EURUSD",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "threshold": 4.5,
+          "foreground": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 20.278668805132316,
+          "applicableContrastRatio": 20.62439635127884,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Canvas paints #030303 behind this visible text. The DOM ancestor #050607 does not describe the actual canvas pixels. The screenshot dominant solid background and direct review establish the rendered background for this state.",
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "EURUSD",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "threshold": 4.5,
+          "foreground": [
+            214,
+            222,
+            226,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 14.876756004604465,
+          "applicableContrastRatio": 15.130387265981481,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Canvas paints #030303 behind this visible text. The DOM ancestor #050607 does not describe the actual canvas pixels. The screenshot dominant solid background and direct review establish the rendered background for this state.",
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": ".chart-symbol-strip > span:nth-child(2)",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "60s · UTC",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 9.457522096392085,
+          "applicableContrastRatio": 9.618761768405694,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Canvas paints #030303 behind this visible text. The DOM ancestor #050607 does not describe the actual canvas pixels. The screenshot dominant solid background and direct review establish the rendered background for this state.",
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "60s · UTC",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            176,
+            177,
+            180,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 9.457522096392085,
+          "applicableContrastRatio": 9.618761768405694,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Canvas paints #030303 behind this visible text. The DOM ancestor #050607 does not describe the actual canvas pixels. The screenshot dominant solid background and direct review establish the rendered background for this state.",
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": ".chart-symbol-ohlc",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "O 1,103 · H 1,1038 · L 1,1027 · C 1,1032 · V 100",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            127,
+            139,
+            148,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 5.816189091937741,
+          "applicableContrastRatio": 5.915348302140478,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Canvas paints #030303 behind this visible text. The DOM ancestor #050607 does not describe the actual canvas pixels. The screenshot dominant solid background and direct review establish the rendered background for this state.",
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "O 1,103 · H 1,1038 · L 1,1027 · C 1,1032 · V 100",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            127,
+            139,
+            148,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 5.816189091937741,
+          "applicableContrastRatio": 5.915348302140478,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Canvas paints #030303 behind this visible text. The DOM ancestor #050607 does not describe the actual canvas pixels. The screenshot dominant solid background and direct review establish the rendered background for this state.",
+            "Hit testing returns the underlying canvas/select because this label has pointer-events:none; this is not evidence of visual occlusion. Rendered screenshot inspected."
+          ],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "a[aria-label=\"Journal tại cutoff này\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "▣",
+          "fontSize": "19px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            184,
+            192,
+            200,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 10.842791017797463,
+          "applicableContrastRatio": 10.842791017797463,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "▣",
+          "fontSize": "19px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            184,
+            192,
+            200,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 10.842791017797463,
+          "applicableContrastRatio": 10.842791017797463,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "a[aria-label=\"Analytics của session\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "replay",
+          "text": "▥",
+          "fontSize": "19px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            184,
+            192,
+            200,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 10.842791017797463,
+          "applicableContrastRatio": 10.842791017797463,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "replay",
+          "text": "▥",
+          "fontSize": "19px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            184,
+            192,
+            200,
+            1
+          ],
+          "background": [
+            7,
+            9,
+            10,
+            1
+          ],
+          "computedAncestorRatio": 10.842791017797463,
+          "applicableContrastRatio": 10.842791017797463,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": [
+            "replay-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": ".live-secondary-button > span[aria-hidden=\"true\"]",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "live",
+          "text": "→",
+          "fontSize": "10px",
+          "fontWeight": "700",
+          "threshold": 3,
+          "foreground": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 20.62439635127884,
+          "applicableContrastRatio": 20.62439635127884,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "live",
+          "text": "→",
+          "fontSize": "10px",
+          "fontWeight": "700",
+          "threshold": 3,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            245,
+            247,
+            248,
+            1
+          ],
+          "computedAncestorRatio": 13.839174600113385,
+          "applicableContrastRatio": 13.839174600113385,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        }
+      ]
+    },
+    {
+      "selector": "div:nth-child(1) > small:nth-child(2)",
+      "classification": "CONTRAST_RESOLVED_LAYOUT_OPEN",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "data",
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            137,
+            148,
+            156,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 6.6584340072913015,
+          "applicableContrastRatio": 6.6584340072913015,
+          "placeholderRatio": null,
+          "classification": "PASS_CONTRAST_WITH_OPEN_LAYOUT_DEFECT",
+          "notes": [
+            "Exact automated target disambiguated by text Có: read_metadata. Contrast passes, but the provider first column is0px at1440/1280 in both themes; readability is not accepted."
+          ],
+          "supplementalScreenshots": [
+            "data-dark-contrast.png"
+          ]
+        },
+        {
+          "theme": "light",
+          "route": "data",
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "computedAncestorRatio": 6.225244635758334,
+          "applicableContrastRatio": 6.225244635758334,
+          "placeholderRatio": null,
+          "classification": "PASS_CONTRAST_WITH_OPEN_LAYOUT_DEFECT",
+          "notes": [
+            "Exact automated target disambiguated by text Có: read_metadata. Contrast passes, but the provider first column is0px at1440/1280 in both themes; readability is not accepted."
+          ],
+          "supplementalScreenshots": [
+            "data-light-contrast.png"
+          ]
+        }
+      ]
+    },
+    {
+      "selector": "li[data-step=\"context\"] > .rs-step-index",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "research",
+          "text": "✓",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            165,
+            224,
+            216,
+            1
+          ],
+          "background": [
+            21,
+            42,
+            41,
+            1
+          ],
+          "computedAncestorRatio": 10.217043027542264,
+          "applicableContrastRatio": 10.217043027542264,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "research",
+          "text": "✓",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            165,
+            224,
+            216,
+            1
+          ],
+          "background": [
+            21,
+            42,
+            41,
+            1
+          ],
+          "computedAncestorRatio": 10.217043027542264,
+          "applicableContrastRatio": 10.217043027542264,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        }
+      ]
+    },
+    {
+      "selector": "li[data-step=\"quality\"] > .rs-step-index",
+      "classification": "CONTRAST_RESOLVED",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "research",
+          "text": "✓",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            165,
+            224,
+            216,
+            1
+          ],
+          "background": [
+            21,
+            42,
+            41,
+            1
+          ],
+          "computedAncestorRatio": 10.217043027542264,
+          "applicableContrastRatio": 10.217043027542264,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        },
+        {
+          "theme": "light",
+          "route": "research",
+          "text": "✓",
+          "fontSize": "10px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            165,
+            224,
+            216,
+            1
+          ],
+          "background": [
+            21,
+            42,
+            41,
+            1
+          ],
+          "computedAncestorRatio": 10.217043027542264,
+          "applicableContrastRatio": 10.217043027542264,
+          "placeholderRatio": null,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [],
+          "supplementalScreenshots": []
+        }
+      ]
+    },
+    {
+      "selector": ".rs-state-mark",
+      "classification": "DECORATIVE_REDUNDANT_GRAPHIC",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "research",
+          "text": "○",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            168,
+            181,
+            188,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "computedAncestorRatio": 9.821812516284487,
+          "applicableContrastRatio": 9.821812516284487,
+          "placeholderRatio": null,
+          "classification": "DECORATIVE_REDUNDANT_GRAPHIC",
+          "notes": [
+            "Current ○ is a noninteractive redundant graphic. Explicit adjacent text supplies both the state and instruction; its shape/color is not required to understand them. Light measured2.10:1 is recorded, not relabelled as a numeric pass. This exception does not cover other rs-state-mark glyphs or states."
+          ],
+          "supplementalScreenshots": [
+            "research-result-status-dark.png"
+          ],
+          "requiredThreshold": null
+        },
+        {
+          "theme": "light",
+          "route": "research",
+          "text": "○",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "threshold": 3,
+          "foreground": [
+            168,
+            181,
+            188,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "computedAncestorRatio": 2.099856448805529,
+          "applicableContrastRatio": 2.099856448805529,
+          "placeholderRatio": null,
+          "classification": "DECORATIVE_REDUNDANT_GRAPHIC",
+          "notes": [
+            "Current ○ is a noninteractive redundant graphic. Explicit adjacent text supplies both the state and instruction; its shape/color is not required to understand them. Light measured2.10:1 is recorded, not relabelled as a numeric pass. This exception does not cover other rs-state-mark glyphs or states."
+          ],
+          "supplementalScreenshots": [
+            "research-result-status-light.png"
+          ],
+          "requiredThreshold": null
+        }
+      ]
+    },
+    {
+      "selector": "textarea[rows=\"8\"]",
+      "classification": "FINDING_OPEN",
+      "observations": [
+        {
+          "theme": "dark",
+          "route": "journal",
+          "text": "",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            232,
+            237,
+            240,
+            1
+          ],
+          "background": [
+            12,
+            17,
+            19,
+            1
+          ],
+          "computedAncestorRatio": 16.10825217679702,
+          "applicableContrastRatio": 16.10825217679702,
+          "placeholderRatio": 4.123873001012635,
+          "classification": "FAIL_PLACEHOLDER_TEXT_CONTRAST",
+          "notes": [
+            "Entered text and placeholder are assessed separately. The enabled empty field visibly presents the placeholder after scrolling; no persisted content or API write was made."
+          ],
+          "supplementalScreenshots": [
+            "journal-dark-contrast.png"
+          ],
+          "placeholderForeground": [
+            117,
+            117,
+            117,
+            1
+          ],
+          "placeholderText": "Ví dụ: giá phá range nhưng chưa đóng trên vùng…"
+        },
+        {
+          "theme": "light",
+          "route": "journal",
+          "text": "",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "threshold": 4.5,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "computedAncestorRatio": 14.871494718297539,
+          "applicableContrastRatio": 14.871494718297539,
+          "placeholderRatio": 4.607518093747377,
+          "classification": "PASS_MEASURED_CONTRAST",
+          "notes": [
+            "Entered text and placeholder are assessed separately. The enabled empty field visibly presents the placeholder after scrolling; no persisted content or API write was made."
+          ],
+          "supplementalScreenshots": [
+            "journal-light-contrast.png"
+          ],
+          "placeholderForeground": [
+            117,
+            117,
+            117,
+            1
+          ],
+          "placeholderText": "Ví dụ: giá phá range nhưng chưa đóng trên vùng…"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "A11Y-01",
+      "status": "OPEN",
+      "criterion": "WCAG1.4.3 Contrast (Minimum)",
+      "route": "journal",
+      "theme": "dark",
+      "selector": "textarea[rows=\"8\"]::placeholder",
+      "foreground": "#757575",
+      "background": "#0c1113",
+      "measuredRatio": 4.123873001012635,
+      "requiredRatio": 4.5,
+      "enteredTextRatio": 16.10825217679702,
+      "lightPlaceholderRatio": 4.607518093747377,
+      "recommendation": "After the root releases source freeze, use the existing muted text token for the Journal placeholder, then recheck empty/enabled input in both themes. Preserve original evidence; new hash needs new receipt."
+    },
+    {
+      "id": "UI-01",
+      "status": "OPEN",
+      "criterion": "Rendered readability/layout defect; no unverified WCAG reflow claim",
+      "route": "data",
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "selector": ".rd-provider-row > div:first-child",
+      "dataCases": [
+        {
+          "theme": "dark",
+          "viewportWidth": 1440,
+          "rowWidth": 418.5,
+          "grid": "0px 150px 244.5px",
+          "firstColumnWidth": 0,
+          "rowHeight": 1223,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 13
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 16
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 47
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "viewportWidth": 1280,
+          "rowWidth": 358.5,
+          "grid": "0px 150px 184.5px",
+          "firstColumnWidth": 0,
+          "rowHeight": 1223,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 13
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 16
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 47
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "viewportWidth": 768,
+          "rowWidth": 646,
+          "grid": "194.734px 150px 277.266px",
+          "firstColumnWidth": 194.734375,
+          "rowHeight": 95,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 1
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 1
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 3
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "viewportWidth": 390,
+          "rowWidth": 308,
+          "grid": "308px",
+          "firstColumnWidth": 308,
+          "rowHeight": 137,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 1
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 1
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 3
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "viewportWidth": 1440,
+          "rowWidth": 418.5,
+          "grid": "0px 150px 244.5px",
+          "firstColumnWidth": 0,
+          "rowHeight": 1223,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 13
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 16
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 47
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "viewportWidth": 1280,
+          "rowWidth": 358.5,
+          "grid": "0px 150px 184.5px",
+          "firstColumnWidth": 0,
+          "rowHeight": 1223,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 13
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 16
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 47
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "viewportWidth": 768,
+          "rowWidth": 646,
+          "grid": "194.734px 150px 277.266px",
+          "firstColumnWidth": 194.734375,
+          "rowHeight": 95,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 1
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 1
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 3
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "viewportWidth": 390,
+          "rowWidth": 308,
+          "grid": "308px",
+          "firstColumnWidth": 308,
+          "rowHeight": 137,
+          "textLineCounts": [
+            {
+              "text": "local-catalog",
+              "lines": 1
+            },
+            {
+              "text": "Có: read_metadata",
+              "lines": 1
+            },
+            {
+              "text": "offline_local · entitlement: dataset_metadata_only",
+              "lines": 3
+            }
+          ]
+        }
+      ],
+      "rootCause": "Desktop Data aside is358.5/418.5px wide. minmax(0,1fr) auto auto with150px status minimum and capability content consumes the available width and leaves the provider track0px. overflow-wrap:anywhere turns words into individual characters. Tablet/main-layout and mobile one-column rule have enough space.",
+      "recommendation": "After source freeze, stack provider metadata/status/capabilities in the narrow desktop aside, or bound the other tracks while retaining a usable first-column width. Recheck1440/1280/768/390 dark/light with line counts, rendered reading and overflow; no-wrapper style fits flat-first UI."
+    }
+  ],
+  "supplementalEvidence": {
+    "reducedMotion": {
+      "status": "SCOPED_PASS",
+      "observations": 14,
+      "routes": [
+        "overview",
+        "sessions",
+        "replay",
+        "live",
+        "data",
+        "research",
+        "journal"
+      ],
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "preferenceMatches": true,
+      "nonReducedComputedStyles": 0,
+      "scope": "Initial rendered route states under prefers-reduced-motion:reduce, including before/after pseudo styles; not every later animation/state."
+    },
+    "keyboard": {
+      "status": "SCOPED_PASS_REUSED",
+      "receipt": "../review/keyboard-readonly-report.json",
+      "sha256": "0b715896aae13681484700baae38ff0aa4040887d901e0b9d98749d206530ba0",
+      "cases": 2,
+      "viewport": "390x844",
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "scope": "Native arrow-key horizontal ledger scrolling, numeric-cell right alignment and visibility, visible focus outline, menu focus loop, Escape and restored focus. Not every keyboard workflow."
+    }
+  },
+  "screenshotHashes": [
+    {
+      "path": "replay-dark-contrast.png",
+      "sha256": "bb6c42dff1bc0fad36ea633058be233feb67aeaf2262df31455743ee08eba833",
+      "theme": "dark",
+      "route": "replay",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "data-dark-contrast.png",
+      "sha256": "1ba391082dc5a40204833514c8a96f5a78f410a8a569852f8c41e5a5e9bd5a31",
+      "theme": "dark",
+      "route": "data",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "journal-dark-contrast.png",
+      "sha256": "bcd1ebe0dc565464cfc030c9d71cc9c3d9f2f41205bca3d30779795ef070ae51",
+      "theme": "dark",
+      "route": "journal",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "replay-light-contrast.png",
+      "sha256": "b7e9ef72dab32843435ae9fb4c5b9e4e0049ccfd245530ca56ba093d0affbb4b",
+      "theme": "light",
+      "route": "replay",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "data-light-contrast.png",
+      "sha256": "68bd23af2b3926ac9f9a77023576ab8dff3866840dbd67eb1301189a309958c4",
+      "theme": "light",
+      "route": "data",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "journal-light-contrast.png",
+      "sha256": "52ed1f77cb0d43c30447e8ae4ffd1892c75708de7dbc73e574fa64ee76d5c8bf",
+      "theme": "light",
+      "route": "journal",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "data-provider-dark-1440.png",
+      "sha256": "0f2acd0847a48c6c53bfb0bd35c9d933fbb323995d5756dc922e450afbee1413",
+      "theme": "dark",
+      "route": "data",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "data-provider-dark-1280.png",
+      "sha256": "7c3575f955b4edd0675048caff54daba3f46b864788b1a2fe432744449d770d3",
+      "theme": "dark",
+      "route": "data",
+      "viewportWidth": 1280
+    },
+    {
+      "path": "data-provider-dark-768.png",
+      "sha256": "a86cc8ed40283831399dd65edc0bf2f45ddfc939088a5d9ac799553a49a9ea83",
+      "theme": "dark",
+      "route": "data",
+      "viewportWidth": 768
+    },
+    {
+      "path": "data-provider-dark-390.png",
+      "sha256": "e4fe16d432fb59ab127b854223afd52ea7c9129a21ac6a21b525e8502e809adb",
+      "theme": "dark",
+      "route": "data",
+      "viewportWidth": 390
+    },
+    {
+      "path": "research-result-status-dark.png",
+      "sha256": "24155c6deb9c733889620c7378c10816e45f88c827ffcc6ad2f01b9a8df69995",
+      "theme": "dark",
+      "route": "research",
+      "viewportWidth": 1440
+    },
+    {
+      "path": "research-result-status-light.png",
+      "sha256": "496dafd18e32d419026dea1799475e38dc46f4c30d3e41b0c98b237c383303ce",
+      "theme": "light",
+      "route": "research",
+      "viewportWidth": 1440
+    }
+  ],
+  "exclusions": [
+    "No full WCAG2.2 AA conformance declaration.",
+    "Other control states, hover/active/disabled, validation/error states, charts/annotations/down-candle semantic colors and complete keyboard/screen-reader coverage not accepted by this receipt.",
+    "No full W4/W7/W8/product/heap/broker acceptance; no source change or promotion authority."
+  ],
+  "safety": {
+    "methods": [
+      "GET",
+      "HEAD",
+      "OPTIONS"
+    ],
+    "origin": "http://127.0.0.1:5180",
+    "pageErrors": 0,
+    "blockedRequests": 0,
+    "writes": 0,
+    "webSocketsClosed": true
+  }
+}

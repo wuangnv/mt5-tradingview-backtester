@@ -1,0 +1,21 @@
+{
+  "schema": "learn-ready-preflight-evidence-v1",
+  "recorded_date_local": "2026-10-02",
+  "status": "BLOCKED_BEFORE_DATABASE",
+  "scope": "Preflight for assigned isolated API8030 and real Learn ready browser QA; no acceptance claimed",
+  "required_database": "trading_workspace_v2_ui_20261001",
+  "host_loopback": true,
+  "exact_database_matches": false,
+  "dsn_printed": false,
+  "database_connection_attempted": false,
+  "create_app_called": false,
+  "service_started": false,
+  "browser_started": false,
+  "course_progress_changed": false,
+  "sources": {
+    "../../education/course.json": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+    "../../education/progress.json": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008"
+  },
+  "next_action": "Coordinator must supply a verified process-scoped DSN matching the assigned disposable QA database before any create_app/database/browser step; no fallback database selected",
+  "effects": "Read inherited DSN in memory and parse metadata only, without printing credentials/DSN or opening a connection. Wrote this evidence file only."
+}

@@ -1,0 +1,47 @@
+{
+  "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=replay&session=39b1d068edd64e75864f692f27237852&cursor=20",
+  "links": [
+    {
+      "text": "Học & thuật ngữ",
+      "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&from=replay",
+      "display": "block",
+      "visibility": "visible",
+      "rect": {
+        "x": 1155.9375,
+        "y": 73.84375,
+        "width": 89.296875,
+        "height": 16,
+        "top": 73.84375,
+        "right": 1245.234375,
+        "bottom": 89.84375,
+        "left": 1155.9375
+      },
+      "parentClass": "replay-topbar-actions",
+      "parentDisplay": "flex",
+      "parentRect": {
+        "x": 1155.9375,
+        "y": 57.34375,
+        "width": 284.0625,
+        "height": 49,
+        "top": 57.34375,
+        "right": 1440,
+        "bottom": 106.34375,
+        "left": 1155.9375
+      }
+    }
+  ],
+  "shellClass": "fx-app fx-shell-story   is-chart-workspace is-chart-route",
+  "replayHeader": {
+    "display": "flex",
+    "rect": {
+      "x": 0,
+      "y": 46,
+      "width": 1440,
+      "height": 72.6875,
+      "top": 46,
+      "right": 1440,
+      "bottom": 118.6875,
+      "left": 0
+    }
+  }
+}

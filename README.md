@@ -24,8 +24,8 @@ có giới hạn → result bất biến → API theo workspace → UI. Replay c
 Tại ngày **02/10/2026**, các lát chức năng và UI local đã có kiểm chứng, nhưng
 **sản phẩm chưa hoàn tất** (`SAFE_SLICES_EXECUTED / FULL_PRODUCT_NOT_COMPLETE`).
 
-- Shell vẫn bật `SHELL_SKELETON_MODE = true` trong [`FxReplayShell.jsx`](foundation_v2/web/src/FxReplayShell.jsx); chưa quảng bá giao diện replay full-bleed thành bản hoàn tất.
-- Native zoom, automated axe/reflow và bộ ảnh chuẩn Dashboard/Sessions/Trades/Analytics/chart đã có bằng chứng theo scope. Manual WCAG, các chart states còn thiếu và nghiệm thu bộ nhớ chạy dài vẫn mở; xem [checkpoint UI](foundation_v2/evidence/wm-all-plan-20261002/ui/CHECKPOINT.md).
+- Shell mở chart workspace khi chọn session/dataset hoặc `surface=workspace`; scaffold `SHELL_SKELETON_MODE` đã được bỏ. Chart full-bleed có scoped visual evidence, còn các workflow/performance gates trước khi nhận toàn U4/W8.
+- Native zoom, automated axe/reflow, ảnh chuẩn Dashboard/Sessions/Trades/Analytics/chart và lượt đo heap Analytics một giờ đã có bằng chứng theo scope. Manual WCAG, các chart states còn thiếu và hiệu năng chart chạy dài vẫn mở; xem [checkpoint UI](foundation_v2/evidence/wm-all-plan-20261002/ui/CHECKPOINT.md).
 - Nghiệm thu dữ liệu thực, provider/AI, broker demo/live, holdout và deploy là các phạm vi riêng. UI local không phải bằng chứng sẵn sàng giao dịch thật.
 
 Dùng các tài liệu trong repo **TradingWorkspace** làm nguồn tiến độ; README này
@@ -83,6 +83,20 @@ workspace phù hợp với [`create_app`](foundation_v2/trading_workspace_v2/api
 [`authorization`](foundation_v2/trading_workspace_v2/auth.py). Tạo app có thể khởi tạo
 schema database; dùng database phát triển riêng. Khi thiếu API/dữ liệu, UI có thể
 hiển thị trạng thái trống hoặc lỗi; đó không phải một bản demo hoàn chỉnh.
+
+Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
+hình database, artifacts và authorization đã có:
+
+```powershell
+$env:TW_V2_LEARN_WORKSPACE_ID = 'tenant-a'
+$env:TW_V2_EDUCATION_ROOT = 'D:/ANNAM/TradingWorkspace/education'
+```
+
+Thay workspace/root theo môi trường của bạn; thiếu một trong hai biến sẽ bị từ
+chối. Bridge chỉ đọc course/resources/glossary và progress, không mở answer key
+hoặc ghi tiến độ. [Learn ready-flow receipt](foundation_v2/evidence/wm-all-plan-20261002/learn-ready/CHECKPOINT.md)
+kiểm course thật qua một API tạm riêng; API đang mở ở8020 vẫn chưa được đổi binding
+hoặc restart bởi lượt QA này.
 
 Repo chưa có launcher một nút cho toàn bộ PATH-2. `Start-Windows.bat`,
 `Start-macOS.command` và `python workspace_app.py` vẫn chạy **Flask legacy**.

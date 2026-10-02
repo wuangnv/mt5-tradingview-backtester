@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_WARNING_REPAIR_REVIEWER_PASS",
+  "reviewer": "/root/mt5_independent_review",
+  "reviewedAt": "2026-10-02T14:32:00.366Z",
+  "sourceHash": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
+  "scope": "Data Provider capabilities safety-warning title and three list items; actual isolated GET-only QA; dark/light × 1440/1280/768/390; measured contrast and directly inspected layout",
+  "selector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block",
+  "measuredEvidence": {
+    "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-measurements.json",
+    "sha256": "ee52260e4bb858c875b25f79923806ca4d1827cb89a90638daab6aaf8a0865dc"
+  },
+  "caseCount": 8,
+  "textObservations": 32,
+  "results": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "titleContrast": 9.120940542183826,
+      "listContrast": [
+        9.618761768405694,
+        9.618761768405694,
+        9.618761768405694
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "titleContrast": 9.120940542183826,
+      "listContrast": [
+        9.618761768405694,
+        9.618761768405694,
+        9.618761768405694
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "titleContrast": 9.120940542183826,
+      "listContrast": [
+        9.618761768405694,
+        9.618761768405694,
+        9.618761768405694
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "titleContrast": 9.120940542183826,
+      "listContrast": [
+        9.618761768405694,
+        9.618761768405694,
+        9.618761768405694
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "titleContrast": 7.19726583768433,
+      "listContrast": [
+        6.225244635758334,
+        6.225244635758334,
+        6.225244635758334
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "titleContrast": 7.19726583768433,
+      "listContrast": [
+        6.225244635758334,
+        6.225244635758334,
+        6.225244635758334
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "titleContrast": 7.19726583768433,
+      "listContrast": [
+        6.225244635758334,
+        6.225244635758334,
+        6.225244635758334
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "titleContrast": 7.19726583768433,
+      "listContrast": [
+        6.225244635758334,
+        6.225244635758334,
+        6.225244635758334
+      ],
+      "allInViewport": true,
+      "renderReview": "Directly inspected full crop; title/list readable, mobile natural wrapping, no observed clipping or overlap"
+    }
+  ],
+  "images": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-dark-1440.png",
+      "sha256": "d9c21a7d0493b4d4b5d49b075262949478a5f08154c8597aa9e8dec8e42d1896",
+      "directlyInspected": true
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-dark-1280.png",
+      "sha256": "548b7699a1827c211c97de6e9ea93826c49325cda3df0cacbbbade1118615bca",
+      "directlyInspected": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-dark-768.png",
+      "sha256": "d94791b5f4fbc84bf56b55d548940371747ad870b17008cc78ced26a4f676ed5",
+      "directlyInspected": true
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-dark-390.png",
+      "sha256": "6eb8a6e800710cc3a2cb13dfdffcfaf8d70d29648e0e273b227395f34e65a708",
+      "directlyInspected": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-light-1440.png",
+      "sha256": "c2183ef2f1c53f912d571b6320f4e7ba14ed23d1f104759b385f9e8b528c251d",
+      "directlyInspected": true
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-light-1280.png",
+      "sha256": "275c7c3b44c9ecaf59a5385dab201a0e30b68f8e211fcf22f020f8a1b568e63f",
+      "directlyInspected": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-light-768.png",
+      "sha256": "71d29d362280ba376dbba8fe067ce266b9ecf0fdb2cae65eef02f764fcfbdd61",
+      "directlyInspected": true
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-repair-r1/warning-light-390.png",
+      "sha256": "b78d00f6d83ac76ed18314feb8ecba1a053c0439475cba6241995a399bf12446",
+      "directlyInspected": true
+    }
+  ],
+  "preservedEvidence": [
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/warning-triage-r1/warning-measurements.json",
+      "sha256": "3758296aa18bdd49a8f5228fbc97d695ca1eba60ab8e84e4420ae9a4d8667ea8"
+    },
+    {
+      "path": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/wm-all-plan-20261002/a11y-review/repair-r2/repair-review.json",
+      "sha256": "65720dfc18c31930ef34228c98fb045b773b289c2549431b2b0c782da0254040"
+    }
+  ],
+  "resolvedFinding": "Historical light-theme list contrast 2.019333456 < 4.5 is repaired to 6.225245; dark list 9.618761768; source final 8205, not the old e993 receipt",
+  "exclusions": [
+    "Not full WCAG certification, canvas contrast or assistive-technology acceptance",
+    "No provider/broker/account authority, product completion or owner acceptance",
+    "Earlier historical failure and earlier scoped receipts remain unchanged"
+  ]
+}

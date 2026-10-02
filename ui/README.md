@@ -18,9 +18,12 @@ served by Vite, with route/state behavior owned by
 See the [root README](../README.md) for setup and the authoritative workspace plans.
 
 `project-ui.json` records current routes and the outstanding UI acceptance gates.
-`SHELL_SKELETON_MODE` remains enabled. Native zoom, axe/WCAG, canonical golden,
-long-duration memory and full-bleed promotion remain open; metadata validation does
-not close these product gates.
+The shell scaffold `SHELL_SKELETON_MODE` has been removed; selected replay
+sessions/datasets open the chart workspace. Native zoom, automated axe/reflow and
+independently reviewed four-route/chart goldens have scoped evidence in the
+[current UI checkpoint](../foundation_v2/evidence/wm-all-plan-20261002/ui/CHECKPOINT.md).
+Complete manual WCAG, alternative chart states/workflows and sustained chart
+performance remain open; metadata validation does not close product gates.
 
 The static U1 previews remain historical exploration references, not the active UI.
 The owner delegated UI direction and acceptance to agents on 23/09/2026; independent

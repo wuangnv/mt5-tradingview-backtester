@@ -1,0 +1,18 @@
+
+> trading-workspace-foundation-v2-web@0.1.0 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 77 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.42 kB │ gzip:   0.29 kB
+dist/assets/index-Cy-Pc_EU.css  289.32 kB │ gzip:  47.29 kB
+dist/assets/index-fbJOS7Qs.js   740.49 kB │ gzip: 217.27 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.33s

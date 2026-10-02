@@ -1,0 +1,1895 @@
+{
+  "status": "CONFIRMED_WARNING_CONTRAST_FINDING",
+  "scope": "Actual GET-only rendered safety-warning title and3items following stacked Data provider;dark/light1440/1280;partial WCAG triage only",
+  "sourceBefore": "fba555162da33d740c254ebf79ba2670df1c0e29e7c80221d649df8dca27ebad",
+  "preservedR2": {
+    "path": "../repair-r2/repair-review.json",
+    "sha256": "65720dfc18c31930ef34228c98fb045b773b289c2549431b2b0c782da0254040"
+  },
+  "selector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "texts": [
+        {
+          "tag": "STRONG",
+          "text": "Quy tắc an toàn",
+          "color": "rgb(239, 200, 113)",
+          "fontSize": "11px",
+          "fontWeight": "700",
+          "bounds": {
+            "x": 1009.5,
+            "y": 796.53125,
+            "width": 406.5,
+            "height": 15
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "STRONG",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > strong",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            239,
+            200,
+            113,
+            1
+          ],
+          "contrastRatio": 12.93474336223001,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Local CSV import chỉ tạo artifact immutable trong workspace hiện tại.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 1026.5,
+            "y": 817.53125,
+            "width": 389.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(1)",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 10.213467364220518,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Không mở holdout, không gọi provider ngoài và không gửi lệnh broker.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 1026.5,
+            "y": 834.578125,
+            "width": 389.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(2)",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 10.213467364220518,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Dataset chưa verified vẫn phải gắn nhãn trước khi dùng.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 1026.5,
+            "y": 851.625,
+            "width": 389.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(3)",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 10.213467364220518,
+          "threshold": 4.5,
+          "contrastPass": true
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "texts": [
+        {
+          "tag": "STRONG",
+          "text": "Quy tắc an toàn",
+          "color": "rgb(239, 200, 113)",
+          "fontSize": "11px",
+          "fontWeight": "700",
+          "bounds": {
+            "x": 909.5,
+            "y": 785.53125,
+            "width": 346.5,
+            "height": 15
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "STRONG",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > strong",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            239,
+            200,
+            113,
+            1
+          ],
+          "contrastRatio": 12.93474336223001,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Local CSV import chỉ tạo artifact immutable trong workspace hiện tại.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 926.5,
+            "y": 806.53125,
+            "width": 329.5,
+            "height": 34.09375
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(1)",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 10.213467364220518,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Không mở holdout, không gọi provider ngoài và không gửi lệnh broker.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 926.5,
+            "y": 840.625,
+            "width": 329.5,
+            "height": 34.09375
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(2)",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 10.213467364220518,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Dataset chưa verified vẫn phải gắn nhãn trước khi dùng.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 926.5,
+            "y": 874.71875,
+            "width": 329.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(3, 3, 3)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(12, 14, 16)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(3)",
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 10.213467364220518,
+          "threshold": 4.5,
+          "contrastPass": true
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "texts": [
+        {
+          "tag": "STRONG",
+          "text": "Quy tắc an toàn",
+          "color": "rgb(118, 80, 0)",
+          "fontSize": "11px",
+          "fontWeight": "700",
+          "bounds": {
+            "x": 1009.5,
+            "y": 796.53125,
+            "width": 406.5,
+            "height": 15
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "STRONG",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > strong",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            118,
+            80,
+            0,
+            1
+          ],
+          "contrastRatio": 7.19726583768433,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Local CSV import chỉ tạo artifact immutable trong workspace hiện tại.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 1026.5,
+            "y": 817.53125,
+            "width": 389.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(1)",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 2.0193334560924474,
+          "threshold": 4.5,
+          "contrastPass": false
+        },
+        {
+          "tag": "LI",
+          "text": "Không mở holdout, không gọi provider ngoài và không gửi lệnh broker.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 1026.5,
+            "y": 834.578125,
+            "width": 389.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(2)",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 2.0193334560924474,
+          "threshold": 4.5,
+          "contrastPass": false
+        },
+        {
+          "tag": "LI",
+          "text": "Dataset chưa verified vẫn phải gắn nhãn trước khi dùng.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 1026.5,
+            "y": 851.625,
+            "width": 389.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(3)",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 2.0193334560924474,
+          "threshold": 4.5,
+          "contrastPass": false
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "texts": [
+        {
+          "tag": "STRONG",
+          "text": "Quy tắc an toàn",
+          "color": "rgb(118, 80, 0)",
+          "fontSize": "11px",
+          "fontWeight": "700",
+          "bounds": {
+            "x": 909.5,
+            "y": 785.53125,
+            "width": 346.5,
+            "height": 15
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "STRONG",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > strong",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            118,
+            80,
+            0,
+            1
+          ],
+          "contrastRatio": 7.19726583768433,
+          "threshold": 4.5,
+          "contrastPass": true
+        },
+        {
+          "tag": "LI",
+          "text": "Local CSV import chỉ tạo artifact immutable trong workspace hiện tại.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 926.5,
+            "y": 806.53125,
+            "width": 329.5,
+            "height": 34.09375
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(1)",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 2.0193334560924474,
+          "threshold": 4.5,
+          "contrastPass": false
+        },
+        {
+          "tag": "LI",
+          "text": "Không mở holdout, không gọi provider ngoài và không gửi lệnh broker.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 926.5,
+            "y": 840.625,
+            "width": 329.5,
+            "height": 34.09375
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(2)",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 2.0193334560924474,
+          "threshold": 4.5,
+          "contrastPass": false
+        },
+        {
+          "tag": "LI",
+          "text": "Dataset chưa verified vẫn phải gắn nhãn trước khi dùng.",
+          "color": "rgb(174, 184, 190)",
+          "fontSize": "11px",
+          "fontWeight": "400",
+          "bounds": {
+            "x": 926.5,
+            "y": 874.71875,
+            "width": 329.5,
+            "height": 17.046875
+          },
+          "inViewport": true,
+          "chain": [
+            {
+              "tag": "LI",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "UL",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-warning-block",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "ASIDE",
+              "className": "rd-panel",
+              "background": "rgb(255, 255, 255)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "rd-main-grid",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "MAIN",
+              "className": "rd-shell",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-content",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "SECTION",
+              "className": "fx-main",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "fx-app fx-shell-story    ",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "DIV",
+              "className": "",
+              "background": "rgba(0, 0, 0, 0)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "BODY",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            },
+            {
+              "tag": "HTML",
+              "className": "",
+              "background": "rgb(245, 247, 248)",
+              "image": "none",
+              "opacity": "1"
+            }
+          ],
+          "exactSelector": "aside[aria-label=\"Provider capabilities\"] > .rd-warning-block > ul > li:nth-child(3)",
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ],
+          "foreground": [
+            174,
+            184,
+            190,
+            1
+          ],
+          "contrastRatio": 2.0193334560924474,
+          "threshold": 4.5,
+          "contrastPass": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\a11y-review\\warning-triage-r1\\warning-dark-1440.png",
+      "sha256": "9c03355fc47a583837cb496d9481609dc99ee8ec8b0f76c1c8a111bbfb9842cf"
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\a11y-review\\warning-triage-r1\\warning-dark-1280.png",
+      "sha256": "a64f17db4662d1a9dcc31594e909a9bb7a80ca381a98ce5c0431248a00ecf738"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\a11y-review\\warning-triage-r1\\warning-light-1440.png",
+      "sha256": "d839487cd8a736bf4e67a4e500c5154e3ae63b25472368dc8f557219db39d336"
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\a11y-review\\warning-triage-r1\\warning-light-1280.png",
+      "sha256": "b4e43422a7dbbe2d4eff51ca849ccc7763d9d26774c74cebb272a0886372af76"
+    }
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "failures": [],
+  "browser": "153.0.8010.12",
+  "sourceAfter": "fba555162da33d740c254ebf79ba2670df1c0e29e7c80221d649df8dca27ebad"
+}

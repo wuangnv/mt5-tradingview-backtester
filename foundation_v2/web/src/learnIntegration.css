@@ -7,13 +7,29 @@
 .learn-context-strip .is-warn, .learn-footnote .is-warn { color: var(--fx-shell-warn, #f0c878) !important; }
 .fx-app .learn-shell .learn-readonly strong, .fx-app .learn-shell .learn-module li.is-current span, .fx-app .learn-shell .learn-module li.is-current strong { color: var(--fx-shell-warn, #f0c878); }
 .fx-app .learn-shell .learn-pane-heading code { color: var(--fx-shell-muted, #9ba4ac); }
+.learn-shell .learn-module li { color: var(--fx-shell-muted, #8f99a2); }
+.learn-shell .learn-module li strong { color: var(--fx-shell-text, #aab3ba); }
 .learn-shell .eyebrow { color: var(--fx-shell-muted, #9ba4ac); }
 .learn-shell .context-link { color: var(--fx-shell-text, #e0e5e9); }
 .learn-shell .learn-message { color: var(--fx-shell-muted, #9ba4ac); }
 .learn-shell .learn-message-error, .learn-shell .learn-message-denied { color: var(--fx-shell-danger, #ef9c9c); }
 .learn-shell .learn-message-unavailable { color: var(--fx-shell-warn, #f0c878); }
 
+/* The expanded product rail still takes 248px at tablet widths. */
+@media (max-width: 900px) {
+  .learn-shell .learn-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .learn-shell .learn-summary > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--fx-shell-line, #293036); }
+  .learn-shell .learn-summary > div:nth-child(4) { border-top: 1px solid var(--fx-shell-line, #293036); }
+  .learn-shell .learn-progress { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 14px 0; }
+  .learn-shell .learn-progress-meta { justify-content: space-between; white-space: normal; }
+  .learn-shell .learn-workspace { grid-template-columns: minmax(0, 1fr); }
+  .learn-shell .learn-course { border-right: 0; border-bottom: 1px solid var(--fx-shell-line, #293036); padding-right: 0; }
+  .learn-shell .learn-reader { padding: 18px 0 0; border-bottom: 1px solid var(--fx-shell-line, #293036); }
+  .learn-shell .learn-glossary { grid-column: auto; }
+}
+
 @media (max-width: 520px) {
+  .learn-shell .learn-summary { grid-template-columns: minmax(0, 1fr); }
   .fx-app .fx-content > .learn-shell { padding-left: 14px; padding-right: 14px; }
   .learn-utility-links { gap: 10px 14px; }
 }

@@ -1,0 +1,790 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\MIIKEY\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\node.exe",
+      "D:\\ANNAM\\TradingWorkspace\\tooling\\ui-qa\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=tests/visual/playwright.chart.config.mjs"
+    ],
+    "configFile": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\playwright.chart.config.mjs",
+    "rootDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1440x900",
+        "name": "dark-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1280x800",
+        "name": "dark-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-768x1024",
+        "name": "dark-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-390x844",
+        "name": "dark-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1440x900",
+        "name": "light-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1280x800",
+        "name": "light-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-768x1024",
+        "name": "light-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r4/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-390x844",
+        "name": "light-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "wmreplay.chart.visual.spec.mjs",
+      "file": "wmreplay.chart.visual.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 375,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:00.042Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-1440x900\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-1440x900\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-1440x900\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-92662e940816aa4753ce",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 333,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:01.223Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-1280x800\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-1280x800\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-1280x800\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-23475dbcba5bd7285a44",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 333,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:02.320Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-768x1024\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-768x1024\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-768x1024\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-46a10610be5fee771235",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 310,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:03.433Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-390x844\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-390x844\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-dark-390x844\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-38670ebc41f5b8d5ec2c",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 362,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:04.625Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-1440x900\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-1440x900\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-1440x900\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-8db7b9a4a5243db13c91",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 380,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:05.798Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-1280x800\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-1280x800\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-1280x800\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-ec9f8c3aa7b16486efb2",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 354,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:07.006Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-768x1024\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-768x1024\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-768x1024\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-304f0a137bcade17347b",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 372,
+                  "error": {
+                    "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                      "column": 14,
+                      "line": 88
+                    },
+                    "snippet": "  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                        "column": 14,
+                        "line": 88
+                      },
+                      "message": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?workspace=visual-chart-fixture&view=replay&surface=workspace&session=fixture-chart-ui&cursor=60\", waiting until \"load\"\u001b[22m\n\n\n  86 |     } else await expect(target).toHaveScreenshot(name)\n  87 |   }\n> 88 |   await page.goto(url(60))\n     |              ^\n  89 |   await ready(fixture.latest, 61, 4)\n  90 |   await expect(page.getByTestId('analytics-workspace')).toHaveCount(0)\n  91 |   await expect(page.locator('[data-testid=\"replay-object\"]')).toHaveCount(4)\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs:88:14"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:42:08.166Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-390x844\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-390x844\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r4\\results\\wmreplay.chart.visual-actu-e0588-drawings-and-visual-fixture-light-390x844\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart.visual.spec.mjs",
+                    "column": 14,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-011ace59f723b3defccf",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-02T14:41:59.477Z",
+    "duration": 9342.902,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 8,
+    "flaky": 0
+  }
+}

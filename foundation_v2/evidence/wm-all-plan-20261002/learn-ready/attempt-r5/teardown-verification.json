@@ -1,0 +1,16 @@
+{
+  "schema": "learn-qa-r5-pid-clarification-v1",
+  "status": "OWNED_SERVICE_AND_LAUNCHER_ABSENT",
+  "checked_at_utc": "2026-10-02T14:22:44.9973703Z",
+  "actual_service_pid": 12572,
+  "windows_venv_launcher_pid": 10888,
+  "actual_service_pid_from": "attempt-r5/service.json emitted by os.getpid()",
+  "launcher_pid_from": "attempt-r5/lifecycle.json emitted by Start-Process.Id; raw field servicePid is mislabeled",
+  "checked_processes_alive": 0,
+  "listener8030_count": 0,
+  "raw_lifecycle_preserved": true,
+  "raw_lifecycle_sha256": "e371acc7357c6d826fd409abc6cb77b8f05c04739fe21d122a25107e1acffeb5",
+  "service_metadata_sha256": "a452b2473d0bac3e3b968778634ddb140687d7cc369a54e2cd6cc4a08a26d373",
+  "raw_report_sha256": "48b11820d8aa9112c0d2ec27d0b36b9b1a294e2897b69ad1edb84911f80bad79",
+  "future_harness_change": "Health now includes attempt and actual PID; launcher/child relationship is checked; teardown names both PIDs and verifies actual PID plus8030 absent. New lifecycle semantics syntax/lint checked only, not rerun; r5 functional/browser raw report remains authoritative."
+}

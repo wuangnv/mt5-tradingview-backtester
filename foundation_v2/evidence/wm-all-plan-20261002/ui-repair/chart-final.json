@@ -1,0 +1,518 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\MIIKEY\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\node.exe",
+      "D:\\ANNAM\\TradingWorkspace\\tooling\\ui-qa\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=tests/visual/playwright.chart.config.mjs"
+    ],
+    "configFile": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\playwright.chart.config.mjs",
+    "rootDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1440x900",
+        "name": "dark-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1280x800",
+        "name": "dark-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-768x1024",
+        "name": "dark-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-390x844",
+        "name": "dark-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1440x900",
+        "name": "light-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1280x800",
+        "name": "light-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-768x1024",
+        "name": "light-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-comparison-after-promotion-r5/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-390x844",
+        "name": "light-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart.visual.spec.mjs"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-comparison-after-promotion-r5\\report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "wmreplay.chart.visual.spec.mjs",
+      "file": "wmreplay.chart.visual.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5013,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:47:42.435Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJkYXJrLTE0NDB4OTAwIiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAxNDQwLAogICAgImhlaWdodCI6IDkwMAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgImNhcHR1cmVzIjogW10sCiAgImFzc2VydGlvbnMiOiBbCiAgICB7CiAgICAgICJjdXJzb3IiOiA2MCwKICAgICAgImNvdW50IjogNjEsCiAgICAgICJvYmplY3RzIjogNCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNzA4MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMywKICAgICAgICAiaGlnaCI6IDEuMTAzOCwKICAgICAgICAibG93IjogMS4xMDI3LAogICAgICAgICJjbG9zZSI6IDEuMTAzMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IDAsCiAgICAgICAgInRvIjogNjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgNjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAxOjAwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDMsIGNhbyAxLDEwMzgsIHRo4bqlcCAxLDEwMjcsIMSRw7NuZyAxLDEwMzIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDMwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY5MDAwLAogICAgICAgICJvcGVuIjogMS4xMDE1LAogICAgICAgICJoaWdoIjogMS4xMDIzLAogICAgICAgICJsb3ciOiAxLjEwMTIsCiAgICAgICAgImNsb3NlIjogMS4xMDE3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImN1cnNvciI6IDIwLAogICAgICAiY291bnQiOiAyMSwKICAgICAgIm9iamVjdHMiOiAwLAogICAgICAibGFzdCI6IHsKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2ODQwMCwKICAgICAgICAib3BlbiI6IDEuMTAxLAogICAgICAgICJoaWdoIjogMS4xMDE4LAogICAgICAgICJsb3ciOiAxLjEwMDcsCiAgICAgICAgImNsb3NlIjogMS4xMDEyLAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfSwKICAgICAgInJhbmdlIjogewogICAgICAgICJmcm9tIjogMCwKICAgICAgICAidG8iOiAyMAogICAgICB9LAogICAgICAiYWNjZXNzaWJsZVN1bW1hcnkiOiAiQmnhu4N1IMSR4buTIHJlcGxheSB24bubaSAyMSBu4bq/biDEkcOjIG3hu58uIE7hur9uIGN14buRaTogMDA6MjA6MDAgMS8xLzI0IFVUQywgbeG7nyAxLDEwMSwgY2FvIDEsMTAxOCwgdGjhuqVwIDEsMTAwNywgxJHDs25nIDEsMTAxMi4gQ3Xhu5luIMSR4buDIHpvb20sIGvDqW8gxJHhu4MgcGFuOyBi4bqlbSBu4bq/biDEkeG7gyBjaOG7jW4gbeG7kWMgZ2nDoS4gRMO5bmcgxJFp4buBdSBraGnhu4NuIHBow61hIGTGsOG7m2kgaG/hurdjIHRoYW5oIGNo4buNbiBu4bq/biDEkeG7gyDEkeG7jWMgT0hMQyDhu58gdOG7q25nIGN1dG9mZi4iLAogICAgICAicmVuZGVyZWRDcm9zc2hhaXJTYW1wbGUiOiB7CiAgICAgICAgImluZGV4IjogMTAsCiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjc4MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMDUsCiAgICAgICAgImhpZ2giOiAxLjEwMTMsCiAgICAgICAgImxvdyI6IDEuMTAwMiwKICAgICAgICAiY2xvc2UiOiAxLjEwMDcsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9CiAgICB9CiAgXSwKICAib2JzZXJ2ZWRQcmVmaXhDb3VudCI6IDMsCiAgImdlb21ldHJ5IjogewogICAgInBhZ2VPdmVyZmxvdyI6IDAsCiAgICAiY29udGVudE92ZXJmbG93IjogMCwKICAgICJjaGFydFdpZHRoIjogMTM1NiwKICAgICJjaGFydEhlaWdodCI6IDYyOAogIH0sCiAgImVycm9ycyI6IFtdLAogICJ1bmV4cGVjdGVkIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-92662e940816aa4753ce",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3205,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:47:48.233Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJkYXJrLTEyODB4ODAwIiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAxMjgwLAogICAgImhlaWdodCI6IDgwMAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgImNhcHR1cmVzIjogW10sCiAgImFzc2VydGlvbnMiOiBbCiAgICB7CiAgICAgICJjdXJzb3IiOiA2MCwKICAgICAgImNvdW50IjogNjEsCiAgICAgICJvYmplY3RzIjogNCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNzA4MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMywKICAgICAgICAiaGlnaCI6IDEuMTAzOCwKICAgICAgICAibG93IjogMS4xMDI3LAogICAgICAgICJjbG9zZSI6IDEuMTAzMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IDAsCiAgICAgICAgInRvIjogNjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgNjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAxOjAwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDMsIGNhbyAxLDEwMzgsIHRo4bqlcCAxLDEwMjcsIMSRw7NuZyAxLDEwMzIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDMwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY5MDAwLAogICAgICAgICJvcGVuIjogMS4xMDE1LAogICAgICAgICJoaWdoIjogMS4xMDIzLAogICAgICAgICJsb3ciOiAxLjEwMTIsCiAgICAgICAgImNsb3NlIjogMS4xMDE3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImN1cnNvciI6IDIwLAogICAgICAiY291bnQiOiAyMSwKICAgICAgIm9iamVjdHMiOiAwLAogICAgICAibGFzdCI6IHsKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2ODQwMCwKICAgICAgICAib3BlbiI6IDEuMTAxLAogICAgICAgICJoaWdoIjogMS4xMDE4LAogICAgICAgICJsb3ciOiAxLjEwMDcsCiAgICAgICAgImNsb3NlIjogMS4xMDEyLAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfSwKICAgICAgInJhbmdlIjogewogICAgICAgICJmcm9tIjogMCwKICAgICAgICAidG8iOiAyMAogICAgICB9LAogICAgICAiYWNjZXNzaWJsZVN1bW1hcnkiOiAiQmnhu4N1IMSR4buTIHJlcGxheSB24bubaSAyMSBu4bq/biDEkcOjIG3hu58uIE7hur9uIGN14buRaTogMDA6MjA6MDAgMS8xLzI0IFVUQywgbeG7nyAxLDEwMSwgY2FvIDEsMTAxOCwgdGjhuqVwIDEsMTAwNywgxJHDs25nIDEsMTAxMi4gQ3Xhu5luIMSR4buDIHpvb20sIGvDqW8gxJHhu4MgcGFuOyBi4bqlbSBu4bq/biDEkeG7gyBjaOG7jW4gbeG7kWMgZ2nDoS4gRMO5bmcgxJFp4buBdSBraGnhu4NuIHBow61hIGTGsOG7m2kgaG/hurdjIHRoYW5oIGNo4buNbiBu4bq/biDEkeG7gyDEkeG7jWMgT0hMQyDhu58gdOG7q25nIGN1dG9mZi4iLAogICAgICAicmVuZGVyZWRDcm9zc2hhaXJTYW1wbGUiOiB7CiAgICAgICAgImluZGV4IjogMTAsCiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjc4MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMDUsCiAgICAgICAgImhpZ2giOiAxLjEwMTMsCiAgICAgICAgImxvdyI6IDEuMTAwMiwKICAgICAgICAiY2xvc2UiOiAxLjEwMDcsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9CiAgICB9CiAgXSwKICAib2JzZXJ2ZWRQcmVmaXhDb3VudCI6IDMsCiAgImdlb21ldHJ5IjogewogICAgInBhZ2VPdmVyZmxvdyI6IDAsCiAgICAiY29udGVudE92ZXJmbG93IjogMCwKICAgICJjaGFydFdpZHRoIjogMTE5NiwKICAgICJjaGFydEhlaWdodCI6IDUyOAogIH0sCiAgImVycm9ycyI6IFtdLAogICJ1bmV4cGVjdGVkIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-23475dbcba5bd7285a44",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3092,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:47:52.186Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJkYXJrLTc2OHgxMDI0IiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiA3NjgsCiAgICAiaGVpZ2h0IjogMTAyNAogIH0sCiAgImJyb3dzZXIiOiAiMTUzLjAuODAxMC4xMiIsCiAgImxvY2FsZSI6ICJ2aS1WTiIsCiAgInRpbWV6b25lIjogIlVUQyIsCiAgImNhcHR1cmVzIjogW10sCiAgImFzc2VydGlvbnMiOiBbCiAgICB7CiAgICAgICJjdXJzb3IiOiA2MCwKICAgICAgImNvdW50IjogNjEsCiAgICAgICJvYmplY3RzIjogNCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNzA4MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMywKICAgICAgICAiaGlnaCI6IDEuMTAzOCwKICAgICAgICAibG93IjogMS4xMDI3LAogICAgICAgICJjbG9zZSI6IDEuMTAzMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IC03LjEwNTQyNzM1NzYwMTAwMmUtMTUsCiAgICAgICAgInRvIjogNjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgNjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAxOjAwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDMsIGNhbyAxLDEwMzgsIHRo4bqlcCAxLDEwMjcsIMSRw7NuZyAxLDEwMzIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDMwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY5MDAwLAogICAgICAgICJvcGVuIjogMS4xMDE1LAogICAgICAgICJoaWdoIjogMS4xMDIzLAogICAgICAgICJsb3ciOiAxLjEwMTIsCiAgICAgICAgImNsb3NlIjogMS4xMDE3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImN1cnNvciI6IDIwLAogICAgICAiY291bnQiOiAyMSwKICAgICAgIm9iamVjdHMiOiAwLAogICAgICAibGFzdCI6IHsKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2ODQwMCwKICAgICAgICAib3BlbiI6IDEuMTAxLAogICAgICAgICJoaWdoIjogMS4xMDE4LAogICAgICAgICJsb3ciOiAxLjEwMDcsCiAgICAgICAgImNsb3NlIjogMS4xMDEyLAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfSwKICAgICAgInJhbmdlIjogewogICAgICAgICJmcm9tIjogMCwKICAgICAgICAidG8iOiAyMAogICAgICB9LAogICAgICAiYWNjZXNzaWJsZVN1bW1hcnkiOiAiQmnhu4N1IMSR4buTIHJlcGxheSB24bubaSAyMSBu4bq/biDEkcOjIG3hu58uIE7hur9uIGN14buRaTogMDA6MjA6MDAgMS8xLzI0IFVUQywgbeG7nyAxLDEwMSwgY2FvIDEsMTAxOCwgdGjhuqVwIDEsMTAwNywgxJHDs25nIDEsMTAxMi4gQ3Xhu5luIMSR4buDIHpvb20sIGvDqW8gxJHhu4MgcGFuOyBi4bqlbSBu4bq/biDEkeG7gyBjaOG7jW4gbeG7kWMgZ2nDoS4gRMO5bmcgxJFp4buBdSBraGnhu4NuIHBow61hIGTGsOG7m2kgaG/hurdjIHRoYW5oIGNo4buNbiBu4bq/biDEkeG7gyDEkeG7jWMgT0hMQyDhu58gdOG7q25nIGN1dG9mZi4iLAogICAgICAicmVuZGVyZWRDcm9zc2hhaXJTYW1wbGUiOiB7CiAgICAgICAgImluZGV4IjogMTAsCiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjc4MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMDUsCiAgICAgICAgImhpZ2giOiAxLjEwMTMsCiAgICAgICAgImxvdyI6IDEuMTAwMiwKICAgICAgICAiY2xvc2UiOiAxLjEwMDcsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9CiAgICB9CiAgXSwKICAib2JzZXJ2ZWRQcmVmaXhDb3VudCI6IDMsCiAgImdlb21ldHJ5IjogewogICAgInBhZ2VPdmVyZmxvdyI6IDAsCiAgICAiY29udGVudE92ZXJmbG93IjogMCwKICAgICJjaGFydFdpZHRoIjogNzMwLAogICAgImNoYXJ0SGVpZ2h0IjogNjIyCiAgfSwKICAiZXJyb3JzIjogW10sCiAgInVuZXhwZWN0ZWQiOiBbXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-46a10610be5fee771235",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2850,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:47:56.073Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJkYXJrLTM5MHg4NDQiLAogICJ2aWV3cG9ydCI6IHsKICAgICJ3aWR0aCI6IDM5MCwKICAgICJoZWlnaHQiOiA4NDQKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJjYXB0dXJlcyI6IFtdLAogICJhc3NlcnRpb25zIjogWwogICAgewogICAgICAiY3Vyc29yIjogNjAsCiAgICAgICJjb3VudCI6IDYxLAogICAgICAib2JqZWN0cyI6IDQsCiAgICAgICJsYXN0IjogewogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDcwODAwLAogICAgICAgICJvcGVuIjogMS4xMDMsCiAgICAgICAgImhpZ2giOiAxLjEwMzgsCiAgICAgICAgImxvdyI6IDEuMTAyNywKICAgICAgICAiY2xvc2UiOiAxLjEwMzIsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9LAogICAgICAicmFuZ2UiOiB7CiAgICAgICAgImZyb20iOiAwLAogICAgICAgICJ0byI6IDYwCiAgICAgIH0sCiAgICAgICJhY2Nlc3NpYmxlU3VtbWFyeSI6ICJCaeG7g3UgxJHhu5MgcmVwbGF5IHbhu5tpIDYxIG7hur9uIMSRw6MgbeG7ny4gTuG6v24gY3Xhu5FpOiAwMTowMDowMCAxLzEvMjQgVVRDLCBt4bufIDEsMTAzLCBjYW8gMSwxMDM4LCB0aOG6pXAgMSwxMDI3LCDEkcOzbmcgMSwxMDMyLiBDdeG7mW4gxJHhu4Mgem9vbSwga8OpbyDEkeG7gyBwYW47IGLhuqVtIG7hur9uIMSR4buDIGNo4buNbiBt4buRYyBnacOhLiBEw7luZyDEkWnhu4F1IGtoaeG7g24gcGjDrWEgZMaw4bubaSBob+G6t2MgdGhhbmggY2jhu41uIG7hur9uIMSR4buDIMSR4buNYyBPSExDIOG7nyB04burbmcgY3V0b2ZmLiIsCiAgICAgICJyZW5kZXJlZENyb3NzaGFpclNhbXBsZSI6IHsKICAgICAgICAiaW5kZXgiOiAzMCwKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2OTAwMCwKICAgICAgICAib3BlbiI6IDEuMTAxNSwKICAgICAgICAiaGlnaCI6IDEuMTAyMywKICAgICAgICAibG93IjogMS4xMDEyLAogICAgICAgICJjbG9zZSI6IDEuMTAxNywKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJjdXJzb3IiOiAyMCwKICAgICAgImNvdW50IjogMjEsCiAgICAgICJvYmplY3RzIjogMCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjg0MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMSwKICAgICAgICAiaGlnaCI6IDEuMTAxOCwKICAgICAgICAibG93IjogMS4xMDA3LAogICAgICAgICJjbG9zZSI6IDEuMTAxMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IDAsCiAgICAgICAgInRvIjogMjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgMjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAwOjIwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDEsIGNhbyAxLDEwMTgsIHRo4bqlcCAxLDEwMDcsIMSRw7NuZyAxLDEwMTIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDEwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY3ODAwLAogICAgICAgICJvcGVuIjogMS4xMDA1LAogICAgICAgICJoaWdoIjogMS4xMDEzLAogICAgICAgICJsb3ciOiAxLjEwMDIsCiAgICAgICAgImNsb3NlIjogMS4xMDA3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfQogIF0sCiAgIm9ic2VydmVkUHJlZml4Q291bnQiOiAzLAogICJnZW9tZXRyeSI6IHsKICAgICJwYWdlT3ZlcmZsb3ciOiAwLAogICAgImNvbnRlbnRPdmVyZmxvdyI6IDAsCiAgICAiY2hhcnRXaWR0aCI6IDM1MiwKICAgICJjaGFydEhlaWdodCI6IDMyMAogIH0sCiAgImVycm9ycyI6IFtdLAogICJ1bmV4cGVjdGVkIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-38670ebc41f5b8d5ec2c",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3269,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:47:59.797Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJsaWdodC0xNDQweDkwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTQ0MCwKICAgICJoZWlnaHQiOiA5MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJjYXB0dXJlcyI6IFtdLAogICJhc3NlcnRpb25zIjogWwogICAgewogICAgICAiY3Vyc29yIjogNjAsCiAgICAgICJjb3VudCI6IDYxLAogICAgICAib2JqZWN0cyI6IDQsCiAgICAgICJsYXN0IjogewogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDcwODAwLAogICAgICAgICJvcGVuIjogMS4xMDMsCiAgICAgICAgImhpZ2giOiAxLjEwMzgsCiAgICAgICAgImxvdyI6IDEuMTAyNywKICAgICAgICAiY2xvc2UiOiAxLjEwMzIsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9LAogICAgICAicmFuZ2UiOiB7CiAgICAgICAgImZyb20iOiAwLAogICAgICAgICJ0byI6IDYwCiAgICAgIH0sCiAgICAgICJhY2Nlc3NpYmxlU3VtbWFyeSI6ICJCaeG7g3UgxJHhu5MgcmVwbGF5IHbhu5tpIDYxIG7hur9uIMSRw6MgbeG7ny4gTuG6v24gY3Xhu5FpOiAwMTowMDowMCAxLzEvMjQgVVRDLCBt4bufIDEsMTAzLCBjYW8gMSwxMDM4LCB0aOG6pXAgMSwxMDI3LCDEkcOzbmcgMSwxMDMyLiBDdeG7mW4gxJHhu4Mgem9vbSwga8OpbyDEkeG7gyBwYW47IGLhuqVtIG7hur9uIMSR4buDIGNo4buNbiBt4buRYyBnacOhLiBEw7luZyDEkWnhu4F1IGtoaeG7g24gcGjDrWEgZMaw4bubaSBob+G6t2MgdGhhbmggY2jhu41uIG7hur9uIMSR4buDIMSR4buNYyBPSExDIOG7nyB04burbmcgY3V0b2ZmLiIsCiAgICAgICJyZW5kZXJlZENyb3NzaGFpclNhbXBsZSI6IHsKICAgICAgICAiaW5kZXgiOiAzMCwKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2OTAwMCwKICAgICAgICAib3BlbiI6IDEuMTAxNSwKICAgICAgICAiaGlnaCI6IDEuMTAyMywKICAgICAgICAibG93IjogMS4xMDEyLAogICAgICAgICJjbG9zZSI6IDEuMTAxNywKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJjdXJzb3IiOiAyMCwKICAgICAgImNvdW50IjogMjEsCiAgICAgICJvYmplY3RzIjogMCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjg0MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMSwKICAgICAgICAiaGlnaCI6IDEuMTAxOCwKICAgICAgICAibG93IjogMS4xMDA3LAogICAgICAgICJjbG9zZSI6IDEuMTAxMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IDAsCiAgICAgICAgInRvIjogMjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgMjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAwOjIwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDEsIGNhbyAxLDEwMTgsIHRo4bqlcCAxLDEwMDcsIMSRw7NuZyAxLDEwMTIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDEwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY3ODAwLAogICAgICAgICJvcGVuIjogMS4xMDA1LAogICAgICAgICJoaWdoIjogMS4xMDEzLAogICAgICAgICJsb3ciOiAxLjEwMDIsCiAgICAgICAgImNsb3NlIjogMS4xMDA3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfQogIF0sCiAgIm9ic2VydmVkUHJlZml4Q291bnQiOiAzLAogICJnZW9tZXRyeSI6IHsKICAgICJwYWdlT3ZlcmZsb3ciOiAwLAogICAgImNvbnRlbnRPdmVyZmxvdyI6IDAsCiAgICAiY2hhcnRXaWR0aCI6IDEzNTYsCiAgICAiY2hhcnRIZWlnaHQiOiA2MjgKICB9LAogICJlcnJvcnMiOiBbXSwKICAidW5leHBlY3RlZCI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-8db7b9a4a5243db13c91",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:48:03.884Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJsaWdodC0xMjgweDgwMCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogMTI4MCwKICAgICJoZWlnaHQiOiA4MDAKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJjYXB0dXJlcyI6IFtdLAogICJhc3NlcnRpb25zIjogWwogICAgewogICAgICAiY3Vyc29yIjogNjAsCiAgICAgICJjb3VudCI6IDYxLAogICAgICAib2JqZWN0cyI6IDQsCiAgICAgICJsYXN0IjogewogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDcwODAwLAogICAgICAgICJvcGVuIjogMS4xMDMsCiAgICAgICAgImhpZ2giOiAxLjEwMzgsCiAgICAgICAgImxvdyI6IDEuMTAyNywKICAgICAgICAiY2xvc2UiOiAxLjEwMzIsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9LAogICAgICAicmFuZ2UiOiB7CiAgICAgICAgImZyb20iOiAwLAogICAgICAgICJ0byI6IDYwCiAgICAgIH0sCiAgICAgICJhY2Nlc3NpYmxlU3VtbWFyeSI6ICJCaeG7g3UgxJHhu5MgcmVwbGF5IHbhu5tpIDYxIG7hur9uIMSRw6MgbeG7ny4gTuG6v24gY3Xhu5FpOiAwMTowMDowMCAxLzEvMjQgVVRDLCBt4bufIDEsMTAzLCBjYW8gMSwxMDM4LCB0aOG6pXAgMSwxMDI3LCDEkcOzbmcgMSwxMDMyLiBDdeG7mW4gxJHhu4Mgem9vbSwga8OpbyDEkeG7gyBwYW47IGLhuqVtIG7hur9uIMSR4buDIGNo4buNbiBt4buRYyBnacOhLiBEw7luZyDEkWnhu4F1IGtoaeG7g24gcGjDrWEgZMaw4bubaSBob+G6t2MgdGhhbmggY2jhu41uIG7hur9uIMSR4buDIMSR4buNYyBPSExDIOG7nyB04burbmcgY3V0b2ZmLiIsCiAgICAgICJyZW5kZXJlZENyb3NzaGFpclNhbXBsZSI6IHsKICAgICAgICAiaW5kZXgiOiAzMCwKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2OTAwMCwKICAgICAgICAib3BlbiI6IDEuMTAxNSwKICAgICAgICAiaGlnaCI6IDEuMTAyMywKICAgICAgICAibG93IjogMS4xMDEyLAogICAgICAgICJjbG9zZSI6IDEuMTAxNywKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJjdXJzb3IiOiAyMCwKICAgICAgImNvdW50IjogMjEsCiAgICAgICJvYmplY3RzIjogMCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjg0MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMSwKICAgICAgICAiaGlnaCI6IDEuMTAxOCwKICAgICAgICAibG93IjogMS4xMDA3LAogICAgICAgICJjbG9zZSI6IDEuMTAxMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IDAsCiAgICAgICAgInRvIjogMjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgMjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAwOjIwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDEsIGNhbyAxLDEwMTgsIHRo4bqlcCAxLDEwMDcsIMSRw7NuZyAxLDEwMTIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDEwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY3ODAwLAogICAgICAgICJvcGVuIjogMS4xMDA1LAogICAgICAgICJoaWdoIjogMS4xMDEzLAogICAgICAgICJsb3ciOiAxLjEwMDIsCiAgICAgICAgImNsb3NlIjogMS4xMDA3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfQogIF0sCiAgIm9ic2VydmVkUHJlZml4Q291bnQiOiAzLAogICJnZW9tZXRyeSI6IHsKICAgICJwYWdlT3ZlcmZsb3ciOiAwLAogICAgImNvbnRlbnRPdmVyZmxvdyI6IDAsCiAgICAiY2hhcnRXaWR0aCI6IDExOTYsCiAgICAiY2hhcnRIZWlnaHQiOiA1MjgKICB9LAogICJlcnJvcnMiOiBbXSwKICAidW5leHBlY3RlZCI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-ec9f8c3aa7b16486efb2",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3339,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:48:07.955Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJsaWdodC03Njh4MTAyNCIsCiAgInZpZXdwb3J0IjogewogICAgIndpZHRoIjogNzY4LAogICAgImhlaWdodCI6IDEwMjQKICB9LAogICJicm93c2VyIjogIjE1My4wLjgwMTAuMTIiLAogICJsb2NhbGUiOiAidmktVk4iLAogICJ0aW1lem9uZSI6ICJVVEMiLAogICJjYXB0dXJlcyI6IFtdLAogICJhc3NlcnRpb25zIjogWwogICAgewogICAgICAiY3Vyc29yIjogNjAsCiAgICAgICJjb3VudCI6IDYxLAogICAgICAib2JqZWN0cyI6IDQsCiAgICAgICJsYXN0IjogewogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDcwODAwLAogICAgICAgICJvcGVuIjogMS4xMDMsCiAgICAgICAgImhpZ2giOiAxLjEwMzgsCiAgICAgICAgImxvdyI6IDEuMTAyNywKICAgICAgICAiY2xvc2UiOiAxLjEwMzIsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9LAogICAgICAicmFuZ2UiOiB7CiAgICAgICAgImZyb20iOiAtNy4xMDU0MjczNTc2MDEwMDJlLTE1LAogICAgICAgICJ0byI6IDYwCiAgICAgIH0sCiAgICAgICJhY2Nlc3NpYmxlU3VtbWFyeSI6ICJCaeG7g3UgxJHhu5MgcmVwbGF5IHbhu5tpIDYxIG7hur9uIMSRw6MgbeG7ny4gTuG6v24gY3Xhu5FpOiAwMTowMDowMCAxLzEvMjQgVVRDLCBt4bufIDEsMTAzLCBjYW8gMSwxMDM4LCB0aOG6pXAgMSwxMDI3LCDEkcOzbmcgMSwxMDMyLiBDdeG7mW4gxJHhu4Mgem9vbSwga8OpbyDEkeG7gyBwYW47IGLhuqVtIG7hur9uIMSR4buDIGNo4buNbiBt4buRYyBnacOhLiBEw7luZyDEkWnhu4F1IGtoaeG7g24gcGjDrWEgZMaw4bubaSBob+G6t2MgdGhhbmggY2jhu41uIG7hur9uIMSR4buDIMSR4buNYyBPSExDIOG7nyB04burbmcgY3V0b2ZmLiIsCiAgICAgICJyZW5kZXJlZENyb3NzaGFpclNhbXBsZSI6IHsKICAgICAgICAiaW5kZXgiOiAzMCwKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2OTAwMCwKICAgICAgICAib3BlbiI6IDEuMTAxNSwKICAgICAgICAiaGlnaCI6IDEuMTAyMywKICAgICAgICAibG93IjogMS4xMDEyLAogICAgICAgICJjbG9zZSI6IDEuMTAxNywKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJjdXJzb3IiOiAyMCwKICAgICAgImNvdW50IjogMjEsCiAgICAgICJvYmplY3RzIjogMCwKICAgICAgImxhc3QiOiB7CiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjg0MDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMSwKICAgICAgICAiaGlnaCI6IDEuMTAxOCwKICAgICAgICAibG93IjogMS4xMDA3LAogICAgICAgICJjbG9zZSI6IDEuMTAxMiwKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0sCiAgICAgICJyYW5nZSI6IHsKICAgICAgICAiZnJvbSI6IDAsCiAgICAgICAgInRvIjogMjAKICAgICAgfSwKICAgICAgImFjY2Vzc2libGVTdW1tYXJ5IjogIkJp4buDdSDEkeG7kyByZXBsYXkgduG7m2kgMjEgbuG6v24gxJHDoyBt4bufLiBO4bq/biBjdeG7kWk6IDAwOjIwOjAwIDEvMS8yNCBVVEMsIG3hu58gMSwxMDEsIGNhbyAxLDEwMTgsIHRo4bqlcCAxLDEwMDcsIMSRw7NuZyAxLDEwMTIuIEN14buZbiDEkeG7gyB6b29tLCBrw6lvIMSR4buDIHBhbjsgYuG6pW0gbuG6v24gxJHhu4MgY2jhu41uIG3hu5FjIGdpw6EuIETDuW5nIMSRaeG7gXUga2hp4buDbiBwaMOtYSBkxrDhu5tpIGhv4bq3YyB0aGFuaCBjaOG7jW4gbuG6v24gxJHhu4MgxJHhu41jIE9ITEMg4bufIHThu6tuZyBjdXRvZmYuIiwKICAgICAgInJlbmRlcmVkQ3Jvc3NoYWlyU2FtcGxlIjogewogICAgICAgICJpbmRleCI6IDEwLAogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY3ODAwLAogICAgICAgICJvcGVuIjogMS4xMDA1LAogICAgICAgICJoaWdoIjogMS4xMDEzLAogICAgICAgICJsb3ciOiAxLjEwMDIsCiAgICAgICAgImNsb3NlIjogMS4xMDA3LAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfQogICAgfQogIF0sCiAgIm9ic2VydmVkUHJlZml4Q291bnQiOiAzLAogICJnZW9tZXRyeSI6IHsKICAgICJwYWdlT3ZlcmZsb3ciOiAwLAogICAgImNvbnRlbnRPdmVyZmxvdyI6IDAsCiAgICAiY2hhcnRXaWR0aCI6IDczMCwKICAgICJjaGFydEhlaWdodCI6IDYyMgogIH0sCiAgImVycm9ycyI6IFtdLAogICJ1bmV4cGVjdGVkIjogW10KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-304f0a137bcade17347b",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        },
+        {
+          "title": "actual chart causal prefix, OHLC, drawings and visual fixture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3041,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T14:48:12.394Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-visual-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiTUFUQ0hFRF9BUFBST1ZFRF9CQVNFTElORSIsCiAgInNjb3BlIjogIkV4cGxpY2l0IHN5bnRoZXRpYyBjaGFydCB2aXN1YWwgZml4dHVyZSBmcm9tIHJlYWQtb25seSBpc29sYXRlZCBRQSBzZXNzaW9uOyB0cmFuc2Zvcm1lZCBkcmF3aW5nIGlkZW50aXR5L2N1dG9mZiBvbmx5OyBubyBBUEkgd3JpdGVzIiwKICAic291cmNlSGFzaCI6ICI4MjA1Yzg5YjJkNzlhODMyY2I4NTNjY2FkMjhiMDhjYTEzZTFkOWRhNjdiMmMxODVhNTE3NzQyNzUyYTE4MGYxIiwKICAiZml4dHVyZVNoYTI1NiI6ICJjNDhiZDQyZWViZGZjZjU3Y2E5Y2Y3MDdkMmQzMjMwNDM5ZDgxZjlhZmYwNWQyYjYxYzkyZGZlNGFkYzUyNTkxIiwKICAicHJvamVjdCI6ICJsaWdodC0zOTB4ODQ0IiwKICAidmlld3BvcnQiOiB7CiAgICAid2lkdGgiOiAzOTAsCiAgICAiaGVpZ2h0IjogODQ0CiAgfSwKICAiYnJvd3NlciI6ICIxNTMuMC44MDEwLjEyIiwKICAibG9jYWxlIjogInZpLVZOIiwKICAidGltZXpvbmUiOiAiVVRDIiwKICAiY2FwdHVyZXMiOiBbXSwKICAiYXNzZXJ0aW9ucyI6IFsKICAgIHsKICAgICAgImN1cnNvciI6IDYwLAogICAgICAiY291bnQiOiA2MSwKICAgICAgIm9iamVjdHMiOiA0LAogICAgICAibGFzdCI6IHsKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA3MDgwMCwKICAgICAgICAib3BlbiI6IDEuMTAzLAogICAgICAgICJoaWdoIjogMS4xMDM4LAogICAgICAgICJsb3ciOiAxLjEwMjcsCiAgICAgICAgImNsb3NlIjogMS4xMDMyLAogICAgICAgICJ2b2x1bWUiOiAxMDAKICAgICAgfSwKICAgICAgInJhbmdlIjogewogICAgICAgICJmcm9tIjogMCwKICAgICAgICAidG8iOiA2MAogICAgICB9LAogICAgICAiYWNjZXNzaWJsZVN1bW1hcnkiOiAiQmnhu4N1IMSR4buTIHJlcGxheSB24bubaSA2MSBu4bq/biDEkcOjIG3hu58uIE7hur9uIGN14buRaTogMDE6MDA6MDAgMS8xLzI0IFVUQywgbeG7nyAxLDEwMywgY2FvIDEsMTAzOCwgdGjhuqVwIDEsMTAyNywgxJHDs25nIDEsMTAzMi4gQ3Xhu5luIMSR4buDIHpvb20sIGvDqW8gxJHhu4MgcGFuOyBi4bqlbSBu4bq/biDEkeG7gyBjaOG7jW4gbeG7kWMgZ2nDoS4gRMO5bmcgxJFp4buBdSBraGnhu4NuIHBow61hIGTGsOG7m2kgaG/hurdjIHRoYW5oIGNo4buNbiBu4bq/biDEkeG7gyDEkeG7jWMgT0hMQyDhu58gdOG7q25nIGN1dG9mZi4iLAogICAgICAicmVuZGVyZWRDcm9zc2hhaXJTYW1wbGUiOiB7CiAgICAgICAgImluZGV4IjogMzAsCiAgICAgICAgInRpbWVzdGFtcCI6IDE3MDQwNjkwMDAsCiAgICAgICAgIm9wZW4iOiAxLjEwMTUsCiAgICAgICAgImhpZ2giOiAxLjEwMjMsCiAgICAgICAgImxvdyI6IDEuMTAxMiwKICAgICAgICAiY2xvc2UiOiAxLjEwMTcsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9CiAgICB9LAogICAgewogICAgICAiY3Vyc29yIjogMjAsCiAgICAgICJjb3VudCI6IDIxLAogICAgICAib2JqZWN0cyI6IDAsCiAgICAgICJsYXN0IjogewogICAgICAgICJ0aW1lc3RhbXAiOiAxNzA0MDY4NDAwLAogICAgICAgICJvcGVuIjogMS4xMDEsCiAgICAgICAgImhpZ2giOiAxLjEwMTgsCiAgICAgICAgImxvdyI6IDEuMTAwNywKICAgICAgICAiY2xvc2UiOiAxLjEwMTIsCiAgICAgICAgInZvbHVtZSI6IDEwMAogICAgICB9LAogICAgICAicmFuZ2UiOiB7CiAgICAgICAgImZyb20iOiAwLAogICAgICAgICJ0byI6IDIwCiAgICAgIH0sCiAgICAgICJhY2Nlc3NpYmxlU3VtbWFyeSI6ICJCaeG7g3UgxJHhu5MgcmVwbGF5IHbhu5tpIDIxIG7hur9uIMSRw6MgbeG7ny4gTuG6v24gY3Xhu5FpOiAwMDoyMDowMCAxLzEvMjQgVVRDLCBt4bufIDEsMTAxLCBjYW8gMSwxMDE4LCB0aOG6pXAgMSwxMDA3LCDEkcOzbmcgMSwxMDEyLiBDdeG7mW4gxJHhu4Mgem9vbSwga8OpbyDEkeG7gyBwYW47IGLhuqVtIG7hur9uIMSR4buDIGNo4buNbiBt4buRYyBnacOhLiBEw7luZyDEkWnhu4F1IGtoaeG7g24gcGjDrWEgZMaw4bubaSBob+G6t2MgdGhhbmggY2jhu41uIG7hur9uIMSR4buDIMSR4buNYyBPSExDIOG7nyB04burbmcgY3V0b2ZmLiIsCiAgICAgICJyZW5kZXJlZENyb3NzaGFpclNhbXBsZSI6IHsKICAgICAgICAiaW5kZXgiOiAxMCwKICAgICAgICAidGltZXN0YW1wIjogMTcwNDA2NzgwMCwKICAgICAgICAib3BlbiI6IDEuMTAwNSwKICAgICAgICAiaGlnaCI6IDEuMTAxMywKICAgICAgICAibG93IjogMS4xMDAyLAogICAgICAgICJjbG9zZSI6IDEuMTAwNywKICAgICAgICAidm9sdW1lIjogMTAwCiAgICAgIH0KICAgIH0KICBdLAogICJvYnNlcnZlZFByZWZpeENvdW50IjogMywKICAiZ2VvbWV0cnkiOiB7CiAgICAicGFnZU92ZXJmbG93IjogMCwKICAgICJjb250ZW50T3ZlcmZsb3ciOiAwLAogICAgImNoYXJ0V2lkdGgiOiAzNTIsCiAgICAiY2hhcnRIZWlnaHQiOiAzMjAKICB9LAogICJlcnJvcnMiOiBbXSwKICAidW5leHBlY3RlZCI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "77e5a50975e4c6f49fa0-011ace59f723b3defccf",
+          "file": "wmreplay.chart.visual.spec.mjs",
+          "line": 26,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-02T14:47:41.797Z",
+    "duration": 33960.92,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

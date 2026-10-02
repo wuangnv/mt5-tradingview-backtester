@@ -1,0 +1,33 @@
+{
+  "schema": "learn-ready-attempt-reconciliation-v1",
+  "attempt": "r3",
+  "status": "UI_MATRIX_PASS_LOADED_REPLAY_JOURNEY_FAIL",
+  "raw_status": "FAIL_REAL_READY_SCOPED",
+  "raw_report_sha256": "776f5b35f0df58cb3d19ee14e2846d4696e3749baf02820f94a9afe50e43c86b",
+  "ui_source_before": "fba555162da33d740c254ebf79ba2670df1c0e29e7c80221d649df8dca27ebad",
+  "ui_source_after": "fba555162da33d740c254ebf79ba2670df1c0e29e7c80221d649df8dca27ebad",
+  "course_progress_unchanged": true,
+  "api_checks": 10,
+  "matrix_passed": 6,
+  "matrix_total": 6,
+  "stable_theme_observation": "All6 cases use CSS transition-completion gate; no axe violations or ARIA incompletes in stabilized matrix",
+  "service_pid": 26184,
+  "service_stopped_in_finally": true,
+  "functional_scope": "10 real API checks + course/progress/resource/glossary/focus succeeded; full loaded replay roundtrip did not complete",
+  "failures": [
+    {
+      "step": "Real replay roundtrip and reload",
+      "error": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('replay-lock') to be visible\u001b[22m\n\u001b[2m    62 \u00d7 locator resolved to hidden <div class=\"replay-lock\" data-testid=\"replay-lock\">\u2026</div>\u001b[22m\n",
+      "stack": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('replay-lock') to be visible\u001b[22m\n\u001b[2m    62 \u00d7 locator resolved to hidden <div class=\"replay-lock\" data-testid=\"replay-lock\">\u2026</div>\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\learn-ready\\run_learn_ready.mjs:183:41"
+    }
+  ],
+  "next_action": "Root owns remaining frontend fixes; fresh source-pinned attempt after visible loaded-chart Learn CTA is added",
+  "whole_y11_accepted": false,
+  "whole_product_accepted": false,
+  "confirmed_root_cause": {
+    "selector": ".replay-topbar",
+    "source": "web/src/ReplayWorkspace.css:988/1015",
+    "behavior": "Loaded chart hides legacy replay header, which owns the only Learn link and replay-lock badge. Visible Learn CTA is required in the chart body/utilityrail, not hidden-DOM navigation."
+  },
+  "correction_to_r1_interpretation": "Initial r1 roundtrip click raced before chart loading completed. It must not be used as proof of a loaded chart\u2192Learn journey. r1 raw evidence remains unchanged."
+}

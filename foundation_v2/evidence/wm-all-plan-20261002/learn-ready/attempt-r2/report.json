@@ -1,0 +1,538 @@
+{
+  "schema": "learn-ready-real-api-browser-v1",
+  "status": "FAIL_REAL_READY_SCOPED",
+  "scope": "Real Learn API/PostgreSQL initialization and existing education source through GET-only browser forwarding; current UI source unchanged",
+  "uiOrigin": "http://127.0.0.1:5180",
+  "learnApiOrigin": "http://127.0.0.1:8030",
+  "replayApiOrigin": "http://127.0.0.1:8020",
+  "sourceBefore": "e993bb4910fc42f3faf8c7852ca6807f392deaa6d331f279f843ea8c9d21e6dd",
+  "educationBefore": {
+    "course.json": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+    "progress.json": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008"
+  },
+  "harnessSha256": "db606623d51d6d058dc709b2361fbe0af926f234fa7a5814f933b55331058292",
+  "seedSha256": "7ab1d94ea2b0d6f51ad4594d37684f338dfc0b6aa697c26b79a27c10d609a39f",
+  "backendSourceHashes": {
+    "api.py": "cf50d24478aa45c889a4a8d868d6cfa38e7788c92c0d55e4036da233a1f1343a",
+    "learn.py": "9e67abc4ec805f749894dad110b1dbb787eace566ce49b7ea9456927d90d5f33",
+    "auth.py": "d8df4595c34c8fc5daf2dbb09e40ea836ef6603c74420b704257c62c4edc0dd1"
+  },
+  "forwarding": "Only /api/v2/learn/** GET requests are forwarded to real isolated API8030; no fixture payloads. Other local GETs use existing5180/8020.",
+  "apiChecks": [
+    {
+      "pathname": "/api/v2/learn/overview",
+      "tenant": "tenant-a",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "pathname": "/api/v2/learn/glossary",
+      "tenant": "tenant-a",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "pathname": "/api/v2/learn/resources/module%3AM08",
+      "tenant": "tenant-a",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "pathname": "/api/v2/learn/resources/course",
+      "tenant": "tenant-a",
+      "status": 200,
+      "detail": null
+    },
+    {
+      "pathname": "/api/v2/learn/overview",
+      "tenant": "tenant-b",
+      "status": 404,
+      "detail": "learn_not_configured"
+    },
+    {
+      "pathname": "/api/v2/learn/glossary",
+      "tenant": "tenant-b",
+      "status": 404,
+      "detail": "learn_not_configured"
+    },
+    {
+      "pathname": "/api/v2/learn/resources/module%3AM08",
+      "tenant": "tenant-b",
+      "status": 404,
+      "detail": "learn_not_configured"
+    },
+    {
+      "pathname": "/api/v2/learn/overview",
+      "tenant": "tenant-denied",
+      "status": 403,
+      "detail": "workspace_access_denied"
+    },
+    {
+      "pathname": "/api/v2/learn/resources/TUTOR.md",
+      "tenant": "tenant-a",
+      "status": 404,
+      "detail": "learn_resource_not_found"
+    },
+    {
+      "pathname": "/api/v2/learn/resources/assessment%3Acourse-checks",
+      "tenant": "tenant-a",
+      "status": 404,
+      "detail": "learn_resource_not_found"
+    }
+  ],
+  "browserChecks": [
+    "real8modules24lessons/currentM08-L03/readOnly/progressOwner",
+    "realCourse/currentModuleReaderExactContent/glossarySearchAndEmpty/focusableReaderAndGlossary/answerKeysAbsent"
+  ],
+  "matrix": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "layout": {
+        "viewport": 1440,
+        "overflowX": 0,
+        "contentOverflowX": 0,
+        "readerWidth": 474,
+        "progressColumns": "433.719px 520.469px 141.812px",
+        "workspaceColumns": "310px 474px 360px",
+        "colors": {
+          ".fx-language-toggle": {
+            "color": "rgb(231, 232, 234)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".is-active > .fx-rail-section-label": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li span": {
+            "color": "rgb(176, 177, 180)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li strong": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        "overflowNodes": []
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "screenshot": "learn-ready-dark-1440.png",
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "layout": {
+        "viewport": 768,
+        "overflowX": 0,
+        "contentOverflowX": 154,
+        "readerWidth": 192,
+        "progressColumns": "220px 240px 141.812px",
+        "workspaceColumns": "280px 192px",
+        "colors": {
+          ".fx-language-toggle": {
+            "color": "rgb(231, 232, 234)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".is-active > .fx-rail-section-label": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li span": {
+            "color": "rgb(176, 177, 180)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li strong": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        "overflowNodes": [
+          {
+            "tag": "DIV",
+            "class": "learn-progress-meta",
+            "right": 921.8125,
+            "width": 141.8125,
+            "minWidth": "auto",
+            "gridColumns": "none"
+          },
+          {
+            "tag": "SPAN",
+            "class": "",
+            "right": 800.875,
+            "width": 20.875,
+            "minWidth": "auto",
+            "gridColumns": "none"
+          },
+          {
+            "tag": "SPAN",
+            "class": "",
+            "right": 921.8125,
+            "width": 102.9375,
+            "minWidth": "auto",
+            "gridColumns": "none"
+          }
+        ]
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "screenshot": "learn-ready-dark-768.png",
+      "pass": false
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "layout": {
+        "viewport": 390,
+        "overflowX": 0,
+        "contentOverflowX": 0,
+        "readerWidth": 304,
+        "progressColumns": "304px",
+        "workspaceColumns": "304px",
+        "colors": {
+          ".fx-language-toggle": {
+            "color": "rgb(231, 232, 234)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".is-active > .fx-rail-section-label": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li span": {
+            "color": "rgb(176, 177, 180)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li strong": {
+            "color": "rgb(255, 255, 255)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        "overflowNodes": []
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "screenshot": "learn-ready-dark-390.png",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "layout": {
+        "viewport": 1440,
+        "overflowX": 0,
+        "contentOverflowX": 0,
+        "readerWidth": 474,
+        "progressColumns": "433.719px 520.469px 141.812px",
+        "workspaceColumns": "310px 474px 360px",
+        "colors": {
+          ".fx-language-toggle": {
+            "color": "rgb(29, 41, 48)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".is-active > .fx-rail-section-label": {
+            "color": "rgb(90, 58, 6)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li span": {
+            "color": "rgb(83, 99, 109)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li strong": {
+            "color": "rgb(29, 41, 48)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        "overflowNodes": []
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "screenshot": "learn-ready-light-1440.png",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "layout": {
+        "viewport": 768,
+        "overflowX": 0,
+        "contentOverflowX": 154,
+        "readerWidth": 192,
+        "progressColumns": "220px 240px 141.812px",
+        "workspaceColumns": "280px 192px",
+        "colors": {
+          ".fx-language-toggle": {
+            "color": "rgb(29, 41, 48)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".is-active > .fx-rail-section-label": {
+            "color": "rgb(90, 58, 6)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li span": {
+            "color": "rgb(83, 99, 109)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li strong": {
+            "color": "rgb(29, 41, 48)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        "overflowNodes": [
+          {
+            "tag": "DIV",
+            "class": "learn-progress-meta",
+            "right": 921.8125,
+            "width": 141.8125,
+            "minWidth": "auto",
+            "gridColumns": "none"
+          },
+          {
+            "tag": "SPAN",
+            "class": "",
+            "right": 800.875,
+            "width": 20.875,
+            "minWidth": "auto",
+            "gridColumns": "none"
+          },
+          {
+            "tag": "SPAN",
+            "class": "",
+            "right": 921.8125,
+            "width": 102.9375,
+            "minWidth": "auto",
+            "gridColumns": "none"
+          }
+        ]
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "screenshot": "learn-ready-light-768.png",
+      "pass": false
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "layout": {
+        "viewport": 390,
+        "overflowX": 0,
+        "contentOverflowX": 0,
+        "readerWidth": 304,
+        "progressColumns": "304px",
+        "workspaceColumns": "304px",
+        "colors": {
+          ".fx-language-toggle": {
+            "color": "rgb(29, 41, 48)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".is-active > .fx-rail-section-label": {
+            "color": "rgb(90, 58, 6)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li span": {
+            "color": "rgb(83, 99, 109)",
+            "background": "rgba(0, 0, 0, 0)"
+          },
+          ".learn-module li strong": {
+            "color": "rgb(29, 41, 48)",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        "overflowNodes": []
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "nodes": [
+              {
+                "target": [
+                  ".fx-theme-icon"
+                ],
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 31
+      },
+      "screenshot": "learn-ready-light-390.png",
+      "pass": true
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "learnRequests": [
+    {
+      "pathname": "/api/v2/learn/glossary",
+      "method": "GET",
+      "tenant": "tenant-a",
+      "forwardedOrigin": "http://127.0.0.1:8030",
+      "status": 200
+    },
+    {
+      "pathname": "/api/v2/learn/overview",
+      "method": "GET",
+      "tenant": "tenant-a",
+      "forwardedOrigin": "http://127.0.0.1:8030",
+      "status": 200
+    },
+    {
+      "pathname": "/api/v2/learn/resources/course",
+      "method": "GET",
+      "tenant": "tenant-a",
+      "forwardedOrigin": "http://127.0.0.1:8030",
+      "status": 200
+    },
+    {
+      "pathname": "/api/v2/learn/resources/module%3AM08",
+      "method": "GET",
+      "tenant": "tenant-a",
+      "forwardedOrigin": "http://127.0.0.1:8030",
+      "status": 200
+    }
+  ],
+  "unexpectedRequests": [],
+  "mutationRequests": [],
+  "failures": [
+    {
+      "step": "Responsive dark/light real ready matrix",
+      "theme": "dark",
+      "width": 768,
+      "violations": [],
+      "overflowX": 0,
+      "contentOverflowX": 154
+    },
+    {
+      "step": "Responsive dark/light real ready matrix",
+      "theme": "light",
+      "width": 768,
+      "violations": [],
+      "overflowX": 0,
+      "contentOverflowX": 154
+    },
+    {
+      "step": "Real replay roundtrip and reload",
+      "error": "TimeoutError: locator.getAttribute: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: 'Học & thuật ngữ', exact: true })\u001b[22m\n",
+      "stack": "locator.getAttribute: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: 'Học & thuật ngữ', exact: true })\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\learn-ready\\run_learn_ready.mjs:184:98"
+    }
+  ],
+  "realCourse": {
+    "version": "1.1",
+    "modules": 8,
+    "lessons": 24,
+    "currentLesson": "M08-L03",
+    "glossaryCount": 22,
+    "safety": {
+      "read_only": true,
+      "progress_owner": "education/progress.json",
+      "answer_keys_exposed": false,
+      "auto_completion_enabled": false
+    },
+    "pendingStatus": "br01_v0_authored_pending_learner_application_and_execution_spec_checks"
+  },
+  "resources": {
+    "module": {
+      "resourceId": "module:M08",
+      "contentSha256": "692d34fcabec566fbf20fff367e98489e532b5589b4c9e542c4f3b05a7de3a8c"
+    },
+    "course": {
+      "contentSha256": "9fa3382e8e1372d443dbda11d255593fd7e6696c546d6a661913803cc4622d58"
+    }
+  },
+  "browserVersion": "153.0.8010.12",
+  "axeVersion": "4.10.3",
+  "sourceAfter": "e993bb4910fc42f3faf8c7852ca6807f392deaa6d331f279f843ea8c9d21e6dd",
+  "educationAfter": {
+    "course.json": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+    "progress.json": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008"
+  }
+}

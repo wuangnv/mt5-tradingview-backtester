@@ -1,0 +1,43 @@
+{
+  "schema": "learn-ready-attempt-reconciliation-v1",
+  "attempt": "r2",
+  "status": "STABLE_CONTRAST_PASS_TABLET_LAYOUT_AND_JOURNEY_FAIL",
+  "raw_status": "FAIL_REAL_READY_SCOPED",
+  "raw_report_sha256": "be47a48db066d7bf78c8837b187fbfd8a4a7da1a188e3b7667729a87a86addf0",
+  "ui_source_before": "e993bb4910fc42f3faf8c7852ca6807f392deaa6d331f279f843ea8c9d21e6dd",
+  "ui_source_after": "e993bb4910fc42f3faf8c7852ca6807f392deaa6d331f279f843ea8c9d21e6dd",
+  "course_progress_unchanged": true,
+  "api_checks": 10,
+  "matrix_passed": 4,
+  "matrix_total": 6,
+  "stable_theme_observation": "All6 cases use CSS transition-completion gate; no axe violations or ARIA incompletes in stabilized matrix",
+  "service_pid": 18488,
+  "service_stopped_in_finally": true,
+  "functional_scope": "10 real API checks + course/progress/resource/glossary/focus succeeded; full loaded replay roundtrip did not complete",
+  "failures": [
+    {
+      "step": "Responsive dark/light real ready matrix",
+      "theme": "dark",
+      "width": 768,
+      "violations": [],
+      "overflowX": 0,
+      "contentOverflowX": 154
+    },
+    {
+      "step": "Responsive dark/light real ready matrix",
+      "theme": "light",
+      "width": 768,
+      "violations": [],
+      "overflowX": 0,
+      "contentOverflowX": 154
+    },
+    {
+      "step": "Real replay roundtrip and reload",
+      "error": "TimeoutError: locator.getAttribute: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: 'H\u1ecdc & thu\u1eadt ng\u1eef', exact: true })\u001b[22m\n",
+      "stack": "locator.getAttribute: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: 'H\u1ecdc & thu\u1eadt ng\u1eef', exact: true })\u001b[22m\n\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\learn-ready\\run_learn_ready.mjs:184:98"
+    }
+  ],
+  "next_action": "Root owns remaining frontend fixes; fresh source-pinned attempt after visible loaded-chart Learn CTA is added",
+  "whole_y11_accepted": false,
+  "whole_product_accepted": false
+}

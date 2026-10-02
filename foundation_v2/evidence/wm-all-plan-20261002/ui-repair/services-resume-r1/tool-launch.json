@@ -1,0 +1,20 @@
+{
+  "schema": "tool-owned-qa-resume-v1",
+  "captured_at": "2026-10-02T21:46:39.088993+07:00",
+  "vite_session": 66234,
+  "api_scope": "GET/HEAD/OPTIONS only, existing named QA DB and artifacts, no reseed/reset/reload",
+  "previous_service_ports_absent": true,
+  "background_launch": "Rejected by policy; narrowed to tool-managed exec sessions",
+  "api_session": 28858,
+  "actual_pids": [
+    20928,
+    20068
+  ],
+  "actual_replay_check": {
+    "view": 20,
+    "canonical": 60,
+    "rows": 21,
+    "status": "PASS",
+    "revision": 123
+  }
+}

@@ -1,12 +1,28 @@
 {
   "status": "EXACT_REVIEWED_CHART_IMAGES_PROMOTED",
-  "sourceHash": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "sourceHash": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
   "fixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
-  "reviewSha256": "aa368b3ad24409054d4663e6514b4da58b9c83c4f2c1c08595461b51acf52f49",
+  "reviewPath": "foundation_v2/evidence/wm-all-plan-20261002/chart-review/r4/chart-visual-approval.json",
+  "reviewSha256": "d162fd19c8881f0d837bf2981ae363db569677f9bf4f551ccc63acdb0bf24e4b",
+  "previousManifestSha256": "3d63619187fb85c7f43fabbe4af0679aff84ff2ddf47283f8fdb74b1ec07223a",
+  "previousManifestReceipt": "foundation_v2/evidence/wm-all-plan-20261002/ui-repair/previous-chart-PROMOTION.json",
+  "scope": "Loaded-chart Learn CTA; exact approved bytes copied. Comparator uses maxDiffPixels0/default perceptual threshold; whole chart product acceptance remains open.",
   "images": [
     {
+      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1280x800/chart-top.png",
+      "sha256": "76fbd7527374d527e9e8aee0cefa03f265560b130e074c977a87c6c3e72f57d2"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1280x800/chart-pane.png",
+      "sha256": "5b1dd4772881a7dd4101985aa1c30590df70717b790a85961bee8d627c43a7bf"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1280x800/chart-history-pane.png",
+      "sha256": "6a6a72c47b76fb6dd956c0f394c1a5a97cea8f8144be3016789e087e29e6f163"
+    },
+    {
       "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1440x900/chart-top.png",
-      "sha256": "616f4634092e3c5efd6b10271b38db424d9bcb5a08d0c557454e85ff5341aeee"
+      "sha256": "30fb9e7b4bfbcb9376df4571b5c21df92dc2af0de4aeae535cf79446c784e73a"
     },
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1440x900/chart-pane.png",
@@ -17,32 +33,8 @@
       "sha256": "7e4f7b57683dd90d5191d9d621a9176f954d8c7995dee147631f5abe01bd46cf"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1280x800/chart-top.png",
-      "sha256": "de8dbf0d31391ebac832bbf0e102deb7c4952b82e86fc55c7baf8419f8abad11"
-    },
-    {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1280x800/chart-pane.png",
-      "sha256": "9a03b869650cdf960089ec04f35a0fb8a3762bb8d4362683d01ef147a6ddeeb4"
-    },
-    {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-1280x800/chart-history-pane.png",
-      "sha256": "6a6a72c47b76fb6dd956c0f394c1a5a97cea8f8144be3016789e087e29e6f163"
-    },
-    {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-768x1024/chart-top.png",
-      "sha256": "13db455e1be8732c55a57949656babada81200727d451e139bb4ad9f4702943d"
-    },
-    {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-768x1024/chart-pane.png",
-      "sha256": "5ebcbfc766f1353cec81df3a7552df0f6bc57a4bc5dbc8351087d95e63a93b87"
-    },
-    {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-768x1024/chart-history-pane.png",
-      "sha256": "e8bf5783b5063a43c0e85341cdbca6c1efbd78b1295a2aa266712568275f1749"
-    },
-    {
       "path": "foundation_v2/web/tests/visual/chart-baselines/dark-390x844/chart-top.png",
-      "sha256": "e24b2216d54446d8b3b72f85cd3c6e9f03aceeb2c5dc4dff25c408bbc298094e"
+      "sha256": "1d7c7436b647a2e0b7d77cf86ec966abadf6c10a91abebae263967e3fcf696d2"
     },
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/dark-390x844/chart-pane.png",
@@ -53,20 +45,20 @@
       "sha256": "6d539067353c6e71ec35ee686936bb64e54f02b01c86b3e591e6becfcd63d4f3"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/light-1440x900/chart-top.png",
-      "sha256": "e2637e1c687652a7d99a70dd3f3730609d7eaf88cc074c44d92532a4e6732244"
+      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-768x1024/chart-top.png",
+      "sha256": "e20956cef4b889e6aac5ccb6ad3e04c36867aedef210d63ceb37bc750b1a92ed"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/light-1440x900/chart-pane.png",
-      "sha256": "ff5c55f2cdae3c51f23a2a9da787dbbf8af364cc750fd1ea5b84ef3ed7a50b4b"
+      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-768x1024/chart-pane.png",
+      "sha256": "5ebcbfc766f1353cec81df3a7552df0f6bc57a4bc5dbc8351087d95e63a93b87"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/light-1440x900/chart-history-pane.png",
-      "sha256": "ea5bbfc118fa76b0f129a173b90116d5f0518520cdb86c6a56d00fbd80c8188a"
+      "path": "foundation_v2/web/tests/visual/chart-baselines/dark-768x1024/chart-history-pane.png",
+      "sha256": "e8bf5783b5063a43c0e85341cdbca6c1efbd78b1295a2aa266712568275f1749"
     },
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/light-1280x800/chart-top.png",
-      "sha256": "2ac908dc35628590979b723d12b54d218facad785427233d7a8146dd528c103c"
+      "sha256": "7f9455900dfe012a3dd4b72a7804daf0e02f04481825dd3092565eafb1ca83e0"
     },
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/light-1280x800/chart-pane.png",
@@ -77,20 +69,20 @@
       "sha256": "2fe6b33c5e1ec5b23821371761fd7cbd8566e893cedfc18cd04dc338fd448635"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/light-768x1024/chart-top.png",
-      "sha256": "fb60f201adad0864d70e54a148ddedbc9090eac87f68a66e8863f0232e358a59"
+      "path": "foundation_v2/web/tests/visual/chart-baselines/light-1440x900/chart-top.png",
+      "sha256": "6ab6908b9f5578a38ff1714e71750613ad7e14cd0ee8cd96a5d664f3ba95e4b1"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/light-768x1024/chart-pane.png",
-      "sha256": "3f4539463f092f094160dce5edeabb9314671eb6abc77f29f124616cf6c727f1"
+      "path": "foundation_v2/web/tests/visual/chart-baselines/light-1440x900/chart-pane.png",
+      "sha256": "649858b59ceea475a7c32352b510d4cc1b36708083e5adb9605701a902bf89bf"
     },
     {
-      "path": "foundation_v2/web/tests/visual/chart-baselines/light-768x1024/chart-history-pane.png",
-      "sha256": "5c0244cbbb351d7b984f56df8fd8b78981fbd2fe122b8687a498bcfdd6983ead"
+      "path": "foundation_v2/web/tests/visual/chart-baselines/light-1440x900/chart-history-pane.png",
+      "sha256": "ea5bbfc118fa76b0f129a173b90116d5f0518520cdb86c6a56d00fbd80c8188a"
     },
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/light-390x844/chart-top.png",
-      "sha256": "4942f474925a075b2a17396b3896e48376dc2190140bdd7ecffde32576c425ab"
+      "sha256": "f847e4e01e9688719ff3158650aa5b1db0b0e45ba4eed92196e811a156ecb095"
     },
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/light-390x844/chart-pane.png",
@@ -99,6 +91,18 @@
     {
       "path": "foundation_v2/web/tests/visual/chart-baselines/light-390x844/chart-history-pane.png",
       "sha256": "debfd97fc323f8b97af5b490cb01128a04de923dfbe8b0c4ec16dbd72d13e6d1"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/chart-baselines/light-768x1024/chart-top.png",
+      "sha256": "443cb5543d42d6e7407098d8277a12ea20b99a50502de741b1ed78492518f907"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/chart-baselines/light-768x1024/chart-pane.png",
+      "sha256": "3f4539463f092f094160dce5edeabb9314671eb6abc77f29f124616cf6c727f1"
+    },
+    {
+      "path": "foundation_v2/web/tests/visual/chart-baselines/light-768x1024/chart-history-pane.png",
+      "sha256": "5c0244cbbb351d7b984f56df8fd8b78981fbd2fe122b8687a498bcfdd6983ead"
     }
   ]
 }

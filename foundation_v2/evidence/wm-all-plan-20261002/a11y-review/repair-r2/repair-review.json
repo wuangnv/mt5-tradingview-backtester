@@ -1,0 +1,1299 @@
+{
+  "status": "SCOPED_REPAIR_REVIEW_PASS",
+  "reviewer": "/root/mt5_independent_review",
+  "sourceBefore": "e993bb4910fc42f3faf8c7852ca6807f392deaa6d331f279f843ea8c9d21e6dd",
+  "sourceAfter": "e993bb4910fc42f3faf8c7852ca6807f392deaa6d331f279f843ea8c9d21e6dd",
+  "scope": "Actual GET-only isolated QA API on Journal/Data,16route cases/8theme-viewport pairs,72Journal placeholder and48Data provider text observations;16exact rendered crops independently viewed. Original and r1failures preserved. No fullWCAG claim.",
+  "measurements": {
+    "path": "measurements.json",
+    "sha256": "8e511a60c76051df0c65f7587623d4e76e6d826bb7757137f597f67af6756ddb",
+    "assertions": 416
+  },
+  "summary": {
+    "routeCases": 16,
+    "viewportThemePairs": 8,
+    "journalPlaceholderObservations": 72,
+    "providerTextObservations": 48,
+    "screenshotCount": 16,
+    "originalAndAdditionalFindingsResolved": 3,
+    "newFindings": 0,
+    "fullWcagConformance": "NOT_EVALUATED",
+    "productAcceptance": "NOT_EVALUATED",
+    "broker": "NOT_CONTACTED"
+  },
+  "findings": [
+    {
+      "id": "A11Y-01",
+      "status": "RESOLVED_VERIFIED_SCOPED",
+      "scope": "9actual enabled empty Journal fields at4widths/2themes",
+      "threshold": 4.5,
+      "darkRatio": 6.371946456275576,
+      "lightRatio": 6.225244635758334,
+      "observationCount": 72,
+      "placeholderOpacity": 1,
+      "meaningfulControl": "Actual content textarea is enabled, empty, visible after scroll and directly inspected in all8crops."
+    },
+    {
+      "id": "UI-01",
+      "status": "RESOLVED_VERIFIED_SCOPED",
+      "scope": "Provider local-catalog metadata/status/capability at4widths/2themes",
+      "widths": [
+        {
+          "theme": "dark",
+          "viewport": 1440,
+          "cellWidth": 418.5,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "dark",
+          "viewport": 1280,
+          "cellWidth": 358.5,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "dark",
+          "viewport": 768,
+          "cellWidth": 646,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "dark",
+          "viewport": 390,
+          "cellWidth": 308,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "light",
+          "viewport": 1440,
+          "cellWidth": 418.5,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "light",
+          "viewport": 1280,
+          "cellWidth": 358.5,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "light",
+          "viewport": 768,
+          "cellWidth": 646,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        },
+        {
+          "theme": "light",
+          "viewport": 390,
+          "cellWidth": 308,
+          "rowHeight": 137,
+          "nameRectCount": 1,
+          "readMetadataRectCount": 1,
+          "wordRectCount": 1
+        }
+      ],
+      "assertions": [
+        "cell>100px",
+        "row<=200px",
+        "name and read_metadata single line",
+        "read_metadata word whole",
+        "entitlement<=3Range rectangles",
+        "tracks inside row, stack without overlap",
+        "state min-width0 and left alignment",
+        "document/body/content no horizontal overflow"
+      ],
+      "tradeOff": "Stacked provider presentation uses more vertical space than a wide3column arrangement, but remains137px and removes the zero-width track without adding wrappers or changing API meaning."
+    },
+    {
+      "id": "A11Y-02",
+      "status": "RESOLVED_VERIFIED_SCOPED",
+      "scope": "Mode/entitlement readiness text at4widths/2themes",
+      "threshold": 4.5,
+      "beforeLightRatio": 1.9875350170707042,
+      "newDarkRatio": 9.120940542183826,
+      "newLightRatio": 5.041243463797098,
+      "foregroundDark": "#d5a45a",
+      "foregroundLight": "#9a630f",
+      "backgroundDark": "#030303",
+      "backgroundLight": "#ffffff",
+      "text": "offline_local · entitlement: dataset_metadata_only",
+      "all6ProviderGroupsChecked": true
+    }
+  ],
+  "providerContrast": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 15.026352053482865,
+          "threshold": 4.5,
+          "foreground": [
+            214,
+            221,
+            226,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.6584340072913015,
+          "threshold": 4.5,
+          "foreground": [
+            137,
+            148,
+            156,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 5.9091542609623104,
+          "threshold": 4.5,
+          "foreground": [
+            127,
+            139,
+            147,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 15.026352053482865,
+          "threshold": 4.5,
+          "foreground": [
+            214,
+            221,
+            226,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.6584340072913015,
+          "threshold": 4.5,
+          "foreground": [
+            137,
+            148,
+            156,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 5.9091542609623104,
+          "threshold": 4.5,
+          "foreground": [
+            127,
+            139,
+            147,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 15.026352053482865,
+          "threshold": 4.5,
+          "foreground": [
+            214,
+            221,
+            226,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.6584340072913015,
+          "threshold": 4.5,
+          "foreground": [
+            137,
+            148,
+            156,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 5.9091542609623104,
+          "threshold": 4.5,
+          "foreground": [
+            127,
+            139,
+            147,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 15.026352053482865,
+          "threshold": 4.5,
+          "foreground": [
+            214,
+            221,
+            226,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.6584340072913015,
+          "threshold": 4.5,
+          "foreground": [
+            137,
+            148,
+            156,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 5.9091542609623104,
+          "threshold": 4.5,
+          "foreground": [
+            127,
+            139,
+            147,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 9.120940542183826,
+          "threshold": 4.5,
+          "foreground": [
+            213,
+            164,
+            90,
+            1
+          ],
+          "background": [
+            3,
+            3,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 14.871494718297539,
+          "threshold": 4.5,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 14.871494718297539,
+          "threshold": 4.5,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 14.871494718297539,
+          "threshold": 4.5,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "text": [
+        {
+          "text": "local-catalog",
+          "fontSize": "11px",
+          "ratio": 14.871494718297539,
+          "threshold": 4.5,
+          "foreground": [
+            29,
+            41,
+            48,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Có: read_metadata",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "offline_local · entitlement: dataset_metadata_only",
+          "fontSize": "11px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Chưa đủ điều kiện production",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Offline / no network",
+          "fontSize": "11px",
+          "ratio": 6.225244635758334,
+          "threshold": 4.5,
+          "foreground": [
+            83,
+            99,
+            109,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        },
+        {
+          "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+          "fontSize": "10px",
+          "ratio": 5.041243463797098,
+          "threshold": 4.5,
+          "foreground": [
+            154,
+            99,
+            15,
+            1
+          ],
+          "background": [
+            255,
+            255,
+            255,
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "renderedReview": {
+    "status": "SCOPED_PASS",
+    "screenshots": [
+      {
+        "path": "journal-dark-1440.png",
+        "theme": "dark",
+        "route": "journal",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "sha256": "7c5b3851523a627792c8eb07ae168c7b0c614d86208c6bdd37e65f81332e7761",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-dark-1440.png",
+        "theme": "dark",
+        "route": "data",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "sha256": "dbdbbe40a1a583eeb3a4be4cda6ba60bc8f1e536555813d2a1b059e21f9ba65b",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-dark-1280.png",
+        "theme": "dark",
+        "route": "journal",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "sha256": "18a70cb6dd3ca2625e6d872b8ac46e06860a82d7a042654252a87c077ed9b599",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-dark-1280.png",
+        "theme": "dark",
+        "route": "data",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "sha256": "af51e963e72a7ebc3449739e760050cbf85d935474d1052fef87f85363340029",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-dark-768.png",
+        "theme": "dark",
+        "route": "journal",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "sha256": "da1c80e961d5becff0a25c21a8932fd8bbfd51fe5c411591fae4ae3998ff09c4",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-dark-768.png",
+        "theme": "dark",
+        "route": "data",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "sha256": "f8d72b367f81f4baa08f6e1db21d239c3f55ca828a4b5237ae45b13cf8bba16c",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-dark-390.png",
+        "theme": "dark",
+        "route": "journal",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "sha256": "f0c40c8caf3b8d3e9e734865d11496087b36837bb6dc3b14c67cb5709de679ab",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-dark-390.png",
+        "theme": "dark",
+        "route": "data",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "sha256": "f3a5cbf6a756058aeb19a146ec831604b1ed5946406a17c4b61017a6f2d39653",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-light-1440.png",
+        "theme": "light",
+        "route": "journal",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "sha256": "5e36a1a73fc438b054cb1f79828fc805fff43600a5d68da49b2ba09e8d917ba7",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-light-1440.png",
+        "theme": "light",
+        "route": "data",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "sha256": "03060dc359dcbe2655a55c248cc39f1ae3f05258bd3b7032c76ef6e8dd4d5c58",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-light-1280.png",
+        "theme": "light",
+        "route": "journal",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "sha256": "e5f56743bad6a82d89dd23664da0b1f75ec927ae2deb07f4ddeab1a4bf9025d8",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-light-1280.png",
+        "theme": "light",
+        "route": "data",
+        "viewport": {
+          "width": 1280,
+          "height": 800
+        },
+        "sha256": "dfe61423d0c801ccec610661ba832f9ed129662e10c162259badbe6df0c3fbcc",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-light-768.png",
+        "theme": "light",
+        "route": "journal",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "sha256": "c51ade1dceeea5b35419ff9588fb0a1dba0894debcc55210d876f8f58a2b7b1b",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-light-768.png",
+        "theme": "light",
+        "route": "data",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "sha256": "98ca7d4a031abbb4704cb38005bbaa1b35f72e2078c67e5a1f5e3e442ca0bfa4",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "journal-light-390.png",
+        "theme": "light",
+        "route": "journal",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "sha256": "87afb93ddff8df0d59a48e636885b648eb42615ca3ea35991e843ac38bde5d21",
+        "inspectedDirectly": true
+      },
+      {
+        "path": "data-light-390.png",
+        "theme": "light",
+        "route": "data",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "sha256": "4d97c85f9dab56d13388542262ce20aea0cebcd5fa2c6ada6c43b7af53da749e",
+        "inspectedDirectly": true
+      }
+    ],
+    "observations": [
+      "Journal placeholder readable in both themes;390wrap remains natural.",
+      "Provider identity/read_metadata/entitlement/status/blocked capability all visible and readable.",
+      "Stacked provider metadata has no collapsed letters, clipped words or overlap."
+    ]
+  },
+  "retainedHistory": [
+    {
+      "path": "../contrast-review.json",
+      "sha256": "2bc316aadd106dd854166fc1a4551d7d567deb9cb1c4ada9d170e663c70396f1",
+      "source": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+      "status": "PARTIAL_WCAG_REVIEW_FINDINGS_OPEN"
+    },
+    {
+      "path": "../repair-r1/measurements.json",
+      "sha256": "eee834a1755a479c6d57170de332e9bcb3632f5ebc7dc5b96ae75efb47678fa4"
+    },
+    {
+      "path": "../repair-r1/provider-text-contrast.json",
+      "sha256": "6d648dfe5d091a9a24d5a3605164c040a9c232dd8afba3dbd62a1aec5518de14"
+    },
+    {
+      "path": "../repair-r1/REPAIR-REVIEW.md",
+      "sha256": "d17f2b7472499f25fc30e0fb8371c76378cefc6db1b56b9f3823e1ed7316f5db"
+    }
+  ],
+  "reuse": {
+    "previous18TargetTriage": "../contrast-review.json",
+    "freshlyVerifiedOriginalTargets": [
+      "textarea[rows=\"8\"]",
+      "div:nth-child(1) > small:nth-child(2)"
+    ],
+    "unaffectedOriginalTargets": 16,
+    "rationale": "Other targets retain scoped prior evidence: placeholder selector is Journal-field scoped, provider layout/text color rules are Data-row scoped, shell change is comment; Learn changes apply to another workspace. This is delta reuse, not fresh execution of the other16selectors.",
+    "keyboardAndMotion": "Prior exact-source receipts remain historical scoped evidence; no fresh all-state keyboard/reduced-motion conformance claimed."
+  },
+  "laterSource": {
+    "fingerprintAtPublication": "fba555162da33d740c254ebf79ba2670df1c0e29e7c80221d649df8dca27ebad",
+    "sequence": "Root reported a later Learn tablet selector-specificity fix after this run completed. e993sourceBefore/sourceAfter matched and script had exited0 before the change.",
+    "runtimeVerifiedByThisReceipt": false,
+    "requiredFollowup": "Root final144route/axe/reflow matrix and golden comparisons on fba555; this receipt has no Learn acceptance authority."
+  },
+  "safety": {
+    "methods": [
+      "GET",
+      "HEAD",
+      "OPTIONS"
+    ],
+    "origin": "http://127.0.0.1:5180",
+    "webSocketsClosed": true,
+    "pageErrors": 0,
+    "blockedRequests": 0,
+    "writes": 0,
+    "sourceEdits": 0,
+    "baselinePromotions": 0,
+    "ledgerChanges": 0,
+    "commits": 0
+  },
+  "exclusions": [
+    "No complete WCAG2.2AA or every-state keyboard/screen-reader claim.",
+    "No Learn/sourcefba555browser verification by this lane.",
+    "No chart-types/down-candle/fullgesture/wholeW8/UY/M7/product/broker acceptance."
+  ]
+}

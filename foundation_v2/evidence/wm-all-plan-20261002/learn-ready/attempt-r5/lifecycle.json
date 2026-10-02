@@ -1,0 +1,14 @@
+{
+  "servicePid": 10888,
+  "schema": "learn-qa-owned-service-lifecycle-v1",
+  "ownedServiceStopped": true,
+  "effects": "Task-only named disposable QA DB schema initialization; read-only Learn/browser requests; evidence files and screenshots only; existing API8020/Vite5180 untouched.",
+  "started": "2026-10-02T14:19:13.8642795Z",
+  "finished": "2026-10-02T14:19:35.7761526Z",
+  "commands": [
+    "python.exe -B serve_learn_qa.py attempt-r5 (Start-Process -WindowStyle Hidden)",
+    "node run_learn_ready.mjs attempt-r5",
+    "Stop-Process -Id <owned-service-PID> in finally"
+  ],
+  "browserExitCode": 0
+}

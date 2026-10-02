@@ -1,0 +1,814 @@
+{
+  "status": "SCOPED_KEYBOARD_LAYOUT_CUTOFF_PASS_PENDING_RENDERED_REVIEW",
+  "scope": "New loaded-chart Learn CTA real isolated QA session/history context;read-only keyboard/layout/cutoff;not fullLearn or chart acceptance",
+  "sourceBefore": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 862.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 890.5
+            },
+            "group": {
+              "x": 11,
+              "y": 862.5,
+              "width": 616.046875,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 862.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 890.5
+            },
+            "group": {
+              "x": 11,
+              "y": 862.5,
+              "width": 564.640625,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "height": 800,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 762.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 790.5
+            },
+            "group": {
+              "x": 11,
+              "y": 762.5,
+              "width": 536.046875,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1280,
+              "height": 800
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 762.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 790.5
+            },
+            "group": {
+              "x": 11,
+              "y": 762.5,
+              "width": 484.640625,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1280,
+              "height": 800
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 1024,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 436.875,
+              "y": 952,
+              "width": 86.421875,
+              "height": 28,
+              "right": 523.296875,
+              "bottom": 980
+            },
+            "group": {
+              "x": 9,
+              "y": 952,
+              "width": 750,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 768,
+              "height": 1024
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 436.875,
+              "y": 952,
+              "width": 86.421875,
+              "height": 28,
+              "right": 523.296875,
+              "bottom": 980
+            },
+            "group": {
+              "x": 9,
+              "y": 952,
+              "width": 750,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 768,
+              "height": 1024
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 201.171875,
+              "y": 751,
+              "width": 86.421875,
+              "height": 28,
+              "right": 287.59375,
+              "bottom": 779
+            },
+            "group": {
+              "x": 9,
+              "y": 751,
+              "width": 372,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 201.171875,
+              "y": 793,
+              "width": 86.421875,
+              "height": 28,
+              "right": 287.59375,
+              "bottom": 821
+            },
+            "group": {
+              "x": 9,
+              "y": 793,
+              "width": 372,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(240, 200, 120) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 862.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 890.5
+            },
+            "group": {
+              "x": 11,
+              "y": 862.5,
+              "width": 616.046875,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 862.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 890.5
+            },
+            "group": {
+              "x": 11,
+              "y": 862.5,
+              "width": 564.640625,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1440,
+              "height": 900
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "height": 800,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 762.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 790.5
+            },
+            "group": {
+              "x": 11,
+              "y": 762.5,
+              "width": 536.046875,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1280,
+              "height": 800
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 203.171875,
+              "y": 762.5,
+              "width": 86.421875,
+              "height": 28,
+              "right": 289.59375,
+              "bottom": 790.5
+            },
+            "group": {
+              "x": 11,
+              "y": 762.5,
+              "width": 484.640625,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 1280,
+              "height": 800
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "nowrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 1024,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 436.875,
+              "y": 952,
+              "width": 86.421875,
+              "height": 28,
+              "right": 523.296875,
+              "bottom": 980
+            },
+            "group": {
+              "x": 9,
+              "y": 952,
+              "width": 750,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 768,
+              "height": 1024
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 436.875,
+              "y": 952,
+              "width": 86.421875,
+              "height": 28,
+              "right": 523.296875,
+              "bottom": 980
+            },
+            "group": {
+              "x": 9,
+              "y": 952,
+              "width": 750,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 768,
+              "height": 1024
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "cutoffs": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=60&cutoff=1704070800&from=replay",
+          "geometry": {
+            "link": {
+              "x": 201.171875,
+              "y": 751,
+              "width": 86.421875,
+              "height": 28,
+              "right": 287.59375,
+              "bottom": 779
+            },
+            "group": {
+              "x": 9,
+              "y": 751,
+              "width": 372,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "href": "/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "learnUrl": "http://127.0.0.1:5180/?workspace=tenant-a&view=learn&session=39b1d068edd64e75864f692f27237852&dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&cursor=20&cutoff=1704068400&from=replay",
+          "geometry": {
+            "link": {
+              "x": 201.171875,
+              "y": 793,
+              "width": 86.421875,
+              "height": 28,
+              "right": 287.59375,
+              "bottom": 821
+            },
+            "group": {
+              "x": 9,
+              "y": 793,
+              "width": 372,
+              "height": 28
+            },
+            "text": "Học & thuật ngữ",
+            "color": "rgb(199, 208, 215)",
+            "fontSize": "10px",
+            "outline": "rgb(112, 70, 9) solid 2px",
+            "outlineOffset": "3px",
+            "focusVisible": true,
+            "hitOwn": true,
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "overflow": {
+              "document": 0,
+              "content": 0
+            },
+            "groupWrap": "wrap",
+            "groupOverflow": 0
+          },
+          "keyboardTabEnteredLink": true,
+          "enterNavigated": true,
+          "returnPrefixUnchanged": true,
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff."
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-dark-1440.png",
+      "sha256": "5df0254752a4861ebbf7d783a04d74d6b698e55852125aded42342d7122a30a1"
+    },
+    {
+      "theme": "dark",
+      "width": 1280,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-dark-1280.png",
+      "sha256": "4f40ac061565da693eb3cc8459e3ab5a0d276d8db54f5d0e4f19d8c69af3cc09"
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-dark-768.png",
+      "sha256": "fd3c6e2601c9172483774894bb69fd7a8b79754c1bc71f5818f552aac52ac889"
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-dark-390.png",
+      "sha256": "a8f393c805e78d32909348ae16f31aa529364a4cb43a1a3d218a7381d73e033f"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-light-1440.png",
+      "sha256": "b084699def0af206261696a0f942676d73fea766bbd376be3f528e3a6f941695"
+    },
+    {
+      "theme": "light",
+      "width": 1280,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-light-1280.png",
+      "sha256": "e5dcc68e8e9a806dac09ba08069963c3b6cb495f444c9c53160092be7266107b"
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-light-768.png",
+      "sha256": "7509c308ba79ca1e3608665220e8013d39e1de4fe91a4ca684279c8e697cc44e"
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "cursor": 20,
+      "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\r4\\learn-focus-light-390.png",
+      "sha256": "6c4ed5895abd1cd51542f65f60e851a66d93ed2eea33cd1f426a503d9f7964d1"
+    }
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "failures": [],
+  "browser": "153.0.8010.12",
+  "sourceAfter": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1"
+}

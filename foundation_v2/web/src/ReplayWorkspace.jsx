@@ -795,6 +795,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="chart-bottom-range" role="group" aria-label="Khoảng thời gian chart">
                   {[['1D', 1], ['5D', 5], ['1M', 30], ['All', null]].map(([range, days]) => <button key={range} type="button" aria-pressed={chartRange === range} className={chartRange === range ? 'is-active' : ''} onClick={() => { setChartRange(range); requestViewport(days ? 'range' : 'fit', { days }) }}>{range}</button>)}
                   <button type="button" onClick={() => requestViewport('latest')}>Tới cutoff</button>
+                  <a className="context-link" href={learnHref}>Học & thuật ngữ</a>
                 </div>
                 <div className="chart-bottom-replay">
                   <button type="button" className="chart-bottom-step" aria-label="Về nến đầu tiên" onClick={() => loadSession(sessionId, 0)} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}>|‹</button>

@@ -1,0 +1,14 @@
+{
+  "schema": "learn-ready-contrast-triage-v1",
+  "status": "OBSERVED_INITIAL_FAILURE_WITH_SHELL_TIMING_UNCERTAINTY",
+  "initial_report_sha256": "d940cd0946caf19445465cfd86c4e39d8409186c19d168a75131dad961f01020",
+  "initial_source": "476d20e4862abf1bfc69060aa978bf09fb7bc002b25a54e84980c74d1fed7901",
+  "facts": [
+    "Initial harness ran axe immediately after theme click and did not await running CSS transitions",
+    "Initial shell foreground colors measured by axe differ from stable light-theme CSS values",
+    "Actual lesson span/strong colors are legacy fixed colors in styles.css and remain independent Learn token findings",
+    "Original raw audit and screenshots remain unchanged"
+  ],
+  "interpretation": "Initial shell contrast results may reflect mid-transition composite colors; they do not establish a stable shell defect and should not trigger a blanket shell patch",
+  "next_validation": "Fresh attempt-r2 waits for zero running CSSTransition objects before axe and records actual computed colors, grid columns and overflow nodes; root owns only scoped Learn fixes"
+}

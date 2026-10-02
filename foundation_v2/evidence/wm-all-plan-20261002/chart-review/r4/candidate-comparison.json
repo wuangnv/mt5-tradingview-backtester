@@ -1,0 +1,1129 @@
+{
+  "status": "EXACT_PIXEL_COMPARISON_MEASURED_PENDING_REVIEWER_CLASSIFICATION",
+  "sourceHash": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
+  "fixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
+  "oldApproval": {
+    "path": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\wm-all-plan-20261002\\chart-review\\chart-visual-approval.json",
+    "sha256": "aa368b3ad24409054d4663e6514b4da58b9c83c4f2c1c08595461b51acf52f49"
+  },
+  "captureReport": {
+    "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-capture-r4\\report.json",
+    "sha256": "816a4d57039d200c7c406f26218cf2e48db5faf5bb196e4766b3c9b12d26686a",
+    "stats": {
+      "startTime": "2026-10-02T14:13:46.393Z",
+      "duration": 29175.117,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "comparisons": [
+    {
+      "project": "dark-1280x800",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1280x800\\chart-top.png",
+      "candidateSha256": "76fbd7527374d527e9e8aee0cefa03f265560b130e074c977a87c6c3e72f57d2",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-1280x800\\chart-top.png",
+      "baselineSha256": "de8dbf0d31391ebac832bbf0e102deb7c4952b82e86fc55c7baf8419f8abad11",
+      "width": 1280,
+      "height": 800,
+      "changedPixels": 425,
+      "changedBounds": {
+        "minX": 163,
+        "minY": 282,
+        "maxX": 1039,
+        "maxY": 784
+      },
+      "outsideFooterChangedPixels": 21,
+      "outsideFooterBounds": {
+        "minX": 163,
+        "minY": 282,
+        "maxX": 1039,
+        "maxY": 282
+      },
+      "nonFooterMaxChannelDelta": 3,
+      "nonFooterColorPairs": [
+        {
+          "pair": "99,185,130,255 -> 97,182,127,255",
+          "count": 11
+        },
+        {
+          "pair": "3,3,3,255 -> 3,4,4,255",
+          "count": 10
+        }
+      ],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-1280x800",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1280x800\\chart-pane.png",
+      "candidateSha256": "5b1dd4772881a7dd4101985aa1c30590df70717b790a85961bee8d627c43a7bf",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-1280x800\\chart-pane.png",
+      "baselineSha256": "9a03b869650cdf960089ec04f35a0fb8a3762bb8d4362683d01ef147a6ddeeb4",
+      "width": 1280,
+      "height": 595,
+      "changedPixels": 21,
+      "changedBounds": {
+        "minX": 163,
+        "minY": 123,
+        "maxX": 1039,
+        "maxY": 123
+      },
+      "outsideFooterChangedPixels": 21,
+      "outsideFooterBounds": {
+        "minX": 163,
+        "minY": 123,
+        "maxX": 1039,
+        "maxY": 123
+      },
+      "nonFooterMaxChannelDelta": 3,
+      "nonFooterColorPairs": [
+        {
+          "pair": "99,185,130,255 -> 97,182,127,255",
+          "count": 11
+        },
+        {
+          "pair": "3,3,3,255 -> 3,4,4,255",
+          "count": 10
+        }
+      ],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-1280x800",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1280x800\\chart-history-pane.png",
+      "candidateSha256": "6a6a72c47b76fb6dd956c0f394c1a5a97cea8f8144be3016789e087e29e6f163",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-1280x800\\chart-history-pane.png",
+      "baselineSha256": "6a6a72c47b76fb6dd956c0f394c1a5a97cea8f8144be3016789e087e29e6f163",
+      "width": 1280,
+      "height": 530,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-1440x900",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1440x900\\chart-top.png",
+      "candidateSha256": "30fb9e7b4bfbcb9376df4571b5c21df92dc2af0de4aeae535cf79446c784e73a",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-1440x900\\chart-top.png",
+      "baselineSha256": "616f4634092e3c5efd6b10271b38db424d9bcb5a08d0c557454e85ff5341aeee",
+      "width": 1440,
+      "height": 900,
+      "changedPixels": 404,
+      "changedBounds": {
+        "minX": 209,
+        "minY": 873,
+        "maxX": 284,
+        "maxY": 884
+      },
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-1440x900",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1440x900\\chart-pane.png",
+      "candidateSha256": "45cc90582f25335658c34868ca812ed78163d1d657f0195754fe2a7db254f041",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-1440x900\\chart-pane.png",
+      "baselineSha256": "45cc90582f25335658c34868ca812ed78163d1d657f0195754fe2a7db254f041",
+      "width": 1440,
+      "height": 695,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-1440x900",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1440x900\\chart-history-pane.png",
+      "candidateSha256": "7e4f7b57683dd90d5191d9d621a9176f954d8c7995dee147631f5abe01bd46cf",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-1440x900\\chart-history-pane.png",
+      "baselineSha256": "7e4f7b57683dd90d5191d9d621a9176f954d8c7995dee147631f5abe01bd46cf",
+      "width": 1440,
+      "height": 630,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-390x844",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-390x844\\chart-top.png",
+      "candidateSha256": "1d7c7436b647a2e0b7d77cf86ec966abadf6c10a91abebae263967e3fcf696d2",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-390x844\\chart-top.png",
+      "baselineSha256": "e24b2216d54446d8b3b72f85cd3c6e9f03aceeb2c5dc4dff25c408bbc298094e",
+      "width": 390,
+      "height": 844,
+      "changedPixels": 404,
+      "changedBounds": {
+        "minX": 207,
+        "minY": 761,
+        "maxX": 282,
+        "maxY": 772
+      },
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-390x844",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-390x844\\chart-pane.png",
+      "candidateSha256": "340273c9b06d17300db5c6614182d7c3f696623ddf33cc4ec4893511e7e2639e",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-390x844\\chart-pane.png",
+      "baselineSha256": "340273c9b06d17300db5c6614182d7c3f696623ddf33cc4ec4893511e7e2639e",
+      "width": 390,
+      "height": 393,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-390x844",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-390x844\\chart-history-pane.png",
+      "candidateSha256": "6d539067353c6e71ec35ee686936bb64e54f02b01c86b3e591e6becfcd63d4f3",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-390x844\\chart-history-pane.png",
+      "baselineSha256": "6d539067353c6e71ec35ee686936bb64e54f02b01c86b3e591e6becfcd63d4f3",
+      "width": 390,
+      "height": 320,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-768x1024",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-768x1024\\chart-top.png",
+      "candidateSha256": "e20956cef4b889e6aac5ccb6ad3e04c36867aedef210d63ceb37bc750b1a92ed",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-768x1024\\chart-top.png",
+      "baselineSha256": "13db455e1be8732c55a57949656babada81200727d451e139bb4ad9f4702943d",
+      "width": 768,
+      "height": 1024,
+      "changedPixels": 1369,
+      "changedBounds": {
+        "minX": 253,
+        "minY": 952,
+        "maxX": 517,
+        "maxY": 979
+      },
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-768x1024",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-768x1024\\chart-pane.png",
+      "candidateSha256": "5ebcbfc766f1353cec81df3a7552df0f6bc57a4bc5dbc8351087d95e63a93b87",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-768x1024\\chart-pane.png",
+      "baselineSha256": "5ebcbfc766f1353cec81df3a7552df0f6bc57a4bc5dbc8351087d95e63a93b87",
+      "width": 768,
+      "height": 705,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "dark-768x1024",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-768x1024\\chart-history-pane.png",
+      "candidateSha256": "e8bf5783b5063a43c0e85341cdbca6c1efbd78b1295a2aa266712568275f1749",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\dark-768x1024\\chart-history-pane.png",
+      "baselineSha256": "e8bf5783b5063a43c0e85341cdbca6c1efbd78b1295a2aa266712568275f1749",
+      "width": 768,
+      "height": 624,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-1280x800",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1280x800\\chart-top.png",
+      "candidateSha256": "7f9455900dfe012a3dd4b72a7804daf0e02f04481825dd3092565eafb1ca83e0",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-1280x800\\chart-top.png",
+      "baselineSha256": "2ac908dc35628590979b723d12b54d218facad785427233d7a8146dd528c103c",
+      "width": 1280,
+      "height": 800,
+      "changedPixels": 404,
+      "changedBounds": {
+        "minX": 209,
+        "minY": 773,
+        "maxX": 284,
+        "maxY": 784
+      },
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-1280x800",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1280x800\\chart-pane.png",
+      "candidateSha256": "57508914457b9185aea496948b5e8c27b70d9b22067de1f9643a426b76094732",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-1280x800\\chart-pane.png",
+      "baselineSha256": "57508914457b9185aea496948b5e8c27b70d9b22067de1f9643a426b76094732",
+      "width": 1280,
+      "height": 595,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-1280x800",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1280x800\\chart-history-pane.png",
+      "candidateSha256": "2fe6b33c5e1ec5b23821371761fd7cbd8566e893cedfc18cd04dc338fd448635",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-1280x800\\chart-history-pane.png",
+      "baselineSha256": "2fe6b33c5e1ec5b23821371761fd7cbd8566e893cedfc18cd04dc338fd448635",
+      "width": 1280,
+      "height": 530,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-1440x900",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1440x900\\chart-top.png",
+      "candidateSha256": "6ab6908b9f5578a38ff1714e71750613ad7e14cd0ee8cd96a5d664f3ba95e4b1",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-1440x900\\chart-top.png",
+      "baselineSha256": "e2637e1c687652a7d99a70dd3f3730609d7eaf88cc074c44d92532a4e6732244",
+      "width": 1440,
+      "height": 900,
+      "changedPixels": 450,
+      "changedBounds": {
+        "minX": 143,
+        "minY": 117,
+        "maxX": 1063,
+        "maxY": 884
+      },
+      "outsideFooterChangedPixels": 46,
+      "outsideFooterBounds": {
+        "minX": 143,
+        "minY": 117,
+        "maxX": 1063,
+        "maxY": 304
+      },
+      "nonFooterMaxChannelDelta": 4,
+      "nonFooterColorPairs": [
+        {
+          "pair": "28,33,36,255 -> 28,33,37,255",
+          "count": 1
+        },
+        {
+          "pair": "73,80,85,255 -> 73,79,85,255",
+          "count": 1
+        },
+        {
+          "pair": "217,223,226,255 -> 217,223,227,255",
+          "count": 2
+        },
+        {
+          "pair": "192,201,207,255 -> 192,201,208,255",
+          "count": 2
+        },
+        {
+          "pair": "123,129,132,255 -> 127,132,136,255",
+          "count": 1
+        },
+        {
+          "pair": "204,211,216,255 -> 203,211,216,255",
+          "count": 2
+        },
+        {
+          "pair": "242,244,245,255 -> 243,245,246,255",
+          "count": 2
+        },
+        {
+          "pair": "72,79,85,255 -> 73,80,86,255",
+          "count": 1
+        },
+        {
+          "pair": "97,182,127,255 -> 99,185,130,255",
+          "count": 19
+        },
+        {
+          "pair": "3,4,4,255 -> 3,3,3,255",
+          "count": 15
+        }
+      ],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-1440x900",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1440x900\\chart-pane.png",
+      "candidateSha256": "649858b59ceea475a7c32352b510d4cc1b36708083e5adb9605701a902bf89bf",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-1440x900\\chart-pane.png",
+      "baselineSha256": "ff5c55f2cdae3c51f23a2a9da787dbbf8af364cc750fd1ea5b84ef3ed7a50b4b",
+      "width": 1440,
+      "height": 695,
+      "changedPixels": 34,
+      "changedBounds": {
+        "minX": 143,
+        "minY": 145,
+        "maxX": 1063,
+        "maxY": 145
+      },
+      "outsideFooterChangedPixels": 34,
+      "outsideFooterBounds": {
+        "minX": 143,
+        "minY": 145,
+        "maxX": 1063,
+        "maxY": 145
+      },
+      "nonFooterMaxChannelDelta": 3,
+      "nonFooterColorPairs": [
+        {
+          "pair": "97,182,127,255 -> 99,185,130,255",
+          "count": 19
+        },
+        {
+          "pair": "3,4,4,255 -> 3,3,3,255",
+          "count": 15
+        }
+      ],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-1440x900",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1440x900\\chart-history-pane.png",
+      "candidateSha256": "ea5bbfc118fa76b0f129a173b90116d5f0518520cdb86c6a56d00fbd80c8188a",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-1440x900\\chart-history-pane.png",
+      "baselineSha256": "ea5bbfc118fa76b0f129a173b90116d5f0518520cdb86c6a56d00fbd80c8188a",
+      "width": 1440,
+      "height": 630,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-390x844",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-390x844\\chart-top.png",
+      "candidateSha256": "f847e4e01e9688719ff3158650aa5b1db0b0e45ba4eed92196e811a156ecb095",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-390x844\\chart-top.png",
+      "baselineSha256": "4942f474925a075b2a17396b3896e48376dc2190140bdd7ecffde32576c425ab",
+      "width": 390,
+      "height": 844,
+      "changedPixels": 413,
+      "changedBounds": {
+        "minX": 207,
+        "minY": 12,
+        "maxX": 381,
+        "maxY": 772
+      },
+      "outsideFooterChangedPixels": 9,
+      "outsideFooterBounds": {
+        "minX": 265,
+        "minY": 12,
+        "maxX": 381,
+        "maxY": 12
+      },
+      "nonFooterMaxChannelDelta": 1,
+      "nonFooterColorPairs": [
+        {
+          "pair": "187,197,203,255 -> 187,198,204,255",
+          "count": 6
+        },
+        {
+          "pair": "238,241,243,255 -> 239,241,243,255",
+          "count": 3
+        }
+      ],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-390x844",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-390x844\\chart-pane.png",
+      "candidateSha256": "2b230fee1746b9ee088b90e43b58fe374d2c7f8e74ff8102bd566f51c5e0ee8d",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-390x844\\chart-pane.png",
+      "baselineSha256": "2b230fee1746b9ee088b90e43b58fe374d2c7f8e74ff8102bd566f51c5e0ee8d",
+      "width": 390,
+      "height": 393,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-390x844",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-390x844\\chart-history-pane.png",
+      "candidateSha256": "debfd97fc323f8b97af5b490cb01128a04de923dfbe8b0c4ec16dbd72d13e6d1",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-390x844\\chart-history-pane.png",
+      "baselineSha256": "debfd97fc323f8b97af5b490cb01128a04de923dfbe8b0c4ec16dbd72d13e6d1",
+      "width": 390,
+      "height": 320,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-768x1024",
+      "name": "chart-top.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-768x1024\\chart-top.png",
+      "candidateSha256": "443cb5543d42d6e7407098d8277a12ea20b99a50502de741b1ed78492518f907",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-768x1024\\chart-top.png",
+      "baselineSha256": "fb60f201adad0864d70e54a148ddedbc9090eac87f68a66e8863f0232e358a59",
+      "width": 768,
+      "height": 1024,
+      "changedPixels": 1369,
+      "changedBounds": {
+        "minX": 253,
+        "minY": 952,
+        "maxX": 517,
+        "maxY": 979
+      },
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-768x1024",
+      "name": "chart-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-768x1024\\chart-pane.png",
+      "candidateSha256": "3f4539463f092f094160dce5edeabb9314671eb6abc77f29f124616cf6c727f1",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-768x1024\\chart-pane.png",
+      "baselineSha256": "3f4539463f092f094160dce5edeabb9314671eb6abc77f29f124616cf6c727f1",
+      "width": 768,
+      "height": 705,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    },
+    {
+      "project": "light-768x1024",
+      "name": "chart-history-pane.png",
+      "candidatePath": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-768x1024\\chart-history-pane.png",
+      "candidateSha256": "5c0244cbbb351d7b984f56df8fd8b78981fbd2fe122b8687a498bcfdd6983ead",
+      "baselinePath": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\chart-baselines\\light-768x1024\\chart-history-pane.png",
+      "baselineSha256": "5c0244cbbb351d7b984f56df8fd8b78981fbd2fe122b8687a498bcfdd6983ead",
+      "width": 768,
+      "height": 624,
+      "changedPixels": 0,
+      "changedBounds": null,
+      "outsideFooterChangedPixels": 0,
+      "outsideFooterBounds": null,
+      "nonFooterMaxChannelDelta": 0,
+      "nonFooterColorPairs": [],
+      "repeatIdentical": true
+    }
+  ],
+  "receipts": [
+    {
+      "project": "dark-1280x800",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1280x800\\chart.json",
+      "sha256": "c24da473017a19a501dfd602b3c52b03d20a9fb5faad4bdb0122a4b37733862d",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1196,
+        "chartHeight": 528
+      }
+    },
+    {
+      "project": "dark-1440x900",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-1440x900\\chart.json",
+      "sha256": "ebe4d626be3a859f5b42a1e0ccb7af059128ddf01451b3d8e73cee8098e4fffe",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1356,
+        "chartHeight": 628
+      }
+    },
+    {
+      "project": "dark-390x844",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-390x844\\chart.json",
+      "sha256": "c547986551cab2ce1709ccecfeca51eb2616988c8d6aaa7d77038525dc965814",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 352,
+        "chartHeight": 320
+      }
+    },
+    {
+      "project": "dark-768x1024",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\dark-768x1024\\chart.json",
+      "sha256": "5281894b7dec3c9f20d96a3eb0f4e2d3a5fb3ee83ddbc2fdf8fc7701d5880c42",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": -7.105427357601002e-15,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 730,
+        "chartHeight": 622
+      }
+    },
+    {
+      "project": "light-1280x800",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1280x800\\chart.json",
+      "sha256": "50ac03537db12952c697d60c25ba3da3b1b9d02b2ad2e37d67e80d36dabd3811",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1196,
+        "chartHeight": 528
+      }
+    },
+    {
+      "project": "light-1440x900",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-1440x900\\chart.json",
+      "sha256": "01714fd02191238ff89883998394fee85947981eb5b4933e326d484c32f5fa81",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 1356,
+        "chartHeight": 628
+      }
+    },
+    {
+      "project": "light-390x844",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-390x844\\chart.json",
+      "sha256": "74bcac4455120eb84ff14ad622447553d6f66f720553aa4447c25df1e18a6d63",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 352,
+        "chartHeight": 320
+      }
+    },
+    {
+      "project": "light-768x1024",
+      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-candidate-r4\\light-768x1024\\chart.json",
+      "sha256": "0842a39f5e26fd3eb6a91a9fd34d11029b6fd04126ac872488c4f265264377c9",
+      "assertions": [
+        {
+          "cursor": 60,
+          "count": 61,
+          "objects": 4,
+          "last": {
+            "timestamp": 1704070800,
+            "open": 1.103,
+            "high": 1.1038,
+            "low": 1.1027,
+            "close": 1.1032,
+            "volume": 100
+          },
+          "range": {
+            "from": -7.105427357601002e-15,
+            "to": 60
+          },
+          "accessibleSummary": "Biểu đồ replay với 61 nến đã mở. Nến cuối: 01:00:00 1/1/24 UTC, mở 1,103, cao 1,1038, thấp 1,1027, đóng 1,1032. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 30,
+            "timestamp": 1704069000,
+            "open": 1.1015,
+            "high": 1.1023,
+            "low": 1.1012,
+            "close": 1.1017,
+            "volume": 100
+          }
+        },
+        {
+          "cursor": 20,
+          "count": 21,
+          "objects": 0,
+          "last": {
+            "timestamp": 1704068400,
+            "open": 1.101,
+            "high": 1.1018,
+            "low": 1.1007,
+            "close": 1.1012,
+            "volume": 100
+          },
+          "range": {
+            "from": 0,
+            "to": 20
+          },
+          "accessibleSummary": "Biểu đồ replay với 21 nến đã mở. Nến cuối: 00:20:00 1/1/24 UTC, mở 1,101, cao 1,1018, thấp 1,1007, đóng 1,1012. Cuộn để zoom, kéo để pan; bấm nến để chọn mốc giá. Dùng điều khiển phía dưới hoặc thanh chọn nến để đọc OHLC ở từng cutoff.",
+          "renderedCrosshairSample": {
+            "index": 10,
+            "timestamp": 1704067800,
+            "open": 1.1005,
+            "high": 1.1013,
+            "low": 1.1002,
+            "close": 1.1007,
+            "volume": 100
+          }
+        }
+      ],
+      "geometry": {
+        "pageOverflow": 0,
+        "contentOverflow": 0,
+        "chartWidth": 730,
+        "chartHeight": 622
+      }
+    }
+  ],
+  "summary": {
+    "candidateImages": 24,
+    "repeatIdentical": 24,
+    "changedTopImages": 8,
+    "unchangedChartFrames": 14,
+    "changedChartFrames": 2,
+    "topImagesWithNonFooterDeltas": 3
+  }
+}

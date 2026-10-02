@@ -1,0 +1,1401 @@
+{
+  "status": "CONFIRMED_CONTRAST_FINDING",
+  "scope": "Focused manual contrast check on visible provider text after stacked layout repair;2themes/1440;additional finding, not full WCAG",
+  "sourceBefore": "476d20e4862abf1bfc69060aa978bf09fb7bc002b25a54e84980c74d1fed7901",
+  "results": [
+    {
+      "theme": "dark",
+      "selector": ".rd-provider-row > div:first-child > strong",
+      "text": "local-catalog",
+      "color": "rgb(214, 221, 226)",
+      "fontSize": "11px",
+      "fontWeight": "700",
+      "chain": [
+        {
+          "tag": "STRONG",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "foreground": [
+        214,
+        221,
+        226,
+        1
+      ],
+      "contrastRatio": 15.026352053482865,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "dark",
+      "selector": ".rd-provider-row > div:first-child > small:nth-child(2)",
+      "text": "Có: read_metadata",
+      "color": "rgb(137, 148, 156)",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SMALL",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "foreground": [
+        137,
+        148,
+        156,
+        1
+      ],
+      "contrastRatio": 6.6584340072913015,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "dark",
+      "selector": ".rd-provider-readiness",
+      "text": "offline_local · entitlement: dataset_metadata_only",
+      "color": "rgb(213, 180, 106)",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SMALL",
+          "className": "rd-provider-readiness",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "foreground": [
+        213,
+        180,
+        106,
+        1
+      ],
+      "contrastRatio": 10.376871941444215,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "dark",
+      "selector": ".rd-provider-state > span",
+      "text": "Chưa đủ điều kiện production",
+      "color": "rgb(213, 164, 90)",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SPAN",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-state is-blocked",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "foreground": [
+        213,
+        164,
+        90,
+        1
+      ],
+      "contrastRatio": 9.120940542183826,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "dark",
+      "selector": ".rd-provider-state > small",
+      "text": "Offline / no network",
+      "color": "rgb(127, 139, 147)",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SMALL",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-state is-blocked",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "foreground": [
+        127,
+        139,
+        147,
+        1
+      ],
+      "contrastRatio": 5.9091542609623104,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "dark",
+      "selector": ".rd-capability",
+      "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+      "color": "rgb(213, 164, 90)",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "DIV",
+          "className": "rd-capability is-blocked",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(3, 3, 3)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(12, 14, 16)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        3,
+        3,
+        3,
+        1
+      ],
+      "foreground": [
+        213,
+        164,
+        90,
+        1
+      ],
+      "contrastRatio": 9.120940542183826,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "light",
+      "selector": ".rd-provider-row > div:first-child > strong",
+      "text": "local-catalog",
+      "color": "rgb(29, 41, 48)",
+      "fontSize": "11px",
+      "fontWeight": "700",
+      "chain": [
+        {
+          "tag": "STRONG",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgb(255, 255, 255)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "foreground": [
+        29,
+        41,
+        48,
+        1
+      ],
+      "contrastRatio": 14.871494718297539,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "light",
+      "selector": ".rd-provider-row > div:first-child > small:nth-child(2)",
+      "text": "Có: read_metadata",
+      "color": "rgb(83, 99, 109)",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SMALL",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgb(255, 255, 255)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "foreground": [
+        83,
+        99,
+        109,
+        1
+      ],
+      "contrastRatio": 6.225244635758334,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "light",
+      "selector": ".rd-provider-readiness",
+      "text": "offline_local · entitlement: dataset_metadata_only",
+      "color": "rgb(213, 180, 106)",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SMALL",
+          "className": "rd-provider-readiness",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgb(255, 255, 255)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "foreground": [
+        213,
+        180,
+        106,
+        1
+      ],
+      "contrastRatio": 1.9875350170707042,
+      "threshold": 4.5,
+      "contrastPass": false
+    },
+    {
+      "theme": "light",
+      "selector": ".rd-provider-state > span",
+      "text": "Chưa đủ điều kiện production",
+      "color": "rgb(154, 99, 15)",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SPAN",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-state is-blocked",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgb(255, 255, 255)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "foreground": [
+        154,
+        99,
+        15,
+        1
+      ],
+      "contrastRatio": 5.041243463797098,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "light",
+      "selector": ".rd-provider-state > small",
+      "text": "Offline / no network",
+      "color": "rgb(83, 99, 109)",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "SMALL",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-state is-blocked",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgb(255, 255, 255)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "foreground": [
+        83,
+        99,
+        109,
+        1
+      ],
+      "contrastRatio": 6.225244635758334,
+      "threshold": 4.5,
+      "contrastPass": true
+    },
+    {
+      "theme": "light",
+      "selector": ".rd-capability",
+      "text": "Khóa: read_history, import, news, fresh_quote, holdout_content",
+      "color": "rgb(154, 99, 15)",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "chain": [
+        {
+          "tag": "DIV",
+          "className": "rd-capability is-blocked",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-row",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-provider-list",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "ASIDE",
+          "className": "rd-panel",
+          "background": "rgb(255, 255, 255)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "rd-main-grid",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "MAIN",
+          "className": "rd-shell",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-content",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "SECTION",
+          "className": "fx-main",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "fx-app fx-shell-story    ",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "DIV",
+          "className": "",
+          "background": "rgba(0, 0, 0, 0)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "BODY",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        },
+        {
+          "tag": "HTML",
+          "className": "",
+          "background": "rgb(245, 247, 248)",
+          "image": "none",
+          "opacity": "1"
+        }
+      ],
+      "inViewport": true,
+      "background": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "foreground": [
+        154,
+        99,
+        15,
+        1
+      ],
+      "contrastRatio": 5.041243463797098,
+      "threshold": 4.5,
+      "contrastPass": true
+    }
+  ],
+  "pageErrors": [],
+  "blockedRequests": [],
+  "failures": [],
+  "sourceAfter": "476d20e4862abf1bfc69060aa978bf09fb7bc002b25a54e84980c74d1fed7901"
+}

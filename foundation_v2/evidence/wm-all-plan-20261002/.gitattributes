@@ -1,0 +1,6 @@
+# These reviewed receipts pin raw byte hashes, including executed scripts.
+a11y-review/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+chart-review/r4/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+learn-ready/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+ui-repair/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+web-*-ui-repair-final.txt -text whitespace=trailing-space,space-before-tab,cr-at-eol

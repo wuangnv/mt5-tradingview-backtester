@@ -247,7 +247,7 @@ export default function LearnWorkspace({ workspace, query }) {
         </div>
       </header>
 
-      <div className="learn-context-strip" data-testid="learn-context-strip" aria-label="Trạng thái Learn">
+      <div className="learn-context-strip" data-testid="learn-context-strip" role="group" aria-label="Trạng thái Learn">
         <span><strong>Local course</strong> · đọc từ workspace</span>
         <span>Progress owner <code>{safety?.progress_owner || 'education/progress.json'}</code></span>
         <span>OAuth <strong className="is-warn">PREP_ONLY</strong></span>

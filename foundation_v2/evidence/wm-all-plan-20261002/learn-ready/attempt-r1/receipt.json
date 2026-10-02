@@ -1,0 +1,139 @@
+{
+  "schema": "learn-real-ready-functional-and-ui-failure-v1",
+  "recorded_date_local": "2026-10-02",
+  "status": "FUNCTIONAL_PASS_UI_MATRIX_FAIL",
+  "authority": {
+    "plan": "planning/mt5-tradingview-backtester/PRODUCT-COMPLETION-PLAN.md",
+    "scope": "U3c/Y11 real read-only Learn ready binding and browser QA; not whole Y11/LMS or product acceptance",
+    "ledger_promotion": "not performed"
+  },
+  "functional": {
+    "status": "PASS_SCOPED_ISOLATED_BINDING",
+    "api_checks": 10,
+    "course": {
+      "version": "1.1",
+      "modules": 8,
+      "lessons": 24,
+      "currentLesson": "M08-L03",
+      "glossaryCount": 22,
+      "safety": {
+        "read_only": true,
+        "progress_owner": "education/progress.json",
+        "answer_keys_exposed": false,
+        "auto_completion_enabled": false
+      },
+      "pendingStatus": "br01_v0_authored_pending_learner_application_and_execution_spec_checks"
+    },
+    "browser_checks": [
+      "real8modules24lessons/currentM08-L03/readOnly/progressOwner",
+      "realCourse/currentModuleReaderExactContent/glossarySearchAndEmpty/focusableReaderAndGlossary/answerKeysAbsent",
+      "realReplaySessionGet200/replayLearnReplayContextSessionAndCursor/reloadProgressAndContext",
+      "realTenantB404Unavailable/notEmpty/noReaderLeak/realUnauthorized403Denied"
+    ],
+    "real_forwarding": "Only /api/v2/learn/** GET requests are forwarded to real isolated API8030; no fixture payloads. Other local GETs use existing5180/8020.",
+    "progress_storage": "Learn reads existing education/progress.json; PostgreSQL was scope-verified and app schema initialized on QA DB, not made a competing progress owner"
+  },
+  "ui": {
+    "status": "FAIL",
+    "cases": 6,
+    "failed_cases": 6,
+    "source_before": "476d20e4862abf1bfc69060aa978bf09fb7bc002b25a54e84980c74d1fed7901",
+    "source_after": "476d20e4862abf1bfc69060aa978bf09fb7bc002b25a54e84980c74d1fed7901",
+    "findings": [
+      {
+        "id": "aria-prohibited-attr",
+        "selector": ".learn-context-strip",
+        "source": "web/src/LearnWorkspace.jsx:250",
+        "evidence": "All six cases have unresolved serious ARIA incomplete because aria-label is on a roleless div"
+      },
+      {
+        "id": "content-overflow",
+        "viewport": 768,
+        "observed_px": 154,
+        "themes": [
+          "dark",
+          "light"
+        ],
+        "source_inference": "learn-progress uses minmax(220px,1fr)+minmax(240px,1.2fr)+auto+48px gap until viewport760, while actual remaining content is narrowed by rail/padding; exact DOM overflow-node decomposition was not retained in first attempt"
+      },
+      {
+        "id": "narrow-reader",
+        "viewport": 768,
+        "observed_reader_width_px": 192,
+        "source_inference": "learn-workspace remains 280px+minmax(0,1fr) at viewport768; reader min-width0 prevents proving it the overflow origin; screenshot confirms unusably narrow reading area"
+      },
+      {
+        "id": "color-contrast",
+        "themes": [
+          "light"
+        ],
+        "selectors": [
+          ".learn-module li span",
+          ".learn-module li strong",
+          ".fx-language-toggle",
+          ".is-active > .fx-rail-section-label"
+        ],
+        "ratios": [
+          2.89,
+          2.12,
+          2.7,
+          2.83
+        ],
+        "required": 4.5,
+        "note": "Axe measured visible nodes; light1440/768/390 violation-node counts34/32/14"
+      }
+    ]
+  },
+  "integrity": {
+    "education_before": {
+      "course.json": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+      "progress.json": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008"
+    },
+    "education_after": {
+      "course.json": "f209be49b62a00af677293ebfccd462f726a12c8f0512100b9584c376e66ebce",
+      "progress.json": "023b006ea85c524f273d8c57a609e432329e1705fc05ea163c00a38540625008"
+    },
+    "course_progress_unchanged": true,
+    "ui_source_unchanged_during_attempt": true,
+    "learn_requests_get_only": true,
+    "mutation_requests": [],
+    "external_requests": [],
+    "page_errors": []
+  },
+  "service": {
+    "named_disposable_database": "trading_workspace_v2_ui_20261001",
+    "database_actual_loopback": true,
+    "port": 8030,
+    "pid": 19472,
+    "stopped_in_finally": true,
+    "existing_api8020_vite5180_restarted": false,
+    "persistent_configuration_changed": false,
+    "inherited_dsn_printed": false
+  },
+  "initial_preflight": "Inherited DSN dbname mismatch correctly stopped before DB. Coordinator then explicitly authorized process-local replacement of dbname only to the named QA DB. SELECT current_database/host(inet_server_addr)/port verified actual scope before create_app.",
+  "commands": [
+    "PowerShell: & ./foundation_v2/evidence/wm-all-plan-20261002/learn-ready/run_learn_ready.ps1 (initial runner used attempt-r1)",
+    "Child: python.exe -B serve_learn_qa.py (hidden temporary service)",
+    "Child: node run_learn_ready.mjs attempt-r1",
+    "Finally: Stop-Process -Id 19472; owned API8030 listener verified gone"
+  ],
+  "effects": "Created idempotent app schema on named existing disposable QA DB and ignored temporary artifact root; read existing course/progress/course-module/glossary; only Learn GET forwarded to API8030; real Replay GET remains existing8020. Wrote evidence/screenshots only. No DB truncation, provider, broker, holdout, learner updates or frontend edits.",
+  "artifacts": {
+    "attempt-r1/report.json": "d940cd0946caf19445465cfd86c4e39d8409186c19d168a75131dad961f01020",
+    "lifecycle-r1.json": "f2cc58c6cd56cffea47128c11329747e1d4f75f7a94cb28f7a4f748a33093dc6",
+    "service-r1.json": "64c717af7ba6df93a0c0f4bc8fa67fb23f82eb36e64ec24abe9466b1e3373504",
+    "preflight-r1.json": "614d2cf71579c3808c2287216e42927864098f8a007ea7d30fa00ea3d1349041",
+    "attempt-r1/learn-ready-dark-1440.png": "2c710173d8672d88cc06ae3dd4e1a6b10c96738a6567e028c61ea2e52bcae54e",
+    "attempt-r1/learn-ready-dark-768.png": "126490af9afce07e8899fee04cf556ea08330b3ca4aecf7c661bff1c2d5953e2",
+    "attempt-r1/learn-ready-dark-390.png": "90976fe7e0650f4a092152e352f0daca35040277f419c0ace729724a3cfba723",
+    "attempt-r1/learn-ready-light-1440.png": "6c58ecbfacc04357f94ef39b069eaa65222e330067021094dc6353d4e6219586",
+    "attempt-r1/learn-ready-light-768.png": "036526fa4f8bf39d751cd71f6792dc68ec0cae17c73e5f443dd53d7fd8bad310",
+    "attempt-r1/learn-ready-light-390.png": "123265a9dc1ec6f17c90ce116f8b5a44b14245a91de56832841234e4fc311b42"
+  },
+  "review": "Root owns focused frontend fixes. Initial failure artifacts retained. Fresh rerun must use new attempt folder, new source fingerprint, and source/course/progress before-after guards.",
+  "remaining": [
+    "Learn ready QA service binding does not configure existing API8020",
+    "Full contextual lesson/playbook links and whole Y11 acceptance remain separate",
+    "Axe/manual-WCAG complete acceptance remains open until actual fixes/rerun/manual evidence"
+  ]
+}

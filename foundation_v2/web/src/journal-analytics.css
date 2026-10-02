@@ -148,6 +148,10 @@
   background: var(--wm-canvas);
   color: var(--wm-content);
 }
+.ja-page :where(.ja-field input, .ja-field textarea)::placeholder {
+  color: var(--wm-content-muted);
+  opacity: 1;
+}
 .ja-page .ja-button { border-radius: var(--wm-radius-control); }
 .ja-page .ja-button-primary { border-color: var(--wm-primary); background: var(--wm-primary); }
 .ja-page .ja-message-error,

@@ -1211,8 +1211,8 @@
 }
 
 /*
- * Loaded replay fallback while SHELL_SKELETON_MODE keeps the dedicated
- * full-bleed chart branch disabled. The normal mobile shell otherwise keeps
+ * Legacy fallback for a chart route outside the dedicated workspace. The
+ * current shell gives chartRoute and chartWorkspace the same value. The normal mobile shell otherwise keeps
  * its expanded 220px rail, leaving only 114px for the chart at 390px. Keep
  * the rail in the document for navigation and accessibility, but make it
  * icon-only for this route so the chart receives a usable canvas. This is a
