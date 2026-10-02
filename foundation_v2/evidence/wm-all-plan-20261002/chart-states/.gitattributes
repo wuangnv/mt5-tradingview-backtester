@@ -1,0 +1,3 @@
+*.json -text
+*.png binary
+*.md -text

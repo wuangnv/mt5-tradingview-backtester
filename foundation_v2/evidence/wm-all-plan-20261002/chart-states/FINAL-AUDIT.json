@@ -1,0 +1,39 @@
+{
+  "schema": "chart-states-final-audit-v1",
+  "finalized_at_utc": "2026-10-02T17:00:03Z",
+  "runtime": {
+    "origin": "http://127.0.0.1:5186",
+    "owned_vite_pid": 18572,
+    "tool_session": 34774,
+    "exact_command_verified_before_stop": true,
+    "fresh_listener_ports_absent": [
+      5180,
+      5186,
+      8020,
+      8030
+    ],
+    "api_database_reseed": false
+  },
+  "tests_and_fixture_raw_sha256": {
+    "foundation_v2/web/tests/visual/wmreplay.chart-states.spec.mjs": "8326c69e9071b9998d04cd231d1a7b4e3be46c4f8dde92bc99b73534dde16468",
+    "foundation_v2/web/tests/visual/playwright.chart-states.config.mjs": "1ad64d1ffc7a7b742f0bea55745f449195e9b424609a361cd88a6b98b0736313",
+    "foundation_v2/web/tests/visual/chart-fixture.json": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591"
+  },
+  "root_viewed_final_byte_equal_images": [
+    "dark-1440x900/candles.png",
+    "dark-1440x900/bars.png",
+    "dark-1440x900/line.png",
+    "dark-1440x900/area.png",
+    "dark-1440x900/baseline.png",
+    "light-390x844/candles-volume-sma.png",
+    "light-390x844/baseline.png"
+  ],
+  "ledger": {
+    "last_event_seq": 389,
+    "task_counts": {
+      "accepted": 37
+    },
+    "state_revision": 389,
+    "mutation": false
+  }
+}

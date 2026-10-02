@@ -1,0 +1,206 @@
+{
+  "status": "SCOPED_BEHAVIOR_PASS_VISUAL_REVIEW_PENDING",
+  "scope": "SYNTHETIC_VARIANT_RENDERER_ONLY: alternating up/down OHLC, 61/21 row prefix; no backend, broker, fixture overwrite or golden promotion",
+  "sourceHash": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
+  "canonicalFixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
+  "variantSha256": "5512d642aa6ad748221debd86115bf80dfd43f192691ea40f67ab1ac45e4fc5e",
+  "project": "light-1280x800",
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "states": [
+    {
+      "type": "candles",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0519595454545367,
+        "to": 57.506505
+      },
+      "panned": {
+        "from": -3.904352693543217,
+        "to": 50.55019276100224
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 13041,
+        "red": 11383,
+        "gold": 0
+      },
+      "captureSha256": "7489c59029aed16f28d9e1c75603f6a9c03698caea781448fd577b48b6428156"
+    },
+    {
+      "type": "bars",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0519595454545367,
+        "to": 57.506505
+      },
+      "panned": {
+        "from": -3.904352693543217,
+        "to": 50.55019276100224
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 3220,
+        "red": 1839,
+        "gold": 0
+      },
+      "captureSha256": "56da14d7f32420f6cfedfcba2299e12c61b773982fd357b31d9e1d7d0df13e91"
+    },
+    {
+      "type": "line",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0519595454545367,
+        "to": 57.506505
+      },
+      "panned": {
+        "from": -3.904352693543217,
+        "to": 50.55019276100224
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 0,
+        "red": 0,
+        "gold": 5179
+      },
+      "captureSha256": "6573d4bff80683cdecffe0f8626a3e607b1896894f039b20ed3a188821ff6dc3"
+    },
+    {
+      "type": "area",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0519595454545367,
+        "to": 57.506505
+      },
+      "panned": {
+        "from": -3.904352693543217,
+        "to": 50.55019276100224
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 5179,
+        "red": 0,
+        "gold": 0
+      },
+      "captureSha256": "488cb19084c59d0ace141e310c43567091a823bf6e41f2668407d067a372c701"
+    },
+    {
+      "type": "baseline",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0519595454545367,
+        "to": 57.506505
+      },
+      "panned": {
+        "from": -3.904352693543217,
+        "to": 50.55019276100224
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 3338,
+        "red": 1848,
+        "gold": 0
+      },
+      "captureSha256": "47c2316ed748308097c8f75866b1b739e8c0929c34f5269fab3042fea12835f1"
+    }
+  ],
+  "overlays": {
+    "sma": 918,
+    "upVolume": 37726,
+    "downVolume": 36448
+  },
+  "preservesViewportOnTypeSwitch": true,
+  "observations": [
+    {
+      "cursor": 60,
+      "canonicalCursor": 60,
+      "rows": 61,
+      "cutoff": 1704070800
+    },
+    {
+      "cursor": 20,
+      "canonicalCursor": 60,
+      "rows": 21,
+      "cutoff": 1704068400
+    },
+    {
+      "cursor": 20,
+      "canonicalCursor": 60,
+      "rows": 21,
+      "cutoff": 1704068400
+    }
+  ],
+  "geometry": {
+    "pageOverflow": 0,
+    "contentOverflow": 0
+  },
+  "errors": [],
+  "unexpected": [],
+  "excluded": [
+    "touch/pinch",
+    "keyboard-only chart pan",
+    "backend persistence",
+    "performance",
+    "independent visual approval",
+    "golden promotion",
+    "full W8"
+  ]
+}

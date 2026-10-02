@@ -1,0 +1,944 @@
+{
+  "schema": "wm-chart-states-evidence-v1",
+  "scope": "synthetic renderer only, root visual review; no independent approval/golden promotion",
+  "final_cases": 8,
+  "chart_type_cases": 40,
+  "wheel_pan_cases": 40,
+  "captures": 48,
+  "source_hashes": [
+    "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1"
+  ],
+  "files": [
+    {
+      "file": "r1-matrix/report.json",
+      "sha256": "02ff920949825b61272f46cbe6aca82530f97e4aa7859e76ea9e5b52e0dcc154",
+      "bytes": 65723
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/area.png",
+      "sha256": "df1ad89287b4fc72a6f473b4088ef7e5d73038a0c74aacc979a5caf7c7160b1c",
+      "bytes": 74913
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/bars.png",
+      "sha256": "aaa65a5f1f9306070721928777bc489a935c8bf38ec788e905a774e4035da233",
+      "bytes": 23201
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/baseline.png",
+      "sha256": "74d8fd64407b2aa273c9ea3f448eee0d22e5ca1304b326497fb7071d8b418e18",
+      "bytes": 66530
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/candles-volume-sma.png",
+      "sha256": "82a45251d4a96b697153974bfb767963e51db85f6b8ef2659a35a59d65de406e",
+      "bytes": 30355
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/candles.png",
+      "sha256": "ef975d532aee6cd2300d53259e70d874a3ada86feb3f3d99b78f24f278656d26",
+      "bytes": 22965
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/line.png",
+      "sha256": "4b5c1a8cae80a385b375312a76e3a5e30e634aee1d793112cc7de16e57005d4e",
+      "bytes": 56925
+    },
+    {
+      "file": "r1-matrix/dark-1280x800/receipt.json",
+      "sha256": "34ab2b7f50e6ee89dea3ec43eeed4c3642d7e9f732c20c9fa5208f3878fbeeb4",
+      "bytes": 4560
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/area.png",
+      "sha256": "ef9d05a97e22d04818a85ffe770cd84bab2010544c12d549b6a09a5efaca08b4",
+      "bytes": 85142
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/bars.png",
+      "sha256": "184b01bc94b969d1737dbc8934a90b9408aad4318dc02a65efd0124c569c8a82",
+      "bytes": 24388
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/baseline.png",
+      "sha256": "7df7891d4ea3ec979f0fc2380014f666c23b94729c7f8cf73de732e82a71b9e8",
+      "bytes": 75869
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/candles-volume-sma.png",
+      "sha256": "0aef6c27d0b97a9ab4a1dabaae17bc297f3d86f7106b0e35729099ed010d3e22",
+      "bytes": 32951
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/candles.png",
+      "sha256": "b4806cf76b9e66f3eec224abc421ef5af386f5163b7c70a4e16d9f5fbdceaef0",
+      "bytes": 24104
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/line.png",
+      "sha256": "c900088434ad344b169cf61d8a637bfa96c50b49d032cd81a3af16206359b225",
+      "bytes": 65229
+    },
+    {
+      "file": "r1-matrix/dark-1440x900/receipt.json",
+      "sha256": "4930b839109394f110d969993fcc1c75a2311d36767e593fd55a998b5fefad47",
+      "bytes": 4560
+    },
+    {
+      "file": "r1-matrix/dark-390x844/area.png",
+      "sha256": "a4da20dd8583c6a9704b0a44b454a17d85b71601a14267d39ff7e08335dbcc16",
+      "bytes": 29031
+    },
+    {
+      "file": "r1-matrix/dark-390x844/bars.png",
+      "sha256": "526db2c1db43696f010f3313a87cc8ee69a4b1fe1100401243eb7b4a668dc76b",
+      "bytes": 10555
+    },
+    {
+      "file": "r1-matrix/dark-390x844/baseline.png",
+      "sha256": "0b70bb8c7da65db97fb5c8409f33e0ec2e8c7e5166ce8a48f95e3a13ce20a14b",
+      "bytes": 26692
+    },
+    {
+      "file": "r1-matrix/dark-390x844/candles-volume-sma.png",
+      "sha256": "dee4ce396f0a2abf89c804f7852c92630292ebb7431a676898ba8ed7ff10a3cd",
+      "bytes": 12949
+    },
+    {
+      "file": "r1-matrix/dark-390x844/candles.png",
+      "sha256": "05de21e4ce1cc1afb801d2121e983a1657193820e5a911454f2ace3745b8ad0c",
+      "bytes": 10157
+    },
+    {
+      "file": "r1-matrix/dark-390x844/line.png",
+      "sha256": "13822e10d9e7e053a26fd0f6309ee083dce37a9bbbc03b16f9037c39a10320cb",
+      "bytes": 22608
+    },
+    {
+      "file": "r1-matrix/dark-390x844/receipt.json",
+      "sha256": "bb275dc88e31f17159066e27492547878f7598ddca020777bbe14484d2cfb7ec",
+      "bytes": 4600
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/area.png",
+      "sha256": "341bfff132b5d4190ca4a4b989070f277ebf6c6b599d0e21d0784b2c3146cb90",
+      "bytes": 63529
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/bars.png",
+      "sha256": "7b330a60dcaa4db5d030dfd6b317f2954142fcc0c198a75469d60a05db3b99e8",
+      "bytes": 19470
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/baseline.png",
+      "sha256": "661f10a844795114950ab93ee7f5e8eae873fcff2093c59d7ab247212caa3b63",
+      "bytes": 57367
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/candles-volume-sma.png",
+      "sha256": "9cb0842990372f61da07d476f52127b3fbd0c17176bf30013410d1e08adaa860",
+      "bytes": 24696
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/candles.png",
+      "sha256": "ac8b7a1351437a8e052a5c77a03283752037314ee414fadca9d2f77619eadd8b",
+      "bytes": 19134
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/line.png",
+      "sha256": "078110e11b7cbfdf6a0d42780d923917247b79b09d0ce1b2fce0ba92d9645896",
+      "bytes": 47204
+    },
+    {
+      "file": "r1-matrix/dark-768x1024/receipt.json",
+      "sha256": "0c3abd10c38639d66e55110ebaa766e2c0f9ea11df2340633cfeea48c6b03d50",
+      "bytes": 4668
+    },
+    {
+      "file": "r1-matrix/light-1280x800/area.png",
+      "sha256": "488cb19084c59d0ace141e310c43567091a823bf6e41f2668407d067a372c701",
+      "bytes": 74937
+    },
+    {
+      "file": "r1-matrix/light-1280x800/bars.png",
+      "sha256": "56da14d7f32420f6cfedfcba2299e12c61b773982fd357b31d9e1d7d0df13e91",
+      "bytes": 23236
+    },
+    {
+      "file": "r1-matrix/light-1280x800/baseline.png",
+      "sha256": "47c2316ed748308097c8f75866b1b739e8c0929c34f5269fab3042fea12835f1",
+      "bytes": 66557
+    },
+    {
+      "file": "r1-matrix/light-1280x800/candles-volume-sma.png",
+      "sha256": "fa2d954862eef4ccff92cf88c029ba38576537d1e3768f017b09b6db317378e6",
+      "bytes": 30385
+    },
+    {
+      "file": "r1-matrix/light-1280x800/candles.png",
+      "sha256": "7489c59029aed16f28d9e1c75603f6a9c03698caea781448fd577b48b6428156",
+      "bytes": 23000
+    },
+    {
+      "file": "r1-matrix/light-1280x800/line.png",
+      "sha256": "6573d4bff80683cdecffe0f8626a3e607b1896894f039b20ed3a188821ff6dc3",
+      "bytes": 56951
+    },
+    {
+      "file": "r1-matrix/light-1280x800/receipt.json",
+      "sha256": "a015aa545713d01179a87665130d893652872649baa1eafce31210ab0a7fd493",
+      "bytes": 4561
+    },
+    {
+      "file": "r1-matrix/light-1440x900/area.png",
+      "sha256": "6f1b2562cef9126dd12e427910a4a645ca9c005000591e4aa642384475f7fadf",
+      "bytes": 85169
+    },
+    {
+      "file": "r1-matrix/light-1440x900/bars.png",
+      "sha256": "60daf6b82bd1f746dc01a44e13e30290e85baec96d992b92acf1d2ff6fe9fc47",
+      "bytes": 24423
+    },
+    {
+      "file": "r1-matrix/light-1440x900/baseline.png",
+      "sha256": "b65abf29ecb0c2645ca25bd18e6046d653ee6c30ff49b24179fae1050c13ed05",
+      "bytes": 75897
+    },
+    {
+      "file": "r1-matrix/light-1440x900/candles-volume-sma.png",
+      "sha256": "6a9850b2f4ea9fe50367d00c19491c694f7cd65a796ff307d9351ec74908810d",
+      "bytes": 32980
+    },
+    {
+      "file": "r1-matrix/light-1440x900/candles.png",
+      "sha256": "ebb80c3fef9d4db115501ab2169d385a0bc77c2a7b2384ba4d4a7f4c67b76a60",
+      "bytes": 24141
+    },
+    {
+      "file": "r1-matrix/light-1440x900/line.png",
+      "sha256": "abea9037ac2df586ed1a26cc847e54610774a651b65061f4e57c018903fb7ea8",
+      "bytes": 65258
+    },
+    {
+      "file": "r1-matrix/light-1440x900/receipt.json",
+      "sha256": "ace3e4ad8bb9687cd01484cbdd6d8d6d5acf2c2af769f8d0a74c99acd174bc67",
+      "bytes": 4561
+    },
+    {
+      "file": "r1-matrix/light-390x844/area.png",
+      "sha256": "ccf14533f9ca2151c22d60f555eca1dc30f1aa61593282cf90c7ca522112df0c",
+      "bytes": 29068
+    },
+    {
+      "file": "r1-matrix/light-390x844/bars.png",
+      "sha256": "2e17d9af0c368b3b2942ce5c5b3a602cc108f109295bfd3762a20ab504fe5f89",
+      "bytes": 10607
+    },
+    {
+      "file": "r1-matrix/light-390x844/baseline.png",
+      "sha256": "a90b9c38abaddf0a7f0d0e88858bb2eca18793c029a5b77589988d487a30c9d4",
+      "bytes": 26724
+    },
+    {
+      "file": "r1-matrix/light-390x844/candles-volume-sma.png",
+      "sha256": "c86c399ecfca7d41b7ee83c3f97d17f49aff4ed771a5522678977c3fe159a0da",
+      "bytes": 13001
+    },
+    {
+      "file": "r1-matrix/light-390x844/candles.png",
+      "sha256": "ab5fa926ef36616b59c5a6708be7ba69156d126cadd42a4afc79cff99bd91b3a",
+      "bytes": 10210
+    },
+    {
+      "file": "r1-matrix/light-390x844/line.png",
+      "sha256": "9260ad9586aa26f56ad4b76e2c0910f7c1532cd43b1c45cb3a8132dc205c5459",
+      "bytes": 22640
+    },
+    {
+      "file": "r1-matrix/light-390x844/receipt.json",
+      "sha256": "7d258a4cab83d36f8c1cddad6780663bceae82ff5a2d48de2e5f9d928661bea6",
+      "bytes": 4601
+    },
+    {
+      "file": "r1-matrix/light-768x1024/area.png",
+      "sha256": "fe97fc453618ba8d880e4766eaac843cea44d8a559fd9ec472fee807c2265356",
+      "bytes": 63558
+    },
+    {
+      "file": "r1-matrix/light-768x1024/bars.png",
+      "sha256": "784f3741f910a90ab43b82b9a36ca41aa8980a473896af483a59c112ba81bdbd",
+      "bytes": 19504
+    },
+    {
+      "file": "r1-matrix/light-768x1024/baseline.png",
+      "sha256": "62bb0bbde4a800b48cf96822e5487e9c5443c364bdc1301990637187b1ac00c1",
+      "bytes": 57393
+    },
+    {
+      "file": "r1-matrix/light-768x1024/candles-volume-sma.png",
+      "sha256": "3c0a0b9164aeeda91557770ebab0cad9c001d2081b0d5304157f4420ea5134f4",
+      "bytes": 24738
+    },
+    {
+      "file": "r1-matrix/light-768x1024/candles.png",
+      "sha256": "53c0b8acaa720eaa889a6d8ae7260d0d76adc7d682fcee32543d9d261afd1217",
+      "bytes": 19168
+    },
+    {
+      "file": "r1-matrix/light-768x1024/line.png",
+      "sha256": "c9c3a086cf9509b5392f7a62053e8b57778c5cb7787142916c7f3f544aa7672a",
+      "bytes": 47229
+    },
+    {
+      "file": "r1-matrix/light-768x1024/receipt.json",
+      "sha256": "030f7042fca4590cad7b339df5b03c09e2f6f54edae9a58bd7ca561592ac76d8",
+      "bytes": 4669
+    },
+    {
+      "file": "r2-matrix/report.json",
+      "sha256": "c379535621606995572e308ce96f02437feed8f8d578469f6ecc73b0106869b3",
+      "bytes": 48181
+    },
+    {
+      "file": "r2-matrix/dark-1280x800/area.png",
+      "sha256": "df1ad89287b4fc72a6f473b4088ef7e5d73038a0c74aacc979a5caf7c7160b1c",
+      "bytes": 74913
+    },
+    {
+      "file": "r2-matrix/dark-1280x800/bars.png",
+      "sha256": "aaa65a5f1f9306070721928777bc489a935c8bf38ec788e905a774e4035da233",
+      "bytes": 23201
+    },
+    {
+      "file": "r2-matrix/dark-1280x800/baseline.png",
+      "sha256": "74d8fd64407b2aa273c9ea3f448eee0d22e5ca1304b326497fb7071d8b418e18",
+      "bytes": 66530
+    },
+    {
+      "file": "r2-matrix/dark-1280x800/candles.png",
+      "sha256": "ef975d532aee6cd2300d53259e70d874a3ada86feb3f3d99b78f24f278656d26",
+      "bytes": 22965
+    },
+    {
+      "file": "r2-matrix/dark-1280x800/line.png",
+      "sha256": "4b5c1a8cae80a385b375312a76e3a5e30e634aee1d793112cc7de16e57005d4e",
+      "bytes": 56925
+    },
+    {
+      "file": "r2-matrix/dark-1440x900/area.png",
+      "sha256": "ef9d05a97e22d04818a85ffe770cd84bab2010544c12d549b6a09a5efaca08b4",
+      "bytes": 85142
+    },
+    {
+      "file": "r2-matrix/dark-1440x900/bars.png",
+      "sha256": "184b01bc94b969d1737dbc8934a90b9408aad4318dc02a65efd0124c569c8a82",
+      "bytes": 24388
+    },
+    {
+      "file": "r2-matrix/dark-1440x900/baseline.png",
+      "sha256": "7df7891d4ea3ec979f0fc2380014f666c23b94729c7f8cf73de732e82a71b9e8",
+      "bytes": 75869
+    },
+    {
+      "file": "r2-matrix/dark-1440x900/candles.png",
+      "sha256": "b4806cf76b9e66f3eec224abc421ef5af386f5163b7c70a4e16d9f5fbdceaef0",
+      "bytes": 24104
+    },
+    {
+      "file": "r2-matrix/dark-1440x900/line.png",
+      "sha256": "c900088434ad344b169cf61d8a637bfa96c50b49d032cd81a3af16206359b225",
+      "bytes": 65229
+    },
+    {
+      "file": "r2-matrix/dark-390x844/area.png",
+      "sha256": "a4da20dd8583c6a9704b0a44b454a17d85b71601a14267d39ff7e08335dbcc16",
+      "bytes": 29031
+    },
+    {
+      "file": "r2-matrix/dark-390x844/bars.png",
+      "sha256": "526db2c1db43696f010f3313a87cc8ee69a4b1fe1100401243eb7b4a668dc76b",
+      "bytes": 10555
+    },
+    {
+      "file": "r2-matrix/dark-390x844/baseline.png",
+      "sha256": "0b70bb8c7da65db97fb5c8409f33e0ec2e8c7e5166ce8a48f95e3a13ce20a14b",
+      "bytes": 26692
+    },
+    {
+      "file": "r2-matrix/dark-390x844/candles.png",
+      "sha256": "05de21e4ce1cc1afb801d2121e983a1657193820e5a911454f2ace3745b8ad0c",
+      "bytes": 10157
+    },
+    {
+      "file": "r2-matrix/dark-390x844/line.png",
+      "sha256": "13822e10d9e7e053a26fd0f6309ee083dce37a9bbbc03b16f9037c39a10320cb",
+      "bytes": 22608
+    },
+    {
+      "file": "r2-matrix/dark-768x1024/area.png",
+      "sha256": "341bfff132b5d4190ca4a4b989070f277ebf6c6b599d0e21d0784b2c3146cb90",
+      "bytes": 63529
+    },
+    {
+      "file": "r2-matrix/dark-768x1024/bars.png",
+      "sha256": "7b330a60dcaa4db5d030dfd6b317f2954142fcc0c198a75469d60a05db3b99e8",
+      "bytes": 19470
+    },
+    {
+      "file": "r2-matrix/dark-768x1024/baseline.png",
+      "sha256": "661f10a844795114950ab93ee7f5e8eae873fcff2093c59d7ab247212caa3b63",
+      "bytes": 57367
+    },
+    {
+      "file": "r2-matrix/dark-768x1024/candles.png",
+      "sha256": "ac8b7a1351437a8e052a5c77a03283752037314ee414fadca9d2f77619eadd8b",
+      "bytes": 19134
+    },
+    {
+      "file": "r2-matrix/dark-768x1024/line.png",
+      "sha256": "078110e11b7cbfdf6a0d42780d923917247b79b09d0ce1b2fce0ba92d9645896",
+      "bytes": 47204
+    },
+    {
+      "file": "r2-matrix/light-1280x800/area.png",
+      "sha256": "488cb19084c59d0ace141e310c43567091a823bf6e41f2668407d067a372c701",
+      "bytes": 74937
+    },
+    {
+      "file": "r2-matrix/light-1280x800/bars.png",
+      "sha256": "56da14d7f32420f6cfedfcba2299e12c61b773982fd357b31d9e1d7d0df13e91",
+      "bytes": 23236
+    },
+    {
+      "file": "r2-matrix/light-1280x800/baseline.png",
+      "sha256": "47c2316ed748308097c8f75866b1b739e8c0929c34f5269fab3042fea12835f1",
+      "bytes": 66557
+    },
+    {
+      "file": "r2-matrix/light-1280x800/candles.png",
+      "sha256": "7489c59029aed16f28d9e1c75603f6a9c03698caea781448fd577b48b6428156",
+      "bytes": 23000
+    },
+    {
+      "file": "r2-matrix/light-1280x800/line.png",
+      "sha256": "6573d4bff80683cdecffe0f8626a3e607b1896894f039b20ed3a188821ff6dc3",
+      "bytes": 56951
+    },
+    {
+      "file": "r2-matrix/light-1440x900/area.png",
+      "sha256": "6f1b2562cef9126dd12e427910a4a645ca9c005000591e4aa642384475f7fadf",
+      "bytes": 85169
+    },
+    {
+      "file": "r2-matrix/light-1440x900/bars.png",
+      "sha256": "60daf6b82bd1f746dc01a44e13e30290e85baec96d992b92acf1d2ff6fe9fc47",
+      "bytes": 24423
+    },
+    {
+      "file": "r2-matrix/light-1440x900/baseline.png",
+      "sha256": "b65abf29ecb0c2645ca25bd18e6046d653ee6c30ff49b24179fae1050c13ed05",
+      "bytes": 75897
+    },
+    {
+      "file": "r2-matrix/light-1440x900/candles.png",
+      "sha256": "ebb80c3fef9d4db115501ab2169d385a0bc77c2a7b2384ba4d4a7f4c67b76a60",
+      "bytes": 24141
+    },
+    {
+      "file": "r2-matrix/light-1440x900/line.png",
+      "sha256": "abea9037ac2df586ed1a26cc847e54610774a651b65061f4e57c018903fb7ea8",
+      "bytes": 65258
+    },
+    {
+      "file": "r2-matrix/light-390x844/area.png",
+      "sha256": "ccf14533f9ca2151c22d60f555eca1dc30f1aa61593282cf90c7ca522112df0c",
+      "bytes": 29068
+    },
+    {
+      "file": "r2-matrix/light-390x844/bars.png",
+      "sha256": "2e17d9af0c368b3b2942ce5c5b3a602cc108f109295bfd3762a20ab504fe5f89",
+      "bytes": 10607
+    },
+    {
+      "file": "r2-matrix/light-390x844/baseline.png",
+      "sha256": "a90b9c38abaddf0a7f0d0e88858bb2eca18793c029a5b77589988d487a30c9d4",
+      "bytes": 26724
+    },
+    {
+      "file": "r2-matrix/light-390x844/candles.png",
+      "sha256": "ab5fa926ef36616b59c5a6708be7ba69156d126cadd42a4afc79cff99bd91b3a",
+      "bytes": 10210
+    },
+    {
+      "file": "r2-matrix/light-390x844/line.png",
+      "sha256": "9260ad9586aa26f56ad4b76e2c0910f7c1532cd43b1c45cb3a8132dc205c5459",
+      "bytes": 22640
+    },
+    {
+      "file": "r2-matrix/light-768x1024/area.png",
+      "sha256": "fe97fc453618ba8d880e4766eaac843cea44d8a559fd9ec472fee807c2265356",
+      "bytes": 63558
+    },
+    {
+      "file": "r2-matrix/light-768x1024/bars.png",
+      "sha256": "784f3741f910a90ab43b82b9a36ca41aa8980a473896af483a59c112ba81bdbd",
+      "bytes": 19504
+    },
+    {
+      "file": "r2-matrix/light-768x1024/baseline.png",
+      "sha256": "62bb0bbde4a800b48cf96822e5487e9c5443c364bdc1301990637187b1ac00c1",
+      "bytes": 57393
+    },
+    {
+      "file": "r2-matrix/light-768x1024/candles.png",
+      "sha256": "53c0b8acaa720eaa889a6d8ae7260d0d76adc7d682fcee32543d9d261afd1217",
+      "bytes": 19168
+    },
+    {
+      "file": "r2-matrix/light-768x1024/line.png",
+      "sha256": "c9c3a086cf9509b5392f7a62053e8b57778c5cb7787142916c7f3f544aa7672a",
+      "bytes": 47229
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1280x800/error-context.md",
+      "sha256": "99f9bc20b1bb34cca787edbee10ded33e8dc48d0dc560d805457a24e31599c2d",
+      "bytes": 17151
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1280x800/test-failed-1.png",
+      "sha256": "f51e94ff2395418968a1ba3013fa738af2849d9026107e93e4765477f3298d5d",
+      "bytes": 52928
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1440x900/error-context.md",
+      "sha256": "1384b9e02c82de9f7bfc8293996f41f405d16258e765978414fcaa30c8662992",
+      "bytes": 17151
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1440x900/test-failed-1.png",
+      "sha256": "a0d50ae89d9f9016b14ba7dea68f2e219f9c8b1c84754fae50e707cc784bb8b8",
+      "bytes": 56243
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-390x844/error-context.md",
+      "sha256": "3b48294638218371f9a44a9026bc272e5ab46d72854fa2b70a832eb00d4e870a",
+      "bytes": 16002
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-390x844/test-failed-1.png",
+      "sha256": "6521314f685a2954150ed0202f5f087a8edd0c68f43f7679f9566cf2533e8d7c",
+      "bytes": 32361
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-768x1024/error-context.md",
+      "sha256": "1e1f403b98b9e4f93fcec4b46f667d06ef8f4db675cf172d199ddb6893c49134",
+      "bytes": 16002
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-768x1024/test-failed-1.png",
+      "sha256": "760f3a57eed085d000d918443983749e428eebedc45e1f7538bf1612b83103c5",
+      "bytes": 44369
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1280x800/error-context.md",
+      "sha256": "8ab16d1010920150cd328d3f42df75fb0f299c384daae952bdb8873d8053b6d8",
+      "bytes": 17161
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1280x800/test-failed-1.png",
+      "sha256": "bbd3f3217e4567607913d15876d8e80a96419c6a36f605c9a9bef8b692b3d82e",
+      "bytes": 53193
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1440x900/error-context.md",
+      "sha256": "bbe62a1e2731f44bfa7f82e69091626e26cdec4186b967bf10bea3a6ce149d80",
+      "bytes": 17161
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1440x900/test-failed-1.png",
+      "sha256": "2236af41a11eb1384bb2b273121323c6f5fbaf1de561f8446205aded04d493b0",
+      "bytes": 56490
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-390x844/error-context.md",
+      "sha256": "32077b6f3bf4579dce364588ae528edd46bc9006daf700300cbc9d65a953e23d",
+      "bytes": 16012
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-390x844/test-failed-1.png",
+      "sha256": "cfa0b1a5b5aaafaed7d99e17e2e338bee8c2572295e02196b6e518cc778660d9",
+      "bytes": 32360
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-768x1024/error-context.md",
+      "sha256": "e298cf4930fe73745d056a1d8a9a0a3f8d8df2c76aa99d60604cdfb9d6db030e",
+      "bytes": 16012
+    },
+    {
+      "file": "r2-matrix/results/wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-768x1024/test-failed-1.png",
+      "sha256": "8364222cc2696db0faad8ab71f765eada9193f7fb4efa2ade05b775b9a8e6f3b",
+      "bytes": 44617
+    },
+    {
+      "file": "r3-probe/report.json",
+      "sha256": "298b637fbc8ea978d9475dc415af32b1441d7718f7d534960d115edc4c16a3d7",
+      "bytes": 21446
+    },
+    {
+      "file": "r3-probe/dark-1440x900/area.png",
+      "sha256": "ef9d05a97e22d04818a85ffe770cd84bab2010544c12d549b6a09a5efaca08b4",
+      "bytes": 85142
+    },
+    {
+      "file": "r3-probe/dark-1440x900/bars.png",
+      "sha256": "184b01bc94b969d1737dbc8934a90b9408aad4318dc02a65efd0124c569c8a82",
+      "bytes": 24388
+    },
+    {
+      "file": "r3-probe/dark-1440x900/baseline.png",
+      "sha256": "7df7891d4ea3ec979f0fc2380014f666c23b94729c7f8cf73de732e82a71b9e8",
+      "bytes": 75869
+    },
+    {
+      "file": "r3-probe/dark-1440x900/candles-volume-sma.png",
+      "sha256": "0aef6c27d0b97a9ab4a1dabaae17bc297f3d86f7106b0e35729099ed010d3e22",
+      "bytes": 32951
+    },
+    {
+      "file": "r3-probe/dark-1440x900/candles.png",
+      "sha256": "b4806cf76b9e66f3eec224abc421ef5af386f5163b7c70a4e16d9f5fbdceaef0",
+      "bytes": 24104
+    },
+    {
+      "file": "r3-probe/dark-1440x900/line.png",
+      "sha256": "c900088434ad344b169cf61d8a637bfa96c50b49d032cd81a3af16206359b225",
+      "bytes": 65229
+    },
+    {
+      "file": "r3-probe/dark-1440x900/receipt.json",
+      "sha256": "66d63fcedf0996b2cdcd425af47415dbe17087755f5a4bd4a8b1c090b7fb5c36",
+      "bytes": 4686
+    },
+    {
+      "file": "r3-probe/light-390x844/area.png",
+      "sha256": "ccf14533f9ca2151c22d60f555eca1dc30f1aa61593282cf90c7ca522112df0c",
+      "bytes": 29068
+    },
+    {
+      "file": "r3-probe/light-390x844/bars.png",
+      "sha256": "2e17d9af0c368b3b2942ce5c5b3a602cc108f109295bfd3762a20ab504fe5f89",
+      "bytes": 10607
+    },
+    {
+      "file": "r3-probe/light-390x844/baseline.png",
+      "sha256": "a90b9c38abaddf0a7f0d0e88858bb2eca18793c029a5b77589988d487a30c9d4",
+      "bytes": 26724
+    },
+    {
+      "file": "r3-probe/light-390x844/candles-volume-sma.png",
+      "sha256": "c86c399ecfca7d41b7ee83c3f97d17f49aff4ed771a5522678977c3fe159a0da",
+      "bytes": 13001
+    },
+    {
+      "file": "r3-probe/light-390x844/candles.png",
+      "sha256": "ab5fa926ef36616b59c5a6708be7ba69156d126cadd42a4afc79cff99bd91b3a",
+      "bytes": 10210
+    },
+    {
+      "file": "r3-probe/light-390x844/line.png",
+      "sha256": "9260ad9586aa26f56ad4b76e2c0910f7c1532cd43b1c45cb3a8132dc205c5459",
+      "bytes": 22640
+    },
+    {
+      "file": "r3-probe/light-390x844/receipt.json",
+      "sha256": "cb295a368e59447308b31d1c6f78540b663f93bab8b625389f5f7d138ecf8ba2",
+      "bytes": 4724
+    },
+    {
+      "file": "r3-matrix/report.json",
+      "sha256": "677a38d65d5cd92b38a26967ec68efcc0acf1832f1daa0836e0c8e4668802e71",
+      "bytes": 67051
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/area.png",
+      "sha256": "df1ad89287b4fc72a6f473b4088ef7e5d73038a0c74aacc979a5caf7c7160b1c",
+      "bytes": 74913
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/bars.png",
+      "sha256": "aaa65a5f1f9306070721928777bc489a935c8bf38ec788e905a774e4035da233",
+      "bytes": 23201
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/baseline.png",
+      "sha256": "74d8fd64407b2aa273c9ea3f448eee0d22e5ca1304b326497fb7071d8b418e18",
+      "bytes": 66530
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/candles-volume-sma.png",
+      "sha256": "82a45251d4a96b697153974bfb767963e51db85f6b8ef2659a35a59d65de406e",
+      "bytes": 30355
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/candles.png",
+      "sha256": "ef975d532aee6cd2300d53259e70d874a3ada86feb3f3d99b78f24f278656d26",
+      "bytes": 22965
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/line.png",
+      "sha256": "4b5c1a8cae80a385b375312a76e3a5e30e634aee1d793112cc7de16e57005d4e",
+      "bytes": 56925
+    },
+    {
+      "file": "r3-matrix/dark-1280x800/receipt.json",
+      "sha256": "2d6f40db2b49c005fe6e739e8a8d5fb5faf64b0cebbeb7430484b033ab2ebcf3",
+      "bytes": 4685
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/area.png",
+      "sha256": "ef9d05a97e22d04818a85ffe770cd84bab2010544c12d549b6a09a5efaca08b4",
+      "bytes": 85142
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/bars.png",
+      "sha256": "184b01bc94b969d1737dbc8934a90b9408aad4318dc02a65efd0124c569c8a82",
+      "bytes": 24388
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/baseline.png",
+      "sha256": "7df7891d4ea3ec979f0fc2380014f666c23b94729c7f8cf73de732e82a71b9e8",
+      "bytes": 75869
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/candles-volume-sma.png",
+      "sha256": "0aef6c27d0b97a9ab4a1dabaae17bc297f3d86f7106b0e35729099ed010d3e22",
+      "bytes": 32951
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/candles.png",
+      "sha256": "b4806cf76b9e66f3eec224abc421ef5af386f5163b7c70a4e16d9f5fbdceaef0",
+      "bytes": 24104
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/line.png",
+      "sha256": "c900088434ad344b169cf61d8a637bfa96c50b49d032cd81a3af16206359b225",
+      "bytes": 65229
+    },
+    {
+      "file": "r3-matrix/dark-1440x900/receipt.json",
+      "sha256": "66d63fcedf0996b2cdcd425af47415dbe17087755f5a4bd4a8b1c090b7fb5c36",
+      "bytes": 4686
+    },
+    {
+      "file": "r3-matrix/dark-390x844/area.png",
+      "sha256": "a4da20dd8583c6a9704b0a44b454a17d85b71601a14267d39ff7e08335dbcc16",
+      "bytes": 29031
+    },
+    {
+      "file": "r3-matrix/dark-390x844/bars.png",
+      "sha256": "526db2c1db43696f010f3313a87cc8ee69a4b1fe1100401243eb7b4a668dc76b",
+      "bytes": 10555
+    },
+    {
+      "file": "r3-matrix/dark-390x844/baseline.png",
+      "sha256": "0b70bb8c7da65db97fb5c8409f33e0ec2e8c7e5166ce8a48f95e3a13ce20a14b",
+      "bytes": 26692
+    },
+    {
+      "file": "r3-matrix/dark-390x844/candles-volume-sma.png",
+      "sha256": "dee4ce396f0a2abf89c804f7852c92630292ebb7431a676898ba8ed7ff10a3cd",
+      "bytes": 12949
+    },
+    {
+      "file": "r3-matrix/dark-390x844/candles.png",
+      "sha256": "05de21e4ce1cc1afb801d2121e983a1657193820e5a911454f2ace3745b8ad0c",
+      "bytes": 10157
+    },
+    {
+      "file": "r3-matrix/dark-390x844/line.png",
+      "sha256": "13822e10d9e7e053a26fd0f6309ee083dce37a9bbbc03b16f9037c39a10320cb",
+      "bytes": 22608
+    },
+    {
+      "file": "r3-matrix/dark-390x844/receipt.json",
+      "sha256": "8ff35360fc23be266a341ae5b34038c0fc207be69c8c4ceb29f6ccee6455e71f",
+      "bytes": 4723
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/area.png",
+      "sha256": "341bfff132b5d4190ca4a4b989070f277ebf6c6b599d0e21d0784b2c3146cb90",
+      "bytes": 63529
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/bars.png",
+      "sha256": "7b330a60dcaa4db5d030dfd6b317f2954142fcc0c198a75469d60a05db3b99e8",
+      "bytes": 19470
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/baseline.png",
+      "sha256": "661f10a844795114950ab93ee7f5e8eae873fcff2093c59d7ab247212caa3b63",
+      "bytes": 57367
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/candles-volume-sma.png",
+      "sha256": "9cb0842990372f61da07d476f52127b3fbd0c17176bf30013410d1e08adaa860",
+      "bytes": 24696
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/candles.png",
+      "sha256": "ac8b7a1351437a8e052a5c77a03283752037314ee414fadca9d2f77619eadd8b",
+      "bytes": 19134
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/line.png",
+      "sha256": "078110e11b7cbfdf6a0d42780d923917247b79b09d0ce1b2fce0ba92d9645896",
+      "bytes": 47204
+    },
+    {
+      "file": "r3-matrix/dark-768x1024/receipt.json",
+      "sha256": "4ffc3b4f56546a715f9981fe18d0ad9162ac151c410d33e7f015e3242162cae0",
+      "bytes": 4793
+    },
+    {
+      "file": "r3-matrix/light-1280x800/area.png",
+      "sha256": "488cb19084c59d0ace141e310c43567091a823bf6e41f2668407d067a372c701",
+      "bytes": 74937
+    },
+    {
+      "file": "r3-matrix/light-1280x800/bars.png",
+      "sha256": "56da14d7f32420f6cfedfcba2299e12c61b773982fd357b31d9e1d7d0df13e91",
+      "bytes": 23236
+    },
+    {
+      "file": "r3-matrix/light-1280x800/baseline.png",
+      "sha256": "47c2316ed748308097c8f75866b1b739e8c0929c34f5269fab3042fea12835f1",
+      "bytes": 66557
+    },
+    {
+      "file": "r3-matrix/light-1280x800/candles-volume-sma.png",
+      "sha256": "fa2d954862eef4ccff92cf88c029ba38576537d1e3768f017b09b6db317378e6",
+      "bytes": 30385
+    },
+    {
+      "file": "r3-matrix/light-1280x800/candles.png",
+      "sha256": "7489c59029aed16f28d9e1c75603f6a9c03698caea781448fd577b48b6428156",
+      "bytes": 23000
+    },
+    {
+      "file": "r3-matrix/light-1280x800/line.png",
+      "sha256": "6573d4bff80683cdecffe0f8626a3e607b1896894f039b20ed3a188821ff6dc3",
+      "bytes": 56951
+    },
+    {
+      "file": "r3-matrix/light-1280x800/receipt.json",
+      "sha256": "a71c5d25ec5ac74355cb31317643bfaf2ae0589479018fc929737cb2c6d4571c",
+      "bytes": 4686
+    },
+    {
+      "file": "r3-matrix/light-1440x900/area.png",
+      "sha256": "6f1b2562cef9126dd12e427910a4a645ca9c005000591e4aa642384475f7fadf",
+      "bytes": 85169
+    },
+    {
+      "file": "r3-matrix/light-1440x900/bars.png",
+      "sha256": "60daf6b82bd1f746dc01a44e13e30290e85baec96d992b92acf1d2ff6fe9fc47",
+      "bytes": 24423
+    },
+    {
+      "file": "r3-matrix/light-1440x900/baseline.png",
+      "sha256": "b65abf29ecb0c2645ca25bd18e6046d653ee6c30ff49b24179fae1050c13ed05",
+      "bytes": 75897
+    },
+    {
+      "file": "r3-matrix/light-1440x900/candles-volume-sma.png",
+      "sha256": "6a9850b2f4ea9fe50367d00c19491c694f7cd65a796ff307d9351ec74908810d",
+      "bytes": 32980
+    },
+    {
+      "file": "r3-matrix/light-1440x900/candles.png",
+      "sha256": "ebb80c3fef9d4db115501ab2169d385a0bc77c2a7b2384ba4d4a7f4c67b76a60",
+      "bytes": 24141
+    },
+    {
+      "file": "r3-matrix/light-1440x900/line.png",
+      "sha256": "abea9037ac2df586ed1a26cc847e54610774a651b65061f4e57c018903fb7ea8",
+      "bytes": 65258
+    },
+    {
+      "file": "r3-matrix/light-1440x900/receipt.json",
+      "sha256": "62707c818931eeb77a7c33da5d9c8e7db2969260d1d229683cab1c1285e1cade",
+      "bytes": 4687
+    },
+    {
+      "file": "r3-matrix/light-390x844/area.png",
+      "sha256": "ccf14533f9ca2151c22d60f555eca1dc30f1aa61593282cf90c7ca522112df0c",
+      "bytes": 29068
+    },
+    {
+      "file": "r3-matrix/light-390x844/bars.png",
+      "sha256": "2e17d9af0c368b3b2942ce5c5b3a602cc108f109295bfd3762a20ab504fe5f89",
+      "bytes": 10607
+    },
+    {
+      "file": "r3-matrix/light-390x844/baseline.png",
+      "sha256": "a90b9c38abaddf0a7f0d0e88858bb2eca18793c029a5b77589988d487a30c9d4",
+      "bytes": 26724
+    },
+    {
+      "file": "r3-matrix/light-390x844/candles-volume-sma.png",
+      "sha256": "c86c399ecfca7d41b7ee83c3f97d17f49aff4ed771a5522678977c3fe159a0da",
+      "bytes": 13001
+    },
+    {
+      "file": "r3-matrix/light-390x844/candles.png",
+      "sha256": "ab5fa926ef36616b59c5a6708be7ba69156d126cadd42a4afc79cff99bd91b3a",
+      "bytes": 10210
+    },
+    {
+      "file": "r3-matrix/light-390x844/line.png",
+      "sha256": "9260ad9586aa26f56ad4b76e2c0910f7c1532cd43b1c45cb3a8132dc205c5459",
+      "bytes": 22640
+    },
+    {
+      "file": "r3-matrix/light-390x844/receipt.json",
+      "sha256": "cb295a368e59447308b31d1c6f78540b663f93bab8b625389f5f7d138ecf8ba2",
+      "bytes": 4724
+    },
+    {
+      "file": "r3-matrix/light-768x1024/area.png",
+      "sha256": "fe97fc453618ba8d880e4766eaac843cea44d8a559fd9ec472fee807c2265356",
+      "bytes": 63558
+    },
+    {
+      "file": "r3-matrix/light-768x1024/bars.png",
+      "sha256": "784f3741f910a90ab43b82b9a36ca41aa8980a473896af483a59c112ba81bdbd",
+      "bytes": 19504
+    },
+    {
+      "file": "r3-matrix/light-768x1024/baseline.png",
+      "sha256": "62bb0bbde4a800b48cf96822e5487e9c5443c364bdc1301990637187b1ac00c1",
+      "bytes": 57393
+    },
+    {
+      "file": "r3-matrix/light-768x1024/candles-volume-sma.png",
+      "sha256": "3c0a0b9164aeeda91557770ebab0cad9c001d2081b0d5304157f4420ea5134f4",
+      "bytes": 24738
+    },
+    {
+      "file": "r3-matrix/light-768x1024/candles.png",
+      "sha256": "53c0b8acaa720eaa889a6d8ae7260d0d76adc7d682fcee32543d9d261afd1217",
+      "bytes": 19168
+    },
+    {
+      "file": "r3-matrix/light-768x1024/line.png",
+      "sha256": "c9c3a086cf9509b5392f7a62053e8b57778c5cb7787142916c7f3f544aa7672a",
+      "bytes": 47229
+    },
+    {
+      "file": "r3-matrix/light-768x1024/receipt.json",
+      "sha256": "aed86c0f391c3645468b82a07a9259a66076912794d790d55b7c1a6a82fbb748",
+      "bytes": 4794
+    }
+  ],
+  "excluded_large_traces": "Retained at .artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results; report/error-context/failure PNG copied here"
+}

@@ -1,0 +1,791 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\MIIKEY\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.19.0-win-x64\\node.exe",
+      "D:\\ANNAM\\TradingWorkspace\\tooling\\ui-qa\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "tests/visual/playwright.chart-states.config.mjs"
+    ],
+    "configFile": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\playwright.chart-states.config.mjs",
+    "rootDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1440x900",
+        "name": "dark-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-1280x800",
+        "name": "dark-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-768x1024",
+        "name": "dark-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "dark"
+        },
+        "id": "dark-390x844",
+        "name": "dark-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1440x900",
+        "name": "light-1440x900",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-1280x800",
+        "name": "light-1280x800",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-768x1024",
+        "name": "light-768x1024",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/chart-states-r2-matrix/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "theme": "light"
+        },
+        "id": "light-390x844",
+        "name": "light-390x844",
+        "testDir": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/visual",
+        "testIgnore": [],
+        "testMatch": [
+          "wmreplay.chart-states.spec.mjs"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "wmreplay.chart-states.spec.mjs",
+      "file": "wmreplay.chart-states.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1440x900",
+              "projectName": "dark-1440x900",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5995,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m8\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m8\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m8\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:54:39.702Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1440x900\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1440x900\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1440x900\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-2c94fff683d8666b311a",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-1280x800",
+              "projectName": "dark-1280x800",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5588,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:54:46.701Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1280x800\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1280x800\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-1280x800\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-c0b8c39127a29da70598",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-768x1024",
+              "projectName": "dark-768x1024",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5471,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:54:53.313Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-768x1024\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-768x1024\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-768x1024\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-8d47864f4ed5f3b70d2a",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "dark-390x844",
+              "projectName": "dark-390x844",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5019,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:54:59.819Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-390x844\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-390x844\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-dark-390x844\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-d2230318d5fb5cc3c75a",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1440x900",
+              "projectName": "light-1440x900",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6052,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m8\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m8\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m8\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:55:05.812Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1440x900\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1440x900\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1440x900\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-8b98b636841ab5954f3d",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-1280x800",
+              "projectName": "light-1280x800",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5812,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:55:12.902Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1280x800\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1280x800\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-1280x800\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-4f17cfb67af283cde8a4",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-768x1024",
+              "projectName": "light-768x1024",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5385,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m2\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:55:19.746Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-768x1024\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-768x1024\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-768x1024\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-4fd832665603176c83a9",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "five chart types render mixed OHLC and preserve cutoff through wheel/pan",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "light-390x844",
+              "projectName": "light-390x844",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 4905,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62",
+                    "location": {
+                      "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                      "column": 62,
+                      "line": 138
+                    },
+                    "snippet": "  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                        "column": 62,
+                        "line": 138
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m10\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  136 |     return totals\n  137 |   })\n> 138 |   for (const count of Object.values(overlays)) expect(count).toBeGreaterThan(10)\n      |                                                              ^\n  139 |   await chart.screenshot({ path: path.join(destination, 'candles-volume-sma.png'), animations: 'disabled', scale: 'css' })\n  140 |   await page.goto(url(20))\n  141 |   await expect(chart).toHaveAttribute('data-visible-row-count', '21')\n    at D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs:138:62"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T16:55:26.166Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-390x844\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-390x844\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\chart-states-r2-matrix\\results\\wmreplay.chart-states-five-1eeb4-ve-cutoff-through-wheel-pan-light-390x844\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\web\\tests\\visual\\wmreplay.chart-states.spec.mjs",
+                    "column": 62,
+                    "line": 138
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "6a55b2976af8fb255677-c7ab0fdc6d6c54b5741b",
+          "file": "wmreplay.chart-states.spec.mjs",
+          "line": 36,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-02T16:54:39.103Z",
+    "duration": 52478.383,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 8,
+    "flaky": 0
+  }
+}

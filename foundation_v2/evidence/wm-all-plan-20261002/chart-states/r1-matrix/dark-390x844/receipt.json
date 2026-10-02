@@ -1,0 +1,200 @@
+{
+  "status": "SCOPED_BEHAVIOR_PASS_VISUAL_REVIEW_PENDING",
+  "scope": "SYNTHETIC_VARIANT_RENDERER_ONLY: alternating up/down OHLC, 61/21 row prefix; no backend, broker, fixture overwrite or golden promotion",
+  "sourceHash": "8205c89b2d79a832cb853ccad28b08ca13e1d9da67b2c185a517742752a180f1",
+  "canonicalFixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
+  "variantSha256": "5512d642aa6ad748221debd86115bf80dfd43f192691ea40f67ab1ac45e4fc5e",
+  "project": "dark-390x844",
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "states": [
+    {
+      "type": "candles",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0615525454545534,
+        "to": 57.51609800000001
+      },
+      "panned": {
+        "from": -3.1000636161616058,
+        "to": 51.35448183838385
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 2802,
+        "red": 1830,
+        "gold": 0
+      },
+      "captureSha256": "05de21e4ce1cc1afb801d2121e983a1657193820e5a911454f2ace3745b8ad0c"
+    },
+    {
+      "type": "bars",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0615525454545534,
+        "to": 57.51609800000001
+      },
+      "panned": {
+        "from": -3.1000636161616058,
+        "to": 51.35448183838385
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 1929,
+        "red": 990,
+        "gold": 0
+      },
+      "captureSha256": "526db2c1db43696f010f3313a87cc8ee69a4b1fe1100401243eb7b4a668dc76b"
+    },
+    {
+      "type": "line",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0615525454545534,
+        "to": 57.51609800000001
+      },
+      "panned": {
+        "from": -3.1000636161616058,
+        "to": 51.35448183838385
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 0,
+        "red": 0,
+        "gold": 3382
+      },
+      "captureSha256": "13822e10d9e7e053a26fd0f6309ee083dce37a9bbbc03b16f9037c39a10320cb"
+    },
+    {
+      "type": "area",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0615525454545534,
+        "to": 57.51609800000001
+      },
+      "panned": {
+        "from": -3.1000636161616058,
+        "to": 51.35448183838385
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 3382,
+        "red": 0,
+        "gold": 0
+      },
+      "captureSha256": "a4da20dd8583c6a9704b0a44b454a17d85b71601a14267d39ff7e08335dbcc16"
+    },
+    {
+      "type": "baseline",
+      "fitted": {
+        "from": 0,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0615525454545534,
+        "to": 57.51609800000001
+      },
+      "panned": {
+        "from": -3.1000636161616058,
+        "to": 51.35448183838385
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 2219,
+        "red": 1190,
+        "gold": 0
+      },
+      "captureSha256": "0b70bb8c7da65db97fb5c8409f33e0ec2e8c7e5166ce8a48f95e3a13ce20a14b"
+    }
+  ],
+  "observations": [
+    {
+      "cursor": 60,
+      "canonicalCursor": 60,
+      "rows": 61,
+      "cutoff": 1704070800
+    },
+    {
+      "cursor": 20,
+      "canonicalCursor": 60,
+      "rows": 21,
+      "cutoff": 1704068400
+    },
+    {
+      "cursor": 20,
+      "canonicalCursor": 60,
+      "rows": 21,
+      "cutoff": 1704068400
+    }
+  ],
+  "geometry": {
+    "pageOverflow": 0,
+    "contentOverflow": 0
+  },
+  "errors": [],
+  "unexpected": [],
+  "excluded": [
+    "touch/pinch",
+    "keyboard-only chart pan",
+    "backend persistence",
+    "performance",
+    "independent visual approval",
+    "golden promotion",
+    "full W8"
+  ]
+}
