@@ -1,0 +1,72 @@
+{
+  "status": "LONG_DURATION_FIXTURE_PASS",
+  "sourceHash": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "process_exited_verified": true,
+  "samples": 61,
+  "summary": {
+    "durationMs": 3608809.1471,
+    "measuredDurationMs": 3601275.3025,
+    "completedIterations": 2620,
+    "baselineUsedBytes": 13235596,
+    "finalUsedBytes": 14352668,
+    "peakUsedBytes": 14794656,
+    "deltaUsedBytes": 1117072,
+    "documentTimeOrigins": [
+      1790945165060
+    ],
+    "domDelta": 0,
+    "frameP95Ms": 33.200000000186265,
+    "maxLongTaskMs": 103
+  },
+  "verdicts": {
+    "requestedDuration": true,
+    "preciseBytesPresent": true,
+    "sameDocument": true,
+    "hostTimeMonotonic": true,
+    "heapDeltaWithinHistorical12MiB": true,
+    "interactions": true,
+    "pageErrors": true,
+    "overflow": true,
+    "localReadOnly": true
+  },
+  "logs": [
+    {
+      "path": "launch.json",
+      "sha256": "e341dd64d2bcdb97465d7a5423e98d210d35cb9d2d68317e9868a4d4e0fda0a6",
+      "bytes": 218
+    },
+    {
+      "path": "process.json",
+      "sha256": "510056e93ee1fee92ba5320888274b80c5a8472edbe12131d68ae52db2cb8bef",
+      "bytes": 537
+    },
+    {
+      "path": "report.json",
+      "sha256": "52f7b13ad82e63cfcb0504848c15b5bc6c5081fd5e8651cbc66f259a24c40c6d",
+      "bytes": 517144
+    },
+    {
+      "path": "stdout.txt",
+      "sha256": "f37b6f1508c81a117c373c4d40b79304bcd0a458698a714ff4c658588a9116b9",
+      "bytes": 982
+    },
+    {
+      "path": "stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "heap_snapshot": {
+    "path": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\heap-long\\full-final.heapsnapshot",
+    "sha256": "d6772ea6c4af7949c6fd86d7fef58db9628ee05d07dfeda85ca34f5318311f77",
+    "bytes": 40225974
+  },
+  "previous_failed_soak_preserved": true,
+  "whole_chart_or_product_accepted": false,
+  "limitations": [
+    "5000-row intercepted analytics fixture only",
+    "No frame target verdict; p95 33.2ms does not prove 60Hz",
+    "No broker/provider/real financial data",
+    "Prior coarse heap failure not rewritten"
+  ]
+}

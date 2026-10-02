@@ -1,0 +1,36 @@
+{
+  "status": "LONG_DURATION_FIXTURE_PASS",
+  "summaries": [
+    {
+      "arm": "full",
+      "summary": {
+        "durationMs": 3608809.1471,
+        "measuredDurationMs": 3601275.3025,
+        "completedIterations": 2620,
+        "baselineUsedBytes": 13235596,
+        "finalUsedBytes": 14352668,
+        "peakUsedBytes": 14794656,
+        "deltaUsedBytes": 1117072,
+        "documentTimeOrigins": [
+          1790945165060
+        ],
+        "domDelta": 0,
+        "frameP95Ms": 33.200000000186265,
+        "maxLongTaskMs": 103
+      },
+      "verdicts": {
+        "requestedDuration": true,
+        "preciseBytesPresent": true,
+        "sameDocument": true,
+        "hostTimeMonotonic": true,
+        "heapDeltaWithinHistorical12MiB": true,
+        "interactions": true,
+        "pageErrors": true,
+        "overflow": true,
+        "localReadOnly": true
+      }
+    }
+  ],
+  "failures": [],
+  "out": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\heap-long"
+}

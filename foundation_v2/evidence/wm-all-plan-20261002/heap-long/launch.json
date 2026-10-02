@@ -1,0 +1,6 @@
+{
+  "Pid": 24164,
+  "StartedAt": "2026-10-02T19:46:04.3151751+07:00",
+  "Script": "tests/wm-integration-quality-heap.mjs",
+  "Output": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-all-plan-20261002\\heap-long"
+}

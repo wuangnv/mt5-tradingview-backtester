@@ -1,0 +1,22 @@
+{
+  "pid": 24164,
+  "startedAt": "2026-10-02T12:46:04.787Z",
+  "origin": "http://127.0.0.1:5180",
+  "sourceBefore": "71373c3a4a02e1d3cd68ff3e6bffbd92a8dfdb153a5f3c8d39aa3ac5cc8030fa",
+  "fixtureRows": 5000,
+  "iterations": 120,
+  "durationMs": 3600000,
+  "checkpointMs": 60000,
+  "dwellMs": 1000,
+  "arms": [
+    "full"
+  ],
+  "argv": [
+    "--arms=full",
+    "--seconds=3600",
+    "--checkpoint-seconds=60",
+    "--dwell=1000",
+    "--snapshot=true",
+    "--out=D:/ANNAM/TradingWorkspace/.artifacts/wm-all-plan-20261002/heap-long"
+  ]
+}
