@@ -1,0 +1,20 @@
+[
+  {
+    "case": "remote-host-rejected",
+    "exit_code": 1,
+    "remaining_restore_databases": 0,
+    "pass": true
+  },
+  {
+    "case": "old-client-rejected",
+    "exit_code": 1,
+    "remaining_restore_databases": 0,
+    "pass": true
+  },
+  {
+    "case": "restore-final",
+    "exit_code": 0,
+    "remaining_restore_databases": 0,
+    "pass": true
+  }
+]

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 287, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 208, in main
+    run(
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 37, in run
+    raise RuntimeError((completed.stderr or completed.stdout or "command failed").strip())
+RuntimeError: pg_dump: error: aborting because of server version mismatch
+pg_dump: detail: server version: 18.6; pg_dump version: 17.11

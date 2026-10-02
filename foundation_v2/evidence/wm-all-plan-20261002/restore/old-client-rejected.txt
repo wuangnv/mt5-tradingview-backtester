@@ -1,0 +1,1 @@
+pg_dump.exe must match PostgreSQL server major 18; select --pg-bin explicitly

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 285, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 200, in main
+    fixture = seed(source_store, ArtifactStore(source_artifacts))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 106, in seed
+    playbook = product.create_playbook(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\trading_workspace_v2\product.py", line 100, in create_playbook
+    raise PlaybookFrozenError("new playbooks must start as draft")
+trading_workspace_v2.product.PlaybookFrozenError: new playbooks must start as draft

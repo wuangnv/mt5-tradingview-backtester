@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 287, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 202, in main
+    fixture = seed(source_store, ArtifactStore(source_artifacts))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\scripts\f7_restore_rehearsal.py", line 138, in seed
+    session = replay.queue_market_order("restore-tenant", session_id, session["revision"], operation_id="restore-order", side="buy", quantity="0.01", stop_loss="1.09", take_profit="1.12")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\trading_workspace_v2\replay.py", line 212, in queue_market_order
+    queued = queue_market_order(
+             ^^^^^^^^^^^^^^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\trading_workspace_v2\replay_execution.py", line 345, in queue_market_order
+    order = ReplayQueuedMarketOrder(
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\.venv\Lib\site-packages\pydantic\main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ReplayQueuedMarketOrder
+side
+  Input should be 'BUY' or 'SELL' [type=literal_error, input_value='buy', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/literal_error
