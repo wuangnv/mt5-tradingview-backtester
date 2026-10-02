@@ -1,0 +1,238 @@
+{
+  "schema": "u5b-manual-sequence-parity-evidence-v1",
+  "recorded_date_local": "2026-10-02",
+  "status": "PASS_OFFLINE_SEQUENCE_SUBSET_WITH_EXPLICIT_GAPS",
+  "scope": "Predeclared synthetic manual protective sequences versus reference and pinned primary Nautilus; regression tests and receipt only",
+  "observed_head_before_receipt": "6265dc3a92ed519d7c9a5f8f27659720bf27da3c",
+  "authority": {
+    "plan": "planning/mt5-tradingview-backtester/PRODUCT-COMPLETION-PLAN.md",
+    "requirement": "U5b: no-signal/skip, protective events and manual/replay comparison on the same causal segment",
+    "reused_comparator_commit": "b03304e",
+    "previous_receipt": "foundation_v2/evidence/U5B-manual-execution-parity-r1.json",
+    "ledger_promotion": "not performed; independent root review and any promotion remain separate"
+  },
+  "sources": {
+    "foundation_v2/tests/test_u5b_manual_sequence_parity.py": "783ee25ff2112951f41ead885ffc2b9d61547de5a6f0e4608110a32e4250660a",
+    "foundation_v2/tests/test_u5b_manual_execution_parity.py": "cfe865b4945e230286a830e807262a1a0d523411337bfed8a03649619a4cbf94",
+    "foundation_v2/tests/test_u5b_protective_margin.py": "0ca9a2ba97a5694c1c79179fc445a64e530c144750725b474cb4fc8db79040d9",
+    "foundation_v2/trading_workspace_v2/replay_execution.py": "b9638541c5c35347cf223a4a337b15a5896449ad6b65fb6b515c30294c842cd2",
+    "foundation_v2/trading_workspace_v2/replay_analytics.py": "91fafa4bbf06d38240645eccf3ae845892d16494a32ba57d1c93bc560c8b4214",
+    "foundation_v2/trading_workspace_v2/research_validation.py": "dba1fa87a4174b2c0c8ac29b5d4ae457ca85117fbe1351dd2eecede394dd48b2",
+    "foundation_v2/trading_workspace_v2/research_engine.py": "8d4354f9d8042f36885c3976d69e5e7ebfaf20474fe459c0c234f38fdd118f05",
+    "foundation_v2/engine_runtime/uv.lock": "d4cb4e843100b712a2d35fc05f1df1da36676aaa6baa354a985e831f5e5a699d",
+    "foundation_v2/engine_runtime/adapter.py": "fadd7d63f80e6736ce85c9d32a016cf41159844875a360c8e49c795c8945d386"
+  },
+  "source_hash_basis": "Raw local file bytes; fixture dataset hashes are SHA-256 of canonical JSON row bytes",
+  "fixtures": [
+    {
+      "name": "long-long",
+      "direction": "long",
+      "hold_bars": 2,
+      "rows_sha256": "7db4aec13b33f5ff330a47fb6f48b02884536aef756f909aca2634c05f9505c4",
+      "decisions": [
+        [
+          2,
+          "BUY",
+          "9.90",
+          "10.40"
+        ],
+        [
+          3,
+          "NO_SIGNAL",
+          null,
+          null
+        ],
+        [
+          4,
+          "BUY",
+          "10.30",
+          "10.80"
+        ]
+      ],
+      "expected_signal_counters": {
+        "long": 2,
+        "short": 0,
+        "no_signal": 1,
+        "skipped_overlap": 0,
+        "skipped_margin": 0
+      },
+      "expected_trade_count": 2
+    },
+    {
+      "name": "short-short",
+      "direction": "short",
+      "hold_bars": 2,
+      "rows_sha256": "0fe73c653fb5184e52a5def1fde3a7e6ea3d064318989e94c8ea2193de5ec640",
+      "decisions": [
+        [
+          2,
+          "SELL",
+          "10.10",
+          "9.60"
+        ],
+        [
+          3,
+          "NO_SIGNAL",
+          null,
+          null
+        ],
+        [
+          4,
+          "SELL",
+          "9.70",
+          "9.20"
+        ]
+      ],
+      "expected_signal_counters": {
+        "long": 0,
+        "short": 2,
+        "no_signal": 1,
+        "skipped_overlap": 0,
+        "skipped_margin": 0
+      },
+      "expected_trade_count": 2
+    },
+    {
+      "name": "long-short",
+      "direction": "both",
+      "hold_bars": 1,
+      "rows_sha256": "d2757ccc6b1c54434e75047ce1e2746b5afbb35eed0e31a39ca064270d50d566",
+      "decisions": [
+        [
+          2,
+          "BUY",
+          "9.85",
+          "10.35"
+        ],
+        [
+          3,
+          "NO_SIGNAL",
+          null,
+          null
+        ],
+        [
+          4,
+          "SELL",
+          "10.35",
+          "9.85"
+        ]
+      ],
+      "expected_signal_counters": {
+        "long": 1,
+        "short": 1,
+        "no_signal": 1,
+        "skipped_overlap": 0,
+        "skipped_margin": 0
+      },
+      "expected_trade_count": 2
+    },
+    {
+      "name": "overlap-skip",
+      "direction": "long",
+      "hold_bars": 3,
+      "rows_sha256": "ae6c53cbb9a06e8df8482729cc3218c188b87ff0befb6bfc080d4dd2214205bf",
+      "decisions": [
+        [
+          2,
+          "BUY",
+          "9.85",
+          "10.35"
+        ],
+        [
+          3,
+          "SKIP_BUY",
+          null,
+          null
+        ]
+      ],
+      "expected_signal_counters": {
+        "long": 2,
+        "short": 0,
+        "no_signal": 0,
+        "skipped_overlap": 1,
+        "skipped_margin": 0
+      },
+      "expected_trade_count": 1
+    },
+    {
+      "name": "no-order",
+      "direction": "both",
+      "hold_bars": 1,
+      "rows_sha256": "0e3aa56ffb5d4a13a56ec7c3f4c6087d5a9c43c7b925472e97c9c163104a345c",
+      "expected_trade_count": 0,
+      "expected_no_signal_count": 4
+    }
+  ],
+  "decision_contract": {
+    "manual": "Every eligible decision cursor/action/absolute bracket is predeclared before either engine runs; only closed visible two-bar lookback and current close are inspected. No automated signals or fills are copied into replay orders.",
+    "entry": "Next bar open; native open +1ns and manual integer-second boundary are validated with existing comparator",
+    "same_close": "Protective close precedes a new manual decision at that close and a new fill at next open",
+    "single_position": "An overlapping BUY signal is asserted against visible bars but queues no second order while a position remains open",
+    "source": "Both branches use the same source hash within each comparison; changed future suffix gets a distinct immutable source hash",
+    "causal_comparison": "At cursors2-4 future-modified source changes only lineage hash, while semantic snapshots/events and queued decision remain identical; first closed trade stays identical, second trade changes TP to SL",
+    "no_signal_limit": "No-order synthetic baseline reconciles zero closed trades, while comparator still declares manual_no_signal_decisions not_compared; no persisted decision audit is claimed"
+  },
+  "validation": {
+    "working_directory": "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester",
+    "stdin_command": "PowerShell: $validationCode | & .\\foundation_v2\\.venv\\Scripts\\python.exe -B -",
+    "stdin_script": "import os\nimport socket\nimport sys\nos.environ.pop('TW_V2_DATABASE_URL', None)\ndef deny_network(*args, **kwargs):\n    raise RuntimeError('U5b offline validation forbids network sockets')\nsocket.socket.connect = deny_network\nsocket.socket.connect_ex = deny_network\nsocket.create_connection = deny_network\nimport pytest\nsys.exit(pytest.main(['-q', 'foundation_v2/tests/test_u5b_manual_sequence_parity.py', 'foundation_v2/tests/test_u5b_manual_execution_parity.py', 'foundation_v2/tests/test_u5b_replay_compare.py', 'foundation_v2/tests/test_replay_execution_core.py', 'foundation_v2/tests/test_replay_analytics.py', 'foundation_v2/tests/test_u5_engine_oracle.py', 'foundation_v2/tests/test_u5b_protective_margin.py', '-k', 'not U5BProtectiveIntegrationTests']))\n",
+    "passed": 106,
+    "subtests_passed": 20,
+    "deselected_db_integration": 1,
+    "new_tests": 14,
+    "new_reference_tests": 7,
+    "new_primary_nautilus_tests": 7,
+    "duration_seconds": 74.02,
+    "guards": "TW_V2_DATABASE_URL removed in validation process; socket.connect/connect_ex/create_connection denied; DB integration explicitly deselected",
+    "lint": "Existing ../quant-trading/.venv/Scripts/ruff.exe check --select E9,F,B passed on the owned test",
+    "format": "Existing Ruff formatter applied to the owned test only; final format/diff/hash checks listed by root review or commit",
+    "warnings": "Two existing Starlette/httpx and AnyIO deprecations"
+  },
+  "verified": [
+    "No-order segment: four independently predeclared no-signal decisions, zero trades and unchanged account state",
+    "Sequential long-long, short-short and long-short completed protective trades reconcile quantities, costs, decision/fill timing and final balance through existing independent engine oracle",
+    "Long-long and short-short protective close/new signal/new entry ordering is explicit at a shared second boundary",
+    "Overlapping signal keeps one active position, records one engine skipped_overlap and creates one manual opening fill",
+    "Changing only future suffix cannot alter prior manual state or first completed trade, while later protective outcome does change",
+    "Insufficient-margin source exposes real divergence: automatic engine skips, current replay fills a trade, comparator rejects closed trade count mismatch"
+  ],
+  "remaining_gaps": [
+    {
+      "scope": "Persisted manual no-signal/skip decision audit",
+      "reason": "Replay persists fills/marks/phase transitions but has no canonical no-signal or skip decision events"
+    },
+    {
+      "scope": "Manual fixed-horizon close",
+      "reason": "Replay has no supported manual or horizon close command/event; existing unresolved horizon fixture remains fail-closed"
+    },
+    {
+      "scope": "Equivalent margin admission",
+      "reason": "Research uses fixed starting-balance/leverage admission; current replay does not declare or enforce it. This receipt proves divergence, not margin parity."
+    },
+    {
+      "scope": "Floating equity path comparison",
+      "reason": "Replay exposes bar-close liquidation-value floating P/L; engine metrics are closed-trade balance and do not supply an equivalent canonical floating path"
+    },
+    {
+      "scope": "Full U5b acceptance",
+      "reason": "Synthetic fixtures do not establish real licensed unseen dataset/manual-browser/product acceptance"
+    }
+  ],
+  "runtime": {
+    "python": "3.12.10",
+    "pyarrow": "25.0.1",
+    "nautilus_trader": "1.231.0",
+    "native_memory_budget_mb": 512,
+    "persistent_service_started": false
+  },
+  "boundaries": {
+    "source_or_runtime_edits": false,
+    "frontend_edits": false,
+    "database_operations": false,
+    "provider_calls": false,
+    "broker_calls": false,
+    "holdout_access": false,
+    "execution_capability": false
+  },
+  "rollback": "Revert only the commit containing test_u5b_manual_sequence_parity.py and this receipt; existing comparator/core and other workers remain unchanged"
+}
