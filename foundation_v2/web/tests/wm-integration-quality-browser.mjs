@@ -15,12 +15,13 @@ const origin = args.origin || 'http://127.0.0.1:5180'
 assert.equal(new URL(origin).hostname, '127.0.0.1', 'Only an explicitly selected loopback service is supported')
 const workspace = args.workspace || 'tenant-a'
 const out = path.resolve(args.out || path.join(workspaceRoot, '.artifacts', `wm-integration-quality-${mode}-${Date.now()}`))
+const sessionQuery = `${args.session ? `&session=${encodeURIComponent(args.session)}` : ''}${args.cursor ? `&cursor=${encodeURIComponent(args.cursor)}` : ''}`
 const allRoutes = {
   overview: ['view=overview', '[data-testid="dashboard-data-state"]'],
   sessions: ['view=replay&select=1', '[data-testid="replay-session-picker"]'],
-  replay: [`view=replay${args.session ? `&session=${encodeURIComponent(args.session)}` : ''}`, '[data-testid="replay-chart"], [data-testid="replay-session-dashboard"]'],
-  analytics: [`view=analytics${args.session ? `&session=${encodeURIComponent(args.session)}` : ''}`, '[data-testid="analytics-workspace"]'],
-  trades: [`view=trade${args.session ? `&session=${encodeURIComponent(args.session)}` : ''}`, '[data-testid="trade-session-picker"]'],
+  replay: [`view=replay${sessionQuery}`, '[data-testid="replay-chart"], [data-testid="replay-session-dashboard"]'],
+  analytics: [`view=analytics${sessionQuery}`, '[data-testid="analytics-workspace"]'],
+  trades: [`view=trade${sessionQuery}`, '[data-testid="trade-session-picker"]'],
   learn: ['view=learn', '.learn-shell'],
   settings: ['view=settings', '[data-testid="settings-workspace"]'],
   live: ['view=live', '[data-testid="live-workspace"]'],

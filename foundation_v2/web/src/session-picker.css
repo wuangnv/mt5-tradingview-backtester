@@ -18,6 +18,7 @@
 .fxr-session-select-details strong { color: #f6f6f6; font-size: 22px; line-height: 1.15; }
 .fxr-session-select-details span { color: #b0b1b4; font-size: 15px; line-height: 1.25; }
 .fxr-select-chevron { position: absolute; top: 50%; right: 16px; display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: #414347; color: #fff; font-size: 23px; line-height: 1; transform: translateY(-50%); pointer-events: none; }
+.fxr-select-chevron svg { display: block; width: 18px; height: 18px; }
 .fxr-session-control.is-compact { width: min(320px, 42vw); flex: 0 1 320px; }
 .fxr-session-control.is-compact > label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; clip-path: inset(50%); }
 .fxr-session-control.is-compact .fxr-session-select-card { min-height: 42px; border-radius: 21px; }
@@ -243,7 +244,7 @@ select.fxr-filter-select { appearance: auto; }
 .fxr-integrated-sessions .fxr-session-report { margin-top: 24px; min-width: 0; }
 .fxr-integrated-sessions .fxr-session-report .analytics-workspace { padding: 0; }
 .fxr-integrated-sessions .fxr-empty-state h1 { color: var(--session-ink); font-size: 24px; }
-.fxr-integrated-sessions .fxr-empty-state p { max-width: 650px; line-height: 1.7; }
+.fxr-integrated-sessions .fxr-empty-state p { max-width: 650px; color: var(--session-muted); line-height: 1.7; }
 .fx-app[data-theme='light'] .fxr-integrated-sessions { --session-ink: #1d2930; --session-muted: #47535b; --session-line: #b7c2c9; --session-field: #fff; }
 .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-session-card, .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-session-select-card { background: #f5f7f8; border-color: var(--session-line); }
 .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-session-select-details strong, .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-session-card h2, .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-session-card p, .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-session-control > label, .fx-app[data-theme='light'] .fxr-integrated-sessions .fxr-text-button { color: var(--session-ink); }

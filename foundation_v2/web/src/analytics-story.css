@@ -149,7 +149,7 @@
 .as-large-empty { margin-top: 25px; min-height: 185px; padding: 36px 24px; border: 1px dashed #364149; background: #101518; }
 .as-large-empty h2 { margin: 4px 0 0; color: #e2e9ec; font-size: 18px; }
 .as-large-empty p { max-width: 650px; margin: 0 0 6px; color: #929ea5; font-size: 12px; line-height: 1.55; }
-.as-message { padding: 25px 0; color: #bac5cb; font-size: 13px; }
+.as-message { padding: 25px 0; color: var(--fx-muted, #bac5cb); font-size: 13px; }
 .as-error { color: #ef9c9c; }
 .as-inline-button { min-height: 28px; margin-left: 9px; padding: 0 9px; border: 1px solid #68474a; background: #251719; color: #f3b4b4; cursor: pointer; }
 

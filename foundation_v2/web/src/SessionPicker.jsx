@@ -48,7 +48,7 @@ function SessionSelect({ kind, selected, catalog, showArchived, onSelect, disabl
         <span>{item ? `${unknownValue(item.instrument_id)} · ${timeframeLabel(item)} · ${unknownValue(item.status)}` : 'Chọn phiên đã lưu hoặc tạo phiên mới'}</span>
         {item && <span>{datasetAvailabilityLabel(item.dataset_available)}{item.archived ? ' · Đã lưu trữ' : ''}</span>}
       </div>
-      <span className="fxr-select-chevron" aria-hidden="true">⌄</span>
+      <span className="fxr-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" focusable="false"><path d="m6 9 6 6 6-6" /></svg></span>
     </div>
   </div>
 }

@@ -18,7 +18,8 @@ const SHELL_COPY = {
     themeLightName: 'Giao diện sáng',
     themeDarkShort: 'Tối',
     themeLightShort: 'Sáng',
-    toggleNavigation: 'Mở hoặc thu gọn điều hướng',
+    expandNavigation: 'Mở rộng điều hướng',
+    collapseNavigation: 'Thu gọn điều hướng',
     openNavigation: 'Mở điều hướng',
     closeNavigation: 'Đóng điều hướng',
     help: 'Mở phím tắt và trợ giúp',
@@ -67,7 +68,8 @@ const SHELL_COPY = {
     themeLightName: 'Light theme',
     themeDarkShort: 'Dark',
     themeLightShort: 'Light',
-    toggleNavigation: 'Expand or collapse navigation',
+    expandNavigation: 'Expand navigation',
+    collapseNavigation: 'Collapse navigation',
     openNavigation: 'Open navigation',
     closeNavigation: 'Close navigation',
     help: 'Open shortcuts and help',
@@ -310,7 +312,14 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
   )
 }
 
+function ThemeIcon({ theme }) {
+  return <svg className="fx-theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    {theme === 'dark' ? <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5" /></> : <path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z" />}
+  </svg>
+}
+
 function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace, helpOpen, onToggleHelp, helpButtonRef, railId, mobileNavigation, drawerOpen, menuButtonRef }) {
+  const navigationAction = mobileNavigation ? copy.openNavigation : railCollapsed ? copy.expandNavigation : copy.collapseNavigation
   if (chartWorkspace) {
     const sessionLabel = query?.get('dataset') || query?.get('session') || 'Phiên replay mới'
     const backHref = buildWorkspaceHref('replay', workspace, query, { select: '1', surface: '' })
@@ -322,8 +331,8 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
         </div>
         <div className="fx-chart-session-title" title={sessionLabel}>WMReplay · {sessionLabel}</div>
         <div className="fx-chart-topbar-actions">
-          <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN⌄' : 'VI⌄'}</button>
-          <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span></button>
+          <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN' : 'VI'}</button>
+          <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDark : copy.themeLight} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><ThemeIcon theme={theme} /></button>
           <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls={helpOpen ? 'fx-shell-help' : undefined} aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
         </div>
       </header>
@@ -332,10 +341,13 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
   return (
     <header className="fx-topbar" inert={drawerOpen}>
       <div className="fx-topbar-brand" title={copy.product}>
-        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-label={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} title={mobileNavigation ? copy.openNavigation : copy.toggleNavigation} ref={menuButtonRef}>
+        <button className="fx-menu-button" type="button" onClick={onToggleRail} aria-expanded={!railCollapsed} aria-controls={railId} aria-label={navigationAction} title={navigationAction} ref={menuButtonRef}>
           <svg className="fx-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-            <path d="M4 7h8M4 12h16M4 17h8" />
-            <path d="m8 4-4 3 4 3" />
+            {mobileNavigation ? <path d="M4 6h16M4 12h16M4 18h16" /> : <>
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M9 4v16" />
+              <path className="fx-menu-chevron" d={railCollapsed ? 'm13 9 3 3-3 3' : 'm16 9-3 3 3 3'} />
+            </>}
           </svg>
         </button>
         <span className="fx-wordmark"><WMReplayWordmark /></span>
@@ -343,10 +355,10 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
       </div>
       <div className="fx-topbar-actions">
         <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">
-          {language === 'vi' ? 'EN⌄' : 'VI⌄'}
+          {language === 'vi' ? 'EN' : 'VI'}
         </button>
-        <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDarkName : copy.themeLightName} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle">
-          <span className="fx-theme-icon" aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span>
+        <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDark : copy.themeLight} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle">
+          <ThemeIcon theme={theme} />
         </button>
         <button className="fx-shell-toggle fx-utility-icon" type="button" onClick={onToggleHelp} aria-expanded={helpOpen} aria-controls={helpOpen ? 'fx-shell-help' : undefined} aria-label={copy.help} title={copy.help} data-testid="help-toggle" ref={helpButtonRef}>?</button>
       </div>

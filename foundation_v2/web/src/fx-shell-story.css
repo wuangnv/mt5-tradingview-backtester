@@ -788,6 +788,29 @@
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-menu-button {
   display: inline-grid !important;
+  position: static;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  transform: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-menu-button:hover {
+  background: color-mix(in srgb, var(--fx-shell-text) 8%, transparent);
+}
+
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-menu-button:focus-visible {
+  outline: 2px solid var(--fx-shell-accent);
+  outline-offset: -2px;
+}
+
+/* Compact navigation prioritizes one clear, centered control over a tiny
+ * wordmark competing for the same rail cell. */
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark-compact {
+  display: none;
 }
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark {
@@ -930,7 +953,7 @@
 }
 
 .fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-wordmark-compact {
-  display: inline-block;
+  display: none;
 }
 
 .fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-rail-section-label {
@@ -970,7 +993,7 @@
   }
 
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark { display: none; }
-  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark-compact { display: inline-block; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark-compact { display: none; }
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark { display: inline-block; }
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark-compact { display: none; }
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-label { display: none; }
@@ -993,7 +1016,8 @@
   .fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-topbar-brand { flex-basis: 58px; }
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-topbar-brand { flex-basis: 58px; justify-content: center; gap: 0; padding: 0; }
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark { display: none; }
-  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark-compact { display: inline-block; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark-compact { display: none; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar { grid-template-columns: 58px minmax(0, 1fr); }
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { gap: 20px; padding: 0 18px; }
 
   .fx-mobile-nav-backdrop {

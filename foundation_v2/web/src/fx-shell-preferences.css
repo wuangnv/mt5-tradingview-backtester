@@ -53,12 +53,14 @@ body[data-tw-theme='dark'] {
 
 .fx-theme-toggle {
   gap: 5px;
-  min-width: 62px;
+  min-width: 36px;
 }
 
 .fx-theme-icon {
-  font-size: 14px;
-  line-height: 1;
+  display: block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .fx-theme-label {
