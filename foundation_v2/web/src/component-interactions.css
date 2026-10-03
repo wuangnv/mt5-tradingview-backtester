@@ -10,6 +10,11 @@
 .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(input, select, textarea):not(:disabled):hover {
   border-color: var(--wm-border-strong);
 }
+.fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:not(:disabled):hover {
+  background: var(--fx-shell-nav-hover);
+  color: var(--wm-content);
+  border-color: color-mix(in srgb, var(--wm-border-strong) 65%, var(--wm-content));
+}
 .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(input, select, textarea):focus-visible {
   border-color: var(--wm-primary);
   outline: 2px solid var(--wm-primary);
@@ -119,8 +124,10 @@
     text-overflow: ellipsis;
   }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:open {
-    border-color: var(--wm-primary);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--wm-primary) 15%, transparent);
+    background: var(--fx-shell-nav-hover);
+    color: var(--wm-content);
+    border-color: var(--wm-border-strong);
+    box-shadow: none;
   }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:disabled { cursor: not-allowed; }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select::picker-icon {
@@ -128,7 +135,7 @@
     margin-inline-start: auto;
     transition: rotate 140ms ease;
   }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:open::picker-icon { rotate: 180deg; color: var(--wm-primary); }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:open::picker-icon { rotate: 180deg; color: var(--wm-content); }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select::picker(select) {
     min-inline-size: anchor-size(width);
     max-inline-size: min(640px, calc(100vw - 24px));
@@ -163,11 +170,11 @@
     line-height: 1.5;
     cursor: pointer;
   }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:not(:disabled):is(:hover, :focus) { background: var(--wm-hover); outline: 0; }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:disabled { color: var(--wm-content-muted); cursor: not-allowed; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked { background: var(--wm-selected); color: var(--wm-content); font-weight: 600; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:focus-visible { outline: 2px solid var(--wm-primary); outline-offset: -2px; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option::checkmark { order: 1; margin-inline-start: auto; color: var(--wm-primary); }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked { background: var(--fx-shell-nav-selected); color: var(--wm-content); font-weight: 600; }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:not(:disabled):is(:hover, :focus-visible) { background: var(--fx-shell-nav-hover); color: var(--wm-content); outline: 0; }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked:not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--fx-shell-nav-selected) 85%, var(--wm-content)); }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option::checkmark { order: 1; margin-inline-start: auto; color: currentColor; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, a, input, select, textarea, summary, tr, article),

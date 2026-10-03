@@ -1,0 +1,49 @@
+{
+  "schema_version": "dashboard-replay-performance-v1",
+  "status": "partial",
+  "scope": {
+    "source": "persisted_replay_execution",
+    "session_id": null,
+    "session_count": 25,
+    "readable_session_count": 7,
+    "filters": {
+      "side": "all",
+      "outcome": "all",
+      "from_close_utc": null,
+      "to_close_utc": null
+    },
+    "includes_archived": true,
+    "duplicate_trade_count": 360,
+    "aggregation": "unique_closed_fills_within_root_lineage",
+    "timezone": "UTC"
+  },
+  "metrics": {
+    "closed_trade_count": 60,
+    "wins": 60,
+    "losses": 0,
+    "breakeven": 0,
+    "win_rate_pct": 100.0
+  },
+  "months": [
+    {
+      "month": "2024-01",
+      "closed_trade_count": 60,
+      "wins": 60,
+      "losses": 0,
+      "breakeven": 0,
+      "win_rate_pct": 100.0
+    }
+  ],
+  "symbols": [
+    {
+      "symbol": "EURUSD",
+      "closed_trade_count": 60,
+      "wins": 60,
+      "losses": 0,
+      "breakeven": 0,
+      "win_rate_pct": 100.0
+    }
+  ],
+  "time_invested_seconds": null,
+  "historical_time_replayed_seconds": null
+}

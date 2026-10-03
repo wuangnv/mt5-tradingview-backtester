@@ -1,0 +1,8 @@
+{
+  "scope": "isolated real GET-only QA data; native select pointer/keyboard/dismissal and component states; no backend writes",
+  "cases": [],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Keyboard focus remains visible\n\n'none' !== 'solid'\n"
+}

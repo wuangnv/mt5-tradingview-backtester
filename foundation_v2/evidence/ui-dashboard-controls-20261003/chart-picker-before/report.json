@@ -1,0 +1,55 @@
+{
+  "scope": "Independent isolated light chart picker GET-only review; no backend writes",
+  "cases": [
+    {
+      "width": 1440,
+      "name": "Kiểu chart",
+      "style": {
+        "color": "rgb(29, 41, 48)",
+        "background": "rgb(224, 231, 234)"
+      },
+      "trigger": {
+        "color": "rgb(29, 41, 48)",
+        "background": "rgb(224, 231, 234)"
+      }
+    },
+    {
+      "width": 1440,
+      "name": "Tốc độ replay",
+      "style": {
+        "color": "rgb(29, 41, 48)",
+        "background": "rgb(224, 231, 234)"
+      },
+      "trigger": {
+        "color": "rgb(220, 227, 231)",
+        "background": "rgb(224, 231, 234)"
+      }
+    },
+    {
+      "width": 320,
+      "name": "Kiểu chart",
+      "style": {
+        "color": "rgb(29, 41, 48)",
+        "background": "rgb(224, 231, 234)"
+      },
+      "trigger": {
+        "color": "rgb(29, 41, 48)",
+        "background": "rgb(224, 231, 234)"
+      }
+    },
+    {
+      "width": 320,
+      "name": "Tốc độ replay",
+      "style": {
+        "color": "rgb(29, 41, 48)",
+        "background": "rgb(224, 231, 234)"
+      },
+      "trigger": {
+        "color": "rgb(220, 227, 231)",
+        "background": "rgb(224, 231, 234)"
+      }
+    }
+  ],
+  "blocked": [],
+  "status": "PASS"
+}

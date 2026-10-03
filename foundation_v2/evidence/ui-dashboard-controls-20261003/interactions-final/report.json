@@ -1,0 +1,2185 @@
+{
+  "scope": "isolated real GET-only QA data; native select pointer/keyboard/dismissal and component states; no backend writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(10, 13, 16)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(232, 237, 240)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(21, 26, 30)",
+            "color": "rgb(255, 255, 255)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "hoverStates": [
+        {
+          "name": "Phạm vi Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Thời gian Performance",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Lọc trạng thái phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Sắp xếp phiên",
+          "resting": {
+            "background": "rgb(245, 247, 248)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionRest": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          },
+          "optionHover": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ],
+      "asideSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavSelected": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "asideHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "subnavHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "outline": "none",
+        "shadow": "none",
+        "radius": "8px",
+        "bottomBorder": "0px"
+      },
+      "options": 26,
+      "appearance": "base-select",
+      "keyboardSelection": "a70ee596383445d29e650175d505639a",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0,
+      "replayPickers": [
+        {
+          "name": "Kiểu chart",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        },
+        {
+          "name": "Tốc độ replay",
+          "hovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "opened": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "6px",
+            "bottomBorder": "1px"
+          },
+          "optionHovered": {
+            "background": "rgb(224, 231, 234)",
+            "color": "rgb(29, 41, 48)",
+            "outline": "none",
+            "shadow": "none",
+            "radius": "4px",
+            "bottomBorder": "0px"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "fallback": "progressive CSS removed: native select retains scope/change and known result; other engines not run",
+  "status": "PASS"
+}

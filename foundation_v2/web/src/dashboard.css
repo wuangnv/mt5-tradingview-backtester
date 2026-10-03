@@ -112,10 +112,10 @@
 .fx-dashboard-session-menu { position: relative; }
 .fx-dashboard-session-menu summary { display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; color: var(--wm-content-muted); font-size: 24px; border-radius: 6px; list-style: none; }
 .fx-dashboard-session-menu summary::-webkit-details-marker { display: none; }
-.fx-dashboard-session-menu summary:hover, .fx-dashboard-session-menu[open] summary { background: var(--wm-hover); color: var(--wm-content); }
+.fx-dashboard-session-menu summary:hover, .fx-dashboard-session-menu[open] summary { background: var(--fx-shell-nav-hover); color: var(--wm-content); }
 .fx-dashboard-menu-items { position: absolute; top: calc(100% + 4px); right: 0; z-index: 5; min-width: 180px; padding: 6px; border-radius: 8px; border: 1px solid var(--wm-border-strong); background: var(--wm-surface); box-shadow: 0 8px 24px #0003; }
 .fx-dashboard-menu-items a { display: flex; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 4px; color: var(--wm-content); text-decoration: none; font-size: 13px; }
-.fx-dashboard-menu-items a:hover { background: var(--wm-hover); }
+.fx-dashboard-menu-items a:hover { background: var(--fx-shell-nav-hover); }
 .fx-dashboard-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; font-size: 12px; color: var(--wm-content-muted); }
 .fx-dashboard-pagination > div { display: flex; align-items: center; gap: 12px; }
 .fx-dashboard-pagination button { width: 44px; }

@@ -11,6 +11,12 @@ const report = { scope: 'isolated real GET-only QA data; native select pointer/k
 await mkdir(out, { recursive: true })
 const axe = await readFile('../../../../.artifacts/wm-integration-quality-tools/node_modules/axe-core/axe.min.js', 'utf8')
 const browser = await chromium.launch({ headless: true })
+const settledStyle = locator => locator.evaluate(async element => {
+  getComputedStyle(element).backgroundColor
+  await Promise.all(element.getAnimations().map(animation => animation.finished))
+  const style = getComputedStyle(element)
+  return { background: style.backgroundColor, color: style.color, outline: style.outlineStyle, shadow: style.boxShadow, radius: style.borderRadius, bottomBorder: style.borderBottomWidth }
+})
 try {
   for (const theme of ['dark', 'light']) for (const width of [1440, 768, 390, 320]) {
     const context = await browser.newContext({ viewport: { width, height: 987 }, reducedMotion: width === 1440 ? 'no-preference' : 'reduce' })
@@ -29,6 +35,50 @@ try {
     await page.getByTestId('dashboard-performance').waitFor()
     await page.locator('.fx-dashboard-metric strong').nth(2).getByText('60', { exact: true }).waitFor()
     const select = page.getByRole('combobox', { name: 'Phạm vi Performance' })
+    const hoverStates = []
+    for (const name of ['Phạm vi Performance', 'Thời gian Performance', 'Lọc trạng thái phiên', 'Sắp xếp phiên']) {
+      await page.getByRole('heading', { name: 'Dashboard', exact: true }).click()
+      const control = page.getByRole('combobox', { name })
+      const resting = await settledStyle(control)
+      await control.hover()
+      const hovered = await settledStyle(control)
+      assert.notEqual(hovered.background, resting.background, `${name}: pointer hover changes the trigger background`)
+      const unchangedValue = await control.inputValue()
+      await control.click()
+      await page.waitForFunction(label => document.querySelector(`select[aria-label="${label}"]`).matches(':open'), name)
+      const opened = await settledStyle(control)
+      assert.equal(opened.shadow, 'none', `${name}: opening does not add a blue glow`)
+      assert.equal(opened.outline, 'none', `${name}: pointer opening has no keyboard focus ring`)
+      const unselected = control.locator('option:not(:checked)').first()
+      const optionRest = await settledStyle(unselected)
+      await unselected.hover()
+      const optionHover = await settledStyle(unselected)
+      assert.notEqual(optionHover.background, optionRest.background, `${name}: popup option has real pointer hover`)
+      assert.equal(await control.inputValue(), unchangedValue, 'Hover never selects an option')
+      await page.screenshot({ path: path.join(out, `hover-${name === 'Phạm vi Performance' ? 'scope' : name === 'Thời gian Performance' ? 'period' : name === 'Lọc trạng thái phiên' ? 'status' : 'sort'}-${theme}-${width}.png`), animations: 'disabled' })
+      await page.getByRole('heading', { name: 'Dashboard', exact: true }).click()
+      assert.equal(await control.evaluate(element => element.matches(':open')), false)
+      hoverStates.push({ name, resting, hovered, opened, optionRest, optionHover })
+    }
+    const asideSelected = await settledStyle(page.locator('.fx-rail-section-heading.is-active'))
+    const subnavSelected = await settledStyle(page.locator('.fx-subnav a.is-active'))
+    assert.equal(subnavSelected.background, asideSelected.background, 'Subheader selected background matches aside')
+    assert.equal(subnavSelected.color, asideSelected.color, 'Subheader selected text matches aside')
+    assert.equal(subnavSelected.radius, asideSelected.radius)
+    assert.equal(subnavSelected.bottomBorder, '0px', 'A rounded selected item replaces the blue underline')
+    const asideLink = page.locator('.fx-rail-section-heading:not(.is-active)').first()
+    await asideLink.hover()
+    const asideHover = await settledStyle(asideLink)
+    const subnavLink = page.locator('.fx-subnav a:not(.is-active)').first()
+    await subnavLink.hover()
+    const subnavHover = await settledStyle(subnavLink)
+    assert.equal(subnavHover.background, asideHover.background, 'Subheader and aside use the same hover background')
+    await page.screenshot({ path: path.join(out, `subnav-hover-${theme}-${width}.png`), animations: 'disabled' })
+    await page.getByRole('heading', { name: 'Dashboard', exact: true }).click()
+    await page.keyboard.press('Tab')
+    await select.focus()
+    assert.equal((await settledStyle(select)).outline, 'solid', 'Keyboard focus remains visible')
+    await page.keyboard.press('Tab')
     if (width === 768 || width === 320) await page.screenshot({ path: path.join(out, `loaded-${theme}-${width}.png`), animations: 'disabled' })
     const options = await select.locator('option').evaluateAll(items => items.map(item => ({ value: item.value, label: item.label })))
     assert.ok(options.length > 2)
@@ -94,7 +144,7 @@ try {
     await page.waitForLoadState('networkidle')
     await page.screenshot({ path: path.join(out, `selected-${theme}-${width}.png`), animations: 'disabled' })
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth) <= 1)
-    report.cases.push({ theme, width, options: options.length, appearance, keyboardSelection: options[1].value, selectedRow: rowId, overflow: 0, axeViolations: 0 })
+    report.cases.push({ theme, width, hoverStates, asideSelected, subnavSelected, asideHover, subnavHover, options: options.length, appearance, keyboardSelection: options[1].value, selectedRow: rowId, overflow: 0, axeViolations: 0 })
     // Remove only this progressive branch to exercise the native fallback
     // contract in the installed browser, without claiming a Safari/Firefox run.
     if (theme === 'light' && width === 320) {
@@ -109,6 +159,31 @@ try {
       await page.locator('.fx-dashboard-metric strong').nth(2).getByText('60', { exact: true }).waitFor()
       report.fallback = 'progressive CSS removed: native select retains scope/change and known result; other engines not run'
     }
+    await page.goto(`${origin}/?workspace=tenant-a&view=replay&session=${session}&cursor=60`, { waitUntil: 'networkidle' })
+    await page.getByTestId('replay-chart').waitFor()
+    const replayPickers = []
+    for (const name of ['Kiểu chart', 'Tốc độ replay']) {
+      const control = page.getByRole('combobox', { name, exact: true })
+      const value = await control.inputValue()
+      await control.hover()
+      const hovered = await settledStyle(control)
+      await control.click()
+      await page.waitForFunction(label => document.querySelector(`select[aria-label="${label}"]`).matches(':open'), name)
+      const option = control.locator('option:not(:checked)').first()
+      await option.hover()
+      const optionHovered = await settledStyle(option)
+      const opened = await settledStyle(control)
+      assert.equal(hovered.color, optionHovered.color, `${name}: hovered trigger uses readable theme text`)
+      assert.equal(opened.color, optionHovered.color, `${name}: opened trigger remains readable when pointer moves into popup`)
+      assert.equal(opened.background, optionHovered.background)
+      assert.equal(opened.shadow, 'none')
+      assert.equal(await control.inputValue(), value)
+      await page.screenshot({ path: path.join(out, `replay-${name === 'Kiểu chart' ? 'type' : 'speed'}-${theme}-${width}.png`), animations: 'disabled' })
+      await page.keyboard.press('Escape')
+      assert.equal(await control.inputValue(), value)
+      replayPickers.push({ name, hovered, opened, optionHovered })
+    }
+    report.cases.at(-1).replayPickers = replayPickers
     await context.close()
   }
   assert.deepEqual(report.errors, [])

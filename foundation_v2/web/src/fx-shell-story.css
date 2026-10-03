@@ -851,15 +851,18 @@
   transition: background-color .14s ease, color .14s ease;
 }
 
+.fx-app.fx-shell-story { --fx-shell-nav-hover: #151a1e; --fx-shell-nav-selected: #202225; --fx-shell-nav-selected-content: var(--fx-shell-text); }
+.fx-app.fx-shell-story[data-theme='light'] { --fx-shell-nav-hover: #e0e7ea; --fx-shell-nav-selected: #f0e6d1; --fx-shell-nav-selected-content: #5a3a06; }
+
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading:hover,
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading:focus-visible {
-  background: #151a1e;
+  background: var(--fx-shell-nav-hover);
   color: var(--fx-shell-text);
 }
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading.is-active {
-  background: #202225;
-  color: var(--fx-shell-text);
+  background: var(--fx-shell-nav-selected);
+  color: var(--fx-shell-nav-selected-content);
 }
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading.is-active .fx-nav-icon {
@@ -1207,12 +1210,12 @@
 /* The source-aligned rail rules above are intentionally dark. Keep the two
  * measured light-theme controls legible after all shell layers are loaded. */
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading.is-active {
-  background: #f0e6d1;
-  color: #5a3a06;
+  background: var(--fx-shell-nav-selected);
+  color: var(--fx-shell-nav-selected-content);
 }
 
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading.is-active .fx-nav-icon {
-  color: #5a3a06;
+  color: var(--fx-shell-nav-selected-content);
 }
 
 .fx-app.fx-shell-story[data-theme='light'] .fx-menu-button {
@@ -1234,7 +1237,7 @@
 
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading:hover,
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading:focus-visible {
-  background: #e0e7ea;
+  background: var(--fx-shell-nav-hover);
   color: #1d2930;
 }
 
@@ -1304,21 +1307,27 @@
 
 .fx-content:focus-visible { outline: 2px solid var(--fx-shell-accent); outline-offset: -2px; }
 
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { align-items: center; gap: 8px; }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a {
+  min-height: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
   transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
 }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a:hover {
   color: var(--wm-content);
-  background: var(--wm-hover);
+  background: var(--fx-shell-nav-hover);
 }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a:focus-visible {
   outline: 2px solid var(--wm-focus);
   outline-offset: -3px;
-  background: var(--wm-hover);
+  background: var(--fx-shell-nav-hover);
 }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a.is-active {
-  color: var(--wm-primary);
-  background: var(--wm-selected);
+  color: var(--fx-shell-nav-selected-content);
+  background: var(--fx-shell-nav-selected);
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a { transition: none; }
