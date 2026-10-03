@@ -1,0 +1,9 @@
+# Owner Dashboard presentation feedback — 2026-10-03
+
+Two owner browser comments explicitly replace the previous resume card and generic heading. Resume now sits directly on the page: transparent background, no left border/radius, spacing/typography only. Removed TESTING / Tiếp tục luyện tập / generic introductory sentence. Actual session name (or meaningful loading/error/empty title) is the page h1. Kept domain metadata, QA description, resume/results and recency label. Catalog refresh is a44px icon with Vietnamese accessible name/title and visible keyboard focus beside recency.
+
+Presentation only; catalog selection, canonical cursor navigation and management mutation ownership from08ce317 remain unchanged.
+
+Verification:79unit tests PASS; Vite78-module build PASS (existing chunk advisory); overview8cases1440/768/390/320×light/dark axe/reflow SCOPED_PASS with no failures/requests. Final UI sourcef0371802756ce0057d508ab0d7d2dc1fbf5eed1df7b6291a79bd96c983c5f8c3, unchanged during scan. Existing focused sessions fixture+real readonly journeys PASS on retry: canonical cursor60/61candles after reload, direct60trade Analytics, readonly management/loading/error/archive semantics preserved. First run hit15second real API heading timeout during host slowdown; explicit GET measured13954ms and still returned correct QA60catalog record. Unchanged-source retry passed; no timeout relaxation or receipt relabeling.
+
+Independent reviewer4cases1440/390dark/light visually inspected flat surface,1h1,0leftborder/radius,44pxrefresh keyboard Enter GETreload and no overflow; PASS (independent/INDEPENDENT-REVIEW.md). Root inspected final desktop/tablet/mobile screenshots. This receipt supersedes08ce317presentation, preserves its behavior evidence and remains scoped to Dashboard; no ledger/golden/broker/provider changes. UI5180/API8020 remain running readonly.
