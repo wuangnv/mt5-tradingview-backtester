@@ -1,0 +1,54 @@
+{
+  "scope": "labeled response fixtures for long name, empty and denied catalog; no backend mutations",
+  "cases": [
+    {
+      "theme": "dark",
+      "mode": "long",
+      "height": 239,
+      "width": 230,
+      "cursor": "pointer",
+      "overflow": 0
+    },
+    {
+      "theme": "dark",
+      "mode": "empty",
+      "height": 52,
+      "width": 230,
+      "cursor": "not-allowed",
+      "overflow": 0
+    },
+    {
+      "theme": "dark",
+      "mode": "denied",
+      "height": 52,
+      "width": 230,
+      "cursor": "not-allowed",
+      "overflow": 0
+    },
+    {
+      "theme": "light",
+      "mode": "long",
+      "height": 239,
+      "width": 230,
+      "cursor": "pointer",
+      "overflow": 0
+    },
+    {
+      "theme": "light",
+      "mode": "empty",
+      "height": 52,
+      "width": 230,
+      "cursor": "not-allowed",
+      "overflow": 0
+    },
+    {
+      "theme": "light",
+      "mode": "denied",
+      "height": 52,
+      "width": 230,
+      "cursor": "not-allowed",
+      "overflow": 0
+    }
+  ],
+  "status": "PASS"
+}

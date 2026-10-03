@@ -41,6 +41,7 @@ export default function DashboardSessions({ workspace, query }) {
   return <>
     <div className="fx-dashboard-toolbar"><h1>Dashboard</h1><div className="fx-dashboard-toolbar-actions">
       <label className="fx-dashboard-scope"><span>Phiên</span><select aria-label="Phiên kết quả" value={selected?.record_id || selectedId} disabled={!ready || !catalog.items.length} onChange={event => selectSession(event.target.value)}>
+        <button type="button" inert><selectedcontent /></button>
         {!selected && <option value={selectedId}>{selectedId ? 'Phiên đã chọn không còn trong danh mục' : 'Chưa có phiên'}</option>}
         {recentSessions(catalog.items, { archived: true }).map(item => <option key={item.record_id} value={item.record_id}>{sessionName(item)}{item.archived ? ' · đã lưu trữ' : ''}</option>)}
       </select></label>
@@ -53,9 +54,9 @@ export default function DashboardSessions({ workspace, query }) {
     <DashboardPerformance workspace={workspace} session={ready ? selected : null} reload={reload} analyticsHref={selected ? analyticsHref(selected) : sessionsHref} />
     <section className="fx-dashboard-recent" data-testid="dashboard-recent" aria-label="Phiên gần đây">
       <div className="fx-dashboard-section-head"><h2>Phiên gần đây</h2><a className="fx-dashboard-text-link" href={sessionsHref}>Xem tất cả phiên <span aria-hidden="true">↗</span></a></div>
-      {ready && sorted.length ? <div className="fx-dashboard-session-list">{sorted.slice(0, 3).map(item => <article className="fx-dashboard-session-row" key={item.record_id} data-session-id={item.record_id}>
+      {ready && sorted.length ? <div className="fx-dashboard-session-list">{sorted.slice(0, 3).map(item => <article className={`fx-dashboard-session-row${selected?.record_id === item.record_id ? ' is-selected' : ''}`} key={item.record_id} data-session-id={item.record_id}>
         <div className="fx-dashboard-session-info"><h3><a href={href(item)} onClick={() => choose(item)}>{sessionName(item)}</a></h3><p>{sessionContext(item)}</p></div><span className="fx-dashboard-session-status">{statusLabel(item)}{item.dataset_available !== true ? ' · Dataset chưa sẵn sàng' : ''}</span>
-        <div className="fx-dashboard-row-actions"><button type="button" className="fx-dashboard-text-link" onClick={() => selectSession(item.record_id)}>Kết quả</button>{canResumeSession(item) && <a className="fx-dashboard-text-link" href={chartHref(item)} onClick={() => choose(item)}>Tiếp tục <span aria-hidden="true">→</span></a>}</div>
+        <div className="fx-dashboard-row-actions"><button type="button" className="fx-dashboard-text-link" aria-pressed={selected?.record_id === item.record_id} onClick={() => selectSession(item.record_id)}>{selected?.record_id === item.record_id && <svg className="fx-dashboard-selection-mark" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m3 8 3 3 7-7" /></svg>}Kết quả</button>{canResumeSession(item) && <a className="fx-dashboard-text-link" href={chartHref(item)} onClick={() => choose(item)}>Tiếp tục <span aria-hidden="true">→</span></a>}</div>
       </article>)}</div> : <p className="fx-dashboard-catalog-status">{catalog.status === 'loading' ? 'Đang tải danh sách phiên…' : catalog.status === 'error' ? 'Danh sách chưa khả dụng.' : 'Chưa có phiên đang hoạt động.'}</p>}
     </section>
     <nav className="fx-dashboard-secondary-actions" aria-label="Công cụ luyện tập"><a className="fx-dashboard-text-link" href={buildWorkspaceHref('testing', workspace, query)}>Prop firm session <span aria-hidden="true">↗</span></a><a className="fx-dashboard-text-link" href={buildWorkspaceHref('learn', workspace, query)}>Bài học <span aria-hidden="true">↗</span></a></nav>

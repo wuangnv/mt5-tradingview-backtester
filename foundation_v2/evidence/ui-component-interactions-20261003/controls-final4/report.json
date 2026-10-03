@@ -1,0 +1,89 @@
+{
+  "scope": "isolated real GET-only QA data; native select pointer/keyboard/dismissal and component states; no backend writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "options": 25,
+      "appearance": "base-select",
+      "keyboardSelection": "5b84db59a5d84a5e94902d5fdb716cb0",
+      "selectedRow": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "axeViolations": 0
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "fallback": "progressive CSS removed: native select retains scope/change and known result; other engines not run",
+  "status": "PASS"
+}

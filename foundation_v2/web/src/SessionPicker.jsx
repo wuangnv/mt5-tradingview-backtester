@@ -28,6 +28,7 @@ function SessionSelect({ kind, selected, catalog, showArchived, onSelect, disabl
     <label htmlFor={`fxr-${kind}-session-select`}>Chọn phiên replay</label>
     <div className="fxr-session-select-card">
       <select id={`fxr-${kind}-session-select`} aria-label="Chọn phiên replay" value={selected} onChange={(event) => onSelect(event.target.value)} disabled={disabled || catalog.status !== 'ready'}>
+        <button type="button" inert><selectedcontent /></button>
         <option value="">Chọn phiên replay</option>
         {selected && !item && <option value={selected}>{selected} · Không có trong danh mục</option>}
         {options.map((entry) => <option key={entry.record_id} value={entry.record_id}>{sessionOptionLabel(entry)}</option>)}

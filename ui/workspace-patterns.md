@@ -45,3 +45,11 @@ One identical grid for every page was rejected: forms, long ledgers, lessons and
 | Replay | Chart pane → compact tools → contextual right panel | ReplayWorkspace, FxReplayShell |
 
 Runtime and independent review receipts live in `foundation_v2/evidence/ui-pattern-migration-20261003/`. Pattern approval does not mean whole-product completion or canonical-golden promotion.
+
+## Component interaction refinement
+
+Owner feedback after migration: selection and child components still felt basic. `component-interactions.css` extends the same project pattern with distinct hover, persistent selection, open picker and keyboard focus, plus short color transitions and reduced-motion handling. Selected records use a subtle full-row tint/outline; no decorative left rail or nested card. Dashboard results show the actual selected row/checkmark; Data/Prop controls expose their selected state to assistive technology.
+
+Native selects retain their value/change, keyboard, type-ahead, form and disabled contracts. [MDN customizable select](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Customizable_select), read03/10/2026, documents `appearance:base-select`, `::picker(select)` and optional button/selectedcontent. Support remains limited: the richer picker is enabled through `@supports`; unsupported engines retain native controls. Session selectors use an inert native button/selectedcontent to truncate long labels in the44px trigger while retaining the full option text in the picker. This does not add a JavaScript combobox library or search feature.
+
+Evidence: `foundation_v2/evidence/ui-component-interactions-20261003/CHECKPOINT.md`. Installed Chromium was tested; removing the progressive CSS tests the native fallback contract without claiming a Safari/Firefox run.

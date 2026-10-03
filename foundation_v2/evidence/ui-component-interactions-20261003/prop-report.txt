@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "fixture": "ui-labeled-ps03-prop-report",
+  "checks": [
+    "simulation_only_lock",
+    "backend_session_and_attempt_discovery",
+    "create_session_and_attempt",
+    "persisted_id_reload_resume",
+    "cursor_and_money_resume_state",
+    "objective_snapshot_visibility",
+    "simulation_lifecycle_start_pause_resume",
+    "attempt_report_reason_explanation",
+    "report_to_exact_replay_cursor_link",
+    "report_status_and_branch_filters",
+    "report_csv_export",
+    "notion_local_oauth_and_offline_connector_flow",
+    "report_failure_does_not_hide_resume_state",
+    "mutations_prop_api_only",
+    "no_broker_or_credential_payload",
+    "conflict",
+    "empty",
+    "denied",
+    "error",
+    "responsive_1440_768_360"
+  ],
+  "screenshots": [
+    "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\prop\\prop-ui-fixture-1440.png",
+    "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\prop\\prop-ui-fixture-768.png",
+    "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\prop\\prop-ui-fixture-360.png"
+  ]
+}

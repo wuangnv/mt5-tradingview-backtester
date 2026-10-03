@@ -1,0 +1,641 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "a6bc415e5385031b2944e639535a4599cc9fa074f9d384c7b1ec80f9abdf4f9e",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"212.25806451612902\"]"
+                ],
+                "html": "<text x=\"66\" y=\"212.25806451612902\" text-anchor=\"end\">0</text>",
+                "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+              },
+              {
+                "target": [
+                  "text[y=\"130\"]"
+                ],
+                "html": "<text x=\"66\" y=\"130\" text-anchor=\"end\">37,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"80\"]"
+                ],
+                "html": "<text x=\"80\" y=\"266\" text-anchor=\"start\">#0</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"527\"]"
+                ],
+                "html": "<text x=\"527\" y=\"266\" text-anchor=\"middle\">#30</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"974\"]"
+                ],
+                "html": "<text x=\"974\" y=\"266\" text-anchor=\"end\">#60</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"212.25806451612902\"]"
+                ],
+                "html": "<text x=\"66\" y=\"212.25806451612902\" text-anchor=\"end\">0</text>",
+                "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+              },
+              {
+                "target": [
+                  "text[y=\"130\"]"
+                ],
+                "html": "<text x=\"66\" y=\"130\" text-anchor=\"end\">37,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"80\"]"
+                ],
+                "html": "<text x=\"80\" y=\"266\" text-anchor=\"start\">#0</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"527\"]"
+                ],
+                "html": "<text x=\"527\" y=\"266\" text-anchor=\"middle\">#30</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"974\"]"
+                ],
+                "html": "<text x=\"974\" y=\"266\" text-anchor=\"end\">#60</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"130\"]"
+                ],
+                "html": "<text x=\"66\" y=\"130\" text-anchor=\"end\">37,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 320,
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 900,
+        "outerWidth": 320,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 320,
+        "overflowX": 0,
+        "contentWidth": 262,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-dark-320.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"212.25806451612902\"]"
+                ],
+                "html": "<text x=\"66\" y=\"212.25806451612902\" text-anchor=\"end\">0</text>",
+                "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+              },
+              {
+                "target": [
+                  "text[y=\"130\"]"
+                ],
+                "html": "<text x=\"66\" y=\"130\" text-anchor=\"end\">37,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"80\"]"
+                ],
+                "html": "<text x=\"80\" y=\"266\" text-anchor=\"start\">#0</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"527\"]"
+                ],
+                "html": "<text x=\"527\" y=\"266\" text-anchor=\"middle\">#30</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"974\"]"
+                ],
+                "html": "<text x=\"974\" y=\"266\" text-anchor=\"end\">#60</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"212.25806451612902\"]"
+                ],
+                "html": "<text x=\"66\" y=\"212.25806451612902\" text-anchor=\"end\">0</text>",
+                "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+              },
+              {
+                "target": [
+                  "text[y=\"130\"]"
+                ],
+                "html": "<text x=\"66\" y=\"130\" text-anchor=\"end\">37,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"80\"]"
+                ],
+                "html": "<text x=\"80\" y=\"266\" text-anchor=\"start\">#0</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"527\"]"
+                ],
+                "html": "<text x=\"527\" y=\"266\" text-anchor=\"middle\">#30</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[x=\"974\"]"
+                ],
+                "html": "<text x=\"974\" y=\"266\" text-anchor=\"end\">#60</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"130\"]"
+                ],
+                "html": "<text x=\"66\" y=\"130\" text-anchor=\"end\">37,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 320,
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 900,
+        "outerWidth": 320,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 320,
+        "overflowX": 0,
+        "contentWidth": 262,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select aria-label=\"Phiên kết quả\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-resume-actions > .fx-dashboard-text-link > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">→</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "text[y=\"47.741935483870975\"]"
+                ],
+                "html": "<text x=\"66\" y=\"47.741935483870975\" text-anchor=\"end\">75</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 27
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-interactions-20261003\\overview-final\\overview-light-320.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "a6bc415e5385031b2944e639535a4599cc9fa074f9d384c7b1ec80f9abdf4f9e",
+  "status": "SCOPED_PASS"
+}

@@ -384,7 +384,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const active = dataset.dataset_id === selected?.dataset_id
                       return (
                         <tr key={dataset.dataset_id} className={active ? 'is-selected' : ''}>
-                          <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} onClick={() => setSelectedId(dataset.dataset_id)}><strong>{dataset.instrument_id || 'Instrument chưa xác định'} · {dataset.timeframe || 'TF chưa xác định'}</strong><small title={dataset.dataset_id}>{dataset.dataset_id}</small><small>{dataset.provider_id || dataset.source?.provider || 'provider unknown'}</small></button></td>
+                          <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => setSelectedId(dataset.dataset_id)}><strong>{dataset.instrument_id || 'Instrument chưa xác định'} · {dataset.timeframe || 'TF chưa xác định'}</strong><small title={dataset.dataset_id}>{dataset.dataset_id}</small><small>{dataset.provider_id || dataset.source?.provider || 'provider unknown'}</small></button></td>
                           <td>{dataset.instrument_id || 'N/A'}<small>{dataset.timeframe || 'TF unknown'}</small></td>
                           <td>{formatUtc(range.start)}<small>→ {formatUtc(range.end)}</small></td>
                           <td><QualityBadge dataset={dataset} /></td>

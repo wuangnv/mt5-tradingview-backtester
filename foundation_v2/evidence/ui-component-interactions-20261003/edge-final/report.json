@@ -1,0 +1,6 @@
+{
+  "scope": "labeled response fixtures for long name, empty and denied catalog; no backend mutations",
+  "cases": [],
+  "status": "FAIL",
+  "error": "AssertionError [ERR_ASSERTION]: long name keeps compact trigger\n    at file:///D:/ANNAM/TradingWorkspace/.artifacts/wm-component-interactions-20261003/edge-final.mjs:12:26"
+}

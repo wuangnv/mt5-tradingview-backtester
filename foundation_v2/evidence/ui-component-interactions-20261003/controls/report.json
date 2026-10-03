@@ -1,0 +1,8 @@
+{
+  "scope": "isolated real GET-only QA data; native select pointer/keyboard/dismissal and component states; no backend writes",
+  "cases": [],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Hover does not erase persistent selection\n+ actual - expected\n\n+ 'color(srgb 0.0489412 0.0776471 0.130353)'\n- 'oklab(0.190443 -0.00411063 -0.029425 / 0.946872)'\n"
+}

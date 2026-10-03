@@ -18,6 +18,7 @@ import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 import './dashboard.css'
 import './workspace-pattern.css'
+import './component-interactions.css'
 
 function WorkspaceOverview({ workspace, query }) {
   return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions key={workspace} workspace={workspace} query={query} /></div></section>

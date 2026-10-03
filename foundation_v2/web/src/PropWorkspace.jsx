@@ -542,6 +542,7 @@ export default function PropWorkspace({ workspace }) {
                   type="button"
                   key={session.session_id}
                   className={active ? 'is-active' : ''}
+                  aria-pressed={active}
                   onClick={() => openSession(session)}
                 >
                   <span>{sessionLabel(session)}</span>
