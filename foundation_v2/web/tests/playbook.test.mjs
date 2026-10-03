@@ -48,7 +48,7 @@ test('playbook GET recovery is bounded and fences stale responses', () => {
   assert.match(source, /historyRequestSeq\s*=\s*useRef/)
   assert.match(source, /requestSeq !== catalogRequestSeq\.current/)
   assert.match(source, /requestSeq !== historyRequestSeq\.current/)
-  assert.match(source, /aria-current=\{selectedId === record\.record_id \? 'page' : undefined\}/)
+  assert.match(source, /aria-pressed=\{selectedId === record\.record_id\}/)
   assert.match(css, /\.pb-retry-button/)
 })
 

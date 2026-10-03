@@ -10,8 +10,8 @@ function DrawingRow({ record, drawings }) {
     <label>Nhãn<input aria-label={`Nhãn ${typeLabel}`} maxLength={256} value={label} disabled={record.locked || busy} onChange={event => setLabel(event.target.value)} /></label>
     <small>{record.payload.anchors.map(anchor => `${new Date(anchor.timestamp * 1000).toISOString().slice(11, 19)} UTC · ${Number(anchor.price).toFixed(5)}`).join(' → ')}</small>
     <div className="replay-object-actions">
-      <button type="button" onClick={() => drawings.toggleHidden(record.record_id)} aria-pressed={!record.hidden}>{record.hidden ? 'Hiện' : 'Ẩn'}</button>
-      <button type="button" onClick={() => drawings.toggleLocked(record.record_id)} aria-pressed={record.locked}>{record.locked ? 'Mở khóa' : 'Khóa'}</button>
+      <button type="button" onClick={() => drawings.toggleHidden(record.record_id)} aria-pressed={!record.hidden}>Hiển thị</button>
+      <button type="button" onClick={() => drawings.toggleLocked(record.record_id)} aria-pressed={record.locked}>Khóa</button>
       {label !== (record.payload.label || '') && <button type="button" disabled={record.locked || busy} onClick={() => drawings.rename(record, label)}>Đổi nhãn</button>}
       {record.local && record.payload.annotation_type !== 'measure' && <button type="button" disabled={record.locked || busy} onClick={() => drawings.save(record)}>Lưu đối tượng</button>}
       <button type="button" disabled={record.locked || busy} onClick={() => drawings.remove(record)}>{record.local ? 'Bỏ nháp' : 'Xóa đối tượng'}</button>

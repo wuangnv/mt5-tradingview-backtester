@@ -144,7 +144,7 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         <h1>Settings</h1>
         <div className="settings-topbar-actions">
           <a className="context-link" href={nextLink}>{returnLabel}</a>
-          <a className="context-link" href={learnHref}>Learn</a>
+          {returnView !== 'learn' && <a className="context-link" href={learnHref}>Learn</a>}
           <button type="button" className="settings-refresh" onClick={() => setReloadToken((token) => token + 1)} disabled={[session, notion, execution].some((state) => state.status === 'loading')}>Làm mới</button>
         </div>
       </header>
@@ -169,7 +169,6 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         <div><span>Broker capability</span><strong className="is-warn">{brokerStatus}</strong></div>
       </section>
 
-      {session.status === 'loading' && <SettingState state="loading" testId="settings-session-loading" />}
       {session.status === 'error' && <SettingState state="error" testId="settings-session-error">Không đọc được project session: {session.error?.message}</SettingState>}
       {session.status === 'denied' && <SettingState state="denied" testId="settings-session-denied" />}
       {session.status === 'unavailable' && <SettingState state="unavailable" testId="settings-session-unavailable">Project session chưa được cấu hình cho workspace này.</SettingState>}
@@ -237,12 +236,6 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         </article>
       </section>
 
-      <footer className="settings-footnote">
-        <span>Workspace <strong>{workspace}</strong></span>
-        <span>Mode <strong>{mode}</strong></span>
-        <span>Broker <strong className="is-warn">{brokerStatus}</strong></span>
-        <span>Provider export <strong className="is-warn">{notion.status === 'ready' ? display(notionPayload.export_mode) : 'Chưa xác minh'}</strong></span>
-      </footer>
     </main>
   )
 }

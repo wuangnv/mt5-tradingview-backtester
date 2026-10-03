@@ -1,0 +1,56 @@
+{
+  "scope": "isolated GET-only local QA data plus labeled annotation/catalog/loading fixtures; local appearance/drawing preferences only",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "PASS"
+}

@@ -1,0 +1,8 @@
+{
+  "scope": "isolated GET-only local QA data plus labeled annotation/catalog/loading fixtures; local appearance/drawing preferences only",
+  "cases": [],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Saved appearance survives reload\n\n'vi' !== 'en'\n"
+}

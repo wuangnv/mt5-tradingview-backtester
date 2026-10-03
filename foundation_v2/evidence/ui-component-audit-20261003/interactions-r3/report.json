@@ -1,0 +1,34 @@
+{
+  "scope": "isolated GET-only local QA data plus labeled annotation/catalog/loading fixtures; local appearance/drawing preferences only",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "playbook": "loading/error/empty/selection",
+      "settings": "single loading/return/save/cancel/reload",
+      "chart": "overlays/range commands/object show/lock/reload",
+      "axeViolations": 0
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds',\n+     help: 'Elements must meet minimum color contrast ratio thresholds',\n+     helpUrl: 'https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI',\n+     id: 'color-contrast',\n+     impact: 'serious',\n+     nodes: [\n+       {\n+         all: [],\n+         any: [\n+           {\n+             data: {\n+               bgColor: '#f5f7f8',\n+               contrastRatio: 4.27,\n+               expectedContrastRatio: '4.5:1',\n+               fgColor: '#a46812',\n+               fontSize: '9.8pt (13px)',\n+               fontWeight: 'normal',\n+               messageKey: null,\n+               shadowColor: undefined\n+             },\n+             id: 'color-contrast',\n+             impact: 'serious',\n+             message: 'Element has insufficient color contrast of 4.27 (foreground color: #a46812, background color: #f5f7f8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1',\n+             relatedNodes: [\n+               {\n+                 html: '<aside class=\"replay-side\" id=\"replay-context-panel\" aria-label=\"Chi tiết replay và nhánh\" tabindex=\"-1\">',\n+                 target: [\n+                   '#replay-context-panel'\n+                 ]\n+               }\n+             ]\n+           }\n+         ],\n+         failureSummary: 'Fix any of the following:\\n' +\n+           '  Element has insufficient color contrast of 4.27 (foreground color: #a46812, background color: #f5f7f8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1',\n+         html: '<a href=\"/?workspace=tenant-a&amp;view=replay&amp;dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&amp;surface=workspace&amp;fresh=1\" aria-current=\"true\">EURUSD · 60s</a>',\n+         impact: 'serious',\n+         none: [],\n+         target: [\n+           'a[aria-current=\"true\"]'\n+         ]\n+       }\n+     ],\n+     tags: [\n+       'cat.color',\n+       'wcag2aa',\n+       'wcag143',\n+       'TTv5',\n+       'TT13.c',\n+       'EN-301-549',\n+       'EN-9.1.4.3',\n+       'ACT'\n+     ]\n+   }\n+ ]\n- []\n",
+  "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds',\n+     help: 'Elements must meet minimum color contrast ratio thresholds',\n+     helpUrl: 'https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI',\n+     id: 'color-contrast',\n+     impact: 'serious',\n+     nodes: [\n+       {\n+         all: [],\n+         any: [\n+           {\n+             data: {\n+               bgColor: '#f5f7f8',\n+               contrastRatio: 4.27,\n+               expectedContrastRatio: '4.5:1',\n+               fgColor: '#a46812',\n+               fontSize: '9.8pt (13px)',\n+               fontWeight: 'normal',\n+               messageKey: null,\n+               shadowColor: undefined\n+             },\n+             id: 'color-contrast',\n+             impact: 'serious',\n+             message: 'Element has insufficient color contrast of 4.27 (foreground color: #a46812, background color: #f5f7f8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1',\n+             relatedNodes: [\n+               {\n+                 html: '<aside class=\"replay-side\" id=\"replay-context-panel\" aria-label=\"Chi tiết replay và nhánh\" tabindex=\"-1\">',\n+                 target: [\n+                   '#replay-context-panel'\n+                 ]\n+               }\n+             ]\n+           }\n+         ],\n+         failureSummary: 'Fix any of the following:\\n' +\n+           '  Element has insufficient color contrast of 4.27 (foreground color: #a46812, background color: #f5f7f8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1',\n+         html: '<a href=\"/?workspace=tenant-a&amp;view=replay&amp;dataset=dataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6&amp;surface=workspace&amp;fresh=1\" aria-current=\"true\">EURUSD · 60s</a>',\n+         impact: 'serious',\n+         none: [],\n+         target: [\n+           'a[aria-current=\"true\"]'\n+         ]\n+       }\n+     ],\n+     tags: [\n+       'cat.color',\n+       'wcag2aa',\n+       'wcag143',\n+       'TTv5',\n+       'TT13.c',\n+       'EN-301-549',\n+       'EN-9.1.4.3',\n+       'ACT'\n+     ]\n+   }\n+ ]\n- []\n\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/component-audit.browser.mjs:143:12"
+}

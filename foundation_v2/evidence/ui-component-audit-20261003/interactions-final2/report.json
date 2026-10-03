@@ -1,0 +1,9 @@
+{
+  "scope": "isolated GET-only local QA data plus labeled annotation/catalog/loading fixtures; local appearance/drawing preferences only",
+  "cases": [],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Crosshair mode has no empty annotation surface\n\n1 !== 0\n",
+  "stack": "AssertionError [ERR_ASSERTION]: Crosshair mode has no empty annotation surface\n\n1 !== 0\n\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/component-audit.browser.mjs:118:12"
+}

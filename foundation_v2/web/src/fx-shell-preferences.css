@@ -660,7 +660,6 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .settings-fact dt,
 .fx-app[data-theme='light'] .settings-note,
 .fx-app[data-theme='light'] .settings-permissions li,
-.fx-app[data-theme='light'] .settings-footnote,
 .fx-app[data-theme='light'] .learn-context-strip,
 .fx-app[data-theme='light'] .learn-resource-copy,
 .fx-app[data-theme='light'] .learn-footnote {
@@ -724,8 +723,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .learn-progress,
 .fx-app[data-theme='light'] .settings-topbar,
 .fx-app[data-theme='light'] .settings-context,
-.fx-app[data-theme='light'] .settings-section,
-.fx-app[data-theme='light'] .settings-footnote {
+.fx-app[data-theme='light'] .settings-section {
   border-color: #d6dde1;
 }
 .fx-app[data-theme='light'] .replay-topbar h1,
@@ -752,7 +750,6 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .learn-resource-copy,
 .fx-app[data-theme='light'] .learn-glossary-list dd,
 .fx-app[data-theme='light'] .settings-note,
-.fx-app[data-theme='light'] .settings-footnote,
 .fx-app[data-theme='light'] .rd-panel-head p,
 .fx-app[data-theme='light'] .trade-heading p,
 .fx-app[data-theme='light'] .risk-heading p {

@@ -1,0 +1,255 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "de28829cb7d722774c9e5a8ce8e806ef7cf9b6d8c053ad03a140fe08776c1d7b",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "width": 320,
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 900,
+        "outerWidth": 320,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 320,
+        "overflowX": 0,
+        "contentWidth": 262,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-dark-320.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "width": 320,
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 900,
+        "outerWidth": 320,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 320,
+        "overflowX": 0,
+        "contentWidth": 262,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-component-audit-20261003\\playbook-final\\playbook-light-320.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "de28829cb7d722774c9e5a8ce8e806ef7cf9b6d8c053ad03a140fe08776c1d7b",
+  "status": "SCOPED_PASS"
+}

@@ -1,0 +1,285 @@
+✔ analytics puts scoped metrics and balance evidence before ledger and selected-trade review (1.5828ms)
+✔ analytics preserves source truth and closed-balance semantics (0.5696ms)
+✔ analytics keeps provenance and trade drilldown linked (4.838ms)
+✔ analytics does not add broker execution controls (0.4185ms)
+✔ analytics reads the bounded U6 read model, filters by ledger fields, and exports through the workspace header (0.5787ms)
+✔ analytics story CSS has desktop, tablet, mobile and reduced-motion contracts (0.2855ms)
+✔ analytics bounds large result rendering while preserving drilldown semantics (0.216ms)
+✔ analytics reuses date formatters for large ledgers (0.2651ms)
+✔ new and resumed replay routes use the chart workspace layout (18.2304ms)
+✔ normalizes chart annotations to safe time/price anchors (2.1526ms)
+✔ builds one local horizontal-line draft from a chart anchor (1.5232ms)
+✔ rejects future anchors, malformed numbers, unknown fields and oversized payloads (0.6561ms)
+✔ create/list/revise use workspace-scoped annotation endpoints and revision guards (0.7473ms)
+✔ surfaces API errors without turning them into successful drafts (0.4608ms)
+✔ drawing visibility requires matching replay scope, known candle anchors and causal creation cutoff (0.3482ms)
+✔ annotation delete preserves workspace and revision and exposes conflict or missing record errors (0.5684ms)
+✔ dashboard keeps unknown distinct from measured zero (1.4916ms)
+✔ dashboard filters encode the selected session and complete UTC close dates (1.5441ms)
+✔ overview request sends workspace and abort signal; rejects old inventory-only payload (1.6492ms)
+✔ malformed performance payload becomes a recoverable load error (0.3512ms)
+✔ dashboard chart uses original balance and preserves every loss and recovery (1.2034ms)
+✔ session result API fences workspace, provenance and ledger count (2.7665ms)
+✔ recent sessions filters archived, searches domain fields and sorts without changing catalog (26.4805ms)
+✔ resume eligibility requires an active session with confirmed dataset availability (0.9514ms)
+✔ last session storage remains workspace-scoped and tolerates inaccessible storage (1.1001ms)
+✔ Data Desk CSV helpers send browser text and workspace scope (2.6149ms)
+✔ chart header delegates commands to the replay workspace (8.4237ms)
+✔ journal UI stays linked to replay/trade context and uses revision endpoint (1.2036ms)
+✔ analytics UI preserves unknown values and exposes result provenance (0.2571ms)
+✔ journal and analytics responsive rules are scoped to the dedicated stylesheet (0.2311ms)
+✔ live route is read-only and carries the workspace context (2.1123ms)
+✔ live route has real loading, unavailable, denied, error and empty states (4.7536ms)
+✔ live route is responsive and reduced-motion aware without adding a dependency (0.3466ms)
+✔ builds an allowlisted preview and keeps owner notes separate (2.7244ms)
+✔ accepts only the Notion OAuth authorization endpoint (0.6727ms)
+✔ builds a pending local receipt only after explicit destination selection (18.7644ms)
+✔ fails closed on sensitive fields, malformed metrics and implicit destinations (2.3299ms)
+✔ flow state names cover login, OAuth, destination, preview and receipt (0.2268ms)
+✔ translates the UI mirror to the authoritative durable ledger schema (22.7595ms)
+✔ rehydrates a persisted ledger row without exposing account identifiers (8.1376ms)
+✔ playbook UI is an explicit read-only version and lineage surface (2.221ms)
+✔ playbook view preserves backend authority and exposes safe metadata (0.2415ms)
+✔ playbook diff is deterministic and responsive (0.2284ms)
+✖ playbook GET recovery is bounded and fences stale responses (2.269ms)
+✔ replay contrast keeps light shell and dark chart surfaces separate (21.626ms)
+✔ replay speed select exposes its accessible name on the native control (44.6023ms)
+✔ domain anchors are projected again after pan, price drag and zoom (7.5636ms)
+✔ hidden, unsupported, incomplete and unmappable drawings are skipped (0.3841ms)
+✔ zero coordinates remain valid and labels remain bounded literal canvas text (0.2932ms)
+✔ native renderer redraws using current scales and pane dimensions (1.1629ms)
+✔ renderer covers five tools, clips to pane and distinguishes local and selected state (0.7551ms)
+✔ measure reports signed price change without dividing a zero starting price (32.0483ms)
+✔ updates request a native repaint and detachment releases chart references (0.5566ms)
+✔ off-screen labels do not become floating visible labels after panning (0.2613ms)
+✔ research story keeps the evidence-first flow and truthful safety boundary (41.6188ms)
+✔ research story styles provide stable geometry and responsive states (3.7703ms)
+✔ research data helpers preserve unknown values and provenance warnings (1.9583ms)
+✔ research data helpers distinguish verified and explicit holdout access (0.2274ms)
+✔ Data Desk catalog has explicit retry and stale-response fencing (7.1758ms)
+✔ Research catalog and job reads expose retry and reject stale responses (1.4841ms)
+✔ Research bounded GET retry recovers from one transient 503 and does not retry 404 (11.5702ms)
+✔ session selection clears stale research and historical context while keeping workspace (3.548ms)
+✔ session analytics receives the selected session rather than a stale job; summary clears filters (0.4717ms)
+✔ malformed catalog never turns into a trustworthy empty session list (1.2258ms)
+✔ catalog and mutations use workspace scope and exact revision/cursor without automatic retries (55.8564ms)
+✔ revision conflicts and authorization failures keep HTTP status for recovery UI (1.4323ms)
+✔ an explicit same-session trade and historical cutoff survive analytics composition (0.4517ms)
+✔ shell exposes truthful EN/VI and theme controls with persisted preference contracts (25.1026ms)
+✔ trade workspace keeps draft on replay context and simulator boundary (2.4274ms)
+✔ trade workspace exposes fail-closed side and risk calculations (0.6088ms)
+✔ trade workspace exposes recoverable read-only loading states and selected side semantics (0.4752ms)
+✔ async replay hydration derives risk defaults from the loaded cutoff (0.4471ms)
+✔ risk workspace uses the existing prop evaluator and surfaces blocked data (2.6797ms)
+✔ visual polish stays scoped to the mounted trading app (29.7536ms)
+✔ readWorkspaceContext normalizes canonical values and legacy aliases (2.9086ms)
+✔ buildWorkspaceHref carries shared replay context and explicit route values (21.1729ms)
+✔ buildWorkspaceHref can clear stale session context without losing workspace (3.6704ms)
+✔ invalid cursor values are never emitted into a deep link (0.53ms)
+✔ unsafe cutoff values are omitted from a deep link (0.3345ms)
+✔ playbook context survives the journal deep link and rejects unsafe revisions (0.2456ms)
+ℹ tests 80
+ℹ suites 0
+ℹ pass 79
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1240.0751
+
+✖ failing tests:
+
+test at tests\playbook.test.mjs:43:1
+✖ playbook GET recovery is bounded and fences stale responses (2.269ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /aria-current=\{selectedId === record\.record_id \? 'page' : undefined\}/. Input:
+
+  "import { useEffect, useMemo, useRef, useState } from 'react'\r\n" +
+    "import { buildWorkspaceHref } from './workspaceContext.js'\r\n" +
+    "import { diffPayloads, fetchPlaybookRevisions, fetchPlaybooks } from './playbookApi.js'\r\n" +
+    "import './playbook-story.css'\r\n" +
+    '\r\n' +
+    'const CAPABILITY_LABELS = {\r\n' +
+    "  'manual-only': 'Manual only',\r\n" +
+    "  'engine-supported': 'Engine supported',\r\n" +
+    "  'needs-definition': 'Needs definition',\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'const MAX_GET_RETRIES = 3\r\n' +
+    '\r\n' +
+    'function statusLabel(status) {\r\n' +
+    "  return status === 'frozen' ? 'Frozen' : status === 'draft' ? 'Draft' : 'Unknown'\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'function recordName(record) {\r\n' +
+    "  return String(record?.payload?.name || 'Unnamed playbook')\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'function revisionPayload(revision) {\r\n' +
+    "  return revision?.payload && typeof revision.payload === 'object' ? revision.payload : {}\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'function formatUtc(value) {\r\n' +
+    "  if (!value) return 'Chưa xác định'\r\n" +
+    '  const date = new Date(value)\r\n' +
+    "  return Number.isNaN(date.getTime()) ? String(value) : date.toISOString().replace('T', ' ').replace('.000Z', ' UTC')\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'function capabilityLabel(value) {\r\n' +
+    "  return CAPABILITY_LABELS[value] || 'Unknown capability'\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'function PlaybookList({ items, selectedId, onSelect }) {\r\n' +
+    '  if (items.length === 0) {\r\n' +
+    '    return <div className="pb-empty" data-testid="playbook-empty"><strong>Chưa có playbook</strong><span>Backend chưa có record để đọc. UI này không tự tạo bản ghi.</span></div>\r\n' +
+    '  }\r\n' +
+    '  return (\r\n' +
+    '    <nav className="pb-list" aria-label="Playbook list" data-testid="playbook-list">\r\n' +
+    '      {items.map((record) => {\r\n' +
+    '        const payload = record.payload || {}\r\n' +
+    '        return (\r\n' +
+    '          <button\r\n' +
+    "            className={`pb-list-row ${selectedId === record.record_id ? 'is-selected' : ''}`}\r\n" +
+    '            key={record.record_id}\r\n' +
+    '            type="button"\r\n' +
+    '            onClick={() => onSelect(record.record_id)}\r\n' +
+    '            aria-pressed={selectedId === record.record_id}\r\n' +
+    '            data-testid={`playbook-row-${record.record_id}`}\r\n' +
+    '          >\r\n' +
+    '            <span className="pb-list-main"><strong>{recordName(record)}</strong><small>{record.record_id}</small></span>\r\n' +
+    '            <span className="pb-list-meta"><b className={`pb-status is-${payload.status || \'unknown\'}`}>{statusLabel(payload.status)}</b><small>r{record.revision}</small></span>\r\n' +
+    '          </button>\r\n' +
+    '        )\r\n' +
+    '      })}\r\n' +
+    '    </nav>\r\n' +
+    '  )\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'function PlaybookSummary({ record, journalHref }) {\r\n' +
+    '  const payload = record?.payload || {}\r\n' +
+    '  const ruleKeys = Object.keys(payload.rules || {}).sort()\r\n' +
+    '  return (\r\n' +
+    '    <section className="pb-summary" aria-label="Selected playbook summary" data-testid="playbook-summary">\r\n' +
+    '      <div className="pb-section-heading"><div><h2>{recordName(record)}</h2></div><span className={`pb-status is-${payload.status || \'unknown\'}`}>{statusLabel(payload.status)}</span></div>\r\n' +
+    '      <p className="pb-summary-copy">Bản đọc từ backend. Freeze / fork chưa được mở từ màn này.</p>\r\n' +
+    '      <dl className="pb-facts">\r\n' +
+    '        <div><dt>Record</dt><dd><code>{record.record_id}</code></dd></div>\r\n' +
+    '        <div><dt>Current revision</dt><dd>r{record.revision}</dd></div>\r\n' +
+    '        <div><dt>Capability</dt><dd>{capabilityLabel(payload.execution_capability)}</dd></div>\r\n' +
+    '        <div><dt>Created</dt><dd>{formatUtc(record.created_at_utc)}</dd></div>\r\n' +
+    '        <div><dt>Updated</dt><dd>{formatUtc(record.updated_at_utc)}</dd></div>\r\n' +
+    "        <div><dt>Parent</dt><dd>{payload.parent_playbook_id ? <code>{payload.parent_playbook_id} · r{payload.parent_revision || '?'}</code> : 'Root record'}</dd></div>\r\n" +
+    '      </dl>\r\n' +
+    '      <div className="pb-rules"><span className="pb-eyebrow">RULE SURFACE</span>{ruleKeys.length ? <div className="pb-rule-chips">{ruleKeys.map((key) => <span key={key}>{key}</span>)}</div> : <span className="pb-muted">Chưa có rule key</span>}</div>\r\n' +
+    '      {journalHref && <a className="pb-journal-link" href={journalHref}>Mở Journal với setup này →</a>}\r\n' +
+    '    </section>\r\n' +
+    '  )\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'function RevisionDiff({ revisions, leftRevision, rightRevision, setLeftRevision, setRightRevision }) {\r\n' +
+    '  const left = revisions.find((item) => item.revision === Number(leftRevision)) || revisions[0]\r\n' +
+    '  const right = revisions.find((item) => item.revision === Number(rightRevision)) || revisions[revisions.length - 1]\r\n' +
+    '  const diff = useMemo(() => (left && right ? diffPayloads(revisionPayload(left), revisionPayload(right)) : []), [left, right])\r\n' +
+    '  if (!revisions.length) return <div className="pb-empty" data-testid="playbook-revisions-empty"><strong>Chưa có revision history</strong><span>Record này chưa trả về lịch sử revision.</span></div>\r\n' +
+    '  return (\r\n' +
+    '    <section className="pb-diff-section" aria-label="Playbook revision diff" data-testid="playbook-diff">\r\n' +
+    '      <div className="pb-section-heading"><div><span className="pb-lineage-label">Version lineage</span><h2>So sánh revision</h2></div><span className="pb-readonly">READ ONLY</span></div>\r\n' +
+    '      <div className="pb-diff-controls">\r\n' +
+    `        <label>Base<select aria-label="Base revision" value={left?.revision || ''} onChange={(event) => setLeftRevision(Number(event.target.value))}>{revisions.map((item) => <option key={item.revision} value={item.revision}>r{item.revision}</option>)}</select></label>\r\n` +
+    '        <span aria-hidden="true">→</span>\r\n' +
+    `        <label>Compare<select aria-label="Compare revision" value={right?.revision || ''} onChange={(event) => setRightRevision(Number(event.target.value))}>{revisions.map((item) => <option key={item.revision} value={item.revision}>r{item.revision}</option>)}</select></label>\r\n` +
+    '      </div>\r\n' +
+    '      {!diff.length ? <div className="pb-no-diff" data-testid="playbook-no-diff">Hai revision có cùng payload.</div> : <div className="pb-diff-table" role="table" aria-label="Changed playbook fields" tabIndex={0}><div className="pb-diff-head" role="row"><span role="columnheader">Field</span><span role="columnheader">Base r{left.revision}</span><span role="columnheader">Compare r{right.revision}</span></div>{diff.map((item) => <div className="pb-diff-row" key={item.path} role="row"><code role="cell">{item.path}</code><span role="cell" className="is-old">{item.leftDisplay}</span><span role="cell" className="is-new">{item.rightDisplay}</span></div>)}</div>}\r\n' +
+    '      <p className="pb-diff-note">Diff chỉ hiển thị các field thay đổi; payload gốc vẫn thuộc backend record và không bị sửa từ màn này.</p>\r\n' +
+    '    </section>\r\n' +
+    '  )\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    "export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(window.location.search) }) {\r\n" +
+    "  const requestedId = query.get('playbook') || ''\r\n" +
+    "  const [catalog, setCatalog] = useState({ status: 'loading', items: [], error: null })\r\n" +
+    '  const [selectedId, setSelectedId] = useState(requestedId)\r\n' +
+    "  const [history, setHistory] = useState({ status: 'idle', items: [], error: null, selectedId: '' })\r\n" +
+    '  const [leftRevision, setLeftRevision] = useState(1)\r\n' +
+    '  const [rightRevision, setRightRevision] = useState(1)\r\n' +
+    '  const [catalogRetryToken, setCatalogRetryToken] = useState(0)\r\n' +
+    '  const [catalogRetryCount, setCatalogRetryCount] = useState(0)\r\n' +
+    '  const [historyRetryToken, setHistoryRetryToken] = useState(0)\r\n' +
+    '  const [historyRetryCount, setHistoryRetryCount] = useState(0)\r\n' +
+    '  const catalogRequestSeq = useRef(0)\r\n' +
+    '  const historyRequestSeq = useRef(0)\r\n' +
+    '  const catalogWorkspaceRef = useRef(workspace)\r\n' +
+    '\r\n' +
+    '  useEffect(() => { setCatalogRetryCount(0) }, [workspace])\r\n' +
+    '  useEffect(() => { setHistoryRetryCount(0) }, [selectedId, workspace])\r\n' +
+    '\r\n' +
+    '  useEffect(() => {\r\n' +
+    '    const requestSeq = ++catalogRequestSeq.current\r\n' +
+    '    const controller = new AbortController()\r\n' +
+    '    const workspaceChanged = catalogWorkspaceRef.current !== workspace\r\n' +
+    '    catalogWorkspaceRef.current = workspace\r\n' +
+    "    setCatalog((current) => ({ status: 'loading', items: workspaceChanged ? [] : current.items, error: null }))\r\n" +
+    '    fetchPlaybooks(workspace, controller.signal)\r\n' +
+    '      .then((items) => {\r\n' +
+    '        if (requestSeq !== catalogRequestSeq.current) return\r\n' +
+    "        setCatalog({ status: 'ready', items, error: null })\r\n" +
+    '        setCatalogRetryCount(0)\r\n' +
+    "        setSelectedId((current) => current || items[0]?.record_id || '')\r\n" +
+    '      })\r\n' +
+    '      .catch((error) => {\r\n' +
+    "        if (error.name !== 'AbortError' && requestSeq === catalogRequestSeq.current) {\r\n" +
+    "          setCatalog((current) => ({ ...current, status: 'error', error: String(error.message || error) }))\r\n" +
+    '        }\r\n' +
+    '      })\r\n' +
+    '    return () => {\r\n' +
+    '      controller.abort()\r\n' +
+    '      if (requestSeq === catalogRequestSeq.current) catalogRequestSeq.current += 1\r\n' +
+    '    }\r\n' +
+    '  }, [catalogRetryToken, workspace])\r\n' +
+    '\r\n' +
+    '  useEffect(() => {\r\n' +
+    '    const requestSeq = ++historyRequestSeq.current\r\n' +
+    '    if (!selectedId) {\r\n' +
+    "      setHistory({ status: 'idle', items: [], error: null, selectedId: '' })\r\n" +
+    '      return () => { if (requestSeq === historyRequestSeq.current) historyRequestSeq.current += 1 }\r\n' +
+    '    }\r\n' +
+    '    const controller = new AbortController()\r\n' +
+    "    setHistory((current) => ({ status: 'loading', items: current.selectedId === selectedId ? current.items : [], error: null, selectedId }))\r\n" +
+    '    fetchPlaybookRevisions(workspace, selectedId, controller.signal)\r\n' +
+    '      .then((items) => {\r\n' +
+    '        if (requestSeq !== historyRequestSeq.current) return\r\n' +
+    "        setHistory({ status: 'ready', items, error: null, selectedId })\r\n" +
+    '        setHistoryRetryCount(0)\r\n' +
+    '        setLeftRevision(items[0]?.revision || 1)\r\n' +
+    '        setRightRevision(items[items.length - 1]?.revision || 1)\r\n' +
+    '      })\r\n' +
+    '      .catch((error) => {\r\n' +
+    "        if (error.name !== 'AbortError' && requestSeq === historyRequestSeq.current) {\r\n" +
+    "          setHistory((current) => ({ ...current, status: 'error', error: String(error.message || error) }))\r\n" +
+    '        }\r\n' +
+    '      })\r\n' +
+    '    return () => {\r\n' +
+    '      controller.abort()\r\n' +
+    '      if (requestSeq === historyRequestSeq.current) historyRequestSeq.current += 1\r\n' +
+    '    }\r\n' +
+    '  }, [historyRetryToken, selectedId, workspace])\r\n' +
+    '\r\n' +
+    '  const selected = catalog.items.find((item) => item.record_id === selectedId) || null\r\n' +
+    '  const selectPlaybook = (recordId) => {\r\n' +
+    '    setSelectedId(recordId)\r\n' +
+    '    const record = catalog.items.find((item) => item.record_id === recordId)\r\n' +
+    '    const hre'... 3650 more characters
+
+      at TestContext.<anonymous> (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/playbook.test.mjs:51:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'import { useEffect, useMemo, useRef, useState } from \'react\'\r\nimport { buildWorkspaceHref } from \'./workspaceContext.js\'\r\nimport { diffPayloads, fetchPlaybookRevisions, fetchPlaybooks } from \'./playbookApi.js\'\r\nimport \'./playbook-story.css\'\r\n\r\nconst CAPABILITY_LABELS = {\r\n  \'manual-only\': \'Manual only\',\r\n  \'engine-supported\': \'Engine supported\',\r\n  \'needs-definition\': \'Needs definition\',\r\n}\r\n\r\nconst MAX_GET_RETRIES = 3\r\n\r\nfunction statusLabel(status) {\r\n  return status === \'frozen\' ? \'Frozen\' : status === \'draft\' ? \'Draft\' : \'Unknown\'\r\n}\r\n\r\nfunction recordName(record) {\r\n  return String(record?.payload?.name || \'Unnamed playbook\')\r\n}\r\n\r\nfunction revisionPayload(revision) {\r\n  return revision?.payload && typeof revision.payload === \'object\' ? revision.payload : {}\r\n}\r\n\r\nfunction formatUtc(value) {\r\n  if (!value) return \'Chưa xác định\'\r\n  const date = new Date(value)\r\n  return Number.isNaN(date.getTime()) ? String(value) : date.toISOString().replace(\'T\', \' \').replace(\'.000Z\', \' UTC\')\r\n}\r\n\r\nfunction capabilityLabel(value) {\r\n  return CAPABILITY_LABELS[value] || \'Unknown capability\'\r\n}\r\n\r\nfunction PlaybookList({ items, selectedId, onSelect }) {\r\n  if (items.length === 0) {\r\n    return <div className="pb-empty" data-testid="playbook-empty"><strong>Chưa có playbook</strong><span>Backend chưa có record để đọc. UI này không tự tạo bản ghi.</span></div>\r\n  }\r\n  return (\r\n    <nav className="pb-list" aria-label="Playbook list" data-testid="playbook-list">\r\n      {items.map((record) => {\r\n        const payload = record.payload || {}\r\n        return (\r\n          <button\r\n            className={`pb-list-row ${selectedId === record.record_id ? \'is-selected\' : \'\'}`}\r\n            key={record.record_id}\r\n            type="button"\r\n            onClick={() => onSelect(record.record_id)}\r\n            aria-pressed={selectedId === record.record_id}\r\n            data-testid={`playbook-row-${record.record_id}`}\r\n          >\r\n            <span className="pb-list-main"><strong>{recordName(record)}</strong><small>{record.record_id}</small></span>\r\n            <span className="pb-list-meta"><b className={`pb-status is-${payload.status || \'unknown\'}`}>{statusLabel(payload.status)}</b><small>r{record.revision}</small></span>\r\n          </button>\r\n        )\r\n      })}\r\n    </nav>\r\n  )\r\n}\r\n\r\nfunction PlaybookSummary({ record, journalHref }) {\r\n  const payload = record?.payload || {}\r\n  const ruleKeys = Object.keys(payload.rules || {}).sort()\r\n  return (\r\n    <section className="pb-summary" aria-label="Selected playbook summary" data-testid="playbook-summary">\r\n      <div className="pb-section-heading"><div><h2>{recordName(record)}</h2></div><span className={`pb-status is-${payload.status || \'unknown\'}`}>{statusLabel(payload.status)}</span></div>\r\n      <p className="pb-summary-copy">Bản đọc từ backend. Freeze / fork chưa được mở từ màn này.</p>\r\n      <dl className="pb-facts">\r\n        <div><dt>Record</dt><dd><code>{record.record_id}</code></dd></div>\r\n        <div><dt>Current revision</dt><dd>r{record.revision}</dd></div>\r\n        <div><dt>Capability</dt><dd>{capabilityLabel(payload.execution_capability)}</dd></div>\r\n        <div><dt>Created</dt><dd>{formatUtc(record.created_at_utc)}</dd></div>\r\n        <div><dt>Updated</dt><dd>{formatUtc(record.updated_at_utc)}</dd></div>\r\n        <div><dt>Parent</dt><dd>{payload.parent_playbook_id ? <code>{payload.parent_playbook_id} · r{payload.parent_revision || \'?\'}</code> : \'Root record\'}</dd></div>\r\n      </dl>\r\n      <div className="pb-rules"><span className="pb-eyebrow">RULE SURFACE</span>{ruleKeys.length ? <div className="pb-rule-chips">{ruleKeys.map((key) => <span key={key}>{key}</span>)}</div> : <span className="pb-muted">Chưa có rule key</span>}</div>\r\n      {journalHref && <a className="pb-journal-link" href={journalHref}>Mở Journal với setup này →</a>}\r\n    </section>\r\n  )\r\n}\r\n\r\nfunction RevisionDiff({ revisions, leftRevision, rightRevision, setLeftRevision, setRightRevision }) {\r\n  const left = revisions.find((item) => item.revision === Number(leftRevision)) || revisions[0]\r\n  const right = revisions.find((item) => item.revision === Number(rightRevision)) || revisions[revisions.length - 1]\r\n  const diff = useMemo(() => (left && right ? diffPayloads(revisionPayload(left), revisionPayload(right)) : []), [left, right])\r\n  if (!revisions.length) return <div className="pb-empty" data-testid="playbook-revisions-empty"><strong>Chưa có revision history</strong><span>Record này chưa trả về lịch sử revision.</span></div>\r\n  return (\r\n    <section className="pb-diff-section" aria-label="Playbook revision diff" data-testid="playbook-diff">\r\n      <div className="pb-section-heading"><div><span className="pb-lineage-label">Version lineage</span><h2>So sánh revision</h2></div><span className="pb-readonly">READ ONLY</span></div>\r\n      <div className="pb-diff-controls">\r\n        <label>Base<select aria-label="Base revision" value={left?.revision || \'\'} onChange={(event) => setLeftRevision(Number(event.target.value))}>{revisions.map((item) => <option key={item.revision} value={item.revision}>r{item.revision}</option>)}</select></label>\r\n        <span aria-hidden="true">→</span>\r\n        <label>Compare<select aria-label="Compare revision" value={right?.revision || \'\'} onChange={(event) => setRightRevision(Number(event.target.value))}>{revisions.map((item) => <option key={item.revision} value={item.revision}>r{item.revision}</option>)}</select></label>\r\n      </div>\r\n      {!diff.length ? <div className="pb-no-diff" data-testid="playbook-no-diff">Hai revision có cùng payload.</div> : <div className="pb-diff-table" role="table" aria-label="Changed playbook fields" tabIndex={0}><div className="pb-diff-head" role="row"><span role="columnheader">Field</span><span role="columnheader">Base r{left.revision}</span><span role="columnheader">Compare r{right.revision}</span></div>{diff.map((item) => <div className="pb-diff-row" key={item.path} role="row"><code role="cell">{item.path}</code><span role="cell" className="is-old">{item.leftDisplay}</span><span role="cell" className="is-new">{item.rightDisplay}</span></div>)}</div>}\r\n      <p className="pb-diff-note">Diff chỉ hiển thị các field thay đổi; payload gốc vẫn thuộc backend record và không bị sửa từ màn này.</p>\r\n    </section>\r\n  )\r\n}\r\n\r\nexport default function PlaybookWorkspace({ workspace = \'tenant-a\', query = new URLSearchParams(window.location.search) }) {\r\n  const requestedId = query.get(\'playbook\') || \'\'\r\n  const [catalog, setCatalog] = useState({ status: \'loading\', items: [], error: null })\r\n  const [selectedId, setSelectedId] = useState(requestedId)\r\n  const [history, setHistory] = useState({ status: \'idle\', items: [], error: null, selectedId: \'\' })\r\n  const [leftRevision, setLeftRevision] = useState(1)\r\n  const [rightRevision, setRightRevision] = useState(1)\r\n  const [catalogRetryToken, setCatalogRetryToken] = useState(0)\r\n  const [catalogRetryCount, setCatalogRetryCount] = useState(0)\r\n  const [historyRetryToken, setHistoryRetryToken] = useState(0)\r\n  const [historyRetryCount, setHistoryRetryCount] = useState(0)\r\n  const catalogRequestSeq = useRef(0)\r\n  const historyRequestSeq = useRef(0)\r\n  const catalogWorkspaceRef = useRef(workspace)\r\n\r\n  useEffect(() => { setCatalogRetryCount(0) }, [workspace])\r\n  useEffect(() => { setHistoryRetryCount(0) }, [selectedId, workspace])\r\n\r\n  useEffect(() => {\r\n    const requestSeq = ++catalogRequestSeq.current\r\n    const controller = new AbortController()\r\n    const workspaceChanged = catalogWorkspaceRef.current !== workspace\r\n    catalogWorkspaceRef.current = workspace\r\n    setCatalog((current) => ({ status: \'loading\', items: workspaceChanged ? [] : current.items, error: null }))\r\n    fetchPlaybooks(workspace, controller.signal)\r\n      .then((items) => {\r\n        if (requestSeq !== catalogRequestSeq.current) return\r\n        setCatalog({ status: \'ready\', items, error: null })\r\n        setCatalogRetryCount(0)\r\n        setSelectedId((current) => current || items[0]?.record_id || \'\')\r\n      })\r\n      .catch((error) => {\r\n        if (error.name !== \'AbortError\' && requestSeq === catalogRequestSeq.current) {\r\n          setCatalog((current) => ({ ...current, status: \'error\', error: String(error.message || error) }))\r\n        }\r\n      })\r\n    return () => {\r\n      controller.abort()\r\n      if (requestSeq === catalogRequestSeq.current) catalogRequestSeq.current += 1\r\n    }\r\n  }, [catalogRetryToken, workspace])\r\n\r\n  useEffect(() => {\r\n    const requestSeq = ++historyRequestSeq.current\r\n    if (!selectedId) {\r\n      setHistory({ status: \'idle\', items: [], error: null, selectedId: \'\' })\r\n      return () => { if (requestSeq === historyRequestSeq.current) historyRequestSeq.current += 1 }\r\n    }\r\n    const controller = new AbortController()\r\n    setHistory((current) => ({ status: \'loading\', items: current.selectedId === selectedId ? current.items : [], error: null, selectedId }))\r\n    fetchPlaybookRevisions(workspace, selectedId, controller.signal)\r\n      .then((items) => {\r\n        if (requestSeq !== historyRequestSeq.current) return\r\n        setHistory({ status: \'ready\', items, error: null, selectedId })\r\n        setHistoryRetryCount(0)\r\n        setLeftRevision(items[0]?.revision || 1)\r\n        setRightRevision(items[items.length - 1]?.revision || 1)\r\n      })\r\n      .catch((error) => {\r\n        if (error.name !== \'AbortError\' && requestSeq === historyRequestSeq.current) {\r\n          setHistory((current) => ({ ...current, status: \'error\', error: String(error.message || error) }))\r\n        }\r\n      })\r\n    return () => {\r\n      controller.abort()\r\n      if (requestSeq === historyRequestSeq.current) historyRequestSeq.current += 1\r\n    }\r\n  }, [historyRetryToken, selectedId, workspace])\r\n\r\n  const selected = catalog.items.find((item) => item.record_id === selectedId) || null\r\n  const selectPlaybook = (recordId) => {\r\n    setSelectedId(recordId)\r\n    const record = catalog.items.find((item) => item.record_id === recordId)\r\n    const hre'... 3650 more characters,
+    expected: /aria-current=\{selectedId === record\.record_id \? 'page' : undefined\}/,
+    operator: 'match',
+    diff: 'simple'
+  }

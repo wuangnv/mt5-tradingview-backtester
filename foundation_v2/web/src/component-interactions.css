@@ -19,10 +19,18 @@
   outline: 2px solid var(--wm-focus);
   outline-offset: 3px;
 }
-.fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, select):disabled {
+.fx-app .wm-page :is([role='region'], [role='table'])[tabindex='0']:focus-visible {
+  outline: 2px solid var(--wm-focus);
+  outline-offset: 3px;
+}
+.fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, input, select, textarea):disabled {
   cursor: not-allowed;
 }
-.fx-app :is(.wm-page, .fx-dashboard) :is(input[type='checkbox'], input[type='radio']) {
+.fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(input:not([type='checkbox']):not([type='radio']):not([type='range']), textarea):disabled {
+  background: var(--wm-hover);
+  color: var(--wm-content-muted);
+}
+.fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(input[type='checkbox'], input[type='radio']) {
   accent-color: var(--wm-action-bg);
   flex-shrink: 0;
 }
@@ -33,7 +41,6 @@
 }
 .fx-app :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .ja-button-primary, .as-primary-button, .learn-open-current, .fx-dashboard-continue):active:not(:disabled) {
   background: var(--wm-action-hover);
-  transform: translateY(1px);
 }
 .fx-app :is(.wm-page, .fx-dashboard) :is(.ja-journal-row, .pb-list-row, .prop-session-list > button, .learn-resource-button, .fx-dashboard-session-row) {
   border-radius: 6px;
@@ -55,6 +62,27 @@
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected,
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected > td { background: var(--wm-selected); }
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected > td:first-child button { color: var(--wm-primary); }
+.fx-app .wm-chart-page :is(.replay-object-actions, .chart-controls) > button:hover:not(:disabled) { background: var(--wm-hover); border-color: var(--wm-border-strong); }
+.fx-app .wm-chart-page .replay-object-actions button[aria-pressed='true'] {
+  background: var(--wm-selected);
+  border-color: var(--wm-selected-border);
+  color: var(--wm-content);
+}
+.fx-app .wm-chart-page .chart-controls > label {
+  min-height: 36px;
+  padding-inline: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.fx-app .wm-chart-page .chart-controls > label:hover { background: var(--wm-hover); }
+.fx-app .wm-chart-page .chart-controls > label:has(input:checked) { background: var(--wm-selected); color: var(--wm-content); }
+.fx-app .wm-chart-page .chart-controls > label:has(input:focus-visible) { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
+.fx-app .wm-chart-page .chart-controls > label:has(input:focus-visible) input:focus-visible { outline: 0; }
+.fx-app .wm-chart-page .replay-watchlist a[aria-current] { color: var(--wm-primary); }
+.fx-app .wm-chart-page .decision-panel .next-action-link { display: flex; align-items: center; min-height: 44px; font-size: 13px; }
+@media (max-width: 760px) {
+  .fx-app .wm-chart-page .chart-controls > label { min-height: 44px; }
+}
 .fx-app :is(.wm-page, .fx-dashboard) summary:hover { color: var(--wm-content); }
 .fx-app :is(.wm-page, .fx-dashboard) summary::marker { color: var(--wm-content-muted); }
 .fx-app :is(.wm-page, .fx-dashboard) details[open] > summary { color: var(--wm-primary); }
@@ -149,5 +177,4 @@
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, a, input, select, textarea, summary, tr, article),
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select::picker(select),
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select::picker-icon { transition: none; }
-  .fx-app :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .ja-button-primary, .as-primary-button, .learn-open-current, .fx-dashboard-continue):active { transform: none; }
 }

@@ -245,11 +245,10 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [showVolume, setShowVolume] = useState(true)
   const [showAverage, setShowAverage] = useState(false)
   const [sideOpen, setSideOpen] = useState(false)
-  const [drawingTool, setDrawingTool] = useState('level')
+  const [drawingTool, setDrawingTool] = useState('cross')
   const [pendingAnchor, setPendingAnchor] = useState(null)
   const [drawingLabel, setDrawingLabel] = useState('')
   const [viewportRequest, setViewportRequest] = useState(null)
-  const [chartRange, setChartRange] = useState('All')
   const [goToDateDraft, setGoToDateDraft] = useState('')
   const [chartNotice, setChartNotice] = useState('')
   const actionLock = useRef(false)
@@ -712,7 +711,6 @@ export default function ReplayWorkspace({ workspace, query }) {
                     data-testid="play-toggle"
                     onClick={() => setIsPlaying((current) => !current)}
                     disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}
-                    aria-pressed={isPlaying}
                   >
                     {isPlaying ? 'Tạm dừng' : 'Phát replay'}
                   </button>
@@ -766,7 +764,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <button type="button" aria-label="Vẽ vùng giá" title="Vẽ vùng giá bằng hai mốc" aria-pressed={drawingTool === 'zone'} onClick={() => chooseDrawingTool('zone')}>▱</button>
                   <button type="button" aria-label="Thêm ghi chú chart" title="Ghi chú tại mốc giá" aria-pressed={drawingTool === 'text'} onClick={() => chooseDrawingTool('text')}>T</button>
                   <button type="button" aria-label="Đo giá giữa hai mốc" title="Đo thay đổi giá và số nến giữa hai mốc" aria-pressed={drawingTool === 'measure'} onClick={() => chooseDrawingTool('measure')}>↔</button>
-                  <button type="button" aria-label="Mở danh sách đối tượng" title="Đối tượng: lưu, ẩn, khóa, xóa" onClick={() => setSideOpen(true)}>☷</button>
+                  <button type="button" aria-label="Mở chi tiết và đối tượng chart" title="Chi tiết và đối tượng chart" aria-expanded={sideOpen} aria-controls="replay-context-panel" onClick={() => setSideOpen(true)}>☷</button>
                   <button type="button" aria-label="Vừa toàn bộ nến đã mở" title="Vừa toàn bộ nến đã mở" onClick={() => requestViewport('fit')}>⛶</button>
                 </nav>
                 <div className="chart-canvas">
@@ -790,7 +788,7 @@ export default function ReplayWorkspace({ workspace, query }) {
 
               <div className="chart-bottom-bar" role="group" aria-label="Điều khiển replay phía dưới chart">
                 <div className="chart-bottom-range" role="group" aria-label="Khoảng thời gian chart">
-                  {[['1D', 1], ['5D', 5], ['1M', 30], ['All', null]].map(([range, days]) => <button key={range} type="button" aria-pressed={chartRange === range} className={chartRange === range ? 'is-active' : ''} onClick={() => { setChartRange(range); requestViewport(days ? 'range' : 'fit', { days }) }}>{range}</button>)}
+                  {[['1D', 1], ['5D', 5], ['1M', 30], ['All', null]].map(([range, days]) => <button key={range} type="button" onClick={() => requestViewport(days ? 'range' : 'fit', { days })}>{range}</button>)}
                   <button type="button" onClick={() => requestViewport('latest')}>Tới cutoff</button>
                   <a className="context-link" href={learnHref}>Học & thuật ngữ</a>
                 </div>
@@ -861,8 +859,8 @@ export default function ReplayWorkspace({ workspace, query }) {
                 {canOpenOrder
                   ? <a className="next-action-link" href={routeHref('trade', { surface: 'workspace', intent: 'order' })}>Mở Trade draft / risk preview →</a>
                   : <p>Về cursor mới nhất hoặc tạo nhánh từ cutoff này để mở lệnh mô phỏng.</p>}
-                <div className={`annotation-draft ${annotationDraft?.status === 'ready' ? 'is-ready' : ''}`} data-testid="annotation-draft" aria-live="polite">
-                  {!annotationDraft && <span>Bấm vào một nến để tạo annotation draft local. Chưa lưu và không có broker action.</span>}
+                {(annotationDraft || drawingTool !== 'cross') && <div className={`annotation-draft ${annotationDraft?.status === 'ready' ? 'is-ready' : ''}`} data-testid="annotation-draft" aria-live="polite">
+                  {!annotationDraft && <span>Đặt mốc trên chart để tạo nháp local.</span>}
                   {annotationDraft?.status === 'ready' && (
                     <>
                       <strong>{annotationDraft.draft.annotation_type === 'horizontal-line' ? 'Draft horizontal line đã chọn' : `${DRAWING_LABELS[annotationDraft.draft.annotation_type]} đã chọn`}</strong>
@@ -870,7 +868,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     </>
                   )}
                   {annotationDraft?.status !== 'ready' && annotationDraft?.message && <span>{annotationDraft.message}</span>}
-                </div>
+                </div>}
                 <a className="next-action-link" href={journalHref}>Mở Journal cho cutoff này →</a>
                 <a className="next-action-link" href={routeHref('analytics', { surface: 'workspace' })}>Analytics của session →</a>
               </section>

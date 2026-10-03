@@ -53,3 +53,9 @@ Owner feedback after migration: selection and child components still felt basic.
 Native selects retain their value/change, keyboard, type-ahead, form and disabled contracts. [MDN customizable select](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Customizable_select), read03/10/2026, documents `appearance:base-select`, `::picker(select)` and optional button/selectedcontent. Support remains limited: the richer picker is enabled through `@supports`; unsupported engines retain native controls. Session selectors use an inert native button/selectedcontent to truncate long labels in the44px trigger while retaining the full option text in the picker. This does not add a JavaScript combobox library or search feature.
 
 Evidence: `foundation_v2/evidence/ui-component-interactions-20261003/CHECKPOINT.md`. Installed Chromium was tested; removing the progressive CSS tests the native fallback contract without claiming a Safari/Firefox run.
+
+## Component audit and consolidation
+
+The follow-up audit closes interaction gaps in disabled fields, keyboard-scroll regions, chart overlays and object controls. Toggle names remain stable with pressed state; one-time actions (play/pause, viewport range) do not claim a persistent selection. Chart opens with crosshair, so drawing requires an explicit tool choice. Annotation guidance appears only while drawing or reviewing a draft, and sidebar actions have separate44px rows.
+
+Loading/error/empty are distinct in Playbook; empty catalogs do not invite selection. Settings retains its safety/context facts but removes repeated footer/loading/return navigation. Retired custom chart-menu CSS and button translation were removed after checking live consumers. No hypothetical read-only field rules were added: there are no such fields in this UI. Evidence and exact source scopes: `foundation_v2/evidence/ui-component-audit-20261003/CHECKPOINT.md`.

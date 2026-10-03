@@ -1,0 +1,13 @@
+
+> trading-workspace-foundation-v2-web@0.1.0 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 81 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.42 kB │ gzip:   0.29 kB
+dist/assets/index-jKwdeuXe.css  331.30 kB │ gzip:  52.12 kB
+dist/assets/index-B9XdRE3Z.js   739.49 kB │ gzip: 216.88 kB
+✓ built in 2.43s
