@@ -22,10 +22,12 @@ async function assertGeometry(page) {
     const cornersHit = [[2, 2], [button.width - 2, button.height - 2]].every(([dx, dy]) => menu.contains(document.elementFromPoint(button.x + dx, button.y + dy)))
     const controls = [...document.querySelectorAll('.fx-topbar-actions button')].map(element => element.getBoundingClientRect().toJSON())
     const utility = document.querySelector('.fx-rail-utility')
-    return { button: button.toJSON(), brand: brand.toJSON(), logo: logo.toJSON(), rail: rail.toJSON(), cornersHit, controls, dividerCount: document.querySelectorAll('.fx-rail-divider').length, utilityBorder: getComputedStyle(utility).borderTopWidth, overflow: document.documentElement.scrollWidth - innerWidth }
+    const railIcon = document.querySelector('.fx-rail-section-heading .fx-nav-icon').getBoundingClientRect()
+    return { button: button.toJSON(), railIcon: railIcon.toJSON(), brand: brand.toJSON(), logo: logo.toJSON(), rail: rail.toJSON(), cornersHit, controls, dividerCount: document.querySelectorAll('.fx-rail-divider').length, utilityBorder: getComputedStyle(utility).borderTopWidth, overflow: document.documentElement.scrollWidth - innerWidth }
   })
   assert.equal(metrics.button.width, 44)
   assert.equal(metrics.button.height, 44)
+  assert.ok(Math.abs(metrics.button.x + metrics.button.width / 2 - metrics.railIcon.x - metrics.railIcon.width / 2) <= 1, 'Menu and aside icon share one horizontal center')
   assert.ok(metrics.button.x >= metrics.brand.x && metrics.button.right <= metrics.brand.right, 'Menu target stays inside its brand cell')
   assert.equal(metrics.cornersHit, true, 'The whole target is clickable, not just the icon')
   assert.ok(metrics.logo.width >= 80 && metrics.logo.height >= 9, 'Full wordmark remains visible and legible even when collapsed')

@@ -1,0 +1,79 @@
+{
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "dark",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 36,
+      "railIconCenter": 36,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 36,
+      "railIconCenter": 36,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 36,
+      "railIconCenter": 36.5,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 36,
+      "railIconCenter": 36.5,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 29,
+      "railIconCenter": 28.5,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 29,
+      "railIconCenter": 28.5,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 29,
+      "railIconCenter": 28.5,
+      "overflow": 0,
+      "contentOverflow": 0
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L.",
+      "menuCenter": 29,
+      "railIconCenter": 28.5,
+      "overflow": 0,
+      "contentOverflow": 0
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "status": "PASS"
+}

@@ -1,0 +1,70 @@
+{
+  "scope": "Labeled synthetic response fixtures based on real QA API, GET-only no writes",
+  "cases": [
+    {
+      "scenario": "real",
+      "metrics": "Net P/L\n75 USD\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n100%\n60 thắng · 0 thua · 0 hòa\nMax drawdown\n0 USD\nSụt giảm balance sau đóng lệnh",
+      "note": "",
+      "chart": 1,
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L."
+    },
+    {
+      "scenario": "blocked",
+      "metrics": "Net P/L\n—\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n—\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n—\nChưa đủ dữ liệu kết quả lệnh\nMax drawdown\n—\nSụt giảm balance sau đóng lệnh",
+      "note": "Kết quả chưa khả dụng: dữ liệu nguồn chưa đủ.",
+      "chart": 0,
+      "desc": null
+    },
+    {
+      "scenario": "unknown",
+      "metrics": "Net P/L\n—\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n—\nChưa đủ dữ liệu kết quả lệnh\nMax drawdown\n—\nSụt giảm balance sau đóng lệnh",
+      "note": "",
+      "chart": 0,
+      "desc": null
+    },
+    {
+      "scenario": "stale",
+      "metrics": "Net P/L\n75 USD\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n100%\n60 thắng · 0 thua · 0 hòa\nMax drawdown\n0 USD\nSụt giảm balance sau đóng lệnh",
+      "note": "Dữ liệu cũ · làm mới trước khi đánh giá kết quả.",
+      "chart": 1,
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L."
+    },
+    {
+      "scenario": "partial",
+      "metrics": "Net P/L\n75 USD\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n100%\n60 thắng · 0 thua · 0 hòa\nMax drawdown\n0 USD\nSụt giảm balance sau đóng lệnh",
+      "note": "Dữ liệu chưa đầy đủ · các chỉ số phản ánh phần đọc được.",
+      "chart": 1,
+      "desc": "60 lệnh; từ 0 đến 75 USD. Chỉ balance sau đóng lệnh; không gồm floating P/L."
+    },
+    {
+      "scenario": "truncated",
+      "metrics": "Net P/L\n75 USD\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n100%\n60 thắng · 0 thua · 0 hòa\nMax drawdown\n0 USD\nSụt giảm balance sau đóng lệnh",
+      "note": "",
+      "chart": 0,
+      "desc": null
+    },
+    {
+      "scenario": "mismatch",
+      "metrics": "Net P/L\n999 USD\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n100%\n60 thắng · 0 thua · 0 hòa\nMax drawdown\n0 USD\nSụt giảm balance sau đóng lệnh",
+      "note": "",
+      "chart": 0,
+      "desc": null
+    },
+    {
+      "scenario": "error",
+      "metrics": "Net P/L\n—\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n—\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n—\nChưa đủ dữ liệu kết quả lệnh\nMax drawdown\n—\nSụt giảm balance sau đóng lệnh",
+      "note": "Chưa tải được kết quả phiên.\nThử lại kết quả",
+      "chart": 0,
+      "desc": null
+    },
+    {
+      "scenario": "missing-selected",
+      "metrics": "Net P/L\n—\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n—\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n—\nChưa đủ dữ liệu kết quả lệnh\nMax drawdown\n—\nSụt giảm balance sau đóng lệnh",
+      "note": "Chọn một phiên để xem kết quả.",
+      "chart": 0,
+      "desc": null
+    }
+  ],
+  "errors": [],
+  "status": "PASS"
+}

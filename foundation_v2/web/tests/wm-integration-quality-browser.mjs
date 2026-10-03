@@ -17,7 +17,7 @@ const workspace = args.workspace || 'tenant-a'
 const out = path.resolve(args.out || path.join(workspaceRoot, '.artifacts', `wm-integration-quality-${mode}-${Date.now()}`))
 const sessionQuery = `${args.session ? `&session=${encodeURIComponent(args.session)}` : ''}${args.cursor ? `&cursor=${encodeURIComponent(args.cursor)}` : ''}`
 const allRoutes = {
-  overview: ['view=overview', '[data-testid="dashboard-data-state"]'],
+  overview: ['view=overview', '[data-testid="dashboard-performance"]'],
   sessions: ['view=replay&select=1', '[data-testid="replay-session-picker"]'],
   replay: [`view=replay${sessionQuery}`, '[data-testid="replay-chart"], [data-testid="replay-session-dashboard"]'],
   analytics: [`view=analytics${sessionQuery}`, '[data-testid="analytics-workspace"]'],

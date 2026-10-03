@@ -783,7 +783,7 @@
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar-brand {
   flex-basis: 248px;
   gap: 14px;
-  padding: 0 22px;
+  padding: 0 14px;
 }
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-menu-button {
@@ -947,7 +947,7 @@
   flex-basis: 248px;
   justify-content: flex-start;
   gap: 14px;
-  padding: 0 22px;
+  padding: 0 14px;
 }
 
 .fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-wordmark {
@@ -985,14 +985,14 @@
     flex-basis: 248px;
     justify-content: flex-start;
     gap: 14px;
-    padding: 0 22px;
+    padding: 0 14px;
   }
 
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-topbar-brand {
     flex-basis: 248px;
     justify-content: flex-start;
     gap: 14px;
-    padding: 0 22px;
+    padding: 0 14px;
   }
 
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark { display: inline-block; }
@@ -1017,7 +1017,7 @@
 
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-topbar-brand,
   .fx-app.fx-shell-story.is-rail-collapsed:not(.is-chart-workspace) .fx-topbar-brand,
-  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-topbar-brand { min-width: 0; flex-basis: auto; justify-content: flex-start; gap: 8px; padding: 0 8px; }
+  .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-topbar-brand { min-width: 0; flex-basis: auto; justify-content: flex-start; gap: 8px; padding: 0 7px; }
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-wordmark,
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark { display: inline-block; min-width: 0; flex: 0 1 132px; }
   .fx-app.fx-shell-story:not(.is-chart-workspace):not(.is-rail-collapsed) .fx-wordmark-compact { display: none; }

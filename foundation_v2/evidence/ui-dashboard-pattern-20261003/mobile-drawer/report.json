@@ -1,0 +1,142 @@
+{
+  "scope": "Shell-only responsive navigation against local services; no API mutation or mock",
+  "scenarios": [
+    {
+      "preference": null,
+      "compact": {
+        "width": 360,
+        "contentWidth": 302,
+        "railWidth": 58,
+        "documentOverflow": 0,
+        "contentOverflow": 0,
+        "persisted": null
+      },
+      "themes": [
+        {
+          "theme": "dark",
+          "opened": {
+            "width": 360,
+            "contentWidth": 302,
+            "railWidth": 280,
+            "documentOverflow": 0,
+            "contentOverflow": 0,
+            "persisted": null
+          },
+          "dismissedBy": [
+            "Escape",
+            "close button",
+            "backdrop",
+            "keyboard navigation"
+          ],
+          "focusLoop": true,
+          "reload": true
+        },
+        {
+          "theme": "light",
+          "opened": {
+            "width": 360,
+            "contentWidth": 302,
+            "railWidth": 280,
+            "documentOverflow": 0,
+            "contentOverflow": 0,
+            "persisted": null
+          },
+          "dismissedBy": [
+            "Escape",
+            "close button",
+            "backdrop",
+            "keyboard navigation"
+          ],
+          "focusLoop": true,
+          "reload": true
+        }
+      ],
+      "restoredDesktop": {
+        "width": 1440,
+        "contentWidth": 1366,
+        "railWidth": 74,
+        "documentOverflow": 0,
+        "contentOverflow": 0,
+        "persisted": null
+      },
+      "chart": {
+        "width": 360,
+        "contentWidth": 360,
+        "railWidth": 0,
+        "documentOverflow": 0,
+        "contentOverflow": 0,
+        "persisted": null
+      }
+    },
+    {
+      "preference": "false",
+      "compact": {
+        "width": 360,
+        "contentWidth": 302,
+        "railWidth": 58,
+        "documentOverflow": 0,
+        "contentOverflow": 0,
+        "persisted": "false"
+      },
+      "themes": [
+        {
+          "theme": "dark",
+          "opened": {
+            "width": 360,
+            "contentWidth": 302,
+            "railWidth": 280,
+            "documentOverflow": 0,
+            "contentOverflow": 0,
+            "persisted": "false"
+          },
+          "dismissedBy": [
+            "Escape",
+            "close button",
+            "backdrop",
+            "keyboard navigation"
+          ],
+          "focusLoop": true,
+          "reload": true
+        },
+        {
+          "theme": "light",
+          "opened": {
+            "width": 360,
+            "contentWidth": 302,
+            "railWidth": 280,
+            "documentOverflow": 0,
+            "contentOverflow": 0,
+            "persisted": "false"
+          },
+          "dismissedBy": [
+            "Escape",
+            "close button",
+            "backdrop",
+            "keyboard navigation"
+          ],
+          "focusLoop": true,
+          "reload": true
+        }
+      ],
+      "restoredDesktop": {
+        "width": 1440,
+        "contentWidth": 1192,
+        "railWidth": 248,
+        "documentOverflow": 0,
+        "contentOverflow": 0,
+        "persisted": "false"
+      },
+      "chart": {
+        "width": 360,
+        "contentWidth": 360,
+        "railWidth": 0,
+        "documentOverflow": 0,
+        "contentOverflow": 0,
+        "persisted": "false"
+      }
+    }
+  ],
+  "blockedRequests": [],
+  "pageErrors": [],
+  "status": "PASS"
+}

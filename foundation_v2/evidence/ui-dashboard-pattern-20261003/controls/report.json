@@ -1,0 +1,800 @@
+{
+  "scope": "Real local read-only shell geometry, preferences and keyboard interactions; no broker or API writes",
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "dark",
+      "initial": {
+        "button": {
+          "x": 14,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 58,
+          "bottom": 53.5,
+          "left": 14
+        },
+        "railIcon": {
+          "x": 24.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 48.5,
+          "bottom": 115,
+          "left": 24.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 248,
+          "height": 63,
+          "top": 0,
+          "right": 248,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 72,
+          "y": 23.3125,
+          "width": 132,
+          "height": 16.359375,
+          "top": 23.3125,
+          "right": 204,
+          "bottom": 39.671875,
+          "left": 72
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 74,
+          "height": 836,
+          "top": 64,
+          "right": 74,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 1285.171875,
+            "y": 15.5,
+            "width": 38.828125,
+            "height": 32,
+            "top": 15.5,
+            "right": 1324,
+            "bottom": 47.5,
+            "left": 1285.171875
+          },
+          {
+            "x": 1338,
+            "y": 15.5,
+            "width": 38,
+            "height": 32,
+            "top": 15.5,
+            "right": 1376,
+            "bottom": 47.5,
+            "left": 1338
+          },
+          {
+            "x": 1390,
+            "y": 15.5,
+            "width": 32,
+            "height": 32,
+            "top": 15.5,
+            "right": 1422,
+            "bottom": 47.5,
+            "left": 1390
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 10.796266533058319,
+      "historicalContrast": null
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "initial": {
+        "button": {
+          "x": 14,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 58,
+          "bottom": 53.5,
+          "left": 14
+        },
+        "railIcon": {
+          "x": 24.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 48.5,
+          "bottom": 115,
+          "left": 24.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 248,
+          "height": 63,
+          "top": 0,
+          "right": 248,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 72,
+          "y": 23.3125,
+          "width": 132,
+          "height": 16.359375,
+          "top": 23.3125,
+          "right": 204,
+          "bottom": 39.671875,
+          "left": 72
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 74,
+          "height": 836,
+          "top": 64,
+          "right": 74,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 1285.171875,
+            "y": 15.5,
+            "width": 38.828125,
+            "height": 32,
+            "top": 15.5,
+            "right": 1324,
+            "bottom": 47.5,
+            "left": 1285.171875
+          },
+          {
+            "x": 1338,
+            "y": 15.5,
+            "width": 38,
+            "height": 32,
+            "top": 15.5,
+            "right": 1376,
+            "bottom": 47.5,
+            "left": 1338
+          },
+          {
+            "x": 1390,
+            "y": 15.5,
+            "width": 32,
+            "height": 32,
+            "top": 15.5,
+            "right": 1422,
+            "bottom": 47.5,
+            "left": 1390
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 7.356983783299684,
+      "historicalContrast": null
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "initial": {
+        "button": {
+          "x": 14,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 58,
+          "bottom": 53.5,
+          "left": 14
+        },
+        "railIcon": {
+          "x": 24.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 48.5,
+          "bottom": 115,
+          "left": 24.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 248,
+          "height": 63,
+          "top": 0,
+          "right": 248,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 72,
+          "y": 23.3125,
+          "width": 132,
+          "height": 16.359375,
+          "top": 23.3125,
+          "right": 204,
+          "bottom": 39.671875,
+          "left": 72
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 74,
+          "height": 836,
+          "top": 64,
+          "right": 74,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 613.171875,
+            "y": 15.5,
+            "width": 38.828125,
+            "height": 32,
+            "top": 15.5,
+            "right": 652,
+            "bottom": 47.5,
+            "left": 613.171875
+          },
+          {
+            "x": 666,
+            "y": 15.5,
+            "width": 38,
+            "height": 32,
+            "top": 15.5,
+            "right": 704,
+            "bottom": 47.5,
+            "left": 666
+          },
+          {
+            "x": 718,
+            "y": 15.5,
+            "width": 32,
+            "height": 32,
+            "top": 15.5,
+            "right": 750,
+            "bottom": 47.5,
+            "left": 718
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 10.796266533058319,
+      "historicalContrast": null
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "initial": {
+        "button": {
+          "x": 14,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 58,
+          "bottom": 53.5,
+          "left": 14
+        },
+        "railIcon": {
+          "x": 24.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 48.5,
+          "bottom": 115,
+          "left": 24.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 248,
+          "height": 63,
+          "top": 0,
+          "right": 248,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 72,
+          "y": 23.3125,
+          "width": 132,
+          "height": 16.359375,
+          "top": 23.3125,
+          "right": 204,
+          "bottom": 39.671875,
+          "left": 72
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 74,
+          "height": 836,
+          "top": 64,
+          "right": 74,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 613.171875,
+            "y": 15.5,
+            "width": 38.828125,
+            "height": 32,
+            "top": 15.5,
+            "right": 652,
+            "bottom": 47.5,
+            "left": 613.171875
+          },
+          {
+            "x": 666,
+            "y": 15.5,
+            "width": 38,
+            "height": 32,
+            "top": 15.5,
+            "right": 704,
+            "bottom": 47.5,
+            "left": 666
+          },
+          {
+            "x": 718,
+            "y": 15.5,
+            "width": 32,
+            "height": 32,
+            "top": 15.5,
+            "right": 750,
+            "bottom": 47.5,
+            "left": 718
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 7.356983783299684,
+      "historicalContrast": null
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "initial": {
+        "button": {
+          "x": 7,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 51,
+          "bottom": 53.5,
+          "left": 7
+        },
+        "railIcon": {
+          "x": 16.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 40.5,
+          "bottom": 115,
+          "left": 16.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 239.171875,
+          "height": 63,
+          "top": 0,
+          "right": 239.171875,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 59,
+          "y": 23.3125,
+          "width": 132,
+          "height": 16.359375,
+          "top": 23.3125,
+          "right": 191,
+          "bottom": 39.671875,
+          "left": 59
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 58,
+          "height": 836,
+          "top": 64,
+          "right": 58,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 251.171875,
+            "y": 16,
+            "width": 38.828125,
+            "height": 31,
+            "top": 16,
+            "right": 290,
+            "bottom": 47,
+            "left": 251.171875
+          },
+          {
+            "x": 296,
+            "y": 16,
+            "width": 38,
+            "height": 31,
+            "top": 16,
+            "right": 334,
+            "bottom": 47,
+            "left": 296
+          },
+          {
+            "x": 340,
+            "y": 16,
+            "width": 32,
+            "height": 31,
+            "top": 16,
+            "right": 372,
+            "bottom": 47,
+            "left": 340
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 10.796266533058319,
+      "historicalContrast": null
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "initial": {
+        "button": {
+          "x": 7,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 51,
+          "bottom": 53.5,
+          "left": 7
+        },
+        "railIcon": {
+          "x": 16.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 40.5,
+          "bottom": 115,
+          "left": 16.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 239.171875,
+          "height": 63,
+          "top": 0,
+          "right": 239.171875,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 59,
+          "y": 23.3125,
+          "width": 132,
+          "height": 16.359375,
+          "top": 23.3125,
+          "right": 191,
+          "bottom": 39.671875,
+          "left": 59
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 58,
+          "height": 836,
+          "top": 64,
+          "right": 58,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 251.171875,
+            "y": 16,
+            "width": 38.828125,
+            "height": 31,
+            "top": 16,
+            "right": 290,
+            "bottom": 47,
+            "left": 251.171875
+          },
+          {
+            "x": 296,
+            "y": 16,
+            "width": 38,
+            "height": 31,
+            "top": 16,
+            "right": 334,
+            "bottom": 47,
+            "left": 296
+          },
+          {
+            "x": 340,
+            "y": 16,
+            "width": 32,
+            "height": 31,
+            "top": 16,
+            "right": 372,
+            "bottom": 47,
+            "left": 340
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 7.356983783299684,
+      "historicalContrast": null
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "initial": {
+        "button": {
+          "x": 7,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 51,
+          "bottom": 53.5,
+          "left": 7
+        },
+        "railIcon": {
+          "x": 16.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 40.5,
+          "bottom": 115,
+          "left": 16.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 169.171875,
+          "height": 63,
+          "top": 0,
+          "right": 169.171875,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 59,
+          "y": 25.109375,
+          "width": 103.171875,
+          "height": 12.78125,
+          "top": 25.109375,
+          "right": 162.171875,
+          "bottom": 37.890625,
+          "left": 59
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 58,
+          "height": 836,
+          "top": 64,
+          "right": 58,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 181.171875,
+            "y": 16,
+            "width": 38.828125,
+            "height": 31,
+            "top": 16,
+            "right": 220,
+            "bottom": 47,
+            "left": 181.171875
+          },
+          {
+            "x": 226,
+            "y": 16,
+            "width": 38,
+            "height": 31,
+            "top": 16,
+            "right": 264,
+            "bottom": 47,
+            "left": 226
+          },
+          {
+            "x": 270,
+            "y": 16,
+            "width": 32,
+            "height": 31,
+            "top": 16,
+            "right": 302,
+            "bottom": 47,
+            "left": 270
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 10.796266533058319,
+      "historicalContrast": null
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "initial": {
+        "button": {
+          "x": 7,
+          "y": 9.5,
+          "width": 44,
+          "height": 44,
+          "top": 9.5,
+          "right": 51,
+          "bottom": 53.5,
+          "left": 7
+        },
+        "railIcon": {
+          "x": 16.5,
+          "y": 91,
+          "width": 24,
+          "height": 24,
+          "top": 91,
+          "right": 40.5,
+          "bottom": 115,
+          "left": 16.5
+        },
+        "brand": {
+          "x": 0,
+          "y": 0,
+          "width": 169.171875,
+          "height": 63,
+          "top": 0,
+          "right": 169.171875,
+          "bottom": 63,
+          "left": 0
+        },
+        "logo": {
+          "x": 59,
+          "y": 25.109375,
+          "width": 103.171875,
+          "height": 12.78125,
+          "top": 25.109375,
+          "right": 162.171875,
+          "bottom": 37.890625,
+          "left": 59
+        },
+        "rail": {
+          "x": 0,
+          "y": 64,
+          "width": 58,
+          "height": 836,
+          "top": 64,
+          "right": 58,
+          "bottom": 900,
+          "left": 0
+        },
+        "cornersHit": true,
+        "controls": [
+          {
+            "x": 181.171875,
+            "y": 16,
+            "width": 38.828125,
+            "height": 31,
+            "top": 16,
+            "right": 220,
+            "bottom": 47,
+            "left": 181.171875
+          },
+          {
+            "x": 226,
+            "y": 16,
+            "width": 38,
+            "height": 31,
+            "top": 16,
+            "right": 264,
+            "bottom": 47,
+            "left": 226
+          },
+          {
+            "x": 270,
+            "y": 16,
+            "width": 32,
+            "height": 31,
+            "top": 16,
+            "right": 302,
+            "bottom": 47,
+            "left": 270
+          }
+        ],
+        "dividerCount": 0,
+        "utilityBorder": "0px",
+        "overflow": 0
+      },
+      "keyboard": true,
+      "stateIcon": true,
+      "preferences": true,
+      "help": true,
+      "selectChevronCentered": true,
+      "emptyContrast": 7.356983783299684,
+      "historicalContrast": null
+    }
+  ],
+  "blockedRequests": [],
+  "pageErrors": [],
+  "status": "PASS"
+}

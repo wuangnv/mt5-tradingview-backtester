@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "results": [
+    "remembered session, three recent rows, compact actions and canonical replay context",
+    "selection persists through URL/reload; EUR result never summed with USD; deep report uses selected scope",
+    "changing scope clears old values; an aborted late response cannot replace selected result",
+    "partial/stale/empty/unknown/blocked retained metrics/malformed/error/retry states",
+    "archived/missing sources cannot resume; invalid explicit scope is not silently replaced; catalog empty/error/recovery",
+    "real isolated API: 60 trades/net75USD/DD0, chart61points, 8 responsive/theme snapshots, resume/reload61candles, deep report date filter"
+  ],
+  "errors": [],
+  "writes": []
+}

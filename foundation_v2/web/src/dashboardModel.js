@@ -1,4 +1,10 @@
 const numberFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 })
+const moneyFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 })
+
+export function dashboardMoney(value, currency) {
+  if (dashboardNumber(value) === '—') return '—'
+  return `${moneyFormatter.format(Number(value))} ${currency || 'đơn vị tài khoản'}`
+}
 
 export function dashboardNumber(value, suffix = '') {
   if (value === null || value === undefined || value === '' || typeof value === 'boolean' || !Number.isFinite(Number(value))) return '—'
@@ -33,4 +39,39 @@ export async function readDashboardOverview(workspace, filters, signal) {
     throw new Error('dashboard_performance_unavailable')
   }
   return payload
+}
+
+export async function readDashboardAnalytics(workspace, session, signal) {
+  const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(session)}/analytics`, { headers: { 'X-Workspace-Id': workspace }, signal })
+  const payload = await response.json().catch(() => ({}))
+  if (!response.ok) throw new Error(typeof payload.detail === 'string' ? payload.detail : `HTTP ${response.status}`)
+  const count = payload.scope?.selected_trade_count
+  const total = payload.scope?.total_trade_count
+  const readyShape = payload.analytics_available === false || (payload.provenance?.session_id === session && payload.provenance?.workspace_id === workspace
+    && payload.metrics && Array.isArray(payload.ledger) && Number.isSafeInteger(count) && count >= 0 && count === payload.ledger.length
+    && Number.isSafeInteger(total) && total >= count && (payload.metrics.closed_trade_count === undefined || payload.metrics.closed_trade_count === count))
+  if (payload.schema_version !== 'analytics-read-model-v1' || typeof payload.analytics_available !== 'boolean' || !payload.scope || !readyShape) throw new Error('analytics_read_model_invalid')
+  return payload
+}
+
+export function dashboardCurve(metrics) {
+  const raw = metrics?.closed_trade_balance_curve
+  const known = value => value !== null && value !== undefined && value !== '' && typeof value !== 'boolean' && Number.isFinite(Number(value))
+  if (!Array.isArray(raw) || raw.length < 2 || !known(metrics.starting_balance)) return null
+  if (raw.some((point, index) => !known(point?.closed_trade_balance) || point.sequence !== index)) return null
+  const start = Number(metrics.starting_balance)
+  // P/L and the balance curve share the session's original starting balance.
+  if (Number(raw[0].closed_trade_balance) !== start) return null
+  const values = raw.map(point => Number(point.closed_trade_balance) - start)
+  if (metrics.closed_trade_count !== undefined && metrics.closed_trade_count !== values.length - 1) return null
+  if (known(metrics.net_pnl) && Math.abs(values.at(-1) - Number(metrics.net_pnl)) > 1e-7 * Math.max(1, Math.abs(Number(metrics.net_pnl)))) return null
+  let low = 0, high = 0
+  for (const value of values) { low = Math.min(low, value); high = Math.max(high, value) }
+  const padding = (high - low || 1) * .12
+  low -= padding; high += padding
+  const y = value => 228 - (value - low) / (high - low) * 204
+  const count = values.length - 1
+  return { count, first: values[0], last: values[count], zeroY: y(0), lastX: 974, lastY: y(values[count]),
+    path: values.map((value, index) => `${index ? 'L' : 'M'}${(80 + index / count * 894).toFixed(2)},${y(value).toFixed(2)}`).join(' '),
+    ticks: [low + padding, (low + high) / 2, high - padding].map(value => ({ value, y: y(value) })) }
 }
