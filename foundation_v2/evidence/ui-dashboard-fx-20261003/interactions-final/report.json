@@ -1,0 +1,8 @@
+{
+  "scope": "isolated real GET-only QA data; native select pointer/keyboard/dismissal and component states; no backend writes",
+  "cases": [],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Selected result action uses the same blue text and border\n+ actual - expected\n\n+ 'rgb(175, 201, 246)'\n- 'rgb(70, 113, 186)'\n       ^\n"
+}

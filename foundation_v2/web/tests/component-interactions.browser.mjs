@@ -27,17 +27,8 @@ try {
     page.on('pageerror', error => report.errors.push(String(error)))
     await page.goto(`${origin}/?view=overview&workspace=tenant-a&dashboard_session=${session}`, { waitUntil: 'networkidle' })
     await page.getByTestId('dashboard-performance').waitFor()
-    await page.getByText('75 USD', { exact: true }).waitFor()
-    const select = page.getByRole('combobox', { name: 'Phiên kết quả' })
-    const scopeLabel = page.locator('.fx-dashboard-scope > span')
-    if (await scopeLabel.isVisible()) {
-      const labelLines = await scopeLabel.evaluate(element => {
-        const range = document.createRange()
-        range.selectNodeContents(element)
-        return range.getClientRects().length
-      })
-      assert.equal(labelLines, 1, 'Scope label remains on one line')
-    }
+    await page.locator('.fx-dashboard-metric strong').nth(2).getByText('60', { exact: true }).waitFor()
+    const select = page.getByRole('combobox', { name: 'Phạm vi Performance' })
     if (width === 768 || width === 320) await page.screenshot({ path: path.join(out, `loaded-${theme}-${width}.png`), animations: 'disabled' })
     const options = await select.locator('option').evaluateAll(items => items.map(item => ({ value: item.value, label: item.label })))
     assert.ok(options.length > 2)
@@ -45,7 +36,7 @@ try {
     const before = await select.inputValue()
     await select.click()
     await page.waitForFunction(() => {
-      const element = document.querySelector('.fx-dashboard-scope select')
+      const element = document.querySelector('select[aria-label="Phạm vi Performance"]')
       return element.matches(':open') && Number(getComputedStyle(element, '::picker(select)').opacity) === 1
     })
     const appearance = await select.evaluate(element => getComputedStyle(element).appearance)
@@ -71,16 +62,23 @@ try {
     assert.equal(await select.inputValue(), options[1].value)
     assert.equal(new URL(page.url()).searchParams.get('dashboard_session'), options[1].value)
     await select.selectOption(session)
-    await page.getByText('75 USD', { exact: true }).waitFor()
+    await page.locator('.fx-dashboard-metric strong').nth(2).getByText('60', { exact: true }).waitFor()
     await page.reload({ waitUntil: 'networkidle' })
     assert.equal(await select.inputValue(), session)
-    await page.getByText('75 USD', { exact: true }).waitFor()
+    await page.locator('.fx-dashboard-metric strong').nth(2).getByText('60', { exact: true }).waitFor()
     const firstRow = page.locator('.fx-dashboard-session-row').first()
-    const resultAction = firstRow.getByRole('button', { name: 'Kết quả', exact: true })
+    const resultAction = firstRow.getByRole('button', { name: /^Kết quả/ })
     const rowId = await firstRow.getAttribute('data-session-id')
     await resultAction.click()
     assert.equal(await resultAction.getAttribute('aria-pressed'), 'true')
-    assert.equal(await firstRow.locator('.fx-dashboard-selection-mark').count(), 1)
+    assert.match(await resultAction.textContent(), /✓/)
+    const resultColors = await resultAction.evaluate(async element => {
+      getComputedStyle(element).color
+      await Promise.all(element.getAnimations().map(animation => animation.finished))
+      const style = getComputedStyle(element)
+      return { text: style.color, border: style.borderTopColor }
+    })
+    assert.equal(resultColors.text, resultColors.border, 'Selected result action uses the same blue text and border after its transition')
     assert.equal(await select.inputValue(), rowId)
     const selectedColor = await firstRow.evaluate(async element => {
       getComputedStyle(element).backgroundColor
@@ -108,7 +106,7 @@ try {
       })
       assert.notEqual(await select.evaluate(element => getComputedStyle(element).appearance), 'base-select')
       await select.selectOption(session)
-      await page.getByText('75 USD', { exact: true }).waitFor()
+      await page.locator('.fx-dashboard-metric strong').nth(2).getByText('60', { exact: true }).waitFor()
       report.fallback = 'progressive CSS removed: native select retains scope/change and known result; other engines not run'
     }
     await context.close()

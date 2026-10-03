@@ -31,7 +31,7 @@ One identical grid for every page was rejected: forms, long ledgers, lessons and
 
 | Group | Pattern | Existing source |
 |---|---|---|
-| Dashboard | Scope → metrics → main chart → three recent rows | DashboardSessions, DashboardPerformance |
+| Dashboard | Three start actions → filtered Performance metrics/charts → searchable Recent Sessions | DashboardSessions, DashboardPerformance |
 | Sessions / Trades | Compact catalog/scope → selected session details → ledger | SessionPicker |
 | Analytics | Filters → metrics/main balance evidence → ledger → review detail | AnalyticsWorkspace |
 | Data / Playbook | Catalog/list → selected detail/editor, import or version diff | DataDeskWorkspace, PlaybookWorkspace |
@@ -45,6 +45,12 @@ One identical grid for every page was rejected: forms, long ledgers, lessons and
 | Replay | Chart pane → compact tools → contextual right panel | ReplayWorkspace, FxReplayShell |
 
 Runtime and independent review receipts live in `foundation_v2/evidence/ui-pattern-migration-20261003/`. Pattern approval does not mean whole-product completion or canonical-golden promotion.
+
+## Dashboard layout reopened by owner
+
+The owner requested one-page-at-a-time redesign using the supplied FX Replay screenshot. Dashboard now restores Backtesting session, Prop firm session and Tutorials entry actions. Performance uses the existing overview aggregate with a session scope and UTC close-date period; four metric surfaces sit beside the monthly trades chart, followed by monthly win rate and trades by symbol. Invested/replayed durations stay unknown because the API does not measure them. All-session totals include archived records and remove inherited duplicate closures; partial sources remain explicit. The earlier selected-session P/L layout is superseded for Dashboard only.
+
+Recent Sessions has independent search/status/sort, six-row pagination and a native disclosure menu. Manage links open existing revision-aware rename/duplicate/archive workflows; Dashboard performs no mutations itself. URL parameters retain Performance and list filters separately. The shared subnav uses the existing hover/selected/focus tokens. Evidence: `foundation_v2/evidence/ui-dashboard-fx-20261003/CHECKPOINT.md`; other page layouts retain their current contracts.
 
 ## Component interaction refinement
 

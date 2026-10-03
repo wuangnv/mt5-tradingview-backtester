@@ -39,7 +39,7 @@
   border-color: var(--wm-border-strong);
   color: var(--wm-content);
 }
-.fx-app :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .ja-button-primary, .as-primary-button, .learn-open-current, .fx-dashboard-continue):active:not(:disabled) {
+.fx-app :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .ja-button-primary, .as-primary-button, .learn-open-current):active:not(:disabled) {
   background: var(--wm-action-hover);
 }
 .fx-app :is(.wm-page, .fx-dashboard) :is(.ja-journal-row, .pb-list-row, .prop-session-list > button, .learn-resource-button, .fx-dashboard-session-row) {
@@ -53,10 +53,6 @@
   background: var(--wm-selected);
   box-shadow: inset 0 0 0 1px var(--wm-selected-border);
 }
-.fx-app .fx-dashboard-session-row { padding-inline: 12px; }
-.fx-app .fx-dashboard-scope > span { white-space: nowrap; flex-shrink: 0; }
-.fx-app .fx-dashboard-row-actions button[aria-pressed='true'] { color: var(--wm-primary); font-weight: 600; text-decoration: none; }
-.fx-app .fx-dashboard-selection-mark { width: 14px; height: 14px; flex-shrink: 0; }
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr { transition: background-color 140ms ease; }
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr:hover { background: var(--wm-hover); }
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected,

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, dashboardCurve } from '../src/dashboardModel.js'
+import { dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions } from '../src/dashboardModel.js'
 
 test('dashboard keeps unknown distinct from measured zero', () => {
   for (const unknown of [null, undefined, '', false, NaN, Infinity, 'not-a-number']) assert.equal(dashboardNumber(unknown), '—')
@@ -9,6 +9,28 @@ test('dashboard keeps unknown distinct from measured zero', () => {
   assert.equal(dashboardMoney(0.01, 'USD'), '0,01 USD', 'Do not round measured cents into zero P/L')
   assert.equal(dashboardMoney(0, 'USD'), '0 USD')
   assert.equal(dashboardMoney(null, 'USD'), '—')
+})
+
+test('recent period ranges use inclusive UTC calendar days across month boundaries', () => {
+  const now = new Date('2026-10-03T23:30:00Z')
+  assert.deepEqual(dashboardPeriodRange('30d', now), { from: '2026-09-04', to: '2026-10-03' })
+  assert.deepEqual(dashboardPeriodRange('90d', now), { from: '2026-07-06', to: '2026-10-03' })
+  assert.equal(dashboardPeriod(dashboardPeriodRange('30d', now), now), '30d')
+  assert.equal(dashboardPeriod({ from: '2024-01-01', to: '' }, now), 'custom')
+  assert.deepEqual(dashboardPeriodRange('lifetime', now), { from: '', to: '' })
+})
+
+test('Dashboard combines search/status/sort without mixing archived and active status', () => {
+  const items = [
+    { record_id: 'a', instrument_id: 'EURUSD', status: 'paused', updated_at_utc: '2026-10-01' },
+    { record_id: 'b', instrument_id: 'GBPUSD', status: 'completed', updated_at_utc: '2026-10-02' },
+    { record_id: 'c', instrument_id: 'EURUSD', status: 'paused', archived: true, updated_at_utc: '2026-10-03' },
+  ]
+  assert.deepEqual(dashboardRecentSessions(items, { status: 'paused' }).map(item => item.record_id), ['a'])
+  assert.deepEqual(dashboardRecentSessions(items, { status: 'archived', search: 'eurusd' }).map(item => item.record_id), ['c'])
+  assert.deepEqual(dashboardRecentSessions(items, { status: 'all', search: 'EURUSD', sort: 'oldest' }).map(item => item.record_id), ['a', 'c'])
+  assert.deepEqual(dashboardRecentSessions(items).map(item => item.record_id), ['b', 'a'])
+  assert.equal(dashboardRecentSessions(items, { search: 'missing' }).length, 0)
 })
 
 test('dashboard filters encode the selected session and complete UTC close dates', () => {

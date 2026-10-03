@@ -1,3 +1,5 @@
+import { recentSessions } from './sessionCatalog.js'
+
 const numberFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 })
 const moneyFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 })
 
@@ -26,6 +28,38 @@ export function dashboardRequestUrl(filters) {
 
 export function dashboardFilterError(filters) {
   return filters.from && filters.to && filters.from > filters.to ? 'Ngày bắt đầu phải trước hoặc bằng ngày kết thúc.' : ''
+}
+
+export function dashboardPeriodRange(period, now = new Date()) {
+  if (period === 'lifetime') return { from: '', to: '' }
+  const days = period === '30d' ? 30 : period === '90d' ? 90 : 0
+  if (!days) return { from: '', to: '' }
+  const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  const start = new Date(end)
+  start.setUTCDate(start.getUTCDate() - days + 1)
+  return { from: start.toISOString().slice(0, 10), to: end.toISOString().slice(0, 10) }
+}
+
+export function dashboardPeriod(filters, now = new Date()) {
+  if (!filters.from && !filters.to) return 'lifetime'
+  return ['30d', '90d'].find(period => {
+    const range = dashboardPeriodRange(period, now)
+    return range.from === filters.from && range.to === filters.to
+  }) || 'custom'
+}
+
+export function dashboardRecentSessions(items, { search = '', status = 'active', sort = 'newest' } = {}) {
+  return recentSessions(items, { search, archived: status === 'all' || status === 'archived', sort })
+    .filter(item => status === 'all' || status === 'active' || (status === 'archived' ? item.archived : item.status === status))
+}
+
+export function updateDashboardQuery(values) {
+  const url = new URL(window.location.href)
+  for (const [key, value] of Object.entries(values)) {
+    if (value) url.searchParams.set(key, value)
+    else url.searchParams.delete(key)
+  }
+  window.history.replaceState(null, '', url)
 }
 
 export async function readDashboardOverview(workspace, filters, signal) {

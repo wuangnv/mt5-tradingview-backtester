@@ -1,0 +1,913 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "51eb0cfd95bec3d212e92b65a1828ef70140a74d04f2f10bfb841f4968c786d1",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 1598,
+      "metrics": {
+        "innerWidth": 1598,
+        "innerHeight": 900,
+        "outerWidth": 1598,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1598,
+        "overflowX": 0,
+        "contentWidth": 1350,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".is-gold > .fx-dashboard-month-chart[role=\"img\"] > .fx-dashboard-chart-scroll > .fx-dashboard-month-bars > .fx-dashboard-month-column > .fx-dashboard-month-label"
+                ],
+                "html": "<span class=\"fx-dashboard-month-label\">01/2024</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 100%\"] > span"
+                ],
+                "html": "<span>100%</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-dark-1598.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".is-gold > .fx-dashboard-month-chart[role=\"img\"] > .fx-dashboard-chart-scroll > .fx-dashboard-month-bars > .fx-dashboard-month-column > .fx-dashboard-month-label"
+                ],
+                "html": "<span class=\"fx-dashboard-month-label\">01/2024</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 100%\"] > span"
+                ],
+                "html": "<span>100%</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 320,
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 900,
+        "outerWidth": 320,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 320,
+        "overflowX": 0,
+        "contentWidth": 262,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-dark-320.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 1598,
+      "metrics": {
+        "innerWidth": 1598,
+        "innerHeight": 900,
+        "outerWidth": 1598,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1598,
+        "overflowX": 0,
+        "contentWidth": 1350,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".is-gold > .fx-dashboard-month-chart[role=\"img\"] > .fx-dashboard-chart-scroll > .fx-dashboard-month-bars > .fx-dashboard-month-column > .fx-dashboard-month-label"
+                ],
+                "html": "<span class=\"fx-dashboard-month-label\">01/2024</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 100%\"] > span"
+                ],
+                "html": "<span>100%</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-light-1598.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".is-gold > .fx-dashboard-month-chart[role=\"img\"] > .fx-dashboard-chart-scroll > .fx-dashboard-month-bars > .fx-dashboard-month-column > .fx-dashboard-month-label"
+                ],
+                "html": "<span class=\"fx-dashboard-month-label\">01/2024</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 100%\"] > span"
+                ],
+                "html": "<span>100%</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 320,
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 900,
+        "outerWidth": 320,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 320,
+        "overflowX": 0,
+        "contentWidth": 262,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-dashboard-fx-20261003\\routes-final\\overview-light-320.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "51eb0cfd95bec3d212e92b65a1828ef70140a74d04f2f10bfb841f4968c786d1",
+  "status": "SCOPED_PASS"
+}

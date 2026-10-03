@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": "Dashboard FX layout: isolated actual GET API journeys + separately labeled browser fixtures; no backend writes",
+  "actual": [
+    "actual API: 60 unique closed trades/100%/Jan2024/EURUSD; time unknown; partial7of25; three canonical entry actions",
+    "subnav hover background and keyboard focus retain active underline",
+    "search empty/reset/reload; all-status pagination reload; sorting resets page; list/performance independent",
+    "selected row and scoped manage links; Escape/outside dismiss; actual resume/reload61candles and selected Analytics route",
+    "native picker Escape; real custom UTC range + reload + inverted dates; last30days zero trades/unknown winrate; lifetime restore",
+    "30 top/charts/recent screenshots +10 open native pickers: both themes 1598/1440/768/390/320px; no page overflow"
+  ],
+  "fixtures": [
+    "multi-month and multi-symbol charts; archived-only/no resume/restore menu; completed-only; six-row pagination",
+    "slow scope clears old data; aborted late s1 response cannot replace s2 metrics",
+    "empty/blocked/partial/malformed/error/retry; missing dataset cannot resume; long name320; catalog empty/error/recovery"
+  ],
+  "errors": [],
+  "writes": []
+}

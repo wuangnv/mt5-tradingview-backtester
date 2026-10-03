@@ -1,55 +1,56 @@
 import React, { useEffect, useState } from 'react'
-import { buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
-import { dashboardNumber, dashboardMoney, readDashboardAnalytics, dashboardCurve } from './dashboardModel.js'
+import { dashboardNumber, dashboardFilterError, readDashboardOverview } from './dashboardModel.js'
 
-function Metric({ title, value, detail, tone }) {
-  return <div className="fx-dashboard-metric"><span>{title}</span><strong className={tone || ''}>{value}</strong><small>{detail}</small></div>
+function Metric({ title, value, detail, icon, tone }) {
+  return <div className="fx-dashboard-metric"><span><span className="fx-dashboard-metric-icon" aria-hidden="true">{icon}</span>{title}</span><strong className={tone || ''}>{value}</strong><small>{detail}</small></div>
 }
 
-export default function DashboardPerformance({ workspace, session, reload, analyticsHref }) {
-  const [state, setState] = useState({ status: 'idle', payload: null, error: '', id: '' })
+function MonthlyChart({ title, items, field, rate = false, accent = 'gold' }) {
+  const valid = items.filter(item => item[field] !== null && Number.isFinite(item[field]))
+  const max = rate ? 100 : Math.max(1, ...valid.map(item => item[field]))
+  return <div className={`fx-dashboard-chart-panel is-${accent}`}><h3>{title}</h3>{valid.length ? <div className="fx-dashboard-month-chart" role="img" aria-label={`${title}: ${valid.map(item => `${item.month}: ${dashboardNumber(item[field], rate ? '%' : ' giao dịch')}`).join('; ')}`}><div className="fx-dashboard-chart-axis">{[max, max / 2, 0].map((value, index) => <span key={index}>{dashboardNumber(value, rate ? '%' : '')}</span>)}</div><div className="fx-dashboard-chart-scroll"><div className="fx-dashboard-month-bars">{valid.map(item => <div className="fx-dashboard-month-column" key={item.month}><div className="fx-dashboard-bar-track"><div className="fx-dashboard-bar" style={{ height: `${item[field] / max * 100}%` }} title={`${item.month}: ${dashboardNumber(item[field], rate ? '%' : '')}`}><span>{dashboardNumber(item[field], rate ? '%' : '')}</span></div></div><span className="fx-dashboard-month-label">{item.month.slice(5)}/{item.month.slice(0, 4)}</span></div>)}</div></div></div> : <div className="fx-dashboard-empty-chart">Chưa có dữ liệu theo tháng.</div>}</div>
+}
+
+function SymbolChart({ items }) {
+  const max = Math.max(1, ...items.map(item => item.closed_trade_count || 0))
+  return <div className="fx-dashboard-chart-panel is-purple"><h3>Trades by symbol</h3>{items.length ? <div className="fx-dashboard-symbol-chart" role="img" aria-label={`Giao dịch theo symbol: ${items.map(item => `${item.symbol}: ${dashboardNumber(item.closed_trade_count)}`).join('; ')}`}>{items.map(item => <div className="fx-dashboard-symbol-row" key={item.symbol}><span>{item.symbol}</span><div className="fx-dashboard-symbol-track"><div className="fx-dashboard-symbol-bar" style={{ width: `${(item.closed_trade_count || 0) / max * 100}%` }} /></div><strong>{dashboardNumber(item.closed_trade_count)}</strong></div>)}<div className="fx-dashboard-symbol-axis"><span>0</span><span>{dashboardNumber(max / 2)}</span><span>{dashboardNumber(max)} giao dịch</span></div></div> : <div className="fx-dashboard-empty-chart">Chưa có giao dịch theo symbol.</div>}</div>
+}
+
+export default function DashboardPerformance({ workspace, filters, reload, analyticsHref, controls, dateControls }) {
+  const [state, setState] = useState({ status: 'loading', payload: null, error: '', key: '' })
   const [retry, setRetry] = useState(0)
-  const id = session?.record_id || ''
+  const key = JSON.stringify([workspace, filters.session, filters.from, filters.to])
+  const filterError = dashboardFilterError(filters)
   useEffect(() => {
-    if (!id) return
+    if (filterError) return
     const controller = new AbortController()
-    setState(previous => ({ status: 'loading', payload: previous.id === id ? previous.payload : null, error: '', id }))
-    readDashboardAnalytics(workspace, id, controller.signal).then(payload => {
-      if (!controller.signal.aborted) setState({ status: 'ready', payload, error: '', id })
+    setState({ status: 'loading', payload: null, error: '', key })
+    readDashboardOverview(workspace, filters, controller.signal).then(payload => {
+      if (!controller.signal.aborted) setState({ status: 'ready', payload, error: '', key })
     }).catch(error => {
-      if (!controller.signal.aborted) setState(previous => ({ ...previous, status: 'error', error: error.message }))
+      if (!controller.signal.aborted) setState({ status: 'error', payload: null, error: error.message, key })
     })
     return () => controller.abort()
-  }, [workspace, id, reload, retry])
-  // A new scope must never display the previous session's successful response.
-  const payload = state.id === id && id ? state.payload : null
-  const blocked = payload?.analytics_available === false || payload?.blocked_by_data?.length > 0
-  const result = payload && !blocked ? { ...payload.provenance, account_currency: payload.account_currency || payload.provenance?.account_currency, metrics: payload.metrics, ledger: payload.ledger } : null
-  const model = buildAnalyticsModel(result)
-  const currency = result?.account_currency || 'đơn vị tài khoản'
-  const chart = dashboardCurve(payload?.metrics)
-  const stale = payload?.stale === true || payload?.freshness === 'stale' || payload?.provenance?.freshness === 'stale' || payload?.provenance?.status === 'stale'
-  const partial = payload?.partial === true || payload?.freshness === 'partial' || payload?.provenance?.status === 'partial'
-  const notice = !id ? 'Chọn một phiên để xem kết quả.' : state.status === 'loading' ? payload ? 'Đang cập nhật · kết quả đang hiển thị là lần đọc trước.' : 'Đang tải kết quả phiên…' : state.status === 'error' ? payload ? 'Chưa cập nhật được · kết quả đang hiển thị là lần đọc trước.' : 'Chưa tải được kết quả phiên.' : blocked ? 'Kết quả chưa khả dụng: dữ liệu nguồn chưa đủ.' : stale ? 'Dữ liệu cũ · làm mới trước khi đánh giá kết quả.' : partial ? 'Dữ liệu chưa đầy đủ · các chỉ số phản ánh phần đọc được.' : payload?.scope?.selected_trade_count === 0 ? 'Phiên chưa có giao dịch đóng.' : ''
-  const money = value => dashboardMoney(value, currency)
-  return <section className="fx-dashboard-results" aria-label="Kết quả phiên" aria-busy={state.status === 'loading'}>
-    <div className="fx-dashboard-performance" data-testid="dashboard-performance">
-      <Metric title="Net P/L" value={money(model.netPnl)} detail="Sau chi phí · lệnh đã đóng" tone={model.netPnl > 0 ? 'is-positive' : model.netPnl < 0 ? 'is-negative' : ''} />
-      <Metric title="Giao dịch đã đóng" value={dashboardNumber(model.tradeCount)} detail="Toàn bộ phiên đang chọn" />
-      <Metric title="Tỷ lệ thắng" value={dashboardNumber(model.winRate, '%')} detail={model.wins !== null ? `${model.wins} thắng · ${model.losses} thua · ${model.breakeven} hòa` : 'Chưa đủ dữ liệu kết quả lệnh'} />
-      <Metric title="Max drawdown" value={money(result?.metrics?.closed_trade_balance_max_drawdown)} detail="Sụt giảm balance sau đóng lệnh" />
-    </div>
-    <div className="fx-dashboard-section-head"><div><h2>Kết quả theo giao dịch</h2><p>P/L tích lũy · {currency} · sau mỗi lệnh đóng</p></div>{session && <a className="fx-dashboard-text-link" href={analyticsHref}>Phân tích chi tiết <span aria-hidden="true">↗</span></a>}</div>
-    <div className={`fx-dashboard-data-state ${state.status === 'error' || blocked || stale || partial ? 'is-warning' : ''}`} data-testid="dashboard-data-state" role={state.status === 'error' || blocked ? 'alert' : 'status'}>{notice && <span>{notice}</span>}{state.status === 'error' && <button type="button" onClick={() => setRetry(value => value + 1)}>Thử lại kết quả</button>}</div>
-    {!blocked && chart ? <svg className="fx-dashboard-result-chart" viewBox="0 0 1000 280" role="img" aria-labelledby="dashboard-curve-title" aria-describedby="dashboard-curve-desc">
-      <title id="dashboard-curve-title">P/L tích lũy theo giao dịch đã đóng</title><desc id="dashboard-curve-desc">{chart.count} lệnh; từ {dashboardNumber(chart.first)} đến {dashboardNumber(chart.last)} {currency}. Chỉ balance sau đóng lệnh; không gồm floating P/L.</desc>
-      {chart.ticks.map(tick => <g key={tick.value}><line x1="80" x2="974" y1={tick.y} y2={tick.y} className="fx-dashboard-chart-grid" /><text x="66" y={tick.y + 4} textAnchor="end">{dashboardNumber(tick.value)}</text></g>)}
-      <line x1="80" x2="974" y1={chart.zeroY} y2={chart.zeroY} className="fx-dashboard-chart-zero" />
-      <path d={chart.path} className="fx-dashboard-chart-path" />
-      <circle cx={chart.lastX} cy={chart.lastY} r="4" className="fx-dashboard-chart-end" />
-      {[0, Math.floor(chart.count / 2), chart.count].map((value, index) => <text key={index} x={80 + 894 * index / 2} y="266" textAnchor={index === 0 ? 'start' : index === 2 ? 'end' : 'middle'}>#{value}</text>)}
-    </svg> : <div className="fx-dashboard-empty-chart">{state.status === 'loading' && id ? 'Đang đọc chuỗi kết quả…' : 'Chưa có chuỗi balance hợp lệ để vẽ biểu đồ.'}</div>}
-    <div className="fx-dashboard-chart-foot"><span>Balance sau đóng lệnh · không gồm floating P/L</span><span>{payload?.provenance?.revision ? `Revision ${payload.provenance.revision}` : 'Chưa có nguồn kết quả'}</span></div>
-    {(state.error || blocked) && <details className="fx-dashboard-provenance"><summary>Chi tiết dữ liệu</summary><p>{state.error || payload.blocked_by_data?.join('; ') || 'Analytics chưa khả dụng cho phiên này.'}</p></details>}
+  }, [key, reload, retry, filterError])
+  // Hide results immediately when scope changes, before its request completes.
+  const performance = !filterError && state.key === key ? state.payload?.performance : null
+  const metrics = performance?.metrics
+  const loading = !filterError && (state.key !== key || state.status === 'loading')
+  const partial = performance?.status === 'partial'
+  const blocked = performance?.status === 'blocked' || performance?.scope?.readable_session_count === 0 && performance?.scope?.session_count > 0
+  const notice = filterError || (loading ? 'Đang tải Performance…' : state.status === 'error' ? 'Chưa tải được Performance.' : blocked ? 'Chưa đủ dữ liệu thực thi để tính Performance.' : partial ? `Dữ liệu chưa đầy đủ · đọc được ${performance.scope.readable_session_count}/${performance.scope.session_count} phiên.` : metrics?.closed_trade_count === 0 ? 'Không có giao dịch đóng trong phạm vi này.' : '')
+  return <section className="fx-dashboard-results" aria-label="Performance" aria-busy={loading}>
+    <div className="fx-dashboard-section-head"><h2>Performance</h2><div className="fx-dashboard-performance-filters">{controls}</div></div>
+    {dateControls}
+    <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{notice}</span>}{state.status === 'error' && !filterError && <button type="button" onClick={() => setRetry(value => value + 1)}>Thử lại kết quả</button>}</div>
+    <div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">
+      <Metric title="Time invested" value="—" detail="Chưa có dữ liệu thời gian luyện tập" icon="◷" />
+      <Metric title="Historical time replayed" value="—" detail="Chưa có dữ liệu thời gian replay" icon="↶" />
+      <Metric title="Trades taken" value={dashboardNumber(metrics?.closed_trade_count)} detail="Giao dịch đã đóng · đã loại trùng" icon="⇄" />
+      <Metric title="Overall win rate" value={dashboardNumber(metrics?.win_rate_pct, '%')} detail={metrics?.wins != null ? `${dashboardNumber(metrics.wins)} thắng · ${dashboardNumber(metrics.losses)} thua · ${dashboardNumber(metrics.breakeven)} hòa` : 'Chưa có kết quả giao dịch'} icon="◎" tone="is-positive" />
+    </div><MonthlyChart title="Giao dịch theo tháng" items={performance?.months || []} field="closed_trade_count" /></div>
+    <div className="fx-dashboard-secondary-charts"><MonthlyChart title="Win rate by month" items={performance?.months || []} field="win_rate_pct" rate accent="blue" /><SymbolChart items={performance?.symbols || []} /></div>
+    <div className="fx-dashboard-chart-foot"><span>Lệnh đóng theo UTC · {filters.session ? 'phiên đang chọn' : 'gồm phiên đã lưu trữ'} · bộ lọc danh sách bên dưới độc lập</span>{analyticsHref && <a className="fx-dashboard-text-link" href={analyticsHref}>Phân tích phiên <span aria-hidden="true">↗</span></a>}</div>
+    {(performance || state.error) && <details className="fx-dashboard-provenance"><summary>Chi tiết dữ liệu</summary>{state.error ? <p>{state.error}</p> : <><p>{performance.scope.readable_session_count} phiên đọc được · {performance.scope.duplicate_trade_count || 0} giao dịch trùng từ bản sao được loại khỏi tổng.</p>{performance.excluded.length > 0 && <ul>{performance.excluded.map((item, index) => <li key={index}>{item.session_id}: {item.reason}</li>)}</ul>}</>}</details>}
   </section>
 }

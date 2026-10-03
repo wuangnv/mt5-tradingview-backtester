@@ -5,143 +5,247 @@ import { chromium } from 'playwright'
 
 const origin = process.env.TW_DASHBOARD_UI_ORIGIN || 'http://127.0.0.1:5180'
 assert.equal(new URL(origin).hostname, '127.0.0.1')
-const out = process.env.TW_UI_EVIDENCE_DIR || path.resolve('../evidence/ui-dashboard-pattern-20261003/sessions')
+const out = process.env.TW_UI_EVIDENCE_DIR || path.resolve('../evidence/ui-dashboard-fx-20261003/journeys')
 await mkdir(out, { recursive: true })
 const browser = await chromium.launch({ headless: true })
-const results = [], errors = [], writes = []
-const item = (id, changes = {}) => ({ record_id: id, revision: 1, name: `Fixture ${id}`, description: 'Phiên mô phỏng để kiểm thử, không phải thị trường thật.', instrument_id: 'EURUSD', timeframe: '60s', cursor_index: 3, dataset_id: 'dataset-fixture', dataset_available: true, status: 'paused', archived: false, updated_at_utc: '2026-10-01T09:00:00Z', ...changes })
-let catalog = [item('older'), item('latest', { updated_at_utc: '2026-10-02T09:00:00Z' }), item('archived', { archived: true }), item('missing', { dataset_available: false }), item('unknown', { dataset_available: null }), item('gbp', { instrument_id: 'GBPUSD' })]
-let catalogState = 'ready', analyticsState = 'ready', release
-function analytics(id) {
-  const empty = analyticsState === 'empty'
-  const currency = id === 'gbp' ? 'EUR' : 'USD'
-  const pnl = id === 'gbp' ? -20 : id === 'latest' ? 30 : 10
-  const balances = empty ? [1000] : [1000, 1100, 950, 1000 + pnl]
-  const ledger = empty ? [] : [100, -150, 50 + pnl].map(net_pnl => ({ net_pnl }))
-  return { schema_version: 'analytics-read-model-v1', analytics_available: analyticsState !== 'blocked', blocked_by_data: analyticsState === 'blocked' ? ['fixture_missing_data'] : [], partial: analyticsState === 'partial', stale: analyticsState === 'stale', scope: { selected_trade_count: ledger.length, total_trade_count: ledger.length, active_filters: false }, provenance: { session_id: id, workspace_id: 'dashboard-fixture', account_currency: currency, revision: 1 }, metrics: { closed_trade_count: ledger.length, net_pnl: analyticsState === 'unknown' ? null : empty ? 0 : pnl, win_rate_pct: empty ? null : 2 / 3 * 100, wins: empty ? 0 : 2, losses: empty ? 0 : 1, breakeven: 0, closed_trade_balance_max_drawdown: analyticsState === 'unknown' ? null : 150, starting_balance: 1000, closed_trade_balance_curve: analyticsState === 'unknown' ? [] : balances.map((closed_trade_balance, sequence) => ({ closed_trade_balance, sequence })) }, ledger: analyticsState === 'unknown' ? ledger.map(() => ({ net_pnl: null })) : ledger }
+const report = { scope: 'Dashboard FX layout: isolated actual GET API journeys + separately labeled browser fixtures; no backend writes', actual: [], fixtures: [], errors: [], writes: [] }
+let page
+const metrics = () => page.locator('.fx-dashboard-metric strong')
+const waitMetric = (index, text) => page.waitForFunction(({ index, text }) => document.querySelectorAll('.fx-dashboard-metric strong')[index]?.textContent === text, { index, text })
+const go = extra => page.goto(`${origin}/?workspace=tenant-a&view=overview&area=testing&section=dashboard${extra || ''}`)
+function guard(context) {
+  return context.route('**/*', route => {
+    const request = route.request()
+    if (new URL(request.url()).origin !== origin) return route.abort()
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method())) { report.writes.push(request.method()); return route.abort() }
+    return route.continue()
+  })
 }
+const session = '39b1d068edd64e75864f692f27237852'
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 987 }, reducedMotion: 'reduce' })
-  await context.routeWebSocket('**/*', socket => socket.close())
-  await context.addInitScript(() => localStorage.setItem('tw:replay:last:dashboard-fixture', 'older'))
-  const page = await context.newPage()
-  globalThis.qaPage = page; page.setDefaultTimeout(10000)
-  page.on('pageerror', e => errors.push(e.message))
-  await context.route('**/*', async route => {
-    const req = route.request(), url = new URL(req.url())
-    if (url.origin !== origin) return route.abort()
-    if (!url.pathname.startsWith('/api/')) return route.continue()
-    if (req.method() !== 'GET') { writes.push(req.method()); return route.fulfill({ status: 403, json: { detail: 'fixture_read_only' } }) }
-    assert.equal(req.headers()['x-workspace-id'], 'dashboard-fixture')
-    if (url.pathname === '/api/v2/replay/sessions') {
-      if (catalogState === 'error') return route.fulfill({ status: 503, json: { detail: 'fixture_catalog_unavailable' } })
-      return route.fulfill({ json: { items: catalog } })
+  const context = await browser.newContext({ viewport: { width: 1598, height: 987 }, reducedMotion: 'reduce' })
+  await guard(context)
+  page = await context.newPage()
+  page.setDefaultTimeout(10000)
+  page.on('pageerror', error => report.errors.push(error.message))
+  const response = page.waitForResponse(res => new URL(res.url()).pathname === '/api/v2/overview')
+  await go()
+  const oracle = (await (await response).json()).performance
+  await waitMetric(2, String(oracle.metrics.closed_trade_count))
+  assert.deepEqual(await metrics().allTextContents(), ['—', '—', '60', '100%'])
+  assert.equal(oracle.metrics.closed_trade_count, 60)
+  assert.equal(oracle.metrics.win_rate_pct, 100)
+  assert.equal(oracle.time_invested_seconds, null)
+  assert.equal(await page.getByLabel('Phạm vi Performance').inputValue(), '')
+  assert.match(await page.getByTestId('dashboard-data-state').textContent(), /7\/25/)
+  assert.match(await page.getByRole('img', { name: /^Giao dịch theo tháng:/ }).getAttribute('aria-label'), /2024-01: 60 giao dịch/)
+  assert.match(await page.getByRole('img', { name: /^Giao dịch theo symbol:/ }).getAttribute('aria-label'), /EURUSD: 60/)
+  const actions = page.getByRole('navigation', { name: 'Bắt đầu luyện tập' }).getByRole('link')
+  assert.equal(await actions.count(), 3)
+  const newSession = new URL(await actions.nth(0).getAttribute('href'), origin)
+  assert.equal(newSession.searchParams.get('fresh'), '1')
+  assert.equal(newSession.searchParams.get('view'), 'replay')
+  for (const key of ['session', 'dataset', 'cursor', 'cutoff', 'select']) assert.equal(newSession.searchParams.has(key), false)
+  assert.equal(new URL(await actions.nth(1).getAttribute('href'), origin).searchParams.get('view'), 'testing')
+  assert.equal(new URL(await actions.nth(2).getAttribute('href'), origin).searchParams.get('view'), 'learn')
+  report.actual.push('actual API: 60 unique closed trades/100%/Jan2024/EURUSD; time unknown; partial7of25; three canonical entry actions')
+
+  const subnav = page.locator('.fx-subnav a').nth(1)
+  const beforeHover = await subnav.evaluate(e => getComputedStyle(e).backgroundColor)
+  await subnav.hover()
+  assert.notEqual(await subnav.evaluate(e => getComputedStyle(e).backgroundColor), beforeHover)
+  await subnav.focus()
+  assert.equal(await subnav.evaluate(e => getComputedStyle(e).outlineStyle), 'solid')
+  report.actual.push('subnav hover background and keyboard focus retain active underline')
+  await page.getByLabel('Tìm phiên gần đây').fill('NO_MATCH_DASHBOARD')
+  assert.ok(await page.getByLabel('Tìm phiên gần đây').evaluate(e => Number.parseFloat(getComputedStyle(e).paddingLeft)) >= 38, 'Search text clears its icon')
+  await page.getByText('Không có phiên khớp bộ lọc.', { exact: false }).waitFor()
+  assert.equal(await metrics().nth(2).textContent(), '60', 'List search does not narrow Performance')
+  await page.reload()
+  assert.equal(await page.getByLabel('Tìm phiên gần đây').inputValue(), 'NO_MATCH_DASHBOARD')
+  await page.getByRole('button', { name: 'Xóa bộ lọc danh sách' }).click()
+  await page.getByLabel('Lọc trạng thái phiên').selectOption('all')
+  await page.getByRole('button', { name: 'Trang phiên sau' }).click()
+  assert.equal(new URL(page.url()).searchParams.get('dashboard_page'), '2')
+  await page.reload()
+  await page.locator('.fx-dashboard-pagination').getByText('2 / 5', { exact: true }).waitFor()
+  await page.getByLabel('Sắp xếp phiên').selectOption('oldest')
+  assert.equal(new URL(page.url()).searchParams.has('dashboard_page'), false)
+  report.actual.push('search empty/reset/reload; all-status pagination reload; sorting resets page; list/performance independent')
+
+  await go(`&dashboard_session=${session}&cursor=999&cutoff=stale&dataset=stale&trade=stale`)
+  await waitMetric(2, '60')
+  await page.getByLabel('Tìm phiên gần đây').fill('QA — 60')
+  const selectedRow = page.locator(`.fx-dashboard-session-row[data-session-id="${session}"]`)
+  await selectedRow.waitFor()
+  assert.equal(await selectedRow.getByRole('button', { name: 'Kết quả' }).getAttribute('aria-pressed'), 'true')
+  const menu = selectedRow.locator('details')
+  await menu.locator('summary').click()
+  for (const [name, intent] of [['Đổi tên', 'rename'], ['Tạo bản sao', 'duplicate'], ['Lưu trữ phiên', 'archive']]) {
+    const href = new URL(await menu.getByRole('link', { name, exact: true }).getAttribute('href'), origin)
+    assert.equal(href.searchParams.get('session'), session)
+    assert.equal(href.searchParams.get('manage'), intent)
+    for (const key of ['cursor', 'cutoff', 'trade']) assert.equal(href.searchParams.has(key), false)
+  }
+  await page.keyboard.press('Escape')
+  assert.equal(await menu.evaluate(e => e.open), false)
+  await menu.locator('summary').click()
+  await page.getByRole('heading', { name: 'Recent Sessions' }).click()
+  assert.equal(await menu.evaluate(e => e.open), false)
+  await selectedRow.getByRole('link', { name: /^Tiếp tục/ }).click()
+  await page.waitForFunction(() => document.querySelector('[data-testid="replay-chart"]')?.dataset.visibleRowCount === '61')
+  assert.equal(new URL(page.url()).searchParams.get('session'), session)
+  await page.reload()
+  await page.waitForFunction(() => document.querySelector('[data-testid="replay-chart"]')?.dataset.visibleRowCount === '61')
+  await go(`&dashboard_session=${session}`)
+  await waitMetric(2, '60')
+  await page.getByRole('link', { name: 'Phân tích phiên' }).click()
+  await page.getByTestId('analytics-workspace').waitFor()
+  assert.equal(new URL(page.url()).searchParams.get('session'), session)
+  report.actual.push('selected row and scoped manage links; Escape/outside dismiss; actual resume/reload61candles and selected Analytics route')
+
+  await go()
+  await waitMetric(2, '60')
+  const scope = page.getByLabel('Phạm vi Performance')
+  await scope.click()
+  await page.waitForFunction(() => document.querySelector('select[aria-label="Phạm vi Performance"]').matches(':open'))
+  await page.screenshot({ path: path.join(out, 'actual-picker-dark-1598.png') })
+  await page.keyboard.press('Escape')
+  assert.equal(await scope.inputValue(), '')
+  await page.getByLabel('Thời gian Performance').selectOption('custom')
+  await page.getByLabel('Từ ngày (UTC)').fill('2024-01-01')
+  await page.getByLabel('Đến ngày (UTC)').fill('2024-01-31')
+  await waitMetric(2, '60')
+  await page.reload()
+  assert.equal(await page.getByLabel('Thời gian Performance').inputValue(), 'custom')
+  assert.equal(await page.getByLabel('Từ ngày (UTC)').inputValue(), '2024-01-01')
+  await page.getByLabel('Từ ngày (UTC)').fill('2024-02-01')
+  await page.getByText('Ngày bắt đầu phải trước hoặc bằng ngày kết thúc.').waitFor()
+  assert.deepEqual(await metrics().allTextContents(), ['—', '—', '—', '—'])
+  await page.getByLabel('Thời gian Performance').selectOption('30d')
+  await waitMetric(2, '0')
+  assert.equal(await metrics().nth(3).textContent(), '—')
+  await page.getByLabel('Thời gian Performance').selectOption('lifetime')
+  await waitMetric(2, '60')
+  report.actual.push('native picker Escape; real custom UTC range + reload + inverted dates; last30days zero trades/unknown winrate; lifetime restore')
+
+  for (const theme of ['dark', 'light']) {
+    if (theme === 'light') await page.getByTestId('theme-toggle').click()
+    for (const width of [1598, 1440, 768, 390, 320]) {
+      await page.setViewportSize({ width, height: 987 })
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0)
+      assert.ok(await page.locator('.fx-content').evaluate(e => e.scrollWidth - e.clientWidth) <= 1)
+      await page.locator('.fx-content').evaluate(e => { e.scrollTop = 0 })
+      await page.screenshot({ path: path.join(out, `actual-${theme}-${width}-top.png`) })
+      await page.locator('.fx-dashboard-secondary-charts').scrollIntoViewIfNeeded()
+      await page.screenshot({ path: path.join(out, `actual-${theme}-${width}-charts.png`) })
+      await page.getByTestId('dashboard-recent').scrollIntoViewIfNeeded()
+      await page.screenshot({ path: path.join(out, `actual-${theme}-${width}-recent.png`) })
+      const recentScope = page.getByLabel('Lọc trạng thái phiên')
+      await recentScope.click()
+      await page.waitForFunction(() => document.querySelector('select[aria-label="Lọc trạng thái phiên"]').matches(':open'))
+      const option = recentScope.locator('option:checked')
+      const box = await option.boundingBox()
+      assert.ok(box.x >= 0 && box.x + box.width <= width + 1)
+      assert.ok(box.height >= 44)
+      await page.screenshot({ path: path.join(out, `actual-${theme}-${width}-picker.png`) })
+      await page.keyboard.press('Escape')
     }
-    if (url.pathname.endsWith('/analytics')) {
-      const id = url.pathname.split('/').at(-2), response = analytics(id)
-      assert.equal(url.search, '', 'Dashboard always reads the entire canonical selected session; Analytics owns date/cutoff filters')
-      if (analyticsState === 'slow') await new Promise(resolve => { release = resolve })
-      if (analyticsState === 'error') return route.fulfill({ status: 503, json: { detail: 'fixture_analytics_unavailable' } })
-      if (analyticsState === 'malformed') response.scope.selected_trade_count = 999
-      return route.fulfill({ json: response }).catch(() => {})
+  }
+  report.actual.push('30 top/charts/recent screenshots +10 open native pickers: both themes 1598/1440/768/390/320px; no page overflow')
+  await context.close()
+
+  // Browser fixtures below are intentionally separate from the actual service oracle.
+  const fixture = await browser.newContext({ viewport: { width: 1440, height: 987 }, reducedMotion: 'reduce' })
+  await guard(fixture)
+  await fixture.routeWebSocket('**/*', socket => socket.close())
+  let mode = 'ready', release, signalSlow
+  const slowSeen = new Promise(resolve => { signalSlow = resolve })
+  const makeItem = (index, changes = {}) => ({ record_id: `s${index}`, revision: 1, name: `Fixture ${index}`, dataset_id: 'fixture-dataset', dataset_available: true, instrument_id: index % 2 ? 'EURUSD' : 'GBPUSD', timeframe: '60s', cursor_index: 60, status: index === 2 ? 'completed' : 'paused', archived: index === 7, updated_at_utc: `2026-10-${String(index).padStart(2, '0')}T09:00:00Z`, ...changes })
+  let catalog = Array.from({ length: 8 }, (_, index) => makeItem(index + 1))
+  function performance(selected) {
+    const empty = mode === 'empty', blocked = mode === 'blocked', count = blocked ? null : empty ? 0 : selected === 's1' ? 99 : 12
+    return { performance: { schema_version: 'dashboard-replay-performance-v1', status: mode === 'partial' || blocked ? 'partial' : 'ready', scope: { session_id: selected || null, session_count: 8, readable_session_count: blocked ? 0 : mode === 'partial' ? 5 : 8, includes_archived: true, duplicate_trade_count: 0 }, metrics: { closed_trade_count: count, win_rate_pct: empty || blocked ? null : 50, wins: blocked ? null : empty ? 0 : 6, losses: blocked ? null : empty ? 0 : 6, breakeven: blocked ? null : 0 }, months: empty || blocked ? [] : [{ month: '2024-01', closed_trade_count: 4, win_rate_pct: 25 }, { month: '2024-02', closed_trade_count: 8, win_rate_pct: 62.5 }], symbols: empty || blocked ? [] : [{ symbol: 'EURUSD', closed_trade_count: 4 }, { symbol: 'GBPUSD', closed_trade_count: 8 }], sessions: [], sources: [], excluded: mode === 'partial' || blocked ? [{ session_id: 's7', reason: 'fixture_execution_unavailable' }] : [], time_invested_seconds: null, historical_time_replayed_seconds: null } }
+  }
+  await fixture.route('**/api/**', async route => {
+    const request = route.request(), url = new URL(request.url())
+    assert.equal(request.method(), 'GET')
+    assert.equal(request.headers()['x-workspace-id'], 'tenant-a')
+    if (url.pathname === '/api/v2/replay/sessions') return mode === 'catalog-error' ? route.fulfill({ status: 503, json: { detail: 'fixture_catalog_unavailable' } }) : route.fulfill({ json: { items: catalog } })
+    if (url.pathname === '/api/v2/overview') {
+      const payload = performance(url.searchParams.get('session_id'))
+      if (mode === 'slow') await new Promise(resolve => { release = resolve; signalSlow() })
+      if (mode === 'error') return route.fulfill({ status: 503, json: { detail: 'fixture_overview_unavailable' } })
+      if (mode === 'malformed') payload.performance.months = null
+      return route.fulfill({ json: payload }).catch(() => {})
     }
     return route.fulfill({ status: 404, json: { detail: 'fixture_not_implemented' } })
   })
-  const go = extra => page.goto(`${origin}/?workspace=dashboard-fixture&view=overview&session=stale&cursor=999&cutoff=stale&trade=stale${extra || ''}`)
-  const resume = page.getByTestId('dashboard-resume'), metrics = page.getByTestId('dashboard-performance'), notice = page.getByTestId('dashboard-data-state')
-  const waitMetric = (index, text) => page.waitForFunction(({ index, text }) => document.querySelectorAll('.fx-dashboard-metric strong')[index]?.textContent === text, { index, text })
-  await go(); await waitMetric(0, '10 USD')
-  assert.equal(await page.getByLabel('Phiên kết quả').inputValue(), 'older')
-  assert.equal(await page.locator('.fx-dashboard-session-row').count(), 3)
-  assert.equal(await page.locator('.fx-dashboard-cards, .fx-dashboard-catalog-controls').count(), 0)
-  const href = new URL(await resume.getByRole('link', { name: 'Tiếp tục replay' }).getAttribute('href'), origin)
-  assert.equal(href.searchParams.get('session'), 'older')
-  assert.equal(href.searchParams.get('surface'), 'workspace')
-  for (const key of ['cursor', 'cutoff', 'trade', 'select']) assert.equal(href.searchParams.has(key), false)
-  results.push('remembered session, three recent rows, compact actions and canonical replay context')
-  await page.getByLabel('Phiên kết quả').selectOption('gbp'); await waitMetric(0, '-20 EUR')
-  assert.equal(new URL(page.url()).searchParams.get('dashboard_session'), 'gbp')
-  await page.reload(); await waitMetric(0, '-20 EUR')
-  const reportHref = new URL(await page.getByRole('link', { name: 'Phân tích chi tiết' }).getAttribute('href'), origin)
-  assert.equal(reportHref.searchParams.get('session'), 'gbp')
-  assert.equal(reportHref.searchParams.get('cursor'), null)
-  assert.equal(reportHref.searchParams.get('surface'), 'workspace')
-  results.push('selection persists through URL/reload; EUR result never summed with USD; deep report uses selected scope')
-  analyticsState = 'slow'
-  await page.getByLabel('Phiên kết quả').selectOption('older')
-  await notice.getByText('Đang tải kết quả phiên…', { exact: true }).waitFor()
-  assert.equal(await metrics.locator('strong').first().textContent(), '—')
-  analyticsState = 'ready'
-  await page.getByLabel('Phiên kết quả').selectOption('latest'); await waitMetric(0, '30 USD')
-  release(); await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))))
-  assert.equal(await page.getByLabel('Phiên kết quả').inputValue(), 'latest')
-  assert.equal(await metrics.locator('strong').first().textContent(), '30 USD')
-  results.push('changing scope clears old values; an aborted late response cannot replace selected result')
-  for (const mode of ['partial', 'stale', 'empty', 'unknown', 'blocked', 'malformed', 'error']) {
-    analyticsState = mode; await go('&dashboard_session=older')
-    if (mode === 'partial') await notice.getByText(/Dữ liệu chưa đầy đủ/).waitFor()
-    if (mode === 'stale') await notice.getByText(/Dữ liệu cũ/).waitFor()
-    if (mode === 'empty') { await notice.getByText('Phiên chưa có giao dịch đóng.', { exact: true }).waitFor(); await waitMetric(0, '0 USD'); await waitMetric(1, '0'); assert.equal(await metrics.locator('strong').nth(2).textContent(), '—') }
-    if (mode === 'unknown') { await waitMetric(0, '—'); await metrics.locator('strong').nth(1).getByText('3', { exact: true }).waitFor(); assert.equal(await metrics.locator('strong').nth(3).textContent(), '—'); assert.equal(await page.locator('.fx-dashboard-result-chart').count(), 0) }
-    if (mode === 'blocked') { await notice.getByText(/Kết quả chưa khả dụng/).waitFor(); assert.deepEqual(await metrics.locator('strong').allTextContents(), ['—', '—', '—', '—']); assert.equal(await page.locator('.fx-dashboard-result-chart').count(), 0) }
-    if (['malformed', 'error'].includes(mode)) { await notice.getByRole('button', { name: 'Thử lại kết quả' }).waitFor(); assert.equal(await metrics.locator('strong').first().textContent(), '—') }
+  page = await fixture.newPage()
+  page.setDefaultTimeout(10000)
+  page.on('pageerror', error => report.errors.push(error.message))
+  await go()
+  await waitMetric(2, '12')
+  assert.equal(await page.locator('.fx-dashboard-session-row').count(), 6)
+  assert.match(await page.getByRole('img', { name: /^Giao dịch theo tháng/ }).getAttribute('aria-label'), /2024-02: 8/)
+  await page.getByLabel('Lọc trạng thái phiên').selectOption('archived')
+  assert.equal(await page.locator('.fx-dashboard-session-row').count(), 1)
+  assert.equal(await page.getByRole('link', { name: /^Tiếp tục/ }).count(), 0)
+  await page.locator('.fx-dashboard-session-menu summary').click()
+  assert.equal(await page.getByRole('link', { name: 'Khôi phục phiên' }).count(), 1)
+  await page.getByLabel('Lọc trạng thái phiên').selectOption('completed')
+  assert.equal(await page.locator('.fx-dashboard-session-row').getAttribute('data-session-id'), 's2')
+  report.fixtures.push('multi-month and multi-symbol charts; archived-only/no resume/restore menu; completed-only; six-row pagination')
+  mode = 'slow'
+  await page.getByLabel('Phạm vi Performance').selectOption('s1')
+  await page.getByText('Đang tải Performance…').waitFor()
+  assert.equal(await metrics().nth(2).textContent(), '—')
+  await page.waitForFunction(() => document.querySelector('[aria-label="Performance"]').getAttribute('aria-busy') === 'true')
+  await slowSeen
+  mode = 'ready'
+  await page.getByLabel('Phạm vi Performance').selectOption('s2')
+  await waitMetric(2, '12')
+  release()
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+  assert.equal(await metrics().nth(2).textContent(), '12')
+  assert.equal(await page.getByLabel('Phạm vi Performance').inputValue(), 's2')
+  report.fixtures.push('slow scope clears old data; aborted late s1 response cannot replace s2 metrics')
+  for (const next of ['empty', 'blocked', 'partial', 'malformed', 'error']) {
+    mode = next
+    await go()
+    if (next === 'empty') { await waitMetric(2, '0'); assert.equal(await metrics().nth(3).textContent(), '—'); assert.equal(await page.getByRole('img', { name: /^Giao dịch theo tháng/ }).count(), 0) }
+    if (next === 'blocked') { await page.getByText('Chưa đủ dữ liệu thực thi để tính Performance.').waitFor(); assert.deepEqual(await metrics().allTextContents(), ['—', '—', '—', '—']) }
+    if (next === 'partial') { await page.getByText(/đọc được 5\/8/).waitFor(); await waitMetric(2, '12') }
+    if (['malformed', 'error'].includes(next)) { await page.getByRole('button', { name: 'Thử lại kết quả' }).waitFor(); assert.equal(await metrics().nth(2).textContent(), '—') }
   }
-  analyticsState = 'ready'; await notice.getByRole('button', { name: 'Thử lại kết quả' }).click(); await waitMetric(0, '10 USD')
-  results.push('partial/stale/empty/unknown/blocked retained metrics/malformed/error/retry states')
-  await go('&dashboard_session=archived'); await waitMetric(0, '10 USD')
-  assert.equal(await resume.getByRole('link', { name: 'Tiếp tục replay' }).count(), 0)
-  await go('&dashboard_session=missing'); await waitMetric(0, '10 USD')
-  assert.equal(await resume.getByRole('link', { name: 'Tiếp tục replay' }).count(), 0)
-  await go('&dashboard_session=foreign'); await resume.getByText('Phiên đã chọn không còn trong danh mục.', { exact: true }).waitFor()
-  assert.equal(await metrics.locator('strong').first().textContent(), '—')
-  await resume.getByRole('button', { name: 'Chọn phiên gần nhất' }).click(); await waitMetric(0, '10 USD')
-  catalog = []; await go(); await resume.getByText('Bắt đầu phiên replay đầu tiên', { exact: true }).waitFor()
-  catalogState = 'error'; await go(); await resume.getByText('Chưa đọc được danh mục phiên', { exact: true }).waitFor()
-  catalogState = 'ready'; catalog = [item('recovered')]
-  await resume.getByRole('button', { name: 'Thử lại danh mục' }).click(); await waitMetric(0, '10 USD')
-  results.push('archived/missing sources cannot resume; invalid explicit scope is not silently replaced; catalog empty/error/recovery')
-  assert.deepEqual(writes, []); await context.close()
-
-  const real = await browser.newContext({ viewport: { width: 1440, height: 987 }, reducedMotion: 'reduce' })
-  const session = '39b1d068edd64e75864f692f27237852'
-  await real.addInitScript(session => localStorage.setItem('tw:replay:last:tenant-a', session), session)
-  await real.route('**/*', route => { const r = route.request(); if (new URL(r.url()).origin !== origin) return route.abort(); if (!['GET', 'HEAD', 'OPTIONS'].includes(r.method())) { writes.push(r.method()); return route.abort() }; return route.continue() })
-  const live = await real.newPage(); globalThis.qaPage = live; live.setDefaultTimeout(20000); live.on('pageerror', e => errors.push(e.message))
-  await live.goto(`${origin}/?workspace=tenant-a&view=overview&area=testing&section=dashboard`)
-  await live.waitForFunction(() => document.querySelector('.fx-dashboard-metric strong')?.textContent === '75 USD')
-  assert.deepEqual(await live.locator('.fx-dashboard-metric strong').allTextContents(), ['75 USD', '60', '100%', '0 USD'])
-  await live.locator('.fx-dashboard-result-chart').waitFor()
-  assert.match(await live.locator('#dashboard-curve-desc').textContent(), /60 lệnh; từ 0 đến 75 USD/)
-  for (const theme of ['dark', 'light']) {
-    if (theme === 'light') await live.getByTestId('theme-toggle').click()
-    for (const width of [1440, 768, 390, 320]) {
-      await live.setViewportSize({ width, height: 987 })
-      assert.equal(await live.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0)
-      assert.ok(await live.locator('.fx-content').evaluate(e => e.scrollWidth - e.clientWidth) <= 1)
-      await live.screenshot({ path: path.join(out, `real-${theme}-${width}.png`) })
-      await live.locator('.fx-content').evaluate(e => { e.scrollTop = e.scrollHeight })
-      await live.screenshot({ path: path.join(out, `real-${theme}-${width}-bottom.png`) })
-      await live.locator('.fx-content').evaluate(e => { e.scrollTop = 0 })
-    }
-  }
-  await live.setViewportSize({ width: 1440, height: 987 })
-  await live.getByTestId('dashboard-resume').getByRole('link', { name: 'Tiếp tục replay' }).click()
-  await live.waitForFunction(() => document.querySelector('[data-testid="replay-chart"]')?.dataset.visibleRowCount === '61')
-  assert.equal(await live.getByText('Cursor #60', { exact: true }).textContent(), 'Cursor #60')
-  await live.reload(); await live.waitForFunction(() => document.querySelector('[data-testid="replay-chart"]')?.dataset.visibleRowCount === '61')
-  await live.goto(`${origin}/?workspace=tenant-a&view=overview&dashboard_session=${session}`)
-  await live.getByRole('link', { name: 'Phân tích chi tiết' }).click()
-  await live.locator('.as-page').waitFor(); await live.locator('.as-story-metric').filter({ hasText: 'Trades' }).getByText('60', { exact: true }).waitFor()
-  assert.equal(new URL(live.url()).searchParams.get('session'), session)
-  await live.getByLabel('Analytics from date').fill('2024-01-02')
-  await live.getByTestId('analytics-empty').waitFor()
-  results.push('real isolated API: 60 trades/net75USD/DD0, chart61points, 8 responsive/theme snapshots, resume/reload61candles, deep report date filter')
-  assert.deepEqual(errors, []); assert.deepEqual(writes, [])
-  await real.close()
-  await writeFile(path.join(out, 'report.json'), JSON.stringify({ status: 'PASS', results, errors, writes }, null, 2))
-  console.log(JSON.stringify({ status: 'PASS', results, out }))
+  mode = 'ready'
+  await page.getByRole('button', { name: 'Thử lại kết quả' }).click()
+  await waitMetric(2, '12')
+  catalog = [makeItem(1, { name: 'Phiên tên rất dài '.repeat(18), dataset_available: false })]
+  await go()
+  await page.locator('.fx-dashboard-session-row').waitFor()
+  assert.equal(await page.getByRole('link', { name: /^Tiếp tục/ }).count(), 0)
+  await page.setViewportSize({ width: 320, height: 987 })
+  await page.getByTestId('dashboard-recent').scrollIntoViewIfNeeded()
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0)
+  await page.screenshot({ path: path.join(out, 'fixture-long-name-320.png') })
+  catalog = []
+  await go()
+  await page.getByText('Chưa có phiên. Tạo backtest đầu tiên ở phía trên.').waitFor()
+  mode = 'catalog-error'
+  await go()
+  await page.getByRole('button', { name: 'Thử lại danh mục' }).waitFor()
+  mode = 'ready'; catalog = [makeItem(1)]
+  await page.getByRole('button', { name: 'Thử lại danh mục' }).click()
+  await page.locator('.fx-dashboard-session-row').waitFor()
+  report.fixtures.push('empty/blocked/partial/malformed/error/retry; missing dataset cannot resume; long name320; catalog empty/error/recovery')
+  assert.deepEqual(report.errors, [])
+  assert.deepEqual(report.writes, [])
+  await fixture.close()
+  await writeFile(path.join(out, 'report.json'), JSON.stringify({ status: 'PASS', ...report }, null, 2))
+  console.log(JSON.stringify({ status: 'PASS', actual: report.actual, fixtures: report.fixtures, out }))
 } catch (error) {
-  await globalThis.qaPage?.screenshot({ path: path.join(out, 'failure.png') }).catch(() => {})
-  await writeFile(path.join(out, 'failure.json'), JSON.stringify({ results, error: error.message, errors, writes }, null, 2))
+  await page?.screenshot({ path: path.join(out, 'failure.png') }).catch(() => {})
+  await writeFile(path.join(out, 'failure.json'), JSON.stringify({ ...report, error: error.message }, null, 2))
   throw error
 } finally { await browser.close() }
