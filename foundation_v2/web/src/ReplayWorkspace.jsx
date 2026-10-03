@@ -598,12 +598,10 @@ export default function ReplayWorkspace({ workspace, query }) {
   const dataDeskHref = routeHref('data')
 
   return (
-    <main className={`replay-shell ${sideOpen ? 'is-panel-open' : ''} ${replay ? 'has-replay' : ''}`}>
+    <main className={`replay-shell wm-chart-page ${sideOpen ? 'is-panel-open' : ''} ${replay ? 'has-replay' : ''}`}>
       <header className="replay-topbar">
         <div>
-          <div className="eyebrow">THỰC HÀNH / CHART-FIRST REPLAY</div>
           <h1>Practice · Replay</h1>
-          <p>Chart là trung tâm. Chỉ dữ liệu tới decision cutoff hiện tại được render.</p>
         </div>
         <div className="replay-topbar-actions">
           <a className="context-link" href={learnHref}>Học & thuật ngữ</a>
@@ -617,9 +615,8 @@ export default function ReplayWorkspace({ workspace, query }) {
       {!replay && state.status !== 'loading' && (
         <section className={`replay-start ${noDataset ? 'is-empty' : ''}`} aria-label="Mở replay">
           <div>
-            <div className="replay-start-kicker">CHART-FIRST PRACTICE</div>
-            <h2>Mở chart để bắt đầu replay</h2>
-            <p>Chọn dữ liệu local đã được đăng ký trong Workspace. Màn hình này chỉ mở phần dữ liệu đã tới cutoff; không gửi lệnh broker.</p>
+            <h2>Mở replay</h2>
+            <p>Chọn dataset và nến bắt đầu. Replay mô phỏng, chỉ hiển thị dữ liệu tới cutoff hiện tại.</p>
           </div>
           <label>
             Dataset

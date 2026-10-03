@@ -1,0 +1,406 @@
+{
+  "scope": "Independent selective real localhost review; GET-only synthetic QA services, no mocks/writes/goldens",
+  "cases": [
+    {
+      "route": "overview",
+      "width": 1440,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Dashboard"
+      ],
+      "primary": [
+        {
+          "label": "Tạo phiên\n+",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Dashboard\nPhiên\nPhiên a70ee596\nQA Sessions 5b84db59\nPhiên 9d977e4c\nPhiên c3a6000e\nPhiên 06d2fd6a\nPhiên be41bcfe\nPhiên 6d10f17a\nPhiên 96bfa7cf\nPhiên e6e73a09\nPhiên f021d05d\nQA Sessions a8f9e42b\nPhiên 8e230dd1\nPhiên 7630a13b\nPhiên 4da0ecae\nPhiên 14cc16c0\nPhiên df434293\nPhiên 7c9bf714\nPhiên 65b00754\nPhiên afa6c1cb\nPhiên cc3db868\nQA Sessions 216bbfbe\nPhiên f9d8b6e3\nPhiên 91721d46\nPhiên 5583306f\nQA — 60 giao dịch mô phỏng\nTạo phiên\n+\nPhiên a70ee596\nEURUSD · 60s · nến #60 · Tạm dừng\nTiếp tục replay\n→\nNet P/L\n75 USD\nSau chi phí · lệnh đã đóng\nGiao dịch đã đóng\n60\nToàn bộ phiên đang chọn\nTỷ lệ thắng\n100%\n60 thắng · 0 thua · 0 hòa\nMax drawdown\n0 USD\nSụt giảm balance sau đóng lệnh\nKết quả theo giao dịch\n\nP/L tích lũy · USD · sau mỗi lệnh đóng\n\nPhân tích chi tiết\n↗\n0\n37,5\n75\n#0\n#30\n#60\nBalance sau đóng lệnh · không gồm floating P/L\nRevision 1\nPhiên gần đây\nXem tất cả phiên\n↗\nPhiên a70ee596\n\nEURUSD · 60s · nến #60\n\nTạm dừng\nKết quả\nTiếp tục\n→\nQA Sessions 5b84db59\n\nEURUSD · 60s · nến #60\n\nTạm dừng\n"
+    },
+    {
+      "route": "sessions",
+      "width": 390,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Sessions"
+      ],
+      "primary": [
+        {
+          "label": "＋ Phiên mới",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        },
+        {
+          "label": "Tiếp tục trên chart →",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Sessions\n＋ Phiên mới\nChọn phiên replay\nChọn phiên replay\na70ee596383445d29e650175d505639a · EURUSD 60s\nQA Sessions 5b84db59 · EURUSD 60s\n9d977e4c9ec346dbacb8d4260e7a79c8 · EURUSD 60s\nc3a6000eacff4b6b937a7925c21417c0 · EURUSD 60s\n06d2fd6ac63f41e78bb91fdef917d99e · EURUSD 60s\nbe41bcfec78244f39087797bf87f4c25 · EURUSD 60s\n6d10f17a975f412393490d8432291468 · EURUSD 60s\n96bfa7cfeb1240d2afa7b1839a66d215 · EURUSD 60s\ne6e73a0912b94b98862c83a4af710edd · EURUSD 60s\nf021d05d656944b890cc425ac060ca1d · EURUSD 60s\nQA Sessions a8f9e42b · EURUSD 60s\n8e230dd15d0b467fb04d7eaf7029df8f · EURUSD 60s\n7630a13be068463ba4b79fdb66d1b5c0 · EURUSD 60s\n4da0ecaed13f4f5b973509a851b316b4 · EURUSD 60s\n14cc16c0b92a47ffbf67d8aa12796a12 · EURUSD 60s\ndf434293e5464d219b5709b379aa1356 · EURUSD 60s\n7c9bf7144fa34d8ca006ac094db5e91a · EURUSD 60s\n65b00754dc794c29b5420cb349096c01 · EURUSD 60s\nafa6c1cb54b54d5f92a4d699cb753ea9 · EURUSD 60s\ncc3db868f1ba4f028cf61ae6fc1ef267 · EURUSD 60s\nQA Sessions 216bbfbe · EURUSD 60s\nf9d8b6e3463f4"
+    },
+    {
+      "route": "replay",
+      "width": 768,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [],
+      "primary": [],
+      "main": "PRACTICE CONTEXT\nEURUSD · 60s\ntenant-a · broker locked\nDECISION CUTOFF\n#20\n00:20:00 1/1/24 UTC\nCutoff lịch sử\nĐang xem đúng cutoff report ở nến #20.\nReplay gốc hiện ở nến #60; dữ liệu sau cutoff này không được render.\nTạo branch nếu muốn tiếp tục từ đúng mốc report mà không sửa session gốc.\nPhát replay\n+1 nến\n+10 nến\nChart\nCandles\nBars\nLine\nArea\nBaseline\nVolume\nSMA 20\nChi tiết & nhánh\nTốc độ\n0.5×\n1×\n2×\n4×\nPhím tắt: → +1 nến · Shift + → +10 nến\n＋\n＝\n╱\n▱\nT\n↔\n☷\n⛶\nEURUSD\n60s · UTC\n\t\n\t\n\n\t\n\t\n1D\n5D\n1M\nAll\nTới cutoff\nHọc & thuật ngữ\n|‹\n‹\nVề cursor mới nhất\n#20 / #60 · UTC"
+    },
+    {
+      "route": "analytics",
+      "width": 320,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Analytics"
+      ],
+      "primary": [],
+      "main": "Analytics\nReplay / local · broker locked\nSide\nTất cả\nBUY\nSELL\nOutcome\nTất cả\nThắng\nThua\nHòa vốn\nTừ ngày (UTC)\nĐến ngày (UTC)\nXóa lọc\nTải CSV\n\nSide: ALL · Outcome: all · Close: mọi ngày → mọi ngày\n\nKết quả tới nến #20. Phiên hiện ở nến #60; bảng và CSV không gồm giao dịch sau mốc đang xem.\n\nPhạm vi và nguồn dữ liệu\nNet P/L\n25\nUSD · net\nReplay\nWin rate\n100%\n20 thắng · 0 thua · 0 hòa\nReplay\nTrades\n20\nclosed-trade ledger\nReplay\nMax DD\n0\nUSD · closed-trade balance\nReplay / ledger\nBalance sau trade đóng\n21 points\n100.000\n100.025\n Balance sau trade đóng\n Drawdown đóng\nKhông phải floating equity · scope UTC\nStarting balance\n100.000\nEnding balance\n100.025\nExpectancy\n1,25\nReplay\nProfit factor\nN/A\ngross profit / loss\nCách đọc đường này\nNguồn và giới hạn\nMở Journal →\nMở Replay →\n20 trade đóng\nN/A = source chưa cung cấp\nTrade\tĐóng UTC\tSource / session\tNet P/L\tNet R\tKết quả\nreplay-pos-1\t00:02:00 1/1/24\t39b1d068edd64e75864f692f27237852\t1\tN/A\tThắng\nreplay-pos-4\t00:03:00 1/1/24\t39b1d068edd64e75864f692f",
+      "provenance": true
+    },
+    {
+      "route": "trades",
+      "width": 1440,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Trades"
+      ],
+      "primary": [
+        {
+          "label": "＋ Phiên mới",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Trades\n＋ Phiên mới\nChọn phiên replay\nChọn phiên replay\na70ee596383445d29e650175d505639a · EURUSD 60s\nQA Sessions 5b84db59 · EURUSD 60s\n9d977e4c9ec346dbacb8d4260e7a79c8 · EURUSD 60s\nc3a6000eacff4b6b937a7925c21417c0 · EURUSD 60s\n06d2fd6ac63f41e78bb91fdef917d99e · EURUSD 60s\nbe41bcfec78244f39087797bf87f4c25 · EURUSD 60s\n6d10f17a975f412393490d8432291468 · EURUSD 60s\n96bfa7cfeb1240d2afa7b1839a66d215 · EURUSD 60s\ne6e73a0912b94b98862c83a4af710edd · EURUSD 60s\nf021d05d656944b890cc425ac060ca1d · EURUSD 60s\nQA Sessions a8f9e42b · EURUSD 60s\n8e230dd15d0b467fb04d7eaf7029df8f · EURUSD 60s\n7630a13be068463ba4b79fdb66d1b5c0 · EURUSD 60s\n4da0ecaed13f4f5b973509a851b316b4 · EURUSD 60s\n14cc16c0b92a47ffbf67d8aa12796a12 · EURUSD 60s\ndf434293e5464d219b5709b379aa1356 · EURUSD 60s\n7c9bf7144fa34d8ca006ac094db5e91a · EURUSD 60s\n65b00754dc794c29b5420cb349096c01 · EURUSD 60s\nafa6c1cb54b54d5f92a4d699cb753ea9 · EURUSD 60s\ncc3db868f1ba4f028cf61ae6fc1ef267 · EURUSD 60s\nQA Sessions 216bbfbe · EURUSD 60s\nf9d8b6e3463f46c"
+    },
+    {
+      "route": "learn",
+      "width": 390,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Học & thuật ngữ"
+      ],
+      "primary": [
+        {
+          "label": "Mở module hiện tại",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Học & thuật ngữ\nResearch\nPractice\nSettings\nREAD ONLY\nKhông ghi tiến độ · không lộ answer key\nLocal course · đọc từ workspace\nProgress owner education/progress.json\nOAuth PREP_ONLY\nBroker Locked\nCourse\nForex từ nền tảng đến thực hành có kiểm chứng\nVersion\n1.1\nTiến độ\n4/24 bài\nTrạng thái\nin_progress\nBài hiện tại\nM08-L03\nQuyết định bước tiếp theo\nMở module hiện tại\n17%\nCập nhật 2026-09-13\nCourse map\n8 module\nTổng quan course\nWorkbook\nBài đang chờ\nM01\nCơ chế giao dịch\nMở\nM01-L01\nHai giá mua/bán\nM01-L02\nMarket, limit, stop, SL và TP\nM01-L03\nTrạng thái tài khoản\nĐã hoàn thành\nM02\nĐơn vị và chi phí\nMở\nM02-L01\nPip, point và lot\nĐã hoàn thành\nM02-L02\nTính tiền lời/lỗ\nĐã hoàn thành\nM02-L03\nChi phí thực sự của một lệnh\nM03\nQuản lý rủi ro\nMở\nM03-L01\nChọn cỡ lệnh từ mức SL\nM03-L02\nĐo kết quả bằng R\nM03-L03\nDrawdown và chuỗi thua\nM04\nĐọc thị trường\nMở\nM04-L01\nNến và khung thời gian\nĐã hoàn thành\nM04-L02\nXu hướng, vùng giá và điều chưa biết\nM04-L03\nTin tức, phiên và giờ Việt Nam\nM05\nPhương pháp kiểm ",
+      "openedResource": true
+    },
+    {
+      "route": "settings",
+      "width": 768,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Settings"
+      ],
+      "primary": [],
+      "main": "Settings\nMở Practice\nLearn\nLàm mới\nGiao diện\n\nLưu trên trình duyệt này. Ngôn ngữ áp dụng cho thanh điều hướng; nội dung nghiệp vụ giữ ngôn ngữ hiện có.\n\nChế độ màu\nTối\nSáng\nNgôn ngữ điều hướng\nTiếng Việt\nEnglish\nLưu giao diện\nHủy thay đổi\n\nWorkspace\ntenant-a\nMode\nlocal-trusted-demo\nDataset được chọn\nChưa chọn\nBroker capability\nĐã khóa\nProject session\nPhiên local hiện tại\nsigned_in\nAuth mode\nlocal-trusted-demo\nProduction auth\nTắt\nIdentity\nlocal-owner\nIdentity source\nlocal-process\nSession id\nlocal-demo-session:9f7ee28edfc852fbe796904a\nCredentials\nKhông\n\nĐây là session local/demo để dùng Workspace. Nó không phải đăng nhập production và không cấp quyền broker.\n\nSafety boundary\nTrạng thái truy cập\nRead only\nSession workspace\nĐã xác minh local\nGửi lệnh broker\nĐã khóa\nHoldout data\nChưa có quyền từ màn này\nCloud write / export\nPREP_ONLY\nĐặt lệnh\nĐã khóa\nSửa lệnh\nĐã khóa\nHủy lệnh\nĐã khóa\nĐóng lệnh\nĐã khóa\n\nTrạng thái được đọc từ session, execution API và connector. Màn này không cấp quyền hay g"
+    },
+    {
+      "route": "live",
+      "width": 320,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Market calendar"
+      ],
+      "primary": [],
+      "main": "Market calendar\nBroker đã khóa\nWorkspace tenant-a\nSurface Calendar\nMode Read only\nExternal write PREP_ONLY\n—\nLive adapter chưa được cấu hình\nKhông có market/account snapshot để hiển thị trong workspace này.\nDữ liệu read-only\n—\nChưa có market calendar source\n\nKhông tự tải dữ liệu thị trường ở màn này. Kết nối local hoặc dataset đã xác minh trước khi hiển thị sự kiện.\n\nMở Data Desk\n→\nPhạm vi truy cập\nFAIL-CLOSED\n\nMàn này chỉ đọc trạng thái. Các quyền chưa được cấp vẫn giữ khóa.\n\nMarket feed\nChưa cấp\nAccount identity\nChưa cấp\nBroker send\nĐã khóa\nHoldout / external write\nPREP_ONLY\nStatus endpoint: /api/v2/live/status · Không có broker request từ màn này."
+    },
+    {
+      "route": "liveTrades",
+      "width": 1440,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Live trades"
+      ],
+      "primary": [],
+      "main": "Live trades\nBroker đã khóa\nWorkspace tenant-a\nSurface Trades\nMode Read only\nExternal write PREP_ONLY\n—\nLive adapter chưa được cấu hình\nKhông có market/account snapshot để hiển thị trong workspace này.\nDữ liệu read-only\n—\nChưa có read-only trade feed\n\nChưa có nguồn trade snapshot nào được gắn với workspace. Broker/live execution vẫn bị khóa.\n\nMở Data Desk\n→\nPhạm vi truy cập\nFAIL-CLOSED\n\nMàn này chỉ đọc trạng thái. Các quyền chưa được cấp vẫn giữ khóa.\n\nMarket feed\nChưa cấp\nAccount identity\nChưa cấp\nBroker send\nĐã khóa\nHoldout / external write\nPREP_ONLY\nStatus endpoint: /api/v2/live/status · Không có broker request từ màn này."
+    },
+    {
+      "route": "liveNotes",
+      "width": 390,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Market notes"
+      ],
+      "primary": [],
+      "main": "Market notes\nBroker đã khóa\nWorkspace tenant-a\nSurface Notes\nMode Read only\nExternal write PREP_ONLY\n—\nLive adapter chưa được cấu hình\nKhông có market/account snapshot để hiển thị trong workspace này.\nDữ liệu read-only\n—\nChưa có market notes\n\nMở Journal từ một replay session để ghi chú có context. Live notes chưa có nguồn dữ liệu riêng.\n\nMở Journal local\n→\nPhạm vi truy cập\nFAIL-CLOSED\n\nMàn này chỉ đọc trạng thái. Các quyền chưa được cấp vẫn giữ khóa.\n\nMarket feed\nChưa cấp\nAccount identity\nChưa cấp\nBroker send\nĐã khóa\nHoldout / external write\nPREP_ONLY\nStatus endpoint: /api/v2/live/status · Không có broker request từ màn này."
+    },
+    {
+      "route": "liveTags",
+      "width": 768,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Tag analytics"
+      ],
+      "primary": [],
+      "main": "Tag analytics\nBroker đã khóa\nWorkspace tenant-a\nSurface Tag analytics\nMode Read only\nExternal write PREP_ONLY\n—\nLive adapter chưa được cấu hình\nKhông có market/account snapshot để hiển thị trong workspace này.\nDữ liệu read-only\n—\nChưa có ledger để phân tích\n\nKhông suy ra tỷ lệ, P/L hoặc tín hiệu từ dữ liệu live khi chưa có ledger canonical.\n\nMở Data Desk\n→\nPhạm vi truy cập\nFAIL-CLOSED\n\nMàn này chỉ đọc trạng thái. Các quyền chưa được cấp vẫn giữ khóa.\n\nMarket feed\nChưa cấp\nAccount identity\nChưa cấp\nBroker send\nĐã khóa\nHoldout / external write\nPREP_ONLY\nStatus endpoint: /api/v2/live/status · Không có broker request từ màn này."
+    },
+    {
+      "route": "liveAccounts",
+      "width": 320,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Trading accounts"
+      ],
+      "primary": [],
+      "main": "Trading accounts\nBroker đã khóa\nWorkspace tenant-a\nSurface Trading accounts\nMode Read only\nExternal write PREP_ONLY\n—\nLive adapter chưa được cấu hình\nKhông có market/account snapshot để hiển thị trong workspace này.\nDữ liệu read-only\n—\nChưa có account capability\n\nKhông có account identity hoặc credential nào được đọc từ UI này; live và broker access vẫn fail-closed.\n\nMở Data Desk\n→\nPhạm vi truy cập\nFAIL-CLOSED\n\nMàn này chỉ đọc trạng thái. Các quyền chưa được cấp vẫn giữ khóa.\n\nMarket feed\nChưa cấp\nAccount identity\nChưa cấp\nBroker send\nĐã khóa\nHoldout / external write\nPREP_ONLY\nStatus endpoint: /api/v2/live/status · Không có broker request từ màn này."
+    },
+    {
+      "route": "playbook",
+      "width": 1440,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Playbook"
+      ],
+      "primary": [],
+      "main": "Playbook\nREAD ONLY\nBroker locked · không freeze / fork\nSetups\n0\nChưa có playbook\nBackend chưa có record để đọc. UI này không tự tạo bản ghi.\nChọn một playbook\nChọn record bên trái để đọc metadata và version history."
+    },
+    {
+      "route": "data",
+      "width": 390,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Data Desk"
+      ],
+      "primary": [
+        {
+          "label": "Preview quality",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": true
+        }
+      ],
+      "main": "Data Desk\nResearch\nReplay\nRESEARCH / SIMULATION\nBroker locked · holdout không mở\nWorkspace tenant-a\nDatasets 1\nProviders 1\nHoldout khóa\nDataset catalog\n\nChỉ hiển thị dữ liệu thuộc workspace hiện tại.\n\nProvider\nTất cả\nlocal-catalog\nDataset\tInstrument\tRange\tQA\tHoldout\tRows\n\nEURUSD · 60s\ndataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6\nlocal-catalog\n\tEURUSD\n60s\n\t00:00 1/1/24\n→ 04:59 1/1/24\n\tChưa xác minh\tKhóa\t300\nProvenance và QA\nMở trong Research →\nDataset\ndataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6\nProvider\nlocal-catalog\nInstrument / TF\nEURUSD · 60s\nSố nến\n300\nRange UTC\n00:00 1/1/24 → 04:59 1/1/24\nLicense\ngenerated test data only\nQuality\nChưa xác minh\nHoldout\nHoldout khóa\nArtifact hash\nc432b9eb5f4e47fcbcf97737bfa746fe40286a89ceebd2b05711a6f86d41d046\nRetrieved\n00:00 1/10/26\nTransform\nu2-normalize-v3\nInstrument spec\nCó\nCần biết trước khi chạy\nDataset chưa được xác minh cho production.\nKhông có quyền holdout trong workspace này.\nProvider"
+    },
+    {
+      "route": "research",
+      "width": 768,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Research"
+      ],
+      "primary": [
+        {
+          "label": "Tạo research run",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Research\nRESEARCH / SIMULATION\nBroker locked · không gửi lệnh\nData Desk →\nWorkspace tenant-a\nJob Chưa tạo\nChưa chạy\nEngine nautilus sẵn sàng\n✓\nContext\n✓\nQuality gate\n03\nRun\n04\nCheckpoint\n05\nResult\nDữ liệu đầu vào\n\nPhạm vi cố định cho run này. Đổi dataset sẽ xóa deep link job hiện tại.\n\nMở Data Desk →\nEURUSD · 60s\n300 rows · 00:00 1/1/24 → 04:59 1/1/24\n\ndataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6\n\nQuality\nChưa xác minh\nHoldout\nHoldout khóa\nProvider\nlocal-catalog\nArtifact SHA\nc432b9eb5f4e47fcbcf97737bfa746fe40286a89ceebd2b05711a6f86d41d046\nProvenance và giới hạn dữ liệu\nCó thể chạy local, nhưng provenance còn thiếu\n\nRun vẫn giữ được tính trung thực, nhưng các cảnh báo bên dưới giới hạn cách diễn giải kết quả.\n\n!\nĐọc 2 cảnh báo trước khi chạy\n2 cảnh báo\nXem cảnh báo ảnh hưởng cách diễn giải\nCố định giả định\n\nChỉ gửi dataset, strategy contract và starting balance đến local research backend.\n\nDataset\nChọn dataset\ndataset-4382b9699e911eea88c7bd12a9082862f9178193a"
+    },
+    {
+      "route": "journal",
+      "width": 320,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Journal"
+      ],
+      "primary": [
+        {
+          "label": "+ Ghi chú",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        },
+        {
+          "label": "Lưu ghi chú",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Journal\nWorkspace local · broker locked\nMở replay\nXem analytics\nLINKED CONTEXT\nReplay 39b1d068edd64e75864f692f27237852\nCutoff nến #20\nChỉ ngữ cảnh này\nMở lại replay\nENTRIES\n0 ghi chú\nĐang lọc theo context hiện tại\n+ Ghi chú\nChưa có ghi chú cho context này\nTạo ghi chú đầu tiên để lưu decision cùng replay.\nDECISION STORY\nChọn ghi chú để xem quyết định và kết quả.\nNEW ENTRY\nGhi chú mới\nLoại ghi chú\nQuan sát\nGiả thuyết\nQuyết định\nKhông giao dịch\nBỏ lỡ giao dịch\nNội dung\nDecision context · quan sát, quyết định & kết quả\nTags\nphân tách bằng dấu phẩy\nOverlay liên quan\nID, phân tách bằng dấu phẩy\nIMMUTABLE SOURCE\nreplay-decision:39b1d068edd64e75864f692f27237852:cursor:20\nSource gắn với session/trade và không đổi khi sửa revision.\nLưu ghi chú",
+      "decisionFields": 6
+    },
+    {
+      "route": "risk",
+      "width": 1440,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Risk & giới hạn"
+      ],
+      "primary": [
+        {
+          "label": "Đánh giá snapshot",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Risk & giới hạn\nSIMULATION ONLY\nKhông có broker action\nRisk Lab không mở live trading\nKết quả chỉ đánh giá profile + snapshot bạn nhập, giữ nguyên các giới hạn local/replay.\nINPUT / PROFILE\nProfile giới hạn\nProfile ID\nTerms version\nEffective from\nTotal drawdown\nType\nStatic\nTrailing\nOverall basis\nEquity\nBalance\nDaily loss\nDaily basis\nEquity\nBalance\nCost basis\nIncluded\nSeparate\nINPUT / SNAPSHOT\nTrạng thái tài khoản\nStarting balance\nBalance\nEquity\nHigh-water mark\nDaily start equity\nChạm đúng floor cũng tính là breach\nĐánh giá snapshot\nREAD BEFORE PROMOTION\nCách đọc kết quả\nFloor\nMức thấp nhất cho phép theo profile hiện tại.\nRemaining\nKhoảng còn lại trước khi chạm giới hạn.\nBlocked\nThiếu dữ liệu nên chưa được phép kết luận.\nSimulation\nKhông nói lên khả năng payout hay edge."
+    },
+    {
+      "route": "prop",
+      "width": 390,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Luyện challenge"
+      ],
+      "primary": [
+        {
+          "label": "Tạo session mô phỏng",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Luyện challenge\nReplay\nHọc\nSIMULATION ONLY\nKhông broker call · không credential · tiền ảo\nSessions\nReports\nNotion\nWORKSPACE\ntenant-a\n0 session\nChưa có session. Tạo một phiên luyện ở form bên cạnh.\nTạo phiên luyện\nGENERIC / CUSTOM PRACTICE PROFILE\n1 phase · UTC · static loss\nTÊN SESSION\nPROFILE\nGeneric practice\nCustom practice\nVỐN ẢO\nCURRENCY\nUSD\nEUR\nPROFIT TARGET\nDAILY LOSS\nOVERALL LOSS\nDATASET VERSION\nBẮT ĐẦU (UTC)\nMAX DAYS\nCOST MODEL\ncost-v1\ncost-zero-fixture\nReview\nEquity-based daily/overall loss, balance target, reset UTC 00:00. Đây là profile luyện tập, không đại diện điều khoản của hãng prop cụ thể.\nTạo session mô phỏng\nPhiên đang chọn\nTRẠNG THÁI ĐÃ LƯU\nChọn hoặc tạo session để xem state."
+    },
+    {
+      "route": "order",
+      "width": 768,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Trade draft"
+      ],
+      "primary": [
+        {
+          "label": "Queue vào simulator",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Trade draft\nSession\nExecution sẵn sàng\ndataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6\nSIM\nSIMULATOR / PAPER ONLY\nQueue order chỉ ghi vào replay ledger local. Broker/live execution đang khóa.\nINSTRUMENT\nEURUSD\nDATASET CATALOG\nVerified\nCUTOFF\n2024-01-01 01:00 UTC\nREVISION\nr123\nGIÁ THAM CHIẾU\n1,1032\nBALANCE\n100.075,00 US$\nEQUITY\n100.075,00 US$\nFLOATING P/L\n0,00 US$\nPOSITION\nFlat\nSTEP 02\nDraft tại chart cutoff\nfuture fill: nến kế tiếp\nBUY\nSELL\nQuantity\nStop loss\nTake profit\nRISK TỚI SL\n4,00 US$\ngross 2,00 US$ + phí 2,00 US$\nREWARD TỚI TP\n2,00 US$\nước tính theo giá tham chiếu\nPLANNED R\n2.00R\nchưa phải kết quả thực tế\nQueue vào simulator\nKhông gửi broker · operation sẽ gắn vào ledger local\nMODEL\nExecution assumptions\nFill basis\nMarket · next bar open\nSpread\n0.0002\nCommission\n1 / side\nContract\n100000\nData suffix\nc432b9eb5f4e\nLive execution bị khóa\nTrade draft và queue chỉ thay đổi replay state. Không có route gửi lệnh broker trong màn hình này."
+    },
+    {
+      "route": "replay",
+      "width": 320,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [],
+      "primary": [],
+      "main": "PRACTICE CONTEXT\nEURUSD · 60s\ntenant-a · broker locked\nDECISION CUTOFF\n#20\n00:20:00 1/1/24 UTC\nCutoff lịch sử\nĐang xem đúng cutoff report ở nến #20.\nReplay gốc hiện ở nến #60; dữ liệu sau cutoff này không được render.\nTạo branch nếu muốn tiếp tục từ đúng mốc report mà không sửa session gốc.\nPhát replay\n+1 nến\n+10 nến\nChart\nCandles\nBars\nLine\nArea\nBaseline\nVolume\nSMA 20\nChi tiết & nhánh\nTốc độ\n0.5×\n1×\n2×\n4×\nPhím tắt: → +1 nến · Shift + → +10 nến\n＋\n＝\n╱\n▱\nT\n↔\n☷\n⛶\nEURUSD\n60s · UTC\n\t\n\t\n\n\t\n\t\n1D\n5D\n1M\nAll\nTới cutoff\nHọc & thuật ngữ\n|‹\n‹\nVề cursor mới nhất\n#20 / #60 · UTC"
+    },
+    {
+      "route": "analytics",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Analytics"
+      ],
+      "primary": [],
+      "main": "Analytics\nReplay / local · broker locked\nSide\nTất cả\nBUY\nSELL\nOutcome\nTất cả\nThắng\nThua\nHòa vốn\nTừ ngày (UTC)\nĐến ngày (UTC)\nXóa lọc\nTải CSV\n\nSide: ALL · Outcome: all · Close: mọi ngày → mọi ngày\n\nKết quả tới nến #20. Phiên hiện ở nến #60; bảng và CSV không gồm giao dịch sau mốc đang xem.\n\nPhạm vi và nguồn dữ liệu\nNet P/L\n25\nUSD · net\nReplay\nWin rate\n100%\n20 thắng · 0 thua · 0 hòa\nReplay\nTrades\n20\nclosed-trade ledger\nReplay\nMax DD\n0\nUSD · closed-trade balance\nReplay / ledger\nBalance sau trade đóng\n21 points\n100.000\n100.025\n Balance sau trade đóng\n Drawdown đóng\nKhông phải floating equity · scope UTC\nStarting balance\n100.000\nEnding balance\n100.025\nExpectancy\n1,25\nReplay\nProfit factor\nN/A\ngross profit / loss\nCách đọc đường này\nNguồn và giới hạn\nMở Journal →\nMở Replay →\n20 trade đóng\nN/A = source chưa cung cấp\nTrade\tĐóng UTC\tSource / session\tNet P/L\tNet R\tKết quả\nreplay-pos-1\t00:02:00 1/1/24\t39b1d068edd64e75864f692f27237852\t1\tN/A\tThắng\nreplay-pos-4\t00:03:00 1/1/24\t39b1d068edd64e75864f692f",
+      "provenance": true
+    },
+    {
+      "route": "sessions",
+      "width": 390,
+      "theme": "light",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Sessions"
+      ],
+      "primary": [
+        {
+          "label": "＋ Phiên mới",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        },
+        {
+          "label": "Tiếp tục trên chart →",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Sessions\n＋ Phiên mới\nChọn phiên replay\nChọn phiên replay\na70ee596383445d29e650175d505639a · EURUSD 60s\nQA Sessions 5b84db59 · EURUSD 60s\n9d977e4c9ec346dbacb8d4260e7a79c8 · EURUSD 60s\nc3a6000eacff4b6b937a7925c21417c0 · EURUSD 60s\n06d2fd6ac63f41e78bb91fdef917d99e · EURUSD 60s\nbe41bcfec78244f39087797bf87f4c25 · EURUSD 60s\n6d10f17a975f412393490d8432291468 · EURUSD 60s\n96bfa7cfeb1240d2afa7b1839a66d215 · EURUSD 60s\ne6e73a0912b94b98862c83a4af710edd · EURUSD 60s\nf021d05d656944b890cc425ac060ca1d · EURUSD 60s\nQA Sessions a8f9e42b · EURUSD 60s\n8e230dd15d0b467fb04d7eaf7029df8f · EURUSD 60s\n7630a13be068463ba4b79fdb66d1b5c0 · EURUSD 60s\n4da0ecaed13f4f5b973509a851b316b4 · EURUSD 60s\n14cc16c0b92a47ffbf67d8aa12796a12 · EURUSD 60s\ndf434293e5464d219b5709b379aa1356 · EURUSD 60s\n7c9bf7144fa34d8ca006ac094db5e91a · EURUSD 60s\n65b00754dc794c29b5420cb349096c01 · EURUSD 60s\nafa6c1cb54b54d5f92a4d699cb753ea9 · EURUSD 60s\ncc3db868f1ba4f028cf61ae6fc1ef267 · EURUSD 60s\nQA Sessions 216bbfbe · EURUSD 60s\nf9d8b6e3463f4"
+    },
+    {
+      "route": "learn",
+      "width": 768,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Học & thuật ngữ"
+      ],
+      "primary": [
+        {
+          "label": "Mở module hiện tại",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Học & thuật ngữ\nResearch\nPractice\nSettings\nREAD ONLY\nKhông ghi tiến độ · không lộ answer key\nLocal course · đọc từ workspace\nProgress owner education/progress.json\nOAuth PREP_ONLY\nBroker Locked\nCourse\nForex từ nền tảng đến thực hành có kiểm chứng\nVersion\n1.1\nTiến độ\n4/24 bài\nTrạng thái\nin_progress\nBài hiện tại\nM08-L03\nQuyết định bước tiếp theo\nMở module hiện tại\n17%\nCập nhật 2026-09-13\nCourse map\n8 module\nTổng quan course\nWorkbook\nBài đang chờ\nM01\nCơ chế giao dịch\nMở\nM01-L01\nHai giá mua/bán\nM01-L02\nMarket, limit, stop, SL và TP\nM01-L03\nTrạng thái tài khoản\nĐã hoàn thành\nM02\nĐơn vị và chi phí\nMở\nM02-L01\nPip, point và lot\nĐã hoàn thành\nM02-L02\nTính tiền lời/lỗ\nĐã hoàn thành\nM02-L03\nChi phí thực sự của một lệnh\nM03\nQuản lý rủi ro\nMở\nM03-L01\nChọn cỡ lệnh từ mức SL\nM03-L02\nĐo kết quả bằng R\nM03-L03\nDrawdown và chuỗi thua\nM04\nĐọc thị trường\nMở\nM04-L01\nNến và khung thời gian\nĐã hoàn thành\nM04-L02\nXu hướng, vùng giá và điều chưa biết\nM04-L03\nTin tức, phiên và giờ Việt Nam\nM05\nPhương pháp kiểm ",
+      "openedResource": true
+    },
+    {
+      "route": "order",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": 0,
+      "contentOverflow": 0,
+      "h1": [
+        "Trade draft"
+      ],
+      "primary": [
+        {
+          "label": "Queue vào simulator",
+          "bg": "rgb(36, 91, 196)",
+          "fg": "rgb(255, 255, 255)",
+          "disabled": false
+        }
+      ],
+      "main": "Trade draft\nSession\nExecution sẵn sàng\ndataset-4382b9699e911eea88c7bd12a9082862f9178193a64193eff48167a4a8e586c6\nSIM\nSIMULATOR / PAPER ONLY\nQueue order chỉ ghi vào replay ledger local. Broker/live execution đang khóa.\nINSTRUMENT\nEURUSD\nDATASET CATALOG\nVerified\nCUTOFF\n2024-01-01 01:00 UTC\nREVISION\nr123\nGIÁ THAM CHIẾU\n1,1032\nBALANCE\n100.075,00 US$\nEQUITY\n100.075,00 US$\nFLOATING P/L\n0,00 US$\nPOSITION\nFlat\nSTEP 02\nDraft tại chart cutoff\nfuture fill: nến kế tiếp\nBUY\nSELL\nQuantity\nStop loss\nTake profit\nRISK TỚI SL\n4,00 US$\ngross 2,00 US$ + phí 2,00 US$\nREWARD TỚI TP\n2,00 US$\nước tính theo giá tham chiếu\nPLANNED R\n2.00R\nchưa phải kết quả thực tế\nQueue vào simulator\nKhông gửi broker · operation sẽ gắn vào ledger local\nMODEL\nExecution assumptions\nFill basis\nMarket · next bar open\nSpread\n0.0002\nCommission\n1 / side\nContract\n100000\nData suffix\nc432b9eb5f4e\nLive execution bị khóa\nTrade draft và queue chỉ thay đổi replay state. Không có route gửi lệnh broker trong màn hình này."
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "PASS"
+}

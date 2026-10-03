@@ -1,0 +1,156 @@
+{
+  "status": "PASS",
+  "scope": "real-local-readonly-synthetic-QA-data-plus-labeled-state-response-fixtures",
+  "checks": [
+    "20 real API screenshots: canonical title, 32/16px scope spacing, no double report padding or document overflow, full-width chart with circular markers and closed sources",
+    "real chart point opens matching trade and URL; detail survives reload; provenance opens on demand",
+    "real Trades pagination/focus, server outcome filter, UTC date empty state and reset preserve scope",
+    "real historical cursor20 shows20trades/25USD/21balance points; CSV uses the same cutoff",
+    "labeled response fixtures: stale/partial preserved,503 blocked result hides metrics"
+  ],
+  "screenshots": [
+    {
+      "filename": "replay-dark-1440.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-dark-1440.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-dark-1440-result.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-dark-1440.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-dark-1440-result.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "replay-dark-390.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-dark-390.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-dark-390-result.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-dark-390.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-dark-390-result.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "replay-light-1440.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-light-1440.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-light-1440-result.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-light-1440.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-light-1440-result.png",
+      "overflow": 0,
+      "padding": "32px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "replay-light-390.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-light-390.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "trade-light-390-result.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-light-390.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    },
+    {
+      "filename": "analytics-light-390-result.png",
+      "overflow": 0,
+      "padding": "16px",
+      "embeddedPadding": "0px",
+      "h1": "22px"
+    }
+  ],
+  "browserErrors": [],
+  "blockedWrites": [],
+  "externalRequests": []
+}

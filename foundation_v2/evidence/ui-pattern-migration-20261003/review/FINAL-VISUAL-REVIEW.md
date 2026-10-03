@@ -1,0 +1,19 @@
+# Independent final visual review — MT5 page pattern migration
+
+Verdict: SCOPED_ACCEPT for the cross-page presentation migration reviewed here. No remaining blocking finding in the inspected final source and captures. This review excludes implementation acceptance for the support pages I authored (Learn/Settings/Live), which require the other independent reviewer/root process.
+
+Read-only review: no product source edits, commits, API mutations, fixture/golden promotion or broker/provider actions.
+
+Reviewed source/diff: AnalyticsWorkspace and analytics-story, DataDeskWorkspace, ResearchWorkspace, PlaybookWorkspace, JournalWorkspace, PropWorkspace, ReplayWorkspace, TradeWorkspace/RiskWorkspace and their current CSS. The change reuses existing typed data, revision/cutoff/state handling and click-bound handlers. Provenance/scope/definitions remain available through native disclosures. Chart SVG circles now retain round geometry at responsive sizes; ledger provides the larger alternative trade selector. Data CSV import moves after catalog without auto-submission. Prop phase labels use current/prior/unopened, not invented completion. Journal optional decision fields retain values and save/revision handling. No added framework or widened broker/provider authority found.
+
+Visual evidence inspected:
+- ui-pattern-migration-20261003/route-scan-final2: Analytics desktop dark/mobile light; Data desktop light; Research desktop light/mobile dark; Playbook desktop light/mobile dark; Prop desktop light/mobile dark; Journal desktop light; Risk desktop/mobile light; real Replay mobile light. The report has144 scoped cases, no failures and identical before/after source hash fe8f7405c4b4d937e637b856e568d01266389e8fb60dd3a093a454215eebeb93. This scan predates the final targeted Trade/Risk repairs; targeted root checks supersede those routes.
+- chart-final2: baseline, candles/volume/SMA, bars, line and area examples across desktop/mobile and both theme contexts. OHLC up/down colors, timestamps, price axis, last-price marker and overlay/volume separation are readable. Receipts label renderer variants as synthetic; no full-product/data/golden acceptance inferred.
+- .artifacts/wm-pattern-risk-journal-20261003/interaction6: populated Journal desktop dark/mobile light reviewed; old Trade cutoff contrast and mobile SIM shrink found and reported. Historical failures remain failures.
+- interaction8: independently inspected trade-draft-light-320.png, trade-draft-dark-390.png, trade-draft-light-1440.png, risk-breach-light-320.png, risk-breach-dark-390.png and risk-breach-light-1440.png. SIM remains one line at320/390, safety copy wraps without overlap; light cutoff text is readable and CSS resolves to --wm-content-muted in both duplicate definitions. Risk form/side are transparent and the form precedes the guide on mobile. Desktop form/result/capability layout remains aligned. No clipping/overlap/illegible state found in these final captures.
+
+Final delta checked in source: Trade lock mark has flex:0 0 34px and white-space:nowrap, its copy container has min-width:0; both Trade/Risk cutoff rules use the semantic muted token; scoped Risk form/side background transparent; mobile guide order0 follows the form. interaction8/report.json records27 checks,18 captures at320/390/1440 both themes and zero failures, with all synthetic mutation requests explicitly intercepted. I did not rerun that suite independently; I inspected its report and final captures, plus the source delta.
+
+Trade/Risk blockers from the earlier review are resolved. The earlier nonblocking Risk surface/order suggestion is also addressed. Root retains ownership of final build, targeted route/zoom checks, receipt integration and commit.
+
+Limit: selective independent visual/source review and existing automated receipts, not comprehensive manual WCAG, full product completion, real live-feed/provider readiness or trading authority.

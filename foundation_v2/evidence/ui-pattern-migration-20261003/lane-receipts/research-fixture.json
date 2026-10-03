@@ -1,0 +1,207 @@
+{
+  "scope": "intercepted synthetic API responses, isolated browser; no real API writes",
+  "checks": [
+    "Dataset selection updates provenance; provider filter scopes catalogue without changing writes",
+    "File stays local until preview, changed instrument invalidates preview, denied import is recoverable and cannot fake success",
+    "Research rejects invalid balance without POST, canonical result and job deep link follow intercepted backend",
+    "Unknown metric stays unknown; failed terminal job shows no fabricated result",
+    "Playbook catalogue selection retains URL scope; revisions diff deterministic and same revision shows no diff",
+    "Read-only history retry remains bounded; empty catalogues expose honest recovery states"
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/providers"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/data/csv/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/data/csv/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/data/csv/import"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/engines"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/research/jobs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/jobs/job-a"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/jobs/job-a"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/jobs/job-a"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/engines"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-b/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/providers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/providers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/engines"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/providers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/engines"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/providers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/engines"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/providers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/research/engines"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks/pb-a/revisions"
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

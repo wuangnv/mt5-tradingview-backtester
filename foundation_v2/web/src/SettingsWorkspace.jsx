@@ -139,13 +139,9 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
   ]
 
   return (
-    <main className="settings-shell" data-testid="settings-workspace">
-      <header className="settings-topbar">
-        <div>
-          <div className="eyebrow">WORKSPACE / SETTINGS</div>
-          <h1>Settings</h1>
-          <p>Chọn giao diện và kiểm tra trạng thái workspace.</p>
-        </div>
+    <main className="settings-shell wm-page" data-testid="settings-workspace">
+      <header className="settings-topbar wm-page-header">
+        <h1>Settings</h1>
         <div className="settings-topbar-actions">
           <a className="context-link" href={nextLink}>{returnLabel}</a>
           <a className="context-link" href={learnHref}>Learn</a>
@@ -158,8 +154,10 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         <form className="settings-appearance-form" onSubmit={saveAppearance}>
           <label><span>Chế độ màu</span><select value={appearanceDraft.theme} onChange={(event) => changeAppearance('theme', event.target.value)}><option value="dark">Tối</option><option value="light">Sáng</option></select></label>
           <label><span>Ngôn ngữ điều hướng</span><select value={appearanceDraft.language} onChange={(event) => changeAppearance('language', event.target.value)}><option value="vi">Tiếng Việt</option><option value="en">English</option></select></label>
-          <button type="submit" disabled={!appearanceDirty && appearanceStatus !== 'volatile'}>Lưu giao diện</button>
+          <div className="settings-appearance-actions">
+            <button type="submit" disabled={!appearanceDirty && appearanceStatus !== 'volatile'}>Lưu giao diện</button>
           <button type="button" disabled={!appearanceDirty} onClick={() => { setAppearanceDraft(appearance); setAppearanceStatus('') }}>Hủy thay đổi</button>
+          </div>
         </form>
         <p className="settings-note" role="status" data-testid="settings-appearance-status">{appearanceStatus === 'saved' ? 'Đã lưu giao diện trên trình duyệt này.' : appearanceStatus === 'volatile' ? 'Đã áp dụng trong phiên này. Trình duyệt đang chặn lưu tùy chọn; bạn có thể thử lưu lại.' : appearanceDirty ? 'Có thay đổi chưa lưu.' : ''}</p>
       </section>}

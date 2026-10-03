@@ -114,8 +114,8 @@ export default function RiskWorkspace({ workspace, initialSnapshot = null }) {
     }
   }
 
-  return <main className="risk-workspace" data-testid="risk-workspace">
-    <div className="risk-heading"><div><span className="risk-eyebrow">RISK LAB / LOCAL EVALUATOR</span><h1>Risk & giới hạn</h1><p>Kiểm tra drawdown và daily loss trên một snapshot rõ nguồn. Số liệu thiếu sẽ bị chặn thay vì coi như 0.</p></div><div className="risk-mode-lock"><strong>SIMULATION ONLY</strong><span>Không có broker action</span></div></div>
+  return <main className="risk-workspace wm-page" data-testid="risk-workspace">
+    <header className="risk-heading wm-page-header"><div><h1>Risk & giới hạn</h1></div><div className="risk-mode-lock"><strong>SIMULATION ONLY</strong><span>Không có broker action</span></div></header>
     <div className="risk-safety-banner"><strong>Risk Lab không mở live trading</strong><span>Kết quả chỉ đánh giá profile + snapshot bạn nhập, giữ nguyên các giới hạn local/replay.</span></div>
     <section className="risk-layout">
       <form className="risk-form" onSubmit={evaluate}>

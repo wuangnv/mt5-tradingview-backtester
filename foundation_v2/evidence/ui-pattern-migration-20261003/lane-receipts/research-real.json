@@ -1,0 +1,481 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "a049276a9a8c9d0fda3bd28f7d406e2f2b9557d1cbb7741153d9546a2f2ccb2f",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "data",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Data Desk",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 35
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\data-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "data",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Data Desk",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 35
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\data-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "research",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Research",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "li[data-step=\"context\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "li[data-step=\"quality\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".rs-state-mark"
+                ],
+                "html": "<span class=\"rs-state-mark\">○</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 33
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\research-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "research",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Research",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "li[data-step=\"context\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "li[data-step=\"quality\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 33
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\research-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\playbook-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\playbook-dark-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "data",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Data Desk",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 35
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\data-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "data",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Data Desk",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 35
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\data-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "research",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Research",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "li[data-step=\"context\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "li[data-step=\"quality\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".rs-state-mark"
+                ],
+                "html": "<span class=\"rs-state-mark\">○</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 33
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\research-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "research",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Research",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "li[data-step=\"context\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "li[data-step=\"quality\"] > .rs-step-index"
+                ],
+                "html": "<span class=\"rs-step-index\">✓</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 33
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\research-light-390.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\playbook-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "width": 390,
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 900,
+        "outerWidth": 390,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 390,
+        "overflowX": 0,
+        "contentWidth": 332,
+        "contentOverflowX": 0,
+        "mainHeading": "Playbook",
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\.artifacts\\wm-pattern-research-20261003\\scan-r2\\playbook-light-390.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "a049276a9a8c9d0fda3bd28f7d406e2f2b9557d1cbb7741153d9546a2f2ccb2f",
+  "status": "SCOPED_PASS"
+}

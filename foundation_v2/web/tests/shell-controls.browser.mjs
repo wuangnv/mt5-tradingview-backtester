@@ -104,14 +104,11 @@ try {
       await menu.click()
     }
     await assertGeometry(page)
-    // The native select remains the real control; its decorative chevron must
-    // be centered independently of the machine's font metrics.
-    const chevron = page.locator('.fxr-select-chevron')
-    const icon = await chevron.locator('svg').boundingBox()
-    const circle = await chevron.boundingBox()
-    assert.ok(Math.abs(icon.x + icon.width / 2 - circle.x - circle.width / 2) < 1)
-    assert.ok(Math.abs(icon.y + icon.height / 2 - circle.y - circle.height / 2) < 1)
-    assert.equal(await page.getByRole('combobox', { name: 'Chọn phiên replay' }).isEnabled(), true)
+    const select = page.getByRole('combobox', { name: 'Chọn phiên replay' })
+    const selectStyle = await select.evaluate(element => ({ opacity: getComputedStyle(element).opacity, height: element.getBoundingClientRect().height }))
+    assert.equal(selectStyle.opacity, '1', 'Native scope selector is visible instead of a transparent overlay')
+    assert.ok(selectStyle.height >= 44, 'Session selector keeps an accessible target')
+    assert.equal(await select.isEnabled(), true)
     await page.getByTestId('language-toggle').click()
     assert.equal(await page.locator('html').getAttribute('lang'), 'en')
     assert.equal(await menu.getAttribute('aria-label'), width <= 760 ? 'Open navigation' : 'Expand navigation')

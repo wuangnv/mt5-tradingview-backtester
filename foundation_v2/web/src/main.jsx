@@ -17,6 +17,7 @@ import DashboardSessions from './DashboardSessions.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 import './dashboard.css'
+import './workspace-pattern.css'
 
 function WorkspaceOverview({ workspace, query }) {
   return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions key={workspace} workspace={workspace} query={query} /></div></section>
@@ -24,7 +25,7 @@ function WorkspaceOverview({ workspace, query }) {
 
 function UnavailableWorkspace({ title, eyebrow, description, next, href }) {
   return (
-    <section className="fx-unavailable" aria-labelledby="unavailable-title">
+    <section className="fx-unavailable wm-page" aria-labelledby="unavailable-title">
       <span className="fx-eyebrow">{eyebrow}</span>
       <h1 id="unavailable-title">{title}</h1>
       <p>{description}</p>

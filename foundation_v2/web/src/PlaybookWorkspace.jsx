@@ -64,8 +64,8 @@ function PlaybookSummary({ record, journalHref }) {
   const ruleKeys = Object.keys(payload.rules || {}).sort()
   return (
     <section className="pb-summary" aria-label="Selected playbook summary" data-testid="playbook-summary">
-      <div className="pb-section-heading"><div><span className="pb-eyebrow">SELECTED PLAYBOOK</span><h2>{recordName(record)}</h2></div><span className={`pb-status is-${payload.status || 'unknown'}`}>{statusLabel(payload.status)}</span></div>
-      <p className="pb-summary-copy">Đây là read-only projection của record backend. Muốn đổi setup, workflow sẽ tạo fork mới sau khi contract UI được duyệt.</p>
+      <div className="pb-section-heading"><div><h2>{recordName(record)}</h2></div><span className={`pb-status is-${payload.status || 'unknown'}`}>{statusLabel(payload.status)}</span></div>
+      <p className="pb-summary-copy">Bản đọc từ backend. Freeze / fork chưa được mở từ màn này.</p>
       <dl className="pb-facts">
         <div><dt>Record</dt><dd><code>{record.record_id}</code></dd></div>
         <div><dt>Current revision</dt><dd>r{record.revision}</dd></div>
@@ -87,7 +87,7 @@ function RevisionDiff({ revisions, leftRevision, rightRevision, setLeftRevision,
   if (!revisions.length) return <div className="pb-empty" data-testid="playbook-revisions-empty"><strong>Chưa có revision history</strong><span>Record này chưa trả về lịch sử revision.</span></div>
   return (
     <section className="pb-diff-section" aria-label="Playbook revision diff" data-testid="playbook-diff">
-      <div className="pb-section-heading"><div><span className="pb-eyebrow">VERSION LINEAGE</span><h2>So sánh revision</h2></div><span className="pb-readonly">READ ONLY</span></div>
+      <div className="pb-section-heading"><div><span className="pb-lineage-label">Version lineage</span><h2>So sánh revision</h2></div><span className="pb-readonly">READ ONLY</span></div>
       <div className="pb-diff-controls">
         <label>Base<select aria-label="Base revision" value={left?.revision || ''} onChange={(event) => setLeftRevision(Number(event.target.value))}>{revisions.map((item) => <option key={item.revision} value={item.revision}>r{item.revision}</option>)}</select></label>
         <span aria-hidden="true">→</span>
@@ -193,12 +193,12 @@ export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new 
   const historyRetryExhausted = historyRetryCount >= MAX_GET_RETRIES
 
   return (
-    <main className="pb-page" data-testid="playbook-root">
-      <header className="pb-topbar"><div><span className="pb-eyebrow">TRADING WORKSPACE / PLAYBOOK</span><h1>Playbook versions</h1><p>Đọc lineage và diff của setup mà không làm thay đổi record backend.</p></div><span className="pb-safety"><strong>READ ONLY</strong><small>Broker locked · không freeze / fork</small></span></header>
+    <main className="pb-page wm-page" data-testid="playbook-root">
+      <header className="pb-topbar wm-page-header"><div><h1>Playbook</h1></div><span className="pb-safety"><strong>READ ONLY</strong><small>Broker locked · không freeze / fork</small></span></header>
       {catalog.status === 'loading' && <div className="pb-message" role="status">Đang đọc playbook catalog…</div>}
       {catalog.status === 'error' && <div className="pb-message is-error" role="alert"><span>Không đọc được playbook: {catalog.error}</span><button type="button" className="pb-retry-button" data-testid="playbook-catalog-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'playbook-catalog-retry-note' : undefined}>{catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{catalogRetryExhausted && <small id="playbook-catalog-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small>}</div>}
       <div className="pb-layout">
-        <aside className="pb-sidebar" aria-busy={catalog.status === 'loading'}><div className="pb-section-heading"><div><span className="pb-eyebrow">CATALOG</span><h2>Setups</h2></div><span className="pb-count">{catalog.items.length}</span></div><PlaybookList items={catalog.items} selectedId={selectedId} onSelect={selectPlaybook} /></aside>
+        <aside className="pb-sidebar" aria-busy={catalog.status === 'loading'}><div className="pb-section-heading"><div><h2>Setups</h2></div><span className="pb-count">{catalog.items.length}</span></div><PlaybookList items={catalog.items} selectedId={selectedId} onSelect={selectPlaybook} /></aside>
         <div className="pb-content" aria-busy={history.status === 'loading'}>{selected ? <PlaybookSummary record={selected} journalHref={journalHref} /> : catalog.status === 'ready' ? <div className="pb-empty"><strong>Chọn một playbook</strong><span>Chọn record bên trái để đọc metadata và version history.</span></div> : null}{history.status === 'loading' && <div className="pb-message" role="status">Đang đọc revision history…</div>}{history.status === 'error' && <div className="pb-message is-error" role="alert"><span>Không đọc được revision history: {history.error}</span><button type="button" className="pb-retry-button" data-testid="playbook-history-retry" onClick={retryHistory} disabled={historyRetryExhausted} aria-describedby={historyRetryExhausted ? 'playbook-history-retry-note' : undefined}>{historyRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{historyRetryExhausted && <small id="playbook-history-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small>}</div>}{history.status === 'ready' && <RevisionDiff revisions={history.items} leftRevision={leftRevision} rightRevision={rightRevision} setLeftRevision={setLeftRevision} setRightRevision={setRightRevision} />}</div>
       </div>
     </main>

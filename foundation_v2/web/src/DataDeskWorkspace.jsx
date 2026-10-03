@@ -62,7 +62,6 @@ function DatasetDetails({ dataset, workspace }) {
       <div className="rd-panel-head">
         <div>
           <h2>Provenance và QA</h2>
-          <p>Đây là bằng chứng metadata hiện có; không suy ra dữ liệu thiếu thành số 0.</p>
         </div>
         <a className="rd-context-link" href={queryHref('research', workspace, { dataset: dataset.dataset_id })}>Mở trong Research →</a>
       </div>
@@ -105,7 +104,7 @@ function LocalCsvQualityReport({ preview }) {
   return (
     <section className="rd-import-report" aria-label="Báo cáo chất lượng CSV" data-testid="data-desk-quality-report">
       <div className="rd-import-report-head">
-        <div><span className="rd-import-kicker">PREVIEW / QUALITY</span><h3>Quality report</h3></div>
+        <div><h3>Chất lượng CSV</h3></div>
         <span className={`rd-badge ${importQualityTone(disposition)}`}>{label}</span>
       </div>
       <dl className="rd-import-facts">
@@ -238,7 +237,7 @@ function LocalCsvImport({ workspace, onImported }) {
   return (
     <section className="rd-import-panel" aria-labelledby="data-desk-import-title" data-testid="data-desk-import">
       <div className="rd-panel-head">
-        <div><span className="rd-import-kicker">LOCAL DATA / NO PROVIDER</span><h2 id="data-desk-import-title">Preview hoặc import CSV</h2><p>File được đọc bằng browser; server chỉ nhận nội dung sau khi bạn bấm Preview. Không gửi đường dẫn file.</p></div>
+        <div><h2 id="data-desk-import-title">Thêm dữ liệu từ CSV</h2><p>File được đọc bằng browser; server chỉ nhận nội dung sau khi bạn bấm Preview. Không gửi đường dẫn file.</p></div>
         <span className="rd-badge is-muted">BROKER LOCKED</span>
       </div>
       <div className="rd-import-grid">
@@ -339,12 +338,10 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const holdoutAccess = state.datasets.some((item) => item.holdout_access === true)
 
   return (
-    <main className="rd-shell" data-testid="data-desk-root">
-      <header className="rd-topbar">
+    <main className="rd-shell wm-page" data-testid="data-desk-root">
+      <header className="rd-topbar wm-page-header">
         <div>
-          <div className="eyebrow">MT5 TRADING WORKSPACE / DATA DESK</div>
           <h1>Data Desk</h1>
-          <p>Chọn dữ liệu có provenance rõ ràng trước khi replay hoặc chạy research.</p>
         </div>
         <div className="rd-actions">
           <a className="rd-context-link" href={queryHref('research', workspace, selected ? { dataset: selected.dataset_id } : {})}>Research</a>
@@ -358,14 +355,6 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <span>Providers <strong>{providers.length}</strong></span>
         <span className={holdoutAccess ? 'rd-status is-ready' : 'rd-status'}>{holdoutAccess ? 'Holdout được cấp' : 'Holdout khóa'}</span>
       </div>
-
-      <LocalCsvImport
-        workspace={workspace}
-        onImported={(dataset) => {
-          setSelectedId(dataset?.dataset_id || '')
-          setCatalogRevision((current) => current + 1)
-        }}
-      />
 
       {state.status === 'loading' && <div className="rd-message" role="status">Đang đọc catalog và capability provider…</div>}
       {state.status === 'error' && <div className="rd-message is-error" role="alert">Không đọc được Data Desk: {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{catalogRetryExhausted && <>{' '}<small id="data-desk-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small></>}</div>}
@@ -395,7 +384,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const active = dataset.dataset_id === selected?.dataset_id
                       return (
                         <tr key={dataset.dataset_id} className={active ? 'is-selected' : ''}>
-                          <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} onClick={() => setSelectedId(dataset.dataset_id)}><strong>{dataset.dataset_id}</strong><small>{dataset.provider_id || dataset.source?.provider || 'provider unknown'}</small></button></td>
+                          <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} onClick={() => setSelectedId(dataset.dataset_id)}><strong>{dataset.instrument_id || 'Instrument chưa xác định'} · {dataset.timeframe || 'TF chưa xác định'}</strong><small title={dataset.dataset_id}>{dataset.dataset_id}</small><small>{dataset.provider_id || dataset.source?.provider || 'provider unknown'}</small></button></td>
                           <td>{dataset.instrument_id || 'N/A'}<small>{dataset.timeframe || 'TF unknown'}</small></td>
                           <td>{formatUtc(range.start)}<small>→ {formatUtc(range.end)}</small></td>
                           <td><QualityBadge dataset={dataset} /></td>
@@ -442,6 +431,13 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           </aside>
         </div>
       )}
+      <LocalCsvImport
+        workspace={workspace}
+        onImported={(dataset) => {
+          setSelectedId(dataset?.dataset_id || '')
+          setCatalogRevision((current) => current + 1)
+        }}
+      />
     </main>
   )
 }

@@ -27,3 +27,45 @@
 .fx-app .prop-shell .prop-message-error,
 .fx-app .prop-shell .prop-message-denied,
 .fx-app .prop-shell .prop-message-conflict { color: var(--fx-shell-danger, #ef9c9c); }
+
+.fx-app .prop-shell.wm-page .prop-topbar { min-height: 0; border: 0; }
+.fx-app .prop-shell.wm-page .prop-layout { grid-template-columns: 240px minmax(0, 1fr); min-height: 0; gap: 32px; padding-top: 28px; }
+.fx-app .prop-shell.wm-page .prop-sidebar { border: 0; padding: 0; }
+.fx-app .prop-shell.wm-page .prop-main { display: flex; flex-direction: column; gap: 32px; padding: 0; }
+.fx-app .prop-shell.wm-page .prop-main.has-selection .prop-resume { order: -1; }
+.fx-app .prop-shell.wm-page .prop-wizard { border: 0; padding: 0; }
+.fx-app .prop-shell.wm-page .prop-wizard form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.fx-app .prop-shell.wm-page .prop-resume { padding: 0; }
+.fx-app .prop-shell.wm-page .prop-section-head { margin-bottom: 16px; }
+.fx-app .prop-shell.wm-page :is(.prop-lock, .prop-review, .prop-resume-note, .prop-report-warning) { border-left: 0; padding-left: 0; }
+.fx-app .prop-shell.wm-page .prop-session-list button { padding: 16px 12px; }
+.fx-app .prop-shell.wm-page .prop-session-list button:is(:hover, .is-active) { background: var(--wm-surface); box-shadow: none; }
+.fx-app .prop-shell.wm-page :is(.prop-field input, .prop-field select) { min-height: 44px; border-color: var(--wm-border); color: var(--wm-content); background: var(--wm-surface); }
+.fx-app .prop-shell.wm-page :is(.prop-refresh, .context-link, .prop-create) { min-height: 44px; }
+.fx-app .prop-shell.wm-page .context-link { display: inline-flex; align-items: center; }
+.fx-app .prop-shell.wm-page :is(.prop-refresh, .prop-tabs button) { color: var(--wm-content); background: transparent; }
+.fx-app .prop-shell.wm-page :is(.prop-review span, .prop-resume-note, .prop-objectives-empty, .prop-objective-grid small, .prop-report-copy, .prop-facts dt, .prop-resume-strip span, .prop-metrics span, .prop-objective-grid span, .prop-report-summary span, .prop-report-row small, .prop-report-row span) { color: var(--wm-content-muted); }
+.fx-app .prop-shell.wm-page :is(.prop-facts dd, .prop-resume-strip strong, .prop-metrics strong, .prop-objective-grid strong, .prop-report-summary strong, .prop-report-row strong) { color: var(--wm-content); }
+.fx-app .prop-shell.wm-page .prop-objective-grid strong.is-breach { color: var(--wm-negative); }
+.fx-app .prop-shell.wm-page .prop-resume-strip strong.is-terminal { color: var(--wm-content); }
+.fx-app .prop-shell.wm-page :is(.prop-tabs, .prop-session-list, .prop-session-list button, .prop-resume-strip, .prop-resume-strip > div, .prop-metrics, .prop-metrics article, .prop-facts div, .prop-objectives, .prop-objective-grid, .prop-objective-grid article, .prop-report, .prop-report-summary, .prop-report-summary > div, .prop-report-filters, .prop-report-row) { border-color: var(--wm-border); }
+.fx-app .prop-shell.wm-page :is(.prop-metrics, .prop-resume-strip, .prop-objective-grid, .prop-report-summary) { border: 0; gap: 24px; }
+.fx-app .prop-shell.wm-page :is(.prop-metrics article, .prop-resume-strip > div, .prop-objective-grid article, .prop-report-summary > div) { border: 0; padding: 0; }
+.fx-app .prop-shell.wm-page .prop-metrics { padding: 24px 0; }
+.fx-app .prop-shell.wm-page .prop-objective-grid { padding-top: 8px; }
+.fx-app .prop-shell.wm-page .prop-lock strong { color: var(--wm-warning); }
+.fx-app .prop-shell.wm-page .prop-create { background: var(--wm-action-bg); color: var(--wm-on-primary, #fff); border-color: var(--wm-action-bg); }
+.fx-app .prop-shell.wm-page .prop-create:hover:not(:disabled) { background: var(--wm-action-hover); }
+.fx-app .prop-shell.wm-page .prop-phase-list { display: flex; flex-wrap: wrap; gap: 24px; margin: 0 0 24px; padding: 0; list-style: none; }
+.fx-app .prop-shell.wm-page .prop-phase-list li { display: grid; gap: 6px; color: var(--wm-content-muted); }
+.fx-app .prop-shell.wm-page .prop-phase-list li[aria-current='step'] { color: var(--wm-content); }
+.fx-app .prop-shell.wm-page .prop-phase-list span { font-size: 12px; }
+@media (max-width: 900px) {
+  .fx-app .prop-shell.wm-page .prop-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .fx-app .prop-shell.wm-page .prop-topbar-actions { flex-wrap: wrap; justify-content: flex-start; gap: 12px; }
+  .fx-app .prop-shell.wm-page .prop-wizard form { grid-template-columns: 1fr; }
+  .fx-app .prop-shell.wm-page .prop-field-wide { grid-column: auto; }
+  .fx-app .prop-shell.wm-page :is(.prop-metrics, .prop-objective-grid, .prop-report-summary) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

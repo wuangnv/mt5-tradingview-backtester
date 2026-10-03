@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'none' !== 'solid'
+
+    at main (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/run_prop_ui_acceptance.mjs:581:12) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'none',
+  expected: 'solid',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

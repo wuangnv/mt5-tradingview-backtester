@@ -1101,3 +1101,28 @@
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar > div:nth-child(2),
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .replay-contextbar > div:nth-child(4) { display: none; }
 .fx-app.fx-shell-story:not([data-theme='light']) .fx-content > .replay-shell .replay-context-primary strong { color: #e8edf0; }
+
+/* Chart controls share the Dashboard's hierarchy, while the renderer retains
+ * its full-bleed geometry and causal visible-row contract. */
+.fx-app .wm-chart-page .replay-start { gap: 16px 24px; background: transparent; }
+.fx-app .wm-chart-page .replay-start h2 { font-size: 20px; font-weight: 650; }
+.fx-app .wm-chart-page .replay-start p { max-width: 64ch; font-size: 13px; color: var(--wm-content-muted); }
+.fx-app .wm-chart-page .replay-start :is(input, select, button) { min-height: 44px; border-radius: 4px; }
+.fx-app .wm-chart-page .replay-start .primary-action,
+.fx-app .wm-chart-page .toolbar-primary .play-button { background: #245bc4; border-color: #245bc4; color: #fff; }
+.fx-app .wm-chart-page .replay-start .primary-action:hover:not(:disabled),
+.fx-app .wm-chart-page .toolbar-primary .play-button:hover:not(:disabled) { background: #1d4ea9; }
+.fx-app .wm-chart-page .chart-control-button { min-height: 36px; border-radius: 4px; font-size: 13px; }
+.fx-app .wm-chart-page .chart-control-button strong { font-size: 13px; }
+.fx-app .wm-chart-page .chart-menu-item,
+.fx-app .wm-chart-page .chart-menu-custom { min-height: 44px; padding-inline: 12px; font-size: 13px; }
+.fx-app .wm-chart-page .chart-menu-heading { font-size: 11px; }
+.fx-app .wm-chart-page .chart-menu-check { color: var(--wm-primary); }
+.fx-app .wm-chart-page .replay-side { background: var(--wm-canvas); }
+.fx-app .wm-chart-page .replay-side :is(.decision-panel, .session-facts, .replay-watchlist) { border-radius: 0; box-shadow: none; background: transparent; }
+.fx-app .wm-chart-page .replay-side h2 { font-size: 16px; }
+.fx-app .wm-chart-page .replay-side p { font-size: 13px; line-height: 1.5; }
+@media (max-width: 760px) {
+  .fx-app .wm-chart-page .chart-control-button { min-height: 44px; }
+  .fx-app .wm-chart-page .replay-start { padding-inline: 16px; }
+}

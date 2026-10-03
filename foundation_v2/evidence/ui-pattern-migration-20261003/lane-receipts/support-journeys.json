@@ -1,0 +1,89 @@
+{
+  "scope": "Isolated browser real local Learn/Settings GET journeys plus labeled Live status fixtures; browser preferences only, no course/API writes",
+  "checks": [
+    {
+      "kind": "real-Learn",
+      "theme": "dark",
+      "width": 1440,
+      "moduleOpen": true,
+      "unknownGlossary": true,
+      "progressUnchanged": true
+    },
+    {
+      "kind": "real-Learn",
+      "theme": "dark",
+      "width": 390,
+      "moduleOpen": true,
+      "unknownGlossary": true,
+      "progressUnchanged": true
+    },
+    {
+      "kind": "real-Learn",
+      "theme": "light",
+      "width": 1440,
+      "moduleOpen": true,
+      "unknownGlossary": true,
+      "progressUnchanged": true
+    },
+    {
+      "kind": "real-Learn",
+      "theme": "light",
+      "width": 390,
+      "moduleOpen": true,
+      "unknownGlossary": true,
+      "progressUnchanged": true
+    },
+    {
+      "kind": "real-Settings",
+      "cancel": true,
+      "save": true,
+      "reload": true,
+      "crossTab": true
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "loading",
+      "stillLocked": true,
+      "retry": false
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "denied",
+      "stillLocked": true,
+      "retry": false
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "unavailable",
+      "stillLocked": true,
+      "retry": false
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "locked",
+      "stillLocked": true,
+      "retry": false
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "ready",
+      "stillLocked": true,
+      "retry": false
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "error",
+      "stillLocked": true,
+      "retry": true
+    },
+    {
+      "kind": "fixture-Live",
+      "scenario": "invalid",
+      "stillLocked": true,
+      "retry": false
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "status": "PASS"
+}

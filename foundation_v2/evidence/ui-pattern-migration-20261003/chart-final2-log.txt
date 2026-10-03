@@ -1,0 +1,29 @@
+
+Running 8 tests using 1 worker
+
+(node:27520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [dark-1440x900] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (8.0s)
+(node:27432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 [dark-1280x800] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (9.6s)
+(node:12960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 [dark-768x1024] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (7.5s)
+(node:16844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 [dark-390x844] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (8.1s)
+(node:30516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 5 [light-1440x900] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (8.7s)
+(node:1812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 6 [light-1280x800] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (7.6s)
+(node:24388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 7 [light-768x1024] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (7.9s)
+(node:30780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 8 [light-390x844] › tests\visual\wmreplay.chart-states.spec.mjs:36:1 › five chart types render mixed OHLC and preserve cutoff through wheel/pan (7.4s)
+
+  8 passed (1.2m)

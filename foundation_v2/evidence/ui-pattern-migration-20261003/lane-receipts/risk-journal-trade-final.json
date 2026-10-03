@@ -1,0 +1,306 @@
+{
+  "scope": "isolated browser; intercepted synthetic Journal/Risk/Trade writes; real canonical replay GET copied as draft fixture; no backend mutation",
+  "checks": [
+    "journal-selected-dark-1440",
+    "journal-selected-dark-390",
+    "journal-selected-dark-320",
+    "journal-selected-light-1440",
+    "journal-selected-light-390",
+    "journal-selected-light-320",
+    "journal create/revision conflict/source retained",
+    "journal denied",
+    "journal empty",
+    "risk missing amount blocked",
+    "risk snapshot/cost contract",
+    "risk-breach-dark-1440",
+    "risk-breach-dark-390",
+    "risk-breach-dark-320",
+    "risk-breach-light-1440",
+    "risk-breach-light-390",
+    "risk-breach-light-320",
+    "risk evaluator blocked",
+    "risk evaluator error",
+    "trade side/validation retained",
+    "trade queue revision conflict fixture",
+    "trade-draft-dark-1440",
+    "trade-draft-dark-390",
+    "trade-draft-dark-320",
+    "trade-draft-light-1440",
+    "trade-draft-light-390",
+    "trade-draft-light-320"
+  ],
+  "failures": [],
+  "requests": [
+    {
+      "path": "/api/v2/journal/note-fixture/revisions",
+      "method": "POST",
+      "payload": {
+        "expected_revision": 3,
+        "payload": {
+          "entry_type": "no-trade",
+          "note": "QA fixture — revised",
+          "tags": [
+            "discipline"
+          ],
+          "observation": "Giá đang trong range",
+          "hypothesis": null,
+          "decision": "Chưa vào lệnh",
+          "plan": "Đợi nến đóng ngoài range",
+          "actual_result": "Giá quay lại range",
+          "next_action": "Tiếp tục replay",
+          "overlay_ids": [],
+          "source": {
+            "kind": "replay-decision",
+            "id": "39b1d068edd64e75864f692f27237852:cursor:60",
+            "session_id": "39b1d068edd64e75864f692f27237852",
+            "cursor_index": 60,
+            "mode": "Practice"
+          }
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/journal",
+      "method": "POST",
+      "payload": {
+        "entry_type": "observation",
+        "note": "QA new note",
+        "tags": [],
+        "observation": "QA observation",
+        "hypothesis": null,
+        "decision": null,
+        "plan": null,
+        "actual_result": null,
+        "next_action": null,
+        "overlay_ids": [],
+        "source": {
+          "kind": "replay-decision",
+          "id": "39b1d068edd64e75864f692f27237852:cursor:60",
+          "session_id": "39b1d068edd64e75864f692f27237852",
+          "cursor_index": 60
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/analytics/prop/evaluate",
+      "method": "POST",
+      "payload": {
+        "profile": {
+          "profile_id": "generic-practice-v1",
+          "terms_version": "ui-practice-v1",
+          "effective_from": "2026-01-01",
+          "reset_timezone": "UTC",
+          "total_drawdown": {
+            "type": "static",
+            "amount": 1000,
+            "basis": "equity"
+          },
+          "daily_loss": {
+            "amount": 500,
+            "basis": "equity"
+          },
+          "cost_basis": "separate",
+          "breach_at_boundary": true
+        },
+        "snapshot": {
+          "starting_balance": 10000,
+          "balance": 10000,
+          "equity": 10000,
+          "high_water_mark": 10000,
+          "daily_start_equity": 10000,
+          "daily_start_balance": 10000,
+          "costs_total": 15,
+          "costs_today": 5
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/analytics/prop/evaluate",
+      "method": "POST",
+      "payload": {
+        "profile": {
+          "profile_id": "generic-practice-v1",
+          "terms_version": "ui-practice-v1",
+          "effective_from": "2026-01-01",
+          "reset_timezone": "UTC",
+          "total_drawdown": {
+            "type": "static",
+            "amount": 1000,
+            "basis": "equity"
+          },
+          "daily_loss": {
+            "amount": 500,
+            "basis": "equity"
+          },
+          "cost_basis": "separate",
+          "breach_at_boundary": true
+        },
+        "snapshot": {
+          "starting_balance": 10000,
+          "balance": 10000,
+          "equity": 10000,
+          "high_water_mark": 10000,
+          "daily_start_equity": 10000,
+          "daily_start_balance": 10000,
+          "costs_total": 15,
+          "costs_today": 5
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/analytics/prop/evaluate",
+      "method": "POST",
+      "payload": {
+        "profile": {
+          "profile_id": "generic-practice-v1",
+          "terms_version": "ui-practice-v1",
+          "effective_from": "2026-01-01",
+          "reset_timezone": "UTC",
+          "total_drawdown": {
+            "type": "static",
+            "amount": 1000,
+            "basis": "equity"
+          },
+          "daily_loss": {
+            "amount": 500,
+            "basis": "equity"
+          },
+          "cost_basis": "included",
+          "breach_at_boundary": true
+        },
+        "snapshot": {
+          "starting_balance": 10000,
+          "balance": 10000,
+          "equity": 10000,
+          "high_water_mark": 10000,
+          "daily_start_equity": 10000,
+          "daily_start_balance": 10000,
+          "costs_total": 0,
+          "costs_today": 0
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/analytics/prop/evaluate",
+      "method": "POST",
+      "payload": {
+        "profile": {
+          "profile_id": "generic-practice-v1",
+          "terms_version": "ui-practice-v1",
+          "effective_from": "2026-01-01",
+          "reset_timezone": "UTC",
+          "total_drawdown": {
+            "type": "static",
+            "amount": 1000,
+            "basis": "equity"
+          },
+          "daily_loss": {
+            "amount": 500,
+            "basis": "equity"
+          },
+          "cost_basis": "included",
+          "breach_at_boundary": true
+        },
+        "snapshot": {
+          "starting_balance": 10000,
+          "balance": 10000,
+          "equity": 10000,
+          "high_water_mark": 10000,
+          "daily_start_equity": 10000,
+          "daily_start_balance": 10000,
+          "costs_total": 0,
+          "costs_today": 0
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/analytics/prop/evaluate",
+      "method": "POST",
+      "payload": {
+        "profile": {
+          "profile_id": "generic-practice-v1",
+          "terms_version": "ui-practice-v1",
+          "effective_from": "2026-01-01",
+          "reset_timezone": "UTC",
+          "total_drawdown": {
+            "type": "static",
+            "amount": 1000,
+            "basis": "equity"
+          },
+          "daily_loss": {
+            "amount": 500,
+            "basis": "equity"
+          },
+          "cost_basis": "included",
+          "breach_at_boundary": true
+        },
+        "snapshot": {
+          "starting_balance": 10000,
+          "balance": 10000,
+          "equity": 10000,
+          "high_water_mark": 10000,
+          "daily_start_equity": 10000,
+          "daily_start_balance": 10000,
+          "costs_total": 0,
+          "costs_today": 0
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/analytics/prop/evaluate",
+      "method": "POST",
+      "payload": {
+        "profile": {
+          "profile_id": "generic-practice-v1",
+          "terms_version": "ui-practice-v1",
+          "effective_from": "2026-01-01",
+          "reset_timezone": "UTC",
+          "total_drawdown": {
+            "type": "static",
+            "amount": 1000,
+            "basis": "equity"
+          },
+          "daily_loss": {
+            "amount": 500,
+            "basis": "equity"
+          },
+          "cost_basis": "included",
+          "breach_at_boundary": true
+        },
+        "snapshot": {
+          "starting_balance": 10000,
+          "balance": 10000,
+          "equity": 10000,
+          "high_water_mark": 10000,
+          "daily_start_equity": 10000,
+          "daily_start_balance": 10000,
+          "costs_total": 0,
+          "costs_today": 0
+        }
+      },
+      "scope": "intercepted fixture"
+    },
+    {
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/orders/market",
+      "method": "POST",
+      "payload": {
+        "expected_revision": 123,
+        "operation_id": "draft-musb3r98-3c17up",
+        "side": "BUY",
+        "quantity": "0.01",
+        "stop_loss": "1.10120",
+        "take_profit": "1.10720"
+      },
+      "scope": "intercepted fixture"
+    }
+  ],
+  "originalExecutionPosition": null,
+  "pageErrors": []
+}

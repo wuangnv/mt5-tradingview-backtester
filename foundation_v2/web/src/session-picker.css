@@ -268,3 +268,47 @@ select.fxr-filter-select { appearance: auto; }
 .fx-app[data-theme='light'] .fxr-integrated-sessions .as-story-metric dt,
 .fx-app[data-theme='light'] .fxr-integrated-sessions .as-eyebrow,
 .fx-app[data-theme='light'] .fxr-integrated-sessions .as-source-note { color: var(--session-muted); }
+
+/* Scope controls stay compact; session metadata forms a flat detail area. */
+.fx-app .fxr-integrated-sessions {
+  --session-ink: var(--wm-content);
+  --session-muted: var(--wm-content-muted);
+  --session-line: var(--wm-border);
+  --session-field: var(--wm-surface);
+  font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, sans-serif);
+}
+.fx-app .fxr-page-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.fx-app .fxr-integrated-sessions .fxr-session-toolbar { min-height: 0; gap: 12px 24px; padding: 0; border: 0; flex-wrap: wrap; }
+.fx-app .fxr-integrated-sessions .fxr-session-control { width: min(480px, 100%); flex: 1 1 320px; min-width: 0; }
+.fx-app .fxr-integrated-sessions .fxr-session-select-card { min-height: 44px; border: 0; border-radius: 0; background: transparent; overflow: visible; }
+.fx-app .fxr-integrated-sessions .fxr-session-select-card select { position: static; opacity: 1; min-height: 44px; padding: 0 12px; border: 1px solid var(--session-line); border-radius: 6px; color: var(--session-ink); background: var(--session-field); font: inherit; font-size: 14px; }
+.fx-app .fxr-integrated-sessions .fxr-session-select-card:focus-within { outline: 0; }
+.fx-app .fxr-integrated-sessions .fxr-session-select-card select:focus-visible { outline: 2px solid var(--wm-primary); outline-offset: 2px; }
+.fx-app .fxr-integrated-sessions .fxr-session-actions { justify-content: flex-start; gap: 12px; }
+.fx-app .fxr-integrated-sessions .fxr-button { min-height: 44px; padding-inline: 14px; border-radius: 6px; font-weight: 600; }
+.fx-app .fxr-integrated-sessions .fxr-button-secondary { color: var(--session-ink); background: transparent; border-color: var(--session-line); }
+.fx-app .fxr-integrated-sessions .fxr-button-primary { background: var(--wm-action-bg); color: var(--wm-on-primary); }
+.fx-app .fxr-integrated-sessions .fxr-button-primary:hover { background: var(--wm-action-hover); }
+.fx-app .fxr-integrated-sessions .fxr-text-button { color: var(--session-ink); min-height: 44px; }
+.fx-app .fxr-integrated-sessions .fxr-session-cards { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; margin-top: 28px; }
+.fx-app .fxr-integrated-sessions .fxr-session-card { min-height: 0; padding: 0; border: 0; border-radius: 0; background: transparent; }
+.fx-app .fxr-integrated-sessions .fxr-session-card h2 { color: var(--session-ink); font-size: 16px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.fx-app .fxr-integrated-sessions .fxr-session-card p { color: var(--session-muted); font-size: 14px; line-height: 1.6; }
+.fx-app .fxr-integrated-sessions .fxr-session-provenance { margin: 12px 0; }
+.fx-app .fxr-integrated-sessions .fxr-session-provenance summary { min-height: 44px; display: flex; align-items: center; }
+.fx-app .fxr-integrated-sessions .fxr-session-provenance summary::before { content: '▸'; margin-right: 8px; }
+.fx-app .fxr-integrated-sessions .fxr-session-provenance[open] summary::before { content: '▾'; }
+.fx-app .fxr-integrated-sessions .fxr-session-facts { margin: 8px 0 16px; }
+.fx-app .fxr-integrated-sessions .fxr-session-description { margin: 8px 0 12px; }
+.fx-app .fxr-integrated-sessions .fxr-session-lifecycle { margin: 16px 0 8px; padding: 0; border: 0; }
+.fx-app .fxr-integrated-sessions .fxr-session-notice { border: 0; padding: 8px 0; }
+.fx-app .fxr-integrated-sessions .fxr-session-notice.is-error,
+.fx-app .fxr-integrated-sessions .fxr-session-catalog-status.is-error { color: var(--wm-negative); }
+.fx-app .fxr-integrated-sessions .fxr-ledger-context { margin-block: 16px 0; }
+.fx-app .fxr-integrated-sessions .fxr-session-report { margin-top: 28px; }
+.fx-app .fxr-integrated-sessions .fxr-empty-state { align-items: flex-start; text-align: left; min-height: 220px; }
+.fx-app .fxr-integrated-sessions .fxr-empty-state h2 { color: var(--session-ink); font-size: 16px; }
+@media (max-width: 768px) {
+  .fx-app .fxr-integrated-sessions .fxr-session-cards { grid-template-columns: 1fr; gap: 28px; }
+  .fx-app .fxr-integrated-sessions .fxr-session-control { flex-basis: 100%; }
+}

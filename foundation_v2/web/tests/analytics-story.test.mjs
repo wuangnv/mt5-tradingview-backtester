@@ -6,16 +6,16 @@ import path from 'node:path'
 const root = path.resolve(process.cwd(), 'src')
 const source = fs.readFileSync(path.join(root, 'AnalyticsWorkspace.jsx'), 'utf8')
 const css = fs.readFileSync(path.join(root, 'analytics-story.css'), 'utf8')
-const renderedStory = source.slice(source.indexOf('return <section className=\"as-page\"'))
+const renderedStory = source.slice(source.lastIndexOf('return <section className='))
 
-test('analytics follows context to takeaway, evidence, drilldown and next action', () => {
+test('analytics puts scoped metrics and balance evidence before ledger and selected-trade review', () => {
   const markers = [
     'as-context-bar',
-    'KẾT QUẢ TRONG PHẠM VI ĐÃ CHỌN',
-    'EVIDENCE / BALANCE PATH',
+    'as-metric-strip',
+    'Balance sau trade đóng',
     'ProvenanceInspector model',
     'TradeLedger model',
-    'NEXT ACTION',
+    'Review trade đang chọn',
   ]
   let previous = -1
   for (const marker of markers) {
@@ -32,9 +32,9 @@ test('analytics preserves source truth and closed-balance semantics', () => {
   assert.match(source, /derived from ledger/)
   assert.match(source, /closed_trade_balance_curve/)
   assert.match(source, /closed_trade_balance_drawdown_curve/)
-  assert.match(source, /not floating equity|Không phải floating equity/i)
+  assert.match(source, /không cung cấp floating path/i)
   assert.match(source, /broker locked/i)
-  assert.match(source, /TRADE LEDGER/)
+  assert.match(source, /aria-label="Trade ledger"/)
   assert.doesNotMatch(source, /Number\(point\.drawdown\) \|\| 0/)
   assert.match(source, /as-drawdown-bar is-unknown/)
 })

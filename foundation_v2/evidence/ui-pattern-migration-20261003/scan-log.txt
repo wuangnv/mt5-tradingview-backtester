@@ -1,0 +1,259 @@
+{
+  "status": "FAIL",
+  "cases": 0,
+  "failures": [
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=overview&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=overview&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=replay&select=1&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=replay&select=1&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "replay",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=replay&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=replay&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "analytics",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "trades",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=trade&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=trade&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "learn",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=learn&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=learn&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "settings",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=settings&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=settings&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "live",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveTrades",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=trades&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=trades&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveNotes",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=notes&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=notes&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveTags",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=tag-analytics&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=tag-analytics&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveAccounts",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=trading-accounts&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=trading-accounts&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "playbook",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=playbook&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=playbook&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "data",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=data&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=data&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "research",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=research&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=research&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "journal",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=journal&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=journal&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "risk",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=risk&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=risk&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "prop",
+      "theme": "dark",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=prop&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=prop&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=overview&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=overview&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=replay&select=1&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=replay&select=1&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "replay",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=replay&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=replay&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "analytics",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "trades",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=trade&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=trade&session=39b1d068edd64e75864f692f27237852&cursor=60&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "learn",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=learn&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=learn&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "settings",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=settings&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=settings&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "live",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveTrades",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=trades&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=trades&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveNotes",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=notes&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=notes&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveTags",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=tag-analytics&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=tag-analytics&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "liveAccounts",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=live&section=trading-accounts&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=live&section=trading-accounts&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "playbook",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=playbook&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=playbook&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "data",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=data&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=data&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "research",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=research&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=research&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "journal",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=journal&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=journal&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "risk",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=risk&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=risk&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    },
+    {
+      "routeId": "prop",
+      "theme": "light",
+      "error": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5180/?view=prop&workspace=tenant-a\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5180/?view=prop&workspace=tenant-a\", waiting until \"networkidle\"\u001b[22m\n",
+      "pageErrors": [],
+      "httpErrors": []
+    }
+  ],
+  "out": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-pattern-migration-20261003\\route-scan-final"
+}

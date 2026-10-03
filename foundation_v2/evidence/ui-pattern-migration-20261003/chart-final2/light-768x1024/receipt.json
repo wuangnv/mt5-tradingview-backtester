@@ -1,0 +1,206 @@
+{
+  "status": "SCOPED_BEHAVIOR_PASS_VISUAL_REVIEW_PENDING",
+  "scope": "SYNTHETIC_VARIANT_RENDERER_ONLY: alternating up/down OHLC, 61/21 row prefix; no backend, broker, fixture overwrite or golden promotion",
+  "sourceHash": "fe8f7405c4b4d937e637b856e568d01266389e8fb60dd3a093a454215eebeb93",
+  "canonicalFixtureSha256": "c48bd42eebdfcf57ca9cf707d2d3230439d81f9aff05d2b61c92dfe4adc52591",
+  "variantSha256": "5512d642aa6ad748221debd86115bf80dfd43f192691ea40f67ab1ac45e4fc5e",
+  "project": "light-768x1024",
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "states": [
+    {
+      "type": "candles",
+      "fitted": {
+        "from": -7.105427357601002e-15,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0558285454545455,
+        "to": 57.510374
+      },
+      "panned": {
+        "from": -3.938438448812448,
+        "to": 50.516107005733005
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 8046,
+        "red": 6731,
+        "gold": 0
+      },
+      "captureSha256": "53c0b8acaa720eaa889a6d8ae7260d0d76adc7d682fcee32543d9d261afd1217"
+    },
+    {
+      "type": "bars",
+      "fitted": {
+        "from": -7.105427357601002e-15,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0558285454545455,
+        "to": 57.510374
+      },
+      "panned": {
+        "from": -3.938438448812448,
+        "to": 50.516107005733005
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 3067,
+        "red": 1927,
+        "gold": 0
+      },
+      "captureSha256": "784f3741f910a90ab43b82b9a36ca41aa8980a473896af483a59c112ba81bdbd"
+    },
+    {
+      "type": "line",
+      "fitted": {
+        "from": -7.105427357601002e-15,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0558285454545455,
+        "to": 57.510374
+      },
+      "panned": {
+        "from": -3.938438448812448,
+        "to": 50.516107005733005
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 0,
+        "red": 0,
+        "gold": 5638
+      },
+      "captureSha256": "c9c3a086cf9509b5392f7a62053e8b57778c5cb7787142916c7f3f544aa7672a"
+    },
+    {
+      "type": "area",
+      "fitted": {
+        "from": -7.105427357601002e-15,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0558285454545455,
+        "to": 57.510374
+      },
+      "panned": {
+        "from": -3.938438448812448,
+        "to": 50.516107005733005
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 5638,
+        "red": 0,
+        "gold": 0
+      },
+      "captureSha256": "fe97fc453618ba8d880e4766eaac843cea44d8a559fd9ec472fee807c2265356"
+    },
+    {
+      "type": "baseline",
+      "fitted": {
+        "from": -7.105427357601002e-15,
+        "to": 60
+      },
+      "zoomed": {
+        "from": 3.0558285454545455,
+        "to": 57.510374
+      },
+      "panned": {
+        "from": -3.938438448812448,
+        "to": 50.516107005733005
+      },
+      "sampleIndex": 31,
+      "sample": {
+        "timestamp": 1704069060,
+        "open": 1.0967,
+        "high": 1.097,
+        "low": 1.0958,
+        "close": 1.0961,
+        "volume": 193
+      },
+      "colors": {
+        "green": 3519,
+        "red": 2174,
+        "gold": 0
+      },
+      "captureSha256": "62bb0bbde4a800b48cf96822e5487e9c5443c364bdc1301990637187b1ac00c1"
+    }
+  ],
+  "overlays": {
+    "sma": 558,
+    "upVolume": 25380,
+    "downVolume": 24658
+  },
+  "preservesViewportOnTypeSwitch": true,
+  "observations": [
+    {
+      "cursor": 60,
+      "canonicalCursor": 60,
+      "rows": 61,
+      "cutoff": 1704070800
+    },
+    {
+      "cursor": 20,
+      "canonicalCursor": 60,
+      "rows": 21,
+      "cutoff": 1704068400
+    },
+    {
+      "cursor": 20,
+      "canonicalCursor": 60,
+      "rows": 21,
+      "cutoff": 1704068400
+    }
+  ],
+  "geometry": {
+    "pageOverflow": 0,
+    "contentOverflow": 0
+  },
+  "errors": [],
+  "unexpected": [],
+  "excluded": [
+    "touch/pinch",
+    "keyboard-only chart pan",
+    "backend persistence",
+    "performance",
+    "independent visual approval",
+    "golden promotion",
+    "full W8"
+  ]
+}

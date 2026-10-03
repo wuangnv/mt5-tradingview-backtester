@@ -411,29 +411,19 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
   const replayHref = buildWorkspaceHref('replay', workspace, query, { trade: null, job: null })
   const analyticsHref = buildWorkspaceHref('analytics', workspace, query, { trade: context.tradeId || null })
   return (
-    <main className="ja-page journal-page ja-story-page" data-testid="journal-workspace" aria-busy={state.status === 'loading'}>
-      <header className="ja-page-header">
+    <main className="ja-page journal-page ja-story-page wm-page" data-testid="journal-workspace" aria-busy={state.status === 'loading'}>
+      <header className="ja-page-header wm-page-header">
         <div>
-          <span className="ja-eyebrow">FXREPLAY / DECISION JOURNAL</span>
           <h1>Journal</h1>
-          <p>Biến một replay cutoff thành câu chuyện có bằng chứng: điều thấy → quyết định → kết quả → bước tiếp theo.</p>
-        </div>
-        <div className="ja-header-status"><span className="ja-status-dot" />Local workspace · broker locked</div>
-      </header>
-
-      <ContextBar context={context} workspace={workspace} filtered={filtered} onFilterChange={setFiltered} replayHref={replayHref} />
-
-      <section className="ja-story-intro" aria-label="Cách dùng Journal">
-        <div className="ja-story-intro-copy">
-          <span className="ja-eyebrow">WORKFLOW</span>
-          <strong>{context.sessionId || context.tradeId ? 'Đang ghi quanh một replay context' : 'Journal chỉ tạo được từ replay context'}</strong>
-          <span>{context.sessionId || context.tradeId ? 'Mỗi entry giữ lại cutoff, source và revision để review sau này.' : 'Mở Practice từ một dataset local trước khi ghi để không mất nguồn bằng chứng.'}</span>
+          <small className="ja-header-status">Workspace local · broker locked</small>
         </div>
         <div className="ja-story-intro-actions">
           <a className="ja-button ja-button-quiet" href={replayHref}>Mở replay</a>
           <a className="ja-button ja-button-quiet" href={analyticsHref}>Xem analytics</a>
         </div>
-      </section>
+      </header>
+
+      <ContextBar context={context} workspace={workspace} filtered={filtered} onFilterChange={setFiltered} replayHref={replayHref} />
 
       {state.status === 'loading' && <div className="ja-message" role="status">Đang tải journal…</div>}
       {state.status === 'error' && (
@@ -466,8 +456,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
           {!selected && (
             <section className="ja-story-placeholder" aria-label="Decision story preview">
               <span className="ja-eyebrow">DECISION STORY</span>
-              <strong>Chọn một entry để xem điều gì đã được biết tại cutoff.</strong>
-              <span>Journal tách phần tóm tắt khỏi note gốc để bạn đọc nhanh trước khi mở provenance.</span>
+              <strong>Chọn ghi chú để xem quyết định và kết quả.</strong>
             </section>
           )}
           {selected && <ProvenancePanel record={selected} context={context} />}
@@ -485,8 +474,8 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
           <label className="ja-field">Nội dung
             <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Ví dụ: giá phá range nhưng chưa đóng trên vùng…" rows={8} disabled={Boolean(selected && !editing)} maxLength={10000} />
           </label>
-          <div className="ja-decision-fields" role="group" aria-label="Decision context">
-            <span className="ja-eyebrow">DECISION CONTEXT</span>
+          <details className="ja-decision-fields" aria-label="DECISION CONTEXT">
+            <summary>Decision context · quan sát, quyết định & kết quả</summary>
             <label className="ja-field">Điều đã quan sát <span className="ja-field-hint">chỉ dữ kiện tới cutoff</span>
               <textarea value={observation} onChange={(event) => setObservation(event.target.value)} placeholder="Ví dụ: nến H1 đóng trong range…" rows={3} disabled={Boolean(selected && !editing)} maxLength={4000} />
             </label>
@@ -505,7 +494,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
             <label className="ja-field">Bước tiếp theo
               <textarea value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="Việc cần kiểm chứng tiếp…" rows={2} disabled={Boolean(selected && !editing)} maxLength={4000} />
             </label>
-          </div>
+          </details>
           <label className="ja-field">Tags <span className="ja-field-hint">phân tách bằng dấu phẩy</span>
             <input value={tags} onChange={(event) => setTags(event.target.value)} placeholder="discipline, breakout" disabled={Boolean(selected && !editing)} />
           </label>

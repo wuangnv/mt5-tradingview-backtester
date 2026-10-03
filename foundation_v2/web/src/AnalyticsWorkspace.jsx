@@ -226,6 +226,18 @@ function AnalyticsFilters({ filters, onChange, csvUrl, onExport, exportPending }
 
 function BalanceEvidence({ model, selectedTradeId, onSelect }) {
   const points = model.curve
+  const chartRef = useRef(null)
+  const [chartSize, setChartSize] = useState({ width: 800, height: 320 })
+  useEffect(() => {
+    const chart = chartRef.current
+    if (!chart) return
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect
+      if (width > 0 && height > 0) setChartSize({ width, height })
+    })
+    observer.observe(chart)
+    return () => observer.disconnect()
+  }, [points.length])
   if (points.length < 2) return <div className="as-chart-empty">Chưa có đường balance đóng đủ dữ liệu để vẽ.</div>
   const renderPoints = sampleSeries(points, MAX_CHART_POINTS, (point) => point.tradeId === selectedTradeId)
   const renderDrawdown = sampleSeries(model.drawdown, MAX_CHART_POINTS)
@@ -233,21 +245,21 @@ function BalanceEvidence({ model, selectedTradeId, onSelect }) {
   const min = Math.min(...values)
   const max = Math.max(...values)
   const span = max - min || 1
-  const y = (value) => 92 - ((value - min) / span) * 76
-  const x = (index) => (index / Math.max(1, points.length - 1)) * 100
+  const y = (value) => chartSize.height * (.92 - ((value - min) / span) * .76)
+  const x = (index) => 4 + (index / Math.max(1, points.length - 1)) * Math.max(0, chartSize.width - 8)
   const line = renderPoints.map((point) => `${x(point.index)},${y(point.value)}`).join(' ')
   const knownDrawdowns = model.drawdown.map((point) => point.drawdown).filter(finite).map(Number)
   const maxDrawdown = knownDrawdowns.length ? Math.max(1, ...knownDrawdowns) : null
   return (
     <div className="as-chart-frame">
-      <svg className="as-balance-chart" viewBox="0 0 100 100" preserveAspectRatio="none" role="group" aria-label="Closed-trade balance evidence">
-        {[20, 44, 68, 92].map((grid) => <line className="as-chart-grid" key={grid} x1="0" x2="100" y1={grid} y2={grid} />)}
+      <svg ref={chartRef} className="as-balance-chart" viewBox={`0 0 ${chartSize.width} ${chartSize.height}`} role="group" aria-label="Closed-trade balance evidence">
+        {[.2, .44, .68, .92].map((grid) => <line className="as-chart-grid" key={grid} x1="0" x2={chartSize.width} y1={chartSize.height * grid} y2={chartSize.height * grid} />)}
         <polyline className="as-balance-line" points={line} />
         {renderPoints.map((point, index) => {
           const trade = model.ledger[point.index - 1]
           const tradeId = point.tradeId || trade?.tradeId || null
           const selected = tradeId && tradeId === selectedTradeId
-          return <circle key={`${point.index}-${tradeId || 'start'}`} className={`as-chart-point ${selected ? 'is-selected' : ''}`} cx={x(point.index)} cy={y(point.value)} r={selected ? 2.2 : 1.4} tabIndex={tradeId ? 0 : undefined} role={tradeId ? 'button' : 'img'} aria-pressed={tradeId ? selected : undefined} aria-label={tradeId ? `${tradeId}, balance ${formatNumber(point.value)}` : `Starting balance ${formatNumber(point.value)}`} onClick={() => tradeId && onSelect(tradeId)} onKeyDown={(event) => { if (tradeId && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onSelect(tradeId) } }} />
+          return <circle key={`${point.index}-${tradeId || 'start'}`} className={`as-chart-point ${selected ? 'is-selected' : ''}`} cx={x(point.index)} cy={y(point.value)} r={selected ? 4 : 3} tabIndex={tradeId ? 0 : undefined} role={tradeId ? 'button' : 'img'} aria-pressed={tradeId ? selected : undefined} aria-label={tradeId ? `${tradeId}, balance ${formatNumber(point.value)}` : `Starting balance ${formatNumber(point.value)}`} onClick={() => tradeId && onSelect(tradeId)} onKeyDown={(event) => { if (tradeId && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onSelect(tradeId) } }} />
         })}
       </svg>
       <div className="as-chart-axis"><span>{formatNumber(min)}</span><span>{formatNumber(max)}</span></div>
@@ -275,7 +287,7 @@ function ContextValue({ label, value, code = false }) {
 function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
   return (
     <aside className="as-inspector" aria-label="Provenance và drilldown">
-      <div className="as-section-head"><div><span className="as-eyebrow">PROVENANCE / DRILL-DOWN</span><h2>{selectedTrade ? selectedTrade.tradeId : 'Nguồn và giới hạn'}</h2></div><span className="as-inspector-state">READ ONLY</span></div>
+      {selectedTrade && <div className="as-section-head"><h2>{selectedTrade.tradeId}</h2><span className="as-inspector-state">Chỉ đọc</span></div>}
       {selectedTrade ? (
         <section className="as-inspector-selection" aria-label="Trade detail">
           <div className="as-selection-outcome"><span className={'as-outcome-dot is-' + selectedTrade.outcome} />{selectedTrade.outcome === 'win' ? 'Thắng' : selectedTrade.outcome === 'loss' ? 'Thua' : selectedTrade.outcome === 'breakeven' ? 'Hòa vốn' : 'Chưa xác định'}<strong>{formatNumber(selectedTrade.pnl)}</strong></div>
@@ -283,9 +295,11 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
           <p className="as-inspector-note">{selectedTrade.source === 'closed balance curve' ? 'Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.' : 'Trade được đọc từ ledger đã lưu theo phiên hoặc research job. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.'}</p>
           <details className="as-raw-details"><summary>Xem record gốc</summary><pre>{JSON.stringify(selectedTrade, null, 2)}</pre></details>
         </section>
-      ) : <div className="as-inspector-empty">Chọn một điểm trên đường balance hoặc một dòng trade để mở chi tiết.</div>}
+      ) : null}
+      <details className="as-provenance-details"><summary>Nguồn và giới hạn</summary>
       <dl className="as-provenance-list"><ContextValue label="Session revision" value={model.result?.revision} /><ContextValue label="Cutoff UTC" value={formatDate(model.result?.cutoff_timestamp)} /><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Dataset SHA" value={model.result?.dataset_sha256} code /><ContextValue label="Protocol SHA" value={model.result?.protocol_sha256} code /><ContextValue label="Artifact SHA" value={model.sourceHash} code /><ContextValue label="Strategy / engine" value={model.strategy} /><ContextValue label="Split" value={model.result?.split} /><ContextValue label="Metric schema" value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label="Observed range" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Journal context" value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
       <p className="as-limit-note">N/A nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Research/simulation đang broker locked; không có đường nào gửi lệnh.</p>
+      </details>
       <div className="as-inspector-actions"><a href={links.journal}>Mở Journal →</a>{links.replay && <a href={links.replay}>Mở Replay →</a>}</div>
     </aside>
   )
@@ -303,7 +317,7 @@ function TradeLedger({ model, selectedTradeId, onSelect }) {
   }, [selectedIndex])
   const start = page * LEDGER_PAGE_SIZE
   const visibleRows = model.ledger.slice(start, start + LEDGER_PAGE_SIZE)
-  return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><span className="as-eyebrow">TRADE LEDGER</span><h2>{model.ledger.length ? `${model.ledger.length} trade đóng` : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Phạm vi này chưa có giao dịch đóng để xem chi tiết.</div> : <><div className="as-table-wrap" tabIndex={0} role="region" aria-label="Trade ledger, cuộn ngang để xem các cột"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{visibleRows.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} onClick={() => onSelect(trade.tradeId)}><td><button type="button" className="as-trade-select" aria-label={`Chọn trade ${trade.tradeId}`} aria-pressed={trade.tradeId === selectedTradeId} onClick={() => onSelect(trade.tradeId)}><code>{trade.tradeId}</code></button></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div><nav className="as-ledger-pagination" aria-label="Trade ledger pagination" data-testid="analytics-ledger-pagination"><button type="button" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label="Trang trước">←</button><span aria-live="polite">Trang {page + 1}/{pageCount} · hiển thị {start + 1}–{Math.min(start + LEDGER_PAGE_SIZE, model.ledger.length)} / {model.ledger.length}</span><button type="button" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1} aria-label="Trang sau">→</button></nav></>}</section>
+  return <section className="as-ledger-section" aria-label="Trade ledger"><div className="as-section-head"><div><h2>{model.ledger.length ? `${model.ledger.length} trade đóng` : 'Chưa có trade ledger'}</h2></div><span className="as-source-note">N/A = source chưa cung cấp</span></div>{!model.ledger.length ? <div className="as-empty-inline">Phạm vi này chưa có giao dịch đóng để xem chi tiết.</div> : <><div className="as-table-wrap" tabIndex={0} role="region" aria-label="Trade ledger, cuộn ngang để xem các cột"><table className="as-table"><thead><tr><th>Trade</th><th>Đóng UTC</th><th>Source / session</th><th>Net P/L</th><th>Net R</th><th>Kết quả</th></tr></thead><tbody>{visibleRows.map((trade) => <tr key={trade.tradeId} className={trade.tradeId === selectedTradeId ? 'is-selected' : ''} onClick={() => onSelect(trade.tradeId)}><td><button type="button" className="as-trade-select" aria-label={`Chọn trade ${trade.tradeId}`} aria-pressed={trade.tradeId === selectedTradeId} onClick={() => onSelect(trade.tradeId)}><code>{trade.tradeId}</code></button></td><td>{trade.closeDate}</td><td>{trade.source}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{formatNumber(trade.pnl)}</td><td>{formatNumber(trade.realized_r, 2, 'R')}</td><td><span className={'as-outcome-text is-' + trade.outcome}>{trade.outcome === 'win' ? 'Thắng' : trade.outcome === 'loss' ? 'Thua' : trade.outcome === 'breakeven' ? 'Hòa' : 'N/A'}</span></td></tr>)}</tbody></table></div><nav className="as-ledger-pagination" aria-label="Trade ledger pagination" data-testid="analytics-ledger-pagination"><button type="button" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label="Trang trước">←</button><span aria-live="polite">Trang {page + 1}/{pageCount} · hiển thị {start + 1}–{Math.min(start + LEDGER_PAGE_SIZE, model.ledger.length)} / {model.ledger.length}</span><button type="button" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))} disabled={page >= pageCount - 1} aria-label="Trang sau">→</button></nav></>}</section>
 }
 
 function AnalyticsMetricDisclosure({ model }) {
@@ -316,7 +330,7 @@ function AnalyticsMetricDisclosure({ model }) {
   const definitionEntries = Object.entries(model.metricDefinitions || {})
   return (
     <section className="as-definition as-metric-disclosure" data-testid="analytics-metric-disclosure">
-      <details open={definitionEntries.length > 0}>
+      <details>
         <summary>Định nghĩa metrics và phân phối R</summary>
         <div className="as-secondary-metrics as-r-distribution" role="group" aria-label="Phân phối realized R">
           <div><span>R dương</span><strong>{values.length ? distribution.positive : 'N/A'}</strong><small>realized R &gt; 0</small></div>
@@ -330,7 +344,7 @@ function AnalyticsMetricDisclosure({ model }) {
   )
 }
 
-function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(), ledgerOnly = false, summaryOnly = false }) {
+function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(), ledgerOnly = false, summaryOnly = false, embedded = false }) {
   const jobId = query?.get('job') || query?.get('job_id') || ''
   const sessionId = query?.get('session') || query?.get('replay_session') || ''
   const resourceId = jobId || sessionId
@@ -480,8 +494,8 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   if (jobId) researchParams.set('job', jobId)
   const links = { journal: '/?' + journalParams.toString(), replay: sessionId ? '/?' + replayParams.toString() : '', research: '/?' + researchParams.toString() }
 
-  return <section className="as-page" data-testid="analytics-workspace">
-    <header className="as-page-header"><div><span className="as-eyebrow">{ledgerOnly ? 'GIAO DỊCH ĐÃ ĐÓNG' : 'KẾT QUẢ MÔ PHỎNG'}</span>{summaryOnly ? <h2>Kết quả phiên</h2> : <h1>{ledgerOnly ? 'Trades' : 'Analytics'}</h1>}<p>{summaryOnly ? 'Giao dịch đã đóng của phiên đang chọn.' : 'Lọc giao dịch đã đóng, xem kết quả và đối chiếu từng lệnh.'}</p></div><div className="as-header-status"><span className="as-status-dot" />{sourceLabel} / local · broker locked</div></header>
+  return <section className={`as-page ${embedded ? 'as-embedded' : 'wm-page'}`} data-testid="analytics-workspace">
+    {(!embedded || summaryOnly) && <header className={`as-page-header ${embedded ? '' : 'wm-page-header'}`}><div>{summaryOnly ? <h2>Kết quả phiên</h2> : <h1>{ledgerOnly ? 'Trades' : 'Analytics'}</h1>}</div><div className="as-header-status"><span className="as-status-dot" />{sourceLabel} / local · broker locked</div></header>}
     <section hidden={summaryOnly || !jobId} className="as-context-bar" aria-label="Ngữ cảnh analytics"><dl className="as-context-grid">{jobId && <ContextValue label="Research job" value={jobId} code />}<ContextValue label="Replay" value={sessionId || 'Không gắn session'} code /><ContextValue label="Trade focus" value={selectedTradeId || 'Chưa chọn'} code /></dl><div className="as-context-actions">{jobId && <a href={'/?' + researchParams.toString()}>Mở Research</a>}{sessionId && <a href={'/?' + replayParams.toString()}>Mở Replay</a>}<a href={'/?' + journalParams.toString()}>Mở Journal</a></div></section>
 
     {resourceId && !summaryOnly && <AnalyticsFilters filters={filters} onChange={updateFilters} csvUrl={csvPath} onExport={exportCsv} exportPending={exportPending} />}
@@ -496,14 +510,13 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     {state.status === 'partial' && <div className="as-stale-banner" role="status"><strong>Kết quả mới chỉ một phần.</strong> Các metric không có bằng chứng vẫn giữ N/A; kiểm tra provenance trước khi dùng làm kết luận.</div>}
 
     {result && (state.status === 'ready' || state.status === 'stale' || state.status === 'partial' || state.status === 'empty') && <>
-      {!ledgerOnly && !summaryOnly && <section className="as-story-lead" aria-labelledby="analytics-takeaway"><div><span className="as-eyebrow">KẾT QUẢ TRONG PHẠM VI ĐÃ CHỌN</span><h2 id="analytics-takeaway">{model.takeaway}</h2><p>{model.observed.start} → {model.observed.end} · UTC · Kết quả mô phỏng.</p></div></section>}
       {!summaryOnly && <details className="as-scope-details"><summary>Phạm vi và nguồn dữ liệu</summary><dl className="as-scope-strip" aria-label="Phạm vi kết quả"><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Instrument" value={model.result?.instrument_id || model.result?.instrument} /><ContextValue label="Timeframe" value={model.result?.timeframe} /><ContextValue label="Strategy / playbook" value={model.strategy} /><ContextValue label="Observed UTC" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Timezone" value={model.result?.timezone || 'UTC'} /><ContextValue label="Data quality" value={model.result?.data_quality || model.result?.quality} /><ContextValue label="Trades in scope" value={model.result?.scope?.selected_trade_count} /><ContextValue label="Trades total" value={model.result?.scope?.total_trade_count} /><ContextValue label="Balance basis" value={model.result?.scope?.balance_curve_scope} /><ContextValue label="Mode" value={sourceLabel + " / simulation"} /><ContextValue label="Broker" value="Locked" /></dl></details>}
-      <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail={(result?.account_currency || 'account units') + ' · net'} source={model.derivedNet ? 'derived from ledger' : sourceLabel} tone={model.netPnl > 0 ? 'is-positive' : model.netPnl < 0 ? 'is-negative' : ''} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} detail={formatNumber(model.wins, 0) + ' thắng · ' + formatNumber(model.losses, 0) + ' thua · ' + formatNumber(model.breakeven, 0) + ' hòa'} source={model.derivedWinRate ? 'derived from ledger' : sourceLabel} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} detail="closed-trade ledger" source={sourceLabel} /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail="closed-trade balance" source={sourceLabel + " / ledger"} /></section>
-      {!summaryOnly && !ledgerOnly && <section className="as-evidence-grid"><article className="as-evidence-panel"><div className="as-section-head"><div><span className="as-eyebrow">EVIDENCE / BALANCE PATH</span><h2>Closed-trade balance</h2></div><span className="as-source-note">{model.curve.length ? model.curve.length + ' points' : 'N/A'}</span></div><BalanceEvidence model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} /><div className="as-secondary-metrics"><div><span>Starting balance</span><strong>{formatNumber(model.startBalance)}</strong></div><div><span>Ending balance</span><strong>{formatNumber(model.endingBalance)}</strong></div><div><span>Expectancy</span><strong>{formatNumber(model.expectancy)}</strong><small>{model.derivedExpectancy ? 'derived from ledger' : sourceLabel}</small></div><div><span>Profit factor</span><strong>{formatNumber(model.profitFactor)}</strong><small>gross profit / loss</small></div></div><details className="as-definition"><summary>Cách đọc đường này</summary><p>Đường chỉ nối balance sau từng trade đóng. Dataset hiện tại không cung cấp floating path, nên không gọi đây là equity curve hay intratrade drawdown.</p></details></article><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></section>}
+      <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail={(result?.account_currency || 'account units') + ' · net'} source={model.derivedNet ? 'derived from ledger' : sourceLabel} tone={model.netPnl > 0 ? 'is-positive' : model.netPnl < 0 ? 'is-negative' : ''} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} detail={formatNumber(model.wins, 0) + ' thắng · ' + formatNumber(model.losses, 0) + ' thua · ' + formatNumber(model.breakeven, 0) + ' hòa'} source={model.derivedWinRate ? 'derived from ledger' : sourceLabel} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} detail="closed-trade ledger" source={sourceLabel} /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail={(result?.account_currency || 'account units') + ' · closed-trade balance'} source={sourceLabel + " / ledger"} /></section>
+      {!summaryOnly && !ledgerOnly && <section className="as-evidence-grid"><article className="as-evidence-panel"><div className="as-section-head"><div><h2>Balance sau trade đóng</h2></div><span className="as-source-note">{model.curve.length ? model.curve.length + ' points' : 'N/A'}</span></div><BalanceEvidence model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} /><div className="as-secondary-metrics"><div><span>Starting balance</span><strong>{formatNumber(model.startBalance)}</strong></div><div><span>Ending balance</span><strong>{formatNumber(model.endingBalance)}</strong></div><div><span>Expectancy</span><strong>{formatNumber(model.expectancy)}</strong><small>{model.derivedExpectancy ? 'derived from ledger' : sourceLabel}</small></div><div><span>Profit factor</span><strong>{formatNumber(model.profitFactor)}</strong><small>gross profit / loss</small></div></div><details className="as-definition"><summary>Cách đọc đường này</summary><p>Đường chỉ nối balance sau từng trade đóng. Dataset hiện tại không cung cấp floating path, nên không gọi đây là equity curve hay intratrade drawdown.</p></details></article><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></section>}
       {!summaryOnly && <TradeLedger model={model} selectedTradeId={selectedTradeId} onSelect={setSelectedTradeId} />}
       {ledgerOnly && <ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} />}
       {!summaryOnly && !ledgerOnly && <AnalyticsMetricDisclosure model={model} />}
-      {!summaryOnly && <section className="as-next-action" aria-label="Next action"><div><span className="as-eyebrow">NEXT ACTION</span><h2>{selectedTrade ? 'Review ' + selectedTrade.tradeId + ' trong context' : 'Chọn một điểm để tiếp tục review'}</h2><p>{selectedTrade ? 'Đối chiếu ledger với Journal hoặc Replay nếu result có session tương ứng.' : 'Bắt đầu từ một trade hoặc một điểm trên đường balance; số liệu chi tiết mở sau phần takeaway.'}</p></div><div className="as-next-links"><a className="as-primary-button" href={selectedTrade ? links.journal : sessionId ? links.replay : links.research}>{selectedTrade ? 'Mở Journal' : sessionId ? 'Về Replay' : 'Về Research'}</a>{sessionId && <a className="as-secondary-button" href={links.replay}>Mở Replay</a>}</div></section>}
+      {!summaryOnly && selectedTrade && <section className="as-next-action" aria-label="Next action"><span>Review trade đang chọn</span><div className="as-next-links"><a className="as-primary-button" href={links.journal}>Mở Journal</a>{sessionId && <a className="as-secondary-button" href={links.replay}>Mở Replay</a>}</div></section>}
     </>}
   </section>
 }

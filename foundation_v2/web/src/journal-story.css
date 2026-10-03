@@ -92,7 +92,7 @@
 
 .ja-story-page .ja-journal-row.is-selected {
   background: #18252b;
-  box-shadow: inset 2px 0 0 #d6a64b;
+  box-shadow: none;
 }
 
 .ja-story-page .ja-row-main strong {
@@ -496,4 +496,61 @@
   .ja-story-page .ja-journal-row {
     transition: none;
   }
+}
+
+/* List/detail grouping uses alignment; only interactive selection gets a surface. */
+.fx-app .ja-story-page.wm-page {
+  --wm-canvas: inherit;
+  --wm-surface: inherit;
+  --wm-content: inherit;
+  --wm-content-muted: inherit;
+  --wm-border: inherit;
+  --wm-border-strong: inherit;
+  --wm-primary: inherit;
+  --wm-positive: inherit;
+  --wm-negative: inherit;
+  --wm-warning: inherit;
+  --wm-focus: inherit;
+}
+.fx-app .ja-story-page.wm-page :is(.ja-list-panel, .ja-editor-panel, .ja-story-rail, .ja-provenance-card, .ja-story-placeholder, .ja-next-action) {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  min-height: 0;
+}
+.fx-app .ja-story-page .ja-editor-column { gap: 28px; }
+.fx-app .ja-story-page .ja-section-head { padding: 0 0 16px; border: 0; }
+.fx-app .ja-story-page .ja-editor-panel > .ja-section-head { margin: 0; }
+.fx-app .ja-story-page .ja-editor-panel { gap: 24px; }
+.fx-app .ja-story-page .ja-decision-fields { border: 0; background: transparent; padding: 0; gap: 24px; }
+.fx-app .ja-story-page .ja-decision-fields > summary { color: var(--wm-content); font-size: 13px; }
+.fx-app .ja-story-page .ja-decision-fields[open] > .ja-field { margin-top: 24px; }
+.fx-app .ja-story-page .ja-context-bar { border: 0; padding: 0; margin-bottom: 28px; }
+.fx-app .ja-story-page .ja-journal-grid { padding-top: 0; gap: 32px; }
+.fx-app .ja-story-page .ja-journal-row { padding: 16px 12px; border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-journal-row:is(:hover, .is-selected) { background: var(--wm-surface); box-shadow: none; }
+.fx-app .ja-story-page .ja-source-box { padding: 0; border: 0; background: transparent; }
+.fx-app .ja-story-page :is(.ja-eyebrow, .ja-section-subtitle, .ja-row-meta span, .ja-row-main small, .ja-field, .ja-field-hint, .ja-story-steps small, .ja-story-facts span, .ja-provenance-card dt, .ja-provenance-card p, .ja-source-box small) { color: var(--wm-content-muted); }
+.fx-app .ja-story-page :is(.ja-row-main strong, .ja-section-head strong, .ja-story-rail-head strong, .ja-story-placeholder strong, .ja-provenance-card-head strong, .ja-provenance-card dd, .ja-story-facts strong, .ja-next-action strong) { color: var(--wm-content); }
+.fx-app .ja-story-page :is(.ja-story-facts strong.is-unknown, .ja-story-status, .ja-readonly-badge) { color: var(--wm-warning); border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-story-facts strong.is-known { color: var(--wm-positive); }
+.fx-app .ja-story-page :is(.ja-button, .ja-inline-button) { min-height: 44px; }
+.fx-app .ja-story-page :is(.ja-field input, .ja-field select) { min-height: 44px; }
+.fx-app .ja-story-page .ja-story-steps { border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-story-steps li { border-color: var(--wm-border); color: var(--wm-content-muted); }
+.fx-app .ja-story-page :is(code, .ja-row-kicker, .ja-story-step-mark) { color: var(--wm-primary); }
+.fx-app .ja-story-page .ja-story-step-mark { border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-story-steps li:is(.is-active, .is-complete) .ja-story-step-mark { color: var(--wm-primary); border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-story-steps li.is-active { color: var(--wm-primary); box-shadow: none; font-weight: 700; }
+.fx-app .ja-story-page .ja-story-steps li.is-complete:not(.is-active) { color: var(--wm-content-muted); }
+.fx-app .ja-story-page .ja-provenance-card dl div { border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-button:not(.ja-button-primary) { background: transparent; color: var(--wm-content); border-color: var(--wm-border); }
+.fx-app .ja-story-page .ja-button-primary { background: var(--wm-action-bg); border-color: var(--wm-action-bg); color: var(--wm-on-primary, #fff); }
+.fx-app .ja-story-page .ja-button-primary:hover:not(:disabled) { background: var(--wm-action-hover); }
+@media (max-width: 820px) {
+  .fx-app .ja-story-page .ja-editor-column { order: 0; }
+}
+@media (max-width: 680px) {
+  .fx-app .ja-story-page .ja-story-intro-actions { flex-wrap: wrap; }
 }

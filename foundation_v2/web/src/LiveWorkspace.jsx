@@ -91,8 +91,8 @@ function PermissionBoundary() {
   ]
   return (
     <section className="live-permission" aria-labelledby="live-permission-title" data-testid="live-permission">
-      <div className="live-section-heading"><div><span className="live-eyebrow">PERMISSION BOUNDARY</span><h2 id="live-permission-title">Live remains read-only</h2></div><span className="live-badge">FAIL-CLOSED</span></div>
-      <p>Live có route để làm rõ trạng thái, không phải để mở execution authority. Mọi capability chưa có receipt đều giữ ở trạng thái khóa.</p>
+      <div className="live-section-heading"><div><h2 id="live-permission-title">Phạm vi truy cập</h2></div><span className="live-badge">FAIL-CLOSED</span></div>
+      <p>Màn này chỉ đọc trạng thái. Các quyền chưa được cấp vẫn giữ khóa.</p>
       <dl className="live-permission-grid">{items.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
     </section>
   )
@@ -105,7 +105,7 @@ function EmptySurface({ section, workspace, query }) {
   const action = section === 'notes' ? 'Mở Journal local' : 'Mở Data Desk'
   return (
     <section className="live-surface" aria-labelledby="live-surface-title" data-testid="live-surface">
-      <div className="live-surface-heading"><div><span className="live-eyebrow">LIVE / {LIVE_SECTIONS[section].label.toUpperCase()}</span><h2 id="live-surface-title">{LIVE_SECTIONS[section].title}</h2><p>{LIVE_SECTIONS[section].description}</p></div><span className="live-readonly">READ ONLY</span></div>
+      <div className="live-surface-heading"><h2 id="live-surface-title">Dữ liệu read-only</h2></div>
       <div className="live-empty" data-testid="live-empty"><span className="live-empty-mark" aria-hidden="true">—</span><div><strong>{LIVE_SECTIONS[section].emptyTitle}</strong><p>{LIVE_SECTIONS[section].emptyCopy}</p></div></div>
       <a className="live-secondary-button" href={href}>{action} <span aria-hidden="true">→</span></a>
     </section>
@@ -131,12 +131,12 @@ export default function LiveWorkspace({ workspace = 'tenant-a', query = new URLS
 
   const surface = useMemo(() => <EmptySurface section={section} workspace={workspace} query={query} />, [query, section, workspace])
   return (
-    <main className="live-workspace" data-testid="live-workspace">
-      <header className="live-topbar"><div><span className="live-eyebrow">WORKSPACE / LIVE</span><h1>Live workspace</h1><p>Kiểm tra capability và snapshot read-only trước khi đưa bất kỳ dữ liệu nào vào workflow.</p></div><span className="live-topbar-lock">BROKER LOCKED</span></header>
+    <main className="live-workspace wm-page" data-testid="live-workspace">
+      <header className="live-topbar wm-page-header"><h1>{LIVE_SECTIONS[section].title}</h1><span className="live-topbar-lock">Broker đã khóa</span></header>
       <section className="live-context" aria-label="Live context"><span>Workspace <strong>{workspace}</strong></span><span>Surface <strong>{LIVE_SECTIONS[section].label}</strong></span><span>Mode <strong>Read only</strong></span><span>External write <strong>PREP_ONLY</strong></span></section>
       <LiveState state={state} onRetry={() => setReloadToken((value) => value + 1)} />
-      <PermissionBoundary />
       {surface}
+      <PermissionBoundary />
       <footer className="live-footnote">Status endpoint: <code>{LIVE_STATUS_URL}</code> · Không có broker request từ màn này.</footer>
     </main>
   )

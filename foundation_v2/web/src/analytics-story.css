@@ -207,19 +207,6 @@
  * aliases them to the shell vocabulary so typography, focus and state cues
  * remain reusable across WMREPLAY surfaces. */
 .as-page {
-  --wm-canvas: var(--fx-bg, #0a0d10);
-  --wm-surface: var(--fx-surface, #0f1317);
-  --wm-surface-raised: var(--fx-surface-raised, #13191e);
-  --wm-content: var(--fx-text, #e8edf0);
-  --wm-content-muted: var(--fx-muted, #8c979f);
-  --wm-content-subtle: var(--fx-subtle, #69747c);
-  --wm-border: var(--fx-line, #252d33);
-  --wm-border-strong: var(--fx-line-strong, #34404a);
-  --wm-focus: #f0b65f;
-  --wm-primary: var(--fx-accent, #e1ad54);
-  --wm-positive: var(--fx-green, #6dc18b);
-  --wm-negative: var(--fx-red, #dc7777);
-  --wm-warning: #d6a64b;
   --wm-radius-control: 4px;
   --wm-radius-panel: 8px;
   --wm-motion-fast: 160ms;
@@ -403,3 +390,133 @@
 .as-story-lead h2 { font-size: 22px; margin-block: 4px; }
 .as-metric-strip { margin-top: 8px; }
 .fxr-session-report .as-page { padding-top: 0; }
+
+/* The chart and ledger own the width; detail/source data opens progressively. */
+.fx-app .as-page {
+  --as-border: var(--wm-border);
+  --as-border-soft: var(--wm-border);
+  --as-muted: var(--wm-content-muted);
+  --as-subtle: var(--wm-content-muted);
+  --as-surface: var(--wm-surface);
+  --as-surface-raised: var(--wm-surface);
+  --as-gold: var(--wm-primary);
+  --as-green: var(--wm-positive);
+  --as-red: var(--wm-negative);
+}
+.fx-app .as-page.as-embedded { width: 100%; max-width: none; margin: 0; padding: 0; }
+.fx-app .as-page .as-page-header { padding: 0; border: 0; align-items: center; }
+.fx-app .as-page .as-page-header h1,
+.fx-app .as-page .as-page-header h2 { margin: 0; color: var(--wm-content); }
+.fx-app .as-page .as-page-header h2 { font-size: 16px; }
+.fx-app .as-page .as-header-status { padding: 0; }
+.fx-app .as-page .as-context-bar { padding: 12px 0; border: 0; }
+.fx-app .as-page .as-filter-bar { padding: 0 0 16px; border: 0; gap: 8px; }
+.fx-app .as-page .as-filter-controls { gap: 12px; }
+.fx-app .as-page .as-filter-controls label { min-width: 0; }
+.fx-app .as-page .as-filter-controls label span,
+.fx-app .as-page .as-filter-summary { font-size: 12px; letter-spacing: 0; text-transform: none; }
+.fx-app .as-page .as-filter-controls select,
+.fx-app .as-page .as-filter-controls input,
+.fx-app .as-page .as-filter-reset,
+.fx-app .as-page .as-export-link { min-height: 44px; padding-inline: 12px; border-radius: 6px; font-size: 14px; border-color: var(--wm-border); }
+.fx-app .as-page .as-export-link { text-decoration: none; }
+.fx-app .as-page .as-export-link:hover,
+.fx-app .as-page .as-filter-reset:hover { color: var(--wm-primary); border-color: var(--wm-primary); }
+.fx-app .as-page .as-scope-details { margin-top: 4px; }
+.fx-app .as-page .as-scope-details > summary,
+.fx-app .as-page .as-provenance-details > summary,
+.fx-app .as-page .as-definition summary { min-height: 44px; padding-block: 12px; box-sizing: border-box; color: var(--wm-content-muted); font-size: 13px; cursor: pointer; }
+.fx-app .as-page .as-scope-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 8px 0 16px; border: 0; }
+.fx-app .as-page .as-context-value dt { font-size: 12px; letter-spacing: 0; text-transform: none; }
+.fx-app .as-page .as-context-value dd { color: var(--wm-content); font-size: 13px; }
+.fx-app .as-page .as-code,
+.fx-app .as-page .as-table code { color: var(--wm-content); font-size: 12px; }
+.fx-app .as-page .as-metric-strip { margin-top: 16px; border: 0; gap: 24px; }
+.fx-app .as-page .as-story-metric,
+.fx-app .as-page .as-story-metric + .as-story-metric { min-height: 0; padding: 0; border: 0; gap: 6px; }
+.fx-app .as-page .as-story-metric dt,
+.fx-app .as-page .as-story-metric small { font-size: 13px; color: var(--wm-content-muted); }
+.fx-app .as-page .as-story-metric dd { font-size: 28px; color: var(--wm-content); letter-spacing: -.02em; }
+.fx-app .as-page .as-story-metric.is-positive dd:not(.as-metric-detail) { color: var(--wm-positive); }
+.fx-app .as-page .as-story-metric.is-negative dd:not(.as-metric-detail) { color: var(--wm-negative); }
+.fx-app .as-page .as-metric-detail em { font-size: 12px; }
+.fx-app .as-page .as-evidence-grid { grid-template-columns: minmax(0, 1fr); margin-top: 32px; gap: 16px; }
+.fx-app .as-page .as-evidence-panel,
+.fx-app .as-page .as-inspector,
+.fx-app .as-page .as-ledger-section { border: 0; background: transparent; border-radius: 0; }
+.fx-app[data-theme='light'] .as-page :is(.as-evidence-panel, .as-inspector, .as-ledger-section, .as-large-empty, .as-balance-chart) { background: transparent; }
+.fx-app .as-page .as-section-head { min-height: 44px; padding: 0 0 12px; border: 0; gap: 16px; }
+.fx-app .as-page .as-section-head h2 { margin: 0; color: var(--wm-content); font-size: 16px; overflow-wrap: anywhere; }
+.fx-app .as-page .as-source-note,
+.fx-app .as-page .as-inspector-state { color: var(--wm-content-muted); font-size: 12px; letter-spacing: 0; }
+.fx-app .as-page .as-chart-frame { padding: 0; }
+.fx-app .as-page .as-balance-chart { height: 320px; background: transparent; border-color: var(--wm-border); }
+.fx-app .as-page .as-chart-grid { stroke: var(--wm-border); }
+.fx-app .as-page .as-chart-point { fill: var(--wm-canvas); }
+.fx-app .as-page .as-chart-point:hover,
+.fx-app .as-page .as-chart-point:focus,
+.fx-app .as-page .as-chart-point.is-selected { fill: var(--wm-primary); stroke: var(--wm-primary); }
+.fx-app .as-page .as-chart-axis,
+.fx-app .as-page .as-chart-legend,
+.fx-app .as-page .as-chart-legend small { color: var(--wm-content-muted); font-size: 12px; }
+.fx-app .as-page .as-drawdown-strip { border-color: var(--wm-border); }
+.fx-app .as-page .as-drawdown-bar,
+.fx-app .as-page .as-legend-dd { background: var(--wm-negative); }
+.fx-app .as-page .as-drawdown-bar.is-unknown { background: transparent; border-color: var(--wm-content-muted); }
+.fx-app .as-page .as-secondary-metrics { margin: 16px 0 0; border: 0; gap: 24px; }
+.fx-app .as-page .as-secondary-metrics > div,
+.fx-app .as-page .as-secondary-metrics > div + div { padding: 0; border: 0; }
+.fx-app .as-page .as-secondary-metrics span,
+.fx-app .as-page .as-secondary-metrics small { color: var(--wm-content-muted); font-size: 12px; }
+.fx-app .as-page .as-secondary-metrics strong { color: var(--wm-content); font-size: 16px; }
+.fx-app .as-page .as-definition { margin: 16px 0 0; border: 0; }
+.fx-app .as-page .as-definition p,
+.fx-app .as-page .as-inspector-note,
+.fx-app .as-page .as-limit-note { color: var(--wm-content-muted); font-size: 13px; line-height: 1.6; }
+.fx-app .as-page .as-inspector-selection { padding: 0; border: 0; }
+.fx-app .as-page .as-selection-outcome { color: var(--wm-content); max-width: 680px; }
+.fx-app .as-page .as-selection-outcome strong { color: var(--wm-content); }
+.fx-app .as-page .as-detail-list,
+.fx-app .as-page .as-provenance-list { max-width: 680px; margin: 8px 0; padding: 0; }
+.fx-app .as-page .as-detail-list .as-context-value dt,
+.fx-app .as-page .as-provenance-list .as-context-value dt { color: var(--wm-content-muted); font-size: 12px; }
+.fx-app .as-page .as-detail-list .as-context-value dd,
+.fx-app .as-page .as-provenance-list .as-context-value dd { color: var(--wm-content); font-size: 13px; }
+.fx-app .as-page .as-limit-note { margin: 12px 0; padding: 0; border: 0; }
+.fx-app .as-page .as-inspector-actions { padding: 0; }
+.fx-app .as-page .as-inspector-actions a { min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; }
+.fx-app .as-page .as-raw-details summary { color: var(--wm-content-muted); font-size: 13px; min-height: 44px; }
+.fx-app .as-page .as-raw-details pre { color: var(--wm-content-muted); background: var(--wm-surface); }
+.fx-app .as-page .as-ledger-section { margin-top: 32px; }
+.fx-app .as-page .as-table th { color: var(--wm-content-muted); font-size: 12px; letter-spacing: 0; text-transform: none; }
+.fx-app .as-page .as-table td { color: var(--wm-content); font-size: 13px; }
+.fx-app .as-page .as-table th,
+.fx-app .as-page .as-table td { padding: 10px 12px; }
+.fx-app .as-page .as-table tbody tr:hover,
+.fx-app .as-page .as-table tbody tr.is-selected { background: var(--wm-surface); }
+.fx-app .as-page .as-table td.is-positive { color: var(--wm-positive); }
+.fx-app .as-page .as-table td.is-negative { color: var(--wm-negative); }
+.fx-app .as-page .as-trade-select { min-height: 44px; }
+.fx-app .as-page .as-ledger-pagination { justify-content: flex-end; gap: 12px; font-size: 12px; border: 0; margin-top: 8px; }
+.fx-app .as-page .as-ledger-pagination button { min-width: 44px; min-height: 44px; border-radius: 6px; color: var(--wm-content); }
+.fx-app .as-page .as-next-action { margin-top: 16px; padding: 0; border: 0; color: var(--wm-content-muted); font-size: 13px; }
+.fx-app .as-page .as-primary-button,
+.fx-app .as-page .as-secondary-button,
+.fx-app .as-page .as-inline-button { min-height: 44px; border-radius: 6px; font-size: 14px; }
+.fx-app .as-page .as-primary-button { color: var(--wm-on-primary); background: var(--wm-action-bg); border-color: var(--wm-action-bg); }
+.fx-app .as-page .as-primary-button:hover { background: var(--wm-action-hover); }
+.fx-app .as-page .as-secondary-button { color: var(--wm-content); border-color: var(--wm-border); }
+.fx-app .as-page .as-large-empty { border: 0; background: transparent; padding: 24px 0; }
+.fx-app .as-page .as-large-empty h2 { color: var(--wm-content); font-size: 16px; }
+.fx-app .as-page .as-large-empty p { color: var(--wm-content-muted); font-size: 14px; }
+.fx-app .as-page .as-stale-banner { color: var(--wm-warning); background: transparent; border: 0; padding-inline: 0; font-size: 13px; }
+@media (max-width: 768px) {
+  .fx-app .as-page .as-filter-controls label { flex: 1 1 120px; }
+  .fx-app .as-page .as-filter-controls input { width: 100%; box-sizing: border-box; min-width: 0; }
+  .fx-app .as-page .as-metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
+  .fx-app .as-page .as-scope-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fx-app .as-page .as-balance-chart { height: 220px; }
+  .fx-app .as-page .as-secondary-metrics { gap: 16px; }
+  .fx-app .as-page .as-ledger-pagination { justify-content: space-between; padding-inline: 0; }
+  .fx-app .as-page .as-next-action { display: flex; flex-wrap: wrap; gap: 12px; }
+}

@@ -24,7 +24,7 @@ function sessionOptionLabel(item) {
 function SessionSelect({ kind, selected, catalog, showArchived, onSelect, disabled }) {
   const options = catalog.items.filter((item) => showArchived || !item.archived || item.record_id === selected)
   const item = catalog.items.find((entry) => entry.record_id === selected)
-  return <div className={`fxr-session-control ${kind !== 'replay' ? 'is-compact' : ''}`}>
+  return <div className="fxr-session-control is-compact">
     <label htmlFor={`fxr-${kind}-session-select`}>Chọn phiên replay</label>
     <div className="fxr-session-select-card">
       <select id={`fxr-${kind}-session-select`} aria-label="Chọn phiên replay" value={selected} onChange={(event) => onSelect(event.target.value)} disabled={disabled || catalog.status !== 'ready'}>
@@ -32,12 +32,6 @@ function SessionSelect({ kind, selected, catalog, showArchived, onSelect, disabl
         {selected && !item && <option value={selected}>{selected} · Không có trong danh mục</option>}
         {options.map((entry) => <option key={entry.record_id} value={entry.record_id}>{sessionOptionLabel(entry)}</option>)}
       </select>
-      <div className="fxr-session-select-details" aria-hidden="true">
-        <strong>{item?.name || selected || 'Chọn phiên replay'}</strong>
-        <span>{item ? `${unknownValue(item.instrument_id)} · ${timeframeLabel(item)} · ${unknownValue(item.status)}` : 'Chọn phiên đã lưu hoặc tạo phiên mới'}</span>
-        {item && <span>{datasetAvailabilityLabel(item.dataset_available)}{item.archived ? ' · Đã lưu trữ' : ''}</span>}
-      </div>
-      <span className="fxr-select-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" focusable="false"><path d="m6 9 6 6 6-6" /></svg></span>
     </div>
   </div>
 }
@@ -119,11 +113,11 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   const available = catalog.status === 'ready' && Boolean(item)
   const actionDisabled = Boolean(pending) || needsRefresh || !available
 
-  return <section className={`fx-session-picker fxr-integrated-sessions fxr-${kind}-picker`} aria-label={kind === 'trade' ? 'Trades theo phiên' : kind === 'analytics' ? 'Analytics theo phiên' : 'Sessions'} data-testid={`${kind}-session-picker`}>
+  return <section className={`wm-page fx-session-picker fxr-integrated-sessions fxr-${kind}-picker`} aria-label={kind === 'trade' ? 'Trades theo phiên' : kind === 'analytics' ? 'Analytics theo phiên' : 'Sessions'} data-testid={`${kind}-session-picker`}>
+    <header className="wm-page-header fxr-page-header"><h1>{kind === 'trade' ? 'Trades' : kind === 'analytics' ? 'Analytics' : 'Sessions'}</h1><a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a></header>
     <div className="fxr-session-toolbar">
       <SessionSelect kind={kind} selected={selected} catalog={catalog} showArchived={showArchived} onSelect={navigate} disabled={Boolean(pending)} />
       <div className="fxr-session-actions">
-        <a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a>
         <button className="fxr-button fxr-button-secondary" type="button" disabled={Boolean(pending) || catalog.status === 'loading'} onClick={() => setReloadToken((value) => value + 1)}>Tải lại</button>
         <label className="fxr-archive-toggle"><input type="checkbox" checked={showArchived} onChange={(event) => setShowArchived(event.target.checked)} />Hiện phiên đã lưu trữ</label>
       </div>
@@ -137,7 +131,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
       {item.archived && <p className="fxr-session-notice" role="status">Phiên đã lưu trữ. Báo cáo vẫn đọc được; khôi phục để tiếp tục replay hoặc tạo bản sao.</p>}
       {kind === 'replay' && <div className="fxr-session-cards">
         <article className="fxr-session-card fxr-session-summary-card">
-          <h1>{item.name || item.record_id}</h1>
+          <h2>{item.name || item.record_id}</h2>
           <p>{unknownValue(item.instrument_id)} · {timeframeLabel(item)} · {unknownValue(item.status)}</p>
           <details className="fxr-session-provenance"><summary>Nguồn dữ liệu · nến #{item.cursor_index} · revision {item.revision}</summary><dl className="fxr-session-facts">
             <div><dt>Session ID</dt><dd>{item.record_id}</dd></div>
@@ -150,7 +144,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
             <a className="fxr-button fxr-button-secondary" href={routeHref('trade')}>Xem Trades</a>
             <a className="fxr-button fxr-button-secondary" href={routeHref('analytics')}>Xem Analytics</a>
           </div>
-          {!item.dataset_available && <p>Dataset không khả dụng. Khôi phục dữ liệu nguồn trước khi mở chart.</p>}
+          {item.dataset_available !== true && <p>{item.dataset_available === false ? 'Dataset không khả dụng. Khôi phục dữ liệu nguồn trước khi mở chart.' : 'Chưa rõ dataset. Tải lại danh mục để kiểm tra trước khi mở chart.'}</p>}
         </article>
         <article className="fxr-session-card fxr-description-card">
           <h2>Thông tin phiên</h2>
@@ -167,9 +161,9 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
         </article>
       </div>}
       {kind !== 'replay' && <div className="fxr-session-links fxr-ledger-context"><span>{item.name || item.record_id} · {unknownValue(item.instrument_id)} · {timeframeLabel(item)}</span><a href={routeHref('replay')}>Thông tin phiên</a>{!item.archived && item.dataset_available && <a href={routeHref('replay', { select: null, surface: 'workspace' })}>Mở chart</a>}</div>}
-      <div className="fxr-session-report"><AnalyticsWorkspace key={`${workspace}:${item.record_id}:${item.revision}:${reloadToken}`} workspace={workspace} query={selectedQuery} ledgerOnly={kind === 'trade'} summaryOnly={kind === 'replay'} /></div>
+      <div className="fxr-session-report"><AnalyticsWorkspace key={`${workspace}:${item.record_id}:${item.revision}:${reloadToken}`} workspace={workspace} query={selectedQuery} ledgerOnly={kind === 'trade'} summaryOnly={kind === 'replay'} embedded /></div>
     </>}
-    {catalog.status === 'ready' && !item && <div className="fxr-empty-state"><h1>{selected ? 'Không tìm thấy phiên trong workspace này' : 'Chọn một phiên để bắt đầu'}</h1><p>{selected ? 'Kiểm tra workspace hoặc chọn phiên khác từ danh mục. Không có dữ liệu performance thay thế.' : 'Mở phiên đã lưu để xem chart, trade ledger và analytics; hoặc tạo phiên mới từ dataset local.'}</p><a className="fxr-button fxr-button-primary" href={newHref}>Tạo phiên mới</a></div>}
+    {catalog.status === 'ready' && !item && <div className="fxr-empty-state"><h2>{selected ? 'Không tìm thấy phiên trong workspace này' : 'Chọn một phiên để bắt đầu'}</h2><p>{selected ? 'Kiểm tra workspace hoặc chọn phiên khác từ danh mục. Không có dữ liệu performance thay thế.' : 'Mở phiên đã lưu để xem chart, trade ledger và analytics; hoặc tạo phiên mới từ dataset local.'}</p><a className="fxr-button fxr-button-primary" href={newHref}>Tạo phiên mới</a></div>}
   </section>
 }
 

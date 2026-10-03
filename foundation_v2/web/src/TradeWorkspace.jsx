@@ -322,11 +322,11 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const account = execution ? { balance: execution.balance, equity: execution.equity, floating: execution.floating_pl } : null
 
   return (
-    <main className="trade-workspace" data-testid="trade-workspace">
-      <div className="trade-heading">
-        <div><span className="trade-eyebrow">TRADE DESK / REPLAY CONTEXT</span><h1>Trade draft</h1><p>Tạo lệnh giả lập từ đúng decision cutoff hiện tại, kiểm tra risk trước khi queue.</p></div>
+    <main className="trade-workspace wm-page" data-testid="trade-workspace">
+      <header className="trade-heading wm-page-header">
+        <div><h1>Trade draft</h1></div>
         <div className="trade-heading-state"><span>Session</span><strong>{stateLabel}</strong><small>{payload?.dataset_id || 'Chưa có dataset'}</small></div>
-      </div>
+      </header>
       <SimulatorBanner />
       {state.status === 'loading' && <div className="trade-message">Đang tải replay session…</div>}
       {state.status === 'error' && <div className="trade-message is-error" role="alert">Không đọc được replay: {state.error}<button className="trade-inline-retry" data-testid="trade-replay-retry" type="button" onClick={retryReplay} disabled={replayRetryExhausted} aria-describedby={replayRetryExhausted ? 'trade-replay-retry-note' : undefined}>{replayRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{replayRetryExhausted && <small id="trade-replay-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small>}</div>}

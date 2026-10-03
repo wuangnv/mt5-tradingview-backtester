@@ -485,12 +485,10 @@ export default function PropWorkspace({ workspace }) {
   const sessionCountLabel = useMemo(() => `${sessions.items.length} session`, [sessions.items.length])
 
   return (
-    <main className="prop-shell ui-theme-dark">
-      <header className="prop-topbar">
+    <main className="prop-shell wm-page">
+      <header className="prop-topbar wm-page-header">
         <div>
-          <div className="eyebrow">TESTING / PROP SESSION</div>
           <h1>Luyện challenge</h1>
-          <p>Tạo và mở lại phiên luyện bằng state đã persist trên backend.</p>
         </div>
         <div className="prop-topbar-actions">
           <a className="context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}`}>Replay</a>
@@ -522,8 +520,6 @@ export default function PropWorkspace({ workspace }) {
           data-testid="prop-notion-tab"
           onClick={() => setActiveTab('notion')}
         >Notion</button>
-        <button type="button" disabled>Dashboard</button>
-        <button type="button" disabled>Trades</button>
       </nav>
 
       {activeTab === 'sessions' && <section className="prop-layout">
@@ -557,7 +553,7 @@ export default function PropWorkspace({ workspace }) {
           </div>
         </aside>
 
-        <section className="prop-main">
+        <section className={`prop-main${selected.session ? ' has-selection' : ''}`}>
           {conflict && (
             <StateMessage kind="conflict" testId="prop-conflict">
               <strong>Xung đột / dữ liệu chưa hợp lệ.</strong> {conflict}
@@ -566,7 +562,7 @@ export default function PropWorkspace({ workspace }) {
 
           <section className="prop-wizard" aria-label="Tạo Prop session">
             <div className="prop-section-head">
-              <div><span>New session</span><strong>Generic / custom practice profile</strong></div>
+              <div><strong>Tạo phiên luyện</strong><span>Generic / custom practice profile</span></div>
               <small>1 phase · UTC · static loss</small>
             </div>
             <form onSubmit={createSession}>
@@ -635,7 +631,7 @@ export default function PropWorkspace({ workspace }) {
 
           <section className="prop-resume" aria-label="Resume state">
             <div className="prop-section-head">
-              <div><span>Persisted state</span><strong>Resume discovery từ backend</strong></div>
+              <div><strong>Phiên đang chọn</strong><span>Trạng thái đã lưu</span></div>
               {selected.session && <button type="button" className="prop-refresh" onClick={() => openSession(selected.session)}>Tải lại</button>}
             </div>
 
@@ -647,6 +643,14 @@ export default function PropWorkspace({ workspace }) {
 
             {selected.status === 'ready' && attempt && phase && (
               <div data-testid="prop-resume-bundle">
+                <ol className="prop-phase-list" aria-label="Các phase của challenge">
+                  {(selected.session.profile?.phases || []).map((item) => (
+                    <li key={item.phase_index} aria-current={item.phase_index === phase.phase_index ? 'step' : undefined}>
+                      <strong>Phase {item.phase_index}</strong>
+                      <span>{item.phase_index === phase.phase_index ? attempt.status : item.phase_index < phase.phase_index ? 'Phase trước' : 'Chưa mở'}</span>
+                    </li>
+                  ))}
+                </ol>
                 <div className="prop-resume-strip">
                   <div><span>Attempt</span><strong>{attempt.attempt_id}</strong></div>
                   <div><span>Status</span><strong className={selectedTerminal ? 'is-terminal' : ''}>{attempt.status}</strong></div>
