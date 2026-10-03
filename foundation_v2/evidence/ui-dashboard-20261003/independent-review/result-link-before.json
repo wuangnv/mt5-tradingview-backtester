@@ -1,0 +1,25 @@
+{
+  "requests": [
+    {
+      "url": "http://127.0.0.1:5180/api/v2/replay/sessions",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:5180/api/v2/overview",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:5180/api/v2/replay/sessions",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:5180/api/v2/replay/sessions/a70ee596383445d29e650175d505639a/analytics",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:5180/api/v2/journal",
+      "method": "GET"
+    }
+  ],
+  "blocked": []
+}

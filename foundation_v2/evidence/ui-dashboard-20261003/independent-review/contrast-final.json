@@ -1,0 +1,44 @@
+[
+  {
+    "theme": "dark",
+    "selector": ".fx-dashboard-continue",
+    "color": "rgb(255, 255, 255)",
+    "background": "rgb(36, 91, 196)",
+    "ratio": 6.234132198918677
+  },
+  {
+    "theme": "dark",
+    "selector": ".fx-dashboard-heading .fx-eyebrow",
+    "color": "rgb(140, 151, 159)",
+    "background": "rgb(3, 3, 3)",
+    "ratio": 6.916414813652938
+  },
+  {
+    "theme": "dark",
+    "selector": ".fx-dashboard-resume .fx-eyebrow",
+    "color": "rgb(140, 151, 159)",
+    "background": "rgb(15, 19, 23)",
+    "ratio": 6.255256673282438
+  },
+  {
+    "theme": "light",
+    "selector": ".fx-dashboard-continue",
+    "color": "rgb(255, 255, 255)",
+    "background": "rgb(36, 91, 196)",
+    "ratio": 6.234132198918677
+  },
+  {
+    "theme": "light",
+    "selector": ".fx-dashboard-heading .fx-eyebrow",
+    "color": "rgb(82, 96, 113)",
+    "background": "rgb(245, 247, 248)",
+    "ratio": 5.9755567326396
+  },
+  {
+    "theme": "light",
+    "selector": ".fx-dashboard-resume .fx-eyebrow",
+    "color": "rgb(82, 96, 113)",
+    "background": "rgb(255, 255, 255)",
+    "ratio": 6.421297725921388
+  }
+]

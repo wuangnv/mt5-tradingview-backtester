@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "scope": "synthetic engine data through real API and isolated PostgreSQL",
+  "session": "39b1d068edd64e75864f692f27237852",
+  "workspace": "tenant-a",
+  "expectedTradeCount": 60,
+  "revision": 123,
+  "productAcceptance": "SCOPED_ONLY",
+  "broker": "NOT_CONTACTED"
+}

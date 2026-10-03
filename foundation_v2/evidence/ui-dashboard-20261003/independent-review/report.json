@@ -1,0 +1,119 @@
+{
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "dark",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "rows": [
+        "a70ee596383445d29e650175d505639a",
+        "5b84db59a5d84a5e94902d5fdb716cb0",
+        "9d977e4c9ec346dbacb8d4260e7a79c8",
+        "c3a6000eacff4b6b937a7925c21417c0",
+        "06d2fd6ac63f41e78bb91fdef917d99e"
+      ],
+      "resumeSession": "a70ee596383445d29e650175d505639a",
+      "overflow": 0,
+      "clipped": []
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "PASS"
+}

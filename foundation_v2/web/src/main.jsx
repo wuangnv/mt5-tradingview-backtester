@@ -14,6 +14,7 @@ import RiskWorkspace from './RiskWorkspace.jsx'
 import PlaybookWorkspace from './PlaybookWorkspace.jsx'
 import LiveWorkspace from './LiveWorkspace.jsx'
 import SessionPicker from './SessionPicker.jsx'
+import DashboardSessions from './DashboardSessions.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import { dashboardFilters, dashboardFilterError, dashboardNumber, readDashboardOverview } from './dashboardModel.js'
 import './styles.css'
@@ -39,6 +40,7 @@ function formatCount(value) {
 
 function WorkspaceOverview({ workspace, query }) {
   const [filters, setFilters] = useState(() => dashboardFilters(query))
+  const [showDetails, setShowDetails] = useState(() => Object.values(dashboardFilters(query)).some(Boolean))
   const [reloadToken, setReloadToken] = useState(0)
   const [overview, setOverview] = useState({ status: 'loading', payload: null, error: null, key: '' })
   const [sessions, setSessions] = useState([])
@@ -94,7 +96,7 @@ function WorkspaceOverview({ workspace, query }) {
   return (
     <section className="fx-dashboard" aria-label="Dashboard">
       <div className="fx-dashboard-inner">
-        <div className="fx-dashboard-cards">
+        <DashboardSessions key={workspace} workspace={workspace} query={query} quickActions={<div className="fx-dashboard-cards">
           {cards.map((card) => (
             <a className={`fx-dashboard-card ${card.primary ? 'is-primary' : ''}`} href={card.href} key={card.id}>
               <span className="fx-dashboard-card-icon" aria-hidden="true">
@@ -106,20 +108,10 @@ function WorkspaceOverview({ workspace, query }) {
               </span>
             </a>
           ))}
-        </div>
+        </div>} />
         <div className="fx-dashboard-performance-head">
-          <div><h2>Hiệu suất replay</h2><p>Giao dịch đã đóng trong các phiên đã lưu · thời gian UTC</p></div>
+          <div><h2>Tổng quan luyện tập</h2><p>Replay mô phỏng · {Object.values(filters).some(Boolean) ? 'đang áp dụng bộ lọc bên dưới' : 'tất cả phiên, gồm đã lưu trữ'} · thời gian UTC</p></div>
           <button type="button" className="fx-dashboard-filter" disabled={pending || Boolean(filterError)} onClick={() => setReloadToken((value) => value + 1)}>{pending ? 'Đang tải…' : 'Làm mới'}</button>
-        </div>
-        <div className="fx-dashboard-filters" role="group" aria-label="Bộ lọc hiệu suất">
-          <label><span>Phiên replay</span><select aria-label="Phiên replay" value={filters.session} onChange={(event) => changeFilters({ session: event.target.value })}>
-            <option value="">Tất cả phiên, gồm đã lưu trữ</option>
-            {filters.session && !sessions.some((item) => item.session_id === filters.session) && <option value={filters.session}>{filters.session}</option>}
-            {sessions.map((item) => <option value={item.session_id} key={item.session_id}>{item.name}{item.instrument_id ? ` · ${item.instrument_id}` : ''}{item.archived ? ' · đã lưu trữ' : ''}</option>)}
-          </select></label>
-          <label><span>Từ ngày đóng (UTC)</span><input type="date" value={filters.from} onChange={(event) => changeFilters({ from: event.target.value })} /></label>
-          <label><span>Đến ngày đóng (UTC)</span><input type="date" value={filters.to} onChange={(event) => changeFilters({ to: event.target.value })} /></label>
-          <button type="button" className="fx-dashboard-filter" onClick={() => changeFilters({ session: '', from: '', to: '' })}>Xóa lọc</button>
         </div>
         <div className={`fx-dashboard-data-state ${partial || overview.status === 'error' ? 'is-warning' : ''}`} data-testid="dashboard-data-state" role={overview.status === 'error' || filterError ? 'alert' : 'status'} aria-live="polite">
           {filterError ? <span>{filterError}</span> : pending ? <span>{payload ? 'Đang cập nhật; số liệu bên dưới là lần đọc trước.' : 'Đang tải đúng phạm vi đã chọn…'}</span> : overview.status === 'error' ? <>
@@ -131,6 +123,18 @@ function WorkspaceOverview({ workspace, query }) {
           <DashboardMetric title="Giao dịch đã đóng" value={dashboardNumber(metrics?.closed_trade_count)} detail={scope?.duplicate_trade_count ? `Đã bỏ ${scope.duplicate_trade_count} bản sao lịch sử branch` : 'Mỗi lần đóng lệnh được tính một lần'} />
           <DashboardMetric title="Tỷ lệ thắng" value={dashboardNumber(metrics?.win_rate_pct, '%')} detail={metrics?.closed_trade_count > 0 ? `${metrics.wins} thắng · ${metrics.losses} thua · ${metrics.breakeven} hòa` : 'Chưa có trade đóng để tính tỷ lệ'} />
           <DashboardMetric title="Phiên trong phạm vi" value={dashboardNumber(scope?.session_count)} detail={scope ? `${scope.readable_session_count} phiên có execution ledger hợp lệ` : 'Chờ dữ liệu từ workspace'} />
+        </div>
+        <details className="fx-dashboard-detail" open={showDetails} onToggle={event => setShowDetails(event.currentTarget.open)}>
+        <summary>Bộ lọc và thống kê chi tiết</summary>
+        <div className="fx-dashboard-filters" role="group" aria-label="Bộ lọc hiệu suất">
+          <label><span>Phiên replay</span><select aria-label="Phiên replay" value={filters.session} onChange={(event) => changeFilters({ session: event.target.value })}>
+            <option value="">Tất cả phiên, gồm đã lưu trữ</option>
+            {filters.session && !sessions.some((item) => item.session_id === filters.session) && <option value={filters.session}>{filters.session}</option>}
+            {sessions.map((item) => <option value={item.session_id} key={item.session_id}>{item.name}{item.instrument_id ? ` · ${item.instrument_id}` : ''}{item.archived ? ' · đã lưu trữ' : ''}</option>)}
+          </select></label>
+          <label><span>Từ ngày đóng (UTC)</span><input type="date" value={filters.from} onChange={(event) => changeFilters({ from: event.target.value })} /></label>
+          <label><span>Đến ngày đóng (UTC)</span><input type="date" value={filters.to} onChange={(event) => changeFilters({ to: event.target.value })} /></label>
+          <button type="button" className="fx-dashboard-filter" onClick={() => changeFilters({ session: '', from: '', to: '' })}>Xóa lọc</button>
         </div>
         <div className="fx-dashboard-distributions">
           <section className="fx-dashboard-distribution" aria-label="Tỷ lệ thắng theo tháng"><h3>Tỷ lệ thắng theo tháng</h3><p>Tháng đóng lệnh theo UTC · tối đa 12 tháng có giao dịch gần nhất</p>
@@ -150,6 +154,7 @@ function WorkspaceOverview({ workspace, query }) {
           <span>{formatCount(sumCounts(payload.counts?.research_jobs))} research job</span>
           <span>{formatCount(sumCounts(payload.counts?.records))} bản ghi đã lưu</span>
         </div>}
+        </details>
       </div>
     </section>
   )
@@ -196,7 +201,7 @@ function App() {
   // Trading tabs open persisted reports. Order entry is an explicit chart action.
   const showSessionPicker = query.get('surface') !== 'workspace' && (query.get('select') === '1' || query.get('mode') === 'Practice')
   const showTradeLedger = query.get('intent') !== 'order'
-  const showSessionAnalytics = !query.get('job') && !query.get('job_id')
+  const showSessionAnalytics = query.get('surface') !== 'workspace' && !query.get('job') && !query.get('job_id')
   const isLearn = activeView === 'learn'
   const isProp = requestedView === 'testing' || requestedView === 'prop'
   let content

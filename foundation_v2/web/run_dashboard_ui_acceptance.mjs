@@ -46,6 +46,7 @@ try {
     const request = route.request()
     const url = new URL(request.url())
     assert.equal(request.method(), 'GET', 'Dashboard must remain read only')
+    if (url.pathname === '/api/v2/replay/sessions') return route.fulfill({ json: { items: sessions.map((item, index) => ({ ...item, record_id: item.session_id, revision: 3, dataset_id: 'dataset-test', dataset_available: true, cursor_index: 20, timeframe: '60s', status: 'paused', updated_at_utc: `2026-10-0${index+1}T07:00:00Z`, description: 'Dữ liệu mô phỏng dành cho kiểm thử Dashboard.' })) } })
     if (url.pathname !== '/api/v2/overview') return route.fulfill({ status: 404, json: { detail: 'unexpected_api_request' } })
     assert.equal(request.headers()['x-workspace-id'], 'dashboard-fixture')
     requests.push(url.search)
@@ -76,6 +77,7 @@ try {
     }
   }
   await page.setViewportSize({ width: 1440, height: 900 })
+  await page.getByText('Bộ lọc và thống kê chi tiết', { exact: true }).click()
   await page.getByLabel('Phiên replay', { exact: true }).selectOption('beta')
   await page.waitForFunction(() => document.querySelector('[data-testid="dashboard-performance"]')?.textContent.includes('100%'))
   await page.getByLabel('Từ ngày đóng (UTC)', { exact: true }).fill('2023-11-14')

@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "scope": "browser API fixture only",
+  "productAcceptance": "NOT_EVALUATED",
+  "results": [
+    {
+      "check": "responsive",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "content": {
+        "width": 1192,
+        "overflow": 0
+      }
+    },
+    {
+      "check": "responsive",
+      "theme": "dark",
+      "width": 768,
+      "overflow": 0,
+      "content": {
+        "width": 520,
+        "overflow": 0
+      }
+    },
+    {
+      "check": "responsive",
+      "theme": "dark",
+      "width": 390,
+      "overflow": 0,
+      "content": {
+        "width": 332,
+        "overflow": 0
+      }
+    },
+    {
+      "check": "responsive",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "content": {
+        "width": 1192,
+        "overflow": 0
+      }
+    },
+    {
+      "check": "responsive",
+      "theme": "light",
+      "width": 768,
+      "overflow": 0,
+      "content": {
+        "width": 520,
+        "overflow": 0
+      }
+    },
+    {
+      "check": "responsive",
+      "theme": "light",
+      "width": 390,
+      "overflow": 0,
+      "content": {
+        "width": 332,
+        "overflow": 0
+      }
+    },
+    {
+      "check": "filters_scope_url_drilldown_error_retry_stale_empty_partial_unknown",
+      "pass": true
+    }
+  ]
+}

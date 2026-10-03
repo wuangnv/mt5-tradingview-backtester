@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "synthetic browser fixture API intercepted no real backend writes",
+  "checks": [
+    "selection navigates and survives reload",
+    "metadata persists and conflict preserves draft",
+    "uncertain server response fences mutation until catalog refresh",
+    "archive restore and archive filter",
+    "duplicate branches at saved cursor and opens child",
+    "Trades pagination detail and server filter",
+    "Analytics uses read model without demo",
+    "responsive 3 routes by 3 widths without horizontal overflow",
+    "light theme 3 routes by 2 widths and scrolled ledger screenshots",
+    "missing execution stays unknown",
+    "denied catalog hides stale report then recovers"
+  ],
+  "browserErrors": [],
+  "externalRequests": 0,
+  "requestCount": 106
+}

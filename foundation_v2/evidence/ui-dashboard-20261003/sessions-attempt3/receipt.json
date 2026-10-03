@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "scope": "Dashboard fixtures + local readonly synthetic database, no broker/product acceptance",
+  "results": [
+    "stored valid session wins; stale chart context reset; detailed statistics collapsed",
+    "search, sort, no match, archived-only result and keyboard menu dismissal",
+    "missing dataset cannot resume",
+    "invalid, archived, missing and unknown stored selections fall back to newest playable session",
+    "all management entrypoints are GET-only, preload rename or focus correct action; archived restore entry",
+    "small archived catalog, empty, error, retry and loading states",
+    "real readonly API: saved QA session, partial 7/25 truthful overview, 8 responsive/theme screenshots, chart resume journey"
+  ],
+  "errors": [],
+  "writes": []
+}

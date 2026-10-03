@@ -1,19 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { duplicateSession, fetchReplaySessions, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
+import { duplicateSession, fetchReplaySessions, readLastSession, rememberSession, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
 import './session-picker.css'
-
-function safeLastSession(workspace) {
-  try { return window.localStorage.getItem(`tw:replay:last:${workspace}`) || '' } catch { return '' }
-}
-
-function rememberSession(workspace, id) {
-  try {
-    if (id) window.localStorage.setItem(`tw:replay:last:${workspace}`, id)
-    else window.localStorage.removeItem(`tw:replay:last:${workspace}`)
-  } catch { /* URL navigation still works when storage is unavailable. */ }
-}
 
 function unknownValue(value, fallback = 'Chưa rõ') {
   return value === null || value === undefined || String(value).trim() === '' ? fallback : String(value)
@@ -54,7 +43,9 @@ function SessionSelect({ kind, selected, catalog, showArchived, onSelect, disabl
 }
 
 export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a', query = new URLSearchParams() }) {
-  const selected = query.get('session') || query.get('replay_session') || safeLastSession(workspace)
+  const selected = query.get('session') || query.get('replay_session') || readLastSession(workspace)
+  const managementIntent = ['rename', 'duplicate', 'archive'].includes(query.get('manage')) ? query.get('manage') : null
+  const managementRef = useRef(null)
   const [catalog, setCatalog] = useState({ status: 'loading', items: [], error: null })
   const [reloadToken, setReloadToken] = useState(0)
   const [showArchived, setShowArchived] = useState(query.get('archived') === '1')
@@ -83,6 +74,14 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   useEffect(() => {
     if (item) rememberSession(workspace, item.record_id)
   }, [workspace, item])
+
+  useEffect(() => {
+    if (!item || !managementIntent || kind !== 'replay') return
+    if (managementIntent === 'rename') {
+      setDraft({ name: item.name || '', description: item.description || '' })
+      setEditing(true)
+    } else managementRef.current?.focus()
+  }, [item?.record_id, managementIntent, kind])
 
   const navigate = (id, record = null) => {
     rememberSession(workspace, id)
@@ -134,6 +133,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     </p>
     {notice && <p className={`fxr-session-notice ${notice.error ? 'is-error' : ''}`} role={notice.error ? 'alert' : 'status'}>{notice.text}</p>}
     {available && <>
+      {managementIntent && kind === 'replay' && <p className="fxr-session-notice" role="status">{managementIntent === 'rename' ? 'Sửa tên hoặc mô tả rồi lưu thay đổi.' : managementIntent === 'duplicate' ? 'Kiểm tra phiên và cutoff trước khi bấm Tạo bản sao tại cutoff.' : 'Kiểm tra phiên trước khi bấm Lưu trữ hoặc Khôi phục. Dữ liệu và lịch sử vẫn được giữ.'}</p>}
       {item.archived && <p className="fxr-session-notice" role="status">Phiên đã lưu trữ. Báo cáo vẫn đọc được; khôi phục để tiếp tục replay hoặc tạo bản sao.</p>}
       {kind === 'replay' && <div className="fxr-session-cards">
         <article className="fxr-session-card fxr-session-summary-card">
@@ -160,8 +160,8 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
             <div className="fxr-session-links"><button type="submit" className="fxr-button fxr-button-primary" disabled={actionDisabled}>{pending === 'save' ? 'Đang lưu…' : 'Lưu thay đổi'}</button><button type="button" className="fxr-button fxr-button-secondary" onClick={() => setEditing(false)} disabled={Boolean(pending)}>Hủy sửa</button></div>
           </form> : <><p className="fxr-session-description">{item.description || 'Chưa thêm mô tả.'}</p><button className="fxr-button fxr-button-secondary" type="button" disabled={actionDisabled} onClick={() => { setDraft({ name: item.name || '', description: item.description || '' }); setEditing(true) }}>Sửa tên và mô tả</button></>}
           <div className="fxr-session-lifecycle">
-            <button className="fxr-button fxr-button-secondary" type="button" disabled={actionDisabled || item.archived || !item.dataset_available} onClick={() => mutate('duplicate')}>{pending === 'duplicate' ? 'Đang tạo…' : 'Tạo bản sao tại cutoff'}</button>
-            <button className="fxr-text-button" type="button" disabled={actionDisabled} onClick={() => mutate('archive', { archived: !item.archived })}>{pending === 'archive' ? 'Đang lưu…' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button>
+            <button className="fxr-button fxr-button-secondary" type="button" ref={managementIntent === 'duplicate' ? managementRef : undefined} disabled={actionDisabled || item.archived || !item.dataset_available} onClick={() => mutate('duplicate')}>{pending === 'duplicate' ? 'Đang tạo…' : 'Tạo bản sao tại cutoff'}</button>
+            <button className="fxr-text-button" type="button" ref={managementIntent === 'archive' ? managementRef : undefined} disabled={actionDisabled} onClick={() => mutate('archive', { archived: !item.archived })}>{pending === 'archive' ? 'Đang lưu…' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button>
           </div>
           <small>Bản sao giữ lineage tại cutoff hiện tại. Lưu trữ không xóa dữ liệu.</small>
         </article>

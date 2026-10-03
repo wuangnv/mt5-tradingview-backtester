@@ -1,5 +1,27 @@
 import { buildWorkspaceHref } from './workspaceContext.js'
 
+export function readLastSession(workspace) {
+  try { return window.localStorage.getItem(`tw:replay:last:${workspace}`) || '' } catch { return '' }
+}
+
+export function rememberSession(workspace, id) {
+  try {
+    if (id) window.localStorage.setItem(`tw:replay:last:${workspace}`, id)
+    else window.localStorage.removeItem(`tw:replay:last:${workspace}`)
+  } catch { /* URL navigation still works when storage is unavailable. */ }
+}
+
+export function canResumeSession(item) {
+  return Boolean(item && !item.archived && item.dataset_available === true)
+}
+
+export function recentSessions(items, { search = '', archived = false, sort = 'newest' } = {}) {
+  const needle = search.trim().toLocaleLowerCase('vi')
+  const timestamp = item => Number.isFinite(Date.parse(item.updated_at_utc)) ? Date.parse(item.updated_at_utc) : 0
+  return items.filter(item => (archived || !item.archived) && (!needle || `${item.name || item.record_id} ${item.instrument_id || ''} ${item.timeframe || ''}`.toLocaleLowerCase('vi').includes(needle)))
+    .sort((left, right) => (sort === 'oldest' ? 1 : -1) * (timestamp(left) - timestamp(right)) || left.record_id.localeCompare(right.record_id))
+}
+
 export function normalizeSessionCatalog(payload) {
   if (!Array.isArray(payload?.items) || payload.items.some((item) => !item || typeof item.record_id !== 'string' || !item.record_id || !Number.isInteger(item.revision) || item.revision < 1)) {
     throw new Error('Danh mục phiên không đúng định dạng.')

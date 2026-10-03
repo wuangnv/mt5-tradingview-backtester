@@ -1,0 +1,114 @@
+[
+  {
+    "width": 1440,
+    "rect": {
+      "x": 1206,
+      "y": 758.34375,
+      "width": 210,
+      "height": 142,
+      "top": 758.34375,
+      "right": 1416,
+      "bottom": 900.34375,
+      "left": 1206
+    },
+    "viewportHeight": 900,
+    "links": [
+      {
+        "text": "Đổi tên và mô tả",
+        "rect": {
+          "x": 1211,
+          "y": 763.34375,
+          "width": 200,
+          "height": 44,
+          "top": 763.34375,
+          "right": 1411,
+          "bottom": 807.34375,
+          "left": 1211
+        }
+      },
+      {
+        "text": "Tạo bản sao…",
+        "rect": {
+          "x": 1211,
+          "y": 807.34375,
+          "width": 200,
+          "height": 44,
+          "top": 807.34375,
+          "right": 1411,
+          "bottom": 851.34375,
+          "left": 1211
+        }
+      },
+      {
+        "text": "Lưu trữ phiên…",
+        "rect": {
+          "x": 1211,
+          "y": 851.34375,
+          "width": 200,
+          "height": 44,
+          "top": 851.34375,
+          "right": 1411,
+          "bottom": 895.34375,
+          "left": 1211
+        }
+      }
+    ],
+    "ancestorOverflow": "auto"
+  },
+  {
+    "width": 768,
+    "rect": {
+      "x": 534,
+      "y": 757.71875,
+      "width": 210,
+      "height": 142,
+      "top": 757.71875,
+      "right": 744,
+      "bottom": 899.71875,
+      "left": 534
+    },
+    "viewportHeight": 900,
+    "links": [
+      {
+        "text": "Đổi tên và mô tả",
+        "rect": {
+          "x": 539,
+          "y": 762.71875,
+          "width": 200,
+          "height": 44,
+          "top": 762.71875,
+          "right": 739,
+          "bottom": 806.71875,
+          "left": 539
+        }
+      },
+      {
+        "text": "Tạo bản sao…",
+        "rect": {
+          "x": 539,
+          "y": 806.71875,
+          "width": 200,
+          "height": 44,
+          "top": 806.71875,
+          "right": 739,
+          "bottom": 850.71875,
+          "left": 539
+        }
+      },
+      {
+        "text": "Lưu trữ phiên…",
+        "rect": {
+          "x": 539,
+          "y": 850.71875,
+          "width": 200,
+          "height": 44,
+          "top": 850.71875,
+          "right": 739,
+          "bottom": 894.71875,
+          "left": 539
+        }
+      }
+    ],
+    "ancestorOverflow": "auto"
+  }
+]
