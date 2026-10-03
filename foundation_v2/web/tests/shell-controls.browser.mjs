@@ -21,14 +21,18 @@ async function assertGeometry(page) {
     const rail = document.querySelector('.fx-rail').getBoundingClientRect()
     const cornersHit = [[2, 2], [button.width - 2, button.height - 2]].every(([dx, dy]) => menu.contains(document.elementFromPoint(button.x + dx, button.y + dy)))
     const controls = [...document.querySelectorAll('.fx-topbar-actions button')].map(element => element.getBoundingClientRect().toJSON())
-    return { button: button.toJSON(), brand: brand.toJSON(), logo: logo.toJSON(), rail: rail.toJSON(), cornersHit, controls, overflow: document.documentElement.scrollWidth - innerWidth }
+    const utility = document.querySelector('.fx-rail-utility')
+    return { button: button.toJSON(), brand: brand.toJSON(), logo: logo.toJSON(), rail: rail.toJSON(), cornersHit, controls, dividerCount: document.querySelectorAll('.fx-rail-divider').length, utilityBorder: getComputedStyle(utility).borderTopWidth, overflow: document.documentElement.scrollWidth - innerWidth }
   })
   assert.equal(metrics.button.width, 44)
   assert.equal(metrics.button.height, 44)
   assert.ok(metrics.button.x >= metrics.brand.x && metrics.button.right <= metrics.brand.right, 'Menu target stays inside its brand cell')
   assert.equal(metrics.cornersHit, true, 'The whole target is clickable, not just the icon')
-  if (metrics.logo.width) assert.ok(metrics.logo.x >= metrics.button.right + 8, 'Expanded logo does not overlap menu')
-  else assert.equal(metrics.button.x + 22, metrics.rail.x + metrics.rail.width / 2, 'Compact menu is centered over the rail')
+  assert.ok(metrics.logo.width >= 80 && metrics.logo.height >= 9, 'Full wordmark remains visible and legible even when collapsed')
+  assert.ok(metrics.logo.x >= metrics.button.right + 8, 'Logo does not overlap menu')
+  assert.ok(metrics.logo.right <= metrics.brand.right, 'Logo fits inside header brand cell')
+  assert.equal(metrics.dividerCount, 0, 'Navigation items use spacing, no horizontal dividers')
+  assert.equal(metrics.utilityBorder, '0px', 'Utility navigation has no horizontal divider')
   for (let i = 1; i < metrics.controls.length; i++) assert.ok(metrics.controls[i].x >= metrics.controls[i - 1].right, 'Header controls do not overlap')
   assert.ok(metrics.overflow <= 1)
   return metrics

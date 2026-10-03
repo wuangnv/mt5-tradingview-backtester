@@ -269,12 +269,7 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
         <button className="fx-shell-help-close" type="button" onClick={onClose} aria-label={copy.closeNavigation} ref={closeButtonRef}>×</button>
       </div>}
       <div className="fx-rail-primary">
-        {primary.map((section, index) => (
-          <React.Fragment key={section.id}>
-            {index > 0 && <div className="fx-rail-divider" />}
-            {renderSectionLink(section)}
-          </React.Fragment>
-        ))}
+        {primary.map(renderSectionLink)}
       </div>
       <div className="fx-rail-spacer" />
       <div className="fx-rail-utility">
