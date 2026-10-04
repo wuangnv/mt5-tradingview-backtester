@@ -143,7 +143,7 @@ filters. Dropdown uses existing hover/selected/focus tokens and stays within its
 container. Unchanged background GET reconciliation retains page size/page/columns/detail.
 Evidence: `foundation_v2/evidence/ui-session-scopes-20261004/CHECKPOINT.md`.
 
-## Chart workspace — 04/10/2026
+## Chart workspace — Lightweight rollback, 04/10/2026
 
 The shell owns navigation, theme and a single command slot. ReplayWorkspace renders its
 commands into that slot; there is no second toolbar/context row above the canvas. Two
@@ -169,6 +169,32 @@ when an older local preview API still returns a canonical execution snapshot for
 New backend historical reads reconstruct the execution checkpoint. Props keep their
 price-mark/receipt gates; editing protection does not create a Prop feed receipt.
 
-The current engine supports this prototype without replacement. Full TradingView feature
-parity, proprietary FX Replay source reuse, canonical golden promotion and broad product
-acceptance are outside this slice. See foundation_v2/evidence/ui-chart-workbench-20261004/CHECKPOINT.md.
+This workbench remains available with `chart_engine=lightweight` as a reversible rollback.
+Its original scoped receipt is foundation_v2/evidence/ui-chart-workbench-20261004/CHECKPOINT.md.
+
+## Chart workspace — Advanced Charts default, 04/10/2026
+
+Owner-confirmed Advanced Charts v23.040 supplies the native drawing rail, indicators,
+chart styles, interval selector, settings and object tree. WMReplay retains the session
+navigation, floating replay controls, application dock and simulator/account bar. Native
+tools replace the overlapping custom drawing/type/indicator controls. Replay pauses on
+native mouse-down; its toolbar starts below the symbol/volume legend and retains local
+move/pin/collapse preferences. Theme is applied after restoring saved layouts so a dark
+snapshot cannot override the light shell.
+
+Only the current API-visible prefix reaches the independent datafeed. Higher intervals
+aggregate that prefix, including the causal partial last bucket; intervals below the
+dataset are not offered. Symbol, tick precision and asset class follow dataset/execution
+metadata. Rewind/session changes rebuild the widget; the adapter also invalidates cache
+callbacks on rewind. Native order lines use generation locks and the existing protection
+API. Entry/SL/TP fit into the price scale, with an explicit native "Vừa lệnh" action.
+
+Native layout/drawing snapshots stay local to browser/workspace/session/dataset and
+creation cutoff. History may restore only a snapshot saved at or before that cutoff;
+there is no remote TradingView persistence or market data. The eight existing workspace
+annotation types render as readonly native imports and never serialize into the native
+layout. They remain managed through the application Objects panel; new native drawings
+use the chart's object tree. The local vendor distribution is served separately and is
+never tracked/copied into the app bundle. Missing assets show a real error and explicit
+rollback. See foundation_v2/evidence/ui-advanced-chart-20261004/CHECKPOINT.md for scoped
+runtime evidence; full U4/product, real-data, performance and manual WCAG gates stay open.

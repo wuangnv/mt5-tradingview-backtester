@@ -1,0 +1,219 @@
+{
+  "result": "PASS",
+  "checks": [
+    "local v23 native iframe, symbol/timeframe, dominant full-bleed chart",
+    "native toolbar and two real pointer clicks create a trend line",
+    "native indicator dialog adds RSI",
+    "all eight API annotation types preserved as readonly native imports, excluded from native serialization",
+    "native drawing, chart type, causal resampling and local save/reload",
+    "history rewind rebuilds native cache; later drawings not restored",
+    "desktop/tablet/mobile shell has no horizontal overflow",
+    "native SL pointer drag reaches real protection API; entry, balance and ledger oracle verified",
+    "native stale amendment fails closed; reload retains protection; historical lines cannot edit",
+    "real simulator queue and next-bar fill with native entry/TP/SL",
+    "missing licensed assets produce explicit error and working reversible rollback"
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e/execution",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e/orders/market",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e/step",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e/orders/protection",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e/orders/protection",
+      "status": 409
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e/step",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f61a7108b067470e82c281880a99280e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    }
+  ]
+}

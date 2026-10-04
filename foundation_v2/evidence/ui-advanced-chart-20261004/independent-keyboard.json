@@ -1,0 +1,70 @@
+{
+  "scope": "Focused actual native custom-header keyboard delta; GET-only; source hash before/after",
+  "before": {
+    "files": [
+      [
+        "foundation_v2/web/src/TradingViewReplayChart.jsx",
+        "4a0b7886f275cebd599053f115f6e071504f9e629db5f50d6b2cb55c5affc503"
+      ],
+      [
+        "foundation_v2/web/src/advancedReplayDatafeed.js",
+        "786c29a3877bc3076b4de21777840bd14b78e1a80d77000043f069e7cb9b674d"
+      ],
+      [
+        "foundation_v2/web/src/advancedChartStorage.js",
+        "d167ba111aa8a009e9e648f7774b118d169905d3d4e39b8f481057f8328a4eb6"
+      ],
+      [
+        "foundation_v2/web/src/ReplayWorkspace.jsx",
+        "be72405e538931af63e742d9143b37f958c5d20594015d57d1ee4ba6928211f0"
+      ],
+      [
+        "foundation_v2/web/src/ChartWorkbench.css",
+        "914092f721e156af408cc03e04e393dbe496845bbba0d51b7986bdfae91f84d2"
+      ],
+      [
+        "foundation_v2/web/vite.config.js",
+        "6b1575ca6830e89dd44df70ce25cc79789f3e4b7941e00b0fdcb66642a7b5b0d"
+      ]
+    ],
+    "sha256": "67c495e19d807e4b83994a32f7f722b18ec8c90d67de550eb6a8a6732dd3fb83"
+  },
+  "checks": [
+    "dark:native Lưu chart keyboard-focus+Enter persists scoped local layout",
+    "dark:native Vừa lệnh keyboard-focus+Space restores allSL/TP range",
+    "light:native Lưu chart keyboard-focus+Enter persists scoped local layout",
+    "light:native Vừa lệnh keyboard-focus+Space restores allSL/TP range"
+  ],
+  "errors": [],
+  "blocked": [],
+  "after": {
+    "files": [
+      [
+        "foundation_v2/web/src/TradingViewReplayChart.jsx",
+        "4a0b7886f275cebd599053f115f6e071504f9e629db5f50d6b2cb55c5affc503"
+      ],
+      [
+        "foundation_v2/web/src/advancedReplayDatafeed.js",
+        "786c29a3877bc3076b4de21777840bd14b78e1a80d77000043f069e7cb9b674d"
+      ],
+      [
+        "foundation_v2/web/src/advancedChartStorage.js",
+        "d167ba111aa8a009e9e648f7774b118d169905d3d4e39b8f481057f8328a4eb6"
+      ],
+      [
+        "foundation_v2/web/src/ReplayWorkspace.jsx",
+        "be72405e538931af63e742d9143b37f958c5d20594015d57d1ee4ba6928211f0"
+      ],
+      [
+        "foundation_v2/web/src/ChartWorkbench.css",
+        "914092f721e156af408cc03e04e393dbe496845bbba0d51b7986bdfae91f84d2"
+      ],
+      [
+        "foundation_v2/web/vite.config.js",
+        "6b1575ca6830e89dd44df70ce25cc79789f3e4b7941e00b0fdcb66642a7b5b0d"
+      ]
+    ],
+    "sha256": "67c495e19d807e4b83994a32f7f722b18ec8c90d67de550eb6a8a6732dd3fb83"
+  },
+  "pass": true
+}

@@ -1,4 +1,12 @@
 /* The workbench owns its chrome; the API owns candle and execution state. */
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame.has-advanced-chart { grid-template-columns: minmax(0, 1fr) 48px; }
+.advanced-chart-host { position: absolute; inset: 0; }
+.advanced-replay-chart { position: relative; }
+.chart-native-objects-hint { padding: 0 14px; color: var(--chart-muted); font-size: 12px; line-height: 1.5; }
+.advanced-chart-message { position: absolute; inset: 60px 12px auto; padding: 16px; color: var(--chart-text); background: var(--chart-surface); z-index: 2; }
+.advanced-chart-message a { margin-left: 12px; color: #719bea; }
+.advanced-chart-save-status { position: absolute; right: 72px; bottom: 32px; padding: 5px 8px; font-size: 11px; background: var(--chart-surface); color: var(--chart-muted); pointer-events: none; }
+@media (max-width: 600px) { .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame.has-advanced-chart { grid-template-columns: minmax(0, 1fr) 36px; } }
 .fx-app.fx-shell-story.is-chart-workspace {
   --chart-bg: #0b0d10; --chart-surface: #101318; --chart-line: #242932;
   --chart-text: #d4dae4; --chart-muted: #9ba5b4; --chart-hover: #242a34;

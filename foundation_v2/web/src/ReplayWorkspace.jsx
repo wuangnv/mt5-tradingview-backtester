@@ -17,6 +17,7 @@ import ReplayObjects from './ReplayObjects.jsx'
 import ChartIcon from './ChartIcon.jsx'
 import ChartFloatingToolbar from './ChartFloatingToolbar.jsx'
 import ChartOrderPanel, { useChartOrder } from './ChartOrderPanel.jsx'
+import TradingViewReplayChart from './TradingViewReplayChart.jsx'
 import { money, orderLevels, marketQuotes } from './replayOrderModel.js'
 import { ReplayOrderPrimitive } from './replayOrderPrimitive.js'
 import './ReplayWorkspace.css'
@@ -287,6 +288,7 @@ function isEditableTarget(target) {
 export default function ReplayWorkspace({ workspace, query }) {
   const { updateMarketContext, appearance } = useFxReplayContext()
   const theme = appearance?.theme || 'dark'
+  const advancedChart = query.get('chart_engine') !== 'lightweight'
   const storageKey = `tw:replay:last:${workspace}`
   const requestedSession = query.get('session') || ''
   const requestedDataset = query.get('dataset') || ''
@@ -720,11 +722,11 @@ export default function ReplayWorkspace({ workspace, query }) {
   return (
     <main className={`replay-shell wm-chart-page ${sideOpen ? 'is-panel-open' : ''} ${replay ? 'has-replay' : ''}`}>
       {headerSlot && replay && createPortal(<div className="chart-command-row" role="group" aria-label="Thanh công cụ chart">
-        <button type="button" className="chart-market-command" onClick={() => openPanel('data')} title="Đổi instrument/timeframe bằng dataset local"><strong>{replayContext.instrument}</strong><span>{replayContext.timeframe}</span></button>
-        <label className="chart-type-command"><ChartIcon name="candles" /><select aria-label="Kiểu chart" value={chartType} onChange={event => setChartType(event.target.value)}>{CHART_TYPES.map(type => <option key={type.id} value={type.id}>{type.label}</option>)}</select></label>
+        <button type="button" className="chart-market-command" onClick={() => openPanel('data')} title="Đổi instrument/timeframe bằng dataset local"><strong>{replayContext.instrument}</strong>{!advancedChart && <span>{replayContext.timeframe}</span>}</button>
+        {!advancedChart && <><label className="chart-type-command"><ChartIcon name="candles" /><select aria-label="Kiểu chart" value={chartType} onChange={event => setChartType(event.target.value)}>{CHART_TYPES.map(type => <option key={type.id} value={type.id}>{type.label}</option>)}</select></label>
         <div className="chart-indicators-command" ref={indicatorsRef}><button type="button" aria-expanded={indicatorsOpen} aria-controls={indicatorsOpen ? 'chart-indicators' : undefined} onClick={() => setIndicatorsOpen(current => !current)}>Indicators</button>
           {indicatorsOpen && <div id="chart-indicators" className="chart-indicators-menu" onKeyDown={event => { if (event.key === 'Escape') { setIndicatorsOpen(false); event.currentTarget.previousElementSibling.focus() } }}><label><input type="checkbox" checked={showVolume} onChange={event => setShowVolume(event.target.checked)} /> Volume</label><label><input type="checkbox" checked={showAverage} onChange={event => setShowAverage(event.target.checked)} /> SMA 20</label></div>}
-        </div>
+        </div></>}
         <a href={routeHref('analytics', { surface: 'workspace' })}><ChartIcon name="analytics" /><span>Analytics</span></a>
         <button type="button" ref={sideToggleRef} aria-expanded={sideOpen && sidePanel === 'context'} aria-controls="replay-context-panel" onClick={() => sideOpen && sidePanel === 'context' ? closeSide() : openPanel('context')}><ChartIcon name="info" /><span>Chi tiết & nhánh</span></button>
         <span className="chart-session-name" title={replay.payload.name || sessionId}>{replay.payload.name || `${replayContext.instrument} · Replay`}</span>
@@ -835,8 +837,8 @@ export default function ReplayWorkspace({ workspace, query }) {
 
           <section className="replay-workspace">
             <div className="replay-main">
-              <div className="chart-frame">
-                <nav className="chart-tool-rail" aria-label="Công cụ chart">
+              <div className={`chart-frame ${advancedChart ? 'has-advanced-chart' : ''}`}>
+                {!advancedChart && <nav className="chart-tool-rail" aria-label="Công cụ chart">
                   <button type="button" aria-label="Chỉ xem crosshair" title="Chỉ xem crosshair" aria-pressed={drawingTool === 'cross'} onClick={() => chooseDrawingTool('cross')}><ChartIcon name="cross" /></button>
                   <button type="button" aria-label="Chọn đường giá local" title="Bấm nến để chọn đường giá local" aria-pressed={drawingTool === 'level'} onClick={() => chooseDrawingTool('level')}><ChartIcon name="level" /></button>
                   <button type="button" aria-label="Vẽ đường xu hướng" title="Vẽ đường xu hướng bằng hai mốc" aria-pressed={drawingTool === 'trendline'} onClick={() => chooseDrawingTool('trendline')}><ChartIcon name="trendline" /></button>
@@ -845,9 +847,9 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <button type="button" aria-label="Đo giá giữa hai mốc" title="Đo thay đổi giá và số nến giữa hai mốc" aria-pressed={drawingTool === 'measure'} onClick={() => chooseDrawingTool('measure')}><ChartIcon name="measure" /></button>
                   <button type="button" aria-label="Mở danh sách đối tượng" title="Chi tiết và đối tượng chart" aria-expanded={sideOpen} aria-controls="replay-context-panel" onClick={() => openPanel('objects')}><ChartIcon name="objects" /></button>
                   <button type="button" aria-label="Vừa toàn bộ nến đã mở" title="Vừa toàn bộ nến đã mở" onClick={() => requestViewport('fit')}><ChartIcon name="fit" /></button>
-                </nav>
+                </nav>}
                 <div className="chart-canvas">
-                  <div className="chart-symbol-strip" role="group" aria-label="Thông tin symbol">
+                  {!advancedChart && <><div className="chart-symbol-strip" role="group" aria-label="Thông tin symbol">
                     <strong>{replayContext.instrument}</strong>
                     <span>{replayContext.timeframe} · UTC</span>
                     <span className="chart-symbol-ohlc">O {formatPrice((crosshair?.row || currentBar)?.open)} · H {formatPrice((crosshair?.row || currentBar)?.high)} · L {formatPrice((crosshair?.row || currentBar)?.low)} · C {formatPrice((crosshair?.row || currentBar)?.close)} · V {formatVolume((crosshair?.row || currentBar)?.volume ?? (crosshair?.row || currentBar)?.tick_volume)}</span>
@@ -855,8 +857,8 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <ChartFloatingToolbar name="Công cụ vẽ" storageKey={`tw:chart:draw-toolbar:${workspace}`} initialPosition={{ x: 22, y: 46 }}>
                     {['cross', 'level', 'trendline', 'zone', 'text', 'measure'].map(tool => <button key={tool} type="button" aria-label={`Công cụ nhanh ${tool}`} title={tool === 'level' ? 'Đường giá' : DRAWING_LABELS[tool] || 'Crosshair'} aria-pressed={drawingTool === tool} onClick={() => chooseDrawingTool(tool)}><ChartIcon name={tool} /></button>)}
                     {drawingTool === 'text' && <input aria-label="Nội dung ghi chú chart" maxLength={256} value={drawingLabel} onChange={event => setDrawingLabel(event.target.value)} placeholder="Ghi chú tại mốc" />}
-                  </ChartFloatingToolbar>
-                  <ChartFloatingToolbar name="Replay" compactRow={1} storageKey={`tw:chart:replay-toolbar:${workspace}`} initialPosition={{ x: 330, y: 46 }}>
+                  </ChartFloatingToolbar></>}
+                  <ChartFloatingToolbar name="Replay" compactRow={1} storageKey={`tw:chart:replay-toolbar:${advancedChart ? 'advanced:' : ''}${workspace}`} initialPosition={{ x: advancedChart ? 180 : 330, y: advancedChart ? 110 : 46 }}>
                     <button type="button" aria-label="Lùi một nến" title="Lùi một nến (chỉ đọc)" onClick={() => loadSession(sessionId, Math.max(0, cursor - 1))} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}><ChartIcon name="back" /></button>
                     <button type="button" className="chart-play" data-testid="play-toggle" aria-label={isPlaying ? 'Tạm dừng' : 'Phát replay'} title="Phát / tạm dừng replay" onClick={() => setIsPlaying(current => !current)} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}><ChartIcon name={isPlaying ? 'pause' : 'play'} /></button>
                     <button type="button" data-testid="step-1" aria-label="Tiến một nến" title="→ Tiến một nến" aria-keyshortcuts="ArrowRight" onClick={() => mutate('step', { expected_revision: revision, steps: 1 })} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}><ChartIcon name="step" /></button>
@@ -864,7 +866,12 @@ export default function ReplayWorkspace({ workspace, query }) {
                     <select aria-label="Tốc độ replay" value={speed} onChange={event => setSpeed(event.target.value)} disabled={Boolean(pendingAction)}>{['0.5', '1', '2', '4'].map(value => <option key={value} value={value}>{value}×</option>)}</select>
                     <span className="chart-float-cutoff" title={formatTimestamp(replay.cutoff_timestamp) + ' UTC'}>#{cursor}</span>
                   </ChartFloatingToolbar>
-                  <ReplayChart theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`} onOrderDragStart={() => setIsPlaying(false)} tickSize={order.instrument?.tick_size} onOrderPriceChange={order.changePrice} rows={visibleRows} sessionId={sessionId} chartType={chartType} showVolume={showVolume} showAverage={showAverage} viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />
+                  {advancedChart ? <TradingViewReplayChart key={`${sessionId}:${replay.payload.dataset_id}:${historicalView ? cursor : 'canonical'}`}
+                    workspace={workspace} datasetId={replay.payload.dataset_id} symbol={replayContext.instrument} assetClass={order.instrument?.asset_class} seconds={activeDataset?.timeframe_seconds || replay.payload.execution?.timeframe_seconds}
+                    cutoff={Number(replay.cutoff_timestamp)} theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`}
+                    onOrderDragStart={() => setIsPlaying(false)} tickSize={order.instrument?.tick_size} onOrderPriceChange={order.changePrice} rows={visibleRows} sessionId={sessionId}
+                    viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} />
+                    : <ReplayChart theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`} onOrderDragStart={() => setIsPlaying(false)} tickSize={order.instrument?.tick_size} onOrderPriceChange={order.changePrice} rows={visibleRows} sessionId={sessionId} chartType={chartType} showVolume={showVolume} showAverage={showAverage} viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />}
                   <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
                   <div className="chart-badge chart-badge-right">{replay.historical_view ? 'HISTORICAL CUTOFF' : 'LIVE REPLAY CURSOR'}</div>
                 </div>
@@ -969,7 +976,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <a className="next-action-link" href={routeHref('analytics', { surface: 'workspace' })}>Analytics của session →</a>
               </section>
               </div>}
-              {sidePanel === 'objects' && <ReplayObjects drawings={drawings} />}
+              {sidePanel === 'objects' && <>{advancedChart && <p className="chart-native-objects-hint">Ghi chú workspace được giữ ở đây. Hình vẽ mới nằm trong cây đối tượng của chart.</p>}<ReplayObjects drawings={drawings} /></>}
               {sidePanel === 'data' && <>
               <section className="replay-watchlist" aria-label="Danh sách dữ liệu local">
                 <h2>Dữ liệu local</h2>

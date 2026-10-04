@@ -37,7 +37,7 @@ await context.route('**/api/**', async route => {
 const page = await context.newPage()
 page.setDefaultTimeout(12000)
 page.on('pageerror', error => errors.push(String(error)))
-const url = cursor => `${ui}/?workspace=tenant-a&view=replay&surface=workspace&session=${session}${cursor == null ? '' : '&cursor=' + cursor}`
+const url = cursor => `${ui}/?workspace=tenant-a&view=replay&surface=workspace&chart_engine=lightweight&session=${session}${cursor == null ? '' : '&cursor=' + cursor}`
 const chart = page.getByTestId('replay-chart')
 const panel = page.getByRole('region', { name: 'Lệnh mô phỏng', exact: true })
 const replayToolbar = page.getByRole('group', { name: 'Replay', exact: true })
@@ -176,4 +176,4 @@ try {
   await writeFile(path.join(out, 'failure.txt'), String(error.stack || error))
   await page.screenshot({ path: path.join(out, 'failure.png') }).catch(() => {})
   throw error
-} finally { await context.unrouteAll({ behavior: 'wait' }); await browser.close() }
+} finally { await context.unrouteAll({ behavior: 'ignoreErrors' }); await browser.close() }

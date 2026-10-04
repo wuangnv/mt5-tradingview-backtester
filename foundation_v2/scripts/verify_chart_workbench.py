@@ -24,7 +24,9 @@ from foundation_v2.tests.test_replay_execution_core import initial_state
 
 
 def main():
-    out = REPO.parent.parent / ('.artifacts/chart-workbench-20261004/integration-' + uuid4().hex[:8])
+    advanced = '--advanced' in sys.argv[1:]
+    evidence = 'advanced-chart-20261004' if advanced else 'chart-workbench-20261004'
+    out = REPO.parent.parent / ('.artifacts/' + evidence + '/integration-' + uuid4().hex[:8])
     out.mkdir(parents=True, exist_ok=True)
     connection = conninfo_to_dict(os.environ['TW_V2_DATABASE_URL'])
     if connection.get('host') not in {'127.0.0.1', 'localhost', '::1'}:
@@ -61,6 +63,17 @@ def main():
             renamed = client.patch('/api/v2/replay/sessions/' + sid, headers=headers,
                 json={'expected_revision': response.json()['revision'], 'name': 'QA · Mixed OHLC', 'description': 'Synthetic, isolated database'})
             assert renamed.is_success, renamed.text
+            if advanced:
+                for annotation_type in ['horizontal-line', 'trendline', 'zone', 'text', 'arrow', 'entry', 'sl', 'tp']:
+                    anchors = [{'timestamp': 1704067200 + 40 * 60, 'price': 1.099}]
+                    if annotation_type in {'trendline', 'zone'}:
+                        anchors.append({'timestamp': 1704067200 + 55 * 60, 'price': 1.102})
+                    annotation = client.post('/api/v2/chart/annotations', headers=headers, json={
+                        'annotation_type': annotation_type, 'instrument_id': 'EURUSD', 'timeframe': '60s',
+                        'cutoff_timestamp': 1704067200 + 60 * 60, 'anchors': anchors, 'source': 'manual',
+                        'run_id': sid, 'label': 'QA API ' + annotation_type,
+                    })
+                    assert annotation.is_success, annotation.text
         listener = socket.socket()
         listener.bind(('127.0.0.1', 0))
         port = listener.getsockname()[1]
@@ -75,7 +88,8 @@ def main():
         receipt = {'scope': 'synthetic data, real UI/API/Postgres in unique temporary database',
             'database': database, 'api': api, 'session': sid, 'cleanup': 'pending'}
         (out / 'environment.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
-        result = subprocess.run(['node', 'tests/chartWorkbench.browser.mjs', '--disposable=true', '--api=' + api,
+        browser_test = 'tests/advancedChart.browser.mjs' if advanced else 'tests/chartWorkbench.browser.mjs'
+        result = subprocess.run(['node', browser_test, '--disposable=true', '--api=' + api,
             '--session=' + sid, '--out=' + str(out)], cwd=REPO / 'foundation_v2/web', check=False)
         if result.returncode:
             raise RuntimeError('Chart browser integration failed; preserve screenshots and attempt evidence')

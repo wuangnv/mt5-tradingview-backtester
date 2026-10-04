@@ -9,7 +9,7 @@ Flask/EA cũ được giữ để đối chiếu và tái sử dụng logic, xem
 | Phần | Nơi làm việc hiện tại |
 | --- | --- |
 | Backend | [`foundation_v2/trading_workspace_v2/`](foundation_v2/trading_workspace_v2/): FastAPI, PostgreSQL, API theo workspace, dataset/result bất biến |
-| UI | [`foundation_v2/web/`](foundation_v2/web/): React, Vite, Lightweight Charts và shell WMReplay |
+| UI | [`foundation_v2/web/`](foundation_v2/web/): React, Vite, TradingView Advanced Charts và shell WMReplay; Lightweight Charts giữ làm rollback |
 | Engine research | [`foundation_v2/engine_runtime/`](foundation_v2/engine_runtime/pyproject.toml): runtime Nautilus tách riêng |
 | Test và bằng chứng | [`foundation_v2/tests/`](foundation_v2/tests/), [`foundation_v2/evidence/`](foundation_v2/evidence/) |
 | Logic được dùng lại | [`retained.py`](foundation_v2/trading_workspace_v2/retained.py) khai báo các module Python gốc mà PATH-2 vẫn cần |
@@ -45,7 +45,8 @@ này. Clone riêng repo MT5 không kèm PLAN; đường dẫn tương đối ra 
 
 Dùng PowerShell tại **gốc repo này**. Cần `uv`, Python 3.12 và Node.js tương thích
 Vite trong lockfile; môi trường local hiện dùng Node 24. Không cần cài MT5 hoặc
-TradingView Advanced Charts để build UI PATH-2.
+TradingView Advanced Charts để build UI PATH-2. Để chạy chart mặc định, cần bộ Advanced
+Charts được cấp quyền; xem cấu hình asset ở dưới.
 
 ```powershell
 uv sync --locked --project foundation_v2 --python 3.12
@@ -84,6 +85,20 @@ workspace phù hợp với [`create_app`](foundation_v2/trading_workspace_v2/api
 schema database; dùng database phát triển riêng. Khi thiếu API/dữ liệu, UI có thể
 hiển thị trạng thái trống hoặc lỗi; đó không phải một bản demo hoàn chỉnh.
 
+Advanced Charts mặc định dùng bản local v23.040 đã được owner xác nhận quyền sử dụng
+ngày 04/10/2026. Vite dev/preview phục vụ `static/charting_library/` tại
+`/charting_library/`; có thể đổi thư mục bằng `TW_V2_CHARTING_LIBRARY_DIR` (đường dẫn
+tuyệt đối). Asset phải giữ nguyên cấu trúc bundle/locale của distribution. Không
+commit hoặc copy vendor vào build. Khi phục vụ `dist/` bằng server khác, cần mount
+distribution được cấp quyền tại cùng URL. Thiếu asset sẽ hiện lỗi và link rollback;
+`chart_engine=lightweight` chọn engine cũ rõ ràng.
+
+Chart dùng `visible_rows` của API, không tải giá từ TradingView. Timeframe lớn hơn
+được gộp từ prefix này; không tạo nến ở timeframe nhỏ hơn dataset. Layout, indicator
+và hình vẽ native lưu trên trình duyệt theo workspace/session/dataset/cutoff;
+ghi chú workspace vẫn thuộc API và được hiển thị riêng trên chart. Xem
+[checkpoint Advanced Charts](foundation_v2/evidence/ui-advanced-chart-20261004/CHECKPOINT.md).
+
 Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
 hình database, artifacts và authorization đã có:
 
@@ -112,5 +127,6 @@ trước khi loại bỏ; `.runtime/` chỉ dành cho state kiểm thử local, 
 
 ## License
 
-Mã nguồn theo [MIT License](LICENSE). TradingView Advanced Charts thuộc runtime
-legacy, không được vendored vào repo và có điều kiện cấp phép riêng.
+Mã nguồn ứng dụng theo [MIT License](LICENSE). TradingView Advanced Charts có điều
+kiện cấp phép riêng, dùng distribution local được cấp quyền và không được vendored
+vào repo. Quyền sử dụng local không là quyền công bố vendor assets.

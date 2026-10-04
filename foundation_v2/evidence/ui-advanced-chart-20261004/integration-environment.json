@@ -1,0 +1,7 @@
+{
+  "scope": "synthetic data, real UI/API/Postgres in unique temporary database",
+  "database": "tw_chart_qa_db78c7b06815429faeb537f337d87413",
+  "api": "http://127.0.0.1:60211",
+  "session": "f61a7108b067470e82c281880a99280e",
+  "cleanup": "own temporary database dropped; artifact evidence retained"
+}
