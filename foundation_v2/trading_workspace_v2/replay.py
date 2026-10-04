@@ -17,6 +17,7 @@ from .replay_execution import (
     ReplayExecutionError,
     ReplayExecutionSnapshot,
     advance_replay_execution,
+    change_replay_protection,
     fork_replay_execution_checkpoint,
     initialize_replay_execution,
     parse_replay_execution_snapshot,
@@ -224,6 +225,30 @@ class ReplayService:
         self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
 
+    def change_protection(self, workspace_id: str, session_id: str, expected_revision: int,
+                          *, target_id: str, operation_id: str, stop_loss, take_profit) -> dict:
+        record = self.store.get_record(workspace_id, "replay", session_id)
+        if record is None:
+            raise LookupError("replay session not found")
+        if record["revision"] != expected_revision:
+            raise RuntimeError("record revision conflict")
+        payload = dict(record["payload"])
+        snapshot = self._execution_snapshot(payload)
+        if snapshot is None:
+            raise ValueError("replay execution is not initialized")
+        if snapshot.cursor_index != int(payload["cursor_index"]):
+            raise RuntimeError("replay execution cursor is inconsistent with replay state")
+        _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
+        if payload.get("status") == "completed" or snapshot.cursor_index >= len(rows) - 1:
+            raise ValueError("protection changes require a future replay bar")
+        bar = rows[snapshot.cursor_index]
+        changed = change_replay_protection(snapshot, target_id=target_id, operation_id=operation_id,
+            stop_loss=stop_loss, take_profit=take_profit, mid_close=bar["close"],
+            virtual_time_utc=int(bar["timestamp"]) + snapshot.timeframe_seconds)
+        payload["execution"] = changed.model_dump(mode="json")
+        self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
+        return self.view(workspace_id, session_id)
+
     def view(self, workspace_id: str, session_id: str, cursor_index: int | None = None) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
@@ -239,6 +264,16 @@ class ReplayService:
         if view_cursor > canonical_cursor:
             raise ValueError("view cursor cannot exceed current replay cursor")
         visible = rows[: view_cursor + 1]
+        execution_view_status = "current" if payload.get("execution") else "not_initialized"
+        if view_cursor != canonical_cursor and payload.get("execution"):
+            try:
+                record = self.analytics_record(workspace_id, session_id, cursor_index=view_cursor)
+                execution_view_status = "checkpoint"
+            except ValueError as exc:
+                if str(exc) != "historical analytics checkpoint is unavailable":
+                    raise
+                record = {**record, "payload": {**payload, "cursor_index": view_cursor, "execution": None}}
+                execution_view_status = "unavailable"
         return {
             **record,
             "dataset_sha256": manifest.artifact_sha256,
@@ -250,6 +285,7 @@ class ReplayService:
             "view_cursor_index": view_cursor,
             "canonical_cursor_index": canonical_cursor,
             "historical_view": view_cursor != canonical_cursor,
+            "execution_view_status": execution_view_status,
         }
 
     def step(self, workspace_id: str, session_id: str, expected_revision: int, steps: int = 1) -> dict:

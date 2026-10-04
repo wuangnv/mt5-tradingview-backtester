@@ -1,0 +1,97 @@
+{
+  "scope": "Independent chart READONLY actual QA; protection API tested separately isolated by parent",
+  "before": "fec81b99fc901bd1d55fe297e011c6ffddb5591a7030a36e7c4bf4ea23e13e1b",
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "light",
+      "canvasColors": [
+        [
+          255,
+          255,
+          255,
+          255
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "bars": [
+        {
+          "label": "Công cụ vẽ",
+          "left": 70,
+          "right": 352,
+          "top": 92,
+          "bottom": 130
+        },
+        {
+          "label": "Replay",
+          "left": 378,
+          "right": 682.359375,
+          "top": 92,
+          "bottom": 130
+        }
+      ],
+      "account": "Balance\n100.075,00 US$\nEquity\n100.075,00 US$\nFloating P/L\n0,00 US$",
+      "initialTp": "1.1072",
+      "updatedTp": "1.1071",
+      "focus": "restored all dock openers",
+      "history": "SIMULATOR\nBroker locked\n\nCutoff lịch sử chỉ đọc. Về cursor mới nhất hoặc tạo nhánh để đặt lệnh.\n\nBalance\n100.025,00 US$\nEquity\n100.025,00 US$\nFloating P/L\n0,00 US$\nLệnh mới\nBUY\nSELL\nKhối lượng (lot)\nStop loss\nTake profit\nRISK TỚI SL\n4,00 US$\ngross 2,00 US$ + phí 2,00 US$\nREWARD TỚI TP\n2,00 US$\nước tính theo giá tham chiếu\nPLANNED R\n2.00R\nchưa phải kết quả thực tế\nQueue lệnh mô phỏng\n\nEntry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.",
+      "axe": 0,
+      "overflow": 0
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "canvasColors": [
+        [
+          255,
+          255,
+          255,
+          255
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "bars": [
+        {
+          "label": "Công cụ vẽ",
+          "left": 58,
+          "right": 308,
+          "top": 92,
+          "bottom": 130
+        },
+        {
+          "label": "Replay",
+          "left": 44,
+          "right": 324.359375,
+          "top": 146,
+          "bottom": 184
+        }
+      ],
+      "account": "Balance\n100.075,00 US$\nEquity\n100.075,00 US$\nFloating P/L\n0,00 US$",
+      "initialTp": "1.1072",
+      "updatedTp": "1.1071",
+      "focus": "restored all dock openers",
+      "history": "SIMULATOR\nBroker locked\n\nCutoff lịch sử chỉ đọc. Về cursor mới nhất hoặc tạo nhánh để đặt lệnh.\n\nBalance\n100.025,00 US$\nEquity\n100.025,00 US$\nFloating P/L\n0,00 US$\nLệnh mới\nBUY\nSELL\nKhối lượng (lot)\nStop loss\nTake profit\nRISK TỚI SL\n4,00 US$\ngross 2,00 US$ + phí 2,00 US$\nREWARD TỚI TP\n2,00 US$\nước tính theo giá tham chiếu\nPLANNED R\n2.00R\nchưa phải kết quả thực tế\nQueue lệnh mô phỏng\n\nEntry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.",
+      "axe": 0,
+      "overflow": 0
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "violations": [],
+  "current": {
+    "width": 360,
+    "theme": "light"
+  },
+  "after": "fec81b99fc901bd1d55fe297e011c6ffddb5591a7030a36e7c4bf4ea23e13e1b",
+  "pass": true
+}

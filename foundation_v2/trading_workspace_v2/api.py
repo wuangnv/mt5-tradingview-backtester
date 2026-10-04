@@ -35,6 +35,7 @@ from .contracts import (
     ReplayCreate,
     ReplayExecutionInitialize,
     ReplayMarketOrderRequest,
+    ReplayProtectionRequest,
     ReplayMetadataUpdate,
     ReplayPropFeedRequest,
     ReplaySessionCatalogItem,
@@ -1114,6 +1115,20 @@ def create_app(
                 stop_loss=body.stop_loss,
                 take_profit=body.take_profit,
             )
+        except LookupError:
+            raise HTTPException(status_code=404, detail="replay_not_found")
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post("/api/v2/replay/sessions/{session_id}/orders/protection")
+    def change_replay_protection_route(session_id: str, body: ReplayProtectionRequest,
+                                       workspace: str = Depends(workspace_id)):
+        try:
+            return replay.change_protection(workspace, session_id, body.expected_revision,
+                target_id=body.target_id, operation_id=body.operation_id,
+                stop_loss=body.stop_loss, take_profit=body.take_profit)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
         except RuntimeError as exc:

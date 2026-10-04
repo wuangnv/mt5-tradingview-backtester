@@ -334,7 +334,6 @@ function ThemeIcon({ theme }) {
 function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollapsed, onToggleRail, chartWorkspace, query, workspace, helpOpen, onToggleHelp, helpButtonRef, railId, mobileNavigation, drawerOpen, menuButtonRef }) {
   const navigationAction = mobileNavigation ? copy.openNavigation : railCollapsed ? copy.expandNavigation : copy.collapseNavigation
   if (chartWorkspace) {
-    const sessionLabel = query?.get('dataset') || query?.get('session') || 'Phiên replay mới'
     const backHref = buildWorkspaceHref('replay', workspace, query, { select: '1', surface: '' })
     return (
       <header className="fx-topbar fx-chart-topbar">
@@ -342,7 +341,7 @@ function ShellTopbar({ copy, language, setLanguage, theme, setTheme, railCollaps
           <a className="fx-chart-icon-button" href={backHref} aria-label="Quay lại Sessions" title="Quay lại Sessions">←</a>
           <span className="fx-chart-brand">{copy.product}</span>
         </div>
-        <div className="fx-chart-session-title" title={sessionLabel}>WMReplay · {sessionLabel}</div>
+        <div id="replay-command-slot" />
         <div className="fx-chart-topbar-actions">
           <button className="fx-shell-toggle fx-language-toggle" type="button" onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')} aria-label={copy.switchLanguage} title={copy.switchLanguage} data-testid="language-toggle">{language === 'vi' ? 'EN' : 'VI'}</button>
           <button className="fx-shell-toggle fx-theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-pressed={theme === 'light'} aria-label={theme === 'dark' ? copy.themeDark : copy.themeLight} title={theme === 'dark' ? copy.themeDark : copy.themeLight} data-testid="theme-toggle"><ThemeIcon theme={theme} /></button>

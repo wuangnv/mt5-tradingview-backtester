@@ -1,0 +1,15 @@
+{
+  "scope": "Independent manual inspection of automated screenshots",
+  "source_sha256": "fec81b99fc901bd1d55fe297e011c6ffddb5591a7030a36e7c4bf4ea23e13e1b",
+  "accepted": true,
+  "resolved_finding": "Light canvas now reads appearance.theme and renders white with readable candles, axes and order overlays. Toolbar collision, TP clipping, Escape focus and light text contrast are resolved.",
+  "evidence": [
+    "final-light-360-chart.png",
+    "final-light-1440-order.png",
+    "final-dark-1440-order.png"
+  ],
+  "automated_checks": "6 frozen-source cases PASS; native canvas pixel palettes and reviewed light screenshots correct; zero console errors, zero blocked writes, no overflow, zero WCAG2A/AA21A/AA22AA violations at canonical and historical checkpoints; TP keyboard and dock focus/toolbar interactions verified",
+  "runtime_limit": "Owned QA API GET20 now returns historical execution20/balance100025/checkpoint; protection route exists in openapi. API is intentionally read-only for this review. Actual API/Postgres write journey belongs to parent disposable integration receipts.",
+  "prop_limit": "Immediate same-cursor Prop branch after protection amendment remains fail-closed until a new canonical price-mark/Prop checkpoint. No contract widening.",
+  "quote_delta": "1296 independent Decimal/backend/frontend quote fixtures and2592BUY/SELL reference checks PASS;15focused protection tests PASS; renewed frozen source2browser cases PASS1440/360light, exact bid/ask labels, historical balance100025, zero axe22aa violations/errors/overflow or writes."
+}

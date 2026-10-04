@@ -142,3 +142,33 @@ Session changes clear old trade/cursor/event scope; date aliases cannot restore 
 filters. Dropdown uses existing hover/selected/focus tokens and stays within its mobile
 container. Unchanged background GET reconciliation retains page size/page/columns/detail.
 Evidence: `foundation_v2/evidence/ui-session-scopes-20261004/CHECKPOINT.md`.
+
+## Chart workspace — 04/10/2026
+
+The shell owns navigation, theme and a single command slot. ReplayWorkspace renders its
+commands into that slot; there is no second toolbar/context row above the canvas. Two
+SVG rails expose existing capabilities: drawings on the left, order/object/data/context
+panels and the real Journal route on the right. Unavailable FX Replay tools are not
+represented as inert controls. Timeframe changes choose a registered dataset rather
+than fabricate candles at another aggregation.
+
+Drawing and replay toolbars are chart-relative overlays. Pointer and arrow-key movement,
+pin/collapse and workspace-scoped optional storage retain user control. Responsive default
+positions separate the two bars; they remain collapsible because overlays can cover candles.
+On narrow screens the dock overlays the chart; Escape returns focus to its actual opener.
+
+Order draft/entry/TP/SL use native Lightweight Charts price/time projections. The order
+primitive participates in autoscaling so TP/SL remain reachable and repaints on pan/zoom.
+Unknown money stays N/A. Buy/Sell prices are modeled bid/ask at the current cutoff, while
+market fill remains next-bar open. Drag/key TP/SL commits through the same revision lock as
+replay stepping. Source session/revision/cursor changes invalidate a drag; historical,
+completed or conflicted states lock mutation. Draft changes have dashed lines and labels.
+
+Execution data is accepted only when its cursor matches the displayed candles, including
+when an older local preview API still returns a canonical execution snapshot for history.
+New backend historical reads reconstruct the execution checkpoint. Props keep their
+price-mark/receipt gates; editing protection does not create a Prop feed receipt.
+
+The current engine supports this prototype without replacement. Full TradingView feature
+parity, proprietary FX Replay source reuse, canonical golden promotion and broad product
+acceptance are outside this slice. See foundation_v2/evidence/ui-chart-workbench-20261004/CHECKPOINT.md.

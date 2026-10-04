@@ -60,11 +60,11 @@ function drawLabel(context, label, x, y, mediaSize, color) {
   context.fillText(label, left + 4, top + 10, width)
 }
 
-function drawProjected(context, drawing, mediaSize) {
+function drawProjected(context, drawing, mediaSize, theme) {
   const { type, points, label, local, selected } = drawing
   const [first, second] = points
   if (type === 'horizontal-line' && (first.y < 0 || first.y > mediaSize.height)) return
-  const color = local ? '#f5bc62' : '#69d5e4'
+  const color = theme === 'light' ? (local ? '#956118' : '#05798c') : (local ? '#f5bc62' : '#69d5e4')
   context.strokeStyle = color
   context.fillStyle = local ? 'rgba(245, 188, 98, 0.13)' : 'rgba(105, 213, 228, 0.13)'
   context.lineWidth = selected ? 2.5 : 1.5
@@ -110,19 +110,25 @@ function drawProjected(context, drawing, mediaSize) {
       context.stroke()
     }
   }
-  drawLabel(context, label, labelX, labelY, mediaSize, color)
+  drawLabel(context, label, labelX, labelY, mediaSize, local ? '#f5bc62' : '#69d5e4')
 }
 
 export class ReplayDrawingPrimitive {
   constructor(drawings = []) {
     this._drawings = Array.isArray(drawings) ? [...drawings] : []
     this._attachment = null
+    this._theme = 'dark'
     const renderer = { draw: (target) => this._draw(target) }
     this._paneViews = [{ zOrder: () => 'normal', renderer: () => renderer }]
   }
 
   setDrawings(drawings) {
     this._drawings = Array.isArray(drawings) ? [...drawings] : []
+    this._attachment?.requestUpdate()
+  }
+
+  setTheme(theme) {
+    this._theme = theme
     this._attachment?.requestUpdate()
   }
 
@@ -151,7 +157,7 @@ export class ReplayDrawingPrimitive {
         for (const drawing of this._drawings) {
           // Native repaint also covers price-scale drag, pan, zoom and resize.
           const projected = projectDrawing(drawing, chart, series)
-          if (projected) drawProjected(context, projected, mediaSize)
+          if (projected) drawProjected(context, projected, mediaSize, this._theme)
         }
       } finally {
         context.restore()

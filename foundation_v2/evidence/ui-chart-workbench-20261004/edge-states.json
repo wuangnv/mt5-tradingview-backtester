@@ -1,0 +1,44 @@
+{
+  "scope": "actual GET-only state journeys",
+  "states": [
+    {
+      "theme": "dark",
+      "name": "empty",
+      "alerts": []
+    },
+    {
+      "theme": "dark",
+      "name": "missing",
+      "alerts": [
+        "Không đọc được replay: replay_not_found"
+      ]
+    },
+    {
+      "theme": "dark",
+      "name": "invalid-cursor",
+      "alerts": [
+        "Không đọc được replay: Cursor replay trong URL không hợp lệ."
+      ]
+    },
+    {
+      "theme": "light",
+      "name": "empty",
+      "alerts": []
+    },
+    {
+      "theme": "light",
+      "name": "missing",
+      "alerts": [
+        "Không đọc được replay: replay_not_found"
+      ]
+    },
+    {
+      "theme": "light",
+      "name": "invalid-cursor",
+      "alerts": [
+        "Không đọc được replay: Cursor replay trong URL không hợp lệ."
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,362 @@
+{
+  "scope": "disposable database real local services, synthetic mixed OHLC",
+  "checks": [
+    "one-row header and dominant chart, no duplicate command strip",
+    "floating toolbar keyboard move, pin, collapse and reload persistence",
+    "indicators and five renderer types preserve candle cutoff",
+    "real API stale revision response locks controls; refresh reconciles without lost state",
+    "real disposable API/Postgres: initialize, queue, next-bar fill, pointer and keyboard amend, ledger/money oracle, reload",
+    "historical checkpoint preserves amendment, locks trade/step controls, no future account state",
+    "eight light/dark viewport cases, rails/dock/canvas geometry, no overflow or console errors"
+  ],
+  "layouts": [
+    {
+      "theme": "dark",
+      "width": 1910,
+      "overflow": false,
+      "chart": {
+        "x": 48,
+        "y": 46,
+        "width": 1814,
+        "height": 780
+      },
+      "bars": [
+        {
+          "x": 70,
+          "y": 92,
+          "width": 282,
+          "height": 38
+        },
+        {
+          "x": 378,
+          "y": 104,
+          "width": 304.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "chart": {
+        "x": 48,
+        "y": 46,
+        "width": 1344,
+        "height": 780
+      },
+      "bars": [
+        {
+          "x": 70,
+          "y": 92,
+          "width": 282,
+          "height": 38
+        },
+        {
+          "x": 378,
+          "y": 104,
+          "width": 304.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "chart": {
+        "x": 36,
+        "y": 46,
+        "width": 696,
+        "height": 892
+      },
+      "bars": [
+        {
+          "x": 58,
+          "y": 92,
+          "width": 282,
+          "height": 38
+        },
+        {
+          "x": 366,
+          "y": 146,
+          "width": 304.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "chart": {
+        "x": 36,
+        "y": 46,
+        "width": 288,
+        "height": 765
+      },
+      "bars": [
+        {
+          "x": 58,
+          "y": 92,
+          "width": 250,
+          "height": 38
+        },
+        {
+          "x": 44,
+          "y": 146,
+          "width": 280.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1910,
+      "overflow": false,
+      "chart": {
+        "x": 48,
+        "y": 46,
+        "width": 1814,
+        "height": 780
+      },
+      "bars": [
+        {
+          "x": 70,
+          "y": 92,
+          "width": 282,
+          "height": 38
+        },
+        {
+          "x": 56,
+          "y": 146,
+          "width": 304.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "chart": {
+        "x": 48,
+        "y": 46,
+        "width": 1344,
+        "height": 780
+      },
+      "bars": [
+        {
+          "x": 70,
+          "y": 92,
+          "width": 282,
+          "height": 38
+        },
+        {
+          "x": 56,
+          "y": 146,
+          "width": 304.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "chart": {
+        "x": 36,
+        "y": 46,
+        "width": 696,
+        "height": 892
+      },
+      "bars": [
+        {
+          "x": 58,
+          "y": 92,
+          "width": 282,
+          "height": 38
+        },
+        {
+          "x": 44,
+          "y": 146,
+          "width": 304.359375,
+          "height": 38
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "chart": {
+        "x": 36,
+        "y": 46,
+        "width": 288,
+        "height": 765
+      },
+      "bars": [
+        {
+          "x": 58,
+          "y": 92,
+          "width": 250,
+          "height": 38
+        },
+        {
+          "x": 44,
+          "y": 146,
+          "width": 280.359375,
+          "height": 38
+        }
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/execution",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/orders/market",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/step",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/orders/protection",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/orders/protection",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/orders/protection",
+      "status": 409
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd/step",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/a3fce38492bb4d0493a24ab21f0e8cbd",
+      "status": 200
+    }
+  ],
+  "errors": []
+}

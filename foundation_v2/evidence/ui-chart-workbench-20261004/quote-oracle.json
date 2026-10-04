@@ -1,0 +1,7 @@
+{
+  "scope": "Independent Decimal floor/ceil oracle plus backend quote helper and frontend parity",
+  "cases": 1296,
+  "sideReferences": 2592,
+  "failures": [],
+  "pass": true
+}

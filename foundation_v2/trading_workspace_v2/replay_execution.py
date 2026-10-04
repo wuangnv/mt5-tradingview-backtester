@@ -111,7 +111,7 @@ class ReplayExecutionEvent(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     sequence: int = Field(ge=1, strict=True)
-    kind: Literal["market_fill", "protective_fill", "price_mark", "phase_transition"]
+    kind: Literal["market_fill", "protective_fill", "price_mark", "phase_transition", "protection_change"]
     replay_session_id: str = Field(min_length=1, max_length=128)
     branch_id: str = Field(min_length=1, max_length=128)
     dataset_id: str = Field(min_length=1, max_length=128)
@@ -130,13 +130,32 @@ class ReplayExecutionEvent(BaseModel):
     def money_is_consistent(self):
         if self.equity != self.balance + self.floating_pl:
             raise ValueError("event equity must equal balance plus floating_pl")
+        if self.kind == "protection_change":
+            raw_position = self.details.get("open_position")
+            raw_pending = self.details.get("pending_market_order")
+            if (raw_position is None) == (raw_pending is None):
+                raise ValueError("protection checkpoint must have one active target")
+            active = (ReplayOpenPosition.model_validate(raw_position) if raw_position is not None
+                      else ReplayQueuedMarketOrder.model_validate(raw_pending))
+            target_id = active.position_id if raw_position is not None else active.operation_id
+            operation_id = self.details.get("operation_id")
+            if (self.details.get("target_id") != target_id or not isinstance(operation_id, str)
+                    or not operation_id.strip() or self.open_positions != int(raw_position is not None)
+                    or self.pending_orders != int(raw_pending is not None)):
+                raise ValueError("protection checkpoint target is inconsistent")
+            for key in ("previous_stop_loss", "previous_take_profit", "mid_close", "closeable_quote"):
+                _decimal(self.details.get(key), key, positive=True)
+            reference = _decimal(self.details["closeable_quote"], "closeable_quote", positive=True)
+            if not (active.stop_loss < reference < active.take_profit if active.side == "BUY"
+                    else active.take_profit < reference < active.stop_loss):
+                raise ValueError("protection checkpoint must bracket its current quote")
         return self
 
 
 class ReplayExecutionEventV2(ReplayExecutionEvent):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     schema_version: Literal["replay-execution-event-v2"] = "replay-execution-event-v2"
-    kind: Literal["market_fill", "order_rejected", "protective_fill", "price_mark", "phase_transition"]
+    kind: Literal["market_fill", "order_rejected", "protective_fill", "price_mark", "phase_transition", "protection_change"]
 
     @model_validator(mode="after")
     def margin_outcome_is_consistent(self):
@@ -287,7 +306,7 @@ def reconstruct_replay_execution_checkpoint(
             )
         # A phase transition can follow the bar's price mark without advancing
         # the cursor. Preserve that entire checkpoint before the next bar.
-        if (event.kind in {"price_mark", "phase_transition"} and event.cursor_index == cursor_index
+        if (event.kind in {"price_mark", "phase_transition", "protection_change"} and event.cursor_index == cursor_index
                 and (event_sequence is None or event.sequence == event_sequence)):
             selected = event
 
@@ -467,6 +486,51 @@ def queue_market_order(
         submitted_cursor_index=snapshot.cursor_index,
     )
     return snapshot.model_copy(update={"pending_market_order": order})
+
+
+def change_replay_protection(
+    snapshot: ReplayExecutionSnapshot, *, target_id: str, operation_id: str,
+    stop_loss, take_profit, mid_close, virtual_time_utc: int,
+) -> ReplayExecutionSnapshot:
+    """Amend future protection at a closed-bar checkpoint, never refilling that bar."""
+    active = snapshot.position or snapshot.pending_market_order
+    if active is None:
+        raise ReplayExecutionError("there is no active replay order or position")
+    actual_id = active.position_id if snapshot.position else active.operation_id
+    if target_id != actual_id:
+        raise ReplayExecutionError("protection target no longer matches the active replay order")
+    source_operation_id = active.source_operation_id if snapshot.position else active.operation_id
+    if (not isinstance(operation_id, str) or not operation_id.strip() or len(operation_id) > 128):
+        raise ReplayExecutionError("operation_id must be a bounded nonempty identifier")
+    if operation_id == source_operation_id or any((raw.get("details") or {}).get("operation_id") == operation_id for raw in snapshot.ledger):
+        raise ReplayExecutionError("operation_id was already consumed")
+    stop = _decimal(stop_loss, "stop_loss", positive=True)
+    target = _decimal(take_profit, "take_profit", positive=True)
+    reference = _decimal(mid_close, "mid_close", positive=True)
+    if snapshot.position:
+        instrument = InstrumentSpec.from_mapping(snapshot.instrument_spec)
+        bid, ask = quote_from_mid(reference, spread_price=snapshot.spread_price, tick_size=instrument.tick_size)
+        reference = bid if active.side == "BUY" else ask
+    if not (stop < reference < target if active.side == "BUY" else target < reference < stop):
+        raise ReplayExecutionError("protection must bracket the current closeable quote")
+    updated = active.model_copy(update={"stop_loss": stop, "take_profit": target})
+    position = updated if snapshot.position else None
+    pending = updated if snapshot.pending_market_order else None
+    event = _event_type(snapshot)(
+        sequence=snapshot.event_sequence + 1, kind="protection_change",
+        replay_session_id=snapshot.replay_session_id, branch_id=snapshot.branch_id,
+        dataset_id=snapshot.dataset_id, dataset_sha256=snapshot.dataset_sha256,
+        cursor_index=snapshot.cursor_index, virtual_time_utc=virtual_time_utc,
+        balance=snapshot.balance, floating_pl=snapshot.floating_pl, equity=snapshot.equity,
+        open_positions=int(position is not None), pending_orders=int(pending is not None),
+        details={"operation_id": operation_id, "target_id": target_id,
+                 "previous_stop_loss": str(active.stop_loss), "previous_take_profit": str(active.take_profit),
+                 "mid_close": str(mid_close), "closeable_quote": str(reference),
+                 "open_position": position.model_dump(mode="json") if position else None,
+                 "pending_market_order": pending.model_dump(mode="json") if pending else None},
+    )
+    return snapshot.model_copy(update={"position": position, "pending_market_order": pending,
+        "event_sequence": event.sequence, "ledger": [*snapshot.ledger, event.model_dump(mode="json")]})
 
 
 def transition_replay_phase(

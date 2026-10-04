@@ -418,6 +418,15 @@ class ReplayMarketOrderRequest(BaseModel):
     take_profit: Decimal = Field(gt=0)
 
 
+class ReplayProtectionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    expected_revision: int = Field(ge=1, strict=True)
+    target_id: str = Field(min_length=1, max_length=128)
+    operation_id: str = Field(min_length=1, max_length=128)
+    stop_loss: Decimal = Field(gt=0)
+    take_profit: Decimal = Field(gt=0)
+
+
 class ReplayPropFeedRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
