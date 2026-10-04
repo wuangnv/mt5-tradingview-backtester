@@ -315,6 +315,26 @@ def create_app(
             raise HTTPException(status_code=503, detail="dashboard_source_invalid") from exc
         return {**product.overview(workspace), "performance": performance}
 
+    @app.get("/api/v2/replay/trades")
+    def get_replay_trades(
+        sessions: str | None = None, side: str = "all", outcome: str = "all",
+        from_close_utc: str | None = None, to_close_utc: str | None = None,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            selected = None if sessions is None else [value for value in sessions.split(",") if value]
+            return build_dashboard_performance(
+                store.list_records(workspace, "replay"), workspace,
+                session_ids=selected, include_ledger=True, side=side, outcome=outcome,
+                from_close_utc=from_close_utc, to_close_utc=to_close_utc,
+            )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except AnalyticsValidationError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except (KeyError, TypeError, ValueError) as exc:
+            raise HTTPException(status_code=503, detail="trade_ledger_source_invalid") from exc
+
     # OAuth connection is separate from the PREP_ONLY export ledger below.
     # Its token lives only in this process and never enters a JSON response.
     @app.get("/api/v2/connectors/notion/oauth/status")

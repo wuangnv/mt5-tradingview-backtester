@@ -133,3 +133,32 @@ def test_a_bad_session_cannot_erase_the_verified_part_or_look_complete():
     assert result["scope"]["readable_session_count"] == 1
     assert result["scope"]["session_count"] == 2
     assert len(result["excluded"]) == 1
+
+
+def test_multi_session_ledger_keeps_checkpoint_currency_and_capital_per_trade():
+    source = closed_trade_record()
+    source["payload"]["name"] = "Original"
+    child = fork(source, "child")
+    independent = fork(source, "independent", parent=False)
+    independent["payload"]["execution"]["instrument_spec"]["account_ccy"] = "EUR"
+    result = build_dashboard_performance([source, child, independent], "tenant-a", session_ids=[source["record_id"], "child", "independent"], include_ledger=True)
+    assert len(result["ledger"]) == 2
+    assert result["scope"]["duplicate_trade_count"] == 1
+    assert {row["account_currency"] for row in result["ledger"]} == {"USD", "EUR"}
+    assert result["ledger"][0]["session_name"] == "Original"
+    assert all(row["starting_balance"] > 0 for row in result["ledger"])
+    assert all(row["source_provenance"]["revision"] == source["revision"] for row in result["ledger"])
+    assert "net_pnl" not in result["metrics"]
+    one = build_dashboard_performance([source, child], "tenant-a", session_ids=["child"], include_ledger=True)
+    assert len(one["ledger"]) == 1
+    assert one["ledger"][0]["session_id"] == "child"
+    assert one["scope"]["duplicate_trade_count"] == 0
+
+
+def test_empty_unknown_duplicate_and_filtered_trade_session_scopes():
+    source = closed_trade_record()
+    assert build_dashboard_performance([source], "tenant-a", session_ids=[], include_ledger=True)["ledger"] == []
+    with pytest.raises(LookupError):
+        build_dashboard_performance([source], "tenant-a", session_ids=["missing"], include_ledger=True)
+    assert len(build_dashboard_performance([source], "tenant-a", session_ids=[source["record_id"]] * 2, include_ledger=True)["ledger"]) == 1
+    assert build_dashboard_performance([source], "tenant-a", outcome="loss", include_ledger=True)["ledger"] == []

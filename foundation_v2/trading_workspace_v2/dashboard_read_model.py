@@ -55,6 +55,10 @@ def build_dashboard_performance(
     session_id: str | None = None,
     from_close_utc: str | None = None,
     to_close_utc: str | None = None,
+    session_ids: list[str] | None = None,
+    include_ledger: bool = False,
+    side: str = "all",
+    outcome: str = "all",
 ) -> dict:
     """Aggregate unique replay closures, keeping source failures visible.
 
@@ -65,12 +69,19 @@ def build_dashboard_performance(
     sessions may have different account currencies and starting capital.
     """
 
-    filters = normalize_filters({"from_close_utc": from_close_utc, "to_close_utc": to_close_utc})
+    filters = normalize_filters({"from_close_utc": from_close_utc, "to_close_utc": to_close_utc,
+                                 "side": side, "outcome": outcome})
     serialized = serialize_filters(filters)
     record_map = {record["record_id"]: record for record in records}
     if session_id and session_id not in record_map:
         raise LookupError("replay session not found")
     selected = [record_map[session_id]] if session_id else records
+    if session_ids is not None:
+        if any(value not in record_map for value in session_ids):
+            raise LookupError("replay session not found")
+        selected = [record_map[value] for value in dict.fromkeys(session_ids)]
+        if len(selected) == 1:
+            session_id = selected[0]["record_id"]
     sessions, sources, excluded, trades = [], [], [], []
     seen: set[tuple] = set()
     duplicate_count = 0
@@ -119,6 +130,13 @@ def build_dashboard_performance(
                     str(trade.get("price_close")),
                     net,
                 )
+                if include_ledger:
+                    trade = {**trade, "session_id": source_id,
+                             "session_name": record["payload"].get("name") or source_id,
+                             "account_currency": view.get("account_currency"),
+                             "starting_balance": view["metrics"].get("starting_balance"),
+                             "source_provenance": view["provenance"],
+                             "origin_session_id": origin_id}
                 keyed_trades.append((key, trade))
             sources.append({
                 "session_id": source_id,
@@ -147,13 +165,14 @@ def build_dashboard_performance(
     metrics = _counts(trades)
     if selected and not sources:
         metrics = dict.fromkeys(metrics)
-    return {
+    result = {
         "schema_version": "dashboard-replay-performance-v1",
         "status": "partial" if excluded else "ready",
         "as_of_utc": datetime.now(timezone.utc).isoformat(),
         "scope": {
             "source": "persisted_replay_execution",
             "session_id": session_id,
+            "session_ids": [record["record_id"] for record in selected],
             "session_count": len(selected),
             "readable_session_count": len(sources),
             "filters": serialized,
@@ -171,3 +190,6 @@ def build_dashboard_performance(
         "time_invested_seconds": None,
         "historical_time_replayed_seconds": None,
     }
+    if include_ledger:
+        result["ledger"] = trades
+    return result
