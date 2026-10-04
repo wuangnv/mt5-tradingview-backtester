@@ -1,8 +1,33 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { duplicateSession, fetchReplaySessions, normalizeSessionCatalog, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from '../src/sessionCatalog.js'
+import { defaultSession, duplicateSession, fetchReplaySessions, normalizeSessionCatalog, reportSessions, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from '../src/sessionCatalog.js'
 
 const item = { record_id: 'session-2', revision: 7, dataset_id: 'dataset-2', cursor_index: 12 }
+
+test('Sessions prefer explicit deep link, valid recently run session, then newest creation', () => {
+  const items = [{ record_id: 'old', created_at_utc: '2024-01-01', updated_at_utc: '2026-01-01' }, { record_id: 'new', created_at_utc: '2025-01-01' }, { record_id: 'archived', archived: true, created_at_utc: '2026-01-01' }]
+  assert.equal(defaultSession(items, '', 'old'), 'old')
+  assert.equal(defaultSession(items, '', 'missing'), 'new')
+  assert.equal(defaultSession(items, '', 'archived'), 'new')
+  assert.equal(defaultSession(items, 'archived', 'old'), 'archived')
+  assert.equal(defaultSession(items, 'missing'), 'missing')
+  assert.equal(defaultSession([]), '')
+})
+
+test('Trades scope distinguishes all, empty, multi selection and explicit session deep links', () => {
+  assert.equal(reportSessions(new URLSearchParams()), null)
+  assert.equal(reportSessions(new URLSearchParams('session=old&sessions=all')), null)
+  assert.deepEqual(reportSessions(new URLSearchParams('sessions=none')), [])
+  assert.deepEqual(reportSessions(new URLSearchParams('sessions=a&sessions=b&sessions=a')), ['a', 'b'])
+  assert.deepEqual(reportSessions(new URLSearchParams('session=old&cursor=20')), ['old'])
+})
+
+test('switching report session clears exact execution checkpoint; same session retains it', () => {
+  const query = new URLSearchParams('session=old&event_sequence=60&cursor=20')
+  assert.equal(sessionAnalyticsQuery(query, item).has('event_sequence'), false)
+  query.set('session', item.record_id)
+  assert.equal(sessionAnalyticsQuery(query, item).get('event_sequence'), '60')
+})
 
 test('session selection clears stale research and historical context while keeping workspace', () => {
   const query = new URLSearchParams('workspace=old&job=job-1&dataset=dataset-1&session=session-1&cursor=80&cutoff=123&side=buy&playbook=old&playbook_revision=9')

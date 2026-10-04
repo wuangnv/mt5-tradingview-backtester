@@ -19,8 +19,8 @@ const axe = await readFile('../../../../.artifacts/wm-integration-quality-tools/
 const routes = [
   ['overview', '.fx-dashboard-quick-actions', ''],
   ['replay', '.fxr-session-toolbar', ''],
-  ['trade', '.fxr-session-toolbar', ''],
-  ['analytics', '.fxr-session-toolbar', ''],
+  ['trade', '.fxa-filters', ''],
+  ['analytics', '.fxa-filters', ''],
   ['analytics', '.fxa-prop-selector', '&analytics_source=prop'],
 ]
 try {

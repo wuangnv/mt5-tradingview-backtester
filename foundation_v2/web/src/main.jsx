@@ -14,6 +14,7 @@ import RiskWorkspace from './RiskWorkspace.jsx'
 import PlaybookWorkspace from './PlaybookWorkspace.jsx'
 import LiveWorkspace from './LiveWorkspace.jsx'
 import SessionPicker from './SessionPicker.jsx'
+import SessionReports from './SessionReports.jsx'
 import DashboardSessions from './DashboardSessions.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
@@ -72,10 +73,10 @@ function App() {
     content = <JournalWorkspace workspace={workspace} query={query} />
     mode = 'Journal'
   } else if (activeView === 'analytics') {
-    content = query.get('analytics_source') === 'prop' ? <PropAnalytics workspace={workspace} query={query} /> : showSessionAnalytics ? <SessionPicker kind="analytics" workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
+    content = query.get('analytics_source') === 'prop' ? <PropAnalytics workspace={workspace} query={query} /> : showSessionAnalytics ? <SessionReports workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
     mode = 'Analytics'
   } else if (activeView === 'trade') {
-    content = showTradeLedger ? <SessionPicker kind="trade" workspace={workspace} query={query} /> : <TradeWorkspace workspace={workspace} query={query} />
+    content = showTradeLedger ? <SessionReports ledgerOnly workspace={workspace} query={query} /> : <TradeWorkspace workspace={workspace} query={query} />
     mode = 'Simulator'
   } else if (activeView === 'risk') {
     content = <RiskWorkspace workspace={workspace} query={query} />

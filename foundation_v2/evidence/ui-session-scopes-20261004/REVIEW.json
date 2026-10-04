@@ -1,0 +1,32 @@
+{
+  "scope": "Independent source and actual GET-only QA review of Session defaults, multi-session Trades, single-session Analytics filter",
+  "source_hash": "79a870f69f76af0a7868c000189f3dc911a8af20e27fad887bd1b512118b56c9",
+  "source_frozen_during_journeys": true,
+  "verdict": "PASS scoped review, no remaining actionable findings in reviewed flows",
+  "fixed_findings": [
+    {"issue": "Invalid analytics_timezone crashed AggregateTrades render", "failed_evidence": "report-initial.json", "verified_fix": "Shared extra filter reader clamps timezone; report.json invalid timezone case renders 60 real rows without page error"},
+    {"issue": "Reserved analytics_source incorrectly used as trade source filter", "verified_fix": "analytics_trade_source mapping; report.json source-param case still reads all 60 rows"},
+    {"issue": "Cleared date aliases restored old filter after reload", "verified_fix": "URL writer deletes old aliases; report.json date-clear case from input stays empty after reload"},
+    {"issue": "Mobile session popover clipped 9 pixels past viewport", "failed_evidence": "journeys-failed.json", "verified_fix": "journeys.json mobile360 popover left74 right344 width270, all controls hit-test correctly; final screenshot visually inspected"},
+    {"issue": "Unchanged background refresh reset pagination, row count and trade details", "failed_evidence": "focus-failed.json", "verified_fix": "focus.json preserves size25,page2of3,details1 after actual focus-triggered GET"},
+    {"issue": "Internal composite JSON ID leaked into visible Session sublabel", "verified_fix": "Final selected-menu-360.png displays original replay-pos ID instead"}
+  ],
+  "actual_verified": [
+    "All Trades actual QA aggregate reads 60 rows with explicit partial scope 7 readable of 25 and 18 excluded",
+    "none -> search QA -> single checkbox selection remains multi-select-capable and URL selects exact session",
+    "Session default picks valid remembered QA on desktop1440 and mobile360",
+    "Analytics cursor20 remains 20/20 with no old top catalog toolbar on both widths",
+    "No page errors, writes, external requests or broker activity in final probes"
+  ],
+  "source_review": [
+    "Aggregate API reuses closed-fill lineage dedup and retains source provenance, original session lineage, account currency and starting capital per row",
+    "Mixed-session monetary total suppressed; ledger Return currencies and denominator remain per row",
+    "Historical single-session deep links reuse original analytics reader; explicit user scope switch removes old trade/cursor/cutoff keys",
+    "Request AbortController prevents old scope responses from committing after scope changes"
+  ],
+  "limitations": [
+    "Actual QA rows are USD and all winning; numerical mixed-currency/race fixtures belong to root validation, not this review's actual browser evidence",
+    "GET-only review did not create, rename, archive, trade or modify persisted records"
+ ],
+  "production_edits_by_reviewer": false
+}

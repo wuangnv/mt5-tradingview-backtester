@@ -4,7 +4,7 @@ import SessionPerformance from './SessionPerformance.jsx'
 import useReadRefresh from './useReadRefresh.js'
 import { dashboardMoney, readDashboardAnalytics } from './dashboardModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { duplicateSession, fetchReplaySessions, readLastSession, rememberSession, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
+import { defaultSession, duplicateSession, fetchReplaySessions, readLastSession, rememberSession, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
 import './session-picker.css'
 import './session-performance.css'
 
@@ -42,7 +42,7 @@ function SessionSelect({ kind, selected, catalog, showArchived, onSelect, disabl
 }
 
 export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a', query = new URLSearchParams() }) {
-  const selected = query.get('session') || query.get('replay_session') || readLastSession(workspace)
+  const explicit = query.get('session') || query.get('replay_session') || ''
   const managementIntent = ['rename', 'duplicate', 'archive'].includes(query.get('manage')) ? query.get('manage') : null
   const managementRef = useRef(null)
   const [catalog, setCatalog] = useState({ status: 'loading', items: [], error: null })
@@ -54,6 +54,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   const [notice, setNotice] = useState(null)
   const [needsRefresh, setNeedsRefresh] = useState(false)
   const [performanceState, setPerformance] = useState({ status: 'loading', payload: null, error: null })
+  const selected = defaultSession(catalog.items, explicit, readLastSession(workspace))
   const item = catalog.items.find((entry) => entry.record_id === selected)
   const performanceScope = `${workspace}:${item?.record_id}:${item?.revision}:${reloadToken}`
   const performance = performanceState.scope === performanceScope ? performanceState : { status: 'loading', payload: null, error: null }
@@ -76,7 +77,11 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   }, [workspace, reloadToken])
 
   useEffect(() => {
-    if (item) rememberSession(workspace, item.record_id)
+    if (!item || explicit) return
+    const url = new URL(window.location.href)
+    url.searchParams.set('session', item.record_id)
+    if (item.dataset_id) url.searchParams.set('dataset', item.dataset_id)
+    window.history.replaceState({}, '', url)
   }, [workspace, item])
 
   useEffect(() => {

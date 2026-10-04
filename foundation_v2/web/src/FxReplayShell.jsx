@@ -303,6 +303,8 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
               area: sectionId,
               section: item.section,
               ...(item.picker ? { select: '1' } : {}),
+              ...(item.route === 'trade' ? { session: null, dataset: null, cursor: null, cutoff: null, mode: null, sessions: 'all' } : {}),
+              ...(item.route === 'replay' && item.picker ? { session: null, dataset: null, cursor: null, cutoff: null } : {}),
             })}
             aria-current={active ? 'page' : undefined}
             key={item.id}

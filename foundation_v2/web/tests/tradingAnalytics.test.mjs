@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { advancedAnalytics, calendarParts, DEFAULT_EXTRA_FILTERS, filterAnalyticsRows, monteCarlo, outcomeOf, tradesCsv } from '../src/tradingAnalyticsModel.js'
+import { advancedAnalytics, calendarParts, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, validateTradesPayload, filterAnalyticsRows, monteCarlo, outcomeOf, tradesCsv } from '../src/tradingAnalyticsModel.js'
 import { buildPropAnalyticsView, propReplayQuery } from '../src/propAnalyticsModel.js'
 
 const rows = [100, -50, 0, 150, -100].map((value, index) => ({ trade_id: `trade-${index}`, tradeId: `trade-${index}`, rowIndex: index, net_pnl: value, pnl: value, side: index % 2 ? 'SELL' : 'BUY', symbol: index % 2 ? 'EURUSD' : 'GBPUSD', realized_r: null, open_time_utc: `2024-01-0${index + 1}T12:00:00Z`, close_time_utc: `2024-01-0${index + 1}T13:00:00Z`, tags: index === 3 ? ['breakout'] : [] }))
@@ -76,3 +76,23 @@ test('Prop same-cursor event and phase fence; subset uses report phase initial b
   assert.throws(() => buildPropAnalyticsView({ ...view, provenance: { ...view.provenance, execution_event_sequence: 41 } }, report), /scope_mismatch/)
   assert.throws(() => buildPropAnalyticsView({ ...view, provenance: { ...view.provenance, dataset_sha256: 'other' } }, report), /scope_mismatch/)
 })
+
+
+test('report filter URL preserves source navigation and validates timezone', () => {
+  const values = readAnalyticsExtraFilters(new URLSearchParams('analytics_source=sessions&analytics_trade_source=trade-source&analytics_timezone=broken'));
+  assert.equal(values.source, 'trade-source'); assert.equal(values.timezone, 'UTC');
+  assert.equal(readAnalyticsExtraFilters(new URLSearchParams('analytics_source=prop')).source, 'all');
+});
+
+test('multi-session CSV keeps each currency and source checkpoint without summing money', () => {
+  const csv = tradesCsv([{ trade_id: 'same', session_id: 'usd', account_currency: 'USD', net_pnl: 5, source_provenance: { revision: 2, execution_event_sequence: 6 } }, { trade_id: 'same', session_id: 'eur', account_currency: 'EUR', net_pnl: 10, source_provenance: { revision: 3 } }], '');
+  assert.match(csv, /source_provenance/); assert.match(csv, /USD/); assert.match(csv, /EUR/); assert.match(csv, /execution_event_sequence/);
+});
+
+
+test('aggregate ledger rejects malformed or mismatched source instead of fabricating rows', () => {
+  const payload = { schema_version: 'dashboard-replay-performance-v1', status: 'ready', ledger: [{ session_id: 'a', trade_id: 'x', net_pnl: 5, source_provenance: { session_id: 'a', revision: 1 } }], sources: [], excluded: [], scope: { session_ids: ['a'] }, metrics: { closed_trade_count: 1 } };
+  assert.equal(validateTradesPayload(payload), payload);
+  for (const ledger of [[null], [{ ...payload.ledger[0], source_provenance: { session_id: 'wrong', revision: 1 } }], [{ ...payload.ledger[0], net_pnl: null }]]) assert.throws(() => validateTradesPayload({ ...payload, ledger }));
+  assert.throws(() => validateTradesPayload({ ...payload, metrics: { closed_trade_count: 0 } }));
+});

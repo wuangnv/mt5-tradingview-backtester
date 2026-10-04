@@ -1,0 +1,162 @@
+{
+  "scope": "GET-only actual local QA API, synthetic persisted sessions; labeled browser fixtures separate",
+  "cases": [
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 1440,
+      "case": "Sessions newest creation fallback"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 1440,
+      "case": "Analytics filter selection, clears cutoff, preserves last-run, reload"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 1440,
+      "case": "Trades nav all, searchable multi checkbox menu stays open, Escape/reload/source counts"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 1440,
+      "case": "Historical Trades deep link retains exact 20 closures"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 768,
+      "case": "Sessions newest creation fallback"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 768,
+      "case": "Analytics filter selection, clears cutoff, preserves last-run, reload"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 768,
+      "case": "Trades nav all, searchable multi checkbox menu stays open, Escape/reload/source counts"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 768,
+      "case": "Historical Trades deep link retains exact 20 closures"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 360,
+      "case": "Sessions newest creation fallback"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 360,
+      "case": "Analytics filter selection, clears cutoff, preserves last-run, reload"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 360,
+      "case": "Trades nav all, searchable multi checkbox menu stays open, Escape/reload/source counts"
+    },
+    {
+      "actual": true,
+      "theme": "dark",
+      "width": 360,
+      "case": "Historical Trades deep link retains exact 20 closures"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 1440,
+      "case": "Sessions newest creation fallback"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 1440,
+      "case": "Analytics filter selection, clears cutoff, preserves last-run, reload"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 1440,
+      "case": "Trades nav all, searchable multi checkbox menu stays open, Escape/reload/source counts"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 1440,
+      "case": "Historical Trades deep link retains exact 20 closures"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 768,
+      "case": "Sessions newest creation fallback"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 768,
+      "case": "Analytics filter selection, clears cutoff, preserves last-run, reload"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 768,
+      "case": "Trades nav all, searchable multi checkbox menu stays open, Escape/reload/source counts"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 768,
+      "case": "Historical Trades deep link retains exact 20 closures"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 360,
+      "case": "Sessions newest creation fallback"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 360,
+      "case": "Analytics filter selection, clears cutoff, preserves last-run, reload"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 360,
+      "case": "Trades nav all, searchable multi checkbox menu stays open, Escape/reload/source counts"
+    },
+    {
+      "actual": true,
+      "theme": "light",
+      "width": 360,
+      "case": "Historical Trades deep link retains exact 20 closures"
+    },
+    {
+      "actual": true,
+      "case": "Sessions remembered 39b1d068edd64e75864f692f27237852"
+    },
+    {
+      "actual": true,
+      "case": "Sessions remembered missing-id"
+    },
+    {
+      "actual": true,
+      "case": "Empty selection, invalid session error without data fallback, invalid timezone, date alias clear/reload, separate Prop source"
+    }
+  ],
+  "errors": []
+}

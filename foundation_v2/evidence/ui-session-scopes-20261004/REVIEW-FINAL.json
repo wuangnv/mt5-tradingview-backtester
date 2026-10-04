@@ -1,0 +1,66 @@
+{
+  "scope": "Independent visual-only Session label/mobile width delta; actual GET-only Analytics QA",
+  "before": "45ca4d4cdaa4bd2b96d9baee0989b62b720e08d1753a627785c4bf6109c1eefd",
+  "cases": [
+    {
+      "width": 1440,
+      "label": "Session",
+      "geometry": {
+        "field": {
+          "left": 280,
+          "right": 500.90625,
+          "width": 220.90625
+        },
+        "parent": {
+          "left": 280,
+          "right": 1408,
+          "width": 1128
+        },
+        "button": {
+          "left": 280,
+          "right": 500.90625,
+          "width": 220.90625
+        },
+        "overflow": 0
+      },
+      "menu": {
+        "left": 280,
+        "right": 580,
+        "viewport": 1440
+      },
+      "keyboardScope": "single selector search/click still works"
+    },
+    {
+      "width": 360,
+      "label": "Session",
+      "geometry": {
+        "field": {
+          "left": 74,
+          "right": 344,
+          "width": 270
+        },
+        "parent": {
+          "left": 74,
+          "right": 344,
+          "width": 270
+        },
+        "button": {
+          "left": 74,
+          "right": 344,
+          "width": 270
+        },
+        "overflow": 0
+      },
+      "menu": {
+        "left": 74,
+        "right": 344,
+        "viewport": 360
+      },
+      "keyboardScope": "single selector search/click still works"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "after": "45ca4d4cdaa4bd2b96d9baee0989b62b720e08d1753a627785c4bf6109c1eefd",
+  "pass": true
+}

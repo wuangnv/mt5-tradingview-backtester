@@ -11,6 +11,24 @@ export function rememberSession(workspace, id) {
   } catch { /* URL navigation still works when storage is unavailable. */ }
 }
 
+export function defaultSession(items, explicit = '', remembered = '') {
+  if (explicit) return explicit
+  const active = items.filter(item => !item.archived)
+  if (active.some(item => item.record_id === remembered)) return remembered
+  return [...active].sort((a, b) => (Date.parse(b.created_at_utc) || 0) - (Date.parse(a.created_at_utc) || 0)
+    || (Date.parse(b.updated_at_utc) || 0) - (Date.parse(a.updated_at_utc) || 0)
+    || a.record_id.localeCompare(b.record_id))[0]?.record_id || ''
+}
+
+export function reportSessions(query) {
+  if (query.has('sessions')) {
+    const ids = query.getAll('sessions')
+    return ids.includes('all') ? null : ids.includes('none') ? [] : [...new Set(ids)]
+  }
+  const explicit = query.get('session') || query.get('replay_session')
+  return explicit ? [explicit] : null
+}
+
 export function canResumeSession(item) {
   return Boolean(item && !item.archived && item.dataset_available === true)
 }
@@ -69,7 +87,7 @@ export function sessionAnalyticsQuery(query, item, { summary = false } = {}) {
   const sameSession = (next.get('session') || next.get('replay_session')) === item.record_id
   for (const key of ['job', 'job_id', 'replay_session']) next.delete(key)
   // Keep explicit same-session drilldown context while switching sessions starts a new scope.
-  if (!sameSession || summary) for (const key of ['trade', 'trade_id', 'cursor', 'cutoff', 'cursor_index', 'decision_cutoff']) next.delete(key)
+  if (!sameSession || summary) for (const key of ['trade', 'trade_id', 'cursor', 'cutoff', 'cursor_index', 'decision_cutoff', 'event_sequence']) next.delete(key)
   if (summary) for (const key of ['side', 'outcome', 'from', 'to', 'from_close_utc', 'to_close_utc']) next.delete(key)
   next.set('session', item.record_id)
   if (item.dataset_id) next.set('dataset', item.dataset_id)

@@ -1,0 +1,20 @@
+.fxa-session-filter { position: relative; min-width: 0; align-self: end; }
+.fxa-session-trigger { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-width: 160px; max-width: 100%; }
+.fxa-session-trigger > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fxa-session-menu { position: absolute; top: calc(100% + 8px); left: 0; z-index: 30; width: 300px; max-width: min(300px, calc(100vw - 48px)); padding: 8px; background: var(--wm-surface); border: 1px solid var(--wm-border); border-radius: 10px; box-shadow: 0 12px 32px #0002; }
+.fxa-session-menu > input { width: 100%; box-sizing: border-box; margin-bottom: 8px; min-height: 38px; background: var(--wm-canvas); color: var(--wm-content); border: 1px solid var(--wm-border); border-radius: 6px; padding: 8px 10px; }
+.fxa-session-options { max-height: min(320px, 45vh); overflow: auto; }
+.fxa-session-options > label, .fxa-session-options > button, .fxa-session-all { display: flex; gap: 10px; align-items: center; width: 100%; box-sizing: border-box; min-height: 44px; padding: 8px; border: 0; border-radius: 5px; background: transparent; color: var(--wm-content); text-align: left; font: inherit; cursor: pointer; }
+.fxa-session-options > button { justify-content: space-between; }
+.fxa-session-options > label:hover, .fxa-session-options > button:hover, .fxa-session-all:hover { background: var(--fx-shell-nav-hover); }
+.fxa-session-options > .is-selected { background: var(--fx-shell-nav-selected); }
+.fxa-session-options small { display: block; margin-top: 3px; color: var(--wm-content-muted); font-size: 11px; }
+.fxa-session-menu input[type=checkbox] { accent-color: var(--wm-primary); flex-shrink: 0; }
+.fxa-session-menu :focus-visible { outline: 2px solid var(--wm-primary); outline-offset: 2px; }
+.fxa-session-options > label > span, .fxa-session-options > button > span { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .fxa-session-trigger { width: 100%; }
+  .fxa-filter-toolbar > .fxa-session-filter, .fxa-filter-grid > .fxa-session-filter { flex-basis: 100%; width: 100%; }
+  .fxa-filter-grid > .fxa-field:has(.fxa-session-filter) { flex-basis: 100%; width: 100%; }
+  .fxa-session-menu { width: 100%; max-width: 100%; box-sizing: border-box; }
+}

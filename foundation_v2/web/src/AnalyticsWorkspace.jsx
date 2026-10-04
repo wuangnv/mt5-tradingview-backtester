@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './analytics-story.css'
 import { FxAnalyticsFilters, FxAnalyticsReport } from './FxAnalytics.jsx'
 import FxTradeLedger from './FxTradeLedger.jsx'
-import { advancedAnalytics, DEFAULT_EXTRA_FILTERS, tradesCsv } from './tradingAnalyticsModel.js'
+import { advancedAnalytics, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, tradesCsv } from './tradingAnalyticsModel.js'
 import useReadRefresh from './useReadRefresh.js'
 import { buildPropAnalyticsView } from './propAnalyticsModel.js'
 
@@ -51,7 +51,7 @@ export function buildAnalyticsModel(result) {
   const metrics = result?.metrics && typeof result.metrics === 'object' ? result.metrics : {}
   const ledger = Array.isArray(result?.ledger) ? result.ledger : []
   const providedNet = firstKnown(metrics.net_pnl, metrics.net_profit, result?.net_pnl)
-  const netPnl = providedNet ?? netFromLedger(ledger)
+  const netPnl = result?.multi_session ? null : providedNet ?? netFromLedger(ledger)
   const providedTradeCount = firstKnown(result?.trade_count, metrics.trade_count, metrics.closed_trade_count)
   const tradeCount = providedTradeCount ?? (Array.isArray(result?.ledger) ? ledger.length : null)
   const ledgerHasCompletePnl = ledger.length > 0 && ledger.every((trade) => finite(trade?.net_pnl))
@@ -137,7 +137,7 @@ async function readJson(response) {
 
 const DEFAULT_ANALYTICS_FILTERS = { side: 'all', outcome: 'all', from: '', to: '' }
 
-function readAnalyticsFilters(query) {
+export function readAnalyticsFilters(query) {
   const from = query?.get('from_close_utc') || query?.get('from') || ''
   const to = query?.get('to_close_utc') || query?.get('to') || ''
   return {
@@ -153,7 +153,7 @@ function dateBoundary(value, endOfDay = false) {
   return `${value}T${endOfDay ? '23:59:59.999' : '00:00:00.000'}Z`
 }
 
-function analyticsQuery(filters) {
+export function analyticsQuery(filters) {
   const params = new URLSearchParams()
   if (filters.side && filters.side !== 'all') params.set('side', filters.side)
   if (filters.outcome && filters.outcome !== 'all') params.set('outcome', filters.outcome)
@@ -205,7 +205,7 @@ function ContextValue({ label, value, code = false }) {
   return <div className="as-context-value"><dt>{label}</dt><dd className={code ? 'as-code' : ''}>{displayValue}</dd></div>
 }
 
-function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
+export function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
   return (
     <aside className="as-inspector" aria-label="Provenance và drilldown">
       {selectedTrade && <div className="as-section-head"><h2>{selectedTrade.tradeId}</h2><span className="as-inspector-state">Chỉ đọc</span></div>}
@@ -226,7 +226,7 @@ function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
   )
 }
 
-function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(), ledgerOnly = false, summaryOnly = false, embedded = false, sessionName = '', propReport = null }) {
+function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(), ledgerOnly = false, summaryOnly = false, embedded = false, sessionName = '', propReport = null, sessionControl = null }) {
   const jobId = query?.get('job') || query?.get('job_id') || ''
   const sessionId = query?.get('session') || query?.get('replay_session') || ''
   const resourceId = jobId || sessionId
@@ -243,15 +243,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   const [selectedTradeId, setSelectedTradeId] = useState(tradeId)
   const [exportPending, setExportPending] = useState(false)
   const [exportError, setExportError] = useState('')
-  const [extra, setExtra] = useState(() => {
-    const values = { ...DEFAULT_EXTRA_FILTERS }
-    for (const key of Object.keys(values)) {
-      const param = key === 'source' ? 'analytics_trade_source' : `analytics_${key}`
-      if (query.get(param)) values[key] = query.get(param)
-    }
-    if (!['UTC', 'Asia/Ho_Chi_Minh', 'America/New_York', 'Europe/London'].includes(values.timezone)) values.timezone = 'UTC'
-    return values
-  })
+  const [extra, setExtra] = useState(() => readAnalyticsExtraFilters(query))
   const [experimentConfig, setExperimentConfig] = useState({ stop_distance_ticks: 20, stop_multiplier: 1, target_r: 2 })
   const [experiments, setExperiments] = useState({ status: 'idle', payload: null, error: '' })
   const [experimentReload, setExperimentReload] = useState(0)
@@ -428,7 +420,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
 
   return <section className={`as-page fxa-page ${embedded ? 'as-embedded' : 'wm-page'}`} aria-label={ledgerOnly ? 'Trades' : 'Analytics'} data-testid="analytics-workspace">
     {!embedded && <h1 className="sr-only">{ledgerOnly ? 'Trades' : 'Analytics'}</h1>}
-    {resourceId && !summaryOnly && <FxAnalyticsFilters filters={filters} onChange={updateFilters} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} onExport={exportCsv} pending={exportPending || state.status === 'loading' || !result} ledgerOnly={ledgerOnly} />}
+    {(resourceId || sessionControl) && !summaryOnly && <FxAnalyticsFilters sessionControl={sessionControl} filters={filters} onChange={updateFilters} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} onExport={exportCsv} pending={exportPending || state.status === 'loading' || !result} ledgerOnly={ledgerOnly} />}
     {exportError && <p role="alert" className="fxa-error">{exportError}</p>}
     {result?.historical_view && <p className="as-message" data-testid="analytics-historical-scope">Kết quả tới nến #{result.cursor_index}. Phiên hiện ở nến #{result.canonical_cursor_index}; báo cáo không gồm giao dịch sau mốc đang xem.</p>}
     {!resourceId && <p className="fxa-empty">Chọn một phiên replay hoặc research job để xem kết quả.</p>}

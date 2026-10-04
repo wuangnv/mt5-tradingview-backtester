@@ -4,6 +4,27 @@ export const known = value => value !== null && value !== undefined && value !==
 export const number = value => known(value) ? Number(value) : null
 export const outcomeOf = value => !known(value) ? 'unknown' : Number(value) > 1e-12 ? 'win' : Number(value) < -1e-12 ? 'loss' : 'breakeven'
 export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', source: 'all', weekday: 'all', hour: 'all', timezone: 'UTC', search: '' }
+export function readAnalyticsExtraFilters(query) {
+  const values = { ...DEFAULT_EXTRA_FILTERS }
+  for (const key of Object.keys(values)) {
+    const param = key === 'source' ? 'analytics_trade_source' : `analytics_${key}`
+    if (query.get(param)) values[key] = query.get(param)
+  }
+  if (!['UTC', 'Asia/Ho_Chi_Minh', 'America/New_York', 'Europe/London'].includes(values.timezone)) values.timezone = 'UTC'
+  return values
+}
+
+export function validateTradesPayload(payload) {
+  const count = payload?.metrics?.closed_trade_count
+  if (payload?.schema_version !== 'dashboard-replay-performance-v1' || !Array.isArray(payload.ledger)
+    || !Array.isArray(payload.sources) || !Array.isArray(payload.excluded) || !Array.isArray(payload.scope?.session_ids)
+    || !['ready', 'partial'].includes(payload.status)
+    || !(count === payload.ledger.length || count === null && !payload.ledger.length && payload.excluded.length)
+    || payload.ledger.some(row => !row || typeof row.session_id !== 'string' || !row.session_id || typeof row.trade_id !== 'string' || !row.trade_id
+      || !known(row.net_pnl) || !row.source_provenance || !Number.isSafeInteger(row.source_provenance.revision) || row.source_provenance.revision < 1
+      || row.source_provenance.session_id !== row.session_id)) throw new Error('trade_ledger_read_model_invalid')
+  return payload
+}
 export const WEEKDAYS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 const calendarFormatters = new Map()
 
@@ -140,6 +161,7 @@ export function monteCarlo(config, ledger = []) {
 export function tradesCsv(rows, currency, metadata = {}) {
   const safe = value => { const text = String(value ?? ''); const numeric = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(text) && Number.isFinite(Number(text)); const formula = /^[\t\r\n]/.test(text) || /^\s*[=+@-]/.test(text) && !numeric; return `"${(formula ? `'${text}` : text).replaceAll('"', '""')}"` }
   const columns = ['trade_id', 'session_id', 'symbol', 'side', 'open_time_utc', 'close_time_utc', 'price_open', 'price_close', 'quantity', 'net_pnl', 'gross_pnl', 'fees', 'realized_r', 'tags']
+  if (rows.some(row => row.source_provenance)) columns.push('origin_session_id', 'source_provenance')
   const metaKeys = Object.keys(metadata).map(key => `report_${key}`)
-  return '\uFEFF' + [...[columns.concat('account_currency', metaKeys).map(safe).join(',')], ...rows.map(row => columns.map(key => safe(key === 'tags' ? (row.tags || []).join('|') : row[key])).concat(safe(currency), Object.values(metadata).map(safe)).join(','))].join('\r\n')
+  return '\uFEFF' + [...[columns.concat('account_currency', metaKeys).map(safe).join(',')], ...rows.map(row => columns.map(key => safe(key === 'tags' ? (row.tags || []).join('|') : key === 'source_provenance' ? JSON.stringify(row[key]) : row[key])).concat(safe(row.account_currency ?? currency), Object.values(metadata).map(safe)).join(','))].join('\r\n')
 }

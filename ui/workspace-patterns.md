@@ -114,3 +114,31 @@ dense tables scroll in a named keyboard-focusable region. Native select value/ch
 progressive picker behavior remain. CSV escapes spreadsheet formulas and includes provenance.
 Evidence and limitations: `foundation_v2/evidence/ui-fx-analytics-20261004/CHECKPOINT.md`.
 Header correction evidence: `foundation_v2/evidence/ui-workspace-header-20261004/CHECKPOINT.md`.
+
+## Session scope controls — 04/10/2026
+
+Sessions entry uses an explicit deep link first, then a valid remembered replay session,
+then newest creation among active sessions. Opening report filters never updates replay
+resume storage. Primary Sessions navigation requests the default; explicit session links
+retain their own destination.
+
+Primary Trades navigation opens all sessions. Its searchable checkbox dropdown supports
+all, one, multiple, or no sessions; repeated `sessions` URL keys preserve selection on
+reload. A plain explicit `session` deep link still selects that session. Historical or
+trade-detail deep links retain the existing exact single-session analytics reader.
+Analytics Sessions uses a single Session control inside the filter grid; catalog/header
+management chrome belongs only to Sessions. Prop source selection remains separate.
+
+GET `/api/v2/replay/trades` accepts optional comma-separated `sessions` (absent = all;
+empty = none), side/outcome and UTC close-date filters. It reuses the Dashboard lineage
+dedup projection, with an optional ledger; each row retains selected source/session,
+origin, revision/cutoff/hash, currency and starting capital. No mixed-session monetary
+total/balance is inferred. Table Return (%) uses each row's original capital and CSV
+retains per-source provenance/currency. Unavailable sessions are listed explicitly;
+invalid selected IDs fail instead of broadening scope. Checkbox/detail identities
+include session + trade while display/Journal/Replay use the original trade ID.
+
+Session changes clear old trade/cursor/event scope; date aliases cannot restore cleared
+filters. Dropdown uses existing hover/selected/focus tokens and stays within its mobile
+container. Unchanged background GET reconciliation retains page size/page/columns/detail.
+Evidence: `foundation_v2/evidence/ui-session-scopes-20261004/CHECKPOINT.md`.

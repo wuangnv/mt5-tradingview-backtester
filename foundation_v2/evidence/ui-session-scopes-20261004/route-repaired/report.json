@@ -1,0 +1,1843 @@
+{
+  "mode": "scan",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "45ca4d4cdaa4bd2b96d9baee0989b62b720e08d1753a627785c4bf6109c1eefd",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".is-gold > .fx-dashboard-month-chart[role=\"img\"] > .fx-dashboard-chart-scroll > .fx-dashboard-month-bars > .fx-dashboard-month-column > .fx-dashboard-month-label"
+                ],
+                "html": "<span class=\"fx-dashboard-month-label\">01/2024</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 100%\"] > span"
+                ],
+                "html": "<span>100%</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\overview-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\overview-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "dark",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\overview-dark-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#fxr-replay-session-select"
+                ],
+                "html": "<select id=\"fxr-replay-session-select\" aria-label=\"Chọn phiên replay\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "text[y=\"104.80000000000001\"]"
+                ],
+                "html": "<text x=\"69\" y=\"104.80000000000001\" text-anchor=\"end\">100.037,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"38.99354838709678\"]"
+                ],
+                "html": "<text x=\"69\" y=\"38.99354838709678\" text-anchor=\"end\">100.075</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 32
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\sessions-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#fxr-replay-session-select"
+                ],
+                "html": "<select id=\"fxr-replay-session-select\" aria-label=\"Chọn phiên replay\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 32
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\sessions-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#fxr-replay-session-select"
+                ],
+                "html": "<select id=\"fxr-replay-session-select\" aria-label=\"Chọn phiên replay\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 32
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\sessions-dark-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Asset\"]"
+                ],
+                "html": "<select aria-label=\"Asset\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả assets</selectedcontent></button><option value=\"all\">Tất cả assets</option><option value=\"EURUSD\">EURUSD</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Side\"]"
+                ],
+                "html": "<select aria-label=\"Side\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả sides</selectedcontent></button><option value=\"all\">Tất cả sides</option><option value=\"buy\">Buy</option><option value=\"sell\">Sell</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Outcome\"]"
+                ],
+                "html": "<select aria-label=\"Outcome\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả kết quả</selectedcontent></button><option value=\"all\">Tất cả kết quả</option><option value=\"win\">Thắng</option><option value=\"loss\">Thua</option><option value=\"breakeven\">Hòa vốn</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thứ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Thứ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Giờ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Giờ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Timezone\"]"
+                ],
+                "html": "<select aria-label=\"Timezone\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Tags\"]"
+                ],
+                "html": "<select aria-label=\"Tags\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả tags</selectedcontent></button><option value=\"all\">Tất cả tags</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Biểu đồ\"]"
+                ],
+                "html": "<select aria-label=\"Biểu đồ\"><button type=\"button\" inert=\"\"><selectedcontent>Balance</selectedcontent></button><option value=\"balance\">Balance</option><option value=\"profit\">Net P/L</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "text[y=\"189\"]"
+                ],
+                "html": "<text x=\"70\" y=\"189\" text-anchor=\"end\">100.015</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"134\"]"
+                ],
+                "html": "<text x=\"70\" y=\"134\" text-anchor=\"end\">100.037,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"79\"]"
+                ],
+                "html": "<text x=\"70\" y=\"79\" text-anchor=\"end\">100.060</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"24\"]"
+                ],
+                "html": "<text x=\"70\" y=\"24\" text-anchor=\"end\">100.082,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\analytics-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Asset\"]"
+                ],
+                "html": "<select aria-label=\"Asset\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả assets</selectedcontent></button><option value=\"all\">Tất cả assets</option><option value=\"EURUSD\">EURUSD</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Side\"]"
+                ],
+                "html": "<select aria-label=\"Side\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả sides</selectedcontent></button><option value=\"all\">Tất cả sides</option><option value=\"buy\">Buy</option><option value=\"sell\">Sell</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Outcome\"]"
+                ],
+                "html": "<select aria-label=\"Outcome\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả kết quả</selectedcontent></button><option value=\"all\">Tất cả kết quả</option><option value=\"win\">Thắng</option><option value=\"loss\">Thua</option><option value=\"breakeven\">Hòa vốn</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thứ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Thứ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Giờ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Giờ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Timezone\"]"
+                ],
+                "html": "<select aria-label=\"Timezone\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Tags\"]"
+                ],
+                "html": "<select aria-label=\"Tags\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả tags</selectedcontent></button><option value=\"all\">Tất cả tags</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Biểu đồ\"]"
+                ],
+                "html": "<select aria-label=\"Biểu đồ\"><button type=\"button\" inert=\"\"><selectedcontent>Balance</selectedcontent></button><option value=\"balance\">Balance</option><option value=\"profit\">Net P/L</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\analytics-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "dark",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Asset\"]"
+                ],
+                "html": "<select aria-label=\"Asset\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả assets</selectedcontent></button><option value=\"all\">Tất cả assets</option><option value=\"EURUSD\">EURUSD</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Side\"]"
+                ],
+                "html": "<select aria-label=\"Side\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả sides</selectedcontent></button><option value=\"all\">Tất cả sides</option><option value=\"buy\">Buy</option><option value=\"sell\">Sell</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Outcome\"]"
+                ],
+                "html": "<select aria-label=\"Outcome\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả kết quả</selectedcontent></button><option value=\"all\">Tất cả kết quả</option><option value=\"win\">Thắng</option><option value=\"loss\">Thua</option><option value=\"breakeven\">Hòa vốn</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thứ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Thứ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Giờ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Giờ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Timezone\"]"
+                ],
+                "html": "<select aria-label=\"Timezone\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\analytics-dark-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "trades",
+      "theme": "dark",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "html"
+                ],
+                "html": "<html lang=\"vi\" data-tw-theme=\"dark\" style=\"color-scheme: dark;\">",
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\trades-dark-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "trades",
+      "theme": "dark",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "html"
+                ],
+                "html": "<html lang=\"vi\" data-tw-theme=\"dark\" style=\"color-scheme: dark;\">",
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\trades-dark-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "trades",
+      "theme": "dark",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "html"
+                ],
+                "html": "<html lang=\"vi\" data-tw-theme=\"dark\" style=\"color-scheme: dark;\">",
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\trades-dark-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  ".is-gold > .fx-dashboard-month-chart[role=\"img\"] > .fx-dashboard-chart-scroll > .fx-dashboard-month-bars > .fx-dashboard-month-column > .fx-dashboard-month-label"
+                ],
+                "html": "<span class=\"fx-dashboard-month-label\">01/2024</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 100%\"] > span"
+                ],
+                "html": "<span>100%</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\overview-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "div[title=\"2024-01: 60\"] > span"
+                ],
+                "html": "<span>60</span>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\overview-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "overview",
+      "theme": "light",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "select[aria-label=\"Phạm vi Performance\"]"
+                ],
+                "html": "<select aria-label=\"Phạm vi Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thời gian Performance\"]"
+                ],
+                "html": "<select aria-label=\"Thời gian Performance\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(1) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◷</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(2) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">↶</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(3) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">⇄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  ".fx-dashboard-metric:nth-child(4) > span > .fx-dashboard-metric-icon[aria-hidden=\"true\"]"
+                ],
+                "html": "<span class=\"fx-dashboard-metric-icon\" aria-hidden=\"true\">◎</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\overview-light-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#fxr-replay-session-select"
+                ],
+                "html": "<select id=\"fxr-replay-session-select\" aria-label=\"Chọn phiên replay\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "text[y=\"104.80000000000001\"]"
+                ],
+                "html": "<text x=\"69\" y=\"104.80000000000001\" text-anchor=\"end\">100.037,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"38.99354838709678\"]"
+                ],
+                "html": "<text x=\"69\" y=\"38.99354838709678\" text-anchor=\"end\">100.075</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 32
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\sessions-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#fxr-replay-session-select"
+                ],
+                "html": "<select id=\"fxr-replay-session-select\" aria-label=\"Chọn phiên replay\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 32
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\sessions-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "#fxr-replay-session-select"
+                ],
+                "html": "<select id=\"fxr-replay-session-select\" aria-label=\"Chọn phiên replay\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 32
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\sessions-light-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Asset\"]"
+                ],
+                "html": "<select aria-label=\"Asset\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả assets</selectedcontent></button><option value=\"all\">Tất cả assets</option><option value=\"EURUSD\">EURUSD</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Side\"]"
+                ],
+                "html": "<select aria-label=\"Side\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả sides</selectedcontent></button><option value=\"all\">Tất cả sides</option><option value=\"buy\">Buy</option><option value=\"sell\">Sell</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Outcome\"]"
+                ],
+                "html": "<select aria-label=\"Outcome\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả kết quả</selectedcontent></button><option value=\"all\">Tất cả kết quả</option><option value=\"win\">Thắng</option><option value=\"loss\">Thua</option><option value=\"breakeven\">Hòa vốn</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thứ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Thứ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Giờ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Giờ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Timezone\"]"
+                ],
+                "html": "<select aria-label=\"Timezone\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Tags\"]"
+                ],
+                "html": "<select aria-label=\"Tags\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả tags</selectedcontent></button><option value=\"all\">Tất cả tags</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Biểu đồ\"]"
+                ],
+                "html": "<select aria-label=\"Biểu đồ\"><button type=\"button\" inert=\"\"><selectedcontent>Balance</selectedcontent></button><option value=\"balance\">Balance</option><option value=\"profit\">Net P/L</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "text[y=\"189\"]"
+                ],
+                "html": "<text x=\"70\" y=\"189\" text-anchor=\"end\">100.015</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"134\"]"
+                ],
+                "html": "<text x=\"70\" y=\"134\" text-anchor=\"end\">100.037,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"79\"]"
+                ],
+                "html": "<text x=\"70\" y=\"79\" text-anchor=\"end\">100.060</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              },
+              {
+                "target": [
+                  "text[y=\"24\"]"
+                ],
+                "html": "<text x=\"70\" y=\"24\" text-anchor=\"end\">100.082,5</text>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\analytics-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Asset\"]"
+                ],
+                "html": "<select aria-label=\"Asset\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả assets</selectedcontent></button><option value=\"all\">Tất cả assets</option><option value=\"EURUSD\">EURUSD</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Side\"]"
+                ],
+                "html": "<select aria-label=\"Side\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả sides</selectedcontent></button><option value=\"all\">Tất cả sides</option><option value=\"buy\">Buy</option><option value=\"sell\">Sell</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Outcome\"]"
+                ],
+                "html": "<select aria-label=\"Outcome\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả kết quả</selectedcontent></button><option value=\"all\">Tất cả kết quả</option><option value=\"win\">Thắng</option><option value=\"loss\">Thua</option><option value=\"breakeven\">Hòa vốn</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thứ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Thứ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Giờ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Giờ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Timezone\"]"
+                ],
+                "html": "<select aria-label=\"Timezone\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Tags\"]"
+                ],
+                "html": "<select aria-label=\"Tags\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả tags</selectedcontent></button><option value=\"all\">Tất cả tags</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Biểu đồ\"]"
+                ],
+                "html": "<select aria-label=\"Biểu đồ\"><button type=\"button\" inert=\"\"><selectedcontent>Balance</selectedcontent></button><option value=\"balance\">Balance</option><option value=\"profit\">Net P/L</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\analytics-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "analytics",
+      "theme": "light",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Asset\"]"
+                ],
+                "html": "<select aria-label=\"Asset\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả assets</selectedcontent></button><option value=\"all\">Tất cả assets</option><option value=\"EURUSD\">EURUSD</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Side\"]"
+                ],
+                "html": "<select aria-label=\"Side\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả sides</selectedcontent></button><option value=\"all\">Tất cả sides</option><option value=\"buy\">Buy</option><option value=\"sell\">Sell</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Outcome\"]"
+                ],
+                "html": "<select aria-label=\"Outcome\"><button type=\"button\" inert=\"\"><selectedcontent>Tất cả kết quả</selectedcontent></button><option value=\"all\">Tất cả kết quả</option><option value=\"win\">Thắng</option><option value=\"loss\">Thua</option><option value=\"breakeven\">Hòa vốn</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Thứ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Thứ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Giờ đóng lệnh\"]"
+                ],
+                "html": "<select aria-label=\"Giờ đóng lệnh\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              },
+              {
+                "target": [
+                  "select[aria-label=\"Timezone\"]"
+                ],
+                "html": "<select aria-label=\"Timezone\">",
+                "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+              }
+            ]
+          }
+        ],
+        "passes": 34
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\analytics-light-360.png",
+      "pass": true
+    },
+    {
+      "routeId": "trades",
+      "theme": "light",
+      "width": 1440,
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "html"
+                ],
+                "html": "<html lang=\"vi\" data-tw-theme=\"light\" style=\"color-scheme: light;\">",
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\trades-light-1440.png",
+      "pass": true
+    },
+    {
+      "routeId": "trades",
+      "theme": "light",
+      "width": 768,
+      "metrics": {
+        "innerWidth": 768,
+        "innerHeight": 900,
+        "outerWidth": 768,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 768,
+        "overflowX": 0,
+        "contentWidth": 520,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "html"
+                ],
+                "html": "<html lang=\"vi\" data-tw-theme=\"light\" style=\"color-scheme: light;\">",
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\trades-light-768.png",
+      "pass": true
+    },
+    {
+      "routeId": "trades",
+      "theme": "light",
+      "width": 360,
+      "metrics": {
+        "innerWidth": 360,
+        "innerHeight": 900,
+        "outerWidth": 360,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 360,
+        "overflowX": 0,
+        "contentWidth": 302,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "bypass",
+            "impact": "serious",
+            "help": "Page must have means to bypass repeated blocks",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/bypass?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  "html"
+                ],
+                "html": "<html lang=\"vi\" data-tw-theme=\"light\" style=\"color-scheme: light;\">",
+                "failureSummary": "Fix any of the following:\n  No valid skip link found\n  Page does not have a heading\n  Page does not have a landmark region"
+              }
+            ]
+          },
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "help": "Elements must meet minimum color contrast ratio thresholds",
+            "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+            "nodes": [
+              {
+                "target": [
+                  ".fxa-session-trigger > span[aria-hidden=\"true\"]"
+                ],
+                "html": "<span aria-hidden=\"true\">⌄</span>",
+                "failureSummary": "Fix any of the following:\n  Element content contains only non-text characters"
+              }
+            ]
+          }
+        ],
+        "passes": 30
+      },
+      "unresolvedAria": [],
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-session-scopes-20261004\\route-repaired\\trades-light-360.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [],
+  "unexpectedRequests": [],
+  "axeVersion": "4.10.3",
+  "sourceAfter": "45ca4d4cdaa4bd2b96d9baee0989b62b720e08d1753a627785c4bf6109c1eefd",
+  "status": "SCOPED_PASS"
+}

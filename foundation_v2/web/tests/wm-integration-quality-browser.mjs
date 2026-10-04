@@ -21,7 +21,7 @@ const allRoutes = {
   sessions: [`view=replay&select=1${sessionQuery}`, '[data-testid="replay-session-picker"]'],
   replay: [`view=replay${sessionQuery}`, '[data-testid="replay-chart"], [data-testid="replay-session-dashboard"]'],
   analytics: [`view=analytics${sessionQuery}`, '[data-testid="analytics-workspace"]'],
-  trades: [`view=trade${sessionQuery}`, '[data-testid="trade-session-picker"]'],
+  trades: [`view=trade${sessionQuery}`, '[data-testid="aggregate-trades"], [data-testid="analytics-workspace"]'],
   learn: ['view=learn', '.learn-shell'],
   settings: ['view=settings', '[data-testid="settings-workspace"]'],
   live: ['view=live', '[data-testid="live-workspace"]'],

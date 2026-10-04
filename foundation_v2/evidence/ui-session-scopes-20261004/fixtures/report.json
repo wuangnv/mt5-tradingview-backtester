@@ -1,0 +1,8 @@
+{
+  "scope": "LABELED browser fixtures only; no persisted data writes",
+  "cases": [
+    "mixed currency/per-source return denominator/same trade ID identities/scoped tags/detail links/CSV",
+    "malformed payload blocks rows and export"
+  ],
+  "errors": []
+}
