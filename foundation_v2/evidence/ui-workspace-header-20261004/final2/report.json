@@ -1,0 +1,687 @@
+{
+  "scope": "Actual GET-only local QA services; spacing and nested Analytics navigation only",
+  "sourceBefore": "cff018bb81aa08d9ad93c48fa72f420ff0820d9a177cabe47292650dfaca2db4",
+  "cases": [
+    {
+      "view": "overview",
+      "source": null,
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "replay",
+      "source": null,
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "trade",
+      "source": null,
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "sessions",
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "prop",
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "journey": "Source click/reload/keyboard Enter preserves session and historical cursor20"
+    },
+    {
+      "view": "overview",
+      "source": null,
+      "theme": "dark",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "replay",
+      "source": null,
+      "theme": "dark",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "trade",
+      "source": null,
+      "theme": "dark",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "sessions",
+      "theme": "dark",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "prop",
+      "theme": "dark",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "journey": "Source click/reload/keyboard Enter preserves session and historical cursor20"
+    },
+    {
+      "view": "overview",
+      "source": null,
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "replay",
+      "source": null,
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "trade",
+      "source": null,
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "sessions",
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 155
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 110,
+          "bottom": 154
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "prop",
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 155
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 110,
+          "bottom": 154
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "journey": "Source click/reload/keyboard Enter preserves session and historical cursor20"
+    },
+    {
+      "view": "overview",
+      "source": null,
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "replay",
+      "source": null,
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "trade",
+      "source": null,
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "sessions",
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "prop",
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "journey": "Source click/reload/keyboard Enter preserves session and historical cursor20"
+    },
+    {
+      "view": "overview",
+      "source": null,
+      "theme": "light",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "replay",
+      "source": null,
+      "theme": "light",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "trade",
+      "source": null,
+      "theme": "light",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "sessions",
+      "theme": "light",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "prop",
+      "theme": "light",
+      "width": 768,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "journey": "Source click/reload/keyboard Enter preserves session and historical cursor20"
+    },
+    {
+      "view": "overview",
+      "source": null,
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "replay",
+      "source": null,
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "trade",
+      "source": null,
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "sessions",
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 155
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 110,
+          "bottom": 154
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "view": "analytics",
+      "source": "prop",
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "gap": 24,
+        "activeVisible": true,
+        "header": {
+          "top": 64,
+          "bottom": 155
+        },
+        "primary": {
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "top": 110,
+          "bottom": 154
+        },
+        "overflow": 0
+      },
+      "axeViolations": 0
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "journey": "Source click/reload/keyboard Enter preserves session and historical cursor20"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "sourceAfter": "cff018bb81aa08d9ad93c48fa72f420ff0820d9a177cabe47292650dfaca2db4"
+}

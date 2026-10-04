@@ -1,0 +1,70 @@
+{
+  "scope": "Supplement actual-loaded Prop header screenshot and containment",
+  "before": "cff018bb81aa08d9ad93c48fa72f420ff0820d9a177cabe47292650dfaca2db4",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "top": 64,
+        "bottom": 116,
+        "headerTop": 64,
+        "headerBottom": 117,
+        "hits": [
+          true,
+          true
+        ]
+      },
+      "ready": "actual empty Prop catalog"
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "top": 110,
+        "bottom": 154,
+        "headerTop": 64,
+        "headerBottom": 155,
+        "hits": [
+          true,
+          true
+        ]
+      },
+      "ready": "actual empty Prop catalog"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "top": 64,
+        "bottom": 116,
+        "headerTop": 64,
+        "headerBottom": 117,
+        "hits": [
+          true,
+          true
+        ]
+      },
+      "ready": "actual empty Prop catalog"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "top": 110,
+        "bottom": 154,
+        "headerTop": 64,
+        "headerBottom": 155,
+        "hits": [
+          true,
+          true
+        ]
+      },
+      "ready": "actual empty Prop catalog"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "after": "cff018bb81aa08d9ad93c48fa72f420ff0820d9a177cabe47292650dfaca2db4",
+  "pass": true
+}

@@ -11,7 +11,7 @@
   --wm-warning: #e1ad54;
   --dashboard-gold: #e7b34f;
   --dashboard-purple: #bd79e3;
-  width: 100%; padding: 0 0 40px; color: var(--wm-content);
+  width: 100%; padding: 24px 0 40px; color: var(--wm-content);
   font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, sans-serif);
 }
 .fx-app[data-theme='light'] .fx-dashboard { --wm-content-muted: #526071; --wm-primary: #245bc4; --wm-positive: #247046; --wm-warning: #825209; --dashboard-gold: #aa710b; --dashboard-purple: #8850b3; }

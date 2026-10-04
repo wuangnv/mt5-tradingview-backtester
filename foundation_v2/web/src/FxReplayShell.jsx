@@ -34,6 +34,7 @@ const SHELL_COPY = {
     primaryNavAria: 'Khu vực chính',
     utilityNavAria: 'Công cụ',
     subnavAria: 'Điều hướng workspace',
+    analyticsSourcesAria: 'Nguồn Analytics',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
       testing: ['Testing', 'Backtesting workspace'],
@@ -84,6 +85,7 @@ const SHELL_COPY = {
     primaryNavAria: 'Primary workspace',
     utilityNavAria: 'Utilities',
     subnavAria: 'Workspace navigation',
+    analyticsSourcesAria: 'Analytics source',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
       testing: ['Testing', 'Backtesting workspace'],
@@ -282,9 +284,15 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
 function ShellSubnav({ activeView, workspace, query, copy }) {
   const sectionId = activeSectionId(activeView, query)
   const items = SUBNAV_GROUPS[sectionId] || []
+  const navRef = useRef(null)
+  const selectedSection = query?.get('section')
+  useEffect(() => {
+    navRef.current?.querySelector('.fx-subnav-primary a[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [activeView, sectionId, selectedSection])
   if (items.length === 0) return null
   return (
-    <nav className="fx-subnav" aria-label={copy.subnavAria}>
+    <nav className="fx-subnav" aria-label={copy.subnavAria} ref={navRef}>
+      <div className="fx-subnav-primary">
       {items.map((item) => {
         const label = copy.nav[item.copyKey || item.id]?.[0] || item.id
         const active = isNavItemActive(item, activeView, query, sectionId)
@@ -303,6 +311,14 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
           </a>
         )
       })}
+      </div>
+      {sectionId === 'testing' && activeView === 'analytics' && <nav className="fx-subsubnav" aria-label={copy.analyticsSourcesAria}>
+        {[['sessions', 'Sessions'], ['prop', 'Prop firm']].map(([source, label]) => <a
+          key={source}
+          href={hrefFor('analytics', workspace, query, { select: '1', analytics_source: source, area: 'testing', section: 'analytics', prop_session: query.get('prop_session'), attempt: query.get('attempt') })}
+          aria-current={(query.get('analytics_source') === 'prop' ? 'prop' : 'sessions') === source ? 'page' : undefined}
+        >{label}</a>)}
+      </nav>}
     </nav>
   )
 }

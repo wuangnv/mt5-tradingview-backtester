@@ -1,0 +1,272 @@
+{
+  "scope": "Independent read-only desktop1440/mobile360 dark/light header spacing, source hierarchy/context, hover/focus; actual localhost GET-only",
+  "before": "cff018bb81aa08d9ad93c48fa72f420ff0820d9a177cabe47292650dfaca2db4",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "overview",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "left": 278,
+          "right": 593.890625,
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "analytics",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "left": 278,
+          "right": 593.890625,
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "left": 609.890625,
+          "right": 759.015625,
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "interaction": {
+        "hover": {
+          "background": "rgb(21, 26, 30)",
+          "expected": "rgb(21, 26, 30)"
+        },
+        "underline": {
+          "height": "2px",
+          "color": "rgb(82, 143, 255)"
+        },
+        "sourceJourney": "Sessions→Prop by keyboard Enter; replay session/cursor preserved",
+        "propContextLinks": [
+          {
+            "label": "Sessions",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=sessions&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          },
+          {
+            "label": "Prop firm",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=prop&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          }
+        ]
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "overview",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "left": 76,
+          "right": 391.890625,
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "analytics",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 155
+        },
+        "primary": {
+          "left": 76,
+          "right": 342,
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "left": 76,
+          "right": 342,
+          "top": 110,
+          "bottom": 154
+        },
+        "overflow": 0
+      },
+      "interaction": {
+        "hover": {
+          "background": "rgb(21, 26, 30)",
+          "expected": "rgb(21, 26, 30)"
+        },
+        "underline": {
+          "height": "2px",
+          "color": "rgb(82, 143, 255)"
+        },
+        "sourceJourney": "Sessions→Prop by keyboard Enter; replay session/cursor preserved",
+        "propContextLinks": [
+          {
+            "label": "Sessions",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=sessions&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          },
+          {
+            "label": "Prop firm",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=prop&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          }
+        ]
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "overview",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "left": 278,
+          "right": 593.890625,
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "analytics",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 117
+        },
+        "primary": {
+          "left": 278,
+          "right": 593.890625,
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "left": 609.890625,
+          "right": 759.015625,
+          "top": 64,
+          "bottom": 116
+        },
+        "overflow": 0
+      },
+      "interaction": {
+        "hover": {
+          "background": "rgb(224, 231, 234)",
+          "expected": "rgb(224, 231, 234)"
+        },
+        "underline": {
+          "height": "2px",
+          "color": "rgb(36, 91, 196)"
+        },
+        "sourceJourney": "Sessions→Prop by keyboard Enter; replay session/cursor preserved",
+        "propContextLinks": [
+          {
+            "label": "Sessions",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=sessions&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          },
+          {
+            "label": "Prop firm",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=prop&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          }
+        ]
+      }
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "overview",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 116
+        },
+        "primary": {
+          "left": 76,
+          "right": 391.890625,
+          "top": 69.5,
+          "bottom": 109.5
+        },
+        "overflow": 0
+      }
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "analytics",
+      "geometry": {
+        "gap": 24,
+        "header": {
+          "top": 64,
+          "bottom": 155
+        },
+        "primary": {
+          "left": 76,
+          "right": 342,
+          "top": 70,
+          "bottom": 110
+        },
+        "secondary": {
+          "left": 76,
+          "right": 342,
+          "top": 110,
+          "bottom": 154
+        },
+        "overflow": 0
+      },
+      "interaction": {
+        "hover": {
+          "background": "rgb(224, 231, 234)",
+          "expected": "rgb(224, 231, 234)"
+        },
+        "underline": {
+          "height": "2px",
+          "color": "rgb(36, 91, 196)"
+        },
+        "sourceJourney": "Sessions→Prop by keyboard Enter; replay session/cursor preserved",
+        "propContextLinks": [
+          {
+            "label": "Sessions",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=sessions&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          },
+          {
+            "label": "Prop firm",
+            "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=analytics&session=39b1d068edd64e75864f692f27237852&cursor=20&select=1&analytics_source=prop&area=testing&section=analytics&prop_session=review-context-session&attempt=review-context-attempt"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "findings": [],
+  "after": "cff018bb81aa08d9ad93c48fa72f420ff0820d9a177cabe47292650dfaca2db4",
+  "frozen": true,
+  "pass": true
+}

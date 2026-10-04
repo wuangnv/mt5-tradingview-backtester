@@ -90,6 +90,11 @@ never floating equity. URL state retains filters and report tab. Same-revision b
 keep the subtree, drafts and Monte Carlo result; a changed scope/revision discards obsolete results.
 
 Analytics has Sessions and Prop firm sources, each using Performance, Drawdown and Simulation.
+The shell owns those source links as nested navigation beside Analytics in the sub-header;
+below760px they form a second header row. They are not tabs inside the scrolling report body.
+The header cannot flex-shrink when long reports load; the active primary page stays visible
+in its horizontal navigation. Source links retain session/cursor and explicit Prop attempt keys.
+Dashboard and report content start24px below the header after duplicate title removal.
 Performance includes outcome/side summaries, explicit fixed UTC hour ranges, timezone-aware
 hour/day/month breakdowns, calendar and average frequency. Drawdown uses closed-trade balances
 and observed price excursion. Missing original fees, planned risk and R remain unknown.
@@ -108,3 +113,4 @@ Chart labels use HTML scale captions below900px to avoid shrinking SVG text on t
 dense tables scroll in a named keyboard-focusable region. Native select value/change and
 progressive picker behavior remain. CSV escapes spreadsheet formulas and includes provenance.
 Evidence and limitations: `foundation_v2/evidence/ui-fx-analytics-20261004/CHECKPOINT.md`.
+Header correction evidence: `foundation_v2/evidence/ui-workspace-header-20261004/CHECKPOINT.md`.

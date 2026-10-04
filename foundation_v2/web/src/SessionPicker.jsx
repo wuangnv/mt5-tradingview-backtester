@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import AnalyticsWorkspace, { analyticsViewResult, buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
-import { AnalyticsSources } from './FxAnalytics.jsx'
 import useReadRefresh from './useReadRefresh.js'
 import { dashboardMoney, readDashboardAnalytics } from './dashboardModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
@@ -139,7 +138,6 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
 
   return <section className={`wm-page fx-session-picker fxr-integrated-sessions fxr-${kind}-picker ${kind === 'replay' ? 'fxs-page' : ''}`} aria-label={kind === 'trade' ? 'Trades theo phiên' : kind === 'analytics' ? 'Analytics theo phiên' : 'Sessions'} data-testid={`${kind}-session-picker`}>
     <h1 className="sr-only">{kind === 'trade' ? 'Trades' : kind === 'analytics' ? 'Analytics' : 'Sessions'}</h1>
-    {kind === 'analytics' && <AnalyticsSources workspace={workspace} query={query} />}
     <div className="fxr-session-toolbar">
       <SessionSelect kind={kind} selected={selected} catalog={catalog} showArchived={showArchived} onSelect={navigate} disabled={Boolean(pending)} />
       <div className="fxr-session-actions">

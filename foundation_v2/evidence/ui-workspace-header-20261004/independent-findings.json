@@ -1,0 +1,21 @@
+{
+  "scope": "Independent header visual review",
+  "source_hash": "2c73cf1719cf80d84f8e4bb55f793de1576a5fef449fbef27c73583a7ae96d81",
+  "pass": false,
+  "findings": [
+    {
+      "kind": "Dropped selected Prop attempt context",
+      "evidence_type": "Static source review before parent patch; browser run after patch confirmed fix",
+      "detail": "Old AnalyticsSources passed prop_session and attempt overrides; moved ShellSubnav initially omitted both, and buildWorkspaceHref does not copy destination keys automatically"
+    },
+    {
+      "kind": "Mobile source row clipped outside header",
+      "evidence_type": "Actual light/dark360 screenshot and geometry",
+      "detail": "Primary top70 bottom110; secondary top110 bottom154; outer header stays bottom115; content begins140, source row invisible. Initial geometry-only harness asserted row ordering but missed containment",
+      "screenshot": "Initial analytics-dark-360.png visually inspected through view_image; same path subsequently overwritten by final passing capture",
+      "required_gate": "secondary.bottom <= header.bottom; center of source link hit-test resolves to that link; both rows visible simultaneously",
+      "receipt_note": "Historical clipping preserved by this receipt and original report.json secondary geometry; final screenshots show corrected source"
+    }
+  ],
+  "production_edits": false
+}

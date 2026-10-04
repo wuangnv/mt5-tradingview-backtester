@@ -1307,7 +1307,7 @@
 
 .fx-content:focus-visible { outline: 2px solid var(--fx-shell-accent); outline-offset: -2px; }
 
-.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { align-items: center; gap: 8px; }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { align-items: center; gap: 8px; flex-shrink: 0; }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a {
   min-height: 40px;
   height: 40px;
@@ -1328,6 +1328,65 @@
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a.is-active {
   color: var(--fx-shell-nav-selected-content);
   background: var(--fx-shell-nav-selected);
+}
+.fx-subnav-primary {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.fx-subsubnav {
+  display: flex;
+  flex: 0 0 auto;
+  align-self: stretch;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+}
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  height: 100%;
+  color: var(--wm-content-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 0;
+}
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a[aria-current='page'] {
+  color: var(--wm-content);
+}
+.fx-subsubnav a[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--wm-primary);
+}
+@media (max-width: 760px) {
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.fx-subsubnav) {
+    flex-wrap: wrap;
+    gap: 0;
+    padding-top: 6px;
+  }
+  .fx-subnav:has(.fx-subsubnav) .fx-subnav-primary {
+    flex-basis: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .fx-subsubnav {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+  .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a {
+    min-height: 44px;
+    height: 44px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a { transition: none; }

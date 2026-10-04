@@ -1,14 +1,10 @@
 import React, { useEffect, useId, useMemo, useState } from 'react'
 import { advancedAnalytics, DEFAULT_EXTRA_FILTERS, known, monteCarlo, number, outcomeOf, WEEKDAYS } from './tradingAnalyticsModel.js'
-import { buildWorkspaceHref } from './workspaceContext.js'
 import './fx-analytics.css'
 
 export const fmt = (value, suffix = '', digits = 2) => known(value) ? `${new Intl.NumberFormat('vi-VN', { maximumFractionDigits: digits }).format(Number(value))}${suffix}` : '—'
 export function SelectField({ label, value, onChange, options, disabled }) {
   return <label className="fxa-field"><span>{label}</span><select aria-label={label} value={value} onChange={event => onChange(event.target.value)} disabled={disabled}><button type="button" inert><selectedcontent /></button>{options.map(([key, text]) => <option value={key} key={key}>{text}</option>)}</select></label>
-}
-export function AnalyticsSources({ workspace, query, active = 'sessions' }) {
-  return <nav className="fxa-source-tabs" aria-label="Nguồn Analytics">{[['sessions', 'Sessions'], ['prop', 'Prop firm']].map(([source, label]) => <a key={source} aria-current={active === source ? 'page' : undefined} href={buildWorkspaceHref('analytics', workspace, query, { select: '1', analytics_source: source, area: 'testing', section: 'analytics', prop_session: query.get('prop_session'), attempt: query.get('attempt') })}>{label}</a>)}</nav>
 }
 export function FxAnalyticsFilters({ filters, onChange, extra, onExtra, rows, onExport, pending, ledgerOnly }) {
   const unique = key => [...new Set(rows.flatMap(row => key === 'tags' ? row.tags || [] : row[key] ? [row[key]] : []))].sort()
