@@ -1,0 +1,55 @@
+{
+  "cases": [
+    {
+      "width": 1440,
+      "view": "trade",
+      "overflow": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "width": 1440,
+      "view": "analytics",
+      "overflow": {
+        "width": 1440,
+        "scroll": 1440
+      }
+    },
+    {
+      "width": 768,
+      "view": "trade",
+      "overflow": {
+        "width": 768,
+        "scroll": 768
+      }
+    },
+    {
+      "width": 768,
+      "view": "analytics",
+      "overflow": {
+        "width": 768,
+        "scroll": 768
+      }
+    },
+    {
+      "width": 390,
+      "view": "trade",
+      "overflow": {
+        "width": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "width": 390,
+      "view": "analytics",
+      "overflow": {
+        "width": 390,
+        "scroll": 390
+      }
+    }
+  ],
+  "errors": [],
+  "violations": [],
+  "blocked": []
+}

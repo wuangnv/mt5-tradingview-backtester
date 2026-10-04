@@ -74,3 +74,37 @@ Evidence: `foundation_v2/evidence/ui-component-interactions-20261003/CHECKPOINT.
 The follow-up audit closes interaction gaps in disabled fields, keyboard-scroll regions, chart overlays and object controls. Toggle names remain stable with pressed state; one-time actions (play/pause, viewport range) do not claim a persistent selection. Chart opens with crosshair, so drawing requires an explicit tool choice. Annotation guidance appears only while drawing or reviewing a draft, and sidebar actions have separate44px rows.
 
 Loading/error/empty are distinct in Playbook; empty catalogs do not invite selection. Settings retains its safety/context facts but removes repeated footer/loading/return navigation. Retired custom chart-menu CSS and button translation were removed after checking live consumers. No hypothetical read-only field rules were added: there are no such fields in this UI. Evidence and exact source scopes: `foundation_v2/evidence/ui-component-audit-20261003/CHECKPOINT.md`.
+
+## Trades and Analytics reopened from FX Replay references — 04/10/2026
+
+This supersedes the earlier retained Trades/Analytics composition. Subnav identifies the page;
+duplicate visible Dashboard/Sessions/Trades/Analytics headings and manual reload actions are removed.
+Existing GET reads reconcile on focus/online without retrying writes. Uncertain session management
+responses keep their draft and mutation fence until the catalog is reconciled. Provider capability
+checks and intentional lifecycle actions remain distinct from reload.
+
+Trades presents one ledger with search, side/outcome/asset/tag/time filters, column selection,
+sortable headings, page size/navigation, row selection, detail and CSV. The same filtered rows own
+Analytics metrics and export; filtered closed balance is hypothetical from original capital,
+never floating equity. URL state retains filters and report tab. Same-revision background reads
+keep the subtree, drafts and Monte Carlo result; a changed scope/revision discards obsolete results.
+
+Analytics has Sessions and Prop firm sources, each using Performance, Drawdown and Simulation.
+Performance includes outcome/side summaries, explicit fixed UTC hour ranges, timezone-aware
+hour/day/month breakdowns, calendar and average frequency. Drawdown uses closed-trade balances
+and observed price excursion. Missing original fees, planned risk and R remain unknown.
+SL/RR uses the read-only experiment endpoint and marks ambiguous/unsupported trades; configured
+stop distance is a what-if assumption. Monte Carlo is local seeded bootstrap/configured win-loss,
+bounded to250000steps, and is not a forecast or a write to the canonical ledger.
+
+Prop selects a persisted attempt report and binds its replay session/dataset/hash/branch/exact
+event/cursor/phase/currency. It includes only closures in the report phase and attempt interval,
+from that phase's initial capital; carried positions belong to the close phase. Challenge
+equity/objectives remain the report's own snapshots. No unrelated session is used as fallback.
+An empty actual Prop catalog is an empty state, not a fabricated challenge.
+
+Project shell hover/selected tokens and existing positive/negative/primary tokens own the colors.
+Chart labels use HTML scale captions below900px to avoid shrinking SVG text on tablets/mobile;
+dense tables scroll in a named keyboard-focusable region. Native select value/change and
+progressive picker behavior remain. CSV escapes spreadsheet formulas and includes provenance.
+Evidence and limitations: `foundation_v2/evidence/ui-fx-analytics-20261004/CHECKPOINT.md`.

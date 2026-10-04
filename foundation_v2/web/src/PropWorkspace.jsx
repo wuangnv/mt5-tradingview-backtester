@@ -268,6 +268,17 @@ export default function PropWorkspace({ workspace }) {
     if (activeTab === 'reports' || activeTab === 'notion') loadReports()
   }, [activeTab, loadReports])
 
+  useEffect(() => {
+    const refresh = () => {
+      if (pendingAction) return
+      loadSessions({ preserveSelection: true })
+      if (activeTab === 'reports' || activeTab === 'notion') loadReports()
+    }
+    window.addEventListener('focus', refresh)
+    window.addEventListener('online', refresh)
+    return () => { window.removeEventListener('focus', refresh); window.removeEventListener('online', refresh) }
+  }, [activeTab, loadReports, loadSessions, pendingAction])
+
   const updateDraft = (field, value) => setDraft((current) => ({ ...current, [field]: value }))
 
   const createSession = useCallback(async (event) => {
@@ -633,7 +644,6 @@ export default function PropWorkspace({ workspace }) {
           <section className="prop-resume" aria-label="Resume state">
             <div className="prop-section-head">
               <div><strong>Phiên đang chọn</strong><span>Trạng thái đã lưu</span></div>
-              {selected.session && <button type="button" className="prop-refresh" onClick={() => openSession(selected.session)}>Tải lại</button>}
             </div>
 
             {selected.status === 'loading' && <StateMessage kind="loading" testId="prop-selection-loading">Đang đọc attempts và resume state…</StateMessage>}
@@ -784,7 +794,6 @@ export default function PropWorkspace({ workspace }) {
                 <option value="hindsight_exploratory">hindsight_exploratory</option>
               </select>
             </label>
-            <button type="button" className="ui-button ui-button--neutral prop-refresh" onClick={loadReports}>Tải lại</button>
           </div>
 
           {reports.status === 'loading' && <StateMessage kind="loading" testId="prop-reports-loading">Đang đọc reports…</StateMessage>}
@@ -828,7 +837,7 @@ export default function PropWorkspace({ workspace }) {
       )}
 
       {activeTab === 'notion' && (
-        <NotionConnector workspace={workspace} reports={reports} onRefresh={loadReports} />
+        <NotionConnector workspace={workspace} reports={reports} />
       )}
     </main>
   )

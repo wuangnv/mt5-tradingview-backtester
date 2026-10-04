@@ -67,7 +67,7 @@ function createLedgerIds(workspace, requestId) {
   }
 }
 
-export default function NotionConnector({ workspace, reports, onRefresh }) {
+export default function NotionConnector({ workspace, reports }) {
   const [flow, setFlow] = useState(NOTION_FLOW_STATES.SESSION_READY)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [oauth, setOauth] = useState({ provider: 'notion', state: null, status: 'idle', error: null })
@@ -621,9 +621,6 @@ export default function NotionConnector({ workspace, reports, onRefresh }) {
       {!items.length && !isLoading && <StateMessage kind="empty" testId="notion-empty">Chưa có report để preview. Hãy tạo hoặc tải một Prop report ở tab Reports trước.</StateMessage>}
       {isLoading && <StateMessage kind="loading" testId="notion-loading">Đang đọc report từ backend local…</StateMessage>}
       {reports?.status === 'error' && <StateMessage kind="error" testId="notion-reports-error">Không đọc được report: {reports.error}</StateMessage>}
-      <div className="notion-footer-actions">
-        <button type="button" className="prop-refresh" onClick={onRefresh} disabled={isLoading}>Tải lại reports</button>
-      </div>
     </section>
   )
 }

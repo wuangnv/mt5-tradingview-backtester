@@ -1,0 +1,183 @@
+{
+  "cases": [
+    {
+      "theme": "light",
+      "width": 768,
+      "inactiveHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "activeHover": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "positive": "rgb(36, 112, 70)",
+      "donut": "conic-gradient(rgb(36, 112, 70) 0%, rgb(36, 112, 70) 100%, rgb(36, 91, 196) 100%, rgb(36, 91, 196) 100%, rgb(214, 221, 225) 100%, rgb(214, 221, 225) 100%)",
+      "primaryRest": {
+        "background": "rgb(36, 91, 196)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "primaryHover": {
+        "background": "rgb(29, 78, 169)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "axe": []
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "inactiveHover": {
+        "background": "rgb(21, 26, 30)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(21, 26, 30)",
+        "selected": "rgb(32, 34, 37)",
+        "selectedContent": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "positive": "rgb(109, 193, 139)",
+        "negative": "rgb(239, 137, 137)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "activeHover": {
+        "background": "rgb(32, 34, 37)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(21, 26, 30)",
+        "selected": "rgb(32, 34, 37)",
+        "selectedContent": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "positive": "rgb(109, 193, 139)",
+        "negative": "rgb(239, 137, 137)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "positive": "rgb(109, 193, 139)",
+      "donut": "conic-gradient(rgb(109, 193, 139) 0%, rgb(109, 193, 139) 100%, rgb(82, 143, 255) 100%, rgb(82, 143, 255) 100%, rgb(65, 67, 71) 100%, rgb(65, 67, 71) 100%)",
+      "primaryRest": {
+        "background": "rgb(36, 91, 196)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(21, 26, 30)",
+        "selected": "rgb(32, 34, 37)",
+        "selectedContent": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "positive": "rgb(109, 193, 139)",
+        "negative": "rgb(239, 137, 137)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "primaryHover": {
+        "background": "rgb(29, 78, 169)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(21, 26, 30)",
+        "selected": "rgb(32, 34, 37)",
+        "selectedContent": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "positive": "rgb(109, 193, 139)",
+        "negative": "rgb(239, 137, 137)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "axe": []
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "inactiveHover": {
+        "background": "rgb(224, 231, 234)",
+        "color": "rgb(29, 41, 48)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "activeHover": {
+        "background": "rgb(240, 230, 209)",
+        "color": "rgb(90, 58, 6)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "positive": "rgb(36, 112, 70)",
+      "donut": "conic-gradient(rgb(36, 112, 70) 0%, rgb(36, 112, 70) 100%, rgb(36, 91, 196) 100%, rgb(36, 91, 196) 100%, rgb(214, 221, 225) 100%, rgb(214, 221, 225) 100%)",
+      "primaryRest": {
+        "background": "rgb(36, 91, 196)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "primaryHover": {
+        "background": "rgb(29, 78, 169)",
+        "color": "rgb(255, 255, 255)",
+        "hover": "rgb(224, 231, 234)",
+        "selected": "rgb(240, 230, 209)",
+        "selectedContent": "rgb(90, 58, 6)",
+        "content": "rgb(29, 41, 48)",
+        "positive": "rgb(36, 112, 70)",
+        "negative": "rgb(181, 51, 51)",
+        "action": "rgb(36, 91, 196)",
+        "actionHover": "rgb(29, 78, 169)",
+        "onPrimary": "rgb(255, 255, 255)"
+      },
+      "axe": []
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

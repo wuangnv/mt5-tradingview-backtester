@@ -1,0 +1,23 @@
+{
+  "scope": "Actual GET-only local QA services; fixture cases explicitly labeled",
+  "cases": [
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/1440",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/1440",
+    "real Prop empty source: dark/1440",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/768",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/768",
+    "real Prop empty source: dark/768",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/390",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/390",
+    "real Prop empty source: dark/390",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/360",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/360",
+    "real Prop empty source: dark/360",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: light/1440",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: light/1440",
+    "real Prop empty source: light/1440"
+  ],
+  "errors": [],
+  "blocked": [],
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     nodes: 1\n+   }\n+ ]\n- []\n\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/tests/fxAnalytics.browser.mjs:59:12"
+}

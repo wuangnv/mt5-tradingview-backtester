@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DRAWING_LABELS } from './useReplayDrawings.js'
 
 function DrawingRow({ record, drawings }) {
@@ -20,11 +20,18 @@ function DrawingRow({ record, drawings }) {
 }
 
 export default function ReplayObjects({ drawings }) {
+  useEffect(() => {
+    const controller = new AbortController()
+    const refresh = () => { if (!drawings.busy) drawings.reload(controller.signal) }
+    window.addEventListener('focus', refresh)
+    window.addEventListener('online', refresh)
+    return () => { controller.abort(); window.removeEventListener('focus', refresh); window.removeEventListener('online', refresh) }
+  }, [drawings.reload, drawings.busy])
   return <section className="replay-objects" aria-label="Đối tượng chart">
     <h2>Đối tượng chart</h2>
     <p>Nháp có nét đứt; đối tượng đã lưu dùng nét liền. Ẩn/khóa lưu trên máy này. Khóa ngăn đổi nhãn và xóa.</p>
     {drawings.saved.status === 'loading' && <p role="status">Đang tải đối tượng…</p>}
-    {(drawings.error || drawings.saved.error) && <p role="alert">{drawings.error || drawings.saved.error} <button type="button" disabled={Boolean(drawings.busy)} onClick={() => drawings.reload()}>Tải lại đối tượng</button></p>}
+    {(drawings.error || drawings.saved.error) && <p role="alert">{drawings.error || drawings.saved.error}</p>}
     {!drawings.objects.length && drawings.saved.status !== 'loading' && <p>Chưa có đối tượng thuộc phiên và cutoff này.</p>}
     <ul>{drawings.objects.map(record => <DrawingRow key={`${record.record_id}:${record.revision || 0}`} record={record} drawings={drawings} />)}</ul>
   </section>

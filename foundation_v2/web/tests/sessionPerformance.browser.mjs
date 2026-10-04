@@ -38,7 +38,7 @@ try {
       const style = getComputedStyle(element)
       return { background: style.backgroundColor, outline: style.outlineStyle, shadow: style.boxShadow }
     })
-    await page.getByRole('heading', { name: 'Sessions', exact: true }).click()
+    await page.locator('.fxr-session-catalog-status').click()
     const resting = await settled(picker)
     await picker.hover()
     assert.notEqual((await settled(picker)).background, resting.background)

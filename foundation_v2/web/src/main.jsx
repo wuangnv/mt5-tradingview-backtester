@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import LearnWorkspace from './LearnWorkspace.jsx'
 import PropWorkspace from './PropWorkspace.jsx'
+import PropAnalytics from './PropAnalytics.jsx'
 import ReplayWorkspace from './ReplayWorkspace.jsx'
 import FxReplayShell from './FxReplayShell.jsx'
 import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
@@ -71,7 +72,7 @@ function App() {
     content = <JournalWorkspace workspace={workspace} query={query} />
     mode = 'Journal'
   } else if (activeView === 'analytics') {
-    content = showSessionAnalytics ? <SessionPicker kind="analytics" workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
+    content = query.get('analytics_source') === 'prop' ? <PropAnalytics workspace={workspace} query={query} /> : showSessionAnalytics ? <SessionPicker kind="analytics" workspace={workspace} query={query} /> : <AnalyticsWorkspace workspace={workspace} query={query} />
     mode = 'Analytics'
   } else if (activeView === 'trade') {
     content = showTradeLedger ? <SessionPicker kind="trade" workspace={workspace} query={query} /> : <TradeWorkspace workspace={workspace} query={query} />

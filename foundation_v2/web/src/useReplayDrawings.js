@@ -71,7 +71,7 @@ export function useReplayDrawings({ workspace, sessionId, rows, cutoff, instrume
     setBusy(record.record_id)
     setError('')
     try { await operation(activeGeneration) } catch (cause) {
-      if (activeGeneration === generation.current) setError(cause.status === 409 ? 'Đối tượng đã đổi ở nơi khác. Tải lại đối tượng trước khi sửa tiếp.' : cause.status === 404 ? 'Đối tượng đã bị xóa hoặc không còn trong workspace. Tải lại danh sách để đồng bộ.' : String(cause.message || cause))
+      if (activeGeneration === generation.current) setError(cause.status === 409 ? 'Đối tượng đã đổi ở nơi khác. Đối chiếu dữ liệu nguồn đối tượng trước khi sửa tiếp.' : cause.status === 404 ? 'Đối tượng đã bị xóa hoặc không còn trong workspace. Đối chiếu dữ liệu nguồn danh sách để đồng bộ.' : String(cause.message || cause))
     } finally {
       if (activeGeneration === generation.current) { lock.current = false; setBusy('') }
     }

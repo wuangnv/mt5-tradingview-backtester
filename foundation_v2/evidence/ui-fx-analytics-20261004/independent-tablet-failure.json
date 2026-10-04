@@ -1,0 +1,201 @@
+{
+  "scope": "read-only light768 chart captions and lower Performance, metric units/timezone",
+  "before": "f53c720814eadc394251f28913ed924423e5bead1f6ecad9dfc60c5f718355e6",
+  "after": "f53c720814eadc394251f28913ed924423e5bead1f6ecad9dfc60c5f718355e6",
+  "errors": [],
+  "blocked": [],
+  "cases": [
+    {
+      "chartScale": {
+        "display": "grid",
+        "font": "12px",
+        "text": "Thấp nhất 100.000 USD\nCao nhất 100.075 USD\nBắt đầu\n60 lệnh đóng"
+      }
+    },
+    {
+      "title": "Performance by time",
+      "layout": {
+        "left": 106,
+        "right": 736,
+        "width": 630,
+        "viewport": 768,
+        "clipped": []
+      },
+      "text": "Performance by time\n00\n72,5 USD\n01\n2,5 USD\n02\n0 USD\n03\n0 USD\n04\n0 USD\n05\n0 USD\n06\n0 USD\n07\n0 USD\n08\n0 USD\n09\n0 USD\n10\n0 USD\n11\n0 USD\n12\n0 USD\n13\n0 USD\n14\n0 USD\n15\n0 USD\n16\n0 USD\n17\n0 USD\n18\n0 USD\n19\n0 USD\n20\n0 USD\n21\n0 USD\n22\n0 USD\n23\n0 USD"
+    },
+    {
+      "title": "Performance by day",
+      "layout": {
+        "left": 106,
+        "right": 409,
+        "width": 303,
+        "viewport": 768,
+        "clipped": []
+      },
+      "text": "Performance by day\nT2\n75 USD\nT3\n0 USD\nT4\n0 USD\nT5\n0 USD\nT6\n0 USD\nT7\n0 USD\nCN\n0 USD"
+    },
+    {
+      "title": "Performance by month",
+      "layout": {
+        "left": 433,
+        "right": 736,
+        "width": 303,
+        "viewport": 768,
+        "clipped": []
+      },
+      "text": "Performance by month\n2024-01\n75 USD"
+    },
+    {
+      "title": "Performance calendar",
+      "layout": {
+        "left": 106,
+        "right": 736,
+        "width": 630,
+        "viewport": 768,
+        "clipped": []
+      },
+      "text": "Performance calendar\nTháng trên lịch\n2024-01\nT2\nT3\nT4\nT5\nT6\nT7\nCN\n1\n75\n60 lệnh\n2\n—\n3\n—\n4\n—\n5\n—\n6\n—\n7\n—\n8\n—\n9\n—\n10\n—\n11\n—\n12\n—\n13\n—\n14\n—\n15\n—\n16\n—\n17\n—\n18\n—\n19\n—\n20\n—\n21\n—\n22\n—\n23\n—\n24\n—\n25\n—\n26\n—\n27\n—\n28\n—\n29\n—\n30\n—\n31\n—\nUSD · ngày đóng theo UTC · — = không có lệnh trong phạm vi đã chọn"
+    },
+    {
+      "title": "Average trade frequency",
+      "layout": {
+        "left": 106,
+        "right": 736,
+        "width": 630,
+        "viewport": 768,
+        "clipped": []
+      },
+      "text": "Average trade frequency\nTính cả kỳ không có lệnh giữa ngày đóng đầu/cuối trong phạm vi đã chọn\nLệnh / ngày\n60\nLệnh / tuần\n60\nLệnh / tháng\n60"
+    },
+    {
+      "hourKeyboardScroll": {
+        "before": 0,
+        "scroll": 762,
+        "width": 630,
+        "after": 3
+      }
+    },
+    {
+      "metric": "count",
+      "hourValues": [
+        "58",
+        "2",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "metric": "winRate",
+      "hourValues": [
+        "100%",
+        "100%",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—",
+        "—"
+      ]
+    },
+    {
+      "metric": "net",
+      "hourValues": [
+        "72,5 USD",
+        "2,5 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD"
+      ]
+    },
+    {
+      "timezone": "Asia/Ho_Chi_Minh",
+      "hourValues": [
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "72,5 USD",
+        "2,5 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD",
+        "0 USD"
+      ],
+      "session": "Performance by session\nCác khoảng giờ đóng cố định theo UTC; không điều chỉnh DST\n00–08 UTC\n75 USD\n60 lệnh · 100% thắng\n08–13 UTC\n0 USD\n0 lệnh · — thắng\n13–21 UTC\n0 USD\n0 lệnh · — thắng\n21–24 UTC\n0 USD\n0 lệnh · — thắng"
+    }
+  ],
+  "api": [
+    "http://127.0.0.1:5180/src/analytics-story.css",
+    "http://127.0.0.1:5180/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics"
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n+   '72,5 USD',\n+   '2,5 USD',\n    '0 USD',\n    '0 USD',\n    '0 USD',\n    '0 USD',\n    '0 USD',\n...\n    '0 USD',\n-   '75 USD',\n    '0 USD',\n    '0 USD',\n    '0 USD',\n    '0 USD',\n    '0 USD',\n-   '0 USD'\n  ]\n"
+}

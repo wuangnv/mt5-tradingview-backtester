@@ -1,0 +1,211 @@
+{
+  "scope": "Explicit report/state/journal fixtures; actual replay GET data and experiments remain service-backed; no writes",
+  "cases": [
+    "fixture Prop report reads real historical ledger at exact report event; no later trades; axe390",
+    "unbound Prop keeps objectives with unavailable analytics",
+    "wrong phase rejected even with same valid dataset/cursor",
+    "Prop clear placeholder safe and URL cleared",
+    "labeled fixture partial",
+    "labeled fixture stale",
+    "labeled fixture blocked",
+    "labeled fixture empty",
+    "labeled fixture unknown",
+    "labeled fixture denied",
+    "labeled fixture malformed",
+    "GET error recovery on network return",
+    "Journal tag annotations filter all metrics and exact CSV with provenance"
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v2/prop/reports",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": "?cursor_index=20&event_sequence=60"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?cursor_index=20&event_sequence=60&stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": "?cursor_index=20&event_sequence=60"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?cursor_index=20&event_sequence=60&stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "query": ""
+    }
+  ],
+  "errors": []
+}

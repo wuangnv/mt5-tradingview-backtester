@@ -336,6 +336,17 @@ export default function ReplayWorkspace({ workspace, query }) {
   }, [datasetDraft, requestedDataset, workspace])
 
   useEffect(() => {
+    const refresh = () => {
+      if (pendingAction) return
+      loadDatasets()
+      if (state.status === 'error' && sessionId && requestedCursorValid) loadSession(sessionId, requestedCursor)
+    }
+    window.addEventListener('focus', refresh)
+    window.addEventListener('online', refresh)
+    return () => { window.removeEventListener('focus', refresh); window.removeEventListener('online', refresh) }
+  }, [loadDatasets, loadSession, pendingAction, requestedCursor, requestedCursorValid, sessionId, state.status])
+
+  useEffect(() => {
     if (requestedSession) {
       loadDatasets()
       if (!requestedCursorValid) {
@@ -663,7 +674,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       )}
 
       {state.status === 'loading' && <div className="replay-message">Đang tải trạng thái replay…</div>}
-      {state.status === 'error' && <div className="replay-message replay-error" role="alert">Không đọc được replay: {state.error} <button type="button" onClick={() => sessionId ? loadSession(sessionId) : loadDatasets()}>Thử lại</button></div>}
+      {state.status === 'error' && <div className="replay-message replay-error" role="alert">Không đọc được replay: {state.error}</div>}
 
       {replay && (
         <>
@@ -876,7 +887,7 @@ export default function ReplayWorkspace({ workspace, query }) {
               <section className="replay-watchlist" aria-label="Danh sách dữ liệu local">
                 <h2>Dữ liệu local</h2>
                 <p>Đổi instrument hoặc timeframe bằng dataset đã đăng ký. Mỗi lựa chọn mở phiên mới, không đổi phiên hiện tại.</p>
-                {datasetState.status === 'error' && <p role="alert">{datasetState.error}<button type="button" onClick={loadDatasets}>Tải lại catalog</button></p>}
+                {datasetState.status === 'error' && <p role="alert">{datasetState.error}</p>}
                 <ul>{datasetState.items.map(item => <li key={item.dataset_id}>
                   <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {item.timeframe || `${item.timeframe_seconds || '?'}s`}</a>
                   <small>{item.quality_status || 'unverified'} · {item.row_count ?? 'N/A'} nến</small>

@@ -88,6 +88,13 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
   const requestSeq = useRef(0)
 
   useEffect(() => {
+    const refresh = () => setReloadToken(token => token + 1)
+    window.addEventListener('focus', refresh)
+    window.addEventListener('online', refresh)
+    return () => { window.removeEventListener('focus', refresh); window.removeEventListener('online', refresh) }
+  }, [])
+
+  useEffect(() => {
     const requestId = ++requestSeq.current
     const controller = new AbortController()
     setSession({ status: 'loading', payload: null, error: null })
@@ -145,7 +152,6 @@ export default function SettingsWorkspace({ workspace = 'tenant-a', query }) {
         <div className="settings-topbar-actions">
           <a className="context-link" href={nextLink}>{returnLabel}</a>
           {returnView !== 'learn' && <a className="context-link" href={learnHref}>Learn</a>}
-          <button type="button" className="settings-refresh" onClick={() => setReloadToken((token) => token + 1)} disabled={[session, notion, execution].some((state) => state.status === 'loading')}>Làm mới</button>
         </div>
       </header>
 

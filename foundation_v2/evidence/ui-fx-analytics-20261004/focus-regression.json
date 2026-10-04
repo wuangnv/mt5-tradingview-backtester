@@ -1,0 +1,16 @@
+{
+  "scope": "real GET-only session with explicit later catalog revision metadata fixture; no database writes",
+  "cases": [
+    "same revision focus retains filtered Simulation drafts and result",
+    "changed revision restores URL filters/Simulation tab and historical cursor20"
+  ],
+  "requests": [
+    "?cursor_index=20",
+    "?side=buy&cursor_index=20",
+    "?side=buy&cursor_index=20",
+    "?side=buy&cursor_index=20",
+    "?side=buy&cursor_index=20"
+  ],
+  "errors": [],
+  "blocked": []
+}

@@ -18,7 +18,6 @@ function SymbolChart({ items }) {
 
 export default function DashboardPerformance({ workspace, filters, reload, analyticsHref, controls, dateControls }) {
   const [state, setState] = useState({ status: 'loading', payload: null, error: '', key: '' })
-  const [retry, setRetry] = useState(0)
   const key = JSON.stringify([workspace, filters.session, filters.from, filters.to])
   const filterError = dashboardFilterError(filters)
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function DashboardPerformance({ workspace, filters, reload, analy
       if (!controller.signal.aborted) setState({ status: 'error', payload: null, error: error.message, key })
     })
     return () => controller.abort()
-  }, [key, reload, retry, filterError])
+  }, [key, reload, filterError])
   // Hide results immediately when scope changes, before its request completes.
   const performance = !filterError && state.key === key ? state.payload?.performance : null
   const metrics = performance?.metrics
@@ -42,7 +41,7 @@ export default function DashboardPerformance({ workspace, filters, reload, analy
   return <section className="fx-dashboard-results" aria-label="Performance" aria-busy={loading}>
     <div className="fx-dashboard-section-head"><h2>Performance</h2><div className="fx-dashboard-performance-filters">{controls}</div></div>
     {dateControls}
-    <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{notice}</span>}{state.status === 'error' && !filterError && <button type="button" onClick={() => setRetry(value => value + 1)}>Thử lại kết quả</button>}</div>
+    <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{notice}</span>}</div>
     <div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">
       <Metric title="Time invested" value="—" detail="Chưa có dữ liệu thời gian luyện tập" icon="◷" />
       <Metric title="Historical time replayed" value="—" detail="Chưa có dữ liệu thời gian replay" icon="↶" />

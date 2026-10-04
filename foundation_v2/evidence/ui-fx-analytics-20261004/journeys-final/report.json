@@ -1,0 +1,33 @@
+{
+  "scope": "Actual GET-only local QA services; fixture cases explicitly labeled",
+  "sourceBefore": "f53c720814eadc394251f28913ed924423e5bead1f6ecad9dfc60c5f718355e6",
+  "cases": [
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/1440",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/1440",
+    "real Prop empty source: dark/1440",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/768",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/768",
+    "real Prop empty source: dark/768",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/390",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/390",
+    "real Prop empty source: dark/390",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: dark/360",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: dark/360",
+    "real Prop empty source: dark/360",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: light/1440",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: light/1440",
+    "real Prop empty source: light/1440",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: light/768",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: light/768",
+    "real Prop empty source: light/768",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: light/390",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: light/390",
+    "real Prop empty source: light/390",
+    "real analytics tabs, filters, MC oracle, SL config, CSV, responsive and axe: light/360",
+    "real Trades pagination, columns, sort, selection/detail, filters and axe: light/360",
+    "real Prop empty source: light/360"
+  ],
+  "errors": [],
+  "blocked": [],
+  "sourceAfter": "f53c720814eadc394251f28913ed924423e5bead1f6ecad9dfc60c5f718355e6"
+}

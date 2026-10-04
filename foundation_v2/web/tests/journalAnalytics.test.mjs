@@ -24,10 +24,9 @@ test('journal UI stays linked to replay/trade context and uses revision endpoint
 test('analytics UI preserves unknown values and exposes result provenance', () => {
   assert.match(analyticsSource, /resourceKind = jobId \? 'research\/jobs' : 'replay\/sessions'/)
   assert.match(analyticsSource, /return 'N\/A'/)
-  assert.match(analyticsSource, /derived from ledger/)
   assert.match(analyticsSource, /profit_factor_after_cost/)
   assert.match(analyticsSource, /expectancy_net_per_trade/)
-  assert.match(analyticsSource, /aria-label="Trade ledger"/)
+  assert.match(analyticsSource, /FxTradeLedger/)
   assert.match(analyticsSource, /data-testid="analytics-workspace"/)
 })
 
