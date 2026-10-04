@@ -1,0 +1,103 @@
+{
+  "scope": "Actual local GET-only QA replay services; fixture state overrides separately labeled; no database writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "TimeoutError: page.reload: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"networkidle\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:5180/?workspace=tenant-a&view=replay&select=1&session=39b1d068edd64e75864f692f27237852\"\u001b[22m\n"
+}

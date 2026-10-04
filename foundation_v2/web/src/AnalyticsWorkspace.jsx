@@ -171,7 +171,7 @@ function analyticsQuery(filters) {
   return params
 }
 
-function analyticsViewResult(view) {
+export function analyticsViewResult(view) {
   if (!view || typeof view !== 'object') return null
   const provenance = view.provenance && typeof view.provenance === 'object' ? view.provenance : {}
   const scope = view.scope && typeof view.scope === 'object' ? view.scope : {}

@@ -32,7 +32,8 @@ One identical grid for every page was rejected: forms, long ledgers, lessons and
 | Group | Pattern | Existing source |
 |---|---|---|
 | Dashboard | Three start actions → filtered Performance metrics/charts → searchable Recent Sessions | DashboardSessions, DashboardPerformance |
-| Sessions / Trades | Compact catalog/scope → selected session details → ledger | SessionPicker |
+| Sessions | Session scope/actions → summary/description → performance → Recent Trades | SessionPicker, SessionPerformance |
+| Trades | Compact catalog/scope → selected session → detailed ledger | SessionPicker, AnalyticsWorkspace |
 | Analytics | Filters → metrics/main balance evidence → ledger → review detail | AnalyticsWorkspace |
 | Data / Playbook | Catalog/list → selected detail/editor, import or version diff | DataDeskWorkspace, PlaybookWorkspace |
 | Research | Data scope/quality → run assumptions → job result/checkpoint | ResearchWorkspace |
@@ -55,6 +56,12 @@ Recent Sessions has independent search/status/sort, six-row pagination and a nat
 Dropdown and navigation refinement: `fx-shell-story.css` owns the project shell hover/selected palette, shared by aside and subnav. Subnav items use an inset40px rounded target rather than a full-height tint/underline. Select triggers, popup options and Recent Sessions menu items have neutral pointer hover; the checked option retains its checkmark and a distinct selected+hover state. Opening a select by pointer does not force a blue glow; keyboard `:focus-visible` remains explicit. Native value/change, disabled and progressive fallback behavior stay intact. This is a project interaction change, not a shared-system release. Evidence: `foundation_v2/evidence/ui-dashboard-controls-20261003/CHECKPOINT.md`.
 
 ## Component interaction refinement
+
+### Sessions layout reopened by owner
+
+Sessions follows the owner's FX Replay reference: native session scope and existing management actions, session summary/description, closed-trade balance plus monthly and weekday Net P/L, six metrics, and paginated Recent Trades. This replaces Sessions' embedded four-metric Analytics summary only; Trades and Analytics retain their own layouts. `SessionPicker` owns catalog, revision-aware mutations and a scope-keyed/abortable analytics read; `SessionPerformance` uses the existing analytics adapter/model and renders that selected scope. Native dropdown interactions reuse the Dashboard system.
+
+Balance excludes floating P/L. Average payoff is distinct from planned Risk/Reward and stays unknown when unavailable. Calendar P/L anchors to the last historical close in UTC; week starts Monday. Missing date/PnL makes time summaries unknown. Charts show the latest12months with reachable overflow; weekday bars include signed Net P/L across the session. Recent Trades sorts latest close first, offers5/10/20rows and page selection, and links each trade to its existing Analytics detail. Archive/restore replaces irreversible deletion; duplicate, metadata conflict and uncertain-write fences stay intact. Evidence: `foundation_v2/evidence/ui-sessions-fx-20261004/CHECKPOINT.md`.
 
 Owner feedback after migration: selection and child components still felt basic. `component-interactions.css` extends the same project pattern with distinct hover, persistent selection, open picker and keyboard focus, plus short color transitions and reduced-motion handling. Selected records use a subtle full-row tint/outline; no decorative left rail or nested card. Dashboard results show the actual selected row/checkmark; Data/Prop controls expose their selected state to assistive technology.
 

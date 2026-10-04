@@ -1,0 +1,147 @@
+{
+  "scope": "Actual local GET-only QA replay services; fixture state overrides separately labeled; no database writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "empty",
+      "pass": true
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "blocked",
+      "pass": true
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "partial",
+      "pass": true
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "stale",
+      "pass": true
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "error",
+      "pass": true
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "malformed",
+      "pass": true
+    },
+    {
+      "source": "labeled state fixture",
+      "state": "missing-date",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "PASS"
+}

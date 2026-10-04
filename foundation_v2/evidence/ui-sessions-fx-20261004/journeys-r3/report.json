@@ -1,0 +1,66 @@
+{
+  "scope": "Actual local GET-only QA replay services; fixture state overrides separately labeled; no database writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "source": "actual QA API",
+      "tradeDrilldown": true,
+      "chartResume": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "source": "actual QA API",
+      "closedTrades": 60,
+      "netPnl": 75,
+      "rowsAndPagination": true,
+      "editCancel": true,
+      "axeViolations": 0,
+      "incompleteRules": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "status": "FAIL",
+  "failure": "TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('session-performance') to be visible\u001b[22m\n"
+}

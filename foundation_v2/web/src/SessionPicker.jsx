@@ -1,8 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
+import AnalyticsWorkspace, { analyticsViewResult, buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
+import SessionPerformance from './SessionPerformance.jsx'
+import { dashboardMoney, readDashboardAnalytics } from './dashboardModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import { duplicateSession, fetchReplaySessions, readLastSession, rememberSession, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
 import './session-picker.css'
+import './session-performance.css'
 
 function unknownValue(value, fallback = 'Chưa rõ') {
   return value === null || value === undefined || String(value).trim() === '' ? fallback : String(value)
@@ -49,7 +52,11 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   const [pending, setPending] = useState('')
   const [notice, setNotice] = useState(null)
   const [needsRefresh, setNeedsRefresh] = useState(false)
+  const [performanceState, setPerformance] = useState({ status: 'loading', payload: null, error: null })
   const item = catalog.items.find((entry) => entry.record_id === selected)
+  const performanceScope = `${workspace}:${item?.record_id}:${item?.revision}:${reloadToken}`
+  const performance = performanceState.scope === performanceScope ? performanceState : { status: 'loading', payload: null, error: null }
+  const performanceModel = useMemo(() => performance.payload?.analytics_available === true ? buildAnalyticsModel(analyticsViewResult(performance.payload)) : null, [performance.payload])
   const selectedQuery = useMemo(() => item ? sessionAnalyticsQuery(query, item, { summary: kind === 'replay' }) : query, [item, kind, query])
   const newHref = buildWorkspaceHref('replay', workspace, query, { surface: 'workspace', fresh: '1', session: null, dataset: null, cursor: null, cutoff: null, playbook: null, playbook_revision: null })
 
@@ -69,6 +76,18 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   useEffect(() => {
     if (item) rememberSession(workspace, item.record_id)
   }, [workspace, item])
+
+  useEffect(() => {
+    if (kind !== 'replay' || !item) return
+    const controller = new AbortController()
+    setPerformance({ scope: performanceScope, status: 'loading', payload: null, error: null })
+    readDashboardAnalytics(workspace, item.record_id, controller.signal).then(payload => {
+      if (!controller.signal.aborted) setPerformance({ scope: performanceScope, status: payload.analytics_available && !payload.blocked_by_data?.length ? 'ready' : 'blocked', payload, error: null })
+    }).catch(error => {
+      if (!controller.signal.aborted) setPerformance({ scope: performanceScope, status: 'error', payload: null, error: error.message })
+    })
+    return () => controller.abort()
+  }, [workspace, kind, item?.record_id, item?.revision, reloadToken])
 
   useEffect(() => {
     if (!item || !managementIntent || kind !== 'replay') return
@@ -114,11 +133,12 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
   const available = catalog.status === 'ready' && Boolean(item)
   const actionDisabled = Boolean(pending) || needsRefresh || !available
 
-  return <section className={`wm-page fx-session-picker fxr-integrated-sessions fxr-${kind}-picker`} aria-label={kind === 'trade' ? 'Trades theo phiên' : kind === 'analytics' ? 'Analytics theo phiên' : 'Sessions'} data-testid={`${kind}-session-picker`}>
-    <header className="wm-page-header fxr-page-header"><h1>{kind === 'trade' ? 'Trades' : kind === 'analytics' ? 'Analytics' : 'Sessions'}</h1><a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a></header>
+  return <section className={`wm-page fx-session-picker fxr-integrated-sessions fxr-${kind}-picker ${kind === 'replay' ? 'fxs-page' : ''}`} aria-label={kind === 'trade' ? 'Trades theo phiên' : kind === 'analytics' ? 'Analytics theo phiên' : 'Sessions'} data-testid={`${kind}-session-picker`}>
+    <header className="wm-page-header fxr-page-header"><h1>{kind === 'trade' ? 'Trades' : kind === 'analytics' ? 'Analytics' : 'Sessions'}</h1>{kind !== 'replay' && <a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a>}</header>
     <div className="fxr-session-toolbar">
       <SessionSelect kind={kind} selected={selected} catalog={catalog} showArchived={showArchived} onSelect={navigate} disabled={Boolean(pending)} />
       <div className="fxr-session-actions">
+        {kind === 'replay' && <><a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a>{available && <><a className="fxr-button fxr-button-secondary" href={routeHref('analytics')}>Analytics ↗</a><button className="fxr-button fxr-button-secondary" type="button" disabled={actionDisabled} onClick={() => { setDraft({ name: item.name || '', description: item.description || '' }); setEditing(true) }}>Cài đặt phiên</button><button className="fxr-button fxr-button-secondary fxs-archive" type="button" ref={managementIntent === 'archive' ? managementRef : undefined} disabled={actionDisabled} onClick={() => mutate('archive', { archived: !item.archived })}>{pending === 'archive' ? 'Đang lưu…' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button></>}</>}
         <button className="fxr-button fxr-button-secondary" type="button" disabled={Boolean(pending) || catalog.status === 'loading'} onClick={() => setReloadToken((value) => value + 1)}>Tải lại</button>
         <label className="fxr-archive-toggle"><input type="checkbox" checked={showArchived} onChange={(event) => setShowArchived(event.target.checked)} />Hiện phiên đã lưu trữ</label>
       </div>
@@ -132,8 +152,9 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
       {item.archived && <p className="fxr-session-notice" role="status">Phiên đã lưu trữ. Báo cáo vẫn đọc được; khôi phục để tiếp tục replay hoặc tạo bản sao.</p>}
       {kind === 'replay' && <div className="fxr-session-cards">
         <article className="fxr-session-card fxr-session-summary-card">
-          <h2>{item.name || item.record_id}</h2>
+          <div className="fxs-summary-heading"><h2>{item.name || item.record_id}</h2>{kind === 'replay' && <div className="fxs-balance"><span>Số dư từ lệnh đóng</span><strong>{performance.status === 'ready' ? dashboardMoney(performanceModel?.endingBalance, performanceModel?.result?.account_currency) : '—'}</strong></div>}</div>
           <p>{unknownValue(item.instrument_id)} · {timeframeLabel(item)} · {unknownValue(item.status)}</p>
+          <p className="fxs-session-range">{performance.status === 'ready' && performanceModel ? `${performanceModel.observed.start} → ${performanceModel.observed.end} · lịch sử UTC` : 'Chưa có khoảng giao dịch đã đóng'}</p>
           <details className="fxr-session-provenance"><summary>Nguồn dữ liệu · nến #{item.cursor_index} · revision {item.revision}</summary><dl className="fxr-session-facts">
             <div><dt>Session ID</dt><dd>{item.record_id}</dd></div>
             <div><dt>Dataset</dt><dd>{unknownValue(item.dataset_id)} · {datasetAvailabilityLabel(item.dataset_available)}</dd></div>
@@ -143,12 +164,11 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
           <div className="fxr-session-links">
             {!item.archived && item.dataset_available && <a className="fxr-button fxr-button-primary" href={routeHref('replay', { select: null, surface: 'workspace' })}>Tiếp tục trên chart →</a>}
             <a className="fxr-button fxr-button-secondary" href={routeHref('trade')}>Xem Trades</a>
-            <a className="fxr-button fxr-button-secondary" href={routeHref('analytics')}>Xem Analytics</a>
           </div>
           {item.dataset_available !== true && <p>{item.dataset_available === false ? 'Dataset không khả dụng. Khôi phục dữ liệu nguồn trước khi mở chart.' : 'Chưa rõ dataset. Tải lại danh mục để kiểm tra trước khi mở chart.'}</p>}
         </article>
         <article className="fxr-session-card fxr-description-card">
-          <h2>Thông tin phiên</h2>
+          <h2>Mô tả</h2>
           {editing ? <form className="fxr-session-edit" onSubmit={(event) => { event.preventDefault(); mutate('save', draft) }}>
             <label>Tên phiên<input autoFocus value={draft.name} maxLength={160} onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))} disabled={Boolean(pending)} /></label>
             <label>Mô tả<textarea aria-label="Mô tả" value={draft.description} maxLength={2000} rows={4} onChange={(event) => setDraft((current) => ({ ...current, description: event.target.value }))} disabled={Boolean(pending)} /></label>
@@ -156,13 +176,12 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
           </form> : <><p className="fxr-session-description">{item.description || 'Chưa thêm mô tả.'}</p><button className="fxr-button fxr-button-secondary" type="button" disabled={actionDisabled} onClick={() => { setDraft({ name: item.name || '', description: item.description || '' }); setEditing(true) }}>Sửa tên và mô tả</button></>}
           <div className="fxr-session-lifecycle">
             <button className="fxr-button fxr-button-secondary" type="button" ref={managementIntent === 'duplicate' ? managementRef : undefined} disabled={actionDisabled || item.archived || !item.dataset_available} onClick={() => mutate('duplicate')}>{pending === 'duplicate' ? 'Đang tạo…' : 'Tạo bản sao tại cutoff'}</button>
-            <button className="fxr-text-button" type="button" ref={managementIntent === 'archive' ? managementRef : undefined} disabled={actionDisabled} onClick={() => mutate('archive', { archived: !item.archived })}>{pending === 'archive' ? 'Đang lưu…' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button>
           </div>
           <small>Bản sao giữ lineage tại cutoff hiện tại. Lưu trữ không xóa dữ liệu.</small>
         </article>
       </div>}
       {kind !== 'replay' && <div className="fxr-session-links fxr-ledger-context"><span>{item.name || item.record_id} · {unknownValue(item.instrument_id)} · {timeframeLabel(item)}</span><a href={routeHref('replay')}>Thông tin phiên</a>{!item.archived && item.dataset_available && <a href={routeHref('replay', { select: null, surface: 'workspace' })}>Mở chart</a>}</div>}
-      <div className="fxr-session-report"><AnalyticsWorkspace key={`${workspace}:${item.record_id}:${item.revision}:${reloadToken}`} workspace={workspace} query={selectedQuery} ledgerOnly={kind === 'trade'} summaryOnly={kind === 'replay'} embedded /></div>
+      <div className="fxr-session-report">{kind === 'replay' ? <>{performance.status === 'loading' && <p role="status">Đang tải kết quả phiên…</p>}{performance.status === 'error' && <p role="alert">Không tải được kết quả: {performance.error}. Chọn Tải lại để thử lại.</p>}{performance.status === 'blocked' && <p role="status" data-testid="session-performance-blocked">Chưa có kết quả replay khả dụng. {performance.payload?.blocked_by_data?.join(' · ')}</p>}{performance.status === 'ready' && performanceModel && <SessionPerformance key={`${workspace}:${item.record_id}:${item.revision}:${reloadToken}`} model={performanceModel} payload={performance.payload} item={item} href={routeHref} />}</> : <AnalyticsWorkspace key={`${workspace}:${item.record_id}:${item.revision}:${reloadToken}`} workspace={workspace} query={selectedQuery} ledgerOnly={kind === 'trade'} embedded />}</div>
     </>}
     {catalog.status === 'ready' && !item && <div className="fxr-empty-state"><h2>{selected ? 'Không tìm thấy phiên trong workspace này' : 'Chọn một phiên để bắt đầu'}</h2><p>{selected ? 'Kiểm tra workspace hoặc chọn phiên khác từ danh mục. Không có dữ liệu performance thay thế.' : 'Mở phiên đã lưu để xem chart, trade ledger và analytics; hoặc tạo phiên mới từ dataset local.'}</p><a className="fxr-button fxr-button-primary" href={newHref}>Tạo phiên mới</a></div>}
   </section>

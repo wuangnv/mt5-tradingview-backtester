@@ -1,0 +1,34 @@
+# Sessions rebuilt from owner FX Replay reference — 04/10/2026
+
+Scope: Sessions only, using the owner's `codex-clipboard-0ab155df-56ad-4eeb-9e76-d3286deec63e.png`. Dashboard shell/interaction system retained. No new framework, backend contract, data migration, broker/provider permission, ledger/STATE or golden promotion.
+
+## Behavior and ownership
+
+- Session selector and new/Analytics/settings/archive/refresh actions sit above summary/description. Chart continuation, description/name editing, duplication at cutoff and archive/restore reuse existing routes/revision guards. Archive retains history; irreversible Delete from the reference is not introduced. Current GET-only QA preview denies mutations; real writes are not claimed tested.
+- `SessionPicker` reads the existing catalog and validated session Analytics API with workspace header, then adapts through existing `analyticsViewResult`/`buildAnalyticsModel`. Performance state is keyed by workspace/session/catalog revision/reload; a new scope immediately hides previous values and aborts superseded reads. Metadata conflict preserves draft; uncertain response fences further writes until catalog refresh.
+- Three charts: validated closed-trade balance, signed monthly Net P/L (latest12months), and signed Net P/L by weekday. Floating P/L is unavailable, so the first chart is not called Equity. Unknown time/PnL prevents fabricated time summaries. Native selects keep value/change, pointer hover, keyboard focus, disabled and progressive fallback.
+- Six metrics show Total P/L, win rate, average win/loss payoff and month/week/day P/L. Payoff is not planned Risk/Reward; absent source remains unknown. Time windows use the last historical close in UTC, with a Monday-start week. Account units remain explicit; no reference screenshot numbers are copied.
+- Recent Trades sorts by latest close, renders5/10/20rows with previous/next/page dropdown, scrolls its table region on narrow screens, and links the actual trade ID/session to Analytics. Journal/Chart links preserve the selected session. Trades/Analytics retain their own original report composition.
+
+## Verification
+
+- Unit85/85PASS, including UTC month/week/day boundaries, timezone offsets, negative P/L, empty/missing dates and epoch normalization. Final build84modules PASS, existing chunk-size warning; diff check clean.
+- [Final management regressions](management-r5/receipt.json):11checks PASS in an explicitly intercepted synthetic API fixture, no real backend writes. Selection/reload, save/conflict draft, uncertain-write fencing, archive/restore/filter, duplicate lineage/cursor, Trades pagination/filter, Analytics, responsive themes, blocked execution and catalog denial/recovery. The last probe additionally asserts both new Sessions report surfaces disappear after catalog denial; reviewer read the earlier same-case management-final receipt.
+- [Data/interaction journeys](journeys-r4/report.json):17PASS, no errors/blocked requests. Eight actual GET-only local theme/width cases at1440/768/390/320 plus actual trade Analytics drilldown/chart continuation and eight separately labeled state fixtures. Covers select trigger/option hover without selection, no pointer-open glow, keyboard focus, row count/page bounds, edit cancel, reload, axe/reflow and signed14month fixture with12visible/latest/reachable months. Fixtures cover empty, blocked, partial, stale,503, malformed read model and missing date; they are not backend acceptance.
+- Actual [API read](api-read.json):60closed replay trades,75USD Net P/L,100075USD ending closed-trade balance,100%winrate,Jan2024. Stored synthetic QA data in isolated PostgreSQL `trading_workspace_v2_ui_20261001`, not the owner's MT5 history. No reseed/database writes.
+- [Current selected-Sessions route/axe/reflow](routes-r5/report.json):8/8SCOPED_PASS, both themes/four widths; [selected-Sessions native zoom](zoom-r5/report.json):6/6SCOPED_PASS at125%/200%/100%. Stable final UI source before/after: `b00bb075c167466012e27ccad88bafe97beff98f4bbff8e6eb32510fd4d9a141`.
+- Earlier [four-route regression](routes-r3/report.json):32/32SCOPED_PASS on `4beb9a90…`, covering Sessions/Trades/Analytics/Dashboard. Later changes only scope-keyed Sessions reads and mobile SVG captions; final route/zoom replacements above cover affected Sessions. Journey r4 spans the final caption-only CSS adjustment; its functional assertions are separate from final-source visual/zoom evidence. No claim all historical images share the final hash.
+- Independent [review](REVIEW.md):SCOPEDPASS after source/visual inspection, fresh GET-only mobile320px chart capture and its separate pagination/12month overflow probes. Both reported findings are closed; final chart caption computed18px and no overflow. Reviewer read final reports but did not rerun root's whole suites. Root reviewed desktop summary/charts/trades and light320px pagination captures. Automated axe incomplete rules remain explicit; no full WCAG or cross-engine certification.
+
+## Findings and retained attempts
+
+- First route scan found a real unsupported `aria-label` on a generic metrics div and detected source drift while implementation continued. Changed it to a named section. [Initial FAIL](routes/report.json) remains diagnostic.
+- Original [journeys](journeys/report.json) timed out at network-idle reload after7cases. Replaced network-idle waits with DOM-loaded plus explicit state locators. [r3](journeys-r3/report.json) timed out waiting for Performance after5entries while suites/source updates overlapped; cause is not conclusively established, API200responses and no page errors were observed. Final waits are bounded30s; unchanged behavior rerun r4passed17cases. These failures are not relabeled PASS.
+- Independent review found bare pagination arrows inconsistent with the light-theme system; they now reuse existing secondary button classes. It also proved centered long monthly lists clipped first rows above scroll origin; `safe center` retains single-month placement and makes overflowing rows reachable. Its12month rerun and root14month fixture confirm closure. Mobile SVG labels are enlarged at widths≤440px.
+- [Zoom r3](zoom-r3/report.json) had six passing observations but FAIL due source drift; final zoom r5owns current acceptance. Initial route/zoom/selected-route receipts remain scoped to their exact earlier sources. Canonical goldens were not replaced.
+
+## Runtime and resume
+
+Earlier preview processes were not listening. Root restarted the same reviewed GET-only adapter, retaining existing QA database: API8020PID13588, UI5180PID18400/managed session35063. API managed session95439; no backend mutations, broker remains locked. Keep these previews for owner review; VI deferred. No full-product acceptance implied.
+
+Preview: `http://127.0.0.1:5180/?workspace=tenant-a&view=replay&select=1&session=39b1d068edd64e75864f692f27237852`.

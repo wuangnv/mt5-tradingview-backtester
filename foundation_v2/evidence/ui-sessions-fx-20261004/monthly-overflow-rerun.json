@@ -1,0 +1,30 @@
+{
+  "scope": "Independent local GET-only controls and DOM-only 12month rendering fixture",
+  "months": {
+    "height": 220,
+    "scrollHeight": 490,
+    "firstTop": 0,
+    "justifyContent": "safe center"
+  },
+  "rest": {
+    "bg": "rgb(255, 255, 255)",
+    "border": "rgb(183, 194, 201)",
+    "radius": "6px",
+    "outline": "none",
+    "width": 44
+  },
+  "hover": {
+    "bg": "color(srgb 0.909961 0.920157 0.92549)",
+    "border": "rgb(181, 192, 199)",
+    "radius": "6px",
+    "outline": "none",
+    "width": 44
+  },
+  "focus": {
+    "bg": "color(srgb 0.909961 0.920157 0.92549)",
+    "border": "rgb(181, 192, 199)",
+    "radius": "6px",
+    "outline": "solid",
+    "width": 44
+  }
+}

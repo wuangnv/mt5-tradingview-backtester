@@ -1,0 +1,288 @@
+{
+  "mode": "zoom",
+  "origin": "http://127.0.0.1:5180",
+  "workspace": "tenant-a",
+  "sourceBefore": "4beb9a902248dfeaa47244cce716e602b8fdc2315cfd6e5672bfb77fb5dca3f1",
+  "scope": "read-only local services; no API fixtures; automated observations do not establish full WCAG or product acceptance",
+  "results": [
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "factor": 1.25,
+      "nativeZoomApi": {
+        "factor": 1.25,
+        "settings": {
+          "defaultZoomFactor": 1,
+          "mode": "automatic",
+          "scope": "per-tab"
+        }
+      },
+      "baseline": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "metrics": {
+        "innerWidth": 1152,
+        "innerHeight": 720,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1.25,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1152,
+        "overflowX": 0,
+        "contentWidth": 904,
+        "contentOverflowX": 0,
+        "bodyHeight": 720
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-sessions-fx-20261004\\zoom-r3\\sessions-dark-zoom-1.25.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "factor": 2,
+      "nativeZoomApi": {
+        "factor": 2,
+        "settings": {
+          "defaultZoomFactor": 1,
+          "mode": "automatic",
+          "scope": "per-tab"
+        }
+      },
+      "baseline": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "metrics": {
+        "innerWidth": 720,
+        "innerHeight": 450,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 2,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 720,
+        "overflowX": 0,
+        "contentWidth": 662,
+        "contentOverflowX": 0,
+        "bodyHeight": 450
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-sessions-fx-20261004\\zoom-r3\\sessions-dark-zoom-2.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "dark",
+      "factor": 1,
+      "nativeZoomApi": {
+        "factor": 1,
+        "settings": {
+          "defaultZoomFactor": 1,
+          "mode": "automatic",
+          "scope": "per-tab"
+        }
+      },
+      "baseline": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-sessions-fx-20261004\\zoom-r3\\sessions-dark-zoom-1.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "factor": 1.25,
+      "nativeZoomApi": {
+        "factor": 1.25,
+        "settings": {
+          "defaultZoomFactor": 1,
+          "mode": "automatic",
+          "scope": "per-tab"
+        }
+      },
+      "baseline": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "metrics": {
+        "innerWidth": 1152,
+        "innerHeight": 720,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1.25,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1152,
+        "overflowX": 0,
+        "contentWidth": 904,
+        "contentOverflowX": 0,
+        "bodyHeight": 720
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-sessions-fx-20261004\\zoom-r3\\sessions-light-zoom-1.25.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "factor": 2,
+      "nativeZoomApi": {
+        "factor": 2,
+        "settings": {
+          "defaultZoomFactor": 1,
+          "mode": "automatic",
+          "scope": "per-tab"
+        }
+      },
+      "baseline": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "metrics": {
+        "innerWidth": 720,
+        "innerHeight": 450,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 2,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 720,
+        "overflowX": 0,
+        "contentWidth": 662,
+        "contentOverflowX": 0,
+        "bodyHeight": 450
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-sessions-fx-20261004\\zoom-r3\\sessions-light-zoom-2.png",
+      "pass": true
+    },
+    {
+      "routeId": "sessions",
+      "theme": "light",
+      "factor": 1,
+      "nativeZoomApi": {
+        "factor": 1,
+        "settings": {
+          "defaultZoomFactor": 1,
+          "mode": "automatic",
+          "scope": "per-tab"
+        }
+      },
+      "baseline": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "outerWidth": 1440,
+        "outerHeight": 900,
+        "dpr": 1,
+        "cssZoom": "1",
+        "visualScale": 1,
+        "scrollWidth": 1440,
+        "overflowX": 0,
+        "contentWidth": 1192,
+        "contentOverflowX": 0,
+        "bodyHeight": 900
+      },
+      "pageErrors": [],
+      "httpErrors": [],
+      "screenshot": "D:\\ANNAM\\TradingWorkspace\\projects\\mt5-tradingview-backtester\\foundation_v2\\evidence\\ui-sessions-fx-20261004\\zoom-r3\\sessions-light-zoom-1.png",
+      "pass": true
+    }
+  ],
+  "themePersistence": [],
+  "failures": [
+    {
+      "reason": "Source changed during scan; findings remain diagnostic only"
+    }
+  ],
+  "unexpectedRequests": [],
+  "sourceAfter": "b941605a08967dbaada546d2402e64d3caebb4461392c813b83f31fcf3fad047",
+  "status": "FAIL"
+}

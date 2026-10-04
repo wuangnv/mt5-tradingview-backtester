@@ -1,0 +1,9 @@
+{
+  "scope": "labeled DOM-only 12-month CSS rendering fixture, no financial/API data mutation",
+  "height": 220,
+  "scrollHeight": 355,
+  "scrollTop": 0,
+  "firstTop": -135,
+  "lastBottom": 355,
+  "justifyContent": "center"
+}
