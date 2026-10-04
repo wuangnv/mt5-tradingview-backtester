@@ -108,6 +108,8 @@ def build_prop_attempt_report(
         },
         "phase": {
             "phase_index": phase.phase_index,
+            "currency": session.profile.phases[phase.phase_index - 1].currency,
+            "initial_balance": str(phase.initial_balance),
             "balance": str(phase.balance),
             "floating_pl": str(phase.floating_pl),
             "equity": str(phase.equity),

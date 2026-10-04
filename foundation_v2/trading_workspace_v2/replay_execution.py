@@ -235,6 +235,7 @@ def reconstruct_replay_execution_checkpoint(
     snapshot: ReplayExecutionSnapshot,
     *,
     cursor_index: int,
+    event_sequence: int | None = None,
 ) -> ReplayExecutionSnapshot:
     """Rebuild an immutable bar-close execution checkpoint from the canonical ledger."""
 
@@ -242,7 +243,10 @@ def reconstruct_replay_execution_checkpoint(
         raise ReplayExecutionError("checkpoint cursor_index must be a nonnegative integer")
     if cursor_index > snapshot.cursor_index:
         raise ReplayExecutionError("checkpoint cursor cannot exceed the replay execution cursor")
-    if cursor_index == snapshot.cursor_index:
+    if event_sequence is not None and (isinstance(event_sequence, bool) or not isinstance(event_sequence, int)
+                                       or not 0 <= event_sequence <= snapshot.event_sequence):
+        raise ReplayExecutionError("checkpoint event_sequence is outside the canonical ledger")
+    if cursor_index == snapshot.cursor_index and event_sequence is None:
         return snapshot
 
     selected: ReplayExecutionEvent | None = None
@@ -266,6 +270,8 @@ def reconstruct_replay_execution_checkpoint(
             raise ReplayExecutionError("replay execution ledger cursor exceeds the snapshot cursor")
         if event.cursor_index > cursor_index:
             break
+        if event_sequence is not None and event.sequence > event_sequence:
+            break
         prefix.append(event)
         if event.kind == "phase_transition":
             details = event.details or {}
@@ -281,7 +287,8 @@ def reconstruct_replay_execution_checkpoint(
             )
         # A phase transition can follow the bar's price mark without advancing
         # the cursor. Preserve that entire checkpoint before the next bar.
-        if event.kind in {"price_mark", "phase_transition"} and event.cursor_index == cursor_index:
+        if (event.kind in {"price_mark", "phase_transition"} and event.cursor_index == cursor_index
+                and (event_sequence is None or event.sequence == event_sequence)):
             selected = event
 
     if selected is None:

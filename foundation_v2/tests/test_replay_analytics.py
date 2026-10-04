@@ -174,6 +174,55 @@ def phase_transition_record(*, open_position=False, carry_policy="reset"):
     return record(transitioned.snapshot)
 
 
+def test_exact_event_cutoff_excludes_a_later_phase_reset_at_the_same_cursor():
+    store = AnalyticsStore()
+    store.current = phase_transition_record()
+    service = ReplayService(store, None)
+    before = deepcopy(store.current)
+    current = build_replay_analytics_view(service.analytics_record("tenant-a", "replay-fixture"))
+    old = build_replay_analytics_view(service.analytics_record("tenant-a", "replay-fixture", 1,
+                                                               event_sequence=3))
+    assert current["phase_index"] == 2 and current["phase_initial_balance"] == 50000
+    assert current["execution_event_sequence"] == 4
+    assert old["phase_index"] == 1 and old["phase_initial_balance"] == 100000
+    assert old["execution_event_sequence"] == 3
+    assert old["canonical_execution_event_sequence"] == 4
+    assert old["provenance"]["historical_view"] is True
+    assert old["provenance"]["phase_index"] == 1
+    assert old["ledger"][0]["close_phase_index"] == 1
+    assert old["metrics"]["net_pnl"] == 17
+    assert store.current == before
+
+
+@pytest.mark.parametrize("event_sequence,cursor", [(True, 1), (-1, 1), (5, 1), (1, 1), (2, 1), (3, 0)])
+def test_exact_event_cutoff_requires_a_canonical_boundary(event_sequence, cursor):
+    store = AnalyticsStore()
+    store.current = phase_transition_record()
+    with pytest.raises(ValueError):
+        ReplayService(store, None).analytics_record("tenant-a", "replay-fixture", cursor,
+                                                   event_sequence=event_sequence)
+
+
+def test_exact_event_zero_uses_immutable_initialization_and_rows_keep_close_phase():
+    from trading_workspace_v2.replay_execution import parse_replay_execution_snapshot
+
+    store = AnalyticsStore()
+    state = parse_replay_execution_snapshot(phase_transition_record()["payload"]["execution"])
+    queued = queue_market_order(state, operation_id="phase-2-entry", side="BUY", quantity="0.10",
+                                stop_loss="1.09", take_profit="1.102")
+    advanced = advance_replay_execution(queued,
+        bar={"timestamp": 1700000060, "open": 1.1000, "high": 1.1030, "low": 1.0990, "close": 1.1020},
+        cursor_index=2)
+    store.current = record(advanced.snapshot)
+    service = ReplayService(store, None)
+    initial = build_replay_analytics_view(service.analytics_record("tenant-a", "replay-fixture", 0,
+                                                                  event_sequence=0))
+    assert initial["execution_event_sequence"] == 0
+    assert initial["ledger"] == []
+    current = build_replay_analytics_view(service.analytics_record("tenant-a", "replay-fixture"))
+    assert [row["close_phase_index"] for row in current["ledger"]] == [1, 2]
+
+
 @pytest.mark.parametrize("carry_policy", ["reset", "carry_balance", "carry_all"])
 def test_phase_transitions_preserve_trade_metrics_without_counting_balance_resets(carry_policy):
     source = phase_transition_record(carry_policy=carry_policy)

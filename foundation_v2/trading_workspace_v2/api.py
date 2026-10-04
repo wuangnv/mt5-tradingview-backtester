@@ -1000,9 +1000,9 @@ def create_app(
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     def replay_analytics_view(session_id, workspace, side, outcome, from_close_utc, to_close_utc,
-                              cursor_index=None, cutoff_timestamp=None):
+                              cursor_index=None, cutoff_timestamp=None, event_sequence=None):
         try:
-            record = replay.analytics_record(workspace, session_id, cursor_index, cutoff_timestamp)
+            record = replay.analytics_record(workspace, session_id, cursor_index, cutoff_timestamp, event_sequence)
             return build_replay_analytics_view({**record, "workspace_id": workspace}, {
                 "side": side, "outcome": outcome,
                 "from_close_utc": from_close_utc, "to_close_utc": to_close_utc,
@@ -1016,19 +1016,41 @@ def create_app(
     def get_replay_analytics(session_id: str, side: str = "all", outcome: str = "all",
                              from_close_utc: str | None = None, to_close_utc: str | None = None,
                              cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+                             event_sequence: int | None = None,
                              workspace: str = Depends(workspace_id)):
         return replay_analytics_view(session_id, workspace, side, outcome, from_close_utc, to_close_utc,
-                                     cursor_index, cutoff_timestamp)
+                                     cursor_index, cutoff_timestamp, event_sequence)
 
     @app.get("/api/v2/replay/sessions/{session_id}/analytics.csv")
     def export_replay_analytics(session_id: str, side: str = "all", outcome: str = "all",
                                 from_close_utc: str | None = None, to_close_utc: str | None = None,
                                 cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+                                event_sequence: int | None = None,
                                 workspace: str = Depends(workspace_id)):
         view = replay_analytics_view(session_id, workspace, side, outcome, from_close_utc, to_close_utc,
-                                     cursor_index, cutoff_timestamp)
+                                     cursor_index, cutoff_timestamp, event_sequence)
         return PlainTextResponse(content=analytics_csv(view), media_type="text/csv; charset=utf-8",
                                  headers={"Content-Disposition": 'attachment; filename="replay-analytics-v1.csv"'})
+
+    @app.get("/api/v2/replay/sessions/{session_id}/analytics/experiments")
+    def get_replay_analytics_experiments(
+        session_id: str, stop_distance_ticks: float = 20, stop_multiplier: float = 1,
+        target_r: float = 2, side: str = "all", outcome: str = "all",
+        from_close_utc: str | None = None, to_close_utc: str | None = None,
+        cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+        event_sequence: int | None = None,
+        workspace: str = Depends(workspace_id),
+    ):
+        try:
+            return replay.analytics_experiments(
+                workspace, session_id, filters={"side": side, "outcome": outcome,
+                    "from_close_utc": from_close_utc, "to_close_utc": to_close_utc},
+                cursor_index=cursor_index, cutoff_timestamp=cutoff_timestamp, event_sequence=event_sequence,
+                stop_distance_ticks=stop_distance_ticks, stop_multiplier=stop_multiplier, target_r=target_r)
+        except (TypeError, KeyError, ValueError) as exc:
+            raise HTTPException(status_code=422, detail="replay_experiment_invalid_source_or_config") from exc
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
 
     @app.post("/api/v2/replay/sessions/{session_id}/execution")
     def initialize_replay_execution(

@@ -282,6 +282,7 @@ class ReplayService:
     def analytics_record(
         self, workspace_id: str, session_id: str,
         cursor_index: int | None = None, cutoff_timestamp: int | None = None,
+        event_sequence: int | None = None,
     ) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
@@ -306,20 +307,27 @@ class ReplayService:
             raise ValueError("analytics cursor is outside the visible replay range")
         payload = dict(record["payload"])
         snapshot = self._execution_snapshot(payload)
-        if selected_cursor < canonical_cursor and snapshot is not None:
+        if event_sequence is not None and (snapshot is None or isinstance(event_sequence, bool)
+                or not isinstance(event_sequence, int) or not 0 <= event_sequence <= snapshot.event_sequence):
+            raise ValueError("analytics event sequence is outside canonical execution")
+        if (selected_cursor < canonical_cursor or event_sequence is not None) and snapshot is not None:
             try:
-                checkpoint = reconstruct_replay_execution_checkpoint(snapshot, cursor_index=selected_cursor)
+                checkpoint = reconstruct_replay_execution_checkpoint(snapshot, cursor_index=selected_cursor,
+                                                                      event_sequence=event_sequence)
             except ReplayExecutionError as exc:
                 if str(exc) != "execution branch cursor has no canonical checkpoint":
                     raise ValueError(str(exc)) from exc
+                if event_sequence not in (None, 0):
+                    raise ValueError("analytics event must select a bar-close or phase checkpoint") from exc
                 # Initialization has no price-mark event. Its immutable revision
                 # is the only valid fallback; never substitute the current state.
                 checkpoint = None
                 for prior in reversed(self.store.list_record_revisions(workspace_id, "replay", session_id)):
                     if prior["revision"] <= record["revision"] and prior["payload"].get("cursor_index") == selected_cursor:
                         checkpoint = self._execution_snapshot(prior["payload"])
-                        if checkpoint is not None:
+                        if checkpoint is not None and (event_sequence is None or checkpoint.event_sequence == event_sequence):
                             break
+                        checkpoint = None
                 if checkpoint is None:
                     raise ValueError("historical analytics checkpoint is unavailable")
             for field in ("replay_session_id", "branch_id", "dataset_id", "dataset_sha256",
@@ -332,7 +340,19 @@ class ReplayService:
             payload["execution"] = checkpoint.model_dump(mode="json")
         payload["cursor_index"] = selected_cursor
         return {**record, "payload": payload, "view_cursor_index": selected_cursor,
-                "canonical_cursor_index": canonical_cursor, "historical_view": selected_cursor < canonical_cursor}
+                "canonical_cursor_index": canonical_cursor,
+                "canonical_execution_event_sequence": snapshot.event_sequence if snapshot else None,
+                "historical_view": selected_cursor < canonical_cursor or (
+                    event_sequence is not None and event_sequence < snapshot.event_sequence)}
+
+    def analytics_experiments(self, workspace_id, session_id, *, filters=None,
+                              cursor_index=None, cutoff_timestamp=None, event_sequence=None, **config):
+        from .analytics_experiments import build_replay_experiments
+
+        record = self.analytics_record(workspace_id, session_id, cursor_index, cutoff_timestamp, event_sequence)
+        manifest, rows = self._dataset_rows(workspace_id, record["payload"]["dataset_id"])
+        return build_replay_experiments({**record, "workspace_id": workspace_id}, rows,
+                                       dataset_sha256=manifest.artifact_sha256, filters=filters, **config)
 
     def branch(self, workspace_id: str, session_id: str, expected_revision: int, cursor_index: int) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)

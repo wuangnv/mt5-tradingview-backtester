@@ -42,6 +42,7 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
         "parent_session_id": payload.get("parent_session_id"),
         "cursor_index": payload["cursor_index"],
         "canonical_cursor_index": view.get("canonical_cursor_index", payload["cursor_index"]),
+        "canonical_execution_event_sequence": view.get("canonical_execution_event_sequence"),
         "historical_view": view.get("historical_view", False),
         "cutoff_timestamp": view.get("cutoff_timestamp"),
         "created_at_utc": view.get("updated_at_utc"),
@@ -125,6 +126,7 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
                     "open_cursor_index": entry.cursor_index,
                     "close_cursor_index": event.cursor_index,
                     "close_event_sequence": event.sequence,
+                    "close_phase_index": phase_transitions + 1,
                     "price_open": _number(entry.details["fill_price"], "entry price", positive=True),
                     "price_close": _number(detail.get("fill_price"), "exit price", positive=True),
                     "net_pnl": _number(detail["net_pnl"], "net pnl"),
@@ -193,6 +195,10 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
             "open_position_count": int(snapshot.position is not None),
             "pending_order_count": int(snapshot.pending_market_order is not None),
             "phase_transition_count": phase_transitions,
+            "execution_event_sequence": snapshot.event_sequence,
+            "phase_index": snapshot.phase_index,
+            "phase_initial_balance": _number(snapshot.phase_initial_balance or snapshot.starting_balance,
+                                               "phase initial balance", positive=True),
             "data_quality": snapshot.evaluation_quality,
         })
         result = build_analytics_view({

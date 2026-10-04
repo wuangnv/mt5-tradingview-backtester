@@ -105,9 +105,9 @@ def _outcome(net_pnl: Any) -> str:
         return "unknown"
     if not number == number or number in (float("inf"), float("-inf")):
         return "unknown"
-    if number > 0:
+    if number > 1e-12:
         return "win"
-    if number < 0:
+    if number < -1e-12:
         return "loss"
     return "breakeven"
 

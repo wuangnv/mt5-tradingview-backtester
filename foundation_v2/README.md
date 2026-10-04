@@ -43,9 +43,17 @@ F7 now has a first software-baseline slice on top of the same foundation:
 - immutable-revision Playbook, Journal and chart-annotation records in PostgreSQL;
 - replay sessions that expose only the prefix up to the cursor, branch on rewind, and validate annotation cutoffs;
 - session metadata updates use `expected_revision`; replay analytics JSON/CSV accept optional
-  `cursor_index` and `cutoff_timestamp` (integer dataset bar timestamp). Historical reads project
+  `cursor_index`, `cutoff_timestamp` (integer dataset bar timestamp), and `event_sequence`.
+  Exact event reads require a canonical price-mark/phase checkpoint (or initialization sequence0)
+  at the selected cursor. Historical reads project
   the execution checkpoint without updating the session; a mismatched or future bound returns 422.
   Overview aggregates closed trades with branch-origin deduplication and keeps unavailable money/risk fields unknown;
+- read-only replay price experiments at `GET /api/v2/replay/sessions/{id}/analytics/experiments`
+  share Analytics filters and historical bounds. `stop_distance_ticks`, `stop_multiplier`, and
+  `target_r` configure hypothetical stops/targets; they are assumptions, not original planned risk.
+  Responses distinguish ready/ambiguous/unsupported results, retain cost and dataset provenance,
+  and exclude terminal intrabar extrema from observed excursion to avoid prices after the original exit.
+  No ledger, account or broker state is changed;
 - durable queued/running research cancellation with no result artifact after a successful cancel gate;
 - versioned prop-profile evaluation that reports missing equity/HWM inputs as `blocked_by_data`;
 - provider-neutral AI boundary, offline by default, with sensitive/holdout guards;

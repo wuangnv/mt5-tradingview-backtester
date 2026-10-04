@@ -21,6 +21,19 @@ from trading_workspace_v2.analytics_read_model import (  # noqa: E402
 )
 
 
+@pytest.mark.parametrize("net_pnl, expected", [
+    (1e-13, "breakeven"), (-1e-13, "breakeven"),
+    (1e-12, "breakeven"), (-1e-12, "breakeven"),
+    (2e-12, "win"), (-2e-12, "loss"),
+])
+def test_outcome_filter_matches_metric_zero_tolerance(net_pnl, expected):
+    result = result_fixture()
+    result["ledger"] = [{**result["ledger"][0], "net_pnl": net_pnl}]
+    for outcome in ("win", "loss", "breakeven"):
+        view = build_analytics_view(result, {"outcome": outcome})
+        assert len(view["ledger"]) == (1 if outcome == expected else 0)
+
+
 def result_fixture() -> dict:
     return {
         "job_id": "job-u6",
