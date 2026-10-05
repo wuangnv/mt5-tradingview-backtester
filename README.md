@@ -101,6 +101,12 @@ ghi chú workspace vẫn thuộc API và được hiển thị riêng trên char
 Chart workspace dùng bố cục Legacy với một header native, thanh replay nổi và
 Buy/Sell phía dưới; xem [checkpoint Legacy](foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md).
 
+Kho lịch sử owner hiện dùng Exness demo EURUSDm M1 (93.810 nến), tách khỏi QA.
+Xem [nguồn dữ liệu, giới hạn và cách chạy lại](foundation_v2/evidence/real-history-20261005/CHECKPOINT.md).
+Lệnh vẫn mô phỏng; historical costs và 82 gaps còn cần xác minh. Advanced Charts
+đã chạy trong Chromium; Codex in-app browser hiện hủy iframe blob, có thông báo lỗi
+và link chart dự phòng thay vì tải mãi.
+
 Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
 hình database, artifacts và authorization đã có:
 

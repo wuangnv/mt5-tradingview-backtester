@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "checks": [
+    "real local API contains only Exness dataset; 501 prefix rows equal exported broker CSV",
+    "native Advanced Charts EURUSDm receives exact broker OHLCV with no future candles",
+    "context preserves broker provenance, 60s timeframe and review disposition with 82 gaps",
+    "real-data chart → Sessions → Dashboard clears chart chrome"
+  ],
+  "rows": 93810,
+  "errors": [],
+  "writes": []
+}

@@ -29,6 +29,11 @@ export default function TradingViewReplayChart(props) {
   useEffect(() => {
     let cancelled = false, saveTimer, restoringImports = false, importedShapes = [], lines = []
     let widget, adapter, chart, fitButton, headerSlots, chartReady = false, fittedLevels = ''
+    const loadingTimer = setTimeout(() => {
+      if (cancelled || chartReady) return
+      setStatus('error')
+      setMessage('Advanced Charts chưa tải được. Thử mở trang này trong Chrome/Edge hoặc dùng chart dự phòng.')
+    }, 20000)
     setStatus('loading'); setMessage('')
     const save = () => {
       if (cancelled || !widget || !chart) return
@@ -64,6 +69,7 @@ export default function TradingViewReplayChart(props) {
       })
       widget.onChartReady(() => {
         if (cancelled) return
+        clearTimeout(loadingTimer)
         const frame = host.current?.querySelector('iframe')
         if (frame) { frame.title = `Biểu đồ replay ${symbol}`; if (frame.contentDocument) frame.contentDocument.title = `WMReplay · ${symbol}` }
         chart = widget.activeChart()
@@ -212,7 +218,7 @@ export default function TradingViewReplayChart(props) {
       })
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
-      cancelled = true; clearTimeout(saveTimer); instance.current = null
+      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); instance.current = null
       latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }

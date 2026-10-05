@@ -1,0 +1,29 @@
+{
+  "scope": "Independent real20sec timeout under deliberately stalled library; excludes actualIAB blob diagnosis",
+  "before": [
+    {
+      "file": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+      "sha256": "6a9276a312fbe02a68d401bb09071fa8de2c75742f4c7f421c2690dc8a7d1f80"
+    },
+    {
+      "file": "foundation_v2/web/src/ReplayWorkspace.jsx",
+      "sha256": "217773c066938f49e95de1ba2af3cba1121d9a4c6def7eb9b8033d8509c48ca4"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "elapsedMs": 20227,
+  "alert": "Advanced Charts chưa tải được. Thử mở trang này trong Chrome/Edge hoặc dùng chart dự phòng. Mở chart dự phòng",
+  "fallbackHref": "http://127.0.0.1:5180/?workspace=tenant-a&view=replay&surface=workspace&session=476f4b498e1a49ed9d48a75719f4d270&dataset=dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d&cursor=500&chart_engine=lightweight",
+  "after": [
+    {
+      "file": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+      "sha256": "6a9276a312fbe02a68d401bb09071fa8de2c75742f4c7f421c2690dc8a7d1f80"
+    },
+    {
+      "file": "foundation_v2/web/src/ReplayWorkspace.jsx",
+      "sha256": "217773c066938f49e95de1ba2af3cba1121d9a4c6def7eb9b8033d8509c48ca4"
+    }
+  ],
+  "pass": true
+}

@@ -42,6 +42,12 @@ function formatVolume(value) {
   return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 2 }).format(Number(value))
 }
 
+function datasetQualityLabel(dataset) {
+  const disposition = dataset?.quality?.disposition || dataset?.quality_status || 'unverified'
+  const gaps = dataset?.quality?.gaps
+  return `${disposition}${Array.isArray(gaps) && gaps.length ? ` · ${gaps.length} khoảng gián đoạn` : ''}`
+}
+
 async function readJson(response) {
   const payload = await response.json().catch(() => ({}))
   if (response.status === 409) {
@@ -516,9 +522,9 @@ export default function ReplayWorkspace({ workspace, query }) {
     const source = activeDataset?.source || {}
     return {
       instrument: activeDataset?.instrument_id || payload.instrument_id || 'Instrument chưa xác định',
-      timeframe: activeDataset?.timeframe || payload.timeframe || 'TF chưa rõ',
-      quality: activeDataset?.quality_status || payload.quality_status || 'unverified',
-      provider: activeDataset?.provider_id || source.provider || payload.provider_id || 'Provider chưa xác định',
+      timeframe: activeDataset?.timeframe || payload.timeframe || (activeDataset?.timeframe_seconds > 0 ? `${activeDataset.timeframe_seconds}s` : 'TF chưa rõ'),
+      quality: datasetQualityLabel(activeDataset || payload),
+      provider: source.provider || activeDataset?.provider_id || payload.provider_id || 'Provider chưa xác định',
       hash: activeDataset?.artifact_sha256 || replay?.dataset_sha256 || '',
       rowCount: activeDataset?.row_count ?? replay?.total_row_count ?? null,
       cutoff: replay?.cutoff_timestamp || payload.cutoff_timestamp || '',
@@ -724,7 +730,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   return (
     <main className={`replay-shell wm-chart-page ${sideOpen ? 'is-panel-open' : ''} ${replay ? 'has-replay' : ''} ${advancedChart && nativeHeaderSlots ? 'is-legacy-chart' : ''}`}>
       {advancedChart && nativeHeaderSlots && <>
-        {createPortal(<div className="legacy-header-identity"><a href={routeHref('replay', { surface: null, select: '1' })} aria-label="Trở về Sessions" title="Trở về Sessions">←</a><button type="button" onClick={event => openPanel('data', event.currentTarget)} title="Chọn dataset local"><ChartIcon name="search" /><strong>{replayContext.instrument}</strong></button></div>, nativeHeaderSlots.market)}
+        {createPortal(<div className="legacy-header-identity"><a href={routeHref('replay', { surface: null, select: '1' })} target="_top" aria-label="Trở về Sessions" title="Trở về Sessions">←</a><button type="button" onClick={event => openPanel('data', event.currentTarget)} title="Chọn dataset local"><ChartIcon name="search" /><strong>{replayContext.instrument}</strong></button></div>, nativeHeaderSlots.market)}
         {createPortal(<div className="legacy-header-session"><strong title={replay?.payload.name || sessionId}>{replay?.payload.name || 'Replay'}</strong><span data-testid="replay-status">{statusLabel}</span><button type="button" onClick={() => applyAppearance({ ...appearance, theme: theme === 'dark' ? 'light' : 'dark' })} aria-label={theme === 'dark' ? 'Chuyển giao diện sáng' : 'Chuyển giao diện tối'} title="Đổi giao diện" data-testid="theme-toggle"><ChartIcon name={theme === 'dark' ? 'moon' : 'sun'} /></button><button type="button" onClick={event => openPanel('context', event.currentTarget)} aria-label="Chi tiết và nhánh" title="Chi tiết và nhánh"><ChartIcon name="info" /></button></div>, nativeHeaderSlots.session)}
       </>}
       {headerSlot && replay && !nativeHeaderSlots && createPortal(<div className="chart-command-row" role="group" aria-label="Thanh công cụ chart">
@@ -768,7 +774,7 @@ export default function ReplayWorkspace({ workspace, query }) {
               {!datasetDraft && <option value="">Chọn dataset…</option>}
               {datasetState.items.map((item) => (
                 <option key={item.dataset_id} value={item.dataset_id}>
-                  {item.instrument_id || item.dataset_id} · {item.timeframe || 'TF chưa rõ'} · {item.quality_status || 'unverified'}
+                  {item.instrument_id || item.dataset_id} · {item.timeframe || (item.timeframe_seconds > 0 ? `${item.timeframe_seconds}s` : 'TF chưa rõ')} · {datasetQualityLabel(item)}
                 </option>
               ))}
               {datasetDraft && !datasetState.items.some((item) => item.dataset_id === datasetDraft) && (
@@ -1004,7 +1010,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 {datasetState.status === 'error' && <p role="alert">{datasetState.error}</p>}
                 <ul>{datasetState.items.map(item => <li key={item.dataset_id}>
                   <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {item.timeframe || `${item.timeframe_seconds || '?'}s`}</a>
-                  <small>{item.quality_status || 'unverified'} · {item.row_count ?? 'N/A'} nến</small>
+                  <small>{datasetQualityLabel(item)} · {item.row_count ?? 'N/A'} nến</small>
                 </li>)}</ul>
               </section>
               </>}
