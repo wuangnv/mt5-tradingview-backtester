@@ -60,6 +60,7 @@ async function measure(page) {
     contentOverflowX: (() => { const content = document.querySelector('.fx-content'); return content ? content.scrollWidth - content.clientWidth : 0 })(),
     mainHeading: document.querySelector('main h1')?.textContent?.trim(),
     bodyHeight: document.body.scrollHeight,
+    chartControlsOverflowY: (() => { const bar = document.querySelector('.is-legacy-chart .chart-trading-bar'); return bar ? Math.max(0, bar.getBoundingClientRect().bottom - innerHeight) : 0 })(),
   }))
 }
 
@@ -122,7 +123,7 @@ try {
           const capture = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false })
           await writeFile(screenshot, Buffer.from(capture.data, 'base64'))
           await cdp.detach()
-          const pass = Math.abs(zoom.factor - factor) < 0.001 && Math.abs(metrics.innerWidth - baseline.innerWidth / factor) <= 2 && metrics.overflowX <= 2 && metrics.contentOverflowX <= 2 && metrics.contentWidth >= Math.min(320, metrics.innerWidth * .8) && pageErrors.length === 0
+          const pass = Math.abs(zoom.factor - factor) < 0.001 && Math.abs(metrics.innerWidth - baseline.innerWidth / factor) <= 2 && metrics.overflowX <= 2 && metrics.contentOverflowX <= 2 && metrics.chartControlsOverflowY <= 1 && metrics.contentWidth >= Math.min(320, metrics.innerWidth * .8) && pageErrors.length === 0
           report.results.push({ routeId, theme, factor, nativeZoomApi: zoom, baseline, metrics, pageErrors: [...pageErrors], httpErrors: [...httpErrors], screenshot, pass })
           if (!pass) report.failures.push({ routeId, theme, factor, reason: 'Native zoom reflow or overflow gate failed' })
         }

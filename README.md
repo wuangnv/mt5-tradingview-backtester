@@ -98,6 +98,8 @@ Chart dùng `visible_rows` của API, không tải giá từ TradingView. Timefr
 và hình vẽ native lưu trên trình duyệt theo workspace/session/dataset/cutoff;
 ghi chú workspace vẫn thuộc API và được hiển thị riêng trên chart. Xem
 [checkpoint Advanced Charts](foundation_v2/evidence/ui-advanced-chart-20261004/CHECKPOINT.md).
+Chart workspace dùng bố cục Legacy với một header native, thanh replay nổi và
+Buy/Sell phía dưới; xem [checkpoint Legacy](foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md).
 
 Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
 hình database, artifacts và authorization đã có:

@@ -198,3 +198,30 @@ use the chart's object tree. The local vendor distribution is served separately 
 never tracked/copied into the app bundle. Missing assets show a real error and explicit
 rollback. See foundation_v2/evidence/ui-advanced-chart-20261004/CHECKPOINT.md for scoped
 runtime evidence; full U4/product, real-data, performance and manual WCAG gates stay open.
+
+## Chart workspace — Legacy arrangement, 05/10/2026
+
+The FX Replay Legacy reference is implemented on the authorized Advanced Charts engine.
+The native header is the only header once both chart and custom header slots are ready.
+Official `createButton` hosts carry React portals for Sessions navigation, current dataset,
+theme and context. Application-owned `/chart-legacy.css` styles the iframe; the pinned v23
+market button group receives one ordering class. Vendor source/assets remain unchanged.
+Before readiness or on missing assets, the shell header retains navigation and rollback.
+
+The black pane, native drawing rail, supported favorite intervals (including causal 3m/2h),
+floating speed/play controls, top-right Go To/Order/News/Journal actions and bottom
+Buy/Sell/Size/Analytics follow the reference. The redundant application range row is hidden
+at the canonical cursor; history retains the action back to the latest cursor. Mobile
+quick actions move to the utility rail and theme remains reachable at tablet widths.
+Replay overlays clear the native left rail and mobile OHLC/Volume legend, remain movable,
+pinnable/collapsible, and use a separate Legacy preference key. DOM order follows Buy,
+Sell, Size for keyboard users.
+
+Iframe portal triggers preserve their actual focus owner; outer panels receive focus and
+Escape returns it across documents. Dataset catalog refresh retains the last metadata while
+loading or failing, so focus changes do not tear down the chart. Session data/revisions,
+cutoff, order state and native local snapshots keep the previous ownership contracts.
+Go To accepts only already-opened candles/timestamps. News shows a real empty state:
+this dataset has no historical event feed, and no economic markers are invented.
+Calendar resolutions beyond the causal intraday adapter are not offered as fake shortcuts.
+Scoped receipt: foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md.

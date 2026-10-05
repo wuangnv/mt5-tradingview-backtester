@@ -19,6 +19,11 @@ const paths = {
   collapse: 'm8 5 7 7-7 7', expand: 'm15 5-7 7 7 7', close: 'm6 6 12 12M18 6 6 18',
   grip: 'M8 6h.01M16 6h.01M8 12h.01M16 12h.01M8 18h.01M16 18h.01',
   candles: 'M6 3v18M3 7h6v8H3zM17 3v18M14 10h6v8h-6z',
+  search: 'M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14M15 15l6 6',
+  moon: 'M20 15A9 9 0 0 1 9 4a9 9 0 1 0 11 11',
+  sun: 'M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10M12 1v2M12 21v2M1 12h2M21 12h2M4 4l2 2M18 18l2 2M4 20l2-2M18 6l2-2',
+  goto: 'M5 6h10a5 5 0 0 1 0 10H7M12 2l4 4-4 4M7 12l-4 4 4 4',
+  news: 'M4 5h16v16H4zM8 3v4M16 3v4M4 10h16M8 14h3M14 14h2M8 17h8',
 }
 
 export default function ChartIcon({ name, ...props }) {

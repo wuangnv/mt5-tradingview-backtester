@@ -51,7 +51,7 @@ test('metadata precision and resolutions reflect dataset; unsupported intervals 
   const item = adapter()
   const info = await new Promise(resolve => item.datafeed.resolveSymbol('EURUSD', resolve, assert.fail))
   assert.equal(info.pricescale, 100000); assert.equal(info.minmov, 1)
-  assert.deepEqual(item.supported, ['1', '5', '15', '30', '60', '240'])
+  assert.deepEqual(item.supported, ['1', '3', '5', '15', '30', '60', '120', '240'])
   assert.equal(replayResolution(5), '5S'); assert.throws(() => replayResolution(90))
   await assert.rejects(getBars(item.datafeed, { from: 0, to: Infinity, countBack: 50 }, '10S'))
   item.dispose()

@@ -1,0 +1,233 @@
+{
+  "scope": "Focused final contrast/hover, mobile legend collision/theme/account and single native-header verification; actual QA8020 GET-only",
+  "before": {
+    "files": [
+      [
+        "foundation_v2/web/src/TradingViewReplayChart.jsx",
+        "f8f1d642999c479b2dadd1e6f59013f5093aedc895fb82919cdd6700eae951f3"
+      ],
+      [
+        "foundation_v2/web/src/advancedReplayDatafeed.js",
+        "ff07d9581a5fded04b502a673991958850d96853385507174e042726083911f0"
+      ],
+      [
+        "foundation_v2/web/src/ReplayWorkspace.jsx",
+        "fbf8dd967cbb2fb0563c77912e8de8a5494c4e31989c21afd0ca8864c6bee692"
+      ],
+      [
+        "foundation_v2/web/src/ChartWorkbench.css",
+        "6ab694f0a6f72ed9d4ff76a6b72572d2ef696069a4da1f948cb51ad155db7a08"
+      ],
+      [
+        "foundation_v2/web/src/ChartFloatingToolbar.jsx",
+        "87f84c9c727d52e1a7ff8551be95d8d405cf3916b08bbb3abca8d89a2885a492"
+      ],
+      [
+        "foundation_v2/web/src/ChartIcon.jsx",
+        "c5b41fa42098ceab25928a303b3816c7c2df58fdeaab103900010625511c869e"
+      ],
+      [
+        "foundation_v2/web/public/chart-legacy.css",
+        "97095049c6d6022c7d1b8ced38ddb889f3189451f52e6f30a490cb87314f6d61"
+      ]
+    ],
+    "sha256": "182d6a0935bb094b7f7b9e34bbbb2272b712e37185b119bc265a6c6ad0b96067"
+  },
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "dark",
+      "floating": {
+        "x": 760,
+        "y": 90,
+        "width": 414.359375,
+        "height": 44
+      },
+      "volume": {
+        "x": 60,
+        "y": 70,
+        "width": 1272,
+        "height": 24
+      },
+      "actions": {
+        "order": [
+          "Buy 1,1033",
+          "Sell 1,1031",
+          "Khối lượng nhanh",
+          "Lệnh"
+        ],
+        "buttons": [
+          {
+            "text": "Buy 1,1033",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 117, 111)",
+            "filter": "none"
+          },
+          {
+            "text": "Sell 1,1031",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(195, 53, 64)",
+            "filter": "none"
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(8, 117, 111)",
+        "filter": "none"
+      },
+      "balanceVisible": true,
+      "headerY": 0,
+      "overflow": 0,
+      "themeControlBox": {
+        "x": 1322,
+        "y": 4,
+        "width": 32,
+        "height": 30
+      },
+      "topAxe": [],
+      "nativeAxe": []
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "floating": {
+        "x": 260,
+        "y": 120,
+        "width": 414.359375,
+        "height": 44
+      },
+      "volume": {
+        "x": 60,
+        "y": 89,
+        "width": 600,
+        "height": 24
+      },
+      "actions": {
+        "order": [
+          "Buy 1,1033",
+          "Sell 1,1031",
+          "Khối lượng nhanh",
+          "Lệnh"
+        ],
+        "buttons": [
+          {
+            "text": "Buy 1,1033",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 117, 111)",
+            "filter": "none"
+          },
+          {
+            "text": "Sell 1,1031",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(195, 53, 64)",
+            "filter": "none"
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(8, 117, 111)",
+        "filter": "none"
+      },
+      "balanceVisible": true,
+      "headerY": 0,
+      "overflow": 0,
+      "themeControlBox": {
+        "x": 728.5,
+        "y": 879,
+        "width": 32,
+        "height": 46
+      },
+      "topAxe": [],
+      "nativeAxe": []
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "floating": {
+        "x": 54,
+        "y": 120,
+        "width": 270,
+        "height": 44
+      },
+      "volume": {
+        "x": 60,
+        "y": 89,
+        "width": 204,
+        "height": 24
+      },
+      "actions": {
+        "order": [
+          "Buy 1,1033",
+          "Sell 1,1031",
+          "Khối lượng nhanh",
+          "Lệnh"
+        ],
+        "buttons": [
+          {
+            "text": "Buy 1,1033",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(8, 117, 111)",
+            "filter": "none"
+          },
+          {
+            "text": "Sell 1,1031",
+            "color": "rgb(255, 255, 255)",
+            "background": "rgb(195, 53, 64)",
+            "filter": "none"
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(8, 117, 111)",
+        "filter": "none"
+      },
+      "balanceVisible": true,
+      "headerY": 0,
+      "overflow": 0,
+      "themeControlBox": {
+        "x": 326.5,
+        "y": 845,
+        "width": 32,
+        "height": 46
+      },
+      "topAxe": [],
+      "nativeAxe": []
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds',\n+     help: 'Elements must meet minimum color contrast ratio thresholds',\n+     helpUrl: 'https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI',\n+     id: 'color-contrast',\n+     impact: 'serious',\n+     nodes: [\n+       {\n+         all: [],\n+         any: [\n+           {\n+             data: {\n+               bgColor: '#ffffff',\n+               contrastRatio: 2.14,\n+               expectedContrastRatio: '4.5:1',\n+               fgColor: '#b0b1b4',\n+               fontSize: '6.8pt (9px)',\n+               fontWeight: 'normal',\n+               messageKey: null,\n+               shadowColor: undefined\n+             },\n+             id: 'color-contrast',\n+             impact: 'serious',\n+             message: 'Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+             relatedNodes: [\n+               {\n+                 html: '<nav class=\"chart-utility-rail\" aria-label=\"Tiện ích replay\">',\n+                 target: [\n+                   '.chart-utility-rail'\n+                 ]\n+               }\n+             ]\n+           }\n+         ],\n+         failureSummary: 'Fix any of the following:\\n' +\n+           '  Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+         html: '<span>Order</span>',\n+         impact: 'serious',\n+         none: [],\n+         target: [\n+           'button[aria-label=\"Lệnh mô phỏng\"] > span'\n+         ]\n+       },\n+       {\n+         all: [],\n+         any: [\n+           {\n+             data: {\n+               bgColor: '#ffffff',\n+               contrastRatio: 2.14,\n+               expectedContrastRatio: '4.5:1',\n+               fgColor: '#b0b1b4',\n+               fontSize: '6.8pt (9px)',\n+               fontWeight: 'normal',\n+               messageKey: null,\n+               shadowColor: undefined\n+             },\n+             id: 'color-contrast',\n+             impact: 'serious',\n+             message: 'Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+             relatedNodes: [\n+               {\n+                 html: '<nav class=\"chart-utility-rail\" aria-label=\"Tiện ích replay\">',\n+                 target: [\n+                   '.chart-utility-rail'\n+                 ]\n+               }\n+             ]\n+           }\n+         ],\n+         failureSummary: 'Fix any of the following:\\n' +\n+           '  Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+         html: '<span>Go To</span>',\n+         impact: 'serious',\n+         none: [],\n+         target: [\n+           'button[aria-label=\"Đi tới cutoff\"] > span'\n+         ]\n+       },\n+       {\n+         all: [],\n+         any: [\n+           {\n+             data: {\n+               bgColor: '#ffffff',\n+               contrastRatio: 2.14,\n+               expectedContrastRatio: '4.5:1',\n+               fgColor: '#b0b1b4',\n+               fontSize: '6.8pt (9px)',\n+               fontWeight: 'normal',\n+               messageKey: null,\n+               shadowColor: undefined\n+             },\n+             id: 'color-contrast',\n+             impact: 'serious',\n+             message: 'Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+             relatedNodes: [\n+               {\n+                 html: '<nav class=\"chart-utility-rail\" aria-label=\"Tiện ích replay\">',\n+                 target: [\n+                   '.chart-utility-rail'\n+                 ]\n+               }\n+             ]\n+           }\n+         ],\n+         failureSummary: 'Fix any of the following:\\n' +\n+           '  Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+         html: '<span>News</span>',\n+         impact: 'serious',\n+         none: [],\n+         target: [\n+           'button[aria-label=\"Tin tức\"] > span'\n+         ]\n+       },\n+       {\n+         all: [],\n+         any: [\n+           {\n+             data: {\n+               bgColor: '#ffffff',\n+               contrastRatio: 2.14,\n+               expectedContrastRatio: '4.5:1',\n+               fgColor: '#b0b1b4',\n+               fontSize: '6.8pt (9px)',\n+               fontWeight: 'normal',\n+               messageKey: null,\n+               shadowColor: undefined\n+             },\n+             id: 'color-contrast',\n+             impact: 'serious',\n+             message: 'Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+             relatedNodes: [\n+               {\n+                 html: '<nav class=\"chart-utility-rail\" aria-label=\"Tiện ích replay\">',\n+                 target: [\n+                   '.chart-utility-rail'\n+                 ]\n+               }\n+             ]\n+           }\n+         ],\n+         failureSummary: 'Fix any of the following:\\n' +\n+           '  Element has insufficient color contrast of 2.14 (foreground color: #b0b1b4, background color: #ffffff, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1',\n+         html: '<span>Chi tiết</span>',\n+         impact: 'serious',\n+         none: [],\n+         target: [\n+           'button[aria-label=\"Chi tiết replay\"] > span'\n+         ]\n+       }\n+     ],\n+     tags: [\n+       'cat.color',\n+       'wcag2aa',\n+       'wcag143',\n+       'TTv5',\n+       'TT13.c',\n+       'EN-301-549',\n+       'EN-9.1.4.3',\n+       'ACT'\n+     ]\n+   }\n+ ]\n- []\n",
+  "after": {
+    "files": [
+      [
+        "foundation_v2/web/src/TradingViewReplayChart.jsx",
+        "f8f1d642999c479b2dadd1e6f59013f5093aedc895fb82919cdd6700eae951f3"
+      ],
+      [
+        "foundation_v2/web/src/advancedReplayDatafeed.js",
+        "ff07d9581a5fded04b502a673991958850d96853385507174e042726083911f0"
+      ],
+      [
+        "foundation_v2/web/src/ReplayWorkspace.jsx",
+        "fbf8dd967cbb2fb0563c77912e8de8a5494c4e31989c21afd0ca8864c6bee692"
+      ],
+      [
+        "foundation_v2/web/src/ChartWorkbench.css",
+        "6ab694f0a6f72ed9d4ff76a6b72572d2ef696069a4da1f948cb51ad155db7a08"
+      ],
+      [
+        "foundation_v2/web/src/ChartFloatingToolbar.jsx",
+        "87f84c9c727d52e1a7ff8551be95d8d405cf3916b08bbb3abca8d89a2885a492"
+      ],
+      [
+        "foundation_v2/web/src/ChartIcon.jsx",
+        "c5b41fa42098ceab25928a303b3816c7c2df58fdeaab103900010625511c869e"
+      ],
+      [
+        "foundation_v2/web/public/chart-legacy.css",
+        "97095049c6d6022c7d1b8ced38ddb889f3189451f52e6f30a490cb87314f6d61"
+      ]
+    ],
+    "sha256": "182d6a0935bb094b7f7b9e34bbbb2272b712e37185b119bc265a6c6ad0b96067"
+  }
+}

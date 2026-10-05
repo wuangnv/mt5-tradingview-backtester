@@ -1,0 +1,29 @@
+/* Application-owned appearance for the authorized v23 widget, no vendor edits. */
+:root {
+  --legacy-text: #26344a; --legacy-muted: #586474; --legacy-hover: #eceef2;
+}
+:root.theme-dark {
+  --legacy-text: #d7d7d7; --legacy-muted: #aaa; --legacy-hover: #262626;
+  --tv-color-platform-background: #252525;
+  --tv-color-pane-background: #101010;
+  --tv-color-toolbar-button-background-hover: #262626;
+  --tv-color-toolbar-button-background-expanded: #303030;
+  --tv-color-toolbar-button-background-active: #333;
+  --tv-color-toolbar-button-text: #c6c6c6;
+  --tv-color-toolbar-button-text-hover: #fff;
+  --tv-color-toolbar-button-text-active: #90b3ff;
+  --tv-color-toolbar-button-text-active-hover: #b4caff;
+  --tv-color-item-active-text: #90b3ff;
+}
+.theme-dark [data-name='auto'], .theme-dark [data-name='logarithm'], .theme-dark [data-name='percentage'] { color: #b8b8b8; }
+.legacy-market-host, .legacy-session-host { display: flex; align-items: center; height: 36px; padding: 0 2px; color: var(--legacy-text); font: 12px Arial, sans-serif; }
+.legacy-market-group { order: -1; }
+.legacy-header-identity, .legacy-header-session { display: flex; align-items: center; gap: 4px; }
+.legacy-header-identity a, .legacy-header-identity button, .legacy-header-session button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 0 8px; border: 0; border-radius: 3px; background: transparent; color: var(--legacy-text); font: inherit; cursor: pointer; text-decoration: none; }
+.legacy-header-identity :is(a,button):hover, .legacy-header-session button:hover { background: var(--legacy-hover); }
+.legacy-header-identity svg, .legacy-header-session svg { width: 16px; height: 16px; }
+.legacy-header-session strong { font-weight: 500; font-style: italic; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legacy-header-session [data-testid='replay-status'] { font-size: 10px; color: var(--legacy-muted); }
+.legacy-header-identity :is(a,button):focus-visible, .legacy-header-session button:focus-visible { outline: 2px solid #90b3ff; outline-offset: -2px; }
+@media (max-width: 1100px) { .legacy-header-session strong, .legacy-header-session [data-testid='replay-status'] { display: none; } }
+@media (max-width: 600px) { .legacy-header-identity button { padding: 0 4px; } .legacy-session-host { display: none; } }

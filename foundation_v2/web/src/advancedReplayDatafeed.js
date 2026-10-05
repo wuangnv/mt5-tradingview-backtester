@@ -33,7 +33,7 @@ export function replayBars(rows, cutoff, seconds) {
 // The API-visible prefix is the only history source. No provider/CDN requests.
 export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, cutoff, assetClass = 'fx' }) {
   const interval = replayResolution(seconds)
-  const supported = [...new Set([interval, ...[1, 5, 15, 30, 60, 240].filter(minutes => minutes * 60 >= seconds && minutes * 60 % seconds === 0).map(String)])]
+  const supported = [...new Set([interval, ...[1, 3, 5, 15, 30, 60, 120, 240].filter(minutes => minutes * 60 >= seconds && minutes * 60 % seconds === 0).map(String)])]
   const precision = tickSize > 0 ? Math.min(8, String(Number(tickSize).toFixed(8)).replace(/0+$/, '').split('.')[1]?.length || 0) : 5
   const pricescale = 10 ** precision
   const type = { fx: 'forex', crypto: 'crypto', equity: 'stock', futures: 'futures' }[assetClass] || 'spread'

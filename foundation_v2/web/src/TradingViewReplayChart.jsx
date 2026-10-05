@@ -4,8 +4,8 @@ import { readChartSnapshot, writeChartSnapshot } from './advancedChartStorage.js
 
 let libraryPromise
 const paneAppearance = theme => ({
-  'paneProperties.backgroundType': 'solid', 'paneProperties.background': theme === 'light' ? '#ffffff' : '#0b0d10',
-  'paneProperties.vertGridProperties.color': theme === 'light' ? '#f0f2f5' : '#171b21', 'paneProperties.horzGridProperties.color': theme === 'light' ? '#f0f2f5' : '#171b21',
+  'paneProperties.backgroundType': 'solid', 'paneProperties.background': theme === 'light' ? '#ffffff' : '#101010',
+  'paneProperties.vertGridProperties.color': theme === 'light' ? '#f0f2f5' : '#1c1c1c', 'paneProperties.horzGridProperties.color': theme === 'light' ? '#f0f2f5' : '#1c1c1c',
 })
 function loadLibrary() {
   if (window.TradingView?.widget) return Promise.resolve()
@@ -28,7 +28,7 @@ export default function TradingViewReplayChart(props) {
 
   useEffect(() => {
     let cancelled = false, saveTimer, restoringImports = false, importedShapes = [], lines = []
-    let widget, adapter, chart, fitButton, fittedLevels = ''
+    let widget, adapter, chart, fitButton, headerSlots, chartReady = false, fittedLevels = ''
     setStatus('loading'); setMessage('')
     const save = () => {
       if (cancelled || !widget || !chart) return
@@ -55,10 +55,11 @@ export default function TradingViewReplayChart(props) {
         container: host.current, library_path: '/charting_library/', datafeed: adapter.datafeed,
         symbol, interval: restoredInterval, locale: 'vi', timezone: 'Etc/UTC', theme: theme === 'light' ? 'Light' : 'Dark', autosize: true,
         ...(saved ? { saved_data: saved } : {}),
-        enabled_features: ['seconds_resolution'],
+        custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported },
+        enabled_features: ['seconds_resolution', 'items_favoriting'],
         disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot'],
         overrides: { ...paneAppearance(theme),
-          'mainSeriesProperties.candleStyle.upColor': '#14b889', 'mainSeriesProperties.candleStyle.downColor': '#ef5350', 'mainSeriesProperties.candleStyle.borderUpColor': '#14b889', 'mainSeriesProperties.candleStyle.borderDownColor': '#ef5350', 'mainSeriesProperties.candleStyle.wickUpColor': '#14b889', 'mainSeriesProperties.candleStyle.wickDownColor': '#ef5350' },
+          'mainSeriesProperties.candleStyle.upColor': '#00a88a', 'mainSeriesProperties.candleStyle.downColor': '#f54659', 'mainSeriesProperties.candleStyle.borderUpColor': '#00a88a', 'mainSeriesProperties.candleStyle.borderDownColor': '#f54659', 'mainSeriesProperties.candleStyle.wickUpColor': '#00a88a', 'mainSeriesProperties.candleStyle.wickDownColor': '#f54659' },
       })
       widget.onChartReady(() => {
         if (cancelled) return
@@ -142,6 +143,8 @@ export default function TradingViewReplayChart(props) {
             const prefix = latest.current.rows
             if (!saved && prefix.length > 1) chart.setVisibleRange({ from: Number(prefix[Math.max(0, prefix.length - 100)].timestamp), to: Number(prefix.at(-1).timestamp) }).catch(() => {})
             setStatus('ready')
+            chartReady = true
+            if (headerSlots) latest.current.onHeaderSlots?.(headerSlots)
           }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
         }
         instance.current = { widget, adapter, chart, refresh, importAnnotations, save }
@@ -160,6 +163,15 @@ export default function TradingViewReplayChart(props) {
         })
         widget.headerReady().then(() => {
           if (cancelled) return
+          const marketHost = widget.createButton({ align: 'left', useTradingViewStyle: false })
+          marketHost.className = 'legacy-market-host'
+          // v23 wraps official custom buttons in a toolbar group. Keep the
+          // market identity first without moving the library-owned controls.
+          marketHost.parentElement.parentElement.classList.add('legacy-market-group')
+          const sessionHost = widget.createButton({ align: 'right', useTradingViewStyle: false })
+          sessionHost.className = 'legacy-session-host'
+          headerSlots = { market: marketHost, session: sessionHost }
+          if (chartReady) latest.current.onHeaderSlots?.(headerSlots)
           const button = widget.createButton()
           button.textContent = 'Lưu chart'
           button.title = 'Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này'
@@ -182,6 +194,7 @@ export default function TradingViewReplayChart(props) {
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
       cancelled = true; clearTimeout(saveTimer); instance.current = null
+      latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }
   }, [workspace, sessionId, datasetId, symbol, assetClass, seconds, tickSize, storageKey])

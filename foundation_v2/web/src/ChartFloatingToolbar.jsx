@@ -5,7 +5,7 @@ export function clampToolbar(position, width, height, parentWidth, parentHeight,
   return { x: Math.max(0, Math.min(position.x, Math.max(0, parentWidth - width))), y: Math.max(minimumY, Math.min(position.y, Math.max(minimumY, parentHeight - height - 28))) }
 }
 
-export default function ChartFloatingToolbar({ name, storageKey, initialPosition, compactRow = 0, children }) {
+export default function ChartFloatingToolbar({ name, storageKey, initialPosition, compactRow = 0, compactMinimumY = 36 + compactRow * 64, insetLeft = 0, children }) {
   const [layout, setLayout] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey))
@@ -18,18 +18,24 @@ export default function ChartFloatingToolbar({ name, storageKey, initialPosition
   useEffect(() => {
     const node = ref.current
     if (!node) return
-    const constrain = () => setLayout(current => ({ ...current, ...clampToolbar(current, node.offsetWidth, node.offsetHeight, node.parentElement.clientWidth, node.parentElement.clientHeight, node.parentElement.clientWidth < 760 ? 36 + compactRow * 64 : 36) }))
+    const constrain = () => setLayout(current => {
+      const next = clampToolbar(current, node.offsetWidth, node.offsetHeight, node.parentElement.clientWidth, node.parentElement.clientHeight, node.parentElement.clientWidth < 760 ? compactMinimumY : 36)
+      return { ...current, ...next, x: Math.max(insetLeft, next.x) }
+    })
     const observer = new ResizeObserver(constrain)
     observer.observe(node.parentElement)
     observer.observe(node)
     return () => observer.disconnect()
-  }, [compactRow])
+  }, [compactMinimumY, insetLeft])
   useEffect(() => { try { localStorage.setItem(storageKey, JSON.stringify(layout)) } catch { /* Optional preferences. */ } }, [layout, storageKey])
   const move = (x, y) => {
     const node = ref.current
-    setLayout(current => ({ ...current, ...clampToolbar({ x, y }, node.offsetWidth, node.offsetHeight, node.parentElement.clientWidth, node.parentElement.clientHeight, node.parentElement.clientWidth < 760 ? 36 + compactRow * 64 : 36) }))
+    setLayout(current => {
+      const next = clampToolbar({ x, y }, node.offsetWidth, node.offsetHeight, node.parentElement.clientWidth, node.parentElement.clientHeight, node.parentElement.clientWidth < 760 ? compactMinimumY : 36)
+      return { ...current, ...next, x: Math.max(insetLeft, next.x) }
+    })
   }
-  return <div ref={ref} className={`chart-floating-toolbar ${layout.collapsed ? 'is-collapsed' : ''}`} role="group" aria-label={name} style={{ left: layout.x, top: layout.y }}>
+  return <div ref={ref} className={`chart-floating-toolbar ${layout.collapsed ? 'is-collapsed' : ''}`} role="group" aria-label={name} style={{ left: layout.x, top: layout.y, maxWidth: `calc(100% - ${insetLeft}px)` }}>
     <button type="button" className="chart-float-grip" aria-label={`Di chuyển ${name}`} title="Kéo để di chuyển · phím mũi tên để chỉnh vị trí" disabled={layout.pinned}
       onPointerDown={event => { if (event.button !== 0) return; event.currentTarget.setPointerCapture(event.pointerId); drag.current = { x: event.clientX - layout.x, y: event.clientY - layout.y }; event.preventDefault() }}
       onPointerMove={event => { if (drag.current) move(event.clientX - drag.current.x, event.clientY - drag.current.y) }}
