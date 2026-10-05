@@ -19,6 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8010)
     parser.add_argument('--mt5-python', type=Path, help='Python environment containing the audited MetaTrader5 SDK; enables read-only sync.')
+    parser.add_argument('--ticks', action='store_true', help='Daily closed-day Bid/Ask tick catch-up for EURUSDm and XAUUSDm.')
     parser.add_argument('--terminal', type=Path, default=Path('C:/Program Files/MetaTrader 5/terminal64.exe'))
     args = parser.parse_args()
     config = conninfo_to_dict(os.environ['TW_V2_DATABASE_URL'])
@@ -33,7 +34,8 @@ def main():
     runtime = None
     if args.mt5_python:
         runtime = lambda store, artifacts: MarketRuntime(store, artifacts, workspace='tenant-a',
-            python=args.mt5_python.resolve(), worker=repo / 'foundation_v2/scripts/mt5_read_worker.py', terminal=args.terminal)
+            python=args.mt5_python.resolve(), worker=repo / 'foundation_v2/scripts/mt5_read_worker.py', terminal=args.terminal,
+            ticks_enabled=args.ticks)
     app = create_app(
         dsn=make_conninfo(**config), artifact_root=artifacts,
         authorization=LocalWorkspaceAuthorization.for_local_owner(['tenant-a'], identity_id='local-owner'),

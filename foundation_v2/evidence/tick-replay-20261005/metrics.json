@@ -1,0 +1,50 @@
+{
+  "execution_capability": false,
+  "assets": {
+    "EURUSDm": {
+      "snapshot_id": "ticks-503082fa3952b25ec1bb2560aa74a59b53e83f62792d4dcbe562cb6646a8704d",
+      "row_count": 2464842,
+      "bytes": 21803187,
+      "requested_from_msc": 1783382400000,
+      "requested_to_msc": 1791158400000,
+      "first_tick_msc": 1783382400087,
+      "last_tick_msc": 1791158396146,
+      "quality": "review",
+      "coverage": "broker_returned_unverified",
+      "empty_days": 13
+    },
+    "XAUUSDm": {
+      "snapshot_id": "ticks-266d18fca74f77d9df23cbcf91e6ec535f6e2dcbee364dfb3422cbe91f9674b4",
+      "row_count": 19014116,
+      "bytes": 260449342,
+      "requested_from_msc": 1783382400000,
+      "requested_to_msc": 1791158400000,
+      "first_tick_msc": 1783468800080,
+      "last_tick_msc": 1791158399671,
+      "quality": "review",
+      "coverage": "broker_returned_unverified",
+      "empty_days": 14
+    }
+  },
+  "benchmark": {
+    "EURUSDm": {
+      "actual_flat_minute_seconds_with_tracing": 0.43285699999978533,
+      "python_traced_peak_bytes": 4259475,
+      "working_set_before_bytes": 46092288,
+      "working_set_after_bytes": 60358656,
+      "scope": "Real immutable day partition, hash verification and minute replay; flat position. RSS includes interpreter/Arrow; tracing omits native Arrow allocations."
+    },
+    "XAUUSDm": {
+      "actual_flat_minute_seconds_with_tracing": 0.45046049999655224,
+      "python_traced_peak_bytes": 4251072,
+      "working_set_before_bytes": 60407808,
+      "working_set_after_bytes": 62144512,
+      "scope": "Real immutable day partition, hash verification and minute replay; flat position. RSS includes interpreter/Arrow; tracing omits native Arrow allocations."
+    }
+  },
+  "disk_bytes": {
+    "tick_store_all_versions": 286942007,
+    "captures": 208643142
+  },
+  "original_session_unchanged": true
+}

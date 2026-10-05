@@ -1,4 +1,6 @@
 import importlib.util
+import csv
+import gzip
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -90,6 +92,53 @@ class MT5ReadWorkerTests(unittest.TestCase):
             self.assertEqual(len((Path(folder) / 'bars.csv').read_text().splitlines()), 4)
             self.assertTrue((Path(folder) / 'receipt.json').exists())
         self.assertFalse(self.sdk.order_send.called)
+
+    def tick_args(self, folder):
+        start = int(datetime(2026, 9, 1, tzinfo=timezone.utc).timestamp())
+        return SimpleNamespace(command='ticks', server=self.account.server, account_key=None,
+            symbol='EURUSDm', start=start, end=start + 86400, output=folder)
+
+    def tick_array(self, rows):
+        return np.array(rows, dtype=[('time_msc', 'i8'), ('bid', 'f8'), ('ask', 'f8'),
+            ('last', 'f8'), ('volume', 'i8'), ('flags', 'i8'), ('volume_real', 'f8')])
+
+    def test_ticks_keep_same_ms_order_and_duplicates_exclude_end(self):
+        with tempfile.TemporaryDirectory() as folder:
+            args = self.tick_args(folder)
+            start = args.start * 1000
+            row = lambda t, b: (t, b, b + .0002, 0, 0, 6, 0)
+            self.sdk.copy_ticks_range.return_value = self.tick_array([
+                row(start + 2, 1.2), row(start, 1.1), row(start, 1.11),
+                row(start, 1.11), row(args.end * 1000, 1.3), row(start - 1, 1.0)])
+            payload = self.worker.collect(args)
+            self.assertEqual(payload['row_count'], 4)
+            with gzip.open(Path(folder) / 'ticks.csv.gz', 'rt', newline='') as handle:
+                rows = list(csv.DictReader(handle))
+            self.assertEqual([float(r['bid']) for r in rows], [1.1, 1.11, 1.11, 1.2])
+            self.assertEqual(payload['requested_to_msc'], args.end * 1000)
+            self.assertFalse(self.sdk.order_send.called)
+            self.assertFalse(self.sdk.order_check.called)
+
+    def test_empty_ticks_are_unavailable_read_failure_is_error(self):
+        with tempfile.TemporaryDirectory() as folder:
+            args = self.tick_args(folder)
+            self.sdk.copy_ticks_range.return_value = self.tick_array([])
+            self.assertEqual(self.worker.collect(args)['status'], 'unavailable')
+            self.sdk.copy_ticks_range.return_value = None
+            with self.assertRaisesRegex(RuntimeError, 'ticks_read_failed'):
+                self.worker.collect(args)
+            args.end += 1
+            with self.assertRaisesRegex(ValueError, 'tick_chunk_range'):
+                self.worker.collect(args)
+
+    def test_ticks_account_drift_rejected_before_receipt_write(self):
+        with tempfile.TemporaryDirectory() as folder:
+            self.sdk.copy_ticks_range.return_value = self.tick_array([])
+            self.sdk.account_info.side_effect = [self.account,
+                SimpleNamespace(server=self.account.server, login=7654321, trade_mode=0)]
+            with self.assertRaisesRegex(RuntimeError, 'account_changed'):
+                self.worker.collect(self.tick_args(folder))
+            self.assertFalse((Path(folder) / 'receipt.json').exists())
 
 
 if __name__ == '__main__':

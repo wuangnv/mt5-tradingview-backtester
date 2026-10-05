@@ -14,6 +14,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .data_ingest import DataIngestService
+from .tick_history import TickHistoryStore
 
 
 DEFAULT_SYMBOLS = tuple(f'{base}{quote}m' for i, base in enumerate(('EUR', 'GBP', 'AUD', 'NZD', 'USD', 'CAD', 'CHF', 'JPY'))
@@ -54,7 +55,7 @@ def merge_bars(paths, destination):
 
 
 class MarketRuntime:
-    def __init__(self, store, artifacts, *, workspace, python, worker, terminal, server='Exness-MT5Trial14', seed_days=90):
+    def __init__(self, store, artifacts, *, workspace, python, worker, terminal, server='Exness-MT5Trial14', seed_days=90, ticks_enabled=False):
         self.store, self.artifacts, self.workspace = store, artifacts, workspace
         self.python, self.worker, self.terminal, self.server = map(str, (python, worker, terminal, server))
         self.root = artifacts.root / workspace / 'market-sync'
@@ -71,6 +72,9 @@ class MarketRuntime:
         self.pin = json.loads(self.pin_path.read_text())['account_key'] if self.pin_path.exists() else None
         self.active = None
         self.owned = False
+        self.ticks_enabled = ticks_enabled
+        self.ticks = TickHistoryStore(artifacts.root)
+        self.tick_start_cache = {}
 
     def authorize(self, workspace):
         if workspace != self.workspace:
@@ -171,10 +175,24 @@ class MarketRuntime:
             items = [{**item, 'symbol': name,
                       'status': 'syncing' if name == self.active else 'queued' if name in queued else item['status']}
                      for name, item in self.state['assets'].items()]
+            for item in items:
+                if item['symbol'] in ('EURUSDm', 'XAUUSDm'):
+                    tick = self.ticks.latest(workspace, item['symbol'])
+                    if tick:
+                        item['ticks'] = {key: tick[key] for key in ('snapshot_id', 'row_count', 'bytes', 'first_tick_msc', 'last_tick_msc', 'quality')}
+                        item['ticks']['unavailable_days'] = len(tick['unavailable_intervals'])
+                        key = (tick['snapshot_id'], item.get('dataset_id'))
+                        if key not in self.tick_start_cache and item.get('dataset_id') and tick['first_tick_msc'] is not None:
+                            dataset = self.store.get_dataset(workspace, item['dataset_id'])
+                            rows = self.artifacts.read_dataset(dataset.artifact_path, dataset.artifact_sha256)
+                            first_minute = tick['first_tick_msc'] // 60000 * 60
+                            self.tick_start_cache[key] = next((index for index, row in enumerate(rows) if row['timestamp'] >= first_minute), None)
+                        item['ticks']['start_index'] = self.tick_start_cache.get(key)
             return {'status': 'ready' if items else 'unavailable', 'items': sorted(items, key=lambda s: (not s['enabled'], s['symbol'])),
                     'schedule': 'daily_utc_closed_bars', 'running': self.active, 'queued': len(queued),
                     'connection_error': self.error, 'source': f'{self.server} / MT5',
                     'seed_days': self.seed_days, 'execution_capability': False,
+                    'ticks_daily_enabled': self.ticks_enabled, 'tick_sync_error': self.state.get('tick_sync_error'),
                     'provider_limits': 'Dukascopy archive disabled pending license clarification; futures exchange data not configured.'}
 
     def live_status(self, workspace):
@@ -275,6 +293,51 @@ class MarketRuntime:
             else:
                 self.stop_event.wait(2)
 
+    def _tick_loop(self):
+        while not self.stop_event.is_set():
+            now = datetime.now(timezone.utc)
+            today = now.date().isoformat()
+            with self.lock:
+                run = not self.error and self.state.get('tick_daily_attempt') != today
+            if not run:
+                self.stop_event.wait(5)
+                continue
+            failed = False
+            errors = []
+            end = now.replace(hour=0, minute=0, second=0, microsecond=0)
+            for symbol in ('EURUSDm', 'XAUUSDm'):
+                latest = self.ticks.latest(self.workspace, symbol)
+                start = end - timedelta(days=2)
+                if latest:
+                    start = min(start, datetime.fromtimestamp(latest['requested_to_msc'] / 1000, timezone.utc))
+                debt = self.state.get('tick_debt_from', {}).get(symbol)
+                if debt:
+                    start = min(start, datetime.fromisoformat(debt))
+                while start < end:
+                    if self.stop_event.is_set():
+                        return
+                    stop = start + timedelta(days=1)
+                    folder = self.root / 'tick-captures' / f'{symbol}-{start.date()}-{uuid4().hex}'
+                    try:
+                        self._collect('ticks', '--symbol', symbol, '--start', str(int(start.timestamp())),
+                            '--end', str(int(stop.timestamp())), '--output', str(folder))
+                        self.ticks.ingest_capture(self.workspace, folder / 'receipt.json')
+                    except Exception as exc:
+                        failed = True
+                        with self.lock:
+                            errors.append(str(exc) if str(exc).startswith('mt5_') else 'tick_import_failed')
+                            debts = self.state.setdefault('tick_debt_from', {})
+                            debts[symbol] = min(debts.get(symbol, start.isoformat()), start.isoformat())
+                            self._save()
+                    start = stop
+            with self.lock:
+                self.state['tick_sync_error'] = errors[0] if errors else None
+                if not failed:
+                    self.state['tick_daily_attempt'] = today
+                    self.state['tick_debt_from'] = {}
+                self._save()
+            self.stop_event.wait(60 if failed else 5)
+
     def _owner_loop(self):
         # One owner for both snapshots and history, even with multiple API workers.
         with self.store.connect() as conn:
@@ -284,7 +347,10 @@ class MarketRuntime:
                 self.error = 'mt5_sync_owned_by_another_process'
                 return
             self.owned = True
-            for name, target in (('market-read-snapshot', self._snapshot_loop), ('market-history-catchup', self._history_loop)):
+            targets = [('market-read-snapshot', self._snapshot_loop), ('market-history-catchup', self._history_loop)]
+            if self.ticks_enabled:
+                targets.append(('market-tick-catchup', self._tick_loop))
+            for name, target in targets:
                 thread = threading.Thread(target=target, name=name, daemon=True)
                 self.threads.append(thread)
                 thread.start()

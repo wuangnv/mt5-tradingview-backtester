@@ -55,7 +55,7 @@ test('async replay hydration derives risk defaults from the loaded cutoff', () =
   // first queue attempt is validated against the actual session price.
   assert.match(code, /setDraft\(initialDraft\(next\)\)/)
   assert.match(code, /if \(replay\) setDraft\(initialDraft\(replay\)\)/)
-  assert.match(code, /const price = optionalNumber\(current\?\.close\)/)
+  assert.match(code, /const price = execution \? marketQuotes\(replay\).ask : optionalNumber\(current\?\.close\)/)
   assert.doesNotMatch(code, /numberOr\(current\?\.close, 1\.1\)/)
   assert.doesNotMatch(code, /\.\.\.initialDraft\(next\), \.\.\.current/)
 })

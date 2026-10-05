@@ -11,7 +11,8 @@ export function orderDraft(replay, instrument, side = 'BUY') {
   replay = replayAtCutoff(replay)
   const active = replay?.payload?.execution?.position || replay?.payload?.execution?.pending_market_order
   if (active) return { side: active.side, quantity: String(active.quantity), stopLoss: String(active.stop_loss), takeProfit: String(active.take_profit) }
-  const entry = finiteNumber(replay?.visible_rows?.at(-1)?.close)
+  const quotes = marketQuotes(replay)
+  const entry = replay?.payload?.execution ? (side === 'BUY' ? quotes.ask : quotes.bid) : finiteNumber(replay?.visible_rows?.at(-1)?.close)
   const pip = finiteNumber(instrument?.pip_size)
   const distance = pip > 0 ? pip * 20 : null
   return { side, quantity: instrument?.quantity_min == null ? '' : String(instrument.quantity_min),
@@ -24,16 +25,18 @@ export function protectionReference(replay) {
   const execution = replay?.payload?.execution
   const close = finiteNumber(replay?.visible_rows?.at(-1)?.close)
   if (close === null) return null
-  if (!execution?.position) return close
+  const active = execution?.position || (execution?.quote_source === 'broker_bid_ask' ? execution.pending_market_order : null)
+  if (!active) return close
   const quote = marketQuotes(replay)
-  return execution.position.side === 'BUY' ? quote.bid : quote.ask
+  return active.side === 'BUY' ? quote.bid : quote.ask
 }
 
 export function orderLevels(replay, draft) {
   replay = replayAtCutoff(replay)
   const execution = replay?.payload?.execution
   const active = execution?.position || execution?.pending_market_order
-  const entry = finiteNumber(execution?.position?.entry_fill ?? replay?.visible_rows?.at(-1)?.close)
+  const quotes = marketQuotes(replay)
+  const entry = finiteNumber(execution?.position?.entry_fill ?? (execution ? (draft.side === 'BUY' ? quotes.ask : quotes.bid) : replay?.visible_rows?.at(-1)?.close))
   const stop = finiteNumber(draft.stopLoss)
   const target = finiteNumber(draft.takeProfit)
   if (![entry, stop, target].every(value => value !== null && value > 0)) return null
@@ -45,6 +48,12 @@ export function orderLevels(replay, draft) {
 
 export function marketQuotes(replay) {
   replay = replayAtCutoff(replay)
+  const execution = replay?.payload?.execution
+  if (execution?.quote_source === 'broker_bid_ask') {
+    const bid = finiteNumber(execution.last_bid)
+    const ask = finiteNumber(execution.last_ask)
+    return bid > 0 && ask >= bid ? { bid, ask } : { bid: null, ask: null }
+  }
   const close = finiteNumber(replay?.visible_rows?.at(-1)?.close)
   const spread = finiteNumber(replay?.payload?.execution?.spread_price)
   const tick = finiteNumber(replay?.payload?.execution?.instrument_spec?.tick_size)

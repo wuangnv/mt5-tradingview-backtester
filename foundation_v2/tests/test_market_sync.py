@@ -99,6 +99,60 @@ class MarketSyncTests(unittest.TestCase):
         resumed._schedule_daily('2026-10-06')
         self.assertEqual(len(resumed.state['pending']), 1)
 
+    def test_tick_daily_catches_downtime_keeps_closed_days_and_resumes_once(self):
+        end = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        starts = []
+        self.runtime.ticks = SimpleNamespace(latest=lambda w, s: {'requested_to_msc': int((end - timedelta(days=4)).timestamp() * 1000)},
+            ingest_capture=lambda w, p: None)
+        def collect(command, *args):
+            self.assertEqual(command, 'ticks')
+            begin, finish = int(args[args.index('--start') + 1]), int(args[args.index('--end') + 1])
+            self.assertEqual(finish - begin, 86400)
+            self.assertLessEqual(finish, int(end.timestamp()))
+            starts.append(begin)
+        self.runtime._collect = collect
+        with patch.object(self.runtime.stop_event, 'wait', side_effect=lambda _: self.runtime.stop_event.set()):
+            self.runtime._tick_loop()
+        self.assertEqual(len(starts), 8)
+        resumed = self.make_runtime()
+        resumed.error = None
+        resumed._collect = lambda *a: self.fail('same day must not run twice')
+        with patch.object(resumed.stop_event, 'wait', side_effect=lambda _: resumed.stop_event.set()):
+            resumed._tick_loop()
+
+    def test_tick_failure_debt_survives_restart_latest_pointer_then_clears_on_success(self):
+        end = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        earliest = (end - timedelta(days=4)).isoformat()
+        self.runtime.state['tick_debt_from'] = {'EURUSDm': earliest}
+        latest = lambda w, s: {'requested_to_msc': int(end.timestamp() * 1000)}
+        self.runtime.ticks = SimpleNamespace(latest=latest, ingest_capture=lambda w, p: None)
+        def fail_first(command, *args):
+            if args[args.index('--symbol') + 1] == 'EURUSDm' and int(args[args.index('--start') + 1]) == int((end - timedelta(days=4)).timestamp()):
+                raise RuntimeError('mt5_ticks_read_failed')
+        self.runtime._collect = fail_first
+        with patch.object(self.runtime.stop_event, 'wait', side_effect=lambda _: self.runtime.stop_event.set()):
+            self.runtime._tick_loop()
+        resumed = self.make_runtime()
+        self.assertEqual(resumed.state['tick_debt_from']['EURUSDm'], earliest)
+        self.assertNotEqual(resumed.state.get('tick_daily_attempt'), end.date().isoformat())
+        resumed.error = None
+        resumed.ticks = SimpleNamespace(latest=latest, ingest_capture=lambda w, p: None)
+        calls = []
+        resumed._collect = lambda *args: calls.append(args)
+        with patch.object(resumed.stop_event, 'wait', side_effect=lambda _: resumed.stop_event.set()):
+            resumed._tick_loop()
+        self.assertEqual(len(calls), 6)
+        self.assertEqual(resumed.state['tick_debt_from'], {})
+        self.assertIsNone(resumed.state['tick_sync_error'])
+
+    def test_tick_loop_disconnected_and_stop_prevent_reads(self):
+        self.runtime.error = 'mt5_disconnected'
+        self.runtime._collect = lambda *a: self.fail('disconnected must not read')
+        with patch.object(self.runtime.stop_event, 'wait', side_effect=lambda _: self.runtime.stop_event.set()):
+            self.runtime._tick_loop()
+        self.runtime.error = None
+        self.runtime._tick_loop()
+
     def test_queue_dedup_scope_owner_and_bad_date(self):
         self.runtime.request('test-market', 'EURUSDm')
         self.runtime.request('test-market', 'EURUSDm')

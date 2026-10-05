@@ -27,7 +27,8 @@ def validate_replay_prop_binding(
     attempt: ChallengeAttemptSnapshot,
     phase: PhaseStateSnapshot,
 ) -> None:
-    expected_engine = "replay-v2" if snapshot.schema_version == "replay-execution-v2" else "replay-v1"
+    expected_engine = ('replay-tick-v1' if snapshot.schema_version == 'replay-execution-tick-v1'
+                       else "replay-v2" if snapshot.schema_version == "replay-execution-v2" else "replay-v1")
     if attempt.engine_version != expected_engine:
         raise ReplayPropConnectionError(f"prop attempt engine_version must be {expected_engine}")
     if not _data_version_matches(attempt.data_version, snapshot.dataset_sha256):
@@ -74,6 +75,8 @@ def validate_replay_prop_branch_checkpoint(
         or child_snapshot.cost_model != parent_snapshot.cost_model
         or child_snapshot.starting_balance != parent_snapshot.starting_balance
         or child_snapshot.schema_version != parent_snapshot.schema_version
+        or getattr(child_snapshot, 'tick_snapshot_id', None) != getattr(parent_snapshot, 'tick_snapshot_id', None)
+        or getattr(child_snapshot, 'tick_snapshot_sha256', None) != getattr(parent_snapshot, 'tick_snapshot_sha256', None)
         or getattr(child_snapshot, "research_margin", None) != getattr(parent_snapshot, "research_margin", None)
     ):
         raise ReplayPropConnectionError("replay branch immutable execution pins diverged from its parent")

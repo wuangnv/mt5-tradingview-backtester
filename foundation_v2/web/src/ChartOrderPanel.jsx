@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { DEFAULT_COST_MODEL, RiskPreview, validateDraft } from './TradeWorkspace.jsx'
-import { finiteNumber, money, orderDraft, protectionReference, replayAtCutoff } from './replayOrderModel.js'
+import { finiteNumber, marketQuotes, money, orderDraft, protectionReference, replayAtCutoff } from './replayOrderModel.js'
+import { useReplayTickOptions } from './useReplayTickOptions.js'
 
-export function useChartOrder({ replay, dataset, ready, blocked, submit }) {
+export function useChartOrder({ workspace, replay, dataset, ready, blocked, submit }) {
   const execution = replayAtCutoff(replay)?.payload?.execution
   const instrument = execution?.instrument_spec || dataset?.instrument_spec
   const [draft, setDraft] = useState(() => orderDraft(replay, instrument))
@@ -10,10 +11,12 @@ export function useChartOrder({ replay, dataset, ready, blocked, submit }) {
   const [startingBalance, setStartingBalance] = useState('10000')
   const [spread, setSpread] = useState('0.0002')
   const [pending, setPending] = useState(false)
+  const tick = useReplayTickOptions(workspace, replay)
   useEffect(() => { setDraft(orderDraft(replay, instrument)); setNotice(null) }, [replay?.record_id, replay?.revision, instrument])
   const active = execution?.position || execution?.pending_market_order
   const costs = execution?.cost_model || (dataset ? DEFAULT_COST_MODEL : null)
-  const reference = protectionReference(replay)
+  const quotes = marketQuotes(replay)
+  const reference = active ? protectionReference(replay) : execution ? (draft.side === 'BUY' ? quotes.ask : quotes.bid) : protectionReference(replay)
   const disabled = !ready || blocked || pending
   const canInitialize = Boolean(instrument && dataset?.timeframe_seconds && costs)
   const run = async (endpoint, body) => {
@@ -22,7 +25,7 @@ export function useChartOrder({ replay, dataset, ready, blocked, submit }) {
     setNotice(null)
     try {
       const success = await submit(endpoint, body)
-      if (success) setNotice({ kind: 'ok', text: endpoint === 'execution' ? 'Simulator sẵn sàng.' : endpoint.endsWith('protection') ? 'TP/SL đã lưu; áp dụng từ nến tiếp theo.' : 'Đã queue; fill ở giá mở nến kế tiếp.' })
+      if (success) setNotice({ kind: 'ok', text: endpoint === 'execution' ? 'Simulator sẵn sàng.' : endpoint.endsWith('protection') ? 'TP/SL đã lưu; áp dụng từ nến tiếp theo.' : execution?.quote_source === 'broker_bid_ask' ? 'Đã queue; fill ở tick đầu tiên của nến kế tiếp.' : 'Đã queue; fill ở giá mở nến kế tiếp.' })
     } catch (error) { setNotice({ kind: 'error', text: error.message }) }
     finally { setPending(false) }
   }
@@ -45,12 +48,17 @@ export function useChartOrder({ replay, dataset, ready, blocked, submit }) {
     if (!active && !disabled) { setDraft(current => ({ ...orderDraft(replay, instrument, side), quantity: current.quantity })); setNotice(null) }
   }
   const initialize = () => {
-    if (!canInitialize) return
-    const balance = finiteNumber(startingBalance), spreadValue = finiteNumber(spread)
+    if (!canInitialize || tick.options === null) return
+    const balance = finiteNumber(startingBalance), spreadValue = tick.useTicks ? 0 : finiteNumber(spread)
     if (!(balance > 0) || spreadValue === null || spreadValue < 0) { setNotice({ kind: 'error', text: 'Nhập vốn dương và spread không âm.' }); return }
-    return run('execution', { instrument_spec: instrument, cost_model: costs, spread_price: String(spreadValue), timeframe_seconds: Number(dataset.timeframe_seconds), starting_balance: String(balance) })
+    const leverage = finiteNumber(tick.leverage)
+    if (tick.useTicks && (!tick.options?.available || !tick.options.snapshot_id || !Number.isInteger(leverage) || leverage < 1 || leverage > 1000)) {
+      setNotice({ kind: 'error', text: 'Cần tick tại phút đang chọn và đòn bẩy nguyên từ 1 đến 1000.' }); return
+    }
+    return run('execution', { instrument_spec: instrument, cost_model: costs, spread_price: String(spreadValue), timeframe_seconds: Number(dataset.timeframe_seconds), starting_balance: String(balance),
+      ...(tick.useTicks ? { tick_snapshot_id: tick.options.snapshot_id, research_margin: { version: 'fixed-starting-balance-leverage-v1', leverage: String(leverage) } } : {}) })
   }
-  return { draft, setDraft, execution, instrument, costs, active, reference, disabled, pending, notice, startingBalance, setStartingBalance, spread, setSpread, canInitialize, initialize, save, changePrice, chooseSide }
+  return { draft, setDraft, execution, instrument, costs, active, reference, disabled, pending, notice, startingBalance, setStartingBalance, spread, setSpread, tick, canInitialize, initialize, save, changePrice, chooseSide }
 }
 
 export default function ChartOrderPanel({ order, blockedReason }) {
@@ -61,8 +69,10 @@ export default function ChartOrderPanel({ order, blockedReason }) {
     {!execution ? <form onSubmit={event => { event.preventDefault(); order.initialize() }}>
       <h2>Khởi tạo tài khoản</h2><p>Chi phí mô phỏng, không phải báo giá broker.</p>
       <label>Vốn ban đầu ({costs?.account_ccy || 'Chưa rõ tiền tệ'})<input type="number" min="1" step="0.01" value={order.startingBalance} onChange={event => order.setStartingBalance(event.target.value)} disabled={disabled} /></label>
-      <label>Spread (đơn vị giá)<input type="number" min="0" step={instrument?.tick_size || 'any'} value={order.spread} onChange={event => order.setSpread(event.target.value)} disabled={disabled} /></label>
-      <button type="submit" disabled={disabled || !order.canInitialize}>Khởi tạo simulator</button>
+      <label className="replay-tick-toggle"><input type="checkbox" checked={order.tick.useTicks} disabled={disabled || !order.tick.options?.available} onChange={event => order.tick.setMode(event.target.checked ? 'tick' : 'bar')} />Khớp lệnh bằng tick Bid/Ask</label>
+      <p role="status">{order.tick.options?.reason || 'Đang kiểm tra lịch sử tick…'}</p>
+      {order.tick.useTicks ? <label>Đòn bẩy mô phỏng<input type="number" min="1" max="1000" step="1" value={order.tick.leverage} onChange={event => order.tick.setLeverage(event.target.value)} disabled={disabled} /></label> : <label>Spread (đơn vị giá)<input type="number" min="0" step={instrument?.tick_size || 'any'} value={order.spread} onChange={event => order.setSpread(event.target.value)} disabled={disabled} /></label>}
+      <button type="submit" disabled={disabled || !order.canInitialize || order.tick.options === null}>Khởi tạo simulator</button>
       {!order.canInitialize && <p>Đang thiếu instrument hoặc timeframe trong dataset.</p>}
     </form> : <>
       <dl className="chart-account"><div><dt>Balance</dt><dd>{money(execution.balance, costs?.account_ccy)}</dd></div><div><dt>Equity</dt><dd>{money(execution.equity, costs?.account_ccy)}</dd></div><div><dt>Floating P/L</dt><dd>{money(execution.floating_pl, costs?.account_ccy)}</dd></div></dl>
@@ -74,7 +84,7 @@ export default function ChartOrderPanel({ order, blockedReason }) {
         <label>Take profit<input aria-label="Take profit" type="number" min="0" step={instrument?.tick_size || 'any'} value={draft.takeProfit} disabled={disabled} onChange={event => setDraft(current => ({ ...current, takeProfit: event.target.value }))} /></label>
         {!active && <RiskPreview draft={draft} entry={order.reference} instrument={instrument} costModel={costs} />}
         <button type="submit" disabled={disabled}>{order.pending ? 'Đang lưu…' : active ? 'Lưu TP/SL' : 'Queue lệnh mô phỏng'}</button>
-        <p>{active ? 'Kéo TP/SL trên chart hoặc nhập giá rồi lưu. Thay đổi áp dụng từ nến kế tiếp.' : 'Entry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.'}</p>
+        <p>{active ? 'Kéo TP/SL trên chart hoặc nhập giá rồi lưu. Thay đổi áp dụng từ nến kế tiếp.' : execution.quote_source === 'broker_bid_ask' ? 'Entry là Bid/Ask tại cutoff. Market fill ở tick đầu tiên của nến kế tiếp; phí theo model.' : 'Entry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.'}</p>
       </form>
     </>}
     {notice && <p className={`chart-order-notice is-${notice.kind}`} role={notice.kind === 'error' ? 'alert' : 'status'}>{notice.text}</p>}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from decimal import Decimal
 from uuid import uuid4
 
 from pydantic import ValidationError
@@ -26,12 +27,15 @@ from .replay_execution import (
     replay_event_for_snapshot,
 )
 from .store import PostgresStore
+from .tick_history import TickHistoryStore
 
 
 class ReplayService:
     def __init__(self, store: PostgresStore, artifacts: ArtifactStore):
         self.store = store
         self.artifacts = artifacts
+        tick_root = getattr(artifacts, 'root', None)
+        self.ticks = TickHistoryStore(tick_root) if tick_root is not None else None
 
     def _dataset_rows(self, workspace_id: str, dataset_id: str) -> tuple[object, list[dict]]:
         manifest = self.store.get_dataset(workspace_id, dataset_id)
@@ -141,6 +145,7 @@ class ReplayService:
         timeframe_seconds: int,
         starting_balance,
         research_margin=None,
+        tick_snapshot_id=None,
     ) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
@@ -183,9 +188,83 @@ class ReplayService:
             ).instrument_spec
             if snapshot.instrument_spec != manifest_instrument:
                 raise ValueError("instrument_spec does not match the immutable dataset manifest")
+        if tick_snapshot_id:
+            from .replay_tick_execution import initialize_tick_execution
+            if self.ticks is None:
+                raise ValueError('tick history storage is unavailable')
+            ticks = self.ticks.load_manifest(workspace_id, tick_snapshot_id)
+            if (ticks['symbol'] != manifest.instrument_id or ticks['source']['mode'] != 'demo'
+                    or manifest.source.provider != f"{ticks['source']['server']} / MT5"):
+                raise ValueError('tick source does not match the replay dataset')
+            if research_margin is None:
+                raise ValueError('tick execution requires an explicit research leverage assumption')
+            _, rows = self._dataset_rows(workspace_id, payload['dataset_id'])
+            bar = rows[int(payload['cursor_index'])]
+            begin, end = int(bar['timestamp']) * 1000, (int(bar['timestamp']) + timeframe_seconds) * 1000
+            self.ticks.assert_interval(workspace_id, tick_snapshot_id, begin, end)
+            quotes = self.ticks.iter_ticks(workspace_id, tick_snapshot_id, begin, end)
+            last = None
+            for last in quotes:
+                pass
+            if last is None:
+                raise ValueError('current replay minute has no ticks')
+            snapshot = initialize_tick_execution(tick_snapshot_id=tick_snapshot_id,
+                tick_snapshot_sha256=tick_snapshot_id.removeprefix('ticks-'),
+                replay_session_id=session_id, branch_id=payload['branch_id'], dataset_id=payload['dataset_id'],
+                dataset_sha256=manifest.artifact_sha256, instrument_spec=instrument_spec,
+                cost_model=cost_model, spread_price=spread_price, timeframe_seconds=timeframe_seconds,
+                starting_balance=starting_balance, cursor_index=int(payload['cursor_index']), research_margin=research_margin)
+            from .replay_execution import ReplayExecutionEventV2
+            quote = ReplayExecutionEventV2(sequence=1, kind='price_mark', replay_session_id=session_id,
+                branch_id=payload['branch_id'], dataset_id=payload['dataset_id'], dataset_sha256=manifest.artifact_sha256,
+                cursor_index=snapshot.cursor_index, virtual_time_utc=end // 1000, balance=snapshot.balance,
+                floating_pl=0, equity=snapshot.balance, open_positions=0, pending_orders=0,
+                details={'tick_snapshot_id': tick_snapshot_id, 'tick_snapshot_sha256': snapshot.tick_snapshot_sha256,
+                    'window_start_msc': begin, 'window_end_msc': end,
+                    'quote_source': 'broker_bid_ask', 'time_msc': last['time_msc'], 'sequence': last['sequence'],
+                    'bid': str(last['bid']), 'ask': str(last['ask']), 'bid_close': str(last['bid']), 'ask_close': str(last['ask']),
+                    'quote_mid_close': str((Decimal(str(last['bid'])) + Decimal(str(last['ask']))) / 2),
+                    'mid_close': str(bar['close']), 'open_position': None, 'pending_market_order': None,
+                    'intrabar_equity_coverage': 'complete'})
+            snapshot = snapshot.model_copy(update={'last_bid': Decimal(str(last['bid'])), 'last_ask': Decimal(str(last['ask'])),
+                'event_sequence': 1, 'ledger': [quote.model_dump(mode='json')]})
+            snapshot = parse_replay_execution_snapshot(snapshot.model_dump(mode='json'))
         payload["execution"] = snapshot.model_dump(mode="json")
         self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
+
+    def tick_options(self, workspace_id, session_id):
+        record = self.store.get_record(workspace_id, 'replay', session_id)
+        if record is None:
+            raise LookupError('replay session not found')
+        manifest, rows = self._dataset_rows(workspace_id, record['payload']['dataset_id'])
+        result = {'available': False, 'execution_capability': False, 'reason': 'Tick chưa được tải cho asset này.'}
+        if self.ticks is None:
+            return result
+        ticks = self.ticks.latest(workspace_id, manifest.instrument_id)
+        if not ticks:
+            return result
+        result.update(snapshot_id=ticks['snapshot_id'], row_count=ticks['row_count'], bytes=ticks['bytes'],
+            first_tick_msc=ticks['first_tick_msc'], last_tick_msc=ticks['last_tick_msc'], quality=ticks['quality'])
+        if manifest.source.provider != f"{ticks['source']['server']} / MT5":
+            return {**result, 'reason': 'Nguồn tick không khớp nguồn dataset.'}
+        bar = rows[record['payload']['cursor_index']]
+        start = int(bar['timestamp']) * 1000
+        try:
+            self.ticks.assert_interval(workspace_id, ticks['snapshot_id'], start, start + 1000 * manifest.timeframe_seconds)
+            first = next(self.ticks.iter_ticks(workspace_id, ticks['snapshot_id'], start, start + 1000 * manifest.timeframe_seconds), None)
+            if first is None:
+                return {**result, 'reason': 'Broker không trả tick trong phút đang chọn.'}
+        except ValueError:
+            return {**result, 'reason': 'Phút đang chọn nằm ngoài đoạn tick đã tải.'}
+        return {**result, 'available': True, 'reason': 'Bid/Ask lịch sử; phí vẫn theo model đã chọn.'}
+
+    @staticmethod
+    def _checkpoint(snapshot, **kwargs):
+        if snapshot.schema_version == 'replay-execution-tick-v1':
+            from .replay_tick_execution import reconstruct_tick_execution_checkpoint
+            return reconstruct_tick_execution_checkpoint(snapshot, **kwargs)
+        return reconstruct_replay_execution_checkpoint(snapshot, **kwargs)
 
     def queue_market_order(
         self,
@@ -242,7 +321,11 @@ class ReplayService:
         if payload.get("status") == "completed" or snapshot.cursor_index >= len(rows) - 1:
             raise ValueError("protection changes require a future replay bar")
         bar = rows[snapshot.cursor_index]
-        changed = change_replay_protection(snapshot, target_id=target_id, operation_id=operation_id,
+        protection = change_replay_protection
+        if snapshot.schema_version == 'replay-execution-tick-v1':
+            from .replay_tick_execution import change_tick_protection
+            protection = change_tick_protection
+        changed = protection(snapshot, target_id=target_id, operation_id=operation_id,
             stop_loss=stop_loss, take_profit=take_profit, mid_close=bar["close"],
             virtual_time_utc=int(bar["timestamp"]) + snapshot.timeframe_seconds)
         payload["execution"] = changed.model_dump(mode="json")
@@ -304,7 +387,15 @@ class ReplayService:
             if execution.cursor_index != current_cursor:
                 raise RuntimeError("replay execution cursor is inconsistent with replay state")
             for next_cursor in range(current_cursor + 1, cursor + 1):
-                advanced = advance_replay_execution(execution, bar=rows[next_cursor], cursor_index=next_cursor)
+                if execution.schema_version == 'replay-execution-tick-v1':
+                    from .replay_tick_execution import advance_tick_execution
+                    bar = rows[next_cursor]
+                    start, end = int(bar['timestamp']) * 1000, (int(bar['timestamp']) + execution.timeframe_seconds) * 1000
+                    self.ticks.assert_interval(workspace_id, execution.tick_snapshot_id, start, end)
+                    advanced = advance_tick_execution(execution, ticks=self.ticks.iter_ticks(workspace_id, execution.tick_snapshot_id, start, end),
+                        bar=bar, cursor_index=next_cursor)
+                else:
+                    advanced = advance_replay_execution(execution, bar=rows[next_cursor], cursor_index=next_cursor)
                 execution = advanced.snapshot
                 execution_events.extend(event.model_dump(mode="json") for event in advanced.events)
             payload["execution"] = execution.model_dump(mode="json")
@@ -348,7 +439,7 @@ class ReplayService:
             raise ValueError("analytics event sequence is outside canonical execution")
         if (selected_cursor < canonical_cursor or event_sequence is not None) and snapshot is not None:
             try:
-                checkpoint = reconstruct_replay_execution_checkpoint(snapshot, cursor_index=selected_cursor,
+                checkpoint = self._checkpoint(snapshot, cursor_index=selected_cursor,
                                                                       event_sequence=event_sequence)
             except ReplayExecutionError as exc:
                 if str(exc) != "execution branch cursor has no canonical checkpoint":
@@ -368,7 +459,7 @@ class ReplayService:
                     raise ValueError("historical analytics checkpoint is unavailable")
             for field in ("replay_session_id", "branch_id", "dataset_id", "dataset_sha256",
                           "instrument_spec", "cost_model", "spread_price", "timeframe_seconds", "starting_balance",
-                          "schema_version", "research_margin"):
+                          "schema_version", "research_margin", "tick_snapshot_id", "tick_snapshot_sha256", "quote_source"):
                 if getattr(checkpoint, field, None) != getattr(snapshot, field, None):
                     raise ValueError("historical analytics checkpoint lineage is inconsistent")
             if checkpoint.cursor_index != selected_cursor:
@@ -433,7 +524,7 @@ class ReplayService:
                 break
             if checkpoint is None:
                 try:
-                    checkpoint = reconstruct_replay_execution_checkpoint(
+                    checkpoint = self._checkpoint(
                         current_execution,
                         cursor_index=int(cursor_index),
                     )
@@ -454,6 +545,7 @@ class ReplayService:
                 "starting_balance",
                 "schema_version",
                 "research_margin",
+                "tick_snapshot_id", "tick_snapshot_sha256", "quote_source",
             )
             for field in immutable_fields:
                 if getattr(checkpoint, field, None) != getattr(current_execution, field, None):

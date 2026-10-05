@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './TradeWorkspace.css'
+import { marketQuotes } from './replayOrderModel.js'
+import { useReplayTickOptions } from './useReplayTickOptions.js'
 
 const DEFAULT_INSTRUMENT = {
   instrument_id: 'EURUSD',
@@ -67,7 +69,7 @@ function initialDraft(replay) {
   const instrument = execution?.instrument_spec || null
   const rows = replay?.visible_rows || []
   const current = rows[rows.length - 1]
-  const price = optionalNumber(current?.close)
+  const price = execution ? marketQuotes(replay).ask : optionalNumber(current?.close)
   const pip = optionalNumber(instrument?.pip_size)
   const hasPrice = Number.isFinite(price)
   const hasPip = Number.isFinite(pip) && pip > 0
@@ -151,7 +153,8 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const execution = payload?.execution
   const rows = replay?.visible_rows || []
   const currentBar = rows[rows.length - 1]
-  const entryReference = numberOr(currentBar?.close, NaN)
+  const quote = marketQuotes(replay)
+  const entryReference = execution ? numberOr(draft.side === 'BUY' ? quote.ask : quote.bid, NaN) : numberOr(currentBar?.close, NaN)
   const datasetId = payload?.dataset_id || ''
   const manifest = datasetState.items.find((item) => item.dataset_id === datasetId)
   const catalogManifest = datasetState.status === 'ready' ? manifest : null
@@ -160,6 +163,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const timeframeSeconds = optionalNumber(catalogManifest?.timeframe_seconds)
   const revision = numberOr(replay?.revision, 0)
   const hasSession = Boolean(sessionId || replay?.record_id)
+  const { options: tickOptions, setMode: setTickMode, leverage: tickLeverage, setLeverage: setTickLeverage, useTicks } = useReplayTickOptions(workspace, replay)
 
   const fetchReplay = useCallback(async () => {
     const id = sessionId
@@ -256,10 +260,15 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
       setNotice({ kind: 'error', text: 'Chưa xác định được dataset context và execution assumptions; chưa thể khởi tạo simulator.' })
       return
     }
-    const spreadValue = optionalNumber(spread)
+    const spreadValue = useTicks ? 0 : optionalNumber(spread)
     const startingBalanceValue = optionalNumber(startingBalance)
     if (![spreadValue, startingBalanceValue].every(Number.isFinite) || startingBalanceValue <= 0 || spreadValue < 0) {
       setNotice({ kind: 'error', text: 'Spread và starting balance phải được nhập đầy đủ; giá trị rỗng không được đổi thành 0.' })
+      return
+    }
+    const leverageValue = optionalNumber(tickLeverage)
+    if (useTicks && (!tickOptions?.available || !tickOptions.snapshot_id || !Number.isInteger(leverageValue) || leverageValue < 1 || leverageValue > 1000)) {
+      setNotice({ kind: 'error', text: 'Cần tick tại phút đang chọn và đòn bẩy mô phỏng nguyên từ 1 đến 1000.' })
       return
     }
     setPending('initialize')
@@ -272,9 +281,11 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
           expected_revision: revision,
           instrument_spec: instrument,
           cost_model: costModel,
-          spread_price: String(spreadValue),
+          spread_price: useTicks ? '0' : String(spreadValue),
           timeframe_seconds: timeframeSeconds,
           starting_balance: String(startingBalanceValue),
+          ...(useTicks ? { tick_snapshot_id: tickOptions?.snapshot_id,
+            research_margin: { version: 'fixed-starting-balance-leverage-v1', leverage: String(leverageValue) } } : {}),
         }),
       })
       const next = await readJson(response)
@@ -284,7 +295,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
     } catch (error) {
       setNotice({ kind: 'error', text: `Không khởi tạo được: ${error.message}` })
     } finally { setPending('') }
-  }, [applyReplay, catalogManifest, costModel, datasetId, datasetState.status, instrument, replay?.record_id, revision, spread, startingBalance, timeframeSeconds, workspace])
+  }, [applyReplay, catalogManifest, costModel, datasetId, datasetState.status, instrument, replay?.record_id, revision, spread, startingBalance, timeframeSeconds, workspace, useTicks, tickOptions, tickLeverage])
 
   const queueOrder = useCallback(async (event) => {
     event.preventDefault()
@@ -340,8 +351,10 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
               <div><span className="trade-eyebrow">STEP 01</span><h2 id="trade-init-title">Khởi tạo simulator state</h2><p>Execution state được gắn vào session và giữ cùng provenance. Chi phí dưới đây là fixture/model, chưa phải báo giá broker.</p></div>
               {canInitialize ? <form className="trade-init-form" onSubmit={initialize}>
                 <label>Starting balance<input type="number" min="1" step="0.01" value={startingBalance} onChange={(event) => setStartingBalance(event.target.value)} /></label>
-                <label>Spread (price)<input type="number" min="0" step="0.00001" value={spread} onChange={(event) => setSpread(event.target.value)} /></label>
-                <button className="trade-primary" type="submit" disabled={Boolean(pending)}>{pending === 'initialize' ? 'Đang khởi tạo…' : 'Khởi tạo local simulator'}</button>
+                <label className="replay-tick-toggle"><input type="checkbox" checked={Boolean(useTicks)} disabled={!tickOptions?.available} onChange={event => setTickMode(event.target.checked ? 'tick' : 'bar')} />Khớp lệnh bằng tick Bid/Ask</label>
+                <p className="replay-tick-status" role="status">{tickOptions?.reason || 'Đang kiểm tra lịch sử tick…'}</p>
+                {useTicks ? <label>Đòn bẩy mô phỏng<input type="number" min="1" max="1000" step="1" value={tickLeverage} onChange={event => setTickLeverage(event.target.value)} /></label> : <label>Spread (price)<input type="number" min="0" step="0.00001" value={spread} onChange={(event) => setSpread(event.target.value)} /></label>}
+                <button className="trade-primary" type="submit" disabled={Boolean(pending) || tickOptions === null}>{pending === 'initialize' ? 'Đang khởi tạo…' : 'Khởi tạo local simulator'}</button>
               </form> : <div className="trade-message" role="status" data-testid="trade-context-unknown">{datasetState.status === 'loading' ? 'Đang chờ dataset context trước khi mở simulator…' : datasetState.status === 'error' ? 'Dataset context đang unavailable; hãy thử lại trước khi mở simulator.' : 'Dataset chưa có manifest/instrument assumptions đủ để mở simulator.'}</div>}
             </section>
           )}
@@ -367,7 +380,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
                   )}
                 </section>
               </div>
-              <aside className="trade-side-column"><section className="trade-context-panel"><div className="trade-section-title"><div><span className="trade-eyebrow">MODEL</span><h2>Execution assumptions</h2></div></div><dl><div><dt>Fill basis</dt><dd>Market · next bar open</dd></div><div><dt>Spread</dt><dd>{execution.spread_price ?? 'N/A'}</dd></div><div><dt>Commission</dt><dd>{costModel?.commission_per_side_account ?? 'N/A'} / side</dd></div><div><dt>Contract</dt><dd>{instrument?.contract_size ?? 'N/A'}</dd></div><div><dt>Data suffix</dt><dd>{String(replay.dataset_sha256 || '').slice(0, 12) || 'N/A'}</dd></div></dl></section><section className="trade-safety-note"><strong>Live execution bị khóa</strong><span>Trade draft và queue chỉ thay đổi replay state. Không có route gửi lệnh broker trong màn hình này.</span></section>{notice && <div className={`trade-notice is-${notice.kind}`} role={notice.kind === 'error' ? 'alert' : 'status'}>{notice.text}</div>}</aside>
+              <aside className="trade-side-column"><section className="trade-context-panel"><div className="trade-section-title"><div><span className="trade-eyebrow">MODEL</span><h2>Execution assumptions</h2></div></div><dl><div><dt>Fill basis</dt><dd>{execution.quote_source === 'broker_bid_ask' ? 'Tick Bid/Ask · đầu phút kế tiếp' : 'Market · next bar open'}</dd></div><div><dt>Spread</dt><dd>{execution.quote_source === 'broker_bid_ask' ? 'Bid/Ask lịch sử' : execution.spread_price ?? 'N/A'}</dd></div><div><dt>Commission</dt><dd>{costModel?.commission_per_side_account ?? 'N/A'} / side</dd></div><div><dt>Contract</dt><dd>{instrument?.contract_size ?? 'N/A'}</dd></div><div><dt>Data suffix</dt><dd>{String(replay.dataset_sha256 || '').slice(0, 12) || 'N/A'}</dd></div></dl></section><section className="trade-safety-note"><strong>Live execution bị khóa</strong><span>Trade draft và queue chỉ thay đổi replay state. Không có route gửi lệnh broker trong màn hình này.</span></section>{notice && <div className={`trade-notice is-${notice.kind}`} role={notice.kind === 'error' ? 'alert' : 'status'}>{notice.text}</div>}</aside>
             </section>
           )}
         </>

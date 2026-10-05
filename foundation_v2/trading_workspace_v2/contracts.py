@@ -398,12 +398,15 @@ class ReplayExecutionInitialize(BaseModel):
     timeframe_seconds: int = Field(gt=0, strict=True)
     starting_balance: Decimal = Field(gt=0)
     research_margin: ReplayResearchMargin | None = None
+    tick_snapshot_id: str | None = Field(default=None, pattern=r'^ticks-[0-9a-f]{64}$')
 
     @model_serializer(mode="wrap")
     def omit_legacy_margin(self, handler):
         result = handler(self)
         if self.research_margin is None:
             result.pop("research_margin", None)
+        if self.tick_snapshot_id is None:
+            result.pop('tick_snapshot_id', None)
         return result
 
 

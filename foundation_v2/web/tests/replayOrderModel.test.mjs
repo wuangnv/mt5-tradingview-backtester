@@ -25,6 +25,18 @@ test('quote reference includes the closeable side of the spread', () => {
   assert.deepEqual(marketQuotes(fractional), { bid: 1.1023, ask: 1.1026 })
   assert.equal(protectionReference(fractional), 1.1023)
 })
+test('tick quote and draft use pinned historical Bid/Ask without OHLC fallback', () => {
+  const tick = structuredClone(replay)
+  Object.assign(tick.payload.execution, { quote_source: 'broker_bid_ask', last_bid: '1.1017', last_ask: '1.1024', spread_price: '0', position: null })
+  assert.deepEqual(marketQuotes(tick), { bid: 1.1017, ask: 1.1024 })
+  assert.equal(orderDraft(tick, { pip_size: '.0001', quantity_min: '.01' }).stopLoss, '1.1004')
+  assert.equal(orderLevels(tick, { side: 'SELL', stopLoss: '1.11', takeProfit: '1.09' }).entry, 1.1017)
+  assert.deepEqual(marketQuotes({ ...tick, view_cursor_index: 0 }), { bid: null, ask: null })
+  tick.payload.execution.last_ask = null
+  assert.deepEqual(marketQuotes(tick), { bid: null, ask: null })
+  tick.payload.execution.last_ask = '1.1'
+  assert.deepEqual(marketQuotes(tick), { bid: null, ask: null })
+})
 test('draft prices use declared pip and quantity assumptions without inventing missing values', () => {
   const plain = { visible_rows: [{ close: 1.1 }], payload: {} }
   assert.deepEqual(orderDraft(plain, { pip_size: '.0001', quantity_min: '.01' }), { side: 'BUY', quantity: '.01', stopLoss: '1.098', takeProfit: '1.104' })

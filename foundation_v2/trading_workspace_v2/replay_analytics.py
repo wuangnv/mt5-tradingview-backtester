@@ -90,7 +90,7 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
             cutoff = max(cutoff or 0, event.virtual_time_utc)
             detail = event.details
             position_id = detail.get("position_id")
-            if snapshot.schema_version == "replay-execution-v2" and event.kind in {"market_fill", "order_rejected"}:
+            if snapshot.schema_version in {"replay-execution-v2", "replay-execution-tick-v1"} and event.kind in {"market_fill", "order_rejected"}:
                 operation_id = detail.get("operation_id")
                 if operation_id in consumed_operations:
                     raise AnalyticsValidationError("replay order outcome is duplicated")
@@ -206,10 +206,13 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
             "protocol": {"starting_balance": _number(snapshot.starting_balance, "starting balance", positive=True)},
             "ledger": trades,
         }, filters)
-        if snapshot.schema_version == "replay-execution-v2":
+        if snapshot.schema_version in {"replay-execution-v2", "replay-execution-tick-v1"}:
             result["order_rejections"] = rejections
             result["rejected_order_count"] = len(rejections)
             result["research_margin"] = snapshot.research_margin.model_dump(mode="json")
+        if snapshot.schema_version == 'replay-execution-tick-v1':
+            result['provenance'].update(tick_snapshot_id=snapshot.tick_snapshot_id,
+                tick_snapshot_sha256=snapshot.tick_snapshot_sha256, quote_source=snapshot.quote_source)
         if phase_transitions:
             result["scope"]["balance_curve_scope"] += "; phase balance resets excluded"
     result["provenance"].update(base)

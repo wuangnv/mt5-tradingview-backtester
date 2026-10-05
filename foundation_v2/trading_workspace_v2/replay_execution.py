@@ -206,6 +206,9 @@ def parse_replay_execution_snapshot(raw: dict) -> ReplayExecutionSnapshot | Repl
         return snapshot
     if version == "replay-execution-v2":
         return ReplayExecutionSnapshotV2.model_validate(raw)
+    if version == "replay-execution-tick-v1":
+        from .replay_tick_execution import ReplayTickExecutionSnapshot
+        return ReplayTickExecutionSnapshot.model_validate(raw)
     raise ReplayExecutionError("unsupported replay execution snapshot version")
 
 
@@ -228,6 +231,9 @@ def replay_event_for_snapshot(snapshot: ReplayExecutionSnapshot, raw: dict) -> R
                     or admission.required_account != required
                     or admission.available_account != snapshot.starting_balance):
                 raise ReplayExecutionError("margin outcome differs from frozen assumption/calculation")
+        if snapshot.schema_version == 'replay-execution-tick-v1':
+            from .replay_tick_execution import validate_tick_execution_event
+            validate_tick_execution_event(snapshot, raw)
         return event
     return ReplayExecutionEvent.model_validate(raw)
 

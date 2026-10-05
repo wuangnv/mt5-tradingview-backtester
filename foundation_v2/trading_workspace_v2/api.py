@@ -1141,11 +1141,21 @@ def create_app(
                 timeframe_seconds=body.timeframe_seconds,
                 starting_balance=body.starting_balance,
                 research_margin=body.research_margin,
+                tick_snapshot_id=body.tick_snapshot_id,
             )
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
         except RuntimeError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get('/api/v2/replay/sessions/{session_id}/tick-data')
+    def replay_tick_options(session_id: str, workspace: str = Depends(workspace_id)):
+        try:
+            return replay.tick_options(workspace, session_id)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail='replay_not_found') from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 

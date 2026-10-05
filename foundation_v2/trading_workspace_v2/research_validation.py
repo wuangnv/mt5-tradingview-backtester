@@ -92,6 +92,8 @@ def compare_replay_engine_execution(*, replay_view: dict, research_result: dict,
         validate_engine_result(research_result, rows=rows)
         payload = replay_view["payload"]
         snapshot = parse_replay_execution_snapshot(payload["execution"])
+        if snapshot.schema_version == 'replay-execution-tick-v1':
+            raise ResearchReconciliationError('tick execution requires a tick oracle; OHLC parity comparison is disabled')
         rules = protocol["playbook"]["rules"]
         if rules.get("exit_mode", "fixed_horizon") != "protective":
             raise ResearchReconciliationError("replay parity supports protective exits only")

@@ -94,6 +94,7 @@ function initialDraft() {
     startUtc: '2026-09-01T08:00',
     durationDays: '30',
     costVersion: 'cost-v1',
+    engineVersion: 'replay-v1',
   }
 }
 
@@ -358,7 +359,7 @@ export default function PropWorkspace({ workspace }) {
         profile_hash: profile.profile_hash,
         data_version: draft.datasetVersion.trim(),
         cost_version: draft.costVersion,
-        engine_version: 'replay-v1',
+        engine_version: draft.engineVersion,
         status: 'ready',
         revision: 1,
         parent_attempt_id: null,
@@ -631,9 +632,11 @@ export default function PropWorkspace({ workspace }) {
                   <option value="cost-zero-fixture">cost-zero-fixture</option>
                 </select>
               </label>
+              <label className="prop-field"><span>Engine khớp lệnh</span><select aria-label="Engine khớp lệnh" value={draft.engineVersion} onChange={event => updateDraft('engineVersion', event.target.value)}><option value="replay-v1">OHLC</option><option value="replay-v2">OHLC + margin mô phỏng</option><option value="replay-tick-v1">Tick Bid/Ask + margin mô phỏng</option></select></label>
               <div className="prop-review prop-field-wide">
                 <strong>Review</strong>
                 <span>Equity-based daily/overall loss, balance target, reset UTC 00:00. Đây là profile luyện tập, không đại diện điều khoản của hãng prop cụ thể.</span>
+                {draft.engineVersion === 'replay-tick-v1' && <span>Tick cải thiện giá khớp lệnh; đánh giá giới hạn equity trong từng phút vẫn chưa đầy đủ. Dataset, cost và engine phải khớp phiên replay được nối.</span>}
               </div>
               <button className="primary-action prop-create" type="submit" disabled={pendingAction === 'create'}>
                 {pendingAction === 'create' ? 'Đang tạo…' : 'Tạo session mô phỏng'}

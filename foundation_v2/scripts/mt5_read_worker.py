@@ -2,10 +2,12 @@
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 import re
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -107,6 +109,36 @@ def collect(args):
     end = datetime.fromtimestamp(args.end, timezone.utc)
     if end <= start or end - start > timedelta(days=1827) or end > now:
         raise ValueError('invalid_history_range')
+    if args.command == 'ticks':
+        if end - start > timedelta(days=1):
+            raise ValueError('invalid_tick_chunk_range')
+        started = time.perf_counter()
+        ticks = mt5.copy_ticks_range(args.symbol, start, end, mt5.COPY_TICKS_ALL)
+        if ticks is None:
+            raise RuntimeError('mt5_ticks_read_failed')
+        ticks = ticks[(ticks['time_msc'] >= args.start * 1000) & (ticks['time_msc'] < args.end * 1000)]
+        # Stable sorting retains broker order for repeated timestamps; no dedup.
+        ticks = ticks[np.argsort(ticks['time_msc'], kind='stable')]
+        checked = mt5.account_info()
+        if not checked or account_key(checked) != key or checked.trade_mode != 0:
+            raise RuntimeError('mt5_account_changed')
+        folder = Path(args.output)
+        folder.mkdir(parents=True, exist_ok=True)
+        raw = folder / 'ticks.csv.gz'
+        with gzip.open(raw, 'wt', newline='', encoding='utf-8', compresslevel=3) as handle:
+            writer = csv.writer(handle)
+            writer.writerow(['time_msc', 'bid', 'ask', 'last', 'volume', 'flags', 'volume_real'])
+            writer.writerows((int(t['time_msc']), repr(float(t['bid'])), repr(float(t['ask'])),
+                repr(float(t['last'])), int(t['volume']), int(t['flags']), repr(float(t['volume_real']))) for t in ticks)
+        base.update(symbol=args.symbol, metadata=metadata(symbol, account, captured),
+            requested_from_msc=args.start * 1000, requested_to_msc=args.end * 1000,
+            row_count=len(ticks), status='downloaded' if len(ticks) else 'unavailable',
+            tick_file='ticks.csv.gz', raw_sha256=hashlib.sha256(raw.read_bytes()).hexdigest(),
+            first_tick_msc=int(ticks[0]['time_msc']) if len(ticks) else None,
+            last_tick_msc=int(ticks[-1]['time_msc']) if len(ticks) else None,
+            compressed_bytes=raw.stat().st_size, elapsed_seconds=time.perf_counter() - started)
+        (folder / 'receipt.json').write_text(json.dumps(base, indent=2), encoding='utf-8')
+        return base
     chunks, cursor = [], start
     while cursor < end:
         boundary = min(cursor + timedelta(days=7), end)
@@ -147,7 +179,7 @@ def collect(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('snapshot', 'history'))
+    parser.add_argument('command', choices=('snapshot', 'history', 'ticks'))
     parser.add_argument('--terminal', required=True)
     parser.add_argument('--server', default='Exness-MT5Trial14')
     parser.add_argument('--account-key')

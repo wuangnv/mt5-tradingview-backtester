@@ -28,6 +28,9 @@
 .trade-init-section h2, .trade-draft-section h2, .trade-context-panel h2, .risk-form h2, .risk-side h2, .risk-result h2 { margin: 6px 0 0; color: var(--wm-content); font-size: 14px; }
 .trade-init-section p { margin: 8px 0 0; color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }
 .trade-init-form { display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 12px; }
+.trade-init-form .replay-tick-status { grid-column: 1 / -1; margin: 0; }
+.trade-init-form label.replay-tick-toggle, .chart-order-panel label.replay-tick-toggle { display: flex; align-items: center; gap: 8px; }
+.trade-init-form .replay-tick-toggle input, .chart-order-panel .replay-tick-toggle input { width: 18px; min-height: 18px; height: 18px; margin: 0; padding: 0; flex: 0 0 18px; accent-color: var(--wm-primary, #719bea); }
 .trade-init-form label, .trade-draft-form label, .risk-form label { display: grid; gap: 6px; color: var(--wm-content-muted); font-size: 12px; text-transform: none; letter-spacing: 0; }
 .trade-init-form input, .trade-draft-form input, .risk-form input, .risk-form select { width: 100%; min-height: 44px; border: 1px solid var(--wm-border); border-radius: 3px; background: var(--wm-surface); color: var(--wm-content); padding: 0 9px; font: inherit; font-size: 12px; letter-spacing: 0; }
 .trade-primary, .risk-primary { min-height: 44px; border: 1px solid var(--wm-action-bg); border-radius: 3px; background: var(--wm-action-bg); color: var(--wm-on-primary, #fff); padding: 0 13px; font-size: 13px; font-weight: 800; white-space: nowrap; cursor: pointer; }

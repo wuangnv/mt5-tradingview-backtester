@@ -621,7 +621,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       throw error
     } finally { actionLock.current = false; setPendingAction('') }
   }
-  const order = useChartOrder({ replay, dataset: activeDataset, ready: state.status === 'ready', blocked: historicalView || completed || conflict || Boolean(pendingAction), submit: submitOrder })
+  const order = useChartOrder({ workspace, replay, dataset: activeDataset, ready: state.status === 'ready', blocked: historicalView || completed || conflict || Boolean(pendingAction), submit: submitOrder })
   const priceLevels = order.active || (!historicalView && sideOpen && sidePanel === 'order') ? orderLevels(replay, order.draft) : null
   const quotes = marketQuotes(replay)
   const orderBlockedReason = historicalView ? 'Cutoff lịch sử chỉ đọc. Về cursor mới nhất hoặc tạo nhánh để đặt lệnh.' : completed ? 'Dataset đã kết thúc; không còn nến để fill hoặc sửa lệnh.' : conflict ? 'Đang khóa vì revision đã thay đổi.' : ''
