@@ -5,8 +5,8 @@ Project-specific UI configuration for the PATH-2 React/WMReplay implementation i
 
 This layer sits below:
 
-- `D:\ANNAM\UI-Systems` — product-agnostic foundations;
-- `D:\ANNAM\TradingWorkspace\UI` — reusable trading-domain contracts.
+- [`../../../UI-Systems/`](../../../UI-Systems/README.md) — product-agnostic foundations;
+- [`../../../UI/`](../../../UI/README.md) — reusable trading-domain contracts.
 
 ## Current state
 

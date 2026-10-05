@@ -24,7 +24,7 @@ Use `.agents/skills/trading-ui-qa/SKILL.md` for web UI QA. Playwright scripts/CL
 
 ## Shared UI layers
 
-- Global foundations: `D:\ANNAM\UI-Systems`
+- Global foundations: `../../UI-Systems/` (relative to this project root)
 - Trading-domain contracts: `D:\ANNAM\TradingWorkspace\UI`
 - Project-specific UI: `ui/`
 
