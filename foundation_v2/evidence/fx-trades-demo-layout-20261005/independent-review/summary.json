@@ -1,0 +1,125 @@
+{
+  "status": "SCOPED_PASS",
+  "evidenceComposition": "Frozen comprehensive observations plus corrected focused reruns; raw failing attempts retained without changing their outcome",
+  "finalHashes": [
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "7d3cc4fd6ed87eb6c5c4fcb2603806a5a19262a78c458df6d4860136a0fc4e47"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "9dec83f7ba761ea13678c8db81618c350ddcd6ed47103f60dfd9702d561d7d5f"
+    },
+    {
+      "file": "foundation_v2/web/src/workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "80c63436eeb1e8cdc6801af9e11a331418490c71a5c123001e14016fda9c2caa"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "127ce8a4d502e85468980513cc4c4efcea69c0bcce24631d504766f11da917ec"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "ffc70ec9b5fb57128ad886b9f8aeb44da42f628ccbb68119968b0a60c6c102ee"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c8e543fd872bdaf206f20035cd84103d8bee054386acc29168c3897866388541"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "6f71d46966b47e1e2f21a947d4f6c599fed8d45b88d4d122884ed0ba4295931d"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "ceda858a4961d4aee2722212c09993c23ad3c5324391697741e799dfd0095633"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-analytics.css",
+      "sha256": "c8facf2fd15f1b2d2d3c5dbc46150c168cb7449acb619c527491045577d00550"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "8fdad4fa151cd6c6d6ffc404c8b9cbde8bef8502becedf673a853282f61efab8"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "8d873954f51789840140f42dd756bca58d61b579caa433a2888a7c82ae03aaa1"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "fecd1622accf759d821bc3bc71e623edafe5caf7b56de6dce562678f602915b5"
+    },
+    {
+      "file": "foundation_v2/web/src/MarketAssetCatalog.jsx",
+      "sha256": "5a2e896142675029b3db511f6ea8717f64a183dadaa70db417c6ff019bd7f29f"
+    },
+    {
+      "file": "foundation_v2/web/src/LiveBrokerSnapshot.jsx",
+      "sha256": "ea2e174ece8bfe1b865c1b4e0e2f3abb1bff888055528fb2bbba6a6e724eafa0"
+    },
+    {
+      "file": "foundation_v2/web/src/JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "foundation_v2/web/src/PlaybookWorkspace.jsx",
+      "sha256": "da86fceb1f578e820d14901482575ae90545f346518fecd97387c31042c8b6ff"
+    }
+  ],
+  "changesAfterComprehensive": [
+    "foundation_v2/web/src/DemoPreview.jsx"
+  ],
+  "actualGutterCases": 56,
+  "demoGutterCases": 56,
+  "actualOracle": {
+    "catalog": 6,
+    "trades": 1,
+    "readable": 4,
+    "scope": 6,
+    "propReports": 0,
+    "old": {
+      "revision": 2,
+      "dataset_sha256": "e1d208a92b9c418d78b8f8cad86dec4c888fe19eae1536100a79f2b005e9b6a2",
+      "visibleRows": 501
+    }
+  },
+  "preserved": {
+    "revision": 2,
+    "wholePayloadEqual": true
+  },
+  "zeroRuntimeErrors": true,
+  "zeroBlockedWritesDownloadsExternalRequests": true,
+  "zeroApiReadsInSupportedDemoRoutes": true,
+  "rawAttempts": [
+    {
+      "file": "browser-attempt1.json",
+      "exit": 1,
+      "issues": "4 wrong Settings selectors; 1 invalid cursor fixture; 3 Journal contrast failures fixed in product and rechecked"
+    },
+    {
+      "file": "focused-attempt1.json",
+      "exit": 1,
+      "issues": "Invalid cursor fixture and wrong role selector for report tab; Settings and Journal/LiveNotes rechecks passed"
+    },
+    {
+      "file": "focused-attempt2.json",
+      "exit": 1,
+      "issues": "Restore, Settings and Journal/LiveNotes pass; only incorrect expectation that local demo report tab changes real URL failed"
+    },
+    {
+      "file": "focused.json",
+      "exit": 0,
+      "issues": "Corrected preview URL oracle; Drawdown/Simulation/config/disabled SL/RR/local Monte Carlo/a11y pass with unchanged source"
+    }
+  ],
+  "limits": [
+    "Prop reports actual inventory is empty; demo objectives/report are presentation fixtures only",
+    "No broker/provider/execution/import/download/export/DB write/native zoom/canonical golden/full product acceptance",
+    "Chart/order workspaces intentionally excluded from shared report gutter contract"
+  ]
+}

@@ -74,9 +74,8 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     {state.status === 'error' && <p role="alert">Không đọc được giao dịch: {state.error}. Sẽ kiểm tra lại khi quay về ứng dụng.</p>}
     {exportError && <p role="alert">{exportError}</p>}
     {state.payload && <>
-      {state.payload.excluded.length > 0 && <details className="as-stale-banner"><summary>{state.payload.excluded.length} phiên chưa có dữ liệu khả dụng · đang hiển thị {state.payload.scope.readable_session_count}/{state.payload.scope.session_count} phiên</summary><ul>{state.payload.excluded.map(item => <li key={item.session_id}>{item.session_id} · {item.reason}</li>)}</ul></details>}
+      {state.payload.excluded.length > 0 && <span className="fxa-partial-badge" role="status" title="Một số phiên chưa có dữ liệu khả dụng">Dữ liệu một phần · {state.payload.scope.readable_session_count}/{state.payload.scope.session_count} phiên</span>}
       <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} />
-      <details className="as-scope-details"><summary>Phạm vi và nguồn dữ liệu</summary><p>{state.payload.scope.session_count} phiên · đã loại {state.payload.scope.duplicate_trade_count} giao dịch kế thừa trùng. Tiền và Return (%) theo đơn vị và vốn ban đầu của từng phiên.</p><pre>{JSON.stringify(state.payload.sources, null, 2)}</pre></details>
       {row && <section className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail · {row.session_name}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><ProvenanceInspector model={detailModel} selectedTrade={{ ...row, tradeId: row.trade_id }} journalCount={null} links={{ replay: link('replay'), journal: link('journal') }} /></section>}
     </>}
   </section>

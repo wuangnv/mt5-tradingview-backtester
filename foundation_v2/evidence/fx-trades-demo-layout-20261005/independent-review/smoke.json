@@ -1,0 +1,157 @@
+{
+  "cases": [
+    {
+      "name": "dashboard",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "sessions",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "trades",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "analytics",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "prop",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "market-data",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "live-calendar",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "live-trades",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "strategies",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    },
+    {
+      "name": "journal",
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "api": [],
+  "blocked": [],
+  "failures": [],
+  "nav": [
+    {
+      "text": "Dashboard",
+      "current": null,
+      "r": {
+        "x": -113,
+        "y": 69.5,
+        "w": 85.09375
+      }
+    },
+    {
+      "text": "Sessions",
+      "current": null,
+      "r": {
+        "x": -19.90625,
+        "y": 69.5,
+        "w": 71.0625
+      }
+    },
+    {
+      "text": "Trades",
+      "current": null,
+      "r": {
+        "x": 59.15625,
+        "y": 69.5,
+        "w": 60.5625
+      }
+    },
+    {
+      "text": "Analytics",
+      "current": "page",
+      "r": {
+        "x": 127.71875,
+        "y": 69.5,
+        "w": 75.171875
+      }
+    },
+    {
+      "text": "Sessions",
+      "current": null,
+      "r": {
+        "x": 210.890625,
+        "y": 69.5,
+        "w": 69.734375
+      }
+    },
+    {
+      "text": "Prop firm",
+      "current": "page",
+      "r": {
+        "x": 284.625,
+        "y": 69.5,
+        "w": 75.390625
+      }
+    },
+    {
+      "text": "Market Data",
+      "current": null,
+      "r": {
+        "x": 385.015625,
+        "y": 69.5,
+        "w": 94.171875
+      }
+    }
+  ],
+  "checks": [
+    "Market demo no chart links and no enabled update/history buttons"
+  ],
+  "pass": true
+}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import LearnWorkspace from './LearnWorkspace.jsx'
 import PropWorkspace from './PropWorkspace.jsx'
@@ -17,11 +18,14 @@ import LiveWorkspace from './LiveWorkspace.jsx'
 import SessionPicker from './SessionPicker.jsx'
 import SessionReports from './SessionReports.jsx'
 import DashboardSessions from './DashboardSessions.jsx'
+import DemoPreview from './DemoPreview.jsx'
+import { canPreviewDemo, demoToggleHref } from './demoMode.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
 import './dashboard.css'
 import './workspace-pattern.css'
 import './component-interactions.css'
+import './page-layout.css'
 
 function WorkspaceOverview({ workspace, query }) {
   return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions key={workspace} workspace={workspace} query={query} /></div></section>
@@ -42,6 +46,7 @@ function UnavailableWorkspace({ title, eyebrow, description, next, href }) {
 
 function App() {
   const query = new URLSearchParams(window.location.search)
+  const [demo, setDemo] = useState(query.get('demo') === '1')
   const workspace = query.get('workspace') || 'tenant-a'
   const requestedView = query.get('view')
   // Preserve deep links emitted by the research/learn flows while keeping a bare root on the overview.
@@ -103,7 +108,14 @@ function App() {
     content = <UnavailableWorkspace eyebrow={copy[0]} title={copy[1]} description={copy[2]} next={copy[3]} href={buildWorkspaceHref('replay', workspace, query)} />
   }
 
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{content}</FxReplayShell>
+  const demoAvailable = canPreviewDemo(activeView, query)
+  const toggleDemo = () => {
+    window.history.replaceState({}, '', demoToggleHref(window.location.href, !demo))
+    setDemo(!demo)
+  }
+  // Unmount real data readers during preview; fixtures never reach mutation handlers.
+  if (demo && demoAvailable) content = <DemoPreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}`} view={activeView} workspace={workspace} query={query} />
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{demoAvailable && <div className="wm-demo-toolbar">{demo && <span className="wm-demo-label" role="status">Demo · Dữ liệu mẫu</span>}<button type="button" className="fxa-button" aria-pressed={demo} onClick={toggleDemo}>{demo ? 'Show real data' : 'Show demo data'}</button></div>}{content}</FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')

@@ -33,7 +33,7 @@ function capabilityLabel(value) {
   return CAPABILITY_LABELS[value] || 'Unknown capability'
 }
 
-function PlaybookList({ items, selectedId, onSelect }) {
+export function PlaybookList({ items, selectedId, onSelect }) {
   if (items.length === 0) {
     return <div className="pb-empty" data-testid="playbook-empty"><strong>Chưa có playbook</strong><span>Backend chưa có record để đọc. UI này không tự tạo bản ghi.</span></div>
   }
@@ -59,13 +59,13 @@ function PlaybookList({ items, selectedId, onSelect }) {
   )
 }
 
-function PlaybookSummary({ record, journalHref }) {
+export function PlaybookSummary({ record, journalHref, preview = false }) {
   const payload = record?.payload || {}
   const ruleKeys = Object.keys(payload.rules || {}).sort()
   return (
     <section className="pb-summary" aria-label="Selected playbook summary" data-testid="playbook-summary">
       <div className="pb-section-heading"><div><h2>{recordName(record)}</h2></div><span className={`pb-status is-${payload.status || 'unknown'}`}>{statusLabel(payload.status)}</span></div>
-      <p className="pb-summary-copy">Bản đọc từ backend. Freeze / fork chưa được mở từ màn này.</p>
+      {!preview && <p className="pb-summary-copy">Bản đọc từ backend. Freeze / fork chưa được mở từ màn này.</p>}
       <dl className="pb-facts">
         <div><dt>Record</dt><dd><code>{record.record_id}</code></dd></div>
         <div><dt>Current revision</dt><dd>r{record.revision}</dd></div>

@@ -1,0 +1,91 @@
+{
+  "cases": [],
+  "checks": [
+    {
+      "name": "demo-analytics-report-tabs-simulation",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "api": [],
+  "blocked": [],
+  "failures": [],
+  "before": [
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c8e543fd872bdaf206f20035cd84103d8bee054386acc29168c3897866388541"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "ffc70ec9b5fb57128ad886b9f8aeb44da42f628ccbb68119968b0a60c6c102ee"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "127ce8a4d502e85468980513cc4c4efcea69c0bcce24631d504766f11da917ec"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "9dec83f7ba761ea13678c8db81618c350ddcd6ed47103f60dfd9702d561d7d5f"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "7d3cc4fd6ed87eb6c5c4fcb2603806a5a19262a78c458df6d4860136a0fc4e47"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "6f71d46966b47e1e2f21a947d4f6c599fed8d45b88d4d122884ed0ba4295931d"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "ceda858a4961d4aee2722212c09993c23ad3c5324391697741e799dfd0095633"
+    },
+    {
+      "file": "foundation_v2/web/src/JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "80c63436eeb1e8cdc6801af9e11a331418490c71a5c123001e14016fda9c2caa"
+    }
+  ],
+  "after": [
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c8e543fd872bdaf206f20035cd84103d8bee054386acc29168c3897866388541"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "ffc70ec9b5fb57128ad886b9f8aeb44da42f628ccbb68119968b0a60c6c102ee"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "127ce8a4d502e85468980513cc4c4efcea69c0bcce24631d504766f11da917ec"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "9dec83f7ba761ea13678c8db81618c350ddcd6ed47103f60dfd9702d561d7d5f"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "7d3cc4fd6ed87eb6c5c4fcb2603806a5a19262a78c458df6d4860136a0fc4e47"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "6f71d46966b47e1e2f21a947d4f6c599fed8d45b88d4d122884ed0ba4295931d"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "ceda858a4961d4aee2722212c09993c23ad3c5324391697741e799dfd0095633"
+    },
+    {
+      "file": "foundation_v2/web/src/JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "80c63436eeb1e8cdc6801af9e11a331418490c71a5c123001e14016fda9c2caa"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

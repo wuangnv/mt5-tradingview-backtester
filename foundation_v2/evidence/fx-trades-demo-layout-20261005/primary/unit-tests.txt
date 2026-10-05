@@ -1,0 +1,43 @@
+✔ Analytics reads remain workspace scoped and have no execution capability (1.3687ms)
+✔ drilldown and export retain resource identity and financial provenance (0.3324ms)
+✔ price experiments are read-only and fenced to the visible result provenance (0.2719ms)
+✔ dashboard keeps unknown distinct from measured zero (1.4861ms)
+✔ recent period ranges use inclusive UTC calendar days across month boundaries (2.5398ms)
+✔ Dashboard combines search/status/sort without mixing archived and active status (0.7279ms)
+✔ dashboard filters encode the selected session and complete UTC close dates (0.7023ms)
+✔ overview request sends workspace and abort signal; rejects old inventory-only payload (2.8632ms)
+✔ malformed performance payload becomes a recoverable load error (0.3184ms)
+✔ dashboard chart uses original balance and preserves every loss and recovery (0.9884ms)
+✔ session result API fences workspace, provenance and ledger count (0.6656ms)
+✔ Assets and strategy intersect; unavailable strategy is not unassigned (1.2805ms)
+✔ profit sorting keeps unknown last and refuses mixed or missing currencies (0.4818ms)
+✔ demo curve, money, fee and R values reconcile to the same ledger (2.4188ms)
+✔ demo selection and UTC date filters have an independent numeric oracle (0.2822ms)
+✔ demo toggle roundtrip retains every real context/filter query value (2.6407ms)
+✔ demo does not replace chart or order-entry surfaces (0.6254ms)
+✔ historical period P/L uses UTC close times, a Monday week and the last close rather than wall clock (20.6765ms)
+✔ missing dates/PnL do not become a zero period or a fabricated daily chart (0.5924ms)
+✔ numeric epoch seconds and milliseconds normalize to the same historical UTC instant (0.2329ms)
+✔ Sessions prefer explicit deep link, valid recently run session, then newest creation (5.3109ms)
+✔ Trades scope distinguishes all, empty, multi selection and explicit session deep links (1.1853ms)
+✔ switching report session clears exact execution checkpoint; same session retains it (0.3192ms)
+✔ session selection clears stale research and historical context while keeping workspace (0.9474ms)
+✔ session analytics receives the selected session rather than a stale job; summary clears filters (0.268ms)
+✔ malformed catalog never turns into a trustworthy empty session list (0.5075ms)
+✔ catalog and mutations use workspace scope and exact revision/cursor without automatic retries (35.4246ms)
+✔ revision conflicts and authorization failures keep HTTP status for recovery UI (0.686ms)
+✔ an explicit same-session trade and historical cutoff survive analytics composition (0.1935ms)
+✔ readWorkspaceContext normalizes canonical values and legacy aliases (3.0857ms)
+✔ buildWorkspaceHref carries shared replay context and explicit route values (0.6188ms)
+✔ buildWorkspaceHref can clear stale session context without losing workspace (0.9078ms)
+✔ invalid cursor values are never emitted into a deep link (0.2176ms)
+✔ unsafe cutoff values are omitted from a deep link (0.2068ms)
+✔ playbook context survives the journal deep link and rejects unsafe revisions (0.195ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 258.4697

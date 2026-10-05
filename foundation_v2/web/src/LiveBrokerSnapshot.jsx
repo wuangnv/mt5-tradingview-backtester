@@ -4,7 +4,7 @@ import { formatUtc } from './researchDataApi.js'
 const number = value => typeof value === 'number' && Number.isFinite(value) ? value.toLocaleString('vi-VN', { maximumFractionDigits: 5 }) : 'N/A'
 const entry = { 0: 'Vào', 1: 'Thoát', 2: 'Đảo chiều', 3: 'Close by' }
 
-export default function LiveBrokerSnapshot({ payload, section }) {
+export default function LiveBrokerSnapshot({ payload, section, preview = false }) {
   const [search, setSearch] = useState(''), [page, setPage] = useState(1)
   const account = payload.account
   if (!account) return null
@@ -12,8 +12,8 @@ export default function LiveBrokerSnapshot({ payload, section }) {
   const pages = Math.max(1, Math.ceil(deals.length / 20)), current = Math.min(page, pages)
   const visible = deals.slice((current - 1) * 20, current * 20)
   return <section className="live-broker" aria-label="Snapshot broker" data-testid="live-broker-snapshot">
-    <div className="live-section-heading"><h2>{payload.source} · {account.account_ref} · Demo</h2><span className="live-badge">{payload.stale ? 'Dữ liệu cũ / mất kết nối' : 'Đã đồng bộ'}</span></div>
-    <p className="live-snapshot-time">Snapshot {new Date(payload.captured_at_utc).toLocaleString('vi-VN', { timeZone: 'UTC' })} UTC · Đọc lại khoảng {payload.poll_seconds}s · Broker send đã khóa</p>
+    <div className="live-section-heading"><h2>{payload.source} · {account.account_ref} · Demo</h2><span className="live-badge">{preview ? 'Dữ liệu mẫu' : payload.stale ? 'Dữ liệu cũ / mất kết nối' : 'Đã đồng bộ'}</span></div>
+    {!preview && <p className="live-snapshot-time">Snapshot {new Date(payload.captured_at_utc).toLocaleString('vi-VN', { timeZone: 'UTC' })} UTC · Đọc lại khoảng {payload.poll_seconds}s · Broker send đã khóa</p>}
     <dl className="live-account-values">{[['Balance', account.balance], ['Equity', account.equity], ['Floating P/L', account.profit], ['Margin', account.margin], ['Free margin', account.margin_free]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{number(value)} <small>{account.currency}</small></dd></div>)}</dl>
     {section === 'trading-accounts' && <>
       <h3>Vị thế đang mở ({payload.positions?.length || 0})</h3>

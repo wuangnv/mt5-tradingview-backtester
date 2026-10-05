@@ -292,12 +292,12 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
-    const revealSelected = () => nav.querySelector('.fx-subnav-primary a[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    const revealSelected = () => (nav.querySelector('.fx-subsubnav a[aria-current="page"]') || nav.querySelector('.fx-subnav-primary a[aria-current="page"]'))?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
     revealSelected()
     const observer = new ResizeObserver(revealSelected)
     observer.observe(nav)
     return () => observer.disconnect()
-  }, [activeView, sectionId, selectedSection])
+  }, [activeView, sectionId, selectedSection, query.get('analytics_source')])
   if (items.length === 0) return null
   return (
     <nav className="fx-subnav" aria-label={copy.subnavAria} ref={navRef}>
@@ -306,6 +306,7 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
         const label = copy.nav[item.copyKey || item.id]?.[0] || item.id
         const active = isNavItemActive(item, activeView, query, sectionId)
         return (
+          <React.Fragment key={item.id}>
           <a
             className={`fx-subnav-link ${active ? 'is-active' : ''}`}
             href={hrefFor(item.route, workspace, query, {
@@ -320,16 +321,15 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
           >
             {label}
           </a>
+          {item.route === 'analytics' && sectionId === 'testing' && activeView === 'analytics' && <nav className="fx-subsubnav" aria-label={copy.analyticsSourcesAria}>
+            {[['sessions', 'Sessions'], ['prop', 'Prop firm']].map(([source, label]) => <a key={source}
+              href={hrefFor('analytics', workspace, query, { select: '1', analytics_source: source, area: 'testing', section: 'analytics', prop_session: query.get('prop_session'), attempt: query.get('attempt') })}
+              aria-current={(query.get('analytics_source') === 'prop' ? 'prop' : 'sessions') === source ? 'page' : undefined}>{label}</a>)}
+          </nav>}
+          </React.Fragment>
         )
       })}
       </div>
-      {sectionId === 'testing' && activeView === 'analytics' && <nav className="fx-subsubnav" aria-label={copy.analyticsSourcesAria}>
-        {[['sessions', 'Sessions'], ['prop', 'Prop firm']].map(([source, label]) => <a
-          key={source}
-          href={hrefFor('analytics', workspace, query, { select: '1', analytics_source: source, area: 'testing', section: 'analytics', prop_session: query.get('prop_session'), attempt: query.get('attempt') })}
-          aria-current={(query.get('analytics_source') === 'prop' ? 'prop' : 'sessions') === source ? 'page' : undefined}
-        >{label}</a>)}
-      </nav>}
     </nav>
   )
 }

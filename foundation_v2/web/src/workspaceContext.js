@@ -90,6 +90,8 @@ export function buildWorkspaceHref(view, workspace, queryLike, overrides = {}) {
   const workspaceId = overrides.workspace ?? workspace ?? context.workspaceId ?? 'tenant-a'
   params.set('workspace', String(workspaceId))
   if (view) params.set('view', String(view))
+  // Preview is presentation state; it never changes replay/broker authority.
+  if (source.get('demo') === '1' && overrides.demo !== null && overrides.demo !== '0') params.set('demo', '1')
 
   const values = {
     session: context.sessionId,

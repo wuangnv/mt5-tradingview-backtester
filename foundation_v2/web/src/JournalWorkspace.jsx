@@ -199,7 +199,7 @@ function ContextBar({ context, workspace, filtered, onFilterChange, replayHref }
   )
 }
 
-function JournalRow({ record, selected, onSelect }) {
+export function JournalRow({ record, selected, onSelect }) {
   const payload = record.payload || record
   const source = sourceForRecord(record)
   return (
@@ -222,7 +222,7 @@ function JournalRow({ record, selected, onSelect }) {
   )
 }
 
-function StoryRail({ record, context }) {
+export function StoryRail({ record, context }) {
   const story = storyForRecord(record, context)
   const payload = record?.payload || record || {}
   return (

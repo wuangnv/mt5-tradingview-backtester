@@ -1,0 +1,2509 @@
+{
+  "scope": "GET-only actual local UI plus explicitly labeled product demo fixtures; no broker/SDK calls, imports, downloads or data writes",
+  "before": [
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "7d3cc4fd6ed87eb6c5c4fcb2603806a5a19262a78c458df6d4860136a0fc4e47"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "9dec83f7ba761ea13678c8db81618c350ddcd6ed47103f60dfd9702d561d7d5f"
+    },
+    {
+      "file": "foundation_v2/web/src/workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "80c63436eeb1e8cdc6801af9e11a331418490c71a5c123001e14016fda9c2caa"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "127ce8a4d502e85468980513cc4c4efcea69c0bcce24631d504766f11da917ec"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "ffc70ec9b5fb57128ad886b9f8aeb44da42f628ccbb68119968b0a60c6c102ee"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "8bd74c5e4beb7b035fef2e598ded0d8d98fa804fa059b4b880e271635ef7fb56"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "6f71d46966b47e1e2f21a947d4f6c599fed8d45b88d4d122884ed0ba4295931d"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "ceda858a4961d4aee2722212c09993c23ad3c5324391697741e799dfd0095633"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-analytics.css",
+      "sha256": "c8facf2fd15f1b2d2d3c5dbc46150c168cb7449acb619c527491045577d00550"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "8fdad4fa151cd6c6d6ffc404c8b9cbde8bef8502becedf673a853282f61efab8"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "8d873954f51789840140f42dd756bca58d61b579caa433a2888a7c82ae03aaa1"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "fecd1622accf759d821bc3bc71e623edafe5caf7b56de6dce562678f602915b5"
+    },
+    {
+      "file": "foundation_v2/web/src/MarketAssetCatalog.jsx",
+      "sha256": "5a2e896142675029b3db511f6ea8717f64a183dadaa70db417c6ff019bd7f29f"
+    },
+    {
+      "file": "foundation_v2/web/src/LiveBrokerSnapshot.jsx",
+      "sha256": "ea2e174ece8bfe1b865c1b4e0e2f3abb1bff888055528fb2bbba6a6e724eafa0"
+    },
+    {
+      "file": "foundation_v2/web/src/JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "foundation_v2/web/src/PlaybookWorkspace.jsx",
+      "sha256": "da86fceb1f578e820d14901482575ae90545f346518fecd97387c31042c8b6ff"
+    }
+  ],
+  "cases": [
+    {
+      "name": "dashboard",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "dashboard",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "dashboard",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "dashboard",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "sessions",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "sessions",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "sessions",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "sessions",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "trades",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "trades",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "trades",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "trades",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "analytics",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "analytics",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "analytics",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "analytics",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "prop",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "prop",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "prop",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "prop",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "market-data",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "market-data",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "market-data",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "market-data",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "live-calendar",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "live-calendar",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "live-calendar",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "live-calendar",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "strategies",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "strategies",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "strategies",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "strategies",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "journal",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "journal",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "journal",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "journal",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "learn",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "learn",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "learn",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "learn",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "research",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "research",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "research",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "research",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "data-desk",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "data-desk",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "data-desk",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "data-desk",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "risk",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "risk",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "risk",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "risk",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-dashboard",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-dashboard",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-dashboard",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-dashboard",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-sessions",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-sessions",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-sessions",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-sessions",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-trades",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-trades",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-trades",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-trades",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-analytics",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-analytics",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-analytics",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-analytics",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-prop",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-prop",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-prop",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-prop",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-prop-practice",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-prop-practice",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-prop-practice",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-prop-practice",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-market-data",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-market-data",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-market-data",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-market-data",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-calendar",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-calendar",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-calendar",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-calendar",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-trades",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-trades",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-trades",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-trades",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-accounts",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-accounts",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-accounts",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-accounts",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-tags",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-tags",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-tags",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-tags",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-live-notes",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-notes",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-notes",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-live-notes",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": null
+    },
+    {
+      "name": "demo-strategies",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-strategies",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-strategies",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-strategies",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-journal",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-journal",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "li:nth-child(6) > span:nth-child(2) > strong"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "demo-journal",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "gutters": {
+        "left": 16,
+        "right": 16
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".is-selected > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".is-selected > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(2) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(2) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(3) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(3) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(4) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(4) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(5) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(5) > .ja-row-meta > code"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "demo-journal",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "gutters": {
+        "left": 32,
+        "right": 32
+      },
+      "axe": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".is-selected > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".is-selected > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(2) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(2) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(3) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(3) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(4) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(4) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(5) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(5) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-journal-row:nth-child(6) > .ja-row-main > .ja-row-kicker"
+            ],
+            [
+              ".ja-journal-row:nth-child(6) > .ja-row-meta > code"
+            ],
+            [
+              ".ja-story-status"
+            ],
+            [
+              ".is-complete:nth-child(1) > span:nth-child(2) > strong"
+            ],
+            [
+              ".is-complete:nth-child(2) > span:nth-child(2) > strong"
+            ],
+            [
+              ".is-complete:nth-child(3) > span:nth-child(2) > strong"
+            ],
+            [
+              ".is-complete:nth-child(4) > span:nth-child(2) > strong"
+            ],
+            [
+              ".is-active.is-complete > span:nth-child(2) > strong"
+            ],
+            [
+              "li:nth-child(6) > span:nth-child(2) > strong"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "dashboard-dark-360",
+      "pass": true
+    },
+    {
+      "name": "dashboard-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "dashboard-light-360",
+      "pass": true
+    },
+    {
+      "name": "dashboard-light-1440",
+      "pass": true
+    },
+    {
+      "name": "sessions-dark-360",
+      "pass": true
+    },
+    {
+      "name": "sessions-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "sessions-light-360",
+      "pass": true
+    },
+    {
+      "name": "sessions-light-1440",
+      "pass": true
+    },
+    {
+      "name": "trades-dark-360",
+      "pass": true
+    },
+    {
+      "name": "trades-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "trades-light-360",
+      "pass": true
+    },
+    {
+      "name": "trades-light-1440",
+      "pass": true
+    },
+    {
+      "name": "analytics-dark-360",
+      "pass": true
+    },
+    {
+      "name": "analytics-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "analytics-light-360",
+      "pass": true
+    },
+    {
+      "name": "analytics-light-1440",
+      "pass": true
+    },
+    {
+      "name": "prop-dark-360",
+      "pass": true
+    },
+    {
+      "name": "prop-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "prop-light-360",
+      "pass": true
+    },
+    {
+      "name": "prop-light-1440",
+      "pass": true
+    },
+    {
+      "name": "market-data-dark-360",
+      "pass": true
+    },
+    {
+      "name": "market-data-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "market-data-light-360",
+      "pass": true
+    },
+    {
+      "name": "market-data-light-1440",
+      "pass": true
+    },
+    {
+      "name": "live-calendar-dark-360",
+      "pass": true
+    },
+    {
+      "name": "live-calendar-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "live-calendar-light-360",
+      "pass": true
+    },
+    {
+      "name": "live-calendar-light-1440",
+      "pass": true
+    },
+    {
+      "name": "strategies-dark-360",
+      "pass": true
+    },
+    {
+      "name": "strategies-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "strategies-light-360",
+      "pass": true
+    },
+    {
+      "name": "strategies-light-1440",
+      "pass": true
+    },
+    {
+      "name": "journal-dark-360",
+      "pass": true
+    },
+    {
+      "name": "journal-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "journal-light-360",
+      "pass": true
+    },
+    {
+      "name": "journal-light-1440",
+      "pass": true
+    },
+    {
+      "name": "learn-dark-360",
+      "pass": true
+    },
+    {
+      "name": "learn-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "learn-light-360",
+      "pass": true
+    },
+    {
+      "name": "learn-light-1440",
+      "pass": true
+    },
+    {
+      "name": "research-dark-360",
+      "pass": true
+    },
+    {
+      "name": "research-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "research-light-360",
+      "pass": true
+    },
+    {
+      "name": "research-light-1440",
+      "pass": true
+    },
+    {
+      "name": "data-desk-dark-360",
+      "pass": true
+    },
+    {
+      "name": "data-desk-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "data-desk-light-360",
+      "pass": true
+    },
+    {
+      "name": "data-desk-light-1440",
+      "pass": true
+    },
+    {
+      "name": "risk-dark-360",
+      "pass": true
+    },
+    {
+      "name": "risk-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "risk-light-360",
+      "pass": true
+    },
+    {
+      "name": "risk-light-1440",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-oracle",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-pagination-sort-columns-selection",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-filter-search-session-empty",
+      "pass": true
+    },
+    {
+      "name": "analytics-inline-nav-mobile-scroll-reload-resize-switch",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-practice-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-practice-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-practice-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-prop-practice-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-market-data-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-market-data-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-market-data-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-market-data-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-calendar-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-calendar-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-calendar-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-calendar-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-trades-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-trades-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-trades-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-trades-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-accounts-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-accounts-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-accounts-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-accounts-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-tags-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-tags-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-tags-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-tags-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-notes-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-notes-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-live-notes-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-live-notes-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-strategies-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-strategies-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-strategies-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-strategies-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-journal-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-routes-isolated-labels-gutters-accessibility",
+      "pass": true
+    },
+    {
+      "name": "old-session-unchanged",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "apiRequests": [
+    {
+      "path": "/api/v2/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/prop/reports",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/prop/reports",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/prop/reports",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/prop/reports",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/live/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/live/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/live/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/live/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/playbooks",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/playbooks",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/playbooks",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/playbooks",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/glossary",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/glossary",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/glossary",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/overview",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/learn/glossary",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/session/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/connectors/notion/oauth/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/execution/capabilities",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/session/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/connectors/notion/oauth/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/execution/capabilities",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/session/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/connectors/notion/oauth/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/execution/capabilities",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/session/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/connectors/notion/oauth/status",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/execution/capabilities",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/research/engines",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/research/engines",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/research/engines",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/research/engines",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/providers",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/providers",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/providers",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/data/providers",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "?cursor_index=123",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "?cursor_index=123",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "mode": "real"
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "mode": "real"
+    }
+  ],
+  "teardown": [],
+  "failures": [
+    {
+      "name": "settings-dark-360",
+      "error": "TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.settings-workspace').first()\u001b[22m\n"
+    },
+    {
+      "name": "settings-dark-1440",
+      "error": "TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.settings-workspace').first()\u001b[22m\n"
+    },
+    {
+      "name": "settings-light-360",
+      "error": "TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.settings-workspace').first()\u001b[22m\n"
+    },
+    {
+      "name": "settings-light-1440",
+      "error": "TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.settings-workspace').first()\u001b[22m\n"
+    },
+    {
+      "name": "demo-toggle-restore-real-context",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n"
+    },
+    {
+      "name": "demo-journal-dark-1440",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     targets: [\n+       [\n+         'li:nth-child(6) > span:nth-child(2) > strong'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "demo-journal-light-360",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     targets: [\n+       [\n+         '.is-selected > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.is-selected > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(2) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(2) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(3) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(3) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(4) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(4) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(5) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(5) > .ja-row-meta > code'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "demo-journal-light-1440",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     targets: [\n+       [\n+         '.is-selected > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.is-selected > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(2) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(2) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(3) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(3) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(4) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(4) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(5) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(5) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(6) > .ja-row-main > .ja-row-kicker'\n+       ],\n+       [\n+         '.ja-journal-row:nth-child(6) > .ja-row-meta > code'\n+       ],\n+       [\n+         '.ja-story-status'\n+       ],\n+       [\n+         '.is-complete:nth-child(1) > span:nth-child(2) > strong'\n+       ],\n+       [\n+         '.is-complete:nth-child(2) > span:nth-child(2) > strong'\n+       ],\n+       [\n+         '.is-complete:nth-child(3) > span:nth-child(2) > strong'\n+       ],\n+       [\n+         '.is-complete:nth-child(4) > span:nth-child(2) > strong'\n+       ],\n+       [\n+         '.is-active.is-complete > span:nth-child(2) > strong'\n+       ],\n+       [\n+         'li:nth-child(6) > span:nth-child(2) > strong'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    }
+  ],
+  "oracle": {
+    "catalog": 6,
+    "trades": 1,
+    "readable": 4,
+    "scope": 6,
+    "propReports": 0,
+    "old": {
+      "revision": 2,
+      "dataset_sha256": "e1d208a92b9c418d78b8f8cad86dec4c888fe19eae1536100a79f2b005e9b6a2",
+      "visibleRows": 501
+    }
+  },
+  "preserved": {
+    "revision": 2,
+    "wholePayloadEqual": true
+  },
+  "after": [
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "7d3cc4fd6ed87eb6c5c4fcb2603806a5a19262a78c458df6d4860136a0fc4e47"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "9dec83f7ba761ea13678c8db81618c350ddcd6ed47103f60dfd9702d561d7d5f"
+    },
+    {
+      "file": "foundation_v2/web/src/workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "80c63436eeb1e8cdc6801af9e11a331418490c71a5c123001e14016fda9c2caa"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "127ce8a4d502e85468980513cc4c4efcea69c0bcce24631d504766f11da917ec"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "ffc70ec9b5fb57128ad886b9f8aeb44da42f628ccbb68119968b0a60c6c102ee"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "8bd74c5e4beb7b035fef2e598ded0d8d98fa804fa059b4b880e271635ef7fb56"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "6f71d46966b47e1e2f21a947d4f6c599fed8d45b88d4d122884ed0ba4295931d"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "ceda858a4961d4aee2722212c09993c23ad3c5324391697741e799dfd0095633"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-analytics.css",
+      "sha256": "c8facf2fd15f1b2d2d3c5dbc46150c168cb7449acb619c527491045577d00550"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "8fdad4fa151cd6c6d6ffc404c8b9cbde8bef8502becedf673a853282f61efab8"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "8d873954f51789840140f42dd756bca58d61b579caa433a2888a7c82ae03aaa1"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "fecd1622accf759d821bc3bc71e623edafe5caf7b56de6dce562678f602915b5"
+    },
+    {
+      "file": "foundation_v2/web/src/MarketAssetCatalog.jsx",
+      "sha256": "5a2e896142675029b3db511f6ea8717f64a183dadaa70db417c6ff019bd7f29f"
+    },
+    {
+      "file": "foundation_v2/web/src/LiveBrokerSnapshot.jsx",
+      "sha256": "ea2e174ece8bfe1b865c1b4e0e2f3abb1bff888055528fb2bbba6a6e724eafa0"
+    },
+    {
+      "file": "foundation_v2/web/src/JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "foundation_v2/web/src/PlaybookWorkspace.jsx",
+      "sha256": "da86fceb1f578e820d14901482575ae90545f346518fecd97387c31042c8b6ff"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: 'TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\\n' +\n+       'Call log:\\n' +\n+       \"\\x1B[2m  - waiting for locator('.settings-workspace').first()\\x1B[22m\\n\",\n+     name: 'settings-dark-360'\n+   },\n+   {\n+     error: 'TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\\n' +\n+       'Call log:\\n' +\n+       \"\\x1B[2m  - waiting for locator('.settings-workspace').first()\\x1B[22m\\n\",\n+     name: 'settings-dark-1440'\n+   },\n+   {\n+     error: 'TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\\n' +\n+       'Call log:\\n' +\n+       \"\\x1B[2m  - waiting for locator('.settings-workspace').first()\\x1B[22m\\n\",\n+     name: 'settings-light-360'\n+   },\n+   {\n+     error: 'TimeoutError: locator.boundingBox: Timeout 15000ms exceeded.\\n' +\n+       'Call log:\\n' +\n+       \"\\x1B[2m  - waiting for locator('.settings-workspace').first()\\x1B[22m\\n\",\n+     name: 'settings-light-1440'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n' +\n+       '\\n' +\n+       '0 !== 1\\n',\n+     name: 'demo-toggle-restore-real-context'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n' +\n+       '+ actual - expected\\n' +\n+       '\\n' +\n+       '+ [\\n' +\n+       '+   {\\n' +\n+       \"+     id: 'color-contrast',\\n\" +\n+       '+     targets: [\\n' +\n+       '+       [\\n' +\n+       \"+         'li:nth-child(6) > span:nth-child(2) > strong'\\n\" +\n+       '+       ]\\n' +\n+       '+     ]\\n' +\n+       '+   }\\n' +\n+       '+ ]\\n' +\n+       '- []\\n',\n+     name: 'demo-journal-dark-1440'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n' +\n+       '+ actual - expected\\n' +\n+       '\\n' +\n+       '+ [\\n' +\n+       '+   {\\n' +\n+       \"+     id: 'color-contrast',\\n\" +\n+       '+     targets: [\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-selected > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-selected > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(2) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(2) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(3) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(3) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(4) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(4) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(5) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(5) > .ja-row-meta > code'\\n\" +\n+       '+       ]\\n' +\n+       '+     ]\\n' +\n+       '+   }\\n' +\n+       '+ ]\\n' +\n+       '- []\\n',\n+     name: 'demo-journal-light-360'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\\n' +\n+       '+ actual - expected\\n' +\n+       '\\n' +\n+       '+ [\\n' +\n+       '+   {\\n' +\n+       \"+     id: 'color-contrast',\\n\" +\n+       '+     targets: [\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-selected > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-selected > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(2) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(2) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(3) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(3) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(4) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(4) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(5) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(5) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(6) > .ja-row-main > .ja-row-kicker'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-journal-row:nth-child(6) > .ja-row-meta > code'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.ja-story-status'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-complete:nth-child(1) > span:nth-child(2) > strong'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-complete:nth-child(2) > span:nth-child(2) > strong'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-complete:nth-child(3) > span:nth-child(2) > strong'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-complete:nth-child(4) > span:nth-child(2) > strong'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         '.is-active.is-complete > span:nth-child(2) > strong'\\n\" +\n+       '+       ],\\n' +\n+       '+       [\\n' +\n+       \"+         'li:nth-child(6) > span:nth-child(2) > strong'\\n\" +\n+       '+       ]\\n' +\n+       '+     ]\\n' +\n+       '+   }\\n' +\n+       '+ ]\\n' +\n+       '- []\\n',\n+     name: 'demo-journal-light-1440'\n+   }\n+ ]\n- []\n"
+}
