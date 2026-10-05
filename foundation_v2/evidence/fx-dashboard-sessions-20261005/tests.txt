@@ -1,0 +1,33 @@
+✔ dashboard keeps unknown distinct from measured zero (1.627ms)
+✔ recent period ranges use inclusive UTC calendar days across month boundaries (3.0498ms)
+✔ Dashboard combines search/status/sort without mixing archived and active status (0.711ms)
+✔ dashboard filters encode the selected session and complete UTC close dates (1.4062ms)
+✔ overview request sends workspace and abort signal; rejects old inventory-only payload (1.3165ms)
+✔ malformed performance payload becomes a recoverable load error (0.2858ms)
+✔ dashboard chart uses original balance and preserves every loss and recovery (1.3806ms)
+✔ session result API fences workspace, provenance and ledger count (0.9466ms)
+✔ Assets and strategy intersect; unavailable strategy is not unassigned (1.2975ms)
+✔ profit sorting keeps unknown last and refuses mixed or missing currencies (0.5668ms)
+✔ recent sessions filters archived, searches domain fields and sorts without changing catalog (22.334ms)
+✔ resume eligibility requires an active session with confirmed dataset availability (0.2187ms)
+✔ last session storage remains workspace-scoped and tolerates inaccessible storage (0.4858ms)
+✔ historical period P/L uses UTC close times, a Monday week and the last close rather than wall clock (23.455ms)
+✔ missing dates/PnL do not become a zero period or a fabricated daily chart (0.2814ms)
+✔ numeric epoch seconds and milliseconds normalize to the same historical UTC instant (0.1657ms)
+✔ Sessions prefer explicit deep link, valid recently run session, then newest creation (2.0866ms)
+✔ Trades scope distinguishes all, empty, multi selection and explicit session deep links (1.0738ms)
+✔ switching report session clears exact execution checkpoint; same session retains it (0.2714ms)
+✔ session selection clears stale research and historical context while keeping workspace (0.9153ms)
+✔ session analytics receives the selected session rather than a stale job; summary clears filters (0.2347ms)
+✔ malformed catalog never turns into a trustworthy empty session list (0.4295ms)
+✔ catalog and mutations use workspace scope and exact revision/cursor without automatic retries (32.6763ms)
+✔ revision conflicts and authorization failures keep HTTP status for recovery UI (0.8515ms)
+✔ an explicit same-session trade and historical cutoff survive analytics composition (0.5074ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 246.6586

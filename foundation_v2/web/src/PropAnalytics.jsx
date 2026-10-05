@@ -6,7 +6,7 @@ import { buildWorkspaceHref } from './workspaceContext.js'
 import useReadRefresh from './useReadRefresh.js'
 
 const reportKey = report => `${report.session.session_id}:${report.attempt.attempt_id}`
-export default function PropAnalytics({ workspace, query }) {
+export default function PropAnalytics({ workspace, query, embedded = false }) {
   const [state, setState] = useState({ status: 'loading', items: [], error: '' }), [reload, setReload] = useState(0)
   const [selected, setSelected] = useState(query.get('prop_session') && query.get('attempt') ? `${query.get('prop_session')}:${query.get('attempt')}` : null)
   useReadRefresh(() => setReload(value => value + 1))
@@ -20,7 +20,7 @@ export default function PropAnalytics({ workspace, query }) {
   const boundQuery = useMemo(() => propReplayQuery(report, new URLSearchParams(window.location.search)), [report, query])
   const choose = value => { setSelected(value); const report = state.items.find(item => reportKey(item) === value); const url = new URL(window.location.href); if (report) { url.searchParams.set('prop_session', report.session.session_id); url.searchParams.set('attempt', report.attempt.attempt_id) } else { url.searchParams.delete('prop_session'); url.searchParams.delete('attempt') } url.searchParams.delete('trade'); window.history.replaceState({}, '', url) }
   const money = report?.objectives?.money, calendar = report?.objectives?.calendar
-  return <section className="wm-page fxa-prop-page" aria-label="Prop firm Analytics" data-testid="prop-analytics"><h1 className="sr-only">Analytics</h1>
+  return <section className={`${embedded ? 'fx-dashboard-prop' : 'wm-page'} fxa-prop-page`} aria-label="Prop firm Analytics" data-testid="prop-analytics">{!embedded && <h1 className="sr-only">Analytics</h1>}
     {state.status === 'loading' && <p role="status">Đang đọc báo cáo challenge…</p>}{state.status === 'error' && <p role="alert">Không đọc được báo cáo: {state.error}. Sẽ kiểm tra lại khi quay về ứng dụng.</p>}
     {state.status === 'ready' && <div className="fxa-prop-selector"><SelectField label="Prop firm attempt" value={report ? reportKey(report) : ''} onChange={choose} options={[["", 'Chọn challenge'], ...state.items.map(item => [reportKey(item), `${item.profile.profile_id} · attempt ${item.attempt.attempt_id.slice(0, 8)} · ${item.outcome.status}`])]} /><a className="fxa-button" href={buildWorkspaceHref('testing', workspace, query)}>Quản lý challenge ↗</a></div>}
     {state.status === 'ready' && !report && <p className="fxa-empty">{state.items.length ? 'Không tìm thấy attempt này. Chọn challenge khác.' : 'Chưa có báo cáo Prop firm. Tạo challenge mô phỏng và gắn replay để có phân tích giao dịch.'}</p>}

@@ -1,0 +1,16 @@
+import {chromium} from '../../../web/node_modules/playwright/index.mjs'
+const out='.artifacts/fx-dashboard-sessions-20261005/root'
+const b=await chromium.launch({headless:true}),c=await b.newContext(),p=await c.newPage()
+await c.route('**/*',r=>['GET','HEAD','OPTIONS'].includes(r.request().method())?r.continue():r.abort())
+await c.routeWebSocket('**/*',s=>s.close())
+await p.setViewportSize({width:1440,height:987})
+await p.goto('http://127.0.0.1:5180/?workspace=tenant-a&view=overview&area=testing&section=dashboard');await p.waitForLoadState('networkidle')
+await p.getByRole('button',{name:'Hiện bộ lọc phiên',exact:true}).click();await p.waitForFunction(()=>!document.querySelector('button[aria-label="Strategy"]').disabled)
+await p.getByTestId('dashboard-recent').scrollIntoViewIfNeeded();await p.screenshot({path:out+'/recent.png'})
+await p.getByRole('button',{name:'Assets',exact:true}).click();await p.screenshot({path:out+'/assets.png'})
+await p.keyboard.press('Escape');await p.getByRole('button',{name:'Sắp xếp phiên',exact:true}).click();await p.screenshot({path:out+'/sort.png'})
+await p.keyboard.press('Escape');await p.setViewportSize({width:360,height:800});await p.getByTestId('dashboard-recent').scrollIntoViewIfNeeded();await p.getByRole('button',{name:'Sắp xếp phiên',exact:true}).click();await p.screenshot({path:out+'/sort-mobile.png'})
+await p.goto('http://127.0.0.1:5180/?workspace=tenant-a&view=replay&area=testing&section=sessions&select=1&session=476f4b498e1a49ed9d48a75719f4d270');await p.waitForLoadState('networkidle');await p.screenshot({path:out+'/session-mobile-final.png'})
+await p.setViewportSize({width:1440,height:987});await p.evaluate(()=>localStorage.setItem('tw-theme','light'));await p.reload();await p.waitForLoadState('networkidle');await p.screenshot({path:out+'/session-light.png'})
+await p.getByRole('button',{name:'Chọn phiên replay',exact:true}).click();await p.screenshot({path:out+'/session-menu-light.png'})
+await b.close()

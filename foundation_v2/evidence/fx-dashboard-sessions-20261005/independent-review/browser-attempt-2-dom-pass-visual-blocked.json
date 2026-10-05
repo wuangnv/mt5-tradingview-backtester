@@ -1,0 +1,193 @@
+{
+  "scope": "Actual GET-only local Dashboard/Sessions review; synthetic error states explicitly labeled. No product edits, broker/provider access, session/DB writes.",
+  "before": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "a530208cbdfa784ccee2445a9b38cf6dd1b9f4d38423ece6bc61dff62fad7edb"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "cefa1dd211db2d45cc711db492302429b77d9c4c70ce5f00fe5fd11ea5d044b8"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "6d449eb2c673c4d87a56bd64f0c6ee73d319f509ee804631449fd0ec0e5fa8a7"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPicker.jsx",
+      "sha256": "4a1c4e4e554783efb2aeb7585bd49d1847013c968ea3cc8f9eb0029259b51909"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "1aeb3032fd94b47326d0612683e1dea51b1b69f9ac7b35ed9ccb685010a8b1e3"
+    },
+    {
+      "file": "foundation_v2/web/src/session-performance.css",
+      "sha256": "8e65913269f2e45dc0bde2152b0465fd493704e0a1ddc8c0c138323793c07348"
+    },
+    {
+      "file": "foundation_v2/web/src/PropAnalytics.jsx",
+      "sha256": "714a7a632995cc7fe75c3e1243ff0b915ecfb5fa712bf99a051e15c1951ddca5"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "42aed4ae578f9241d80203e5696fb6e427e3d56d8b7b0fa8632a0a2843217e93"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "27d6acad0135fa6450e9de8fdd3b872cc4127b27f4c7876a77b5c48051c57156"
+    }
+  ],
+  "cases": [
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "width": 768,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "width": 768,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "width": 360,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "width": 768,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "width": 360,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "width": 768,
+      "overflow": 0,
+      "axe": []
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0,
+      "axe": []
+    }
+  ],
+  "checks": [
+    "Actual Dashboard counts match GET overview; three create/tutorial actions retained; repeated h1 is hidden; footer/provenance/View all/reload/single-page pagination removed",
+    "Source choices expose real Backtesting and Prop firm separately; Battles explicitly disabled; weekly UTC range and count match actual GET and survive reload; Lifetime restores scope",
+    "Actual recent Assets/search/Strategy/unassigned/status/date sort/profit sort operate on catalog + analytics metadata; unknown results sort after known comparable USD outcomes; no fake strategy names",
+    "Rich searchable session selector keyboard navigation reaches genuine no-init old session: six unknowns/no fabricated balance/path/empty recent trades; actual initialized-empty keeps measured zero and original balance; populated XAU metrics/trades match actual read model",
+    "LABELED SYNTHETIC: analytics GET500 shows error and hides result; unavailable source cannot become empty-zero performance",
+    "LABELED SYNTHETIC: stale source notice remains explicit with scoped results",
+    "LABELED SYNTHETIC: overview GET500 retains truthful unknown metrics and visible failure"
+  ],
+  "errors": [],
+  "blocked": [],
+  "teardown": [],
+  "preserved": {
+    "sessionId": "476f4b498e1a49ed9d48a75719f4d270",
+    "revision": 2,
+    "visibleRows": 501,
+    "unchanged": true
+  },
+  "after": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "a530208cbdfa784ccee2445a9b38cf6dd1b9f4d38423ece6bc61dff62fad7edb"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "cefa1dd211db2d45cc711db492302429b77d9c4c70ce5f00fe5fd11ea5d044b8"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "6d449eb2c673c4d87a56bd64f0c6ee73d319f509ee804631449fd0ec0e5fa8a7"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPicker.jsx",
+      "sha256": "4a1c4e4e554783efb2aeb7585bd49d1847013c968ea3cc8f9eb0029259b51909"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "1aeb3032fd94b47326d0612683e1dea51b1b69f9ac7b35ed9ccb685010a8b1e3"
+    },
+    {
+      "file": "foundation_v2/web/src/session-performance.css",
+      "sha256": "8e65913269f2e45dc0bde2152b0465fd493704e0a1ddc8c0c138323793c07348"
+    },
+    {
+      "file": "foundation_v2/web/src/PropAnalytics.jsx",
+      "sha256": "714a7a632995cc7fe75c3e1243ff0b915ecfb5fa712bf99a051e15c1951ddca5"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "42aed4ae578f9241d80203e5696fb6e427e3d56d8b7b0fa8632a0a2843217e93"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "27d6acad0135fa6450e9de8fdd3b872cc4127b27f4c7876a77b5c48051c57156"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

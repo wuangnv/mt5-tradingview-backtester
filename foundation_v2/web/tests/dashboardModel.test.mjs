@@ -14,6 +14,8 @@ test('dashboard keeps unknown distinct from measured zero', () => {
 test('recent period ranges use inclusive UTC calendar days across month boundaries', () => {
   const now = new Date('2026-10-03T23:30:00Z')
   assert.deepEqual(dashboardPeriodRange('30d', now), { from: '2026-09-04', to: '2026-10-03' })
+  assert.deepEqual(dashboardPeriodRange('7d', now), { from: '2026-09-27', to: '2026-10-03' })
+  assert.equal(dashboardPeriod(dashboardPeriodRange('7d', now), now), '7d')
   assert.deepEqual(dashboardPeriodRange('90d', now), { from: '2026-07-06', to: '2026-10-03' })
   assert.equal(dashboardPeriod(dashboardPeriodRange('30d', now), now), '30d')
   assert.equal(dashboardPeriod({ from: '2024-01-01', to: '' }, now), 'custom')
@@ -93,4 +95,22 @@ test('session result API fences workspace, provenance and ledger count', async c
   await assert.rejects(readDashboardAnalytics('w', 's/a', controller.signal), /analytics_read_model_invalid/)
   payload.provenance.session_id = 's/a'; payload.scope.selected_trade_count = 2
   await assert.rejects(readDashboardAnalytics('w', 's/a', controller.signal), /analytics_read_model_invalid/)
+})
+
+test('Assets and strategy intersect; unavailable strategy is not unassigned', () => {
+  const items = ['a', 'b', 'c', 'd'].map((record_id, i) => ({ record_id, instrument_id: i === 2 ? 'GBPUSD' : 'EURUSD', created_at_utc: `2026-10-0${i + 1}` }))
+  const details = { a: { strategy: 'breakout' }, b: { strategy: null }, c: { strategy: 'breakout' } }
+  assert.deepEqual(dashboardRecentSessions(items, { asset: 'EURUSD', strategy: 'breakout', details }).map(x => x.record_id), ['a'])
+  assert.deepEqual(dashboardRecentSessions(items, { asset: 'EURUSD', strategy: 'unassigned', details }).map(x => x.record_id), ['b'])
+})
+
+test('profit sorting keeps unknown last and refuses mixed or missing currencies', () => {
+  const items = ['a', 'b', 'c'].map((record_id, i) => ({ record_id, created_at_utc: `2026-10-0${i + 1}`, updated_at_utc: `2026-10-0${3 - i}` }))
+  const details = { a: { pnl: 20, currency: 'USD' }, b: { pnl: 0, currency: 'USD' }, c: { pnl: null, currency: 'USD' } }
+  const ids = options => dashboardRecentSessions(items, options).map(x => x.record_id)
+  assert.deepEqual(ids({ sort: 'profit', details }), ['a', 'b', 'c'])
+  assert.deepEqual(ids({ sort: 'profit', details: { ...details, b: { pnl: 1000, currency: 'JPY' } } }), ['c', 'b', 'a'])
+  assert.deepEqual(ids({ sort: 'profit', details: { ...details, b: { pnl: 1000, currency: '' } } }), ['c', 'b', 'a'])
+  assert.deepEqual(ids({ sort: 'newest' }), ['c', 'b', 'a'])
+  assert.deepEqual(ids({ sort: 'last' }), ['a', 'b', 'c'])
 })

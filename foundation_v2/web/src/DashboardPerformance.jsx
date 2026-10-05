@@ -16,7 +16,7 @@ function SymbolChart({ items }) {
   return <div className="fx-dashboard-chart-panel is-purple"><h3>Trades by symbol</h3>{items.length ? <div className="fx-dashboard-symbol-chart" role="img" aria-label={`Giao dịch theo symbol: ${items.map(item => `${item.symbol}: ${dashboardNumber(item.closed_trade_count)}`).join('; ')}`}>{items.map(item => <div className="fx-dashboard-symbol-row" key={item.symbol}><span>{item.symbol}</span><div className="fx-dashboard-symbol-track"><div className="fx-dashboard-symbol-bar" style={{ width: `${(item.closed_trade_count || 0) / max * 100}%` }} /></div><strong>{dashboardNumber(item.closed_trade_count)}</strong></div>)}<div className="fx-dashboard-symbol-axis"><span>0</span><span>{dashboardNumber(max / 2)}</span><span>{dashboardNumber(max)} giao dịch</span></div></div> : <div className="fx-dashboard-empty-chart">Chưa có giao dịch theo symbol.</div>}</div>
 }
 
-export default function DashboardPerformance({ workspace, filters, reload, analyticsHref, controls, dateControls }) {
+export default function DashboardPerformance({ workspace, filters, reload, controls, dateControls, sourceHeading }) {
   const [state, setState] = useState({ status: 'loading', payload: null, error: '', key: '' })
   const key = JSON.stringify([workspace, filters.session, filters.from, filters.to])
   const filterError = dashboardFilterError(filters)
@@ -41,6 +41,7 @@ export default function DashboardPerformance({ workspace, filters, reload, analy
   return <section className="fx-dashboard-results" aria-label="Performance" aria-busy={loading}>
     <div className="fx-dashboard-section-head"><h2>Performance</h2><div className="fx-dashboard-performance-filters">{controls}</div></div>
     {dateControls}
+    {sourceHeading && <h3 className="fx-dashboard-source-heading">{sourceHeading}</h3>}
     <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{notice}</span>}</div>
     <div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">
       <Metric title="Time invested" value="—" detail="Chưa có dữ liệu thời gian luyện tập" icon="◷" />
@@ -49,7 +50,5 @@ export default function DashboardPerformance({ workspace, filters, reload, analy
       <Metric title="Overall win rate" value={dashboardNumber(metrics?.win_rate_pct, '%')} detail={metrics?.wins != null ? `${dashboardNumber(metrics.wins)} thắng · ${dashboardNumber(metrics.losses)} thua · ${dashboardNumber(metrics.breakeven)} hòa` : 'Chưa có kết quả giao dịch'} icon="◎" tone="is-positive" />
     </div><MonthlyChart title="Giao dịch theo tháng" items={performance?.months || []} field="closed_trade_count" /></div>
     <div className="fx-dashboard-secondary-charts"><MonthlyChart title="Win rate by month" items={performance?.months || []} field="win_rate_pct" rate accent="blue" /><SymbolChart items={performance?.symbols || []} /></div>
-    <div className="fx-dashboard-chart-foot"><span>Lệnh đóng theo UTC · {filters.session ? 'phiên đang chọn' : 'gồm phiên đã lưu trữ'} · bộ lọc danh sách bên dưới độc lập</span>{analyticsHref && <a className="fx-dashboard-text-link" href={analyticsHref}>Phân tích phiên <span aria-hidden="true">↗</span></a>}</div>
-    {(performance || state.error) && <details className="fx-dashboard-provenance"><summary>Chi tiết dữ liệu</summary>{state.error ? <p>{state.error}</p> : <><p>{performance.scope.readable_session_count} phiên đọc được · {performance.scope.duplicate_trade_count || 0} giao dịch trùng từ bản sao được loại khỏi tổng.</p>{performance.excluded.length > 0 && <ul>{performance.excluded.map((item, index) => <li key={index}>{item.session_id}: {item.reason}</li>)}</ul>}</>}</details>}
   </section>
 }

@@ -32,7 +32,7 @@ export function dashboardFilterError(filters) {
 
 export function dashboardPeriodRange(period, now = new Date()) {
   if (period === 'lifetime') return { from: '', to: '' }
-  const days = period === '30d' ? 30 : period === '90d' ? 90 : 0
+  const days = period === '7d' ? 7 : period === '30d' ? 30 : period === '90d' ? 90 : 0
   if (!days) return { from: '', to: '' }
   const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
   const start = new Date(end)
@@ -42,15 +42,26 @@ export function dashboardPeriodRange(period, now = new Date()) {
 
 export function dashboardPeriod(filters, now = new Date()) {
   if (!filters.from && !filters.to) return 'lifetime'
-  return ['30d', '90d'].find(period => {
+  return ['7d', '30d', '90d'].find(period => {
     const range = dashboardPeriodRange(period, now)
     return range.from === filters.from && range.to === filters.to
   }) || 'custom'
 }
 
-export function dashboardRecentSessions(items, { search = '', status = 'active', sort = 'newest' } = {}) {
-  return recentSessions(items, { search, archived: status === 'all' || status === 'archived', sort })
+export function dashboardRecentSessions(items, { search = '', status = 'active', sort = 'newest', asset = '', strategy = '', details = {} } = {}) {
+  const filtered = recentSessions(items, { search, archived: status === 'all' || status === 'archived', sort })
     .filter(item => status === 'all' || status === 'active' || (status === 'archived' ? item.archived : item.status === status))
+    .filter(item => (!asset || item.instrument_id === asset) && (!strategy || (strategy === 'unassigned' ? details[item.record_id]?.strategy === null : details[item.record_id]?.strategy === strategy)))
+  const stamp = (item, key) => Date.parse(item[key] || item.updated_at_utc) || 0
+  const knownProfits = filtered.map(item => details[item.record_id]).filter(value => value?.pnl != null)
+  const comparable = knownProfits.every(value => typeof value.currency === 'string' && value.currency.trim()) && new Set(knownProfits.map(value => value.currency)).size <= 1
+  return filtered.sort((a, b) => {
+    if (sort === 'profit' && comparable) {
+      const left = details[a.record_id]?.pnl, right = details[b.record_id]?.pnl
+      if (left != null || right != null) return left == null ? 1 : right == null ? -1 : right - left || a.record_id.localeCompare(b.record_id)
+    }
+    return (sort === 'oldest' ? 1 : -1) * (stamp(a, sort === 'last' ? 'updated_at_utc' : 'created_at_utc') - stamp(b, sort === 'last' ? 'updated_at_utc' : 'created_at_utc')) || a.record_id.localeCompare(b.record_id)
+  })
 }
 
 export function updateDashboardQuery(values) {

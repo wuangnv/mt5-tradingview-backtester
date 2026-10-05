@@ -1,0 +1,62 @@
+[
+  {
+    "file": "foundation_v2/web/src/DashboardSessions.jsx",
+    "expected": "b3e1f1c26793e43ff3b6704e134b579ea8527adaf87ff0f6084f3b3f50e86ba7",
+    "actual": "b3e1f1c26793e43ff3b6704e134b579ea8527adaf87ff0f6084f3b3f50e86ba7",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+    "expected": "cefa1dd211db2d45cc711db492302429b77d9c4c70ce5f00fe5fd11ea5d044b8",
+    "actual": "cefa1dd211db2d45cc711db492302429b77d9c4c70ce5f00fe5fd11ea5d044b8",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/dashboardModel.js",
+    "expected": "6d449eb2c673c4d87a56bd64f0c6ee73d319f509ee804631449fd0ec0e5fa8a7",
+    "actual": "6d449eb2c673c4d87a56bd64f0c6ee73d319f509ee804631449fd0ec0e5fa8a7",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/SessionPicker.jsx",
+    "expected": "4a1c4e4e554783efb2aeb7585bd49d1847013c968ea3cc8f9eb0029259b51909",
+    "actual": "4a1c4e4e554783efb2aeb7585bd49d1847013c968ea3cc8f9eb0029259b51909",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/SessionPerformance.jsx",
+    "expected": "1aeb3032fd94b47326d0612683e1dea51b1b69f9ac7b35ed9ccb685010a8b1e3",
+    "actual": "1aeb3032fd94b47326d0612683e1dea51b1b69f9ac7b35ed9ccb685010a8b1e3",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/session-performance.css",
+    "expected": "8e65913269f2e45dc0bde2152b0465fd493704e0a1ddc8c0c138323793c07348",
+    "actual": "8e65913269f2e45dc0bde2152b0465fd493704e0a1ddc8c0c138323793c07348",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/PropAnalytics.jsx",
+    "expected": "714a7a632995cc7fe75c3e1243ff0b915ecfb5fa712bf99a051e15c1951ddca5",
+    "actual": "714a7a632995cc7fe75c3e1243ff0b915ecfb5fa712bf99a051e15c1951ddca5",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/FxSelect.jsx",
+    "expected": "ad5f0aa3b34120c779a1388103efaa36642751f4b9baba7bb0969e37cc361cd4",
+    "actual": "ad5f0aa3b34120c779a1388103efaa36642751f4b9baba7bb0969e37cc361cd4",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/fx-select.css",
+    "expected": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041",
+    "actual": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041",
+    "match": true
+  },
+  {
+    "file": "foundation_v2/web/src/dashboard.css",
+    "expected": "40fff426483a4257834eaaf98e1105fbefb97640c4c8286fe6a2d329aac87859",
+    "actual": "40fff426483a4257834eaaf98e1105fbefb97640c4c8286fe6a2d329aac87859",
+    "match": true
+  }
+]

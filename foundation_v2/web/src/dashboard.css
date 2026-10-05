@@ -166,3 +166,30 @@
   .fx-dashboard-symbol-axis { margin-left: 66px; }
   .fx-dashboard-pagination { flex-wrap: wrap; }
 }
+.fx-dashboard-performance-filters { flex-wrap: wrap; }
+.fx-dashboard-performance-filters > .fx-select { min-width: 156px; }
+.fx-dashboard-list-filters { flex-wrap: wrap; justify-content: flex-end; }
+.fx-dashboard-recent-toolbar { flex-wrap: wrap; }
+.fx-dashboard-search { flex: 1 1 260px; max-width: 420px; }
+.fx-dashboard-list-filters { flex: 1 1 auto; }
+.fx-dashboard-list-filters .fx-select { max-width: 100%; }
+.fx-app .fx-dashboard .fx-dashboard-filter-toggle { display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; border-radius: 50%; background: transparent; flex-shrink: 0; }
+.fx-dashboard-filter-toggle svg { width: 20px; height: 20px; }
+.fx-dashboard .fx-dashboard-filter-toggle[aria-expanded='true'] { background: var(--wm-selected); }
+.fx-dashboard-source-heading { margin: 0 0 20px; font-size: 14px; }
+.fx-dashboard-selected-session { display: flex; align-items: center; gap: 12px; width: fit-content; max-width: 100%; margin-bottom: 16px; padding-left: 14px; border: 1px solid var(--wm-border); border-radius: 24px; font-size: 13px; overflow-wrap: anywhere; }
+.fx-dashboard-selected-session button { border: 0; background: transparent; border-radius: 50%; }
+.fx-dashboard-prop { margin-block: 24px; }
+.fx-dashboard-prop .wm-empty { padding-block: 40px; }
+.fx-dashboard-prop-section { margin-top: 32px; }
+@media (max-width: 768px) {
+  .fx-dashboard-search { max-width: none; }
+  .fx-dashboard-list-filters { justify-content: flex-start; }
+}
+@media (max-width: 480px) {
+  .fx-dashboard-performance-filters > .fx-select { flex: 1 1 120px; min-width: 0; }
+  .fx-app .fx-dashboard-performance-filters .fx-select-trigger { padding-inline: 10px; gap: 6px; font-size: 13px; }
+  .fx-dashboard-performance-filters .fx-select-trigger > svg:not(.fx-select-chevron) { display: none; }
+  .fx-dashboard-performance-filters .fx-select-chevron { margin-left: 0; }
+  .fx-dashboard-list-filters .fx-select { flex: 1 1 120px; }
+}
