@@ -1,8 +1,37 @@
 /* Interaction states belong to controls and selected records, not page wrappers. */
-.fx-app {
-  --wm-hover: color-mix(in srgb, var(--wm-content) 6%, var(--wm-canvas));
-  --wm-selected: color-mix(in srgb, var(--wm-primary) 12%, var(--wm-canvas));
-  --wm-selected-border: color-mix(in srgb, var(--wm-primary) 55%, var(--wm-border));
+.fx-app.fx-shell-story {
+  --wm-control-radius: 8px;
+  --wm-control-height: 40px;
+  --wm-control-text: #fff;
+  --wm-control-muted: #a6a6a6;
+  --wm-control-border: #414141;
+  --wm-control-hover-border: #707070;
+  --wm-control-open: #292929;
+  --wm-hover: #202020;
+  --wm-selected: #2b2b2b;
+  --wm-selected-border: #707070;
+  --wm-focus: #dedede;
+  --wm-action-bg: #e8e8e8;
+  --wm-action-hover: #fff;
+  --wm-on-primary: #171717;
+  --fx-shell-nav-hover: var(--wm-hover);
+  --fx-focus-ring: var(--wm-focus);
+}
+.fx-app.fx-shell-story[data-theme='light'] {
+  --wm-control-text: #171717;
+  --wm-control-muted: #626262;
+  --wm-control-border: #d3d3d3;
+  --wm-control-hover-border: #8b8b8b;
+  --wm-control-open: #e3e3e3;
+  --wm-hover: #ededed;
+  --wm-selected: #dedede;
+  --wm-selected-border: #8b8b8b;
+  --wm-focus: #4d4d4d;
+  --wm-action-bg: #242424;
+  --wm-action-hover: #3a3a3a;
+  --wm-on-primary: #fff;
+  --fx-shell-nav-hover: var(--wm-hover);
+  --fx-focus-ring: var(--wm-focus);
 }
 .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, a, input, select, textarea, summary) {
   transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
@@ -16,8 +45,8 @@
   border-color: color-mix(in srgb, var(--wm-border-strong) 65%, var(--wm-content));
 }
 .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(input, select, textarea):focus-visible {
-  border-color: var(--wm-primary);
-  outline: 2px solid var(--wm-primary);
+  border-color: var(--wm-control-hover-border);
+  outline: 2px solid var(--wm-focus);
   outline-offset: 2px;
 }
 .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, a, summary):focus-visible {
@@ -86,8 +115,55 @@
 }
 .fx-app :is(.wm-page, .fx-dashboard) summary:hover { color: var(--wm-content); }
 .fx-app :is(.wm-page, .fx-dashboard) summary::marker { color: var(--wm-content-muted); }
-.fx-app :is(.wm-page, .fx-dashboard) details[open] > summary { color: var(--wm-primary); }
-.fx-app :is(.wm-page, .fx-dashboard) details[open] > summary::marker { color: var(--wm-primary); }
+.fx-app :is(.wm-page, .fx-dashboard) details[open] > summary { color: var(--wm-control-text); }
+.fx-app :is(.wm-page, .fx-dashboard) details[open] > summary::marker { color: var(--wm-control-text); }
+
+/* Hover is neutral throughout the product; price/risk marks retain their colors. */
+.fx-app.fx-shell-story[data-theme] :is(button, a, summary):not(:disabled):not(:where(.is-danger, .fxr-button-danger, .buy, .sell, .is-buy, .is-sell, .chart-order-level, .trade-inline-retry)):hover {
+  color: var(--wm-control-text);
+  border-color: var(--wm-control-hover-border);
+}
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-page, .fx-dashboard, .replay-shell) button:not(:disabled):not(:where(.is-danger, .fxr-button-danger, .buy, .sell, .is-buy, .is-sell, .chart-order-level, .trade-inline-retry)):hover {
+  background: var(--wm-hover);
+  color: var(--wm-control-text);
+  border-color: var(--wm-control-hover-border);
+}
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .fxa-apply-button, .fxa-button.is-primary, .trade-primary, .risk-primary, .prop-create, .learn-open-current, .ja-button-primary, .rs-button.is-primary, .rd-button.is-primary, .as-primary-button, .primary-action):hover:not(:disabled),
+.fx-app.fx-shell-story[data-theme] .settings-appearance-actions button[type='submit']:hover:not(:disabled) {
+  background: var(--wm-action-hover);
+  border-color: var(--wm-action-hover);
+  color: var(--wm-on-primary);
+}
+.fx-app .fx-dashboard-quick-action:hover .fx-dashboard-action-arrow,
+.fx-app .rd-table button:hover strong { color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme] :is(.fx-nav-item, .fx-rail-section-heading, .fx-subnav a):hover svg { color: var(--wm-control-text); }
+.fx-app.fx-shell-story.is-chart-workspace { --chart-hover: var(--wm-hover); }
+.fx-app.fx-shell-story.is-chart-workspace[data-theme='light'] { --chart-hover: var(--wm-hover); }
+
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) select:not([multiple]) {
+  height: var(--wm-control-height);
+  min-height: var(--wm-control-height);
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid var(--wm-control-border);
+  border-radius: var(--wm-control-radius);
+  color: var(--wm-control-text);
+  background: transparent;
+  font-size: 13px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) :is(input, select, textarea):focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--wm-control-border);
+}
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) select:not(:disabled):hover { background: var(--wm-hover); border-color: var(--wm-control-hover-border); }
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) select:open { background: var(--wm-control-open); border-color: var(--wm-control-hover-border); }
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) :is(input, select, textarea):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; border-color: var(--wm-control-hover-border); }
 
 /* Keep the native keyboard/type-ahead/change contract. Unsupported browsers
  * retain their normal select rather than receiving a partial custom widget. */
@@ -100,7 +176,7 @@
     align-items: center;
     gap: 12px;
     padding-inline: 12px;
-    border-radius: 6px;
+    border-radius: var(--wm-control-radius);
     cursor: pointer;
   }
   .fx-app :is(.wm-page, .fx-dashboard) select > button {
@@ -124,9 +200,9 @@
     text-overflow: ellipsis;
   }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:open {
-    background: var(--fx-shell-nav-hover);
+    background: var(--wm-control-open);
     color: var(--wm-content);
-    border-color: var(--wm-border-strong);
+    border-color: var(--wm-control-hover-border);
     box-shadow: none;
   }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select:disabled { cursor: not-allowed; }
@@ -142,8 +218,8 @@
     max-block-size: min(360px, 55vh);
     margin-block: 6px;
     padding: 6px;
-    border: 1px solid var(--wm-border-strong);
-    border-radius: 8px;
+    border: 1px solid var(--wm-control-border);
+    border-radius: 10px;
     background: var(--wm-surface);
     color: var(--wm-content);
     box-shadow: 0 12px 32px rgb(0 0 0 / 20%);
@@ -161,9 +237,9 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    min-height: 44px;
-    padding: 10px 12px;
-    border-radius: 4px;
+    min-height: 40px;
+    padding: 9px 10px;
+    border-radius: 6px;
     white-space: normal;
     overflow-wrap: anywhere;
     font-size: 13px;
@@ -171,10 +247,14 @@
     cursor: pointer;
   }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:disabled { color: var(--wm-content-muted); cursor: not-allowed; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked { background: var(--fx-shell-nav-selected); color: var(--wm-content); font-weight: 600; }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked { background: var(--wm-selected); color: var(--wm-control-text); font-weight: 500; }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:not(:disabled):is(:hover, :focus-visible) { background: var(--fx-shell-nav-hover); color: var(--wm-content); outline: 0; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked:not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--fx-shell-nav-selected) 85%, var(--wm-content)); }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked:not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--wm-selected) 90%, var(--wm-control-text)); }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option::checkmark { order: 1; margin-inline-start: auto; color: currentColor; }
+}
+@media (pointer: coarse) {
+  .fx-app.fx-shell-story { --wm-control-height: 44px; }
+  .fx-app :is(.fx-select-menu [role='option'], .fxa-session-options > button, .fxa-session-options > label) { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, a, input, select, textarea, summary, tr, article),

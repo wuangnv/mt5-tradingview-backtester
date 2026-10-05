@@ -43,7 +43,7 @@ export default function SessionFilter({ items, value, onChange, multiple = false
       event.preventDefault(); controls[next]?.focus()
     }
   }}>
-    <button type="button" className="fxa-button fxa-session-trigger" aria-label={`Session: ${label}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setOpen(!open); setSearch('') }}><span>{triggerContent || label}</span><span aria-hidden="true">⌄</span></button>
+    <button type="button" className="fxa-button fxa-session-trigger" aria-label={`Session: ${label}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setOpen(!open); setSearch('') }}><span>{triggerContent || label}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></button>
     {open && <div className="fxa-session-menu" id={id} role="dialog" aria-label="Chọn session">
       <input ref={input} type="search" aria-label="Tìm phiên" placeholder="Tìm phiên…" value={search} onChange={event => setSearch(event.target.value)} />
       {multiple && <label className="fxa-session-all"><input type="checkbox" checked={all} ref={node => { if (node) node.indeterminate = !all && selected.length > 0 }} onChange={() => onChange(all ? [] : null)} />Tất cả phiên</label>}

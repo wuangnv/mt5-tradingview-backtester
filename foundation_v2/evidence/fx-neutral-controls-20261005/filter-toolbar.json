@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "checks": [
+    "pencil shares filter row; column search/select-all changes table; Escape",
+    "demo Side/Session deferred until Apply; chips/clear/date validation; real URL untouched",
+    "six desktop/mobile theme cases: right subnav action; visible selected source; bounded Session popup; no document overflow",
+    "real applied filters survive Session report remount/reload; old execution cursor removed",
+    "real aggregate Trades retains table with no visible partial badge"
+  ],
+  "errors": [],
+  "writes": [],
+  "demoReads": []
+}

@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "checks": [
+    "preview selection/tab stay local; real owner context restores",
+    "Analytics source tabs are adjacent, same row, visible on mobile"
+  ],
+  "previewRequests": [],
+  "writes": [],
+  "errors": []
+}

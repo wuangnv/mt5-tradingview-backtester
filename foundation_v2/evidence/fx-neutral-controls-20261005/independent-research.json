@@ -1,0 +1,128 @@
+{
+  "before": "18f1676f69dbf8b2af672d607ea3aaae6a8d3d7e06da1d534c2afe25d6d15040",
+  "cases": [
+    {
+      "theme": "dark",
+      "before": {
+        "height": 40,
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "textOverflow": "ellipsis",
+        "selectedContent": {
+          "width": 223,
+          "scrollWidth": 544,
+          "textOverflow": "ellipsis"
+        },
+        "iconDisplay": "block",
+        "iconColor": "rgb(176, 177, 180)",
+        "value": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+        "label": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8 · USTECm",
+        "docOverflow": 0
+      },
+      "options": [
+        {
+          "label": "Chọn dataset",
+          "value": "",
+          "whiteSpace": "normal",
+          "overflow": "visible",
+          "box": {
+            "x": 81,
+            "y": 146.90625,
+            "width": 272,
+            "height": 40
+          }
+        },
+        {
+          "label": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8 · USTECm",
+          "value": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+          "whiteSpace": "normal",
+          "overflow": "visible",
+          "box": {
+            "x": 81,
+            "y": 186.90625,
+            "width": 272,
+            "height": 96
+          }
+        },
+        {
+          "label": "dataset-1a1a1d3203b0e9cb0bf5f1075056141b8cbd4ee3fb3e4472cfe57e06a9f99e47 · US500m",
+          "value": "dataset-1a1a1d3203b0e9cb0bf5f1075056141b8cbd4ee3fb3e4472cfe57e06a9f99e47",
+          "whiteSpace": "normal",
+          "overflow": "visible",
+          "box": {
+            "x": 81,
+            "y": 282.90625,
+            "width": 272,
+            "height": 96
+          }
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "before": {
+        "height": 40,
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "textOverflow": "ellipsis",
+        "selectedContent": {
+          "width": 223,
+          "scrollWidth": 544,
+          "textOverflow": "ellipsis"
+        },
+        "iconDisplay": "block",
+        "iconColor": "rgb(83, 99, 109)",
+        "value": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+        "label": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8 · USTECm",
+        "docOverflow": 0
+      },
+      "options": [
+        {
+          "label": "Chọn dataset",
+          "value": "",
+          "whiteSpace": "normal",
+          "overflow": "visible",
+          "box": {
+            "x": 81,
+            "y": 146.90625,
+            "width": 272,
+            "height": 40
+          }
+        },
+        {
+          "label": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8 · USTECm",
+          "value": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+          "whiteSpace": "normal",
+          "overflow": "visible",
+          "box": {
+            "x": 81,
+            "y": 186.90625,
+            "width": 272,
+            "height": 96
+          }
+        },
+        {
+          "label": "dataset-1a1a1d3203b0e9cb0bf5f1075056141b8cbd4ee3fb3e4472cfe57e06a9f99e47 · US500m",
+          "value": "dataset-1a1a1d3203b0e9cb0bf5f1075056141b8cbd4ee3fb3e4472cfe57e06a9f99e47",
+          "whiteSpace": "normal",
+          "overflow": "visible",
+          "box": {
+            "x": 81,
+            "y": 282.90625,
+            "width": 272,
+            "height": 96
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "hmrIsolation": [
+    "[vite] failed to connect to websocket.\nyour current setup:\n  (browser) 127.0.0.1:5180/ <--[HTTP]--> 127.0.0.1:5180/ (server)\n  (browser) 127.0.0.1:5180/ <--[WebSocket (failing)]--> 127.0.0.1:5180/ (server)\nCheck out your Vite / network configuration and https://vite.dev/config/server-options.html#server-hmr .",
+    "[vite] failed to connect to websocket.\nyour current setup:\n  (browser) 127.0.0.1:5180/ <--[HTTP]--> 127.0.0.1:5180/ (server)\n  (browser) 127.0.0.1:5180/ <--[WebSocket (failing)]--> 127.0.0.1:5180/ (server)\nCheck out your Vite / network configuration and https://vite.dev/config/server-options.html#server-hmr ."
+  ],
+  "blocked": [],
+  "pass": true,
+  "after": "18f1676f69dbf8b2af672d607ea3aaae6a8d3d7e06da1d534c2afe25d6d15040",
+  "sourceUnchanged": true
+}

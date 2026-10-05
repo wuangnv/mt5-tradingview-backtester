@@ -1,0 +1,166 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "theme": "dark",
+      "view": "dashboard",
+      "idle": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(65, 65, 65)",
+        "background": "rgba(0, 0, 0, 0)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      },
+      "hover": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(112, 112, 112)",
+        "background": "rgb(32, 32, 32)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      },
+      "opened": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(112, 112, 112)",
+        "background": "rgb(32, 32, 32)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      }
+    },
+    {
+      "theme": "dark",
+      "view": "trades",
+      "sessionStyle": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(65, 65, 65)",
+        "background": "rgba(0, 0, 0, 0)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      },
+      "native": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(112, 112, 112)",
+        "background": "rgb(32, 32, 32)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "solid",
+        "focus": true
+      }
+    },
+    {
+      "theme": "dark",
+      "view": "analytics",
+      "apply": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(255, 255, 255)",
+        "background": "rgb(255, 255, 255)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      }
+    },
+    {
+      "theme": "dark",
+      "view": "market-data",
+      "native": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(112, 112, 112)",
+        "background": "rgb(32, 32, 32)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "solid",
+        "focus": true
+      }
+    },
+    {
+      "theme": "light",
+      "view": "dashboard",
+      "idle": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(211, 211, 211)",
+        "background": "rgba(0, 0, 0, 0)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      },
+      "hover": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(139, 139, 139)",
+        "background": "rgb(237, 237, 237)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      },
+      "opened": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(139, 139, 139)",
+        "background": "rgb(237, 237, 237)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      }
+    },
+    {
+      "theme": "light",
+      "view": "trades",
+      "sessionStyle": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(211, 211, 211)",
+        "background": "rgba(0, 0, 0, 0)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      },
+      "native": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(139, 139, 139)",
+        "background": "rgb(237, 237, 237)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "solid",
+        "focus": true
+      }
+    },
+    {
+      "theme": "light",
+      "view": "analytics",
+      "apply": {
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(58, 58, 58)",
+        "background": "rgb(58, 58, 58)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "none",
+        "focus": false
+      }
+    },
+    {
+      "theme": "light",
+      "view": "market-data",
+      "native": {
+        "color": "rgb(23, 23, 23)",
+        "border": "rgb(139, 139, 139)",
+        "background": "rgb(237, 237, 237)",
+        "radius": "8px",
+        "height": 40,
+        "outline": "solid",
+        "focus": true
+      }
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "apiReads": []
+}

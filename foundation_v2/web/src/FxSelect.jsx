@@ -25,7 +25,7 @@ export default function FxSelect({ label, value, options, onChange, icon, search
       const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip?.right || window.innerWidth) - 12)
       menu.style.maxWidth = `${right - left}px`
       menu.style.transform = ''
-      menu.style.top = 'calc(100% + 6px)'
+      menu.style.top = 'calc(100% + 8px)'
       menu.style.bottom = 'auto'
       const bounds = menu.getBoundingClientRect()
       const shift = bounds.left < left ? left - bounds.left : bounds.right > right ? right - bounds.right : 0
@@ -34,7 +34,7 @@ export default function FxSelect({ label, value, options, onChange, icon, search
       const below = Math.min(window.innerHeight, clip?.bottom || window.innerHeight) - anchor.bottom - 18
       const above = anchor.top - Math.max(0, clip?.top || 0) - 18
       const upwards = bounds.height > below && above > below
-      if (upwards) { menu.style.top = 'auto'; menu.style.bottom = 'calc(100% + 6px)' }
+      if (upwards) { menu.style.top = 'auto'; menu.style.bottom = 'calc(100% + 8px)' }
       const list = menu.querySelector('[role="listbox"]')
       const chromeHeight = bounds.height - list.getBoundingClientRect().height
       list.style.maxHeight = `${Math.max(44, Math.min(300, (upwards ? above : below) - chromeHeight))}px`
@@ -59,7 +59,7 @@ export default function FxSelect({ label, value, options, onChange, icon, search
     }
   }}>
     <button type="button" className="fx-select-trigger" aria-label={label} aria-haspopup={searchable ? 'dialog' : 'listbox'} aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setSearch(''); setOpen(!open) }}>
-      {icon && <FilterIcon kind={icon} />}{!iconOnly && <><span className="fx-select-value">{triggerContent || selected?.label || 'Chọn…'}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d={open ? 'm5 12 5-5 5 5' : 'm5 8 5 5 5-5'} /></svg></>}
+      {icon && <FilterIcon kind={icon} />}{!iconOnly && <><span className="fx-select-value">{triggerContent || selected?.label || 'Chọn…'}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></>}
     </button>
     {open && <div id={id} className="fx-select-menu" role={searchable ? 'dialog' : 'presentation'} aria-label={searchable ? label : undefined}>
       {multiple && <span className="fx-select-count">{value.length} / {options.length} đã chọn</span>}

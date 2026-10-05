@@ -5,7 +5,6 @@
   --wm-content-muted: var(--fx-muted, #a6afb8);
   --wm-border: var(--fx-line, #252d33);
   --wm-border-strong: var(--fx-line-strong, #34404a);
-  --wm-focus: #f0b65f;
   --wm-primary: #528fff;
   --wm-positive: var(--fx-green, #6dc18b);
   --wm-warning: #e1ad54;

@@ -37,7 +37,7 @@
 dialog.fxa-trade-inspector { width: min(760px, calc(100vw - 64px)); max-height: calc(100dvh - 64px); box-sizing: border-box; margin: auto; border: 1px solid var(--wm-border-strong); color: var(--wm-content); overflow: auto; }
 dialog.fxa-trade-inspector::backdrop { background: #0008; }
 .market-sync-update { margin-left: auto; }
-.fxa-columns-control .fx-select-trigger { width: 38px; height: 38px; min-height: 38px; padding: 9px; border-radius: 6px; }
+.fxa-columns-control .fx-select-trigger { width: 40px; height: var(--wm-control-height); min-height: var(--wm-control-height); padding: 11px; border-radius: var(--wm-control-radius); }
 .fxa-columns-control .fx-select-menu { width: 270px; }
 .fx-select-count { display: block; padding: 8px 12px; color: var(--wm-content-muted); font-size: 12px; }
 .fx-select-all { display: flex; align-items: center; gap: 12px; padding: 10px 12px; min-height: 24px; cursor: pointer; }
@@ -51,11 +51,11 @@ dialog.fxa-trade-inspector::backdrop { background: #0008; }
 .fxa-analytics-filter-row .fx-select-trigger { gap: 6px; padding-inline: 12px; }
 .fxa-analytics-filter-row .fx-select-chevron { margin-left: 0; }
 .fxa-session-filter.is-compact { align-self: center; }
-.fxa-session-filter.is-compact .fxa-session-trigger { width: auto; min-width: 0; min-height: 40px; border-radius: 999px; gap: 8px; }
+.fxa-session-filter.is-compact .fxa-session-trigger { width: auto; min-width: 0; min-height: var(--wm-control-height); border-radius: var(--wm-control-radius); gap: 8px; }
 .fxa-analytics-filters { gap: 16px; margin-block: 0 28px; }
-.fxa-filter-pill { display: flex; align-items: center; gap: 8px; border-radius: 999px; min-height: 40px; }
+.fxa-filter-pill { display: flex; align-items: center; gap: 8px; border-radius: var(--wm-control-radius); min-height: var(--wm-control-height); }
 .fxa-filter-pill svg { width: 16px; height: 16px; }
-.fxa-apply-button { min-height: 40px; border-radius: 999px; background: var(--wm-action-bg); border-color: var(--wm-action-bg); color: var(--wm-on-primary); }
+.fxa-apply-button { min-height: var(--wm-control-height); border-radius: var(--wm-control-radius); background: var(--wm-action-bg); border-color: var(--wm-action-bg); color: var(--wm-on-primary); }
 .fxa-apply-button:hover:not(:disabled) { background: var(--wm-action-hover); }
 .fxa-export-button { margin-left: auto; }
 .fxa-filter-chips { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
