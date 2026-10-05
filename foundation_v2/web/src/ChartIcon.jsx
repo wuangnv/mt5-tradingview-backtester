@@ -24,6 +24,11 @@ const paths = {
   sun: 'M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10M12 1v2M12 21v2M1 12h2M21 12h2M4 4l2 2M18 18l2 2M4 20l2-2M18 6l2-2',
   goto: 'M5 6h10a5 5 0 0 1 0 10H7M12 2l4 4-4 4M7 12l-4 4 4 4',
   news: 'M4 5h16v16H4zM8 3v4M16 3v4M4 10h16M8 14h3M14 14h2M8 17h8',
+  layers: 'm12 3 9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5',
+  camera: 'M4 7h4l2-3h4l2 3h4v13H4zM12 10a4 4 0 1 0 0 8 4 4 0 0 0 0-8',
+  fib: 'M4 5h16M4 10h16M4 14h16M4 19h16M7 3v18',
+  long: 'M5 3h14v7H5zM5 10h14v11H5zM12 17V6M9 9l3-3 3 3',
+  short: 'M5 3h14v11H5zM5 14h14v7H5zM12 7v11M9 15l3 3 3-3',
 }
 
 export default function ChartIcon({ name, ...props }) {

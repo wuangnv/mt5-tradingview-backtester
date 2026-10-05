@@ -1,0 +1,71 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "dark",
+      "toolbarOverlapArea": 0,
+      "railIconCenterMaxDelta": 0,
+      "bottomFont": "Arial, sans-serif",
+      "bottomHeights": [
+        32,
+        30
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "toolbarOverlapArea": 0,
+      "railIconCenterMaxDelta": 0,
+      "bottomFont": "Arial, sans-serif",
+      "bottomHeights": [
+        32,
+        30
+      ]
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "toolbarOverlapArea": 0,
+      "railIconCenterMaxDelta": 0,
+      "bottomFont": "Arial, sans-serif",
+      "bottomHeights": [
+        32,
+        30
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "toolbarOverlapArea": 0,
+      "railIconCenterMaxDelta": 0,
+      "bottomFont": "Arial, sans-serif",
+      "bottomHeights": [
+        32,
+        30
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "toolbarOverlapArea": 0,
+      "railIconCenterMaxDelta": 0,
+      "bottomFont": "Arial, sans-serif",
+      "bottomHeights": [
+        32,
+        30
+      ]
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "toolbarOverlapArea": 0,
+      "railIconCenterMaxDelta": 0,
+      "bottomFont": "Arial, sans-serif",
+      "bottomHeights": [
+        32,
+        30
+      ]
+    }
+  ]
+}

@@ -55,7 +55,8 @@ export default function TradingViewReplayChart(props) {
         container: host.current, library_path: '/charting_library/', datafeed: adapter.datafeed,
         symbol, interval: restoredInterval, locale: 'vi', timezone: 'Etc/UTC', theme: theme === 'light' ? 'Light' : 'Dark', autosize: true,
         ...(saved ? { saved_data: saved } : {}),
-        custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported },
+        custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles', 'Bars', 'Line', 'Area', 'Heikin Ashi'] },
+        header_widget_buttons_mode: 'adaptive',
         enabled_features: ['seconds_resolution', 'items_favoriting'],
         disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot'],
         overrides: { ...paneAppearance(theme),
@@ -170,7 +171,25 @@ export default function TradingViewReplayChart(props) {
           marketHost.parentElement.parentElement.classList.add('legacy-market-group')
           const sessionHost = widget.createButton({ align: 'right', useTradingViewStyle: false })
           sessionHost.className = 'legacy-session-host'
-          headerSlots = { market: marketHost, session: sessionHost }
+          headerSlots = { market: marketHost, session: sessionHost,
+            selectDrawing: tool => { if (!cancelled) { latest.current.onOrderDragStart(); widget.selectLineTool(tool) } },
+            openTree: () => { if (!cancelled) chart.executeActionById('paneObjectTree') },
+            capture: async () => {
+              latest.current.onOrderDragStart()
+              const generation = latest.current.orderGeneration, cutoff = Number(latest.current.cutoff), resolution = chart.resolution()
+              try {
+                // Client-only export; native takeScreenshot() uploads to a server.
+                const canvas = await widget.takeClientScreenshot()
+                if (cancelled || generation !== latest.current.orderGeneration) { if (!cancelled) setMessage('Cutoff đã đổi; chụp lại chart tại mốc mới.'); return }
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
+                if (cancelled || generation !== latest.current.orderGeneration || cutoff !== Number(latest.current.cutoff) || resolution !== chart.resolution()) { if (!cancelled) setMessage('Chart đã đổi; chụp lại tại mốc mới.'); return }
+                if (!blob) throw new Error('Không tạo được ảnh PNG.')
+                const url = URL.createObjectURL(blob), link = document.createElement('a')
+                link.href = url; link.download = `WMReplay-${symbol}-${resolution}-cutoff-${cutoff}.png`; link.click()
+                setTimeout(() => URL.revokeObjectURL(url), 1000)
+              } catch (error) { if (!cancelled) setMessage(`Không chụp được chart: ${error.message || error}`) }
+            },
+          }
           if (chartReady) latest.current.onHeaderSlots?.(headerSlots)
           const button = widget.createButton()
           button.textContent = 'Lưu chart'

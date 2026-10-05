@@ -1,19 +1,35 @@
 export function replayResolution(seconds) {
   const value = Number(seconds)
   if (!Number.isInteger(value) || value < 1 || (value >= 60 && value % 60)) throw new Error('Timeframe dataset không được Advanced Charts hỗ trợ.')
-  return value < 60 ? `${value}S` : String(value / 60)
+  return value % 86400 === 0 ? `${value / 86400}D` : value < 60 ? `${value}S` : String(value / 60)
 }
 
 export function resolutionSeconds(resolution) {
-  return String(resolution).endsWith('S') ? Number(String(resolution).slice(0, -1)) : Number(resolution) * 60
+  const text = String(resolution)
+  if (text.endsWith('D')) return Number(text.slice(0, -1) || 1) * 86400
+  if (text.endsWith('W')) return Number(text.slice(0, -1) || 1) * 604800
+  return text.endsWith('S') ? Number(text.slice(0, -1)) : Number(text) * 60
 }
 
-export function replayBars(rows, cutoff, seconds) {
+function bucketTime(timestamp, period) {
+  if (period === '1M') {
+    const date = new Date(timestamp * 1000)
+    return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1)
+  }
+  if (period === '1W') {
+    const day = Math.floor(timestamp / 86400)
+    return (day - (new Date(timestamp * 1000).getUTCDay() + 6) % 7) * 86400000
+  }
+  const seconds = typeof period === 'number' ? period : resolutionSeconds(period)
+  return Math.floor(timestamp / seconds) * seconds * 1000
+}
+
+export function replayBars(rows, cutoff, period) {
   const buckets = new Map()
   for (const row of rows) {
     const timestamp = Number(row.timestamp)
     if (!Number.isFinite(timestamp) || timestamp > Number(cutoff)) continue
-    const time = Math.floor(timestamp / seconds) * seconds * 1000
+    const time = bucketTime(timestamp, period)
     const next = { time, open: Number(row.open), high: Number(row.high), low: Number(row.low), close: Number(row.close) }
     const volume = row.volume ?? row.tick_volume
     if (volume != null && Number.isFinite(Number(volume))) next.volume = Number(volume)
@@ -33,7 +49,8 @@ export function replayBars(rows, cutoff, seconds) {
 // The API-visible prefix is the only history source. No provider/CDN requests.
 export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, cutoff, assetClass = 'fx' }) {
   const interval = replayResolution(seconds)
-  const supported = [...new Set([interval, ...[1, 3, 5, 15, 30, 60, 120, 240].filter(minutes => minutes * 60 >= seconds && minutes * 60 % seconds === 0).map(String)])]
+  const calendar = seconds <= 86400 && 86400 % seconds === 0 ? ['1D', '1W', '1M'] : []
+  const supported = [...new Set([interval, ...[1, 3, 5, 15, 30, 60, 120, 240].filter(minutes => minutes * 60 >= seconds && minutes * 60 % seconds === 0).map(String), ...calendar])]
   const precision = tickSize > 0 ? Math.min(8, String(Number(tickSize).toFixed(8)).replace(/0+$/, '').split('.')[1]?.length || 0) : 5
   const pricescale = 10 ** precision
   const type = { fx: 'forex', crypto: 'crypto', equity: 'stock', futures: 'futures' }[assetClass] || 'spread'
@@ -41,7 +58,7 @@ export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, 
   const subscriptions = new Map()
   const history = resolution => {
     if (!supported.includes(resolution)) throw new Error('Resolution không thuộc dataset hiện tại.')
-    return replayBars(visible, limit, resolutionSeconds(resolution))
+    return replayBars(visible, limit, resolution.endsWith('S') || /^\d+$/.test(resolution) ? resolutionSeconds(resolution) : resolution)
   }
   const defer = callback => setTimeout(callback, 0)
   const datafeed = {
@@ -51,9 +68,10 @@ export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, 
       if (!alive) return
       if (name !== symbol) { error('Chỉ symbol của dataset đã chọn được phép hiển thị.'); return }
       callback({ name: symbol, ticker: symbol, description: `${symbol} · Paper replay`, type, format: 'price', session: '24x7', timezone: 'Etc/UTC', exchange: 'Replay', listed_exchange: 'Replay',
-        minmov: Math.max(1, Math.round(Number(tickSize || 1 / pricescale) * pricescale)), pricescale, has_intraday: true, has_seconds: seconds < 60,
-        seconds_multipliers: seconds < 60 ? [String(seconds)] : [], intraday_multipliers: supported.filter(value => !value.endsWith('S')),
-        supported_resolutions: supported, has_daily: false, has_weekly_and_monthly: false, volume_precision: 0, data_status: 'streaming' })
+        minmov: Math.max(1, Math.round(Number(tickSize || 1 / pricescale) * pricescale)), pricescale, has_intraday: seconds < 86400, has_seconds: seconds < 60,
+        seconds_multipliers: seconds < 60 ? [String(seconds)] : [], intraday_multipliers: supported.filter(value => /^\d+$/.test(value)),
+        supported_resolutions: supported, has_daily: supported.some(value => value.endsWith('D')), daily_multipliers: [String(seconds >= 86400 ? seconds / 86400 : 1)],
+        has_weekly_and_monthly: calendar.includes('1W'), weekly_multipliers: ['1'], monthly_multipliers: ['1'], volume_precision: 0, data_status: 'streaming' })
     }) },
     getBars(info, resolution, period, callback, error) {
       const requestedGeneration = generation

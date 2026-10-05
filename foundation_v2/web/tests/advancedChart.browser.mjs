@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { chromium } from 'playwright'
 import { fileURLToPath } from 'node:url'
 
@@ -20,7 +20,8 @@ await context.addInitScript(() => {
     window.TradingView.widget = function (...args) {
       const feed = args[0].datafeed, originalBars = feed.getBars.bind(feed)
       window.__qaHistory = []
-      feed.getBars = (info, resolution, period, callback, error) => originalBars(info, resolution, period, (bars, meta) => { window.__qaHistory.push(...bars.map(bar => ({ ...bar }))); callback(bars, meta) }, error)
+      window.__qaResponses = []
+      feed.getBars = (info, resolution, period, callback, error) => originalBars(info, resolution, period, (bars, meta) => { window.__qaHistory.push(...bars.map(bar => ({ ...bar }))); window.__qaResponses.push({ resolution, bars }); callback(bars, meta) }, error)
       const widget = new Original(...args)
       window.__qaWidget = widget
       widget.onChartReady(() => {
@@ -102,6 +103,50 @@ try {
   await page.getByLabel('Điều chỉnh tốc độ replay', { exact: true }).press('ArrowRight')
   await page.screenshot({ path: out + '/legacy-desktop.png' })
   checks.push('one native header, iframe portal keyboard/theme/focus return, honest News state, replay move/pin/collapse/speed')
+  const sourceCutoff = Number(await page.getByTestId('replay-chart').getAttribute('data-cutoff'))
+  const sourceRows = await page.evaluate(() => window.__qaResponses.find(response => response.resolution === '1' && response.bars.length)?.bars)
+  const expected = sourceRows.reduce((bar, row) => ({ ...bar, high: Math.max(bar.high, row.high), low: Math.min(bar.low, row.low), close: row.close, volume: bar.volume + row.volume }), { ...sourceRows[0], volume: 0 })
+  for (const resolution of ['1D', '1W', '1M']) {
+    await page.evaluate(resolution => new Promise(resolve => window.__qaWidget.activeChart().setResolution(resolution, resolve)), resolution)
+    await page.waitForFunction(resolution => window.__qaResponses.some(response => response.resolution === resolution && response.bars.length), resolution)
+    const response = await page.evaluate(resolution => window.__qaResponses.filter(response => response.resolution === resolution && response.bars.length).at(-1), resolution)
+    assert.equal(response.bars.length, 1)
+    const date = new Date(sourceCutoff * 1000), day = Math.floor(sourceCutoff / 86400)
+    const bucket = resolution === '1M' ? Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1) : (resolution === '1W' ? day - (date.getUTCDay() + 6) % 7 : day) * 86400000
+    const values = bar => Object.fromEntries(['time', 'open', 'high', 'low', 'close', 'volume'].map(key => [key, bar[key]]))
+    assert.deepEqual(values(response.bars[0]), values({ ...expected, time: bucket }))
+    assert.equal(await page.evaluate(() => window.__qaWidget.activeChart().resolution()), resolution)
+  }
+  await page.evaluate(() => new Promise(resolve => window.__qaWidget.activeChart().setResolution('1', resolve)))
+  await page.evaluate(() => new Promise(resolve => { if (!window.__qaWidget.activeChart().dataReady(resolve)) return; resolve() }))
+  checks.push('native D/W/M calendar requests exactly match UTC prefix OHLC/volume; source cutoff unchanged')
+  const favoriteBar = page.getByRole('group', { name: 'Công cụ vẽ yêu thích', exact: true })
+  for (const label of ['Đường xu hướng', 'Đường giá', 'Vùng giá', 'Fibonacci retracement', 'Long position', 'Short position']) {
+    const ids = await page.evaluate(() => window.__qaWidget.activeChart().getAllShapes().map(shape => shape.id))
+    await favoriteBar.getByRole('button', { name: `Vẽ ${label}`, exact: true }).click()
+    const bounds = await native.locator('[data-name="pane-widget-chart-gui-wrapper"]').first().boundingBox()
+    await page.mouse.click(bounds.x + bounds.width * .3, bounds.y + bounds.height * .4)
+    if (label !== 'Đường giá') {
+      await page.waitForTimeout(500)
+      await page.mouse.click(bounds.x + bounds.width * .6, bounds.y + bounds.height * .65)
+    }
+    await page.waitForFunction(ids => window.__qaWidget.activeChart().getAllShapes().some(shape => !ids.includes(shape.id)), ids)
+    await page.evaluate(ids => { const chart = window.__qaWidget.activeChart(); for (const shape of chart.getAllShapes()) if (!ids.includes(shape.id)) chart.removeEntity(shape.id); window.__qaWidget.selectLineTool('cursor') }, ids)
+  }
+  await page.getByRole('button', { name: 'Cây đối tượng chart', exact: true }).click()
+  await native.getByText('Danh sách đối tượng', { exact: true }).waitFor()
+  await page.screenshot({ path: out + '/native-objects.png' })
+  await page.keyboard.press('Escape')
+  await native.getByText('Danh sách đối tượng', { exact: true }).waitFor({ state: 'hidden' })
+  const downloadEvent = page.waitForEvent('download')
+  await page.getByRole('button', { name: 'Chụp chart PNG', exact: true }).click()
+  const download = await downloadEvent
+  assert.ok(download.suggestedFilename().includes(`cutoff-${sourceCutoff}`))
+  await download.saveAs(out + '/export.png')
+  const png = await readFile(out + '/export.png')
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+  assert.ok(png.readUInt32BE(16) > 500 && png.readUInt32BE(20) > 500)
+  checks.push('six favorite tools create native shapes via actual pointer gestures; object tree and client PNG export')
   if (writable) await page.waitForFunction(() => window.__qaWidget.activeChart().getAllShapes().length === 8)
   if (writable) {
     await page.evaluate(() => window.__qaWidget.activeChart().removeAllShapes())
@@ -109,7 +154,7 @@ try {
   }
   const initialShapes = await page.evaluate(() => window.__qaWidget.activeChart().getAllShapes().map(shape => shape.id))
   const plot = await native.locator('[data-name="pane-widget-chart-gui-wrapper"]').first().boundingBox()
-  await native.locator('[data-name="linetool-group-trend-line"] [title="Đường Xu hướng"]').click()
+  await favoriteBar.getByRole('button', { name: 'Vẽ Đường xu hướng', exact: true }).click()
   await page.waitForTimeout(200) // Native toolbar commits its selected tool on the next frame.
   await page.mouse.click(plot.x + plot.width * .3, plot.y + plot.height * .35)
   await page.waitForTimeout(500) // Distinct anchor gestures, outside the engine's double-click window.
@@ -181,7 +226,11 @@ try {
       const mobileToolbar = await toolbar.boundingBox()
       assert.ok(mobileToolbar.x >= 54 && mobileToolbar.x + mobileToolbar.width <= width - 36 + 1, 'Mobile toolbar clears both rails')
       assert.ok(mobileToolbar.y >= 120, 'Mobile replay toolbar clears native OHLC/Volume legend')
+      const favoriteBox = await favoriteBar.boundingBox()
+      assert.ok(favoriteBox.y >= mobileToolbar.y + mobileToolbar.height, 'Drawing toolbar clears replay toolbar')
     }
+    const centers = await rail.locator(':scope > button, :scope > a').evaluateAll(nodes => nodes.map(node => { const box = node.getBoundingClientRect(); const svg = node.querySelector('svg').getBoundingClientRect(); return { width: box.width, height: box.height, offset: (svg.left + svg.width / 2) - (box.left + box.width / 2), lineHeight: getComputedStyle(node.querySelector('span') || node).lineHeight } }))
+    assert.ok(centers.filter(box => box.width > 0).every(box => Math.abs(box.offset) < 1 && box.height === 46), `Rail links and buttons have identical icon centers/heights: ${JSON.stringify(centers)}`)
     await page.screenshot({ path: `${out}/${theme}-${width}.png`, fullPage: true })
     }
   }

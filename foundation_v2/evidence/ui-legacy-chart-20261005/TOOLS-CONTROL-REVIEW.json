@@ -1,0 +1,22 @@
+{
+  "before": "b32ebfa218248a7d43597cf04b4ee3af0db67a5805b11a1769d8056939b4d6b8",
+  "errors": [],
+  "blocked": [],
+  "downloads": [],
+  "checks": [
+    "Native D/W/M full OHLCV equals aggregation of actual API-visible61source bars",
+    "Native objecttree rows actually rendered for pointer-drawn rectangle",
+    "Delayed client PNG resolves after resolutionchange: stale download denied with visible message"
+  ],
+  "calendarOracle": {
+    "time": 1704067200000,
+    "open": 1.1,
+    "high": 1.1038,
+    "low": 1.0997,
+    "close": 1.1032,
+    "volume": 6100
+  },
+  "objectTreeText": "5y\n1y\n6p\n3p\n1p\n5n\n1n\n03:52:39 (UTC)\nlog\ntự động\n\t\nEURUSD · Paper replay\n1\nReplay\nO1.1030H1.1038L1.1027C1.1032+0.0000 (+0.00%)\nKhối lượng\nSMA 9\n100\n\t\n\n\t\n\t\nA\n1m\n3m\n5m\n15m\n30m\n1h\n2h\n4h\nD\nW\nM\nCác chỉ báo\n←\nEURUSD\nLưu chart\nQA — 60 giao dịch mô phỏng\nTạm dừng\n\nDanh sách đối tượng\nEURUSD, Replay, 1\nKhối lượng (SMA, 9)\nHình chữ nhật",
+  "after": "b32ebfa218248a7d43597cf04b4ee3af0db67a5805b11a1769d8056939b4d6b8",
+  "pass": true
+}

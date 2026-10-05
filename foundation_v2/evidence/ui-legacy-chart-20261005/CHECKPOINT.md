@@ -63,10 +63,56 @@ invocation. No preview data was changed and no guard was loosened.
 
 UI remains running at `http://127.0.0.1:5180`, API at `http://127.0.0.1:8020`; broker locked.
 The screenshot's market history differs from the current labeled QA dataset, and the
-reference's historical news/calendar and D/W/M shortcuts are not supplied by this slice.
+reference's historical economic news/calendar are not supplied by this slice.
 No FX Replay source was copied. Standalone production hosting still must separately
 mount the authorized Advanced Charts distribution as documented in README.
 
 This does not close whole U4/product acceptance, manual accessibility, sustained chart
 performance, real market data/OOS, broker/provider/deploy or Trading Platform depth/order
 flow scope. Ledger/STATE and global/shared UI foundations were not changed.
+
+## Follow-up: tools and alignment
+
+The owner reported missing tools and uneven alignment. The follow-up adds real UTC D/W/M
+aggregation, six native drawing shortcuts (trend/price/rectangle/Fibonacci/long/short),
+native object tree and local PNG export. The adaptive header exposes interval/style
+favorites on desktop. App-owned chart controls share the native Arial font; icon centers,
+caption line-height, button/link dimensions and trading-control heights are consistent.
+Favorite/replay bars start separately, with mobile rows clearing the native legend/rail.
+
+Data ownership stays with the API-visible prefix. Calendar buckets include partial current
+bars without future prices/volume; Monday weeks and actual month boundaries are used.
+Chart timeframe does not change dataset-source stepping or simulator fills. Native drawing
+shortcuts use official `selectLineTool`; their shapes retain the native local snapshot
+contract. PNG uses `takeClientScreenshot` and is fenced against cutoff/interval/session
+changes. Native server screenshot upload stays disabled; vendor assets were not edited.
+
+Follow-up validation (supersedes baseline counts for this slice):
+
+- Build passed, same existing large-chunk advisory.
+- 20 focused tests passed, including leap-month/year boundaries, partial month realtime,
+  rewind/pending-history invalidation and coarse-source resolution restrictions.
+- Actual read-only preview: 10 groups passed, including exact native D/W/M OHLC/volume,
+  six two/one-anchor drawing gestures, native object tree, valid PNG download, dark/light
+  desktop/tablet/mobile, centered/equal rail controls, save/reload/rewind and rollback.
+  Receipt: product `.artifacts/legacy-chart-20261005/complete-r5/`.
+- Native browser zoom: 6 cases passed (125%/200%/reset, dark/light), no cut-off trading bar.
+  Receipt: product `.artifacts/legacy-chart-20261005/complete-zoom/`.
+- Real disposable UI/API/Postgres: 14 groups passed, including native SL drag, exact
+  protection ledger, stale revision rejection, reload, historical locks and next-bar fill.
+  Receipt: workspace `.artifacts/advanced-chart-20261004/integration-2aae919a/`.
+  The temporary database was dropped; owner preview was unchanged.
+
+Earlier failing assertions remain in attempt artifacts. Native SDK adds bar flags to the
+callback objects, so the OHLC oracle projects only financial fields. Hidden theme buttons
+are excluded from geometry checks. A native modal is closed with Escape, not by calling
+its open action again. These were harness corrections, not weakened financial assertions.
+The original baseline independent-review receipt is not acceptance of this follow-up.
+The separate follow-up review accepted composite
+`b32ebfa218248a7d43597cf04b4ee3af0db67a5805b11a1769d8056939b4d6b8`
+with unchanged before/after fingerprints: six dark/light layouts, zero toolbar overlap,
+zero rail icon-center delta, zero automated outer/native axe violations, six pointer
+drawings and a waited object-tree row. Client PNG was validated at 1356x899; a delayed
+capture after interval change was suppressed with a visible message. No external request
+or preview write was attempted. See TOOLS-INDEPENDENT-REVIEW.md, TOOLS-CONTROL-REVIEW.json,
+TOOLS-ALIGNMENT-REVIEW.json and tools-desktop/mobile.png beside this checkpoint.

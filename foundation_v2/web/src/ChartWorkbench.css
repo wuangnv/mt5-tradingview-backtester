@@ -209,21 +209,30 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-quick-actions > :last-child { border: 0; }
 .legacy-quick-actions :is(button, a):hover { background: var(--chart-hover); }
 .legacy-quick-actions :is(button, a):focus-visible { outline: 2px solid #90b3ff; outline-offset: -2px; }
-.is-legacy-chart .chart-floating-toolbar { background: var(--chart-bg); border-radius: 4px; min-height: 44px; padding: 4px; }
+.is-legacy-chart { font-family: Arial, sans-serif; }
+.is-legacy-chart :is(.chart-floating-toolbar, .legacy-quick-actions, .chart-utility-rail, .chart-trading-bar) :is(button, a, input, select) { box-sizing: border-box; font-family: inherit; line-height: 1; }
+.is-legacy-chart :is(.chart-floating-toolbar, .legacy-quick-actions, .chart-utility-rail, .chart-trading-bar) svg { display: block; flex: 0 0 auto; width: 18px; height: 18px; }
+.is-legacy-chart .chart-floating-toolbar { background: var(--chart-bg); border-radius: 4px; min-height: 38px; padding: 3px; box-sizing: border-box; }
+.is-legacy-chart .chart-floating-toolbar :is(button, select) { height: 30px; min-height: 30px; flex-shrink: 0; }
+.is-legacy-chart .chart-floating-toolbar select { cursor: pointer; border-radius: 4px; }
+.is-legacy-chart .chart-floating-toolbar select:hover { background: var(--chart-hover); }
 .is-legacy-chart .chart-floating-toolbar button.chart-play { background: transparent; color: var(--chart-text); }
-.is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { width: 96px; padding: 0; margin-inline: 5px; border: 0; accent-color: #568af5; cursor: pointer; }
+.is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { width: 96px; height: 30px; flex-shrink: 0; padding: 0; margin: 0 5px; border: 0; accent-color: #568af5; cursor: pointer; }
 .is-legacy-chart .chart-floating-toolbar .chart-float-cutoff { color: var(--chart-muted); }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top: 44px; gap: 4px; border-left: 1px solid var(--chart-line); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { align-items: center; padding-top: 40px; gap: 4px; border-left: 1px solid var(--chart-line); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { min-height: 0; overflow-y: auto; }
-.legacy-rail-tools { display: grid; gap: 4px; margin-bottom: auto; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail > :is(button, a) { display: flex; flex-direction: column; justify-content: center; gap: 3px; min-height: 46px; font-size: 9px; }
-.fx-app.fx-shell-story .fx-content > .is-legacy-chart .chart-utility-rail :is(button, a) span { white-space: nowrap; font-size: 9px; color: inherit; }
+.legacy-rail-tools { display: grid; justify-items: center; gap: 4px; margin-bottom: auto; flex-shrink: 0; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail :is(button, a) { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; height: 36px; min-height: 36px; text-decoration: none; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail > :is(button, a) { gap: 4px; height: 46px; min-height: 46px; font-size: 9px; }
+.fx-app.fx-shell-story .fx-content > .is-legacy-chart .chart-utility-rail :is(button, a) span { white-space: nowrap; font-size: 9px; line-height: 10px; color: inherit; }
 .fx-app.fx-shell-story.is-chart-workspace[data-theme='light'] .fx-content > .replay-shell.is-legacy-chart .chart-utility-rail button span { color: inherit; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-bottom-bar { min-height: 28px; padding-left: 56px; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-bottom-bar:not(.is-historical) { display: none; }
 .is-legacy-chart .chart-bottom-range { display: none !important; }
 .is-legacy-chart .chart-trading-bar { min-height: 52px; border-top: 1px solid var(--chart-line); padding-left: 14px; }
 .is-legacy-chart .chart-trading-actions { gap: 8px; }
+.is-legacy-chart .chart-trading-actions :is(button, label), .is-legacy-chart .legacy-analytics-link { display: inline-flex; align-items: center; justify-content: center; height: 32px; min-height: 32px; box-sizing: border-box; white-space: nowrap; }
+.is-legacy-chart .chart-trading-actions input { height: 30px; min-height: 30px; }
 .is-legacy-chart .chart-trading-actions button { border-radius: 20px; gap: 8px; }
 .is-legacy-chart .chart-trading-actions button.buy { background: #08756f; }
 .is-legacy-chart .chart-trading-actions button.sell { background: #c33540; }

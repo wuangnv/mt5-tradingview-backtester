@@ -223,5 +223,14 @@ loading or failing, so focus changes do not tear down the chart. Session data/re
 cutoff, order state and native local snapshots keep the previous ownership contracts.
 Go To accepts only already-opened candles/timestamps. News shows a real empty state:
 this dataset has no historical event feed, and no economic markers are invented.
-Calendar resolutions beyond the causal intraday adapter are not offered as fake shortcuts.
+Supported datasets now offer UTC D/W/M aggregation of the same causal prefix: days start
+at midnight, weeks on Monday, and months on their actual calendar boundary. Dataset bars
+must divide a day exactly; coarser/straddling source bars do not enable these shortcuts.
+Changing chart interval does not change replay stepping or next-source-bar order fill.
+The adaptive native header shows favorite intervals/styles when space permits. Six quick
+drawing actions call official `selectLineTool`; the native object tree manages their shapes.
+PNG export uses client-only `takeClientScreenshot`, with cutoff/generation/interval guards;
+native server screenshot upload stays disabled. App chrome shares Arial with the widget,
+fixed 30px floating controls, 32px trading controls and centered 46px labeled rail actions.
+Floating tools start in separate desktop positions/mobile rows and retain move/pin/collapse.
 Scoped receipt: foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md.
