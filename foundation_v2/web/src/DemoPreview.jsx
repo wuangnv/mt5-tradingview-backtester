@@ -33,11 +33,12 @@ function DemoReports({ ledgerOnly, prop = false }) {
     const url = URL.createObjectURL(blob), anchor = document.createElement('a')
     anchor.href = url; anchor.download = 'demo-trades.csv'; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
+  const renderFilters = columnControl => <FxAnalyticsFilters persistInUrl={false} sourceType={prop ? 'Prop firm' : 'Backtesting'} columnControl={columnControl} ledgerOnly={ledgerOnly} filters={filters} onChange={patch => { setFilters(value => ({ ...value, ...patch })); setSelected('') }} extra={extra} onExtra={patch => setExtra(value => ({ ...value, ...patch }))} rows={model.ledger} onExport={exportCsv} sessionControl={<SessionFilter items={DEMO_SESSIONS} multiple={ledgerOnly} value={ids} onChange={value => { setIds(value); setSelected('') }} />} onClearSessions={() => setIds(ledgerOnly ? null : DEMO_SESSIONS[0].record_id)} />
   return <section className="wm-page as-page" aria-label={ledgerOnly ? 'Trades' : 'Analytics'}>
     <h1 className="sr-only">{ledgerOnly ? 'Trades' : 'Analytics'}</h1>
-    <FxAnalyticsFilters ledgerOnly={ledgerOnly} filters={filters} onChange={patch => { setFilters(value => ({ ...value, ...patch })); setSelected('') }} extra={extra} onExtra={patch => setExtra(value => ({ ...value, ...patch }))} rows={model.ledger} onExport={exportCsv} sessionControl={<SessionFilter items={DEMO_SESSIONS} multiple={ledgerOnly} value={ids} onChange={value => { setIds(value); setSelected('') }} />} onClearSessions={() => setIds(ledgerOnly ? null : DEMO_SESSIONS[0].record_id)} />
+    {ledgerOnly ? <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} renderFilters={renderFilters} /> : renderFilters()}
     {prop && <Objectives model={model} />}
-    {ledgerOnly ? <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} /> : <div className="fxa-report"><FxAnalyticsReport model={model} extra={extra} experimentStatus="unavailable" config={config} onConfig={setConfig} selected={selected} onSelect={setSelected} /></div>}
+    {!ledgerOnly && <div className="fxa-report"><FxAnalyticsReport model={model} extra={extra} experimentStatus="unavailable" config={config} onConfig={setConfig} selected={selected} onSelect={setSelected} /></div>}
     {row && <section className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>{row.session_name} · {row.symbol}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><div className="fxa-metrics"><Metric label="Net P/L" value={fmt(row.net_pnl, ' USD')} /><Metric label="Return (R)" value={fmt(row.realized_r, ' R')} /><Metric label="Entry" value={fmt(row.price_open, '', 6)} /><Metric label="Exit" value={fmt(row.price_close, '', 6)} /></div></section>}
   </section>
 }

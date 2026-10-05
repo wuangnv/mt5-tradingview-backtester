@@ -69,13 +69,11 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     } catch (error) { setExportError(`Không tạo được CSV: ${error.message}`) }
   }
   return <section className="as-page fxa-page wm-page" aria-label="Trades" data-testid="aggregate-trades">
-    <FxAnalyticsFilters filters={filters} onChange={patch => setFilters(current => ({ ...current, ...patch }))} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} sessionControl={sessionControl} onClearSessions={onClearSessions} onExport={exportCsv} pending={!state.payload} ledgerOnly />
+    <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} hidden={!state.payload} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={patch => setFilters(current => ({ ...current, ...patch }))} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} sessionControl={sessionControl} onClearSessions={onClearSessions} onExport={exportCsv} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
     {state.status === 'loading' && <p role="status">Đang tải giao dịch…</p>}
     {state.status === 'error' && <p role="alert">Không đọc được giao dịch: {state.error}. Sẽ kiểm tra lại khi quay về ứng dụng.</p>}
     {exportError && <p role="alert">{exportError}</p>}
     {state.payload && <>
-      {state.payload.excluded.length > 0 && <span className="fxa-partial-badge" role="status" title="Một số phiên chưa có dữ liệu khả dụng">Dữ liệu một phần · {state.payload.scope.readable_session_count}/{state.payload.scope.session_count} phiên</span>}
-      <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} />
       {row && <section className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail · {row.session_name}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><ProvenanceInspector model={detailModel} selectedTrade={{ ...row, tradeId: row.trade_id }} journalCount={null} links={{ replay: link('replay'), journal: link('journal') }} /></section>}
     </>}
   </section>

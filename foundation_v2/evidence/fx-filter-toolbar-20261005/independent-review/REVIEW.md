@@ -1,0 +1,31 @@
+# Independent review — filter toolbar
+
+**SCOPED_PASS.** Final corrected comprehensive browser run passes 30 checks with 12 layout/accessibility cases. Final focused run passes 20 checks, including 18 standalone-route layout/accessibility cases. Both keep all 14 reviewed source hashes unchanged. No runtime errors, writes, downloads, external requests or actual API reads in demo mode were observed. Reviewer changed only this evidence directory.
+
+## Accepted behavior
+
+- At 1710/1440/360px in dark/light, the demo action stays visible at the right of `.fx-subnav`; primary navigation scrolls independently. Analytics → Sessions source → Prop firm source → Market Data share one row. Mobile selection, reload and resize preserve source visibility and real session/cursor context. Journal/Testing/Prop standalone routes retain the action even when no primary links exist. Gutters remain 32px desktop/16px mobile and document overflow is zero.
+- Trades has no partial badge or separate column toolbar. The pencil column control shares the filter toolbar. Its 21 options, search, selected count, select-all/clear, partial selection and actual table headers agree. Multiple selection keeps the popup open; keyboard option selection, outside dismissal, Escape and trigger focus restoration work. Popup bounds fit the content clipping region across both themes and all three widths.
+- Analytics drafts remain unapplied: Side/Outcome/Assets/Tags/Session changes do not alter chips, metrics, URL or reads until Apply. Apply commits the combined state. Actual session remount keeps applied filters, removes old cursor/cutoff/trade/dataset context and survives reload. Clear and chip removal act on applied state. Legacy `from_close_utc`/`to_close_utc` cannot override newly applied dates after session switching.
+- Type is deliberately limited to the current source. Strategy lists only real row `playbook_id` values; no strategy is invented from a session name or tag. The typed strategy filter intersects other filters, excludes unknown ownership and recomputes a filtered curve rather than retaining the unfiltered one.
+- Demo draft/applied/session/report filters stay in component state and do not overwrite saved real URL filters. All supported demo journeys issue zero API reads. CSV Blobs were intercepted before anchor download: demo export matches applied rows while a new Side draft remains unapplied; actual export matches the genuine stored trade. No file download or DB/API write occurred.
+- Actual initialized-empty analytics keeps measured zero and the original 10,000 USD balance. Uninitialized analytics remains blocked with no fabricated metrics; CSV is disabled. A clearly labeled synthetic unknown-P/L fixture renders `—` and exposes only its explicitly supplied strategy. This synthetic fixture is not actual financial acceptance.
+- Date/select/session popovers fit horizontal and vertical clipping bounds in tested layouts, support search/empty results, outside/Escape dismissal and focus restoration. Invalid draft date order disables Apply and leaves the applied result unchanged. Arrow/End/Enter selection remains draft until Apply. Axe checks have zero violations after transitions settle.
+- The old active replay session remains revision 2 with 501 visible rows and exactly equal full GET payload before/after. Actual oracle: six stored sessions and one closed trade. No session lifecycle action, history sync, broker/order call or mutation was attempted.
+
+## Finding and correction
+
+The only product issue found was an enabled CSV action on a blocked/uninitialized report because a blocked payload was truthy. The handler already rejected export, but the visible action was incorrect. Root now enables export only for ready/partial/stale/empty states; final browser checks confirm it is disabled on the actual blocked session.
+
+`browser-attempt1.json` retains exit 1 for this issue plus three harness issues: two mobile outside clicks landed inside a long popup, and a requested demo tag was not present in the selected session. The harness now clicks the header outside the popup and uses a tag actually present in the fixture. `corrections.json` passes four affected checks but honestly records changing source hashes during root cleanup. The final `browser.json` is a stable-source exit 0; earlier raw outcomes were not relabeled.
+
+## Evidence and commands
+
+- `node .artifacts/fx-filter-toolbar-20261005/independent-review/browser.mjs --ready`: final exit 0, 30 checks, 12 theme/width geometry+axe cases; `browser.json` includes API traces, actual/synthetic/export oracles, session preservation and 14 source hashes.
+- `node .artifacts/fx-filter-toolbar-20261005/independent-review/final-focused.mjs`: exit 0, 20 checks, 18 Journal/Testing/Prop standalone theme/width cases, legacy date remount/reload/clear and actual Trades/blocked-export checks; `final-focused.json` records stable hashes.
+- `node --test tests/tradingAnalytics.test.mjs` from `foundation_v2/web`: reviewer ran 13 tests, all pass, covering unknown values, strategy intersections/curves, CSV, timezone, Prop scope and malformed aggregate rejection.
+- `git diff --check -- foundation_v2/web/src foundation_v2/web/tests`: clean; only repository LF/CRLF notices.
+
+Selected screenshots: `analytics-light-1710.png`, `trade-dark-1440.png`, `columns-menu-light-360.png`, `date-menu-dark-360.png`, `real-filter-session-roundtrip.png`, `demo-local-applied-state.png`, `synthetic-unknown-strategy.png` and `standalone-*-360.png`. CSV evidence is in `actual-export-inspection.json`/`demo-export-inspection.json`, explicitly intercepted with no download.
+
+The data boundary remains local API reads for real reports and deterministic UI fixtures for demo. Apply separates draft from applied state; real filters persist in URL before a session remount, whereas demo keeps its state local. Single asset/day/hour selection and current-source Type are intentional existing semantics. Removing the Trades partial badge changes presentation, not backend completeness or excluded-source validation. Prop preview is report/objective presentation only. Broker execution, actual populated Prop evaluation, native zoom, canonical goldens and whole-product acceptance remain outside this receipt. Root's separate build/primary browser checks are not claimed as reviewer-run evidence.

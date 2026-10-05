@@ -115,7 +115,8 @@ function App() {
   }
   // Unmount real data readers during preview; fixtures never reach mutation handlers.
   if (demo && demoAvailable) content = <DemoPreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}`} view={activeView} workspace={workspace} query={query} />
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode}>{demoAvailable && <div className="wm-demo-toolbar">{demo && <span className="wm-demo-label" role="status">Demo · Dữ liệu mẫu</span>}<button type="button" className="fxa-button" aria-pressed={demo} onClick={toggleDemo}>{demo ? 'Show real data' : 'Show demo data'}</button></div>}{content}</FxReplayShell>
+  const subnavAction = demoAvailable && <div className="wm-demo-action">{demo && <span className="wm-demo-label" role="status">Demo · Dữ liệu mẫu</span>}<button type="button" className="fxa-button" aria-pressed={demo} onClick={toggleDemo}>{demo ? 'Show real data' : 'Show demo data'}</button></div>
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}>{content}</FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')

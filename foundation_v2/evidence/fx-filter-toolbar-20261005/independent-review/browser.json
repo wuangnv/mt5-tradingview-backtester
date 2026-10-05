@@ -1,0 +1,673 @@
+{
+  "scope": "Root-ready UI5180/API8010 GET-only isolated review; export Blob intercepted without download; no broker/order/history/init/session write",
+  "before": [
+    {
+      "file": "foundation_v2/web/src/AnalyticsFilterBar.jsx",
+      "sha256": "28f28be50e060c759e1a118f5bcd3ec3481f77e541d1e8066e18d0d118a724f9"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+      "sha256": "0f89ce616b22675a6357e5c20dced244ffe4ec9aa0c50ce77345647dc31b8efe"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c78dc0a9aefca1574ba840150c44ac9e2cc035320e2300be73ff417a2b0ba10a"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "58f8b01f5cb2d0b2bf574719952280616cf975b16ec37360cb0a4ccb9b36a0bd"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "82f361fc0b7112ac5e40d0c61e6af974b1ae05afbc4175814d17e563c2ad76ba"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "5219a5aa09a66381ab10cffce0ce6c27dcb5f11a66c303c5a3cb3aa832050faf"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "5df70bca3aafe53ed06fc09d5bb6508e787d38910b6e4802139003c00b49cd46"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "265181ad24c8250ea433983cb4808a500d7ef86899d5aefa7183666d71380915"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "f70098ddbf0b2667236539ad40c54b8ba0a52110fb9cf558054e2eaf0176e2ef"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "c1a31bbddbe2131eca11347bd921695a3fbbf07d82922f8de59e8e762ff8d9de"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "eb0852b45691ffd2435d90863a1006861eb7b887392ae2f3d82ff1d111872ad3"
+    },
+    {
+      "file": "foundation_v2/web/src/tradingAnalyticsModel.js",
+      "sha256": "2d8da773d78524535ed5362d5b29880b071280ce31e20a1556e3891d3ab21b4e"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "740e53e100fbc2813b7b8a9fe3a7677579a37e9c5be9f5c1292041d9c583693d"
+    }
+  ],
+  "checks": [
+    {
+      "name": "trade-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "trade-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "trade-dark-360",
+      "pass": true
+    },
+    {
+      "name": "trade-light-1710",
+      "pass": true
+    },
+    {
+      "name": "trade-light-1440",
+      "pass": true
+    },
+    {
+      "name": "trade-light-360",
+      "pass": true
+    },
+    {
+      "name": "analytics-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "analytics-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "analytics-dark-360",
+      "pass": true
+    },
+    {
+      "name": "analytics-light-1710",
+      "pass": true
+    },
+    {
+      "name": "analytics-light-1440",
+      "pass": true
+    },
+    {
+      "name": "analytics-light-360",
+      "pass": true
+    },
+    {
+      "name": "nav-primary-independent-scroll-mobile-reload-source",
+      "pass": true
+    },
+    {
+      "name": "columns-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "columns-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "columns-dark-360",
+      "pass": true
+    },
+    {
+      "name": "columns-light-1710",
+      "pass": true
+    },
+    {
+      "name": "columns-light-1440",
+      "pass": true
+    },
+    {
+      "name": "columns-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-draft-apply-session-export-local",
+      "pass": true
+    },
+    {
+      "name": "analytics-real-apply-session-remount-reload-clear-export",
+      "pass": true
+    },
+    {
+      "name": "analytics-popovers-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "analytics-popovers-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "analytics-popovers-dark-360",
+      "pass": true
+    },
+    {
+      "name": "analytics-popovers-light-1710",
+      "pass": true
+    },
+    {
+      "name": "analytics-popovers-light-1440",
+      "pass": true
+    },
+    {
+      "name": "analytics-popovers-light-360",
+      "pass": true
+    },
+    {
+      "name": "actual-unknown-uninitialized-and-missing-strategy",
+      "pass": true
+    },
+    {
+      "name": "LABELED-SYNTHETIC-financial-unknown-strategy",
+      "pass": true
+    },
+    {
+      "name": "preserve-old-real-session-and-isolation",
+      "pass": true
+    }
+  ],
+  "cases": [
+    {
+      "view": "trade",
+      "theme": "dark",
+      "width": 1710,
+      "action": {
+        "x": 1455.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 1169.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "trade",
+      "theme": "dark",
+      "width": 1440,
+      "action": {
+        "x": 1185.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 899.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "trade",
+      "theme": "dark",
+      "width": 360,
+      "action": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "primary": {
+        "x": 76,
+        "y": 69.5,
+        "width": 164.265625,
+        "height": 40
+      },
+      "gutter": 16,
+      "violations": []
+    },
+    {
+      "view": "trade",
+      "theme": "light",
+      "width": 1710,
+      "action": {
+        "x": 1455.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 1169.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "trade",
+      "theme": "light",
+      "width": 1440,
+      "action": {
+        "x": 1185.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 899.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "trade",
+      "theme": "light",
+      "width": 360,
+      "action": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "primary": {
+        "x": 76,
+        "y": 69.5,
+        "width": 164.265625,
+        "height": 40
+      },
+      "gutter": 16,
+      "violations": []
+    },
+    {
+      "view": "analytics",
+      "theme": "dark",
+      "width": 1710,
+      "action": {
+        "x": 1455.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 1169.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "analytics",
+      "theme": "dark",
+      "width": 1440,
+      "action": {
+        "x": 1185.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 899.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "analytics",
+      "theme": "dark",
+      "width": 360,
+      "action": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "primary": {
+        "x": 76,
+        "y": 69.5,
+        "width": 172.265625,
+        "height": 40
+      },
+      "gutter": 16,
+      "violations": []
+    },
+    {
+      "view": "analytics",
+      "theme": "light",
+      "width": 1710,
+      "action": {
+        "x": 1455.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 1169.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "analytics",
+      "theme": "light",
+      "width": 1440,
+      "action": {
+        "x": 1185.828125,
+        "y": 70.5,
+        "width": 224.171875,
+        "height": 38
+      },
+      "primary": {
+        "x": 278,
+        "y": 69.5,
+        "width": 899.828125,
+        "height": 40
+      },
+      "gutter": 32,
+      "violations": []
+    },
+    {
+      "view": "analytics",
+      "theme": "light",
+      "width": 360,
+      "action": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "primary": {
+        "x": 76,
+        "y": 69.5,
+        "width": 172.265625,
+        "height": 40
+      },
+      "gutter": 16,
+      "violations": []
+    }
+  ],
+  "api": [
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "?cursor_index=1061&cutoff_timestamp=1783468860",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?cursor_index=1061&cutoff_timestamp=1783468860&stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "search": "?side=sell&outcome=loss",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics/experiments",
+      "search": "?side=sell&outcome=loss&stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "search": "?side=sell&outcome=loss",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics/experiments",
+      "search": "?side=sell&outcome=loss&stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "analytics-real-apply-session-remount-reload-clear-export",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-unknown-uninitialized-and-missing-strategy",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-unknown-uninitialized-and-missing-strategy",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "actual-unknown-uninitialized-and-missing-strategy",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-unknown-uninitialized-and-missing-strategy",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-SYNTHETIC-financial-unknown-strategy",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-SYNTHETIC-financial-unknown-strategy",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-SYNTHETIC-financial-unknown-strategy",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-SYNTHETIC-financial-unknown-strategy",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-SYNTHETIC-financial-unknown-strategy",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "failures": [],
+  "teardown": [],
+  "oracle": {
+    "sessions": 6,
+    "actualClosedTrades": 1,
+    "filledTradeIds": [
+      "replay-pos-2"
+    ],
+    "initializedEmptyCount": 0,
+    "oldRevision": 2,
+    "oldVisibleRows": 501
+  },
+  "exportOracle": {
+    "mode": "explicit demo",
+    "intercepted": true,
+    "download": false,
+    "rows": 6,
+    "ids": [
+      "demo-trade-011",
+      "demo-trade-023",
+      "demo-trade-029",
+      "demo-trade-041",
+      "demo-trade-053",
+      "demo-trade-059"
+    ]
+  },
+  "exportActual": {
+    "rows": 1,
+    "intercepted": true,
+    "download": false
+  },
+  "unknownActual": {
+    "uninitialized": true,
+    "noFabricatedMetrics": true,
+    "noInventedStrategy": true
+  },
+  "syntheticUnknown": {
+    "label": "INDEPENDENT-FIXTURE-STRATEGY, ledger net unknown",
+    "display": "—",
+    "count": 1
+  },
+  "preserved": {
+    "revision": 2,
+    "fullPayloadEqual": true,
+    "visibleRows": 501
+  },
+  "after": [
+    {
+      "file": "foundation_v2/web/src/AnalyticsFilterBar.jsx",
+      "sha256": "28f28be50e060c759e1a118f5bcd3ec3481f77e541d1e8066e18d0d118a724f9"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+      "sha256": "0f89ce616b22675a6357e5c20dced244ffe4ec9aa0c50ce77345647dc31b8efe"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c78dc0a9aefca1574ba840150c44ac9e2cc035320e2300be73ff417a2b0ba10a"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "58f8b01f5cb2d0b2bf574719952280616cf975b16ec37360cb0a4ccb9b36a0bd"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "82f361fc0b7112ac5e40d0c61e6af974b1ae05afbc4175814d17e563c2ad76ba"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "5219a5aa09a66381ab10cffce0ce6c27dcb5f11a66c303c5a3cb3aa832050faf"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "5df70bca3aafe53ed06fc09d5bb6508e787d38910b6e4802139003c00b49cd46"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "265181ad24c8250ea433983cb4808a500d7ef86899d5aefa7183666d71380915"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "f70098ddbf0b2667236539ad40c54b8ba0a52110fb9cf558054e2eaf0176e2ef"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "c1a31bbddbe2131eca11347bd921695a3fbbf07d82922f8de59e8e762ff8d9de"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "eb0852b45691ffd2435d90863a1006861eb7b887392ae2f3d82ff1d111872ad3"
+    },
+    {
+      "file": "foundation_v2/web/src/tradingAnalyticsModel.js",
+      "sha256": "2d8da773d78524535ed5362d5b29880b071280ce31e20a1556e3891d3ab21b4e"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "740e53e100fbc2813b7b8a9fe3a7677579a37e9c5be9f5c1292041d9c583693d"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

@@ -284,7 +284,7 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
   )
 }
 
-function ShellSubnav({ activeView, workspace, query, copy }) {
+function ShellSubnav({ activeView, workspace, query, copy, action }) {
   const sectionId = activeSectionId(activeView, query)
   const items = SUBNAV_GROUPS[sectionId] || []
   const navRef = useRef(null)
@@ -298,7 +298,7 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
     observer.observe(nav)
     return () => observer.disconnect()
   }, [activeView, sectionId, selectedSection, query.get('analytics_source')])
-  if (items.length === 0) return null
+  if (items.length === 0 && !action) return null
   return (
     <nav className="fx-subnav" aria-label={copy.subnavAria} ref={navRef}>
       <div className="fx-subnav-primary">
@@ -330,6 +330,7 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
         )
       })}
       </div>
+      {action && <div className="fx-subnav-action">{action}</div>}
     </nav>
   )
 }
@@ -409,7 +410,7 @@ function currentQuery() {
   return typeof window === 'undefined' ? new URLSearchParams() : new URLSearchParams(window.location.search)
 }
 
-export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay' }) {
+export default function FxReplayShell({ children, workspace, query = currentQuery(), activeView = 'overview', mode = 'Replay', subnavAction }) {
   const chartWorkspace = activeView === 'replay' && query.get('select') !== '1' && (query.get('surface') === 'workspace' || Boolean(query.get('session')) || Boolean(query.get('dataset')))
   const chartRoute = chartWorkspace
   const routeContext = useMemo(() => readWorkspaceContext(query), [query])
@@ -606,7 +607,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
         {drawerOpen && <div className="fx-mobile-nav-backdrop" aria-hidden="true" onClick={() => setMobileNavigationOpen(false)} />}
         {!chartWorkspace && <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" drawerOpen={drawerOpen} onClose={() => setMobileNavigationOpen(false)} closeButtonRef={navigationCloseRef} />}
         <section className="fx-main" aria-label={copy.contentAria} inert={drawerOpen}>
-          <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} />
+          <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} action={subnavAction} />
           {helpOpen && <ShellHelp copy={copy} helpCloseRef={helpCloseRef} onClose={() => setHelpOpen(false)} />}
           <div className="fx-content" tabIndex={0}>{children}</div>
         </section>

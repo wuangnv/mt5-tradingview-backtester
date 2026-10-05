@@ -35,6 +35,16 @@ test('local filter recomputes every metric and hypothetical balance from origina
   assert.equal(filterAnalyticsRows(rows, { ...DEFAULT_EXTRA_FILTERS, search: 'trade-2' }).length, 1)
   assert.equal(outcomeOf(1e-13), 'breakeven')
 })
+test('strategy filter excludes unknown ownership and intersects assets without retaining an unfiltered curve', () => {
+  const strategyRows = rows.map((row, index) => ({ ...row, playbook_id: index === 1 || index === 3 ? 'breakout' : index === 0 ? 'reversal' : null }))
+  const filters = { ...DEFAULT_EXTRA_FILTERS, strategy: 'breakout', asset: 'EURUSD' }
+  const data = advancedAnalytics({ ...model, ledger: strategyRows }, filters)
+  assert.equal(data.count, 2); assert.equal(data.net, 100)
+  assert.deepEqual(data.curve.map(point => point.value), [1000, 950, 1100])
+  assert.equal(filterAnalyticsRows(strategyRows, { ...filters, strategy: 'missing' }).length, 0)
+  assert.equal(filterAnalyticsRows(strategyRows, DEFAULT_EXTRA_FILTERS).length, 5)
+  assert.equal(readAnalyticsExtraFilters(new URLSearchParams('analytics_strategy=breakout')).strategy, 'breakout')
+})
 test('timezone and calendar zero periods use actual dates rather than local machine date', () => {
   const utc = calendarParts('2024-01-01T23:59:00Z', 'UTC'), vn = calendarParts('2024-01-01T23:59:00Z', 'Asia/Ho_Chi_Minh')
   assert.equal(utc.key, '2024-01-01'); assert.equal(vn.key, '2024-01-02'); assert.equal(vn.hour, 6)

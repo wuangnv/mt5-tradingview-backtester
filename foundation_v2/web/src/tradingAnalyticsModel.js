@@ -3,7 +3,7 @@ import { closeTime } from './sessionPerformanceModel.js'
 export const known = value => value !== null && value !== undefined && value !== '' && typeof value !== 'boolean' && Number.isFinite(Number(value))
 export const number = value => known(value) ? Number(value) : null
 export const outcomeOf = value => !known(value) ? 'unknown' : Number(value) > 1e-12 ? 'win' : Number(value) < -1e-12 ? 'loss' : 'breakeven'
-export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', source: 'all', weekday: 'all', hour: 'all', timezone: 'UTC', search: '' }
+export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', strategy: 'all', source: 'all', weekday: 'all', hour: 'all', timezone: 'UTC', search: '' }
 export function readAnalyticsExtraFilters(query) {
   const values = { ...DEFAULT_EXTRA_FILTERS }
   for (const key of Object.keys(values)) {
@@ -44,6 +44,7 @@ export function filterAnalyticsRows(rows, filters = DEFAULT_EXTRA_FILTERS) {
     const time = calendarParts(row.close_time_utc, filters.timezone)
     return (filters.asset === 'all' || row.symbol === filters.asset)
       && (filters.tag === 'all' || (row.tags || []).includes(filters.tag))
+      && (!filters.strategy || filters.strategy === 'all' || row.playbook_id === filters.strategy)
       && (filters.source === 'all' || row.source_id === filters.source || (typeof row.source === 'string' ? row.source : row.source?.session_id) === filters.source)
       && (filters.weekday === 'all' || time?.weekday === Number(filters.weekday))
       && (filters.hour === 'all' || time?.hour === Number(filters.hour))
@@ -81,7 +82,7 @@ function stats(rows) {
 export function advancedAnalytics(model, filters = DEFAULT_EXTRA_FILTERS) {
   const rows = filterAnalyticsRows(model.ledger, filters)
   const summary = stats(rows)
-  const localFiltered = ['asset', 'tag', 'source', 'weekday', 'hour', 'search'].some(key => filters[key] !== DEFAULT_EXTRA_FILTERS[key])
+  const localFiltered = ['asset', 'tag', 'strategy', 'source', 'weekday', 'hour', 'search'].some(key => (filters[key] ?? DEFAULT_EXTRA_FILTERS[key]) !== DEFAULT_EXTRA_FILTERS[key])
   // A filtered balance is a hypothetical sequence from the original starting capital.
   let balance = number(model.startBalance), peak = balance, drawdown = [], curve = []
   if (balance !== null && summary.complete) {

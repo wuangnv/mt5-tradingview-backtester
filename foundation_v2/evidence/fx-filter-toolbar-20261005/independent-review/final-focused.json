@@ -1,0 +1,525 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/web/src/AnalyticsFilterBar.jsx",
+      "sha256": "28f28be50e060c759e1a118f5bcd3ec3481f77e541d1e8066e18d0d118a724f9"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+      "sha256": "0f89ce616b22675a6357e5c20dced244ffe4ec9aa0c50ce77345647dc31b8efe"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c78dc0a9aefca1574ba840150c44ac9e2cc035320e2300be73ff417a2b0ba10a"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "58f8b01f5cb2d0b2bf574719952280616cf975b16ec37360cb0a4ccb9b36a0bd"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "82f361fc0b7112ac5e40d0c61e6af974b1ae05afbc4175814d17e563c2ad76ba"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "5219a5aa09a66381ab10cffce0ce6c27dcb5f11a66c303c5a3cb3aa832050faf"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "5df70bca3aafe53ed06fc09d5bb6508e787d38910b6e4802139003c00b49cd46"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "265181ad24c8250ea433983cb4808a500d7ef86899d5aefa7183666d71380915"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "f70098ddbf0b2667236539ad40c54b8ba0a52110fb9cf558054e2eaf0176e2ef"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "c1a31bbddbe2131eca11347bd921695a3fbbf07d82922f8de59e8e762ff8d9de"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "eb0852b45691ffd2435d90863a1006861eb7b887392ae2f3d82ff1d111872ad3"
+    },
+    {
+      "file": "foundation_v2/web/src/tradingAnalyticsModel.js",
+      "sha256": "2d8da773d78524535ed5362d5b29880b071280ce31e20a1556e3891d3ab21b4e"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "740e53e100fbc2813b7b8a9fe3a7677579a37e9c5be9f5c1292041d9c583693d"
+    }
+  ],
+  "cases": [
+    {
+      "view": "journal",
+      "theme": "dark",
+      "width": 1710,
+      "button": {
+        "x": 1569.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "journal",
+      "theme": "dark",
+      "width": 1440,
+      "button": {
+        "x": 1299.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "journal",
+      "theme": "dark",
+      "width": 360,
+      "button": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "journal",
+      "theme": "light",
+      "width": 1710,
+      "button": {
+        "x": 1569.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "journal",
+      "theme": "light",
+      "width": 1440,
+      "button": {
+        "x": 1299.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "journal",
+      "theme": "light",
+      "width": 360,
+      "button": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "testing",
+      "theme": "dark",
+      "width": 1710,
+      "button": {
+        "x": 1569.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "testing",
+      "theme": "dark",
+      "width": 1440,
+      "button": {
+        "x": 1299.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "testing",
+      "theme": "dark",
+      "width": 360,
+      "button": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "testing",
+      "theme": "light",
+      "width": 1710,
+      "button": {
+        "x": 1569.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "testing",
+      "theme": "light",
+      "width": 1440,
+      "button": {
+        "x": 1299.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "testing",
+      "theme": "light",
+      "width": 360,
+      "button": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "prop",
+      "theme": "dark",
+      "width": 1710,
+      "button": {
+        "x": 1569.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "prop",
+      "theme": "dark",
+      "width": 1440,
+      "button": {
+        "x": 1299.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "prop",
+      "theme": "dark",
+      "width": 360,
+      "button": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "prop",
+      "theme": "light",
+      "width": 1710,
+      "button": {
+        "x": 1569.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "prop",
+      "theme": "light",
+      "width": 1440,
+      "button": {
+        "x": 1299.21875,
+        "y": 70.5,
+        "width": 110.78125,
+        "height": 38
+      },
+      "pass": true
+    },
+    {
+      "view": "prop",
+      "theme": "light",
+      "width": 360,
+      "button": {
+        "x": 248.265625,
+        "y": 70.5,
+        "width": 93.734375,
+        "height": 38
+      },
+      "pass": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "journal-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "journal-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "journal-dark-360",
+      "pass": true
+    },
+    {
+      "name": "journal-light-1710",
+      "pass": true
+    },
+    {
+      "name": "journal-light-1440",
+      "pass": true
+    },
+    {
+      "name": "journal-light-360",
+      "pass": true
+    },
+    {
+      "name": "testing-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "testing-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "testing-dark-360",
+      "pass": true
+    },
+    {
+      "name": "testing-light-1710",
+      "pass": true
+    },
+    {
+      "name": "testing-light-1440",
+      "pass": true
+    },
+    {
+      "name": "testing-light-360",
+      "pass": true
+    },
+    {
+      "name": "prop-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "prop-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "prop-dark-360",
+      "pass": true
+    },
+    {
+      "name": "prop-light-1710",
+      "pass": true
+    },
+    {
+      "name": "prop-light-1440",
+      "pass": true
+    },
+    {
+      "name": "prop-light-360",
+      "pass": true
+    },
+    {
+      "name": "legacy-date-remount-preserves-applied-clears-cutoff",
+      "pass": true
+    },
+    {
+      "name": "final-blocked-export-and-actual-trades-toolbar",
+      "pass": true
+    }
+  ],
+  "api": [
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "?from_close_utc=2026-07-01T00%3A00%3A00.000Z&to_close_utc=2026-10-01T23%3A59%3A59.999Z&cursor_index=1061",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?from_close_utc=2026-07-01T00%3A00%3A00.000Z&to_close_utc=2026-10-01T23%3A59%3A59.999Z&cursor_index=1061&stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "search": "?side=sell&from_close_utc=2026-08-01T00%3A00%3A00.000Z&to_close_utc=2026-09-01T23%3A59%3A59.999Z",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics/experiments",
+      "search": "?side=sell&from_close_utc=2026-08-01T00%3A00%3A00.000Z&to_close_utc=2026-09-01T23%3A59%3A59.999Z&stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "search": "?side=sell&from_close_utc=2026-08-01T00%3A00%3A00.000Z&to_close_utc=2026-09-01T23%3A59%3A59.999Z",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics/experiments",
+      "search": "?side=sell&from_close_utc=2026-08-01T00%3A00%3A00.000Z&to_close_utc=2026-09-01T23%3A59%3A59.999Z&stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "failures": [],
+  "after": [
+    {
+      "file": "foundation_v2/web/src/AnalyticsFilterBar.jsx",
+      "sha256": "28f28be50e060c759e1a118f5bcd3ec3481f77e541d1e8066e18d0d118a724f9"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+      "sha256": "0f89ce616b22675a6357e5c20dced244ffe4ec9aa0c50ce77345647dc31b8efe"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "c78dc0a9aefca1574ba840150c44ac9e2cc035320e2300be73ff417a2b0ba10a"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "58f8b01f5cb2d0b2bf574719952280616cf975b16ec37360cb0a4ccb9b36a0bd"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "82f361fc0b7112ac5e40d0c61e6af974b1ae05afbc4175814d17e563c2ad76ba"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "5219a5aa09a66381ab10cffce0ce6c27dcb5f11a66c303c5a3cb3aa832050faf"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "5df70bca3aafe53ed06fc09d5bb6508e787d38910b6e4802139003c00b49cd46"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "265181ad24c8250ea433983cb4808a500d7ef86899d5aefa7183666d71380915"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "f70098ddbf0b2667236539ad40c54b8ba0a52110fb9cf558054e2eaf0176e2ef"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "c1a31bbddbe2131eca11347bd921695a3fbbf07d82922f8de59e8e762ff8d9de"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "eb0852b45691ffd2435d90863a1006861eb7b887392ae2f3d82ff1d111872ad3"
+    },
+    {
+      "file": "foundation_v2/web/src/tradingAnalyticsModel.js",
+      "sha256": "2d8da773d78524535ed5362d5b29880b071280ce31e20a1556e3891d3ab21b4e"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "816fba1abdfc2b97cb84259b16874e3231e140cd59c3f3036a2eb66d9d05d041"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "740e53e100fbc2813b7b8a9fe3a7677579a37e9c5be9f5c1292041d9c583693d"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}
