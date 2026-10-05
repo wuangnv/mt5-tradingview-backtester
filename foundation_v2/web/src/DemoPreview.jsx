@@ -5,21 +5,21 @@ import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
 import FxSelect from './FxSelect.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
-import DashboardPerformance from './DashboardPerformance.jsx'
+import DashboardSessions from './DashboardSessions.jsx'
 import MarketAssetCatalog from './MarketAssetCatalog.jsx'
 import LiveBrokerSnapshot from './LiveBrokerSnapshot.jsx'
 import { PlaybookList, PlaybookSummary } from './PlaybookWorkspace.jsx'
 import { JournalRow, StoryRail } from './JournalWorkspace.jsx'
 import { DEFAULT_EXTRA_FILTERS, filterAnalyticsRows, tradesCsv } from './tradingAnalyticsModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_ASSETS, DEMO_LIVE, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
+import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_ASSETS, DEMO_LIVE, DEMO_DATASETS, demoDashboardAnalytics, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
 
 function Objectives({ model }) {
   return <section className="fxa-prop-objectives" aria-label="Challenge objectives"><div className="fxa-section-heading"><h2>Challenge objectives</h2><span>Practice · Phase 1</span></div><div className="fxa-metrics"><Metric label="Balance" value={fmt(model.endingBalance, ' USD')} /><Metric label="Profit target" value="1.000 USD" /><Metric label="Daily loss limit" value="500 USD" /><Metric label="Overall loss limit" value="1.000 USD" /></div><table><thead><tr><th>Objective</th><th>Kết quả / ngưỡng</th><th>Trạng thái</th></tr></thead><tbody><tr><td>Profit target</td><td>{fmt(model.netPnl, ' USD')} / 1.000 USD</td><td>{model.netPnl >= 1000 ? 'Đạt' : 'Đang thực hiện'}</td></tr><tr><td>Overall drawdown</td><td>{fmt(model.maxDrawdown, ' USD')} / 1.000 USD</td><td>{model.maxDrawdown < 1000 ? 'Trong giới hạn' : 'Vi phạm'}</td></tr></tbody></table></section>
 }
 
-function DemoReports({ ledgerOnly, prop = false }) {
-  const [ids, setIds] = useState(ledgerOnly ? null : DEMO_SESSIONS[0].record_id)
+function DemoReports({ ledgerOnly, prop = false, query }) {
+  const [ids, setIds] = useState(ledgerOnly ? null : DEMO_SESSIONS.find(item => item.record_id === query?.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
   const [filters, setFilters] = useState({ side: 'all', outcome: 'all', from: '', to: '' })
   const [extra, setExtra] = useState({ ...DEFAULT_EXTRA_FILTERS })
   const [selected, setSelected] = useState(''), [config, setConfig] = useState({ stop_distance_ticks: 10, stop_multiplier: 1, target_r: 2 })
@@ -52,17 +52,11 @@ function DemoSessions() {
 }
 
 function DemoDashboard({ workspace, query }) {
-  const [session, setSession] = useState(''), [period, setPeriod] = useState('lifetime'), [from, setFrom] = useState(''), [to, setTo] = useState('')
-  const [search, setSearch] = useState(''), [sort, setSort] = useState('newest')
-  const range = period === '30d' ? { from: '2026-09-06', to: '2026-10-05' } : period === '7d' ? { from: '2026-09-29', to: '2026-10-05' } : period === 'custom' ? { from, to } : {}
-  const filters = { session, from: range.from || '', to: range.to || '' }
-  const payload = useMemo(() => demoOverview(demoFilterRows(session ? [session] : null, filters)), [session, filters.from, filters.to])
-  const visible = [...DEMO_SESSIONS].filter(item => `${item.name} ${item.instrument_id}`.toLowerCase().includes(search.toLowerCase())).sort((a, b) => (sort === 'oldest' ? 1 : -1) * a.created_at_utc.localeCompare(b.created_at_utc))
-  return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><h1 className="sr-only">Dashboard</h1><nav className="fx-dashboard-quick-actions" aria-label="Bắt đầu luyện tập">{[['Backtesting session', 'Tạo phiên backtest'], ['Prop firm session', 'Bắt đầu challenge mô phỏng']].map(([title, hint], index) => <button key={title} disabled type="button" className={`fx-dashboard-quick-action${index === 0 ? ' is-primary' : ''}`}><span><strong>{title}</strong><small>{hint}</small></span><span className="fx-dashboard-action-arrow">↗</span></button>)}<a className="fx-dashboard-quick-action" href={buildWorkspaceHref('learn', workspace, query)}><span><strong>Tutorials</strong><small>Học và luyện tập</small></span><span className="fx-dashboard-action-arrow">↗</span></a></nav>
-    <DashboardPerformance workspace={workspace} filters={filters} previewPayload={payload} controls={<><FxSelect label="Phạm vi Performance" value={session} onChange={setSession} searchable options={[{ value: '', label: 'Backtesting · All sessions' }, ...DEMO_SESSIONS.map(item => ({ value: item.record_id, label: item.name }))]} /><FxSelect label="Thời gian Performance" value={period} onChange={setPeriod} icon="calendar" options={[['7d', 'Last week'], ['30d', 'Last month'], ['lifetime', 'Lifetime'], ['custom', 'Khoảng tùy chọn']].map(([value, label]) => ({ value, label }))} /></>} dateControls={period === 'custom' && <div className="fx-dashboard-date-controls"><label>Từ ngày (UTC)<input type="date" value={from} onChange={event => setFrom(event.target.value)} /></label><label>Đến ngày (UTC)<input type="date" value={to} onChange={event => setTo(event.target.value)} /></label></div>} />
-    <section className="fx-dashboard-recent" aria-label="Recent Sessions"><div className="fx-dashboard-section-head"><h2>Recent Sessions</h2></div><div className="fx-dashboard-recent-toolbar"><label className="fx-dashboard-search"><input type="search" aria-label="Tìm phiên gần đây" placeholder="Tìm tên phiên, symbol…" value={search} onChange={event => setSearch(event.target.value)} /></label><FxSelect label="Sắp xếp phiên" value={sort} onChange={setSort} icon="sort" options={[{ value: 'newest', label: 'Newest to oldest' }, { value: 'oldest', label: 'Oldest to newest' }]} /></div><div className="fx-dashboard-session-list">{visible.map(item => <article className={`fx-dashboard-session-row${session === item.record_id ? ' is-selected' : ''}`} key={item.record_id}><span className="fx-dashboard-session-symbol" aria-hidden="true">▷</span><div className="fx-dashboard-session-info"><h3>{item.name}</h3><p>{item.instrument_id} · {item.timeframe}</p></div><span className="fx-dashboard-session-status">{item.status === 'completed' ? 'Hoàn thành' : 'Tạm dừng'}</span><div className="fx-dashboard-row-actions"><button type="button" className="fx-dashboard-result-button" aria-pressed={session === item.record_id} onClick={() => setSession(item.record_id)}>Kết quả</button></div></article>)}</div>{!visible.length && <p className="fxa-empty">Không có phiên khớp bộ lọc.</p>}</section></div></section>
+  const preview = useMemo(() => ({ items: DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics,
+    overview: (filters, items) => demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : null, filters)),
+    propReport: <DemoReports prop /> }), [])
+  return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions workspace={workspace} query={query} preview={preview} /></div></section>
 }
-
 const demoPlaybooks = DEMO_SESSIONS.map(item => ({ ...item, payload: { name: item.name, status: 'draft', execution_capability: 'replay_only', rules: { entry: 'breakout', exit: '2R', risk: '1%' } } }))
 const demoNotes = DEMO_LEDGER.slice(0, 6).map(row => ({ record_id: row.trade_id, revision: 1, updated_at_utc: row.close_time_utc, payload: { entry_type: 'decision', note: `${row.session_name} · ${row.symbol}: chờ đóng nến xác nhận`, observation: 'Giá quay về vùng breakout', decision: 'Giữ rủi ro 1% theo kế hoạch', plan: 'SL ngoài vùng, mục tiêu 2R', actual_result: `${row.net_pnl} USD`, next_action: 'Đối chiếu entry với checklist', tags: row.tags, source: { type: 'replay_session', id: row.session_id } } }))
 
@@ -86,7 +80,7 @@ export default function DemoPreview({ view, workspace, query }) {
   if (view === 'overview') return <DemoDashboard workspace={workspace} query={query} />
   if (view === 'replay') return <DemoSessions />
   if (view === 'trade') return <DemoReports ledgerOnly />
-  if (view === 'analytics' || view === 'testing' || view === 'prop') return <DemoReports prop={view !== 'analytics' || query.get('analytics_source') === 'prop'} />
+  if (view === 'analytics' || view === 'testing' || view === 'prop') return <DemoReports query={query} prop={view !== 'analytics' || query.get('analytics_source') === 'prop'} />
   if (view === 'market-data') return <main className="wm-page market-data-workspace" aria-label="Market Data"><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} preview={DEMO_ASSETS} /></main>
   if (view === 'live') return <DemoLive query={query} />
   if (view === 'playbook') return <DemoStrategies />

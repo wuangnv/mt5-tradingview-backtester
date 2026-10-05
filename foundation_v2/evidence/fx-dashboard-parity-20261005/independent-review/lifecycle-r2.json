@@ -1,0 +1,196 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "5ebdeb289c874029b271d6d596a9b127f2f07360e64b2e2b34749309c88b27ff"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "25382924483581c04a88762f46dfa986c78783eed09636f868399aa29c844f2a"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "d626ec7474028dc42a63083c39da59a4984a7286612c58e07cb9dc888f5b0272"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    }
+  ],
+  "checks": [
+    {
+      "name": "demo-analytics-scoping-toggle",
+      "pass": true
+    }
+  ],
+  "failures": [
+    {
+      "name": "demo-local-lifecycle-and-copy-ledger",
+      "error": "TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.fx-dashboard-dialog[open]') to be hidden\u001b[22m\n\u001b[2m    23 × locator resolved to visible <dialog open=\"\" class=\"fx-dashboard-dialog\" aria-label=\"Summary · Gold Swing Edited (copy)\">…</dialog>\u001b[22m\n"
+    },
+    {
+      "name": "actual-archived-summary-read-only-cancel",
+      "error": "TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.fx-dashboard-dialog[open]') to be hidden\u001b[22m\n\u001b[2m    23 × locator resolved to visible <dialog open=\"\" class=\"fx-dashboard-dialog\" aria-label=\"Summary · QA tick XAUUSDm\">…</dialog>\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "api": [
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/journal",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    }
+  ],
+  "focus": [],
+  "cards": [],
+  "after": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "5ebdeb289c874029b271d6d596a9b127f2f07360e64b2e2b34749309c88b27ff"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "25382924483581c04a88762f46dfa986c78783eed09636f868399aa29c844f2a"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "d626ec7474028dc42a63083c39da59a4984a7286612c58e07cb9dc888f5b0272"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: 'TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\\n' +\n+       'Call log:\\n' +\n+       \"\\x1B[2m  - waiting for locator('.fx-dashboard-dialog[open]') to be hidden\\x1B[22m\\n\" +\n+       '\\x1B[2m    23 × locator resolved to visible <dialog open=\"\" class=\"fx-dashboard-dialog\" aria-label=\"Summary · Gold Swing Edited (copy)\">…</dialog>\\x1B[22m\\n',\n+     name: 'demo-local-lifecycle-and-copy-ledger'\n+   },\n+   {\n+     error: 'TimeoutError: locator.waitFor: Timeout 10000ms exceeded.\\n' +\n+       'Call log:\\n' +\n+       \"\\x1B[2m  - waiting for locator('.fx-dashboard-dialog[open]') to be hidden\\x1B[22m\\n\" +\n+       '\\x1B[2m    23 × locator resolved to visible <dialog open=\"\" class=\"fx-dashboard-dialog\" aria-label=\"Summary · QA tick XAUUSDm\">…</dialog>\\x1B[22m\\n',\n+     name: 'actual-archived-summary-read-only-cancel'\n+   }\n+ ]\n- []\n"
+}

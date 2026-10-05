@@ -99,6 +99,13 @@ export async function readDashboardAnalytics(workspace, session, signal) {
   return payload
 }
 
+export async function readDashboardDatasets(workspace, signal) {
+  const response = await fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace }, signal })
+  const payload = await response.json().catch(() => ({}))
+  if (!response.ok || !Array.isArray(payload.items)) throw new Error('dashboard_dataset_catalog_unavailable')
+  return payload.items
+}
+
 export function dashboardCurve(metrics) {
   const raw = metrics?.closed_trade_balance_curve
   const known = value => value !== null && value !== undefined && value !== '' && typeof value !== 'boolean' && Number.isFinite(Number(value))

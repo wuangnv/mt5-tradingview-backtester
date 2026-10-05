@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "Demo rename, copy with analytics, archive/restore, Summary, 3-chart expansion, unique SVG gradients, session-specific demo Analytics link",
+    "Demo mutations reset on navigation/reload; original fixtures remain unchanged",
+    "Real Dashboard catalog/read analytics and Summary; responsive demo dialog and cards 1671/768/360x600"
+  ],
+  "errors": [],
+  "writes": [],
+  "scope": "Demo lifecycle local state; real services GET-only. No broker/session API writes.",
+  "pass": true
+}

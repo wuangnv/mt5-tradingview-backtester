@@ -1,0 +1,1285 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "208c547e65268a355210323702d5107aefd7c557ee73fcd1187a24f4db6dc41a"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "861536e1172c6baa3d8ee6b6aa31660bc0d718d27f2a7f0739ab289659eb4e29"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "8346872c950dcb7a7da6a8cf689aa2f18677d2b9ddca68833916bb949ea57c19"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "a4c3bef61ffd10a17a7e1d1246caf429c1382e67e9f3b0d7db99ac192030d7c2"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "844646f06ef792cc525dd19b09c27ca6a92ef85ed550a0503490aed925aeb99b"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "71fd637e47ecb7fb8580e8e2b251a47c2bc3f27b6a063ca129f06186a24984c3"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionCatalog.js",
+      "sha256": "a164874d02cd2b9a282e96ee6e50f1f982729669b8e06d2fe7d82ea21229e819"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionPerformanceModel.js",
+      "sha256": "4beaafd331bc290e564678a96e73bffb6a16239c77ce61c68831daced92f1ade"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "d4c4265f59a88b5498ee022d116c1364981fbd3b931b8359b491f715e5f393fb"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "44c75868d5add290b6d1302fafa524926a5d1c043a9eb48d3e0645f477376ad7"
+    }
+  ],
+  "cases": [
+    {
+      "mode": "demo",
+      "theme": "dark",
+      "width": 1440,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "demo",
+      "theme": "dark",
+      "width": 768,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "demo",
+      "theme": "dark",
+      "width": 360,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "demo",
+      "theme": "light",
+      "width": 1440,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "demo",
+      "theme": "light",
+      "width": 768,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "demo",
+      "theme": "light",
+      "width": 360,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "real",
+      "theme": "dark",
+      "width": 1440,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "real",
+      "theme": "dark",
+      "width": 768,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "real",
+      "theme": "dark",
+      "width": 360,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "real",
+      "theme": "light",
+      "width": 1440,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "real",
+      "theme": "light",
+      "width": 768,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    },
+    {
+      "mode": "real",
+      "theme": "light",
+      "width": 360,
+      "source": [
+        {
+          "text": "Backtesting✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "period": [
+        {
+          "text": "Lifetime✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "sort": [
+        {
+          "text": "Newest to oldest✓",
+          "background": "rgba(0, 0, 0, 0)",
+          "hover": false,
+          "focus": false
+        }
+      ],
+      "search": {
+        "input": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "solid",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        }
+      },
+      "menuSearchStyles": {
+        "input": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "outline": "none",
+          "shadow": "none"
+        },
+        "wrapper": {
+          "left": 1,
+          "right": 1,
+          "top": 1,
+          "outline": "none",
+          "shadow": "rgba(0, 0, 0, 0.2) 0px 8px 24px 0px"
+        }
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "dashboard-controls-demo-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-demo-dark-768",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-demo-dark-360",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-demo-light-1440",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-demo-light-768",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-demo-light-360",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-real-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-real-dark-768",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-real-dark-360",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-real-light-1440",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-real-light-768",
+      "pass": true
+    },
+    {
+      "name": "dashboard-controls-real-light-360",
+      "pass": true
+    },
+    {
+      "name": "shared-option-states-dark",
+      "pass": true
+    },
+    {
+      "name": "shared-option-states-light",
+      "pass": true
+    },
+    {
+      "name": "mode-source-prop-all-and-real-session-isolation",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "api": [
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-1440",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-768",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-dark-360",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-1440",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-768",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "dashboard-controls-real-light-360",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    }
+  ],
+  "after": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "208c547e65268a355210323702d5107aefd7c557ee73fcd1187a24f4db6dc41a"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "861536e1172c6baa3d8ee6b6aa31660bc0d718d27f2a7f0739ab289659eb4e29"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "8346872c950dcb7a7da6a8cf689aa2f18677d2b9ddca68833916bb949ea57c19"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "a4c3bef61ffd10a17a7e1d1246caf429c1382e67e9f3b0d7db99ac192030d7c2"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "844646f06ef792cc525dd19b09c27ca6a92ef85ed550a0503490aed925aeb99b"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "71fd637e47ecb7fb8580e8e2b251a47c2bc3f27b6a063ca129f06186a24984c3"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionCatalog.js",
+      "sha256": "a164874d02cd2b9a282e96ee6e50f1f982729669b8e06d2fe7d82ea21229e819"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionPerformanceModel.js",
+      "sha256": "4beaafd331bc290e564678a96e73bffb6a16239c77ce61c68831daced92f1ade"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "d4c4265f59a88b5498ee022d116c1364981fbd3b931b8359b491f715e5f393fb"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "44c75868d5add290b6d1302fafa524926a5d1c043a9eb48d3e0645f477376ad7"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

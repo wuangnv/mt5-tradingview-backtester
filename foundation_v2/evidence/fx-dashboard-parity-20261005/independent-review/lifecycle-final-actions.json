@@ -1,0 +1,3167 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "861536e1172c6baa3d8ee6b6aa31660bc0d718d27f2a7f0739ab289659eb4e29"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "8346872c950dcb7a7da6a8cf689aa2f18677d2b9ddca68833916bb949ea57c19"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "a4c3bef61ffd10a17a7e1d1246caf429c1382e67e9f3b0d7db99ac192030d7c2"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "208c547e65268a355210323702d5107aefd7c557ee73fcd1187a24f4db6dc41a"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "844646f06ef792cc525dd19b09c27ca6a92ef85ed550a0503490aed925aeb99b"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    }
+  ],
+  "checks": [
+    {
+      "name": "demo-metadata-charts-summary",
+      "pass": true
+    },
+    {
+      "name": "demo-local-lifecycle-and-copy-ledger",
+      "pass": true
+    },
+    {
+      "name": "modal-closure-focus-1440",
+      "pass": true
+    },
+    {
+      "name": "modal-closure-focus-360",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-scoping-toggle",
+      "pass": true
+    },
+    {
+      "name": "actual-archived-summary-read-only-cancel",
+      "pass": true
+    },
+    {
+      "name": "actual-no-init-unknown-metadata",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "api": [
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics/experiments",
+      "query": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/journal",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "demo-analytics-scoping-toggle",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-no-init-unknown-metadata",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-no-init-unknown-metadata",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-no-init-unknown-metadata",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-no-init-unknown-metadata",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    }
+  ],
+  "focus": [
+    {
+      "tag": "summary-1440",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        }
+      ]
+    },
+    {
+      "tag": "rename-1440",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        }
+      ]
+    },
+    {
+      "tag": "archive-1440",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        }
+      ]
+    },
+    {
+      "tag": "summary-1440",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        }
+      ]
+    },
+    {
+      "tag": "rename-360",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        }
+      ]
+    },
+    {
+      "tag": "archive-360",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu trữ"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        }
+      ]
+    },
+    {
+      "tag": "summary-360",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        }
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "demo-london",
+      "text": "London Breakout\nM1\n6/7/26 – 5/10/26\n10.960 USD\nEURUSD\nCòn 12 ngày dữ liệu\nSummary",
+      "value": 1401
+    },
+    {
+      "id": "demo-newyork",
+      "text": "New York Reversal\nM1\n6/7/26 – 5/10/26\n10.960 USD\nGBPUSD\nCòn 10 ngày dữ liệu\nSummary",
+      "value": 1901
+    },
+    {
+      "id": "demo-gold",
+      "text": "Gold Swing\nM5\n6/7/26 – 5/10/26\n10.960 USD\nXAUUSD\nCòn 9 ngày dữ liệu\nSummary",
+      "value": 2401
+    }
+  ],
+  "after": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "861536e1172c6baa3d8ee6b6aa31660bc0d718d27f2a7f0739ab289659eb4e29"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "8346872c950dcb7a7da6a8cf689aa2f18677d2b9ddca68833916bb949ea57c19"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "a4c3bef61ffd10a17a7e1d1246caf429c1382e67e9f3b0d7db99ac192030d7c2"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "208c547e65268a355210323702d5107aefd7c557ee73fcd1187a24f4db6dc41a"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "844646f06ef792cc525dd19b09c27ca6a92ef85ed550a0503490aed925aeb99b"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

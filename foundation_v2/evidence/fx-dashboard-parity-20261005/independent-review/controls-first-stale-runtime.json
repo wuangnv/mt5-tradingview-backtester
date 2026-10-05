@@ -1,0 +1,27 @@
+{
+  "checks": [],
+  "failures": [
+    {
+      "name": "dashboard-controls-demo-dark-1440",
+      "error": "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('fxreplay-shell')\u001b[22m\n"
+    },
+    {
+      "name": "dashboard-controls-demo-dark-768",
+      "error": "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('fxreplay-shell')\u001b[22m\n"
+    },
+    {
+      "name": "dashboard-controls-demo-dark-360",
+      "error": "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('fxreplay-shell')\u001b[22m\n"
+    },
+    {
+      "name": "dashboard-controls-demo-light-1440",
+      "error": "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('fxreplay-shell')\u001b[22m\n"
+    }
+  ],
+  "errors": [
+    "SyntaxError: The requested module '/src/demoFixtures.js' does not provide an export named 'DEMO_DATASETS'",
+    "SyntaxError: The requested module '/src/demoFixtures.js' does not provide an export named 'DEMO_DATASETS'",
+    "SyntaxError: The requested module '/src/demoFixtures.js' does not provide an export named 'DEMO_DATASETS'",
+    "SyntaxError: The requested module '/src/demoFixtures.js' does not provide an export named 'DEMO_DATASETS'"
+  ]
+}

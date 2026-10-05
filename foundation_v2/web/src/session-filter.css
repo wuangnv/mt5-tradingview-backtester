@@ -9,7 +9,7 @@
 .fxa-session-options > label, .fxa-session-options > button, .fxa-session-all { display: flex; gap: 10px; align-items: center; width: 100%; box-sizing: border-box; min-height: 40px; padding: 9px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--wm-control-text); text-align: left; font: inherit; cursor: pointer; }
 .fxa-session-options > button { justify-content: space-between; }
 .fxa-session-options > label:hover, .fxa-session-options > button:hover, .fxa-session-all:hover { background: var(--fx-shell-nav-hover); }
-.fxa-session-options > .is-selected { background: var(--wm-selected); }
+.fxa-session-options > .is-selected:not(:hover) { background: transparent; }
 .fxa-session-options small { display: block; margin-top: 3px; color: var(--wm-content-muted); font-size: 11px; }
 .fxa-session-menu input[type=checkbox] { accent-color: var(--wm-action-bg); flex-shrink: 0; }
 .fxa-session-menu :focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }

@@ -48,7 +48,7 @@ export default function FxSelect({ label, value, options, onChange, icon, search
     return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', positionMenu) }
   }, [open, searchable])
   return <div className={`fx-select ${className}`} ref={root} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
-    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); close() }
+    if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); close() }
     if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key) && (event.target !== input.current || event.key.startsWith('Arrow'))) {
       event.preventDefault()
       if (!open) { setOpen(true); setSearch(''); return }

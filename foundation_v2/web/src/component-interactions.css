@@ -247,9 +247,9 @@
     cursor: pointer;
   }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:disabled { color: var(--wm-content-muted); cursor: not-allowed; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked { background: var(--wm-selected); color: var(--wm-control-text); font-weight: 500; }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked { background: transparent; color: var(--wm-control-text); font-weight: 500; }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:not(:disabled):is(:hover, :focus-visible) { background: var(--fx-shell-nav-hover); color: var(--wm-content); outline: 0; }
-  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked:not(:disabled):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--wm-selected) 90%, var(--wm-control-text)); }
+  .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option:checked:not(:disabled):is(:hover, :focus-visible) { background: var(--wm-hover); }
   .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) select option::checkmark { order: 1; margin-inline-start: auto; color: currentColor; }
 }
 @media (pointer: coarse) {

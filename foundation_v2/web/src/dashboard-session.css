@@ -1,0 +1,61 @@
+.fx-dashboard-session-card { border: 1px solid var(--wm-border); border-radius: 16px; background: var(--wm-surface); min-width: 0; }
+.fx-dashboard-session-card-head { display: grid; grid-template-columns: 36px minmax(180px, 1fr) minmax(120px, 160px) auto; gap: 18px; align-items: center; padding: 20px; }
+.fx-dashboard-card-play { display: grid; place-items: center; width: 36px; min-height: 36px; padding: 0; border: 0; border-radius: 50%; background: var(--wm-action-bg); color: var(--wm-on-primary); text-decoration: none; }
+.fx-dashboard-card-play:disabled, .fx-dashboard-card-play.is-unavailable { background: var(--wm-control-open); color: var(--wm-content-muted); }
+.fx-dashboard-card-play svg { width: 20px; height: 20px; }
+.fx-dashboard-card-info { min-width: 0; }
+.fx-dashboard-card-info h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.fx-dashboard-card-info h3 > span, .fx-dashboard-card-asset { border: 1px solid var(--wm-border-strong); border-radius: 999px; padding: 3px 8px; font-size: 11px; font-weight: 400; }
+.fx-dashboard-card-info h3 small { color: var(--wm-content-muted); font-size: 11px; font-weight: 400; }
+.fx-dashboard-card-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 8px; font-size: 12px; }
+.fx-dashboard-card-facts > span { display: inline-flex; align-items: center; gap: 6px; }
+.fx-dashboard-card-facts svg, .fx-dashboard-card-actions svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.fx-dashboard-card-asset { display: inline-block; }
+.fx-dashboard-card-progress { display: grid; gap: 6px; text-align: center; min-width: 0; }
+.fx-dashboard-card-progress small { color: var(--wm-content-muted); font-size: 10px; }
+.fx-dashboard-card-progress progress { appearance: none; width: 100%; height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
+.fx-dashboard-card-progress progress::-webkit-progress-bar { background: var(--wm-control-open); }
+.fx-dashboard-card-progress progress::-webkit-progress-value { background: var(--wm-content-muted); }
+.fx-dashboard-card-progress progress::-moz-progress-bar { background: var(--wm-content-muted); }
+.fx-dashboard-card-actions { display: flex; align-items: center; gap: 8px; }
+.fx-app .fx-dashboard .fx-dashboard-card-icon { display: inline-flex; justify-content: center; align-items: center; flex: 0 0 32px; width: 32px; min-height: 32px; padding: 0; border: 0; border-radius: 50%; background: var(--wm-control-open); color: var(--wm-content); text-decoration: none; }
+.fx-app .fx-dashboard .fx-dashboard-card-icon.is-danger { color: var(--wm-negative); }
+.fx-app .fx-dashboard .fx-dashboard-card-icon.is-danger:hover { background: var(--wm-hover); }
+.fx-app .fx-dashboard .fx-dashboard-card-summary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--wm-control-open); white-space: nowrap; font-size: 12px; }
+.fx-dashboard-card-expand svg { transition: rotate 140ms; }
+.fx-dashboard-card-expand[aria-expanded='true'] svg { rotate: 180deg; }
+.fx-dashboard-card-charts { padding: 0 20px 20px; }
+.fx-dashboard-card-charts .fxs-performance { margin: 0; }
+.fx-dashboard-card-charts .fxs-charts { gap: 16px; }
+.fx-dashboard-card-charts .fxs-chart-panel { background: transparent; }
+.fx-dashboard-card-charts > p { margin: 12px 0 0; font-size: 13px; color: var(--wm-content-muted); }
+.fx-dashboard-dialog { width: min(1100px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); box-sizing: border-box; overflow: auto; margin: auto; padding: 24px; border: 1px solid var(--wm-border-strong); border-radius: 12px; color: var(--wm-content); background: var(--wm-surface); }
+.fx-dashboard-dialog::backdrop { background: #0009; }
+.fx-dashboard-dialog > header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.fx-dashboard-dialog h2 { margin: 0; font-size: 18px; }
+.fx-dashboard-dialog > header button { border: 0; background: transparent; font-size: 22px; min-width: 40px; padding: 0; }
+.fx-dashboard-dialog form { display: grid; gap: 20px; }
+.fx-dashboard-dialog label { display: grid; gap: 8px; font-size: 13px; }
+.fx-dashboard-dialog input, .fx-dashboard-dialog textarea { box-sizing: border-box; width: 100%; }
+.fx-dashboard-dialog footer { display: flex; justify-content: flex-end; gap: 8px; }
+.fx-dashboard-dialog-preview { display: block; color: var(--wm-content-muted); margin-bottom: 16px; }
+.fx-dashboard-dialog form p { margin: 0; font-size: 14px; line-height: 1.6; }
+@media (max-width: 1250px) {
+  .fx-dashboard-session-card-head { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 14px; }
+  .fx-dashboard-card-progress { grid-column: 2; grid-row: 2; width: min(160px, 100%); text-align: left; }
+  .fx-dashboard-card-actions { grid-column: 3; grid-row: 1 / span 2; }
+}
+@media (max-width: 960px) {
+  .fx-dashboard-session-card-head { grid-template-columns: 36px minmax(0, 1fr); }
+  .fx-dashboard-card-progress { grid-column: 2; }
+  .fx-dashboard-card-actions { grid-column: 1 / -1; grid-row: auto; justify-content: flex-end; flex-wrap: wrap; }
+}
+@media (max-width: 480px) {
+  .fx-dashboard-session-card-head { padding: 14px; gap: 12px; }
+  .fx-dashboard-card-actions { justify-content: flex-start; gap: 4px; }
+  .fx-app .fx-dashboard .fx-dashboard-card-summary { padding-inline: 8px; }
+  .fx-dashboard-card-charts { padding: 0 14px 14px; }
+  .fx-dashboard-dialog { padding: 16px; }
+}
+@media (pointer: coarse) { .fx-app .fx-dashboard :is(.fx-dashboard-card-icon, .fx-dashboard-card-play, .fx-dashboard-card-summary) { min-height: 44px; min-width: 44px; } }
+@media (prefers-reduced-motion: reduce) { .fx-dashboard-card-expand svg { transition: none; } }

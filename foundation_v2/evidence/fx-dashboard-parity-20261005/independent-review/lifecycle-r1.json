@@ -1,0 +1,1439 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "5ebdeb289c874029b271d6d596a9b127f2f07360e64b2e2b34749309c88b27ff"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "25382924483581c04a88762f46dfa986c78783eed09636f868399aa29c844f2a"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "d626ec7474028dc42a63083c39da59a4984a7286612c58e07cb9dc888f5b0272"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    }
+  ],
+  "checks": [],
+  "failures": [
+    {
+      "name": "demo-metadata-charts-summary",
+      "error": "AssertionError [ERR_ASSERTION]: focus escaped modal [{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"}]"
+    },
+    {
+      "name": "demo-local-lifecycle-and-copy-ledger",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+    },
+    {
+      "name": "modal-closure-focus-1440",
+      "error": "AssertionError [ERR_ASSERTION]: focus escaped modal [{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"}]"
+    },
+    {
+      "name": "modal-closure-focus-360",
+      "error": "AssertionError [ERR_ASSERTION]: focus escaped modal [{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\n    WMEN?TestingLiveStrategiesEducation\"}]"
+    },
+    {
+      "name": "demo-analytics-scoping-toggle",
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Gold Swing/. Input:\n\n'Session'\n"
+    },
+    {
+      "name": "actual-archived-summary-read-only-cancel",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "api": [
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/overview",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "query": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-archived-summary-read-only-cancel",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "demo": null
+    }
+  ],
+  "focus": [
+    {
+      "tag": "summary-1440",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIALOG",
+          "label": "Summary · Gold Swing"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIALOG",
+          "label": "Summary · Gold Swing"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIALOG",
+          "label": "Summary · Gold Swing"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIALOG",
+          "label": "Summary · Gold Swing"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIALOG",
+          "label": "Summary · Gold Swing"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIV",
+          "label": "Giao dịch gần đây"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tuần T2–CN chứa 2026-09-26 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Tháng 2026-09 · UTC"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "10 thắng · 8 thua"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "SPAN",
+          "label": "Net · giao dịch đóng"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "DIALOG",
+          "label": "Summary · Gold Swing"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Số dòng Recent Trades"
+        }
+      ]
+    },
+    {
+      "tag": "rename-1440",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        }
+      ]
+    },
+    {
+      "tag": "rename-360",
+      "results": [
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": false,
+          "tag": "BODY",
+          "label": "\n    WMEN?TestingLiveStrategiesEducation"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Lưu thay đổi"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Hủy"
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "TEXTAREA",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "INPUT",
+          "label": ""
+        },
+        {
+          "key": "Shift+Tab",
+          "inside": true,
+          "tag": "BUTTON",
+          "label": "Đóng hộp thoại phiên"
+        }
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "demo-london",
+      "text": "London Breakout\nM1\n6/7/26 – 5/10/26\n10.960 USD\nEURUSD\nCòn 12 ngày dữ liệu\nSummary",
+      "value": 1401
+    },
+    {
+      "id": "demo-newyork",
+      "text": "New York Reversal\nM1\n6/7/26 – 5/10/26\n10.960 USD\nGBPUSD\nCòn 10 ngày dữ liệu\nSummary",
+      "value": 1901
+    },
+    {
+      "id": "demo-gold",
+      "text": "Gold Swing\nM5\n6/7/26 – 5/10/26\n10.960 USD\nXAUUSD\nCòn 9 ngày dữ liệu\nSummary",
+      "value": 2401
+    }
+  ],
+  "after": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "99b7d4a54e300d5aa4841ab9cc844eb1a59ae455c4b4b69e85314af1e20de802"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "5ebdeb289c874029b271d6d596a9b127f2f07360e64b2e2b34749309c88b27ff"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "32700835645fa29d1534a56df05a3403b64fca4118291d5faf987fe5b99a86a3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "524fe98a4a25c27d86b5ef1b749bcb3bbbf6dc357310539ae733514fbf314449"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "c24e71e4b2568e535bc8d9dbcec32eb4f42e292c36d9a54054de77fc2cc566ae"
+    },
+    {
+      "file": "foundation_v2/web/src/demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "53a76eeb17cc9deb8e7f3c65a7a4d83b5dfaeb9f786aa0c88daa9ce4fc375f4b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "ff61c99d9c3aa7aeaf44d7e9d0019f4fdf018c81d90420e6ef82fd7a05b147ee"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "25382924483581c04a88762f46dfa986c78783eed09636f868399aa29c844f2a"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "d626ec7474028dc42a63083c39da59a4984a7286612c58e07cb9dc888f5b0272"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: focus escaped modal [{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"}]',\n+     name: 'demo-metadata-charts-summary'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n' +\n+       '\\n' +\n+       '1 !== 0\\n',\n+     name: 'demo-local-lifecycle-and-copy-ledger'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: focus escaped modal [{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"}]',\n+     name: 'modal-closure-focus-1440'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: focus escaped modal [{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"},{\"key\":\"Shift+Tab\",\"inside\":false,\"tag\":\"BODY\",\"label\":\"\\\\n    WMEN?TestingLiveStrategiesEducation\"}]',\n+     name: 'modal-closure-focus-360'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Gold Swing/. Input:\\n' +\n+       '\\n' +\n+       \"'Session'\\n\",\n+     name: 'demo-analytics-scoping-toggle'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\\n' +\n+       '\\n' +\n+       '1 !== 0\\n',\n+     name: 'actual-archived-summary-read-only-cancel'\n+   }\n+ ]\n- []\n"
+}

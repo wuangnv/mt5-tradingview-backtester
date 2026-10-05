@@ -9,6 +9,6 @@ export function canPreviewDemo(view, query) {
 export function demoToggleHref(href, enabled) {
   const url = new URL(href)
   if (enabled) url.searchParams.set('demo', '1')
-  else url.searchParams.delete('demo')
+  else { url.searchParams.delete('demo'); url.searchParams.delete('demo_session') }
   return url
 }

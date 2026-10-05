@@ -1,0 +1,41 @@
+{
+  "scope": "Synthetic browser API responses for metadata/branch contracts. Actual API GET-only and compared unchanged.",
+  "requests": [
+    {
+      "method": "PATCH",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "body": {
+        "name": "Synthetic renamed",
+        "description": "Real Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.",
+        "expected_revision": 2
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "body": {
+        "name": "Synthetic renamed",
+        "description": "Real Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.",
+        "expected_revision": 3
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/branch",
+      "body": {
+        "expected_revision": 4,
+        "cursor_index": 500
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "body": {
+        "archived": true,
+        "expected_revision": 4
+      }
+    }
+  ],
+  "blocked": [],
+  "pass": true
+}

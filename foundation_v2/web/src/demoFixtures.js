@@ -3,7 +3,7 @@ export const DEMO_SESSIONS = [
   { record_id: 'demo-london', name: 'London Breakout', instrument_id: 'EURUSD', timeframe: 'M1', status: 'paused', created_at_utc: '2026-07-06T08:00:00Z' },
   { record_id: 'demo-newyork', name: 'New York Reversal', instrument_id: 'GBPUSD', timeframe: 'M1', status: 'paused', created_at_utc: '2026-08-03T13:00:00Z' },
   { record_id: 'demo-gold', name: 'Gold Swing', instrument_id: 'XAUUSD', timeframe: 'M5', status: 'completed', created_at_utc: '2026-09-07T07:00:00Z' },
-].map((item, i) => ({ ...item, revision: 1, row_count: 30000, cursor_index: 1400 + i * 500, updated_at_utc: '2026-10-05T08:00:00Z', dataset_available: true, archived: false }))
+].map((item, i) => ({ ...item, dataset_id: `demo-dataset-${item.instrument_id}`, timeframe_seconds: item.timeframe === 'M5' ? 300 : 60, revision: 1, row_count: 30000, cursor_index: 1400 + i * 500, updated_at_utc: '2026-10-05T08:00:00Z', dataset_available: true, archived: false }))
 
 export const DEMO_LEDGER = Array.from({ length: 60 }, (_, i) => {
   const session = DEMO_SESSIONS[i % 3], side = i % 2 ? 'sell' : 'buy'
@@ -44,6 +44,17 @@ export function demoFilterRows(ids, filters = {}) {
     && (!filters.outcome || filters.outcome === 'all' || (row.net_pnl > 0 ? 'win' : row.net_pnl < 0 ? 'loss' : 'breakeven') === filters.outcome)
     && (!filters.from || row.close_time_utc.slice(0, 10) >= filters.from) && (!filters.to || row.close_time_utc.slice(0, 10) <= filters.to))
 }
+
+export function demoDashboardAnalytics(item, workspace) {
+  const rows = demoFilterRows([item.source_record_id || item.record_id]).map(row => ({ ...row, session_id: item.record_id, session_name: item.name }))
+  const result = demoResult(rows, item)
+  return { schema_version: 'analytics-read-model-v1', analytics_available: true, metrics: result.metrics, ledger: rows,
+    scope: { selected_trade_count: rows.length, total_trade_count: rows.length },
+    provenance: { preview: true, workspace_id: workspace, session_id: item.record_id, account_currency: 'USD', instrument_id: item.instrument_id,
+      playbook_id: item.source_record_id || item.record_id, cutoff_timestamp: rows.length ? Date.parse(rows.at(-1).close_time_utc) / 1000 : null } }
+}
+
+export const DEMO_DATASETS = DEMO_SESSIONS.map(item => ({ dataset_id: item.dataset_id, first_timestamp: Date.UTC(2026, 6, 6) / 1000, last_timestamp: Date.UTC(2026, 9, 5) / 1000 }))
 
 export const DEMO_ASSETS = { status: 'ready', source: 'UI demo', items: ['EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD', 'USDCHF', 'USDCAD', 'NZDUSD', 'XAUUSD', 'XAGUSD', 'US500', 'NAS100', 'BTCUSD'].map((symbol, i) => ({
   symbol, metadata: { group: i < 7 ? 'Forex' : i < 9 ? 'Metals' : i < 11 ? 'Indices' : 'Crypto', description: `${symbol} · Demo` }, enabled: true, status: i < 10 ? 'ready' : 'not_downloaded',
