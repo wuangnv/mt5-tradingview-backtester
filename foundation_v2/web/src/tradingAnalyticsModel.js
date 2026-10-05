@@ -3,7 +3,13 @@ import { closeTime } from './sessionPerformanceModel.js'
 export const known = value => value !== null && value !== undefined && value !== '' && typeof value !== 'boolean' && Number.isFinite(Number(value))
 export const number = value => known(value) ? Number(value) : null
 export const outcomeOf = value => !known(value) ? 'unknown' : Number(value) > 1e-12 ? 'win' : Number(value) < -1e-12 ? 'loss' : 'breakeven'
-export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', strategy: 'all', source: 'all', weekday: 'all', hour: 'all', timezone: 'UTC', search: '' }
+export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', strategy: 'all', source: 'all', weekday: 'all', hour: 'all', timezone: 'UTC', search: '', notes: '', assets: '', sides: '', outcomes: '', types: '', years: '', months: '', days: '', hours: '', tagInclude: '', tagExclude: '', tagIncludeMode: 'AND', tagExcludeMode: 'AND' }
+// JSON preserves commas in journal tags and survives the existing string URL contract.
+export function filterValues(value) {
+  if (Array.isArray(value)) return value.map(String)
+  if (!value) return []
+  try { const parsed = JSON.parse(value); return Array.isArray(parsed) ? parsed.map(String) : [] } catch { return [] }
+}
 export function readAnalyticsExtraFilters(query) {
   const values = { ...DEFAULT_EXTRA_FILTERS }
   for (const key of Object.keys(values)) {
@@ -39,15 +45,32 @@ export function calendarParts(value, timezone = 'UTC') {
 }
 
 export function filterAnalyticsRows(rows, filters = DEFAULT_EXTRA_FILTERS) {
+  filters = { ...DEFAULT_EXTRA_FILTERS, ...filters }
   const search = filters.search.trim().toLowerCase()
+  const notes = filters.notes.trim().toLowerCase()
+  const lists = Object.fromEntries(['assets', 'sides', 'outcomes', 'types', 'years', 'months', 'days', 'hours', 'tagInclude', 'tagExclude'].map(key => [key, filterValues(filters[key])]))
+  const matches = (key, value) => !lists[key].length || value !== null && value !== undefined && lists[key].includes(String(value))
+  const tagsMatch = (values, tags, mode) => mode === 'OR' ? values.some(value => tags.includes(value)) : values.every(value => tags.includes(value))
   return rows.filter(row => {
     const time = calendarParts(row.close_time_utc, filters.timezone)
+    const tags = Array.isArray(row.tags) ? row.tags : []
     return (filters.asset === 'all' || row.symbol === filters.asset)
       && (filters.tag === 'all' || (row.tags || []).includes(filters.tag))
       && (!filters.strategy || filters.strategy === 'all' || row.playbook_id === filters.strategy)
       && (filters.source === 'all' || row.source_id === filters.source || (typeof row.source === 'string' ? row.source : row.source?.session_id) === filters.source)
       && (filters.weekday === 'all' || time?.weekday === Number(filters.weekday))
       && (filters.hour === 'all' || time?.hour === Number(filters.hour))
+      && matches('assets', row.symbol)
+      && matches('sides', row.side?.toLowerCase())
+      && matches('outcomes', outcomeOf(row.net_pnl))
+      && matches('types', row.entry_type)
+      && matches('years', time?.key.slice(0, 4))
+      && matches('months', time ? Number(time.key.slice(5, 7)) : null)
+      && matches('days', time?.weekday)
+      && matches('hours', time?.hour)
+      && (!notes || typeof row.notes === 'string' && row.notes.toLowerCase().includes(notes) || typeof row.note === 'string' && row.note.toLowerCase().includes(notes))
+      && (!lists.tagInclude.length || tagsMatch(lists.tagInclude, tags, filters.tagIncludeMode))
+      && (!lists.tagExclude.length || !tagsMatch(lists.tagExclude, tags, filters.tagExcludeMode))
       && (!search || [row.tradeId, row.trade_id, row.symbol, row.side, ...(row.tags || [])].join(' ').toLowerCase().includes(search))
   })
 }
@@ -82,7 +105,7 @@ function stats(rows) {
 export function advancedAnalytics(model, filters = DEFAULT_EXTRA_FILTERS) {
   const rows = filterAnalyticsRows(model.ledger, filters)
   const summary = stats(rows)
-  const localFiltered = ['asset', 'tag', 'strategy', 'source', 'weekday', 'hour', 'search'].some(key => (filters[key] ?? DEFAULT_EXTRA_FILTERS[key]) !== DEFAULT_EXTRA_FILTERS[key])
+  const localFiltered = Object.keys(DEFAULT_EXTRA_FILTERS).filter(key => key !== 'timezone').some(key => (filters[key] ?? DEFAULT_EXTRA_FILTERS[key]) !== DEFAULT_EXTRA_FILTERS[key])
   // A filtered balance is a hypothetical sequence from the original starting capital.
   let balance = number(model.startBalance), peak = balance, drawdown = [], curve = []
   if (balance !== null && summary.complete) {

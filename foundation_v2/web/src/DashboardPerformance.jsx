@@ -40,8 +40,7 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
   const blocked = performance?.status === 'blocked' || performance?.scope?.readable_session_count === 0 && performance?.scope?.session_count > 0
   const notice = filterError || (loading ? 'Đang tải Performance…' : state.status === 'error' ? 'Chưa tải được Performance.' : blocked ? 'Chưa đủ dữ liệu thực thi để tính Performance.' : partial ? `Dữ liệu chưa đầy đủ · đọc được ${performance.scope.readable_session_count}/${performance.scope.session_count} phiên.` : metrics?.closed_trade_count === 0 ? 'Không có giao dịch đóng trong phạm vi này.' : '')
   return <section className="fx-dashboard-results" aria-label="Performance" aria-busy={loading}>
-    <div className="fx-dashboard-section-head"><h2>Performance</h2><div className="fx-dashboard-performance-filters">{controls}</div></div>
-    {dateControls}
+    <div className="fx-dashboard-section-head"><h2>Performance</h2><div className="fx-dashboard-performance-filters">{controls}{dateControls}</div></div>
     {sourceHeading && <h3 className="fx-dashboard-source-heading">{sourceHeading}</h3>}
     <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{notice}</span>}</div>
     <div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">

@@ -1,0 +1,11 @@
+{
+  "actual": [
+    "No-init canonical session range91days; unknown balance—; description-only editing; borderless settings hover;4drawer tabs; no config-save affordance; Escape/focus restoration; no backend mutations",
+    "390px mobile drawer and Sessions visual checkpoints"
+  ],
+  "fixture": [
+    "Isolated synthetic PATCH only: description payload excludes name; conflict preserves draft; successful revision-save updates card; drawer updates metadata only"
+  ],
+  "blockedWrites": [],
+  "errors": []
+}

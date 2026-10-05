@@ -3,7 +3,7 @@ export const DEMO_SESSIONS = [
   { record_id: 'demo-london', name: 'London Breakout', instrument_id: 'EURUSD', timeframe: 'M1', status: 'paused', created_at_utc: '2026-07-06T08:00:00Z' },
   { record_id: 'demo-newyork', name: 'New York Reversal', instrument_id: 'GBPUSD', timeframe: 'M1', status: 'paused', created_at_utc: '2026-08-03T13:00:00Z' },
   { record_id: 'demo-gold', name: 'Gold Swing', instrument_id: 'XAUUSD', timeframe: 'M5', status: 'completed', created_at_utc: '2026-09-07T07:00:00Z' },
-].map((item, i) => ({ ...item, dataset_id: `demo-dataset-${item.instrument_id}`, timeframe_seconds: item.timeframe === 'M5' ? 300 : 60, revision: 1, row_count: 30000, cursor_index: 1400 + i * 500, updated_at_utc: '2026-10-05T08:00:00Z', dataset_available: true, archived: false }))
+].map((item, i) => ({ ...item, dataset_id: `demo-dataset-${item.instrument_id}`, timeframe_seconds: item.timeframe === 'M5' ? 300 : 60, revision: 1, row_count: 30000, cursor_index: item.status === 'completed' ? 29999 : 1400 + i * 500, updated_at_utc: '2026-10-05T08:00:00Z', dataset_available: true, archived: false }))
 
 export const DEMO_LEDGER = Array.from({ length: 60 }, (_, i) => {
   const session = DEMO_SESSIONS[i % 3], side = i % 2 ? 'sell' : 'buy'
@@ -55,6 +55,14 @@ export function demoDashboardAnalytics(item, workspace) {
 }
 
 export const DEMO_DATASETS = DEMO_SESSIONS.map(item => ({ dataset_id: item.dataset_id, first_timestamp: Date.UTC(2026, 6, 6) / 1000, last_timestamp: Date.UTC(2026, 9, 5) / 1000 }))
+
+export function demoReplayContext(item) {
+  const source = item.source_record_id || item.record_id
+  const index = Math.max(0, DEMO_SESSIONS.findIndex(entry => entry.record_id === source))
+  const dataset = DEMO_DATASETS.find(entry => entry.dataset_id === item.dataset_id)
+  return { record_id: item.record_id, revision: item.revision, cutoff_timestamp: dataset.last_timestamp - [7, 3, 0][index] * 86400,
+    payload: { execution: { balance: demoDashboardAnalytics(item, 'demo').metrics.ending_closed_trade_balance, starting_balance: 10000 } } }
+}
 
 export const DEMO_ASSETS = { status: 'ready', source: 'UI demo', items: ['EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD', 'USDCHF', 'USDCAD', 'NZDUSD', 'XAUUSD', 'XAGUSD', 'US500', 'NAS100', 'BTCUSD'].map((symbol, i) => ({
   symbol, metadata: { group: i < 7 ? 'Forex' : i < 9 ? 'Metals' : i < 11 ? 'Indices' : 'Crypto', description: `${symbol} · Demo` }, enabled: true, status: i < 10 ? 'ready' : 'not_downloaded',

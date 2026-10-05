@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "scope": "real local UI + demo-local data; API GET only, broker not evaluated",
+  "checks": [
+    "22 default cells = checkbox + Actions + 20 source columns; no toolbar CSV/search; document icon",
+    "searchable Basic accordions; draft does not filter until Apply; Close discards; Apply filters Buy",
+    "Reset table columns restores22 headers and leaves Buy filter unchanged",
+    "Tags include AND plus exclude filter intersect; synthetic journal tags rendered",
+    "first/last pages and page size50 work; inner rows scroll while header/footer remain viewport-pinned",
+    "390px drawer fits viewport; Escape closes",
+    "30 Tab/ShiftTab cycles stay in modal desktop/mobile; complete page-size control fits 320/360/390/480px"
+  ],
+  "writes": [],
+  "errors": []
+}

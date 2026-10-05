@@ -106,6 +106,15 @@ export async function readDashboardDatasets(workspace, signal) {
   return payload.items
 }
 
+export async function readDashboardReplayContext(workspace, item, signal) {
+  const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(item.record_id)}`, { headers: { 'X-Workspace-Id': workspace }, signal })
+  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  const record = await response.json()
+  if (record.record_id !== item.record_id || record.revision !== item.revision) throw new Error('replay_context_revision_mismatch')
+  const { visible_rows, ...metadata } = record
+  return metadata
+}
+
 export function dashboardCurve(metrics) {
   const raw = metrics?.closed_trade_balance_curve
   const known = value => value !== null && value !== undefined && value !== '' && typeof value !== 'boolean' && Number.isFinite(Number(value))

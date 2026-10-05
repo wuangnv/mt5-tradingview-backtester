@@ -306,6 +306,11 @@ select.fxr-filter-select { appearance: auto; }
 .fx-app .fxr-integrated-sessions .fxr-session-catalog-status.is-error { color: var(--wm-negative); }
 .fx-app .fxr-integrated-sessions .fxr-ledger-context { margin-block: 16px 0; }
 .fx-app .fxr-integrated-sessions .fxr-session-report { margin-top: 28px; }
+.fx-app .fxr-integrated-sessions.fxs-page .fxr-session-actions .fx-select-trigger { min-height: 44px; border: 1px solid var(--wm-control-border); border-radius: 999px; padding-inline: 14px; background: transparent; font-weight: 600; }
+.fx-app .fxr-integrated-sessions.fxs-page .fxr-session-actions .fxr-button { border-color: var(--wm-control-border); }
+.fx-app .fxr-integrated-sessions.fxs-page .fxr-session-actions .fxs-settings { border: 0; border-radius: 0; background: transparent; padding-inline: 0; color: var(--wm-content); font-weight: 500; }
+.fx-app .fxr-integrated-sessions.fxs-page .fxr-session-actions .fxs-settings:hover:not(:disabled) { background: transparent; text-decoration: underline; text-underline-offset: 6px; color: var(--wm-content); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fxr-integrated-sessions.fxs-page .fxr-session-actions .fxs-settings:hover:not(:disabled) { background: transparent; }
 .fx-app .fxr-integrated-sessions .fxr-empty-state { align-items: flex-start; text-align: left; min-height: 220px; }
 .fx-app .fxr-integrated-sessions .fxr-empty-state h2 { color: var(--session-ink); font-size: 16px; }
 @media (max-width: 768px) {

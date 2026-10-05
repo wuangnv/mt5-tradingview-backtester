@@ -6,13 +6,16 @@ import FxSelect from './FxSelect.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
 import DashboardSessions from './DashboardSessions.jsx'
+import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
+import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
+import { SessionSelect } from './SessionPicker.jsx'
 import MarketAssetCatalog from './MarketAssetCatalog.jsx'
 import LiveBrokerSnapshot from './LiveBrokerSnapshot.jsx'
 import { PlaybookList, PlaybookSummary } from './PlaybookWorkspace.jsx'
 import { JournalRow, StoryRail } from './JournalWorkspace.jsx'
 import { DEFAULT_EXTRA_FILTERS, filterAnalyticsRows, tradesCsv } from './tradingAnalyticsModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_ASSETS, DEMO_LIVE, DEMO_DATASETS, demoDashboardAnalytics, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
+import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_ASSETS, DEMO_LIVE, DEMO_DATASETS, demoDashboardAnalytics, demoReplayContext, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
 
 function Objectives({ model }) {
   return <section className="fxa-prop-objectives" aria-label="Challenge objectives"><div className="fxa-section-heading"><h2>Challenge objectives</h2><span>Practice · Phase 1</span></div><div className="fxa-metrics"><Metric label="Balance" value={fmt(model.endingBalance, ' USD')} /><Metric label="Profit target" value="1.000 USD" /><Metric label="Daily loss limit" value="500 USD" /><Metric label="Overall loss limit" value="1.000 USD" /></div><table><thead><tr><th>Objective</th><th>Kết quả / ngưỡng</th><th>Trạng thái</th></tr></thead><tbody><tr><td>Profit target</td><td>{fmt(model.netPnl, ' USD')} / 1.000 USD</td><td>{model.netPnl >= 1000 ? 'Đạt' : 'Đang thực hiện'}</td></tr><tr><td>Overall drawdown</td><td>{fmt(model.maxDrawdown, ' USD')} / 1.000 USD</td><td>{model.maxDrawdown < 1000 ? 'Trong giới hạn' : 'Vi phạm'}</td></tr></tbody></table></section>
@@ -44,15 +47,38 @@ function DemoReports({ ledgerOnly, prop = false, query }) {
   </section>
 }
 
-function DemoSessions() {
-  const [id, setId] = useState(DEMO_SESSIONS[0].record_id)
-  const item = DEMO_SESSIONS.find(item => item.record_id === id)
-  const model = useMemo(() => buildAnalyticsModel(demoResult(demoFilterRows([id]), item)), [id])
-  return <section className="wm-page fx-session-picker fxr-integrated-sessions fxs-page" aria-label="Sessions"><h1 className="sr-only">Sessions</h1><div className="fxr-session-toolbar"><div className="fxr-session-control"><span className="fxs-select-label">Session</span><FxSelect label="Chọn phiên replay" value={id} onChange={setId} searchable options={DEMO_SESSIONS.map(item => ({ value: item.record_id, label: item.name, detail: item.instrument_id }))} /></div><div className="fxr-session-actions"><button className="fxr-button fxr-button-secondary" disabled type="button">Mở chart</button><button className="fxr-button fxr-button-primary" disabled type="button">Tạo backtest</button></div></div><div className="fxs-demo-summary"><div><h2>{item.name}</h2><span>{item.instrument_id} · {item.timeframe}</span></div><div className="fxs-balance"><span>Balance · USD</span><strong>{fmt(model.endingBalance)}</strong></div></div><SessionPerformance model={model} item={item} payload={{}} /></section>
+function DemoSessions({ workspace, query }) {
+  const [items, setItems] = useState(DEMO_SESSIONS)
+  const [id, setId] = useState(DEMO_SESSIONS.find(item => item.record_id === query.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
+  const [editing, setEditing] = useState(false)
+  const item = items.find(item => item.record_id === id)
+  const payload = useMemo(() => demoDashboardAnalytics(item, workspace), [item, workspace])
+  const model = useMemo(() => buildAnalyticsModel(demoResult(payload.ledger, item)), [payload, item])
+  const dataset = DEMO_DATASETS.find(entry => entry.dataset_id === item.dataset_id), replayRecord = demoReplayContext(item)
+  const href = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, { demo_session: id, select: '1', analytics_source: 'sessions', ...overrides })
+  const save = draft => { setItems(current => current.map(entry => entry.record_id === id ? { ...entry, ...draft, revision: entry.revision + 1 } : entry)); setEditing(false); return true }
+  const select = value => { setId(value); const url = new URL(window.location.href); url.searchParams.set('demo_session', value); window.history.replaceState(null, '', url) }
+  return <section className="wm-page fx-session-picker fxr-integrated-sessions fxs-page" aria-label="Sessions">
+    <h1 className="sr-only">Sessions</h1>
+    <div className="fxr-session-toolbar">
+      <SessionSelect selected={id} catalog={{ status: 'ready', items }} onSelect={select} balance={fmt(model.endingBalance, ' USD')} />
+      <div className="fxr-session-actions">
+        <button className="fxr-button fxr-button-primary" disabled type="button">＋ Phiên mới</button>
+        <FxSelect className="fxs-analytics-button" label="Mở Analytics" value="session" triggerContent="Analytics" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(href('analytics', { analytics_source: value === 'prop' ? 'prop' : 'sessions' }))} />
+        <button className="fxr-button fxr-button-secondary fxs-settings" type="button" onClick={() => setEditing(true)}>Cài đặt phiên</button>
+      </div>
+    </div>
+    <div className="fxr-session-cards">
+      <SessionSummaryCard item={item} dataset={dataset} payload={payload} model={model} replayRecord={replayRecord} preview />
+      <SessionDescriptionCard item={item} onSave={description => save({ description })} />
+    </div>
+    <div className="fxr-session-report"><SessionPerformance model={model} item={item} payload={payload} href={href} /></div>
+    {editing && <SessionSettingsDrawer item={item} dataset={dataset} payload={payload} model={model} replayRecord={replayRecord} workspace={workspace} preview onClose={() => setEditing(false)} onSubmit={save} />}
+  </section>
 }
 
 function DemoDashboard({ workspace, query }) {
-  const preview = useMemo(() => ({ items: DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics,
+  const preview = useMemo(() => ({ items: DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics, replayContext: demoReplayContext,
     overview: (filters, items) => demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : null, filters)),
     propReport: <DemoReports prop /> }), [])
   return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions workspace={workspace} query={query} preview={preview} /></div></section>
@@ -78,7 +104,7 @@ function DemoLive({ query }) {
 
 export default function DemoPreview({ view, workspace, query }) {
   if (view === 'overview') return <DemoDashboard workspace={workspace} query={query} />
-  if (view === 'replay') return <DemoSessions />
+  if (view === 'replay') return <DemoSessions workspace={workspace} query={query} />
   if (view === 'trade') return <DemoReports ledgerOnly />
   if (view === 'analytics' || view === 'testing' || view === 'prop') return <DemoReports query={query} prop={view !== 'analytics' || query.get('analytics_source') === 'prop'} />
   if (view === 'market-data') return <main className="wm-page market-data-workspace" aria-label="Market Data"><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} preview={DEMO_ASSETS} /></main>

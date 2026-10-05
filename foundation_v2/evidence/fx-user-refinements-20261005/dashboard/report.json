@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Custom date inputs align on the right with Performance filters at1571px",
+    "Recent search uses one pill border with no protruding focus ring",
+    "Dashboard Settings uses shared4tab drawer; demo saves name/description locally",
+    "Demo archive hides active card; archived filter allows restoration without deletion",
+    "Summary navigates to selected Gold demo Sessions; shared cards/description edit/readonly range work",
+    "Actual no-init session91calendar days from canonical cutoff; Summary correct id; balance stays unknown",
+    "Custom dates/dashboard responsive without page overflow at768px and390px"
+  ],
+  "errors": [],
+  "blockedWrites": [],
+  "actualWrites": 0
+}

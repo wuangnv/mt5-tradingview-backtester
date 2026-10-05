@@ -1,0 +1,130 @@
+import assert from 'node:assert/strict'
+import { mkdir, writeFile } from 'node:fs/promises'
+import path from 'node:path'
+import { chromium } from 'playwright'
+
+const origin = 'http://127.0.0.1:5180'
+const output = path.resolve('../evidence/fx-session-refinement-20261005')
+await mkdir(output, { recursive: true })
+const browser = await chromium.launch({ headless: true })
+const report = { actual: [], fixture: [], blockedWrites: [], errors: [] }
+const session = '476f4b498e1a49ed9d48a75719f4d270'
+const url = `${origin}/?workspace=tenant-a&view=replay&area=testing&section=sessions&select=1&session=${session}`
+const guard = context => context.route('**/*', route => {
+  if (new URL(route.request().url()).origin !== origin) return route.abort()
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(route.request().method())) { report.blockedWrites.push(route.request().method()); return route.abort() }
+  return route.continue()
+})
+try {
+  const context = await browser.newContext({ viewport: { width: 1571, height: 987 }, reducedMotion: 'reduce' })
+  await guard(context)
+  const page = await context.newPage()
+  page.on('pageerror', error => report.errors.push(error.message))
+  await page.goto(url)
+  await page.locator('.fxs-session-range').getByText('91 ngày còn lại').waitFor()
+  assert.equal(await page.locator('.fxs-no-analytics').evaluate(element => getComputedStyle(element).justifyContent), 'flex-start')
+  assert.equal(await page.locator('.fxr-session-summary-card h2').textContent(), 'Exness · EURUSDm · M1 · Jul–Oct 2026')
+  assert.equal(await page.locator('.fxs-balance strong').textContent(), '—')
+  const settings = page.getByRole('button', { name: 'Cài đặt phiên', exact: true })
+  await settings.hover()
+  assert.equal(await settings.evaluate(element => getComputedStyle(element).borderTopWidth), '0px')
+  assert.equal(await settings.evaluate(element => getComputedStyle(element).textDecorationLine), 'underline')
+  await page.screenshot({ path: path.join(output, 'sessions-dark.png'), fullPage: true })
+  await settings.click()
+  const dialog = page.getByRole('dialog', { name: 'Session Settings' })
+  await dialog.waitFor()
+  const bounds = await dialog.boundingBox()
+  assert.ok(Math.abs(bounds.x + bounds.width - 1571) < 2)
+  assert.equal(bounds.y, 0)
+  assert.equal(bounds.height, 987)
+  assert.notEqual(await dialog.evaluate(element => getComputedStyle(element).backgroundColor), 'rgba(0, 0, 0, 0)')
+  assert.equal(await dialog.getByRole('button', { name: 'Save Changes' }).isEnabled(), false)
+  await dialog.getByLabel('Name', { exact: true }).fill('Unsaved QA name')
+  assert.equal(await dialog.getByLabel('Name', { exact: true }).evaluate(element => getComputedStyle(element).borderRadius), '12px')
+  assert.equal(await dialog.getByLabel('Name', { exact: true }).evaluate(element => getComputedStyle(element).outlineStyle), 'none')
+  assert.equal(await dialog.getByRole('button', { name: 'Save Changes' }).isEnabled(), true)
+  for (const tab of ['Balance & Assets', 'Costs', 'Date Range']) {
+    await dialog.getByRole('tab', { name: tab, exact: true }).click()
+    assert.equal(await dialog.getByRole('button', { name: 'Save Changes' }).count(), 0)
+    assert.equal(await dialog.locator('[role="tabpanel"] input:not([readonly])').count(), 0)
+    await page.screenshot({ path: path.join(output, `settings-${tab.replaceAll(' ', '-').replace('&', 'and').toLowerCase()}.png`) })
+  }
+  await dialog.getByRole('tab', { name: 'Session Info', exact: true }).click()
+  assert.equal(await dialog.getByLabel('Name', { exact: true }).inputValue(), 'Unsaved QA name')
+  await page.screenshot({ path: path.join(output, 'settings-info.png') })
+  await page.keyboard.press('Escape')
+  await dialog.waitFor({ state: 'hidden' })
+  assert.equal(await settings.evaluate(element => element === document.activeElement), true)
+  await page.getByRole('button', { name: 'Sửa mô tả', exact: true }).click()
+  assert.equal(await page.locator('.fxr-description-card input').count(), 0)
+  await page.getByLabel('Mô tả phiên').fill('Unsaved description')
+  await page.getByRole('button', { name: 'Hủy sửa mô tả', exact: true }).click()
+  assert.equal(await page.locator('.fxr-description-card textarea').count(), 0)
+  report.actual.push('No-init canonical session range91days; unknown balance—; description-only editing; borderless settings hover;4drawer tabs; no config-save affordance; Escape/focus restoration; no backend mutations')
+  await page.getByTestId('theme-toggle').click()
+  await settings.click()
+  await dialog.waitFor()
+  assert.notEqual(await dialog.evaluate(element => getComputedStyle(element).backgroundColor), 'rgba(0, 0, 0, 0)')
+  await page.screenshot({ path: path.join(output, 'settings-light.png') })
+  await page.keyboard.press('Escape')
+  await page.getByTestId('theme-toggle').click()
+  await page.setViewportSize({ width: 390, height: 844 })
+  await settings.click()
+  await dialog.waitFor()
+  const mobile = await dialog.boundingBox()
+  assert.ok(mobile.x >= 0 && mobile.width <= 390)
+  await page.screenshot({ path: path.join(output, 'settings-mobile.png') })
+  await page.keyboard.press('Escape')
+  await page.screenshot({ path: path.join(output, 'sessions-mobile.png'), fullPage: true })
+  report.actual.push('390px mobile drawer and Sessions visual checkpoints')
+  assert.deepEqual(report.errors, [])
+  assert.deepEqual(report.blockedWrites, [])
+  await context.close()
+
+  const fixture = await browser.newContext({ viewport: { width: 1571, height: 987 }, reducedMotion: 'reduce' })
+  const headers = { 'X-Workspace-Id': 'tenant-a' }
+  const catalog = await (await fixture.request.get(`${origin}/api/v2/replay/sessions`, { headers })).json()
+  const record = await (await fixture.request.get(`${origin}/api/v2/replay/sessions/${session}`, { headers })).json()
+  const item = catalog.items.find(item => item.record_id === session)
+  const patches = []
+  let conflict = true
+  await fixture.route('**/*', route => {
+    const request = route.request(), location = new URL(request.url())
+    if (location.origin !== origin) return route.abort()
+    if (location.pathname === `/api/v2/replay/sessions/${session}` && request.method() === 'PATCH') {
+      const draft = request.postDataJSON()
+      patches.push(draft)
+      if (conflict) { conflict = false; return route.fulfill({ status: 409, json: { detail: 'Isolated fixture conflict' } }) }
+      Object.assign(item, draft, { revision: item.revision + 1 })
+      Object.assign(record.payload, draft); record.revision = item.revision
+      return route.fulfill({ json: record })
+    }
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method())) return route.abort()
+    if (location.pathname === '/api/v2/replay/sessions') return route.fulfill({ json: catalog })
+    if (location.pathname === `/api/v2/replay/sessions/${session}`) return route.fulfill({ json: record })
+    return route.continue()
+  })
+  const synthetic = await fixture.newPage()
+  await synthetic.goto(url)
+  await synthetic.getByRole('button', { name: 'Sửa mô tả', exact: true }).click()
+  await synthetic.getByLabel('Mô tả phiên').fill('Isolated description save')
+  await synthetic.getByRole('button', { name: 'Save', exact: true }).click()
+  await synthetic.getByText('Phiên đã thay đổi ở nơi khác.', { exact: false }).waitFor()
+  assert.equal(await synthetic.getByLabel('Mô tả phiên').inputValue(), 'Isolated description save')
+  await synthetic.getByRole('button', { name: 'Save', exact: true }).click()
+  await synthetic.locator('.fxr-session-description').getByText('Isolated description save', { exact: true }).waitFor()
+  assert.deepEqual(Object.keys(patches[1]).sort(), ['description', 'expected_revision'])
+  assert.equal(item.name, 'Exness · EURUSDm · M1 · Jul–Oct 2026')
+  await synthetic.getByRole('button', { name: 'Cài đặt phiên', exact: true }).click()
+  await synthetic.getByRole('dialog').getByLabel('Name', { exact: true }).fill('Isolated settings name')
+  await synthetic.getByRole('button', { name: 'Save Changes', exact: true }).click()
+  await synthetic.getByRole('dialog').waitFor({ state: 'hidden' })
+  await synthetic.locator('.fxr-session-summary-card h2').getByText('Isolated settings name').waitFor()
+  assert.deepEqual(Object.keys(patches[2]).sort(), ['description', 'expected_revision', 'name'])
+  report.fixture.push('Isolated synthetic PATCH only: description payload excludes name; conflict preserves draft; successful revision-save updates card; drawer updates metadata only')
+  await fixture.close()
+} finally {
+  await writeFile(path.join(output, 'report.json'), JSON.stringify(report, null, 2))
+  await browser.close()
+}
+console.log(JSON.stringify(report))

@@ -1,0 +1,437 @@
+{
+  "status": "SCOPED_PASS",
+  "scope": "FX user refinements: Dashboard, Sessions, Trades and selected Analytics routing/separator behavior",
+  "generatedAt": "2026-10-05T15:28:53.4929661Z",
+  "uniqueChecks": 43,
+  "affectedRerunChecks": 26,
+  "reusedUnchangedChecks": 17,
+  "single43CheckRun": false,
+  "sourcePins": [
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "f89039b9cfbda1702687f08fbc82a7e2df217d8e89eb3e05c45c4120f7e2d2e4"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "9d8c1ad88f96cd31e57f1564e2f139d08eceef503ce6a7518d245996e7c7491b"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "281f5e77eef159a3f8c5e1ac41c1fabbf4e83209df5b448f0c8e1c109854b9e4"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "bb5d823bdcd1f8a5808108e0d7b250780410982f0d924af88c16ab59a84531d9"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "d4a2871eecc7b4d434cb8ee9b220b49cdb9f6a864febf1cc5b295e025e521c81"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboardModel.js",
+      "sha256": "15f0d66db1bf820f2491890bb5b3a678386a844bc7d3fe9e57e8e2f12727fbb9"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "2eedef974cf3594b559bc6c17cffae4320b09958756613c2326da72c0eda2c02"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "dfa99275844a8ab5dd18ab0976b09c514e4b2b4584d98220fb7a8481a8445857"
+    },
+    {
+      "file": "foundation_v2/web/src/FxReplayShell.jsx",
+      "sha256": "f70098ddbf0b2667236539ad40c54b8ba0a52110fb9cf558054e2eaf0176e2ef"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "8346872c950dcb7a7da6a8cf689aa2f18677d2b9ddca68833916bb949ea57c19"
+    },
+    {
+      "file": "foundation_v2/web/src/fx-select.css",
+      "sha256": "844646f06ef792cc525dd19b09c27ca6a92ef85ed550a0503490aed925aeb99b"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionFilter.jsx",
+      "sha256": "a4c3bef61ffd10a17a7e1d1246caf429c1382e67e9f3b0d7db99ac192030d7c2"
+    },
+    {
+      "file": "foundation_v2/web/src/session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPicker.jsx",
+      "sha256": "d1188cb29c0ce2301a694861d1028cb787e0a739c5848489a118183d5fe5931d"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionDetails.jsx",
+      "sha256": "36a7640a7b367ccdf4c7bcf57c117fbf343a30819a25e5895edbc4a234a7d92d"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionSettingsDrawer.jsx",
+      "sha256": "ec804bd695e1ad8cc0387e5a6527e22f500d5bedfe6fc22d7857f1ac22dcd9d0"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionSettingsModel.js",
+      "sha256": "bdb634745ff4be949f13f083a5e0c1dbfe861d85e63741bcf2b0abe0b186cc90"
+    },
+    {
+      "file": "foundation_v2/web/src/session-settings.css",
+      "sha256": "85534a2d413dee8014856d2c9cc5c29ff1ba124068d50922afefb4247b4e57d8"
+    },
+    {
+      "file": "foundation_v2/web/src/session-picker.css",
+      "sha256": "17843e39af688f570bd96b019bf62c6bf57a0024995802b164919f8b1d7cb1ae"
+    },
+    {
+      "file": "foundation_v2/web/src/session-performance.css",
+      "sha256": "71f388179ba16cdea6aff38a543940615c3900f9f29792437d04481ec9455fdb"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPerformance.jsx",
+      "sha256": "b86a7c2a3c54e357e745bd975778441b0b1bfe842f796ed50e9aefd8b6fd8611"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "1f40015cb5855f54a2e7b527ad3618915dff8ac5d804edc37d63337860a10383"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsFilterBar.jsx",
+      "sha256": "28f28be50e060c759e1a118f5bcd3ec3481f77e541d1e8066e18d0d118a724f9"
+    },
+    {
+      "file": "foundation_v2/web/src/LedgerFilterDrawer.jsx",
+      "sha256": "db031007397b6d5255f7b8b2e31867dfb1da08b4284e85fe92a63c070439e535"
+    },
+    {
+      "file": "foundation_v2/web/src/ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "761bdf8e220b9acf9da6aea6f138f6e8b794485550b825c27ac4d021ed6c9996"
+    },
+    {
+      "file": "foundation_v2/web/src/tradingAnalyticsModel.js",
+      "sha256": "6c0140bc6e198bb0f697542ceb336ebfb058ba44e798addd3e89e9e52eff938a"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "3dbbb68e038d80c09c6936efef583838eb68df74522247fcc590dd638545abd7"
+    },
+    {
+      "file": "foundation_v2/web/src/component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    },
+    {
+      "file": "foundation_v2/web/src/main.jsx",
+      "sha256": "44c75868d5add290b6d1302fafa524926a5d1c043a9eb48d3e0645f477376ad7"
+    },
+    {
+      "file": "foundation_v2/web/src/workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    }
+  ],
+  "sourceStableDuringAffectedRun": true,
+  "sourceStableDuringBaseRun": true,
+  "currentDiskPinsMatch": true,
+  "changedSinceBase": [
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "dfa99275844a8ab5dd18ab0976b09c514e4b2b4584d98220fb7a8481a8445857"
+    }
+  ],
+  "acceptedChecks": [
+    {
+      "name": "layout-demo-overview-dark-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-replay-dark-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-trade-dark-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-overview-dark-768",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-replay-dark-768",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-trade-dark-768",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-overview-dark-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-replay-dark-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-trade-dark-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-overview-light-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-replay-light-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-trade-light-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-overview-light-768",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-replay-light-768",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-trade-light-768",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-overview-light-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-replay-light-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-demo-trade-light-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "dashboard-custom-dates-dark-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "dashboard-custom-dates-dark-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "dashboard-custom-dates-light-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "dashboard-custom-dates-light-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "demo-summary-drawer-dark-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "demo-summary-drawer-dark-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "demo-summary-drawer-light-1440",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "demo-summary-drawer-light-360",
+      "pass": true,
+      "receipt": "report-final-affected.json",
+      "acceptance": "rerun after final fixture correction"
+    },
+    {
+      "name": "layout-actual-overview-dark-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-replay-dark-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-trade-dark-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-overview-dark-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-replay-dark-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-trade-dark-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-overview-light-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-replay-light-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-trade-light-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-overview-light-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-replay-light-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "layout-actual-trade-light-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "actual-dashboard-summary-canonical91",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "actual-filled-settings4tabs-readonly",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "ledger-filters-navigation-scope",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "ledger-filter-interactions-1440",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    },
+    {
+      "name": "ledger-filter-interactions-360",
+      "pass": true,
+      "receipt": "report-r3-frozen-base.json",
+      "acceptance": "unchanged product sources; only demoFixtures.js changed, affected demo cases rerun"
+    }
+  ],
+  "actualServices": {
+    "policy": "GET-only; non-GET/HEAD/OPTIONS, external traffic, downloads, WebSockets blocked",
+    "canonicalCatalogAndTwoRecordsUnchanged": true,
+    "recordIds": [
+      "476f4b498e1a49ed9d48a75719f4d270",
+      "273a1275538c42cb95cfff16e0f9f62c"
+    ],
+    "actualMetadataSaved": false,
+    "brokerExecution": false
+  },
+  "demo": {
+    "apiRequests": 0,
+    "nameDescriptionEdits": "local state only",
+    "goldProgress": "30000/30000",
+    "remainingDays": 0
+  },
+  "errors": [],
+  "blockedWrites": [],
+  "limitations": [
+    "Actual settings submit was not exercised; metadata edits were canceled.",
+    "No whole-product, broker or provider acceptance claim.",
+    "Root unit tests and build are separate evidence, not reviewer-run validation."
+  ],
+  "retainedRawReports": [
+    "report-r1-crossed-source.json",
+    "report-r2-filter-focus.json",
+    "report-r3-frozen-base.json",
+    "report-final-affected.json"
+  ],
+  "reviewerOracleCorrections": [
+    "vi date formatting order corrected against actual browser output",
+    "Date caption geometry compares positioned caption span, not parent label rectangle"
+  ]
+}

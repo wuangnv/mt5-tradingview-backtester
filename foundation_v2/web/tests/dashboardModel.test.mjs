@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions } from '../src/dashboardModel.js'
+import { dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, readDashboardReplayContext, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions } from '../src/dashboardModel.js'
 
 test('dashboard keeps unknown distinct from measured zero', () => {
   for (const unknown of [null, undefined, '', false, NaN, Infinity, 'not-a-number']) assert.equal(dashboardNumber(unknown), '—')
@@ -113,4 +113,19 @@ test('profit sorting keeps unknown last and refuses mixed or missing currencies'
   assert.deepEqual(ids({ sort: 'profit', details: { ...details, b: { pnl: 1000, currency: '' } } }), ['c', 'b', 'a'])
   assert.deepEqual(ids({ sort: 'newest' }), ['c', 'b', 'a'])
   assert.deepEqual(ids({ sort: 'last' }), ['a', 'b', 'c'])
+})
+
+test('replay context verifies the catalog revision and drops candle arrays before retaining metadata', async context => {
+  const payload = { record_id: 's/a', revision: 2, cutoff_timestamp: 1783315500, payload: { execution: null }, visible_rows: [{ time: 1 }] }
+  context.mock.method(globalThis, 'fetch', async (url, options) => {
+    assert.equal(url, '/api/v2/replay/sessions/s%2Fa')
+    assert.equal(options.headers['X-Workspace-Id'], 'w')
+    return { ok: true, json: async () => payload }
+  })
+  const item = { record_id: 's/a', revision: 2 }
+  assert.deepEqual(await readDashboardReplayContext('w', item), { record_id: 's/a', revision: 2, cutoff_timestamp: 1783315500, payload: { execution: null } })
+  payload.revision = 3
+  await assert.rejects(readDashboardReplayContext('w', item), /revision_mismatch/)
+  payload.revision = 2; payload.record_id = 'foreign'
+  await assert.rejects(readDashboardReplayContext('w', item), /revision_mismatch/)
 })

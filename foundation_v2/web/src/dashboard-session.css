@@ -7,6 +7,8 @@
 .fx-dashboard-card-info h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
 .fx-dashboard-card-info h3 > span, .fx-dashboard-card-asset { border: 1px solid var(--wm-border-strong); border-radius: 999px; padding: 3px 8px; font-size: 11px; font-weight: 400; }
 .fx-dashboard-card-info h3 small { color: var(--wm-content-muted); font-size: 11px; font-weight: 400; }
+.fx-dashboard-card-info h3 .fx-dashboard-days { display: inline-flex; align-items: center; gap: 4px; color: var(--wm-warning); }
+.fx-dashboard-days svg { width: 12px; height: 14px; }
 .fx-dashboard-card-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 8px; font-size: 12px; }
 .fx-dashboard-card-facts > span { display: inline-flex; align-items: center; gap: 6px; }
 .fx-dashboard-card-facts svg, .fx-dashboard-card-actions svg { width: 16px; height: 16px; flex: 0 0 16px; }
@@ -21,7 +23,7 @@
 .fx-app .fx-dashboard .fx-dashboard-card-icon { display: inline-flex; justify-content: center; align-items: center; flex: 0 0 32px; width: 32px; min-height: 32px; padding: 0; border: 0; border-radius: 50%; background: var(--wm-control-open); color: var(--wm-content); text-decoration: none; }
 .fx-app .fx-dashboard .fx-dashboard-card-icon.is-danger { color: var(--wm-negative); }
 .fx-app .fx-dashboard .fx-dashboard-card-icon.is-danger:hover { background: var(--wm-hover); }
-.fx-app .fx-dashboard .fx-dashboard-card-summary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--wm-control-open); white-space: nowrap; font-size: 12px; }
+.fx-app .fx-dashboard .fx-dashboard-card-summary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--wm-control-open); color: var(--wm-content); text-decoration: none; white-space: nowrap; font-size: 12px; }
 .fx-dashboard-card-expand svg { transition: rotate 140ms; }
 .fx-dashboard-card-expand[aria-expanded='true'] svg { rotate: 180deg; }
 .fx-dashboard-card-charts { padding: 0 20px 20px; }

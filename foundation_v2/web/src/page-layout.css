@@ -23,7 +23,11 @@
 .fxa-pagination button[aria-current="page"] { background: var(--fx-shell-nav-selected); color: var(--fx-shell-nav-selected-content); border-color: transparent; }
 .fxa-filter-toolbar.is-ledger .fxa-filter-actions { margin-left: auto; }
 .fxa-filter-toolbar.is-ledger .fxa-session-filter { margin-right: 0; }
-.fxa-filters { border-bottom: 1px solid var(--fx-shell-line); padding-bottom: 20px; }
+.fxa-filters { position: relative; border-bottom: 0; padding-bottom: 20px; }
+.fxa-filters::after, .fxa-report-tabs::after { content: ''; position: absolute; bottom: 0; left: calc(-1 * var(--wm-page-gutter)); right: calc(-1 * var(--wm-page-gutter)); height: 1px; background: var(--fx-shell-line); pointer-events: none; }
+.fxa-report-tabs { position: relative; border-bottom: 0; }
+.fx-app .wm-page > .fxa-trades { margin-inline: calc(-1 * var(--wm-page-gutter)); width: calc(100% + 2 * var(--wm-page-gutter)); }
+.fxa-trades .fxa-pagination { padding-inline: var(--wm-page-gutter); box-sizing: border-box; }
 /* The ledger owns the remaining viewport; only its rows scroll. */
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-content:has(> .wm-page > .fxa-trades) { overflow: hidden; padding-bottom: 0; display: flex; flex-direction: column; }
 .fx-app .fx-content > .wm-page:has(> .fxa-trades) { flex: 1; display: flex; flex-direction: column; min-height: 0; padding-top: 24px; padding-bottom: 0; }
