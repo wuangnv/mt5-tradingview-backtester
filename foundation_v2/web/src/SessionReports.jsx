@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import AnalyticsWorkspace, { analyticsQuery, buildAnalyticsModel, ProvenanceInspector, readAnalyticsFilters } from './AnalyticsWorkspace.jsx'
 import { FxAnalyticsFilters } from './FxAnalytics.jsx'
-import FxTradeLedger from './FxTradeLedger.jsx'
+import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import { defaultSession, fetchReplaySessions, readLastSession, reportSessions, sessionAnalyticsQuery } from './sessionCatalog.js'
 import { filterAnalyticsRows, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, tradesCsv, validateTradesPayload } from './tradingAnalyticsModel.js'
@@ -74,7 +74,7 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     {state.status === 'error' && <p role="alert">Không đọc được giao dịch: {state.error}. Sẽ kiểm tra lại khi quay về ứng dụng.</p>}
     {exportError && <p role="alert">{exportError}</p>}
     {state.payload && <>
-      {row && <section className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail · {row.session_name}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><ProvenanceInspector model={detailModel} selectedTrade={{ ...row, tradeId: row.trade_id }} journalCount={null} links={{ replay: link('replay'), journal: link('journal') }} /></section>}
+      {row && <TradeInspector onClose={() => setSelected('')} className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail · {row.session_name}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><ProvenanceInspector model={detailModel} selectedTrade={{ ...row, tradeId: row.trade_id }} journalCount={null} links={{ replay: link('replay'), journal: link('journal') }} /></TradeInspector>}
     </>}
   </section>
 }

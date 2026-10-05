@@ -1,0 +1,1194 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "9f4d32f8336afce980d7ac68a35815be843eea300db14393eb8f52bfbc51f5f2"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "cc1619d225d95814c64dbdc3e4bdd1c5d65ec60e34b2e6827a81d6d557faef0f"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+      "sha256": "abd68c5be1b9d8bf10853b6f376d733cb3af31a02c9473e23f6aa81797095ad3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "a373cfd6020af0304a00f4202d1106d3fd8bacdc3a131999af8997141bda1d35"
+    },
+    {
+      "file": "foundation_v2/web/src/MarketAssetCatalog.jsx",
+      "sha256": "1c5ae353476ea9d0f52a4987e87cf89f0aea8e2f1eb8e8bafafa7aae72b9aa51"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "5f25435923c3667ed6b61d693522bb5f6f0f97520d755c13cbc589411879fab2"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "7b68e4ac300d0d3fa3c0855cb74103e02ee63317bbfb932ce3e2734a3fa4db88"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "5219a5aa09a66381ab10cffce0ce6c27dcb5f11a66c303c5a3cb3aa832050faf"
+    },
+    {
+      "file": "foundation_v2/web/src/market-sync.css",
+      "sha256": "345a264f6ff6e5c8013e8a78d29d5aa55e638fbdd8c596024dd7210cd5fffbf5"
+    }
+  ],
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "height": 987,
+      "basic": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1462,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 295,
+          "width": 54.59375,
+          "height": 60.5,
+          "bottom": 355.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1398,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 295,
+          "width": 1398,
+          "height": 619,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 619,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1462,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 377,
+          "width": 54.59375,
+          "height": 60.5,
+          "bottom": 437.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1398,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 377,
+          "width": 1398,
+          "height": 537,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 537,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 987,
+      "basic": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 295,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 355.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1128,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 295,
+          "width": 1128,
+          "height": 619,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 619,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 377,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 437.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1128,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 377,
+          "width": 1128,
+          "height": 537,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 537,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 987,
+      "basic": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 74,
+          "y": 753,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 813.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 914,
+          "width": 270,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 74,
+          "y": 753,
+          "width": 270,
+          "height": 161,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 161,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 74,
+          "y": 819,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 879.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 914,
+          "width": 270,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 74,
+          "y": 819,
+          "width": 270,
+          "height": 95,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 95,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 600,
+      "basic": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 280,
+          "y": 295,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 355.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 527,
+          "width": 1128,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 280,
+          "y": 295,
+          "width": 1128,
+          "height": 232,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 232,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 280,
+          "y": 377,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 437.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 527,
+          "width": 1128,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 280,
+          "y": 377,
+          "width": 1128,
+          "height": 150,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 150,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 600,
+      "basic": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 74,
+          "y": 432,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 492.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 527,
+          "width": 270,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 74,
+          "y": 432,
+          "width": 270,
+          "height": 95,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 95,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 74,
+          "y": 432,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 492.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 527,
+          "width": 270,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 74,
+          "y": 432,
+          "width": 270,
+          "height": 95,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 95,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "height": 987,
+      "basic": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1462,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 295,
+          "width": 54.59375,
+          "height": 60.5,
+          "bottom": 355.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1398,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 295,
+          "width": 1398,
+          "height": 619,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 619,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1462,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 377,
+          "width": 54.59375,
+          "height": 60.5,
+          "bottom": 437.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1398,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 377,
+          "width": 1398,
+          "height": 537,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 537,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 987,
+      "basic": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 295,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 355.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1128,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 295,
+          "width": 1128,
+          "height": 619,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 619,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 280,
+          "y": 377,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 437.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 914,
+          "width": 1128,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 280,
+          "y": 377,
+          "width": 1128,
+          "height": 537,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 537,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 987,
+      "basic": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 74,
+          "y": 753,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 813.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 914,
+          "width": 270,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 74,
+          "y": 753,
+          "width": 270,
+          "height": 161,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 161,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 871,
+          "bottom": 987
+        },
+        "header": {
+          "x": 74,
+          "y": 819,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 879.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 914,
+          "width": 270,
+          "height": 73,
+          "bottom": 987
+        },
+        "body": {
+          "x": 74,
+          "y": 819,
+          "width": 270,
+          "height": 95,
+          "bottom": 914
+        },
+        "clipTop": 0,
+        "clipHeight": 871,
+        "clipScrollHeight": 871,
+        "bodyTop": 0,
+        "bodyHeight": 95,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 600,
+      "basic": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 280,
+          "y": 295,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 355.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 527,
+          "width": 1128,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 280,
+          "y": 295,
+          "width": 1128,
+          "height": 232,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 232,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 248,
+          "y": 116,
+          "width": 1192,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 280,
+          "y": 377,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 437.5
+        },
+        "footer": {
+          "x": 280,
+          "y": 527,
+          "width": 1128,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 280,
+          "y": 377,
+          "width": 1128,
+          "height": 150,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 150,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 600,
+      "basic": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 74,
+          "y": 432,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 492.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 527,
+          "width": 270,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 74,
+          "y": 432,
+          "width": 270,
+          "height": 95,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 95,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      },
+      "both": {
+        "clip": {
+          "x": 58,
+          "y": 116,
+          "width": 302,
+          "height": 484,
+          "bottom": 600
+        },
+        "header": {
+          "x": 74,
+          "y": 432,
+          "width": 48,
+          "height": 60.5,
+          "bottom": 492.5
+        },
+        "footer": {
+          "x": 74,
+          "y": 527,
+          "width": 270,
+          "height": 73,
+          "bottom": 600
+        },
+        "body": {
+          "x": 74,
+          "y": 432,
+          "width": 270,
+          "height": 95,
+          "bottom": 527
+        },
+        "clipTop": 0,
+        "clipHeight": 484,
+        "clipScrollHeight": 484,
+        "bodyTop": 0,
+        "bodyHeight": 95,
+        "bodyScrollHeight": 3721,
+        "overflow": 0,
+        "clipOverflow": "hidden",
+        "headerPosition": "sticky"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "grid-dark-1710x987",
+      "pass": true
+    },
+    {
+      "name": "grid-dark-1440x987",
+      "pass": true
+    },
+    {
+      "name": "grid-dark-360x987",
+      "pass": true
+    },
+    {
+      "name": "grid-dark-1440x600",
+      "pass": true
+    },
+    {
+      "name": "grid-dark-360x600",
+      "pass": true
+    },
+    {
+      "name": "grid-light-1710x987",
+      "pass": true
+    },
+    {
+      "name": "grid-light-1440x987",
+      "pass": true
+    },
+    {
+      "name": "grid-light-360x987",
+      "pass": true
+    },
+    {
+      "name": "grid-light-1440x600",
+      "pass": true
+    },
+    {
+      "name": "grid-light-360x600",
+      "pass": true
+    },
+    {
+      "name": "real-aggregate",
+      "pass": true
+    },
+    {
+      "name": "real-single",
+      "pass": true
+    },
+    {
+      "name": "real-initialized-empty",
+      "pass": true
+    },
+    {
+      "name": "real-blocked",
+      "pass": true
+    },
+    {
+      "name": "empty-demo-grid-filter-and-report-detail-section",
+      "pass": true
+    },
+    {
+      "name": "market-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "market-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "market-dark-360",
+      "pass": true
+    },
+    {
+      "name": "market-light-1710",
+      "pass": true
+    },
+    {
+      "name": "market-light-1440",
+      "pass": true
+    },
+    {
+      "name": "market-light-360",
+      "pass": true
+    },
+    {
+      "name": "actual-market-toolbar-no-click",
+      "pass": true
+    },
+    {
+      "name": "LABELED-market-runtime-errors-queued-empty-GET-failure",
+      "pass": true
+    },
+    {
+      "name": "LABELED-trades-loading-and-error-state",
+      "pass": true
+    },
+    {
+      "name": "isolation-old-session-preserved",
+      "pass": true
+    }
+  ],
+  "api": [
+    {
+      "phase": "real-aggregate",
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-aggregate",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-aggregate",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-single",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "?cursor_index=1061",
+      "demo": null
+    },
+    {
+      "phase": "real-single",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-single",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-single",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-single",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-initialized-empty",
+      "path": "/api/v2/replay/trades",
+      "search": "?sessions=d70ee54946144605bf20ba5b8e2f4cdf",
+      "demo": null
+    },
+    {
+      "phase": "real-initialized-empty",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-initialized-empty",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-blocked",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "search": "?cursor_index=500",
+      "demo": null
+    },
+    {
+      "phase": "real-blocked",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "real-blocked",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "empty-demo-grid-filter-and-report-detail-section",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "empty-demo-grid-filter-and-report-detail-section",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics/experiments",
+      "search": "?stop_distance_ticks=20&stop_multiplier=1&target_r=2",
+      "demo": null
+    },
+    {
+      "phase": "empty-demo-grid-filter-and-report-detail-section",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "empty-demo-grid-filter-and-report-detail-section",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "actual-market-toolbar-no-click",
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-market-runtime-errors-queued-empty-GET-failure",
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-market-runtime-errors-queued-empty-GET-failure",
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-market-runtime-errors-queued-empty-GET-failure",
+      "path": "/api/v2/data/market-assets",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-trades-loading-and-error-state",
+      "path": "/api/v2/replay/trades",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-trades-loading-and-error-state",
+      "path": "/api/v2/journal",
+      "search": "",
+      "demo": null
+    },
+    {
+      "phase": "LABELED-trades-loading-and-error-state",
+      "path": "/api/v2/replay/sessions",
+      "search": "",
+      "demo": null
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "failures": [
+    {
+      "name": "demo-dialog-1440x987",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(await dialog.evaluate(el=>el.contains(document.activeElement)))\n"
+    },
+    {
+      "name": "demo-dialog-360x600",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(await dialog.evaluate(el=>el.contains(document.activeElement)))\n"
+    }
+  ],
+  "oracle": {
+    "actualTrades": 1,
+    "oldRevision": 2,
+    "oldVisibleRows": 501,
+    "marketCount": 356
+  },
+  "actualMarket": {
+    "count": 356,
+    "updateDisabled": false,
+    "actionInFilterRow": true
+  },
+  "preserved": {
+    "revision": 2,
+    "fullPayloadEqual": true,
+    "visibleRows": 501
+  },
+  "after": [
+    {
+      "file": "foundation_v2/web/src/FxTradeLedger.jsx",
+      "sha256": "9f4d32f8336afce980d7ac68a35815be843eea300db14393eb8f52bfbc51f5f2"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionReports.jsx",
+      "sha256": "cc1619d225d95814c64dbdc3e4bdd1c5d65ec60e34b2e6827a81d6d557faef0f"
+    },
+    {
+      "file": "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+      "sha256": "abd68c5be1b9d8bf10853b6f376d733cb3af31a02c9473e23f6aa81797095ad3"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "a373cfd6020af0304a00f4202d1106d3fd8bacdc3a131999af8997141bda1d35"
+    },
+    {
+      "file": "foundation_v2/web/src/MarketAssetCatalog.jsx",
+      "sha256": "1c5ae353476ea9d0f52a4987e87cf89f0aea8e2f1eb8e8bafafa7aae72b9aa51"
+    },
+    {
+      "file": "foundation_v2/web/src/page-layout.css",
+      "sha256": "5f25435923c3667ed6b61d693522bb5f6f0f97520d755c13cbc589411879fab2"
+    },
+    {
+      "file": "foundation_v2/web/src/FxAnalytics.jsx",
+      "sha256": "7b68e4ac300d0d3fa3c0855cb74103e02ee63317bbfb932ce3e2734a3fa4db88"
+    },
+    {
+      "file": "foundation_v2/web/src/FxSelect.jsx",
+      "sha256": "5219a5aa09a66381ab10cffce0ce6c27dcb5f11a66c303c5a3cb3aa832050faf"
+    },
+    {
+      "file": "foundation_v2/web/src/market-sync.css",
+      "sha256": "345a264f6ff6e5c8013e8a78d29d5aa55e638fbdd8c596024dd7210cd5fffbf5"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\\n' +\n+       '\\n' +\n+       '  assert.ok(await dialog.evaluate(el=>el.contains(document.activeElement)))\\n',\n+     name: 'demo-dialog-1440x987'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\\n' +\n+       '\\n' +\n+       '  assert.ok(await dialog.evaluate(el=>el.contains(document.activeElement)))\\n',\n+     name: 'demo-dialog-360x600'\n+   }\n+ ]\n- []\n"
+}

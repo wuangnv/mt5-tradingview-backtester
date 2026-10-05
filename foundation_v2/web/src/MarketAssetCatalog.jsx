@@ -51,9 +51,8 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
     && `${item.symbol} ${item.metadata.description}`.toLowerCase().includes(search.toLowerCase()))
   const groups = [...new Set(items.map(item => item.metadata.group))].sort()
   return <section className="market-assets" aria-label="Kho dữ liệu Testing" data-testid="market-assets">
-    <div className="market-sync-heading"><div>{showHeading && <h2>Kho Testing</h2>}<p>{preview ? 'Danh mục mẫu · M1' : `${state.source || 'Nguồn chưa kết nối'} · M1 · Tự tải bù mỗi ngày khi MT5 kết nối. Replay dùng dữ liệu đã lưu.`}</p></div>
-      <button type="button" className="fxr-button fxr-button-secondary" onClick={() => update(null)} disabled={Boolean(preview) || pending || !items.length || Boolean(state.queued) || Boolean(state.running)}>Cập nhật dữ liệu</button></div>
-    <div className="market-sync-facts"><span>{items.filter(item => item.dataset_id).length} assets đã tải</span><span>{state.queued || 0} đang chờ</span>{state.running && <span role="status">Đang tải {state.running}</span>}</div>
+    {showHeading && <div className="market-sync-heading"><h2>Kho Testing</h2></div>}
+    {state.running && <span role="status">Đang tải {state.running}</span>}
     {state.connection_error && <p role="status">MT5 chưa sẵn sàng ({state.connection_error}). Kho đã tải vẫn dùng được.</p>}
     {state.tick_sync_error && <p role="status">Tick đang chờ tải bù: {state.tick_sync_error}.</p>}
     {state.status === 'loading' && <p role="status">Đang đọc kho Testing…</p>}
@@ -64,6 +63,7 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
       <select aria-label="Nhóm asset" value={group} onChange={event => setGroup(event.target.value)}><option value="all">Tất cả nhóm</option>{groups.map(item => <option key={item}>{item}</option>)}</select>
       <label>Tải từ ngày<input type="date" aria-label="Ngày bắt đầu tải lịch sử" value={fromDate} onChange={event => setFromDate(event.target.value)} /></label>
       <label><input type="checkbox" checked={all} onChange={event => setAll(event.target.checked)} />Hiện toàn bộ danh mục broker</label>
+      <button type="button" className="fxr-button fxr-button-secondary market-sync-update" onClick={() => update(null)} disabled={Boolean(preview) || pending || !items.length || Boolean(state.queued) || Boolean(state.running)}>Cập nhật dữ liệu</button>
     </div>
     {items.length > 0 && <div className="market-sync-table" tabIndex={0} role="region" aria-label="Danh mục lịch sử broker"><table><thead><tr><th>Asset / sản phẩm</th><th>Nguồn</th><th>Lịch sử UTC</th><th>Trạng thái</th><th><span className="sr-only">Thao tác</span></th></tr></thead><tbody>{visible.map(item => <tr key={item.symbol}>
       <td><strong>{item.symbol}</strong><small>{item.metadata.group}</small></td><td>{state.source}</td>

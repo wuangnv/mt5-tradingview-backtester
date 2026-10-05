@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './analytics-story.css'
 import { FxAnalyticsFilters, FxAnalyticsReport } from './FxAnalytics.jsx'
-import FxTradeLedger from './FxTradeLedger.jsx'
+import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
 import { advancedAnalytics, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, tradesCsv } from './tradingAnalyticsModel.js'
 import useReadRefresh from './useReadRefresh.js'
 import { buildPropAnalyticsView } from './propAnalyticsModel.js'
@@ -418,6 +418,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   const links = { journal: '/?' + journalParams.toString(), replay: sessionId ? '/?' + replayParams.toString() : '', research: '/?' + researchParams.toString() }
   const experimentScopeMatches = experiments.payload && result && ['session_id', 'dataset_id', 'dataset_sha256', 'revision', 'cursor_index', 'execution_event_sequence'].every(key => experiments.payload.provenance?.[key] === result[key])
 
+  const Inspector = ledgerOnly ? TradeInspector : 'section'
   const renderFilters = columnControl => <FxAnalyticsFilters sourceType={propReport ? 'Prop firm' : jobId ? 'Research' : 'Backtesting'} sessionControl={sessionControl} filters={filters} onChange={updateFilters} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} onExport={exportCsv} pending={exportPending || !result || !['ready', 'partial', 'stale', 'empty'].includes(state.status)} columnControl={columnControl} ledgerOnly={ledgerOnly} />
   return <section className={`as-page fxa-page ${embedded ? 'as-embedded' : 'wm-page'}`} aria-label={ledgerOnly ? 'Trades' : 'Analytics'} data-testid="analytics-workspace">
     {!embedded && <h1 className="sr-only">{ledgerOnly ? 'Trades' : 'Analytics'}</h1>}
@@ -433,8 +434,8 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     {!ledgerOnly && state.status === 'partial' && <p className="as-stale-banner" role="status">Dữ liệu một phần. Chỉ tính trên các giao dịch có trong nguồn đã đọc.</p>}
     {result && ['ready', 'stale', 'partial', 'empty'].includes(state.status) && <>
       {summaryOnly ? <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail={result.account_currency} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail="Closed balance" /></section> : ledgerOnly ? null : <FxAnalyticsReport model={model} extra={extra} experiments={experimentScopeMatches ? experiments.payload : null} experimentStatus={experimentScopeMatches ? experiments.status : experiments.status === 'ready' ? 'error' : experiments.status} experimentError={experiments.error || (experiments.status === 'ready' && !experimentScopeMatches ? 'Đường giá chưa khớp revision/cutoff của báo cáo.' : '')} config={experimentConfig} onConfig={setExperimentConfig} selected={selectedTradeId} onSelect={setSelectedTradeId} />}
-      {!summaryOnly && <details className="as-scope-details"><summary>Phạm vi và nguồn dữ liệu</summary><dl className="as-scope-strip"><ContextValue label="Session" value={sessionId || jobId} code /><ContextValue label="Revision" value={result.revision} /><ContextValue label="Cutoff" value={result.cursor_index} /><ContextValue label="Dataset SHA" value={result.dataset_sha256} code /><ContextValue label="Balance basis" value={result.scope?.balance_curve_scope} /><ContextValue label="Mode" value={sourceLabel + ' / simulation'} /></dl><p>Chỉ dùng ledger đóng tại cutoff đã chọn. Các bộ lọc tạo lại đường số dư từ vốn ban đầu. — là dữ liệu chưa được nguồn cung cấp.</p></details>}
-      {!summaryOnly && selectedTrade && <section className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail</h2><button className="fxa-button" type="button" onClick={() => setSelectedTradeId('')}>Đóng chi tiết</button></div><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></section>}
+      {!summaryOnly && !ledgerOnly && <details className="as-scope-details"><summary>Phạm vi và nguồn dữ liệu</summary><dl className="as-scope-strip"><ContextValue label="Session" value={sessionId || jobId} code /><ContextValue label="Revision" value={result.revision} /><ContextValue label="Cutoff" value={result.cursor_index} /><ContextValue label="Dataset SHA" value={result.dataset_sha256} code /><ContextValue label="Balance basis" value={result.scope?.balance_curve_scope} /><ContextValue label="Mode" value={sourceLabel + ' / simulation'} /></dl><p>Chỉ dùng ledger đóng tại cutoff đã chọn. Các bộ lọc tạo lại đường số dư từ vốn ban đầu. — là dữ liệu chưa được nguồn cung cấp.</p></details>}
+      {!summaryOnly && selectedTrade && <Inspector onClose={() => setSelectedTradeId('')} className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail</h2><button className="fxa-button" type="button" onClick={() => setSelectedTradeId('')}>Đóng chi tiết</button></div><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></Inspector>}
     </>}
   </section>
 }

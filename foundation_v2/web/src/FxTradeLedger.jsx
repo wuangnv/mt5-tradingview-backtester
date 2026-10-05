@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { filterAnalyticsRows, known, outcomeOf } from './tradingAnalyticsModel.js'
 import { closeTime } from './sessionPerformanceModel.js'
 import FxSelect from './FxSelect.jsx'
@@ -13,6 +13,21 @@ const COLUMNS = [
   ['close_time_utc', 'Exit (UTC)'], ['price_close', 'Exit price'], ['gross_pnl', 'Gross P/L'], ['fees', 'Fees'], ['tags', 'Tags'],
 ]
 const DEFAULT_COLUMNS = ['session_id', 'status', 'source', 'recorded_at_utc', 'open_time_utc', 'symbol', 'side', 'entry_type', 'net_pnl', 'return_pct', 'realized_r', 'rating']
+export function TradeInspector({ children, onClose }) {
+  const dialog = useRef(null)
+  useEffect(() => {
+    const opener = document.activeElement
+    dialog.current.showModal()
+    return () => { dialog.current?.close(); if (opener?.isConnected) opener.focus({ preventScroll: true }) }
+  }, [])
+  return <dialog className="fxa-trade-inspector" aria-label="Chi tiết giao dịch" ref={dialog} onCancel={event => { event.preventDefault(); onClose() }} onKeyDown={event => {
+    if (event.key !== 'Tab') return
+    const controls = [...event.currentTarget.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(element => !element.disabled && element.tabIndex >= 0 && element.getClientRects().length)
+    const first = controls[0], last = controls[controls.length - 1]
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+  }} onClick={event => { if (event.target === event.currentTarget) { const bounds = event.currentTarget.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose() } }}>{children}</dialog>
+}
 function valueOf(row, key, model, sessionName) {
   if (key === 'session_id') return sessionName || row.session_name || row.session_id || row.source?.session_id || model.result?.session_id || '—'
   if (key === 'status') return 'Closed'
@@ -36,6 +51,7 @@ export default function FxTradeLedger({ model, extra, selected, onSelect, sessio
   const data = useMemo(() => ({ rows: filterAnalyticsRows(model.ledger, extra) }), [model, extra])
   const [page, setPage] = useState(0), [size, setSize] = useState(10), [sort, setSort] = useState({ key: 'close_time_utc', direction: 'desc' })
   const [columns, setColumns] = useState(DEFAULT_COLUMNS), [checked, setChecked] = useState(new Set())
+  const tableScroll = useRef(null)
   const rows = useMemo(() => [...data.rows].sort((left, right) => {
     let a = valueOf(left, sort.key, model, sessionName), b = valueOf(right, sort.key, model, sessionName)
     if (sort.key.endsWith('_time_utc') || sort.key === 'recorded_at_utc') { a = closeTime(a)?.getTime(); b = closeTime(b)?.getTime() }
@@ -45,6 +61,7 @@ export default function FxTradeLedger({ model, extra, selected, onSelect, sessio
     return (sort.direction === 'asc' ? compared : -compared) || left.rowIndex - right.rowIndex
   }), [data.rows, model, sort, sessionName])
   const pages = Math.max(1, Math.ceil(rows.length / size)), current = Math.min(page, pages - 1), visible = rows.slice(current * size, (current + 1) * size)
+  useEffect(() => { if (tableScroll.current) tableScroll.current.scrollTop = 0 }, [current, size, sort, extra, model.result])
   useEffect(() => { setPage(0); setChecked(new Set()) }, [extra, model.result])
   const toggle = id => setChecked(values => { const next = new Set(values); if (next.has(id)) next.delete(id); else next.add(id); return next })
   const shownColumns = COLUMNS.filter(([key]) => columns.includes(key))
@@ -55,8 +72,7 @@ export default function FxTradeLedger({ model, extra, selected, onSelect, sessio
     <section hidden={hidden} className="fxa-trades" aria-label="Trade ledger" data-testid="fx-trade-ledger">
     {!renderFilters && <div className="fxa-ledger-tools">{columnControl}</div>}
     {checked.size > 0 && <span className="sr-only" role="status">{checked.size} đã chọn</span>}
-    <div className="fxa-table-scroll" tabIndex={0} role="region" aria-label="Giao dịch, cuộn ngang để xem các cột"><table><thead><tr><th><input aria-label="Chọn các lệnh trên trang" type="checkbox" checked={allChecked} onChange={() => setChecked(values => { const next = new Set(values); visible.forEach(row => allChecked ? next.delete(row.tradeId) : next.add(row.tradeId)); return next })} /></th><th>Actions</th>{shownColumns.map(([key, label]) => <th key={key} aria-sort={sort.key === key ? sort.direction === 'asc' ? 'ascending' : 'descending' : 'none'}><button type="button" onClick={() => { setSort({ key, direction: sort.key === key && sort.direction === 'asc' ? 'desc' : 'asc' }); setPage(0) }}>{key === 'net_pnl' ? 'Return (' + (model.result?.account_currency || 'đơn vị tài khoản') + ')' : label}{sort.key === key ? sort.direction === 'asc' ? ' ↑' : ' ↓' : ''}</button></th>)}</tr></thead><tbody>{visible.map(row => <tr key={row.tradeId} className={selected === row.tradeId ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Chọn lệnh ${row.tradeId}`} checked={checked.has(row.tradeId)} onChange={() => toggle(row.tradeId)} /></td><td><button className="fxa-detail-button" type="button" aria-label={`Chi tiết ${row.tradeId}`} aria-pressed={selected === row.tradeId} onClick={() => onSelect(selected === row.tradeId ? '' : row.tradeId)}>↗</button></td>{shownColumns.map(([key]) => <td key={key} className={['net_pnl', 'gross_pnl'].includes(key) ? outcomeOf(row[key]) === 'win' ? 'is-positive' : outcomeOf(row[key]) === 'loss' ? 'is-negative' : '' : ''}>{['status', 'side'].includes(key) ? <span className={`fxa-badge is-${key === 'status' ? 'closed' : String(row.side).toLowerCase()}`}>{display(row, key, model, sessionName)}</span> : key === 'session_id' ? <span title={row.trade_id || row.tradeId}>{display(row, key, model, sessionName)}</span> : display(row, key, model, sessionName)}</td>)}</tr>)}</tbody></table></div>
-    {!rows.length && <p className="fxa-empty">Không có giao dịch khớp bộ lọc.</p>}
+    <div className="fxa-table-scroll" ref={tableScroll} tabIndex={0} role="region" aria-label="Giao dịch, cuộn ngang để xem các cột"><table><thead><tr><th><input aria-label="Chọn các lệnh trên trang" type="checkbox" checked={allChecked} onChange={() => setChecked(values => { const next = new Set(values); visible.forEach(row => allChecked ? next.delete(row.tradeId) : next.add(row.tradeId)); return next })} /></th><th>Actions</th>{shownColumns.map(([key, label]) => <th key={key} aria-sort={sort.key === key ? sort.direction === 'asc' ? 'ascending' : 'descending' : 'none'}><button type="button" onClick={() => { setSort({ key, direction: sort.key === key && sort.direction === 'asc' ? 'desc' : 'asc' }); setPage(0) }}>{key === 'net_pnl' ? 'Return (' + (model.result?.account_currency || 'đơn vị tài khoản') + ')' : label}{sort.key === key ? sort.direction === 'asc' ? ' ↑' : ' ↓' : ''}</button></th>)}</tr></thead><tbody>{visible.map(row => <tr key={row.tradeId} className={selected === row.tradeId ? 'is-selected' : ''}><td><input type="checkbox" aria-label={`Chọn lệnh ${row.tradeId}`} checked={checked.has(row.tradeId)} onChange={() => toggle(row.tradeId)} /></td><td><button className="fxa-detail-button" type="button" aria-label={`Chi tiết ${row.tradeId}`} aria-pressed={selected === row.tradeId} onClick={() => onSelect(selected === row.tradeId ? '' : row.tradeId)}>↗</button></td>{shownColumns.map(([key]) => <td key={key} className={['net_pnl', 'gross_pnl'].includes(key) ? outcomeOf(row[key]) === 'win' ? 'is-positive' : outcomeOf(row[key]) === 'loss' ? 'is-negative' : '' : ''}>{['status', 'side'].includes(key) ? <span className={`fxa-badge is-${key === 'status' ? 'closed' : String(row.side).toLowerCase()}`}>{display(row, key, model, sessionName)}</span> : key === 'session_id' ? <span title={row.trade_id || row.tradeId}>{display(row, key, model, sessionName)}</span> : display(row, key, model, sessionName)}</td>)}</tr>)}</tbody></table>{!rows.length && <p className="fxa-empty">Không có giao dịch khớp bộ lọc.</p>}</div>
     <nav className="fxa-pagination" aria-label="Trade ledger pagination" data-testid="analytics-ledger-pagination"><div><button className="fxa-button" type="button" aria-label="Trang trước" disabled={current === 0} onClick={() => setPage(current - 1)}>‹</button>{Array.from({ length: Math.min(pages, 7) }, (_, i) => Math.min(Math.max(0, current - 3), Math.max(0, pages - 7)) + i).map(index => <button key={index} type="button" className="fxa-button" aria-label={`Trang ${index + 1}`} aria-current={current === index ? 'page' : undefined} onClick={() => setPage(index)}>{index + 1}</button>)}<button className="fxa-button" type="button" aria-label="Trang sau" disabled={current >= pages - 1} onClick={() => setPage(current + 1)}>›</button></div><FxSelect label="Số dòng Trades" value={size} onChange={value => { setSize(Number(value)); setPage(0) }} triggerContent={`${size} / trang`} options={[10, 25, 50, 100].map(value => ({ value, label: String(value) }))} /></nav>
   </section></>
 }
