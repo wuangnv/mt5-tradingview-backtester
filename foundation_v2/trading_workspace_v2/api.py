@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import tempfile
 from collections.abc import Mapping
-from contextlib import contextmanager
+from contextlib import asynccontextmanager, contextmanager
 from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
@@ -135,6 +135,12 @@ class CsvDataImportRequest(BaseModel):
 CSV_PAYLOAD_MAX_BYTES = 10 * 1024 * 1024
 
 
+class MarketHistoryUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    symbol: str | None = Field(default=None, max_length=64, pattern=r'^[A-Za-z0-9_]+$')
+    from_date: str | None = Field(default=None, pattern=r'^\d{4}-\d{2}-\d{2}$')
+
+
 @contextmanager
 def _materialize_csv_payload(csv_text: str):
     """Materialize one bounded request payload and remove it on exit."""
@@ -181,6 +187,7 @@ def create_app(
     data_registry: DataProviderRegistry | None = None,
     learn_roots: Mapping[str, str | Path] | None = None,
     notion_oauth: NotionOAuthService | None = None,
+    market_runtime_factory=None,
 ) -> FastAPI:
     dsn = dsn or os.environ["TW_V2_DATABASE_URL"]
     artifact_root = artifact_root or os.environ["TW_V2_ARTIFACT_ROOT"]
@@ -211,7 +218,19 @@ def create_app(
             identity_id=os.getenv("TW_V2_LOCAL_IDENTITY", "local-owner"),
         )
 
-    app = FastAPI(title="Trading Workspace Foundation v2", version=CONTRACT_VERSION)
+    market_runtime = market_runtime_factory(store, artifacts) if market_runtime_factory else None
+
+    @asynccontextmanager
+    async def lifespan(app):
+        if market_runtime:
+            market_runtime.start()
+        try:
+            yield
+        finally:
+            if market_runtime:
+                market_runtime.stop()
+
+    app = FastAPI(title="Trading Workspace Foundation v2", version=CONTRACT_VERSION, lifespan=lifespan)
     app.state.store = store
     app.state.service = service
     app.state.ingest = ingest
@@ -220,6 +239,7 @@ def create_app(
     app.state.data_registry = data_registry
     app.state.learn = learn
     app.state.authorization = authorization
+    app.state.market_runtime = market_runtime
     if notion_oauth is None:
         notion_oauth = NotionOAuthService(NotionOAuthConfig.from_environment())
     app.state.notion_oauth = notion_oauth
@@ -516,6 +536,37 @@ def create_app(
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
         return {"items": data_registry.list_datasets(workspace), "holdout_access": False}
+
+    @app.get('/api/v2/data/market-assets')
+    def market_assets(workspace: str = Depends(workspace_id)):
+        if market_runtime is None:
+            return {'status': 'unavailable', 'items': [], 'execution_capability': False}
+        try:
+            return market_runtime.catalog(workspace)
+        except PermissionError as exc:
+            raise HTTPException(status_code=403, detail=str(exc)) from exc
+
+    @app.post('/api/v2/data/market-assets/update', status_code=202)
+    def update_market_assets(body: MarketHistoryUpdateRequest, workspace: str = Depends(workspace_id)):
+        if market_runtime is None:
+            raise HTTPException(status_code=503, detail='market_sync_not_configured')
+        try:
+            return market_runtime.request(workspace, body.symbol, body.from_date)
+        except PermissionError as exc:
+            raise HTTPException(status_code=403, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=503, detail='market_sync_owner_unavailable') from exc
+
+    @app.get('/api/v2/live/status')
+    def live_read_status(workspace: str = Depends(workspace_id)):
+        if market_runtime is None:
+            return {'status': 'unavailable', 'execution_capability': False}
+        try:
+            return market_runtime.live_status(workspace)
+        except PermissionError as exc:
+            raise HTTPException(status_code=403, detail=str(exc)) from exc
 
     @app.get("/api/v2/data/providers")
     def list_data_providers(workspace: str = Depends(workspace_id)):

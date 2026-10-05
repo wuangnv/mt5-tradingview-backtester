@@ -1,0 +1,20 @@
+D:\ANNAM\TradingWorkspace\projects\mt5-tradingview-backtester\foundation_v2\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_bulk_retry_only_restores_failed_asset_date (test_market_sync.MarketSyncTests.test_bulk_retry_only_restores_failed_asset_date) ... ok
+test_collector_rejects_live_server_or_account_drift (test_market_sync.MarketSyncTests.test_collector_rejects_live_server_or_account_drift) ... ok
+test_daily_runs_once_per_utc_day_and_resumes_pending_on_restart (test_market_sync.MarketSyncTests.test_daily_runs_once_per_utc_day_and_resumes_pending_on_restart) ... ok
+test_merge_failure_removes_sqlite_so_next_attempt_can_work (test_market_sync.MarketSyncTests.test_merge_failure_removes_sqlite_so_next_attempt_can_work) ... ok
+test_merge_overlap_correction_keeps_gaps_and_closes_windows_file (test_market_sync.MarketSyncTests.test_merge_overlap_correction_keeps_gaps_and_closes_windows_file) ... ok
+test_queue_dedup_scope_owner_and_bad_date (test_market_sync.MarketSyncTests.test_queue_dedup_scope_owner_and_bad_date) ... ok
+test_queued_and_inflight_date_upgrade_is_not_lost (test_market_sync.MarketSyncTests.test_queued_and_inflight_date_upgrade_is_not_lost) ... ok
+test_real_import_versions_immutable_artifacts_noop_and_recovery (test_market_sync.MarketSyncTests.test_real_import_versions_immutable_artifacts_noop_and_recovery) ... ok
+test_snapshot_dedups_persisted_deals_cashflows_and_stale (test_market_sync.MarketSyncTests.test_snapshot_dedups_persisted_deals_cashflows_and_stale) ... ok
+test_transient_error_retries_and_exhaustion_keeps_backfill_date (test_market_sync.MarketSyncTests.test_transient_error_retries_and_exhaustion_keeps_backfill_date) ... ok
+test_default_app_never_enables_collector_and_has_explicit_unavailable (test_market_sync_api.MarketSyncApiTests.test_default_app_never_enables_collector_and_has_explicit_unavailable) ... ok
+test_non_owner_update_is_503_and_invalid_catalog_symbol_is_422 (test_market_sync_api.MarketSyncApiTests.test_non_owner_update_is_503_and_invalid_catalog_symbol_is_422) ... ok
+test_scope_request_shape_and_lifespan (test_market_sync_api.MarketSyncApiTests.test_scope_request_shape_and_lifespan) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.618s
+
+OK

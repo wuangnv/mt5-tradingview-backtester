@@ -1,0 +1,10 @@
+test_empty_broker_snapshot_is_real_empty_without_login_or_execution_calls (test_mt5_read_worker.MT5ReadWorkerTests.test_empty_broker_snapshot_is_real_empty_without_login_or_execution_calls) ... ok
+test_history_dedups_week_boundaries_and_excludes_forming_bar (test_mt5_read_worker.MT5ReadWorkerTests.test_history_dedups_week_boundaries_and_excludes_forming_bar) ... ok
+test_incomplete_is_error_not_empty (test_mt5_read_worker.MT5ReadWorkerTests.test_incomplete_is_error_not_empty) ... ok
+test_metal_in_forex_folder_is_cfd (test_mt5_read_worker.MT5ReadWorkerTests.test_metal_in_forex_folder_is_cfd) ... ok
+test_scope_and_identity_rechecked_after_read (test_mt5_read_worker.MT5ReadWorkerTests.test_scope_and_identity_rechecked_after_read) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.064s
+
+OK

@@ -1,0 +1,32 @@
+{
+  "scope": "actual owner read-only API/SDK snapshots; simulated failures labeled separately; no broker or API writes",
+  "checks": [
+    "catalog-dark-360",
+    "live-trades-dark-360",
+    "live-account-dark-360",
+    "catalog-dark-768",
+    "live-trades-dark-768",
+    "live-account-dark-768",
+    "catalog-dark-1440",
+    "latest-dataset opens fresh replay form without creating session",
+    "live-trades-dark-1440",
+    "live-account-dark-1440",
+    "catalog-light-360",
+    "live-trades-light-360",
+    "live-account-light-360",
+    "catalog-light-768",
+    "live-trades-light-768",
+    "live-account-light-768",
+    "catalog-light-1440",
+    "live-trades-light-1440",
+    "live-account-light-1440",
+    "actual broker poll refreshes snapshot without user reload",
+    "simulated network failure retains visibly stale snapshot",
+    "simulated 403 clears account and deals",
+    "simulated unavailable has no account values",
+    "original replay dataset hash, 93810 rows, revision and 501 visible bars unchanged"
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

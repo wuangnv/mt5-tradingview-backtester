@@ -1,0 +1,336 @@
+{
+  "source": "Exness-MT5Trial14 / MT5",
+  "catalog_count": 356,
+  "enabled_assets": [
+    {
+      "symbol": "AUDCADm",
+      "status": "ready",
+      "dataset_id": "dataset-839f60031ff5ba3b404cd36b5233662047311e74870d0a173c0bdee259f887d3",
+      "row_count": 91623,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "AUDCHFm",
+      "status": "ready",
+      "dataset_id": "dataset-f82a1fca5742e846d89d16e395a100fbb5c37c71e5c293c8ec18de0795a7aa2f",
+      "row_count": 91687,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "AUDJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-bd034a6e2d90fdba7012bab98a0dc453a2605959a334226ba68b0b4abf0eeaf0",
+      "row_count": 91784,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "AUDNZDm",
+      "status": "ready",
+      "dataset_id": "dataset-a5f4080d9654b1eab312849037bebe688f7950bd1a87f37a6f5517b42aa48eb8",
+      "row_count": 91406,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "AUDUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-0996664d69add32cb1bf2a0036d7331d1414e38983b16b90f3d8bcb1bf241585",
+      "row_count": 91892,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "BTCUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-57231e69fd353e5815cb0cd219e3716d70eb169cacc2f640a0ae2500d9f18b01",
+      "row_count": 100003,
+      "first_timestamp": 1785174720,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "CADCHFm",
+      "status": "ready",
+      "dataset_id": "dataset-55b5976679fc65cced13142e169de68cdb92dabce263f53f6d291f9c657d0e77",
+      "row_count": 91566,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "CADJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-6a8d067bc838b51f4a372c1d44c2f90e72d9ea42cae5468c0f8595173f8bbc63",
+      "row_count": 91750,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "CHFJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-de36b8fc4fdc72967afa772d222e63522e866d434403a25ad1d12aa0b7a6463e",
+      "row_count": 91337,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "ETHUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-23add0d2f1b47918ece2f76b1da2b6f6e0916a0bc617d1ef4b39615a2eaee3d2",
+      "row_count": 100003,
+      "first_timestamp": 1785174720,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURAUDm",
+      "status": "ready",
+      "dataset_id": "dataset-8e9ea8b4de4dd0cacd24684f0ece4ebb83ba94b16ad9d18c231f67dcd95d5f41",
+      "row_count": 91645,
+      "first_timestamp": 1783401360,
+      "last_timestamp": 1791177300,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURCADm",
+      "status": "ready",
+      "dataset_id": "dataset-4c4bbd68cc8d3f351ae6861f87347362ff80dbad49b8a047da1044770bd92df1",
+      "row_count": 91601,
+      "first_timestamp": 1783401420,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURCHFm",
+      "status": "ready",
+      "dataset_id": "dataset-a5be6dd9b3333d353ff8f29019a61a28f776d76febe7e62904d0f1836239f7cc",
+      "row_count": 91926,
+      "first_timestamp": 1783401420,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURGBPm",
+      "status": "ready",
+      "dataset_id": "dataset-7731b0a6d52da3c4ae5d3bde5323c652a98b16dc07dcac812a4195d925be9f5d",
+      "row_count": 91959,
+      "first_timestamp": 1783401420,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-14a0d929e0198834c21df29cab3bdd10c2d46bf79da3d430ee90d24336b862ee",
+      "row_count": 91919,
+      "first_timestamp": 1783401420,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURNZDm",
+      "status": "ready",
+      "dataset_id": "dataset-76fadff0de6a8002c9ba2017b65e1861ea669d2dbf3408667aeca6aa503aa4cd",
+      "row_count": 91672,
+      "first_timestamp": 1783401420,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "EURUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-10cb4e60eeacc18f47c79a3c71addbad10e580a737bc20b7ac6e8e10c61e0ca7",
+      "row_count": 93860,
+      "first_timestamp": 1783285500,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "GBPAUDm",
+      "status": "ready",
+      "dataset_id": "dataset-370521de1a35cfb109df4db0abcb4d5fffae0cc05c128e9ddd7738f808ab4780",
+      "row_count": 91800,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "GBPCADm",
+      "status": "ready",
+      "dataset_id": "dataset-fb4c5fa0b4c5a8c52d208b53a3128be83ad0eb4db3301c43eee4931351d1ca22",
+      "row_count": 91641,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "GBPCHFm",
+      "status": "ready",
+      "dataset_id": "dataset-f1172f7c66e9a401ef21c2365a1214b19c3c6cecf35e518d1d059af75f05107b",
+      "row_count": 91917,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "GBPJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-bfcd6b1be2e620030b461abb9ef5116c342af537074dae9482384f3cf4ae0b7f",
+      "row_count": 91913,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "GBPNZDm",
+      "status": "ready",
+      "dataset_id": "dataset-ff2e161dc2fd3a5e1a3d60efcf24ce1b25b543381c1c487a6df25b51e40e532d",
+      "row_count": 91386,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "GBPUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-1eeaf475b9c1bafaf79677251ea1fbbca0fc15539460e0f67f0715cbc6bdcb68",
+      "row_count": 91819,
+      "first_timestamp": 1783401420,
+      "last_timestamp": 1791177360,
+      "quality": "review"
+    },
+    {
+      "symbol": "NZDCADm",
+      "status": "ready",
+      "dataset_id": "dataset-69da8f966c02d39a76cc89464b5bf78189c1b501873296c8b565a63c8bd93b35",
+      "row_count": 91860,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "NZDCHFm",
+      "status": "ready",
+      "dataset_id": "dataset-c5cb66e87304575251b559eba69bcf1c3fcd94bb82c719696b4870b479429532",
+      "row_count": 92097,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "NZDJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-8b7f0d44818c8edf2451326b5a1c184f7a8bf41d847928327fb88ac3906d4cf2",
+      "row_count": 91912,
+      "first_timestamp": 1783382400,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "NZDUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-9b7f55f511ee86b1ec1a17194a1a9dcb4370ee7b1bc8185c436d8e6ba17fe96e",
+      "row_count": 91927,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "US30m",
+      "status": "ready",
+      "dataset_id": "dataset-7cdf36acfb1727b38aa1b8d26f9aeec0a696efb8b6962ef977f6ccf99aad83f1",
+      "row_count": 88009,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "US500m",
+      "status": "ready",
+      "dataset_id": "dataset-1a1a1d3203b0e9cb0bf5f1075056141b8cbd4ee3fb3e4472cfe57e06a9f99e47",
+      "row_count": 88012,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "USDCADm",
+      "status": "ready",
+      "dataset_id": "dataset-c7afe7a365466e78f45df55d114e024ca9804cf0a9ba7223bc4b7903eaad558f",
+      "row_count": 91940,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "USDCHFm",
+      "status": "ready",
+      "dataset_id": "dataset-93d6e2360877ed72155e1629f3bccca46f3808866d7bc89eb43daad634cdc1ef",
+      "row_count": 91892,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "USDJPYm",
+      "status": "ready",
+      "dataset_id": "dataset-9e7880ce57067ddf4d081c739f7a876d2e6ab406ac0abca76108d79d48ac9e11",
+      "row_count": 91852,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "USTECm",
+      "status": "ready",
+      "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+      "row_count": 88014,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "XAGUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-be4b51f00a3534cf488a0c2c5b845e06b43665a6b4f925b4d12ac63e120aaa54",
+      "row_count": 87916,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    },
+    {
+      "symbol": "XAUUSDm",
+      "status": "ready",
+      "dataset_id": "dataset-7c63c3eb55e2e3b86522ea5e5bacbaede4f525de340a6aa555b86984484be2d4",
+      "row_count": 88020,
+      "first_timestamp": 1783401480,
+      "last_timestamp": 1791177420,
+      "quality": "review"
+    }
+  ],
+  "queued": 0,
+  "running": null,
+  "connection_error": null,
+  "live": {
+    "source": "Exness-MT5Trial14",
+    "mode": "demo",
+    "stale": false,
+    "deal_count": 2,
+    "cashflow_count": 2,
+    "position_count": 0,
+    "order_count": 0,
+    "quote_count": 6,
+    "poll_seconds": 5,
+    "execution_capability": false
+  }
+}

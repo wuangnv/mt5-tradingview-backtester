@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './live-workspace.css'
+import LiveBrokerSnapshot from './LiveBrokerSnapshot.jsx'
 
 const LIVE_STATUS_URL = '/api/v2/live/status'
 
@@ -64,7 +65,7 @@ async function readLiveStatus(workspace, signal) {
 
 function statusCopy(state) {
   if (state.status === 'loading') return { tone: 'loading', title: 'Đang đọc live status', detail: 'Chỉ đọc metadata local; chưa có quyền market hoặc broker.' }
-  if (state.status === 'ready') return { tone: 'ready', title: 'Read-only status đã sẵn sàng', detail: 'Status này không cấp quyền gửi lệnh hoặc truy cập account.' }
+  if (state.status === 'ready') return state.payload?.stale ? { tone: 'unavailable', title: 'Snapshot cũ — chưa xác nhận trạng thái hiện tại', detail: state.payload.error || 'Chưa nhận được lần đồng bộ mới.' } : { tone: 'ready', title: 'Read-only feed đã sẵn sàng', detail: 'Dữ liệu tài khoản và giao dịch từ broker; không cấp quyền gửi lệnh.' }
   if (state.status === 'denied') return { tone: 'denied', title: 'Workspace không có quyền đọc live status', detail: 'Permission boundary đang giữ nguyên; không thử đăng nhập hoặc gọi broker.' }
   if (state.status === 'unavailable') return { tone: 'unavailable', title: 'Live adapter chưa được cấu hình', detail: 'Không có market/account snapshot để hiển thị trong workspace này.' }
   if (state.status === 'locked') return { tone: 'unavailable', title: 'Live đang bị khóa theo policy', detail: 'Workspace nhận được status nhưng chưa có capability read-only nào được cấp.' }
@@ -82,10 +83,10 @@ function LiveState({ state, onRetry }) {
   )
 }
 
-function PermissionBoundary() {
+function PermissionBoundary({ payload }) {
   const items = [
-    ['Market feed', 'Chưa cấp'],
-    ['Account identity', 'Chưa cấp'],
+    ['Market feed', payload?.account ? 'Snapshot read-only' : 'Chưa cấp'],
+    ['Account identity', payload?.account ? 'Exness demo được cấp' : 'Chưa cấp'],
     ['Broker send', 'Đã khóa'],
     ['Holdout / external write', 'PREP_ONLY'],
   ]
@@ -116,17 +117,27 @@ export default function LiveWorkspace({ workspace = 'tenant-a', query = new URLS
   const requestedSection = query.get('section')
   const section = LIVE_SECTIONS[requestedSection] ? requestedSection : 'calendar'
   const [reloadToken, setReloadToken] = useState(0)
-  const [state, setState] = useState({ status: 'loading', payload: null, error: null })
+  const [snapshot, setState] = useState({ workspace, status: 'loading', payload: null, error: null })
+  const state = snapshot.workspace === workspace ? snapshot : { status: 'loading', payload: null, error: null }
 
   useEffect(() => {
     const controller = new AbortController()
-    setState({ status: 'loading', payload: null, error: null })
-    readLiveStatus(workspace, controller.signal)
-      .then((payload) => setState({ status: payload.status, payload, error: null }))
-      .catch((error) => {
-        if (error.name !== 'AbortError') setState({ status: error.kind || 'error', payload: null, error })
-      })
-    return () => controller.abort()
+    setState({ workspace, status: 'loading', payload: null, error: null })
+    let refreshing = false
+    const refresh = async () => {
+      if (refreshing) return
+      refreshing = true
+      try {
+        const payload = await readLiveStatus(workspace, controller.signal)
+        if (!controller.signal.aborted) setState({ workspace, status: payload.status, payload, error: null })
+      } catch (error) {
+        if (!controller.signal.aborted) setState(previous => ({ workspace, status: error.kind || 'error',
+          payload: error.kind === 'denied' || previous.workspace !== workspace ? null : previous.payload ? { ...previous.payload, stale: true } : null, error }))
+      } finally { refreshing = false }
+    }
+    refresh()
+    const timer = setInterval(refresh, 5000)
+    return () => { controller.abort(); clearInterval(timer) }
   }, [reloadToken, workspace])
 
   const surface = useMemo(() => <EmptySurface section={section} workspace={workspace} query={query} />, [query, section, workspace])
@@ -135,9 +146,9 @@ export default function LiveWorkspace({ workspace = 'tenant-a', query = new URLS
       <header className="live-topbar wm-page-header"><h1>{LIVE_SECTIONS[section].title}</h1><span className="live-topbar-lock">Broker đã khóa</span></header>
       <section className="live-context" aria-label="Live context"><span>Workspace <strong>{workspace}</strong></span><span>Surface <strong>{LIVE_SECTIONS[section].label}</strong></span><span>Mode <strong>Read only</strong></span><span>External write <strong>PREP_ONLY</strong></span></section>
       <LiveState state={state} onRetry={() => setReloadToken((value) => value + 1)} />
-      {surface}
-      <PermissionBoundary />
-      <footer className="live-footnote">Status endpoint: <code>{LIVE_STATUS_URL}</code> · Không có broker request từ màn này.</footer>
+      {state.payload?.account && ['trades', 'trading-accounts'].includes(section) ? <LiveBrokerSnapshot payload={state.payload} section={section} /> : surface}
+      <PermissionBoundary payload={state.payload} />
+      <footer className="live-footnote">Testing và Live có dữ liệu riêng. App chỉ đọc broker; không có thao tác gửi lệnh trên màn này.</footer>
     </main>
   )
 }

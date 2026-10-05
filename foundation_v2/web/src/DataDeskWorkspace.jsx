@@ -11,6 +11,7 @@ import {
 } from './researchDataApi.js'
 import { importLocalCsv, previewLocalCsv } from './dataDeskApi.js'
 import './research-data.css'
+import MarketAssetCatalog from './MarketAssetCatalog.jsx'
 
 const CSV_LIMIT_BYTES = 10 * 1024 * 1024
 const MAX_GET_RETRIES = 3
@@ -349,6 +350,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           <div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · holdout không mở</span></div>
         </div>
       </header>
+      <MarketAssetCatalog workspace={workspace} query={query} />
       <div className="rd-statusbar" role="group" aria-label="Trạng thái Data Desk">
         <span>Workspace <strong>{workspace}</strong></span>
         <span>Datasets <strong>{state.datasets.length}</strong></span>

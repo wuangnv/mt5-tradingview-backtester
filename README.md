@@ -101,9 +101,14 @@ ghi chú workspace vẫn thuộc API và được hiển thị riêng trên char
 Chart workspace dùng bố cục Legacy với một header native, thanh replay nổi và
 Buy/Sell phía dưới; xem [checkpoint Legacy](foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md).
 
-Kho lịch sử owner hiện dùng Exness demo EURUSDm M1 (93.810 nến), tách khỏi QA.
-Xem [nguồn dữ liệu, giới hạn và cách chạy lại](foundation_v2/evidence/real-history-20261005/CHECKPOINT.md).
-Lệnh vẫn mô phỏng; historical costs và 82 gaps còn cần xác minh. Advanced Charts
+Kho Testing/Prop luyện tập hiện dùng lịch sử Exness demo đã lưu local, tách khỏi QA.
+35 assets mặc định đã tải M1 (28 Forex, 2 metals CFD, 3 indices CFD, 2 crypto CFD);
+Data Desk cho tìm trong 356 symbols broker và tải thêm. Khi bật collector và MT5
+kết nối, API tự tải bù mỗi ngày UTC; session cũ giữ nguyên dataset. Live đọc snapshot
+tài khoản/deals khoảng 5 giây, không gửi lệnh. Không cần MT5 để replay dữ liệu đã lưu.
+Xem [đồng bộ Testing/Live và cách chạy](foundation_v2/evidence/market-sync-20261005/CHECKPOINT.md)
+và [phiên EURUSD ban đầu](foundation_v2/evidence/real-history-20261005/CHECKPOINT.md).
+Lệnh replay vẫn mô phỏng; historical costs và gaps còn cần xác minh. Advanced Charts
 đã chạy trong Chromium; Codex in-app browser hiện hủy iframe blob, có thông báo lỗi
 và link chart dự phòng thay vì tải mãi.
 

@@ -1,0 +1,18 @@
+.market-assets { padding: 24px 0 36px; min-width: 0; }
+.market-sync-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; }
+.market-sync-heading h2 { margin: 0; font-size: 18px; }
+.market-sync-heading p, .market-sync-note { color: var(--wm-content-muted); font-size: 13px; line-height: 1.6; }
+.market-sync-facts, .market-sync-filters { display: flex; gap: 12px 24px; flex-wrap: wrap; align-items: center; margin: 16px 0; font-size: 13px; }
+.market-sync-filters label { display: flex; gap: 8px; align-items: center; }
+.market-sync-filters input:not([type=checkbox]), .market-sync-filters select { min-height: 40px; padding: 0 12px; background: var(--wm-surface); color: var(--wm-content); border: 1px solid var(--wm-border); border-radius: 6px; }
+.market-sync-filters input[type=search] { width: 220px; }
+.market-sync-table { overflow: auto; max-height: 520px; }
+.market-sync-table:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
+.market-sync-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.market-sync-table th { text-align: left; font-weight: 500; color: var(--wm-content-muted); background: var(--wm-surface); position: sticky; top: 0; }
+.market-sync-table th, .market-sync-table td { padding: 12px 16px; border-bottom: 1px solid var(--wm-border); vertical-align: middle; }
+.market-sync-table td:last-child { white-space: nowrap; }
+.market-sync-table td:last-child button { margin-left: 8px; }
+.market-sync-table small { display: block; margin-top: 4px; color: var(--wm-content-muted); font-size: 12px; }
+.market-sync-table tbody tr:hover { background: var(--wm-hover); }
+@media (max-width: 760px) { .market-sync-heading { flex-wrap: wrap; gap: 12px; } .market-sync-table table { min-width: 850px; } .market-sync-filters label { flex-wrap: wrap; } }
