@@ -1,4 +1,6 @@
 .market-assets { padding: 24px 0 36px; min-width: 0; }
+.market-data-workspace .market-assets { padding-top: 0; }
+.market-data-workspace .market-sync-heading p { margin-top: 0; }
 .market-sync-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; }
 .market-sync-heading h2 { margin: 0; font-size: 18px; }
 .market-sync-heading p, .market-sync-note { color: var(--wm-content-muted); font-size: 13px; line-height: 1.6; }

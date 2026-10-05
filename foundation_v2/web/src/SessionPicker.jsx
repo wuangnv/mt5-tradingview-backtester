@@ -146,7 +146,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     <div className="fxr-session-toolbar">
       <SessionSelect kind={kind} selected={selected} catalog={catalog} showArchived={showArchived} onSelect={navigate} disabled={Boolean(pending)} />
       <div className="fxr-session-actions">
-        {kind === 'replay' && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('data', workspace, query, { section: null, area: null })}>Kho assets</a>}
+        {kind === 'replay' && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('market-data', workspace, query, { section: 'market-data', area: 'testing' })}>Market Data</a>}
         {kind === 'replay' && <><a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a>{available && <><a className="fxr-button fxr-button-secondary" href={routeHref('analytics')}>Analytics ↗</a><button className="fxr-button fxr-button-secondary" type="button" disabled={actionDisabled} onClick={() => { setDraft({ name: item.name || '', description: item.description || '' }); setEditing(true) }}>Cài đặt phiên</button><button className="fxr-button fxr-button-secondary fxs-archive" type="button" ref={managementIntent === 'archive' ? managementRef : undefined} disabled={actionDisabled} onClick={() => mutate('archive', { archived: !item.archived })}>{pending === 'archive' ? 'Đang lưu…' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button></>}</>}
         <label className="fxr-archive-toggle"><input type="checkbox" checked={showArchived} onChange={(event) => setShowArchived(event.target.checked)} />Hiện phiên đã lưu trữ</label>
       </div>

@@ -54,6 +54,7 @@ const SHELL_COPY = {
       settings: ['Settings', 'Workspace và kết nối'],
       overview: ['Dashboard', 'Phiên đang làm và điểm tiếp theo'],
       data: ['Data desk', 'Dataset, provenance và QA'],
+      marketData: ['Market Data', 'Assets và lịch sử cho Testing'],
       research: ['Research', 'Backtest và kết quả'],
       journal: ['Journal', 'Ghi chú theo phiên'],
       analytics: ['Analytics', 'Hiệu suất và thống kê'],
@@ -105,6 +106,7 @@ const SHELL_COPY = {
       settings: ['Settings', 'Workspace and connections'],
       overview: ['Dashboard', 'Current session and next action'],
       data: ['Data desk', 'Dataset, provenance and QA'],
+      marketData: ['Market Data', 'Assets and history for Testing'],
       research: ['Research', 'Backtest and results'],
       journal: ['Journal', 'Session notes'],
       analytics: ['Analytics', 'Performance and statistics'],
@@ -125,6 +127,7 @@ const SIDEBAR_SECTIONS = [
       { id: 'testing-sessions', copyKey: 'sessions', icon: 'sessions', route: 'replay', picker: true, activeViews: ['replay'], section: 'sessions' },
       { id: 'testing-trades', copyKey: 'trade', icon: 'trades', route: 'trade', picker: true, activeViews: ['trade'], section: 'trades' },
       { id: 'testing-analytics', copyKey: 'analytics', icon: 'analytics', route: 'analytics', picker: true, activeViews: ['analytics'], section: 'analytics' },
+      { id: 'testing-market-data', copyKey: 'marketData', icon: 'data', route: 'market-data', activeViews: ['market-data'], section: 'market-data' },
     ],
   },
   {
@@ -164,7 +167,7 @@ const SUBNAV_GROUPS = {
 function activeSectionId(activeView, query) {
   const area = query?.get('area')
   if (area && SIDEBAR_SECTIONS.some((section) => section.id === area)) return area
-  if (['overview', 'replay', 'trade', 'analytics'].includes(activeView)) return 'testing'
+  if (['overview', 'replay', 'trade', 'analytics', 'market-data'].includes(activeView)) return 'testing'
   if (activeView === 'live') return 'live'
   if (activeView === 'playbook') return 'strategies'
   if (activeView === 'learn') return 'education'
@@ -287,7 +290,13 @@ function ShellSubnav({ activeView, workspace, query, copy }) {
   const navRef = useRef(null)
   const selectedSection = query?.get('section')
   useEffect(() => {
-    navRef.current?.querySelector('.fx-subnav-primary a[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    const nav = navRef.current
+    if (!nav) return
+    const revealSelected = () => nav.querySelector('.fx-subnav-primary a[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    revealSelected()
+    const observer = new ResizeObserver(revealSelected)
+    observer.observe(nav)
+    return () => observer.disconnect()
   }, [activeView, sectionId, selectedSection])
   if (items.length === 0) return null
   return (

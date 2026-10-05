@@ -5,7 +5,7 @@ import './market-sync.css'
 
 const labels = { ready: 'Đã tải', queued: 'Đang chờ', syncing: 'Đang tải', error: 'Cập nhật lỗi', not_downloaded: 'Chưa tải' }
 
-export default function MarketAssetCatalog({ workspace, query }) {
+export default function MarketAssetCatalog({ workspace, query, showHeading = true }) {
   const [catalog, setState] = useState({ workspace, status: 'loading', items: [] })
   const state = catalog.workspace === workspace ? catalog : { status: 'loading', items: [] }
   const [search, setSearch] = useState(''), [group, setGroup] = useState('all')
@@ -49,7 +49,7 @@ export default function MarketAssetCatalog({ workspace, query }) {
     && `${item.symbol} ${item.metadata.description}`.toLowerCase().includes(search.toLowerCase()))
   const groups = [...new Set(items.map(item => item.metadata.group))].sort()
   return <section className="market-assets" aria-label="Kho dữ liệu Testing" data-testid="market-assets">
-    <div className="market-sync-heading"><div><h2>Kho Testing</h2><p>{state.source || 'Nguồn chưa kết nối'} · M1 · Tự tải bù mỗi ngày khi MT5 kết nối. Replay dùng dữ liệu đã lưu.</p></div>
+    <div className="market-sync-heading"><div>{showHeading && <h2>Kho Testing</h2>}<p>{state.source || 'Nguồn chưa kết nối'} · M1 · Tự tải bù mỗi ngày khi MT5 kết nối. Replay dùng dữ liệu đã lưu.</p></div>
       <button type="button" className="fxr-button fxr-button-secondary" onClick={() => update(null)} disabled={pending || !items.length || Boolean(state.queued) || Boolean(state.running)}>Cập nhật dữ liệu</button></div>
     <div className="market-sync-facts"><span>{items.filter(item => item.dataset_id).length} assets đã tải</span><span>{state.queued || 0} đang chờ</span>{state.running && <span role="status">Đang tải {state.running}</span>}</div>
     {state.connection_error && <p role="status">MT5 chưa sẵn sàng ({state.connection_error}). Kho đã tải vẫn dùng được.</p>}

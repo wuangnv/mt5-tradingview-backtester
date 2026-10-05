@@ -103,7 +103,10 @@ Buy/Sell phía dưới; xem [checkpoint Legacy](foundation_v2/evidence/ui-legacy
 
 Kho Testing/Prop luyện tập hiện dùng lịch sử Exness demo đã lưu local, tách khỏi QA.
 35 assets mặc định đã tải M1 (28 Forex, 2 metals CFD, 3 indices CFD, 2 crypto CFD);
-Data Desk cho tìm trong 356 symbols broker và tải thêm. Khi bật collector và MT5
+Tab **Market Data** ở cuối sub-header Testing cho tìm trong 356 symbols broker,
+lọc nhóm, xem lịch sử đã lưu và mở phiên luyện tập M1/tick. Data Desk vẫn giữ
+luồng CSV/provenance; xem [kiểm chứng điều hướng Market Data](foundation_v2/evidence/market-data-nav-20261005/CHECKPOINT.md).
+Khi bật collector và MT5
 kết nối, API tự tải bù mỗi ngày UTC; session cũ giữ nguyên dataset. Live đọc snapshot
 tài khoản/deals khoảng 5 giây, không gửi lệnh. Không cần MT5 để replay dữ liệu đã lưu.
 EURUSDm và XAUUSDm đã tải tick Bid/Ask cho khoảng 90 ngày, khoảng 472,6 MiB gồm bản gốc

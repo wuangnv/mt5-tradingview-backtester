@@ -8,6 +8,7 @@ import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
 import JournalWorkspace from './JournalWorkspace.jsx'
 import SettingsWorkspace from './SettingsWorkspace.jsx'
 import DataDeskWorkspace from './DataDeskWorkspace.jsx'
+import MarketAssetCatalog from './MarketAssetCatalog.jsx'
 import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
 import TradeWorkspace from './TradeWorkspace.jsx'
 import RiskWorkspace from './RiskWorkspace.jsx'
@@ -66,6 +67,9 @@ function App() {
     content = <ResearchWorkspaceV2 workspace={workspace} query={query} />
   } else if (activeView === 'data') {
     content = <DataDeskWorkspace workspace={workspace} query={query} />
+    mode = 'Data'
+  } else if (activeView === 'market-data') {
+    content = <main className="wm-page market-data-workspace" aria-label="Market Data"><h1 className="sr-only">Market Data</h1><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} /></main>
     mode = 'Data'
   } else if (activeView === 'overview') {
     content = <WorkspaceOverview workspace={workspace} query={query} />
