@@ -3,12 +3,11 @@ import { useEffect, useId, useRef, useState } from 'react'
 import './session-actions.css'
 import './dashboard-session.css'
 
-export function SessionActions({ item, onAction, disabled = false }) {
+export function SessionActions({ item, onAction, disabled = false, text = false }) {
   const { t } = useTestingLocale()
 
   return <div className="fxs-actions" aria-label={t("Thao tác {name}", { name: item.name || item.record_id })}>
-    <button type="button" className="fxs-action-button" aria-label={t(item.archived ? 'Khôi phục {name}' : 'Lưu trữ {name}', { name: item.name || item.record_id })} title={item.archived ? t("Khôi phục phiên") : t("Lưu trữ phiên")} disabled={disabled} onClick={() => onAction('archive', item)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v12h14V8M9 12h6" />{item.archived && <path d="m9 16 3-3 3 3m-3-3v5" />}</svg></button>
-    <button type="button" className="fxs-action-button is-danger" aria-label={t("Xóa {name}", { name: item.name || item.record_id })} title={t("Xóa phiên")} disabled={disabled} onClick={() => onAction('delete', item)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7" /></svg></button>
+    <button type="button" className={`${text ? 'fxr-button fxr-button-secondary' : 'fxs-action-button'} is-danger`} aria-label={text ? t("Xóa phiên") : t("Xóa {name}", { name: item.name || item.record_id })} title={t("Xóa phiên")} disabled={disabled} onClick={() => onAction('delete', item)}>{text ? t("Xóa phiên") : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7" /></svg>}</button>
   </div>
 }
 
@@ -18,7 +17,7 @@ export function SessionActionDialog({ mode, item, onClose, onSubmit, pending, bl
   const dialog = useRef(null), opener = useRef(document.activeElement), messageId = useId()
   const [confirmation, setConfirmation] = useState('')
   const name = item.name || item.record_id, deleting = mode === 'delete'
-  const title = deleting ? 'Xóa phiên' : mode === 'duplicate' ? 'Tạo bản sao phiên' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'
+  const title = deleting ? 'Xóa phiên' : 'Tạo bản sao phiên'
   useEffect(() => {
     const element = dialog.current
     element.showModal()
@@ -35,10 +34,10 @@ export function SessionActionDialog({ mode, item, onClose, onSubmit, pending, bl
     <header><h2>{t(title)}</h2><button type="button" aria-label={t("Đóng hộp thoại phiên")} disabled={pending} onClick={onClose}>×</button></header>
     {preview && <small className="fx-dashboard-dialog-preview">{t("Bản xem thử · thay đổi chỉ ở chế độ demo")}</small>}
     <form onSubmit={event => { event.preventDefault(); if (!pending && !blocked && (!deleting || confirmation === name)) onSubmit(mode, item, confirmation) }}>
-      <p id={messageId}>{deleting ? t('Xóa “{name}” khỏi workspace cùng kết quả của phiên. Không thể khôi phục bằng giao diện. Dataset trong Market Data và các phiên khác vẫn được giữ.', { name }) : mode === 'duplicate' ? t("Tạo bản sao “{name}” ở vị trí replay hiện tại.", { name: name }) : item.archived ? t("Khôi phục “{name}” vào danh sách phiên đang hoạt động.", { name: name }) : t("Chuyển “{name}” sang Đã lưu trữ. Dữ liệu và lịch sử vẫn được giữ.", { name: name })}</p>
+      <p id={messageId}>{deleting ? t('Xóa “{name}” khỏi workspace cùng kết quả của phiên. Không thể khôi phục bằng giao diện. Dataset trong Market Data và các phiên khác vẫn được giữ.', { name }) : t("Tạo bản sao “{name}” ở vị trí replay hiện tại.", { name })}</p>
       {deleting && <label>{t("Nhập tên phiên để xác nhận")}<strong>{name}</strong><input autoFocus autoComplete="off" aria-label={t("Tên phiên xác nhận xóa")} value={confirmation} disabled={pending} onChange={event => setConfirmation(event.target.value)} /></label>}
       {error && <p role="alert">{t(error)}</p>}
-      <footer><button className="fxr-button fxr-button-secondary" type="button" disabled={pending} onClick={onClose}>{t("Hủy")}</button><button className={`fxr-button ${deleting ? 'fxs-delete-confirm' : 'fxr-button-primary'}`} type="submit" disabled={pending || blocked || deleting && confirmation !== name}>{pending ? deleting ? t("Đang xóa…") : t("Đang lưu…") : deleting ? t("Xóa phiên") : mode === 'duplicate' ? t("Tạo bản sao") : item.archived ? t("Khôi phục") : t("Lưu trữ")}</button></footer>
+      <footer><button className="fxr-button fxr-button-secondary" type="button" disabled={pending} onClick={onClose}>{t("Hủy")}</button><button className={`fxr-button ${deleting ? 'fxs-delete-confirm is-danger' : 'fxr-button-primary'}`} type="submit" disabled={pending || blocked || deleting && confirmation !== name}>{pending ? deleting ? t("Đang xóa…") : t("Đang lưu…") : deleting ? t("Xóa phiên") : t("Tạo bản sao")}</button></footer>
     </form>
   </dialog>
 }

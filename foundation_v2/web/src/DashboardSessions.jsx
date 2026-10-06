@@ -26,7 +26,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   const [filters, setFilters] = useState(() => dashboardFilters(initialQuery))
   const [period, setPeriod] = useState(() => dashboardPeriod(dashboardFilters(initialQuery)))
   const [search, setSearch] = useState(initialQuery.get('dashboard_search') || '')
-  const [status, setStatus] = useState(['paused', 'running', 'ready', 'completed', 'archived', 'all'].includes(initialQuery.get('dashboard_status')) ? initialQuery.get('dashboard_status') : 'active')
+  const [status, setStatus] = useState(['paused', 'running', 'ready', 'completed', 'all'].includes(initialQuery.get('dashboard_status')) ? initialQuery.get('dashboard_status') : 'active')
   const [sort, setSort] = useState(['oldest', 'last', 'profit'].includes(initialQuery.get('dashboard_sort')) ? initialQuery.get('dashboard_sort') : 'newest')
   const [source, setSource] = useState(['prop', 'all'].includes(initialQuery.get('dashboard_source')) ? initialQuery.get('dashboard_source') : 'backtest')
   const [asset, setAsset] = useState(initialQuery.get('dashboard_asset') || ''), [strategy, setStrategy] = useState(initialQuery.get('dashboard_strategy') || '')
@@ -109,23 +109,23 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
     : sessionNavigationHref(view, workspace, query, item, { manage: null, ...overrides })
   const newHref = buildWorkspaceHref('replay', workspace, query, { fresh: '1', surface: 'workspace', session: null, dataset: null, cursor: null, cutoff: null, playbook: null, playbook_revision: null, mode: 'Practice' })
   const dialogItem = catalog.items.find(item => item.record_id === dialog?.id)
-  const selectedDialog = dialogItem && dialog?.mode === 'archive' ? { ...dialogItem, archived: dialog.archived } : dialogItem
-  const openDialog = (mode, item) => { setMutationError(''); setDialog({ mode, id: item.record_id, archived: Boolean(item.archived) }) }
+  const selectedDialog = dialogItem
+  const openDialog = (mode, item) => { setMutationError(''); setDialog({ mode, id: item.record_id }) }
   const mutate = async (action, item, draft) => {
-    if (pending || needsRefresh || catalog.refreshing) return
+    if (pending || needsRefresh || catalog.refreshing || !['rename', 'duplicate', 'delete'].includes(action)) return
     setPending(true); setMutationError(''); setNotice('')
     try {
       if (preview) {
         const now = new Date().toISOString()
-        setCatalog(current => ({ ...current, items: action === 'delete' ? current.items.filter(entry => entry.record_id !== item.record_id) : action === 'duplicate' ? [...current.items, { ...item, source_record_id: item.source_record_id || item.record_id, record_id: 'demo-copy-' + crypto.randomUUID(), name: item.name + ' (copy)', revision: 1, created_at_utc: now, updated_at_utc: now }] : current.items.map(entry => entry.record_id === item.record_id ? { ...entry, ...(action === 'rename' ? { name: draft.name.trim(), description: draft.description } : { archived: !item.archived }), revision: entry.revision + 1, updated_at_utc: now } : entry) }))
+        setCatalog(current => ({ ...current, items: action === 'delete' ? current.items.filter(entry => entry.record_id !== item.record_id) : action === 'duplicate' ? [...current.items, { ...item, source_record_id: item.source_record_id || item.record_id, record_id: 'demo-copy-' + crypto.randomUUID(), name: item.name + ' (copy)', revision: 1, created_at_utc: now, updated_at_utc: now }] : current.items.map(entry => entry.record_id === item.record_id ? { ...entry, name: draft.name.trim(), description: draft.description, revision: entry.revision + 1, updated_at_utc: now } : entry) }))
       } else {
-        const result = action === 'delete' ? await deleteSession(workspace, item, draft) : action === 'duplicate' ? await duplicateSession(workspace, item) : await updateSessionMetadata(workspace, item, action === 'rename' ? { name: draft.name.trim(), description: draft.description } : { archived: !item.archived })
+        const result = action === 'delete' ? await deleteSession(workspace, item, draft) : action === 'duplicate' ? await duplicateSession(workspace, item) : await updateSessionMetadata(workspace, item, { name: draft.name.trim(), description: draft.description })
         if (action === 'duplicate' && (typeof result.record_id !== 'string' || !result.record_id)) throw new Error('Phản hồi tạo bản sao thiếu session id.')
         setCatalog(current => ({ ...current, refreshing: true })); setReload(value => value + 1)
       }
       if (action === 'delete' && !preview) cleanDeletedScope(item)
       setDialog(null)
-      setNotice((action === 'delete' ? 'Đã xóa phiên' : action === 'rename' ? 'Đã lưu thay đổi' : action === 'duplicate' ? 'Đã tạo bản sao' : item.archived ? 'Đã khôi phục phiên' : 'Đã lưu trữ phiên') + (preview ? ' trong bản xem thử.' : '.'))
+      setNotice((action === 'delete' ? 'Đã xóa phiên' : action === 'rename' ? 'Đã lưu thay đổi' : 'Đã tạo bản sao') + (preview ? ' trong bản xem thử.' : '.'))
     } catch (error) {
       const uncertain = !error.status || error.status >= 500
       if (action === 'delete' && (uncertain || error.status === 404)) uncertainDelete.current = item
@@ -154,7 +154,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
       <div className="fx-dashboard-section-head"><h2>{t("Recent Sessions")}</h2></div>
       <div className="fx-dashboard-recent-toolbar"><label className="fx-dashboard-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg><input type="search" aria-label={t("Tìm phiên gần đây")} placeholder={t("Tìm tên phiên, symbol…")} value={search} onChange={event => changeRecent('search', event.target.value, setSearch)} /></label><div className="fx-dashboard-list-filters">
         <button className="fx-dashboard-filter-toggle" type="button" aria-label={filtersOpen ? t("Ẩn bộ lọc phiên") : t("Hiện bộ lọc phiên")} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) clearFilters(); setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
-        {filtersOpen && <><FxSelect label={t("Assets")} triggerContent={t("Assets")} value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder={t("Tìm asset…")} options={[{ value: '', label: 'Tất cả assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value, localize: false }))]} /><FxSelect label={t("Strategy")} triggerContent={t("Strategy")} value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder={t("Tìm strategy…")} disabled={detailsLoading} options={[{ value: '', label: 'Tất cả strategies' }, ...[...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value, localize: false })), ...(catalog.items.some(item => details[item.record_id]?.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /><FxSelect label={t("Trạng thái phiên")} value={status} onChange={value => changeRecent('status', value, setStatus)} options={[['active', 'Đang hoạt động'], ['all', 'Tất cả'], ['archived', 'Đã lưu trữ']].map(([value, label]) => ({ value, label }))} /></>}
+        {filtersOpen && <><FxSelect label={t("Assets")} triggerContent={t("Assets")} value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder={t("Tìm asset…")} options={[{ value: '', label: 'Tất cả assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value, localize: false }))]} /><FxSelect label={t("Strategy")} triggerContent={t("Strategy")} value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder={t("Tìm strategy…")} disabled={detailsLoading} options={[{ value: '', label: 'Tất cả strategies' }, ...[...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value, localize: false })), ...(catalog.items.some(item => details[item.record_id]?.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /><FxSelect label={t("Trạng thái phiên")} value={status} onChange={value => changeRecent('status', value, setStatus)} options={[['active', 'Đang hoạt động'], ['all', 'Tất cả']].map(([value, label]) => ({ value, label }))} /></>}
         <FxSelect label={t("Sắp xếp phiên")} value={sort} icon="sort" onChange={value => changeRecent('sort', value, setSort)} options={[{ value: 'newest', label: 'Newest to oldest' }, { value: 'oldest', label: 'Oldest to newest' }, { value: 'last', label: 'Last updated' }, { value: 'profit', label: 'Most profit' }]} />
       </div></div>
       {notice && <p className="fx-dashboard-action-notice" role="status">{t(notice)}</p>}

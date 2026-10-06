@@ -42,7 +42,7 @@ try {
     const url = `${origin}/?workspace=tenant-a&view=${view}&area=testing&section=${view === 'overview' ? 'dashboard' : 'sessions'}&select=1&session=${original.record_id}&dataset=${original.dataset_id}&cursor=500`
     await page.goto(url); await page.waitForLoadState('networkidle')
     await page.evaluate(id => localStorage.setItem('tw:replay:last:tenant-a', id), original.record_id)
-    await page.getByRole('button', { name: 'Xóa ' + original.name, exact: true }).click()
+    await page.getByRole('button', { name: view === 'replay' ? 'Xóa phiên' : 'Xóa phiên ' + original.name, exact: true }).click()
     const dialog = page.getByRole('dialog', { name: 'Xóa phiên', exact: true })
     await dialog.getByLabel('Tên phiên xác nhận xóa').fill(original.name)
     await dialog.getByRole('button', { name: 'Xóa phiên', exact: true }).click()
@@ -58,35 +58,30 @@ try {
       await dialog.getByRole('alert').waitFor()
       assert.equal(await dialog.getByLabel('Tên phiên xác nhận xóa').inputValue(), original.name)
       assert.equal(new URL(page.url()).searchParams.get('session'), original.record_id)
-      if (mode === 'linked') assert.match(await dialog.getByRole('alert').textContent(), /Prop Firm.*lưu trữ/)
+      if (mode === 'linked') assert.match(await dialog.getByRole('alert').textContent(), /prop firm.*không|Không thể xóa.*prop firm/i)
       if (mode === 'conflict') { await page.waitForLoadState('networkidle'); assert.ok(await dialog.getByRole('button', { name: 'Xóa phiên', exact: true }).isEnabled()); assert.ok(reads > 1) }
     }
     assert.equal(writes.length, 1, 'no automatic mutation retry')
     checks.push(`${view}: ${mode}, scoped exact revision/name, no actual write`)
     await context.close()
   }
-  // A409 from an already archived session cannot reverse the user's intention.
+  // Labeled legacy archived fixture: read-only access stays honest without restore UI.
   const context = await browser.newContext(), page = await context.newPage()
-  let item = { ...original }, calls = []
+  const item = { ...original, archived: true }, writes = []
   await context.route('**/api/**', route => {
     const request = route.request(), url = new URL(request.url())
     if (request.method() === 'GET' && url.pathname === '/api/v2/replay/sessions') return route.fulfill({ json: { items: [item] } })
     if (['GET', 'HEAD', 'OPTIONS'].includes(request.method())) return route.continue()
-    assert.equal(request.method(), 'PATCH'); assert.equal(request.postDataJSON().archived, true)
-    calls.push(request.postDataJSON()); item = { ...item, archived: true, revision: item.revision + 1 }
-    return calls.length === 1 ? route.fulfill({ status: 409, json: { detail: 'record_revision_conflict' } }) : route.fulfill({ json: { record_id: item.record_id, revision: item.revision, payload: { archived: true } } })
+    writes.push(request.method()); return route.abort()
   })
-  await page.goto(`${origin}/?workspace=tenant-a&view=overview&area=testing&section=dashboard`)
+  await page.goto(origin + '/?workspace=tenant-a&view=replay&area=testing&section=sessions&select=1&session=' + original.record_id + '&manage=archive')
   await page.waitForLoadState('networkidle')
-  await page.getByRole('button', { name: 'Lưu trữ ' + original.name, exact: true }).click()
-  const archive = page.getByRole('dialog', { name: 'Lưu trữ phiên', exact: true })
-  await archive.getByRole('button', { name: 'Lưu trữ', exact: true }).click()
-  await archive.getByRole('alert').waitFor()
-  await page.waitForLoadState('networkidle')
-  await archive.getByRole('button', { name: 'Lưu trữ', exact: true }).click()
-  assert.equal(calls.length, 2)
-  assert.equal(calls[1].expected_revision, original.revision + 1)
-  checks.push('Archive409 preserves target archived=true after refresh')
+  assert.equal(await page.getByRole('dialog').count(), 0, 'retired archive deep link is inert')
+  assert.equal(await page.getByRole('button', { name: /Lưu trữ|Khôi phục/ }).count(), 0)
+  assert.match(await page.locator('.fxr-session-notice').innerText(), /Phiên đã lưu trữ trước đây/)
+  assert.equal(await page.getByRole('link', { name: /Go to chart|Mở chart/ }).count(), 0)
+  assert.deepEqual(writes, [])
+  checks.push('Previously archived fixture remains readable; no restore action or archive deep-link mutation')
   await context.close()
   assert.deepEqual(errors, [])
   await writeFile(path.join(out, 'recovery.json'), JSON.stringify({ checks, errors, mutationTransport: 'intercepted-only' }, null, 2))

@@ -250,7 +250,7 @@ h1 { margin: 3px 0 0; font-size: 24px; line-height: 1.15; letter-spacing: 0; }
 .fx-dashboard-card-copy { min-width: 0; }
 .fx-dashboard-card-copy strong { display: block; color: #f3f5f7; font-size: 15px; font-weight: 720; line-height: 1.2; }
 .fx-dashboard-card-copy small { display: block; margin-top: 7px; color: #7d8992; font-size: 12px; line-height: 1.25; }
-.fx-dashboard-card-info { color: #7b8790; font-size: 12px; font-weight: 400; vertical-align: 1px; }
+.fx-dashboard-card-info { color: var(--wm-content); font-size: 12px; font-weight: 400; vertical-align: 1px; }
 .fx-page-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--fx-line); padding: 28px 0 22px; }
 .fx-eyebrow { display: block; color: #6e7a82; font-size: 9px; font-weight: 700; letter-spacing: .14em; }
 .fx-page-heading h1, .fx-unavailable h1, .fx-settings h1 { margin: 7px 0 0; color: #e8edf0; font-size: 24px; line-height: 1.15; }

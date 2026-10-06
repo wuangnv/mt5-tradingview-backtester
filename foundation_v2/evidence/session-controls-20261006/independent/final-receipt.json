@@ -1,0 +1,109 @@
+{
+  "status": "PASS_SCOPED_SESSION_CONTROLS",
+  "scope": "Archive entry removal, danger colors, text Delete, Dashboard filter/contrast, Trades alignment, intercepted archived report/disabled replay-duplicate",
+  "priorPassCases": 27,
+  "priorFailedCase": "demo-dashboard-dark-1377 legacy card-info contrast, fixed by owner and affected case rerun",
+  "finalAffectedPassCases": 4,
+  "archivedFixtureCases": 4,
+  "actualMutationWrites": 0,
+  "finalPins": [
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "7f541c9424b074c88a4dd30b66a6956b23975401b8405d07b7d706330ebcf2af"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "0ba3b2a6c55b434ea6ac25ce523fc45f0d06867a3502cf2641d788749fc7391c"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "f068ba9dfafb6aa2192138aeb878b963fe1880de4cf143f0ccb60be5ef916f43"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "f92c483003545d7850c088219a9b7f1d890299c5eca4047cebf6723e84931f2f"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "fc6fc8dc2a7aafb17d899fd11fb63d5bff3f8a4a45f810ab0c48cde6939a2a21"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "b15fe2eddfde8a4e9668f25c857e1d93737df8e4ecf85059133d4d2c3e4b82a2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "48069e016202642020af408631c40c95def783d5758dc97873c91060d5fd05fb"
+    },
+    {
+      "file": "sessionCatalog.js",
+      "sha256": "2412f0829f1426799f75dc016b6fd2124825ec4367a1e607298cdb84ca00109a"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "3ea096b0b41c722ac95dfbb744ed5210e9ef9580a480f4e283f9d4e5e85dfaff"
+    },
+    {
+      "file": "styles.css",
+      "sha256": "42d10f6b5dfba2798ee893872a3424f31203fed2daf0cb036444bc803dd8602b"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "6744e291506edaaba9850bdcc28b42e12843306fb25fb8c554c076ddde3b0663"
+    }
+  ],
+  "finalPinsStable": true,
+  "priorPinsStable": true,
+  "sourceOnlyFinalCheck": "SessionPicker hides duplicate notice for archived; disabled duplicate and absent chart behavior already covered by4 archived fixture cases",
+  "runtimeErrors": [],
+  "blockedRequests": [],
+  "reports": [
+    "final/report.json",
+    "final-r3/report.json",
+    "r1-report.json"
+  ],
+  "screenshotsReviewed": [
+    "final/demo-sessions-dark-1377-delete-confirm.png",
+    "final/actual-sessions-light-360.png",
+    "final/fixture-archived-light-360.png",
+    "final-r3/demo-dashboard-dark-1377.png",
+    "final-r3/demo-dashboard-light-360.png"
+  ],
+  "limitations": [
+    "GET-only actual API journeys; delete confirmation enabled and cancelled, never submitted.",
+    "Archived fixture uses labeled synthetic GET responses, no real record archive/restore performed.",
+    "27 scoped passes retained before final3 source files changed; final affected4 Dashboard cases rerun and archived notice source reviewed.",
+    "Independent scoped UI acceptance only; backend mutation tests and full-product acceptance belong to owner."
+  ],
+  "combinedDistinctPassingCases": 28,
+  "combinedCaseNames": [
+    "actual-dashboard-dark-1377",
+    "actual-dashboard-dark-360",
+    "actual-dashboard-light-1377",
+    "actual-dashboard-light-360",
+    "actual-sessions-dark-1377",
+    "actual-sessions-dark-360",
+    "actual-sessions-light-1377",
+    "actual-sessions-light-360",
+    "actual-trades-dark-1377",
+    "actual-trades-dark-360",
+    "actual-trades-light-1377",
+    "actual-trades-light-360",
+    "demo-dashboard-dark-1377",
+    "demo-dashboard-dark-360",
+    "demo-dashboard-light-1377",
+    "demo-dashboard-light-360",
+    "demo-sessions-dark-1377",
+    "demo-sessions-dark-360",
+    "demo-sessions-light-1377",
+    "demo-sessions-light-360",
+    "demo-trades-dark-1377",
+    "demo-trades-dark-360",
+    "demo-trades-light-1377",
+    "demo-trades-light-360",
+    "fixture-archived-dark-1377",
+    "fixture-archived-dark-360",
+    "fixture-archived-light-1377",
+    "fixture-archived-light-360"
+  ]
+}

@@ -9,7 +9,7 @@
 .fx-dashboard-card-info h3 small { color: var(--wm-content-muted); font-size: 11px; font-weight: 400; }
 .fx-dashboard-card-info h3 .fx-dashboard-days { display: inline-flex; align-items: center; gap: 4px; color: var(--wm-warning); }
 .fx-dashboard-days svg { width: 12px; height: 14px; }
-.fx-dashboard-card-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 8px; font-size: 12px; }
+.fx-dashboard-card-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 8px; font-size: 12px; color: var(--wm-content-muted); }
 .fx-dashboard-card-facts > span { display: inline-flex; align-items: center; gap: 6px; }
 .fx-dashboard-card-facts svg, .fx-dashboard-card-actions svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-dashboard-card-asset { display: inline-block; }

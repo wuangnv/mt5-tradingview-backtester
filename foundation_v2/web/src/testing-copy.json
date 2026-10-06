@@ -4574,5 +4574,13 @@
   "Không chụp được chart: {error}": {
     "vi": "Không chụp được chart: {error}",
     "en": "Could not capture chart: {error}"
+  },
+  "Phiên đã lưu trữ trước đây. Báo cáo vẫn đọc được; không thể tiếp tục replay hoặc tạo bản sao.": {
+    "vi": "Phiên đã lưu trữ trước đây. Báo cáo vẫn đọc được; không thể tiếp tục replay hoặc tạo bản sao.",
+    "en": "This session was previously archived. Reports remain available; replay and duplication are unavailable."
+  },
+  "Không thể xóa phiên đang được dùng trong Prop Firm. Báo cáo và lịch sử challenge vẫn được giữ.": {
+    "vi": "Không thể xóa phiên đang liên kết với thử thách prop firm. Báo cáo và lịch sử vẫn được giữ.",
+    "en": "This session is linked to a prop firm challenge and cannot be deleted. Reports and history remain available."
   }
 }

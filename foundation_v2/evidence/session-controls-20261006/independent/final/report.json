@@ -1,0 +1,2572 @@
+{
+  "cases": [
+    {
+      "name": "actual-dashboard-dark-1377",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-dark-1377",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-dark-1377",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-1377",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-1377",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-dark-360",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-dark-360",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-360",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-light-1377",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-light-1377",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-light-1377",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-1377",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-1377",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-1377",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-light-360",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-light-360",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-archived-dark-1377",
+      "pass": true
+    },
+    {
+      "name": "fixture-archived-dark-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-archived-light-1377",
+      "pass": true
+    },
+    {
+      "name": "fixture-archived-light-360",
+      "pass": true
+    }
+  ],
+  "failures": [
+    {
+      "name": "demo-dashboard-dark-1377",
+      "error": "AssertionError [ERR_ASSERTION]: [{\"id\":\"color-contrast\",\"targets\":[[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > h3\"],[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Dataset range · UTC\\\"]\"],[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Closed balance\\\"]\"],[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-asset\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > h3\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Dataset range · UTC\\\"]\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Closed balance\\\"]\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-asset\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > h3\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Dataset range · UTC\\\"]\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Closed balance\\\"]\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-asset\"]]}]\n\n1 !== 0\n",
+      "stack": "AssertionError [ERR_ASSERTION]: [{\"id\":\"color-contrast\",\"targets\":[[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > h3\"],[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Dataset range · UTC\\\"]\"],[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Closed balance\\\"]\"],[\"article[data-session-id=\\\"demo-gold\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-asset\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > h3\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Dataset range · UTC\\\"]\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Closed balance\\\"]\"],[\"article[data-session-id=\\\"demo-newyork\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-asset\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > h3\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Dataset range · UTC\\\"]\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-facts > span[title=\\\"Closed balance\\\"]\"],[\"article[data-session-id=\\\"demo-london\\\"] > .fx-dashboard-session-card-head > .fx-dashboard-card-info > .fx-dashboard-card-asset\"]]}]\n\n1 !== 0\n\n    at caseRun.theme.theme (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/session-controls-20261006/independent/final-review.mjs:19:177)\n    at async caseRun (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/session-controls-20261006/independent/final-review.mjs:13:1365)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/session-controls-20261006/independent/final-review.mjs:14:155"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "requests": [
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/overview",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-dark-1377",
+      "path": "/api/v2/replay/trades",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-dark-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/overview",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-dark-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-dark-360",
+      "path": "/api/v2/replay/trades",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/overview",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-1377",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-light-1377",
+      "path": "/api/v2/replay/trades",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-light-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/overview",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/dca9128ca872470c8f93d35ee6320213/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/4a3ca707b2494948be4523f6c91f3958/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/a11f6ccb63b3499a9a0e36d43c271912/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/273a1275538c42cb95cfff16e0f9f62c/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "path": "/api/v2/replay/sessions/d70ee54946144605bf20ba5b8e2f4cdf/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-sessions-light-360",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-light-360",
+      "path": "/api/v2/replay/trades",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "actual-trades-light-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": false
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-1377",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-dark-360",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-1377",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/replay/sessions/demo-london",
+      "method": "GET",
+      "fixture": true
+    },
+    {
+      "phase": "fixture-archived-light-360",
+      "path": "/api/v2/replay/sessions/demo-london/analytics",
+      "method": "GET",
+      "fixture": true
+    }
+  ],
+  "styles": [
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "filter": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgb(48, 58, 64)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 32,
+        "h": 32,
+        "x": 1140.140625,
+        "y": 727.78125,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 735.78125,
+            "center": 743.78125
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 1148.140625,
+          "y": 735.78125,
+          "width": 16,
+          "height": 16,
+          "top": 735.78125,
+          "right": 1164.140625,
+          "bottom": 751.78125,
+          "left": 1148.140625
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-dark-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 830.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 838.53125,
+              "center": 846.53125
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 1019.078125,
+            "y": 838.53125,
+            "width": 16,
+            "height": 16,
+            "top": 838.53125,
+            "right": 1035.078125,
+            "bottom": 854.53125,
+            "left": 1019.078125
+          }
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 830.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 838.53125,
+              "center": 846.53125
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 1019.078125,
+            "y": 838.53125,
+            "width": 16,
+            "height": 16,
+            "top": 838.53125,
+            "right": 1035.078125,
+            "bottom": 854.53125,
+            "left": 1019.078125
+          }
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-dark-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-dark-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 606.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 606.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "actual-trades-dark-1377",
+      "actions": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(236, 233, 226)",
+        "w": 254.234375,
+        "h": 40,
+        "x": 1090.765625,
+        "y": 141,
+        "align": "center",
+        "children": [
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 152,
+            "center": 161
+          },
+          {
+            "w": 54.75,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          },
+          {
+            "w": 51.140625,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 1098.765625,
+          "y": 153,
+          "width": 16,
+          "height": 16,
+          "top": 153,
+          "right": 1114.765625,
+          "bottom": 169,
+          "left": 1098.765625
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-dark-1377",
+      "filter": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgb(48, 58, 64)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 32,
+        "h": 32,
+        "x": 1140.140625,
+        "y": 535.78125,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 543.78125,
+            "center": 551.78125
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 1148.140625,
+          "y": 543.78125,
+          "width": 16,
+          "height": 16,
+          "top": 543.78125,
+          "right": 1164.140625,
+          "bottom": 559.78125,
+          "left": 1148.140625
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-dark-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 638.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 646.53125,
+              "center": 654.53125
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 1019.078125,
+            "y": 646.53125,
+            "width": 16,
+            "height": 16,
+            "top": 646.53125,
+            "right": 1035.078125,
+            "bottom": 662.53125,
+            "left": 1019.078125
+          }
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 638.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 646.53125,
+              "center": 654.53125
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 1019.078125,
+            "y": 646.53125,
+            "width": 16,
+            "height": 16,
+            "top": 646.53125,
+            "right": 1035.078125,
+            "bottom": 662.53125,
+            "left": 1019.078125
+          }
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-dark-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-dark-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 612.390625,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 612.390625,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "demo-trades-dark-1377",
+      "actions": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(236, 233, 226)",
+        "w": 254.234375,
+        "h": 40,
+        "x": 1090.765625,
+        "y": 141,
+        "align": "center",
+        "children": [
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 152,
+            "center": 161
+          },
+          {
+            "w": 54.75,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          },
+          {
+            "w": 51.140625,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 1098.765625,
+          "y": 153,
+          "width": 16,
+          "height": 16,
+          "top": 153,
+          "right": 1114.765625,
+          "bottom": 169,
+          "left": 1098.765625
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "filter": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgb(48, 58, 64)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 44,
+        "h": 44,
+        "x": 74,
+        "y": 531.78125,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 545.78125,
+            "center": 553.78125
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 88,
+          "y": 545.78125,
+          "width": 16,
+          "height": 16,
+          "top": 545.78125,
+          "right": 104,
+          "bottom": 561.78125,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-dark-360",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 800.28125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 814.28125,
+              "center": 822.28125
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 103,
+            "y": 814.28125,
+            "width": 16,
+            "height": 16,
+            "top": 814.28125,
+            "right": 119,
+            "bottom": 830.28125,
+            "left": 103
+          }
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 800.28125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 814.28125,
+              "center": 822.28125
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 103,
+            "y": 814.28125,
+            "width": 16,
+            "height": 16,
+            "top": 814.28125,
+            "right": 119,
+            "bottom": 830.28125,
+            "left": 103
+          }
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-dark-360",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 371,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 371,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-dark-360",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 615.78125,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 615.78125,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "actual-trades-dark-360",
+      "actions": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(236, 233, 226)",
+        "w": 270,
+        "h": 96,
+        "x": 74,
+        "y": 193,
+        "align": "center",
+        "children": [
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 206,
+            "center": 215
+          },
+          {
+            "w": 54.75,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 51.140625,
+            "h": 44,
+            "y": 245,
+            "center": 267
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 88,
+          "y": 207,
+          "width": 16,
+          "height": 16,
+          "top": 207,
+          "right": 104,
+          "bottom": 223,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-dark-360",
+      "filter": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgb(48, 58, 64)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 44,
+        "h": 44,
+        "x": 74,
+        "y": 530.171875,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 544.171875,
+            "center": 552.171875
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 88,
+          "y": 544.171875,
+          "width": 16,
+          "height": 16,
+          "top": 544.171875,
+          "right": 104,
+          "bottom": 560.171875,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-dark-360",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 766.671875,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 780.671875,
+              "center": 788.671875
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 103,
+            "y": 780.671875,
+            "width": 16,
+            "height": 16,
+            "top": 780.671875,
+            "right": 119,
+            "bottom": 796.671875,
+            "left": 103
+          }
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 766.671875,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 780.671875,
+              "center": 788.671875
+            }
+          ],
+          "negative": "#D89B95",
+          "icon": {
+            "x": 103,
+            "y": 780.671875,
+            "width": 16,
+            "height": 16,
+            "top": 780.671875,
+            "right": 119,
+            "bottom": 796.671875,
+            "left": 103
+          }
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-dark-360",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 351,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 351,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-dark-360",
+      "danger": {
+        "before": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(48, 58, 64)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 621.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        },
+        "after": {
+          "color": "rgb(216, 155, 149)",
+          "bg": "rgb(52, 63, 70)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 621.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#D89B95"
+        }
+      }
+    },
+    {
+      "phase": "demo-trades-dark-360",
+      "actions": {
+        "color": "rgb(236, 233, 226)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(236, 233, 226)",
+        "w": 270,
+        "h": 96,
+        "x": 74,
+        "y": 193,
+        "align": "center",
+        "children": [
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 206,
+            "center": 215
+          },
+          {
+            "w": 54.75,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 51.140625,
+            "h": 44,
+            "y": 245,
+            "center": 267
+          }
+        ],
+        "negative": "#D89B95",
+        "icon": {
+          "x": 88,
+          "y": 207,
+          "width": 16,
+          "height": 16,
+          "top": 207,
+          "right": 104,
+          "bottom": 223,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "filter": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgb(228, 232, 229)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 32,
+        "h": 32,
+        "x": 1140.140625,
+        "y": 727.78125,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 735.78125,
+            "center": 743.78125
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 1148.140625,
+          "y": 735.78125,
+          "width": 16,
+          "height": 16,
+          "top": 735.78125,
+          "right": 1164.140625,
+          "bottom": 751.78125,
+          "left": 1148.140625
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-light-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 830.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 838.53125,
+              "center": 846.53125
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 1019.078125,
+            "y": 838.53125,
+            "width": 16,
+            "height": 16,
+            "top": 838.53125,
+            "right": 1035.078125,
+            "bottom": 854.53125,
+            "left": 1019.078125
+          }
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 830.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 838.53125,
+              "center": 846.53125
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 1019.078125,
+            "y": 838.53125,
+            "width": 16,
+            "height": 16,
+            "top": 838.53125,
+            "right": 1035.078125,
+            "bottom": 854.53125,
+            "left": 1019.078125
+          }
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-light-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-light-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 606.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 606.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "actual-trades-light-1377",
+      "actions": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(40, 49, 56)",
+        "w": 254.234375,
+        "h": 40,
+        "x": 1090.765625,
+        "y": 141,
+        "align": "center",
+        "children": [
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 152,
+            "center": 161
+          },
+          {
+            "w": 54.75,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          },
+          {
+            "w": 51.140625,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 1098.765625,
+          "y": 153,
+          "width": 16,
+          "height": 16,
+          "top": 153,
+          "right": 1114.765625,
+          "bottom": 169,
+          "left": 1098.765625
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-light-1377",
+      "filter": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgb(228, 232, 229)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 32,
+        "h": 32,
+        "x": 1140.140625,
+        "y": 535.78125,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 543.78125,
+            "center": 551.78125
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 1148.140625,
+          "y": 543.78125,
+          "width": 16,
+          "height": 16,
+          "top": 543.78125,
+          "right": 1164.140625,
+          "bottom": 559.78125,
+          "left": 1148.140625
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-light-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 638.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 646.53125,
+              "center": 654.53125
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 1019.078125,
+            "y": 646.53125,
+            "width": 16,
+            "height": 16,
+            "top": 646.53125,
+            "right": 1035.078125,
+            "bottom": 662.53125,
+            "left": 1019.078125
+          }
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 32,
+          "h": 32,
+          "x": 1011.078125,
+          "y": 638.53125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 646.53125,
+              "center": 654.53125
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 1019.078125,
+            "y": 646.53125,
+            "width": 16,
+            "height": 16,
+            "top": 646.53125,
+            "right": 1035.078125,
+            "bottom": 662.53125,
+            "left": 1019.078125
+          }
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-light-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 1215.890625,
+          "y": 202,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-light-1377",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 612.390625,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 40,
+          "x": 809.390625,
+          "y": 612.390625,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "demo-trades-light-1377",
+      "actions": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(40, 49, 56)",
+        "w": 254.234375,
+        "h": 40,
+        "x": 1090.765625,
+        "y": 141,
+        "align": "center",
+        "children": [
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 32,
+            "h": 32,
+            "y": 145,
+            "center": 161
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 152,
+            "center": 161
+          },
+          {
+            "w": 54.75,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          },
+          {
+            "w": 51.140625,
+            "h": 40,
+            "y": 141,
+            "center": 161
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 1098.765625,
+          "y": 153,
+          "width": 16,
+          "height": 16,
+          "top": 153,
+          "right": 1114.765625,
+          "bottom": 169,
+          "left": 1098.765625
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "filter": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgb(228, 232, 229)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 44,
+        "h": 44,
+        "x": 74,
+        "y": 531.78125,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 545.78125,
+            "center": 553.78125
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 88,
+          "y": 545.78125,
+          "width": 16,
+          "height": 16,
+          "top": 545.78125,
+          "right": 104,
+          "bottom": 561.78125,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "actual-dashboard-light-360",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 800.28125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 814.28125,
+              "center": 822.28125
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 103,
+            "y": 814.28125,
+            "width": 16,
+            "height": 16,
+            "top": 814.28125,
+            "right": 119,
+            "bottom": 830.28125,
+            "left": 103
+          }
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 800.28125,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 814.28125,
+              "center": 822.28125
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 103,
+            "y": 814.28125,
+            "width": 16,
+            "height": 16,
+            "top": 814.28125,
+            "right": 119,
+            "bottom": 830.28125,
+            "left": 103
+          }
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-light-360",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 371,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 371,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "actual-sessions-light-360",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 615.78125,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 615.78125,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "actual-trades-light-360",
+      "actions": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(40, 49, 56)",
+        "w": 270,
+        "h": 96,
+        "x": 74,
+        "y": 193,
+        "align": "center",
+        "children": [
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 206,
+            "center": 215
+          },
+          {
+            "w": 54.75,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 51.140625,
+            "h": 44,
+            "y": 245,
+            "center": 267
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 88,
+          "y": 207,
+          "width": 16,
+          "height": 16,
+          "top": 207,
+          "right": 104,
+          "bottom": 223,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-light-360",
+      "filter": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgb(228, 232, 229)",
+        "border": "rgba(0, 0, 0, 0)",
+        "w": 44,
+        "h": 44,
+        "x": 74,
+        "y": 530.171875,
+        "align": "center",
+        "children": [
+          {
+            "w": 16,
+            "h": 16,
+            "y": 544.171875,
+            "center": 552.171875
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 88,
+          "y": 544.171875,
+          "width": 16,
+          "height": 16,
+          "top": 544.171875,
+          "right": 104,
+          "bottom": 560.171875,
+          "left": 88
+        }
+      }
+    },
+    {
+      "phase": "demo-dashboard-light-360",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 766.671875,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 780.671875,
+              "center": 788.671875
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 103,
+            "y": 780.671875,
+            "width": 16,
+            "height": 16,
+            "top": 780.671875,
+            "right": 119,
+            "bottom": 796.671875,
+            "left": 103
+          }
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 44,
+          "h": 44,
+          "x": 89,
+          "y": 766.671875,
+          "align": "center",
+          "children": [
+            {
+              "w": 16,
+              "h": 16,
+              "y": 780.671875,
+              "center": 788.671875
+            }
+          ],
+          "negative": "#984745",
+          "icon": {
+            "x": 103,
+            "y": 780.671875,
+            "width": 16,
+            "height": 16,
+            "top": 780.671875,
+            "right": 119,
+            "bottom": 796.671875,
+            "left": 103
+          }
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-light-360",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 351,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 179.84375,
+          "y": 351,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "demo-sessions-light-360",
+      "danger": {
+        "before": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(228, 232, 229)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 621.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        },
+        "after": {
+          "color": "rgb(152, 71, 69)",
+          "bg": "rgb(220, 226, 223)",
+          "border": "rgba(0, 0, 0, 0)",
+          "w": 114.109375,
+          "h": 44,
+          "x": 211.890625,
+          "y": 621.578125,
+          "align": "center",
+          "children": [],
+          "negative": "#984745"
+        }
+      }
+    },
+    {
+      "phase": "demo-trades-light-360",
+      "actions": {
+        "color": "rgb(40, 49, 56)",
+        "bg": "rgba(0, 0, 0, 0)",
+        "border": "rgb(40, 49, 56)",
+        "w": 270,
+        "h": 96,
+        "x": 74,
+        "y": 193,
+        "align": "center",
+        "children": [
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 44,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 42.34375,
+            "h": 18,
+            "y": 206,
+            "center": 215
+          },
+          {
+            "w": 54.75,
+            "h": 44,
+            "y": 193,
+            "center": 215
+          },
+          {
+            "w": 51.140625,
+            "h": 44,
+            "y": 245,
+            "center": 267
+          }
+        ],
+        "negative": "#984745",
+        "icon": {
+          "x": 88,
+          "y": 207,
+          "width": 16,
+          "height": 16,
+          "top": 207,
+          "right": 104,
+          "bottom": 223,
+          "left": 88
+        }
+      }
+    }
+  ],
+  "before": [
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "7f541c9424b074c88a4dd30b66a6956b23975401b8405d07b7d706330ebcf2af"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "e340295c052265e5c729264a77513616376e5115c391cdc874a25137c4a2e712"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "f068ba9dfafb6aa2192138aeb878b963fe1880de4cf143f0ccb60be5ef916f43"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "f92c483003545d7850c088219a9b7f1d890299c5eca4047cebf6723e84931f2f"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "fc6fc8dc2a7aafb17d899fd11fb63d5bff3f8a4a45f810ab0c48cde6939a2a21"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "b15fe2eddfde8a4e9668f25c857e1d93737df8e4ecf85059133d4d2c3e4b82a2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "48069e016202642020af408631c40c95def783d5758dc97873c91060d5fd05fb"
+    },
+    {
+      "file": "sessionCatalog.js",
+      "sha256": "2412f0829f1426799f75dc016b6fd2124825ec4367a1e607298cdb84ca00109a"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "3ea096b0b41c722ac95dfbb744ed5210e9ef9580a480f4e283f9d4e5e85dfaff"
+    }
+  ],
+  "phase": "fixture-archived-light-360",
+  "after": [
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "7f541c9424b074c88a4dd30b66a6956b23975401b8405d07b7d706330ebcf2af"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "e340295c052265e5c729264a77513616376e5115c391cdc874a25137c4a2e712"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "f068ba9dfafb6aa2192138aeb878b963fe1880de4cf143f0ccb60be5ef916f43"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "f92c483003545d7850c088219a9b7f1d890299c5eca4047cebf6723e84931f2f"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "fc6fc8dc2a7aafb17d899fd11fb63d5bff3f8a4a45f810ab0c48cde6939a2a21"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "b15fe2eddfde8a4e9668f25c857e1d93737df8e4ecf85059133d4d2c3e4b82a2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "48069e016202642020af408631c40c95def783d5758dc97873c91060d5fd05fb"
+    },
+    {
+      "file": "sessionCatalog.js",
+      "sha256": "2412f0829f1426799f75dc016b6fd2124825ec4367a1e607298cdb84ca00109a"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "3ea096b0b41c722ac95dfbb744ed5210e9ef9580a480f4e283f9d4e5e85dfaff"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n27 !== 28\n"
+}

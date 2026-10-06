@@ -84,7 +84,7 @@ export async function deleteSession(workspace, session, confirmationName) {
 }
 
 export function sessionMutationError(error) {
-  if (error.message === 'replay_linked_to_prop_attempt') return 'Phiên đang được dùng trong Prop Firm. Hãy lưu trữ để giữ báo cáo và lịch sử challenge.'
+  if (error.message === 'replay_linked_to_prop_attempt') return 'Không thể xóa phiên đang được dùng trong Prop Firm. Báo cáo và lịch sử challenge vẫn được giữ.'
   if (error.message === 'session_delete_confirmation_mismatch') return 'Tên xác nhận không khớp tên phiên hiện tại.'
   return 'Không lưu được thao tác: ' + error.message
 }

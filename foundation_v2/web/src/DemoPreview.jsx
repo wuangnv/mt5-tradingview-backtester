@@ -73,9 +73,10 @@ function DemoSessions({ workspace, query }) {
   const save = draft => { setItems(current => current.map(entry => entry.record_id === id ? { ...entry, ...draft, revision: entry.revision + 1 } : entry)); setEditing(false); return true }
   const select = value => { setId(value); const url = new URL(window.location.href); if (value) url.searchParams.set('demo_session', value); else url.searchParams.delete('demo_session'); window.history.replaceState(null, '', url) }
   const mutate = action => {
-    const next = action === 'delete' ? items.filter(entry => entry.record_id !== id) : items.map(entry => entry.record_id === id ? { ...entry, archived: !entry.archived, revision: entry.revision + 1 } : entry)
+    if (action !== 'delete') return
+    const next = items.filter(entry => entry.record_id !== id)
     setItems(next); setActionDialog(null)
-    if (action === 'delete') select(next.find(entry => !entry.archived)?.record_id || next[0]?.record_id || '')
+    select(next[0]?.record_id || '')
   }
   return <section className="wm-page fx-session-picker fxr-integrated-sessions fxs-page" aria-label={t("Sessions")}>
     <h1 className="sr-only">{t("Sessions")}</h1>
@@ -85,7 +86,7 @@ function DemoSessions({ workspace, query }) {
         <button className="fxr-button fxr-button-primary" disabled type="button">{t("＋ Phiên mới")}</button>
         {item && <><FxSelect className="fxs-analytics-button" label={t("Mở Analytics")} value="session" triggerContent={t("Analytics")} options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(href('analytics', { analytics_source: value === 'prop' ? 'prop' : 'sessions' }))} />
         <button className="fxr-button fxr-button-secondary fxs-settings" type="button" onClick={() => setEditing(true)}>{t("Cài đặt phiên")}</button>
-        <SessionActions item={item} onAction={action => setActionDialog(action)} /></>}
+        <SessionActions text item={item} onAction={action => setActionDialog(action)} /></>}
       </div>
     </div>
     {item ? <><div className="fxr-session-cards">

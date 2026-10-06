@@ -33,6 +33,10 @@ and nearby page numbers. The row-count selector remains a text pill.
 Spacing uses 4/8/12/16/24/32px. Buttons and ordinary select triggers use pill
 radii, one transparent 1px border and a muted control surface; primary actions use the
 Go-to-chart sea-blue surface with a contrasting foreground. Open and keyboard-focus states remain visible.
+Destructive actions use the negative (muted red) color in both resting and hover
+states. Dashboard keeps a compact Delete icon; the Sessions toolbar uses the text
+Delete session pill. The Recent Sessions filter toggle shares compact icon sizing.
+Trades toolbar icons and text controls align around one vertical center.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
 
@@ -67,7 +71,7 @@ on hover. Keyboard focus retains its visible outline.
 | `SessionFilter` | Raw session names and full-row multi selection |
 | `AnalyticsFilterBar`, `LedgerFilterDrawer` | Draft editing; Apply commits filter scope |
 | `TimeFilter`, `DateFilter` | Native typed input plus calendar; ISO values and IANA timezone IDs |
-| `SessionSettingsDrawer`, `SessionActionDialog` | Focus management, cancel, immutable facts, archive/restore/delete confirmation |
+| `SessionSettingsDrawer`, `SessionActionDialog` | Focus management, cancel, immutable facts, duplicate/delete confirmation |
 | `TestingSkeleton`, `TestingReadState` | Initial read, unavailable/error/retry and route load failure |
 | `TestingIcon`, `ChartIcon` | SVG icons; do not replace them with font glyphs |
 | `TestingComponentReference` | Internal reference at `?area=testing&ui_reference=1` |
@@ -82,6 +86,12 @@ Names, descriptions, symbols, tags, strategies, dataset IDs and hashes are user 
 source data: keep them raw. Set `localize:false` on data options or
 `localizeOptions={false}` on a data-only select. Translate only the surrounding
 system copy. Language switches must retain drafts and exact delete confirmation.
+
+Session archive/restore UI is deferred, including old `manage=archive` links.
+Previously archived records remain stored and can be read from All sessions or a
+direct link, with replay/duplication unavailable. No data migration is performed.
+Deletion still requires the exact session name and revision, and retains the
+Prop-linked-session refusal. Demo mutations affect local component state only.
 
 ## Data and loading
 
