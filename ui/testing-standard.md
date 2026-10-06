@@ -48,6 +48,12 @@ values retain their colors. Selected dropdown options show a check; selection
 does not permanently apply hover background. Focus remains visible without a
 second overlapping border. Respect reduced-motion preferences.
 
+Workspace tabs use 52px height and 18px navigation icons. Hover adds a neutral
+surface without a border; selected tabs use contrast text and a 2px underline
+(white in dark theme, dark in light theme), with no persistent fill. Analytics
+source tabs stay beside Analytics on the same horizontally scrolling row, with
+no vertical separator. Keyboard focus retains its visible outline.
+
 ## Components and language boundaries
 
 | Owner | Use |

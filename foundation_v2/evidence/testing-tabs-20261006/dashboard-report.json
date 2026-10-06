@@ -1,0 +1,133 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1320,
+      "selected": {
+        "text": "rgb(255, 255, 255)",
+        "line": "rgb(255, 255, 255)",
+        "lineHeight": "2px",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "selected": {
+        "text": "rgb(255, 255, 255)",
+        "line": "rgb(255, 255, 255)",
+        "lineHeight": "2px",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1320,
+      "selected": {
+        "text": "rgb(23, 23, 23)",
+        "line": "rgb(23, 23, 23)",
+        "lineHeight": "2px",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "selected": {
+        "text": "rgb(23, 23, 23)",
+        "line": "rgb(23, 23, 23)",
+        "lineHeight": "2px",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "deniedRequests": [],
+  "responses": [
+    {
+      "status": 200,
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/overview"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/overview"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/overview"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/overview"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics"
+    },
+    {
+      "status": 200,
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270"
+    }
+  ],
+  "pass": true
+}

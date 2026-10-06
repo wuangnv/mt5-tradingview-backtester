@@ -1327,13 +1327,20 @@
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { align-items: center; gap: 8px; flex-shrink: 0; }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a {
-  min-height: 40px;
-  height: 40px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  height: 52px;
   padding: 0 12px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
   transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
 }
+.fx-subnav-icon { display: inline-flex; flex: 0 0 18px; width: 18px; height: 18px; }
+.fx-subnav-icon svg { width: 100%; height: 100%; }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a:hover {
   color: var(--wm-content);
   background: var(--fx-shell-nav-hover);
@@ -1344,9 +1351,13 @@
   background: var(--fx-shell-nav-hover);
 }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a.is-active {
-  color: var(--fx-shell-nav-selected-content);
-  background: var(--fx-shell-nav-selected);
+  color: var(--wm-control-text);
+  background: transparent;
 }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a:is(.is-active, [aria-current='page'])::after {
+  content: ''; position: absolute; inset: auto 0 0; height: 2px; background: var(--wm-control-text); pointer-events: none;
+}
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav a.is-active:hover { background: var(--fx-shell-nav-hover); }
 .fx-subnav-primary {
   display: flex;
   flex: 0 0 auto;

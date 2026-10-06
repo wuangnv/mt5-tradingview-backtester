@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "scope": "Subheader parent/Analytics child hover,selected,keyboardfocus,icons and mobile horizontal scrolling; demo and actual local API loading",
+  "reviewer": "fx_analytics_review",
+  "at": "2026-10-06T13:36:40.861Z",
+  "matrix": {
+    "cases": 48,
+    "routes": [
+      "Sessions",
+      "Analytics"
+    ],
+    "modes": [
+      "demo",
+      "actual-local-API"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "languages": [
+      "vi",
+      "en"
+    ],
+    "widths": [
+      1320,
+      768,
+      360
+    ],
+    "analyticsChildSources": [
+      "sessions",
+      "prop"
+    ]
+  },
+  "catalogRead": {
+    "status": 200,
+    "count": 6,
+    "selected": "dca9128ca872470c8f93d35ee6320213"
+  },
+  "apiReadResponses": 138,
+  "apiErrorResponses": 0,
+  "unexpectedBlockedRequests": 0,
+  "pageErrors": 0,
+  "demoApiRequests": 0,
+  "visualImages": 18,
+  "sourceUnchanged": true,
+  "sourcePins": [
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "7928493c0051d527c4498779c3e2ed8808d164b8ebce09c5ef6ef2ef4a6c9c6f"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "ff5cbcf2cd186de211782dc28bfdd8fc6e1c5aa315c5c5fc2764ec3a258ea86e"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "9cbb0795b5c526a66ffda853e80651047e639999268c41423853b54605ca3eff"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "1483d2e1852b6736868ab0fb23036a2b91dc12b97d71d3f8f2fa93691466b6a0"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "2850fcb1a768a917d0137544cb96d12137686829451b594c0ecb81de1112a3bb"
+    },
+    {
+      "file": "visual-polish.css",
+      "sha256": "1b82fb416e6e5e41fcdb14dc3ff9c965a93ab620c426fa1fedc9f82ce0a5702c"
+    }
+  ],
+  "evidence": [
+    "report.json",
+    "visual.json",
+    "REVIEW.md"
+  ],
+  "limitations": [
+    "Local API8010 was already running with owner-reviewed historical-data serving and no MT5 synchronization. Reviewer did not start or change servers.",
+    "Actual load/GET journeys and route selection only: no financial calculation acceptance, MT5 connection, broker/execution or provider calls.",
+    "Only evidence files changed by this reviewer; no product source edit or commit."
+  ]
+}

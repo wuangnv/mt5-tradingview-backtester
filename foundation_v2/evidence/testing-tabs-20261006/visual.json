@@ -1,0 +1,76 @@
+{
+  "before": [
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "7928493c0051d527c4498779c3e2ed8808d164b8ebce09c5ef6ef2ef4a6c9c6f"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "ff5cbcf2cd186de211782dc28bfdd8fc6e1c5aa315c5c5fc2764ec3a258ea86e"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "9cbb0795b5c526a66ffda853e80651047e639999268c41423853b54605ca3eff"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "1483d2e1852b6736868ab0fb23036a2b91dc12b97d71d3f8f2fa93691466b6a0"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "2850fcb1a768a917d0137544cb96d12137686829451b594c0ecb81de1112a3bb"
+    },
+    {
+      "file": "visual-polish.css",
+      "sha256": "1b82fb416e6e5e41fcdb14dc3ff9c965a93ab620c426fa1fedc9f82ce0a5702c"
+    }
+  ],
+  "images": [
+    "visual-child-selected-dark-1320.png",
+    "visual-child-hover-dark-1320.png",
+    "visual-parent-hover-dark-1320.png",
+    "visual-child-selected-dark-768.png",
+    "visual-child-hover-dark-768.png",
+    "visual-parent-hover-dark-768.png",
+    "visual-child-selected-dark-360.png",
+    "visual-child-hover-dark-360.png",
+    "visual-parent-hover-dark-360.png",
+    "visual-child-selected-light-1320.png",
+    "visual-child-hover-light-1320.png",
+    "visual-parent-hover-light-1320.png",
+    "visual-child-selected-light-768.png",
+    "visual-child-hover-light-768.png",
+    "visual-parent-hover-light-768.png",
+    "visual-child-selected-light-360.png",
+    "visual-child-hover-light-360.png",
+    "visual-parent-hover-light-360.png"
+  ],
+  "blocked": [],
+  "after": [
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "7928493c0051d527c4498779c3e2ed8808d164b8ebce09c5ef6ef2ef4a6c9c6f"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "ff5cbcf2cd186de211782dc28bfdd8fc6e1c5aa315c5c5fc2764ec3a258ea86e"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "9cbb0795b5c526a66ffda853e80651047e639999268c41423853b54605ca3eff"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "1483d2e1852b6736868ab0fb23036a2b91dc12b97d71d3f8f2fa93691466b6a0"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "2850fcb1a768a917d0137544cb96d12137686829451b594c0ecb81de1112a3bb"
+    },
+    {
+      "file": "visual-polish.css",
+      "sha256": "1b82fb416e6e5e41fcdb14dc3ff9c965a93ab620c426fa1fedc9f82ce0a5702c"
+    }
+  ],
+  "sourceUnchanged": true
+}

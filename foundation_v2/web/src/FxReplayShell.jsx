@@ -328,6 +328,7 @@ function ShellSubnav({ activeView, workspace, query, copy, action }) {
             aria-current={active ? 'page' : undefined}
             key={item.id}
           >
+            <span className="fx-subnav-icon" aria-hidden="true"><RailIcon id={item.icon} /></span>
             {label}
           </a>
           {item.route === 'analytics' && sectionId === 'testing' && activeView === 'analytics' && <nav className="fx-subsubnav" aria-label={copy.analyticsSourcesAria}>
