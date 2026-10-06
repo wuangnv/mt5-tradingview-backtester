@@ -341,15 +341,24 @@ def create_app(
     def get_replay_trades(
         sessions: str | None = None, side: str = "all", outcome: str = "all",
         from_close_utc: str | None = None, to_close_utc: str | None = None,
+        page: int | None = None, page_size: int = 10,
+        sort_key: str = "close_time_utc", sort_direction: str = "desc",
+        extra_filters: str = "{}",
         workspace: str = Depends(workspace_id),
     ):
         try:
             selected = None if sessions is None else [value for value in sessions.split(",") if value]
-            return build_dashboard_performance(
+            report = build_dashboard_performance(
                 store.list_records(workspace, "replay"), workspace,
                 session_ids=selected, include_ledger=True, side=side, outcome=outcome,
                 from_close_utc=from_close_utc, to_close_utc=to_close_utc,
             )
+            if page is None:
+                return report
+            from .trades_page import build_trades_page
+            return build_trades_page(report, store.list_records(workspace, "journal"),
+                                     page=page, page_size=page_size, sort_key=sort_key,
+                                     sort_direction=sort_direction, extra_filters=extra_filters)
         except LookupError as exc:
             raise HTTPException(status_code=404, detail="replay_not_found") from exc
         except AnalyticsValidationError as exc:
