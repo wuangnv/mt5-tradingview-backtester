@@ -1,0 +1,991 @@
+{
+  "checks": [
+    {
+      "name": "actual-chart-label-supplement-vi",
+      "pass": true
+    },
+    {
+      "name": "actual-chart-label-supplement-en",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "blocked": [],
+  "requests": [
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/chart/annotations",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/tick-data",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/replay/sessions",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/data/datasets",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/chart/annotations",
+      "query": "",
+      "fixture": null
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/tick-data",
+      "query": "",
+      "fixture": null
+    }
+  ],
+  "errors": [],
+  "geometry": [
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "outerAria": "Advanced Charts · EURUSDm · 501 nến đến cutoff 1783315500 UTC",
+      "iframeTitle": "Biểu đồ replay EURUSDm",
+      "saveTitle": "Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này",
+      "fitVisible": false
+    },
+    {
+      "phase": "actual-chart-label-supplement-vi",
+      "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=replay&session=476f4b498e1a49ed9d48a75719f4d270&dataset=dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d&mode=Practice&surface=workspace&cursor=500",
+      "recordId": "476f4b498e1a49ed9d48a75719f4d270",
+      "canvas": 0,
+      "orderText": "MÔ PHỎNG\nGiao dịch broker bị khóa\nKhởi tạo tài khoản mô phỏng\n\nChi phí mô phỏng; không phải báo giá broker.\n\nVốn ban đầu (USD)\nKhớp lệnh bằng tick Bid/Ask\n\nPhút đang chọn nằm ngoài đoạn tick đã tải.\n\nSpread (đơn vị giá)\nKhởi tạo mô phỏng"
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "outerAria": "Advanced Charts · EURUSDm · 501 candles through cutoff 1783315500 UTC",
+      "iframeTitle": "Replay chart EURUSDm",
+      "saveTitle": "Save layout and drawings for this session/cutoff in this browser",
+      "fitVisible": false
+    },
+    {
+      "phase": "actual-chart-label-supplement-en",
+      "href": "http://127.0.0.1:5180/?workspace=tenant-a&view=replay&session=476f4b498e1a49ed9d48a75719f4d270&dataset=dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d&mode=Practice&surface=workspace&cursor=500",
+      "recordId": "476f4b498e1a49ed9d48a75719f4d270",
+      "canvas": 0,
+      "orderText": "SIMULATOR\nBroker execution locked\nInitialize simulated account\n\nSimulated costs; not broker quotes.\n\nStarting balance (USD)\nUse Bid/Ask ticks for execution\n\nPhút đang chọn nằm ngoài đoạn tick đã tải.\n\nSpread (price units)\nInitialize simulator"
+    }
+  ],
+  "before": [
+    {
+      "file": "advancedChartStorage.js",
+      "sha256": "d167ba111aa8a009e9e648f7774b118d169905d3d4e39b8f481057f8328a4eb6"
+    },
+    {
+      "file": "advancedReplayDatafeed.js",
+      "sha256": "146453a786ba9dfd405b60e8b583acd84ddc3c1e6002d6b9c56d2433a2575656"
+    },
+    {
+      "file": "analytics-filter-controls.css",
+      "sha256": "1e6e929ecd7ad8ed3e2314349f92e50ded7234ff3afc3e17e0ebc1905c706199"
+    },
+    {
+      "file": "analytics-story.css",
+      "sha256": "012b9901fd8b549b7f76c56b1377f979e2f80bed59d2aa2e7438c910ca7343ab"
+    },
+    {
+      "file": "AnalyticsFilterBar.jsx",
+      "sha256": "2211dba3036a151e84f6a5911026796ea3974c328e712a84f16ac1459a9a51fd"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "75013a90050308ad151f1421bcda5bf2968802a0aad5b2ac183a68a852942dc1"
+    },
+    {
+      "file": "analyticsSimulation.js",
+      "sha256": "a25395e40fc317785e05c9e48c90094648e3bbd0109c1a922be4020f2b5b09d1"
+    },
+    {
+      "file": "AnalyticsWorkspace.jsx",
+      "sha256": "17ed1de8b6104608350d342353e0ff2148efe61f1c977292e85b5b4b59ce64ca"
+    },
+    {
+      "file": "chartAnnotations.js",
+      "sha256": "1c9a4f22cd8616d080ad91547eca7a80e3bc342ab59dd0ea7a2ce25bda0f6c2b"
+    },
+    {
+      "file": "ChartFloatingToolbar.jsx",
+      "sha256": "62740f174c2eb787151bb7c0867ab7fd5b17435c609af42713966853ecc1eae5"
+    },
+    {
+      "file": "ChartIcon.jsx",
+      "sha256": "62945edc8802a914544db735edf7b8f2fa77c1beddaf7dd9f723ce3021283cec"
+    },
+    {
+      "file": "ChartOrderPanel.jsx",
+      "sha256": "3f581a85dca27ea5d7727010116dcbc855ab61318fd74e7cef984be5610ff387"
+    },
+    {
+      "file": "ChartWorkbench.css",
+      "sha256": "732b35cb9e893ba9d3f814fbc07243989342d165ca0a943be594cb3d722fbde4"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "d4a2871eecc7b4d434cb8ee9b220b49cdb9f6a864febf1cc5b295e025e521c81"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "15f0d66db1bf820f2491890bb5b3a678386a844bc7d3fe9e57e8e2f12727fbb9"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "3c1afa01aa1dcbf39d58e721dd7a4b40d37a9ceef59aaf4a62727782674d4ea8"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "5456c1b136b95dde6959439e3a39629674bfa819a0774d618b1ba6a85f142e6d"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "2b4418e19d5d25fadb0fc2ee399a6f6c1dc3c19d396cc95689c0067b769756d5"
+    },
+    {
+      "file": "dataDeskApi.js",
+      "sha256": "1c115c122ee506a65c9b3eec1c1d352d7a391329750a6db2a05d1f8b6f05f29d"
+    },
+    {
+      "file": "DataDeskWorkspace.jsx",
+      "sha256": "9b3281212ffa16415d81ef39ef5bba7f3ca93c9eb8437305896b6df90021a0e2"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "dfa99275844a8ab5dd18ab0976b09c514e4b2b4584d98220fb7a8481a8445857"
+    },
+    {
+      "file": "demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "33f89f1ff3b82ee101ae12714114dedcb7a5d594065f84b706b83c7551183286"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "35afec8b6b0dd97b74e42c97e75a29fb53dd3860b8c1b6ac62d9b9aa78a2097a"
+    },
+    {
+      "file": "fx-shell-preferences.css",
+      "sha256": "8a142b960e7a9dc47008d86cfefdd8016521347fb10bc43ac68cb84047dc43e1"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "e4bb56bfad2881181475cb7d85a4769e591c198270d2759b32c518343a409303"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8bac3f5092ddec0ccfd397fc6acf3f043a255d397c63cc99aae2e19fc8217a6c"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "9e209845e0be0bff18e943b036b3ca3a131856212d0a7cd55ffaad4c4998b4c5"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "ca05fbb19cb37c1f9875bb434b27742036a72c9c17ab86f016cdaf2f7d04e4ba"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "6438d21f493ed3f04d54f41e7fcddf19c41ab71856195f7966036af344625856"
+    },
+    {
+      "file": "journal-analytics.css",
+      "sha256": "0d52bbe154858421d6c05aad9a1ee6893d2c77a5571dcd663642ca19be29cd8e"
+    },
+    {
+      "file": "journal-story.css",
+      "sha256": "a82684024752ecaf940c47d759356faaff57e2deb13399e3081a9ae8f9af9640"
+    },
+    {
+      "file": "JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "learnIntegration.css",
+      "sha256": "4826662a42ae25bb87eefbf5eeec61cbbff68439b7d9578d3ca24429d42af923"
+    },
+    {
+      "file": "LearnWorkspace.jsx",
+      "sha256": "66aac68fca645fbe88c40d89322018612ba74c73b0caf9a19f7e075fc3705205"
+    },
+    {
+      "file": "ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "LedgerFilterDrawer.jsx",
+      "sha256": "1115cf46f370eeea9ede06d82ea7c71c16ce2fbab78f9e9201a7751011e33ed5"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "5a1a5386b3bf464d11f4fed990521ff078d52ee294b92cd2afe96103bd7df933"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "ea2e174ece8bfe1b865c1b4e0e2f3abb1bff888055528fb2bbba6a6e724eafa0"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "310d7ddb991e66312ab54ae2ba52ac69a8a869e64e7f7cbf68e402cedf7ca604"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "a44b7b2950dc2663414ca6bb524eed7c7534155f9ae37ce6c5ca357531636075"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "345a264f6ff6e5c8013e8a78d29d5aa55e638fbdd8c596024dd7210cd5fffbf5"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "notionConnector.js",
+      "sha256": "59aebf47dc16ecefedb56ecbbdc9f3efbbbb0ffb282d9207d89958a0a81c4d48"
+    },
+    {
+      "file": "NotionConnector.jsx",
+      "sha256": "8032e634f479adb09c7703f5e1ce8ff484d22b4253e2e2a0a06faa11e05fe920"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "playbook-story.css",
+      "sha256": "4ca1453f3e83abc452cb006aa12fdfb568a32697eb17d251457be3c5812f3bcd"
+    },
+    {
+      "file": "playbookApi.js",
+      "sha256": "260cc452c7877aa024f4ec195f3f064828dcee554507dc0270869b7407254dde"
+    },
+    {
+      "file": "PlaybookWorkspace.jsx",
+      "sha256": "da86fceb1f578e820d14901482575ae90545f346518fecd97387c31042c8b6ff"
+    },
+    {
+      "file": "PropAnalytics.jsx",
+      "sha256": "621b4e37b59c6976269953c60726317ae5e0a0e905186455862cc4313667c5a2"
+    },
+    {
+      "file": "propAnalyticsModel.js",
+      "sha256": "8ba06f6f41701053d0a5dbb85d7ef668a40881038a3235cfac5c2c6ea2299279"
+    },
+    {
+      "file": "PropWorkspace.css",
+      "sha256": "ea0e61842c6314431b7be267ab1b62798a78891426bf08f406899a5edb1c3f4b"
+    },
+    {
+      "file": "PropWorkspace.jsx",
+      "sha256": "b606765ca3f7a4bb2f0e281eacd002fd3c7e4b13c803b50343a6ef85a383ec27"
+    },
+    {
+      "file": "replayDrawingPrimitive.js",
+      "sha256": "fa623818ad8dc454910523c991a993750ffd5a63b8c00a57f66700f2b2fe5f22"
+    },
+    {
+      "file": "ReplayObjects.jsx",
+      "sha256": "af860a55d8176dcdbe5f78e1f6bb29569c921daed816e13ae2d341aee72eafc5"
+    },
+    {
+      "file": "replayOrderModel.js",
+      "sha256": "6c06d52b0a3a511c69b817d3d05112edcb917bc4c470a5f90f65065a0812570a"
+    },
+    {
+      "file": "replayOrderPrimitive.js",
+      "sha256": "eddf296f58028bc74769ce6b5d5ccf0deb80008d73a91da837919f6157af01ca"
+    },
+    {
+      "file": "ReplayWorkspace.css",
+      "sha256": "00ef860ef97738f8e798c5e3445de61e8e8622bde58014a4e0116828c59fd0c9"
+    },
+    {
+      "file": "ReplayWorkspace.jsx",
+      "sha256": "6f0372b2e1e887e89332882fff5f570fca7aa76850571ce85114805e4019560d"
+    },
+    {
+      "file": "research-data.css",
+      "sha256": "5b4c33e449f5aa9b632ba2ff7b702b3cf61d80b553755fe1d048473c6148d050"
+    },
+    {
+      "file": "research-story.css",
+      "sha256": "364674c12a9b69698276f8f2089e3369f5e4ab91271614f6e017606a3a9c8975"
+    },
+    {
+      "file": "researchDataApi.js",
+      "sha256": "814acc60bacc0a7952a507b3dcd0835b8da45dc6f7a2083fbe339c7bd5f39332"
+    },
+    {
+      "file": "ResearchWorkspace.jsx",
+      "sha256": "c1a1159f7b178aa2460d1f8b5c97d944ec5617ecee9643d27bb91fe7d0d1ae9c"
+    },
+    {
+      "file": "RiskWorkspace.css",
+      "sha256": "fb8091147ebac0a9567b8ec38626cc9b19c00d58db9b7d34c75b57e46247b28d"
+    },
+    {
+      "file": "RiskWorkspace.jsx",
+      "sha256": "dfd06ed362d7b824c3baedc636e0ac29af2631abb5ab5ab112869f092668d113"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "session-picker.css",
+      "sha256": "17843e39af688f570bd96b019bf62c6bf57a0024995802b164919f8b1d7cb1ae"
+    },
+    {
+      "file": "session-settings.css",
+      "sha256": "85534a2d413dee8014856d2c9cc5c29ff1ba124068d50922afefb4247b4e57d8"
+    },
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "6da81c53038e5b1ae0ce23cbf6d030131685f090ebaad6271871b89cb43b82aa"
+    },
+    {
+      "file": "sessionCatalog.js",
+      "sha256": "449dba63d374fe267ba86deaf43de92b659aef85d53d9955a8843ee89112185d"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "5e1ac569daae65b9a400939a49e81b3c9878821e98cc5bd6cbc4f81724316ad9"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "866abc84469a43e18f3f7633eb98f44de53e6b042d03421c0b0a3be4783e50f9"
+    },
+    {
+      "file": "sessionPerformanceModel.js",
+      "sha256": "4beaafd331bc290e564678a96e73bffb6a16239c77ce61c68831daced92f1ade"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "4a236b3a9e07cdd9d29fa9405aa384b6e8cd397312b60b57570ce0e43baa155c"
+    },
+    {
+      "file": "SessionReports.jsx",
+      "sha256": "98b12e23a0e03a5b717984482c2799e2d7481c5f64b0310ef8e52d9e14b77943"
+    },
+    {
+      "file": "SessionSettingsDrawer.jsx",
+      "sha256": "89384a3b9a39a10ff8ef1ee9f49dc43a750ef99dedae3dda1b992937bbec7de0"
+    },
+    {
+      "file": "sessionSettingsModel.js",
+      "sha256": "165a17325edbd0e8ef10a0519b306a7e34189186dfa3e2c0350b065a487f1099"
+    },
+    {
+      "file": "settings.css",
+      "sha256": "b4b7447cf29c91be60b288e8136d62c9c722fcdcca31e226cb49e984b26d5234"
+    },
+    {
+      "file": "SettingsWorkspace.jsx",
+      "sha256": "578260057a10db90632e699269828e538bbb3cecab7035b60a62f1a847b7e0f0"
+    },
+    {
+      "file": "styles.css",
+      "sha256": "c104ecd57eedeff0c47cf751e626386ee9a17e4a2775f84336a8a7b07ad663a5"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "8795bf363a49a2afd7792c7f1a9f8c3e248e41c2725042b068d2652093f5a91a"
+    },
+    {
+      "file": "testing-enums.json",
+      "sha256": "c632ff35ffed44b31207bff856ea9d8b823cb2574d2ffd538f34ff2fe3ef233b"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "3ede264b3c21dce1c66a64bd211f0ff3653be6fe2caff3bd85981ee92622d1dd"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "02b485af029c16f400e4f42ddcbec3e71a90646aa2ea106479beeb2fbcfbeb47"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "TradeWorkspace.css",
+      "sha256": "756dbff364135200b1a69936e254f6442ab8ea7a4da97c9a401d76249ff4e6b5"
+    },
+    {
+      "file": "TradeWorkspace.jsx",
+      "sha256": "af3b6021853ce14bf7679cf87e4a20599b5dc2bfea2b5497a0489cc0376e319b"
+    },
+    {
+      "file": "tradingAnalyticsModel.js",
+      "sha256": "3b2c500152e2aec0b0c137ca347ca0a30c5edd4b144cc847e6f50d77cce5c001"
+    },
+    {
+      "file": "TradingViewReplayChart.jsx",
+      "sha256": "06771177af37790b8bb43a98b5bd1c29ab6efcc77e9ff67505a6bfec24353b7e"
+    },
+    {
+      "file": "typography-scale.css",
+      "sha256": "30e8192261d810f4a0e71fb4f6b32fa52bfe0b745d2dcc64cc782f76d9d809e2"
+    },
+    {
+      "file": "ui-system.snapshot.css",
+      "sha256": "85f7fa1bcb545c4a8a1ea4a1dd4fd6ee41b8597167d8d2ccf6c1d117610de2c8"
+    },
+    {
+      "file": "useReadRefresh.js",
+      "sha256": "168facaee53ad199df80be4a981d15aacf0c69812ca6d7a9fba03e07ed289d5c"
+    },
+    {
+      "file": "useReplayDrawings.js",
+      "sha256": "e4e319e56e1324a8a686f1c18510ea1ceed744118a6b7ceee6663cfc96626678"
+    },
+    {
+      "file": "useReplayTickOptions.js",
+      "sha256": "bfb631ed8d6c3d8698651d75db0a9c1005bcda0aeea29cae42a1fa64200167e6"
+    },
+    {
+      "file": "visual-polish.css",
+      "sha256": "1b82fb416e6e5e41fcdb14dc3ff9c965a93ab620c426fa1fedc9f82ce0a5702c"
+    },
+    {
+      "file": "workspace-pattern.css",
+      "sha256": "ceed487072af263436aeb26d4e97c88caf8b02aae12f7af79068696a59d04208"
+    },
+    {
+      "file": "workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    }
+  ],
+  "phase": "actual-chart-label-supplement-en",
+  "actualRecordsUnchanged": true,
+  "after": [
+    {
+      "file": "advancedChartStorage.js",
+      "sha256": "d167ba111aa8a009e9e648f7774b118d169905d3d4e39b8f481057f8328a4eb6"
+    },
+    {
+      "file": "advancedReplayDatafeed.js",
+      "sha256": "146453a786ba9dfd405b60e8b583acd84ddc3c1e6002d6b9c56d2433a2575656"
+    },
+    {
+      "file": "analytics-filter-controls.css",
+      "sha256": "1e6e929ecd7ad8ed3e2314349f92e50ded7234ff3afc3e17e0ebc1905c706199"
+    },
+    {
+      "file": "analytics-story.css",
+      "sha256": "012b9901fd8b549b7f76c56b1377f979e2f80bed59d2aa2e7438c910ca7343ab"
+    },
+    {
+      "file": "AnalyticsFilterBar.jsx",
+      "sha256": "2211dba3036a151e84f6a5911026796ea3974c328e712a84f16ac1459a9a51fd"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "75013a90050308ad151f1421bcda5bf2968802a0aad5b2ac183a68a852942dc1"
+    },
+    {
+      "file": "analyticsSimulation.js",
+      "sha256": "a25395e40fc317785e05c9e48c90094648e3bbd0109c1a922be4020f2b5b09d1"
+    },
+    {
+      "file": "AnalyticsWorkspace.jsx",
+      "sha256": "17ed1de8b6104608350d342353e0ff2148efe61f1c977292e85b5b4b59ce64ca"
+    },
+    {
+      "file": "chartAnnotations.js",
+      "sha256": "1c9a4f22cd8616d080ad91547eca7a80e3bc342ab59dd0ea7a2ce25bda0f6c2b"
+    },
+    {
+      "file": "ChartFloatingToolbar.jsx",
+      "sha256": "62740f174c2eb787151bb7c0867ab7fd5b17435c609af42713966853ecc1eae5"
+    },
+    {
+      "file": "ChartIcon.jsx",
+      "sha256": "62945edc8802a914544db735edf7b8f2fa77c1beddaf7dd9f723ce3021283cec"
+    },
+    {
+      "file": "ChartOrderPanel.jsx",
+      "sha256": "3f581a85dca27ea5d7727010116dcbc855ab61318fd74e7cef984be5610ff387"
+    },
+    {
+      "file": "ChartWorkbench.css",
+      "sha256": "732b35cb9e893ba9d3f814fbc07243989342d165ca0a943be594cb3d722fbde4"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "c1c67066566db1240901d3548cd26f31cd2432f9fbf5c83c6b7f394ff552c965"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "d4a2871eecc7b4d434cb8ee9b220b49cdb9f6a864febf1cc5b295e025e521c81"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "15f0d66db1bf820f2491890bb5b3a678386a844bc7d3fe9e57e8e2f12727fbb9"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "3c1afa01aa1dcbf39d58e721dd7a4b40d37a9ceef59aaf4a62727782674d4ea8"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "5456c1b136b95dde6959439e3a39629674bfa819a0774d618b1ba6a85f142e6d"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "2b4418e19d5d25fadb0fc2ee399a6f6c1dc3c19d396cc95689c0067b769756d5"
+    },
+    {
+      "file": "dataDeskApi.js",
+      "sha256": "1c115c122ee506a65c9b3eec1c1d352d7a391329750a6db2a05d1f8b6f05f29d"
+    },
+    {
+      "file": "DataDeskWorkspace.jsx",
+      "sha256": "9b3281212ffa16415d81ef39ef5bba7f3ca93c9eb8437305896b6df90021a0e2"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "dfa99275844a8ab5dd18ab0976b09c514e4b2b4584d98220fb7a8481a8445857"
+    },
+    {
+      "file": "demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "33f89f1ff3b82ee101ae12714114dedcb7a5d594065f84b706b83c7551183286"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "35afec8b6b0dd97b74e42c97e75a29fb53dd3860b8c1b6ac62d9b9aa78a2097a"
+    },
+    {
+      "file": "fx-shell-preferences.css",
+      "sha256": "8a142b960e7a9dc47008d86cfefdd8016521347fb10bc43ac68cb84047dc43e1"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "e4bb56bfad2881181475cb7d85a4769e591c198270d2759b32c518343a409303"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8bac3f5092ddec0ccfd397fc6acf3f043a255d397c63cc99aae2e19fc8217a6c"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "9e209845e0be0bff18e943b036b3ca3a131856212d0a7cd55ffaad4c4998b4c5"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "ca05fbb19cb37c1f9875bb434b27742036a72c9c17ab86f016cdaf2f7d04e4ba"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "6438d21f493ed3f04d54f41e7fcddf19c41ab71856195f7966036af344625856"
+    },
+    {
+      "file": "journal-analytics.css",
+      "sha256": "0d52bbe154858421d6c05aad9a1ee6893d2c77a5571dcd663642ca19be29cd8e"
+    },
+    {
+      "file": "journal-story.css",
+      "sha256": "a82684024752ecaf940c47d759356faaff57e2deb13399e3081a9ae8f9af9640"
+    },
+    {
+      "file": "JournalWorkspace.jsx",
+      "sha256": "6bd8dffeaaa66c3b1ff9698dafef613ba11000846ba8fc7fe475ae46da859147"
+    },
+    {
+      "file": "learnIntegration.css",
+      "sha256": "4826662a42ae25bb87eefbf5eeec61cbbff68439b7d9578d3ca24429d42af923"
+    },
+    {
+      "file": "LearnWorkspace.jsx",
+      "sha256": "66aac68fca645fbe88c40d89322018612ba74c73b0caf9a19f7e075fc3705205"
+    },
+    {
+      "file": "ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "LedgerFilterDrawer.jsx",
+      "sha256": "1115cf46f370eeea9ede06d82ea7c71c16ce2fbab78f9e9201a7751011e33ed5"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "5a1a5386b3bf464d11f4fed990521ff078d52ee294b92cd2afe96103bd7df933"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "ea2e174ece8bfe1b865c1b4e0e2f3abb1bff888055528fb2bbba6a6e724eafa0"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "310d7ddb991e66312ab54ae2ba52ac69a8a869e64e7f7cbf68e402cedf7ca604"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "a44b7b2950dc2663414ca6bb524eed7c7534155f9ae37ce6c5ca357531636075"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "345a264f6ff6e5c8013e8a78d29d5aa55e638fbdd8c596024dd7210cd5fffbf5"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "notionConnector.js",
+      "sha256": "59aebf47dc16ecefedb56ecbbdc9f3efbbbb0ffb282d9207d89958a0a81c4d48"
+    },
+    {
+      "file": "NotionConnector.jsx",
+      "sha256": "8032e634f479adb09c7703f5e1ce8ff484d22b4253e2e2a0a06faa11e05fe920"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "playbook-story.css",
+      "sha256": "4ca1453f3e83abc452cb006aa12fdfb568a32697eb17d251457be3c5812f3bcd"
+    },
+    {
+      "file": "playbookApi.js",
+      "sha256": "260cc452c7877aa024f4ec195f3f064828dcee554507dc0270869b7407254dde"
+    },
+    {
+      "file": "PlaybookWorkspace.jsx",
+      "sha256": "da86fceb1f578e820d14901482575ae90545f346518fecd97387c31042c8b6ff"
+    },
+    {
+      "file": "PropAnalytics.jsx",
+      "sha256": "621b4e37b59c6976269953c60726317ae5e0a0e905186455862cc4313667c5a2"
+    },
+    {
+      "file": "propAnalyticsModel.js",
+      "sha256": "8ba06f6f41701053d0a5dbb85d7ef668a40881038a3235cfac5c2c6ea2299279"
+    },
+    {
+      "file": "PropWorkspace.css",
+      "sha256": "ea0e61842c6314431b7be267ab1b62798a78891426bf08f406899a5edb1c3f4b"
+    },
+    {
+      "file": "PropWorkspace.jsx",
+      "sha256": "b606765ca3f7a4bb2f0e281eacd002fd3c7e4b13c803b50343a6ef85a383ec27"
+    },
+    {
+      "file": "replayDrawingPrimitive.js",
+      "sha256": "fa623818ad8dc454910523c991a993750ffd5a63b8c00a57f66700f2b2fe5f22"
+    },
+    {
+      "file": "ReplayObjects.jsx",
+      "sha256": "af860a55d8176dcdbe5f78e1f6bb29569c921daed816e13ae2d341aee72eafc5"
+    },
+    {
+      "file": "replayOrderModel.js",
+      "sha256": "6c06d52b0a3a511c69b817d3d05112edcb917bc4c470a5f90f65065a0812570a"
+    },
+    {
+      "file": "replayOrderPrimitive.js",
+      "sha256": "eddf296f58028bc74769ce6b5d5ccf0deb80008d73a91da837919f6157af01ca"
+    },
+    {
+      "file": "ReplayWorkspace.css",
+      "sha256": "00ef860ef97738f8e798c5e3445de61e8e8622bde58014a4e0116828c59fd0c9"
+    },
+    {
+      "file": "ReplayWorkspace.jsx",
+      "sha256": "6f0372b2e1e887e89332882fff5f570fca7aa76850571ce85114805e4019560d"
+    },
+    {
+      "file": "research-data.css",
+      "sha256": "5b4c33e449f5aa9b632ba2ff7b702b3cf61d80b553755fe1d048473c6148d050"
+    },
+    {
+      "file": "research-story.css",
+      "sha256": "364674c12a9b69698276f8f2089e3369f5e4ab91271614f6e017606a3a9c8975"
+    },
+    {
+      "file": "researchDataApi.js",
+      "sha256": "814acc60bacc0a7952a507b3dcd0835b8da45dc6f7a2083fbe339c7bd5f39332"
+    },
+    {
+      "file": "ResearchWorkspace.jsx",
+      "sha256": "c1a1159f7b178aa2460d1f8b5c97d944ec5617ecee9643d27bb91fe7d0d1ae9c"
+    },
+    {
+      "file": "RiskWorkspace.css",
+      "sha256": "fb8091147ebac0a9567b8ec38626cc9b19c00d58db9b7d34c75b57e46247b28d"
+    },
+    {
+      "file": "RiskWorkspace.jsx",
+      "sha256": "dfd06ed362d7b824c3baedc636e0ac29af2631abb5ab5ab112869f092668d113"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "session-picker.css",
+      "sha256": "17843e39af688f570bd96b019bf62c6bf57a0024995802b164919f8b1d7cb1ae"
+    },
+    {
+      "file": "session-settings.css",
+      "sha256": "85534a2d413dee8014856d2c9cc5c29ff1ba124068d50922afefb4247b4e57d8"
+    },
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "6da81c53038e5b1ae0ce23cbf6d030131685f090ebaad6271871b89cb43b82aa"
+    },
+    {
+      "file": "sessionCatalog.js",
+      "sha256": "449dba63d374fe267ba86deaf43de92b659aef85d53d9955a8843ee89112185d"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "5e1ac569daae65b9a400939a49e81b3c9878821e98cc5bd6cbc4f81724316ad9"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "866abc84469a43e18f3f7633eb98f44de53e6b042d03421c0b0a3be4783e50f9"
+    },
+    {
+      "file": "sessionPerformanceModel.js",
+      "sha256": "4beaafd331bc290e564678a96e73bffb6a16239c77ce61c68831daced92f1ade"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "4a236b3a9e07cdd9d29fa9405aa384b6e8cd397312b60b57570ce0e43baa155c"
+    },
+    {
+      "file": "SessionReports.jsx",
+      "sha256": "98b12e23a0e03a5b717984482c2799e2d7481c5f64b0310ef8e52d9e14b77943"
+    },
+    {
+      "file": "SessionSettingsDrawer.jsx",
+      "sha256": "89384a3b9a39a10ff8ef1ee9f49dc43a750ef99dedae3dda1b992937bbec7de0"
+    },
+    {
+      "file": "sessionSettingsModel.js",
+      "sha256": "165a17325edbd0e8ef10a0519b306a7e34189186dfa3e2c0350b065a487f1099"
+    },
+    {
+      "file": "settings.css",
+      "sha256": "b4b7447cf29c91be60b288e8136d62c9c722fcdcca31e226cb49e984b26d5234"
+    },
+    {
+      "file": "SettingsWorkspace.jsx",
+      "sha256": "578260057a10db90632e699269828e538bbb3cecab7035b60a62f1a847b7e0f0"
+    },
+    {
+      "file": "styles.css",
+      "sha256": "c104ecd57eedeff0c47cf751e626386ee9a17e4a2775f84336a8a7b07ad663a5"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "8795bf363a49a2afd7792c7f1a9f8c3e248e41c2725042b068d2652093f5a91a"
+    },
+    {
+      "file": "testing-enums.json",
+      "sha256": "c632ff35ffed44b31207bff856ea9d8b823cb2574d2ffd538f34ff2fe3ef233b"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "3ede264b3c21dce1c66a64bd211f0ff3653be6fe2caff3bd85981ee92622d1dd"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "02b485af029c16f400e4f42ddcbec3e71a90646aa2ea106479beeb2fbcfbeb47"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "TradeWorkspace.css",
+      "sha256": "756dbff364135200b1a69936e254f6442ab8ea7a4da97c9a401d76249ff4e6b5"
+    },
+    {
+      "file": "TradeWorkspace.jsx",
+      "sha256": "af3b6021853ce14bf7679cf87e4a20599b5dc2bfea2b5497a0489cc0376e319b"
+    },
+    {
+      "file": "tradingAnalyticsModel.js",
+      "sha256": "3b2c500152e2aec0b0c137ca347ca0a30c5edd4b144cc847e6f50d77cce5c001"
+    },
+    {
+      "file": "TradingViewReplayChart.jsx",
+      "sha256": "06771177af37790b8bb43a98b5bd1c29ab6efcc77e9ff67505a6bfec24353b7e"
+    },
+    {
+      "file": "typography-scale.css",
+      "sha256": "30e8192261d810f4a0e71fb4f6b32fa52bfe0b745d2dcc64cc782f76d9d809e2"
+    },
+    {
+      "file": "ui-system.snapshot.css",
+      "sha256": "85f7fa1bcb545c4a8a1ea4a1dd4fd6ee41b8597167d8d2ccf6c1d117610de2c8"
+    },
+    {
+      "file": "useReadRefresh.js",
+      "sha256": "168facaee53ad199df80be4a981d15aacf0c69812ca6d7a9fba03e07ed289d5c"
+    },
+    {
+      "file": "useReplayDrawings.js",
+      "sha256": "e4e319e56e1324a8a686f1c18510ea1ceed744118a6b7ceee6663cfc96626678"
+    },
+    {
+      "file": "useReplayTickOptions.js",
+      "sha256": "bfb631ed8d6c3d8698651d75db0a9c1005bcda0aeea29cae42a1fa64200167e6"
+    },
+    {
+      "file": "visual-polish.css",
+      "sha256": "1b82fb416e6e5e41fcdb14dc3ff9c965a93ab620c426fa1fedc9f82ce0a5702c"
+    },
+    {
+      "file": "workspace-pattern.css",
+      "sha256": "ceed487072af263436aeb26d4e97c88caf8b02aae12f7af79068696a59d04208"
+    },
+    {
+      "file": "workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import path from 'node:path'
 import { chromium } from 'playwright'
-import { monteCarlo } from '../src/tradingAnalyticsModel.js'
+import { monteCarlo } from '../src/analyticsSimulation.js'
 const apiData = await (await fetch('http://127.0.0.1:8020/api/v2/replay/sessions/39b1d068edd64e75864f692f27237852/analytics', { headers: { 'X-Workspace-Id': 'tenant-a' } })).json()
 const oracle = monteCarlo({ method: 'ledger', simulations: 10, trades: 3, capital: 100000, seed: 42 }, apiData.ledger)
 const oracleAverage = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 }).format(oracle.average) + ' USD'

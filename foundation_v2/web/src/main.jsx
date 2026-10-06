@@ -1,24 +1,25 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import LearnWorkspace from './LearnWorkspace.jsx'
-import PropWorkspace from './PropWorkspace.jsx'
-import PropAnalytics from './PropAnalytics.jsx'
-import ReplayWorkspace from './ReplayWorkspace.jsx'
+const LearnWorkspace = lazy(() => import('./LearnWorkspace.jsx'))
+const PropWorkspace = lazy(() => import('./PropWorkspace.jsx'))
+const PropAnalytics = lazy(() => import('./PropAnalytics.jsx'))
+const ReplayWorkspace = lazy(() => import('./ReplayWorkspace.jsx'))
 import FxReplayShell from './FxReplayShell.jsx'
-import AnalyticsWorkspace from './AnalyticsWorkspace.jsx'
-import JournalWorkspace from './JournalWorkspace.jsx'
-import SettingsWorkspace from './SettingsWorkspace.jsx'
-import DataDeskWorkspace from './DataDeskWorkspace.jsx'
-import MarketAssetCatalog from './MarketAssetCatalog.jsx'
-import ResearchWorkspaceV2 from './ResearchWorkspace.jsx'
-import TradeWorkspace from './TradeWorkspace.jsx'
-import RiskWorkspace from './RiskWorkspace.jsx'
-import PlaybookWorkspace from './PlaybookWorkspace.jsx'
-import LiveWorkspace from './LiveWorkspace.jsx'
-import SessionPicker from './SessionPicker.jsx'
-import SessionReports from './SessionReports.jsx'
-import DashboardSessions from './DashboardSessions.jsx'
-import DemoPreview from './DemoPreview.jsx'
+const AnalyticsWorkspace = lazy(() => import('./AnalyticsWorkspace.jsx'))
+const JournalWorkspace = lazy(() => import('./JournalWorkspace.jsx'))
+const SettingsWorkspace = lazy(() => import('./SettingsWorkspace.jsx'))
+const DataDeskWorkspace = lazy(() => import('./DataDeskWorkspace.jsx'))
+const MarketAssetCatalog = lazy(() => import('./MarketAssetCatalog.jsx'))
+const ResearchWorkspaceV2 = lazy(() => import('./ResearchWorkspace.jsx'))
+const TradeWorkspace = lazy(() => import('./TradeWorkspace.jsx'))
+const RiskWorkspace = lazy(() => import('./RiskWorkspace.jsx'))
+const PlaybookWorkspace = lazy(() => import('./PlaybookWorkspace.jsx'))
+const LiveWorkspace = lazy(() => import('./LiveWorkspace.jsx'))
+const SessionPicker = lazy(() => import('./SessionPicker.jsx'))
+const SessionReports = lazy(() => import('./SessionReports.jsx'))
+const DashboardSessions = lazy(() => import('./DashboardSessions.jsx'))
+const DemoPreview = lazy(() => import('./DemoPreview.jsx'))
+const TestingComponentReference = lazy(() => import('./TestingComponentReference.jsx'))
 import { canPreviewDemo, demoToggleHref } from './demoMode.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './styles.css'
@@ -26,6 +27,9 @@ import './dashboard.css'
 import './workspace-pattern.css'
 import './page-layout.css'
 import './component-interactions.css'
+import './testing-standard.css'
+import { useTestingLocale } from './testingLocale.jsx'
+import { TestingSkeleton, TestingRouteBoundary } from './TestingReadState.jsx'
 
 function WorkspaceOverview({ workspace, query }) {
   return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions key={workspace} workspace={workspace} query={query} /></div></section>
@@ -43,6 +47,11 @@ function UnavailableWorkspace({ title, eyebrow, description, next, href }) {
   )
 }
 
+
+function DemoToggle({ demo, onToggle }) {
+  const { t } = useTestingLocale()
+  return <div className="wm-demo-action">{demo && <span className="wm-demo-label" role="status">{t('Dữ liệu mẫu')}</span>}<button type="button" className="fxa-button" aria-pressed={demo} onClick={onToggle}>{t(demo ? 'Show real data' : 'Show demo data')}</button></div>
+}
 
 function App() {
   const query = new URLSearchParams(window.location.search)
@@ -115,8 +124,9 @@ function App() {
   }
   // Unmount real data readers during preview; fixtures never reach mutation handlers.
   if (demo && demoAvailable) content = <DemoPreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}`} view={activeView} workspace={workspace} query={query} />
-  const subnavAction = demoAvailable && <div className="wm-demo-action">{demo && <span className="wm-demo-label" role="status">Demo · Dữ liệu mẫu</span>}<button type="button" className="fxa-button" aria-pressed={demo} onClick={toggleDemo}>{demo ? 'Show real data' : 'Show demo data'}</button></div>
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}>{content}</FxReplayShell>
+  if (query.get('ui_reference') === '1') content = <TestingComponentReference />
+  const subnavAction = demoAvailable && <DemoToggle demo={demo} onToggle={toggleDemo} />
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><TestingRouteBoundary key={`${activeView}:${demo}`}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')

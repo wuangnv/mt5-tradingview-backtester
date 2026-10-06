@@ -1,0 +1,125 @@
+{
+  "checks": [
+    {
+      "name": "remote paging >100 rows and all-scope facets",
+      "pass": true
+    },
+    {
+      "name": "size and sort controlled by API",
+      "pass": true
+    },
+    {
+      "name": "session scope change starts first page",
+      "pass": true
+    },
+    {
+      "name": "scope revision refresh resets page predictably",
+      "pass": true
+    },
+    {
+      "name": "loading retains full facets and aborted late response cannot overwrite new scope",
+      "pass": true
+    }
+  ],
+  "requests": [
+    {
+      "page": "1",
+      "page_size": "10",
+      "sort_key": "close_time_utc",
+      "sort_direction": "desc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "page": "14",
+      "page_size": "10",
+      "sort_key": "close_time_utc",
+      "sort_direction": "desc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "page": "1",
+      "page_size": "10",
+      "sort_key": "close_time_utc",
+      "sort_direction": "desc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "page": "1",
+      "page_size": "25",
+      "sort_key": "close_time_utc",
+      "sort_direction": "desc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "page": "1",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "page": "6",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "sessions": "session-a",
+      "page": "6",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "sessions": "session-a",
+      "page": "1",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "sessions": "session-a",
+      "page": "3",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "sessions": "session-a",
+      "page": "3",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "sessions": "session-a",
+      "page": "1",
+      "page_size": "25",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "sessions": "session-a",
+      "page": "1",
+      "page_size": "50",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    },
+    {
+      "page": "1",
+      "page_size": "50",
+      "sort_key": "net_pnl",
+      "sort_direction": "asc",
+      "extra_filters": "{\"asset\":\"all\",\"tag\":\"all\",\"strategy\":\"all\",\"source\":\"all\",\"weekday\":\"all\",\"hour\":\"all\",\"timeStart\":\"\",\"timeEnd\":\"\",\"reportKinds\":\"\",\"timezone\":\"UTC\",\"search\":\"\",\"notes\":\"\",\"assets\":\"\",\"sides\":\"\",\"outcomes\":\"\",\"types\":\"\",\"years\":\"\",\"months\":\"\",\"days\":\"\",\"hours\":\"\",\"tagInclude\":\"\",\"tagExclude\":\"\",\"tagIncludeMode\":\"AND\",\"tagExcludeMode\":\"AND\"}"
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

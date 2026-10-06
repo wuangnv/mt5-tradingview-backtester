@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import './fx-shell-story.css'
 import './fx-shell-preferences.css'
 import { buildWorkspaceHref, readWorkspaceContext } from './workspaceContext.js'
+import { TestingLocaleProvider, useTestingLocale } from './testingLocale.jsx'
 
 export { buildWorkspaceHref, readWorkspaceContext }
 
@@ -242,6 +243,7 @@ function RailIcon({ id }) {
 }
 
 function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onClose, closeButtonRef }) {
+  const { t } = useTestingLocale()
   const activeArea = activeSectionId(activeView, query)
   const primary = SIDEBAR_SECTIONS.slice(0, 3)
   const utility = SIDEBAR_SECTIONS.slice(3)
@@ -263,7 +265,7 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
         onClick={drawerOpen ? onClose : undefined}
       >
         <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={section.icon} /></span>
-        <span className="fx-rail-section-label">{label}</span>
+        <span className="fx-rail-section-label">{t(label)}</span>
       </a>
     )
   }
@@ -285,6 +287,7 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
 }
 
 function ShellSubnav({ activeView, workspace, query, copy, action }) {
+  const { t } = useTestingLocale()
   const sectionId = activeSectionId(activeView, query)
   const items = SUBNAV_GROUPS[sectionId] || []
   const navRef = useRef(null)
@@ -303,7 +306,7 @@ function ShellSubnav({ activeView, workspace, query, copy, action }) {
     <nav className="fx-subnav" aria-label={copy.subnavAria} ref={navRef}>
       <div className="fx-subnav-primary">
       {items.map((item) => {
-        const label = copy.nav[item.copyKey || item.id]?.[0] || item.id
+        const label = t(copy.nav[item.copyKey || item.id]?.[0] || item.id)
         const active = isNavItemActive(item, activeView, query, sectionId)
         return (
           <React.Fragment key={item.id}>
@@ -324,7 +327,7 @@ function ShellSubnav({ activeView, workspace, query, copy, action }) {
           {item.route === 'analytics' && sectionId === 'testing' && activeView === 'analytics' && <nav className="fx-subsubnav" aria-label={copy.analyticsSourcesAria}>
             {[['sessions', 'Sessions'], ['prop', 'Prop firm']].map(([source, label]) => <a key={source}
               href={hrefFor('analytics', workspace, query, { select: '1', analytics_source: source, area: 'testing', section: 'analytics', prop_session: query.get('prop_session'), attempt: query.get('attempt') })}
-              aria-current={(query.get('analytics_source') === 'prop' ? 'prop' : 'sessions') === source ? 'page' : undefined}>{label}</a>)}
+              aria-current={(query.get('analytics_source') === 'prop' ? 'prop' : 'sessions') === source ? 'page' : undefined}>{t(label)}</a>)}
           </nav>}
           </React.Fragment>
         )
@@ -601,8 +604,8 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
   }, [helpOpen])
 
   return (
-    <FxReplayContext.Provider value={contextValue}>
-      <div className={`fx-app fx-shell-story ${displayedRailCollapsed ? 'is-rail-collapsed' : ''} ${drawerOpen ? 'is-mobile-nav-open' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''} ${chartRoute ? 'is-chart-route' : ''}`} data-testid="fxreplay-shell" data-theme={theme} lang={language}>
+    <TestingLocaleProvider language={language}><FxReplayContext.Provider value={contextValue}>
+      <div className={`fx-app fx-shell-story ${displayedRailCollapsed ? 'is-rail-collapsed' : ''} ${drawerOpen ? 'is-mobile-nav-open' : ''} ${chartWorkspace ? 'is-chart-workspace' : ''} ${chartRoute ? 'is-chart-route' : ''}`} data-testid="fxreplay-shell" data-theme={theme} data-ui-area={query.get('area') || (['overview', 'replay', 'trade', 'analytics', 'market-data', 'testing', 'prop'].includes(activeView) ? 'testing' : activeView)} lang={language}>
         <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={displayedRailCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" mobileNavigation={mobileNavigation} drawerOpen={drawerOpen} menuButtonRef={menuButtonRef} />
         {drawerOpen && <div className="fx-mobile-nav-backdrop" aria-hidden="true" onClick={() => setMobileNavigationOpen(false)} />}
         {!chartWorkspace && <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" drawerOpen={drawerOpen} onClose={() => setMobileNavigationOpen(false)} closeButtonRef={navigationCloseRef} />}
@@ -612,7 +615,6 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
           <div className="fx-content" tabIndex={0}>{children}</div>
         </section>
       </div>
-    </FxReplayContext.Provider>
+    </FxReplayContext.Provider></TestingLocaleProvider>
   )
 }
-

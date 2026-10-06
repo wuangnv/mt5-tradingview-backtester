@@ -1,0 +1,4570 @@
+{
+  "Dashboard": {
+    "vi": "Tổng quan",
+    "en": "Dashboard"
+  },
+  "Sessions": {
+    "vi": "Phiên",
+    "en": "Sessions"
+  },
+  "Trades": {
+    "vi": "Giao dịch",
+    "en": "Trades"
+  },
+  "Analytics": {
+    "vi": "Phân tích",
+    "en": "Analytics"
+  },
+  "Market Data": {
+    "vi": "Kho dữ liệu",
+    "en": "Market data"
+  },
+  "Testing": {
+    "vi": "Luyện tập",
+    "en": "Testing"
+  },
+  "Prop firm": {
+    "vi": "Prop firm",
+    "en": "Prop firm"
+  },
+  "Prop Firm": {
+    "vi": "Prop firm",
+    "en": "Prop firm"
+  },
+  "Backtesting": {
+    "vi": "Backtest",
+    "en": "Backtesting"
+  },
+  "Tutorials": {
+    "vi": "Hướng dẫn",
+    "en": "Tutorials"
+  },
+  "Journal": {
+    "vi": "Nhật ký",
+    "en": "Journal"
+  },
+  "Performance": {
+    "vi": "Hiệu suất",
+    "en": "Performance"
+  },
+  "Drawdown": {
+    "vi": "Sụt giảm vốn",
+    "en": "Drawdown"
+  },
+  "Simulation": {
+    "vi": "Mô phỏng",
+    "en": "Simulation"
+  },
+  "Research": {
+    "vi": "Nghiên cứu",
+    "en": "Research"
+  },
+  "Type": {
+    "vi": "Loại",
+    "en": "Type"
+  },
+  "Type filter": {
+    "vi": "Lọc theo loại",
+    "en": "Type filter"
+  },
+  "Assets": {
+    "vi": "Tài sản",
+    "en": "Assets"
+  },
+  "Asset": {
+    "vi": "Tài sản",
+    "en": "Asset"
+  },
+  "Side": {
+    "vi": "Hướng lệnh",
+    "en": "Side"
+  },
+  "Outcome": {
+    "vi": "Kết quả",
+    "en": "Outcome"
+  },
+  "Tags": {
+    "vi": "Nhãn",
+    "en": "Tags"
+  },
+  "Session": {
+    "vi": "Phiên",
+    "en": "Session"
+  },
+  "Strategy": {
+    "vi": "Chiến lược",
+    "en": "Strategy"
+  },
+  "Day": {
+    "vi": "Thứ",
+    "en": "Day"
+  },
+  "Time": {
+    "vi": "Giờ",
+    "en": "Time"
+  },
+  "Timezone": {
+    "vi": "Múi giờ",
+    "en": "Timezone"
+  },
+  "Backtesting Date": {
+    "vi": "Ngày backtest",
+    "en": "Backtesting date"
+  },
+  "Backtesting date filter": {
+    "vi": "Lọc ngày đóng lệnh backtest",
+    "en": "Backtesting close-date filter"
+  },
+  "Time filter": {
+    "vi": "Lọc giờ đóng lệnh",
+    "en": "Close-time filter"
+  },
+  "Start": {
+    "vi": "Bắt đầu",
+    "en": "Start"
+  },
+  "End": {
+    "vi": "Kết thúc",
+    "en": "End"
+  },
+  "All": {
+    "vi": "Tất cả",
+    "en": "All"
+  },
+  "None": {
+    "vi": "Không chọn",
+    "en": "None"
+  },
+  "Apply": {
+    "vi": "Áp dụng",
+    "en": "Apply"
+  },
+  "Clear": {
+    "vi": "Xóa",
+    "en": "Clear"
+  },
+  "Clear filters": {
+    "vi": "Xóa bộ lọc",
+    "en": "Clear filters"
+  },
+  "Clear All": {
+    "vi": "Xóa tất cả",
+    "en": "Clear all"
+  },
+  "Apply Filters": {
+    "vi": "Áp dụng bộ lọc",
+    "en": "Apply filters"
+  },
+  "Filter by": {
+    "vi": "Lọc theo",
+    "en": "Filter by"
+  },
+  "Filters": {
+    "vi": "Bộ lọc",
+    "en": "Filters"
+  },
+  "Basic": {
+    "vi": "Cơ bản",
+    "en": "Basic"
+  },
+  "Include": {
+    "vi": "Bao gồm",
+    "en": "Include"
+  },
+  "Exclude": {
+    "vi": "Loại trừ",
+    "en": "Exclude"
+  },
+  "Select tags": {
+    "vi": "Chọn nhãn",
+    "en": "Select tags"
+  },
+  "Select timezone": {
+    "vi": "Chọn múi giờ",
+    "en": "Select timezone"
+  },
+  "Search timezone…": {
+    "vi": "Tìm múi giờ…",
+    "en": "Search timezones…"
+  },
+  "Search filter": {
+    "vi": "Tìm bộ lọc",
+    "en": "Search filters"
+  },
+  "Search notes": {
+    "vi": "Tìm ghi chú",
+    "en": "Search notes"
+  },
+  "Notes filter": {
+    "vi": "Lọc ghi chú",
+    "en": "Notes filter"
+  },
+  "Notes": {
+    "vi": "Ghi chú",
+    "en": "Notes"
+  },
+  "Date range": {
+    "vi": "Khoảng ngày",
+    "en": "Date range"
+  },
+  "From · close date (UTC)": {
+    "vi": "Từ ngày đóng lệnh (UTC)",
+    "en": "From close date (UTC)"
+  },
+  "To · close date (UTC)": {
+    "vi": "Đến ngày đóng lệnh (UTC)",
+    "en": "To close date (UTC)"
+  },
+  "Year": {
+    "vi": "Năm",
+    "en": "Year"
+  },
+  "Month": {
+    "vi": "Tháng",
+    "en": "Month"
+  },
+  "Days": {
+    "vi": "Thứ trong tuần",
+    "en": "Days of the week"
+  },
+  "Hour of the day": {
+    "vi": "Giờ trong ngày",
+    "en": "Hour of the day"
+  },
+  "Unknown": {
+    "vi": "Chưa rõ",
+    "en": "Unknown"
+  },
+  "Buy": {
+    "vi": "Mua",
+    "en": "Buy"
+  },
+  "Sell": {
+    "vi": "Bán",
+    "en": "Sell"
+  },
+  "Win": {
+    "vi": "Thắng",
+    "en": "Win"
+  },
+  "Loss": {
+    "vi": "Thua",
+    "en": "Loss"
+  },
+  "Breakeven": {
+    "vi": "Hòa vốn",
+    "en": "Breakeven"
+  },
+  "Closed": {
+    "vi": "Đã đóng",
+    "en": "Closed"
+  },
+  "Tất cả": {
+    "vi": "Tất cả",
+    "en": "All"
+  },
+  "Tất cả assets": {
+    "vi": "Tất cả tài sản",
+    "en": "All assets"
+  },
+  "Tất cả sides": {
+    "vi": "Tất cả hướng lệnh",
+    "en": "All sides"
+  },
+  "Tất cả kết quả": {
+    "vi": "Tất cả kết quả",
+    "en": "All outcomes"
+  },
+  "Tất cả tags": {
+    "vi": "Tất cả nhãn",
+    "en": "All tags"
+  },
+  "Tất cả strategies": {
+    "vi": "Tất cả chiến lược",
+    "en": "All strategies"
+  },
+  "Mọi thứ": {
+    "vi": "Tất cả các thứ",
+    "en": "All days"
+  },
+  "Thắng": {
+    "vi": "Thắng",
+    "en": "Win"
+  },
+  "Thua": {
+    "vi": "Thua",
+    "en": "Loss"
+  },
+  "Hòa vốn": {
+    "vi": "Hòa vốn",
+    "en": "Breakeven"
+  },
+  "Chưa có nguồn dữ liệu Battles": {
+    "vi": "Chưa có dữ liệu Battles",
+    "en": "Battles data is unavailable"
+  },
+  "Ngày kết thúc phải từ ngày bắt đầu trở đi.": {
+    "vi": "Ngày kết thúc không được trước ngày bắt đầu.",
+    "en": "End date must be on or after start date."
+  },
+  "Bộ lọc analytics": {
+    "vi": "Bộ lọc phân tích",
+    "en": "Analytics filters"
+  },
+  "Bộ lọc giao dịch": {
+    "vi": "Bộ lọc giao dịch",
+    "en": "Trade filters"
+  },
+  "Bộ lọc đã áp dụng": {
+    "vi": "Bộ lọc đã áp dụng",
+    "en": "Applied filters"
+  },
+  "Xuất CSV": {
+    "vi": "Xuất CSV",
+    "en": "Export CSV"
+  },
+  "Bỏ lọc Backtesting Date": {
+    "vi": "Bỏ lọc ngày backtest",
+    "en": "Remove backtesting date filter"
+  },
+  "Previous month": {
+    "vi": "Tháng trước",
+    "en": "Previous month"
+  },
+  "Next month": {
+    "vi": "Tháng sau",
+    "en": "Next month"
+  },
+  "Analytics from date": {
+    "vi": "Ngày bắt đầu phân tích",
+    "en": "Analytics start date"
+  },
+  "Analytics to date": {
+    "vi": "Ngày kết thúc phân tích",
+    "en": "Analytics end date"
+  },
+  "Chọn khoảng ngày đóng UTC": {
+    "vi": "Chọn khoảng ngày đóng lệnh (UTC)",
+    "en": "Select close-date range (UTC)"
+  },
+  "Đóng Filters": {
+    "vi": "Đóng bộ lọc",
+    "en": "Close filters"
+  },
+  "Filter type": {
+    "vi": "Loại bộ lọc",
+    "en": "Filter type"
+  },
+  "Chưa có ghi chú trong dữ liệu giao dịch.": {
+    "vi": "Chưa có ghi chú giao dịch.",
+    "en": "No trade notes are available."
+  },
+  "Backtesting session": {
+    "vi": "Phiên backtest",
+    "en": "Backtesting session"
+  },
+  "Prop firm session": {
+    "vi": "Phiên prop firm",
+    "en": "Prop firm session"
+  },
+  "Tạo phiên backtest": {
+    "vi": "Tạo phiên backtest",
+    "en": "Create a backtesting session"
+  },
+  "Bắt đầu challenge mô phỏng": {
+    "vi": "Bắt đầu thử thách mô phỏng",
+    "en": "Start a simulated challenge"
+  },
+  "Học và luyện tập": {
+    "vi": "Học và luyện tập",
+    "en": "Learn and practice"
+  },
+  "Bắt đầu luyện tập": {
+    "vi": "Bắt đầu luyện tập",
+    "en": "Start practicing"
+  },
+  "Time invested": {
+    "vi": "Thời gian luyện tập",
+    "en": "Time invested"
+  },
+  "Historical time replayed": {
+    "vi": "Thời gian lịch sử đã replay",
+    "en": "Historical time replayed"
+  },
+  "Trades taken": {
+    "vi": "Giao dịch đã đóng",
+    "en": "Closed trades"
+  },
+  "Overall win rate": {
+    "vi": "Tỷ lệ thắng tổng thể",
+    "en": "Overall win rate"
+  },
+  "Trades by symbol": {
+    "vi": "Giao dịch theo mã",
+    "en": "Trades by symbol"
+  },
+  "Win rate by month": {
+    "vi": "Tỷ lệ thắng theo tháng",
+    "en": "Win rate by month"
+  },
+  "Giao dịch theo tháng": {
+    "vi": "Giao dịch theo tháng",
+    "en": "Trades by month"
+  },
+  "Chưa có dữ liệu theo tháng.": {
+    "vi": "Chưa có dữ liệu theo tháng.",
+    "en": "No monthly data is available."
+  },
+  "Chưa có giao dịch theo symbol.": {
+    "vi": "Chưa có giao dịch theo mã.",
+    "en": "No trades by symbol are available."
+  },
+  "Thời gian luyện tập mẫu": {
+    "vi": "Thời gian luyện tập mẫu",
+    "en": "Sample practice time"
+  },
+  "Thời gian replay mẫu": {
+    "vi": "Thời gian replay mẫu",
+    "en": "Sample replay time"
+  },
+  "Chưa có dữ liệu thời gian luyện tập": {
+    "vi": "Chưa có dữ liệu thời gian luyện tập",
+    "en": "Practice-time data is unavailable"
+  },
+  "Chưa có dữ liệu thời gian replay": {
+    "vi": "Chưa có dữ liệu thời gian replay",
+    "en": "Replay-time data is unavailable"
+  },
+  "Giao dịch đã đóng · đã loại trùng": {
+    "vi": "Giao dịch đã đóng · không trùng lặp",
+    "en": "Closed trades · duplicates removed"
+  },
+  "Chưa có kết quả giao dịch": {
+    "vi": "Chưa có kết quả giao dịch",
+    "en": "No trade outcomes are available"
+  },
+  "Đang tải Performance…": {
+    "vi": "Đang tải hiệu suất…",
+    "en": "Loading performance…"
+  },
+  "Chưa tải được Performance.": {
+    "vi": "Chưa tải được hiệu suất.",
+    "en": "Could not load performance."
+  },
+  "Chưa đủ dữ liệu thực thi để tính Performance.": {
+    "vi": "Chưa đủ dữ liệu khớp lệnh để tính hiệu suất.",
+    "en": "Execution data is insufficient to calculate performance."
+  },
+  "Không có giao dịch đóng trong phạm vi này.": {
+    "vi": "Không có giao dịch đóng trong phạm vi này.",
+    "en": "No closed trades in this scope."
+  },
+  "Phạm vi Performance": {
+    "vi": "Phạm vi hiệu suất",
+    "en": "Performance scope"
+  },
+  "Thời gian Performance": {
+    "vi": "Khoảng thời gian hiệu suất",
+    "en": "Performance period"
+  },
+  "Backtesting · All sessions": {
+    "vi": "Backtest · tất cả phiên",
+    "en": "Backtesting · all sessions"
+  },
+  "Last week": {
+    "vi": "7 ngày gần nhất",
+    "en": "Last 7 days"
+  },
+  "Last month": {
+    "vi": "30 ngày gần nhất",
+    "en": "Last 30 days"
+  },
+  "Lifetime": {
+    "vi": "Toàn bộ thời gian",
+    "en": "All time"
+  },
+  "Khoảng tùy chọn": {
+    "vi": "Khoảng tùy chọn",
+    "en": "Custom range"
+  },
+  "90 ngày gần nhất": {
+    "vi": "90 ngày gần nhất",
+    "en": "Last 90 days"
+  },
+  "Từ ngày (UTC)": {
+    "vi": "Từ ngày (UTC)",
+    "en": "From date (UTC)"
+  },
+  "Đến ngày (UTC)": {
+    "vi": "Đến ngày (UTC)",
+    "en": "To date (UTC)"
+  },
+  "Phiên đang chọn": {
+    "vi": "Phiên đang chọn",
+    "en": "Selected session"
+  },
+  "Bỏ chọn phiên Performance": {
+    "vi": "Bỏ chọn phiên hiệu suất",
+    "en": "Clear performance session"
+  },
+  "Recent Sessions": {
+    "vi": "Phiên gần đây",
+    "en": "Recent sessions"
+  },
+  "Newest to oldest": {
+    "vi": "Mới nhất trước",
+    "en": "Newest first"
+  },
+  "Oldest to newest": {
+    "vi": "Cũ nhất trước",
+    "en": "Oldest first"
+  },
+  "Last updated": {
+    "vi": "Cập nhật gần nhất",
+    "en": "Recently updated"
+  },
+  "Most profit": {
+    "vi": "Lợi nhuận cao nhất",
+    "en": "Highest profit"
+  },
+  "Tìm phiên gần đây": {
+    "vi": "Tìm phiên gần đây",
+    "en": "Search recent sessions"
+  },
+  "Tìm tên phiên, symbol…": {
+    "vi": "Tìm tên phiên hoặc mã…",
+    "en": "Search session names or symbols…"
+  },
+  "Tìm asset…": {
+    "vi": "Tìm tài sản…",
+    "en": "Search assets…"
+  },
+  "Tìm strategy…": {
+    "vi": "Tìm chiến lược…",
+    "en": "Search strategies…"
+  },
+  "Ẩn bộ lọc phiên": {
+    "vi": "Ẩn bộ lọc phiên",
+    "en": "Hide session filters"
+  },
+  "Hiện bộ lọc phiên": {
+    "vi": "Hiện bộ lọc phiên",
+    "en": "Show session filters"
+  },
+  "Trạng thái phiên": {
+    "vi": "Trạng thái phiên",
+    "en": "Session status"
+  },
+  "Đang hoạt động": {
+    "vi": "Đang hoạt động",
+    "en": "Active"
+  },
+  "Đã lưu trữ": {
+    "vi": "Đã lưu trữ",
+    "en": "Archived"
+  },
+  "Sắp xếp phiên": {
+    "vi": "Sắp xếp phiên",
+    "en": "Sort sessions"
+  },
+  "Chưa gắn strategy": {
+    "vi": "Chưa gắn chiến lược",
+    "en": "No strategy assigned"
+  },
+  "Trang phiên trước": {
+    "vi": "Trang phiên trước",
+    "en": "Previous session page"
+  },
+  "Trang phiên sau": {
+    "vi": "Trang phiên sau",
+    "en": "Next session page"
+  },
+  "Đang đọc lợi nhuận phiên…": {
+    "vi": "Đang tải lợi nhuận các phiên…",
+    "en": "Loading session profits…"
+  },
+  "Một số phiên chưa đọc được kết quả; bộ lọc Strategy và lợi nhuận chưa đầy đủ.": {
+    "vi": "Chưa đọc được kết quả của một số phiên. Bộ lọc chiến lược và lợi nhuận có thể chưa đầy đủ.",
+    "en": "Some session results are unavailable. Strategy and profit filters may be incomplete."
+  },
+  "Tiền tệ khác nhau hoặc chưa rõ; giữ thứ tự tạo phiên để tránh so sánh lợi nhuận sai.": {
+    "vi": "Các phiên dùng tiền tệ khác nhau hoặc chưa rõ. Chưa thể xếp hạng lợi nhuận.",
+    "en": "Session currencies differ or are unknown. Profit ranking is unavailable."
+  },
+  "Đang tải danh sách phiên…": {
+    "vi": "Đang tải danh sách phiên…",
+    "en": "Loading sessions…"
+  },
+  "Đang đọc Strategy của các phiên…": {
+    "vi": "Đang tải chiến lược của các phiên…",
+    "en": "Loading session strategies…"
+  },
+  "Không có phiên khớp bộ lọc.": {
+    "vi": "Không có phiên khớp bộ lọc.",
+    "en": "No sessions match the filters."
+  },
+  "Xóa bộ lọc danh sách": {
+    "vi": "Xóa bộ lọc danh sách",
+    "en": "Clear list filters"
+  },
+  "Chưa có phiên. Tạo backtest đầu tiên ở phía trên.": {
+    "vi": "Chưa có phiên. Tạo phiên backtest để bắt đầu.",
+    "en": "No sessions yet. Create a backtesting session to start."
+  },
+  "Đã đối chiếu: phiên không còn trong danh mục.": {
+    "vi": "Đã kiểm tra: phiên không còn trong danh sách.",
+    "en": "Checked: the session is no longer listed."
+  },
+  "Phản hồi tạo bản sao thiếu session id.": {
+    "vi": "Phản hồi tạo bản sao thiếu mã phiên.",
+    "en": "The duplicate response is missing a session ID."
+  },
+  "Phiên đã thay đổi ở nơi khác. Đang đọc revision mới; kiểm tra rồi lưu lại.": {
+    "vi": "Phiên đã thay đổi ở nơi khác. Đang tải phiên bản mới; kiểm tra trước khi lưu lại.",
+    "en": "The session changed elsewhere. Loading the latest revision; review it before saving again."
+  },
+  "Chưa xác định thao tác đã được lưu hay chưa. Đang đối chiếu danh mục; kiểm tra trước khi thử lại.": {
+    "vi": "Chưa xác định thao tác đã được lưu hay chưa. Đang kiểm tra danh sách; đợi kết quả trước khi thử lại.",
+    "en": "It is unclear whether the action was saved. Checking the session list; wait before retrying."
+  },
+  "Đã xóa phiên": {
+    "vi": "Đã xóa phiên",
+    "en": "Session deleted"
+  },
+  "Đã lưu thay đổi": {
+    "vi": "Đã lưu thay đổi",
+    "en": "Changes saved"
+  },
+  "Đã tạo bản sao": {
+    "vi": "Đã tạo bản sao",
+    "en": "Session duplicated"
+  },
+  "Đã khôi phục phiên": {
+    "vi": "Đã khôi phục phiên",
+    "en": "Session restored"
+  },
+  "Đã lưu trữ phiên": {
+    "vi": "Đã lưu trữ phiên",
+    "en": "Session archived"
+  },
+  "Chart cần phiên thật": {
+    "vi": "Biểu đồ cần phiên dữ liệu thực",
+    "en": "The chart requires a session with real data"
+  },
+  "Phiên hoặc dataset chưa sẵn sàng": {
+    "vi": "Phiên hoặc bộ dữ liệu chưa sẵn sàng",
+    "en": "The session or dataset is not ready"
+  },
+  "Số ngày lịch còn lại từ vị trí replay đến cuối dataset": {
+    "vi": "Số ngày lịch còn lại từ vị trí replay đến cuối bộ dữ liệu",
+    "en": "Calendar days remaining from the replay position to the dataset end"
+  },
+  "Phạm vi dataset · UTC": {
+    "vi": "Phạm vi dữ liệu · UTC",
+    "en": "Dataset range · UTC"
+  },
+  "Số dư từ lệnh đóng": {
+    "vi": "Số dư sau lệnh đóng",
+    "en": "Closed balance"
+  },
+  "Sửa tên và mô tả": {
+    "vi": "Sửa tên và mô tả",
+    "en": "Edit name and description"
+  },
+  "Tạo bản sao": {
+    "vi": "Tạo bản sao",
+    "en": "Duplicate"
+  },
+  "Summary": {
+    "vi": "Tóm tắt",
+    "en": "Summary"
+  },
+  "Mở rộng": {
+    "vi": "Mở rộng",
+    "en": "Expand"
+  },
+  "Thu gọn": {
+    "vi": "Thu gọn",
+    "en": "Collapse"
+  },
+  "Đang tải kết quả phiên…": {
+    "vi": "Đang tải kết quả phiên…",
+    "en": "Loading session results…"
+  },
+  "Chưa đọc được kết quả phiên.": {
+    "vi": "Chưa đọc được kết quả phiên.",
+    "en": "Could not load session results."
+  },
+  "Xóa phiên": {
+    "vi": "Xóa phiên",
+    "en": "Delete session"
+  },
+  "Lưu trữ phiên": {
+    "vi": "Lưu trữ phiên",
+    "en": "Archive session"
+  },
+  "Khôi phục phiên": {
+    "vi": "Khôi phục phiên",
+    "en": "Restore session"
+  },
+  "Tạo bản sao phiên": {
+    "vi": "Tạo bản sao phiên",
+    "en": "Duplicate session"
+  },
+  "Đóng hộp thoại phiên": {
+    "vi": "Đóng hộp thoại phiên",
+    "en": "Close session dialog"
+  },
+  "Bản xem thử · thay đổi chỉ ở chế độ demo": {
+    "vi": "Dữ liệu mẫu · thay đổi chỉ áp dụng trong chế độ demo",
+    "en": "Demo data · changes only apply in demo mode"
+  },
+  "Nhập tên phiên để xác nhận": {
+    "vi": "Nhập tên phiên để xác nhận",
+    "en": "Enter the session name to confirm"
+  },
+  "Tên phiên xác nhận xóa": {
+    "vi": "Tên phiên xác nhận xóa",
+    "en": "Session name to confirm deletion"
+  },
+  "Hủy": {
+    "vi": "Hủy",
+    "en": "Cancel"
+  },
+  "Đang xóa…": {
+    "vi": "Đang xóa…",
+    "en": "Deleting…"
+  },
+  "Đang lưu…": {
+    "vi": "Đang lưu…",
+    "en": "Saving…"
+  },
+  "Khôi phục": {
+    "vi": "Khôi phục",
+    "en": "Restore"
+  },
+  "Lưu trữ": {
+    "vi": "Lưu trữ",
+    "en": "Archive"
+  },
+  "Go to chart": {
+    "vi": "Mở biểu đồ",
+    "en": "Go to chart"
+  },
+  "Mở chart": {
+    "vi": "Mở biểu đồ",
+    "en": "Go to chart"
+  },
+  "Account balance": {
+    "vi": "Số dư tài khoản",
+    "en": "Account balance"
+  },
+  "Account Balance": {
+    "vi": "Số dư tài khoản",
+    "en": "Account balance"
+  },
+  "Chưa rõ thời gian còn lại": {
+    "vi": "Chưa rõ thời gian còn lại",
+    "en": "Remaining time is unknown"
+  },
+  "Dataset không khả dụng.": {
+    "vi": "Bộ dữ liệu không khả dụng.",
+    "en": "The dataset is unavailable."
+  },
+  "Chưa rõ dataset.": {
+    "vi": "Chưa xác định bộ dữ liệu.",
+    "en": "The dataset is unknown."
+  },
+  "Description": {
+    "vi": "Mô tả",
+    "en": "Description"
+  },
+  "Hủy sửa mô tả": {
+    "vi": "Hủy sửa mô tả",
+    "en": "Cancel description editing"
+  },
+  "Sửa mô tả": {
+    "vi": "Sửa mô tả",
+    "en": "Edit description"
+  },
+  "Mô tả phiên": {
+    "vi": "Mô tả phiên",
+    "en": "Session description"
+  },
+  "Add a description…": {
+    "vi": "Thêm mô tả…",
+    "en": "Add a description…"
+  },
+  "Save": {
+    "vi": "Lưu",
+    "en": "Save"
+  },
+  "Đơn vị tài khoản": {
+    "vi": "Đơn vị tiền tệ tài khoản",
+    "en": "Account currency"
+  },
+  "Chưa có dữ liệu giao dịch đóng.": {
+    "vi": "Chưa có dữ liệu giao dịch đóng.",
+    "en": "No closed-trade data is available."
+  },
+  "12 tháng gần nhất · đầy đủ tại Analytics": {
+    "vi": "12 tháng gần nhất · xem đầy đủ trong Phân tích",
+    "en": "Last 12 months · view all in Analytics"
+  },
+  "Dữ liệu chưa cập nhật.": {
+    "vi": "Dữ liệu chưa cập nhật.",
+    "en": "Data is out of date."
+  },
+  "Dữ liệu một phần.": {
+    "vi": "Dữ liệu một phần.",
+    "en": "Partial data."
+  },
+  "Kết quả chỉ phản ánh phạm vi nguồn đã đọc.": {
+    "vi": "Kết quả chỉ phản ánh dữ liệu đã đọc được.",
+    "en": "Results only reflect the available source data."
+  },
+  "Chưa có đường số dư được xác minh.": {
+    "vi": "Chưa có dữ liệu đã xác minh để vẽ đường số dư.",
+    "en": "Verified balance-curve data is unavailable."
+  },
+  "Bắt đầu": {
+    "vi": "Bắt đầu",
+    "en": "Start"
+  },
+  "Kết quả theo tháng": {
+    "vi": "Kết quả theo tháng",
+    "en": "Results by month"
+  },
+  "Kết quả theo thứ": {
+    "vi": "Kết quả theo thứ",
+    "en": "Results by day of the week"
+  },
+  "Chưa có phân tích giao dịch.": {
+    "vi": "Chưa có phân tích giao dịch.",
+    "en": "No trade analytics are available."
+  },
+  "Chưa đủ ngày đóng hoặc Net P/L để tính kết quả theo thời gian.": {
+    "vi": "Thiếu ngày đóng hoặc P/L ròng để tính kết quả theo thời gian.",
+    "en": "Close dates or net P/L are missing for time-based results."
+  },
+  "Chỉ số phiên": {
+    "vi": "Chỉ số phiên",
+    "en": "Session metrics"
+  },
+  "Total P/L": {
+    "vi": "P/L tổng",
+    "en": "Total P/L"
+  },
+  "Win rate": {
+    "vi": "Tỷ lệ thắng",
+    "en": "Win rate"
+  },
+  "Net · giao dịch đóng": {
+    "vi": "P/L ròng · giao dịch đã đóng",
+    "en": "Net P/L · closed trades"
+  },
+  "Lời/lỗ trung bình": {
+    "vi": "Tỷ số lãi/lỗ trung bình",
+    "en": "Payoff ratio"
+  },
+  "Lãi/lỗ trung bình": {
+    "vi": "Tỷ số lãi/lỗ trung bình",
+    "en": "Payoff ratio"
+  },
+  "Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn": {
+    "vi": "Lãi trung bình / độ lớn lỗ trung bình · thiếu dữ liệu sẽ không tính",
+    "en": "Average win / average loss magnitude · unavailable when data is missing"
+  },
+  "Lãi TB / độ lớn lỗ TB": {
+    "vi": "Lãi trung bình / độ lớn lỗ trung bình",
+    "en": "Average win / average loss magnitude"
+  },
+  "P/L tháng": {
+    "vi": "P/L tháng",
+    "en": "Monthly P/L"
+  },
+  "P/L tuần": {
+    "vi": "P/L tuần",
+    "en": "Weekly P/L"
+  },
+  "P/L ngày": {
+    "vi": "P/L ngày",
+    "en": "Daily P/L"
+  },
+  "Chưa có ngày đóng": {
+    "vi": "Chưa có ngày đóng lệnh",
+    "en": "Close date is unavailable"
+  },
+  "Recent Trades": {
+    "vi": "Giao dịch gần đây",
+    "en": "Recent trades"
+  },
+  "Giao dịch gần đây": {
+    "vi": "Giao dịch gần đây",
+    "en": "Recent trades"
+  },
+  "Phiên / lệnh": {
+    "vi": "Phiên / giao dịch",
+    "en": "Session / trade"
+  },
+  "Đóng lệnh (UTC)": {
+    "vi": "Đóng lệnh (UTC)",
+    "en": "Close time (UTC)"
+  },
+  "Symbol": {
+    "vi": "Mã giao dịch",
+    "en": "Symbol"
+  },
+  "Net P/L": {
+    "vi": "P/L ròng",
+    "en": "Net P/L"
+  },
+  "Số dòng": {
+    "vi": "Số dòng",
+    "en": "Rows per page"
+  },
+  "Số dòng Recent Trades": {
+    "vi": "Số dòng giao dịch gần đây",
+    "en": "Recent trades rows per page"
+  },
+  "Trang Recent Trades": {
+    "vi": "Trang giao dịch gần đây",
+    "en": "Recent trades page"
+  },
+  "Trang giao dịch trước": {
+    "vi": "Trang giao dịch trước",
+    "en": "Previous trade page"
+  },
+  "Trang giao dịch sau": {
+    "vi": "Trang giao dịch sau",
+    "en": "Next trade page"
+  },
+  "Chưa có giao dịch đóng": {
+    "vi": "Chưa có giao dịch đóng",
+    "en": "No closed trades yet"
+  },
+  "Mở chart để bắt đầu phiên luyện tập.": {
+    "vi": "Mở biểu đồ để bắt đầu luyện tập.",
+    "en": "Open the chart to start practicing."
+  },
+  "Giao dịch đã đóng sẽ xuất hiện tại đây.": {
+    "vi": "Giao dịch đã đóng sẽ xuất hiện tại đây.",
+    "en": "Closed trades will appear here."
+  },
+  "Session Info": {
+    "vi": "Thông tin phiên",
+    "en": "Session info"
+  },
+  "Balance & Assets": {
+    "vi": "Số dư và tài sản",
+    "en": "Balance and assets"
+  },
+  "Costs": {
+    "vi": "Chi phí",
+    "en": "Costs"
+  },
+  "Date Range": {
+    "vi": "Khoảng ngày",
+    "en": "Date range"
+  },
+  "Session Settings": {
+    "vi": "Cài đặt phiên",
+    "en": "Session settings"
+  },
+  "Cài đặt phiên": {
+    "vi": "Cài đặt phiên",
+    "en": "Session settings"
+  },
+  "Đóng cài đặt phiên": {
+    "vi": "Đóng cài đặt phiên",
+    "en": "Close session settings"
+  },
+  "Name": {
+    "vi": "Tên",
+    "en": "Name"
+  },
+  "Chart Layout": {
+    "vi": "Bố cục biểu đồ",
+    "en": "Chart layout"
+  },
+  "Chưa gắn chart layout": {
+    "vi": "Chưa gắn bố cục biểu đồ",
+    "en": "No chart layout assigned"
+  },
+  "Add notes to your session": {
+    "vi": "Thêm ghi chú cho phiên",
+    "en": "Add notes to your session"
+  },
+  "Save Changes": {
+    "vi": "Lưu thay đổi",
+    "en": "Save changes"
+  },
+  "Select Assets": {
+    "vi": "Tài sản của phiên",
+    "en": "Session assets"
+  },
+  "Balance và assets được giữ theo phiên hiện tại. Tạo phiên mới để đổi cấu hình.": {
+    "vi": "Số dư và tài sản được giữ theo cấu hình của phiên. Tạo phiên mới để thay đổi.",
+    "en": "Balance and assets use this session's configuration. Create a new session to change them."
+  },
+  "Đang đọc cấu hình chi phí…": {
+    "vi": "Đang tải cấu hình chi phí…",
+    "en": "Loading cost configuration…"
+  },
+  "Spread · price": {
+    "vi": "Spread · đơn vị giá",
+    "en": "Spread · price units"
+  },
+  "Đã nằm trong Bid/Ask lịch sử": {
+    "vi": "Đã tính trong Bid/Ask lịch sử",
+    "en": "Included in historical Bid/Ask"
+  },
+  "Commission / side": {
+    "vi": "Hoa hồng mỗi chiều",
+    "en": "Commission per side"
+  },
+  "Minimum fee": {
+    "vi": "Phí tối thiểu",
+    "en": "Minimum fee"
+  },
+  "Slippage / side · price": {
+    "vi": "Trượt giá mỗi chiều · đơn vị giá",
+    "en": "Slippage per side · price units"
+  },
+  "Cost model": {
+    "vi": "Mô hình chi phí",
+    "en": "Cost model"
+  },
+  "Chưa có cấu hình chi phí đã lưu cho phiên này.": {
+    "vi": "Phiên này chưa có cấu hình chi phí đã lưu.",
+    "en": "No cost configuration is saved for this session."
+  },
+  "Chi phí của phiên đã lưu chỉ đọc; không tính lại các giao dịch đã chạy.": {
+    "vi": "Chi phí của phiên đã lưu chỉ đọc. Các giao dịch đã chạy không được tính lại.",
+    "en": "Saved session costs are read-only. Existing trades are not recalculated."
+  },
+  "Dataset start · UTC": {
+    "vi": "Đầu bộ dữ liệu · UTC",
+    "en": "Dataset start · UTC"
+  },
+  "Dataset end · UTC": {
+    "vi": "Cuối bộ dữ liệu · UTC",
+    "en": "Dataset end · UTC"
+  },
+  "Replay position · UTC": {
+    "vi": "Vị trí replay · UTC",
+    "en": "Replay position · UTC"
+  },
+  "Auto-update end date": {
+    "vi": "Tự cập nhật ngày kết thúc",
+    "en": "Auto-update end date"
+  },
+  "Phạm vi dataset cố định": {
+    "vi": "Phạm vi bộ dữ liệu cố định",
+    "en": "Fixed dataset range"
+  },
+  "Smooth candles": {
+    "vi": "Làm mượt nến",
+    "en": "Smooth candles"
+  },
+  "Không áp dụng · replay theo dữ liệu nguồn": {
+    "vi": "Không áp dụng · replay theo dữ liệu nguồn",
+    "en": "Not applied · replay uses source data"
+  },
+  "Phạm vi được giữ theo dataset của phiên. Cập nhật Market Data không thay đổi phiên đã lưu.": {
+    "vi": "Phạm vi được giữ theo bộ dữ liệu của phiên. Cập nhật kho dữ liệu không thay đổi phiên đã lưu.",
+    "en": "The range follows the session's dataset. Market data updates do not change saved sessions."
+  },
+  "Tất cả phiên": {
+    "vi": "Tất cả phiên",
+    "en": "All sessions"
+  },
+  "Chọn phiên": {
+    "vi": "Chọn phiên",
+    "en": "Select a session"
+  },
+  "Chọn session": {
+    "vi": "Chọn phiên",
+    "en": "Select a session"
+  },
+  "Tìm phiên": {
+    "vi": "Tìm phiên",
+    "en": "Search sessions"
+  },
+  "Tìm phiên…": {
+    "vi": "Tìm phiên…",
+    "en": "Search sessions…"
+  },
+  "Tìm phiên, asset…": {
+    "vi": "Tìm phiên hoặc tài sản…",
+    "en": "Search sessions or assets…"
+  },
+  "Chọn phiên replay": {
+    "vi": "Chọn phiên replay",
+    "en": "Select a replay session"
+  },
+  "Chưa rõ asset": {
+    "vi": "Chưa xác định tài sản",
+    "en": "Unknown asset"
+  },
+  "Không tìm thấy phiên.": {
+    "vi": "Không tìm thấy phiên.",
+    "en": "No sessions found."
+  },
+  "Không có trong danh mục": {
+    "vi": "Không có trong danh sách",
+    "en": "Not in the session list"
+  },
+  "＋ Phiên mới": {
+    "vi": "Phiên mới",
+    "en": "New session"
+  },
+  "Mở Analytics": {
+    "vi": "Mở phân tích",
+    "en": "Open analytics"
+  },
+  "Analytics phiên": {
+    "vi": "Phân tích phiên",
+    "en": "Session analytics"
+  },
+  "Đang tải danh mục phiên…": {
+    "vi": "Đang tải danh sách phiên…",
+    "en": "Loading sessions…"
+  },
+  "Sửa tên hoặc mô tả rồi lưu thay đổi.": {
+    "vi": "Sửa tên hoặc mô tả rồi lưu thay đổi.",
+    "en": "Edit the name or description, then save changes."
+  },
+  "Phiên đã lưu trữ. Báo cáo vẫn đọc được; khôi phục để tiếp tục replay hoặc tạo bản sao.": {
+    "vi": "Phiên đã lưu trữ. Vẫn có thể xem báo cáo; khôi phục để tiếp tục replay hoặc tạo bản sao.",
+    "en": "This session is archived. Reports remain available; restore it to resume replay or create a copy."
+  },
+  "Đang tạo…": {
+    "vi": "Đang tạo…",
+    "en": "Creating…"
+  },
+  "Tạo bản sao tại cutoff": {
+    "vi": "Tạo bản sao tại mốc hiện tại",
+    "en": "Duplicate at the current cutoff"
+  },
+  "Thông tin phiên": {
+    "vi": "Thông tin phiên",
+    "en": "Session details"
+  },
+  "Kết quả chưa đủ dữ liệu để hiển thị.": {
+    "vi": "Chưa đủ dữ liệu để hiển thị kết quả.",
+    "en": "There is not enough data to display results."
+  },
+  "Không tìm thấy phiên trong workspace này": {
+    "vi": "Không tìm thấy phiên trong không gian làm việc này",
+    "en": "Session not found in this workspace"
+  },
+  "Chọn một phiên để bắt đầu": {
+    "vi": "Chọn một phiên để bắt đầu",
+    "en": "Select a session to start"
+  },
+  "Tạo phiên mới": {
+    "vi": "Tạo phiên mới",
+    "en": "Create a session"
+  },
+  "Chưa có phiên trong bản xem thử": {
+    "vi": "Chưa có phiên trong chế độ demo",
+    "en": "No sessions in demo mode"
+  },
+  "Tải lại trang để xem lại các phiên demo.": {
+    "vi": "Tải lại trang để khôi phục các phiên demo.",
+    "en": "Reload the page to restore the demo sessions."
+  },
+  "Reset table columns": {
+    "vi": "Đặt lại cột mặc định",
+    "en": "Reset table columns"
+  },
+  "Cột hiển thị": {
+    "vi": "Cột hiển thị",
+    "en": "Visible columns"
+  },
+  "Chi tiết giao dịch": {
+    "vi": "Chi tiết giao dịch",
+    "en": "Trade details"
+  },
+  "Trade ledger": {
+    "vi": "Danh sách giao dịch",
+    "en": "Trade ledger"
+  },
+  "Trade ledger pagination": {
+    "vi": "Phân trang giao dịch",
+    "en": "Trade ledger pagination"
+  },
+  "Giao dịch, cuộn ngang để xem các cột": {
+    "vi": "Giao dịch; cuộn ngang để xem các cột",
+    "en": "Trades; scroll horizontally to view columns"
+  },
+  "Chọn các lệnh trên trang": {
+    "vi": "Chọn tất cả giao dịch trên trang này",
+    "en": "Select all trades on this page"
+  },
+  "Actions": {
+    "vi": "Thao tác",
+    "en": "Actions"
+  },
+  "Source": {
+    "vi": "Nguồn",
+    "en": "Source"
+  },
+  "Entry Date (Realtime)": {
+    "vi": "Thời gian ghi nhận (UTC)",
+    "en": "Recorded time (UTC)"
+  },
+  "Entry Date (Chart UTC)": {
+    "vi": "Thời gian vào lệnh (biểu đồ UTC)",
+    "en": "Entry time (chart UTC)"
+  },
+  "Entry type": {
+    "vi": "Loại lệnh",
+    "en": "Order type"
+  },
+  "Return": {
+    "vi": "P/L ròng",
+    "en": "Net P/L"
+  },
+  "Return (%)": {
+    "vi": "Tỷ suất (%)",
+    "en": "Return (%)"
+  },
+  "Return (R)": {
+    "vi": "Kết quả (R)",
+    "en": "Return (R)"
+  },
+  "Trade Rating": {
+    "vi": "Đánh giá giao dịch",
+    "en": "Trade rating"
+  },
+  "Entry price": {
+    "vi": "Giá vào lệnh",
+    "en": "Entry price"
+  },
+  "Size": {
+    "vi": "Khối lượng",
+    "en": "Size"
+  },
+  "Stop loss": {
+    "vi": "Cắt lỗ",
+    "en": "Stop loss"
+  },
+  "Take profit": {
+    "vi": "Chốt lời",
+    "en": "Take profit"
+  },
+  "Exit date (UTC)": {
+    "vi": "Thời gian thoát lệnh (UTC)",
+    "en": "Exit time (UTC)"
+  },
+  "Exit price": {
+    "vi": "Giá thoát lệnh",
+    "en": "Exit price"
+  },
+  "Gross PnL": {
+    "vi": "P/L trước phí",
+    "en": "Gross P/L"
+  },
+  "Fees": {
+    "vi": "Phí",
+    "en": "Fees"
+  },
+  "UI demo": {
+    "vi": "Dữ liệu mẫu",
+    "en": "Demo data"
+  },
+  "Replay": {
+    "vi": "Replay",
+    "en": "Replay"
+  },
+  "đơn vị chưa rõ": {
+    "vi": "chưa rõ tiền tệ",
+    "en": "unknown currency"
+  },
+  "đơn vị tài khoản": {
+    "vi": "đơn vị tiền tệ tài khoản",
+    "en": "account currency"
+  },
+  "Không có giao dịch khớp bộ lọc.": {
+    "vi": "Không có giao dịch khớp bộ lọc.",
+    "en": "No trades match the filters."
+  },
+  "Trang đầu": {
+    "vi": "Trang đầu",
+    "en": "First page"
+  },
+  "Trang trước": {
+    "vi": "Trang trước",
+    "en": "Previous page"
+  },
+  "Trang sau": {
+    "vi": "Trang sau",
+    "en": "Next page"
+  },
+  "Trang cuối": {
+    "vi": "Trang cuối",
+    "en": "Last page"
+  },
+  "Số dòng Trades": {
+    "vi": "Số dòng giao dịch",
+    "en": "Trade rows per page"
+  },
+  "Profit and loss": {
+    "vi": "Lãi và lỗ",
+    "en": "Profit and loss"
+  },
+  "Closed balance": {
+    "vi": "Số dư sau lệnh đóng",
+    "en": "Closed balance"
+  },
+  "Total trades": {
+    "vi": "Tổng giao dịch",
+    "en": "Total trades"
+  },
+  "Average realized R": {
+    "vi": "R thực hiện trung bình",
+    "en": "Average realized R"
+  },
+  "Max realized R": {
+    "vi": "R thực hiện lớn nhất",
+    "en": "Maximum realized R"
+  },
+  "Expectancy & Profit factor": {
+    "vi": "Kỳ vọng và hệ số lợi nhuận",
+    "en": "Expectancy and profit factor"
+  },
+  "Expectancy": {
+    "vi": "Kỳ vọng mỗi giao dịch",
+    "en": "Expectancy"
+  },
+  "Profit factor": {
+    "vi": "Hệ số lợi nhuận",
+    "en": "Profit factor"
+  },
+  "Winners and losers": {
+    "vi": "Giao dịch thắng và thua",
+    "en": "Winning and losing trades"
+  },
+  "Winners": {
+    "vi": "Giao dịch thắng",
+    "en": "Winning trades"
+  },
+  "Losers": {
+    "vi": "Giao dịch thua",
+    "en": "Losing trades"
+  },
+  "Tổng lệnh": {
+    "vi": "Tổng giao dịch",
+    "en": "Total trades"
+  },
+  "Lãi lớn nhất": {
+    "vi": "Lãi lớn nhất",
+    "en": "Largest win"
+  },
+  "Lỗ lớn nhất": {
+    "vi": "Lỗ lớn nhất",
+    "en": "Largest loss"
+  },
+  "Trung bình": {
+    "vi": "Trung bình",
+    "en": "Average"
+  },
+  "Thời gian giữ trung bình": {
+    "vi": "Thời gian giữ lệnh trung bình",
+    "en": "Average holding time"
+  },
+  "Chuỗi dài nhất": {
+    "vi": "Chuỗi dài nhất",
+    "en": "Longest streak"
+  },
+  "Performance by side": {
+    "vi": "Hiệu suất theo hướng lệnh",
+    "en": "Performance by side"
+  },
+  "Performance by session": {
+    "vi": "Hiệu suất theo phiên thị trường",
+    "en": "Performance by market session"
+  },
+  "Các khoảng giờ đóng cố định theo UTC; không điều chỉnh DST": {
+    "vi": "Nhóm theo giờ đóng cố định UTC; không điều chỉnh giờ mùa hè",
+    "en": "Grouped by fixed UTC close-time windows; no daylight-saving adjustment"
+  },
+  "Performance by time": {
+    "vi": "Hiệu suất theo giờ",
+    "en": "Performance by hour"
+  },
+  "Performance by day": {
+    "vi": "Hiệu suất theo thứ",
+    "en": "Performance by day of the week"
+  },
+  "Performance by month": {
+    "vi": "Hiệu suất theo tháng",
+    "en": "Performance by month"
+  },
+  "Performance calendar": {
+    "vi": "Lịch hiệu suất",
+    "en": "Performance calendar"
+  },
+  "Average trade frequency": {
+    "vi": "Tần suất giao dịch trung bình",
+    "en": "Average trade frequency"
+  },
+  "Tính cả kỳ không có lệnh giữa ngày đóng đầu/cuối trong phạm vi đã chọn": {
+    "vi": "Tính cả khoảng không có giao dịch giữa ngày đóng đầu tiên và cuối cùng trong phạm vi đã chọn",
+    "en": "Includes periods without trades between the first and last close dates in the selected scope"
+  },
+  "Chưa đủ ngày để tính tần suất.": {
+    "vi": "Chưa đủ ngày đóng lệnh để tính tần suất.",
+    "en": "Not enough close dates to calculate frequency."
+  },
+  "Chưa có lịch giao dịch.": {
+    "vi": "Chưa có lịch giao dịch.",
+    "en": "No trade calendar is available."
+  },
+  "Tháng trên lịch": {
+    "vi": "Tháng trên lịch",
+    "en": "Calendar month"
+  },
+  "Chưa đủ thời gian đóng lệnh.": {
+    "vi": "Thiếu thời gian đóng lệnh.",
+    "en": "Close times are missing."
+  },
+  "Chỉ số theo thời gian": {
+    "vi": "Chỉ số theo thời gian",
+    "en": "Time-based metric"
+  },
+  "Số giao dịch": {
+    "vi": "Số giao dịch",
+    "en": "Trade count"
+  },
+  "Biểu đồ": {
+    "vi": "Biểu đồ",
+    "en": "Chart"
+  },
+  "Balance": {
+    "vi": "Số dư",
+    "en": "Balance"
+  },
+  "Balance từ lệnh đóng · không gồm floating P/L": {
+    "vi": "Số dư sau lệnh đóng · không gồm lãi/lỗ thả nổi",
+    "en": "Closed balance · excludes floating P/L"
+  },
+  "Lệnh đã lọc, tính từ vốn ban đầu · không phải lịch sử tài khoản": {
+    "vi": "Giao dịch đã lọc, tính từ vốn ban đầu · không phải lịch sử tài khoản",
+    "en": "Filtered trades calculated from starting capital · not account history"
+  },
+  "Balance sau lệnh đóng": {
+    "vi": "Số dư sau lệnh đóng",
+    "en": "Balance after closed trades"
+  },
+  "Net P/L tích lũy": {
+    "vi": "P/L ròng tích lũy",
+    "en": "Cumulative net P/L"
+  },
+  "Net P/L / số lệnh đóng": {
+    "vi": "P/L ròng / số giao dịch đã đóng",
+    "en": "Net P/L / closed-trade count"
+  },
+  "Chưa có tổng lỗ để chia": {
+    "vi": "Chưa có tổng lỗ để tính",
+    "en": "No losses available for the calculation"
+  },
+  "Tổng lãi net / độ lớn tổng lỗ net": {
+    "vi": "Tổng lãi ròng / độ lớn tổng lỗ ròng",
+    "en": "Total net wins / total net loss magnitude"
+  },
+  "Drawdown on closed balance": {
+    "vi": "Sụt giảm số dư sau lệnh đóng",
+    "en": "Drawdown on closed balance"
+  },
+  "Peak-to-trough sau lệnh đóng; chưa phải drawdown trên equity thả nổi": {
+    "vi": "Mức giảm từ đỉnh xuống đáy sau lệnh đóng; chưa tính equity thả nổi",
+    "en": "Peak-to-trough decline after closed trades; excludes floating-equity drawdown"
+  },
+  "Drawdown sau lệnh đóng": {
+    "vi": "Sụt giảm số dư sau lệnh đóng",
+    "en": "Closed-balance drawdown"
+  },
+  "Max drawdown": {
+    "vi": "Sụt giảm vốn lớn nhất",
+    "en": "Maximum drawdown"
+  },
+  "Average drawdown": {
+    "vi": "Sụt giảm vốn trung bình",
+    "en": "Average drawdown"
+  },
+  "Recovery": {
+    "vi": "Số giao dịch để hồi phục",
+    "en": "Recovery trades"
+  },
+  "Drawdown frequency": {
+    "vi": "Số đợt sụt giảm vốn",
+    "en": "Drawdown episodes"
+  },
+  "Chỉ lấy các điểm dưới đỉnh": {
+    "vi": "Chỉ tính các điểm dưới đỉnh vốn",
+    "en": "Only includes points below the peak"
+  },
+  "Trung bình các chu kỳ đã phục hồi": {
+    "vi": "Trung bình các chu kỳ đã phục hồi",
+    "en": "Average of recovered episodes"
+  },
+  "Maximum Adverse Excursion": {
+    "vi": "Biên giá bất lợi lớn nhất (MAE)",
+    "en": "Maximum adverse excursion"
+  },
+  "Observed adverse excursion": {
+    "vi": "Biên giá bất lợi quan sát được",
+    "en": "Observed adverse excursion"
+  },
+  "Đang đọc đường giá…": {
+    "vi": "Đang tải đường giá…",
+    "en": "Loading price paths…"
+  },
+  "Nguồn chưa đủ đường giá để đo excursion.": {
+    "vi": "Chưa đủ dữ liệu đường giá để đo biên dao động trong lệnh.",
+    "en": "Price-path data is insufficient to measure trade excursions."
+  },
+  "Drawdown on winning trades": {
+    "vi": "Biên giá bất lợi của lệnh thắng",
+    "en": "Adverse excursion on winning trades"
+  },
+  "Lệnh thắng có đường giá": {
+    "vi": "Giao dịch thắng có đường giá",
+    "en": "Winning trades with price paths"
+  },
+  "Max adverse price": {
+    "vi": "Biên giá bất lợi lớn nhất",
+    "en": "Maximum adverse price excursion"
+  },
+  "Lower bound khi chưa có thứ tự intrabar": {
+    "vi": "Giới hạn dưới khi chưa rõ thứ tự giá trong nến",
+    "en": "Lower bound when intrabar price order is unknown"
+  },
+  "Stop Loss Simulator": {
+    "vi": "Mô phỏng cắt lỗ",
+    "en": "Stop-loss simulator"
+  },
+  "RR Simulator": {
+    "vi": "Mô phỏng tỷ lệ lợi nhuận/rủi ro",
+    "en": "Risk/reward simulator"
+  },
+  "Monte Carlo Simulation": {
+    "vi": "Mô phỏng Monte Carlo",
+    "en": "Monte Carlo simulation"
+  },
+  "Stop distance (ticks)": {
+    "vi": "Khoảng cắt lỗ (tick)",
+    "en": "Stop distance (ticks)"
+  },
+  "Stop multiplier": {
+    "vi": "Hệ số khoảng cắt lỗ",
+    "en": "Stop-distance multiplier"
+  },
+  "Target R": {
+    "vi": "Mục tiêu (R)",
+    "en": "Target R"
+  },
+  "Chạy SL / RR": {
+    "vi": "Chạy mô phỏng SL/RR",
+    "en": "Run SL/RR simulation"
+  },
+  "Mẫu này chưa có đường giá để tính SL / RR": {
+    "vi": "Dữ liệu mẫu chưa có đường giá để mô phỏng SL/RR",
+    "en": "Demo data has no price paths for SL/RR simulation"
+  },
+  "Lệnh tính được": {
+    "vi": "Giao dịch tính được",
+    "en": "Calculated trades"
+  },
+  "Scenario net P/L": {
+    "vi": "P/L ròng theo kịch bản",
+    "en": "Scenario net P/L"
+  },
+  "Chỉ mẫu tính được, không phải tổng toàn phiên": {
+    "vi": "Chỉ gồm giao dịch tính được; không phải tổng toàn phiên",
+    "en": "Calculated trades only; not the whole-session total"
+  },
+  "Toàn bộ lệnh trong phạm vi": {
+    "vi": "Toàn bộ giao dịch trong phạm vi",
+    "en": "All trades in scope"
+  },
+  "Đang mô phỏng từ đường giá…": {
+    "vi": "Đang mô phỏng từ đường giá…",
+    "en": "Simulating price paths…"
+  },
+  "Kết quả từng lệnh và phạm vi tính": {
+    "vi": "Kết quả từng giao dịch và phạm vi tính",
+    "en": "Individual trade results and calculation scope"
+  },
+  "Lệnh": {
+    "vi": "Giao dịch",
+    "en": "Trade"
+  },
+  "Trạng thái": {
+    "vi": "Trạng thái",
+    "en": "Status"
+  },
+  "Giá thoát": {
+    "vi": "Giá thoát lệnh",
+    "en": "Exit price"
+  },
+  "Không đủ dữ liệu": {
+    "vi": "Không đủ dữ liệu",
+    "en": "Insufficient data"
+  },
+  "What-if offline trong thời gian giữ lệnh gốc · không sửa kết quả đã lưu": {
+    "vi": "Kịch bản giả định trong thời gian giữ lệnh gốc · không sửa kết quả đã lưu",
+    "en": "Offline what-if within the original holding period · saved results remain unchanged"
+  },
+  "Kịch bản ngẫu nhiên có seed · độc lập giữa các lệnh · vốn về 0 thì dừng giao dịch": {
+    "vi": "Kịch bản ngẫu nhiên có seed cố định · các giao dịch độc lập · dừng khi hết vốn",
+    "en": "Seeded random scenarios · independent trades · stop when capital is exhausted"
+  },
+  "Phương pháp": {
+    "vi": "Phương pháp",
+    "en": "Method"
+  },
+  "Lấy mẫu Net P/L từ ledger": {
+    "vi": "Lấy mẫu P/L ròng từ danh sách giao dịch",
+    "en": "Sample net P/L from the trade ledger"
+  },
+  "Win / loss cấu hình": {
+    "vi": "Lãi/lỗ theo cấu hình",
+    "en": "Configured win/loss amounts"
+  },
+  "Số lượt mô phỏng": {
+    "vi": "Số lượt mô phỏng",
+    "en": "Simulation runs"
+  },
+  "Lệnh mỗi lượt": {
+    "vi": "Giao dịch mỗi lượt",
+    "en": "Trades per run"
+  },
+  "Seed": {
+    "vi": "Seed ngẫu nhiên",
+    "en": "Random seed"
+  },
+  "Lãi trung bình": {
+    "vi": "Lãi trung bình",
+    "en": "Average win"
+  },
+  "Độ lớn lỗ trung bình": {
+    "vi": "Độ lớn lỗ trung bình",
+    "en": "Average loss magnitude"
+  },
+  "Win rate (%)": {
+    "vi": "Tỷ lệ thắng (%)",
+    "en": "Win rate (%)"
+  },
+  "Đặt lại cấu hình": {
+    "vi": "Đặt lại cấu hình",
+    "en": "Reset configuration"
+  },
+  "Đang tính…": {
+    "vi": "Đang tính…",
+    "en": "Calculating…"
+  },
+  "Chạy Monte Carlo": {
+    "vi": "Chạy Monte Carlo",
+    "en": "Run Monte Carlo"
+  },
+  "Cấu hình đã đổi; chạy lại để cập nhật kết quả.": {
+    "vi": "Cấu hình đã đổi; chạy lại để cập nhật kết quả.",
+    "en": "Configuration changed; run again to update results."
+  },
+  "Average balance": {
+    "vi": "Số dư trung bình",
+    "en": "Average balance"
+  },
+  "P05 / Median / P95": {
+    "vi": "P05 / trung vị / P95",
+    "en": "P05 / median / P95"
+  },
+  "Worst drawdown": {
+    "vi": "Sụt giảm vốn lớn nhất",
+    "en": "Worst drawdown"
+  },
+  "Xác suất kết thúc có lãi": {
+    "vi": "Tỷ lệ kịch bản kết thúc có lãi",
+    "en": "Profitable scenario rate"
+  },
+  "Tỷ lệ cạn vốn": {
+    "vi": "Tỷ lệ kịch bản cạn vốn",
+    "en": "Capital-exhaustion rate"
+  },
+  "Chọn phương pháp và chạy mô phỏng để xem phân phối kết quả.": {
+    "vi": "Chọn phương pháp rồi chạy mô phỏng để xem phân phối kết quả.",
+    "en": "Choose a method and run the simulation to view the distribution."
+  },
+  "Đóng chi tiết": {
+    "vi": "Đóng chi tiết",
+    "en": "Close details"
+  },
+  "Entry": {
+    "vi": "Vào lệnh",
+    "en": "Entry"
+  },
+  "Exit": {
+    "vi": "Thoát lệnh",
+    "en": "Exit"
+  },
+  "Kho Testing": {
+    "vi": "Kho dữ liệu luyện tập",
+    "en": "Testing data library"
+  },
+  "Kho dữ liệu Testing": {
+    "vi": "Kho dữ liệu luyện tập",
+    "en": "Testing data library"
+  },
+  "Đã tải": {
+    "vi": "Đã tải",
+    "en": "Downloaded"
+  },
+  "Đang chờ": {
+    "vi": "Đang chờ",
+    "en": "Queued"
+  },
+  "Đang tải": {
+    "vi": "Đang tải",
+    "en": "Downloading"
+  },
+  "Cập nhật lỗi": {
+    "vi": "Cập nhật lỗi",
+    "en": "Update failed"
+  },
+  "Chưa tải": {
+    "vi": "Chưa tải",
+    "en": "Not downloaded"
+  },
+  "Không đọc được kho assets; trạng thái tải có thể đã cũ.": {
+    "vi": "Không đọc được kho dữ liệu; trạng thái tải có thể đã cũ.",
+    "en": "Unable to load market data; the displayed download status may be out of date."
+  },
+  "Đang đọc kho Testing…": {
+    "vi": "Đang tải kho dữ liệu luyện tập…",
+    "en": "Loading the testing data library…"
+  },
+  "Chưa cấu hình nguồn lịch sử tự cập nhật.": {
+    "vi": "Chưa cấu hình nguồn dữ liệu lịch sử tự cập nhật.",
+    "en": "No automatically updated history source is configured."
+  },
+  "Tìm asset": {
+    "vi": "Tìm tài sản",
+    "en": "Search assets"
+  },
+  "Nhóm asset": {
+    "vi": "Nhóm tài sản",
+    "en": "Asset group"
+  },
+  "Tất cả nhóm": {
+    "vi": "Tất cả nhóm",
+    "en": "All groups"
+  },
+  "Tải từ ngày": {
+    "vi": "Tải từ ngày",
+    "en": "Download from date"
+  },
+  "Ngày bắt đầu tải lịch sử": {
+    "vi": "Ngày bắt đầu tải dữ liệu lịch sử",
+    "en": "History download start date"
+  },
+  "Hiện toàn bộ danh mục broker": {
+    "vi": "Hiện toàn bộ danh mục broker",
+    "en": "Show the full broker catalog"
+  },
+  "Cập nhật dữ liệu": {
+    "vi": "Cập nhật dữ liệu",
+    "en": "Update data"
+  },
+  "Danh mục lịch sử broker": {
+    "vi": "Danh mục dữ liệu lịch sử broker",
+    "en": "Broker history catalog"
+  },
+  "Asset / sản phẩm": {
+    "vi": "Tài sản / sản phẩm",
+    "en": "Asset / instrument"
+  },
+  "Nguồn": {
+    "vi": "Nguồn",
+    "en": "Source"
+  },
+  "Lịch sử UTC": {
+    "vi": "Phạm vi lịch sử (UTC)",
+    "en": "History range (UTC)"
+  },
+  "Thao tác": {
+    "vi": "Thao tác",
+    "en": "Actions"
+  },
+  "Chưa có dữ liệu": {
+    "vi": "Chưa có dữ liệu",
+    "en": "No data available"
+  },
+  "Có khoảng gián đoạn cần kiểm tra": {
+    "vi": "Có khoảng trống dữ liệu cần kiểm tra",
+    "en": "Data gaps need review"
+  },
+  "Kiểm tra cơ bản; phí lịch sử chưa xác minh": {
+    "vi": "Đã kiểm tra cơ bản; phí lịch sử chưa xác minh",
+    "en": "Basic checks completed; historical costs are unverified"
+  },
+  "Luyện tập": {
+    "vi": "Luyện tập",
+    "en": "Practice"
+  },
+  "Luyện tick": {
+    "vi": "Luyện tập với tick",
+    "en": "Practice with ticks"
+  },
+  "Tải bổ sung": {
+    "vi": "Tải bổ sung",
+    "en": "Download updates"
+  },
+  "Tải lịch sử": {
+    "vi": "Tải dữ liệu lịch sử",
+    "en": "Download history"
+  },
+  "Không có asset phù hợp bộ lọc.": {
+    "vi": "Không có tài sản khớp bộ lọc.",
+    "en": "No assets match the filters."
+  },
+  "Show demo data": {
+    "vi": "Xem dữ liệu mẫu",
+    "en": "Show demo data"
+  },
+  "Show real data": {
+    "vi": "Xem dữ liệu hiện có",
+    "en": "Show actual data"
+  },
+  "Demo · Dữ liệu mẫu": {
+    "vi": "Dữ liệu mẫu",
+    "en": "Demo data"
+  },
+  "Prop firm Analytics": {
+    "vi": "Phân tích prop firm",
+    "en": "Prop firm analytics"
+  },
+  "Đang đọc báo cáo challenge…": {
+    "vi": "Đang tải báo cáo thử thách…",
+    "en": "Loading challenge reports…"
+  },
+  "Prop firm attempt": {
+    "vi": "Lượt thử thách prop firm",
+    "en": "Prop firm attempt"
+  },
+  "Chọn challenge": {
+    "vi": "Chọn thử thách",
+    "en": "Select a challenge"
+  },
+  "Quản lý challenge": {
+    "vi": "Quản lý thử thách",
+    "en": "Manage challenges"
+  },
+  "Không tìm thấy attempt này. Chọn challenge khác.": {
+    "vi": "Không tìm thấy lượt thử này. Chọn thử thách khác.",
+    "en": "This attempt was not found. Select another challenge."
+  },
+  "Chưa có báo cáo Prop firm. Tạo challenge mô phỏng và gắn replay để có phân tích giao dịch.": {
+    "vi": "Chưa có báo cáo prop firm. Tạo thử thách mô phỏng và liên kết phiên replay để phân tích giao dịch.",
+    "en": "No prop firm reports yet. Create a simulated challenge and link a replay session to analyze trades."
+  },
+  "Challenge objectives": {
+    "vi": "Mục tiêu thử thách",
+    "en": "Challenge objectives"
+  },
+  "Balance snapshot": {
+    "vi": "Số dư tại thời điểm báo cáo",
+    "en": "Balance snapshot"
+  },
+  "Equity snapshot": {
+    "vi": "Equity tại thời điểm báo cáo",
+    "en": "Equity snapshot"
+  },
+  "Trading days": {
+    "vi": "Ngày giao dịch đủ điều kiện",
+    "en": "Qualifying trading days"
+  },
+  "Report time (UTC)": {
+    "vi": "Thời điểm báo cáo (UTC)",
+    "en": "Report time (UTC)"
+  },
+  "Objective": {
+    "vi": "Mục tiêu",
+    "en": "Objective"
+  },
+  "Kết quả / ngưỡng": {
+    "vi": "Kết quả / ngưỡng",
+    "en": "Result / threshold"
+  },
+  "Profit target": {
+    "vi": "Mục tiêu lợi nhuận",
+    "en": "Profit target"
+  },
+  "Daily loss": {
+    "vi": "Giới hạn lỗ ngày",
+    "en": "Daily loss limit"
+  },
+  "Overall drawdown": {
+    "vi": "Giới hạn sụt giảm vốn tổng",
+    "en": "Overall drawdown limit"
+  },
+  "Đạt": {
+    "vi": "Đạt",
+    "en": "Met"
+  },
+  "Đang thực hiện": {
+    "vi": "Đang thực hiện",
+    "en": "In progress"
+  },
+  "Vi phạm": {
+    "vi": "Vi phạm",
+    "en": "Breached"
+  },
+  "Trong giới hạn": {
+    "vi": "Trong giới hạn",
+    "en": "Within limits"
+  },
+  "Chưa đủ dữ liệu": {
+    "vi": "Chưa đủ dữ liệu",
+    "en": "Insufficient data"
+  },
+  "Ngày đủ điều kiện": {
+    "vi": "Ngày đủ điều kiện",
+    "en": "Qualifying days"
+  },
+  "Hết hạn": {
+    "vi": "Hết hạn",
+    "en": "Expired"
+  },
+  "Chưa có snapshot evaluator đủ dữ liệu để đánh giá objectives.": {
+    "vi": "Chưa đủ dữ liệu tại thời điểm báo cáo để đánh giá mục tiêu.",
+    "en": "The evaluation snapshot lacks enough data to assess objectives."
+  },
+  "Attempt chưa có replay binding và cutoff hợp lệ. Objectives vẫn đọc được; gắn replay trong phần quản lý challenge để phân tích giao dịch và mô phỏng.": {
+    "vi": "Lượt thử chưa liên kết phiên replay với mốc dữ liệu hợp lệ. Vẫn có thể xem mục tiêu; liên kết replay trong phần quản lý thử thách để phân tích và mô phỏng.",
+    "en": "This attempt has no valid replay link and cutoff. Objectives remain available; link a replay in challenge management for analytics and simulation."
+  },
+  "Luyện challenge": {
+    "vi": "Luyện thử thách",
+    "en": "Challenge practice"
+  },
+  "SIMULATION ONLY": {
+    "vi": "CHỈ MÔ PHỎNG",
+    "en": "SIMULATION ONLY"
+  },
+  "Không broker call · không credential · tiền ảo": {
+    "vi": "Không kết nối broker · không dùng thông tin đăng nhập · vốn ảo",
+    "en": "No broker calls · no credentials · virtual funds"
+  },
+  "Reports": {
+    "vi": "Báo cáo",
+    "en": "Reports"
+  },
+  "Workspace": {
+    "vi": "Không gian làm việc",
+    "en": "Workspace"
+  },
+  "Đang tìm session đã lưu…": {
+    "vi": "Đang tải các phiên đã lưu…",
+    "en": "Loading saved sessions…"
+  },
+  "Workspace này không có quyền đọc Prop session.": {
+    "vi": "Không gian làm việc này không có quyền đọc phiên prop firm.",
+    "en": "This workspace cannot read prop firm sessions."
+  },
+  "Chưa có session. Tạo một phiên luyện ở form bên cạnh.": {
+    "vi": "Chưa có phiên. Tạo một phiên luyện tập để bắt đầu.",
+    "en": "No sessions yet. Create a practice session to start."
+  },
+  "Xung đột / dữ liệu chưa hợp lệ.": {
+    "vi": "Có xung đột hoặc dữ liệu chưa hợp lệ.",
+    "en": "Conflict or invalid data."
+  },
+  "Tạo Prop session": {
+    "vi": "Tạo phiên prop firm",
+    "en": "Create a prop firm session"
+  },
+  "Tạo phiên luyện": {
+    "vi": "Tạo phiên luyện tập",
+    "en": "Create a practice session"
+  },
+  "Generic / custom practice profile": {
+    "vi": "Cấu hình luyện tập chung hoặc tùy chỉnh",
+    "en": "Generic or custom practice profile"
+  },
+  "1 phase · UTC · static loss": {
+    "vi": "1 giai đoạn · UTC · giới hạn lỗ cố định",
+    "en": "1 phase · UTC · fixed loss limits"
+  },
+  "Tên session": {
+    "vi": "Tên phiên",
+    "en": "Session name"
+  },
+  "Profile": {
+    "vi": "Cấu hình thử thách",
+    "en": "Challenge profile"
+  },
+  "Generic practice": {
+    "vi": "Luyện tập với cấu hình chung",
+    "en": "Generic practice"
+  },
+  "Custom practice": {
+    "vi": "Luyện tập với cấu hình tùy chỉnh",
+    "en": "Custom practice"
+  },
+  "Vốn ảo": {
+    "vi": "Vốn ảo",
+    "en": "Virtual capital"
+  },
+  "Currency": {
+    "vi": "Tiền tệ",
+    "en": "Currency"
+  },
+  "Overall loss": {
+    "vi": "Giới hạn lỗ tổng",
+    "en": "Overall loss limit"
+  },
+  "Dataset version": {
+    "vi": "Phiên bản bộ dữ liệu",
+    "en": "Dataset version"
+  },
+  "Bắt đầu (UTC)": {
+    "vi": "Bắt đầu (UTC)",
+    "en": "Start time (UTC)"
+  },
+  "Bắt đầu UTC": {
+    "vi": "Bắt đầu (UTC)",
+    "en": "Start time (UTC)"
+  },
+  "Max days": {
+    "vi": "Số ngày tối đa",
+    "en": "Maximum days"
+  },
+  "Engine khớp lệnh": {
+    "vi": "Bộ máy khớp lệnh",
+    "en": "Execution engine"
+  },
+  "OHLC + margin mô phỏng": {
+    "vi": "OHLC và ký quỹ mô phỏng",
+    "en": "OHLC with simulated margin"
+  },
+  "Tick Bid/Ask + margin mô phỏng": {
+    "vi": "Tick Bid/Ask và ký quỹ mô phỏng",
+    "en": "Bid/Ask ticks with simulated margin"
+  },
+  "Review": {
+    "vi": "Kiểm tra cấu hình",
+    "en": "Review configuration"
+  },
+  "Resume state": {
+    "vi": "Trạng thái tiếp tục phiên",
+    "en": "Resume state"
+  },
+  "Trạng thái đã lưu": {
+    "vi": "Trạng thái đã lưu",
+    "en": "Saved state"
+  },
+  "Đang đọc attempts và resume state…": {
+    "vi": "Đang tải các lượt thử và trạng thái tiếp tục…",
+    "en": "Loading attempts and resume state…"
+  },
+  "Không có quyền đọc session này.": {
+    "vi": "Không có quyền đọc phiên này.",
+    "en": "You do not have permission to read this session."
+  },
+  "Chọn hoặc tạo session để xem state.": {
+    "vi": "Chọn hoặc tạo phiên để xem trạng thái.",
+    "en": "Select or create a session to view its state."
+  },
+  "Session chưa có attempt để resume.": {
+    "vi": "Phiên chưa có lượt thử để tiếp tục.",
+    "en": "This session has no attempt to resume."
+  },
+  "Các phase của challenge": {
+    "vi": "Các giai đoạn thử thách",
+    "en": "Challenge phases"
+  },
+  "Phase trước": {
+    "vi": "Giai đoạn trước",
+    "en": "Previous phase"
+  },
+  "Chưa mở": {
+    "vi": "Chưa mở",
+    "en": "Not started"
+  },
+  "Attempt": {
+    "vi": "Lượt thử",
+    "en": "Attempt"
+  },
+  "Status": {
+    "vi": "Trạng thái",
+    "en": "Status"
+  },
+  "Revision": {
+    "vi": "Phiên bản",
+    "en": "Revision"
+  },
+  "Cursor": {
+    "vi": "Vị trí replay",
+    "en": "Replay position"
+  },
+  "Equity": {
+    "vi": "Equity",
+    "en": "Equity"
+  },
+  "HWM": {
+    "vi": "Đỉnh equity",
+    "en": "High-water mark"
+  },
+  "Daily anchor": {
+    "vi": "Mốc đầu ngày",
+    "en": "Daily anchor"
+  },
+  "Virtual time": {
+    "vi": "Thời gian mô phỏng",
+    "en": "Simulated time"
+  },
+  "Cursor time": {
+    "vi": "Thời điểm replay",
+    "en": "Replay time"
+  },
+  "Dataset": {
+    "vi": "Bộ dữ liệu",
+    "en": "Dataset"
+  },
+  "Cost / engine": {
+    "vi": "Chi phí / bộ máy khớp lệnh",
+    "en": "Cost model / execution engine"
+  },
+  "Open / pending": {
+    "vi": "Vị thế mở / lệnh chờ",
+    "en": "Open positions / pending orders"
+  },
+  "Evaluation quality": {
+    "vi": "Chất lượng đánh giá",
+    "en": "Evaluation quality"
+  },
+  "Chưa có snapshot evaluator": {
+    "vi": "Chưa có dữ liệu đánh giá tại thời điểm báo cáo",
+    "en": "No evaluation snapshot"
+  },
+  "Pass ready": {
+    "vi": "Đủ điều kiện hoàn thành",
+    "en": "Ready to pass"
+  },
+  "Đang theo dõi": {
+    "vi": "Đang theo dõi",
+    "en": "Monitoring"
+  },
+  "Chờ event mô phỏng": {
+    "vi": "Đang chờ sự kiện mô phỏng",
+    "en": "Waiting for a simulation event"
+  },
+  "Đang bắt đầu…": {
+    "vi": "Đang bắt đầu…",
+    "en": "Starting…"
+  },
+  "Bắt đầu mô phỏng": {
+    "vi": "Bắt đầu mô phỏng",
+    "en": "Start simulation"
+  },
+  "Đang tạm dừng…": {
+    "vi": "Đang tạm dừng…",
+    "en": "Pausing…"
+  },
+  "Tạm dừng": {
+    "vi": "Tạm dừng",
+    "en": "Pause"
+  },
+  "Đang tiếp tục…": {
+    "vi": "Đang tiếp tục…",
+    "en": "Resuming…"
+  },
+  "Tiếp tục mô phỏng": {
+    "vi": "Tiếp tục mô phỏng",
+    "en": "Resume simulation"
+  },
+  "Đang mở phase…": {
+    "vi": "Đang mở giai đoạn…",
+    "en": "Opening phase…"
+  },
+  "Mở phase tiếp theo": {
+    "vi": "Mở giai đoạn tiếp theo",
+    "en": "Open next phase"
+  },
+  "Đang bỏ…": {
+    "vi": "Đang kết thúc lượt thử…",
+    "en": "Abandoning attempt…"
+  },
+  "Bỏ attempt": {
+    "vi": "Kết thúc lượt thử",
+    "en": "Abandon attempt"
+  },
+  "Attempt report": {
+    "vi": "Báo cáo lượt thử",
+    "en": "Attempt report"
+  },
+  "Technical": {
+    "vi": "Trạng thái đánh giá",
+    "en": "Evaluation status"
+  },
+  "Terminal": {
+    "vi": "Đã kết thúc",
+    "en": "Terminal"
+  },
+  "Branch": {
+    "vi": "Nhánh",
+    "en": "Branch"
+  },
+  "Quality": {
+    "vi": "Chất lượng",
+    "en": "Quality"
+  },
+  "Giải thích kết quả": {
+    "vi": "Giải thích kết quả",
+    "en": "Result explanation"
+  },
+  "Read-only từ persisted Prop state": {
+    "vi": "Chỉ đọc từ trạng thái prop firm đã lưu",
+    "en": "Read-only from saved prop firm state"
+  },
+  "Report status": {
+    "vi": "Trạng thái báo cáo",
+    "en": "Report status"
+  },
+  "Report branch": {
+    "vi": "Nhánh báo cáo",
+    "en": "Report branch"
+  },
+  "Đang đọc reports…": {
+    "vi": "Đang tải báo cáo…",
+    "en": "Loading reports…"
+  },
+  "Workspace này không có quyền đọc Prop reports.": {
+    "vi": "Không gian làm việc này không có quyền đọc báo cáo prop firm.",
+    "en": "This workspace cannot read prop firm reports."
+  },
+  "Không có report khớp bộ lọc.": {
+    "vi": "Không có báo cáo khớp bộ lọc.",
+    "en": "No reports match the filters."
+  },
+  "Balance / equity": {
+    "vi": "Số dư / equity",
+    "en": "Balance / equity"
+  },
+  "Reason": {
+    "vi": "Lý do",
+    "en": "Reason"
+  },
+  "Chưa có terminal reason.": {
+    "vi": "Chưa có lý do kết thúc.",
+    "en": "No terminal reason is available."
+  },
+  "Cần tên session, dataset version và thời điểm bắt đầu hợp lệ.": {
+    "vi": "Nhập tên phiên, phiên bản bộ dữ liệu và thời điểm bắt đầu hợp lệ.",
+    "en": "Enter a valid session name, dataset version, and start time."
+  },
+  "Vốn và các ngưỡng phải là số dương.": {
+    "vi": "Vốn và các ngưỡng phải là số dương.",
+    "en": "Capital and thresholds must be positive numbers."
+  },
+  "Daily loss đã bị breach.": {
+    "vi": "Đã vượt giới hạn lỗ ngày.",
+    "en": "The daily loss limit was breached."
+  },
+  "Overall drawdown đã bị breach.": {
+    "vi": "Đã vượt giới hạn sụt giảm vốn tổng.",
+    "en": "The overall drawdown limit was breached."
+  },
+  "Thiếu dữ liệu để kết luận đầy đủ.": {
+    "vi": "Chưa đủ dữ liệu để kết luận đầy đủ.",
+    "en": "Data is insufficient for a complete assessment."
+  },
+  "Attempt hết thời gian mô phỏng.": {
+    "vi": "Lượt thử đã hết thời gian mô phỏng.",
+    "en": "The attempt's simulation time expired."
+  },
+  "Attempt đã bị bỏ.": {
+    "vi": "Lượt thử đã kết thúc theo yêu cầu.",
+    "en": "The attempt was abandoned."
+  },
+  "Các objective đã khai báo được thỏa mãn.": {
+    "vi": "Đã đáp ứng các mục tiêu đã khai báo.",
+    "en": "The declared objectives were met."
+  },
+  "Chưa đạt": {
+    "vi": "Chưa đạt",
+    "en": "Not met"
+  },
+  "Chưa rõ": {
+    "vi": "Chưa rõ",
+    "en": "Unknown"
+  },
+  "Breached": {
+    "vi": "Vi phạm",
+    "en": "Breached"
+  },
+  "Lệnh mô phỏng": {
+    "vi": "Lệnh mô phỏng",
+    "en": "Simulated orders"
+  },
+  "SIMULATOR": {
+    "vi": "MÔ PHỎNG",
+    "en": "SIMULATOR"
+  },
+  "Broker locked": {
+    "vi": "Giao dịch broker bị khóa",
+    "en": "Broker execution locked"
+  },
+  "Khởi tạo tài khoản": {
+    "vi": "Khởi tạo tài khoản mô phỏng",
+    "en": "Initialize simulated account"
+  },
+  "Chi phí mô phỏng, không phải báo giá broker.": {
+    "vi": "Chi phí mô phỏng; không phải báo giá broker.",
+    "en": "Simulated costs; not broker quotes."
+  },
+  "Chưa rõ tiền tệ": {
+    "vi": "Chưa rõ tiền tệ",
+    "en": "Unknown currency"
+  },
+  "Khớp lệnh bằng tick Bid/Ask": {
+    "vi": "Khớp lệnh bằng tick Bid/Ask",
+    "en": "Use Bid/Ask ticks for execution"
+  },
+  "Đang kiểm tra lịch sử tick…": {
+    "vi": "Đang kiểm tra lịch sử tick…",
+    "en": "Checking tick history…"
+  },
+  "Đòn bẩy mô phỏng": {
+    "vi": "Đòn bẩy mô phỏng",
+    "en": "Simulated leverage"
+  },
+  "Spread (đơn vị giá)": {
+    "vi": "Spread (đơn vị giá)",
+    "en": "Spread (price units)"
+  },
+  "Khởi tạo simulator": {
+    "vi": "Khởi tạo mô phỏng",
+    "en": "Initialize simulator"
+  },
+  "Đang thiếu instrument hoặc timeframe trong dataset.": {
+    "vi": "Bộ dữ liệu thiếu thông tin sản phẩm hoặc khung thời gian.",
+    "en": "The dataset lacks instrument or timeframe information."
+  },
+  "Floating P/L": {
+    "vi": "P/L thả nổi",
+    "en": "Floating P/L"
+  },
+  "Vị thế đang mở": {
+    "vi": "Vị thế đang mở",
+    "en": "Open position"
+  },
+  "Lệnh chờ nến kế tiếp": {
+    "vi": "Lệnh chờ nến kế tiếp",
+    "en": "Order queued for the next candle"
+  },
+  "Lệnh mới": {
+    "vi": "Lệnh mới",
+    "en": "New order"
+  },
+  "Khối lượng lệnh": {
+    "vi": "Khối lượng lệnh",
+    "en": "Order size"
+  },
+  "Lưu TP/SL": {
+    "vi": "Lưu TP/SL",
+    "en": "Save TP/SL"
+  },
+  "Queue lệnh mô phỏng": {
+    "vi": "Đặt lệnh mô phỏng chờ khớp",
+    "en": "Queue simulated order"
+  },
+  "Simulator sẵn sàng.": {
+    "vi": "Mô phỏng đã sẵn sàng.",
+    "en": "The simulator is ready."
+  },
+  "TP/SL đã lưu; áp dụng từ nến tiếp theo.": {
+    "vi": "Đã lưu TP/SL; áp dụng từ nến tiếp theo.",
+    "en": "TP/SL saved; applies from the next candle."
+  },
+  "Đã queue; fill ở tick đầu tiên của nến kế tiếp.": {
+    "vi": "Đã xếp lệnh chờ; khớp ở tick đầu tiên của nến kế tiếp.",
+    "en": "Order queued; fills at the first tick of the next candle."
+  },
+  "Đã queue; fill ở giá mở nến kế tiếp.": {
+    "vi": "Đã xếp lệnh chờ; khớp ở giá mở nến kế tiếp.",
+    "en": "Order queued; fills at the next candle's open."
+  },
+  "Nhập vốn dương và spread không âm.": {
+    "vi": "Nhập vốn lớn hơn 0 và spread không âm.",
+    "en": "Enter positive capital and a non-negative spread."
+  },
+  "Cần tick tại phút đang chọn và đòn bẩy nguyên từ 1 đến 1000.": {
+    "vi": "Cần dữ liệu tick tại phút đang chọn và đòn bẩy là số nguyên từ 1 đến 1000.",
+    "en": "Ticks must be available for the selected minute; leverage must be an integer from 1 to 1000."
+  },
+  "Kéo TP/SL trên chart hoặc nhập giá rồi lưu. Thay đổi áp dụng từ nến kế tiếp.": {
+    "vi": "Kéo TP/SL trên biểu đồ hoặc nhập giá rồi lưu. Thay đổi áp dụng từ nến tiếp theo.",
+    "en": "Drag TP/SL on the chart or enter prices and save. Changes apply from the next candle."
+  },
+  "Entry là Bid/Ask tại cutoff. Market fill ở tick đầu tiên của nến kế tiếp; phí theo model.": {
+    "vi": "Giá vào lệnh tham chiếu là Bid/Ask tại mốc replay. Lệnh thị trường khớp ở tick đầu tiên của nến kế tiếp; phí theo mô hình.",
+    "en": "The reference entry is Bid/Ask at the replay cutoff. Market orders fill at the first tick of the next candle; costs follow the model."
+  },
+  "Entry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.": {
+    "vi": "Giá vào lệnh là giá tham chiếu. Lệnh thị trường khớp ở giá mở nến kế tiếp, có spread và phí.",
+    "en": "Entry is a reference price. Market orders fill at the next candle's open, including spread and fees."
+  },
+  "Risk tới SL": {
+    "vi": "Rủi ro tới SL",
+    "en": "Risk to SL"
+  },
+  "Reward tới TP": {
+    "vi": "Lợi nhuận tới TP",
+    "en": "Reward to TP"
+  },
+  "ước tính theo giá tham chiếu": {
+    "vi": "Ước tính theo giá tham chiếu",
+    "en": "Estimated from the reference price"
+  },
+  "Planned R": {
+    "vi": "R dự kiến",
+    "en": "Planned R"
+  },
+  "chưa phải kết quả thực tế": {
+    "vi": "Chưa phải kết quả thực hiện",
+    "en": "Not a realized result"
+  },
+  "Thử lại": {
+    "vi": "Thử lại",
+    "en": "Retry"
+  },
+  "Đã hết lượt thử": {
+    "vi": "Đã hết lượt thử lại",
+    "en": "Retry limit reached"
+  },
+  "Đang mở Advanced Charts…": {
+    "vi": "Đang mở biểu đồ…",
+    "en": "Opening Advanced Charts…"
+  },
+  "Mở chart dự phòng": {
+    "vi": "Mở biểu đồ dự phòng",
+    "en": "Open fallback chart"
+  },
+  "Trở về Sessions": {
+    "vi": "Trở về danh sách phiên",
+    "en": "Back to sessions"
+  },
+  "Chọn dataset local": {
+    "vi": "Chọn bộ dữ liệu đã tải",
+    "en": "Select a downloaded dataset"
+  },
+  "Chuyển giao diện sáng": {
+    "vi": "Chuyển sang giao diện sáng",
+    "en": "Switch to light theme"
+  },
+  "Chuyển giao diện tối": {
+    "vi": "Chuyển sang giao diện tối",
+    "en": "Switch to dark theme"
+  },
+  "Đổi giao diện": {
+    "vi": "Đổi giao diện",
+    "en": "Change theme"
+  },
+  "Chi tiết và nhánh": {
+    "vi": "Chi tiết và nhánh",
+    "en": "Details and branches"
+  },
+  "Thanh công cụ chart": {
+    "vi": "Thanh công cụ biểu đồ",
+    "en": "Chart toolbar"
+  },
+  "Kiểu chart": {
+    "vi": "Kiểu biểu đồ",
+    "en": "Chart type"
+  },
+  "Indicators": {
+    "vi": "Chỉ báo",
+    "en": "Indicators"
+  },
+  "Volume": {
+    "vi": "Khối lượng",
+    "en": "Volume"
+  },
+  "Chi tiết & nhánh": {
+    "vi": "Chi tiết và nhánh",
+    "en": "Details and branches"
+  },
+  "Học & thuật ngữ": {
+    "vi": "Học và thuật ngữ",
+    "en": "Learn and glossary"
+  },
+  "Broker locked · không gửi lệnh": {
+    "vi": "Giao dịch broker bị khóa · không gửi lệnh",
+    "en": "Broker execution locked · no orders sent"
+  },
+  "Mở replay": {
+    "vi": "Mở replay",
+    "en": "Open replay"
+  },
+  "Chọn dataset và nến bắt đầu. Replay mô phỏng, chỉ hiển thị dữ liệu tới cutoff hiện tại.": {
+    "vi": "Chọn bộ dữ liệu và nến bắt đầu. Replay chỉ hiển thị dữ liệu đến mốc hiện tại.",
+    "en": "Select a dataset and starting candle. Replay only shows data up to the current cutoff."
+  },
+  "Chọn dataset…": {
+    "vi": "Chọn bộ dữ liệu…",
+    "en": "Select a dataset…"
+  },
+  "Đang đọc danh mục dữ liệu…": {
+    "vi": "Đang tải danh mục dữ liệu…",
+    "en": "Loading data catalog…"
+  },
+  "Chưa có dataset local trong workspace này.": {
+    "vi": "Chưa có bộ dữ liệu đã tải trong không gian làm việc này.",
+    "en": "This workspace has no downloaded datasets."
+  },
+  "Đang tải trạng thái replay…": {
+    "vi": "Đang tải trạng thái replay…",
+    "en": "Loading replay state…"
+  },
+  "Ngữ cảnh replay": {
+    "vi": "Ngữ cảnh replay",
+    "en": "Replay context"
+  },
+  "Session đã thay đổi ở nơi khác.": {
+    "vi": "Phiên đã thay đổi ở nơi khác.",
+    "en": "The session changed elsewhere."
+  },
+  "Controls đang khóa để tránh ghi đè revision cũ.": {
+    "vi": "Các thao tác bị khóa để tránh ghi đè phiên bản cũ.",
+    "en": "Controls are locked to prevent overwriting an older revision."
+  },
+  "Tải trạng thái mới": {
+    "vi": "Tải trạng thái mới",
+    "en": "Load latest state"
+  },
+  "Đường xu hướng": {
+    "vi": "Đường xu hướng",
+    "en": "Trend line"
+  },
+  "Đường giá": {
+    "vi": "Đường giá",
+    "en": "Price level"
+  },
+  "Vùng giá": {
+    "vi": "Vùng giá",
+    "en": "Price zone"
+  },
+  "Vẽ đường xu hướng": {
+    "vi": "Vẽ đường xu hướng",
+    "en": "Draw a trend line"
+  },
+  "Vẽ vùng giá": {
+    "vi": "Vẽ vùng giá",
+    "en": "Draw a price zone"
+  },
+  "Thêm ghi chú chart": {
+    "vi": "Thêm ghi chú biểu đồ",
+    "en": "Add a chart note"
+  },
+  "Mở danh sách đối tượng": {
+    "vi": "Mở danh sách đối tượng",
+    "en": "Open the object list"
+  },
+  "Lùi một nến": {
+    "vi": "Lùi một nến",
+    "en": "Previous candle"
+  },
+  "Tiến một nến": {
+    "vi": "Tiến một nến",
+    "en": "Next candle"
+  },
+  "Tiến mười nến": {
+    "vi": "Tiến mười nến",
+    "en": "Advance ten candles"
+  },
+  "Phát replay": {
+    "vi": "Phát replay",
+    "en": "Play replay"
+  },
+  "Phát / tạm dừng replay": {
+    "vi": "Phát / tạm dừng replay",
+    "en": "Play / pause replay"
+  },
+  "Điều chỉnh tốc độ replay": {
+    "vi": "Điều chỉnh tốc độ replay",
+    "en": "Adjust replay speed"
+  },
+  "Tốc độ replay": {
+    "vi": "Tốc độ replay",
+    "en": "Replay speed"
+  },
+  "Ghim vị trí": {
+    "vi": "Ghim vị trí",
+    "en": "Pin position"
+  },
+  "Mở thanh công cụ": {
+    "vi": "Mở thanh công cụ",
+    "en": "Expand toolbar"
+  },
+  "Kéo để di chuyển · phím mũi tên để chỉnh vị trí": {
+    "vi": "Kéo để di chuyển · dùng phím mũi tên để chỉnh vị trí",
+    "en": "Drag to move · use arrow keys to adjust position"
+  },
+  "Go To": {
+    "vi": "Đi tới",
+    "en": "Go to"
+  },
+  "Order": {
+    "vi": "Lệnh",
+    "en": "Order"
+  },
+  "News": {
+    "vi": "Tin tức",
+    "en": "News"
+  },
+  "Tin tức": {
+    "vi": "Tin tức",
+    "en": "News"
+  },
+  "Ghi chú workspace": {
+    "vi": "Ghi chú không gian làm việc",
+    "en": "Workspace notes"
+  },
+  "Dữ liệu": {
+    "vi": "Dữ liệu",
+    "en": "Data"
+  },
+  "Chụp chart PNG": {
+    "vi": "Chụp biểu đồ PNG",
+    "en": "Capture chart as PNG"
+  },
+  "Đi tới cutoff": {
+    "vi": "Đi tới mốc replay",
+    "en": "Go to replay cutoff"
+  },
+  "Chi tiết replay": {
+    "vi": "Chi tiết replay",
+    "en": "Replay details"
+  },
+  "Danh sách đối tượng": {
+    "vi": "Danh sách đối tượng",
+    "en": "Object list"
+  },
+  "Danh sách dữ liệu": {
+    "vi": "Danh sách dữ liệu",
+    "en": "Data catalog"
+  },
+  "Đóng thông báo": {
+    "vi": "Đóng thông báo",
+    "en": "Dismiss notification"
+  },
+  "Khối lượng nhanh": {
+    "vi": "Khối lượng lệnh nhanh",
+    "en": "Quick order size"
+  },
+  "Tới cutoff": {
+    "vi": "Tới mốc replay",
+    "en": "Go to replay cutoff"
+  },
+  "Về nến đầu tiên": {
+    "vi": "Về nến đầu tiên",
+    "en": "Go to first candle"
+  },
+  "Mở cutoff trước": {
+    "vi": "Mở mốc replay trước",
+    "en": "Open previous cutoff"
+  },
+  "Về cursor mới nhất": {
+    "vi": "Về vị trí replay mới nhất",
+    "en": "Go to latest replay position"
+  },
+  "Tìm…": {
+    "vi": "Tìm…",
+    "en": "Search…"
+  },
+  "Chọn…": {
+    "vi": "Chọn…",
+    "en": "Select…"
+  },
+  "Chọn tất cả": {
+    "vi": "Chọn tất cả",
+    "en": "Select all"
+  },
+  "Không có lựa chọn phù hợp.": {
+    "vi": "Không có lựa chọn phù hợp.",
+    "en": "No options match your search."
+  },
+  "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc.": {
+    "vi": "Ngày kết thúc không được trước ngày bắt đầu.",
+    "en": "End date must be on or after start date."
+  },
+  "Giới hạn: 1–1.000 lượt, 1–1.000 lệnh, tối đa 250.000 bước; vốn > 0 và seed 0–4.294.967.295.": {
+    "vi": "Chọn 1–1.000 lượt, 1–1.000 giao dịch mỗi lượt và tối đa 250.000 bước. Vốn phải lớn hơn 0; seed phải là số nguyên từ 0 đến 4.294.967.295.",
+    "en": "Use 1–1,000 runs, 1–1,000 trades per run, and at most 250,000 steps. Capital must be positive; the seed must be an integer from 0 to 4,294,967,295."
+  },
+  "Ledger phải có Net P/L đầy đủ để lấy mẫu.": {
+    "vi": "Cần P/L ròng đầy đủ của các giao dịch để lấy mẫu.",
+    "en": "All sampled trades must have net P/L values."
+  },
+  "Lãi/lỗ trung bình phải ≥ 0; win rate từ 0 đến 100%.": {
+    "vi": "Lãi trung bình và độ lớn lỗ trung bình không được âm; tỷ lệ thắng phải từ 0 đến 100%.",
+    "en": "Average win and average loss magnitude must be non-negative; win rate must be from 0 to 100%."
+  },
+  "Danh mục phiên không đúng định dạng.": {
+    "vi": "Danh sách phiên không đúng định dạng.",
+    "en": "The session list has an invalid format."
+  },
+  "Phản hồi phiên không đúng định dạng.": {
+    "vi": "Phản hồi phiên không đúng định dạng.",
+    "en": "The session response has an invalid format."
+  },
+  "Phản hồi xóa phiên không đúng định dạng.": {
+    "vi": "Phản hồi xóa phiên không đúng định dạng.",
+    "en": "The delete-session response has an invalid format."
+  },
+  "Phiên đang được dùng trong Prop Firm. Hãy lưu trữ để giữ báo cáo và lịch sử challenge.": {
+    "vi": "Phiên đang được liên kết với thử thách prop firm. Có thể lưu trữ để giữ báo cáo và lịch sử.",
+    "en": "This session is linked to a prop firm challenge. You can archive it to retain reports and history."
+  },
+  "Tên xác nhận không khớp tên phiên hiện tại.": {
+    "vi": "Tên xác nhận không khớp tên phiên hiện tại.",
+    "en": "The confirmation name does not match the current session name."
+  },
+  "Khối lượng, SL và TP phải là số dương.": {
+    "vi": "Khối lượng, SL và TP phải lớn hơn 0.",
+    "en": "Size, stop loss, and take profit must be positive."
+  },
+  "Lệnh BUY cần SL dưới giá tham chiếu và TP trên giá tham chiếu.": {
+    "vi": "Lệnh mua cần SL dưới giá tham chiếu và TP trên giá tham chiếu.",
+    "en": "A buy order requires stop loss below the reference price and take profit above it."
+  },
+  "Lệnh SELL cần SL trên giá tham chiếu và TP dưới giá tham chiếu.": {
+    "vi": "Lệnh bán cần SL trên giá tham chiếu và TP dưới giá tham chiếu.",
+    "en": "A sell order requires stop loss above the reference price and take profit below it."
+  },
+  "Chưa đọc được trạng thái tick.": {
+    "vi": "Chưa đọc được trạng thái tick.",
+    "en": "Could not load tick availability."
+  },
+  "Tạo session mô phỏng": {
+    "vi": "Tạo phiên mô phỏng",
+    "en": "Create a simulated session"
+  },
+  "Equity-based daily/overall loss, balance target, reset UTC 00:00. Đây là profile luyện tập, không đại diện điều khoản của hãng prop cụ thể.": {
+    "vi": "Giới hạn lỗ ngày và lỗ tổng tính theo equity; mục tiêu lợi nhuận tính theo số dư; đặt lại mốc ngày lúc 00:00 UTC. Đây là cấu hình luyện tập, không phải điều khoản của một hãng prop cụ thể.",
+    "en": "Daily and overall loss limits use equity; the profit target uses balance; the daily anchor resets at 00:00 UTC. This is a practice profile, not the terms of a specific prop firm."
+  },
+  "Tick cải thiện giá khớp lệnh; đánh giá giới hạn equity trong từng phút vẫn chưa đầy đủ. Dataset, cost và engine phải khớp phiên replay được nối.": {
+    "vi": "Tick cải thiện độ chi tiết của giá khớp lệnh; việc kiểm tra giới hạn equity trong từng phút vẫn chưa đầy đủ. Bộ dữ liệu, mô hình chi phí và bộ máy khớp lệnh phải khớp phiên replay được liên kết.",
+    "en": "Ticks improve execution-price detail; intraminute equity-limit checks remain incomplete. The dataset, cost model, and execution engine must match the linked replay session."
+  },
+  "Chưa có lifecycle event đủ dữ liệu để tính objective. Resume state và provenance vẫn được giữ nguyên.": {
+    "vi": "Chưa có sự kiện mô phỏng đủ dữ liệu để đánh giá mục tiêu. Trạng thái tiếp tục và thông tin nguồn vẫn được giữ.",
+    "en": "No simulation event has enough data to assess objectives. Resume state and provenance are retained."
+  },
+  "Attempt chưa có terminal reason. Report chỉ phản ánh state mô phỏng đã persist.": {
+    "vi": "Lượt thử chưa có lý do kết thúc. Báo cáo chỉ phản ánh trạng thái mô phỏng đã lưu.",
+    "en": "This attempt has no terminal reason. The report only reflects saved simulation state."
+  },
+  "Đây là hindsight branch để khám phá sau checkpoint; không gộp với clean attempt.": {
+    "vi": "Đây là nhánh khám phá sau checkpoint có thông tin tương lai; không gộp với lượt thử nguyên bản.",
+    "en": "This is a hindsight exploration branch after a checkpoint; do not combine it with the clean attempt."
+  },
+  "Mở Learn": {
+    "vi": "Mở phần học",
+    "en": "Open learning"
+  },
+  "Learn": {
+    "vi": "Học",
+    "en": "Learn"
+  },
+  "CN": {
+    "vi": "CN",
+    "en": "Sun"
+  },
+  "T2": {
+    "vi": "T2",
+    "en": "Mon"
+  },
+  "T3": {
+    "vi": "T3",
+    "en": "Tue"
+  },
+  "T4": {
+    "vi": "T4",
+    "en": "Wed"
+  },
+  "T5": {
+    "vi": "T5",
+    "en": "Thu"
+  },
+  "T6": {
+    "vi": "T6",
+    "en": "Fri"
+  },
+  "T7": {
+    "vi": "T7",
+    "en": "Sat"
+  },
+  "Su": {
+    "vi": "CN",
+    "en": "Sun"
+  },
+  "Mo": {
+    "vi": "T2",
+    "en": "Mon"
+  },
+  "Tu": {
+    "vi": "T3",
+    "en": "Tue"
+  },
+  "We": {
+    "vi": "T4",
+    "en": "Wed"
+  },
+  "Th": {
+    "vi": "T5",
+    "en": "Thu"
+  },
+  "Fr": {
+    "vi": "T6",
+    "en": "Fri"
+  },
+  "Sa": {
+    "vi": "T7",
+    "en": "Sat"
+  },
+  "Performance chỉ tổng hợp {readable}/{total} phiên có dữ liệu.": {
+    "vi": "Hiệu suất chỉ tổng hợp {readable}/{total} phiên có dữ liệu.",
+    "en": "Performance includes {readable} of {total} sessions with available data."
+  },
+  "{wins} thắng · {losses} thua · {breakeven} hòa": {
+    "vi": "{wins} thắng · {losses} thua · {breakeven} hòa",
+    "en": "Wins: {wins} · Losses: {losses} · Breakeven: {breakeven}"
+  },
+  "Remaining {count} days": {
+    "vi": "Còn {count} ngày",
+    "en": "{count} days remaining"
+  },
+  "{count} days": {
+    "vi": "{count} ngày",
+    "en": "{count} days"
+  },
+  "Còn {count} nến": {
+    "vi": "Còn {count} nến",
+    "en": "{count} candles remaining"
+  },
+  "{count} ngày còn lại": {
+    "vi": "Còn {count} ngày",
+    "en": "{count} days remaining"
+  },
+  "{count} nến còn lại": {
+    "vi": "Còn {count} nến",
+    "en": "{count} candles remaining"
+  },
+  "{count} phiên": {
+    "vi": "{count} phiên",
+    "en": "{count} sessions"
+  },
+  "{count} đã chọn": {
+    "vi": "Đã chọn {count} giao dịch",
+    "en": "{count} trades selected"
+  },
+  "Trang {current} trên {total}": {
+    "vi": "Trang {current} trên {total}",
+    "en": "Page {current} of {total}"
+  },
+  "Trang {page}": {
+    "vi": "Trang {page}",
+    "en": "Page {page}"
+  },
+  "Thao tác {name}": {
+    "vi": "Thao tác với phiên {name}",
+    "en": "Actions for session {name}"
+  },
+  "Tiếp tục {name}": {
+    "vi": "Tiếp tục phiên {name}",
+    "en": "Resume session {name}"
+  },
+  "Sửa {name}": {
+    "vi": "Sửa phiên {name}",
+    "en": "Edit session {name}"
+  },
+  "Analytics {name}": {
+    "vi": "Phân tích phiên {name}",
+    "en": "Analytics for session {name}"
+  },
+  "Tạo bản sao {name}": {
+    "vi": "Tạo bản sao phiên {name}",
+    "en": "Duplicate session {name}"
+  },
+  "Summary {name}": {
+    "vi": "Tóm tắt phiên {name}",
+    "en": "Summary for session {name}"
+  },
+  "Mở rộng {name}": {
+    "vi": "Mở rộng phiên {name}",
+    "en": "Expand session {name}"
+  },
+  "Thu gọn {name}": {
+    "vi": "Thu gọn phiên {name}",
+    "en": "Collapse session {name}"
+  },
+  "Lưu trữ {name}": {
+    "vi": "Lưu trữ phiên {name}",
+    "en": "Archive session {name}"
+  },
+  "Khôi phục {name}": {
+    "vi": "Khôi phục phiên {name}",
+    "en": "Restore session {name}"
+  },
+  "Xóa {name}": {
+    "vi": "Xóa phiên {name}",
+    "en": "Delete session {name}"
+  },
+  "Tiến độ {name}": {
+    "vi": "Tiến độ phiên {name}",
+    "en": "Progress for session {name}"
+  },
+  "Chọn lệnh {id}": {
+    "vi": "Chọn giao dịch {id}",
+    "en": "Select trade {id}"
+  },
+  "Chi tiết {id}": {
+    "vi": "Chi tiết giao dịch {id}",
+    "en": "Details for trade {id}"
+  },
+  "Session: {name}": {
+    "vi": "Phiên: {name}",
+    "en": "Session: {name}"
+  },
+  "Bỏ lọc {label}": {
+    "vi": "Bỏ bộ lọc {label}",
+    "en": "Remove {label} filter"
+  },
+  "Chưa có dữ liệu {label}.": {
+    "vi": "Chưa có dữ liệu cho {label}.",
+    "en": "No data is available for {label}."
+  },
+  "Year, Month, Days và Hour theo {timezone}.": {
+    "vi": "Năm, tháng, thứ và giờ theo múi giờ {timezone}.",
+    "en": "Year, month, day, and hour use {timezone}."
+  },
+  "Xóa “{name}” khỏi workspace cùng kết quả của phiên. Không thể khôi phục bằng giao diện. Dataset trong Market Data và các phiên khác vẫn được giữ.": {
+    "vi": "Xóa phiên “{name}” và kết quả khỏi không gian làm việc. Không thể khôi phục qua giao diện. Bộ dữ liệu và các phiên khác vẫn được giữ.",
+    "en": "Delete “{name}” and its results from the workspace. This cannot be undone in the interface. Datasets and other sessions are kept."
+  },
+  "Tạo bản sao “{name}” ở vị trí replay hiện tại.": {
+    "vi": "Tạo bản sao phiên “{name}” tại vị trí replay hiện tại.",
+    "en": "Duplicate “{name}” at the current replay position."
+  },
+  "Khôi phục “{name}” vào danh sách phiên đang hoạt động.": {
+    "vi": "Khôi phục phiên “{name}” vào danh sách đang hoạt động.",
+    "en": "Restore “{name}” to the active session list."
+  },
+  "Chuyển “{name}” sang Đã lưu trữ. Dữ liệu và lịch sử vẫn được giữ.": {
+    "vi": "Lưu trữ phiên “{name}”. Dữ liệu và lịch sử vẫn được giữ.",
+    "en": "Archive “{name}”. Its data and history are kept."
+  },
+  "Không lưu được phiên: {error}": {
+    "vi": "Không lưu được phiên: {error}",
+    "en": "Could not save the session: {error}"
+  },
+  "Chưa tải được danh sách: {error}": {
+    "vi": "Không tải được danh sách phiên: {error}",
+    "en": "Could not load sessions: {error}"
+  },
+  "Không tải được danh mục: {error}. Sẽ kiểm tra lại khi quay về ứng dụng.": {
+    "vi": "Không tải được danh sách phiên: {error}. Sẽ thử lại khi bạn quay về ứng dụng.",
+    "en": "Could not load sessions: {error}. We will retry when you return to the app."
+  },
+  "Không tải được kết quả: {error}. Sẽ kiểm tra lại khi quay về ứng dụng.": {
+    "vi": "Không tải được kết quả: {error}. Sẽ thử lại khi bạn quay về ứng dụng.",
+    "en": "Could not load results: {error}. We will retry when you return to the app."
+  },
+  "Không đọc được báo cáo: {error}. Sẽ kiểm tra lại khi quay về ứng dụng.": {
+    "vi": "Không tải được báo cáo: {error}. Sẽ thử lại khi bạn quay về ứng dụng.",
+    "en": "Could not load reports: {error}. We will retry when you return to the app."
+  },
+  "Vốn ban đầu ({currency})": {
+    "vi": "Vốn ban đầu ({currency})",
+    "en": "Starting capital ({currency})"
+  },
+  "Tháng {month} · UTC": {
+    "vi": "Tháng {month} · UTC",
+    "en": "Month {month} · UTC"
+  },
+  "Tuần T2–CN chứa {date} · UTC": {
+    "vi": "Tuần từ thứ Hai đến Chủ nhật chứa ngày {date} · UTC",
+    "en": "Monday–Sunday week containing {date} · UTC"
+  },
+  "{count} lệnh đóng": {
+    "vi": "{count} giao dịch đã đóng",
+    "en": "{count} closed trades"
+  },
+  "{count} lệnh": {
+    "vi": "{count} giao dịch",
+    "en": "{count} trades"
+  },
+  "{count} giao dịch": {
+    "vi": "{count} giao dịch",
+    "en": "{count} trades"
+  },
+  "{count} phút": {
+    "vi": "{count} phút",
+    "en": "{count} minutes"
+  },
+  "{count} đợt": {
+    "vi": "{count} đợt",
+    "en": "{count} episodes"
+  },
+  "{readable}/{total} lệnh có risk": {
+    "vi": "{readable}/{total} giao dịch có dữ liệu rủi ro",
+    "en": "{readable} of {total} trades have risk data"
+  },
+  "{count} lệnh chưa có side.": {
+    "vi": "{count} giao dịch chưa xác định hướng lệnh.",
+    "en": "{count} trades have an unknown side."
+  },
+  "Còn {count} lệnh chưa hồi đỉnh": {
+    "vi": "Còn {count} giao dịch trong chu kỳ chưa hồi đỉnh",
+    "en": "{count} trades in the unrecovered episode"
+  },
+  "Phân tích theo ngày đóng · {timezone}": {
+    "vi": "Phân tích theo ngày đóng lệnh · {timezone}",
+    "en": "Analysis by close date · {timezone}"
+  },
+  "Lịch performance {month}, {timezone}": {
+    "vi": "Lịch hiệu suất tháng {month}, múi giờ {timezone}",
+    "en": "Performance calendar for {month}, {timezone}"
+  },
+  "{count} lệnh có biên quan sát · tối đa 50 dòng · đơn vị giá, không phải tiền": {
+    "vi": "{count} giao dịch có biên giá quan sát được · tối đa 50 dòng · đơn vị giá, không phải tiền",
+    "en": "{count} trades with observed excursions · up to 50 rows · price units, not money"
+  },
+  "Monte Carlo · {runs} lượt · seed {seed}": {
+    "vi": "Monte Carlo · {runs} lượt · seed {seed}",
+    "en": "Monte Carlo · {runs} runs · seed {seed}"
+  },
+  "Hiển thị tối đa 30 đường; thống kê tính trên tất cả {runs} lượt. Không dự báo lợi nhuận tương lai.": {
+    "vi": "Hiển thị tối đa 30 đường; thống kê tính trên tất cả {runs} lượt. Đây không phải dự báo lợi nhuận.",
+    "en": "Up to 30 paths shown; statistics include all {runs} runs. This is not a profit forecast."
+  },
+  "Đang tải {symbol}": {
+    "vi": "Đang tải {symbol}",
+    "en": "Downloading {symbol}"
+  },
+  "MT5 chưa sẵn sàng ({error}). Kho đã tải vẫn dùng được.": {
+    "vi": "MT5 chưa sẵn sàng ({error}). Vẫn dùng được dữ liệu đã tải.",
+    "en": "MT5 is not ready ({error}). Downloaded data is still available."
+  },
+  "Tick đang chờ tải bù: {error}.": {
+    "vi": "Dữ liệu tick đang chờ tải bổ sung: {error}.",
+    "en": "Tick history is waiting for a backfill: {error}."
+  },
+  "Không cập nhật được: {error}": {
+    "vi": "Không cập nhật được dữ liệu: {error}",
+    "en": "Could not update data: {error}"
+  },
+  "đến {date} · {count} nến": {
+    "vi": "đến {date} · {count} nến",
+    "en": "to {date} · {count} candles"
+  },
+  "Tick Bid/Ask: {count} · {size} MiB nén · {days} ngày broker trả rỗng": {
+    "vi": "Tick Bid/Ask: {count} · {size} MiB nén · {days} ngày broker không cung cấp dữ liệu",
+    "en": "Bid/Ask ticks: {count} · {size} MiB compressed · {days} days without broker data"
+  },
+  "Phase {number}": {
+    "vi": "Giai đoạn {number}",
+    "en": "Phase {number}"
+  },
+  "Không tạo được session: {error}": {
+    "vi": "Không tạo được phiên: {error}",
+    "en": "Could not create the session: {error}"
+  },
+  "Lifecycle chưa đổi được: {error}": {
+    "vi": "Không đổi được trạng thái lượt thử: {error}",
+    "en": "Could not change the attempt status: {error}"
+  },
+  "Không export được report: {error}": {
+    "vi": "Không xuất được báo cáo: {error}",
+    "en": "Could not export the report: {error}"
+  },
+  "Không đọc được session: {error}": {
+    "vi": "Không đọc được phiên: {error}",
+    "en": "Could not load the session: {error}"
+  },
+  "Không đọc được reports: {error}": {
+    "vi": "Không đọc được báo cáo: {error}",
+    "en": "Could not load reports: {error}"
+  },
+  "Di chuyển {name}": {
+    "vi": "Di chuyển {name}",
+    "en": "Move {name}"
+  },
+  "Ghim {name}": {
+    "vi": "Ghim {name}",
+    "en": "Pin {name}"
+  },
+  " · Đã lưu trữ": {
+    "vi": " · Đã lưu trữ",
+    "en": " · Archived"
+  },
+  ". Kết quả sẽ được kiểm tra khi quay lại ứng dụng hoặc kết nối mạng phục hồi.": {
+    "vi": ". Sẽ kiểm tra lại khi quay về ứng dụng hoặc kết nối mạng phục hồi.",
+    "en": ". Results will be checked when you return to the app or connectivity is restored."
+  },
+  ". Phiên hiện ở nến #": {
+    "vi": ". Phiên hiện ở nến #",
+    "en": ". The session is now at candle #"
+  },
+  ". Sẽ kiểm tra lại khi quay về ứng dụng.": {
+    "vi": ". Sẽ kiểm tra lại khi quay về ứng dụng.",
+    "en": ". We will retry when you return to the app."
+  },
+  ". Đây là số dư/equity tại snapshot, không phải đường equity lịch sử.": {
+    "vi": ". Đây là số dư/equity tại thời điểm báo cáo, không phải đường equity lịch sử.",
+    "en": ". These are balance/equity snapshots, not a historical equity curve."
+  },
+  "; báo cáo không gồm giao dịch sau mốc đang xem.": {
+    "vi": "; báo cáo không gồm giao dịch sau mốc đang xem.",
+    "en": "; the report excludes trades after the viewed cutoff."
+  },
+  "Analytics theo phiên": {
+    "vi": "Phân tích theo phiên",
+    "en": "Analytics by session"
+  },
+  "Artifact SHA": {
+    "vi": "SHA của kết quả",
+    "en": "Artifact SHA"
+  },
+  "Balance basis": {
+    "vi": "Cơ sở số dư",
+    "en": "Balance basis"
+  },
+  "Biên bất lợi quan sát của những lệnh có Net P/L > 0": {
+    "vi": "Biên giá bất lợi quan sát được của giao dịch có P/L ròng > 0",
+    "en": "Observed adverse price excursion on trades with net P/L > 0"
+  },
+  "Biên giá bất lợi quan sát được trong lệnh; nến đóng intrabar bị loại để tránh dùng giá sau khi thoát": {
+    "vi": "Biên giá bất lợi quan sát được trong lệnh; loại nến thoát lệnh trong nến để tránh dùng giá sau khi thoát",
+    "en": "Observed adverse price excursion during a trade; the intrabar exit candle is excluded to avoid using prices after the exit"
+  },
+  "Calendar / quality": {
+    "vi": "Lịch / chất lượng",
+    "en": "Calendar / quality"
+  },
+  "Cao nhất": {
+    "vi": "Cao nhất",
+    "en": "High"
+  },
+  "Chi tiết điểm": {
+    "vi": "Chi tiết điểm",
+    "en": "Point details"
+  },
+  "Chưa": {
+    "vi": "Chưa",
+    "en": "Not yet"
+  },
+  "Chưa có đường dữ liệu được xác minh.": {
+    "vi": "Chưa có đường dữ liệu đã xác minh.",
+    "en": "No verified data curve is available."
+  },
+  "Chưa xác định": {
+    "vi": "Chưa xác định",
+    "en": "Unknown"
+  },
+  "Chưa đủ dữ liệu để tính analytics": {
+    "vi": "Chưa đủ dữ liệu để phân tích",
+    "en": "Insufficient data for analytics"
+  },
+  "Chưa đủ ngày đóng và Net P/L.": {
+    "vi": "Chưa đủ ngày đóng lệnh và P/L ròng.",
+    "en": "Close dates and net P/L are insufficient."
+  },
+  "Chỉ dùng ledger đóng tại cutoff đã chọn. Các bộ lọc tạo lại đường số dư từ vốn ban đầu. — là dữ liệu chưa được nguồn cung cấp.": {
+    "vi": "Chỉ dùng giao dịch đã đóng tại mốc đang chọn. Bộ lọc dựng lại đường số dư từ vốn ban đầu. — nghĩa là nguồn chưa cung cấp dữ liệu.",
+    "en": "Only uses trades closed by the selected cutoff. Filters rebuild the balance curve from starting capital. — means the source has not provided the data."
+  },
+  "Chỉ đọc": {
+    "vi": "Chỉ đọc",
+    "en": "Read-only"
+  },
+  "Chọn giao dịch": {
+    "vi": "Chọn giao dịch",
+    "en": "Select a trade"
+  },
+  "Chọn giao dịch trên biểu đồ": {
+    "vi": "Chọn giao dịch trên biểu đồ",
+    "en": "Select a trade on the chart"
+  },
+  "Chọn một phiên replay hoặc research job để xem kết quả.": {
+    "vi": "Chọn phiên replay hoặc tác vụ nghiên cứu để xem kết quả.",
+    "en": "Select a replay session or research job to view results."
+  },
+  "Cutoff": {
+    "vi": "Mốc dữ liệu",
+    "en": "Cutoff"
+  },
+  "Cutoff UTC": {
+    "vi": "Mốc dữ liệu (UTC)",
+    "en": "Cutoff (UTC)"
+  },
+  "Có": {
+    "vi": "Có",
+    "en": "Yes"
+  },
+  "Daily loss limit": {
+    "vi": "Giới hạn lỗ ngày",
+    "en": "Daily loss limit"
+  },
+  "Dataset SHA": {
+    "vi": "SHA bộ dữ liệu",
+    "en": "Dataset SHA"
+  },
+  "Days ready": {
+    "vi": "Đủ số ngày",
+    "en": "Day requirement met"
+  },
+  "Dữ liệu có thể đã cũ. Giữ nguyên nguồn và kiểm tra lại khi quay về ứng dụng.": {
+    "vi": "Dữ liệu có thể đã cũ. Giữ nguyên nguồn và kiểm tra lại khi quay về ứng dụng.",
+    "en": "Data may be out of date. The source is retained and will be checked when you return to the app."
+  },
+  "Dữ liệu một phần. Chỉ tính trên các giao dịch có trong nguồn đã đọc.": {
+    "vi": "Dữ liệu một phần. Chỉ tính các giao dịch đọc được từ nguồn.",
+    "en": "Partial data. Only trades available from the source are included."
+  },
+  "Event": {
+    "vi": "Sự kiện",
+    "en": "Event"
+  },
+  "Export CSV": {
+    "vi": "Xuất CSV",
+    "en": "Export CSV"
+  },
+  "Forecast": {
+    "vi": "Dự báo",
+    "en": "Forecast"
+  },
+  "Giá mở": {
+    "vi": "Giá mở",
+    "en": "Open price"
+  },
+  "Giá đóng": {
+    "vi": "Giá đóng",
+    "en": "Close price"
+  },
+  "Hiển thị tối đa 30 đường; thống kê tính trên tất cả": {
+    "vi": "Hiển thị tối đa 30 đường; thống kê tính trên tất cả",
+    "en": "Up to 30 paths shown; statistics include all"
+  },
+  "Học": {
+    "vi": "Học",
+    "en": "Learn"
+  },
+  "Impact": {
+    "vi": "Mức ảnh hưởng",
+    "en": "Impact"
+  },
+  "Journal context": {
+    "vi": "Ngữ cảnh nhật ký",
+    "en": "Journal context"
+  },
+  "Không có giao dịch đóng khớp bộ lọc.": {
+    "vi": "Không có giao dịch đóng khớp bộ lọc.",
+    "en": "No closed trades match the filters."
+  },
+  "Không tải được danh mục phiên:": {
+    "vi": "Không tải được danh sách phiên:",
+    "en": "Could not load sessions:"
+  },
+  "Không tải được kết quả:": {
+    "vi": "Không tải được kết quả:",
+    "en": "Could not load results:"
+  },
+  "Không đọc được báo cáo:": {
+    "vi": "Không tải được báo cáo:",
+    "en": "Could not load reports:"
+  },
+  "Không đọc được danh sách:": {
+    "vi": "Không tải được danh sách:",
+    "en": "Could not load the list:"
+  },
+  "Không đọc được kết quả:": {
+    "vi": "Không tải được kết quả:",
+    "en": "Could not load results:"
+  },
+  "Không đọc được reports:": {
+    "vi": "Không tải được báo cáo:",
+    "en": "Could not load reports:"
+  },
+  "Không đọc được session:": {
+    "vi": "Không tải được phiên:",
+    "en": "Could not load the session:"
+  },
+  "Khối lượng": {
+    "vi": "Khối lượng",
+    "en": "Volume"
+  },
+  "Kiểm tra phiên trước khi bấm Lưu trữ hoặc Khôi phục. Dữ liệu và lịch sử vẫn được giữ.": {
+    "vi": "Kiểm tra phiên trước khi chọn Lưu trữ hoặc Khôi phục. Dữ liệu và lịch sử vẫn được giữ.",
+    "en": "Review the session before choosing Archive or Restore. Data and history are retained."
+  },
+  "Kiểm tra phiên và cutoff trước khi bấm Tạo bản sao tại cutoff.": {
+    "vi": "Kiểm tra phiên và mốc dữ liệu trước khi tạo bản sao.",
+    "en": "Review the session and cutoff before creating a copy."
+  },
+  "Kiểm tra workspace hoặc chọn phiên khác từ danh mục. Không có dữ liệu performance thay thế.": {
+    "vi": "Kiểm tra không gian làm việc hoặc chọn phiên khác. Không dùng dữ liệu thay thế để tính hiệu suất.",
+    "en": "Check the workspace or select another session. No substitute performance data is used."
+  },
+  "Kết quả tới nến #": {
+    "vi": "Kết quả đến nến #",
+    "en": "Results up to candle #"
+  },
+  "Live": {
+    "vi": "Trực tiếp",
+    "en": "Live"
+  },
+  "Lịch sự kiện mẫu": {
+    "vi": "Lịch sự kiện mẫu",
+    "en": "Sample event calendar"
+  },
+  "Market calendar": {
+    "vi": "Lịch thị trường",
+    "en": "Market calendar"
+  },
+  "Max DD": {
+    "vi": "Sụt giảm vốn lớn nhất",
+    "en": "Maximum drawdown"
+  },
+  "Metric schema": {
+    "vi": "Lược đồ chỉ số",
+    "en": "Metric schema"
+  },
+  "Metrics chính": {
+    "vi": "Chỉ số chính",
+    "en": "Key metrics"
+  },
+  "MiB nén ·": {
+    "vi": "MiB nén ·",
+    "en": "MiB compressed ·"
+  },
+  "Mode": {
+    "vi": "Chế độ",
+    "en": "Mode"
+  },
+  "My strategies": {
+    "vi": "Chiến lược của tôi",
+    "en": "My strategies"
+  },
+  "Mặc định tải": {
+    "vi": "Mặc định tải",
+    "en": "Downloads by default:"
+  },
+  "Mở Journal →": {
+    "vi": "Mở nhật ký",
+    "en": "Open journal"
+  },
+  "Mở Replay →": {
+    "vi": "Mở replay",
+    "en": "Open replay"
+  },
+  "Mở phiên đã lưu để xem chart, trade ledger và analytics; hoặc tạo phiên mới từ dataset local.": {
+    "vi": "Mở phiên đã lưu để xem biểu đồ, giao dịch và phân tích; hoặc tạo phiên từ bộ dữ liệu đã tải.",
+    "en": "Open a saved session to view its chart, trades, and analytics; or create a session from a downloaded dataset."
+  },
+  "Mở replay #": {
+    "vi": "Mở replay #",
+    "en": "Open replay #"
+  },
+  "N/A nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Research/simulation đang broker locked; không có đường nào gửi lệnh.": {
+    "vi": "— nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Nghiên cứu và mô phỏng không gửi lệnh tới broker.",
+    "en": "— means the source has not provided the required data. Research and simulation do not send broker orders."
+  },
+  "Net R": {
+    "vi": "R ròng",
+    "en": "Net R"
+  },
+  "Nguồn chưa có kết quả đã phát hành.": {
+    "vi": "Nguồn chưa có kết quả đã phát hành.",
+    "en": "The source has no published results."
+  },
+  "Nguồn và giới hạn": {
+    "vi": "Nguồn và giới hạn",
+    "en": "Sources and limitations"
+  },
+  "Observed range": {
+    "vi": "Phạm vi quan sát",
+    "en": "Observed range"
+  },
+  "Overall drawdown ·": {
+    "vi": "Sụt giảm vốn tổng ·",
+    "en": "Overall drawdown ·"
+  },
+  "Overall loss limit": {
+    "vi": "Giới hạn lỗ tổng",
+    "en": "Overall loss limit"
+  },
+  "Phase": {
+    "vi": "Giai đoạn",
+    "en": "Phase"
+  },
+  "Phân tích": {
+    "vi": "Phân tích",
+    "en": "Analytics"
+  },
+  "Phân tích theo ngày đóng ·": {
+    "vi": "Phân tích theo ngày đóng lệnh ·",
+    "en": "Analysis by close date ·"
+  },
+  "Phạm vi và nguồn dữ liệu": {
+    "vi": "Phạm vi và nguồn dữ liệu",
+    "en": "Data scope and sources"
+  },
+  "Practice · Phase 1": {
+    "vi": "Luyện tập · giai đoạn 1",
+    "en": "Practice · phase 1"
+  },
+  "Previous": {
+    "vi": "Trước đó",
+    "en": "Previous"
+  },
+  "Prop Firm Performance": {
+    "vi": "Hiệu suất prop firm",
+    "en": "Prop firm performance"
+  },
+  "Protocol SHA": {
+    "vi": "SHA quy trình",
+    "en": "Protocol SHA"
+  },
+  "Provenance và drilldown": {
+    "vi": "Nguồn dữ liệu và xem chi tiết",
+    "en": "Provenance and drill-down"
+  },
+  "Replay #": {
+    "vi": "Replay #",
+    "en": "Replay #"
+  },
+  "Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.": {
+    "vi": "Kết quả chỉ cung cấp mã giao dịch trên đường số dư; chưa có bản ghi đầy đủ nên các trường khác để —.",
+    "en": "Results only provide trade IDs on the balance curve; full ledger records are unavailable, so other fields show —."
+  },
+  "Resume chỉ khôi phục state đã persist. Các nút lifecycle gửi lệnh rõ ràng tới backend; UI không tự chạy clock hoặc fill lệnh.": {
+    "vi": "Tiếp tục chỉ khôi phục trạng thái đã lưu. Chỉ khi bạn thao tác mới gửi yêu cầu đổi trạng thái; giao diện không tự chạy thời gian hay khớp lệnh.",
+    "en": "Resume restores saved state only. State changes require explicit actions; the interface does not advance time or fill orders automatically."
+  },
+  "Resume state vẫn dùng được, nhưng report chưa tải được:": {
+    "vi": "Vẫn dùng được trạng thái tiếp tục, nhưng chưa tải được báo cáo:",
+    "en": "Resume state is available, but the report could not be loaded:"
+  },
+  "Risk budget": {
+    "vi": "Ngân sách rủi ro",
+    "en": "Risk budget"
+  },
+  "Session revision": {
+    "vi": "Phiên bản của phiên",
+    "en": "Session revision"
+  },
+  "Split": {
+    "vi": "Phân chia dữ liệu",
+    "en": "Data split"
+  },
+  "Stop cấu hình là giả định mới, không phải SL gốc. Trường hợp SL và TP cùng nến giữ “ambiguous”.": {
+    "vi": "Khoảng cắt lỗ là giả định mới, không phải SL gốc. Nếu SL và TP cùng bị chạm trong một nến, kết quả vẫn là chưa rõ thứ tự.",
+    "en": "The configured stop is a new assumption, not the original SL. If SL and TP are both touched in one candle, the result remains ambiguous."
+  },
+  "Strategies": {
+    "vi": "Chiến lược",
+    "en": "Strategies"
+  },
+  "Strategy / engine": {
+    "vi": "Chiến lược / bộ máy khớp lệnh",
+    "en": "Strategy / execution engine"
+  },
+  "Testing views": {
+    "vi": "Các màn luyện tập",
+    "en": "Testing views"
+  },
+  "Thấp nhất": {
+    "vi": "Thấp nhất",
+    "en": "Low"
+  },
+  "Tick Bid/Ask:": {
+    "vi": "Tick Bid/Ask:",
+    "en": "Bid/Ask ticks:"
+  },
+  "Trade detail": {
+    "vi": "Chi tiết giao dịch",
+    "en": "Trade details"
+  },
+  "Trade detail ·": {
+    "vi": "Chi tiết giao dịch ·",
+    "en": "Trade details ·"
+  },
+  "Trade được đọc từ ledger đã lưu theo phiên hoặc research job. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.": {
+    "vi": "Giao dịch được đọc từ dữ liệu đã lưu của phiên hoặc tác vụ nghiên cứu. Dùng Nhật ký để ghi nhận diễn giải; Phân tích không sửa giá khớp hay kết quả.",
+    "en": "Trades are read from saved session or research-job ledgers. Use Journal for your notes; Analytics does not change fills or results."
+  },
+  "Trades theo phiên": {
+    "vi": "Giao dịch theo phiên",
+    "en": "Trades by session"
+  },
+  "Xem record gốc": {
+    "vi": "Xem bản ghi gốc",
+    "en": "View original record"
+  },
+  "Xóa “": {
+    "vi": "Xóa phiên “",
+    "en": "Delete “"
+  },
+  "Year, Month, Days và Hour theo": {
+    "vi": "Năm, tháng, thứ và giờ theo",
+    "en": "Year, month, day, and hour use"
+  },
+  "days": {
+    "vi": "ngày",
+    "en": "days"
+  },
+  "elapsed ·": {
+    "vi": "đã qua ·",
+    "en": "elapsed ·"
+  },
+  "flat": {
+    "vi": "không có vị thế mở",
+    "en": "flat"
+  },
+  "giao dịch": {
+    "vi": "giao dịch",
+    "en": "trades"
+  },
+  "lượt. Không dự báo lợi nhuận tương lai.": {
+    "vi": "lượt. Đây không phải dự báo lợi nhuận.",
+    "en": "runs. This is not a profit forecast."
+  },
+  "lệnh": {
+    "vi": "lệnh",
+    "en": "trades"
+  },
+  "lệnh chưa có side.": {
+    "vi": "giao dịch chưa xác định hướng lệnh.",
+    "en": "trades have an unknown side."
+  },
+  "lệnh có biên quan sát · tối đa 50 dòng · đơn vị giá, không phải tiền": {
+    "vi": "giao dịch có biên giá quan sát được · tối đa 50 dòng · đơn vị giá, không phải tiền",
+    "en": "trades with observed excursions · up to 50 rows · price units, not money"
+  },
+  "lệnh đóng": {
+    "vi": "lệnh đóng",
+    "en": "closed trades"
+  },
+  "ngày broker trả rỗng": {
+    "vi": "ngày broker không cung cấp dữ liệu",
+    "en": "days without broker data"
+  },
+  "ngày; có thể chọn ngày xa hơn trong 5 năm, tùy lịch sử broker. Chỉ số, cổ phiếu và crypto ở nguồn này là CFD. Session cũ giữ nguyên dataset. Dukascopy chưa bật do quyền lưu kho chưa rõ; futures CME chưa cấu hình.": {
+    "vi": "ngày; có thể chọn xa hơn trong 5 năm tùy lịch sử broker. Chỉ số, cổ phiếu và crypto của nguồn này là CFD. Phiên cũ giữ nguyên bộ dữ liệu. Dukascopy chưa bật do quyền lưu kho chưa rõ; futures CME chưa được cấu hình.",
+    "en": "days; earlier dates within 5 years depend on broker history. Indices, stocks, and crypto from this source are CFDs. Saved sessions keep their datasets. Dukascopy is disabled pending storage rights; CME futures are not configured."
+  },
+  "not ready": {
+    "vi": "chưa sẵn sàng",
+    "en": "not ready"
+  },
+  "nến": {
+    "vi": "nến",
+    "en": "candles"
+  },
+  "phút": {
+    "vi": "phút",
+    "en": "minutes"
+  },
+  "report": {
+    "vi": "báo cáo",
+    "en": "report"
+  },
+  "thắng": {
+    "vi": "thắng",
+    "en": "win rate"
+  },
+  "within cutoff": {
+    "vi": "trong thời hạn",
+    "en": "within cutoff"
+  },
+  "· Phase": {
+    "vi": "· giai đoạn",
+    "en": "· phase"
+  },
+  "· UTC": {
+    "vi": "· UTC",
+    "en": "· UTC"
+  },
+  "· floor": {
+    "vi": "· ngưỡng tối thiểu",
+    "en": "· floor"
+  },
+  "· không gồm lãi/lỗ thả nổi": {
+    "vi": "· không gồm lãi/lỗ thả nổi",
+    "en": "· excludes floating P/L"
+  },
+  "· net · UTC": {
+    "vi": "· ròng · UTC",
+    "en": "· net · UTC"
+  },
+  "· ngày đóng theo": {
+    "vi": "· ngày đóng lệnh theo",
+    "en": "· close dates use"
+  },
+  "· positions": {
+    "vi": "· vị thế",
+    "en": "· positions"
+  },
+  "· rev": {
+    "vi": "· phiên bản",
+    "en": "· revision"
+  },
+  "· terms": {
+    "vi": "· điều khoản",
+    "en": "· terms"
+  },
+  "· — = không có lệnh trong phạm vi đã chọn": {
+    "vi": "· — = không có giao dịch trong phạm vi đã chọn",
+    "en": "· — = no trades in the selected scope"
+  },
+  "Đang export…": {
+    "vi": "Đang xuất…",
+    "en": "Exporting…"
+  },
+  "Đang tải kết quả…": {
+    "vi": "Đang tải kết quả…",
+    "en": "Loading results…"
+  },
+  "Đóng (UTC)": {
+    "vi": "Đóng lệnh (UTC)",
+    "en": "Close time (UTC)"
+  },
+  "đã chọn": {
+    "vi": "đã chọn",
+    "en": "selected"
+  },
+  "đến": {
+    "vi": "đến",
+    "en": "to"
+  },
+  "đợt": {
+    "vi": "đợt",
+    "en": "episodes"
+  },
+  "” khỏi workspace cùng kết quả của phiên. Không thể khôi phục bằng giao diện. Dataset trong Market Data và các phiên khác vẫn được giữ.": {
+    "vi": "” và kết quả khỏi không gian làm việc. Không thể khôi phục qua giao diện. Bộ dữ liệu và các phiên khác vẫn được giữ.",
+    "en": "” and its results from the workspace. This cannot be undone in the interface. Datasets and other sessions are kept."
+  },
+  "AND": {
+    "vi": "AND",
+    "en": "AND"
+  },
+  "CSV": {
+    "vi": "CSV",
+    "en": "CSV"
+  },
+  "EUR": {
+    "vi": "EUR",
+    "en": "EUR"
+  },
+  "Notion": {
+    "vi": "Notion",
+    "en": "Notion"
+  },
+  "OHLC": {
+    "vi": "OHLC",
+    "en": "OHLC"
+  },
+  "R": {
+    "vi": "R",
+    "en": "R"
+  },
+  "USD": {
+    "vi": "USD",
+    "en": "USD"
+  },
+  "UTC": {
+    "vi": "UTC",
+    "en": "UTC"
+  },
+  "cost-v1": {
+    "vi": "cost-v1",
+    "en": "cost-v1"
+  },
+  "cost-zero-fixture": {
+    "vi": "cost-zero-fixture",
+    "en": "cost-zero-fixture"
+  },
+  "/ 1.000 USD": {
+    "vi": "/ 1.000 USD",
+    "en": "/ 1.000 USD"
+  },
+  "N/A": {
+    "vi": "—",
+    "en": "—"
+  },
+  "ready": {
+    "vi": "Sẵn sàng",
+    "en": "Ready"
+  },
+  "running": {
+    "vi": "Đang chạy",
+    "en": "Running"
+  },
+  "paused": {
+    "vi": "Tạm dừng",
+    "en": "Paused"
+  },
+  "phase_passed": {
+    "vi": "Đã đạt giai đoạn",
+    "en": "Phase passed"
+  },
+  "next_phase_ready": {
+    "vi": "Sẵn sàng cho giai đoạn tiếp theo",
+    "en": "Next phase ready"
+  },
+  "completed_pass": {
+    "vi": "Hoàn thành thử thách",
+    "en": "Challenge passed"
+  },
+  "failed_breach": {
+    "vi": "Không đạt do vi phạm giới hạn",
+    "en": "Failed: limit breached"
+  },
+  "expired": {
+    "vi": "Hết hạn",
+    "en": "Expired"
+  },
+  "abandoned": {
+    "vi": "Đã kết thúc theo yêu cầu",
+    "en": "Abandoned"
+  },
+  "clean": {
+    "vi": "Lượt thử nguyên bản",
+    "en": "Clean attempt"
+  },
+  "hindsight_exploratory": {
+    "vi": "Nhánh khám phá có thông tin tương lai",
+    "en": "Hindsight exploration"
+  },
+  "Đang tải dữ liệu…": {
+    "vi": "Đang tải dữ liệu…",
+    "en": "Loading data…"
+  },
+  "Dữ liệu mẫu": {
+    "vi": "Dữ liệu mẫu",
+    "en": "Demo data"
+  },
+  "Không tải được trang.": {
+    "vi": "Không tải được trang.",
+    "en": "Unable to load this page."
+  },
+  "Đơn vị từng phiên": {
+    "vi": "Đơn vị từng phiên",
+    "en": "Per-session units"
+  },
+  "Ngày tạo": {
+    "vi": "Ngày tạo",
+    "en": "Created"
+  },
+  "ngày": {
+    "vi": "ngày",
+    "en": "days"
+  },
+  "Một số phiên chưa đủ dữ liệu; bảng chỉ gồm các giao dịch đã đọc được.": {
+    "vi": "Một số phiên chưa đủ dữ liệu; bảng chỉ gồm các giao dịch đã đọc được.",
+    "en": "Some sessions lack data; this table includes only readable trades."
+  },
+  "Không đọc được giao dịch: {error}": {
+    "vi": "Không đọc được giao dịch: {error}",
+    "en": "Unable to load trades: {error}"
+  },
+  "Phân trang kho dữ liệu": {
+    "vi": "Phân trang kho dữ liệu",
+    "en": "Market data pagination"
+  },
+  "Số dòng mỗi trang": {
+    "vi": "Số dòng mỗi trang",
+    "en": "Rows per page"
+  },
+  "Kho dữ liệu chưa có sản phẩm.": {
+    "vi": "Kho dữ liệu chưa có sản phẩm.",
+    "en": "No instruments in this catalog."
+  },
+  "Bộ chuẩn Testing": {
+    "vi": "Bộ chuẩn Testing",
+    "en": "Testing component reference"
+  },
+  "Nút và bộ lọc": {
+    "vi": "Nút và bộ lọc",
+    "en": "Buttons and filters"
+  },
+  "Trạng thái dữ liệu": {
+    "vi": "Trạng thái dữ liệu",
+    "en": "Data states"
+  },
+  "Đã chọn": {
+    "vi": "Đã chọn",
+    "en": "Selected"
+  },
+  "Chưa có dữ liệu.": {
+    "vi": "Chưa có dữ liệu.",
+    "en": "No data yet."
+  },
+  "Không có kết quả khớp bộ lọc.": {
+    "vi": "Không có kết quả khớp bộ lọc.",
+    "en": "No results match the filters."
+  },
+  "Không tải được dữ liệu.": {
+    "vi": "Không tải được dữ liệu.",
+    "en": "Unable to load data."
+  },
+  "Ngày": {
+    "vi": "Ngày",
+    "en": "Day"
+  },
+  "Tuần": {
+    "vi": "Tuần",
+    "en": "Week"
+  },
+  "Tháng": {
+    "vi": "Tháng",
+    "en": "Month"
+  },
+  "Không gồm lãi/lỗ thả nổi": {
+    "vi": "Không gồm lãi/lỗ thả nổi",
+    "en": "Excludes floating P/L"
+  },
+  "Không tải được thành phần giao diện.": {
+    "vi": "Không tải được thành phần giao diện.",
+    "en": "Unable to load this component."
+  },
+  " lệnh": {
+    "vi": " lệnh",
+    "en": " trades"
+  },
+  " phút": {
+    "vi": " phút",
+    "en": " minutes"
+  },
+  " lệnh đóng": {
+    "vi": " lệnh đóng",
+    "en": " closed trades"
+  },
+  "Tìm {label}": {
+    "vi": "Tìm {label}",
+    "en": "Search {label}"
+  },
+  "Time Start": {
+    "vi": "Giờ bắt đầu",
+    "en": "Start time"
+  },
+  "Time End": {
+    "vi": "Giờ kết thúc",
+    "en": "End time"
+  },
+  "replay_execution_not_initialized": {
+    "vi": "Phiên chưa khởi tạo mô phỏng giao dịch.",
+    "en": "Trading simulation has not been initialized for this session."
+  },
+  "Khối lượng (": {
+    "vi": "Khối lượng (",
+    "en": "Quantity ("
+  },
+  "Vốn ban đầu (": {
+    "vi": "Vốn ban đầu (",
+    "en": "Starting balance ("
+  },
+  "lot": {
+    "vi": "lot",
+    "en": "lot"
+  },
+  "quantity": {
+    "vi": "đơn vị",
+    "en": "units"
+  },
+  "Mở {name}": {
+    "vi": "Mở {name}",
+    "en": "Expand {name}"
+  },
+  "Trước phí {risk} + phí {fees}": {
+    "vi": "Trước phí {risk} + phí {fees}",
+    "en": "Gross {risk} + fees {fees}"
+  },
+  "Ước tính theo giá tham chiếu": {
+    "vi": "Ước tính theo giá tham chiếu",
+    "en": "Estimated at reference price"
+  },
+  "Chưa phải kết quả thực tế": {
+    "vi": "Chưa phải kết quả thực tế",
+    "en": "Planned result"
+  },
+  "Đang cập nhật…": {
+    "vi": "Đang cập nhật…",
+    "en": "Refreshing…"
+  },
+  "Trang {page} trên {pages}": {
+    "vi": "Trang {page} trên {pages}",
+    "en": "Page {page} of {pages}"
+  },
+  "Chưa tải được danh sách:": {
+    "vi": "Chưa tải được danh sách:",
+    "en": "Could not load sessions:"
+  },
+  "Lệnh #{index} · {value}": {
+    "vi": "Lệnh #{index} · {value}",
+    "en": "Trade #{index} · {value}"
+  },
+  "Chưa có lựa chọn cho {label}.": {
+    "vi": "Chưa có lựa chọn cho {label}.",
+    "en": "No options for {label}."
+  },
+  "Cách kết hợp {name}": {
+    "vi": "Cách kết hợp {name}",
+    "en": "{name} match mode"
+  },
+  " nháp": {
+    "vi": " nháp",
+    "en": " draft"
+  },
+  "03 · EVIDENCE": {
+    "vi": "03 · BẰNG CHỨNG",
+    "en": "03 · EVIDENCE"
+  },
+  "04 · NEXT ACTION": {
+    "vi": "04 · BƯỚC TIẾP THEO",
+    "en": "04 · NEXT ACTION"
+  },
+  "; dữ liệu sau cutoff này không được render.": {
+    "vi": "; dữ liệu sau mốc này được ẩn.",
+    "en": "; data after this cutoff is hidden."
+  },
+  "Analytics của session →": {
+    "vi": "Phân tích phiên →",
+    "en": "Session analytics →"
+  },
+  "Bấm nến để chọn đường giá local": {
+    "vi": "Bấm vào nến để đặt đường giá nháp",
+    "en": "Click a candle to place a draft price line"
+  },
+  "Bắt đầu replay": {
+    "vi": "Bắt đầu phát lại",
+    "en": "Start replay"
+  },
+  "Bằng chứng chart": {
+    "vi": "Bằng chứng từ biểu đồ",
+    "en": "Chart evidence"
+  },
+  "Bỏ nháp": {
+    "vi": "Bỏ bản nháp",
+    "en": "Discard draft"
+  },
+  "C": {
+    "vi": "C",
+    "en": "C"
+  },
+  "Chi tiết replay và nhánh": {
+    "vi": "Chi tiết phát lại và nhánh",
+    "en": "Replay and branch details"
+  },
+  "Chi tiết và đối tượng chart": {
+    "vi": "Chi tiết và đối tượng biểu đồ",
+    "en": "Chart details and objects"
+  },
+  "Chưa có hash": {
+    "vi": "Chưa có mã băm",
+    "en": "Hash unavailable"
+  },
+  "Chưa có lịch tin cho dataset này": {
+    "vi": "Bộ dữ liệu này chưa có lịch tin",
+    "en": "No news calendar is available for this dataset"
+  },
+  "Chưa có đối tượng thuộc phiên và cutoff này.": {
+    "vi": "Chưa có đối tượng tại mốc này trong phiên.",
+    "en": "No objects at this cutoff in this session."
+  },
+  "Chỉ xem crosshair": {
+    "vi": "Chỉ xem con trỏ chữ thập",
+    "en": "Crosshair only"
+  },
+  "Chọn một nến đã mở trong phiên. Các nến sau cutoff vẫn được ẩn.": {
+    "vi": "Chọn một nến đã mở trong phiên. Các nến sau mốc này vẫn được ẩn.",
+    "en": "Select a candle already revealed in this session. Candles after the cutoff remain hidden."
+  },
+  "Chọn nến cũ rồi tạo branch. Session gốc và quyết định cũ không bị sửa.": {
+    "vi": "Chọn nến trước đó rồi tạo nhánh. Phiên gốc và các quyết định đã lưu được giữ nguyên.",
+    "en": "Select an earlier candle, then create a branch. The original session and saved decisions are preserved."
+  },
+  "Chọn nến replay": {
+    "vi": "Chọn nến phát lại",
+    "en": "Select replay candle"
+  },
+  "Chọn đường giá local": {
+    "vi": "Chọn đường giá nháp",
+    "en": "Select draft price line"
+  },
+  "Chờ fill": {
+    "vi": "Chờ khớp lệnh",
+    "en": "Awaiting fill"
+  },
+  "Context & provenance": {
+    "vi": "Ngữ cảnh và nguồn gốc dữ liệu",
+    "en": "Context and provenance"
+  },
+  "Crosshair": {
+    "vi": "Con trỏ chữ thập",
+    "en": "Crosshair"
+  },
+  "Cây đối tượng chart": {
+    "vi": "Danh sách đối tượng biểu đồ",
+    "en": "Chart object tree"
+  },
+  "Công cụ chart": {
+    "vi": "Công cụ biểu đồ",
+    "en": "Chart tools"
+  },
+  "Cần một dataset local đã có provenance trước khi mở chart.": {
+    "vi": "Cần một bộ dữ liệu trên máy có nguồn gốc rõ ràng để mở biểu đồ.",
+    "en": "A local dataset with provenance is required to open the chart."
+  },
+  "Danh sách dữ liệu local": {
+    "vi": "Danh sách dữ liệu trên máy",
+    "en": "Local datasets"
+  },
+  "Dataset hash": {
+    "vi": "Mã băm bộ dữ liệu",
+    "en": "Dataset hash"
+  },
+  "Decision cutoff": {
+    "vi": "Mốc dữ liệu của quyết định",
+    "en": "Decision cutoff"
+  },
+  "Decision note": {
+    "vi": "Ghi chú quyết định",
+    "en": "Decision note"
+  },
+  "Draft horizontal line đã chọn": {
+    "vi": "Đường ngang nháp đang chọn",
+    "en": "Selected draft horizontal line"
+  },
+  "Dữ liệu local": {
+    "vi": "Dữ liệu trên máy",
+    "en": "Local data"
+  },
+  "Future values": {
+    "vi": "Giá trị tương lai",
+    "en": "Future values"
+  },
+  "Ghi chú tại mốc": {
+    "vi": "Ghi chú tại mốc này",
+    "en": "Note at this cutoff"
+  },
+  "Ghi chú tại mốc giá": {
+    "vi": "Ghi chú tại mốc giá",
+    "en": "Note at price level"
+  },
+  "Ghi chú workspace được giữ ở đây. Hình vẽ mới nằm trong cây đối tượng của chart.": {
+    "vi": "Ghi chú không gian làm việc được giữ tại đây. Hình vẽ mới nằm trong danh sách đối tượng biểu đồ.",
+    "en": "Workspace notes remain here. New drawings appear in the chart object tree."
+  },
+  "Giao dịch mô phỏng": {
+    "vi": "Giao dịch mô phỏng",
+    "en": "Simulated trades"
+  },
+  "Giá đóng hiện tại": {
+    "vi": "Giá đóng cửa hiện tại",
+    "en": "Current close price"
+  },
+  "Gốc": {
+    "vi": "Gốc",
+    "en": "Original"
+  },
+  "H": {
+    "vi": "H",
+    "en": "H"
+  },
+  "HISTORICAL CUTOFF": {
+    "vi": "MỐC DỮ LIỆU LỊCH SỬ",
+    "en": "HISTORICAL CUTOFF"
+  },
+  "Hiển thị": {
+    "vi": "Hiển thị",
+    "en": "Show"
+  },
+  "Hành động nhanh chart": {
+    "vi": "Thao tác nhanh trên biểu đồ",
+    "en": "Chart quick actions"
+  },
+  "ID": {
+    "vi": "ID",
+    "en": "ID"
+  },
+  "Inspect": {
+    "vi": "Xem chi tiết",
+    "en": "Inspect"
+  },
+  "Instrument": {
+    "vi": "Mã giao dịch",
+    "en": "Instrument"
+  },
+  "Journal tại cutoff này": {
+    "vi": "Nhật ký tại mốc này",
+    "en": "Journal at this cutoff"
+  },
+  "Khoảng thời gian chart": {
+    "vi": "Phạm vi thời gian biểu đồ",
+    "en": "Chart date range"
+  },
+  "Khóa": {
+    "vi": "Khóa",
+    "en": "Lock"
+  },
+  "Không render": {
+    "vi": "Ẩn",
+    "en": "Hidden"
+  },
+  "Không đọc được danh mục:": {
+    "vi": "Không tải được danh mục:",
+    "en": "Could not load the catalog:"
+  },
+  "Không đọc được replay:": {
+    "vi": "Không tải được phiên phát lại:",
+    "en": "Could not load the replay:"
+  },
+  "Kéo đổi giá · phím ↑ ↓ chỉnh một tick": {
+    "vi": "Kéo để đổi giá · phím ↑ ↓ điều chỉnh một bước giá",
+    "en": "Drag to change price · ↑ ↓ adjust by one tick"
+  },
+  "L": {
+    "vi": "L",
+    "en": "L"
+  },
+  "LIVE REPLAY CURSOR": {
+    "vi": "VỊ TRÍ PHÁT LẠI HIỆN TẠI",
+    "en": "CURRENT REPLAY CURSOR"
+  },
+  "Lùi một nến (chỉ đọc)": {
+    "vi": "Lùi một nến (chỉ xem)",
+    "en": "Previous candle (read-only)"
+  },
+  "Lưu đối tượng": {
+    "vi": "Lưu đối tượng",
+    "en": "Save object"
+  },
+  "Mở Data Desk →": {
+    "vi": "Mở kho dữ liệu →",
+    "en": "Open market data →"
+  },
+  "Mở Journal cho cutoff này →": {
+    "vi": "Mở nhật ký tại mốc này →",
+    "en": "Open journal at this cutoff →"
+  },
+  "Mở Trade draft / risk preview →": {
+    "vi": "Mở lệnh nháp và xem rủi ro →",
+    "en": "Open trade draft and risk preview →"
+  },
+  "Mở cutoff này": {
+    "vi": "Xem mốc này",
+    "en": "View this cutoff"
+  },
+  "Mở cutoff theo thời điểm": {
+    "vi": "Chọn mốc theo thời gian",
+    "en": "Select cutoff by time"
+  },
+  "Nháp có nét đứt; đối tượng đã lưu dùng nét liền. Ẩn/khóa lưu trên máy này. Khóa ngăn đổi nhãn và xóa.": {
+    "vi": "Bản nháp dùng nét đứt; đối tượng đã lưu dùng nét liền. Trạng thái ẩn và khóa được lưu trên máy này. Khóa ngăn đổi nhãn và xóa.",
+    "en": "Drafts use dashed lines; saved objects use solid lines. Visibility and lock settings are stored on this device. Locking prevents renaming and deletion."
+  },
+  "Nháp entry": {
+    "vi": "Lệnh vào nháp",
+    "en": "Entry draft"
+  },
+  "Nháp local": {
+    "vi": "Bản nháp trên máy",
+    "en": "Local draft"
+  },
+  "Nhãn": {
+    "vi": "Nhãn",
+    "en": "Label"
+  },
+  "Nến bắt đầu branch": {
+    "vi": "Nến bắt đầu nhánh",
+    "en": "Branch start candle"
+  },
+  "Nến hiện tại": {
+    "vi": "Nến hiện tại",
+    "en": "Current candle"
+  },
+  "Nến tương lai đang ẩn": {
+    "vi": "Nến tương lai được ẩn",
+    "en": "Future candles are hidden"
+  },
+  "Nến tại cutoff": {
+    "vi": "Nến tại mốc dữ liệu",
+    "en": "Candle at cutoff"
+  },
+  "Nến đang chọn": {
+    "vi": "Nến đang chọn",
+    "en": "Selected candle"
+  },
+  "Nến đã mở": {
+    "vi": "Nến đã mở",
+    "en": "Revealed candles"
+  },
+  "Nội dung ghi chú chart": {
+    "vi": "Nội dung ghi chú biểu đồ",
+    "en": "Chart note"
+  },
+  "O": {
+    "vi": "O",
+    "en": "O"
+  },
+  "OHLC nến hiện tại": {
+    "vi": "OHLC của nến hiện tại",
+    "en": "Current candle OHLC"
+  },
+  "P/L": {
+    "vi": "P/L",
+    "en": "P/L"
+  },
+  "Panel replay": {
+    "vi": "Bảng điều khiển phát lại",
+    "en": "Replay panel"
+  },
+  "Paper replay": {
+    "vi": "Phát lại mô phỏng",
+    "en": "Paper replay"
+  },
+  "Parent": {
+    "vi": "Nhánh cha",
+    "en": "Parent"
+  },
+  "Phiên hiện tại có dữ liệu OHLC, chưa có nguồn tin lịch sử gắn với cutoff.": {
+    "vi": "Phiên này có dữ liệu OHLC nhưng chưa có tin lịch sử tại mốc đang xem.",
+    "en": "This session has OHLC data but no historical news at the current cutoff."
+  },
+  "Practice context": {
+    "vi": "Ngữ cảnh luyện tập",
+    "en": "Practice context"
+  },
+  "Practice · Replay": {
+    "vi": "Luyện tập · Phát lại",
+    "en": "Practice · Replay"
+  },
+  "Provider": {
+    "vi": "Nguồn cung cấp",
+    "en": "Provider"
+  },
+  "Quyết định tại nến #": {
+    "vi": "Quyết định tại nến #",
+    "en": "Decision at candle #"
+  },
+  "REPLAY / SIMULATION": {
+    "vi": "PHÁT LẠI / MÔ PHỎNG",
+    "en": "REPLAY / SIMULATION"
+  },
+  "Replay gốc hiện ở nến #": {
+    "vi": "Phiên phát lại gốc đang ở nến #",
+    "en": "Original replay is at candle #"
+  },
+  "Rewind an toàn": {
+    "vi": "Xem lại an toàn",
+    "en": "Safe rewind"
+  },
+  "Rows": {
+    "vi": "Số dòng",
+    "en": "Rows"
+  },
+  "SIM": {
+    "vi": "MÔ PHỎNG",
+    "en": "SIM"
+  },
+  "SL": {
+    "vi": "SL",
+    "en": "SL"
+  },
+  "SMA 20": {
+    "vi": "SMA 20",
+    "en": "SMA 20"
+  },
+  "Shift + → Tiến mười nến": {
+    "vi": "Shift + → Tiến mười nến",
+    "en": "Shift + → Advance ten candles"
+  },
+  "Start index": {
+    "vi": "Chỉ số bắt đầu",
+    "en": "Start index"
+  },
+  "Số nến cutoff": {
+    "vi": "Số nến tới mốc dữ liệu",
+    "en": "Candles through cutoff"
+  },
+  "TP": {
+    "vi": "TP",
+    "en": "TP"
+  },
+  "Thông tin symbol": {
+    "vi": "Thông tin mã giao dịch",
+    "en": "Instrument details"
+  },
+  "Thời điểm replay UTC": {
+    "vi": "Thời điểm phát lại (UTC)",
+    "en": "Replay time (UTC)"
+  },
+  "Timeframe": {
+    "vi": "Khung thời gian",
+    "en": "Timeframe"
+  },
+  "Tiện ích replay": {
+    "vi": "Tiện ích phát lại",
+    "en": "Replay tools"
+  },
+  "Tạo branch nếu muốn tiếp tục từ đúng mốc report mà không sửa session gốc.": {
+    "vi": "Tạo nhánh để tiếp tục từ mốc báo cáo và giữ nguyên phiên gốc.",
+    "en": "Create a branch to continue from the report cutoff while preserving the original session."
+  },
+  "Tạo nhánh mới": {
+    "vi": "Tạo nhánh mới",
+    "en": "Create branch"
+  },
+  "Tải ảnh chart tại cutoff · không upload": {
+    "vi": "Tải ảnh biểu đồ tại mốc này · lưu trên máy",
+    "en": "Download chart at this cutoff · saved locally"
+  },
+  "UTC · giá": {
+    "vi": "UTC · giá",
+    "en": "UTC · price"
+  },
+  "Visible rows": {
+    "vi": "Số dòng hiển thị",
+    "en": "Visible rows"
+  },
+  "Vẽ vùng giá bằng hai mốc": {
+    "vi": "Vẽ vùng giá bằng hai điểm",
+    "en": "Draw a price zone using two points"
+  },
+  "Vẽ đường xu hướng bằng hai mốc": {
+    "vi": "Vẽ đường xu hướng bằng hai điểm",
+    "en": "Draw a trendline using two points"
+  },
+  "Về cursor mới nhất hoặc tạo nhánh từ cutoff này để mở lệnh mô phỏng.": {
+    "vi": "Quay về vị trí phát lại mới nhất hoặc tạo nhánh từ mốc này để mở lệnh mô phỏng.",
+    "en": "Return to the latest replay cursor or create a branch from this cutoff to open simulated trades."
+  },
+  "Vừa toàn bộ nến đã mở": {
+    "vi": "Vừa tất cả nến đã mở",
+    "en": "Fit all revealed candles"
+  },
+  "Xem dữ liệu phiên": {
+    "vi": "Xem dữ liệu phiên",
+    "en": "View session data"
+  },
+  "Xóa đối tượng": {
+    "vi": "Xóa đối tượng",
+    "en": "Delete object"
+  },
+  "nến được phép hiển thị": {
+    "vi": "nến được phép hiển thị",
+    "en": "candles allowed to display"
+  },
+  "revision r": {
+    "vi": "bản sửa đổi r",
+    "en": "revision r"
+  },
+  "· C": {
+    "vi": "· C",
+    "en": "· C"
+  },
+  "· H": {
+    "vi": "· H",
+    "en": "· H"
+  },
+  "· L": {
+    "vi": "· L",
+    "en": "· L"
+  },
+  "· P/L": {
+    "vi": "· P/L",
+    "en": "· P/L"
+  },
+  "· V": {
+    "vi": "· V",
+    "en": "· V"
+  },
+  "· broker locked": {
+    "vi": "· khóa theo nhà môi giới",
+    "en": "· broker locked"
+  },
+  "Đang tải đối tượng…": {
+    "vi": "Đang tải đối tượng…",
+    "en": "Loading objects…"
+  },
+  "Đang xem đúng cutoff report ở nến #": {
+    "vi": "Đang xem mốc báo cáo tại nến #",
+    "en": "Viewing report cutoff at candle #"
+  },
+  "Đi tới nến": {
+    "vi": "Đi tới nến",
+    "en": "Go to candle"
+  },
+  "Đi tới nến đã có trong session": {
+    "vi": "Đi tới nến đã mở trong phiên",
+    "en": "Go to a revealed session candle"
+  },
+  "Đi tới thời điểm UTC đã mở": {
+    "vi": "Đi tới thời điểm đã mở (UTC)",
+    "en": "Go to a revealed time (UTC)"
+  },
+  "Điều khiển replay phía dưới chart": {
+    "vi": "Điều khiển phát lại dưới biểu đồ",
+    "en": "Replay controls below the chart"
+  },
+  "Đo giá giữa hai mốc": {
+    "vi": "Đo giá giữa hai điểm",
+    "en": "Measure price between two points"
+  },
+  "Đo thay đổi giá và số nến giữa hai mốc": {
+    "vi": "Đo thay đổi giá và số nến giữa hai điểm",
+    "en": "Measure price change and candle count between two points"
+  },
+  "Đã ở cuối dữ liệu": {
+    "vi": "Đã tới cuối dữ liệu",
+    "en": "End of data reached"
+  },
+  "Đóng panel": {
+    "vi": "Đóng bảng điều khiển",
+    "en": "Close panel"
+  },
+  "Đặt mốc trên chart để tạo nháp local.": {
+    "vi": "Chọn điểm trên biểu đồ để tạo bản nháp trên máy.",
+    "en": "Place a point on the chart to create a local draft."
+  },
+  "Đọc chart và ghi lại hypothesis trước khi mở bước kế tiếp. Replay này chỉ tạo bằng chứng local; không gửi lệnh broker.": {
+    "vi": "Đọc biểu đồ và ghi lại giả thuyết trước khi tiếp tục. Phiên phát lại chỉ tạo bằng chứng trên máy, không gửi lệnh tới nhà môi giới.",
+    "en": "Read the chart and record a hypothesis before continuing. This replay creates local evidence and does not send broker orders."
+  },
+  "Đối tượng chart": {
+    "vi": "Đối tượng biểu đồ",
+    "en": "Chart objects"
+  },
+  "Đổi instrument hoặc timeframe bằng dataset đã đăng ký. Mỗi lựa chọn mở phiên mới, không đổi phiên hiện tại.": {
+    "vi": "Chọn mã giao dịch hoặc khung thời gian từ bộ dữ liệu đã đăng ký. Mỗi lựa chọn mở phiên mới và giữ nguyên phiên hiện tại.",
+    "en": "Select an instrument or timeframe from a registered dataset. Each selection opens a new session and preserves the current one."
+  },
+  "Đổi instrument/timeframe bằng dataset local": {
+    "vi": "Đổi mã giao dịch hoặc khung thời gian từ dữ liệu trên máy",
+    "en": "Change instrument or timeframe using a local dataset"
+  },
+  "Đổi nhãn": {
+    "vi": "Đổi nhãn",
+    "en": "Rename label"
+  },
+  "→ Tiến một nến": {
+    "vi": "→ Tiến một nến",
+    "en": "→ Advance one candle"
+  },
+  "{title}, cuộn ngang để xem các tháng": {
+    "vi": "{title}, cuộn ngang để xem các tháng",
+    "en": "{title}, scroll horizontally to view months"
+  },
+  "Giao dịch theo symbol: {values}": {
+    "vi": "Giao dịch theo mã: {values}",
+    "en": "Trades by symbol: {values}"
+  },
+  "{count} khoảng gián đoạn": {
+    "vi": "{count} khoảng gián đoạn",
+    "en": "{count} data gaps"
+  },
+  "TF chưa rõ": {
+    "vi": "Chưa rõ khung thời gian",
+    "en": "Unknown timeframe"
+  },
+  "Đang kiểm tra": {
+    "vi": "Đang kiểm tra",
+    "en": "Checking"
+  },
+  "unverified": {
+    "vi": "Chưa xác minh",
+    "en": "Unverified"
+  },
+  "Số dư từ lệnh đóng: {start} → {end}": {
+    "vi": "Số dư từ lệnh đóng: {start} → {end}",
+    "en": "Closed balance: {start} → {end}"
+  },
+  "{wins} thắng · {losses} thua": {
+    "vi": "{wins} thắng · {losses} thua",
+    "en": "Wins: {wins} · Losses: {losses}"
+  },
+  "Biểu đồ replay {symbol}": {
+    "vi": "Biểu đồ replay {symbol}",
+    "en": "Replay chart {symbol}"
+  },
+  "Lưu chart": {
+    "vi": "Lưu chart",
+    "en": "Save chart"
+  },
+  "Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này": {
+    "vi": "Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này",
+    "en": "Save layout and drawings for this session/cutoff in this browser"
+  },
+  "Vừa lệnh": {
+    "vi": "Vừa lệnh",
+    "en": "Fit order"
+  },
+  "Hiển thị đầy đủ Entry, Stop loss và Take profit mô phỏng": {
+    "vi": "Hiển thị đầy đủ Entry, Stop loss và Take profit mô phỏng",
+    "en": "Show simulated entry, stop loss and take profit"
+  },
+  "Advanced Charts · {symbol} · {count} nến đến cutoff {cutoff} UTC": {
+    "vi": "Advanced Charts · {symbol} · {count} nến đến cutoff {cutoff} UTC",
+    "en": "Advanced Charts · {symbol} · {count} candles through cutoff {cutoff} UTC"
+  },
+  "Advanced Charts bundle không hợp lệ.": {
+    "vi": "Advanced Charts bundle không hợp lệ.",
+    "en": "Invalid Advanced Charts bundle."
+  },
+  "Thiếu bộ Advanced Charts local tại /charting_library/.": {
+    "vi": "Thiếu bộ Advanced Charts local tại /charting_library/.",
+    "en": "Local Advanced Charts bundle is missing at /charting_library/."
+  },
+  "Advanced Charts chưa tải được. Thử mở trang này trong Chrome/Edge hoặc dùng chart dự phòng.": {
+    "vi": "Advanced Charts chưa tải được. Thử mở trang này trong Chrome/Edge hoặc dùng chart dự phòng.",
+    "en": "Advanced Charts could not load. Open this page in Chrome/Edge or use the fallback chart."
+  },
+  "Đã lưu chart trên trình duyệt này.": {
+    "vi": "Đã lưu chart trên trình duyệt này.",
+    "en": "Chart saved in this browser."
+  },
+  "Không lưu được chart: bộ nhớ trình duyệt không khả dụng hoặc đã đầy.": {
+    "vi": "Không lưu được chart: bộ nhớ trình duyệt không khả dụng hoặc đã đầy.",
+    "en": "Could not save chart: browser storage is unavailable or full."
+  },
+  "Không đọc được chart đã lưu trên trình duyệt này.": {
+    "vi": "Không đọc được chart đã lưu trên trình duyệt này.",
+    "en": "Could not read the chart saved in this browser."
+  },
+  "Cutoff đã đổi; chụp lại chart tại mốc mới.": {
+    "vi": "Cutoff đã đổi; chụp lại chart tại mốc mới.",
+    "en": "Cutoff changed; capture the chart at the new cutoff."
+  },
+  "Chart đã đổi; chụp lại tại mốc mới.": {
+    "vi": "Chart đã đổi; chụp lại tại mốc mới.",
+    "en": "Chart changed; capture it at the new cutoff."
+  },
+  "Không tạo được ảnh PNG.": {
+    "vi": "Không tạo được ảnh PNG.",
+    "en": "Could not create PNG image."
+  },
+  "Không chụp được chart: {error}": {
+    "vi": "Không chụp được chart: {error}",
+    "en": "Could not capture chart: {error}"
+  }
+}

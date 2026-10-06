@@ -1,0 +1,17 @@
+{
+  "changes": [
+    "foundation_v2/web/src/AnalyticsWorkspace.jsx",
+    "foundation_v2/web/src/ChartFloatingToolbar.jsx",
+    "foundation_v2/web/src/DemoPreview.jsx",
+    "foundation_v2/web/src/FxAnalytics.jsx",
+    "foundation_v2/web/src/FxReplayShell.jsx",
+    "foundation_v2/web/src/FxSelect.jsx",
+    "foundation_v2/web/src/PropAnalytics.jsx",
+    "foundation_v2/web/src/SessionActions.jsx",
+    "foundation_v2/web/src/SessionFilter.jsx",
+    "foundation_v2/web/src/analyticsSimulation.js",
+    "foundation_v2/web/src/researchDataApi.js",
+    "foundation_v2/web/src/tradingAnalyticsModel.js"
+  ],
+  "nonWhitespaceUnchanged": true
+}

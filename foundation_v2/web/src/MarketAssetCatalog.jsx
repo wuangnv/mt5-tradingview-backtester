@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { readJson, workspaceHeaders, formatUtc } from './researchDataApi.js'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useEffect, useState } from 'react'
+import { readJson, workspaceHeaders, formatUtc as formatMarketUtc } from './researchDataApi.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './market-sync.css'
+import FxSelect from './FxSelect.jsx'
+import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 
-const labels = { ready: 'Đã tải', queued: 'Đang chờ', syncing: 'Đang tải', error: 'Cập nhật lỗi', not_downloaded: 'Chưa tải' }
 
 export default function MarketAssetCatalog({ workspace, query, showHeading = true, preview }) {
+  const formatUtc = value => formatMarketUtc(value, locale)
+
+  const { t, locale, fmt, statusLabel } = useTestingLocale()
+
   const [catalog, setState] = useState({ workspace, status: 'loading', items: [] })
   const state = catalog.workspace === workspace ? catalog : { status: 'loading', items: [] }
   const [search, setSearch] = useState(''), [group, setGroup] = useState('all')
   const [all, setAll] = useState(false), [pending, setPending] = useState(false), [error, setError] = useState('')
-  const [fromDate, setFromDate] = useState('')
+  const [fromDate, setFromDate] = useState(''), [reload, setReload] = useState(0)
+  const [page, setPage] = useState(1), [pageSize, setPageSize] = useState(25)
   useEffect(() => {
     if (preview) { setState({ ...preview, workspace }); return }
     const controller = new AbortController()
@@ -26,14 +33,14 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
       } catch (error) {
         if (!controller.signal.aborted) {
           setError('Không đọc được kho assets; trạng thái tải có thể đã cũ.')
-          if (error.status === 403) setState({ workspace, status: 'unavailable', items: [] })
+          setState(current => current.items.length && error.status !== 403 ? { ...current, stale: true } : { workspace, status: error.status === 403 ? 'unavailable' : 'error', items: [] })
         }
       } finally { refreshing = false }
     }
     refresh()
     const timer = setInterval(refresh, 5000)
     return () => { controller.abort(); clearInterval(timer) }
-  }, [workspace, preview])
+  }, [workspace, preview, reload])
   const update = async symbol => {
     if (preview) return
     setPending(true); setError('')
@@ -43,36 +50,41 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
         body: JSON.stringify({ symbol, from_date: fromDate || null }),
       })
       setState({ ...await readJson(response), workspace })
-    } catch (error) { setError(`Không cập nhật được: ${error.message}`) }
+    } catch (error) { setError(t("Không cập nhật được: {error}", { error: error.message })) }
     finally { setPending(false) }
   }
   const items = state.items || []
-  const visible = items.filter(item => (all || item.enabled) && (group === 'all' || item.metadata.group === group)
-    && `${item.symbol} ${item.metadata.description}`.toLowerCase().includes(search.toLowerCase()))
-  const groups = [...new Set(items.map(item => item.metadata.group))].sort()
-  return <section className="market-assets" aria-label="Kho dữ liệu Testing" data-testid="market-assets">
-    {showHeading && <div className="market-sync-heading"><h2>Kho Testing</h2></div>}
-    {state.running && <span role="status">Đang tải {state.running}</span>}
-    {state.connection_error && <p role="status">MT5 chưa sẵn sàng ({state.connection_error}). Kho đã tải vẫn dùng được.</p>}
-    {state.tick_sync_error && <p role="status">Tick đang chờ tải bù: {state.tick_sync_error}.</p>}
-    {state.status === 'loading' && <p role="status">Đang đọc kho Testing…</p>}
-    {state.status === 'unavailable' && <p>Chưa cấu hình nguồn lịch sử tự cập nhật.</p>}
-    {error && <p role="alert">{error}</p>}
+  const visible = items.filter(item => (all || item.enabled) && (group === 'all' || item.metadata?.group === group)
+    && `${item.symbol} ${item.metadata?.description || ''}`.toLowerCase().includes(search.toLowerCase()))
+  const groups = [...new Set(items.map(item => item.metadata?.group).filter(Boolean))].sort()
+  const pages = Math.max(1, Math.ceil(visible.length / pageSize)), currentPage = Math.min(page, pages)
+  const pageItems = visible.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  useEffect(() => setPage(1), [search, group, all, pageSize, workspace])
+  return <section className="market-assets" aria-label={t("Kho dữ liệu Testing")} data-testid="market-assets">
+    {showHeading && <div className="market-sync-heading"><h2>{t("Kho Testing")}</h2></div>}
+    {state.running && <span role="status">{t("Đang tải")}{state.running}</span>}
+    {state.connection_error && <TestingReadState message={t('MT5 chưa sẵn sàng ({error}). Kho đã tải vẫn dùng được.', { error: state.connection_error })} />}
+    {state.tick_sync_error && <TestingReadState message={t('Tick đang chờ tải bù: {error}.', { error: state.tick_sync_error })} />}
+    {state.status === 'loading' && <TestingSkeleton label={t("Đang đọc kho Testing…")} />}
+    {state.status === 'unavailable' && <p>{t("Chưa cấu hình nguồn lịch sử tự cập nhật.")}</p>}
+    {error && <TestingReadState error message={t(error)} onRetry={() => setReload(value => value + 1)} />}
     <div className="market-sync-filters">
-      <input type="search" aria-label="Tìm asset" placeholder="Tìm asset…" value={search} onChange={event => setSearch(event.target.value)} />
-      <select aria-label="Nhóm asset" value={group} onChange={event => setGroup(event.target.value)}><option value="all">Tất cả nhóm</option>{groups.map(item => <option key={item}>{item}</option>)}</select>
-      <label>Tải từ ngày<input type="date" aria-label="Ngày bắt đầu tải lịch sử" value={fromDate} onChange={event => setFromDate(event.target.value)} /></label>
-      <label><input type="checkbox" checked={all} onChange={event => setAll(event.target.checked)} />Hiện toàn bộ danh mục broker</label>
-      <button type="button" className="fxr-button fxr-button-secondary market-sync-update" onClick={() => update(null)} disabled={Boolean(preview) || pending || !items.length || Boolean(state.queued) || Boolean(state.running)}>Cập nhật dữ liệu</button>
+      <input type="search" aria-label={t("Tìm asset")} placeholder={t("Tìm asset…")} value={search} onChange={event => setSearch(event.target.value)} />
+      <FxSelect label={t("Nhóm asset")} value={group} onChange={setGroup} options={[{ value: 'all', label: 'Tất cả nhóm' }, ...groups.map(value => ({ value, label: value, localize: false }))]} />
+      <label>{t("Tải từ ngày")}<input type="date" aria-label={t("Ngày bắt đầu tải lịch sử")} value={fromDate} onChange={event => setFromDate(event.target.value)} /></label>
+      <label><input type="checkbox" checked={all} onChange={event => setAll(event.target.checked)} />{t("Hiện toàn bộ danh mục broker")}</label>
+      <button type="button" className="fxr-button fxr-button-secondary market-sync-update" onClick={() => update(null)} disabled={Boolean(preview) || pending || !items.length || Boolean(state.queued) || Boolean(state.running)}>{t("Cập nhật dữ liệu")}</button>
     </div>
-    {items.length > 0 && <div className="market-sync-table" tabIndex={0} role="region" aria-label="Danh mục lịch sử broker"><table><thead><tr><th>Asset / sản phẩm</th><th>Nguồn</th><th>Lịch sử UTC</th><th>Trạng thái</th><th><span className="sr-only">Thao tác</span></th></tr></thead><tbody>{visible.map(item => <tr key={item.symbol}>
-      <td><strong>{item.symbol}</strong><small>{item.metadata.group}</small></td><td>{state.source}</td>
-      <td>{item.dataset_id ? <>{formatUtc(item.first_timestamp)}<small>đến {formatUtc(item.last_timestamp)} · {item.row_count?.toLocaleString('vi-VN')} nến</small></> : 'Chưa có dữ liệu'}{item.ticks && <small>Tick Bid/Ask: {item.ticks.row_count.toLocaleString('vi-VN')} · {(item.ticks.bytes / 1048576).toFixed(1)} MiB nén · {item.ticks.unavailable_days} ngày broker trả rỗng</small>}</td>
-      <td>{labels[item.status] || item.status}{item.dataset_id && <small>{item.quality === 'review' ? 'Có khoảng gián đoạn cần kiểm tra' : 'Kiểm tra cơ bản; phí lịch sử chưa xác minh'}</small>}{item.error && <small>{item.error}</small>}</td>
-      <td>{item.dataset_id && !preview && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, select: null, fresh: '1', surface: 'workspace' })}>Luyện tập</a>}
-        {!preview && item.ticks?.start_index != null && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, start: item.ticks.start_index, select: null, fresh: '1', surface: 'workspace' })}>Luyện tick</a>}
-        <button type="button" className="fxr-button fxr-button-secondary" disabled={Boolean(preview) || pending || ['queued', 'syncing'].includes(item.status)} onClick={() => update(item.symbol)}>{item.dataset_id ? 'Tải bổ sung' : 'Tải lịch sử'}</button></td>
-    </tr>)}</tbody></table>{!visible.length && <p>Không có asset phù hợp bộ lọc.</p>}</div>}
-    {!preview && <p className="market-sync-note">Mặc định tải {state.seed_days || 90} ngày; có thể chọn ngày xa hơn trong 5 năm, tùy lịch sử broker. Chỉ số, cổ phiếu và crypto ở nguồn này là CFD. Session cũ giữ nguyên dataset. Dukascopy chưa bật do quyền lưu kho chưa rõ; futures CME chưa cấu hình.</p>}
+    {items.length > 0 && <div className="market-sync-table" tabIndex={0} role="region" aria-label={t("Danh mục lịch sử broker")}><table><thead><tr><th>{t("Asset / sản phẩm")}</th><th>{t("Nguồn")}</th><th>{t("Lịch sử UTC")}</th><th>{t("Trạng thái")}</th><th><span className="sr-only">{t("Thao tác")}</span></th></tr></thead><tbody>{pageItems.map(item => <tr key={item.symbol}>
+      <td><strong>{item.symbol}</strong><small>{item.metadata?.group || '—'}</small></td><td>{state.source}</td>
+      <td>{item.dataset_id ? <>{formatUtc(item.first_timestamp)}<small>{t('đến {date} · {count} nến', { date: formatUtc(item.last_timestamp), count: fmt(item.row_count, '', 0) })}</small></> : t("Chưa có dữ liệu")}{item.ticks && <small>{t("Tick Bid/Ask:")} {fmt(item.ticks.row_count, '', 0)} · {(item.ticks.bytes / 1048576).toFixed(1)} {t("MiB nén ·")} {item.ticks.unavailable_days} {t("ngày broker trả rỗng")}</small>}</td>
+      <td>{statusLabel('market_asset', item.status)}{item.dataset_id && <small>{item.quality === 'review' ? t("Có khoảng gián đoạn cần kiểm tra") : t("Kiểm tra cơ bản; phí lịch sử chưa xác minh")}</small>}{item.error && <small>{item.error}</small>}</td>
+      <td>{item.dataset_id && !preview && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, select: null, fresh: '1', surface: 'workspace' })}>{t("Luyện tập")}</a>}
+        {!preview && item.ticks?.start_index != null && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, start: item.ticks.start_index, select: null, fresh: '1', surface: 'workspace' })}>{t("Luyện tick")}</a>}
+        <button type="button" className="fxr-button fxr-button-secondary" disabled={Boolean(preview) || pending || ['queued', 'syncing'].includes(item.status)} onClick={() => update(item.symbol)}>{item.dataset_id ? t("Tải bổ sung") : t("Tải lịch sử")}</button></td>
+    </tr>)}</tbody></table>{!visible.length && <p>{t("Không có asset phù hợp bộ lọc.")}</p>}</div>}
+    {items.length > 0 && <nav className="fxa-pagination" aria-label={t('Phân trang kho dữ liệu')}><div><button className="fxa-button" aria-label={t('Trang trước')} disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</button><span>{currentPage} / {pages}</span><button className="fxa-button" aria-label={t('Trang sau')} disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>›</button></div><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10, 25, 50, 100].map(value => ({ value, label: String(value) }))} /></nav>}
+    {state.status === 'ready' && !items.length && <TestingReadState message="Kho dữ liệu chưa có sản phẩm." />}
+    {!preview && <p className="market-sync-note">{t("Mặc định tải")} {state.seed_days || 90} {t("ngày; có thể chọn ngày xa hơn trong 5 năm, tùy lịch sử broker. Chỉ số, cổ phiếu và crypto ở nguồn này là CFD. Session cũ giữ nguyên dataset. Dukascopy chưa bật do quyền lưu kho chưa rõ; futures CME chưa cấu hình.")}</p>}
   </section>
 }

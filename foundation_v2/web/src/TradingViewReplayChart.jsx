@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useEffect, useRef, useState } from 'react'
 import { createAdvancedReplayDatafeed } from './advancedReplayDatafeed.js'
 import { readChartSnapshot, writeChartSnapshot } from './advancedChartStorage.js'
 
@@ -20,6 +21,8 @@ function loadLibrary() {
 }
 
 export default function TradingViewReplayChart(props) {
+  const { t, locale } = useTestingLocale()
+
   const { workspace, sessionId, datasetId, symbol, assetClass, seconds, tickSize, rows, cutoff, theme, drawings, levels, orderEditable, orderGeneration, viewportRequest } = props
   const host = useRef(null), instance = useRef(null), latest = useRef(props)
   latest.current = props
@@ -58,7 +61,7 @@ export default function TradingViewReplayChart(props) {
       if (seriesState) { seriesState.symbol = symbol; seriesState.interval = restoredInterval }
       widget = new window.TradingView.widget({
         container: host.current, library_path: '/charting_library/', datafeed: adapter.datafeed,
-        symbol, interval: restoredInterval, locale: 'vi', timezone: 'Etc/UTC', theme: theme === 'light' ? 'Light' : 'Dark', autosize: true,
+        symbol, interval: restoredInterval, locale: locale.slice(0, 2), timezone: 'Etc/UTC', theme: theme === 'light' ? 'Light' : 'Dark', autosize: true,
         ...(saved ? { saved_data: saved } : {}),
         custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles', 'Bars', 'Line', 'Area', 'Heikin Ashi'] },
         header_widget_buttons_mode: 'adaptive',
@@ -71,7 +74,7 @@ export default function TradingViewReplayChart(props) {
         if (cancelled) return
         clearTimeout(loadingTimer)
         const frame = host.current?.querySelector('iframe')
-        if (frame) { frame.title = `Biểu đồ replay ${symbol}`; if (frame.contentDocument) frame.contentDocument.title = `WMReplay · ${symbol}` }
+        if (frame) { frame.title = t('Biểu đồ replay {symbol}', { symbol }); if (frame.contentDocument) frame.contentDocument.title = `WMReplay · ${symbol}` }
         chart = widget.activeChart()
         // Restoring a layout cannot change the authoritative dataset symbol.
         if (chart.symbol() !== symbol) chart.setSymbol(symbol)
@@ -198,12 +201,12 @@ export default function TradingViewReplayChart(props) {
           }
           if (chartReady) latest.current.onHeaderSlots?.(headerSlots)
           const button = widget.createButton()
-          button.textContent = 'Lưu chart'
-          button.title = 'Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này'
+          button.textContent = t('Lưu chart')
+          button.title = t('Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này')
           button.addEventListener('click', save)
           fitButton = widget.createButton()
-          fitButton.textContent = 'Vừa lệnh'
-          fitButton.title = 'Hiển thị đầy đủ Entry, Stop loss và Take profit mô phỏng'
+          fitButton.textContent = t('Vừa lệnh')
+          fitButton.title = t('Hiển thị đầy đủ Entry, Stop loss và Take profit mô phỏng')
           fitButton.style.display = latest.current.levels ? '' : 'none'
           fitButton.addEventListener('click', fitOrder)
           for (const control of [button, fitButton]) {
@@ -222,7 +225,7 @@ export default function TradingViewReplayChart(props) {
       latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }
-  }, [workspace, sessionId, datasetId, symbol, assetClass, seconds, tickSize, storageKey])
+  }, [workspace, sessionId, datasetId, symbol, assetClass, seconds, tickSize, storageKey, locale])
 
   useEffect(() => {
     const item = instance.current
@@ -254,10 +257,10 @@ export default function TradingViewReplayChart(props) {
 
   const fallbackUrl = new URL(window.location.href)
   fallbackUrl.searchParams.set('chart_engine', 'lightweight')
-  return <div className="replay-chart advanced-replay-chart" data-testid="replay-chart" data-chart-engine="advanced" data-chart-status={status} data-visible-row-count={rows.length} data-cutoff={cutoff} role="group" aria-label={`Advanced Charts · ${symbol} · ${rows.length} nến đến cutoff ${cutoff} UTC`}>
+  return <div className="replay-chart advanced-replay-chart" data-testid="replay-chart" data-chart-engine="advanced" data-chart-status={status} data-visible-row-count={rows.length} data-cutoff={cutoff} role="group" aria-label={t('Advanced Charts · {symbol} · {count} nến đến cutoff {cutoff} UTC', { symbol, count: rows.length, cutoff })}>
     <div ref={host} className="advanced-chart-host" />
-    {status === 'loading' && <div className="advanced-chart-message" role="status">Đang mở Advanced Charts…</div>}
-    {status === 'error' && <div className="advanced-chart-message" role="alert">{message} <a href={fallbackUrl.href}>Mở chart dự phòng</a></div>}
-    {status === 'ready' && message && <span className="advanced-chart-save-status" role="status">{message}</span>}
+    {status === 'loading' && <div className="advanced-chart-message" role="status">{t("Đang mở Advanced Charts…")}</div>}
+    {status === 'error' && <div className="advanced-chart-message" role="alert">{t(message)} <a href={fallbackUrl.href}>{t("Mở chart dự phòng")}</a></div>}
+    {status === 'ready' && message && <span className="advanced-chart-save-status" role="status">{t(message)}</span>}
   </div>
 }

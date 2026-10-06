@@ -84,14 +84,14 @@ export function formatNumber(value, digits = 2, fallback = 'Chưa có dữ liệ
   return new Intl.NumberFormat('vi-VN', { maximumFractionDigits: digits }).format(Number(value))
 }
 
-export function formatUtc(value) {
+export function formatUtc(value, locale = 'vi-VN') {
   if (value === null || value === undefined || value === '') return 'Chưa có dữ liệu'
   const raw = Number(value)
   const date = Number.isFinite(raw)
     ? new Date(raw > 10_000_000_000 ? raw : raw * 1000)
     : new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(date)
+  return new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(date)
 }
 
 export function qualityLabel(dataset) {

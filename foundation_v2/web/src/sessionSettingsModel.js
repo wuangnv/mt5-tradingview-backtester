@@ -1,6 +1,6 @@
-export function sessionDate(value, time = false) {
+export function sessionDate(value, time = false, locale = 'vi-VN') {
   if (value == null || value === '' || typeof value === 'boolean' || !Number.isFinite(Number(value))) return '—'
-  return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', ...(time ? { timeStyle: 'short' } : {}), timeZone: 'UTC' }).format(new Date(Number(value) * 1000))
+  return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', ...(time ? { timeStyle: 'short' } : {}), timeZone: 'UTC' }).format(new Date(Number(value) * 1000))
 }
 
 export function sessionRemainingDays(dataset, payload, record) {

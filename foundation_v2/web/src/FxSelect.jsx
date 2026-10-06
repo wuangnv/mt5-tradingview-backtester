@@ -1,4 +1,5 @@
-import React, { useEffect, useId, useRef, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useEffect, useId, useRef, useState } from 'react'
 import './fx-select.css'
 
 export function FilterIcon({ kind }) {
@@ -9,7 +10,10 @@ export function SelectChevron() {
   return <svg className="fx-select-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg>
 }
 
-export default function FxSelect({ label, value, options, onChange, icon, searchable = false, placeholder = 'Tìm…', emptyLabel = 'Không có lựa chọn phù hợp.', disabled = false, triggerContent, className = '', multiple = false, iconOnly = false, selectAllLabel = 'Chọn tất cả', menuTitle, selectionField = false, clearValue }) {
+export default function FxSelect({ label, value, options: inputOptions, onChange, icon, searchable = false, placeholder = 'Tìm…', emptyLabel = 'Không có lựa chọn phù hợp.', disabled = false, triggerContent, className = '', multiple = false, iconOnly = false, selectAllLabel = 'Chọn tất cả', menuTitle, selectionField = false, clearValue, localizeOptions = true, ...triggerProps }) {
+  const { t } = useTestingLocale()
+  const options = inputOptions.map(option => ({ ...option, label: option.localize === false || !localizeOptions ? option.label : t(option.label), detail: option.localize === false || !localizeOptions ? option.detail : t(option.detail) }))
+
   const [open, setOpen] = useState(false), [search, setSearch] = useState('')
   const root = useRef(null), trigger = useRef(null), input = useRef(null)
   const id = useId()
@@ -63,20 +67,20 @@ export default function FxSelect({ label, value, options, onChange, icon, search
       entries[next]?.focus()
     }
   }}>
-    <button type="button" className="fx-select-trigger" aria-label={label} aria-haspopup={searchable ? 'dialog' : 'listbox'} aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setSearch(''); setOpen(!open) }}>
-      {icon && <FilterIcon kind={icon} />}{!iconOnly && <><span className="fx-select-value">{triggerContent || selected?.label || 'Chọn…'}</span><SelectChevron /></>}
+    <button {...triggerProps} type="button" className="fx-select-trigger" aria-label={t(label)} aria-haspopup={searchable ? 'dialog' : 'listbox'} aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setSearch(''); setOpen(!open) }}>
+      {icon && <FilterIcon kind={icon} />}{!iconOnly && <><span className="fx-select-value">{(localizeOptions ? t(triggerContent) : triggerContent) || selected?.label || t("Chọn…")}</span><SelectChevron /></>}
     </button>
-    {open && <div id={id} className="fx-select-menu" role={searchable ? 'dialog' : 'presentation'} aria-label={searchable ? label : undefined}>
-      {menuTitle && <h3 className="fx-filter-title">{menuTitle}</h3>}
-      {selectionField && <div className="fx-filter-selection"><span>{multiple ? allSelected ? 'All' : options.filter(isSelected).map(option => option.label).join(', ') || 'None' : selected?.label}</span>{clearValue !== undefined && <button type="button" aria-label={`Clear ${label}`} onClick={() => onChange(clearValue)}>×</button>}<SelectChevron /></div>}
-      {multiple && !selectionField && <span className="fx-select-count">{value.length} / {options.length} đã chọn</span>}
-      {searchable && <input ref={input} type="search" aria-label={`Tìm ${label}`} placeholder={placeholder} value={search} onChange={event => setSearch(event.target.value)} />}
-      {multiple && <button type="button" role="checkbox" aria-checked={allSelected ? true : value.length > 0 ? 'mixed' : false} className="fx-select-all" onClick={() => onChange(allSelected ? [] : available.map(option => option.value))}><span className={`fx-select-checkbox${allSelected ? ' is-checked' : ''}`} aria-hidden="true">{allSelected ? '✓' : value.length > 0 ? '−' : ''}</span>{selectAllLabel}</button>}
-      <div role="listbox" tabIndex={-1} aria-label={label} aria-multiselectable={multiple || undefined}>{visible.map(option => <button type="button" role="option" key={option.value} aria-selected={isSelected(option)} disabled={option.disabled} title={option.disabled ? option.detail : undefined} onClick={() => {
+    {open && <div id={id} className="fx-select-menu" role={searchable ? 'dialog' : 'presentation'} aria-label={searchable ? t(label) : undefined}>
+      {menuTitle && <h3 className="fx-filter-title">{t(menuTitle)}</h3>}
+      {selectionField && <div className="fx-filter-selection"><span>{multiple ? allSelected ? t("All") : options.filter(isSelected).map(option => option.label).join(', ') || t("None") : selected?.label}</span>{clearValue !== undefined && <button type="button" aria-label={t('Bỏ lọc {label}', { label: t(label) })} onClick={() => onChange(clearValue)}>×</button>}<SelectChevron /></div>}
+      {multiple && !selectionField && <span className="fx-select-count">{value.length} / {options.length} {t("đã chọn")}</span>}
+      {searchable && <input ref={input} type="search" aria-label={t('Tìm {label}', { label: t(label) })} placeholder={t(placeholder)} value={search} onChange={event => setSearch(event.target.value)} />}
+      {multiple && <button type="button" role="checkbox" aria-checked={allSelected ? true : value.length > 0 ? 'mixed' : false} className="fx-select-all" onClick={() => onChange(allSelected ? [] : available.map(option => option.value))}><span className={`fx-select-checkbox${allSelected ? ' is-checked' : ''}`} aria-hidden="true">{allSelected ? '✓' : value.length > 0 ? '−' : ''}</span>{t(selectAllLabel)}</button>}
+      <div role="listbox" tabIndex={-1} aria-label={t(label)} aria-multiselectable={multiple || undefined}>{visible.map(option => <button type="button" role="option" key={option.value} aria-selected={isSelected(option)} disabled={option.disabled} title={option.disabled ? option.detail : undefined} onClick={() => {
         if (multiple) onChange(isSelected(option) ? value.filter(item => item !== option.value) : [...value, option.value])
         else { onChange(option.value); close() }
       }}>{multiple && <span className={`fx-select-checkbox${isSelected(option) ? ' is-checked' : ''}`} aria-hidden="true">{isSelected(option) ? '✓' : ''}</span>}<span>{option.label}{option.detail && <small>{option.detail}</small>}</span>{!multiple && isSelected(option) && <span className="fx-select-check" aria-hidden="true">✓</span>}</button>)}</div>
-      {!visible.length && <p role="status">{emptyLabel}</p>}
+      {!visible.length && <p role="status">{t(emptyLabel)}</p>}
     </div>}
   </div>
 }

@@ -234,3 +234,5 @@ native server screenshot upload stays disabled. App chrome shares Arial with the
 fixed 30px floating controls, 32px trading controls and centered 46px labeled rail actions.
 Floating tools start in separate desktop positions/mobile rows and retain move/pin/collapse.
 Scoped receipt: foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md.
+
+Testing component/state/language/paging contract: [testing-standard.md](testing-standard.md).

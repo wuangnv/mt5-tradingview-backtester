@@ -1,14 +1,17 @@
-import React, { useEffect, useId, useRef, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useEffect, useId, useRef, useState } from 'react'
 import './session-filter.css'
 
 export default function SessionFilter({ items, value, onChange, multiple = false, disabled = false, triggerContent, compact = false }) {
+  const { t } = useTestingLocale()
+
   const [open, setOpen] = useState(false), [search, setSearch] = useState('')
   const root = useRef(null), trigger = useRef(null), input = useRef(null)
   const id = useId()
   const all = multiple && value === null
   const selected = multiple ? value || [] : value ? [value] : []
   const visible = items.filter(item => `${item.name || item.record_id} ${item.instrument_id || ''}`.toLocaleLowerCase('vi').includes(search.trim().toLocaleLowerCase('vi')))
-  const label = all ? 'Tất cả phiên' : selected.length > 1 ? `${selected.length} phiên` : selected.length ? items.find(item => item.record_id === selected[0])?.name || selected[0] : 'Chọn phiên'
+  const label = all ? t('Tất cả phiên') : selected.length > 1 ? t("{count} phiên", { count: selected.length }) : selected.length ? items.find(item => item.record_id === selected[0])?.name || selected[0] : t('Chọn phiên')
   useEffect(() => {
     if (!open) return
     const position = () => {
@@ -44,12 +47,12 @@ export default function SessionFilter({ items, value, onChange, multiple = false
       event.preventDefault(); controls[next]?.focus()
     }
   }}>
-    <button type="button" className="fxa-button fxa-session-trigger" aria-label={`Session: ${label}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setOpen(!open); setSearch('') }}><span>{triggerContent || label}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></button>
-    {open && <div className="fxa-session-menu" id={id} role="dialog" aria-label="Chọn session">
-      <input ref={input} type="search" aria-label="Tìm phiên" placeholder="Tìm phiên…" value={search} onChange={event => setSearch(event.target.value)} />
-      {multiple && <button type="button" role="checkbox" aria-checked={all ? true : selected.length ? "mixed" : false} className="fxa-session-all" onClick={() => onChange(all ? [] : null)}><span className={`fx-select-checkbox${all ? " is-checked" : ""}`} aria-hidden="true">{all ? "✓" : selected.length ? "−" : ""}</span>Tất cả phiên</button>}
-      <div className="fxa-session-options" tabIndex={-1}>{visible.map(item => multiple ? <button type="button" role="checkbox" aria-checked={all || selected.includes(item.record_id)} key={item.record_id} className={all || selected.includes(item.record_id) ? 'is-selected' : ''} onClick={() => toggle(item)}><span className={`fx-select-checkbox${all || selected.includes(item.record_id) ? " is-checked" : ""}`} aria-hidden="true">{all || selected.includes(item.record_id) ? "✓" : ""}</span><span>{item.name || item.record_id}<small>{item.instrument_id || 'Chưa rõ asset'}{item.archived ? ' · Đã lưu trữ' : ''}</small></span></button> : <button type="button" key={item.record_id} aria-pressed={value === item.record_id} className={value === item.record_id ? 'is-selected' : ''} onClick={() => toggle(item)}><span>{item.name || item.record_id}<small>{item.instrument_id || 'Chưa rõ asset'}{item.archived ? ' · Đã lưu trữ' : ''}</small></span>{value === item.record_id && <span aria-hidden="true">✓</span>}</button>)}</div>
-      {!visible.length && <p className="fxa-empty">Không tìm thấy phiên.</p>}
+    <button type="button" className="fxa-button fxa-session-trigger" aria-label={t("Session: {name}", { name: label })} aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setOpen(!open); setSearch('') }}><span>{t(triggerContent) || label}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></button>
+    {open && <div className="fxa-session-menu" id={id} role="dialog" aria-label={t("Chọn session")}>
+      <input ref={input} type="search" aria-label={t("Tìm phiên")} placeholder={t("Tìm phiên…")} value={search} onChange={event => setSearch(event.target.value)} />
+      {multiple && <button type="button" role="checkbox" aria-checked={all ? true : selected.length ? "mixed" : false} className="fxa-session-all" onClick={() => onChange(all ? [] : null)}><span className={`fx-select-checkbox${all ? " is-checked" : ""}`} aria-hidden="true">{all ? "✓" : selected.length ? "−" : ""}</span>{t("Tất cả phiên")}</button>}
+      <div className="fxa-session-options" tabIndex={-1}>{visible.map(item => multiple ? <button type="button" role="checkbox" aria-checked={all || selected.includes(item.record_id)} key={item.record_id} className={all || selected.includes(item.record_id) ? 'is-selected' : ''} onClick={() => toggle(item)}><span className={`fx-select-checkbox${all || selected.includes(item.record_id) ? " is-checked" : ""}`} aria-hidden="true">{all || selected.includes(item.record_id) ? "✓" : ""}</span><span>{item.name || item.record_id}<small>{item.instrument_id || t("Chưa rõ asset")}{item.archived ? t(" · Đã lưu trữ") : ''}</small></span></button> : <button type="button" key={item.record_id} aria-pressed={value === item.record_id} className={value === item.record_id ? 'is-selected' : ''} onClick={() => toggle(item)}><span>{item.name || item.record_id}<small>{item.instrument_id || t("Chưa rõ asset")}{item.archived ? t(" · Đã lưu trữ") : ''}</small></span>{value === item.record_id && <span aria-hidden="true">✓</span>}</button>)}</div>
+      {!visible.length && <p className="fxa-empty">{t("Không tìm thấy phiên.")}</p>}
     </div>}
   </div>
 }

@@ -1,0 +1,63 @@
+/* Testing is the reference consumer; other workspaces opt in independently. */
+.fx-app[data-ui-area='testing'] {
+  --wm-text-value: 32px;
+  --wm-text-page: 22px;
+  --wm-text-dialog: 20px;
+  --wm-text-section: 16px;
+  --wm-text-body: 14px;
+  --wm-text-control: 13px;
+  --wm-text-meta: 12px;
+  --wm-space-1: 4px;
+  --wm-space-2: 8px;
+  --wm-space-3: 12px;
+  --wm-space-4: 16px;
+  --wm-space-6: 24px;
+  --wm-space-8: 32px;
+  --wm-control-height: 40px;
+  --wm-control-radius: 8px;
+  --wm-popup-radius: 12px;
+  font-size: var(--wm-text-body);
+}
+.fx-app[data-ui-area='testing'] .fx-content :is(h1, .wm-page-title) { font-size: var(--wm-text-page); line-height: 1.3; }
+.fx-app[data-ui-area='testing'] .fx-content :is(h2, h3) { font-size: var(--wm-text-section); line-height: 1.5; }
+.fx-app[data-ui-area='testing'] .fx-content :is(dialog, [role='dialog']) h2 { font-size: var(--wm-text-dialog); }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-metric, .fxs-metric, .fx-dashboard-metric) > strong { font-size: var(--wm-text-value); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-metric, .fxs-metric, .fx-dashboard-metric) > span { font-size: var(--wm-text-meta); line-height: 1.5; }
+.fx-app[data-ui-area='testing'] .fx-content small { font-size: var(--wm-text-meta); line-height: 1.5; }
+.fx-app[data-ui-area='testing'] .fx-content :is(table, button, input, select, textarea, .fx-select) { font-size: var(--wm-text-control); }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button, .fx-select-trigger, .fx-dashboard-refresh, .fx-dashboard-icon-button) { min-height: var(--wm-control-height); box-sizing: border-box; }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fx-select-menu, .fxa-session-menu, .fx-filter-popover) { border-radius: var(--wm-popup-radius); }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fxa-columns-control .fx-select-trigger) { width: 40px; height: 40px; min-width: 40px; padding: 0; border-radius: 50%; justify-content: center; }
+.fx-app[data-ui-area='testing'] .fx-content .fxa-detail-button { width: 32px; height: 32px; min-width: 32px; min-height: 32px; flex-shrink: 0; padding: 0; border-radius: 50%; }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fxa-detail-button, .fx-dashboard-icon-button) > svg { width: 18px; height: 18px; flex: 0 0 18px; }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fx-select-trigger, .fxa-filter-pill) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.fx-app[data-ui-area='testing'] .fx-content .fxa-pagination { min-height: 56px; padding-block: 8px; align-items: center; }
+.fx-app[data-ui-area='testing'] .fx-content .fxa-pagination > div { display: flex; align-items: center; }
+.fx-app[data-ui-area='testing'] .fx-content .fxa-pagination .fx-select-trigger { height: 40px; min-height: 40px; }
+.fx-app[data-ui-area='testing'] .fx-content :is(input, textarea):focus-visible { outline: none; border-color: var(--wm-focus); box-shadow: inset 0 0 0 1px var(--wm-focus); }
+.fx-app[data-ui-area='testing'] .fx-content input[type='checkbox']:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
+.wm-read-state { display: flex; align-items: center; gap: 12px; padding: 16px 0; color: var(--wm-content-muted); font-size: 14px; }
+.wm-read-state p { margin: 0; }
+.wm-read-state button { margin-left: auto; }
+.wm-skeleton { display: grid; gap: 16px; padding-block: 16px; }
+.wm-component-reference > section { padding-block: 24px; border-bottom: 1px solid var(--wm-control-border); }
+.wm-reference-controls { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.wm-reference-controls > .fx-select { min-width: 180px; }
+.wm-skeleton > span { display: block; min-height: 40px; border-radius: 8px; background: var(--wm-hover); animation: wm-load-pulse 1.4s ease-in-out infinite alternate; }
+.wm-skeleton > span:first-child { min-height: 96px; }
+@keyframes wm-load-pulse { to { opacity: .4; } }
+@media (prefers-reduced-motion: reduce) {
+  .fx-app[data-ui-area='testing'] *, .fx-app[data-ui-area='testing'] *::before, .fx-app[data-ui-area='testing'] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media (max-width: 480px) {
+  .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button, .fx-select-trigger, .fxa-detail-button) { min-height: 44px; }
+  .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fxa-columns-control .fx-select-trigger, .fxa-detail-button) { width: 44px; min-width: 44px; height: 44px; }
+}
+
+.fx-app[data-ui-area='testing'] .fx-content .fxr-integrated-sessions.fxs-page :is(.fxr-session-summary-card, .fxr-description-card) h2 { font-size: var(--wm-text-section); line-height: 1.5; }
+@media (max-width: 480px) {
+  .fx-app[data-ui-area='testing'] .fx-content .fxa-pagination .fx-select-trigger { height: 44px; min-height: 44px; }
+}
+
+/* Route chunks must not determine whether accessible headings are visible. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

@@ -1,0 +1,1364 @@
+{
+  "checks": [
+    {
+      "name": "demo-sessions-dark-vi-390",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-vi-768",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-en-390",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-en-768",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-dark-en-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-vi-390",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-vi-768",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-en-390",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-en-768",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-dark-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-dark-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-light-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-light-en-1710",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "requests": [
+    {
+      "phase": "actual-sessions-dark-vi-1710",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-vi-1710",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-vi-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-vi-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-en-1710",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-en-1710",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-en-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-dark-en-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-vi-1710",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-vi-1710",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-vi-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-vi-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-en-1710",
+      "path": "/api/v2/data/datasets",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-en-1710",
+      "path": "/api/v2/replay/sessions",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-en-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "method": "GET",
+      "demo": null
+    },
+    {
+      "phase": "actual-sessions-light-en-1710",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "method": "GET",
+      "demo": null
+    }
+  ],
+  "geometry": [],
+  "texts": [
+    {
+      "phase": "demo-sessions-dark-vi-390",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 6/7/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n6 thg 7, 2026 – 5 thg 10, 2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n0\nT6\n280\nT7\n-220\nCN\n0\nP/L tổng\n960 USD\nTỷ lệ thắng\n50%\nTỷ số lãi/lỗ trung bình\n1,8\nP/L tháng\n615 USD\nP/L tuần\n140 USD\nP/L ngày\n140 USD\nGiao dịch gần đây\nNhật ký\nPhiên / giao dịch\tĐóng lệnh (UTC)\tMã giao dịch\tP/L ròng\nLondon Breakout\nBán\n\t19:35 23/9/26\tEURUSD\t140 USD\nLondon Breakout\nMua\n\t17:50 19/9/26\tEURUSD\t0 USD\nLondon Breakout\nBán\n\t14:05 15/9/26\tEURUSD\t-90 USD\nLondon Breakout\nMua\n\t10:20 11/9/26\tEURUSD\t260 USD\nLondon Breakout\nBán\n\t08:35 7/9/26\tEURUSD\t85 USD\nSố dòng\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Số dư sau lệnh đóng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo tháng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo thứ",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Số dòng giao dịch gần đây",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Trang giao dịch gần đây",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-dark-vi-768",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 6/7/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n6 thg 7, 2026 – 5 thg 10, 2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n0\nT6\n280\nT7\n-220\nCN\n0\nP/L tổng\n960 USD\nTỷ lệ thắng\n50%\nTỷ số lãi/lỗ trung bình\n1,8\nP/L tháng\n615 USD\nP/L tuần\n140 USD\nP/L ngày\n140 USD\nGiao dịch gần đây\nNhật ký\nPhiên / giao dịch\tĐóng lệnh (UTC)\tMã giao dịch\tP/L ròng\nLondon Breakout\nBán\n\t19:35 23/9/26\tEURUSD\t140 USD\nLondon Breakout\nMua\n\t17:50 19/9/26\tEURUSD\t0 USD\nLondon Breakout\nBán\n\t14:05 15/9/26\tEURUSD\t-90 USD\nLondon Breakout\nMua\n\t10:20 11/9/26\tEURUSD\t260 USD\nLondon Breakout\nBán\n\t08:35 7/9/26\tEURUSD\t85 USD\nSố dòng\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Số dư sau lệnh đóng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo tháng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo thứ",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Số dòng giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Trang giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-dark-vi-1710",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 6/7/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n6 thg 7, 2026 – 5 thg 10, 2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n0\nT6\n280\nT7\n-220\nCN\n0\nP/L tổng\n960 USD\nTỷ lệ thắng\n50%\nTỷ số lãi/lỗ trung bình\n1,8\nP/L tháng\n615 USD\nP/L tuần\n140 USD\nP/L ngày\n140 USD\nGiao dịch gần đây\nNhật ký\nPhiên / giao dịch\tĐóng lệnh (UTC)\tMã giao dịch\tP/L ròng\nLondon Breakout\nBán\n\t19:35 23/9/26\tEURUSD\t140 USD\nLondon Breakout\nMua\n\t17:50 19/9/26\tEURUSD\t0 USD\nLondon Breakout\nBán\n\t14:05 15/9/26\tEURUSD\t-90 USD\nLondon Breakout\nMua\n\t10:20 11/9/26\tEURUSD\t260 USD\nLondon Breakout\nBán\n\t08:35 7/9/26\tEURUSD\t85 USD\nSố dòng\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Số dư sau lệnh đóng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo tháng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo thứ",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Số dòng giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Trang giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-dark-en-390",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nLondon Breakout\nEURUSD · M1\nClosed balance: 10,960 USD\nCreated: 7/6/26 · UTC\nNew session\nAnalytics\nSession settings\nLondon Breakout\nAccount balance\n10,960 USD\n\ndemo-london · EURUSD\n\nJul 6, 2026 – Oct 5, 2026\n7 days remaining\n\nGo to chart\nDescription\nClosed balance\nUSD · excludes floating P/L\n9,865\n10,412.5\n10,960\nStart\n20 closed trades\nResults by month\nUSD · net · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nResults by day of the week\nUSD · net · UTC\nMon\n490\nTue\n-310\nWed\n720\nThu\n0\nFri\n280\nSat\n-220\nSun\n0\nTotal P/L\n960 USD\nWin rate\n50%\nPayoff ratio\n1.8\nMonthly P/L\n615 USD\nWeekly P/L\n140 USD\nDaily P/L\n140 USD\nRecent trades\nJournal\nSession / trade\tClose time (UTC)\tSymbol\tNet P/L\nLondon Breakout\nSell\n\t9/23/26, 7:35 PM\tEURUSD\t140 USD\nLondon Breakout\nBuy\n\t9/19/26, 5:50 PM\tEURUSD\t0 USD\nLondon Breakout\nSell\n\t9/15/26, 2:05 PM\tEURUSD\t-90 USD\nLondon Breakout\nBuy\n\t9/11/26, 10:20 AM\tEURUSD\t260 USD\nLondon Breakout\nSell\n\t9/7/26, 8:35 AM\tEURUSD\t85 USD\nRows per page\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Closed balance",
+          "font": "16px"
+        },
+        {
+          "text": "Results by month",
+          "font": "16px"
+        },
+        {
+          "text": "Results by day of the week",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Recent trades rows per page",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Recent trades page",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-dark-en-768",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nLondon Breakout\nEURUSD · M1\nClosed balance: 10,960 USD\nCreated: 7/6/26 · UTC\nNew session\nAnalytics\nSession settings\nLondon Breakout\nAccount balance\n10,960 USD\n\ndemo-london · EURUSD\n\nJul 6, 2026 – Oct 5, 2026\n7 days remaining\n\nGo to chart\nDescription\nClosed balance\nUSD · excludes floating P/L\n9,865\n10,412.5\n10,960\nStart\n20 closed trades\nResults by month\nUSD · net · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nResults by day of the week\nUSD · net · UTC\nMon\n490\nTue\n-310\nWed\n720\nThu\n0\nFri\n280\nSat\n-220\nSun\n0\nTotal P/L\n960 USD\nWin rate\n50%\nPayoff ratio\n1.8\nMonthly P/L\n615 USD\nWeekly P/L\n140 USD\nDaily P/L\n140 USD\nRecent trades\nJournal\nSession / trade\tClose time (UTC)\tSymbol\tNet P/L\nLondon Breakout\nSell\n\t9/23/26, 7:35 PM\tEURUSD\t140 USD\nLondon Breakout\nBuy\n\t9/19/26, 5:50 PM\tEURUSD\t0 USD\nLondon Breakout\nSell\n\t9/15/26, 2:05 PM\tEURUSD\t-90 USD\nLondon Breakout\nBuy\n\t9/11/26, 10:20 AM\tEURUSD\t260 USD\nLondon Breakout\nSell\n\t9/7/26, 8:35 AM\tEURUSD\t85 USD\nRows per page\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Closed balance",
+          "font": "16px"
+        },
+        {
+          "text": "Results by month",
+          "font": "16px"
+        },
+        {
+          "text": "Results by day of the week",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Recent trades rows per page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Recent trades page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-dark-en-1710",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nLondon Breakout\nEURUSD · M1\nClosed balance: 10,960 USD\nCreated: 7/6/26 · UTC\nNew session\nAnalytics\nSession settings\nLondon Breakout\nAccount balance\n10,960 USD\n\ndemo-london · EURUSD\n\nJul 6, 2026 – Oct 5, 2026\n7 days remaining\n\nGo to chart\nDescription\nClosed balance\nUSD · excludes floating P/L\n9,865\n10,412.5\n10,960\nStart\n20 closed trades\nResults by month\nUSD · net · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nResults by day of the week\nUSD · net · UTC\nMon\n490\nTue\n-310\nWed\n720\nThu\n0\nFri\n280\nSat\n-220\nSun\n0\nTotal P/L\n960 USD\nWin rate\n50%\nPayoff ratio\n1.8\nMonthly P/L\n615 USD\nWeekly P/L\n140 USD\nDaily P/L\n140 USD\nRecent trades\nJournal\nSession / trade\tClose time (UTC)\tSymbol\tNet P/L\nLondon Breakout\nSell\n\t9/23/26, 7:35 PM\tEURUSD\t140 USD\nLondon Breakout\nBuy\n\t9/19/26, 5:50 PM\tEURUSD\t0 USD\nLondon Breakout\nSell\n\t9/15/26, 2:05 PM\tEURUSD\t-90 USD\nLondon Breakout\nBuy\n\t9/11/26, 10:20 AM\tEURUSD\t260 USD\nLondon Breakout\nSell\n\t9/7/26, 8:35 AM\tEURUSD\t85 USD\nRows per page\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Closed balance",
+          "font": "16px"
+        },
+        {
+          "text": "Results by month",
+          "font": "16px"
+        },
+        {
+          "text": "Results by day of the week",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Recent trades rows per page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        },
+        {
+          "label": "Recent trades page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-light-vi-390",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 6/7/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n6 thg 7, 2026 – 5 thg 10, 2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n0\nT6\n280\nT7\n-220\nCN\n0\nP/L tổng\n960 USD\nTỷ lệ thắng\n50%\nTỷ số lãi/lỗ trung bình\n1,8\nP/L tháng\n615 USD\nP/L tuần\n140 USD\nP/L ngày\n140 USD\nGiao dịch gần đây\nNhật ký\nPhiên / giao dịch\tĐóng lệnh (UTC)\tMã giao dịch\tP/L ròng\nLondon Breakout\nBán\n\t19:35 23/9/26\tEURUSD\t140 USD\nLondon Breakout\nMua\n\t17:50 19/9/26\tEURUSD\t0 USD\nLondon Breakout\nBán\n\t14:05 15/9/26\tEURUSD\t-90 USD\nLondon Breakout\nMua\n\t10:20 11/9/26\tEURUSD\t260 USD\nLondon Breakout\nBán\n\t08:35 7/9/26\tEURUSD\t85 USD\nSố dòng\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Số dư sau lệnh đóng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo tháng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo thứ",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Số dòng giao dịch gần đây",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Trang giao dịch gần đây",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-light-vi-768",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 6/7/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n6 thg 7, 2026 – 5 thg 10, 2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n0\nT6\n280\nT7\n-220\nCN\n0\nP/L tổng\n960 USD\nTỷ lệ thắng\n50%\nTỷ số lãi/lỗ trung bình\n1,8\nP/L tháng\n615 USD\nP/L tuần\n140 USD\nP/L ngày\n140 USD\nGiao dịch gần đây\nNhật ký\nPhiên / giao dịch\tĐóng lệnh (UTC)\tMã giao dịch\tP/L ròng\nLondon Breakout\nBán\n\t19:35 23/9/26\tEURUSD\t140 USD\nLondon Breakout\nMua\n\t17:50 19/9/26\tEURUSD\t0 USD\nLondon Breakout\nBán\n\t14:05 15/9/26\tEURUSD\t-90 USD\nLondon Breakout\nMua\n\t10:20 11/9/26\tEURUSD\t260 USD\nLondon Breakout\nBán\n\t08:35 7/9/26\tEURUSD\t85 USD\nSố dòng\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Số dư sau lệnh đóng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo tháng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo thứ",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Số dòng giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Trang giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-light-vi-1710",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nLondon Breakout\nEURUSD · M1\nSố dư sau lệnh đóng: 10.960 USD\nNgày tạo: 6/7/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nLondon Breakout\nSố dư tài khoản\n10.960 USD\n\ndemo-london · EURUSD\n\n6 thg 7, 2026 – 5 thg 10, 2026\nCòn 7 ngày\n\nMở biểu đồ\nMô tả\nSố dư sau lệnh đóng\nUSD · không gồm lãi/lỗ thả nổi\n9.865\n10.412,5\n10.960\nBắt đầu\n20 giao dịch đã đóng\nKết quả theo tháng\nUSD · ròng · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nKết quả theo thứ\nUSD · ròng · UTC\nT2\n490\nT3\n-310\nT4\n720\nT5\n0\nT6\n280\nT7\n-220\nCN\n0\nP/L tổng\n960 USD\nTỷ lệ thắng\n50%\nTỷ số lãi/lỗ trung bình\n1,8\nP/L tháng\n615 USD\nP/L tuần\n140 USD\nP/L ngày\n140 USD\nGiao dịch gần đây\nNhật ký\nPhiên / giao dịch\tĐóng lệnh (UTC)\tMã giao dịch\tP/L ròng\nLondon Breakout\nBán\n\t19:35 23/9/26\tEURUSD\t140 USD\nLondon Breakout\nMua\n\t17:50 19/9/26\tEURUSD\t0 USD\nLondon Breakout\nBán\n\t14:05 15/9/26\tEURUSD\t-90 USD\nLondon Breakout\nMua\n\t10:20 11/9/26\tEURUSD\t260 USD\nLondon Breakout\nBán\n\t08:35 7/9/26\tEURUSD\t85 USD\nSố dòng\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Số dư sau lệnh đóng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo tháng",
+          "font": "16px"
+        },
+        {
+          "text": "Kết quả theo thứ",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Số dòng giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Trang giao dịch gần đây",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-light-en-390",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nLondon Breakout\nEURUSD · M1\nClosed balance: 10,960 USD\nCreated: 7/6/26 · UTC\nNew session\nAnalytics\nSession settings\nLondon Breakout\nAccount balance\n10,960 USD\n\ndemo-london · EURUSD\n\nJul 6, 2026 – Oct 5, 2026\n7 days remaining\n\nGo to chart\nDescription\nClosed balance\nUSD · excludes floating P/L\n9,865\n10,412.5\n10,960\nStart\n20 closed trades\nResults by month\nUSD · net · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nResults by day of the week\nUSD · net · UTC\nMon\n490\nTue\n-310\nWed\n720\nThu\n0\nFri\n280\nSat\n-220\nSun\n0\nTotal P/L\n960 USD\nWin rate\n50%\nPayoff ratio\n1.8\nMonthly P/L\n615 USD\nWeekly P/L\n140 USD\nDaily P/L\n140 USD\nRecent trades\nJournal\nSession / trade\tClose time (UTC)\tSymbol\tNet P/L\nLondon Breakout\nSell\n\t9/23/26, 7:35 PM\tEURUSD\t140 USD\nLondon Breakout\nBuy\n\t9/19/26, 5:50 PM\tEURUSD\t0 USD\nLondon Breakout\nSell\n\t9/15/26, 2:05 PM\tEURUSD\t-90 USD\nLondon Breakout\nBuy\n\t9/11/26, 10:20 AM\tEURUSD\t260 USD\nLondon Breakout\nSell\n\t9/7/26, 8:35 AM\tEURUSD\t85 USD\nRows per page\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Closed balance",
+          "font": "16px"
+        },
+        {
+          "text": "Results by month",
+          "font": "16px"
+        },
+        {
+          "text": "Results by day of the week",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Recent trades rows per page",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Recent trades page",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-light-en-768",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nLondon Breakout\nEURUSD · M1\nClosed balance: 10,960 USD\nCreated: 7/6/26 · UTC\nNew session\nAnalytics\nSession settings\nLondon Breakout\nAccount balance\n10,960 USD\n\ndemo-london · EURUSD\n\nJul 6, 2026 – Oct 5, 2026\n7 days remaining\n\nGo to chart\nDescription\nClosed balance\nUSD · excludes floating P/L\n9,865\n10,412.5\n10,960\nStart\n20 closed trades\nResults by month\nUSD · net · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nResults by day of the week\nUSD · net · UTC\nMon\n490\nTue\n-310\nWed\n720\nThu\n0\nFri\n280\nSat\n-220\nSun\n0\nTotal P/L\n960 USD\nWin rate\n50%\nPayoff ratio\n1.8\nMonthly P/L\n615 USD\nWeekly P/L\n140 USD\nDaily P/L\n140 USD\nRecent trades\nJournal\nSession / trade\tClose time (UTC)\tSymbol\tNet P/L\nLondon Breakout\nSell\n\t9/23/26, 7:35 PM\tEURUSD\t140 USD\nLondon Breakout\nBuy\n\t9/19/26, 5:50 PM\tEURUSD\t0 USD\nLondon Breakout\nSell\n\t9/15/26, 2:05 PM\tEURUSD\t-90 USD\nLondon Breakout\nBuy\n\t9/11/26, 10:20 AM\tEURUSD\t260 USD\nLondon Breakout\nSell\n\t9/7/26, 8:35 AM\tEURUSD\t85 USD\nRows per page\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Closed balance",
+          "font": "16px"
+        },
+        {
+          "text": "Results by month",
+          "font": "16px"
+        },
+        {
+          "text": "Results by day of the week",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Recent trades rows per page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Recent trades page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "demo-sessions-light-en-1710",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nLondon Breakout\nEURUSD · M1\nClosed balance: 10,960 USD\nCreated: 7/6/26 · UTC\nNew session\nAnalytics\nSession settings\nLondon Breakout\nAccount balance\n10,960 USD\n\ndemo-london · EURUSD\n\nJul 6, 2026 – Oct 5, 2026\n7 days remaining\n\nGo to chart\nDescription\nClosed balance\nUSD · excludes floating P/L\n9,865\n10,412.5\n10,960\nStart\n20 closed trades\nResults by month\nUSD · net · UTC\n2026-07\n430\n2026-08\n-85\n2026-09\n615\nResults by day of the week\nUSD · net · UTC\nMon\n490\nTue\n-310\nWed\n720\nThu\n0\nFri\n280\nSat\n-220\nSun\n0\nTotal P/L\n960 USD\nWin rate\n50%\nPayoff ratio\n1.8\nMonthly P/L\n615 USD\nWeekly P/L\n140 USD\nDaily P/L\n140 USD\nRecent trades\nJournal\nSession / trade\tClose time (UTC)\tSymbol\tNet P/L\nLondon Breakout\nSell\n\t9/23/26, 7:35 PM\tEURUSD\t140 USD\nLondon Breakout\nBuy\n\t9/19/26, 5:50 PM\tEURUSD\t0 USD\nLondon Breakout\nSell\n\t9/15/26, 2:05 PM\tEURUSD\t-90 USD\nLondon Breakout\nBuy\n\t9/11/26, 10:20 AM\tEURUSD\t260 USD\nLondon Breakout\nSell\n\t9/7/26, 8:35 AM\tEURUSD\t85 USD\nRows per page\n5\n‹\n1\n/ 4\n›",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "London Breakout",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Closed balance",
+          "font": "16px"
+        },
+        {
+          "text": "Results by month",
+          "font": "16px"
+        },
+        {
+          "text": "Results by day of the week",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Recent trades rows per page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        },
+        {
+          "label": "Recent trades page",
+          "height": 40,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "actual-sessions-dark-vi-1710",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nExness · EURUSDm · M1 · Jul–Oct 2026\nEURUSDm · 60s\nSố dư sau lệnh đóng: —\nNgày tạo: 5/10/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nExness · EURUSDm · M1 · Jul–Oct 2026\nSố dư tài khoản\n—\n\nChưa gắn chiến lược · EURUSDm\n\n5 thg 7, 2026 – 5 thg 10, 2026\nCòn 91 ngày\n\nMở biểu đồ\nMô tả\n\nReal Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.\n\nChưa có phân tích giao dịch.\n\nP/L tổng\n—\nTỷ lệ thắng\n—\nTỷ số lãi/lỗ trung bình\n—\nP/L tháng\n—\nP/L tuần\n—\nP/L ngày\n—\nGiao dịch gần đây\nNhật ký\nChưa có giao dịch đóng\n\nMở biểu đồ để bắt đầu luyện tập.\n\nMở biểu đồ",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "Exness · EURUSDm · M1 · Jul–Oct 2026",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        },
+        {
+          "text": "Chưa có giao dịch đóng",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "actual-sessions-dark-en-1710",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nExness · EURUSDm · M1 · Jul–Oct 2026\nEURUSDm · 60s\nClosed balance: —\nCreated: 10/5/26 · UTC\nNew session\nAnalytics\nSession settings\nExness · EURUSDm · M1 · Jul–Oct 2026\nAccount balance\n—\n\nNo strategy assigned · EURUSDm\n\nJul 5, 2026 – Oct 5, 2026\n91 days remaining\n\nGo to chart\nDescription\n\nReal Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.\n\nNo trade analytics are available.\n\nTotal P/L\n—\nWin rate\n—\nPayoff ratio\n—\nMonthly P/L\n—\nWeekly P/L\n—\nDaily P/L\n—\nRecent trades\nJournal\nNo closed trades yet\n\nOpen the chart to start practicing.\n\nGo to chart",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "Exness · EURUSDm · M1 · Jul–Oct 2026",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        },
+        {
+          "text": "No closed trades yet",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(65, 65, 65)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "actual-sessions-light-vi-1710",
+      "visibleTitles": [],
+      "text": "Phiên\nChọn phiên\nExness · EURUSDm · M1 · Jul–Oct 2026\nEURUSDm · 60s\nSố dư sau lệnh đóng: —\nNgày tạo: 5/10/26 · UTC\nPhiên mới\nPhân tích\nCài đặt phiên\nExness · EURUSDm · M1 · Jul–Oct 2026\nSố dư tài khoản\n—\n\nChưa gắn chiến lược · EURUSDm\n\n5 thg 7, 2026 – 5 thg 10, 2026\nCòn 91 ngày\n\nMở biểu đồ\nMô tả\n\nReal Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.\n\nChưa có phân tích giao dịch.\n\nP/L tổng\n—\nTỷ lệ thắng\n—\nTỷ số lãi/lỗ trung bình\n—\nP/L tháng\n—\nP/L tuần\n—\nP/L ngày\n—\nGiao dịch gần đây\nNhật ký\nChưa có giao dịch đóng\n\nMở biểu đồ để bắt đầu luyện tập.\n\nMở biểu đồ",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "Exness · EURUSDm · M1 · Jul–Oct 2026",
+          "font": "16px"
+        },
+        {
+          "text": "Mô tả",
+          "font": "16px"
+        },
+        {
+          "text": "Giao dịch gần đây",
+          "font": "16px"
+        },
+        {
+          "text": "Chưa có giao dịch đóng",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Mở phân tích",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(209, 209, 209)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    },
+    {
+      "phase": "actual-sessions-light-en-1710",
+      "visibleTitles": [],
+      "text": "Sessions\nSelect a session\nExness · EURUSDm · M1 · Jul–Oct 2026\nEURUSDm · 60s\nClosed balance: —\nCreated: 10/5/26 · UTC\nNew session\nAnalytics\nSession settings\nExness · EURUSDm · M1 · Jul–Oct 2026\nAccount balance\n—\n\nNo strategy assigned · EURUSDm\n\nJul 5, 2026 – Oct 5, 2026\n91 days remaining\n\nGo to chart\nDescription\n\nReal Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.\n\nNo trade analytics are available.\n\nTotal P/L\n—\nWin rate\n—\nPayoff ratio\n—\nMonthly P/L\n—\nWeekly P/L\n—\nDaily P/L\n—\nRecent trades\nJournal\nNo closed trades yet\n\nOpen the chart to start practicing.\n\nGo to chart",
+      "documentOverflow": 0,
+      "contentOverflow": 0,
+      "headings": [
+        {
+          "text": "Exness · EURUSDm · M1 · Jul–Oct 2026",
+          "font": "16px"
+        },
+        {
+          "text": "Description",
+          "font": "16px"
+        },
+        {
+          "text": "Recent trades",
+          "font": "16px"
+        },
+        {
+          "text": "No closed trades yet",
+          "font": "16px"
+        }
+      ],
+      "controls": [
+        {
+          "label": "Open analytics",
+          "height": 44,
+          "font": "13px",
+          "border": "rgb(211, 211, 211)"
+        }
+      ],
+      "values": [
+        "32px",
+        "32px",
+        "32px",
+        "32px",
+        "32px"
+      ]
+    }
+  ],
+  "before": [
+    {
+      "file": "AnalyticsFilterBar.jsx",
+      "sha256": "2211dba3036a151e84f6a5911026796ea3974c328e712a84f16ac1459a9a51fd"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "75013a90050308ad151f1421bcda5bf2968802a0aad5b2ac183a68a852942dc1"
+    },
+    {
+      "file": "AnalyticsWorkspace.jsx",
+      "sha256": "17ed1de8b6104608350d342353e0ff2148efe61f1c977292e85b5b4b59ce64ca"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "3c1afa01aa1dcbf39d58e721dd7a4b40d37a9ceef59aaf4a62727782674d4ea8"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "5456c1b136b95dde6959439e3a39629674bfa819a0774d618b1ba6a85f142e6d"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "2b4418e19d5d25fadb0fc2ee399a6f6c1dc3c19d396cc95689c0067b769756d5"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "33f89f1ff3b82ee101ae12714114dedcb7a5d594065f84b706b83c7551183286"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8bac3f5092ddec0ccfd397fc6acf3f043a255d397c63cc99aae2e19fc8217a6c"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "9e209845e0be0bff18e943b036b3ca3a131856212d0a7cd55ffaad4c4998b4c5"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "ca05fbb19cb37c1f9875bb434b27742036a72c9c17ab86f016cdaf2f7d04e4ba"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "6438d21f493ed3f04d54f41e7fcddf19c41ab71856195f7966036af344625856"
+    },
+    {
+      "file": "ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "a44b7b2950dc2663414ca6bb524eed7c7534155f9ae37ce6c5ca357531636075"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "345a264f6ff6e5c8013e8a78d29d5aa55e638fbdd8c596024dd7210cd5fffbf5"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "PropAnalytics.jsx",
+      "sha256": "621b4e37b59c6976269953c60726317ae5e0a0e905186455862cc4313667c5a2"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "session-picker.css",
+      "sha256": "17843e39af688f570bd96b019bf62c6bf57a0024995802b164919f8b1d7cb1ae"
+    },
+    {
+      "file": "session-settings.css",
+      "sha256": "85534a2d413dee8014856d2c9cc5c29ff1ba124068d50922afefb4247b4e57d8"
+    },
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "6da81c53038e5b1ae0ce23cbf6d030131685f090ebaad6271871b89cb43b82aa"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "5e1ac569daae65b9a400939a49e81b3c9878821e98cc5bd6cbc4f81724316ad9"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "866abc84469a43e18f3f7633eb98f44de53e6b042d03421c0b0a3be4783e50f9"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "4a236b3a9e07cdd9d29fa9405aa384b6e8cd397312b60b57570ce0e43baa155c"
+    },
+    {
+      "file": "SessionReports.jsx",
+      "sha256": "98b12e23a0e03a5b717984482c2799e2d7481c5f64b0310ef8e52d9e14b77943"
+    },
+    {
+      "file": "SessionSettingsDrawer.jsx",
+      "sha256": "89384a3b9a39a10ff8ef1ee9f49dc43a750ef99dedae3dda1b992937bbec7de0"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "dc4d575c2ad736a44c5cd8eb51861f5793a044366a16c209e9b9cebb0df35ca5"
+    },
+    {
+      "file": "testing-enums.json",
+      "sha256": "c632ff35ffed44b31207bff856ea9d8b823cb2574d2ffd538f34ff2fe3ef233b"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "3ede264b3c21dce1c66a64bd211f0ff3653be6fe2caff3bd85981ee92622d1dd"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "02b485af029c16f400e4f42ddcbec3e71a90646aa2ea106479beeb2fbcfbeb47"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "tradingAnalyticsModel.js",
+      "sha256": "3b2c500152e2aec0b0c137ca347ca0a30c5edd4b144cc847e6f50d77cce5c001"
+    }
+  ],
+  "phase": "actual-sessions-light-en-1710",
+  "actualRecordsUnchanged": true,
+  "after": [
+    {
+      "file": "AnalyticsFilterBar.jsx",
+      "sha256": "2211dba3036a151e84f6a5911026796ea3974c328e712a84f16ac1459a9a51fd"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "75013a90050308ad151f1421bcda5bf2968802a0aad5b2ac183a68a852942dc1"
+    },
+    {
+      "file": "AnalyticsWorkspace.jsx",
+      "sha256": "17ed1de8b6104608350d342353e0ff2148efe61f1c977292e85b5b4b59ce64ca"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "3c1afa01aa1dcbf39d58e721dd7a4b40d37a9ceef59aaf4a62727782674d4ea8"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "5456c1b136b95dde6959439e3a39629674bfa819a0774d618b1ba6a85f142e6d"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "2b4418e19d5d25fadb0fc2ee399a6f6c1dc3c19d396cc95689c0067b769756d5"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "33f89f1ff3b82ee101ae12714114dedcb7a5d594065f84b706b83c7551183286"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8bac3f5092ddec0ccfd397fc6acf3f043a255d397c63cc99aae2e19fc8217a6c"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "9e209845e0be0bff18e943b036b3ca3a131856212d0a7cd55ffaad4c4998b4c5"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "ca05fbb19cb37c1f9875bb434b27742036a72c9c17ab86f016cdaf2f7d04e4ba"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "6438d21f493ed3f04d54f41e7fcddf19c41ab71856195f7966036af344625856"
+    },
+    {
+      "file": "ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "a44b7b2950dc2663414ca6bb524eed7c7534155f9ae37ce6c5ca357531636075"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "345a264f6ff6e5c8013e8a78d29d5aa55e638fbdd8c596024dd7210cd5fffbf5"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "PropAnalytics.jsx",
+      "sha256": "621b4e37b59c6976269953c60726317ae5e0a0e905186455862cc4313667c5a2"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "session-picker.css",
+      "sha256": "17843e39af688f570bd96b019bf62c6bf57a0024995802b164919f8b1d7cb1ae"
+    },
+    {
+      "file": "session-settings.css",
+      "sha256": "85534a2d413dee8014856d2c9cc5c29ff1ba124068d50922afefb4247b4e57d8"
+    },
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "6da81c53038e5b1ae0ce23cbf6d030131685f090ebaad6271871b89cb43b82aa"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "5e1ac569daae65b9a400939a49e81b3c9878821e98cc5bd6cbc4f81724316ad9"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "866abc84469a43e18f3f7633eb98f44de53e6b042d03421c0b0a3be4783e50f9"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "4a236b3a9e07cdd9d29fa9405aa384b6e8cd397312b60b57570ce0e43baa155c"
+    },
+    {
+      "file": "SessionReports.jsx",
+      "sha256": "98b12e23a0e03a5b717984482c2799e2d7481c5f64b0310ef8e52d9e14b77943"
+    },
+    {
+      "file": "SessionSettingsDrawer.jsx",
+      "sha256": "89384a3b9a39a10ff8ef1ee9f49dc43a750ef99dedae3dda1b992937bbec7de0"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "dc4d575c2ad736a44c5cd8eb51861f5793a044366a16c209e9b9cebb0df35ca5"
+    },
+    {
+      "file": "testing-enums.json",
+      "sha256": "c632ff35ffed44b31207bff856ea9d8b823cb2574d2ffd538f34ff2fe3ef233b"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "3ede264b3c21dce1c66a64bd211f0ff3653be6fe2caff3bd85981ee92622d1dd"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "02b485af029c16f400e4f42ddcbec3e71a90646aa2ea106479beeb2fbcfbeb47"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "tradingAnalyticsModel.js",
+      "sha256": "3b2c500152e2aec0b0c137ca347ca0a30c5edd4b144cc847e6f50d77cce5c001"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

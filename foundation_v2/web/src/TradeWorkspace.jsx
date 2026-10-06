@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import './TradeWorkspace.css'
 import { marketQuotes } from './replayOrderModel.js'
 import { useReplayTickOptions } from './useReplayTickOptions.js'
@@ -98,6 +99,8 @@ function validateDraft(draft, entry) {
 }
 
 function RiskPreview({ draft, entry, instrument, costModel }) {
+  const { t, fmt } = useTestingLocale()
+  const formatMoney = (value, currency) => fmt(value, ` ${currency || t('Đơn vị tài khoản')}`)
   const quantity = optionalNumber(draft.quantity)
   const stop = optionalNumber(draft.stopLoss)
   const target = optionalNumber(draft.takeProfit)
@@ -114,9 +117,9 @@ function RiskPreview({ draft, entry, instrument, costModel }) {
   const rMultiple = risk > 0 && reward !== null ? reward / risk : NaN
   return (
     <div className="trade-risk-preview" data-testid="trade-risk-preview">
-      <div><span>Risk tới SL</span><strong>{formatMoney(netRisk, costModel?.account_ccy || 'USD')}</strong><small>gross {formatMoney(risk, costModel?.account_ccy || 'USD')} + phí {formatMoney(fees, costModel?.account_ccy || 'USD')}</small></div>
-      <div><span>Reward tới TP</span><strong>{formatMoney(netReward, costModel?.account_ccy || 'USD')}</strong><small>ước tính theo giá tham chiếu</small></div>
-      <div><span>Planned R</span><strong>{Number.isFinite(rMultiple) ? `${rMultiple.toFixed(2)}R` : 'N/A'}</strong><small>chưa phải kết quả thực tế</small></div>
+      <div><span>{t('Risk tới SL')}</span><strong>{formatMoney(netRisk, costModel?.account_ccy || 'USD')}</strong><small>{t('Trước phí {risk} + phí {fees}', { risk: formatMoney(risk, costModel?.account_ccy), fees: formatMoney(fees, costModel?.account_ccy) })}</small></div>
+      <div><span>{t('Reward tới TP')}</span><strong>{formatMoney(netReward, costModel?.account_ccy || 'USD')}</strong><small>{t('Ước tính theo giá tham chiếu')}</small></div>
+      <div><span>{t('Planned R')}</span><strong>{Number.isFinite(rMultiple) ? fmt(rMultiple, ' R') : '—'}</strong><small>{t('Chưa phải kết quả thực tế')}</small></div>
     </div>
   )
 }

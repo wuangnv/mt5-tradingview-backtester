@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import FxSelect from './FxSelect.jsx'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import NotionConnector from './NotionConnector.jsx'
 import './PropWorkspace.css'
 
@@ -10,25 +12,26 @@ function utcIsoFromInput(value) {
   return parsed.toISOString()
 }
 
-function formatMoney(value, currency = 'USD') {
+function formatPropMoney(value, currency = 'USD', locale = 'vi-VN') {
+  if (value === null || value === undefined || value === '' || typeof value === 'boolean') return '—'
   const number = Number(value)
   if (!Number.isFinite(number)) return 'N/A'
   try {
-    return new Intl.NumberFormat('vi-VN', {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency,
       maximumFractionDigits: 2,
     }).format(number)
   } catch {
-    return `${number.toLocaleString('vi-VN')} ${currency}`
+    return `${number.toLocaleString(locale)} ${currency}`
   }
 }
 
-function formatUtc(value) {
+function formatPropUtc(value, locale = 'vi-VN') {
   if (!value) return 'N/A'
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) return 'N/A'
-  return new Intl.DateTimeFormat('vi-VN', {
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: 'short',
     timeStyle: 'short',
     timeZone: 'UTC',
@@ -109,7 +112,7 @@ function sessionLabel(session) {
   return profile.source_kind === 'custom' ? 'Custom practice' : 'Generic practice'
 }
 
-function reportReasonLabel(code) {
+function propReasonLabel(code) {
   const labels = {
     daily_loss_breached: 'Daily loss đã bị breach.',
     overall_drawdown_breached: 'Overall drawdown đã bị breach.',
@@ -142,11 +145,11 @@ function objectiveStateLabel(value) {
   return 'Chưa rõ'
 }
 
-function objectiveNumber(value, currency = 'USD') {
-  return value === null || value === undefined ? 'N/A' : formatMoney(value, currency)
+function objectiveNumber(value, currency = 'USD', locale = 'vi-VN') {
+  return value === null || value === undefined ? 'N/A' : formatPropMoney(value, currency, locale)
 }
 
-function objectiveSummary(objectives, phase, currency) {
+function objectiveSummary(objectives, phase, currency, locale = 'vi-VN') {
   if (!objectives || typeof objectives !== 'object') return null
   const money = objectives.money && typeof objectives.money === 'object' ? objectives.money : null
   const calendar = objectives.calendar && typeof objectives.calendar === 'object' ? objectives.calendar : null
@@ -156,18 +159,18 @@ function objectiveSummary(objectives, phase, currency) {
     positionsReady: objectives.positions_ready === true,
     profitTarget: money?.profit_target ? {
       status: objectiveStateLabel(money.profit_target.hit),
-      current: objectiveNumber(money.profit_target.current, currency),
-      target: objectiveNumber(money.profit_target.target, currency),
+      current: objectiveNumber(money.profit_target.current, currency, locale),
+      target: objectiveNumber(money.profit_target.target, currency, locale),
     } : null,
     dailyLoss: money?.daily_loss ? {
       status: money.daily_loss.breached ? 'Breached' : 'Trong giới hạn',
-      current: objectiveNumber(money.daily_loss.current, currency),
-      floor: objectiveNumber(money.daily_loss.floor, currency),
+      current: objectiveNumber(money.daily_loss.current, currency, locale),
+      floor: objectiveNumber(money.daily_loss.floor, currency, locale),
     } : null,
     overallDrawdown: money?.overall_drawdown ? {
       status: money.overall_drawdown.breached ? 'Breached' : 'Trong giới hạn',
-      current: objectiveNumber(money.overall_drawdown.current, currency),
-      floor: objectiveNumber(money.overall_drawdown.floor, currency),
+      current: objectiveNumber(money.overall_drawdown.current, currency, locale),
+      floor: objectiveNumber(money.overall_drawdown.floor, currency, locale),
       kind: money.overall_drawdown.kind || 'static',
     } : null,
     calendar: calendar ? {
@@ -182,6 +185,11 @@ function objectiveSummary(objectives, phase, currency) {
 }
 
 export default function PropWorkspace({ workspace }) {
+  const { t, locale, statusLabel } = useTestingLocale()
+  const formatMoney = (value, currency) => formatPropMoney(value, currency, locale)
+  const formatUtc = value => formatPropUtc(value, locale)
+  const reportReasonLabel = code => t(propReasonLabel(code))
+
   const [draft, setDraft] = useState(initialDraft)
   const [sessions, setSessions] = useState({ status: 'loading', items: [], error: null })
   const [selected, setSelected] = useState({ status: 'idle', session: null, attempts: [], bundle: null, report: null, reportError: null, error: null })
@@ -402,7 +410,7 @@ export default function PropWorkspace({ workspace }) {
     } catch (error) {
       if (error.kind === 'conflict') setConflict(error.message)
       else if (error.kind === 'denied') setSessions({ status: 'denied', items: [], error: error.message })
-      else setConflict(`Không tạo được session: ${error.message}`)
+      else setConflict(t("Không tạo được session: {error}", { error: error.message }))
       if (error.kind !== 'conflict') await loadSessions({ preserveSelection: true }).catch(() => {})
     } finally {
       setPendingAction('')
@@ -443,9 +451,9 @@ export default function PropWorkspace({ workspace }) {
       }))
       await loadBundle(updatedSession, [payload.attempt])
     } catch (error) {
-      if (error.kind === 'conflict') setConflict(`Lifecycle chưa đổi được: ${error.message}`)
+      if (error.kind === 'conflict') setConflict(t("Lifecycle chưa đổi được: {error}", { error: error.message }))
       else if (error.kind === 'denied') setSelected((current) => ({ ...current, status: 'denied', error: error.message }))
-      else setConflict(`Lifecycle chưa đổi được: ${error.message}`)
+      else setConflict(t("Lifecycle chưa đổi được: {error}", { error: error.message }))
     } finally {
       setPendingAction('')
     }
@@ -477,7 +485,7 @@ export default function PropWorkspace({ workspace }) {
       link.remove()
       URL.revokeObjectURL(href)
     } catch (error) {
-      setConflict(`Không export được report: ${error.message}`)
+      setConflict(t("Không export được report: {error}", { error: error.message }))
     } finally {
       setPendingAction('')
     }
@@ -489,7 +497,7 @@ export default function PropWorkspace({ workspace }) {
   const report = selected.report
   const currency = selected.session?.profile?.phases?.[0]?.currency || draft.currency
   const lifecycleObjectives = bundle?.resume_state?.prop_lifecycle?.last_objectives || report?.objectives || null
-  const objectives = objectiveSummary(lifecycleObjectives, phase, currency)
+  const objectives = objectiveSummary(lifecycleObjectives, phase, currency, locale)
   const selectedReplayTarget = reportReplayHref(report, workspace)
   const cursor = bundle?.resume_state?.cursor
   const selectedTerminal = TERMINAL_STATUSES.has(attempt?.status)
@@ -500,51 +508,51 @@ export default function PropWorkspace({ workspace }) {
     <main className="prop-shell wm-page">
       <header className="prop-topbar wm-page-header">
         <div>
-          <h1>Luyện challenge</h1>
+          <h1>{t("Luyện challenge")}</h1>
         </div>
         <div className="prop-topbar-actions">
-          <a className="context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}`}>Replay</a>
-          <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}`}>Học</a>
+          <a className="context-link" href={`/?view=replay&workspace=${encodeURIComponent(workspace)}`}>{t("Replay")}</a>
+          <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}`}>{t("Học")}</a>
           <div className="prop-lock" data-testid="prop-lock">
-            <strong>SIMULATION ONLY</strong>
-            <span>Không broker call · không credential · tiền ảo</span>
+            <strong>{t("SIMULATION ONLY")}</strong>
+            <span>{t("Không broker call · không credential · tiền ảo")}</span>
           </div>
         </div>
       </header>
 
-      <nav className="prop-tabs" aria-label="Testing views">
+      <nav className="prop-tabs" aria-label={t("Testing views")}>
         <button
           type="button"
           className={activeTab === 'sessions' ? 'is-active' : ''}
           aria-current={activeTab === 'sessions' ? 'page' : undefined}
           onClick={() => setActiveTab('sessions')}
-        >Sessions</button>
+        >{t("Sessions")}</button>
         <button
           type="button"
           className={activeTab === 'reports' ? 'is-active' : ''}
           aria-current={activeTab === 'reports' ? 'page' : undefined}
           onClick={() => setActiveTab('reports')}
-        >Reports</button>
+        >{t("Reports")}</button>
         <button
           type="button"
           className={activeTab === 'notion' ? 'is-active' : ''}
           aria-current={activeTab === 'notion' ? 'page' : undefined}
           data-testid="prop-notion-tab"
           onClick={() => setActiveTab('notion')}
-        >Notion</button>
+        >{t("Notion")}</button>
       </nav>
 
       {activeTab === 'sessions' && <section className="prop-layout">
         <aside className="prop-sidebar">
           <div className="prop-section-head">
-            <div><span>Workspace</span><strong>{workspace}</strong></div>
+            <div><span>{t("Workspace")}</span><strong>{workspace}</strong></div>
             <small>{sessionCountLabel}</small>
           </div>
 
-          {sessions.status === 'loading' && <StateMessage kind="loading" testId="prop-loading">Đang tìm session đã lưu…</StateMessage>}
-          {sessions.status === 'denied' && <StateMessage kind="denied" testId="prop-denied">Workspace này không có quyền đọc Prop session.</StateMessage>}
-          {sessions.status === 'error' && <StateMessage kind="error" testId="prop-error">Không đọc được danh sách: {sessions.error}</StateMessage>}
-          {sessions.status === 'ready' && !sessions.items.length && <StateMessage kind="empty" testId="prop-empty">Chưa có session. Tạo một phiên luyện ở form bên cạnh.</StateMessage>}
+          {sessions.status === 'loading' && <StateMessage kind="loading" testId="prop-loading">{t("Đang tìm session đã lưu…")}</StateMessage>}
+          {sessions.status === 'denied' && <StateMessage kind="denied" testId="prop-denied">{t("Workspace này không có quyền đọc Prop session.")}</StateMessage>}
+          {sessions.status === 'error' && <StateMessage kind="error" testId="prop-error">{t("Không đọc được danh sách:")} {sessions.error}</StateMessage>}
+          {sessions.status === 'ready' && !sessions.items.length && <StateMessage kind="empty" testId="prop-empty">{t("Chưa có session. Tạo một phiên luyện ở form bên cạnh.")}</StateMessage>}
 
           <div className="prop-session-list" data-testid="prop-session-list">
             {sessions.items.map((session) => {
@@ -559,7 +567,7 @@ export default function PropWorkspace({ workspace }) {
                 >
                   <span>{sessionLabel(session)}</span>
                   <strong>{session.session_id}</strong>
-                  <small>{session.status} · rev {session.revision}</small>
+                  <small>{statusLabel('session', session.status)} {t("· rev")} {session.revision}</small>
                 </button>
               )
             })}
@@ -569,186 +577,173 @@ export default function PropWorkspace({ workspace }) {
         <section className={`prop-main${selected.session ? ' has-selection' : ''}`}>
           {conflict && (
             <StateMessage kind="conflict" testId="prop-conflict">
-              <strong>Xung đột / dữ liệu chưa hợp lệ.</strong> {conflict}
+              <strong>{t("Xung đột / dữ liệu chưa hợp lệ.")}</strong> {conflict}
             </StateMessage>
           )}
 
-          <section className="prop-wizard" aria-label="Tạo Prop session">
+          <section className="prop-wizard" aria-label={t("Tạo Prop session")}>
             <div className="prop-section-head">
-              <div><strong>Tạo phiên luyện</strong><span>Generic / custom practice profile</span></div>
-              <small>1 phase · UTC · static loss</small>
+              <div><strong>{t("Tạo phiên luyện")}</strong><span>{t("Generic / custom practice profile")}</span></div>
+              <small>{t("1 phase · UTC · static loss")}</small>
             </div>
             <form onSubmit={createSession}>
               <label className="prop-field prop-field-wide">
-                <span>Tên session</span>
-                <input aria-label="Tên session" value={draft.name} onChange={(event) => updateDraft('name', event.target.value)} />
+                <span>{t("Tên session")}</span>
+                <input aria-label={t("Tên session")} value={draft.name} onChange={(event) => updateDraft('name', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Profile</span>
-                <select aria-label="Profile" value={draft.profileKind} onChange={(event) => updateDraft('profileKind', event.target.value)}>
-                  <option value="generic">Generic practice</option>
-                  <option value="custom">Custom practice</option>
-                </select>
+                <span>{t("Profile")}</span>
+                <FxSelect label={t("Profile")} value={draft.profileKind} onChange={value => updateDraft('profileKind', value)} localizeOptions={false} options={[({ value: "generic", label: t("Generic practice"), localize: false }), ({ value: "custom", label: t("Custom practice"), localize: false })]} />
               </label>
               <label className="prop-field">
-                <span>Vốn ảo</span>
-                <input aria-label="Vốn ảo" type="number" min="1" value={draft.initialCapital} onChange={(event) => updateDraft('initialCapital', event.target.value)} />
+                <span>{t("Vốn ảo")}</span>
+                <input aria-label={t("Vốn ảo")} type="number" min="1" value={draft.initialCapital} onChange={(event) => updateDraft('initialCapital', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Currency</span>
-                <select aria-label="Currency" value={draft.currency} onChange={(event) => updateDraft('currency', event.target.value)}>
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                </select>
+                <span>{t("Currency")}</span>
+                <FxSelect label={t("Currency")} value={draft.currency} onChange={value => updateDraft('currency', value)} localizeOptions={false} options={[({ value: "USD", label: t("USD"), localize: false }), ({ value: "EUR", label: t("EUR"), localize: false })]} />
               </label>
               <label className="prop-field">
-                <span>Profit target</span>
-                <input aria-label="Profit target" type="number" min="1" value={draft.target} onChange={(event) => updateDraft('target', event.target.value)} />
+                <span>{t("Profit target")}</span>
+                <input aria-label={t("Profit target")} type="number" min="1" value={draft.target} onChange={(event) => updateDraft('target', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Daily loss</span>
-                <input aria-label="Daily loss" type="number" min="1" value={draft.dailyLoss} onChange={(event) => updateDraft('dailyLoss', event.target.value)} />
+                <span>{t("Daily loss")}</span>
+                <input aria-label={t("Daily loss")} type="number" min="1" value={draft.dailyLoss} onChange={(event) => updateDraft('dailyLoss', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Overall loss</span>
-                <input aria-label="Overall loss" type="number" min="1" value={draft.overallLoss} onChange={(event) => updateDraft('overallLoss', event.target.value)} />
+                <span>{t("Overall loss")}</span>
+                <input aria-label={t("Overall loss")} type="number" min="1" value={draft.overallLoss} onChange={(event) => updateDraft('overallLoss', event.target.value)} />
               </label>
               <label className="prop-field prop-field-wide">
-                <span>Dataset version</span>
-                <input aria-label="Dataset version" value={draft.datasetVersion} onChange={(event) => updateDraft('datasetVersion', event.target.value)} />
+                <span>{t("Dataset version")}</span>
+                <input aria-label={t("Dataset version")} value={draft.datasetVersion} onChange={(event) => updateDraft('datasetVersion', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Bắt đầu (UTC)</span>
-                <input aria-label="Bắt đầu UTC" type="datetime-local" value={draft.startUtc} onChange={(event) => updateDraft('startUtc', event.target.value)} />
+                <span>{t("Bắt đầu (UTC)")}</span>
+                <input aria-label={t("Bắt đầu UTC")} type="datetime-local" value={draft.startUtc} onChange={(event) => updateDraft('startUtc', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Max days</span>
-                <input aria-label="Max days" type="number" min="1" max="365" value={draft.durationDays} onChange={(event) => updateDraft('durationDays', event.target.value)} />
+                <span>{t("Max days")}</span>
+                <input aria-label={t("Max days")} type="number" min="1" max="365" value={draft.durationDays} onChange={(event) => updateDraft('durationDays', event.target.value)} />
               </label>
               <label className="prop-field">
-                <span>Cost model</span>
-                <select aria-label="Cost model" value={draft.costVersion} onChange={(event) => updateDraft('costVersion', event.target.value)}>
-                  <option value="cost-v1">cost-v1</option>
-                  <option value="cost-zero-fixture">cost-zero-fixture</option>
-                </select>
+                <span>{t("Cost model")}</span>
+                <FxSelect label={t("Cost model")} value={draft.costVersion} onChange={value => updateDraft('costVersion', value)} localizeOptions={false} options={[({ value: "cost-v1", label: t("cost-v1"), localize: false }), ({ value: "cost-zero-fixture", label: t("cost-zero-fixture"), localize: false })]} />
               </label>
-              <label className="prop-field"><span>Engine khớp lệnh</span><select aria-label="Engine khớp lệnh" value={draft.engineVersion} onChange={event => updateDraft('engineVersion', event.target.value)}><option value="replay-v1">OHLC</option><option value="replay-v2">OHLC + margin mô phỏng</option><option value="replay-tick-v1">Tick Bid/Ask + margin mô phỏng</option></select></label>
+              <label className="prop-field"><span>{t("Engine khớp lệnh")}</span><FxSelect label={t("Engine khớp lệnh")} value={draft.engineVersion} onChange={value => updateDraft('engineVersion', value)} localizeOptions={false} options={[({ value: "replay-v1", label: t("OHLC"), localize: false }), ({ value: "replay-v2", label: t("OHLC + margin mô phỏng"), localize: false }), ({ value: "replay-tick-v1", label: t("Tick Bid/Ask + margin mô phỏng"), localize: false })]} /></label>
               <div className="prop-review prop-field-wide">
-                <strong>Review</strong>
-                <span>Equity-based daily/overall loss, balance target, reset UTC 00:00. Đây là profile luyện tập, không đại diện điều khoản của hãng prop cụ thể.</span>
-                {draft.engineVersion === 'replay-tick-v1' && <span>Tick cải thiện giá khớp lệnh; đánh giá giới hạn equity trong từng phút vẫn chưa đầy đủ. Dataset, cost và engine phải khớp phiên replay được nối.</span>}
+                <strong>{t("Review")}</strong>
+                <span>{t("Equity-based daily/overall loss, balance target, reset UTC 00:00. Đây là profile luyện tập, không đại diện điều khoản của hãng prop cụ thể.")}</span>
+                {draft.engineVersion === 'replay-tick-v1' && <span>{t("Tick cải thiện giá khớp lệnh; đánh giá giới hạn equity trong từng phút vẫn chưa đầy đủ. Dataset, cost và engine phải khớp phiên replay được nối.")}</span>}
               </div>
               <button className="primary-action prop-create" type="submit" disabled={pendingAction === 'create'}>
-                {pendingAction === 'create' ? 'Đang tạo…' : 'Tạo session mô phỏng'}
+                {pendingAction === 'create' ? t("Đang tạo…") : t("Tạo session mô phỏng")}
               </button>
             </form>
           </section>
 
-          <section className="prop-resume" aria-label="Resume state">
+          <section className="prop-resume" aria-label={t("Resume state")}>
             <div className="prop-section-head">
-              <div><strong>Phiên đang chọn</strong><span>Trạng thái đã lưu</span></div>
+              <div><strong>{t("Phiên đang chọn")}</strong><span>{t("Trạng thái đã lưu")}</span></div>
             </div>
 
-            {selected.status === 'loading' && <StateMessage kind="loading" testId="prop-selection-loading">Đang đọc attempts và resume state…</StateMessage>}
-            {selected.status === 'denied' && <StateMessage kind="denied" testId="prop-selection-denied">Không có quyền đọc session này.</StateMessage>}
-            {selected.status === 'error' && <StateMessage kind="error" testId="prop-selection-error">Không đọc được session: {selected.error}</StateMessage>}
-            {selected.status === 'idle' && <StateMessage kind="empty">Chọn hoặc tạo session để xem state.</StateMessage>}
-            {selected.status === 'ready' && selected.session && !attempt && <StateMessage kind="empty">Session chưa có attempt để resume.</StateMessage>}
+            {selected.status === 'loading' && <StateMessage kind="loading" testId="prop-selection-loading">{t("Đang đọc attempts và resume state…")}</StateMessage>}
+            {selected.status === 'denied' && <StateMessage kind="denied" testId="prop-selection-denied">{t("Không có quyền đọc session này.")}</StateMessage>}
+            {selected.status === 'error' && <StateMessage kind="error" testId="prop-selection-error">{t("Không đọc được session:")} {selected.error}</StateMessage>}
+            {selected.status === 'idle' && <StateMessage kind="empty">{t("Chọn hoặc tạo session để xem state.")}</StateMessage>}
+            {selected.status === 'ready' && selected.session && !attempt && <StateMessage kind="empty">{t("Session chưa có attempt để resume.")}</StateMessage>}
 
             {selected.status === 'ready' && attempt && phase && (
               <div data-testid="prop-resume-bundle">
-                <ol className="prop-phase-list" aria-label="Các phase của challenge">
+                <ol className="prop-phase-list" aria-label={t("Các phase của challenge")}>
                   {(selected.session.profile?.phases || []).map((item) => (
                     <li key={item.phase_index} aria-current={item.phase_index === phase.phase_index ? 'step' : undefined}>
-                      <strong>Phase {item.phase_index}</strong>
-                      <span>{item.phase_index === phase.phase_index ? attempt.status : item.phase_index < phase.phase_index ? 'Phase trước' : 'Chưa mở'}</span>
+                      <strong>{t("Phase")} {item.phase_index}</strong>
+                      <span>{item.phase_index === phase.phase_index ? attempt.status : item.phase_index < phase.phase_index ? t("Phase trước") : t("Chưa mở")}</span>
                     </li>
                   ))}
                 </ol>
                 <div className="prop-resume-strip">
-                  <div><span>Attempt</span><strong>{attempt.attempt_id}</strong></div>
-                  <div><span>Status</span><strong className={selectedTerminal ? 'is-terminal' : ''}>{attempt.status}</strong></div>
-                  <div><span>Revision</span><strong>{attempt.revision}</strong></div>
-                  <div><span>Cursor</span><strong>{cursor ? `#${cursor.bar_index}` : 'N/A'}</strong></div>
+                  <div><span>{t("Attempt")}</span><strong>{attempt.attempt_id}</strong></div>
+                  <div><span>{t("Status")}</span><strong className={selectedTerminal ? 'is-terminal' : ''}>{statusLabel('prop_attempt', attempt.status)}</strong></div>
+                  <div><span>{t("Revision")}</span><strong>{attempt.revision}</strong></div>
+                  <div><span>{t("Cursor")}</span><strong>{cursor ? `#${cursor.bar_index}` : t("N/A")}</strong></div>
                 </div>
                 <div className="prop-metrics">
-                  <article><span>Balance</span><strong>{formatMoney(phase.balance, currency)}</strong></article>
-                  <article><span>Equity</span><strong>{formatMoney(phase.equity, currency)}</strong></article>
-                  <article><span>HWM</span><strong>{formatMoney(phase.high_water_mark, currency)}</strong></article>
-                  <article><span>Daily anchor</span><strong>{formatMoney(phase.daily_anchor, currency)}</strong></article>
+                  <article><span>{t("Balance")}</span><strong>{formatMoney(phase.balance, currency)}</strong></article>
+                  <article><span>{t("Equity")}</span><strong>{formatMoney(phase.equity, currency)}</strong></article>
+                  <article><span>{t("HWM")}</span><strong>{formatMoney(phase.high_water_mark, currency)}</strong></article>
+                  <article><span>{t("Daily anchor")}</span><strong>{formatMoney(phase.daily_anchor, currency)}</strong></article>
                 </div>
                 <dl className="prop-facts">
-                  <div><dt>Virtual time</dt><dd>{formatUtc(phase.virtual_time_utc)}</dd></div>
-                  <div><dt>Cursor time</dt><dd>{formatUtc(cursor?.timestamp_utc)}</dd></div>
-                  <div><dt>Dataset</dt><dd>{attempt.data_version}</dd></div>
-                  <div><dt>Cost / engine</dt><dd>{attempt.cost_version} · {attempt.engine_version}</dd></div>
-                  <div><dt>Open / pending</dt><dd>{phase.open_positions} / {phase.pending_orders}</dd></div>
-                  <div><dt>Evaluation quality</dt><dd>{phase.evaluation_quality}</dd></div>
+                  <div><dt>{t("Virtual time")}</dt><dd>{formatUtc(phase.virtual_time_utc)}</dd></div>
+                  <div><dt>{t("Cursor time")}</dt><dd>{formatUtc(cursor?.timestamp_utc)}</dd></div>
+                  <div><dt>{t("Dataset")}</dt><dd>{attempt.data_version}</dd></div>
+                  <div><dt>{t("Cost / engine")}</dt><dd>{attempt.cost_version} · {attempt.engine_version}</dd></div>
+                  <div><dt>{t("Open / pending")}</dt><dd>{phase.open_positions} / {phase.pending_orders}</dd></div>
+                  <div><dt>{t("Evaluation quality")}</dt><dd>{phase.evaluation_quality}</dd></div>
                 </dl>
-                <div className="prop-resume-note" data-testid="prop-resume-note">
-                  Resume chỉ khôi phục state đã persist. Các nút lifecycle gửi lệnh rõ ràng tới backend; UI không tự chạy clock hoặc fill lệnh.
-                </div>
+                <div className="prop-resume-note" data-testid="prop-resume-note">{t("Resume chỉ khôi phục state đã persist. Các nút lifecycle gửi lệnh rõ ràng tới backend; UI không tự chạy clock hoặc fill lệnh.")}</div>
 
-                <section className="prop-objectives" data-testid="prop-objectives" aria-label="Challenge objectives">
+                <section className="prop-objectives" data-testid="prop-objectives" aria-label={t("Challenge objectives")}>
                   <div className="prop-section-head">
-                    <div><span>Challenge objectives</span><strong>{objectives ? `Phase ${objectives.phaseIndex} · ${objectives.technicalStatus}` : 'Chưa có snapshot evaluator'}</strong></div>
-                    <small>{objectives ? (objectives.passReady ? 'Pass ready' : 'Đang theo dõi') : 'Chờ event mô phỏng'}</small>
+                    <div><span>{t("Challenge objectives")}</span><strong>{objectives ? `Phase ${objectives.phaseIndex} · ${statusLabel('data_quality', objectives.technicalStatus)}` : t("Chưa có snapshot evaluator")}</strong></div>
+                    <small>{objectives ? (objectives.passReady ? t("Pass ready") : t("Đang theo dõi")) : t("Chờ event mô phỏng")}</small>
                   </div>
-                  {!objectives && <p className="prop-objectives-empty">Chưa có lifecycle event đủ dữ liệu để tính objective. Resume state và provenance vẫn được giữ nguyên.</p>}
+                  {!objectives && <p className="prop-objectives-empty">{t("Chưa có lifecycle event đủ dữ liệu để tính objective. Resume state và provenance vẫn được giữ nguyên.")}</p>}
                   {objectives && (
                     <div className="prop-objective-grid">
-                      {objectives.profitTarget && <article><span>Profit target</span><strong>{objectives.profitTarget.status}</strong><small>{objectives.profitTarget.current} / {objectives.profitTarget.target}</small></article>}
-                      {objectives.dailyLoss && <article><span>Daily loss</span><strong className={objectives.dailyLoss.status === 'Breached' ? 'is-breach' : ''}>{objectives.dailyLoss.status}</strong><small>{objectives.dailyLoss.current} · floor {objectives.dailyLoss.floor}</small></article>}
-                      {objectives.overallDrawdown && <article><span>Overall drawdown · {objectives.overallDrawdown.kind}</span><strong className={objectives.overallDrawdown.status === 'Breached' ? 'is-breach' : ''}>{objectives.overallDrawdown.status}</strong><small>{objectives.overallDrawdown.current} · floor {objectives.overallDrawdown.floor}</small></article>}
-                      {objectives.calendar && <article><span>Calendar / quality</span><strong>{objectives.calendar.minDaysSatisfied ? 'Days ready' : `${objectives.calendar.qualifyingDays ?? 0} qualifying day`}</strong><small>{objectives.calendar.elapsedDays ?? 0} elapsed · {objectives.calendar.expired ? 'expired' : 'within cutoff'} · positions {objectives.positionsReady ? 'flat' : 'not ready'}</small></article>}
+                      {objectives.profitTarget && <article><span>{t("Profit target")}</span><strong>{t(objectives.profitTarget.status)}</strong><small>{objectives.profitTarget.current} / {objectives.profitTarget.target}</small></article>}
+                      {objectives.dailyLoss && <article><span>{t("Daily loss")}</span><strong className={objectives.dailyLoss.status === 'Breached' ? 'is-breach' : ''}>{t(objectives.dailyLoss.status)}</strong><small>{objectives.dailyLoss.current} {t("· floor")} {objectives.dailyLoss.floor}</small></article>}
+                      {objectives.overallDrawdown && <article><span>{t("Overall drawdown ·")} {objectives.overallDrawdown.kind}</span><strong className={objectives.overallDrawdown.status === 'Breached' ? 'is-breach' : ''}>{t(objectives.overallDrawdown.status)}</strong><small>{objectives.overallDrawdown.current} {t("· floor")} {objectives.overallDrawdown.floor}</small></article>}
+                      {objectives.calendar && <article><span>{t("Calendar / quality")}</span><strong>{objectives.calendar.minDaysSatisfied ? t("Days ready") : `${objectives.calendar.qualifyingDays ?? 0} qualifying day`}</strong><small>{objectives.calendar.elapsedDays ?? 0} {t("elapsed ·")} {objectives.calendar.expired ? t("expired") : t("within cutoff")} {t("· positions")} {objectives.positionsReady ? t("flat") : t("not ready")}</small></article>}
                     </div>
                   )}
                 </section>
 
                 <div className="prop-lifecycle-actions" data-testid="prop-lifecycle-actions">
-                  {attempt.status === 'ready' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-start" disabled={pendingAction === 'transition:start'} onClick={() => transitionAttempt('start')}>{pendingAction === 'transition:start' ? 'Đang bắt đầu…' : 'Bắt đầu mô phỏng'}</button>}
-                  {attempt.status === 'running' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-pause" disabled={pendingAction === 'transition:pause'} onClick={() => transitionAttempt('pause')}>{pendingAction === 'transition:pause' ? 'Đang tạm dừng…' : 'Tạm dừng'}</button>}
-                  {attempt.status === 'paused' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-resume" disabled={pendingAction === 'transition:resume'} onClick={() => transitionAttempt('resume')}>{pendingAction === 'transition:resume' ? 'Đang tiếp tục…' : 'Tiếp tục mô phỏng'}</button>}
-                  {canOpenNextPhase && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-next-phase" disabled={pendingAction === 'transition:next_phase'} onClick={() => transitionAttempt('next_phase')}>{pendingAction === 'transition:next_phase' ? 'Đang mở phase…' : 'Mở phase tiếp theo'}</button>}
-                  {['ready', 'running', 'paused', 'phase_passed', 'next_phase_ready'].includes(attempt.status) && <button type="button" className="prop-refresh" data-testid="prop-transition-abandon" disabled={pendingAction === 'transition:abandon'} onClick={() => transitionAttempt('abandon')}>{pendingAction === 'transition:abandon' ? 'Đang bỏ…' : 'Bỏ attempt'}</button>}
+                  {attempt.status === 'ready' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-start" disabled={pendingAction === 'transition:start'} onClick={() => transitionAttempt('start')}>{pendingAction === 'transition:start' ? t("Đang bắt đầu…") : t("Bắt đầu mô phỏng")}</button>}
+                  {attempt.status === 'running' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-pause" disabled={pendingAction === 'transition:pause'} onClick={() => transitionAttempt('pause')}>{pendingAction === 'transition:pause' ? t("Đang tạm dừng…") : t("Tạm dừng")}</button>}
+                  {attempt.status === 'paused' && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-resume" disabled={pendingAction === 'transition:resume'} onClick={() => transitionAttempt('resume')}>{pendingAction === 'transition:resume' ? t("Đang tiếp tục…") : t("Tiếp tục mô phỏng")}</button>}
+                  {canOpenNextPhase && <button type="button" className="ui-button ui-button--neutral prop-refresh" data-testid="prop-transition-next-phase" disabled={pendingAction === 'transition:next_phase'} onClick={() => transitionAttempt('next_phase')}>{pendingAction === 'transition:next_phase' ? t("Đang mở phase…") : t("Mở phase tiếp theo")}</button>}
+                  {['ready', 'running', 'paused', 'phase_passed', 'next_phase_ready'].includes(attempt.status) && <button type="button" className="prop-refresh" data-testid="prop-transition-abandon" disabled={pendingAction === 'transition:abandon'} onClick={() => transitionAttempt('abandon')}>{pendingAction === 'transition:abandon' ? t("Đang bỏ…") : t("Bỏ attempt")}</button>}
                 </div>
 
                 {selected.reportError && (
-                  <StateMessage kind="error" testId="prop-report-error">
-                    Resume state vẫn dùng được, nhưng report chưa tải được: {selected.reportError}
+                  <StateMessage kind="error" testId="prop-report-error">{t("Resume state vẫn dùng được, nhưng report chưa tải được:")}{selected.reportError}
                   </StateMessage>
                 )}
 
                 {report && (
                   <section className="prop-report" data-testid="prop-report">
                     <div className="prop-section-head">
-                      <div><span>Attempt report</span><strong>{report.outcome.status}</strong></div>
+                      <div><span>{t("Attempt report")}</span><strong>{statusLabel('prop_attempt', report.outcome.status)}</strong></div>
                       <small>{report.result_source}</small>
                     </div>
                     <div className="prop-report-summary">
-                      <div><span>Technical</span><strong>{report.outcome.technical_status || 'N/A'}</strong></div>
-                      <div><span>Terminal</span><strong>{report.outcome.terminal ? 'Có' : 'Chưa'}</strong></div>
-                      <div><span>Branch</span><strong>{report.attempt.branch_kind}</strong></div>
-                      <div><span>Quality</span><strong>{report.phase.evaluation_quality}</strong></div>
+                      <div><span>{t("Technical")}</span><strong>{report.outcome.technical_status || t("N/A")}</strong></div>
+                      <div><span>{t("Terminal")}</span><strong>{report.outcome.terminal ? t("Có") : t("Chưa")}</strong></div>
+                      <div><span>{t("Branch")}</span><strong>{report.attempt.branch_kind}</strong></div>
+                      <div><span>{t("Quality")}</span><strong>{report.phase.evaluation_quality}</strong></div>
                     </div>
                     <div className="prop-report-copy">
-                      <strong>Giải thích kết quả</strong>
+                      <strong>{t("Giải thích kết quả")}</strong>
                       {report.outcome.reason_codes.length ? (
                         <ul>{report.outcome.reason_codes.map((code) => <li key={code}>{reportReasonLabel(code)}</li>)}</ul>
                       ) : (
-                        <p>Attempt chưa có terminal reason. Report chỉ phản ánh state mô phỏng đã persist.</p>
+                        <p>{t("Attempt chưa có terminal reason. Report chỉ phản ánh state mô phỏng đã persist.")}</p>
                       )}
                       {report.provenance.hindsight_exploratory && (
-                        <p className="prop-report-warning">Đây là hindsight branch để khám phá sau checkpoint; không gộp với clean attempt.</p>
+                        <p className="prop-report-warning">{t("Đây là hindsight branch để khám phá sau checkpoint; không gộp với clean attempt.")}</p>
                       )}
                     </div>
                     <div className="prop-report-actions">
                       {selectedReplayTarget && (
-                        <a className="context-link" data-testid="prop-report-replay" href={selectedReplayTarget.href}>
-                          Mở replay #{selectedReplayTarget.cursorIndex}
+                        <a className="context-link" data-testid="prop-report-replay" href={selectedReplayTarget.href}>{t("Mở replay #")}{selectedReplayTarget.cursorIndex}
                         </a>
                       )}
-                      <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(report.session.session_id)}&attempt=${encodeURIComponent(report.attempt.attempt_id)}`}>Mở Learn</a>
+                      <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(report.session.session_id)}&attempt=${encodeURIComponent(report.attempt.attempt_id)}`}>{t("Mở Learn")}</a>
                       <button
                         type="button"
                         className="prop-refresh"
@@ -756,7 +751,7 @@ export default function PropWorkspace({ workspace }) {
                         disabled={pendingAction === `export:${report.attempt.attempt_id}`}
                         onClick={() => exportReport(report)}
                       >
-                        {pendingAction === `export:${report.attempt.attempt_id}` ? 'Đang export…' : 'Export CSV'}
+                        {pendingAction === `export:${report.attempt.attempt_id}` ? t("Đang export…") : t("Export CSV")}
                       </button>
                     </div>
                   </section>
@@ -770,68 +765,53 @@ export default function PropWorkspace({ workspace }) {
       {activeTab === 'reports' && (
         <section className="prop-reports" data-testid="prop-reports-view">
           <div className="prop-section-head">
-            <div><span>Reports</span><strong>Read-only từ persisted Prop state</strong></div>
-            <small>{reports.items.length} report</small>
+            <div><span>{t("Reports")}</span><strong>{t("Read-only từ persisted Prop state")}</strong></div>
+            <small>{reports.items.length} {t("report")}</small>
           </div>
           <div className="prop-report-filters">
             <label className="prop-field">
-              <span>Status</span>
-              <select aria-label="Report status" value={reportFilters.status} onChange={(event) => setReportFilters((current) => ({ ...current, status: event.target.value }))}>
-                <option value="">Tất cả</option>
-                <option value="ready">ready</option>
-                <option value="running">running</option>
-                <option value="paused">paused</option>
-                <option value="phase_passed">phase_passed</option>
-                <option value="next_phase_ready">next_phase_ready</option>
-                <option value="completed_pass">completed_pass</option>
-                <option value="failed_breach">failed_breach</option>
-                <option value="expired">expired</option>
-                <option value="abandoned">abandoned</option>
-              </select>
+              <span>{t("Status")}</span>
+              <FxSelect label={t("Report status")} value={reportFilters.status} onChange={value => setReportFilters((current) => ({ ...current, status: value }))} localizeOptions={false} options={[({ value: "", label: t("Tất cả"), localize: false }), ({ value: "ready", label: t("ready"), localize: false }), ({ value: "running", label: t("running"), localize: false }), ({ value: "paused", label: t("paused"), localize: false }), ({ value: "phase_passed", label: t("phase_passed"), localize: false }), ({ value: "next_phase_ready", label: t("next_phase_ready"), localize: false }), ({ value: "completed_pass", label: t("completed_pass"), localize: false }), ({ value: "failed_breach", label: t("failed_breach"), localize: false }), ({ value: "expired", label: t("expired"), localize: false }), ({ value: "abandoned", label: t("abandoned"), localize: false })]} />
             </label>
             <label className="prop-field">
-              <span>Branch</span>
-              <select aria-label="Report branch" value={reportFilters.branchKind} onChange={(event) => setReportFilters((current) => ({ ...current, branchKind: event.target.value }))}>
-                <option value="">Tất cả</option>
-                <option value="clean">clean</option>
-                <option value="hindsight_exploratory">hindsight_exploratory</option>
-              </select>
+              <span>{t("Branch")}</span>
+              <FxSelect label={t("Report branch")} value={reportFilters.branchKind} onChange={value => setReportFilters((current) => ({ ...current, branchKind: value }))} localizeOptions={false} options={[({ value: "", label: t("Tất cả"), localize: false }), ({ value: "clean", label: t("clean"), localize: false }), ({ value: "hindsight_exploratory", label: t("hindsight_exploratory"), localize: false })]} />
             </label>
           </div>
 
-          {reports.status === 'loading' && <StateMessage kind="loading" testId="prop-reports-loading">Đang đọc reports…</StateMessage>}
-          {reports.status === 'denied' && <StateMessage kind="denied" testId="prop-reports-denied">Workspace này không có quyền đọc Prop reports.</StateMessage>}
-          {reports.status === 'error' && <StateMessage kind="error" testId="prop-reports-error">Không đọc được reports: {reports.error}</StateMessage>}
-          {reports.status === 'ready' && !reports.items.length && <StateMessage kind="empty" testId="prop-reports-empty">Không có report khớp bộ lọc.</StateMessage>}
+          {reports.status === 'loading' && <StateMessage kind="loading" testId="prop-reports-loading">{t("Đang đọc reports…")}</StateMessage>}
+          {reports.status === 'denied' && <StateMessage kind="denied" testId="prop-reports-denied">{t("Workspace này không có quyền đọc Prop reports.")}</StateMessage>}
+          {reports.status === 'error' && <StateMessage kind="error" testId="prop-reports-error">{t("Không đọc được reports:")} {reports.error}</StateMessage>}
+          {reports.status === 'ready' && !reports.items.length && <StateMessage kind="empty" testId="prop-reports-empty">{t("Không có report khớp bộ lọc.")}</StateMessage>}
 
           <div className="prop-report-list" data-testid="prop-report-list">
             {reports.items.map((item) => {
               const replayTarget = reportReplayHref(item, workspace)
               return <article className="prop-report-row" key={`${item.session.session_id}/${item.attempt.attempt_id}`}>
                 <div>
-                  <span>{item.outcome.status} · {item.attempt.branch_kind}</span>
+                  <span>{statusLabel('prop_attempt', item.outcome.status)} · {statusLabel('prop_branch', item.attempt.branch_kind)}</span>
                   <strong>{item.session.session_id}</strong>
                   <small>{item.attempt.attempt_id}</small>
                 </div>
                 <div>
-                  <span>Balance / equity</span>
+                  <span>{t("Balance / equity")}</span>
                   <strong>{item.phase.balance} / {item.phase.equity}</strong>
                   <small>{item.phase.evaluation_quality}</small>
                 </div>
                 <div className="prop-report-row-reasons">
-                  <span>Reason</span>
-                  <strong>{item.outcome.reason_codes.length ? item.outcome.reason_codes.map(reportReasonLabel).join(' ') : 'Chưa có terminal reason.'}</strong>
+                  <span>{t("Reason")}</span>
+                  <strong>{item.outcome.reason_codes.length ? item.outcome.reason_codes.map(reportReasonLabel).join(' ') : t("Chưa có terminal reason.")}</strong>
                   <small>{item.result_source}</small>
                 </div>
                 <div className="prop-report-row-actions">
-                  {replayTarget && <a className="context-link" href={replayTarget.href}>Replay #{replayTarget.cursorIndex}</a>}
-                  <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(item.session.session_id)}&attempt=${encodeURIComponent(item.attempt.attempt_id)}`}>Learn</a>
+                  {replayTarget && <a className="context-link" href={replayTarget.href}>{t("Replay #")}{replayTarget.cursorIndex}</a>}
+                  <a className="context-link" href={`/?view=learn&workspace=${encodeURIComponent(workspace)}&from=prop&session=${encodeURIComponent(item.session.session_id)}&attempt=${encodeURIComponent(item.attempt.attempt_id)}`}>{t("Learn")}</a>
                   <button
                     type="button"
                     className="ui-button ui-button--neutral prop-refresh"
                     disabled={pendingAction === `export:${item.attempt.attempt_id}`}
                     onClick={() => exportReport(item)}
-                  >CSV</button>
+                  >{t("CSV")}</button>
                 </div>
               </article>
             })}

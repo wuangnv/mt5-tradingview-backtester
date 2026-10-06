@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
 import { DEFAULT_COST_MODEL, RiskPreview, validateDraft } from './TradeWorkspace.jsx'
-import { finiteNumber, marketQuotes, money, orderDraft, protectionReference, replayAtCutoff } from './replayOrderModel.js'
+import { finiteNumber, marketQuotes, orderDraft, protectionReference, replayAtCutoff } from './replayOrderModel.js'
 import { useReplayTickOptions } from './useReplayTickOptions.js'
 
 export function useChartOrder({ workspace, replay, dataset, ready, blocked, submit }) {
@@ -62,31 +63,34 @@ export function useChartOrder({ workspace, replay, dataset, ready, blocked, subm
 }
 
 export default function ChartOrderPanel({ order, blockedReason }) {
+  const { t, fmt } = useTestingLocale()
+  const money = (value, currency) => fmt(value, ` ${currency || t('Đơn vị tài khoản')}`)
+
   const { execution, draft, setDraft, active, instrument, costs, disabled, notice } = order
-  return <section className="chart-order-panel" aria-label="Lệnh mô phỏng">
-    <div className="chart-order-mode"><strong>SIMULATOR</strong><span>Broker locked</span></div>
-    {blockedReason && <p role="status">{blockedReason}</p>}
+  return <section className="chart-order-panel" aria-label={t("Lệnh mô phỏng")}>
+    <div className="chart-order-mode"><strong>{t("SIMULATOR")}</strong><span>{t("Broker locked")}</span></div>
+    {blockedReason && <p role="status">{t(blockedReason)}</p>}
     {!execution ? <form onSubmit={event => { event.preventDefault(); order.initialize() }}>
-      <h2>Khởi tạo tài khoản</h2><p>Chi phí mô phỏng, không phải báo giá broker.</p>
-      <label>Vốn ban đầu ({costs?.account_ccy || 'Chưa rõ tiền tệ'})<input type="number" min="1" step="0.01" value={order.startingBalance} onChange={event => order.setStartingBalance(event.target.value)} disabled={disabled} /></label>
-      <label className="replay-tick-toggle"><input type="checkbox" checked={order.tick.useTicks} disabled={disabled || !order.tick.options?.available} onChange={event => order.tick.setMode(event.target.checked ? 'tick' : 'bar')} />Khớp lệnh bằng tick Bid/Ask</label>
-      <p role="status">{order.tick.options?.reason || 'Đang kiểm tra lịch sử tick…'}</p>
-      {order.tick.useTicks ? <label>Đòn bẩy mô phỏng<input type="number" min="1" max="1000" step="1" value={order.tick.leverage} onChange={event => order.tick.setLeverage(event.target.value)} disabled={disabled} /></label> : <label>Spread (đơn vị giá)<input type="number" min="0" step={instrument?.tick_size || 'any'} value={order.spread} onChange={event => order.setSpread(event.target.value)} disabled={disabled} /></label>}
-      <button type="submit" disabled={disabled || !order.canInitialize || order.tick.options === null}>Khởi tạo simulator</button>
-      {!order.canInitialize && <p>Đang thiếu instrument hoặc timeframe trong dataset.</p>}
+      <h2>{t("Khởi tạo tài khoản")}</h2><p>{t("Chi phí mô phỏng, không phải báo giá broker.")}</p>
+      <label>{t("Vốn ban đầu (")}{costs?.account_ccy || t("Chưa rõ tiền tệ")})<input type="number" min="1" step="0.01" value={order.startingBalance} onChange={event => order.setStartingBalance(event.target.value)} disabled={disabled} /></label>
+      <label className="replay-tick-toggle"><input type="checkbox" checked={order.tick.useTicks} disabled={disabled || !order.tick.options?.available} onChange={event => order.tick.setMode(event.target.checked ? 'tick' : 'bar')} />{t("Khớp lệnh bằng tick Bid/Ask")}</label>
+      <p role="status">{t(order.tick.options?.reason || 'Đang kiểm tra lịch sử tick…')}</p>
+      {order.tick.useTicks ? <label>{t("Đòn bẩy mô phỏng")}<input type="number" min="1" max="1000" step="1" value={order.tick.leverage} onChange={event => order.tick.setLeverage(event.target.value)} disabled={disabled} /></label> : <label>{t("Spread (đơn vị giá)")}<input type="number" min="0" step={instrument?.tick_size || 'any'} value={order.spread} onChange={event => order.setSpread(event.target.value)} disabled={disabled} /></label>}
+      <button type="submit" disabled={disabled || !order.canInitialize || order.tick.options === null}>{t("Khởi tạo simulator")}</button>
+      {!order.canInitialize && <p>{t("Đang thiếu instrument hoặc timeframe trong dataset.")}</p>}
     </form> : <>
-      <dl className="chart-account"><div><dt>Balance</dt><dd>{money(execution.balance, costs?.account_ccy)}</dd></div><div><dt>Equity</dt><dd>{money(execution.equity, costs?.account_ccy)}</dd></div><div><dt>Floating P/L</dt><dd>{money(execution.floating_pl, costs?.account_ccy)}</dd></div></dl>
+      <dl className="chart-account"><div><dt>{t("Balance")}</dt><dd>{money(execution.balance, costs?.account_ccy)}</dd></div><div><dt>{t("Equity")}</dt><dd>{money(execution.equity, costs?.account_ccy)}</dd></div><div><dt>{t("Floating P/L")}</dt><dd>{money(execution.floating_pl, costs?.account_ccy)}</dd></div></dl>
       <form onSubmit={event => { event.preventDefault(); order.save() }}>
-        <h2>{execution.position ? 'Vị thế đang mở' : active ? 'Lệnh chờ nến kế tiếp' : 'Lệnh mới'}</h2>
+        <h2>{execution.position ? t("Vị thế đang mở") : active ? t("Lệnh chờ nến kế tiếp") : t("Lệnh mới")}</h2>
         <div className="chart-order-sides">{['BUY', 'SELL'].map(side => <button key={side} type="button" aria-pressed={draft.side === side} className={side.toLowerCase()} disabled={disabled || Boolean(active)} onClick={() => order.chooseSide(side)}>{side}</button>)}</div>
-        <label>Khối lượng ({instrument?.asset_class === 'fx' ? 'lot' : 'quantity'})<input aria-label="Khối lượng lệnh" type="number" min={instrument?.quantity_min || '0'} step={instrument?.quantity_step || 'any'} value={draft.quantity} disabled={disabled || Boolean(active)} onChange={event => setDraft(current => ({ ...current, quantity: event.target.value }))} /></label>
-        <label>Stop loss<input aria-label="Stop loss" type="number" min="0" step={instrument?.tick_size || 'any'} value={draft.stopLoss} disabled={disabled} onChange={event => setDraft(current => ({ ...current, stopLoss: event.target.value }))} /></label>
-        <label>Take profit<input aria-label="Take profit" type="number" min="0" step={instrument?.tick_size || 'any'} value={draft.takeProfit} disabled={disabled} onChange={event => setDraft(current => ({ ...current, takeProfit: event.target.value }))} /></label>
+        <label>{t("Khối lượng (")}{instrument?.asset_class === 'fx' ? t("lot") : t("quantity")})<input aria-label={t("Khối lượng lệnh")} type="number" min={instrument?.quantity_min || '0'} step={instrument?.quantity_step || 'any'} value={draft.quantity} disabled={disabled || Boolean(active)} onChange={event => setDraft(current => ({ ...current, quantity: event.target.value }))} /></label>
+        <label>{t("Stop loss")}<input aria-label={t("Stop loss")} type="number" min="0" step={instrument?.tick_size || 'any'} value={draft.stopLoss} disabled={disabled} onChange={event => setDraft(current => ({ ...current, stopLoss: event.target.value }))} /></label>
+        <label>{t("Take profit")}<input aria-label={t("Take profit")} type="number" min="0" step={instrument?.tick_size || 'any'} value={draft.takeProfit} disabled={disabled} onChange={event => setDraft(current => ({ ...current, takeProfit: event.target.value }))} /></label>
         {!active && <RiskPreview draft={draft} entry={order.reference} instrument={instrument} costModel={costs} />}
-        <button type="submit" disabled={disabled}>{order.pending ? 'Đang lưu…' : active ? 'Lưu TP/SL' : 'Queue lệnh mô phỏng'}</button>
-        <p>{active ? 'Kéo TP/SL trên chart hoặc nhập giá rồi lưu. Thay đổi áp dụng từ nến kế tiếp.' : execution.quote_source === 'broker_bid_ask' ? 'Entry là Bid/Ask tại cutoff. Market fill ở tick đầu tiên của nến kế tiếp; phí theo model.' : 'Entry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.'}</p>
+        <button type="submit" disabled={disabled}>{order.pending ? t("Đang lưu…") : active ? t("Lưu TP/SL") : t("Queue lệnh mô phỏng")}</button>
+        <p>{active ? t("Kéo TP/SL trên chart hoặc nhập giá rồi lưu. Thay đổi áp dụng từ nến kế tiếp.") : execution.quote_source === 'broker_bid_ask' ? t("Entry là Bid/Ask tại cutoff. Market fill ở tick đầu tiên của nến kế tiếp; phí theo model.") : t("Entry là giá tham chiếu. Market fill ở giá mở nến kế tiếp, có spread và phí.")}</p>
       </form>
     </>}
-    {notice && <p className={`chart-order-notice is-${notice.kind}`} role={notice.kind === 'error' ? 'alert' : 'status'}>{notice.text}</p>}
+    {notice && <p className={`chart-order-notice is-${notice.kind}`} role={notice.kind === 'error' ? 'alert' : 'status'}>{t(notice.text)}</p>}
   </section>
 }

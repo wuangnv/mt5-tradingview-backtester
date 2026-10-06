@@ -1,0 +1,5 @@
+import React from 'react'
+
+export default function TestingIcon({ kind = 'info', size = 18 }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'clock' ? <><circle cx="12" cy="12" r="9" /><path d="M12 6v6l4 2" /></> : kind === 'history' ? <><path d="M3 11a9 9 0 1 1 3 8M3 4v7h7M12 7v5l4 2" /></> : kind === 'trades' ? <><path d="M3 7h18l-4-4M21 17H3l4 4" /></> : kind === 'target' ? <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></> : <><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none" /></>}</svg>
+}

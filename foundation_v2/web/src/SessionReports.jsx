@@ -1,37 +1,43 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
+import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
+import { useEffect, useMemo, useState } from 'react'
 import AnalyticsWorkspace, { analyticsQuery, buildAnalyticsModel, ProvenanceInspector, readAnalyticsFilters } from './AnalyticsWorkspace.jsx'
 import { FxAnalyticsFilters } from './FxAnalytics.jsx'
 import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import { defaultSession, fetchReplaySessions, readLastSession, reportSessions, sessionAnalyticsQuery } from './sessionCatalog.js'
-import { filterAnalyticsRows, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, tradesCsv, validateTradesPayload } from './tradingAnalyticsModel.js'
+import { DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, validateTradesPagePayload } from './tradingAnalyticsModel.js'
 import useReadRefresh from './useReadRefresh.js'
 
 function AggregateTrades({ workspace, ids, query, sessionControl, onClearSessions }) {
+  const { t } = useTestingLocale()
+
   const [filters, setFilters] = useState(() => readAnalyticsFilters(query))
   const [extra, setExtra] = useState(() => readAnalyticsExtraFilters(query))
-  const [state, setState] = useState({ status: 'loading', payload: null })
-  const [reload, setReload] = useState(0), [selected, setSelected] = useState(''), [journal, setJournal] = useState([])
-  const [exportError, setExportError] = useState('')
+  const [readState, setState] = useState({ status: 'loading', payload: null })
+  const [reload, setReload] = useState(0), [selected, setSelected] = useState(''), [paging, setPaging] = useState({ page: 1, pageSize: 10, sort: { key: 'close_time_utc', direction: 'desc' } })
   const params = useMemo(() => {
     const params = analyticsQuery(filters)
     if (ids !== null) params.set('sessions', ids.join(','))
+    params.set('page', paging.page); params.set('page_size', paging.pageSize); params.set('sort_key', paging.sort.key); params.set('sort_direction', paging.sort.direction); params.set('extra_filters', JSON.stringify(extra))
     return params.toString()
-  }, [ids, filters])
+  }, [ids, filters, extra, paging])
+  const state = readState.params === params && readState.workspace === workspace ? readState : { status: 'loading', payload: null, facets: readState.payload?.facets || readState.facets }
+  useEffect(() => { setPaging(current => ({ ...current, page: 1 })); setSelected('') }, [workspace, ids])
   useReadRefresh(() => setReload(value => value + 1))
   useEffect(() => {
     const controller = new AbortController()
-    setState(current => current.params === params && current.workspace === workspace && current.payload ? { ...current, refreshing: true } : { status: 'loading', payload: null })
+    setState(current => current.params === params && current.workspace === workspace && current.payload ? { ...current, refreshing: true } : { status: 'loading', payload: null, params, workspace, facets: current.payload?.facets || current.facets })
     fetch(`/api/v2/replay/trades?${params}`, { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal }).then(async response => {
       const payload = await response.json()
       if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`)
-      validateTradesPayload(payload)
+      validateTradesPagePayload(payload)
       if (!controller.signal.aborted) {
-        const signature = JSON.stringify([payload.status, payload.scope, payload.sources, payload.excluded, payload.ledger])
+        if (readState.params === params && readState.payload?.snapshot_key && readState.payload.snapshot_key !== payload.snapshot_key && paging.page > 1) { setPaging(current => ({ ...current, page: 1 })); return }
+        const signature = JSON.stringify([payload.snapshot_key, payload.pagination, payload.ledger])
         setState(current => current.signature === signature && current.params === params && current.workspace === workspace ? { ...current, refreshing: false } : { status: payload.status, payload, signature, params, workspace })
       }
-    }).catch(error => { if (!controller.signal.aborted) setState({ status: 'error', error: error.message, payload: null }) })
-    fetch('/api/v2/journal', { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal }).then(async response => response.ok ? (await response.json()).items || [] : []).then(items => { if (!controller.signal.aborted) setJournal(current => JSON.stringify(current) === JSON.stringify(items) ? current : items) }).catch(() => { if (!controller.signal.aborted) setJournal([]) })
+    }).catch(error => { if (!controller.signal.aborted) setState({ status: 'error', error: error.message, payload: null, params, workspace }) })
     return () => controller.abort()
   }, [workspace, params, reload])
   useEffect(() => { setSelected('') }, [workspace, params])
@@ -46,12 +52,9 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     window.history.replaceState({}, '', url)
   }, [filters, extra])
   const model = useMemo(() => {
-    const base = buildAnalyticsModel({ ledger: state.payload?.ledger || [], metrics: {}, scope: state.payload?.scope, multi_session: true, account_currency: 'đơn vị từng phiên' })
-    return { ...base, ledger: base.ledger.map(row => ({ ...row, tradeId: JSON.stringify([row.session_id, row.trade_id]), tags: [...new Set([...(row.tags || []), ...journal.flatMap(record => {
-      const source = record.payload?.source || {}
-      return [source.session_id, source.replay_session_id].includes(row.session_id) && [source.trade_id, source.id].includes(row.trade_id) ? record.payload?.tags || [] : []
-    })])] })) }
-  }, [state.payload, journal])
+    const base = buildAnalyticsModel({ ledger: state.payload?.ledger || [], metrics: {}, scope: state.payload?.scope, multi_session: true, account_currency: t('Đơn vị từng phiên'), paged: true })
+    return { ...base, ledger: base.ledger.map(row => ({ ...row, tradeId: JSON.stringify([row.session_id, row.trade_id]) })) }
+  }, [state.payload, t])
   const row = model.ledger.find(row => row.tradeId === selected)
   useEffect(() => { if (selected && !row) setSelected('') }, [row, selected])
   const detailModel = useMemo(() => buildAnalyticsModel({ ...row?.source_provenance, ledger: row ? [row] : [], metrics: {} }), [row])
@@ -60,26 +63,19 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     if (view === 'replay') { params.set('surface', 'workspace'); params.set('cursor', row.close_cursor_index); params.set('event_sequence', row.close_event_sequence); if (row.source_provenance.dataset_id) params.set('dataset', row.source_provenance.dataset_id) }
     return `/?${params}`
   }
-  const exportCsv = () => {
-    try {
-      const rows = filterAnalyticsRows(model.ledger, extra)
-      const blob = new Blob([tradesCsv(rows, '', { sessions: JSON.stringify(ids), filters: JSON.stringify({ ...filters, ...extra }), aggregation: state.payload.scope.aggregation })], { type: 'text/csv;charset=utf-8' })
-      const url = URL.createObjectURL(blob), anchor = document.createElement('a')
-      anchor.href = url; anchor.download = 'trades.csv'; anchor.click(); URL.revokeObjectURL(url); setExportError('')
-    } catch (error) { setExportError(`Không tạo được CSV: ${error.message}`) }
-  }
-  return <section className="as-page fxa-page wm-page" aria-label="Trades" data-testid="aggregate-trades">
-    <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} hidden={!state.payload} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={patch => setFilters(current => ({ ...current, ...patch }))} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} sessionControl={sessionControl} onClearSessions={onClearSessions} onExport={exportCsv} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
-    {state.status === 'loading' && <p role="status">Đang tải giao dịch…</p>}
-    {state.status === 'error' && <p role="alert">Không đọc được giao dịch: {state.error}. Sẽ kiểm tra lại khi quay về ứng dụng.</p>}
-    {exportError && <p role="alert">{exportError}</p>}
+  return <section className="as-page fxa-page wm-page" aria-label={t("Trades")} data-testid="aggregate-trades">
+    <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} remotePage={{ page: state.payload?.pagination.page || paging.page, pageSize: paging.pageSize, sort: paging.sort, totalCount: state.payload?.pagination.filtered_count ?? null, pending: state.status === 'loading', onChange: patch => setPaging(current => ({ ...current, ...patch })) }} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={patch => { setPaging(current => ({ ...current, page: 1 })); setFilters(current => ({ ...current, ...patch })) }} extra={extra} onExtra={patch => { setPaging(current => ({ ...current, page: 1 })); setExtra(current => ({ ...current, ...patch })) }} rows={model.ledger} facets={state.payload?.facets || state.facets} sessionControl={sessionControl} onClearSessions={onClearSessions} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
+    {state.status === 'error' && <TestingReadState error message={t('Không đọc được giao dịch: {error}', { error: state.error })} onRetry={() => setReload(value => value + 1)} />}
+    {state.payload?.status === 'partial' && <TestingReadState message={t('Một số phiên chưa đủ dữ liệu; bảng chỉ gồm các giao dịch đã đọc được.')} />}
     {state.payload && <>
-      {row && <TradeInspector onClose={() => setSelected('')} className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail · {row.session_name}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><ProvenanceInspector model={detailModel} selectedTrade={{ ...row, tradeId: row.trade_id }} journalCount={null} links={{ replay: link('replay'), journal: link('journal') }} /></TradeInspector>}
+      {row && <TradeInspector onClose={() => setSelected('')} className="fxa-trade-inspector" aria-label={t("Chi tiết giao dịch")}><div className="fxa-section-heading"><h2>{t("Trade detail ·")} {row.session_name}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>{t("Đóng chi tiết")}</button></div><ProvenanceInspector model={detailModel} selectedTrade={{ ...row, tradeId: row.trade_id }} journalCount={null} links={{ replay: link('replay'), journal: link('journal') }} /></TradeInspector>}
     </>}
   </section>
 }
 
 export default function SessionReports({ workspace, query, ledgerOnly = false }) {
+  const { t } = useTestingLocale()
+
   const [catalog, setCatalog] = useState({ status: 'loading', items: [] })
   const [scope, setScope] = useState(() => ledgerOnly ? reportSessions(query) : query.get('session') || query.get('replay_session') || '')
   const [reload, setReload] = useState(0)
@@ -105,7 +101,8 @@ export default function SessionReports({ workspace, query, ledgerOnly = false })
     const url = new URL(window.location.href); url.searchParams.set('session', scope); window.history.replaceState({}, '', url)
   }, [scope, ledgerOnly])
   return <>
-    {catalog.status === 'error' && <p role="alert">Không tải được danh mục phiên: {catalog.error}</p>}
+    {catalog.status === 'loading' && <TestingSkeleton label="Đang tải danh mục phiên…" />}
+    {catalog.status === 'error' && <TestingReadState error message={t('Không tải được danh mục phiên:') + ' ' + t(catalog.error)} onRetry={() => setReload(value => value + 1)} />}
     {ledgerOnly && !(sessionId && ['cursor', 'cursor_index', 'cutoff', 'decision_cutoff', 'event_sequence', 'trade', 'trade_id'].some(key => new URLSearchParams(window.location.search).has(key))) ? <AggregateTrades workspace={workspace} ids={scope} query={query} sessionControl={control} onClearSessions={() => change(null)} /> : <AnalyticsWorkspace key={`${workspace}:${sessionId}`} workspace={workspace} query={scopedQuery} ledgerOnly={ledgerOnly} sessionName={item?.name || ''} sessionControl={control} />}
   </>
 }

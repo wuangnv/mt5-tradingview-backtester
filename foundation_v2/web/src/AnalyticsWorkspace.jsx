@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
+import { useTestingLocale } from './testingLocale.jsx'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './analytics-story.css'
 import { FxAnalyticsFilters, FxAnalyticsReport } from './FxAnalytics.jsx'
 import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
@@ -197,36 +199,49 @@ function analyticsViewStatus(view) {
 }
 
 function StoryMetric({ label, value, detail, source, tone = '' }) {
-  return <dl className={'as-story-metric ' + tone}><dt>{label}</dt><dd>{value}</dd><dd className="as-metric-detail"><small>{detail}</small><em>{source}</em></dd></dl>
+  const { t } = useTestingLocale()
+
+  return <dl className={'as-story-metric ' + tone}><dt>{t(label)}</dt><dd>{value}</dd><dd className="as-metric-detail"><small>{t(detail)}</small><em>{source}</em></dd></dl>
 }
 
 function ContextValue({ label, value, code = false }) {
+  const { t } = useTestingLocale()
+
   const displayValue = value === null || value === undefined || value === '' ? 'N/A' : value
-  return <div className="as-context-value"><dt>{label}</dt><dd className={code ? 'as-code' : ''}>{displayValue}</dd></div>
+  return <div className="as-context-value"><dt>{t(label)}</dt><dd className={code ? 'as-code' : ''}>{displayValue}</dd></div>
 }
 
 export function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
+  const formatNumber = (value, digits = 2, suffix = '') => fmt(value, suffix, digits)
+  const formatDate = value => dateFromValue(value) ? new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(dateFromValue(value)) : '—'
+
+  const { t, locale, fmt } = useTestingLocale()
+
   return (
-    <aside className="as-inspector" aria-label="Provenance và drilldown">
-      {selectedTrade && <div className="as-section-head"><h2>{selectedTrade.tradeId}</h2><span className="as-inspector-state">Chỉ đọc</span></div>}
+    <aside className="as-inspector" aria-label={t("Provenance và drilldown")}>
+      {selectedTrade && <div className="as-section-head"><h2>{selectedTrade.tradeId}</h2><span className="as-inspector-state">{t("Chỉ đọc")}</span></div>}
       {selectedTrade ? (
-        <section className="as-inspector-selection" aria-label="Trade detail">
-          <div className="as-selection-outcome"><span className={'as-outcome-dot is-' + selectedTrade.outcome} />{selectedTrade.outcome === 'win' ? 'Thắng' : selectedTrade.outcome === 'loss' ? 'Thua' : selectedTrade.outcome === 'breakeven' ? 'Hòa vốn' : 'Chưa xác định'}<strong>{formatNumber(selectedTrade.pnl)}</strong></div>
-          <dl className="as-detail-list"><ContextValue label="Đóng (UTC)" value={selectedTrade.closeDate} /><ContextValue label="Side" value={selectedTrade.side} /><ContextValue label="Symbol" value={selectedTrade.symbol} /><ContextValue label="Khối lượng" value={formatNumber(selectedTrade.quantity, 4)} /><ContextValue label="Giá mở" value={formatNumber(selectedTrade.price_open, 6)} /><ContextValue label="Giá đóng" value={formatNumber(selectedTrade.price_close, 6)} /><ContextValue label="Net R" value={formatNumber(selectedTrade.realized_r, 2, 'R')} /><ContextValue label="Risk budget" value={formatNumber(selectedTrade.planned_risk_budget)} /></dl>
-          <p className="as-inspector-note">{selectedTrade.source === 'closed balance curve' ? 'Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.' : 'Trade được đọc từ ledger đã lưu theo phiên hoặc research job. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.'}</p>
-          <details className="as-raw-details"><summary>Xem record gốc</summary><pre>{JSON.stringify(selectedTrade, null, 2)}</pre></details>
+        <section className="as-inspector-selection" aria-label={t("Trade detail")}>
+          <div className="as-selection-outcome"><span className={'as-outcome-dot is-' + selectedTrade.outcome} />{selectedTrade.outcome === 'win' ? t("Thắng") : selectedTrade.outcome === 'loss' ? t("Thua") : selectedTrade.outcome === 'breakeven' ? t("Hòa vốn") : t("Chưa xác định")}<strong>{formatNumber(selectedTrade.pnl)}</strong></div>
+          <dl className="as-detail-list"><ContextValue label={t("Đóng (UTC)")} value={selectedTrade.closeDate} /><ContextValue label={t("Side")} value={selectedTrade.side} /><ContextValue label={t("Symbol")} value={selectedTrade.symbol} /><ContextValue label={t("Khối lượng")} value={formatNumber(selectedTrade.quantity, 4)} /><ContextValue label={t("Giá mở")} value={formatNumber(selectedTrade.price_open, 6)} /><ContextValue label={t("Giá đóng")} value={formatNumber(selectedTrade.price_close, 6)} /><ContextValue label={t("Net R")} value={formatNumber(selectedTrade.realized_r, 2, 'R')} /><ContextValue label={t("Risk budget")} value={formatNumber(selectedTrade.planned_risk_budget)} /></dl>
+          <p className="as-inspector-note">{selectedTrade.source === 'closed balance curve' ? t("Result chỉ cung cấp trade ID trên balance curve; full ledger record chưa có nên các field còn lại giữ N/A.") : t("Trade được đọc từ ledger đã lưu theo phiên hoặc research job. Chọn Journal để ghi nhận diễn giải riêng; không sửa fill/result trong Analytics.")}</p>
+          <details className="as-raw-details"><summary>{t("Xem record gốc")}</summary><pre>{JSON.stringify(selectedTrade, null, 2)}</pre></details>
         </section>
       ) : null}
-      <details className="as-provenance-details"><summary>Nguồn và giới hạn</summary>
-      <dl className="as-provenance-list"><ContextValue label="Session revision" value={model.result?.revision} /><ContextValue label="Cutoff UTC" value={formatDate(model.result?.cutoff_timestamp)} /><ContextValue label="Dataset" value={model.result?.dataset_id} code /><ContextValue label="Dataset SHA" value={model.result?.dataset_sha256} code /><ContextValue label="Protocol SHA" value={model.result?.protocol_sha256} code /><ContextValue label="Artifact SHA" value={model.sourceHash} code /><ContextValue label="Strategy / engine" value={model.strategy} /><ContextValue label="Split" value={model.result?.split} /><ContextValue label="Metric schema" value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label="Observed range" value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label="Journal context" value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
-      <p className="as-limit-note">N/A nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Research/simulation đang broker locked; không có đường nào gửi lệnh.</p>
+      <details className="as-provenance-details"><summary>{t("Nguồn và giới hạn")}</summary>
+      <dl className="as-provenance-list"><ContextValue label={t("Session revision")} value={model.result?.revision} /><ContextValue label={t("Cutoff UTC")} value={formatDate(model.result?.cutoff_timestamp)} /><ContextValue label={t("Dataset")} value={model.result?.dataset_id} code /><ContextValue label={t("Dataset SHA")} value={model.result?.dataset_sha256} code /><ContextValue label={t("Protocol SHA")} value={model.result?.protocol_sha256} code /><ContextValue label={t("Artifact SHA")} value={model.sourceHash} code /><ContextValue label={t("Strategy / engine")} value={model.strategy} /><ContextValue label={t("Split")} value={model.result?.split} /><ContextValue label={t("Metric schema")} value={model.result?.metrics_schema_version || model.metrics.metric_schema_version} code /><ContextValue label={t("Observed range")} value={model.observed.start + ' → ' + model.observed.end} /><ContextValue label={t("Journal context")} value={journalCount === null ? 'N/A' : journalCount + ' entries'} /></dl>
+      <p className="as-limit-note">{t("N/A nghĩa là nguồn chưa cung cấp dữ liệu cần thiết. Research/simulation đang broker locked; không có đường nào gửi lệnh.")}</p>
       </details>
-      <div className="as-inspector-actions"><a href={links.journal}>Mở Journal →</a>{links.replay && <a href={links.replay}>Mở Replay →</a>}</div>
+      <div className="as-inspector-actions"><a href={links.journal}>{t("Mở Journal →")}</a>{links.replay && <a href={links.replay}>{t("Mở Replay →")}</a>}</div>
     </aside>
   )
 }
 
 function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(), ledgerOnly = false, summaryOnly = false, embedded = false, sessionName = '', propReport = null, sessionControl = null }) {
+  const formatNumber = (value, digits = 2, suffix = '') => fmt(value, suffix, digits)
+
+  const { t, fmt } = useTestingLocale()
+
   const jobId = query?.get('job') || query?.get('job_id') || ''
   const sessionId = query?.get('session') || query?.get('replay_session') || ''
   const resourceId = jobId || sessionId
@@ -244,6 +259,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   const [exportPending, setExportPending] = useState(false)
   const [exportError, setExportError] = useState('')
   const [extra, setExtra] = useState(() => readAnalyticsExtraFilters(query))
+  const [activeReportTab, setActiveReportTab] = useState(query.get('analytics_tab') || 'performance')
   const [experimentConfig, setExperimentConfig] = useState({ stop_distance_ticks: 20, stop_multiplier: 1, target_r: 2 })
   const [experiments, setExperiments] = useState({ status: 'idle', payload: null, error: '' })
   const [experimentReload, setExperimentReload] = useState(0)
@@ -291,7 +307,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
     } catch (error) {
       if (error?.name === 'AbortError' || requestId !== requestSequence.current) return
       const status = error?.status === 409 || error?.status === 503 ? 'blocked_by_data' : 'error'
-      setState({ status, payload: error?.payload || null, error: String(error.message || error) })
+      setState(current => background && current.payload && ['ready', 'partial', 'stale', 'empty'].includes(current.status) ? { ...current, status: 'stale', refreshing: false, error: String(error.message || error) } : { status, payload: error?.payload || null, error: String(error.message || error) })
     }
   }, [analyticsPath, resourceId, workspace, propReport])
 
@@ -302,7 +318,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
   }, [load])
   useReadRefresh(() => { load({ background: true }); setExperimentReload(value => value + 1) }, Boolean(resourceId))
   useEffect(() => {
-    if (jobId || !sessionId || summaryOnly || ledgerOnly) return
+    if (jobId || !sessionId || summaryOnly || ledgerOnly || !['drawdown', 'simulation'].includes(activeReportTab)) return
     const controller = new AbortController()
     const params = new URLSearchParams(filterParams)
     for (const [key, value] of Object.entries(experimentConfig)) params.set(key, value)
@@ -314,7 +330,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
       }
     }).catch(error => { if (!controller.signal.aborted) setExperiments({ status: 'error', payload: null, error: `Chưa đọc được đường giá: ${error.message}` }) })
     return () => controller.abort()
-  }, [workspace, sessionId, jobId, filterParams, experimentConfig, experimentReload, summaryOnly, ledgerOnly])
+  }, [workspace, sessionId, jobId, filterParams, experimentConfig, experimentReload, summaryOnly, ledgerOnly, activeReportTab])
   useEffect(() => {
     if (summaryOnly) return
     const url = new URL(window.location.href)
@@ -420,25 +436,25 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
 
   const Inspector = ledgerOnly ? TradeInspector : 'section'
   const renderFilters = columnControl => <FxAnalyticsFilters sourceType={propReport ? 'Prop firm' : jobId ? 'Research' : 'Backtesting'} sessionControl={sessionControl} filters={filters} onChange={updateFilters} extra={extra} onExtra={patch => setExtra(current => ({ ...current, ...patch }))} rows={model.ledger} onExport={exportCsv} pending={exportPending || !result || !['ready', 'partial', 'stale', 'empty'].includes(state.status)} columnControl={columnControl} ledgerOnly={ledgerOnly} />
-  return <section className={`as-page fxa-page ${embedded ? 'as-embedded' : 'wm-page'}`} aria-label={ledgerOnly ? 'Trades' : 'Analytics'} data-testid="analytics-workspace">
-    {!embedded && <h1 className="sr-only">{ledgerOnly ? 'Trades' : 'Analytics'}</h1>}
+  return <section className={`as-page fxa-page ${embedded ? 'as-embedded' : 'wm-page'}`} aria-label={ledgerOnly ? t("Trades") : t("Analytics")} data-testid="analytics-workspace">
+    {!embedded && <h1 className="sr-only">{ledgerOnly ? t("Trades") : t("Analytics")}</h1>}
     {(resourceId || sessionControl) && !summaryOnly && (ledgerOnly ? <FxTradeLedger model={model} extra={extra} selected={selectedTradeId} onSelect={setSelectedTradeId} sessionName={sessionName} hidden={!result || !['ready', 'stale', 'partial', 'empty'].includes(state.status)} renderFilters={renderFilters} /> : renderFilters())}
-    {exportError && <p role="alert" className="fxa-error">{exportError}</p>}
-    {result?.historical_view && <p className="as-message" data-testid="analytics-historical-scope">Kết quả tới nến #{result.cursor_index}. Phiên hiện ở nến #{result.canonical_cursor_index}; báo cáo không gồm giao dịch sau mốc đang xem.</p>}
-    {!resourceId && <p className="fxa-empty">Chọn một phiên replay hoặc research job để xem kết quả.</p>}
-    {state.status === 'loading' && <div className="as-message" role="status">Đang tải kết quả…</div>}
-    {state.status === 'error' && <p className="as-message as-error" role="alert">Không đọc được kết quả: {state.error}. Kết quả sẽ được kiểm tra khi quay lại ứng dụng hoặc kết nối mạng phục hồi.</p>}
-    {state.status === 'blocked_by_data' && <section className="as-empty-state" data-testid="analytics-blocked"><h2>Chưa đủ dữ liệu để tính analytics</h2><p>{state.payload?.blocked_by_data?.join(' · ') || state.error || 'Nguồn chưa có kết quả đã phát hành.'}</p></section>}
-    {state.status === 'empty' && <p className="as-message" data-testid="analytics-empty">Không có giao dịch đóng khớp bộ lọc.</p>}
-    {state.status === 'stale' && <p className="as-stale-banner" role="status">Dữ liệu có thể đã cũ. Giữ nguyên nguồn và kiểm tra lại khi quay về ứng dụng.</p>}
-    {!ledgerOnly && state.status === 'partial' && <p className="as-stale-banner" role="status">Dữ liệu một phần. Chỉ tính trên các giao dịch có trong nguồn đã đọc.</p>}
+    {exportError && <p role="alert" className="fxa-error">{t(exportError)}</p>}
+    {result?.historical_view && <p className="as-message" data-testid="analytics-historical-scope">{t("Kết quả tới nến #")}{result.cursor_index}{t(". Phiên hiện ở nến #")}{result.canonical_cursor_index}{t("; báo cáo không gồm giao dịch sau mốc đang xem.")}</p>}
+    {!resourceId && <p className="fxa-empty">{t("Chọn một phiên replay hoặc research job để xem kết quả.")}</p>}
+    {state.status === 'loading' && <TestingSkeleton label="Đang tải kết quả…" />}
+    {state.refreshing && <TestingReadState message="Đang cập nhật…" />}
+    {state.status === 'error' && <TestingReadState error message={t('Không đọc được kết quả:') + ' ' + t(state.error)} onRetry={() => load()} />}
+    {state.status === 'blocked_by_data' && <section className="as-empty-state" data-testid="analytics-blocked"><h2>{t("Chưa đủ dữ liệu để tính analytics")}</h2><p>{state.payload?.blocked_by_data?.map(reason => t(reason)).join(' · ') || t(state.error) || t("Nguồn chưa có kết quả đã phát hành.")}</p></section>}
+    {state.status === 'empty' && <p className="as-message" data-testid="analytics-empty">{t("Không có giao dịch đóng khớp bộ lọc.")}</p>}
+    {state.status === 'stale' && <p className="as-stale-banner" role="status">{t("Dữ liệu có thể đã cũ. Giữ nguyên nguồn và kiểm tra lại khi quay về ứng dụng.")}</p>}
+    {!ledgerOnly && state.status === 'partial' && <p className="as-stale-banner" role="status">{t("Dữ liệu một phần. Chỉ tính trên các giao dịch có trong nguồn đã đọc.")}</p>}
     {result && ['ready', 'stale', 'partial', 'empty'].includes(state.status) && <>
-      {summaryOnly ? <section className="as-metric-strip" aria-label="Metrics chính"><StoryMetric label="Net P/L" value={formatNumber(model.netPnl)} detail={result.account_currency} /><StoryMetric label="Win rate" value={formatNumber(model.winRate, 1, '%')} /><StoryMetric label="Trades" value={formatNumber(model.tradeCount, 0)} /><StoryMetric label="Max DD" value={formatNumber(model.maxDrawdown)} detail="Closed balance" /></section> : ledgerOnly ? null : <FxAnalyticsReport model={model} extra={extra} experiments={experimentScopeMatches ? experiments.payload : null} experimentStatus={experimentScopeMatches ? experiments.status : experiments.status === 'ready' ? 'error' : experiments.status} experimentError={experiments.error || (experiments.status === 'ready' && !experimentScopeMatches ? 'Đường giá chưa khớp revision/cutoff của báo cáo.' : '')} config={experimentConfig} onConfig={setExperimentConfig} selected={selectedTradeId} onSelect={setSelectedTradeId} />}
-      {!summaryOnly && !ledgerOnly && <details className="as-scope-details"><summary>Phạm vi và nguồn dữ liệu</summary><dl className="as-scope-strip"><ContextValue label="Session" value={sessionId || jobId} code /><ContextValue label="Revision" value={result.revision} /><ContextValue label="Cutoff" value={result.cursor_index} /><ContextValue label="Dataset SHA" value={result.dataset_sha256} code /><ContextValue label="Balance basis" value={result.scope?.balance_curve_scope} /><ContextValue label="Mode" value={sourceLabel + ' / simulation'} /></dl><p>Chỉ dùng ledger đóng tại cutoff đã chọn. Các bộ lọc tạo lại đường số dư từ vốn ban đầu. — là dữ liệu chưa được nguồn cung cấp.</p></details>}
-      {!summaryOnly && selectedTrade && <Inspector onClose={() => setSelectedTradeId('')} className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>Trade detail</h2><button className="fxa-button" type="button" onClick={() => setSelectedTradeId('')}>Đóng chi tiết</button></div><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></Inspector>}
+      {summaryOnly ? <section className="as-metric-strip" aria-label={t("Metrics chính")}><StoryMetric label={t("Net P/L")} value={formatNumber(model.netPnl)} detail={result.account_currency} /><StoryMetric label={t("Win rate")} value={formatNumber(model.winRate, 1, '%')} /><StoryMetric label={t("Trades")} value={formatNumber(model.tradeCount, 0)} /><StoryMetric label={t("Max DD")} value={formatNumber(model.maxDrawdown)} detail={t("Closed balance")} /></section> : ledgerOnly ? null : <FxAnalyticsReport model={model} extra={extra} experiments={experimentScopeMatches ? experiments.payload : null} experimentStatus={experimentScopeMatches ? experiments.status : experiments.status === 'ready' ? 'error' : experiments.status} experimentError={experiments.error || (experiments.status === 'ready' && !experimentScopeMatches ? 'Đường giá chưa khớp revision/cutoff của báo cáo.' : '')} config={experimentConfig} onConfig={setExperimentConfig} onTabChange={setActiveReportTab} selected={selectedTradeId} onSelect={setSelectedTradeId} />}
+      {!summaryOnly && !ledgerOnly && <details className="as-scope-details"><summary>{t("Phạm vi và nguồn dữ liệu")}</summary><dl className="as-scope-strip"><ContextValue label={t("Session")} value={sessionId || jobId} code /><ContextValue label={t("Revision")} value={result.revision} /><ContextValue label={t("Cutoff")} value={result.cursor_index} /><ContextValue label={t("Dataset SHA")} value={result.dataset_sha256} code /><ContextValue label={t("Balance basis")} value={result.scope?.balance_curve_scope} /><ContextValue label={t("Mode")} value={sourceLabel + ' / simulation'} /></dl><p>{t("Chỉ dùng ledger đóng tại cutoff đã chọn. Các bộ lọc tạo lại đường số dư từ vốn ban đầu. — là dữ liệu chưa được nguồn cung cấp.")}</p></details>}
+      {!summaryOnly && selectedTrade && <Inspector onClose={() => setSelectedTradeId('')} className="fxa-trade-inspector" aria-label={t("Chi tiết giao dịch")}><div className="fxa-section-heading"><h2>{t("Trade detail")}</h2><button className="fxa-button" type="button" onClick={() => setSelectedTradeId('')}>{t("Đóng chi tiết")}</button></div><ProvenanceInspector model={model} selectedTrade={selectedTrade} journalCount={journalCount} links={links} /></Inspector>}
     </>}
   </section>
 }
 
 export default AnalyticsStoryWorkspace
-

@@ -1,0 +1,38 @@
+{
+  "session": {
+    "ready": {"vi": "Sẵn sàng", "en": "Ready"},
+    "running": {"vi": "Đang chạy", "en": "Running"},
+    "paused": {"vi": "Tạm dừng", "en": "Paused"},
+    "completed": {"vi": "Hoàn thành", "en": "Completed"},
+    "archived": {"vi": "Đã lưu trữ", "en": "Archived"}
+  },
+  "prop_attempt": {
+    "ready": {"vi": "Sẵn sàng", "en": "Ready"},
+    "running": {"vi": "Đang chạy", "en": "Running"},
+    "paused": {"vi": "Tạm dừng", "en": "Paused"},
+    "phase_passed": {"vi": "Đã đạt giai đoạn", "en": "Phase passed"},
+    "next_phase_ready": {"vi": "Sẵn sàng cho giai đoạn tiếp theo", "en": "Next phase ready"},
+    "completed_pass": {"vi": "Hoàn thành thử thách", "en": "Challenge passed"},
+    "failed_breach": {"vi": "Không đạt do vi phạm giới hạn", "en": "Failed: limit breached"},
+    "expired": {"vi": "Hết hạn", "en": "Expired"},
+    "abandoned": {"vi": "Đã kết thúc theo yêu cầu", "en": "Abandoned"}
+  },
+  "data_quality": {
+    "partial": {"vi": "Dữ liệu một phần", "en": "Partial data"},
+    "stale": {"vi": "Dữ liệu có thể đã cũ", "en": "Data may be out of date"},
+    "blocked": {"vi": "Chưa đủ dữ liệu", "en": "Insufficient data"},
+    "unknown": {"vi": "Chưa rõ", "en": "Unknown"},
+    "full_for_declared_model": {"vi": "Đủ dữ liệu cho mô hình đã khai báo", "en": "Complete for the declared model"}
+  },
+  "prop_branch": {
+    "clean": {"vi": "Lượt thử nguyên bản", "en": "Clean attempt"},
+    "hindsight_exploratory": {"vi": "Nhánh khám phá có thông tin tương lai", "en": "Hindsight exploration"}
+  },
+  "market_asset": {
+    "ready": {"vi": "Đã tải", "en": "Downloaded"},
+    "queued": {"vi": "Đang chờ", "en": "Queued"},
+    "syncing": {"vi": "Đang tải", "en": "Downloading"},
+    "error": {"vi": "Cập nhật lỗi", "en": "Update failed"},
+    "not_downloaded": {"vi": "Chưa tải", "en": "Not downloaded"}
+  }
+}

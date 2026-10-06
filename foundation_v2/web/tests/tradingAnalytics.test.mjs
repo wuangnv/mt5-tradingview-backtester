@@ -1,6 +1,7 @@
+import { monteCarlo } from '../src/analyticsSimulation.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { advancedAnalytics, calendarParts, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, validateTradesPayload, filterAnalyticsRows, monteCarlo, outcomeOf, tradesCsv } from '../src/tradingAnalyticsModel.js'
+import { advancedAnalytics, calendarParts, DEFAULT_EXTRA_FILTERS, readAnalyticsExtraFilters, validateTradesPayload, filterAnalyticsRows, outcomeOf, tradesCsv } from '../src/tradingAnalyticsModel.js'
 import { buildPropAnalyticsView, propReplayQuery } from '../src/propAnalyticsModel.js'
 
 const rows = [100, -50, 0, 150, -100].map((value, index) => ({ trade_id: `trade-${index}`, tradeId: `trade-${index}`, rowIndex: index, net_pnl: value, pnl: value, side: index % 2 ? 'SELL' : 'BUY', symbol: index % 2 ? 'EURUSD' : 'GBPUSD', realized_r: null, open_time_utc: `2024-01-0${index + 1}T12:00:00Z`, close_time_utc: `2024-01-0${index + 1}T13:00:00Z`, tags: index === 3 ? ['breakout'] : [] }))
