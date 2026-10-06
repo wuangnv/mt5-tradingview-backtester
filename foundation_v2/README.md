@@ -36,6 +36,18 @@ This foundation does not enable live execution, read holdout data or deploy to
 cloud. Existing root launch scripts still start Flask legacy; they do not launch
 PATH-2. Follow the root README when developing this foundation.
 
+Session management in Dashboard and Sessions distinguishes archive/restore from
+delete. `POST /api/v2/replay/sessions/{id}/delete` requires a strict positive
+`expected_revision` and the exact current `confirmation_name`. It appends a
+deleted revision; canonical reads, reports and mutations no longer expose that
+session, and UI restore cannot revive it. Immutable revisions remain internal
+audit evidence; this is not a physical storage purge. Shared Market Data,
+independent journal/annotations and other replay branches are preserved.
+Deletion is blocked when any persisted Prop attempt revision references the
+session. Binding writers lock replay before Prop to prevent a new dependency
+from racing deletion. Existing invalid/missing replay bindings are now rejected
+when writing a bundle/resume; no schema migration is required.
+
 F7 now has a first software-baseline slice on top of the same foundation:
 
 - tenant-scoped dataset catalog with provenance and an explicit holdout lock;

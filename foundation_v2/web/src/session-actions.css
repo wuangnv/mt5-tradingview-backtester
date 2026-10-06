@@ -1,0 +1,21 @@
+.fxs-actions { position: relative; flex: 0 0 auto; }
+.fx-app .fxs-actions .fxs-actions-trigger { display: grid; place-items: center; width: 36px; min-height: 36px; padding: 8px; border: 1px solid var(--wm-control-border); border-radius: 50%; background: transparent; color: var(--wm-content); cursor: pointer; }
+.fxs-actions-trigger svg { width: 18px; height: 18px; }
+.fx-app .fxs-actions-trigger:hover:not(:disabled), .fx-app .fxs-actions-trigger[aria-expanded='true'] { background: var(--wm-hover); border-color: var(--wm-control-hover-border); }
+.fxs-actions-menu { position: fixed; z-index: 70; width: 210px; max-width: calc(100vw - 32px); box-sizing: border-box; padding: 6px; border: 1px solid var(--wm-control-border); border-radius: 10px; background: var(--wm-surface); box-shadow: 0 8px 24px #0003; }
+.fx-app.fx-shell-story .fxs-actions-menu > button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px; padding: 9px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--wm-content); font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+.fxs-actions-menu svg { width: 18px; height: 18px; }
+.fx-app.fx-shell-story .fxs-actions-menu > .is-danger { color: var(--wm-negative); border-top: 1px solid var(--wm-border); border-radius: 0 0 6px 6px; margin-top: 4px; padding-top: 13px; }
+.fx-app .fxs-actions-menu button:hover, .fx-app .fxs-actions-menu button:focus-visible { background: var(--wm-hover); }
+.fxs-actions :is(button):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: -2px; }
+.fx-dashboard-dialog.fxs-action-dialog { width: min(520px, calc(100vw - 32px)); }
+.fxs-action-dialog label strong { font-weight: 500; overflow-wrap: anywhere; }
+.fx-app .fxs-action-dialog .fxs-delete-confirm { color: var(--wm-negative); border: 1px solid var(--wm-negative); background: transparent; }
+.fx-app .fxs-action-dialog .fxs-delete-confirm:hover:not(:disabled) { background: var(--wm-hover); }
+.fxs-action-dialog input { min-height: 42px; padding: 10px 12px; border: 1px solid var(--wm-control-border); border-radius: 8px; background: transparent; color: var(--wm-content); font: inherit; }
+.fxs-action-dialog input:focus-visible { outline: 1px solid var(--wm-focus); outline-offset: -1px; }
+@media (pointer: coarse) { .fx-app .fxs-actions .fxs-actions-trigger { width: 44px; min-height: 44px; } }
+
+.fx-app.fx-shell-story[data-theme] .fx-content .fxs-actions :is(button):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: -2px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .fxs-action-dialog input:focus-visible { outline: none; box-shadow: none; border-color: var(--wm-focus); }
+.fx-app.fx-shell-story .fxs-action-dialog > header button { color: var(--wm-content); border: 0; border-radius: 50%; background: transparent; padding: 0; }

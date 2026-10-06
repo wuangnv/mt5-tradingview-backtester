@@ -6,6 +6,7 @@ import FxSelect from './FxSelect.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
 import DashboardSessions from './DashboardSessions.jsx'
+import { SessionActionsMenu, SessionActionDialog } from './SessionActions.jsx'
 import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
 import { SessionSelect } from './SessionPicker.jsx'
@@ -50,36 +51,44 @@ function DemoReports({ ledgerOnly, prop = false, query }) {
 function DemoSessions({ workspace, query }) {
   const [items, setItems] = useState(DEMO_SESSIONS)
   const [id, setId] = useState(DEMO_SESSIONS.find(item => item.record_id === query.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
-  const [editing, setEditing] = useState(false)
+  const [editing, setEditing] = useState(false), [actionDialog, setActionDialog] = useState(null)
   const item = items.find(item => item.record_id === id)
-  const payload = useMemo(() => demoDashboardAnalytics(item, workspace), [item, workspace])
-  const model = useMemo(() => buildAnalyticsModel(demoResult(payload.ledger, item)), [payload, item])
-  const dataset = DEMO_DATASETS.find(entry => entry.dataset_id === item.dataset_id), replayRecord = demoReplayContext(item)
+  const payload = useMemo(() => item ? demoDashboardAnalytics(item, workspace) : null, [item, workspace])
+  const model = useMemo(() => item ? buildAnalyticsModel(demoResult(payload.ledger, item)) : null, [payload, item])
+  const dataset = DEMO_DATASETS.find(entry => entry.dataset_id === item?.dataset_id), replayRecord = item ? demoReplayContext(item) : null
   const href = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, { demo_session: id, select: '1', analytics_source: 'sessions', ...overrides })
   const save = draft => { setItems(current => current.map(entry => entry.record_id === id ? { ...entry, ...draft, revision: entry.revision + 1 } : entry)); setEditing(false); return true }
-  const select = value => { setId(value); const url = new URL(window.location.href); url.searchParams.set('demo_session', value); window.history.replaceState(null, '', url) }
+  const select = value => { setId(value); const url = new URL(window.location.href); if (value) url.searchParams.set('demo_session', value); else url.searchParams.delete('demo_session'); window.history.replaceState(null, '', url) }
+  const mutate = action => {
+    const next = action === 'delete' ? items.filter(entry => entry.record_id !== id) : items.map(entry => entry.record_id === id ? { ...entry, archived: !entry.archived, revision: entry.revision + 1 } : entry)
+    setItems(next); setActionDialog(null)
+    if (action === 'delete') select(next.find(entry => !entry.archived)?.record_id || next[0]?.record_id || '')
+  }
   return <section className="wm-page fx-session-picker fxr-integrated-sessions fxs-page" aria-label="Sessions">
     <h1 className="sr-only">Sessions</h1>
     <div className="fxr-session-toolbar">
-      <SessionSelect selected={id} catalog={{ status: 'ready', items }} onSelect={select} balance={fmt(model.endingBalance, ' USD')} />
+      <SessionSelect selected={id} catalog={{ status: 'ready', items }} onSelect={select} balance={fmt(model?.endingBalance, ' USD')} />
       <div className="fxr-session-actions">
         <button className="fxr-button fxr-button-primary" disabled type="button">＋ Phiên mới</button>
-        <FxSelect className="fxs-analytics-button" label="Mở Analytics" value="session" triggerContent="Analytics" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(href('analytics', { analytics_source: value === 'prop' ? 'prop' : 'sessions' }))} />
+        {item && <><FxSelect className="fxs-analytics-button" label="Mở Analytics" value="session" triggerContent="Analytics" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(href('analytics', { analytics_source: value === 'prop' ? 'prop' : 'sessions' }))} />
         <button className="fxr-button fxr-button-secondary fxs-settings" type="button" onClick={() => setEditing(true)}>Cài đặt phiên</button>
+        <SessionActionsMenu item={item} onAction={action => setActionDialog(action)} /></>}
       </div>
     </div>
-    <div className="fxr-session-cards">
+    {item ? <><div className="fxr-session-cards">
       <SessionSummaryCard item={item} dataset={dataset} payload={payload} model={model} replayRecord={replayRecord} preview />
       <SessionDescriptionCard item={item} onSave={description => save({ description })} />
     </div>
     <div className="fxr-session-report"><SessionPerformance model={model} item={item} payload={payload} href={href} /></div>
-    {editing && <SessionSettingsDrawer item={item} dataset={dataset} payload={payload} model={model} replayRecord={replayRecord} workspace={workspace} preview onClose={() => setEditing(false)} onSubmit={save} />}
+    </> : <div className="fxr-empty-state"><h2>Chưa có phiên trong bản xem thử</h2><p>Tải lại trang để xem lại các phiên demo.</p></div>}
+    {actionDialog && item && <SessionActionDialog key={actionDialog + id} mode={actionDialog} item={item} preview onClose={() => setActionDialog(null)} onSubmit={mutate} />}
+    {editing && item && <SessionSettingsDrawer item={item} dataset={dataset} payload={payload} model={model} replayRecord={replayRecord} workspace={workspace} preview onClose={() => setEditing(false)} onSubmit={save} />}
   </section>
 }
 
 function DemoDashboard({ workspace, query }) {
   const preview = useMemo(() => ({ items: DEMO_SESSIONS, datasets: DEMO_DATASETS, analytics: demoDashboardAnalytics, replayContext: demoReplayContext,
-    overview: (filters, items) => demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : null, filters)),
+    overview: (filters, items) => demoOverview(demoFilterRows(filters.session ? [items.find(item => item.record_id === filters.session)?.source_record_id || filters.session] : [...new Set(items.map(item => item.source_record_id || item.record_id))], filters)),
     propReport: <DemoReports prop /> }), [])
   return <section className="fx-dashboard" aria-label="Dashboard"><div className="fx-dashboard-inner"><DashboardSessions workspace={workspace} query={query} preview={preview} /></div></section>
 }

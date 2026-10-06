@@ -1,0 +1,452 @@
+{
+  "checks": [
+    {
+      "name": "demo-overview-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-light-1440",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-light-360",
+      "pass": true
+    },
+    {
+      "name": "actual-overview-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "actual-overview-light-360",
+      "pass": true
+    },
+    {
+      "name": "actual-replay-dark-1440",
+      "pass": true
+    },
+    {
+      "name": "actual-replay-light-360",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "api": [
+    {
+      "method": "GET",
+      "path": "/api/v2/overview",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270",
+      "demo": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/analytics",
+      "demo": null
+    }
+  ],
+  "styles": [
+    {
+      "demo": true,
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(73, 84, 93)",
+        "color": "rgb(232, 237, 240)"
+      },
+      "hover": {
+        "background": "rgba(32, 32, 32, 0.616)",
+        "hover": "#202020"
+      }
+    },
+    {
+      "demo": true,
+      "view": "overview",
+      "width": 1440,
+      "theme": "light",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(168, 177, 184)",
+        "color": "rgb(29, 41, 48)"
+      },
+      "hover": {
+        "background": "rgba(237, 237, 237, 0.616)",
+        "hover": "#ededed"
+      }
+    },
+    {
+      "demo": true,
+      "view": "overview",
+      "width": 360,
+      "theme": "dark",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(73, 84, 93)",
+        "color": "rgb(232, 237, 240)"
+      },
+      "hover": {
+        "background": "rgba(32, 32, 32, 0.616)",
+        "hover": "#202020"
+      }
+    },
+    {
+      "demo": true,
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(168, 177, 184)",
+        "color": "rgb(29, 41, 48)"
+      },
+      "hover": {
+        "background": "rgba(237, 237, 237, 0.125)",
+        "hover": "#ededed"
+      }
+    },
+    {
+      "demo": true,
+      "view": "replay",
+      "width": 1440,
+      "theme": "dark",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(85, 85, 85)",
+        "color": "rgb(255, 255, 255)"
+      },
+      "hover": {
+        "background": "rgba(32, 32, 32, 0.384)",
+        "hover": "#202020"
+      }
+    },
+    {
+      "demo": true,
+      "view": "replay",
+      "width": 1440,
+      "theme": "light",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(194, 194, 194)",
+        "color": "rgb(29, 41, 48)"
+      },
+      "hover": {
+        "background": "rgba(237, 237, 237, 0.384)",
+        "hover": "#ededed"
+      }
+    },
+    {
+      "demo": true,
+      "view": "replay",
+      "width": 360,
+      "theme": "dark",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(162, 162, 162)",
+        "color": "rgb(255, 255, 255)"
+      },
+      "hover": {
+        "background": "rgba(32, 32, 32, 0.384)",
+        "hover": "#202020"
+      }
+    },
+    {
+      "demo": true,
+      "view": "replay",
+      "width": 360,
+      "theme": "light",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(107, 107, 107)",
+        "color": "rgb(29, 41, 48)"
+      },
+      "hover": {
+        "background": "rgba(237, 237, 237, 0.384)",
+        "hover": "#ededed"
+      }
+    },
+    {
+      "demo": false,
+      "view": "overview",
+      "width": 1440,
+      "theme": "dark",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(117, 125, 131)",
+        "color": "rgb(232, 237, 240)"
+      },
+      "hover": {
+        "background": "rgba(32, 32, 32, 0.616)",
+        "hover": "#202020"
+      }
+    },
+    {
+      "demo": false,
+      "view": "overview",
+      "width": 360,
+      "theme": "light",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(117, 121, 124)",
+        "color": "rgb(29, 41, 48)"
+      },
+      "hover": {
+        "background": "rgba(237, 237, 237, 0.776)",
+        "hover": "#ededed"
+      }
+    },
+    {
+      "demo": false,
+      "view": "replay",
+      "width": 1440,
+      "theme": "dark",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(85, 85, 85)",
+        "color": "rgb(255, 255, 255)"
+      },
+      "hover": {
+        "background": "rgba(32, 32, 32, 0.384)",
+        "hover": "#202020"
+      }
+    },
+    {
+      "demo": false,
+      "view": "replay",
+      "width": 360,
+      "theme": "light",
+      "input": {
+        "border": "1px",
+        "parentBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "borderColor": "rgb(128, 128, 128)",
+        "color": "rgb(29, 41, 48)"
+      },
+      "hover": {
+        "background": "rgba(237, 237, 237, 0.776)",
+        "hover": "#ededed"
+      }
+    }
+  ],
+  "before": [
+    {
+      "file": "foundation_v2/web/src/SessionActions.jsx",
+      "sha256": "d8309f7c5b03135c5d16525a6bfe5cbf02455fc9fdf145414e44ae95a342f45b"
+    },
+    {
+      "file": "foundation_v2/web/src/session-actions.css",
+      "sha256": "4181266b69f18c6a3a4a503c0c1690e2a8950fea9683e3bc5b8be9f68b2bebfe"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "7e6cade137e744a5285b8549dc6a8bfa020512e1ac4bc14037edf388a704a5c0"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "8ae70aa510d2f41b002b9312a323807decc07cdc3802e7dd2e46c1f7647fb49c"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPicker.jsx",
+      "sha256": "10760ba2f8f1d9ea6c671c761593815e48de3e2a24b9173986e13973a5488b76"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionCatalog.js",
+      "sha256": "449dba63d374fe267ba86deaf43de92b659aef85d53d9955a8843ee89112185d"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "a1632822594baeee218dff71f37f3d8dd24b0a37968058f468bbd6ef812c6055"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/store.py",
+      "sha256": "e3f90ea7f3f66ee70cedb19e5af398abd88323e51093af589d14d447efdf3055"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/contracts.py",
+      "sha256": "b55f39cb064c7980cc904faaf3adecd127a04cfec5a949f3074f202414cbfa7c"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/api.py",
+      "sha256": "101ec39c031eaf23dcd95ee5f2acc52929cac796b86c41f1397508a4b9ad8ee9"
+    }
+  ],
+  "actualRecordsUnchanged": true,
+  "after": [
+    {
+      "file": "foundation_v2/web/src/SessionActions.jsx",
+      "sha256": "0e8a612c54cf891f97e4a4550bd5b7ed5bcc9551d0ecd2fa18468a9c0ed3d81c"
+    },
+    {
+      "file": "foundation_v2/web/src/session-actions.css",
+      "sha256": "4181266b69f18c6a3a4a503c0c1690e2a8950fea9683e3bc5b8be9f68b2bebfe"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "7e6cade137e744a5285b8549dc6a8bfa020512e1ac4bc14037edf388a704a5c0"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "06d3d3c12ba42947f1bda3f7596aaa766a6411ef857f4097303752fa935a9469"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPicker.jsx",
+      "sha256": "10760ba2f8f1d9ea6c671c761593815e48de3e2a24b9173986e13973a5488b76"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionCatalog.js",
+      "sha256": "449dba63d374fe267ba86deaf43de92b659aef85d53d9955a8843ee89112185d"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "a1632822594baeee218dff71f37f3d8dd24b0a37968058f468bbd6ef812c6055"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/store.py",
+      "sha256": "e3f90ea7f3f66ee70cedb19e5af398abd88323e51093af589d14d447efdf3055"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/contracts.py",
+      "sha256": "b55f39cb064c7980cc904faaf3adecd127a04cfec5a949f3074f202414cbfa7c"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/api.py",
+      "sha256": "101ec39c031eaf23dcd95ee5f2acc52929cac796b86c41f1397508a4b9ad8ee9"
+    }
+  ],
+  "sourceUnchanged": false,
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(report.sourceUnchanged)\n"
+}

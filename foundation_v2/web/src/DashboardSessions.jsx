@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { duplicateSession, fetchReplaySessions, rememberSession, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
+import { deleteSession, readLastSession, sessionMutationError, duplicateSession, fetchReplaySessions, rememberSession, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
 import { dashboardFilters, dashboardRecentSessions, dashboardPeriod, dashboardPeriodRange, dashboardNumber, readDashboardAnalytics, readDashboardDatasets, readDashboardReplayContext, updateDashboardQuery } from './dashboardModel.js'
 import { analyticsViewResult, buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
 import DashboardPerformance from './DashboardPerformance.jsx'
-import DashboardSessionCard, { DashboardSessionDialog } from './DashboardSessionCard.jsx'
+import DashboardSessionCard from './DashboardSessionCard.jsx'
+import { SessionActionDialog } from './SessionActions.jsx'
 import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import FxSelect, { FilterIcon } from './FxSelect.jsx'
 import PropAnalytics from './PropAnalytics.jsx'
@@ -30,6 +31,19 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   const [page, setPage] = useState(Math.max(1, Number.parseInt(initialQuery.get('dashboard_page'), 10) || 1))
   const [dialog, setDialog] = useState(null), [pending, setPending] = useState(false), [mutationError, setMutationError] = useState(''), [notice, setNotice] = useState('')
   const [needsRefresh, setNeedsRefresh] = useState(false)
+  const uncertainDelete = useRef(null)
+  const cleanDeletedScope = item => {
+    if (readLastSession(workspace) === item.record_id) rememberSession(workspace, '')
+    const url = new URL(window.location.href)
+    if (url.searchParams.get('dashboard_session') === item.record_id) url.searchParams.delete('dashboard_session')
+    if ((url.searchParams.get('session') || url.searchParams.get('replay_session')) === item.record_id) {
+      for (const key of ['session', 'replay_session', 'dataset', 'cursor', 'cutoff', 'trade', 'trade_id', 'manage']) url.searchParams.delete(key)
+      window.location.assign(url.href)
+      return
+    }
+    window.history.replaceState({}, '', url)
+    setFilters(current => current.session === item.record_id ? { ...current, session: '' } : current)
+  }
   const details = detailState.workspace === workspace ? detailState.items : {}
   const needsAllDetails = Boolean(filtersOpen || sort === 'profit' || strategy)
   const matching = dashboardRecentSessions(catalog.items, { search, status, sort, asset, strategy, details })
@@ -51,7 +65,14 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
     const controller = new AbortController()
     setCatalog(current => ({ ...current, refreshing: true, error: null }))
     fetchReplaySessions(workspace, controller.signal).then(items => {
-      if (!controller.signal.aborted) { setCatalog({ status: 'ready', items, error: null }); setNeedsRefresh(false) }
+      if (!controller.signal.aborted) {
+        setCatalog({ status: 'ready', items, error: null }); setNeedsRefresh(false)
+        setDetailState(current => ({ ...current, items: Object.fromEntries(Object.entries(current.items).filter(([id]) => items.some(item => item.record_id === id))) }))
+        if (uncertainDelete.current && !items.some(item => item.record_id === uncertainDelete.current.record_id)) {
+          cleanDeletedScope(uncertainDelete.current); setDialog(null); setNotice('Đã đối chiếu: phiên không còn trong danh mục.')
+        }
+        uncertainDelete.current = null
+      }
     }).catch(error => { if (!controller.signal.aborted) setCatalog(current => ({ ...current, status: 'error', refreshing: false, error: error.message })) })
     readDashboardDatasets(workspace, controller.signal).then(items => { if (!controller.signal.aborted) setDatasets(items) }).catch(() => { if (!controller.signal.aborted) setDatasets([]) })
     return () => controller.abort()
@@ -83,26 +104,29 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
     ? buildWorkspaceHref(view, workspace, query, { demo_session: item.source_record_id || item.record_id, select: '1', analytics_source: 'sessions', ...overrides })
     : sessionNavigationHref(view, workspace, query, item, { manage: null, ...overrides })
   const newHref = buildWorkspaceHref('replay', workspace, query, { fresh: '1', surface: 'workspace', session: null, dataset: null, cursor: null, cutoff: null, playbook: null, playbook_revision: null, mode: 'Practice' })
-  const selectedDialog = catalog.items.find(item => item.record_id === dialog?.id)
-  const openDialog = (mode, item) => { setMutationError(''); setDialog({ mode, id: item.record_id }) }
+  const dialogItem = catalog.items.find(item => item.record_id === dialog?.id)
+  const selectedDialog = dialogItem && dialog?.mode === 'archive' ? { ...dialogItem, archived: dialog.archived } : dialogItem
+  const openDialog = (mode, item) => { setMutationError(''); setDialog({ mode, id: item.record_id, archived: Boolean(item.archived) }) }
   const mutate = async (action, item, draft) => {
     if (pending || needsRefresh || catalog.refreshing) return
     setPending(true); setMutationError(''); setNotice('')
     try {
       if (preview) {
         const now = new Date().toISOString()
-        setCatalog(current => ({ ...current, items: action === 'duplicate' ? [...current.items, { ...item, source_record_id: item.source_record_id || item.record_id, record_id: 'demo-copy-' + crypto.randomUUID(), name: item.name + ' (copy)', revision: 1, created_at_utc: now, updated_at_utc: now }] : current.items.map(entry => entry.record_id === item.record_id ? { ...entry, ...(action === 'rename' ? { name: draft.name.trim(), description: draft.description } : { archived: !item.archived }), revision: entry.revision + 1, updated_at_utc: now } : entry) }))
+        setCatalog(current => ({ ...current, items: action === 'delete' ? current.items.filter(entry => entry.record_id !== item.record_id) : action === 'duplicate' ? [...current.items, { ...item, source_record_id: item.source_record_id || item.record_id, record_id: 'demo-copy-' + crypto.randomUUID(), name: item.name + ' (copy)', revision: 1, created_at_utc: now, updated_at_utc: now }] : current.items.map(entry => entry.record_id === item.record_id ? { ...entry, ...(action === 'rename' ? { name: draft.name.trim(), description: draft.description } : { archived: !item.archived }), revision: entry.revision + 1, updated_at_utc: now } : entry) }))
       } else {
-        const result = action === 'duplicate' ? await duplicateSession(workspace, item) : await updateSessionMetadata(workspace, item, action === 'rename' ? { name: draft.name.trim(), description: draft.description } : { archived: !item.archived })
+        const result = action === 'delete' ? await deleteSession(workspace, item, draft) : action === 'duplicate' ? await duplicateSession(workspace, item) : await updateSessionMetadata(workspace, item, action === 'rename' ? { name: draft.name.trim(), description: draft.description } : { archived: !item.archived })
         if (action === 'duplicate' && (typeof result.record_id !== 'string' || !result.record_id)) throw new Error('Phản hồi tạo bản sao thiếu session id.')
         setCatalog(current => ({ ...current, refreshing: true })); setReload(value => value + 1)
       }
+      if (action === 'delete' && !preview) cleanDeletedScope(item)
       setDialog(null)
-      setNotice((action === 'rename' ? 'Đã lưu thay đổi' : action === 'duplicate' ? 'Đã tạo bản sao' : item.archived ? 'Đã khôi phục phiên' : 'Đã lưu trữ phiên') + (preview ? ' trong bản xem thử.' : '.'))
+      setNotice((action === 'delete' ? 'Đã xóa phiên' : action === 'rename' ? 'Đã lưu thay đổi' : action === 'duplicate' ? 'Đã tạo bản sao' : item.archived ? 'Đã khôi phục phiên' : 'Đã lưu trữ phiên') + (preview ? ' trong bản xem thử.' : '.'))
     } catch (error) {
       const uncertain = !error.status || error.status >= 500
-      setMutationError(error.status === 409 ? 'Phiên đã thay đổi ở nơi khác. Đang đọc revision mới; kiểm tra rồi lưu lại.' : uncertain ? 'Chưa xác định thao tác đã được lưu hay chưa. Đang đối chiếu danh mục; kiểm tra trước khi thử lại.' : 'Không lưu được phiên: ' + error.message)
-      if (error.status === 409 || uncertain) { setNeedsRefresh(true); setReload(value => value + 1) }
+      if (action === 'delete' && (uncertain || error.status === 404)) uncertainDelete.current = item
+      setMutationError(error.message === 'replay_linked_to_prop_attempt' || error.message === 'session_delete_confirmation_mismatch' ? sessionMutationError(error) : error.status === 409 ? 'Phiên đã thay đổi ở nơi khác. Đang đọc revision mới; kiểm tra rồi lưu lại.' : uncertain ? 'Chưa xác định thao tác đã được lưu hay chưa. Đang đối chiếu danh mục; kiểm tra trước khi thử lại.' : 'Không lưu được phiên: ' + error.message)
+      if ((error.status === 409 && error.message !== 'replay_linked_to_prop_attempt') || uncertain || error.status === 404) { setNeedsRefresh(true); setReload(value => value + 1) }
     } finally { setPending(false) }
   }
   const performanceControls = <>
@@ -111,7 +135,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   </>
   const currencies = new Set(matching.map(item => details[item.record_id]).filter(value => value?.pnl != null).map(value => value.currency))
   const detailsLoading = catalog.items.some(item => !details[item.record_id] || details[item.record_id].status === 'loading')
-  const detailFailed = Object.values(details).some(value => value.unavailable)
+  const detailFailed = catalog.items.some(item => details[item.record_id]?.unavailable)
   const propReport = preview ? preview.propReport : <PropAnalytics workspace={workspace} query={query} embedded />
 
   return <>
@@ -126,15 +150,15 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
       <div className="fx-dashboard-section-head"><h2>Recent Sessions</h2></div>
       <div className="fx-dashboard-recent-toolbar"><label className="fx-dashboard-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg><input type="search" aria-label="Tìm phiên gần đây" placeholder="Tìm tên phiên, symbol…" value={search} onChange={event => changeRecent('search', event.target.value, setSearch)} /></label><div className="fx-dashboard-list-filters">
         <button className="fx-dashboard-filter-toggle" type="button" aria-label={filtersOpen ? 'Ẩn bộ lọc phiên' : 'Hiện bộ lọc phiên'} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) clearFilters(); setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
-        {filtersOpen && <><FxSelect label="Assets" value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder="Tìm asset…" options={[{ value: '', label: 'Assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value }))]} /><FxSelect label="Strategy" value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder="Tìm strategy…" disabled={detailsLoading} options={[{ value: '', label: 'Strategy' }, ...[...new Set(Object.values(details).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value })), ...(Object.values(details).some(value => value.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /><FxSelect label="Trạng thái phiên" value={status} onChange={value => changeRecent('status', value, setStatus)} options={[['active', 'Đang hoạt động'], ['all', 'Tất cả'], ['archived', 'Đã lưu trữ']].map(([value, label]) => ({ value, label }))} /></>}
+        {filtersOpen && <><FxSelect label="Assets" value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder="Tìm asset…" options={[{ value: '', label: 'Assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value }))]} /><FxSelect label="Strategy" value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder="Tìm strategy…" disabled={detailsLoading} options={[{ value: '', label: 'Strategy' }, ...[...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value })), ...(catalog.items.some(item => details[item.record_id]?.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /><FxSelect label="Trạng thái phiên" value={status} onChange={value => changeRecent('status', value, setStatus)} options={[['active', 'Đang hoạt động'], ['all', 'Tất cả'], ['archived', 'Đã lưu trữ']].map(([value, label]) => ({ value, label }))} /></>}
         <FxSelect label="Sắp xếp phiên" value={sort} icon="sort" onChange={value => changeRecent('sort', value, setSort)} options={[{ value: 'newest', label: 'Newest to oldest' }, { value: 'oldest', label: 'Oldest to newest' }, { value: 'last', label: 'Last updated' }, { value: 'profit', label: 'Most profit' }]} />
       </div></div>
       {notice && <p className="fx-dashboard-action-notice" role="status">{notice}</p>}
       {sort === 'profit' && detailsLoading && <p role="status">Đang đọc lợi nhuận phiên…</p>}
       {(filtersOpen || sort === 'profit') && detailFailed && <p role="status">Một số phiên chưa đọc được kết quả; bộ lọc Strategy và lợi nhuận chưa đầy đủ.</p>}
       {sort === 'profit' && (currencies.size > 1 || currencies.has(null)) && <p role="status">Tiền tệ khác nhau hoặc chưa rõ; giữ thứ tự tạo phiên để tránh so sánh lợi nhuận sai.</p>}
-      {catalog.status === 'ready' && visible.length ? <><div className="fx-dashboard-session-list">{visible.map(item => <DashboardSessionCard key={item.record_id} item={item} detail={details[item.record_id]?.revision === item.revision ? details[item.record_id] : null} dataset={datasets.find(dataset => dataset.dataset_id === item.dataset_id)} preview={Boolean(preview)} href={(view, overrides) => href(item, view, overrides)} onManage={openDialog} onRemember={() => rememberSession(workspace, item.record_id)} />)}</div>{pages > 1 && <div className="fx-dashboard-pagination"><div><button type="button" disabled={currentPage === 1} onClick={() => { setPage(currentPage - 1); updateQuery({ dashboard_page: String(currentPage - 1) }) }} aria-label="Trang phiên trước">‹</button><span aria-label={'Trang ' + currentPage + ' trên ' + pages}>{currentPage} / {pages}</span><button type="button" disabled={currentPage === pages} onClick={() => { setPage(currentPage + 1); updateQuery({ dashboard_page: String(currentPage + 1) }) }} aria-label="Trang phiên sau">›</button></div></div>}</> : <div className="fx-dashboard-catalog-status" role={catalog.status === 'error' ? 'alert' : 'status'}>{catalog.status === 'loading' ? 'Đang tải danh sách phiên…' : detailsLoading && strategy ? 'Đang đọc Strategy của các phiên…' : catalog.status === 'error' ? 'Chưa tải được danh sách: ' + catalog.error : catalog.items.length ? <>Không có phiên khớp bộ lọc.<button type="button" onClick={clearFilters}>Xóa bộ lọc danh sách</button></> : 'Chưa có phiên. Tạo backtest đầu tiên ở phía trên.'}</div>}
+      {catalog.status === 'ready' && visible.length ? <><div className="fx-dashboard-session-list">{visible.map(item => <DashboardSessionCard key={item.record_id} item={item} detail={details[item.record_id]?.revision === item.revision ? details[item.record_id] : null} dataset={datasets.find(dataset => dataset.dataset_id === item.dataset_id)} preview={Boolean(preview)} href={(view, overrides) => href(item, view, overrides)} onManage={openDialog} actionsDisabled={pending || needsRefresh || Boolean(catalog.refreshing)} onRemember={() => rememberSession(workspace, item.record_id)} />)}</div>{pages > 1 && <div className="fx-dashboard-pagination"><div><button type="button" disabled={currentPage === 1} onClick={() => { setPage(currentPage - 1); updateQuery({ dashboard_page: String(currentPage - 1) }) }} aria-label="Trang phiên trước">‹</button><span aria-label={'Trang ' + currentPage + ' trên ' + pages}>{currentPage} / {pages}</span><button type="button" disabled={currentPage === pages} onClick={() => { setPage(currentPage + 1); updateQuery({ dashboard_page: String(currentPage + 1) }) }} aria-label="Trang phiên sau">›</button></div></div>}</> : <div className="fx-dashboard-catalog-status" role={catalog.status === 'error' ? 'alert' : 'status'}>{catalog.status === 'loading' ? 'Đang tải danh sách phiên…' : detailsLoading && strategy ? 'Đang đọc Strategy của các phiên…' : catalog.status === 'error' ? 'Chưa tải được danh sách: ' + catalog.error : catalog.items.length ? <>Không có phiên khớp bộ lọc.<button type="button" onClick={clearFilters}>Xóa bộ lọc danh sách</button></> : 'Chưa có phiên. Tạo backtest đầu tiên ở phía trên.'}</div>}
     </section>
-    {selectedDialog && (dialog.mode === 'rename' ? <SessionSettingsDrawer key={dialog.id} item={selectedDialog} dataset={datasets.find(entry => entry.dataset_id === selectedDialog.dataset_id)} payload={details[selectedDialog.record_id]?.payload} model={details[selectedDialog.record_id]?.model} replayRecord={details[selectedDialog.record_id]?.replayRecord} workspace={workspace} preview={Boolean(preview)} pending={pending} blocked={needsRefresh || Boolean(catalog.refreshing)} error={mutationError} onClose={() => setDialog(null)} onSubmit={draft => mutate('rename', selectedDialog, draft)} /> : <DashboardSessionDialog key={dialog.mode + ':' + dialog.id} mode={dialog.mode} item={selectedDialog} preview={Boolean(preview)} pending={pending} blocked={needsRefresh || Boolean(catalog.refreshing)} error={mutationError} onClose={() => setDialog(null)} onSubmit={mutate} />)}
+    {selectedDialog && (dialog.mode === 'rename' ? <SessionSettingsDrawer key={dialog.id} item={selectedDialog} dataset={datasets.find(entry => entry.dataset_id === selectedDialog.dataset_id)} payload={details[selectedDialog.record_id]?.payload} model={details[selectedDialog.record_id]?.model} replayRecord={details[selectedDialog.record_id]?.replayRecord} workspace={workspace} preview={Boolean(preview)} pending={pending} blocked={needsRefresh || Boolean(catalog.refreshing)} error={mutationError} onClose={() => setDialog(null)} onSubmit={draft => mutate('rename', selectedDialog, draft)} /> : <SessionActionDialog key={dialog.mode + ':' + dialog.id} mode={dialog.mode} item={selectedDialog} preview={Boolean(preview)} pending={pending} blocked={needsRefresh || Boolean(catalog.refreshing)} error={mutationError} onClose={() => setDialog(null)} onSubmit={mutate} />)}
   </>
 }

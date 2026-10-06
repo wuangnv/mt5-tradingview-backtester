@@ -37,6 +37,7 @@ from .contracts import (
     ReplayMarketOrderRequest,
     ReplayProtectionRequest,
     ReplayMetadataUpdate,
+    ReplayDelete,
     ReplayPropFeedRequest,
     ReplaySessionCatalogItem,
     ReplayStep,
@@ -681,6 +682,8 @@ def create_app(
                 body.phase,
                 resume_state=body.resume_state,
             )
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
         except (PropPersistenceConflict, PropSessionContractError) as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         return {
@@ -1068,6 +1071,17 @@ def create_app(
             raise HTTPException(status_code=404, detail="replay_not_found") from exc
         except RuntimeError as exc:
             raise HTTPException(status_code=409, detail="record_revision_conflict") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post("/api/v2/replay/sessions/{session_id}/delete")
+    def delete_replay_session(session_id: str, body: ReplayDelete, workspace: str = Depends(workspace_id)):
+        try:
+            return store.delete_replay_session(workspace, session_id, body.expected_revision, body.confirmation_name)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 

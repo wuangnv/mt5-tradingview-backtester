@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Dark/light menu and confirm at desktop/tablet/mobile; keyboard, exact name gating, Escape cancellation",
+    "Dashboard demo archive/restore/delete operate on local state",
+    "Sessions demo deletion selects a remaining session, handles final empty state, clears demo URL",
+    "Actual Dashboard/Sessions read-only menu/cancel journey made no writes"
+  ],
+  "errors": [],
+  "writes": []
+}

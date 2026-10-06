@@ -1,0 +1,90 @@
+{
+  "status": "SCOPED_PASS",
+  "scope": "Session actions only: archive/restore/delete UI and backend tombstone/binding source review",
+  "generatedAt": "2026-10-06T08:15:33.0603468Z",
+  "runtimeChecks": 12,
+  "demoChecks": 8,
+  "actualGetOnlyChecks": 4,
+  "sourcePins": [
+    {
+      "file": "foundation_v2/web/src/SessionActions.jsx",
+      "sha256": "0e8a612c54cf891f97e4a4550bd5b7ed5bcc9551d0ecd2fa18468a9c0ed3d81c"
+    },
+    {
+      "file": "foundation_v2/web/src/session-actions.css",
+      "sha256": "fa602a1c23437fe5a3e80e755c94c282a4e9e77d9160420199ebcde55025d6bd"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessions.jsx",
+      "sha256": "7e6cade137e744a5285b8549dc6a8bfa020512e1ac4bc14037edf388a704a5c0"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardSessionCard.jsx",
+      "sha256": "06d3d3c12ba42947f1bda3f7596aaa766a6411ef857f4097303752fa935a9469"
+    },
+    {
+      "file": "foundation_v2/web/src/SessionPicker.jsx",
+      "sha256": "10760ba2f8f1d9ea6c671c761593815e48de3e2a24b9173986e13973a5488b76"
+    },
+    {
+      "file": "foundation_v2/web/src/sessionCatalog.js",
+      "sha256": "449dba63d374fe267ba86deaf43de92b659aef85d53d9955a8843ee89112185d"
+    },
+    {
+      "file": "foundation_v2/web/src/DemoPreview.jsx",
+      "sha256": "a1632822594baeee218dff71f37f3d8dd24b0a37968058f468bbd6ef812c6055"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/store.py",
+      "sha256": "e3f90ea7f3f66ee70cedb19e5af398abd88323e51093af589d14d447efdf3055"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/contracts.py",
+      "sha256": "b55f39cb064c7980cc904faaf3adecd127a04cfec5a949f3074f202414cbfa7c"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/api.py",
+      "sha256": "101ec39c031eaf23dcd95ee5f2acc52929cac796b86c41f1397508a4b9ad8ee9"
+    }
+  ],
+  "sourceStableDuringRun": true,
+  "actualCatalogAndSelectedRecordUnchanged": true,
+  "browserErrors": [],
+  "blockedWrites": [],
+  "demoApiRequests": 0,
+  "closeButtonLightContrast": [
+    {
+      "demo": false,
+      "fg": "rgb(29, 41, 48)",
+      "bg": "rgb(255, 255, 255)",
+      "contrast": 14.871494718297539
+    },
+    {
+      "demo": true,
+      "fg": "rgb(29, 41, 48)",
+      "bg": "rgb(255, 255, 255)",
+      "contrast": 14.871494718297539
+    }
+  ],
+  "findingsResolved": [
+    "All persisted incoming replay binding writers fence canonical replay before Prop locks",
+    "Historical Prop branch locks child and parent before Prop and rejects tombstones",
+    "Dashboard selected-session delete navigates with clean scope; uncertain deletes reconcile catalog without mutation retry",
+    "Dashboard details prune and archived target intent retained across conflict",
+    "Delete dialog explicitly focuses confirmation input after showModal",
+    "Close button light-theme contrast fixed from 1.21 to 14.87"
+  ],
+  "validationBoundaries": [
+    "Independent runtime actual API strictly GET-only; no real save/archive/delete",
+    "Only demo deletion submitted, local React state only",
+    "Backend concurrency and API mutation behavior source-reviewed; isolated integration tests belong to root evidence",
+    "Archive/restore runtime dialogs were canceled; root owns full demo archive/restore and recovery fixture proof",
+    "No broker/provider/product-wide acceptance"
+  ],
+  "rawReports": [
+    "report-r1-initial-focus-oracle.json",
+    "report-r2-source-crossed.json",
+    "report-r3-before-close-contrast-fix.json",
+    "report-final.json"
+  ]
+}

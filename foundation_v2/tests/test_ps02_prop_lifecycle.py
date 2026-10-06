@@ -978,7 +978,7 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
         self.assertEqual(restored["phase"].phase_index, 1)
         self.assertEqual(restored["phase"].open_positions, 1)
 
-    def test_next_phase_rejects_replay_binding_when_canonical_replay_record_is_missing(self):
+    def test_bundle_rejects_replay_binding_when_canonical_replay_record_is_missing(self):
         session, attempt, phase, resume = self.create_multiphase_bundle(carry_policy="reset")
         attempt_passed = attempt.model_copy(update={"status": "phase_passed"})
         session_passed = session.model_copy(update={"status": "phase_passed"})
@@ -998,21 +998,15 @@ class Ps02PropLifecyclePersistenceTests(unittest.TestCase):
         phase = phase.model_copy(
             update={"session_id": session_passed.session_id, "attempt_id": attempt_passed.attempt_id}
         )
-        self.store.create_prop_session_bundle(
-            session_passed,
-            attempt_passed,
-            phase,
-            resume_state=replay_resume,
-        )
-        with self.assertRaisesRegex(PropPersistenceConflict, "canonical replay session not found"):
-            self.store.apply_prop_transition_intent(
-                transition_intent(attempt_passed, phase, "next_phase")
+        with self.assertRaisesRegex(LookupError, "replay session not found"):
+            self.store.create_prop_session_bundle(
+                session_passed,
+                attempt_passed,
+                phase,
+                resume_state=replay_resume,
             )
-        restored = self.store.get_prop_resume_state(
-            session_passed.workspace_id,
-            session_passed.session_id,
-            attempt_passed.attempt_id,
-        )
+        self.assertIsNone(self.store.get_prop_session(session_passed.workspace_id, session_passed.session_id))
+        restored = self.store.get_prop_resume_state(session.workspace_id, session.session_id, attempt.attempt_id)
         self.assertEqual(restored["attempt"].revision, 1)
         self.assertEqual(restored["phase"].phase_index, 1)
 

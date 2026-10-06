@@ -1426,7 +1426,7 @@ class PostgresStore:
                 """,
                 (workspace_id, kind, record_id),
             ).fetchone()
-        if not row:
+        if not row or (kind == "replay" and row["deleted"]):
             return None
         return {
             "record_id": row["record_id"],
@@ -1580,6 +1580,51 @@ class PostgresStore:
             )
             conn.commit()
         return self.get_record(workspace_id, "annotation", record_id)
+
+    def delete_replay_session(self, workspace_id: str, session_id: str, expected_revision: int, confirmation_name: str) -> dict:
+        if isinstance(expected_revision, bool) or not isinstance(expected_revision, int) or expected_revision < 1:
+            raise ValueError("expected_revision must be a positive integer")
+        now = utc_now_iso()
+        with self.connect() as conn:
+            current = conn.execute(
+                """
+                SELECT r.current_revision,v.deleted,v.payload_json FROM workspace_records r
+                JOIN workspace_record_revisions v
+                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                 AND v.revision=r.current_revision
+                WHERE r.workspace_id=%s AND r.kind='replay' AND r.record_id=%s
+                FOR UPDATE OF r
+                """, (workspace_id, session_id),
+            ).fetchone()
+            if current is None or current["deleted"]:
+                raise LookupError("replay session not found")
+            if int(current["current_revision"]) != expected_revision:
+                raise RuntimeError("record_revision_conflict")
+            if confirmation_name != (current["payload_json"].get("name") or session_id):
+                raise ValueError("session_delete_confirmation_mismatch")
+            linked = conn.execute(
+                """SELECT 1 FROM prop_attempt_revisions WHERE workspace_id=%s
+                   AND resume_json->'replay_binding'->>'replay_session_id'=%s LIMIT 1""",
+                (workspace_id, session_id),
+            ).fetchone()
+            if linked:
+                raise RuntimeError("replay_linked_to_prop_attempt")
+            revision = expected_revision + 1
+            # Keep immutable evidence for branches and audit, while canonical
+            # reads and mutations cannot restore the deleted session.
+            conn.execute(
+                """INSERT INTO workspace_record_revisions(
+                       workspace_id,kind,record_id,revision,payload_json,deleted,created_at_utc
+                   ) VALUES(%s,'replay',%s,%s,%s::jsonb,true,%s)""",
+                (workspace_id, session_id, revision, json.dumps(current["payload_json"], sort_keys=True), now),
+            )
+            conn.execute(
+                """UPDATE workspace_records SET current_revision=%s,updated_at_utc=%s
+                   WHERE workspace_id=%s AND kind='replay' AND record_id=%s""",
+                (revision, now, workspace_id, session_id),
+            )
+            conn.commit()
+        return {"record_id": session_id, "revision": revision, "deleted": True}
 
     def create_prop_session(self, session: PropSessionSnapshot) -> PropSessionSnapshot:
         if session.revision != 1:
@@ -1854,6 +1899,19 @@ class PostgresStore:
         now = utc_now_iso()
 
         with self.connect() as conn:
+            preview = conn.execute(
+                """SELECT v.payload_json FROM workspace_records r
+                   JOIN workspace_record_revisions v
+                     ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                    AND v.revision=r.current_revision
+                   WHERE r.workspace_id=%s AND r.kind='replay' AND r.record_id=%s""",
+                (workspace_id, replay_session_id),
+            ).fetchone()
+            replay_ids = {replay_session_id}
+            if preview and preview["payload_json"].get("parent_session_id"):
+                replay_ids.add(preview["payload_json"]["parent_session_id"])
+            for record_id in sorted(replay_ids):
+                self._lock_resume_replay(conn, workspace_id, {"replay_binding": {"replay_session_id": record_id}})
             session_row = conn.execute(
                 """
                 SELECT snapshot_json FROM prop_sessions
@@ -2212,6 +2270,25 @@ class PostgresStore:
             "duplicate": False,
         }
 
+    @staticmethod
+    def _lock_resume_replay(conn, workspace_id: str, resume: dict | None) -> None:
+        binding = (resume or {}).get("replay_binding")
+        if not isinstance(binding, dict) or not binding.get("replay_session_id"):
+            return
+        # All binding writers lock replay before Prop so deletion and a new
+        # dependency cannot commit concurrently or leave a dangling binding.
+        row = conn.execute(
+            """SELECT v.deleted FROM workspace_records r
+               JOIN workspace_record_revisions v
+                 ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                AND v.revision=r.current_revision
+               WHERE r.workspace_id=%s AND r.kind='replay' AND r.record_id=%s
+               FOR UPDATE OF r""",
+            (workspace_id, binding["replay_session_id"]),
+        ).fetchone()
+        if row is None or row["deleted"]:
+            raise LookupError("replay session not found")
+
     def create_prop_attempt(
         self,
         attempt: ChallengeAttemptSnapshot,
@@ -2226,6 +2303,7 @@ class PostgresStore:
         resume = dict(resume_state or {})
         now = utc_now_iso()
         with self.connect() as conn:
+            self._lock_resume_replay(conn, attempt.workspace_id, resume)
             session_row = conn.execute(
                 "SELECT snapshot_json FROM prop_sessions WHERE workspace_id=%s AND session_id=%s FOR UPDATE",
                 (attempt.workspace_id, attempt.session_id),
@@ -2359,6 +2437,7 @@ class PostgresStore:
         resume_json = json.dumps(resume, sort_keys=True)
 
         with self.connect() as conn:
+            self._lock_resume_replay(conn, session.workspace_id, resume)
             inserted_session = conn.execute(
                 """
                 INSERT INTO prop_sessions(
@@ -2582,6 +2661,7 @@ class PostgresStore:
         fingerprint = _payload_fingerprint(mutation_payload)
         now = utc_now_iso()
         with self.connect() as conn:
+            self._lock_resume_replay(conn, attempt.workspace_id, resume)
             row = conn.execute(
                 """
                 SELECT current_revision,snapshot_json,phase_json,resume_json FROM prop_attempts
@@ -3229,6 +3309,7 @@ class PostgresStore:
         )
         now = utc_now_iso()
         with self.connect() as conn:
+            self._lock_resume_replay(conn, event.workspace_id, supplied_resume)
             session_row = conn.execute(
                 """
                 SELECT snapshot_json FROM prop_sessions

@@ -3,7 +3,7 @@ import { chromium } from 'playwright'
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
-const out = path.resolve('../evidence/fx-user-refinements-20261005/dashboard')
+const out = path.resolve(process.env.TW_UI_EVIDENCE_DIR || '../evidence/fx-user-refinements-20261005/dashboard')
 await mkdir(out, { recursive: true })
 const browser = await chromium.launch({ headless: true })
 const page = await browser.newPage({ viewport: { width: 1571, height: 987 } })
@@ -42,14 +42,16 @@ try {
   assert.equal(await drawer().count(), 0)
   await page.getByRole('heading', { name: /Gold Swing revised/ }).waitFor()
   checks.push('Dashboard Settings uses shared4tab drawer; demo saves name/description locally')
-  await page.getByRole('button', { name: 'Lưu trữ Gold Swing revised', exact: true }).click()
+  await page.getByRole('button', { name: 'Thao tác Gold Swing revised', exact: true }).click()
+  await page.getByRole('menuitem', { name: 'Lưu trữ phiên', exact: true }).click()
   const archive = page.getByRole('dialog', { name: 'Lưu trữ phiên', exact: true })
   await archive.getByRole('button', { name: 'Lưu trữ', exact: true }).click()
   assert.equal(await page.getByRole('heading', { name: /Gold Swing revised/ }).count(), 0)
   await page.getByRole('button', { name: 'Hiện bộ lọc phiên', exact: true }).click()
   await page.getByRole('button', { name: 'Trạng thái phiên', exact: true }).click()
   await page.getByRole('option', { name: 'Đã lưu trữ', exact: true }).click()
-  await page.getByRole('button', { name: 'Khôi phục Gold Swing revised', exact: true }).click()
+  await page.getByRole('button', { name: 'Thao tác Gold Swing revised', exact: true }).click()
+  await page.getByRole('menuitem', { name: 'Khôi phục phiên', exact: true }).click()
   await page.getByRole('dialog', { name: 'Khôi phục phiên', exact: true }).getByRole('button', { name: 'Khôi phục', exact: true }).click()
   checks.push('Demo archive hides active card; archived filter allows restoration without deletion')
   await page.goto(home + '&demo=1'); await page.waitForLoadState('networkidle')

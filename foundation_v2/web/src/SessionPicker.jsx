@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import AnalyticsWorkspace, { analyticsViewResult, buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
+import { SessionActionDialog, SessionActionsMenu } from './SessionActions.jsx'
 import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
 import FxSelect from './FxSelect.jsx'
 import useReadRefresh from './useReadRefresh.js'
 import { dashboardMoney, readDashboardAnalytics, readDashboardDatasets, readDashboardReplayContext } from './dashboardModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { defaultSession, duplicateSession, fetchReplaySessions, readLastSession, rememberSession, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
+import { defaultSession, deleteSession, sessionMutationError, duplicateSession, fetchReplaySessions, readLastSession, rememberSession, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
 import './session-picker.css'
 import './session-performance.css'
 
@@ -48,10 +49,11 @@ export function SessionSelect({ selected, catalog, onSelect, disabled, balance }
 export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a', query = new URLSearchParams() }) {
   const explicit = query.get('session') || query.get('replay_session') || ''
   const managementIntent = ['rename', 'duplicate', 'archive'].includes(query.get('manage')) ? query.get('manage') : null
-  const managementRef = useRef(null)
+  const managementRef = useRef(null), uncertainDelete = useRef(null)
   const [catalog, setCatalog] = useState({ status: 'loading', items: [], error: null })
   const [reloadToken, setReloadToken] = useState(0)
   const [editing, setEditing] = useState(false)
+  const [actionDialog, setActionDialog] = useState(null)
   const [datasets, setDatasets] = useState([])
   const [recordState, setRecord] = useState({ scope: '', record: null })
   const [pending, setPending] = useState('')
@@ -92,6 +94,11 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     fetchReplaySessions(workspace, controller.signal).then((items) => {
       if (controller.signal.aborted) return
       setCatalog({ status: 'ready', items, error: null })
+      if (uncertainDelete.current && !items.some(item => item.record_id === uncertainDelete.current)) {
+        if (readLastSession(workspace) === uncertainDelete.current) rememberSession(workspace, '')
+        window.location.assign(buildWorkspaceHref('replay', workspace, query, { select: '1', surface: null, session: null, replay_session: null, dataset: null, cursor: null, cutoff: null, manage: null }))
+      }
+      uncertainDelete.current = null
       setNeedsRefresh(false)
     }).catch((error) => {
       if (!controller.signal.aborted) setCatalog({ status: 'error', items: [], error: error.message })
@@ -123,7 +130,8 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     if (!item || !managementIntent || kind !== 'replay') return
     if (managementIntent === 'rename') {
       setEditing(true)
-    } else managementRef.current?.focus()
+    } else if (managementIntent === 'archive') setActionDialog({ mode: 'archive', archived: Boolean(item.archived) })
+    else managementRef.current?.focus()
   }, [item?.record_id, managementIntent, kind])
 
   const navigate = (id, record = null) => {
@@ -137,24 +145,32 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     setPending(action)
     setNotice(null)
     try {
-      const record = action === 'duplicate' ? await duplicateSession(workspace, item) : await updateSessionMetadata(workspace, item, changes)
-      if (action === 'duplicate') {
+      const record = action === 'delete' ? await deleteSession(workspace, item, changes) : action === 'duplicate' ? await duplicateSession(workspace, item) : await updateSessionMetadata(workspace, item, changes)
+      if (action === 'delete') {
+        if (readLastSession(workspace) === item.record_id) rememberSession(workspace, '')
+        window.location.assign(buildWorkspaceHref('replay', workspace, query, { select: '1', surface: null, session: null, replay_session: null, dataset: null, cursor: null, cutoff: null, manage: null, trade: null, trade_id: null }))
+      } else if (action === 'duplicate') {
         if (typeof record.record_id !== 'string' || !record.record_id) throw new Error('Phản hồi tạo bản sao thiếu session id.')
         navigate(record.record_id, { record_id: record.record_id, dataset_id: record.payload?.dataset_id || item.dataset_id })
       } else {
         setEditing(false)
+        setActionDialog(null)
         setNotice({ error: false, text: action === 'save' ? 'Đã lưu thay đổi phiên.' : changes.archived ? 'Đã lưu trữ phiên. Dữ liệu và lịch sử vẫn được giữ.' : 'Đã khôi phục phiên.' })
         setReloadToken((value) => value + 1)
       }
     } catch (error) {
-      if (error.status === 409) {
+      if (error.message === 'replay_linked_to_prop_attempt' || error.message === 'session_delete_confirmation_mismatch') {
+        setNotice({ error: true, text: sessionMutationError(error) })
+      } else if (error.status === 409) {
+        setNeedsRefresh(true)
         setNotice({ error: true, text: 'Phiên đã thay đổi ở nơi khác. Đã tải lại revision mới; nội dung bạn đang sửa vẫn được giữ. Kiểm tra trước khi lưu lại.' })
         setReloadToken((value) => value + 1)
       } else {
         const uncertain = !error.status || error.status >= 500
-        setNeedsRefresh(uncertain)
+        if (action === 'delete' && (uncertain || error.status === 404)) uncertainDelete.current = item.record_id
+        setNeedsRefresh(uncertain || error.status === 404)
         setNotice({ error: true, text: uncertain ? 'Chưa xác định thao tác đã được lưu hay chưa. Đang đối chiếu danh mục; kiểm tra nội dung trước khi thử lại.' : `Không lưu được phiên: ${error.message}` })
-        if (uncertain) setReloadToken(value => value + 1)
+        if (uncertain || error.status === 404) setReloadToken(value => value + 1)
       }
       return false
     } finally { setPending('') }
@@ -169,7 +185,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     <div className="fxr-session-toolbar">
       <SessionSelect selected={selected} catalog={catalog} onSelect={navigate} disabled={Boolean(pending)} balance={performance.status === 'ready' ? dashboardMoney(performanceModel?.endingBalance, performanceModel?.result?.account_currency) : '—'} />
       <div className="fxr-session-actions">
-        {kind === 'replay' && <><a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a>{available && <><FxSelect className="fxs-analytics-button" label="Mở Analytics" value="session" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(value === 'prop' ? buildWorkspaceHref('analytics', workspace, query, { area: 'testing', section: 'analytics', analytics_source: 'prop', select: '1' }) : routeHref('analytics'))} triggerContent="Analytics" /><button className="fxr-button fxr-button-secondary fxs-settings" type="button" disabled={actionDisabled} onClick={() => { setEditing(true) }}>Cài đặt phiên</button><button className="fxr-button fxr-button-secondary fxs-archive" type="button" ref={managementIntent === 'archive' ? managementRef : undefined} disabled={actionDisabled} onClick={() => mutate('archive', { archived: !item.archived })}>{pending === 'archive' ? 'Đang lưu…' : item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button></>}</>}
+        {kind === 'replay' && <><a className="fxr-button fxr-button-primary" href={newHref}>＋ Phiên mới</a>{available && <><FxSelect className="fxs-analytics-button" label="Mở Analytics" value="session" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(value === 'prop' ? buildWorkspaceHref('analytics', workspace, query, { area: 'testing', section: 'analytics', analytics_source: 'prop', select: '1' }) : routeHref('analytics'))} triggerContent="Analytics" /><button className="fxr-button fxr-button-secondary fxs-settings" type="button" disabled={actionDisabled} onClick={() => { setEditing(true) }}>Cài đặt phiên</button><SessionActionsMenu item={item} disabled={actionDisabled || Boolean(catalog.refreshing)} onAction={action => { setNotice(null); setActionDialog({ mode: action, archived: Boolean(item.archived) }) }} /></>}</>}
       </div>
     </div>
     {catalog.status !== 'ready' && <p className={`fxr-session-catalog-status is-${catalog.status}`} role={catalog.status === 'error' ? 'alert' : 'status'} data-testid="session-catalog-status">{catalog.status === 'loading' ? 'Đang tải danh mục phiên…' : `Không tải được danh mục: ${catalog.error}. Sẽ kiểm tra lại khi quay về ứng dụng.`}</p>}
@@ -186,6 +202,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
       {kind !== 'replay' && <div className="fxr-session-links fxr-ledger-context"><span>{item.name || item.record_id} · {unknownValue(item.instrument_id)} · {timeframeLabel(item)}</span><a href={routeHref('replay')}>Thông tin phiên</a>{!item.archived && item.dataset_available && <a href={routeHref('replay', { select: null, surface: 'workspace' })}>Mở chart</a>}</div>}
       <div className="fxr-session-report">{kind === 'replay' ? <>{performance.status === 'loading' && <p role="status">Đang tải kết quả phiên…</p>}{performance.status === 'error' && <p role="alert">Không tải được kết quả: {performance.error}. Sẽ kiểm tra lại khi quay về ứng dụng.</p>}{performance.status === 'blocked' && performance.payload?.blocked_by_data?.some(reason => reason !== 'replay_execution_not_initialized') && <p role="status" data-testid="session-performance-blocked">Kết quả chưa đủ dữ liệu để hiển thị.</p>}{['ready', 'blocked'].includes(performance.status) && <SessionPerformance key={`${workspace}:${item.record_id}:${item.revision}:${reloadToken}`} model={performanceModel} payload={performance.payload} item={item} href={routeHref} />}</> : <AnalyticsWorkspace key={`${workspace}:${item.record_id}:${item.revision}`} workspace={workspace} query={selectedQuery} ledgerOnly={kind === 'trade'} sessionName={item.name || item.record_id} embedded />}</div>
     </>}
+    {actionDialog && item && <SessionActionDialog key={actionDialog.mode + ':' + item.record_id} mode={actionDialog.mode} item={actionDialog.mode === 'archive' ? { ...item, archived: actionDialog.archived } : item} pending={Boolean(pending)} blocked={actionDisabled || Boolean(catalog.refreshing)} error={notice?.error ? notice.text : null} onClose={() => setActionDialog(null)} onSubmit={(action, entry, confirmation) => mutate(action, action === 'delete' ? confirmation : { archived: !entry.archived })} />}
     {editing && item && <SessionSettingsDrawer item={item} dataset={dataset} payload={performance.payload} model={performanceModel} replayRecord={replayRecord} workspace={workspace} pending={Boolean(pending)} blocked={actionDisabled} onClose={() => setEditing(false)} onSubmit={draft => mutate('save', draft)} error={notice?.error ? notice.text : null} />}
     {catalog.status === 'ready' && !item && <div className="fxr-empty-state"><h2>{selected ? 'Không tìm thấy phiên trong workspace này' : 'Chọn một phiên để bắt đầu'}</h2><p>{selected ? 'Kiểm tra workspace hoặc chọn phiên khác từ danh mục. Không có dữ liệu performance thay thế.' : 'Mở phiên đã lưu để xem chart, trade ledger và analytics; hoặc tạo phiên mới từ dataset local.'}</p><a className="fxr-button fxr-button-primary" href={newHref}>Tạo phiên mới</a></div>}
   </section>

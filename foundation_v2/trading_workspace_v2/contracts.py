@@ -381,6 +381,13 @@ class ReplayStep(BaseModel):
     steps: int = Field(default=1, ge=1, le=1000)
 
 
+class ReplayDelete(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    expected_revision: int = Field(ge=1, strict=True)
+    confirmation_name: str = Field(min_length=1, max_length=160)
+
+
 class ReplayBranch(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

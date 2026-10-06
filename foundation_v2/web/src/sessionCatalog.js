@@ -75,6 +75,20 @@ export function duplicateSession(workspace, session) {
   })
 }
 
+export async function deleteSession(workspace, session, confirmationName) {
+  const result = await request(`/api/v2/replay/sessions/${encodeURIComponent(session.record_id)}/delete`, workspace, {
+    method: 'POST', body: JSON.stringify({ expected_revision: session.revision, confirmation_name: confirmationName }),
+  })
+  if (result.deleted !== true || result.record_id !== session.record_id || result.revision !== session.revision + 1) throw new Error('Phản hồi xóa phiên không đúng định dạng.')
+  return result
+}
+
+export function sessionMutationError(error) {
+  if (error.message === 'replay_linked_to_prop_attempt') return 'Phiên đang được dùng trong Prop Firm. Hãy lưu trữ để giữ báo cáo và lịch sử challenge.'
+  if (error.message === 'session_delete_confirmation_mismatch') return 'Tên xác nhận không khớp tên phiên hiện tại.'
+  return 'Không lưu được thao tác: ' + error.message
+}
+
 export function sessionNavigationHref(kind, workspace, query, item, overrides = {}) {
   return buildWorkspaceHref(kind, workspace, query, {
     select: '1', session: item?.record_id || null, dataset: item?.dataset_id || null,

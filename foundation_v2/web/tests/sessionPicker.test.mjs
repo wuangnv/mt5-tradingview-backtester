@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { defaultSession, duplicateSession, fetchReplaySessions, normalizeSessionCatalog, reportSessions, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from '../src/sessionCatalog.js'
+import { defaultSession, deleteSession, duplicateSession, fetchReplaySessions, normalizeSessionCatalog, reportSessions, sessionAnalyticsQuery, sessionNavigationHref, updateSessionMetadata } from '../src/sessionCatalog.js'
 
 const item = { record_id: 'session-2', revision: 7, dataset_id: 'dataset-2', cursor_index: 12 }
 
@@ -96,4 +96,19 @@ test('an explicit same-session trade and historical cutoff survive analytics com
   const summary = sessionAnalyticsQuery(query, item, { summary: true })
   assert.equal(summary.has('cursor'), false)
   assert.equal(summary.has('trade'), false)
+})
+
+
+test('delete requires scoped exact name/revision and validates immutable tombstone receipt', async t => {
+  const calls = []
+  t.mock.method(globalThis, 'fetch', async (path, options) => {
+    calls.push({ path, options })
+    return new Response(JSON.stringify({ record_id: item.record_id, revision: 8, deleted: true }))
+  })
+  await deleteSession('tenant-a', item, 'Phiên mới')
+  assert.equal(calls[0].path, '/api/v2/replay/sessions/session-2/delete')
+  assert.deepEqual(JSON.parse(calls[0].options.body), { expected_revision: 7, confirmation_name: 'Phiên mới' })
+  assert.equal(calls[0].options.headers['X-Workspace-Id'], 'tenant-a')
+  t.mock.method(globalThis, 'fetch', async () => new Response(JSON.stringify({ record_id: 'wrong', revision: 8, deleted: true })))
+  await assert.rejects(deleteSession('tenant-a', item, 'Phiên mới'))
 })
