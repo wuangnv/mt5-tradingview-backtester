@@ -1,0 +1,534 @@
+{
+  "results": [
+    {
+      "section": "calendar",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trades",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "notes",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "tag-analytics",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "analytics",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trading-accounts",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "market-data",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "dashboard",
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "calendar",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trades",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "notes",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "tag-analytics",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "analytics",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trading-accounts",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1425
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "market-data",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        },
+        "divider": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "dashboard",
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 248,
+          "right": 1440
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "calendar",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trades",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "notes",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "tag-analytics",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "analytics",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trading-accounts",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "market-data",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "dashboard",
+      "width": 360,
+      "theme": "dark",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "calendar",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trades",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "notes",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "tag-analytics",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "analytics",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "trading-accounts",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "market-data",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        },
+        "divider": {
+          "left": 58,
+          "right": 345
+        }
+      },
+      "pass": true
+    },
+    {
+      "section": "dashboard",
+      "width": 360,
+      "theme": "light",
+      "geometry": {
+        "overflow": false,
+        "content": {
+          "left": 58,
+          "right": 360
+        }
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

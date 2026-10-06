@@ -1,5 +1,9 @@
 .market-assets { padding: 24px 0 36px; min-width: 0; }
 .market-data-workspace .market-assets { padding-top: 0; }
+.market-data-workspace .market-sync-filters { margin-inline: calc(-1 * var(--wm-page-gutter)); padding-inline: var(--wm-page-gutter); }
+.market-data-workspace .market-sync-table { margin-inline: calc(-1 * var(--wm-page-gutter)); }
+.market-data-workspace .market-sync-note { margin-inline: calc(-1 * var(--wm-page-gutter)); padding-inline: var(--wm-page-gutter); }
+.fx-app .market-data-workspace .market-assets .fxa-pagination { margin-inline: calc(-1 * var(--wm-page-gutter)); padding-inline: var(--wm-page-gutter); border-top: 1px solid var(--wm-border); }
 .market-data-workspace .market-sync-heading p { margin-top: 0; }
 .market-sync-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; }
 .market-sync-heading h2 { margin: 0; font-size: 18px; }

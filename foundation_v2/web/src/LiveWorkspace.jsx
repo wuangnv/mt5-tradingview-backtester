@@ -65,17 +65,17 @@ export default function LiveWorkspace({ workspace = 'tenant-a', query = new URLS
   }, [reloadToken, workspace, preview])
   const copy = statusCopy(state)
   return <section className="live-workspace wm-page" data-testid="live-workspace" aria-label={t('Live')}>
-    <div className={`live-status live-status-${copy.tone}`} data-testid="live-status" role={copy.tone === 'error' ? 'alert' : 'status'}>
-      <span className="live-status-dot" aria-hidden="true" /><span>{t(preview ? 'Sample account data' : copy.title)}</span>
+    {!preview && copy.tone !== 'ready' && <div className={`live-status live-status-${copy.tone}`} data-testid="live-status" role={copy.tone === 'error' ? 'alert' : 'status'}>
+      <span className="live-status-dot" aria-hidden="true" /><span>{t(copy.title)}</span>
       {!preview && ['error', 'denied', 'unavailable'].includes(state.status) && <button type="button" className="fxa-button live-retry" onClick={() => setReloadToken(value => value + 1)}>{t('Thử lại')}</button>}
-    </div>
+    </div>}
     {state.status === 'loading' ? <TestingSkeleton label="Reading account data…" /> : <LiveSurfaces key={`${workspace}:${section}:${Boolean(preview)}`} section={section} payload={state.payload} query={query} preview={Boolean(preview)} onRefresh={() => setReloadToken(value => value + 1)} />}
     <details className="live-source-details"><summary>{t('Data source and access')}</summary><dl>
       <div><dt>{t('Workspace')}</dt><dd>{workspace}</dd></div>
       <div><dt>{t('Source')}</dt><dd>{state.payload?.source || '—'}</dd></div>
       <div><dt>{t('Last snapshot (UTC)')}</dt><dd>{state.payload?.captured_at_utc ? new Date(state.payload.captured_at_utc).toLocaleString(locale, { timeZone: 'UTC' }) : '—'}</dd></div>
       <div><dt>{t('History from (UTC)')}</dt><dd>{state.payload?.history_from_utc ? new Date(state.payload.history_from_utc).toLocaleString(locale, { timeZone: 'UTC' }) : '—'}</dd></div>
-    </dl><p>{t('Account data is read only. This page does not send orders or connect a broker.')}</p></details>
+    </dl><p>{t('Account data is read only. This page does not send orders or connect a broker.')}</p><p>{t('Includes deal costs. Return requires opening capital; deals have not been paired into trades.')}</p><p>{t('Totals cover synced deals only. — means data is unavailable or the day is not fully covered.')}</p></details>
   </section>
 }
 

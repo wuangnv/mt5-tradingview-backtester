@@ -620,7 +620,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
         <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={displayedRailCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" mobileNavigation={mobileNavigation} drawerOpen={drawerOpen} menuButtonRef={menuButtonRef} />
         {drawerOpen && <div className="fx-mobile-nav-backdrop" aria-hidden="true" onClick={() => setMobileNavigationOpen(false)} />}
         {!chartWorkspace && <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" drawerOpen={drawerOpen} onClose={() => setMobileNavigationOpen(false)} closeButtonRef={navigationCloseRef} />}
-        <section className="fx-main" role={['live', 'market-data'].includes(activeView) ? 'main' : undefined} aria-label={copy.contentAria} inert={drawerOpen}>
+        <section className="fx-main" role={['overview', 'live', 'market-data'].includes(activeView) ? 'main' : undefined} aria-label={copy.contentAria} inert={drawerOpen}>
           <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} action={subnavAction} />
           {helpOpen && <ShellHelp copy={copy} helpCloseRef={helpCloseRef} onClose={() => setHelpOpen(false)} />}
           <div className="fx-content" tabIndex={0}>{children}</div>

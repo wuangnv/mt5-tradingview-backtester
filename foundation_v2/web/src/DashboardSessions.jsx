@@ -28,11 +28,10 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   const [filters, setFilters] = useState(() => dashboardFilters(initialQuery))
   const [period, setPeriod] = useState(() => dashboardPeriod(dashboardFilters(initialQuery)))
   const [search, setSearch] = useState(initialQuery.get('dashboard_search') || '')
-  const [status, setStatus] = useState(['paused', 'running', 'ready', 'completed', 'all'].includes(initialQuery.get('dashboard_status')) ? initialQuery.get('dashboard_status') : 'active')
   const [sort, setSort] = useState(['oldest', 'last', 'profit'].includes(initialQuery.get('dashboard_sort')) ? initialQuery.get('dashboard_sort') : 'newest')
   const [source, setSource] = useState(['prop', 'all'].includes(initialQuery.get('dashboard_source')) ? initialQuery.get('dashboard_source') : 'backtest')
   const [asset, setAsset] = useState(initialQuery.get('dashboard_asset') || ''), [strategy, setStrategy] = useState(initialQuery.get('dashboard_strategy') || '')
-  const [filtersOpen, setFiltersOpen] = useState(Boolean(asset || strategy || initialQuery.get('dashboard_status')))
+  const [filtersOpen, setFiltersOpen] = useState(Boolean(asset || strategy))
   const [detailState, setDetailState] = useState({ workspace, items: {} })
   const [page, setPage] = useState(Math.max(1, Number.parseInt(initialQuery.get('dashboard_page'), 10) || 1))
   const [dialog, setDialog] = useState(null), [pending, setPending] = useState(false), [mutationError, setMutationError] = useState(''), [notice, setNotice] = useState('')
@@ -52,7 +51,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   }
   const details = detailState.workspace === workspace ? detailState.items : {}
   const needsAllDetails = Boolean(filtersOpen || sort === 'profit' || strategy)
-  const matching = dashboardRecentSessions(catalog.items, { search, status, sort, asset, strategy, details })
+  const matching = dashboardRecentSessions(catalog.items, { search, sort, asset, strategy, details })
   const pages = Math.max(1, Math.ceil(matching.length / 6)), currentPage = Math.min(page, pages)
   const visible = matching.slice((currentPage - 1) * 6, currentPage * 6)
   const readItems = needsAllDetails ? catalog.items : visible
@@ -105,7 +104,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   const setPerformanceFilters = next => { setFilters(next); updateQuery({ dashboard_session: next.session, dashboard_from: next.from, dashboard_to: next.to }) }
   const changePeriod = value => { setPeriod(value); if (value !== 'custom') setPerformanceFilters({ ...filters, ...dashboardPeriodRange(value) }) }
   const changeRecent = (key, value, setter) => { setter(value); setPage(1); updateQuery({ ['dashboard_' + key]: value, dashboard_page: '' }) }
-  const clearFilters = () => { setAsset(''); setStrategy(''); setStatus('active'); setSearch(''); setPage(1); updateQuery({ dashboard_asset: '', dashboard_strategy: '', dashboard_status: '', dashboard_search: '', dashboard_page: '' }) }
+  const clearFilters = () => { setAsset(''); setStrategy(''); setSearch(''); setPage(1); updateQuery({ dashboard_asset: '', dashboard_strategy: '', dashboard_status: '', dashboard_search: '', dashboard_page: '' }) }
   const href = (item, view = 'replay', overrides = {}) => preview
     ? buildWorkspaceHref(view, workspace, query, { demo_session: item.source_record_id || item.record_id, select: '1', analytics_source: 'sessions', ...overrides })
     : sessionNavigationHref(view, workspace, query, item, { manage: null, ...overrides })
@@ -156,7 +155,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
       <div className="fx-dashboard-section-head"><h2>{t("Recent Sessions")}</h2></div>
       <div className="fx-dashboard-recent-toolbar"><label className="fx-dashboard-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg><input type="search" aria-label={t("Tìm phiên gần đây")} placeholder={t("Tìm tên phiên, symbol…")} value={search} onChange={event => changeRecent('search', event.target.value, setSearch)} /></label><div className="fx-dashboard-list-filters">
         <button className="fx-dashboard-filter-toggle" type="button" aria-label={filtersOpen ? t("Ẩn bộ lọc phiên") : t("Hiện bộ lọc phiên")} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) clearFilters(); setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
-        {filtersOpen && <><FxSelect label={t("Assets")} triggerContent={t("Assets")} value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder={t("Tìm asset…")} options={[{ value: '', label: 'Tất cả assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value, localize: false }))]} /><FxSelect label={t("Strategy")} triggerContent={t("Strategy")} value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder={t("Tìm strategy…")} disabled={detailsLoading} options={[{ value: '', label: 'Tất cả strategies' }, ...[...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value, localize: false })), ...(catalog.items.some(item => details[item.record_id]?.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /><FxSelect label={t("Trạng thái phiên")} value={status} onChange={value => changeRecent('status', value, setStatus)} options={[['active', 'Đang hoạt động'], ['all', 'Tất cả']].map(([value, label]) => ({ value, label }))} /></>}
+        {filtersOpen && <><FxSelect label={t("Assets")} triggerContent={t("Assets")} value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder={t("Tìm asset…")} options={[{ value: '', label: 'Tất cả assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value, localize: false }))]} /><FxSelect label={t("Strategy")} triggerContent={t("Strategy")} value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder={t("Tìm strategy…")} disabled={detailsLoading} options={[{ value: '', label: 'Tất cả strategies' }, ...[...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value, localize: false })), ...(catalog.items.some(item => details[item.record_id]?.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /></>}
         <FxSelect label={t("Sắp xếp phiên")} value={sort} icon="sort" onChange={value => changeRecent('sort', value, setSort)} options={[{ value: 'newest', label: 'Newest to oldest' }, { value: 'oldest', label: 'Oldest to newest' }, { value: 'last', label: 'Last updated' }, { value: 'profit', label: 'Most profit' }]} />
       </div></div>
       {catalog.status === 'ready' && <div className="fx-dashboard-session-count" role="status"><span>{t("{count} of {total} sessions", { count: matching.length, total: catalog.items.length })}</span><progress aria-label={t("Phiên khớp bộ lọc")} value={matching.length} max={Math.max(1, catalog.items.length)} /></div>}

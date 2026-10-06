@@ -1,0 +1,144 @@
+{
+  "pass": true,
+  "scope": "Live/Market dividers and Dashboard refinement only",
+  "routeCases": 32,
+  "axeScans": 16,
+  "axeViolations": 0,
+  "dashboardStateChecks": 6,
+  "liveStateChecks": 3,
+  "mainLandmarkCases": 32,
+  "sourcePins": [
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203",
+      "finalSha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "b96e22cd92f97fc44bf53b9b14bdb2710c48eae0daa5213e1c35d8a5f55c7757",
+      "finalSha256": "b96e22cd92f97fc44bf53b9b14bdb2710c48eae0daa5213e1c35d8a5f55c7757"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6b647fbc3789ef90f72bd314461bd1bc39eca153cbc083a7d490462332dac720",
+      "finalSha256": "6b647fbc3789ef90f72bd314461bd1bc39eca153cbc083a7d490462332dac720"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e",
+      "finalSha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "cb41186d164d80d044664f57f223a0b7347c3e4ec5cacadea93a393a2f446bb9",
+      "finalSha256": "cb41186d164d80d044664f57f223a0b7347c3e4ec5cacadea93a393a2f446bb9"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639",
+      "finalSha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1",
+      "finalSha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a",
+      "finalSha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df",
+      "finalSha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e",
+      "finalSha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807",
+      "finalSha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54",
+      "finalSha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39",
+      "finalSha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "95b3044acec92f2f85cfe74149f08cc44992649626eb5e532b7a87806bce123b",
+      "finalSha256": "95b3044acec92f2f85cfe74149f08cc44992649626eb5e532b7a87806bce123b"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "5d72f866b2a12e1cb373ed19ee64ad699432bf5f9e2fa17835f207801d80f552",
+      "finalSha256": "5d72f866b2a12e1cb373ed19ee64ad699432bf5f9e2fa17835f207801d80f552"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "c43560ff579beeb5a9534cb5bba77d221eadc29a6f3488818661528615c1263a",
+      "finalSha256": "c43560ff579beeb5a9534cb5bba77d221eadc29a6f3488818661528615c1263a"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "884eff6c9b231d4c1840a89cb04a9b8b63bf2d9cd7b4aa52b364a144aff3007d",
+      "finalSha256": "884eff6c9b231d4c1840a89cb04a9b8b63bf2d9cd7b4aa52b364a144aff3007d"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737",
+      "finalSha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c",
+      "finalSha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "b62f8b4815725fb2314fab5c89919dd13d22a34c8633daa78a4ad0fcb7da160b",
+      "finalSha256": "b62f8b4815725fb2314fab5c89919dd13d22a34c8633daa78a4ad0fcb7da160b"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a",
+      "finalSha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11",
+      "finalSha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e",
+      "finalSha256": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "894ee84e3eb1dbe5f0ad48a299237a71bdd00ae346ccbb9a40f3d51068e22133",
+      "finalSha256": "894ee84e3eb1dbe5f0ad48a299237a71bdd00ae346ccbb9a40f3d51068e22133"
+    }
+  ],
+  "r2RetainedCases": 22,
+  "r3RerunCases": 10,
+  "r2ToR3Delta": [
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "actualBoundary": "Local Live endpoint unavailable; positive Live/demo and Dashboard state arithmetic use labeled fixtures; no writes or broker/provider acceptance",
+  "review": "REVIEW.md"
+}

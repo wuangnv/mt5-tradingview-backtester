@@ -1,0 +1,59 @@
+{
+  "scope": "Synthetic intercepted Dashboard GET responses; no actual mutation/feed acceptance",
+  "before": [
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "cb41186d164d80d044664f57f223a0b7347c3e4ec5cacadea93a393a2f446bb9"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "b96e22cd92f97fc44bf53b9b14bdb2710c48eae0daa5213e1c35d8a5f55c7757"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    }
+  ],
+  "checks": [
+    "legacy archived query ignored; 3 nonarchived including completed; no status control",
+    "clear removes legacy status query",
+    "held same-scope refresh uses aria-busy, retains metrics, no refresh text",
+    "failed refresh preserves stale warning/results and clears busy",
+    "retry recovers warning and busy",
+    "initial read failure still visible as alert with retry"
+  ],
+  "errors": [],
+  "blocked": [],
+  "after": [
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "cb41186d164d80d044664f57f223a0b7347c3e4ec5cacadea93a393a2f446bb9"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "b96e22cd92f97fc44bf53b9b14bdb2710c48eae0daa5213e1c35d8a5f55c7757"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

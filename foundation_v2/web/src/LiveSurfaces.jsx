@@ -83,7 +83,6 @@ function Summary({ payload, deals, sidebar = false }) {
     {sidebar && <h2><TestingIcon kind="chart" />{t('Analytics')}</h2>}
     {!available || !deals.length ? <Empty title="No analytics yet" copy={available ? 'No deals in this selection.' : 'Select a connected account to view analytics.'} /> : <>
       <dl>{metrics.map(([label, value, suffix]) => <div key={label}><dt>{t(label)}</dt><dd className={label === 'Net deal P/L' ? summary.net < 0 ? 'is-loss' : summary.net > 0 ? 'is-gain' : '' : ''}>{fmt(value, suffix ? ` ${suffix}` : '', label === 'Filled deals' ? 0 : 2)}</dd></div>)}</dl>
-      <p className="live-muted">{t('Includes deal costs. Return requires opening capital; deals have not been paired into trades.')}</p>
     </>}
   </section>
 }
@@ -112,15 +111,14 @@ function Calendar({ payload, deals, filters, onPreview }) {
   return <div className="live-split"><section className="live-calendar-section">
     <div className="live-calendar-toolbar"><div className="live-month-nav"><div className="live-month-step"><Action compact label="Previous month" onClick={() => shift(-1)}>‹</Action><h2 aria-live="polite">{first.toLocaleDateString(locale, { month: 'long', timeZone: 'UTC' })}</h2><Action compact label="Next month" onClick={() => shift(1)}>›</Action></div><div className="live-month-step"><Action compact label="Previous year" onClick={() => shift(-12)}>‹</Action><strong>{first.getUTCFullYear()}</strong><Action compact label="Next year" onClick={() => shift(12)}>›</Action></div></div>
       <div className="live-toolbar-actions"><span className="live-money-mode">{currency || t('Amount')}</span><Action disabled title={t('Percentage requires opening capital.')}>%</Action><Action onClick={() => onPreview('Share')}>{t('Share')}</Action><Action icon="plus" onClick={() => onPreview('Monthly review')}>{t('Monthly review')}</Action></div>
-    </div><p className="live-calendar-scope">{t('Booked deal P/L · {zone}', { zone: filters.timezone })}</p>
-    <div className="live-calendar-scroll" role="region" aria-label={t('P/L calendar')} tabIndex={0}><div className="live-calendar-grid">
+    </div>
+    <div className="live-calendar-scroll" role="region" aria-label={`${t('P/L calendar')} · ${filters.timezone}`} tabIndex={0}><div className="live-calendar-grid">
       {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Total'].map(day => <div className="live-calendar-dayname" key={day}>{t(day)}</div>)}
       {weeks.map((week, index) => <div className="live-calendar-week" key={week[0].key}>{week.map(day => <button type="button" key={day.key} className={`live-calendar-cell${!day.inMonth ? ' is-outside' : ''}${day.net > 0 ? ' is-gain' : day.net < 0 ? ' is-loss' : ''}`} disabled={!day.inMonth} aria-pressed={selected === day.key} aria-label={`${day.key} · ${fmt(day.net, currency ? ` ${currency}` : '')}`} onClick={() => setSelected(selected === day.key ? '' : day.key)}>
         <span className="live-day-number">{day.date.getUTCDate()}</span><strong>{day.inMonth ? fmt(day.net) : ''}</strong>{day.count !== null && day.count > 0 && <small>{t('{count} filled deals', { count: day.count })}</small>}
       </button>)}<div className="live-week-total"><span>{t('Week {count}', { count: index + 1 })}</span><strong>{fmt(week.filter(day => day.inMonth).every(day => day.net !== null) ? week.filter(day => day.inMonth).reduce((sum, day) => sum + day.net, 0) : null)}</strong></div></div>)}
     </div></div>
     <div className="live-month-total"><span>{t('Month total')}</span><strong>{fmt(total.net, currency ? ` ${currency}` : '')}</strong><span>{total.count !== null ? t('{count} filled deals', { count: total.count }) : '—'}</span></div>
-    <p className="live-calendar-scope">{t('Totals cover synced deals only. — means data is unavailable or the day is not fully covered.')}</p>
     {selected && <div className="live-day-detail"><h3>{selected}</h3>{deals.filter(deal => dayKey(deal.time_msc, filters.timezone) === selected).length ? <ul>{deals.filter(deal => dayKey(deal.time_msc, filters.timezone) === selected).map(deal => <li key={deal.ticket}><span>{deal.symbol} · #{deal.ticket}</span><strong>{fmt(dealNet(deal), currency ? ` ${currency}` : '')}</strong></li>)}</ul> : <p>{t(weeks.flat().find(day => day.key === selected)?.covered ? 'No deals recorded for this day.' : 'Data for this day is unavailable or incomplete.')}</p>}</div>}
   </section><Summary payload={payload} deals={rows} sidebar /></div>
 }
@@ -163,7 +161,7 @@ export default function LiveSurfaces({ section, payload, query, preview, onRefre
   const deals = filterLiveDeals(payload, applied), clear = () => { setDraft({ ...LIVE_FILTERS }); setApplied({ ...LIVE_FILTERS }) }
   const apply = override => { const next = override || draft; if (!next.from || !next.to || next.from <= next.to) setApplied({ ...next }) }
   return <>
-    <header className="live-topbar"><h1>{t('Live')}<span className="live-read-only">{t(preview ? 'Dữ liệu mẫu' : 'Read only')}</span></h1><div className="live-toolbar-actions"><Action primary icon="plus" onClick={() => setAction('Add trade')}>{t('Add trade')}</Action><Action compact icon="upload" label="Upload file" onClick={() => setAction('Upload file')} /></div></header>
+    <header className="live-topbar"><h1 className="sr-only">{t('Live')}</h1><div className="live-toolbar-actions"><Action primary icon="plus" onClick={() => setAction('Add trade')}>{t('Add trade')}</Action><Action compact icon="upload" label="Upload file" onClick={() => setAction('Upload file')} /></div></header>
     {!['notes', 'trading-accounts'].includes(section) && <FilterBar section={section} payload={payload} draft={draft} setDraft={setDraft} applied={applied} onApply={apply} onClear={clear} onPreview={setAction} onRefresh={onRefresh} />}
     {section === 'calendar' && <Calendar payload={payload} deals={deals} filters={applied} onPreview={setAction} />}
     {section === 'trades' && <div className="live-split"><section>{payload?.account && Array.isArray(payload.deals) ? <LiveBrokerSnapshot payload={payload} section="trades" deals={deals} filterKey={JSON.stringify(applied)} /> : <Empty title="No trades yet" copy="Your synced deals will appear here." icon="journal" />}</section><Summary payload={payload} deals={deals} sidebar /></div>}

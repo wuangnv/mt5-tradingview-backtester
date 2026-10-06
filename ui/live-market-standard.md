@@ -29,6 +29,12 @@ Notes retains the reference toolbar/group/empty arrangement. Tag analysis keeps
 its curve/list/summary arrangement without inventing broker tags. Accounts uses
 account facts and an Add account side region. At narrower widths, side regions
 stack below content; calendars and tables scroll within their own regions.
+Structural dividers meet at panel boundaries and span the canonical workspace
+width. Content retains its gutter inside panels; interactive calendar cells
+retain their separate spacing. The shell already identifies Live and demo mode,
+so the page heading is accessible-only and ready/demo status is not repeated.
+Exceptional read states remain visible. Data caveats live in the source/access
+disclosure instead of repeated paragraphs beside the calendar and deal table.
 
 ## Data and state
 

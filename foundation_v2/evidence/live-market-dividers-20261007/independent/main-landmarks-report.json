@@ -1,0 +1,266 @@
+{
+  "before": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54",
+  "cases": [
+    {
+      "section": "calendar",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trades",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "notes",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "tag-analytics",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "analytics",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trading-accounts",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "market-data",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "dashboard",
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "calendar",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trades",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "notes",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "tag-analytics",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "analytics",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trading-accounts",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "market-data",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "dashboard",
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "calendar",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trades",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "notes",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "tag-analytics",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "analytics",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trading-accounts",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "market-data",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "dashboard",
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "calendar",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trades",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "notes",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "tag-analytics",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "analytics",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "trading-accounts",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "market-data",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    },
+    {
+      "section": "dashboard",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "mainCount": 1,
+      "nestedCount": 0
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "after": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54",
+  "sourceUnchanged": true,
+  "pass": true
+}
