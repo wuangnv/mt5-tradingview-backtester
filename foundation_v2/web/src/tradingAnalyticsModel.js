@@ -3,7 +3,7 @@ import { closeTime } from './sessionPerformanceModel.js'
 export const known = value => value !== null && value !== undefined && value !== '' && typeof value !== 'boolean' && Number.isFinite(Number(value))
 export const number = value => known(value) ? Number(value) : null
 export const outcomeOf = value => !known(value) ? 'unknown' : Number(value) > 1e-12 ? 'win' : Number(value) < -1e-12 ? 'loss' : 'breakeven'
-export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', strategy: 'all', source: 'all', weekday: 'all', hour: 'all', timezone: 'UTC', search: '', notes: '', assets: '', sides: '', outcomes: '', types: '', years: '', months: '', days: '', hours: '', tagInclude: '', tagExclude: '', tagIncludeMode: 'AND', tagExcludeMode: 'AND' }
+export const DEFAULT_EXTRA_FILTERS = { asset: 'all', tag: 'all', strategy: 'all', source: 'all', weekday: 'all', hour: 'all', timeStart: '', timeEnd: '', reportKinds: '', timezone: 'UTC', search: '', notes: '', assets: '', sides: '', outcomes: '', types: '', years: '', months: '', days: '', hours: '', tagInclude: '', tagExclude: '', tagIncludeMode: 'AND', tagExcludeMode: 'AND' }
 // JSON preserves commas in journal tags and survives the existing string URL contract.
 export function filterValues(value) {
   if (Array.isArray(value)) return value.map(String)
@@ -16,7 +16,8 @@ export function readAnalyticsExtraFilters(query) {
     const param = key === 'source' ? 'analytics_trade_source' : `analytics_${key}`
     if (query.get(param)) values[key] = query.get(param)
   }
-  if (!['UTC', 'Asia/Ho_Chi_Minh', 'America/New_York', 'Europe/London'].includes(values.timezone)) values.timezone = 'UTC'
+  try { new Intl.DateTimeFormat('en', { timeZone: values.timezone }) } catch { values.timezone = 'UTC' }
+  for (const key of ['timeStart', 'timeEnd']) if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(values[key])) values[key] = ''
   return values
 }
 
@@ -37,11 +38,11 @@ const calendarFormatters = new Map()
 export function calendarParts(value, timezone = 'UTC') {
   const date = closeTime(value)
   if (!date) return null
-  if (!calendarFormatters.has(timezone)) calendarFormatters.set(timezone, new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', hourCycle: 'h23' }))
+  if (!calendarFormatters.has(timezone)) calendarFormatters.set(timezone, new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }))
   const parts = calendarFormatters.get(timezone).formatToParts(date)
   const at = type => parts.find(part => part.type === type)?.value
   const key = `${at('year')}-${at('month')}-${at('day')}`
-  return { key, month: key.slice(0, 7), hour: Number(at('hour')), weekday: new Date(`${key}T00:00:00Z`).getUTCDay() }
+  return { key, month: key.slice(0, 7), hour: Number(at('hour')), minute: Number(at('minute')), weekday: new Date(`${key}T00:00:00Z`).getUTCDay() }
 }
 
 export function filterAnalyticsRows(rows, filters = DEFAULT_EXTRA_FILTERS) {
@@ -50,11 +51,22 @@ export function filterAnalyticsRows(rows, filters = DEFAULT_EXTRA_FILTERS) {
   const notes = filters.notes.trim().toLowerCase()
   const lists = Object.fromEntries(['assets', 'sides', 'outcomes', 'types', 'years', 'months', 'days', 'hours', 'tagInclude', 'tagExclude'].map(key => [key, filterValues(filters[key])]))
   const matches = (key, value) => !lists[key].length || value !== null && value !== undefined && lists[key].includes(String(value))
+  const reportKinds = filterValues(filters.reportKinds)
+  const minuteOf = value => /^([01]\d|2[0-3]):[0-5]\d$/.test(value || '') ? Number(value.slice(0, 2)) * 60 + Number(value.slice(3)) : null
+  const start = minuteOf(filters.timeStart), end = minuteOf(filters.timeEnd)
+  const inTime = time => {
+    if (start === null && end === null) return true
+    if (!time) return false
+    const minute = time.hour * 60 + time.minute
+    return start !== null && end !== null && start > end ? minute >= start || minute <= end : (start === null || minute >= start) && (end === null || minute <= end)
+  }
   const tagsMatch = (values, tags, mode) => mode === 'OR' ? values.some(value => tags.includes(value)) : values.every(value => tags.includes(value))
   return rows.filter(row => {
     const time = calendarParts(row.close_time_utc, filters.timezone)
     const tags = Array.isArray(row.tags) ? row.tags : []
-    return (filters.asset === 'all' || row.symbol === filters.asset)
+    return inTime(time)
+      && (filters.reportKinds === '' || reportKinds.includes(row.report_kind || 'app'))
+      && (filters.asset === 'all' || row.symbol === filters.asset)
       && (filters.tag === 'all' || (row.tags || []).includes(filters.tag))
       && (!filters.strategy || filters.strategy === 'all' || row.playbook_id === filters.strategy)
       && (filters.source === 'all' || row.source_id === filters.source || (typeof row.source === 'string' ? row.source : row.source?.session_id) === filters.source)

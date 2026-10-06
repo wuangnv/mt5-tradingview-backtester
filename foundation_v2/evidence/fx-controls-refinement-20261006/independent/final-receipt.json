@@ -1,0 +1,264 @@
+{
+  "status": "SCOPED_PASS",
+  "created_at_utc": "2026-10-06T09:14:58.0984665Z",
+  "reviewer": "fx_analytics_review",
+  "runtime_cases": 31,
+  "accessibility_scans": 10,
+  "accessibility_violations": 0,
+  "runtime_errors": 0,
+  "blocked_requests": 0,
+  "demo_api_requests": 0,
+  "actual_records_unchanged": true,
+  "product_files_pinned": 21,
+  "source_unchanged": true,
+  "native_scrollbar_style_instrumentation": false,
+  "browser": "Playwright Chromium headless, ignoreDefaultArgs --hide-scrollbars",
+  "popup_fit_oracle": "Popup within content client edge excluding native scrollbar; no added content overflow beyond closed-report baseline",
+  "known_existing_limit": "Analytics360 native closed-report scrollWidth298/clientWidth287, 11px baseline overflow remains; popup does not add overflow",
+  "source_pins": [
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "a5e4940a0e21f08d871bf626a5a17919132d29b0005acae47533085069f96ad8"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "682e7020e1bb6e9c2383e731cd72c4f9d52c1513b9709ca2a181e1c8bbb19d49"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "3da66443a4eaa522e4c45a979922d16786bcdad456d50255c7997772c41401a0"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "5442582f48595ace021018b6d282fbc7150cdbf89ce472f38797c7798e5ef8a1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "078a8179c62198f83139351c01e825f4c503a0333cb142966188a593630bf15c"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "3d1ad73ad22b57dd1437541efc20f4520edefc3e5c91ef3dd9137b6a2522af8a"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "9ccf67d81110a96b1f5b08acda905bc013213e2f4089d9ec7b15b209161542fb"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "41d05baddfa9c1ef893929d63e6ccf61ae4a0513bade754821cd78d98d581653"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "49f62304d5b4b84fdc862c7b8809603c4f24e9c064f85e50637f04f15875007d"
+    },
+    {
+      "file": "AnalyticsFilterBar.jsx",
+      "sha256": "c74083df5f472c1d3dc1e8792df04ada91f96b4e03b504357bcb72ce5a988ed9"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "186c9ad20c230bddb579e28433a2bc6296c5a830d39885d9f9037785c9626f18"
+    },
+    {
+      "file": "analytics-filter-controls.css",
+      "sha256": "1e6e929ecd7ad8ed3e2314349f92e50ded7234ff3afc3e17e0ebc1905c706199"
+    },
+    {
+      "file": "AnalyticsWorkspace.jsx",
+      "sha256": "bc6f636d0c49dbe5513b6edb377049a66cd31807ff56803911a5a938f3809023"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "11d61be858e0aa71b4696761caad2dbbfd410d2a08d07d30cdd054ec18ada4cc"
+    },
+    {
+      "file": "tradingAnalyticsModel.js",
+      "sha256": "fb4bc9842502d662468cd51cb2b43e5650f8ac15576b0fc043f366b7a7e1b3fb"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "67917824a4597f0e02e217c1c66a6c41b677320db057bf394d062cf358422839"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "761bdf8e220b9acf9da6aea6f138f6e8b794485550b825c27ac4d021ed6c9996"
+    },
+    {
+      "file": "ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "947fdb38ef66c2ab450984772f546ab27fd505af2a8154789f21ec919cd8c73f"
+    }
+  ],
+  "content_baselines": [
+    {
+      "phase": "overview-dark-360",
+      "scroll": 287,
+      "client": 287
+    },
+    {
+      "phase": "replay-dark-360",
+      "scroll": 287,
+      "client": 287
+    },
+    {
+      "phase": "trade-dark-360",
+      "scroll": 302,
+      "client": 302
+    },
+    {
+      "phase": "analytics-dark-360",
+      "scroll": 298,
+      "client": 287
+    },
+    {
+      "phase": "overview-dark-768",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "replay-dark-768",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "trade-dark-768",
+      "scroll": 694,
+      "client": 694
+    },
+    {
+      "phase": "analytics-dark-768",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "overview-dark-1440",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "replay-dark-1440",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "trade-dark-1440",
+      "scroll": 1192,
+      "client": 1192
+    },
+    {
+      "phase": "analytics-dark-1440",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "overview-light-360",
+      "scroll": 287,
+      "client": 287
+    },
+    {
+      "phase": "replay-light-360",
+      "scroll": 287,
+      "client": 287
+    },
+    {
+      "phase": "trade-light-360",
+      "scroll": 302,
+      "client": 302
+    },
+    {
+      "phase": "analytics-light-360",
+      "scroll": 298,
+      "client": 287
+    },
+    {
+      "phase": "overview-light-768",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "replay-light-768",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "trade-light-768",
+      "scroll": 694,
+      "client": 694
+    },
+    {
+      "phase": "analytics-light-768",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "overview-light-1440",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "replay-light-1440",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "trade-light-1440",
+      "scroll": 1192,
+      "client": 1192
+    },
+    {
+      "phase": "analytics-light-1440",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "synthetic-catalog-native-scrollbar-replay",
+      "scroll": 679,
+      "client": 679
+    },
+    {
+      "phase": "synthetic-catalog-native-scrollbar-trade",
+      "scroll": 694,
+      "client": 694
+    },
+    {
+      "phase": "actual-get-only-overview",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "actual-get-only-replay",
+      "scroll": 1177,
+      "client": 1177
+    },
+    {
+      "phase": "actual-get-only-trade",
+      "scroll": 1192,
+      "client": 1192
+    },
+    {
+      "phase": "actual-get-only-analytics",
+      "scroll": 1192,
+      "client": 1192
+    }
+  ],
+  "actual_scope": "GET-only route smoke and canceled dialogs; no real mutation",
+  "synthetic_scope": "GET catalog plus 15 labeled clones only for two scroll tests",
+  "broader_acceptance": false,
+  "reports": [
+    "report.json",
+    "accessibility-report.json",
+    "REVIEW.md"
+  ]
+}

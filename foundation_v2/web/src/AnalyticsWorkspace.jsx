@@ -47,7 +47,7 @@ function netFromLedger(ledger) {
   return ledger.reduce((total, trade) => total + Number(trade.net_pnl), 0)
 }
 
-export function buildAnalyticsModel(result) {
+export function buildAnalyticsModel(result, reportKind = 'app') {
   const metrics = result?.metrics && typeof result.metrics === 'object' ? result.metrics : {}
   const ledger = Array.isArray(result?.ledger) ? result.ledger : []
   const providedNet = firstKnown(metrics.net_pnl, metrics.net_profit, result?.net_pnl)
@@ -77,7 +77,7 @@ export function buildAnalyticsModel(result) {
   const observedEnd = observedRange.end_utc || observedRange.end || observedRange.to_utc || observedRange.to
   const ledgerDates = ledger.flatMap((trade) => [trade?.open_time_utc, trade?.close_time_utc]).map(dateFromValue).filter(Boolean).sort((a, b) => a - b)
   const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : DATE_FORMATTER_VI_UTC.format(date) }
-  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? DATE_TIME_FORMATTER_VI.format(date) : 'N/A' } })
+  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, report_kind: reportKind, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? DATE_TIME_FORMATTER_VI.format(date) : 'N/A' } })
   const realizedRValues = (Array.isArray(metrics.realized_r_values) ? metrics.realized_r_values : rows.map((trade) => trade.realized_r)).filter(finite).map(Number)
   const metricDefinitions = metrics.definitions && typeof metrics.definitions === 'object'
     ? Object.entries(metrics.definitions).slice(0, 16).reduce((out, [key, value]) => {
@@ -355,7 +355,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
 
   const result = useMemo(() => state.payload?.schema_version === 'analytics-read-model-v1' ? analyticsViewResult(state.payload) : null, [state.payload])
   const model = useMemo(() => {
-    const base = buildAnalyticsModel(result)
+    const base = buildAnalyticsModel(result, propReport ? 'prop' : jobId ? 'research' : 'app')
     const ledger = base.ledger.map(trade => {
       const tags = journalItems.flatMap(record => {
         const source = record.payload?.source || {}
@@ -364,7 +364,7 @@ function AnalyticsStoryWorkspace({ workspace = 'tenant-a', query = new URLSearch
       return { ...trade, tags: [...new Set([...(Array.isArray(trade.tags) ? trade.tags : []), ...tags])], tag_source: tags.length ? 'journal_annotation' : 'ledger' }
     })
     return { ...base, ledger }
-  }, [result, journalItems, sessionId])
+  }, [result, journalItems, sessionId, propReport, jobId])
   useEffect(() => {
     if (!selectedTradeId || !result) return
     const isKnown = model.ledger.some((trade) => trade.tradeId === selectedTradeId) || model.curve.some((point) => point.tradeId === selectedTradeId)

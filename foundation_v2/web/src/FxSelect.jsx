@@ -5,7 +5,11 @@ export function FilterIcon({ kind }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'calendar' ? <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4m8-4v4M4 10h16" /></> : kind === 'sort' ? <><path d="M7 4v16m-3-3 3 3 3-3M17 20V4m-3 3 3-3 3 3" /></> : kind === 'filter' ? <path d="M3 4h18l-7 8v7l-4 2v-9Z" /> : kind === 'edit' ? <><path d="m16 3 5 5-12 12H4v-5ZM13 6l5 5" /></> : <><path d="M4 20h16M7 16v-5m5 5V5m5 11V9" /></>}</svg>
 }
 
-export default function FxSelect({ label, value, options, onChange, icon, searchable = false, placeholder = 'Tìm…', emptyLabel = 'Không có lựa chọn phù hợp.', disabled = false, triggerContent, className = '', multiple = false, iconOnly = false, selectAllLabel = 'Chọn tất cả' }) {
+export function SelectChevron() {
+  return <svg className="fx-select-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg>
+}
+
+export default function FxSelect({ label, value, options, onChange, icon, searchable = false, placeholder = 'Tìm…', emptyLabel = 'Không có lựa chọn phù hợp.', disabled = false, triggerContent, className = '', multiple = false, iconOnly = false, selectAllLabel = 'Chọn tất cả', menuTitle, selectionField = false, clearValue }) {
   const [open, setOpen] = useState(false), [search, setSearch] = useState('')
   const root = useRef(null), trigger = useRef(null), input = useRef(null)
   const id = useId()
@@ -21,8 +25,9 @@ export default function FxSelect({ label, value, options, onChange, icon, search
       const menu = root.current?.querySelector('.fx-select-menu')
       if (!menu) return
       // Popups must fit the scrolling content, which also clips the sidebar edge.
-      const clip = root.current.closest('.fx-content')?.getBoundingClientRect()
-      const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip?.right || window.innerWidth) - 12)
+      const container = root.current.closest('.fx-content')
+      const clip = container?.getBoundingClientRect()
+      const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip ? clip.left + container.clientWidth : window.innerWidth) - 12)
       menu.style.maxWidth = `${right - left}px`
       menu.style.transform = ''
       menu.style.top = 'calc(100% + 8px)'
@@ -47,7 +52,7 @@ export default function FxSelect({ label, value, options, onChange, icon, search
     window.addEventListener('resize', positionMenu)
     return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', positionMenu) }
   }, [open, searchable])
-  return <div className={`fx-select ${className}`} ref={root} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
+  return <div className={`fx-select ${className}`} ref={root} onBlur={event => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); close() }
     if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key) && (event.target !== input.current || event.key.startsWith('Arrow'))) {
       event.preventDefault()
@@ -59,13 +64,15 @@ export default function FxSelect({ label, value, options, onChange, icon, search
     }
   }}>
     <button type="button" className="fx-select-trigger" aria-label={label} aria-haspopup={searchable ? 'dialog' : 'listbox'} aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setSearch(''); setOpen(!open) }}>
-      {icon && <FilterIcon kind={icon} />}{!iconOnly && <><span className="fx-select-value">{triggerContent || selected?.label || 'Chọn…'}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></>}
+      {icon && <FilterIcon kind={icon} />}{!iconOnly && <><span className="fx-select-value">{triggerContent || selected?.label || 'Chọn…'}</span><SelectChevron /></>}
     </button>
     {open && <div id={id} className="fx-select-menu" role={searchable ? 'dialog' : 'presentation'} aria-label={searchable ? label : undefined}>
-      {multiple && <span className="fx-select-count">{value.length} / {options.length} đã chọn</span>}
+      {menuTitle && <h3 className="fx-filter-title">{menuTitle}</h3>}
+      {selectionField && <div className="fx-filter-selection"><span>{multiple ? allSelected ? 'All' : options.filter(isSelected).map(option => option.label).join(', ') || 'None' : selected?.label}</span>{clearValue !== undefined && <button type="button" aria-label={`Clear ${label}`} onClick={() => onChange(clearValue)}>×</button>}<SelectChevron /></div>}
+      {multiple && !selectionField && <span className="fx-select-count">{value.length} / {options.length} đã chọn</span>}
       {searchable && <input ref={input} type="search" aria-label={`Tìm ${label}`} placeholder={placeholder} value={search} onChange={event => setSearch(event.target.value)} />}
       {multiple && <label className="fx-select-all"><input type="checkbox" checked={allSelected} ref={node => { if (node) node.indeterminate = !allSelected && value.length > 0 }} onChange={() => onChange(allSelected ? [] : available.map(option => option.value))} />{selectAllLabel}</label>}
-      <div role="listbox" aria-label={label} aria-multiselectable={multiple || undefined}>{visible.map(option => <button type="button" role="option" key={option.value} aria-selected={isSelected(option)} disabled={option.disabled} title={option.disabled ? option.detail : undefined} onClick={() => {
+      <div role="listbox" tabIndex={-1} aria-label={label} aria-multiselectable={multiple || undefined}>{visible.map(option => <button type="button" role="option" key={option.value} aria-selected={isSelected(option)} disabled={option.disabled} title={option.disabled ? option.detail : undefined} onClick={() => {
         if (multiple) onChange(isSelected(option) ? value.filter(item => item !== option.value) : [...value, option.value])
         else { onChange(option.value); close() }
       }}>{multiple && <span className={`fx-select-checkbox${isSelected(option) ? ' is-checked' : ''}`} aria-hidden="true">{isSelected(option) ? '✓' : ''}</span>}<span>{option.label}{option.detail && <small>{option.detail}</small>}</span>{!multiple && isSelected(option) && <span className="fx-select-check" aria-hidden="true">✓</span>}</button>)}</div>

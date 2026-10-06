@@ -6,6 +6,31 @@ import { buildPropAnalyticsView, propReplayQuery } from '../src/propAnalyticsMod
 const rows = [100, -50, 0, 150, -100].map((value, index) => ({ trade_id: `trade-${index}`, tradeId: `trade-${index}`, rowIndex: index, net_pnl: value, pnl: value, side: index % 2 ? 'SELL' : 'BUY', symbol: index % 2 ? 'EURUSD' : 'GBPUSD', realized_r: null, open_time_utc: `2024-01-0${index + 1}T12:00:00Z`, close_time_utc: `2024-01-0${index + 1}T13:00:00Z`, tags: index === 3 ? ['breakout'] : [] }))
 const model = { ledger: rows, startBalance: 1000, endingBalance: 1100, curve: [1000, 1100, 1050, 1050, 1200, 1100].map((value, index) => ({ value, index })), drawdown: [0, 50, 50, 0, 100].map((drawdown, index) => ({ drawdown, drawdownPct: drawdown / (index < 3 ? 1100 : 1200) * 100 })) }
 const almost = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} !== ${expected}`)
+
+test('minute range is inclusive, supports overnight and uses selected IANA timezone', () => {
+  const times = ['09:14', '09:15', '09:45', '09:46', '23:30', '00:30']
+  const ledger = times.map((time, i) => ({ trade_id: String(i), close_time_utc: `2024-01-01T${time}:30Z` }))
+  const ids = extra => filterAnalyticsRows(ledger, extra).map(row => row.trade_id)
+  assert.deepEqual(ids({ timeStart: '09:15', timeEnd: '09:45' }), ['1', '2'])
+  assert.deepEqual(ids({ timeStart: '23:30', timeEnd: '00:30' }), ['4', '5'])
+  assert.deepEqual(ids({ timeStart: '16:15', timeEnd: '16:45', timezone: 'Asia/Ho_Chi_Minh' }), ['1', '2'])
+  assert.deepEqual(ids({ timeEnd: '00:30' }), ['5'])
+  assert.deepEqual(ids({ timeStart: '23:30' }), ['4'])
+  assert.equal(filterAnalyticsRows([{ close_time_utc: null }], { timeStart: '09:00' }).length, 0)
+})
+test('Type belongs to report source and never substitutes the trade entry type', () => {
+  const ledger = [{ report_kind: 'app', entry_type: 'market' }, { report_kind: 'prop', entry_type: 'market' }, { report_kind: 'research', entry_type: 'limit' }]
+  assert.deepEqual(filterAnalyticsRows(ledger, { reportKinds: '["prop"]' }), [ledger[1]])
+  assert.equal(filterAnalyticsRows(ledger, { reportKinds: '[]' }).length, 0)
+  assert.equal(filterAnalyticsRows(ledger, { reportKinds: '' }).length, 3)
+  assert.deepEqual(filterAnalyticsRows(ledger, { reportKinds: '["app","prop"]', types: '["market"]' }), ledger.slice(0, 2))
+})
+test('URL accepts supported cities and clears malformed HH:mm values', () => {
+  const valid = readAnalyticsExtraFilters(new URLSearchParams('analytics_timezone=Pacific/Honolulu&analytics_timeStart=23:59&analytics_timeEnd=00:30'))
+  assert.equal(valid.timezone, 'Pacific/Honolulu'); assert.equal(valid.timeStart, '23:59'); assert.equal(valid.timeEnd, '00:30')
+  const bad = readAnalyticsExtraFilters(new URLSearchParams('analytics_timezone=not/a-zone&analytics_timeStart=25:00&analytics_timeEnd=9:30'))
+  assert.equal(bad.timezone, 'UTC'); assert.equal(bad.timeStart, ''); assert.equal(bad.timeEnd, '')
+})
 test('known numeric oracle: metrics, partial risk, closed DD, durations and calendar', () => {
   const data = advancedAnalytics(model)
   assert.equal(data.net, 100); assert.equal(data.count, 5); assert.equal(data.winRate, 40)

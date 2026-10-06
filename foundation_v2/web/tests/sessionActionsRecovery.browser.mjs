@@ -3,7 +3,7 @@ import { chromium } from 'playwright'
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
-const out = path.resolve('../evidence/fx-session-actions-20261006')
+const out = path.resolve(process.env.TW_UI_EVIDENCE_DIR || '../evidence/fx-session-actions-20261006')
 await mkdir(out, { recursive: true })
 const browser = await chromium.launch({ headless: true })
 const origin = 'http://127.0.0.1:5180'
@@ -42,8 +42,7 @@ try {
     const url = `${origin}/?workspace=tenant-a&view=${view}&area=testing&section=${view === 'overview' ? 'dashboard' : 'sessions'}&select=1&session=${original.record_id}&dataset=${original.dataset_id}&cursor=500`
     await page.goto(url); await page.waitForLoadState('networkidle')
     await page.evaluate(id => localStorage.setItem('tw:replay:last:tenant-a', id), original.record_id)
-    await page.getByRole('button', { name: 'Thao tác ' + original.name, exact: true }).click()
-    await page.getByRole('menuitem', { name: 'Xóa phiên', exact: true }).click()
+    await page.getByRole('button', { name: 'Xóa ' + original.name, exact: true }).click()
     const dialog = page.getByRole('dialog', { name: 'Xóa phiên', exact: true })
     await dialog.getByLabel('Tên phiên xác nhận xóa').fill(original.name)
     await dialog.getByRole('button', { name: 'Xóa phiên', exact: true }).click()
@@ -79,8 +78,7 @@ try {
   })
   await page.goto(`${origin}/?workspace=tenant-a&view=overview&area=testing&section=dashboard`)
   await page.waitForLoadState('networkidle')
-  await page.getByRole('button', { name: 'Thao tác ' + original.name, exact: true }).click()
-  await page.getByRole('menuitem', { name: 'Lưu trữ phiên', exact: true }).click()
+  await page.getByRole('button', { name: 'Lưu trữ ' + original.name, exact: true }).click()
   const archive = page.getByRole('dialog', { name: 'Lưu trữ phiên', exact: true })
   await archive.getByRole('button', { name: 'Lưu trữ', exact: true }).click()
   await archive.getByRole('alert').waitFor()

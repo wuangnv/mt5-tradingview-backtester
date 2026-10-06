@@ -1,38 +1,11 @@
-import React, { useEffect, useLayoutEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import './session-actions.css'
 import './dashboard-session.css'
 
-export function SessionActionsMenu({ item, onAction, disabled = false }) {
-  const [open, setOpen] = useState(false), [position, setPosition] = useState({})
-  const root = useRef(null), trigger = useRef(null), menu = useRef(null), id = useId()
-  const close = () => { setOpen(false); trigger.current?.focus() }
-  useLayoutEffect(() => {
-    if (!open) return
-    const anchor = trigger.current.getBoundingClientRect(), popup = menu.current.getBoundingClientRect()
-    setPosition({ left: Math.max(16, Math.min(anchor.right - popup.width, window.innerWidth - popup.width - 16)), top: Math.max(16, anchor.bottom + 8 + popup.height > window.innerHeight - 16 ? anchor.top - popup.height - 8 : anchor.bottom + 8) })
-  }, [open])
-  useEffect(() => {
-    if (!open) return
-    menu.current?.querySelector('button')?.focus({ preventScroll: true })
-    const outside = event => { if (!root.current?.contains(event.target)) setOpen(false) }
-    const reposition = () => setOpen(false)
-    document.addEventListener('pointerdown', outside)
-    window.addEventListener('resize', reposition); window.addEventListener('wheel', reposition, { passive: true })
-    return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', reposition); window.removeEventListener('wheel', reposition) }
-  }, [open])
-  return <div className="fxs-actions" ref={root} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
-    if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); close() }
-    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return
-    event.preventDefault()
-    if (!open) { setOpen(true); return }
-    const entries = [...menu.current.querySelectorAll('button')], current = entries.indexOf(document.activeElement)
-    entries[event.key === 'Home' ? 0 : event.key === 'End' ? entries.length - 1 : (current + (event.key === 'ArrowDown' ? 1 : -1) + entries.length) % entries.length]?.focus()
-  }}>
-    <button type="button" className="fxs-actions-trigger" aria-label={`Thao tác ${item.name || item.record_id}`} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => setOpen(!open)}><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg></button>
-    {open && <div className="fxs-actions-menu" role="menu" aria-label="Thao tác phiên" id={id} ref={menu} style={position}>
-      <button type="button" role="menuitem" onClick={() => { close(); onAction('archive', item) }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v12h14V8M9 12h6" /></svg>{item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'}</button>
-      <button type="button" role="menuitem" className="is-danger" onClick={() => { close(); onAction('delete', item) }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7" /></svg>Xóa phiên</button>
-    </div>}
+export function SessionActions({ item, onAction, disabled = false }) {
+  return <div className="fxs-actions" aria-label={`Thao tác ${item.name || item.record_id}`}>
+    <button type="button" className="fxs-action-button" aria-label={`${item.archived ? 'Khôi phục' : 'Lưu trữ'} ${item.name || item.record_id}`} title={item.archived ? 'Khôi phục phiên' : 'Lưu trữ phiên'} disabled={disabled} onClick={() => onAction('archive', item)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v12h14V8M9 12h6" />{item.archived && <path d="m9 16 3-3 3 3m-3-3v5" />}</svg></button>
+    <button type="button" className="fxs-action-button is-danger" aria-label={`Xóa ${item.name || item.record_id}`} title="Xóa phiên" disabled={disabled} onClick={() => onAction('delete', item)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7" /></svg></button>
   </div>
 }
 

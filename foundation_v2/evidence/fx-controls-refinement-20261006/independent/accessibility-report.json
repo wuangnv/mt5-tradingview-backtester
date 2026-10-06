@@ -1,0 +1,185 @@
+{
+  "checks": [
+    {
+      "name": "action-dialog-dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "session-filter-dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 11
+        }
+      ]
+    },
+    {
+      "name": "type-dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 6
+        }
+      ]
+    },
+    {
+      "name": "timezone-dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 24
+        }
+      ]
+    },
+    {
+      "name": "calendar-dark",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 40
+        }
+      ]
+    },
+    {
+      "name": "action-dialog-light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    {
+      "name": "session-filter-light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "nodes": 1
+        },
+        {
+          "id": "color-contrast",
+          "nodes": 11
+        }
+      ]
+    },
+    {
+      "name": "type-light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 6
+        }
+      ]
+    },
+    {
+      "name": "timezone-light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 24
+        }
+      ]
+    },
+    {
+      "name": "calendar-light",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 40
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "before": [
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "a5e4940a0e21f08d871bf626a5a17919132d29b0005acae47533085069f96ad8"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "9ccf67d81110a96b1f5b08acda905bc013213e2f4089d9ec7b15b209161542fb"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "41d05baddfa9c1ef893929d63e6ccf61ae4a0513bade754821cd78d98d581653"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "49f62304d5b4b84fdc862c7b8809603c4f24e9c064f85e50637f04f15875007d"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "186c9ad20c230bddb579e28433a2bc6296c5a830d39885d9f9037785c9626f18"
+    },
+    {
+      "file": "analytics-filter-controls.css",
+      "sha256": "1e6e929ecd7ad8ed3e2314349f92e50ded7234ff3afc3e17e0ebc1905c706199"
+    }
+  ],
+  "after": [
+    {
+      "file": "SessionActions.jsx",
+      "sha256": "a5e4940a0e21f08d871bf626a5a17919132d29b0005acae47533085069f96ad8"
+    },
+    {
+      "file": "session-actions.css",
+      "sha256": "d4abc5831557f2ac14be8fb504536eab5c2b5fd88a7609b8069be8f9cfe7761d"
+    },
+    {
+      "file": "SessionFilter.jsx",
+      "sha256": "9ccf67d81110a96b1f5b08acda905bc013213e2f4089d9ec7b15b209161542fb"
+    },
+    {
+      "file": "session-filter.css",
+      "sha256": "33dcad7a90aaf92cf7737163c4ec0a97ad4781082b347b33925d1511ac04b298"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "41d05baddfa9c1ef893929d63e6ccf61ae4a0513bade754821cd78d98d581653"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "49f62304d5b4b84fdc862c7b8809603c4f24e9c064f85e50637f04f15875007d"
+    },
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "186c9ad20c230bddb579e28433a2bc6296c5a830d39885d9f9037785c9626f18"
+    },
+    {
+      "file": "analytics-filter-controls.css",
+      "sha256": "1e6e929ecd7ad8ed3e2314349f92e50ded7234ff3afc3e17e0ebc1905c706199"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

@@ -12,7 +12,7 @@
 .fx-subnav-primary > a { flex-shrink: 0; }
 .fx-subnav-action { flex: 0 0 auto; margin-left: auto; }
 .fx-app .fx-subsubnav { flex: 0 0 auto; align-self: center; margin-inline: -4px 8px; padding-inline: 4px 8px; border-right: 1px solid var(--wm-border); width: auto; }
-.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a { height: 40px; min-height: 40px; }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a { height: 40px; min-height: 40px; border-radius: var(--wm-control-radius); }
 .wm-demo-action { display: flex; align-items: center; gap: 8px; }
 .wm-demo-action .fxa-button { border-radius: 999px; white-space: nowrap; }
 .wm-demo-label { color: var(--wm-content-muted); font-size: 12px; }
@@ -68,11 +68,6 @@ button.fxa-filter-chip { cursor: pointer; }
 button.fxa-filter-chip:hover { background: var(--fx-shell-nav-selected); color: var(--wm-content); }
 .fxa-clear-filters { margin-left: auto; background: transparent; border: 0; color: var(--wm-content-muted); font: inherit; font-size: 12px; padding: 8px 0; cursor: pointer; }
 .fxa-clear-filters:hover { color: var(--wm-content); }
-.fxa-date-filter { position: relative; }
-.fxa-date-menu { position: absolute; top: calc(100% + 6px); right: 0; width: 245px; box-sizing: border-box; background: var(--wm-surface); border: 1px solid var(--wm-border-strong); border-radius: 12px; padding: 14px; box-shadow: 0 10px 28px #0004; z-index: 30; }
-.fxa-date-menu label { display: grid; gap: 6px; font-size: 12px; color: var(--wm-content-muted); }
-.fxa-date-menu label + label { margin-top: 12px; }
-.fxa-date-menu input { width: 100%; box-sizing: border-box; min-height: 38px; padding: 8px; border: 1px solid var(--wm-border-strong); border-radius: 6px; background: var(--wm-canvas); color: var(--wm-content); font: inherit; }
 .fxa-analytics-filter-row :focus-visible, .fxa-filter-chips button:focus-visible, .fx-select-all input:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
 .fxs-demo-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 28px; }
 .fxs-demo-summary h2 { margin: 0 0 8px; font-size: 24px; }
@@ -80,5 +75,17 @@ button.fxa-filter-chip:hover { background: var(--fx-shell-nav-selected); color: 
 .fx-dashboard-quick-action:disabled { opacity: .7; cursor: not-allowed; text-align: left; font: inherit; }
 .pb-workspace-grid, .ja-workspace-grid { display: grid; grid-template-columns: minmax(250px, 1fr) minmax(0, 2fr); gap: 32px; }
 @media (max-width: 760px) { .fx-app.fx-shell-story { --wm-page-gutter: 16px; } }
-@media (max-width: 600px) { .wm-demo-label { display: none; } .wm-demo-action .fxa-button { font-size: 11px; padding-inline: 10px; } .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { gap: 8px; } .fxa-date-menu { left: 0; right: auto; } }
+@media (max-width: 600px) { .wm-demo-label { display: none; } .wm-demo-action .fxa-button { font-size: 11px; padding-inline: 10px; } .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { gap: 8px; } .fx-filter-popover { left: 0; right: auto; } }
 @media (max-width: 600px) { .pb-workspace-grid, .ja-workspace-grid { grid-template-columns: minmax(0, 1fr); } .fxa-filter-toolbar.is-ledger .fxa-filter-actions { margin-left: 0; flex-wrap: wrap; } .fxa-filter-toolbar.is-ledger .fxa-session-filter { flex-basis: 100%; } }
+
+/* Icon controls share the dashboard filter's circular hit area. */
+.fx-app .fxa-filter-actions .fxa-icon-button,
+.fx-app .fxa-columns-control .fx-select-trigger { width: 40px; height: 40px; min-height: 40px; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; flex-shrink: 0; }
+.fx-app .fxa-trades .fxa-detail-button { width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; vertical-align: middle; }
+.fx-app .fxa-trades .fxa-pagination .fx-select-trigger { height: 36px; min-height: 36px; min-width: 70px; padding: 0 12px; align-items: center; border-radius: 999px; line-height: 20px; }
+.fxa-pagination .fx-select-value { text-align: center; flex: 0 0 auto; }
+.fxa-pagination .fx-select-chevron { margin-left: 0; }
+.fx-app .fxa-session-options > button[role='checkbox'] { justify-content: flex-start; }
+.fxa-session-options .fx-select-checkbox { min-width: 16px; flex: 0 0 16px; }
+.fxs-metric-info { display: inline-flex; align-items: center; vertical-align: middle; width: 16px; height: 16px; }
+.fxs-metric-info svg { width: 16px; height: 16px; flex: 0 0 16px; }

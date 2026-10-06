@@ -14,8 +14,9 @@ export default function SessionFilter({ items, value, onChange, multiple = false
     const position = () => {
       const menu = root.current?.querySelector('.fxa-session-menu')
       if (!menu) return
-      const clip = root.current.closest('.fx-content')?.getBoundingClientRect()
-      const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip?.right || window.innerWidth) - 12)
+      const container = root.current.closest('.fx-content')
+      const clip = container?.getBoundingClientRect()
+      const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip ? clip.left + container.clientWidth : window.innerWidth) - 12)
       menu.style.maxWidth = `${right - left}px`; menu.style.transform = ''
       const bounds = menu.getBoundingClientRect()
       menu.style.transform = `translateX(${bounds.left < left ? left - bounds.left : bounds.right > right ? right - bounds.right : 0}px)`
@@ -34,7 +35,7 @@ export default function SessionFilter({ items, value, onChange, multiple = false
     else next.add(item.record_id)
     onChange(next.size === items.length && items.every(item => next.has(item.record_id)) ? null : [...next])
   }
-  return <div className={`fxa-session-filter${compact ? ' is-compact' : ''}`} ref={root} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
+  return <div className={`fxa-session-filter${compact ? ' is-compact' : ''}`} ref={root} onBlur={event => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
     if (event.key === 'Escape') { event.preventDefault(); setOpen(false); trigger.current?.focus() }
     if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key) && open && event.target !== input.current) {
       const controls = [...root.current.querySelectorAll('.fxa-session-menu input, .fxa-session-menu button')]
@@ -46,8 +47,8 @@ export default function SessionFilter({ items, value, onChange, multiple = false
     <button type="button" className="fxa-button fxa-session-trigger" aria-label={`Session: ${label}`} aria-haspopup="dialog" aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setOpen(!open); setSearch('') }}><span>{triggerContent || label}</span><svg className="fx-select-chevron" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg></button>
     {open && <div className="fxa-session-menu" id={id} role="dialog" aria-label="Chọn session">
       <input ref={input} type="search" aria-label="Tìm phiên" placeholder="Tìm phiên…" value={search} onChange={event => setSearch(event.target.value)} />
-      {multiple && <label className="fxa-session-all"><input type="checkbox" checked={all} ref={node => { if (node) node.indeterminate = !all && selected.length > 0 }} onChange={() => onChange(all ? [] : null)} />Tất cả phiên</label>}
-      <div className="fxa-session-options">{visible.map(item => multiple ? <label key={item.record_id} className={all || selected.includes(item.record_id) ? 'is-selected' : ''}><input type="checkbox" checked={all || selected.includes(item.record_id)} onChange={() => toggle(item)} /><span>{item.name || item.record_id}<small>{item.instrument_id || 'Chưa rõ asset'}{item.archived ? ' · Đã lưu trữ' : ''}</small></span></label> : <button type="button" key={item.record_id} aria-pressed={value === item.record_id} className={value === item.record_id ? 'is-selected' : ''} onClick={() => toggle(item)}><span>{item.name || item.record_id}<small>{item.instrument_id || 'Chưa rõ asset'}{item.archived ? ' · Đã lưu trữ' : ''}</small></span>{value === item.record_id && <span aria-hidden="true">✓</span>}</button>)}</div>
+      {multiple && <button type="button" role="checkbox" aria-checked={all ? true : selected.length ? "mixed" : false} className="fxa-session-all" onClick={() => onChange(all ? [] : null)}><span className={`fx-select-checkbox${all ? " is-checked" : ""}`} aria-hidden="true">{all ? "✓" : selected.length ? "−" : ""}</span>Tất cả phiên</button>}
+      <div className="fxa-session-options" tabIndex={-1}>{visible.map(item => multiple ? <button type="button" role="checkbox" aria-checked={all || selected.includes(item.record_id)} key={item.record_id} className={all || selected.includes(item.record_id) ? 'is-selected' : ''} onClick={() => toggle(item)}><span className={`fx-select-checkbox${all || selected.includes(item.record_id) ? " is-checked" : ""}`} aria-hidden="true">{all || selected.includes(item.record_id) ? "✓" : ""}</span><span>{item.name || item.record_id}<small>{item.instrument_id || 'Chưa rõ asset'}{item.archived ? ' · Đã lưu trữ' : ''}</small></span></button> : <button type="button" key={item.record_id} aria-pressed={value === item.record_id} className={value === item.record_id ? 'is-selected' : ''} onClick={() => toggle(item)}><span>{item.name || item.record_id}<small>{item.instrument_id || 'Chưa rõ asset'}{item.archived ? ' · Đã lưu trữ' : ''}</small></span>{value === item.record_id && <span aria-hidden="true">✓</span>}</button>)}</div>
       {!visible.length && <p className="fxa-empty">Không tìm thấy phiên.</p>}
     </div>}
   </div>

@@ -6,7 +6,7 @@ import FxSelect from './FxSelect.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
 import DashboardSessions from './DashboardSessions.jsx'
-import { SessionActionsMenu, SessionActionDialog } from './SessionActions.jsx'
+import { SessionActions, SessionActionDialog } from './SessionActions.jsx'
 import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
 import { SessionSelect } from './SessionPicker.jsx'
@@ -29,8 +29,8 @@ function DemoReports({ ledgerOnly, prop = false, query }) {
   const [selected, setSelected] = useState(''), [config, setConfig] = useState({ stop_distance_ticks: 10, stop_multiplier: 1, target_r: 2 })
   const model = useMemo(() => {
     const rows = demoFilterRows(ledgerOnly ? ids : [ids], filters)
-    return buildAnalyticsModel({ ...demoResult(rows, DEMO_SESSIONS.find(item => item.record_id === ids)), multi_session: ledgerOnly })
-  }, [ids, filters, ledgerOnly])
+    return buildAnalyticsModel({ ...demoResult(rows, DEMO_SESSIONS.find(item => item.record_id === ids)), multi_session: ledgerOnly }, prop ? 'prop' : 'app')
+  }, [ids, filters, ledgerOnly, prop])
   const row = model.ledger.find(item => item.tradeId === selected)
   const exportCsv = () => {
     const blob = new Blob([tradesCsv(filterAnalyticsRows(model.ledger, extra), 'USD', { source: 'UI demo' })], { type: 'text/csv;charset=utf-8' })
@@ -72,7 +72,7 @@ function DemoSessions({ workspace, query }) {
         <button className="fxr-button fxr-button-primary" disabled type="button">＋ Phiên mới</button>
         {item && <><FxSelect className="fxs-analytics-button" label="Mở Analytics" value="session" triggerContent="Analytics" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(href('analytics', { analytics_source: value === 'prop' ? 'prop' : 'sessions' }))} />
         <button className="fxr-button fxr-button-secondary fxs-settings" type="button" onClick={() => setEditing(true)}>Cài đặt phiên</button>
-        <SessionActionsMenu item={item} onAction={action => setActionDialog(action)} /></>}
+        <SessionActions item={item} onAction={action => setActionDialog(action)} /></>}
       </div>
     </div>
     {item ? <><div className="fxr-session-cards">

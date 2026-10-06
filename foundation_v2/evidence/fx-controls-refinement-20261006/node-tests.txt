@@ -1,0 +1,30 @@
+✔ Analytics reads remain workspace scoped and have no execution capability (1.3347ms)
+✔ drilldown and export retain resource identity and financial provenance (0.2886ms)
+✔ price experiments are read-only and fenced to the visible result provenance (0.2515ms)
+✔ journal UI stays linked to replay/trade context and uses revision endpoint (8.9471ms)
+✔ analytics UI preserves unknown values and exposes result provenance (0.2103ms)
+✔ journal and analytics responsive rules are scoped to the dedicated stylesheet (0.2047ms)
+✔ minute range is inclusive, supports overnight and uses selected IANA timezone (28.9036ms)
+✔ Type belongs to report source and never substitutes the trade entry type (0.3034ms)
+✔ URL accepts supported cities and clears malformed HH:mm values (1.098ms)
+✔ known numeric oracle: metrics, partial risk, closed DD, durations and calendar (2.8788ms)
+✔ all winning or losing distributions keep undefined denominators unknown (1.0996ms)
+✔ local filter recomputes every metric and hypothetical balance from original capital (0.7585ms)
+✔ strategy filter excludes unknown ownership and intersects assets without retaining an unfiltered curve (0.9064ms)
+✔ timezone and calendar zero periods use actual dates rather than local machine date (0.5516ms)
+✔ Monte Carlo deterministic bootstrap with a one-value oracle and bounded configuration (4.5107ms)
+✔ CSV retains unknown blanks, exports exact filtered rows, escapes spreadsheet formulas (0.6987ms)
+✔ Prop adapter takes report replay cutoff and clears unrelated route context (0.3225ms)
+✔ CSV prefix protection rejects formulas including negative expressions but retains numeric negatives (0.1541ms)
+✔ Prop same-cursor event and phase fence; subset uses report phase initial balance (0.4805ms)
+✔ report filter URL preserves source navigation and validates timezone (0.3789ms)
+✔ multi-session CSV keeps each currency and source checkpoint without summing money (0.3017ms)
+✔ aggregate ledger rejects malformed or mismatched source instead of fabricating rows (0.3487ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 277.0977
