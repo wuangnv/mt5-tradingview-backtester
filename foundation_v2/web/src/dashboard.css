@@ -32,6 +32,12 @@
 .fx-dashboard-quick-action:hover .fx-dashboard-action-arrow { color: var(--wm-primary); }
 .fx-dashboard-section-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
 .fx-dashboard-section-head h2 { margin: 0; font-size: 16px; font-weight: 650; }
+.fx-dashboard-performance-heading { display: flex; align-items: center; gap: 8px; position: relative; }
+.fx-dashboard-scope-info { display: inline-flex; color: var(--wm-content-muted); border-radius: 50%; }
+.fx-dashboard-scope-info > svg { width: 18px; height: 18px; }
+.fx-dashboard-scope-info:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 3px; }
+.fx-dashboard-scope-tooltip { display: none; position: absolute; left: 0; top: calc(100% + 8px); z-index: 5; width: min(280px, calc(100vw - 120px)); box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--wm-border); border-radius: 8px; background: var(--wm-surface); color: var(--wm-content); font-size: 12px; font-weight: 400; line-height: 1.5; }
+.fx-dashboard-scope-info:hover .fx-dashboard-scope-tooltip, .fx-dashboard-scope-info:focus .fx-dashboard-scope-tooltip { display: block; }
 .fx-dashboard-performance-filters, .fx-dashboard-list-filters { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .fx-dashboard :is(select, input, button:not(.fx-dashboard-refresh)) { min-height: 44px; border: 1px solid var(--wm-border-strong); border-radius: 6px; background: var(--wm-canvas); color: var(--wm-content); padding: 8px 12px; font: inherit; font-size: 13px; min-width: 0; }
 .fx-dashboard button:not(:disabled), .fx-dashboard select { cursor: pointer; }

@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "partial compact info, keyboard tooltip fits: dark/1710",
+    "real empty chart CTA matches summary style/route: dark/1710",
+    "analytics equal tabs, flat band, keyboard: dark/1710",
+    "partial compact info, keyboard tooltip fits: light/1710",
+    "real empty chart CTA matches summary style/route: light/1710",
+    "analytics equal tabs, flat band, keyboard: light/1710",
+    "partial compact info, keyboard tooltip fits: dark/768",
+    "real empty chart CTA matches summary style/route: dark/768",
+    "analytics equal tabs, flat band, keyboard: dark/768",
+    "partial compact info, keyboard tooltip fits: light/768",
+    "real empty chart CTA matches summary style/route: light/768",
+    "analytics equal tabs, flat band, keyboard: light/768",
+    "partial compact info, keyboard tooltip fits: dark/360",
+    "real empty chart CTA matches summary style/route: dark/360",
+    "analytics equal tabs, flat band, keyboard: dark/360",
+    "partial compact info, keyboard tooltip fits: light/360",
+    "real empty chart CTA matches summary style/route: light/360",
+    "analytics equal tabs, flat band, keyboard: light/360",
+    "labeled blocked fixture preserves explicit notice and unknown value",
+    "labeled error fixture preserves explicit notice and unknown value"
+  ],
+  "errors": [],
+  "writes": []
+}

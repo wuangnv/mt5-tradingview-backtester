@@ -1,0 +1,988 @@
+{
+  "checks": [
+    {
+      "name": "demo-overview-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-dark-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-partial-dark-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-empty-CTA-dark-360",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-dark-768",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-dark-768",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-dark-768",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-partial-dark-768",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-empty-CTA-dark-768",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-partial-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-empty-CTA-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-light-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-partial-light-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-empty-CTA-light-360",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-light-768",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-light-768",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-light-768",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-partial-light-768",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-empty-CTA-light-768",
+      "pass": true
+    },
+    {
+      "name": "demo-overview-light-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-replay-light-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-analytics-light-1710",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-partial-light-1710",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-empty-CTA-light-1710",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-blocked",
+      "pass": true
+    },
+    {
+      "name": "fixture-dashboard-error",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-archived",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-missing-dataset",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-blocked",
+      "pass": true
+    },
+    {
+      "name": "fixture-session-error",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "requests": [
+    {
+      "phase": "fixture-dashboard-partial-dark-360",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-360",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-360",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-360",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-768",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-768",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-768",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-768",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-768",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-1710",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-1710",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-1710",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-dark-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-1710",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-1710",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-dark-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-360",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-360",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-360",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-360",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-360",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-360",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-768",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-768",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-768",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-768",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-768",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-768",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-1710",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-1710",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-1710",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-dashboard-partial-light-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-partial"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-1710",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-1710",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-session-empty-CTA-light-1710",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-empty"
+    },
+    {
+      "phase": "fixture-dashboard-blocked",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-blocked"
+    },
+    {
+      "phase": "fixture-dashboard-blocked",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-blocked"
+    },
+    {
+      "phase": "fixture-dashboard-blocked",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-blocked"
+    },
+    {
+      "phase": "fixture-dashboard-blocked",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-blocked"
+    },
+    {
+      "phase": "fixture-dashboard-blocked",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-blocked"
+    },
+    {
+      "phase": "fixture-dashboard-error",
+      "path": "/api/v2/overview",
+      "fixture": "dashboard-error"
+    },
+    {
+      "phase": "fixture-dashboard-error",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "dashboard-error"
+    },
+    {
+      "phase": "fixture-dashboard-error",
+      "path": "/api/v2/data/datasets",
+      "fixture": "dashboard-error"
+    },
+    {
+      "phase": "fixture-dashboard-error",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "dashboard-error"
+    },
+    {
+      "phase": "fixture-dashboard-error",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "dashboard-error"
+    },
+    {
+      "phase": "fixture-session-archived",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-archived"
+    },
+    {
+      "phase": "fixture-session-archived",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-archived"
+    },
+    {
+      "phase": "fixture-session-archived",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-archived"
+    },
+    {
+      "phase": "fixture-session-archived",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-archived"
+    },
+    {
+      "phase": "fixture-session-missing-dataset",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-missing-dataset"
+    },
+    {
+      "phase": "fixture-session-missing-dataset",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-missing-dataset"
+    },
+    {
+      "phase": "fixture-session-missing-dataset",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-missing-dataset"
+    },
+    {
+      "phase": "fixture-session-missing-dataset",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-missing-dataset"
+    },
+    {
+      "phase": "fixture-session-blocked",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-blocked"
+    },
+    {
+      "phase": "fixture-session-blocked",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-blocked"
+    },
+    {
+      "phase": "fixture-session-blocked",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-blocked"
+    },
+    {
+      "phase": "fixture-session-blocked",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-blocked"
+    },
+    {
+      "phase": "fixture-session-error",
+      "path": "/api/v2/data/datasets",
+      "fixture": "session-error"
+    },
+    {
+      "phase": "fixture-session-error",
+      "path": "/api/v2/replay/sessions",
+      "fixture": "session-error"
+    },
+    {
+      "phase": "fixture-session-error",
+      "path": "/api/v2/replay/sessions/qa-page-polish",
+      "fixture": "session-error"
+    },
+    {
+      "phase": "fixture-session-error",
+      "path": "/api/v2/replay/sessions/qa-page-polish/analytics",
+      "fixture": "session-error"
+    }
+  ],
+  "geometry": [
+    {
+      "phase": "demo-analytics-dark-360",
+      "box": {
+        "x": 74,
+        "y": 574,
+        "width": 255,
+        "height": 60,
+        "top": 574,
+        "right": 329,
+        "bottom": 634,
+        "left": 74
+      },
+      "paddingTop": "8px",
+      "paddingBottom": "8px",
+      "display": "grid",
+      "children": [
+        {
+          "x": 74,
+          "y": 582,
+          "width": 79.65625,
+          "height": 44,
+          "top": 582,
+          "right": 153.65625,
+          "bottom": 626,
+          "left": 74
+        },
+        {
+          "x": 161.65625,
+          "y": 582,
+          "width": 79.671875,
+          "height": 44,
+          "top": 582,
+          "right": 241.328125,
+          "bottom": 626,
+          "left": 161.65625
+        },
+        {
+          "x": 249.328125,
+          "y": 582,
+          "width": 79.65625,
+          "height": 44,
+          "top": 582,
+          "right": 328.984375,
+          "bottom": 626,
+          "left": 249.328125
+        }
+      ],
+      "separator": {
+        "left": -16,
+        "right": -16,
+        "height": "1px",
+        "content": "\"\""
+      },
+      "content": {
+        "left": 58,
+        "right": 345
+      },
+      "filterBottom": 574
+    },
+    {
+      "phase": "demo-analytics-dark-768",
+      "box": {
+        "x": 106,
+        "y": 348,
+        "width": 615,
+        "height": 60,
+        "top": 348,
+        "right": 721,
+        "bottom": 408,
+        "left": 106
+      },
+      "paddingTop": "8px",
+      "paddingBottom": "8px",
+      "display": "grid",
+      "children": [
+        {
+          "x": 106,
+          "y": 356,
+          "width": 199.65625,
+          "height": 44,
+          "top": 356,
+          "right": 305.65625,
+          "bottom": 400,
+          "left": 106
+        },
+        {
+          "x": 313.65625,
+          "y": 356,
+          "width": 199.671875,
+          "height": 44,
+          "top": 356,
+          "right": 513.328125,
+          "bottom": 400,
+          "left": 313.65625
+        },
+        {
+          "x": 521.328125,
+          "y": 356,
+          "width": 199.671875,
+          "height": 44,
+          "top": 356,
+          "right": 721,
+          "bottom": 400,
+          "left": 521.328125
+        }
+      ],
+      "separator": {
+        "left": -32,
+        "right": -32,
+        "height": "1px",
+        "content": "\"\""
+      },
+      "content": {
+        "left": 74,
+        "right": 753
+      },
+      "filterBottom": 348
+    },
+    {
+      "phase": "demo-analytics-dark-1710",
+      "box": {
+        "x": 280,
+        "y": 252,
+        "width": 1383,
+        "height": 60,
+        "top": 252,
+        "right": 1663,
+        "bottom": 312,
+        "left": 280
+      },
+      "paddingTop": "8px",
+      "paddingBottom": "8px",
+      "display": "grid",
+      "children": [
+        {
+          "x": 280,
+          "y": 260,
+          "width": 455.65625,
+          "height": 44,
+          "top": 260,
+          "right": 735.65625,
+          "bottom": 304,
+          "left": 280
+        },
+        {
+          "x": 743.65625,
+          "y": 260,
+          "width": 455.671875,
+          "height": 44,
+          "top": 260,
+          "right": 1199.328125,
+          "bottom": 304,
+          "left": 743.65625
+        },
+        {
+          "x": 1207.328125,
+          "y": 260,
+          "width": 455.65625,
+          "height": 44,
+          "top": 260,
+          "right": 1662.984375,
+          "bottom": 304,
+          "left": 1207.328125
+        }
+      ],
+      "separator": {
+        "left": -32,
+        "right": -32,
+        "height": "1px",
+        "content": "\"\""
+      },
+      "content": {
+        "left": 248,
+        "right": 1695
+      },
+      "filterBottom": 252
+    },
+    {
+      "phase": "demo-analytics-light-360",
+      "box": {
+        "x": 74,
+        "y": 574,
+        "width": 255,
+        "height": 60,
+        "top": 574,
+        "right": 329,
+        "bottom": 634,
+        "left": 74
+      },
+      "paddingTop": "8px",
+      "paddingBottom": "8px",
+      "display": "grid",
+      "children": [
+        {
+          "x": 74,
+          "y": 582,
+          "width": 79.65625,
+          "height": 44,
+          "top": 582,
+          "right": 153.65625,
+          "bottom": 626,
+          "left": 74
+        },
+        {
+          "x": 161.65625,
+          "y": 582,
+          "width": 79.671875,
+          "height": 44,
+          "top": 582,
+          "right": 241.328125,
+          "bottom": 626,
+          "left": 161.65625
+        },
+        {
+          "x": 249.328125,
+          "y": 582,
+          "width": 79.65625,
+          "height": 44,
+          "top": 582,
+          "right": 328.984375,
+          "bottom": 626,
+          "left": 249.328125
+        }
+      ],
+      "separator": {
+        "left": -16,
+        "right": -16,
+        "height": "1px",
+        "content": "\"\""
+      },
+      "content": {
+        "left": 58,
+        "right": 345
+      },
+      "filterBottom": 574
+    },
+    {
+      "phase": "demo-analytics-light-768",
+      "box": {
+        "x": 106,
+        "y": 348,
+        "width": 615,
+        "height": 60,
+        "top": 348,
+        "right": 721,
+        "bottom": 408,
+        "left": 106
+      },
+      "paddingTop": "8px",
+      "paddingBottom": "8px",
+      "display": "grid",
+      "children": [
+        {
+          "x": 106,
+          "y": 356,
+          "width": 199.65625,
+          "height": 44,
+          "top": 356,
+          "right": 305.65625,
+          "bottom": 400,
+          "left": 106
+        },
+        {
+          "x": 313.65625,
+          "y": 356,
+          "width": 199.671875,
+          "height": 44,
+          "top": 356,
+          "right": 513.328125,
+          "bottom": 400,
+          "left": 313.65625
+        },
+        {
+          "x": 521.328125,
+          "y": 356,
+          "width": 199.671875,
+          "height": 44,
+          "top": 356,
+          "right": 721,
+          "bottom": 400,
+          "left": 521.328125
+        }
+      ],
+      "separator": {
+        "left": -32,
+        "right": -32,
+        "height": "1px",
+        "content": "\"\""
+      },
+      "content": {
+        "left": 74,
+        "right": 753
+      },
+      "filterBottom": 348
+    },
+    {
+      "phase": "demo-analytics-light-1710",
+      "box": {
+        "x": 280,
+        "y": 252,
+        "width": 1383,
+        "height": 60,
+        "top": 252,
+        "right": 1663,
+        "bottom": 312,
+        "left": 280
+      },
+      "paddingTop": "8px",
+      "paddingBottom": "8px",
+      "display": "grid",
+      "children": [
+        {
+          "x": 280,
+          "y": 260,
+          "width": 455.65625,
+          "height": 44,
+          "top": 260,
+          "right": 735.65625,
+          "bottom": 304,
+          "left": 280
+        },
+        {
+          "x": 743.65625,
+          "y": 260,
+          "width": 455.671875,
+          "height": 44,
+          "top": 260,
+          "right": 1199.328125,
+          "bottom": 304,
+          "left": 743.65625
+        },
+        {
+          "x": 1207.328125,
+          "y": 260,
+          "width": 455.65625,
+          "height": 44,
+          "top": 260,
+          "right": 1662.984375,
+          "bottom": 304,
+          "left": 1207.328125
+        }
+      ],
+      "separator": {
+        "left": -32,
+        "right": -32,
+        "height": "1px",
+        "content": "\"\""
+      },
+      "content": {
+        "left": 248,
+        "right": 1695
+      },
+      "filterBottom": 252
+    }
+  ],
+  "before": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "c68c57d6fe05d39bc180cdc25cea4532bfc86a35e9a512943158addf8e2b1aae"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "ac89cbd8862e09deea2b723a175229f9149328bf2cc960f1e21f6eabf6a1a7c1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "e634bebbd4018038632154d4395c22fef8f33f90861531a85cb6567d102a0a5e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "11d61be858e0aa71b4696761caad2dbbfd410d2a08d07d30cdd054ec18ada4cc"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "6b50389e72c23cadc1f75687f3f4a41d39abc5b670ff33c6302a74e4e6ccc1c8"
+    }
+  ],
+  "phase": "fixture-session-error",
+  "after": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "c68c57d6fe05d39bc180cdc25cea4532bfc86a35e9a512943158addf8e2b1aae"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "ac89cbd8862e09deea2b723a175229f9149328bf2cc960f1e21f6eabf6a1a7c1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "e634bebbd4018038632154d4395c22fef8f33f90861531a85cb6567d102a0a5e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "11d61be858e0aa71b4696761caad2dbbfd410d2a08d07d30cdd054ec18ada4cc"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "6b50389e72c23cadc1f75687f3f4a41d39abc5b670ff33c6302a74e4e6ccc1c8"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

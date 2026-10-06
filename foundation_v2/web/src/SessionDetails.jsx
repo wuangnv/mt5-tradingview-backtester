@@ -4,6 +4,11 @@ import { dashboardMoney } from './dashboardModel.js'
 import { sessionDate, sessionRemainingDays, sessionSettingsFacts } from './sessionSettingsModel.js'
 import './session-performance.css'
 
+export function SessionChartLink({ href, preview = false }) {
+  const content = <>Go to chart<svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="m6 3 10 7-10 7Z" /></svg></>
+  return preview ? <button className="fxr-button fxr-button-primary fxs-go-chart" disabled title="Chart cần phiên thật">{content}</button> : <a className="fxr-button fxr-button-primary fxs-go-chart" href={href}>{content}</a>
+}
+
 export function SessionSummaryCard({ item, dataset, payload, model, replayRecord, chartHref, preview = false }) {
   const facts = sessionSettingsFacts(item, dataset, payload, model, replayRecord)
   const days = sessionRemainingDays(dataset, payload, replayRecord)
@@ -12,7 +17,7 @@ export function SessionSummaryCard({ item, dataset, payload, model, replayRecord
     <div className="fxs-summary-heading"><h2>{item.name || item.record_id}</h2><div className="fxs-balance"><span>Account balance</span><strong>{dashboardMoney(facts.balance, facts.currency)}</strong></div></div>
     <p>{facts.strategy} · {facts.asset}</p>
     <p className="fxs-session-range">{sessionDate(facts.first)} – {sessionDate(facts.last)} <span className="fxs-remaining">{days !== null ? `${days.toLocaleString('vi-VN')} ngày còn lại` : remaining !== null ? `${remaining.toLocaleString('vi-VN')} nến còn lại` : 'Chưa rõ thời gian còn lại'}</span></p>
-    <div className="fxr-session-links">{preview ? <button className="fxr-button fxr-button-primary fxs-go-chart" disabled title="Chart cần phiên thật">Go to chart<svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="m6 3 10 7-10 7Z" /></svg></button> : !item.archived && item.dataset_available === true && <a className="fxr-button fxr-button-primary fxs-go-chart" href={chartHref}>Go to chart<svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="m6 3 10 7-10 7Z" /></svg></a>}</div>
+    <div className="fxr-session-links">{(preview || !item.archived && item.dataset_available === true) && <SessionChartLink href={chartHref} preview={preview} />}</div>
     {!preview && item.dataset_available !== true && <p>{item.dataset_available === false ? 'Dataset không khả dụng.' : 'Chưa rõ dataset.'}</p>}
   </article>
 }

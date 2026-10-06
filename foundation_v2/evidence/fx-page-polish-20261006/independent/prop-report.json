@@ -1,0 +1,114 @@
+{
+  "checks": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "widths": [
+        79.65625,
+        79.671875,
+        79.65625
+      ],
+      "top": "8px",
+      "bottom": "8px",
+      "previous": "fxa-prop-objectives",
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "widths": [
+        199.65625,
+        199.671875,
+        199.671875
+      ],
+      "top": "8px",
+      "bottom": "8px",
+      "previous": "fxa-prop-objectives",
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "widths": [
+        455.65625,
+        455.671875,
+        455.65625
+      ],
+      "top": "8px",
+      "bottom": "8px",
+      "previous": "fxa-prop-objectives",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "widths": [
+        79.65625,
+        79.671875,
+        79.65625
+      ],
+      "top": "8px",
+      "bottom": "8px",
+      "previous": "fxa-prop-objectives",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "widths": [
+        199.65625,
+        199.671875,
+        199.671875
+      ],
+      "top": "8px",
+      "bottom": "8px",
+      "previous": "fxa-prop-objectives",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "widths": [
+        455.65625,
+        455.671875,
+        455.65625
+      ],
+      "top": "8px",
+      "bottom": "8px",
+      "previous": "fxa-prop-objectives",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "before": [
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "6b50389e72c23cadc1f75687f3f4a41d39abc5b670ff33c6302a74e4e6ccc1c8"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    }
+  ],
+  "after": [
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "6b50389e72c23cadc1f75687f3f4a41d39abc5b670ff33c6302a74e4e6ccc1c8"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

@@ -43,7 +43,7 @@ function DemoReports({ ledgerOnly, prop = false, query }) {
     <h1 className="sr-only">{ledgerOnly ? 'Trades' : 'Analytics'}</h1>
     {ledgerOnly ? <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} renderFilters={renderFilters} /> : renderFilters()}
     {prop && <Objectives model={model} />}
-    {!ledgerOnly && <div className="fxa-report"><FxAnalyticsReport model={model} extra={extra} experimentStatus="unavailable" config={config} onConfig={setConfig} selected={selected} onSelect={setSelected} /></div>}
+    {!ledgerOnly && <FxAnalyticsReport model={model} extra={extra} experimentStatus="unavailable" config={config} onConfig={setConfig} selected={selected} onSelect={setSelected} />}
     {row && <Inspector onClose={() => setSelected('')} className="fxa-trade-inspector" aria-label="Chi tiết giao dịch"><div className="fxa-section-heading"><h2>{row.session_name} · {row.symbol}</h2><button className="fxa-button" type="button" onClick={() => setSelected('')}>Đóng chi tiết</button></div><div className="fxa-metrics"><Metric label="Net P/L" value={fmt(row.net_pnl, ' USD')} /><Metric label="Return (R)" value={fmt(row.realized_r, ' R')} /><Metric label="Entry" value={fmt(row.price_open, '', 6)} /><Metric label="Exit" value={fmt(row.price_close, '', 6)} /></div></Inspector>}
   </section>
 }

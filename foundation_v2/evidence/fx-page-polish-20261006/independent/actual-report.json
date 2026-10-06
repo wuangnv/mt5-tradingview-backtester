@@ -1,0 +1,103 @@
+{
+  "checks": [
+    {
+      "view": "overview",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "before": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "c68c57d6fe05d39bc180cdc25cea4532bfc86a35e9a512943158addf8e2b1aae"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "ac89cbd8862e09deea2b723a175229f9149328bf2cc960f1e21f6eabf6a1a7c1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "e634bebbd4018038632154d4395c22fef8f33f90861531a85cb6567d102a0a5e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "11d61be858e0aa71b4696761caad2dbbfd410d2a08d07d30cdd054ec18ada4cc"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "6b50389e72c23cadc1f75687f3f4a41d39abc5b670ff33c6302a74e4e6ccc1c8"
+    }
+  ],
+  "dashboard": {
+    "notice": "",
+    "partial": "Performance chỉ tổng hợp 4/6 phiên có dữ liệu."
+  },
+  "ctaHref": "/?workspace=tenant-a&view=replay&session=476f4b498e1a49ed9d48a75719f4d270&dataset=dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d&mode=Practice&surface=workspace",
+  "analytics": "blocked_by_data",
+  "actualRecordsUnchanged": true,
+  "after": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "c68c57d6fe05d39bc180cdc25cea4532bfc86a35e9a512943158addf8e2b1aae"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "39c06eb5d98e6ba7ae935c8cc7f0b7f9a10a0b93a2dfbb93307588753989a986"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "ac89cbd8862e09deea2b723a175229f9149328bf2cc960f1e21f6eabf6a1a7c1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "e634bebbd4018038632154d4395c22fef8f33f90861531a85cb6567d102a0a5e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b2d02cc4e7cd2ca08dd85d2ebdbccb1f413f4df75aa5a268c148fb278537365b"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "11d61be858e0aa71b4696761caad2dbbfd410d2a08d07d30cdd054ec18ada4cc"
+    },
+    {
+      "file": "fx-analytics.css",
+      "sha256": "fa1750250b56c2072052a9db5366ca53d7d09867c63a29a257618606b1b34003"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "6b50389e72c23cadc1f75687f3f4a41d39abc5b670ff33c6302a74e4e6ccc1c8"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

@@ -37,7 +37,7 @@ try {
   assert.equal(oracle.metrics.win_rate_pct, 100)
   assert.equal(oracle.time_invested_seconds, null)
   assert.equal(await page.getByLabel('Phạm vi Performance').inputValue(), '')
-  assert.match(await page.getByTestId('dashboard-data-state').textContent(), /7\/25/)
+  assert.match(await page.locator('.fx-dashboard-scope-info').getAttribute('aria-label'), /7\/25/)
   assert.match(await page.getByRole('img', { name: /^Giao dịch theo tháng:/ }).getAttribute('aria-label'), /2024-01: 60 giao dịch/)
   assert.match(await page.getByRole('img', { name: /^Giao dịch theo symbol:/ }).getAttribute('aria-label'), /EURUSD: 60/)
   const actions = page.getByRole('navigation', { name: 'Bắt đầu luyện tập' }).getByRole('link')
@@ -215,7 +215,7 @@ try {
     await go()
     if (next === 'empty') { await waitMetric(2, '0'); assert.equal(await metrics().nth(3).textContent(), '—'); assert.equal(await page.getByRole('img', { name: /^Giao dịch theo tháng/ }).count(), 0) }
     if (next === 'blocked') { await page.getByText('Chưa đủ dữ liệu thực thi để tính Performance.').waitFor(); assert.deepEqual(await metrics().allTextContents(), ['—', '—', '—', '—']) }
-    if (next === 'partial') { await page.getByText(/đọc được 5\/8/).waitFor(); await waitMetric(2, '12') }
+    if (next === 'partial') { await page.getByRole('img', { name: /Performance chỉ tổng hợp 5\/8 phiên/ }).waitFor(); await waitMetric(2, '12') }
     if (['malformed', 'error'].includes(next)) { await page.getByRole('button', { name: 'Thử lại kết quả' }).waitFor(); assert.equal(await metrics().nth(2).textContent(), '—') }
   }
   mode = 'ready'
