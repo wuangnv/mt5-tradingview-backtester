@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "overview: success, scoped exact revision/name, no actual write",
+    "overview: lost, scoped exact revision/name, no actual write",
+    "overview: conflict, scoped exact revision/name, no actual write",
+    "overview: linked, scoped exact revision/name, no actual write",
+    "overview: denied, scoped exact revision/name, no actual write",
+    "replay: success, scoped exact revision/name, no actual write",
+    "replay: lost, scoped exact revision/name, no actual write",
+    "replay: conflict, scoped exact revision/name, no actual write",
+    "replay: linked, scoped exact revision/name, no actual write",
+    "replay: denied, scoped exact revision/name, no actual write",
+    "Previously archived fixture remains readable; no restore action or archive deep-link mutation"
+  ],
+  "errors": [],
+  "mutationTransport": "intercepted-only"
+}

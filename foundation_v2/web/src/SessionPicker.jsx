@@ -7,6 +7,7 @@ import { SessionActionDialog, SessionActions } from './SessionActions.jsx'
 import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
 import FxSelect from './FxSelect.jsx'
+import TestingIcon from './TestingIcon.jsx'
 import useReadRefresh from './useReadRefresh.js'
 import { readDashboardAnalytics, readDashboardDatasets, readDashboardReplayContext } from './dashboardModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
@@ -194,7 +195,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     <div className="fxr-session-toolbar">
       <SessionSelect selected={selected} catalog={catalog} onSelect={navigate} disabled={Boolean(pending)} balance={performance.status === 'ready' ? dashboardMoney(performanceModel?.endingBalance, performanceModel?.result?.account_currency) : '—'} />
       <div className="fxr-session-actions">
-        {kind === 'replay' && <><a className="fxr-button fxr-button-primary" href={newHref}>{t("＋ Phiên mới")}</a>{available && <><FxSelect className="fxs-analytics-button" label={t("Mở Analytics")} value="session" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(value === 'prop' ? buildWorkspaceHref('analytics', workspace, query, { area: 'testing', section: 'analytics', analytics_source: 'prop', select: '1' }) : routeHref('analytics'))} triggerContent={t("Analytics")} /><button className="fxr-button fxr-button-secondary fxs-settings" type="button" disabled={actionDisabled} onClick={() => { setEditing(true) }}>{t("Cài đặt phiên")}</button><SessionActions text item={item} disabled={actionDisabled || Boolean(catalog.refreshing)} onAction={action => { setNotice(null); setActionDialog({ mode: action }) }} /></>}</>}
+        {kind === 'replay' && <><a className="fxr-button fxr-button-primary fxs-new-session" href={newHref}><TestingIcon kind="plus" size={16} />{t("＋ Phiên mới")}</a>{available && <><FxSelect className="fxs-analytics-button" label={t("Mở Analytics")} value="session" options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(value === 'prop' ? buildWorkspaceHref('analytics', workspace, query, { area: 'testing', section: 'analytics', analytics_source: 'prop', select: '1' }) : routeHref('analytics'))} triggerContent={t("Analytics")} /><button className="fxr-button fxr-button-secondary fxs-settings" type="button" disabled={actionDisabled} onClick={() => { setEditing(true) }}>{t("Cài đặt phiên")}</button><SessionActions text item={item} disabled={actionDisabled || Boolean(catalog.refreshing)} onAction={action => { setNotice(null); setActionDialog({ mode: action }) }} /></>}</>}
       </div>
     </div>
     {catalog.status === 'loading' && <TestingSkeleton label="Đang tải danh mục phiên…" />}

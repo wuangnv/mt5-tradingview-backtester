@@ -52,6 +52,7 @@
 .fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxs-action-dialog .fxs-delete-confirm,
 .fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxs-action-dialog .fxs-delete-confirm:hover:not(:disabled) { color: var(--wm-negative); border: 1px solid var(--wm-negative); background: transparent; }
 .fx-app[data-ui-area='testing'] .fx-content :is(.fx-select-trigger, .fxa-filter-pill) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxs-new-session, .fxs-journal) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-app[data-ui-area='testing'] .fx-content .fxa-pagination { min-height: 56px; padding-block: 8px; align-items: center; }
 .fx-app[data-ui-area='testing'] .fx-content .fxa-pagination > div { display: flex; align-items: center; }
 .fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxa-pagination > div:not(.fx-select) > button.fxa-button { width: var(--wm-icon-action-size); height: var(--wm-icon-action-size); min-width: var(--wm-icon-action-size); min-height: var(--wm-icon-action-size); flex: 0 0 var(--wm-icon-action-size); padding: 0; border-radius: 50%; }

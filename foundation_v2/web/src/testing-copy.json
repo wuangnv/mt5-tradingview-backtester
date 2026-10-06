@@ -32,15 +32,15 @@
     "en": "Testing"
   },
   "Prop firm": {
-    "vi": "Prop firm",
+    "vi": "Thử thách cấp vốn",
     "en": "Prop firm"
   },
   "Prop Firm": {
-    "vi": "Prop firm",
+    "vi": "Thử thách cấp vốn",
     "en": "Prop firm"
   },
   "Backtesting": {
-    "vi": "Backtest",
+    "vi": "Kiểm thử lịch sử",
     "en": "Backtesting"
   },
   "Tutorials": {
@@ -116,11 +116,11 @@
     "en": "Timezone"
   },
   "Backtesting Date": {
-    "vi": "Ngày backtest",
+    "vi": "Ngày kiểm thử",
     "en": "Backtesting date"
   },
   "Backtesting date filter": {
-    "vi": "Lọc ngày đóng lệnh backtest",
+    "vi": "Lọc ngày đóng lệnh kiểm thử",
     "en": "Backtesting close-date filter"
   },
   "Time filter": {
@@ -332,7 +332,7 @@
     "en": "Export CSV"
   },
   "Bỏ lọc Backtesting Date": {
-    "vi": "Bỏ lọc ngày backtest",
+    "vi": "Bỏ lọc ngày kiểm thử",
     "en": "Remove backtesting date filter"
   },
   "Previous month": {
@@ -368,15 +368,15 @@
     "en": "No trade notes are available."
   },
   "Backtesting session": {
-    "vi": "Phiên backtest",
+    "vi": "Phiên kiểm thử",
     "en": "Backtesting session"
   },
   "Prop firm session": {
-    "vi": "Phiên prop firm",
+    "vi": "Thử thách cấp vốn",
     "en": "Prop firm session"
   },
   "Tạo phiên backtest": {
-    "vi": "Tạo phiên backtest",
+    "vi": "Kiểm thử trên dữ liệu lịch sử",
     "en": "Create a backtesting session"
   },
   "Bắt đầu challenge mô phỏng": {
@@ -476,7 +476,7 @@
     "en": "Performance period"
   },
   "Backtesting · All sessions": {
-    "vi": "Backtest · tất cả phiên",
+    "vi": "Kiểm thử lịch sử · tất cả phiên",
     "en": "Backtesting · all sessions"
   },
   "Last week": {
@@ -616,7 +616,7 @@
     "en": "Clear list filters"
   },
   "Chưa có phiên. Tạo backtest đầu tiên ở phía trên.": {
-    "vi": "Chưa có phiên. Tạo phiên backtest để bắt đầu.",
+    "vi": "Chưa có phiên. Tạo phiên kiểm thử để bắt đầu.",
     "en": "No sessions yet. Create a backtesting session to start."
   },
   "Đã đối chiếu: phiên không còn trong danh mục.": {
@@ -1852,7 +1852,7 @@
     "en": "Demo data"
   },
   "Prop firm Analytics": {
-    "vi": "Phân tích prop firm",
+    "vi": "Phân tích thử thách cấp vốn",
     "en": "Prop firm analytics"
   },
   "Đang đọc báo cáo challenge…": {
@@ -1860,7 +1860,7 @@
     "en": "Loading challenge reports…"
   },
   "Prop firm attempt": {
-    "vi": "Lượt thử thách prop firm",
+    "vi": "Lượt thử thách cấp vốn",
     "en": "Prop firm attempt"
   },
   "Chọn challenge": {
@@ -1876,7 +1876,7 @@
     "en": "This attempt was not found. Select another challenge."
   },
   "Chưa có báo cáo Prop firm. Tạo challenge mô phỏng và gắn replay để có phân tích giao dịch.": {
-    "vi": "Chưa có báo cáo prop firm. Tạo thử thách mô phỏng và liên kết phiên replay để phân tích giao dịch.",
+    "vi": "Chưa có báo cáo thử thách cấp vốn. Tạo thử thách mô phỏng và liên kết phiên phát lại để phân tích giao dịch.",
     "en": "No prop firm reports yet. Create a simulated challenge and link a replay session to analyze trades."
   },
   "Challenge objectives": {
@@ -1980,7 +1980,7 @@
     "en": "Loading saved sessions…"
   },
   "Workspace này không có quyền đọc Prop session.": {
-    "vi": "Không gian làm việc này không có quyền đọc phiên prop firm.",
+    "vi": "Không gian làm việc này không có quyền đọc phiên thử thách cấp vốn.",
     "en": "This workspace cannot read prop firm sessions."
   },
   "Chưa có session. Tạo một phiên luyện ở form bên cạnh.": {
@@ -1992,7 +1992,7 @@
     "en": "Conflict or invalid data."
   },
   "Tạo Prop session": {
-    "vi": "Tạo phiên prop firm",
+    "vi": "Tạo thử thách cấp vốn",
     "en": "Create a prop firm session"
   },
   "Tạo phiên luyện": {
@@ -2236,7 +2236,7 @@
     "en": "Result explanation"
   },
   "Read-only từ persisted Prop state": {
-    "vi": "Chỉ đọc từ trạng thái prop firm đã lưu",
+    "vi": "Chỉ đọc từ trạng thái thử thách cấp vốn đã lưu",
     "en": "Read-only from saved prop firm state"
   },
   "Report status": {
@@ -2252,7 +2252,7 @@
     "en": "Loading reports…"
   },
   "Workspace này không có quyền đọc Prop reports.": {
-    "vi": "Không gian làm việc này không có quyền đọc báo cáo prop firm.",
+    "vi": "Không gian làm việc này không có quyền đọc báo cáo thử thách cấp vốn.",
     "en": "This workspace cannot read prop firm reports."
   },
   "Không có report khớp bộ lọc.": {
@@ -2736,7 +2736,7 @@
     "en": "The delete-session response has an invalid format."
   },
   "Phiên đang được dùng trong Prop Firm. Hãy lưu trữ để giữ báo cáo và lịch sử challenge.": {
-    "vi": "Phiên đang được liên kết với thử thách prop firm. Có thể lưu trữ để giữ báo cáo và lịch sử.",
+    "vi": "Không thể xóa phiên đang liên kết với thử thách cấp vốn. Báo cáo và lịch sử vẫn được giữ.",
     "en": "This session is linked to a prop firm challenge. You can archive it to retain reports and history."
   },
   "Tên xác nhận không khớp tên phiên hiện tại.": {
@@ -2764,7 +2764,7 @@
     "en": "Create a simulated session"
   },
   "Equity-based daily/overall loss, balance target, reset UTC 00:00. Đây là profile luyện tập, không đại diện điều khoản của hãng prop cụ thể.": {
-    "vi": "Giới hạn lỗ ngày và lỗ tổng tính theo equity; mục tiêu lợi nhuận tính theo số dư; đặt lại mốc ngày lúc 00:00 UTC. Đây là cấu hình luyện tập, không phải điều khoản của một hãng prop cụ thể.",
+    "vi": "Giới hạn lỗ ngày và lỗ tổng tính theo equity; mục tiêu lợi nhuận tính theo số dư; đặt lại mốc ngày lúc 00:00 UTC. Đây là cấu hình luyện tập, không phải điều khoản của một công ty cấp vốn cụ thể.",
     "en": "Daily and overall loss limits use equity; the profit target uses balance; the daily anchor resets at 00:00 UTC. This is a practice profile, not the terms of a specific prop firm."
   },
   "Tick cải thiện giá khớp lệnh; đánh giá giới hạn equity trong từng phút vẫn chưa đầy đủ. Dataset, cost và engine phải khớp phiên replay được nối.": {
@@ -3444,7 +3444,7 @@
     "en": "Previous"
   },
   "Prop Firm Performance": {
-    "vi": "Hiệu suất prop firm",
+    "vi": "Hiệu suất thử thách cấp vốn",
     "en": "Prop firm performance"
   },
   "Protocol SHA": {
@@ -4580,7 +4580,7 @@
     "en": "This session was previously archived. Reports remain available; replay and duplication are unavailable."
   },
   "Không thể xóa phiên đang được dùng trong Prop Firm. Báo cáo và lịch sử challenge vẫn được giữ.": {
-    "vi": "Không thể xóa phiên đang liên kết với thử thách prop firm. Báo cáo và lịch sử vẫn được giữ.",
+    "vi": "Không thể xóa phiên đang liên kết với thử thách cấp vốn. Báo cáo và lịch sử vẫn được giữ.",
     "en": "This session is linked to a prop firm challenge and cannot be deleted. Reports and history remain available."
   }
 }

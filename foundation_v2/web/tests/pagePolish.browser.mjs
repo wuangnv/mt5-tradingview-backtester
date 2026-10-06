@@ -38,17 +38,12 @@ try {
     await page.setViewportSize({ width, height: 987 })
     dashboardMode = 'partial'
     await go('view=overview&section=dashboard', theme)
-    const info = page.getByRole('img', { name: 'Performance chỉ tổng hợp 4/6 phiên có dữ liệu.', exact: true })
-    await info.waitFor()
+    const results = page.locator('.fx-dashboard-results')
+    await page.waitForFunction(() => document.querySelector('.fx-dashboard-results')?.getAttribute('aria-description')?.includes('4/6'))
     assert.equal(await page.getByTestId('dashboard-data-state').innerText(), '')
-    await page.keyboard.press('Tab'); await info.focus()
-    const tooltip = page.locator('.fx-dashboard-scope-tooltip')
-    assert.equal(await tooltip.isVisible(), true)
-    const r = await tooltip.boundingBox()
-    assert.ok(r.x >= 0 && r.x + r.width <= width)
-    assert.equal(await info.evaluate(e => getComputedStyle(e).outlineStyle), 'solid')
-    await page.locator('.fx-dashboard-results').screenshot({ path: path.join(out, `dashboard-${theme}-${width}.png`) })
-    checks.push(`partial compact info, keyboard tooltip fits: ${theme}/${width}`)
+    assert.equal(await page.locator('.fx-dashboard-scope-info, .fx-dashboard-scope-tooltip').count(), 0)
+    await results.screenshot({ path: path.join(out, `dashboard-${theme}-${width}.png`) })
+    checks.push(`partial scope remains accessible without info icon: ${theme}/${width}`)
 
     dashboardMode = ''
     await go('view=replay&section=sessions&select=1&session=476f4b498e1a49ed9d48a75719f4d270', theme)

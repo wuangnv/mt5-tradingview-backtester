@@ -37,7 +37,7 @@ try {
   assert.equal(oracle.metrics.win_rate_pct, 100)
   assert.equal(oracle.time_invested_seconds, null)
   assert.equal(await page.getByLabel('Phạm vi Performance').inputValue(), '')
-  assert.match(await page.locator('.fx-dashboard-scope-info').getAttribute('aria-label'), /7\/25/)
+  assert.match(await page.locator('.fx-dashboard-results').getAttribute('aria-description'), /7\/25/)
   assert.match(await page.getByRole('img', { name: /^Giao dịch theo tháng:/ }).getAttribute('aria-label'), /2024-01: 60 giao dịch/)
   assert.match(await page.getByRole('img', { name: /^Giao dịch theo symbol:/ }).getAttribute('aria-label'), /EURUSD: 60/)
   const actions = page.getByRole('navigation', { name: 'Bắt đầu luyện tập' }).getByRole('link')

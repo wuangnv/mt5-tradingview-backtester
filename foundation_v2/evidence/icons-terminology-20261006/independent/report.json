@@ -1,0 +1,924 @@
+{
+  "cases": [
+    {
+      "name": "actual-dashboard-dark-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-dark-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-dark-vi-360",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-dark-vi-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-vi-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-vi-360",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-dark-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-dark-en-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-en-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-dark-en-360",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-dark-en-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-dark-en-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-dark-en-360",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-light-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-light-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-vi-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-light-vi-360",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-light-vi-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-vi-360",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-vi-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-vi-360",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-en-1710",
+      "pass": true
+    },
+    {
+      "name": "actual-dashboard-light-en-360",
+      "pass": true
+    },
+    {
+      "name": "actual-sessions-light-en-360",
+      "pass": true
+    },
+    {
+      "name": "actual-trades-light-en-360",
+      "pass": true
+    },
+    {
+      "name": "demo-dashboard-light-en-360",
+      "pass": true
+    },
+    {
+      "name": "demo-sessions-light-en-360",
+      "pass": true
+    },
+    {
+      "name": "demo-trades-light-en-360",
+      "pass": true
+    },
+    {
+      "name": "fixture-partial-dark-vi-1710",
+      "pass": true
+    }
+  ],
+  "failures": [
+    {
+      "name": "actual-sessions-dark-vi-1710",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "demo-sessions-dark-vi-1710",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "actual-sessions-dark-vi-360",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "demo-sessions-dark-vi-360",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "actual-sessions-dark-en-1710",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "demo-sessions-dark-en-1710",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "actual-sessions-dark-en-360",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "demo-sessions-dark-en-360",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "actual-sessions-light-vi-1710",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "demo-sessions-light-vi-1710",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "actual-sessions-light-vi-360",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n18 !== 16\n\n    at glyph (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:8:237)\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:11:460)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:189"
+    },
+    {
+      "name": "fixture-partial-dark-en-1710",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(state.description?.includes('1/3'))\n",
+      "stack": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(state.description?.includes('1/3'))\n\n    at run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:10:239)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/icons-terminology-20261006/independent/review.mjs:14:331"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "states": [
+    {
+      "name": "actual-dashboard-dark-vi-1710",
+      "lang": "vi",
+      "theme": "dark",
+      "description": "Hiệu suất chỉ tổng hợp 4/6 phiên có dữ liệu.",
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "actual-trades-dark-vi-1710",
+      "lang": "vi",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-dark-vi-1710",
+      "lang": "vi",
+      "theme": "dark",
+      "description": null,
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "demo-trades-dark-vi-1710",
+      "lang": "vi",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-dark-vi-360",
+      "lang": "vi",
+      "theme": "dark",
+      "description": "Hiệu suất chỉ tổng hợp 4/6 phiên có dữ liệu.",
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "actual-trades-dark-vi-360",
+      "lang": "vi",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-dark-vi-360",
+      "lang": "vi",
+      "theme": "dark",
+      "description": null,
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "demo-trades-dark-vi-360",
+      "lang": "vi",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-dark-en-1710",
+      "lang": "en",
+      "theme": "dark",
+      "description": "Performance includes 4 of 6 sessions with available data.",
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "actual-trades-dark-en-1710",
+      "lang": "en",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-dark-en-1710",
+      "lang": "en",
+      "theme": "dark",
+      "description": null,
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "demo-trades-dark-en-1710",
+      "lang": "en",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-dark-en-360",
+      "lang": "en",
+      "theme": "dark",
+      "description": "Performance includes 4 of 6 sessions with available data.",
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "actual-trades-dark-en-360",
+      "lang": "en",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-dark-en-360",
+      "lang": "en",
+      "theme": "dark",
+      "description": null,
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "demo-trades-dark-en-360",
+      "lang": "en",
+      "theme": "dark",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-light-vi-1710",
+      "lang": "vi",
+      "theme": "light",
+      "description": "Hiệu suất chỉ tổng hợp 4/6 phiên có dữ liệu.",
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "actual-trades-light-vi-1710",
+      "lang": "vi",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-light-vi-1710",
+      "lang": "vi",
+      "theme": "light",
+      "description": null,
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "demo-trades-light-vi-1710",
+      "lang": "vi",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-light-vi-360",
+      "lang": "vi",
+      "theme": "light",
+      "description": "Hiệu suất chỉ tổng hợp 4/6 phiên có dữ liệu.",
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "actual-trades-light-vi-360",
+      "lang": "vi",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-light-vi-360",
+      "lang": "vi",
+      "theme": "light",
+      "description": null,
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    },
+    {
+      "name": "demo-sessions-light-vi-360",
+      "lang": "vi",
+      "theme": "light",
+      "newIcon": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<path d=\"M12 5v14M5 12h14\"></path>"
+      },
+      "newText": "Phiên mới",
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-trades-light-vi-360",
+      "lang": "vi",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-light-en-1710",
+      "lang": "en",
+      "theme": "light",
+      "description": "Performance includes 4 of 6 sessions with available data.",
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "actual-sessions-light-en-1710",
+      "lang": "en",
+      "theme": "light",
+      "newIcon": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<path d=\"M12 5v14M5 12h14\"></path>"
+      },
+      "newText": "New session",
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-trades-light-en-1710",
+      "lang": "en",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-light-en-1710",
+      "lang": "en",
+      "theme": "light",
+      "description": null,
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "demo-sessions-light-en-1710",
+      "lang": "en",
+      "theme": "light",
+      "newIcon": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<path d=\"M12 5v14M5 12h14\"></path>"
+      },
+      "newText": "New session",
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-trades-light-en-1710",
+      "lang": "en",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-dashboard-light-en-360",
+      "lang": "en",
+      "theme": "light",
+      "description": "Performance includes 4 of 6 sessions with available data.",
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "actual-sessions-light-en-360",
+      "lang": "en",
+      "theme": "light",
+      "newIcon": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<path d=\"M12 5v14M5 12h14\"></path>"
+      },
+      "newText": "New session",
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "actual-trades-light-en-360",
+      "lang": "en",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 1,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-dashboard-light-en-360",
+      "lang": "en",
+      "theme": "light",
+      "description": null,
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    },
+    {
+      "name": "demo-sessions-light-en-360",
+      "lang": "en",
+      "theme": "light",
+      "newIcon": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<path d=\"M12 5v14M5 12h14\"></path>"
+      },
+      "newText": "New session",
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "demo-trades-light-en-360",
+      "lang": "en",
+      "theme": "light",
+      "divider": {
+        "w": 1,
+        "h": 18,
+        "hidden": "true",
+        "before": "fx-select fxa-columns-control",
+        "after": "fxa-filter-label"
+      },
+      "rows": 10,
+      "journal": {
+        "width": 16,
+        "height": 16,
+        "hidden": "true",
+        "html": "<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\"></rect><path d=\"M8 3v18M11 8h6M11 12h6\"></path>"
+      }
+    },
+    {
+      "name": "fixture-partial-dark-vi-1710",
+      "lang": "vi",
+      "theme": "dark",
+      "description": "Hiệu suất chỉ tổng hợp 1/3 phiên có dữ liệu.",
+      "perfLabel": "Kiểm thử lịch sử",
+      "options": [
+        "Kiểm thử lịch sử✓",
+        "BattlesChưa có dữ liệu Battles",
+        "Thử thách cấp vốn",
+        "Tất cả"
+      ]
+    }
+  ],
+  "before": [
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "efb45ec263a9796d1885d3f70595ba89491fa4cfdb67bd380adeec99e7e9ec8b"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "8022810cd5163203551cb019a8957deeb1a851b8060b484b252396b09840d202"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "fe446bc76928dd87adffae18dab26a30cc2fc90f807222a6aa0aa7abb27f08c9"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "4585bb2b1f3d08bf19289aa3b12de292b759e8ce5d3eb0ad17e8592d8fd5bd0a"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8e52b2f1a410ed14a4e0df3be4bf4dca45e2e30b294607530c3b18a3e7e3ff64"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "4297dc2a4b9e500efc2b7ae2bcb5d9604e8cfd279c7ffb2f5fa6582982677f30"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6e0e84c23bc32e9fbf4adac9c035f4938769fe56d02dccc0250d7e63244e15bc"
+    }
+  ],
+  "phase": "fixture-partial-dark-en-1710",
+  "after": [
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "efb45ec263a9796d1885d3f70595ba89491fa4cfdb67bd380adeec99e7e9ec8b"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "88119ecc6637f3f530ce476b5404ef6474dfc086258b6ef17ad0a062b2b07d9e"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "209eb1e6608d1898fc8221f8b7efcef62fc39a53b7d163b04f9e0b6821999e6c"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "4585bb2b1f3d08bf19289aa3b12de292b759e8ce5d3eb0ad17e8592d8fd5bd0a"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8e52b2f1a410ed14a4e0df3be4bf4dca45e2e30b294607530c3b18a3e7e3ff64"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "4297dc2a4b9e500efc2b7ae2bcb5d9604e8cfd279c7ffb2f5fa6582982677f30"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6e0e84c23bc32e9fbf4adac9c035f4938769fe56d02dccc0250d7e63244e15bc"
+    }
+  ],
+  "sourceUnchanged": false,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n38 !== 50\n"
+}

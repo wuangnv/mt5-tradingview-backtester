@@ -1,0 +1,129 @@
+{
+  "cases": [
+    {
+      "name": "fixture-partial-dark-en-1710",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "states": [
+    {
+      "name": "fixture-partial-dark-en-1710",
+      "lang": "en",
+      "theme": "dark",
+      "description": "Performance includes 1 of 3 sessions with available data.",
+      "perfLabel": "Backtesting",
+      "options": [
+        "Backtesting✓",
+        "BattlesBattles data is unavailable",
+        "Prop firm",
+        "All"
+      ]
+    }
+  ],
+  "before": [
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "efb45ec263a9796d1885d3f70595ba89491fa4cfdb67bd380adeec99e7e9ec8b"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "88119ecc6637f3f530ce476b5404ef6474dfc086258b6ef17ad0a062b2b07d9e"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "209eb1e6608d1898fc8221f8b7efcef62fc39a53b7d163b04f9e0b6821999e6c"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "4585bb2b1f3d08bf19289aa3b12de292b759e8ce5d3eb0ad17e8592d8fd5bd0a"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8e52b2f1a410ed14a4e0df3be4bf4dca45e2e30b294607530c3b18a3e7e3ff64"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "4297dc2a4b9e500efc2b7ae2bcb5d9604e8cfd279c7ffb2f5fa6582982677f30"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6e0e84c23bc32e9fbf4adac9c035f4938769fe56d02dccc0250d7e63244e15bc"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "c8c8d7789164c0f8fb64a2ec36ea96b7a1098df71fd7eb5741528188ada34edd"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b3a56fd6ab069f6b73857a0d990b5ebbfee32eec25b959e5388279ece8082f36"
+    }
+  ],
+  "phase": "fixture-partial-dark-en-1710",
+  "after": [
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "efb45ec263a9796d1885d3f70595ba89491fa4cfdb67bd380adeec99e7e9ec8b"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "88119ecc6637f3f530ce476b5404ef6474dfc086258b6ef17ad0a062b2b07d9e"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "209eb1e6608d1898fc8221f8b7efcef62fc39a53b7d163b04f9e0b6821999e6c"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "4585bb2b1f3d08bf19289aa3b12de292b759e8ce5d3eb0ad17e8592d8fd5bd0a"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "8e52b2f1a410ed14a4e0df3be4bf4dca45e2e30b294607530c3b18a3e7e3ff64"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "4297dc2a4b9e500efc2b7ae2bcb5d9604e8cfd279c7ffb2f5fa6582982677f30"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6e0e84c23bc32e9fbf4adac9c035f4938769fe56d02dccc0250d7e63244e15bc"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "c8c8d7789164c0f8fb64a2ec36ea96b7a1098df71fd7eb5741528188ada34edd"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "b3a56fd6ab069f6b73857a0d990b5ebbfee32eec25b959e5388279ece8082f36"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

@@ -21,7 +21,7 @@ function LedgerFilters({ filters, onChange, extra, onExtra, rows, sessionControl
 
   const [drawer, setDrawer] = useState('')
   return <section className="fxa-filters" aria-label={t("Bộ lọc giao dịch")} data-testid="analytics-filters">
-    <div className="fxa-filter-toolbar is-ledger">{sessionControl}<div className="fxa-filter-actions">{columnControl}<span className="fxa-filter-label">{t("Filter by")}</span>{['Basic', 'Tags'].map(tab => <button key={tab} className="fxa-button" type="button" aria-haspopup="dialog" aria-expanded={drawer === tab} onClick={() => setDrawer(tab)}>{t(tab)}</button>)}</div></div>
+    <div className="fxa-filter-toolbar is-ledger">{sessionControl}<div className="fxa-filter-actions">{columnControl}{columnControl && <span className="fxa-filter-divider" aria-hidden="true" />}<span className="fxa-filter-label">{t("Filter by")}</span>{['Basic', 'Tags'].map(tab => <button key={tab} className="fxa-button" type="button" aria-haspopup="dialog" aria-expanded={drawer === tab} onClick={() => setDrawer(tab)}>{t(tab)}</button>)}</div></div>
     {drawer && <LedgerFilterDrawer initialTab={drawer} {...{ filters, extra, rows, facets }} onApply={(next, nextExtra) => { onChange(next); onExtra(nextExtra) }} onClose={() => setDrawer('')} />}
   </section>
 }

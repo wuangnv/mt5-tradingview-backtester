@@ -4,6 +4,7 @@ import { buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
 import { FxAnalyticsFilters, FxAnalyticsReport, Metric } from './FxAnalytics.jsx'
 import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
 import FxSelect from './FxSelect.jsx'
+import TestingIcon from './TestingIcon.jsx'
 import SessionFilter from './SessionFilter.jsx'
 import SessionPerformance from './SessionPerformance.jsx'
 import DashboardSessions from './DashboardSessions.jsx'
@@ -83,7 +84,7 @@ function DemoSessions({ workspace, query }) {
     <div className="fxr-session-toolbar">
       <SessionSelect selected={id} catalog={{ status: 'ready', items }} onSelect={select} balance={fmt(model?.endingBalance, t(" USD"))} />
       <div className="fxr-session-actions">
-        <button className="fxr-button fxr-button-primary" disabled type="button">{t("＋ Phiên mới")}</button>
+        <button className="fxr-button fxr-button-primary fxs-new-session" disabled type="button"><TestingIcon kind="plus" size={16} />{t("＋ Phiên mới")}</button>
         {item && <><FxSelect className="fxs-analytics-button" label={t("Mở Analytics")} value="session" triggerContent={t("Analytics")} options={[{ value: 'session', label: 'Analytics phiên' }, { value: 'prop', label: 'Prop Firm' }]} onChange={value => window.location.assign(href('analytics', { analytics_source: value === 'prop' ? 'prop' : 'sessions' }))} />
         <button className="fxr-button fxr-button-secondary fxs-settings" type="button" onClick={() => setEditing(true)}>{t("Cài đặt phiên")}</button>
         <SessionActions text item={item} onAction={action => setActionDialog(action)} /></>}

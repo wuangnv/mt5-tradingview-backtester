@@ -19,6 +19,7 @@
 .fxa-icon-button { width: 38px; height: 38px; padding: 9px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
 .fxa-icon-button svg { width: 18px; height: 18px; }
 .fxa-filter-label { align-self: center; color: var(--wm-content-muted); font-size: 12px; margin-inline: 8px 2px; }
+.fxa-filter-divider { width: 1px; height: 18px; flex: 0 0 1px; background: var(--wm-control-border); margin-inline: 4px; }
 .fxa-ledger-tools { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-block: 0 8px; color: var(--wm-content-muted); font-size: 12px; }
 .fxa-pagination button[aria-current="page"] { background: var(--fx-shell-nav-selected); color: var(--fx-shell-nav-selected-content); border-color: transparent; }
 .fxa-filter-toolbar.is-ledger .fxa-filter-actions { margin-left: auto; }

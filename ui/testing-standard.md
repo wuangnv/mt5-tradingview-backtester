@@ -87,6 +87,19 @@ source data: keep them raw. Set `localize:false` on data options or
 `localizeOptions={false}` on a data-only select. Translate only the surrounding
 system copy. Language switches must retain drafts and exact delete confirmation.
 
+Backtesting is labeled **Kiểm thử lịch sử**, with **Phiên kiểm thử** for sessions:
+testing a trading method against historical market data. Prop firm means a company
+providing trading capital, not an investment fund; this product's simulated
+evaluation workflow is labeled **Thử thách cấp vốn**. Keep English labels and API
+identifiers intact. Do not imply that a simulated result earns real funding.
+
+Journal and trade-detail entry controls share the 16px notebook glyph in
+`TestingIcon`; the ledger entry still opens its existing trade inspector.
+New session has a separate SVG plus, never a symbol embedded in translated copy.
+The ledger tools/filter boundary uses one short divider, not a navigation divider.
+Dashboard omits the partial-scope info icon; its accessible section description
+still identifies partial scope, and error/blocked/unknown states remain explicit.
+
 Session archive/restore UI is deferred, including old `manage=archive` links.
 Previously archived records remain stored and can be read from All sessions or a
 direct link, with replay/duplication unavailable. No data migration is performed.
