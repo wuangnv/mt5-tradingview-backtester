@@ -399,7 +399,7 @@
   --as-subtle: var(--wm-content-muted);
   --as-surface: var(--wm-surface);
   --as-surface-raised: var(--wm-surface);
-  --as-gold: var(--wm-primary);
+  --as-gold: var(--report-blue);
   --as-green: var(--wm-positive);
   --as-red: var(--wm-negative);
 }
@@ -455,13 +455,13 @@
 .fx-app .as-page .as-chart-point { fill: var(--wm-canvas); }
 .fx-app .as-page .as-chart-point:hover,
 .fx-app .as-page .as-chart-point:focus,
-.fx-app .as-page .as-chart-point.is-selected { fill: var(--wm-primary); stroke: var(--wm-primary); }
+.fx-app .as-page .as-chart-point.is-selected { fill: var(--report-blue); stroke: var(--report-blue); }
 .fx-app .as-page .as-chart-axis,
 .fx-app .as-page .as-chart-legend,
 .fx-app .as-page .as-chart-legend small { color: var(--wm-content-muted); font-size: 12px; }
 .fx-app .as-page .as-drawdown-strip { border-color: var(--wm-border); }
 .fx-app .as-page .as-drawdown-bar,
-.fx-app .as-page .as-legend-dd { background: var(--wm-negative); }
+.fx-app .as-page .as-legend-dd { background: var(--report-negative); }
 .fx-app .as-page .as-drawdown-bar.is-unknown { background: transparent; border-color: var(--wm-content-muted); }
 .fx-app .as-page .as-secondary-metrics { margin: 16px 0 0; border: 0; gap: 24px; }
 .fx-app .as-page .as-secondary-metrics > div,

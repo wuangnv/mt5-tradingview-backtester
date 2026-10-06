@@ -30,8 +30,8 @@
 .fxa-metric.is-positive strong,.fxa-trades .is-positive{color:var(--wm-positive)}
 .fxa-metric.is-negative strong,.fxa-trades .is-negative{color:var(--wm-negative)}
 .fxa-stat-row{padding:18px 0;border-block:1px solid var(--wm-border)}
-.fxa-curve{color:var(--wm-primary);margin-top:16px;min-width:0}
-.fxa-curve.is-negative{color:var(--wm-negative)}
+.fxa-curve{color:var(--report-blue);margin-top:16px;min-width:0}
+.fxa-curve.is-negative{color:var(--report-negative)}
 .fxa-curve svg{display:block;width:100%;height:auto;min-height:180px}
 .fxa-curve svg text{fill:var(--wm-content-muted);font:12px system-ui,sans-serif}
 .fxa-gridline{stroke:var(--wm-border);stroke-dasharray:4 5;stroke-width:1}
@@ -60,8 +60,8 @@
 .fxa-bar-item>strong{font-weight:500;font-variant-numeric:tabular-nums}
 .fxa-bar-track{height:170px;width:100%;max-width:32px;position:relative;background:var(--wm-surface)}
 .fxa-bar-zero{position:absolute;height:1px;background:var(--wm-border-strong);width:100%}
-.fxa-bar-fill{position:absolute;background:var(--wm-positive);left:4px;right:4px;min-height:0}
-.fxa-bar-fill.is-negative{background:var(--wm-negative)}
+.fxa-bar-fill{position:absolute;background:var(--report-positive);left:4px;right:4px;min-height:0}
+.fxa-bar-fill.is-negative{background:var(--report-negative)}
 .fxa-bars.is-horizontal{display:grid;gap:12px;min-height:0;max-height:480px;overflow:auto;padding:2px}
 .fxa-bars.is-horizontal .fxa-bar-item{display:grid;grid-template-columns:66px minmax(100px,1fr) 75px;min-width:0;gap:14px;align-items:center;font-size:12px}
 .fxa-bars.is-horizontal .fxa-bar-track{height:24px;max-width:none;width:100%;border-radius:2px}
@@ -72,8 +72,8 @@
 .fxa-calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:16px 0 8px}
 .fxa-calendar-weekday{text-align:center;color:var(--wm-content-muted);font-size:12px;padding-bottom:8px}
 .fxa-calendar-day{background:var(--wm-surface);min-height:90px;padding:8px;display:grid;align-content:start;gap:8px;font-variant-numeric:tabular-nums;border-radius:4px;overflow-wrap:anywhere;font-size:13px}
-.fxa-calendar-day.is-positive{background:color-mix(in srgb,var(--wm-positive) 10%,var(--wm-canvas))}
-.fxa-calendar-day.is-negative{background:color-mix(in srgb,var(--wm-negative) 10%,var(--wm-canvas))}
+.fxa-calendar-day.is-positive{background:color-mix(in srgb,var(--report-positive) 18%,var(--wm-canvas))}
+.fxa-calendar-day.is-negative{background:color-mix(in srgb,var(--report-negative) 18%,var(--wm-canvas))}
 .fxa-calendar-day strong{font-size:14px}
 .fxa-calendar-day small{font-size:11px}
 .fxa-simulator-config,.fxa-monte-form{display:flex;gap:14px;align-items:end;flex-wrap:wrap}

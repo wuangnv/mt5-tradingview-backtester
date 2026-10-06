@@ -1,4 +1,14 @@
 .fx-dashboard-session-card { border: 1px solid var(--wm-border); border-radius: 16px; background: var(--wm-surface); min-width: 0; }
+.fx-dashboard-session-card { overflow: hidden; transition: background-color 140ms ease; }
+.fx-dashboard-session-card-head { cursor: pointer; transition: background-color 140ms ease; }
+.fx-dashboard-session-card-head:hover { background: color-mix(in srgb, var(--project-hover) 55%, var(--wm-surface)); }
+.fx-dashboard-session-card.is-expanded { background: color-mix(in srgb, var(--project-canvas) 40%, var(--wm-surface)); }
+.fx-dashboard-session-card.is-expanded .fx-dashboard-session-card-head:hover { background: color-mix(in srgb, var(--project-hover) 40%, var(--wm-surface)); }
+.fx-dashboard-session-count { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin: 12px 0; color: var(--project-highlight); font-size: 12px; font-variant-numeric: tabular-nums; }
+.fx-dashboard-session-count progress { appearance: none; width: clamp(80px, 14vw, 180px); height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
+.fx-dashboard-session-count progress::-webkit-progress-bar { background: var(--wm-control-open); }
+.fx-dashboard-session-count progress::-webkit-progress-value { background: var(--project-action); }
+.fx-dashboard-session-count progress::-moz-progress-bar { background: var(--project-action); }
 .fx-dashboard-session-card-head { display: grid; grid-template-columns: 36px minmax(180px, 1fr) minmax(120px, 160px) auto; gap: 18px; align-items: center; padding: 20px; }
 .fx-dashboard-card-play { display: grid; place-items: center; width: 36px; min-height: 36px; padding: 0; border: 0; border-radius: 50%; background: var(--wm-action-bg); color: var(--wm-on-primary); text-decoration: none; }
 .fx-dashboard-card-play:disabled, .fx-dashboard-card-play.is-unavailable { background: var(--wm-control-open); color: var(--wm-content-muted); }

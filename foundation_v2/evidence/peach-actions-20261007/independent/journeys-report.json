@@ -1,0 +1,269 @@
+{
+  "cases": [
+    {
+      "name": "actual-dashboard-delete-isolation-dark",
+      "cardBefore": "476f4b498e1a49ed9d48a75719f4d270",
+      "axe": []
+    },
+    {
+      "name": "actual-analytics-clear-draft-dark",
+      "sessionBefore": "Phiên: Exness · EURUSDm · M1 · Jul–Oct 2026",
+      "appliedChips": [
+        "Backtest",
+        "Phiên · Exness · EURUSDm · M1 · Jul–Oct 2026",
+        "Hướng lệnh · Mua×",
+        "Kết quả · Thua×",
+        "Giờ · 06:00–06:59×",
+        "Loại · App×",
+        "Múi giờ · Asia/Ho_Chi_Minh×",
+        "2026-07-01 → 2026-10-01×"
+      ],
+      "sessionOptions": 6,
+      "afterChips": [
+        "Backtest",
+        "Phiên · Exness · EURUSDm · M1 · Jul–Oct 2026"
+      ]
+    },
+    {
+      "name": "demo-dashboard-delete-isolation-dark",
+      "cardBefore": "demo-gold",
+      "confirmEnabled": true,
+      "confirmPaint": {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(165, 79, 72)"
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-analytics-clear-draft-dark",
+      "sessionBefore": "Phiên: London Breakout",
+      "appliedChips": [
+        "Backtest",
+        "Phiên · London Breakout",
+        "Hướng lệnh · Mua×"
+      ],
+      "sessionOptions": 3,
+      "afterChips": [
+        "Backtest",
+        "Phiên · London Breakout"
+      ]
+    },
+    {
+      "name": "actual-dashboard-delete-isolation-light",
+      "cardBefore": "476f4b498e1a49ed9d48a75719f4d270",
+      "axe": []
+    },
+    {
+      "name": "actual-analytics-clear-draft-light",
+      "sessionBefore": "Phiên: Exness · EURUSDm · M1 · Jul–Oct 2026",
+      "appliedChips": [
+        "Backtest",
+        "Phiên · Exness · EURUSDm · M1 · Jul–Oct 2026",
+        "Hướng lệnh · Mua×",
+        "Kết quả · Thua×",
+        "Giờ · 06:00–06:59×",
+        "Loại · App×",
+        "Múi giờ · Asia/Ho_Chi_Minh×",
+        "2026-07-01 → 2026-10-01×"
+      ],
+      "sessionOptions": 6,
+      "afterChips": [
+        "Backtest",
+        "Phiên · Exness · EURUSDm · M1 · Jul–Oct 2026"
+      ]
+    },
+    {
+      "name": "demo-dashboard-delete-isolation-light",
+      "cardBefore": "demo-gold",
+      "confirmEnabled": true,
+      "confirmPaint": {
+        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(152, 71, 69)"
+      },
+      "axe": []
+    },
+    {
+      "name": "demo-analytics-clear-draft-light",
+      "sessionBefore": "Phiên: London Breakout",
+      "appliedChips": [
+        "Backtest",
+        "Phiên · London Breakout",
+        "Hướng lệnh · Mua×"
+      ],
+      "sessionOptions": 3,
+      "afterChips": [
+        "Backtest",
+        "Phiên · London Breakout"
+      ]
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "before": [
+    {
+      "file": "public/project-palette.css",
+      "sha256": "bb40d601b12e0db491d21bd6d4b213f74654eef0b0850c7414e90e679d4d95d0"
+    },
+    {
+      "file": "src/AnalyticsFilterBar.jsx",
+      "sha256": "be95d26a5300f30aa8c9d83c98613fea0ebfc5b684758f13e4842965037faa5b"
+    },
+    {
+      "file": "src/DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "src/DashboardSessions.jsx",
+      "sha256": "9f01d627ac5b8b130d4029513804ad3220bf84103da7c309a65022428ddd97cd"
+    },
+    {
+      "file": "src/FxAnalytics.jsx",
+      "sha256": "45eaa6857381649538303313cc59ebceba11496622b0529c1fbc6bc446dfe335"
+    },
+    {
+      "file": "src/SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    },
+    {
+      "file": "src/TestingIcon.jsx",
+      "sha256": "2f6935a70830ad7f3e0c98603e466a5d675bd131b2b68815701a951c1779bc59"
+    },
+    {
+      "file": "src/component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "src/dashboard-session.css",
+      "sha256": "c13aa42f05d0df868e1e128ee4f8a236e2251827703c09414ce1a94845229897"
+    },
+    {
+      "file": "src/dashboard.css",
+      "sha256": "c03c345c3a2fb51be71b09b013b034565f74bbeee2ae29916bf76c660e9fbd57"
+    },
+    {
+      "file": "src/fx-analytics.css",
+      "sha256": "bb5f6115b9571026f74128e322536ccd9a4eb46eaf41674dd4b19a5607463305"
+    },
+    {
+      "file": "src/fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "src/fx-shell-story.css",
+      "sha256": "5bdfeb5022f4a3d6117d241225240555027f7e5b5d645727b0942fd71cf02cbb"
+    },
+    {
+      "file": "src/session-performance.css",
+      "sha256": "08b6f9fed40df30aff80e02538b3f10bb5fb3e28728704c760afcb4b4e14ef2f"
+    },
+    {
+      "file": "src/testing-copy.json",
+      "sha256": "61f6cc4a43b9a8bb7b29785c787ae2d2e821f01b0f18d95dbf3ad40fc30274a2"
+    },
+    {
+      "file": "src/testing-standard.css",
+      "sha256": "0c867848d612502d5b330f21d930499d56ef75d8cbcbd35e287f5e7668dadfce"
+    },
+    {
+      "file": "src/analytics-story.css",
+      "sha256": "d0eb8fa10da2952c231a64918e0664772f34b5c69f8004c1ee6a338cd1be14ce"
+    },
+    {
+      "file": "src/journal-analytics.css",
+      "sha256": "93185beaa5a75b24fa75d6fb005b60338f3132a310eaf13c6c07fae2dfd83ff8"
+    },
+    {
+      "file": "src/research-story.css",
+      "sha256": "d0ccfd2a194777079e45a0d14770dd6d20b6a000948d4c17d4e972835b71c1c7"
+    },
+    {
+      "file": "src/research-data.css",
+      "sha256": "fde21b063265a9858d8d2055f6daf54572fcac185f681b3a2e9d8d1b573dc349"
+    }
+  ],
+  "after": [
+    {
+      "file": "public/project-palette.css",
+      "sha256": "bb40d601b12e0db491d21bd6d4b213f74654eef0b0850c7414e90e679d4d95d0"
+    },
+    {
+      "file": "src/AnalyticsFilterBar.jsx",
+      "sha256": "be95d26a5300f30aa8c9d83c98613fea0ebfc5b684758f13e4842965037faa5b"
+    },
+    {
+      "file": "src/DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "src/DashboardSessions.jsx",
+      "sha256": "9f01d627ac5b8b130d4029513804ad3220bf84103da7c309a65022428ddd97cd"
+    },
+    {
+      "file": "src/FxAnalytics.jsx",
+      "sha256": "45eaa6857381649538303313cc59ebceba11496622b0529c1fbc6bc446dfe335"
+    },
+    {
+      "file": "src/SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    },
+    {
+      "file": "src/TestingIcon.jsx",
+      "sha256": "2f6935a70830ad7f3e0c98603e466a5d675bd131b2b68815701a951c1779bc59"
+    },
+    {
+      "file": "src/component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "src/dashboard-session.css",
+      "sha256": "c13aa42f05d0df868e1e128ee4f8a236e2251827703c09414ce1a94845229897"
+    },
+    {
+      "file": "src/dashboard.css",
+      "sha256": "c03c345c3a2fb51be71b09b013b034565f74bbeee2ae29916bf76c660e9fbd57"
+    },
+    {
+      "file": "src/fx-analytics.css",
+      "sha256": "bb5f6115b9571026f74128e322536ccd9a4eb46eaf41674dd4b19a5607463305"
+    },
+    {
+      "file": "src/fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "src/fx-shell-story.css",
+      "sha256": "5bdfeb5022f4a3d6117d241225240555027f7e5b5d645727b0942fd71cf02cbb"
+    },
+    {
+      "file": "src/session-performance.css",
+      "sha256": "08b6f9fed40df30aff80e02538b3f10bb5fb3e28728704c760afcb4b4e14ef2f"
+    },
+    {
+      "file": "src/testing-copy.json",
+      "sha256": "61f6cc4a43b9a8bb7b29785c787ae2d2e821f01b0f18d95dbf3ad40fc30274a2"
+    },
+    {
+      "file": "src/testing-standard.css",
+      "sha256": "0c867848d612502d5b330f21d930499d56ef75d8cbcbd35e287f5e7668dadfce"
+    },
+    {
+      "file": "src/analytics-story.css",
+      "sha256": "d0eb8fa10da2952c231a64918e0664772f34b5c69f8004c1ee6a338cd1be14ce"
+    },
+    {
+      "file": "src/journal-analytics.css",
+      "sha256": "93185beaa5a75b24fa75d6fb005b60338f3132a310eaf13c6c07fae2dfd83ff8"
+    },
+    {
+      "file": "src/research-story.css",
+      "sha256": "d0ccfd2a194777079e45a0d14770dd6d20b6a000948d4c17d4e972835b71c1c7"
+    },
+    {
+      "file": "src/research-data.css",
+      "sha256": "fde21b063265a9858d8d2055f6daf54572fcac185f681b3a2e9d8d1b573dc349"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

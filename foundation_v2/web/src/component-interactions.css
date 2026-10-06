@@ -11,9 +11,9 @@
   --wm-selected: var(--project-control);
   --wm-selected-border: var(--project-border-strong);
   --wm-focus: var(--project-primary);
-  --wm-action-bg: var(--project-primary);
-  --wm-action-hover: var(--project-primary-hover);
-  --wm-on-primary: var(--project-on-primary);
+  --wm-action-bg: var(--project-action);
+  --wm-action-hover: var(--project-action-hover);
+  --wm-on-primary: var(--project-on-action);
   --fx-shell-nav-hover: var(--wm-hover);
   --fx-shell-bg: var(--project-canvas);
   --fx-shell-rail: var(--project-chrome);

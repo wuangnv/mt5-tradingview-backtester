@@ -1400,6 +1400,11 @@
   background: var(--wm-control-text);
   pointer-events: none;
 }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav .fx-subnav-link.is-active:has(+ .fx-subsubnav) { color: var(--project-highlight); }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav .fx-subnav-link.is-active:has(+ .fx-subsubnav) .fx-subnav-icon svg { color: var(--project-highlight); }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav .fx-subnav-link.is-active:has(+ .fx-subsubnav)::after,
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav::after { background: var(--project-highlight); }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a { color: var(--wm-control-text); }
 @media (max-width: 760px) {
   .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav:has(.fx-subsubnav) {
     flex-wrap: wrap;

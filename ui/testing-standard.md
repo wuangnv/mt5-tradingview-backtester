@@ -32,17 +32,17 @@ and nearby page numbers. The row-count selector remains a text pill.
 
 Spacing uses 4/8/12/16/24/32px. Buttons and ordinary select triggers use pill
 radii, one transparent 1px border and a muted control surface; primary actions use the
-Go-to-chart sea-blue surface with a contrasting foreground. Open and keyboard-focus states remain visible.
-Destructive actions use the negative (muted red) color in both resting and hover
-states. Dashboard keeps a compact Delete icon; the Sessions toolbar uses the text
+Go-to-chart peach surface with a contrasting foreground. Open and keyboard-focus states remain visible.
+Destructive actions use a filled red surface with white text in resting and hover
+states. Remaining-days badges use the softer peach surface/text pair. Dashboard keeps a compact Delete icon; the Sessions toolbar uses the text
 Delete session pill. The Recent Sessions filter toggle shares compact icon sizing.
 Trades toolbar icons and text controls align around one vertical center.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
 
 Shell chrome and generic actions use neutral white/black/gray in both themes.
-No additional brand accent is required; financial positive/negative and data
-series colors retain their meaning. The sidebar shows the current raw workspace
+Primary actions use peach; financial positive/negative colors and the separate
+report chart palette retain their meaning. The sidebar shows the current raw workspace
 ID with a Settings link above the separated primary group. It does not imply a
 signed-in profile, tier, or workspace-switching capability.
 Icon actions are circles, filter pills retain the established rounded shape.
@@ -59,8 +59,9 @@ icons without a background or border; selected tabs use contrast text and a 2px 
 (ivory in dark theme, dark in light theme), with no persistent fill. Analytics
 source tabs stay beside Analytics on the same horizontally scrolling row, with
 no vertical separator. On Analytics, the underline runs continuously from the
-Analytics parent through both source tabs; only the selected source text is
-emphasized. The rail toggle has a transparent background and brightens its icon
+Analytics parent through both source tabs in peach. The parent text/icon is
+peach, while both source labels remain neutral. Other selected tabs retain the
+ivory/dark underline. The rail toggle has a transparent background and brightens its icon
 on hover. Keyboard focus retains its visible outline.
 
 ## Components and language boundaries
@@ -87,10 +88,11 @@ source data: keep them raw. Set `localize:false` on data options or
 `localizeOptions={false}` on a data-only select. Translate only the surrounding
 system copy. Language switches must retain drafts and exact delete confirmation.
 
-Backtesting is labeled **Kiểm thử lịch sử**, with **Phiên kiểm thử** for sessions:
+Backtesting is labeled **Backtest**, with **Phiên backtest** for sessions:
 testing a trading method against historical market data. Prop firm means a company
 providing trading capital, not an investment fund; this product's simulated
-evaluation workflow is labeled **Thử thách cấp vốn**. Keep English labels and API
+source is labeled **Prop Firm**, and its simulated evaluation workflow is
+labeled **Thử thách prop firm**. Date filters use **Ngày backtest**. Keep English labels and API
 identifiers intact. Do not imply that a simulated result earns real funding.
 
 Journal and trade-detail entry controls share the 16px notebook glyph in
@@ -170,3 +172,12 @@ The browser smoke needs the UI on 5180 and API on 8010; it blocks actual writes.
 Independent acceptance evidence lives in
 `foundation_v2/evidence/testing-standard-20261006/`. Build and fixture results do
 not establish broker authorization or whole-product completion.
+
+Recent session headers expand on non-action clicks, with hover feedback and a
+darker expanded surface. The existing chevron supplies keyboard activation and
+`aria-expanded`/`aria-controls`; actions within the header do not expand it.
+Empty expanded reports use a single left-aligned message; known balance curves
+remain visible even if no full ledger is available. The peach list count shows
+filtered matches / entire catalog, independent of page size. It is local catalog
+filtering, not server paging. Popup search fields share transparent background
+against the raised menu surface and the same underline/focus treatment.

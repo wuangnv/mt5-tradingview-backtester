@@ -1,0 +1,49 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "count": "1 / 6 phiên",
+      "contrast": {
+        "action": 7.498476928289605,
+        "actionHover": 8.9687414205488,
+        "delete": 5.509157163475755,
+        "deleteHover": 4.640920212846598,
+        "remaining": 7.898768453509094,
+        "blue": 6.978757188899596,
+        "peach": 7.492612547220997,
+        "positive": 7.117852015890901,
+        "negative": 6.42925759320146,
+        "violet": 6.4242826164762565,
+        "gold": 8.806570816067648
+      },
+      "primary": "rgb(214, 160, 123)",
+      "delete": "rgb(165, 79, 72)",
+      "primaryHover": "rgb(228, 177, 141)",
+      "chart": "rgb(120, 189, 227)"
+    },
+    {
+      "theme": "light",
+      "count": "1 / 6 phiên",
+      "contrast": {
+        "action": 5.450944977925016,
+        "actionHover": 7.013906499206707,
+        "delete": 6.320904121762569,
+        "deleteHover": 8.13901112338957,
+        "remaining": 5.911422046756925,
+        "blue": 5.107579780967022,
+        "peach": 4.801480017892578,
+        "positive": 5.220339476179613,
+        "negative": 5.150977136512677,
+        "violet": 5.703815049922734,
+        "gold": 4.855431899358867
+      },
+      "primary": "rgb(154, 89, 52)",
+      "delete": "rgb(152, 71, 69)",
+      "primaryHover": "rgb(132, 74, 42)",
+      "chart": "rgb(45, 113, 149)"
+    }
+  ],
+  "errors": [],
+  "blockedWrites": [],
+  "failure": null
+}

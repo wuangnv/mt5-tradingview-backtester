@@ -59,7 +59,7 @@ try {
       assert.equal(await dialog.getByLabel('Tên phiên xác nhận xóa').inputValue(), original.name)
       assert.equal(new URL(page.url()).searchParams.get('session'), original.record_id)
       if (mode === 'linked') assert.match(await dialog.getByRole('alert').textContent(), /Không thể xóa.*thử thách cấp vốn/i)
-      if (mode === 'conflict') { await page.waitForLoadState('networkidle'); assert.ok(await dialog.getByRole('button', { name: 'Xóa phiên', exact: true }).isEnabled()); assert.ok(reads > 1) }
+      if (mode === 'conflict') { await page.waitForLoadState('networkidle'); await page.waitForFunction(() => document.querySelector('.fxs-action-dialog .fxs-delete-confirm')?.disabled === false); assert.ok(await dialog.getByRole('button', { name: 'Xóa phiên', exact: true }).isEnabled()); assert.ok(reads > 1) }
     }
     assert.equal(writes.length, 1, 'no automatic mutation retry')
     checks.push(`${view}: ${mode}, scoped exact revision/name, no actual write`)

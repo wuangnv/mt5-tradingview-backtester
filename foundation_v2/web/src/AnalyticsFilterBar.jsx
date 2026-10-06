@@ -1,6 +1,7 @@
 import { useTestingLocale } from './testingLocale.jsx'
 import React, { useEffect, useState } from 'react'
 import FxSelect from './FxSelect.jsx'
+import TestingIcon from './TestingIcon.jsx'
 import { DEFAULT_EXTRA_FILTERS, WEEKDAYS, filterValues } from './tradingAnalyticsModel.js'
 
 import { DateFilter, TimeFilter, timezoneOptions } from './AnalyticsFilterControls.jsx'
@@ -19,6 +20,7 @@ export default function AnalyticsFilterBar({ filters, onChange, extra, onExtra, 
   const change = patch => setDraft(value => ({ ...value, ...patch }))
   const changeExtra = patch => setDraftExtra(value => ({ ...value, ...patch }))
   const apply = (next = draft, nextExtra = draftExtra, nextSession = draftSession) => {
+    setDraft(next); setDraftExtra(nextExtra); setDraftSession(nextSession)
     // A session change remounts its report: persist the entire applied scope first.
     if (persistInUrl) {
       const url = new URL(window.location.href)
@@ -66,6 +68,6 @@ export default function AnalyticsFilterBar({ filters, onChange, extra, onExtra, 
       <button className="fxa-button fxa-icon-button fxa-export-button" type="button" aria-label={t("Xuất CSV")} disabled={pending} onClick={onExport}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5" /></svg></button>
     </div>
     {invalidDates && <p role="alert" className="fxa-error">{t("Ngày kết thúc phải từ ngày bắt đầu trở đi.")}</p>}
-    <div className="fxa-filter-chips" aria-label={t("Bộ lọc đã áp dụng")}><span className="fxa-filter-chip">{t(sourceType)}</span>{sessionName && <span className="fxa-filter-chip" title={sessionName}>{t("Session")} · {sessionName}</span>}{chips.map(([key, label, value, server]) => <button key={key} type="button" className="fxa-filter-chip" aria-label={t("Bỏ lọc {label}", { label: t(label) })} onClick={() => apply(server ? { ...filters, [key]: 'all' } : filters, server ? extra : { ...extra, [key]: DEFAULT_EXTRA_FILTERS[key] }, sessionProps?.value)}>{t(label)} · {chipValue(key, value)}<span aria-hidden="true">×</span></button>)}{(filters.from || filters.to) && <button type="button" className="fxa-filter-chip" aria-label={t("Bỏ lọc Backtesting Date")} onClick={() => apply({ ...filters, from: '', to: '' }, extra, sessionProps?.value)}>{filters.from || '…'} → {filters.to || '…'}<span aria-hidden="true">×</span></button>}<button type="button" className="fxa-clear-filters" onClick={() => apply({ ...filters, side: 'all', outcome: 'all', from: '', to: '' }, { ...DEFAULT_EXTRA_FILTERS }, sessionProps?.value)}>{t("Clear filters")}</button></div>
+    <div className="fxa-filter-chips" aria-label={t("Bộ lọc đã áp dụng")}><span className="fxa-filter-chip">{t(sourceType)}</span>{sessionName && <span className="fxa-filter-chip" title={sessionName}>{t("Session")} · {sessionName}</span>}{chips.map(([key, label, value, server]) => <button key={key} type="button" className="fxa-filter-chip" aria-label={t("Bỏ lọc {label}", { label: t(label) })} onClick={() => apply(server ? { ...filters, [key]: 'all' } : filters, server ? extra : { ...extra, [key]: DEFAULT_EXTRA_FILTERS[key] }, sessionProps?.value)}>{t(label)} · {chipValue(key, value)}<span aria-hidden="true">×</span></button>)}{(filters.from || filters.to) && <button type="button" className="fxa-filter-chip" aria-label={t("Bỏ lọc Backtesting Date")} onClick={() => apply({ ...filters, from: '', to: '' }, extra, sessionProps?.value)}>{filters.from || '…'} → {filters.to || '…'}<span aria-hidden="true">×</span></button>}<button type="button" className="fxa-clear-filters" onClick={() => apply({ ...filters, side: 'all', outcome: 'all', from: '', to: '' }, { ...DEFAULT_EXTRA_FILTERS }, sessionProps?.value)}><TestingIcon kind="delete" size={16} />{t("Clear filters")}</button></div>
   </section>
 }

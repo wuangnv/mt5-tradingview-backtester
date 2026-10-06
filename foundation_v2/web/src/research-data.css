@@ -104,7 +104,7 @@
 .rd-provenance-grid span { display: block; color: var(--wm-content-muted); font-size: 12px; }
 .rd-provenance-grid code, .rd-provenance-grid strong { display: block; margin-top: 3px; color: var(--wm-content); font-size: 12px; overflow-wrap: anywhere; }
 .rd-spark { width: 100%; height: 120px; margin-top: 14px; border-top: 1px solid var(--wm-border); border-bottom: 1px solid var(--wm-border); background: var(--wm-surface); }
-.rd-spark polyline { fill: none; stroke: var(--wm-primary); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.rd-spark polyline { fill: none; stroke: var(--report-blue); stroke-width: 2; vector-effect: non-scaling-stroke; }
 .rd-spark text { fill: var(--wm-content-muted); font-size: 12px; }
 .rd-empty-callout { padding: 18px 0; border-top: 1px solid var(--wm-border); border-bottom: 1px solid var(--wm-border); color: var(--wm-content-muted); font-size: 12px; line-height: 1.55; }
 .rd-empty-callout a { color: var(--wm-primary); }

@@ -32,15 +32,15 @@
     "en": "Testing"
   },
   "Prop firm": {
-    "vi": "Thử thách cấp vốn",
+    "vi": "Prop Firm",
     "en": "Prop firm"
   },
   "Prop Firm": {
-    "vi": "Thử thách cấp vốn",
+    "vi": "Prop Firm",
     "en": "Prop firm"
   },
   "Backtesting": {
-    "vi": "Kiểm thử lịch sử",
+    "vi": "Backtest",
     "en": "Backtesting"
   },
   "Tutorials": {
@@ -116,7 +116,7 @@
     "en": "Timezone"
   },
   "Backtesting Date": {
-    "vi": "Ngày kiểm thử",
+    "vi": "Ngày backtest",
     "en": "Backtesting date"
   },
   "Backtesting date filter": {
@@ -332,7 +332,7 @@
     "en": "Export CSV"
   },
   "Bỏ lọc Backtesting Date": {
-    "vi": "Bỏ lọc ngày kiểm thử",
+    "vi": "Bỏ lọc ngày backtest",
     "en": "Remove backtesting date filter"
   },
   "Previous month": {
@@ -368,11 +368,11 @@
     "en": "No trade notes are available."
   },
   "Backtesting session": {
-    "vi": "Phiên kiểm thử",
+    "vi": "Phiên backtest",
     "en": "Backtesting session"
   },
   "Prop firm session": {
-    "vi": "Thử thách cấp vốn",
+    "vi": "Thử thách prop firm",
     "en": "Prop firm session"
   },
   "Tạo phiên backtest": {
@@ -476,7 +476,7 @@
     "en": "Performance period"
   },
   "Backtesting · All sessions": {
-    "vi": "Kiểm thử lịch sử · tất cả phiên",
+    "vi": "Backtest · tất cả phiên",
     "en": "Backtesting · all sessions"
   },
   "Last week": {
@@ -4582,5 +4582,13 @@
   "Không thể xóa phiên đang được dùng trong Prop Firm. Báo cáo và lịch sử challenge vẫn được giữ.": {
     "vi": "Không thể xóa phiên đang liên kết với thử thách cấp vốn. Báo cáo và lịch sử vẫn được giữ.",
     "en": "This session is linked to a prop firm challenge and cannot be deleted. Reports and history remain available."
+  },
+  "{count} of {total} sessions": {
+    "vi": "{count} / {total} phiên",
+    "en": "{count} of {total} sessions"
+  },
+  "Phiên khớp bộ lọc": {
+    "vi": "Phiên khớp bộ lọc",
+    "en": "Sessions matching filters"
   }
 }
