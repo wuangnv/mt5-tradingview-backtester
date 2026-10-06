@@ -1,0 +1,785 @@
+{
+  "checks": [
+    {
+      "name": "Type-All-dark-360",
+      "pass": true
+    },
+    {
+      "name": "Type-All-dark-1710",
+      "pass": true
+    },
+    {
+      "name": "Type-All-light-360",
+      "pass": true
+    },
+    {
+      "name": "Type-All-light-1710",
+      "pass": true
+    },
+    {
+      "name": "Timezone-native-track-thumb-dark",
+      "pass": true
+    },
+    {
+      "name": "Timezone-native-track-thumb-light",
+      "pass": true
+    }
+  ],
+  "failures": [
+    {
+      "name": "Sort-Oldest-hover-dark-360",
+      "error": "AssertionError [ERR_ASSERTION]: hover background missing",
+      "stack": "AssertionError [ERR_ASSERTION]: hover background missing\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2"
+    },
+    {
+      "name": "Sort-Oldest-hover-dark-1710",
+      "error": "AssertionError [ERR_ASSERTION]: hover background missing",
+      "stack": "AssertionError [ERR_ASSERTION]: hover background missing\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2"
+    },
+    {
+      "name": "Sort-Oldest-hover-light-360",
+      "error": "AssertionError [ERR_ASSERTION]: hover background missing",
+      "stack": "AssertionError [ERR_ASSERTION]: hover background missing\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2"
+    },
+    {
+      "name": "Sort-Oldest-hover-light-1710",
+      "error": "AssertionError [ERR_ASSERTION]: hover background missing",
+      "stack": "AssertionError [ERR_ASSERTION]: hover background missing\n    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\n    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\n    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "geometry": [
+    {
+      "phase": "Type-All-dark-360",
+      "rows": [
+        {
+          "box": {
+            "x": 89,
+            "y": 338,
+            "width": 225,
+            "height": 40,
+            "top": 338,
+            "right": 314,
+            "bottom": 378,
+            "left": 89
+          },
+          "check": {
+            "x": 99,
+            "y": 350,
+            "width": 16,
+            "height": 16,
+            "top": 350,
+            "right": 115,
+            "bottom": 366,
+            "left": 99
+          },
+          "label": {
+            "x": 127,
+            "y": 349.25,
+            "width": 14.6875,
+            "height": 17,
+            "top": 349.25,
+            "right": 141.6875,
+            "bottom": 366.25,
+            "left": 127
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 89,
+            "y": 380,
+            "width": 225,
+            "height": 40,
+            "top": 380,
+            "right": 314,
+            "bottom": 420,
+            "left": 89
+          },
+          "check": {
+            "x": 99,
+            "y": 392,
+            "width": 16,
+            "height": 16,
+            "top": 392,
+            "right": 115,
+            "bottom": 408,
+            "left": 99
+          },
+          "label": {
+            "x": 127,
+            "y": 391.25,
+            "width": 23.671875,
+            "height": 17,
+            "top": 391.25,
+            "right": 150.671875,
+            "bottom": 408.25,
+            "left": 127
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 89,
+            "y": 479.5,
+            "width": 225,
+            "height": 40,
+            "top": 479.5,
+            "right": 314,
+            "bottom": 519.5,
+            "left": 89
+          },
+          "check": {
+            "x": 99,
+            "y": 491.5,
+            "width": 16,
+            "height": 16,
+            "top": 491.5,
+            "right": 115,
+            "bottom": 507.5,
+            "left": 99
+          },
+          "label": {
+            "x": 127,
+            "y": 490.75,
+            "width": 55.84375,
+            "height": 17,
+            "top": 490.75,
+            "right": 182.84375,
+            "bottom": 507.75,
+            "left": 127
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        }
+      ]
+    },
+    {
+      "phase": "Sort-Oldest-hover-dark-360",
+      "list": {
+        "offset": 187,
+        "client": 187,
+        "height": 164,
+        "scroll": 164,
+        "padding": "2px"
+      },
+      "row": {
+        "box": {
+          "x": 137,
+          "y": 484.5625,
+          "width": 183,
+          "height": 40,
+          "top": 484.5625,
+          "right": 320,
+          "bottom": 524.5625,
+          "left": 137
+        },
+        "label": {
+          "x": 147,
+          "y": 496.0625,
+          "width": 96.75,
+          "height": 17,
+          "top": 496.0625,
+          "right": 243.75,
+          "bottom": 513.0625,
+          "left": 147
+        },
+        "checkCss": null,
+        "padding": "9px 10px",
+        "bg": "rgba(0, 0, 0, 0)",
+        "radius": "6px"
+      },
+      "insets": {
+        "left": 2,
+        "right": 2
+      }
+    },
+    {
+      "phase": "Type-All-dark-1710",
+      "rows": [
+        {
+          "box": {
+            "x": 279,
+            "y": 338,
+            "width": 282,
+            "height": 40,
+            "top": 338,
+            "right": 561,
+            "bottom": 378,
+            "left": 279
+          },
+          "check": {
+            "x": 289,
+            "y": 350,
+            "width": 16,
+            "height": 16,
+            "top": 350,
+            "right": 305,
+            "bottom": 366,
+            "left": 289
+          },
+          "label": {
+            "x": 317,
+            "y": 349.25,
+            "width": 14.6875,
+            "height": 17,
+            "top": 349.25,
+            "right": 331.6875,
+            "bottom": 366.25,
+            "left": 317
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 279,
+            "y": 380,
+            "width": 282,
+            "height": 40,
+            "top": 380,
+            "right": 561,
+            "bottom": 420,
+            "left": 279
+          },
+          "check": {
+            "x": 289,
+            "y": 392,
+            "width": 16,
+            "height": 16,
+            "top": 392,
+            "right": 305,
+            "bottom": 408,
+            "left": 289
+          },
+          "label": {
+            "x": 317,
+            "y": 391.25,
+            "width": 23.671875,
+            "height": 17,
+            "top": 391.25,
+            "right": 340.671875,
+            "bottom": 408.25,
+            "left": 317
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 279,
+            "y": 479.5,
+            "width": 282,
+            "height": 40,
+            "top": 479.5,
+            "right": 561,
+            "bottom": 519.5,
+            "left": 279
+          },
+          "check": {
+            "x": 289,
+            "y": 491.5,
+            "width": 16,
+            "height": 16,
+            "top": 491.5,
+            "right": 305,
+            "bottom": 507.5,
+            "left": 289
+          },
+          "label": {
+            "x": 317,
+            "y": 490.75,
+            "width": 55.84375,
+            "height": 17,
+            "top": 490.75,
+            "right": 372.84375,
+            "bottom": 507.75,
+            "left": 317
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        }
+      ]
+    },
+    {
+      "phase": "Sort-Oldest-hover-dark-1710",
+      "list": {
+        "offset": 163,
+        "client": 163,
+        "height": 164,
+        "scroll": 164,
+        "padding": "2px"
+      },
+      "row": {
+        "box": {
+          "x": 1495.0625,
+          "y": 628,
+          "width": 158.9375,
+          "height": 40,
+          "top": 628,
+          "right": 1654,
+          "bottom": 668,
+          "left": 1495.0625
+        },
+        "label": {
+          "x": 1505.0625,
+          "y": 639.5,
+          "width": 96.75,
+          "height": 17,
+          "top": 639.5,
+          "right": 1601.8125,
+          "bottom": 656.5,
+          "left": 1505.0625
+        },
+        "checkCss": null,
+        "padding": "9px 10px",
+        "bg": "rgba(0, 0, 0, 0)",
+        "radius": "6px"
+      },
+      "insets": {
+        "left": 2,
+        "right": 2
+      }
+    },
+    {
+      "phase": "Type-All-light-360",
+      "rows": [
+        {
+          "box": {
+            "x": 89,
+            "y": 338,
+            "width": 225,
+            "height": 40,
+            "top": 338,
+            "right": 314,
+            "bottom": 378,
+            "left": 89
+          },
+          "check": {
+            "x": 99,
+            "y": 350,
+            "width": 16,
+            "height": 16,
+            "top": 350,
+            "right": 115,
+            "bottom": 366,
+            "left": 99
+          },
+          "label": {
+            "x": 127,
+            "y": 349.25,
+            "width": 14.6875,
+            "height": 17,
+            "top": 349.25,
+            "right": 141.6875,
+            "bottom": 366.25,
+            "left": 127
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 89,
+            "y": 380,
+            "width": 225,
+            "height": 40,
+            "top": 380,
+            "right": 314,
+            "bottom": 420,
+            "left": 89
+          },
+          "check": {
+            "x": 99,
+            "y": 392,
+            "width": 16,
+            "height": 16,
+            "top": 392,
+            "right": 115,
+            "bottom": 408,
+            "left": 99
+          },
+          "label": {
+            "x": 127,
+            "y": 391.25,
+            "width": 23.671875,
+            "height": 17,
+            "top": 391.25,
+            "right": 150.671875,
+            "bottom": 408.25,
+            "left": 127
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 89,
+            "y": 479.5,
+            "width": 225,
+            "height": 40,
+            "top": 479.5,
+            "right": 314,
+            "bottom": 519.5,
+            "left": 89
+          },
+          "check": {
+            "x": 99,
+            "y": 491.5,
+            "width": 16,
+            "height": 16,
+            "top": 491.5,
+            "right": 115,
+            "bottom": 507.5,
+            "left": 99
+          },
+          "label": {
+            "x": 127,
+            "y": 490.75,
+            "width": 55.84375,
+            "height": 17,
+            "top": 490.75,
+            "right": 182.84375,
+            "bottom": 507.75,
+            "left": 127
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        }
+      ]
+    },
+    {
+      "phase": "Sort-Oldest-hover-light-360",
+      "list": {
+        "offset": 187,
+        "client": 187,
+        "height": 164,
+        "scroll": 164,
+        "padding": "2px"
+      },
+      "row": {
+        "box": {
+          "x": 137,
+          "y": 484.5625,
+          "width": 183,
+          "height": 40,
+          "top": 484.5625,
+          "right": 320,
+          "bottom": 524.5625,
+          "left": 137
+        },
+        "label": {
+          "x": 147,
+          "y": 496.0625,
+          "width": 96.75,
+          "height": 17,
+          "top": 496.0625,
+          "right": 243.75,
+          "bottom": 513.0625,
+          "left": 147
+        },
+        "checkCss": null,
+        "padding": "9px 10px",
+        "bg": "rgba(0, 0, 0, 0)",
+        "radius": "6px"
+      },
+      "insets": {
+        "left": 2,
+        "right": 2
+      }
+    },
+    {
+      "phase": "Type-All-light-1710",
+      "rows": [
+        {
+          "box": {
+            "x": 279,
+            "y": 338,
+            "width": 282,
+            "height": 40,
+            "top": 338,
+            "right": 561,
+            "bottom": 378,
+            "left": 279
+          },
+          "check": {
+            "x": 289,
+            "y": 350,
+            "width": 16,
+            "height": 16,
+            "top": 350,
+            "right": 305,
+            "bottom": 366,
+            "left": 289
+          },
+          "label": {
+            "x": 317,
+            "y": 349.25,
+            "width": 14.6875,
+            "height": 17,
+            "top": 349.25,
+            "right": 331.6875,
+            "bottom": 366.25,
+            "left": 317
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 279,
+            "y": 380,
+            "width": 282,
+            "height": 40,
+            "top": 380,
+            "right": 561,
+            "bottom": 420,
+            "left": 279
+          },
+          "check": {
+            "x": 289,
+            "y": 392,
+            "width": 16,
+            "height": 16,
+            "top": 392,
+            "right": 305,
+            "bottom": 408,
+            "left": 289
+          },
+          "label": {
+            "x": 317,
+            "y": 391.25,
+            "width": 23.671875,
+            "height": 17,
+            "top": 391.25,
+            "right": 340.671875,
+            "bottom": 408.25,
+            "left": 317
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        },
+        {
+          "box": {
+            "x": 279,
+            "y": 479.5,
+            "width": 282,
+            "height": 40,
+            "top": 479.5,
+            "right": 561,
+            "bottom": 519.5,
+            "left": 279
+          },
+          "check": {
+            "x": 289,
+            "y": 491.5,
+            "width": 16,
+            "height": 16,
+            "top": 491.5,
+            "right": 305,
+            "bottom": 507.5,
+            "left": 289
+          },
+          "label": {
+            "x": 317,
+            "y": 490.75,
+            "width": 55.84375,
+            "height": 17,
+            "top": 490.75,
+            "right": 372.84375,
+            "bottom": 507.75,
+            "left": 317
+          },
+          "checkCss": {
+            "width": "16px",
+            "height": "16px",
+            "font": "12px",
+            "radius": "4px"
+          },
+          "padding": "9px 10px",
+          "bg": "rgba(0, 0, 0, 0)",
+          "radius": "6px"
+        }
+      ]
+    },
+    {
+      "phase": "Sort-Oldest-hover-light-1710",
+      "list": {
+        "offset": 163,
+        "client": 163,
+        "height": 164,
+        "scroll": 164,
+        "padding": "2px"
+      },
+      "row": {
+        "box": {
+          "x": 1495.0625,
+          "y": 628,
+          "width": 158.9375,
+          "height": 40,
+          "top": 628,
+          "right": 1654,
+          "bottom": 668,
+          "left": 1495.0625
+        },
+        "label": {
+          "x": 1505.0625,
+          "y": 639.5,
+          "width": 96.75,
+          "height": 17,
+          "top": 639.5,
+          "right": 1601.8125,
+          "bottom": 656.5,
+          "left": 1505.0625
+        },
+        "checkCss": null,
+        "padding": "9px 10px",
+        "bg": "rgba(0, 0, 0, 0)",
+        "radius": "6px"
+      },
+      "insets": {
+        "left": 2,
+        "right": 2
+      }
+    },
+    {
+      "phase": "Timezone-native-track-thumb-dark",
+      "gutter": 15,
+      "height": 300,
+      "full": 24975,
+      "top": 0,
+      "scrolled": 262,
+      "after": 222
+    },
+    {
+      "phase": "Timezone-native-track-thumb-light",
+      "gutter": 15,
+      "height": 300,
+      "full": 24975,
+      "top": 0,
+      "scrolled": 262,
+      "after": 222
+    }
+  ],
+  "accessibility": [
+    {
+      "phase": "Type-All-dark-1710",
+      "violations": []
+    },
+    {
+      "phase": "Type-All-light-1710",
+      "violations": []
+    }
+  ],
+  "before": [
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "464b5e976ffc34ff1170cfbedb019d071df0afe88065868df33832918ce15972"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "35afec8b6b0dd97b74e42c97e75a29fb53dd3860b8c1b6ac62d9b9aa78a2097a"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "753813c61c55656775be122b88d8f3d6cb9e21f7b0299efda1cd6593bac9648c"
+    }
+  ],
+  "phase": "Timezone-native-track-thumb-light",
+  "after": [
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "464b5e976ffc34ff1170cfbedb019d071df0afe88065868df33832918ce15972"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "35afec8b6b0dd97b74e42c97e75a29fb53dd3860b8c1b6ac62d9b9aa78a2097a"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "753813c61c55656775be122b88d8f3d6cb9e21f7b0299efda1cd6593bac9648c"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: hover background missing',\n+     name: 'Sort-Oldest-hover-dark-360',\n+     stack: 'AssertionError [ERR_ASSERTION]: hover background missing\\n' +\n+       '    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\\n' +\n+       '    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\\n' +\n+       '    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: hover background missing',\n+     name: 'Sort-Oldest-hover-dark-1710',\n+     stack: 'AssertionError [ERR_ASSERTION]: hover background missing\\n' +\n+       '    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\\n' +\n+       '    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\\n' +\n+       '    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: hover background missing',\n+     name: 'Sort-Oldest-hover-light-360',\n+     stack: 'AssertionError [ERR_ASSERTION]: hover background missing\\n' +\n+       '    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\\n' +\n+       '    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\\n' +\n+       '    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2'\n+   },\n+   {\n+     error: 'AssertionError [ERR_ASSERTION]: hover background missing',\n+     name: 'Sort-Oldest-hover-light-1710',\n+     stack: 'AssertionError [ERR_ASSERTION]: hover background missing\\n' +\n+       '    at file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:1000\\n' +\n+       '    at async run (file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:18:50)\\n' +\n+       '    at async file:///D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/evidence/fx-select-polish-20261006/independent/review.mjs:22:2'\n+   }\n+ ]\n- []\n"
+}

@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Type checkbox appearance/full-row/keyboard/mixed: dark/1710",
+    "Sort rounded hover/symmetric inset/select: dark/1710",
+    "Type checkbox appearance/full-row/keyboard/mixed: light/1710",
+    "Sort rounded hover/symmetric inset/select: light/1710",
+    "Type checkbox appearance/full-row/keyboard/mixed: dark/360",
+    "Sort rounded hover/symmetric inset/select: dark/360",
+    "Type checkbox appearance/full-row/keyboard/mixed: light/360",
+    "Sort rounded hover/symmetric inset/select: light/360"
+  ],
+  "errors": [],
+  "writes": []
+}

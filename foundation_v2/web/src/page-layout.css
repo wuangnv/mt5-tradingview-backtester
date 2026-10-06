@@ -44,9 +44,8 @@ dialog.fxa-trade-inspector::backdrop { background: #0008; }
 .fxa-columns-control .fx-select-trigger { width: 40px; height: var(--wm-control-height); min-height: var(--wm-control-height); padding: 11px; border-radius: var(--wm-control-radius); }
 .fxa-columns-control .fx-select-menu { width: 270px; }
 .fx-select-count { display: block; padding: 8px 12px; color: var(--wm-content-muted); font-size: 12px; }
-.fx-select-all { display: flex; align-items: center; gap: 12px; padding: 10px 12px; min-height: 24px; cursor: pointer; }
-.fx-select-all:hover { background: var(--fx-shell-nav-hover); border-radius: 7px; }
-.fx-select-all input { accent-color: var(--wm-primary); }
+.fx-app .fx-select-menu .fx-select-all { display: flex; align-items: center; gap: 12px; width: calc(100% - 4px); margin-inline: 2px; padding: 9px 10px; min-height: 40px; box-sizing: border-box; border: 0; border-radius: 6px; background: transparent; color: var(--wm-control-text); font: inherit; text-align: left; cursor: pointer; }
+.fx-app .fx-select-menu .fx-select-all:hover { background: var(--wm-hover); }
 .fx-select-checkbox { flex: 0 0 16px; width: 16px; height: 16px; border: 1px solid var(--wm-border-strong); border-radius: 4px; display: inline-grid; place-items: center; font-size: 12px; }
 .fx-select-checkbox.is-checked { background: var(--wm-action-bg); border-color: var(--wm-action-bg); color: var(--wm-on-primary); }
 .fx-select-menu [aria-multiselectable=true] [role=option] { justify-content: flex-start; gap: 12px; }

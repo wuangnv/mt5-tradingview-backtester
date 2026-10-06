@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Type search/checklist, disabled Battles, draft Apply and scoped source filtering",
+    "Time HH:mm Start/End apply to report; clear restores original count",
+    "Timezone searchable IANA cities, scrollbar drag/wheel, draft/apply, Escape",
+    "Calendar endpoints, range selection and Apply/clear",
+    "Circular icon hit areas, pagination alignment, All full-row click, page size",
+    "Actual catalog contains real session options only; info glyph replaced by SVG",
+    "Four filter popovers fit 360/768/1440 dark/light, rounded subnav hover"
+  ],
+  "errors": [],
+  "writes": []
+}

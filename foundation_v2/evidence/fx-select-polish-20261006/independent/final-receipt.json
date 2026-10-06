@@ -1,0 +1,30 @@
+{
+  "status": "SCOPED_PASS",
+  "created_at_utc": "2026-10-06T10:11:36.3046730Z",
+  "runtime_checks": 10,
+  "accessibility_scans": 2,
+  "accessibility_violations": 0,
+  "source_unchanged": true,
+  "source_pins": [
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "464b5e976ffc34ff1170cfbedb019d071df0afe88065868df33832918ce15972"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "35afec8b6b0dd97b74e42c97e75a29fb53dd3860b8c1b6ac62d9b9aa78a2097a"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "753813c61c55656775be122b88d8f3d6cb9e21f7b0299efda1cd6593bac9648c"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "scope": "Type All visual and keyboard consistency, symmetric shortlist hover, long native timezone scroll regression",
+  "actual_mutations": false,
+  "reports": [
+    "report.json",
+    "REVIEW.md"
+  ]
+}
