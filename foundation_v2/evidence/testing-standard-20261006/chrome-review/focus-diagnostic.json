@@ -1,0 +1,37 @@
+{
+  "samples": [
+    {
+      "width": "3px",
+      "style": "none",
+      "color": "rgb(255, 255, 255)",
+      "transition": "background-color 0.14s, border-color 0.14s",
+      "more": false,
+      "focus": false
+    },
+    {
+      "width": "3px",
+      "style": "none",
+      "color": "rgb(255, 255, 255)",
+      "transition": "background-color 0.14s, border-color 0.14s",
+      "more": false,
+      "focus": false
+    },
+    {
+      "width": "3px",
+      "style": "none",
+      "color": "rgb(255, 255, 255)",
+      "transition": "background-color 0.14s, border-color 0.14s",
+      "more": false,
+      "focus": false
+    },
+    {
+      "width": "3px",
+      "style": "none",
+      "color": "rgb(255, 255, 255)",
+      "transition": "background-color 0.14s, border-color 0.14s",
+      "more": false,
+      "focus": false
+    }
+  ],
+  "matched": []
+}

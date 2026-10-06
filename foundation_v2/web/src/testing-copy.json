@@ -1,4 +1,12 @@
 {
+  "Settings": {
+    "vi": "Cài đặt",
+    "en": "Settings"
+  },
+  "Education": {
+    "vi": "Học tập",
+    "en": "Education"
+  },
   "Dashboard": {
     "vi": "Tổng quan",
     "en": "Dashboard"

@@ -14,7 +14,8 @@
   --wm-space-6: 24px;
   --wm-space-8: 32px;
   --wm-control-height: 40px;
-  --wm-control-radius: 8px;
+  --wm-control-radius: 999px;
+  --wm-icon-action-size: 32px;
   --wm-popup-radius: 12px;
   font-size: var(--wm-text-body);
 }
@@ -27,13 +28,32 @@
 .fx-app[data-ui-area='testing'] .fx-content :is(table, button, input, select, textarea, .fx-select) { font-size: var(--wm-text-control); }
 .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button, .fx-select-trigger, .fx-dashboard-refresh, .fx-dashboard-icon-button) { min-height: var(--wm-control-height); box-sizing: border-box; }
 .fx-app[data-ui-area='testing'] .fx-content :is(.fx-select-menu, .fxa-session-menu, .fx-filter-popover) { border-radius: var(--wm-popup-radius); }
-.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fxa-columns-control .fx-select-trigger) { width: 40px; height: 40px; min-width: 40px; padding: 0; border-radius: 50%; justify-content: center; }
-.fx-app[data-ui-area='testing'] .fx-content .fxa-detail-button { width: 32px; height: 32px; min-width: 32px; min-height: 32px; flex-shrink: 0; padding: 0; border-radius: 50%; }
-.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fxa-detail-button, .fx-dashboard-icon-button) > svg { width: 18px; height: 18px; flex: 0 0 18px; }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-button, .fxr-button, .fxa-session-trigger, .fx-select:not(.is-rich) .fx-select-trigger, .fx-dashboard-card-summary, .fx-dashboard-result-button) {
+  border: 1px solid transparent; border-radius: var(--wm-control-radius); background: var(--wm-control-open); color: var(--wm-control-text); min-height: var(--wm-control-height); box-sizing: border-box;
+}
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxr-button-primary, .fxa-button.is-primary, .fxa-apply-button) { background: var(--wm-action-bg); color: var(--wm-on-primary); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-button, .fxr-button, .fxa-session-trigger, .fx-select:not(.is-rich) .fx-select-trigger, .fx-dashboard-card-summary, .fx-dashboard-result-button):hover:not(:disabled) { border-color: transparent; background: var(--wm-hover); color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxr-button-primary, .fxa-button.is-primary, .fxa-apply-button):hover:not(:disabled) { background: var(--wm-action-hover); color: var(--wm-on-primary); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-session-trigger, .fx-select:not(.is-rich) .fx-select-trigger)[aria-expanded='true'] { border-color: var(--wm-control-hover-border); background: var(--wm-control-open); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-button, .fxr-button, .fxa-session-trigger, .fx-select:not(.is-rich) .fx-select-trigger):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; box-shadow: none; }
+/* Copy/duplicate is the compact desktop reference. Coarse pointers keep 44px targets. */
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-icon-button, .fx-select.fxa-columns-control .fx-select-trigger, .fxa-detail-button, .fx-dashboard-card-icon, .fx-dashboard-card-play, .fx-dashboard-refresh, .fx-dashboard-icon-button, .fxs-action-button, .fxs-edit-description) {
+  display: inline-flex; align-items: center; justify-content: center; width: var(--wm-icon-action-size); height: var(--wm-icon-action-size); min-width: var(--wm-icon-action-size); min-height: var(--wm-icon-action-size); flex: 0 0 var(--wm-icon-action-size); padding: 0; border: 1px solid transparent; border-radius: 50%; box-sizing: border-box; background: var(--wm-control-open); color: var(--wm-control-text);
+}
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fx-dashboard-card-play):not(:disabled):not(.is-unavailable) { background: var(--wm-action-bg); color: var(--wm-on-primary); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-icon-button, .fx-select.fxa-columns-control .fx-select-trigger, .fxa-detail-button, .fx-dashboard-card-icon, .fx-dashboard-card-play, .fx-dashboard-refresh, .fx-dashboard-icon-button, .fxs-action-button, .fxs-edit-description):hover:not(:disabled) { background: var(--wm-hover); border-color: transparent; color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fx-dashboard-card-icon, .fxs-action-button).is-danger { color: var(--wm-negative); }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-icon-button, .fxa-detail-button, .fx-dashboard-icon-button, .fx-dashboard-card-icon, .fx-dashboard-card-play, .fx-dashboard-refresh, .fxs-action-button, .fxs-edit-description, .fx-select.fxa-columns-control .fx-select-trigger) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
+/* Settings stays an inline text action as previously requested. */
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxr-session-actions .fxr-button.fxs-settings { border: 0; border-radius: 0; background: transparent; padding-inline: 0; }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxr-session-actions .fxr-button.fxs-settings:hover:not(:disabled) { background: transparent; }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxs-action-dialog .fxs-delete-confirm { color: var(--wm-negative); border: 1px solid var(--wm-negative); background: transparent; }
 .fx-app[data-ui-area='testing'] .fx-content :is(.fx-select-trigger, .fxa-filter-pill) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-app[data-ui-area='testing'] .fx-content .fxa-pagination { min-height: 56px; padding-block: 8px; align-items: center; }
 .fx-app[data-ui-area='testing'] .fx-content .fxa-pagination > div { display: flex; align-items: center; }
-.fx-app[data-ui-area='testing'] .fx-content .fxa-pagination .fx-select-trigger { height: 40px; min-height: 40px; }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxa-pagination > div:not(.fx-select) > button.fxa-button { width: var(--wm-icon-action-size); height: var(--wm-icon-action-size); min-width: var(--wm-icon-action-size); min-height: var(--wm-icon-action-size); flex: 0 0 var(--wm-icon-action-size); padding: 0; border-radius: 50%; }
+.fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content .fxa-pagination > div:not(.fx-select) > button.fxa-button[aria-current='page'] { background: var(--wm-selected); }
+.fx-app[data-ui-area='testing'] .fx-content .fxa-pagination .fx-select-trigger { height: var(--wm-control-height); min-height: var(--wm-control-height); }
 .fx-app[data-ui-area='testing'] .fx-content :is(input, textarea):focus-visible { outline: none; border-color: var(--wm-focus); box-shadow: inset 0 0 0 1px var(--wm-focus); }
 .fx-app[data-ui-area='testing'] .fx-content input[type='checkbox']:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
 .wm-read-state { display: flex; align-items: center; gap: 12px; padding: 16px 0; color: var(--wm-content-muted); font-size: 14px; }
@@ -50,14 +70,15 @@
   .fx-app[data-ui-area='testing'] *, .fx-app[data-ui-area='testing'] *::before, .fx-app[data-ui-area='testing'] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 @media (max-width: 480px) {
+  .fx-app[data-ui-area='testing'] { --wm-control-height: 44px; --wm-icon-action-size: 44px; }
+  .fx-app[data-ui-area='testing'] .fx-content .fxa-trades .fxa-pagination { padding-inline: 16px; }
   .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button, .fx-select-trigger, .fxa-detail-button) { min-height: 44px; }
-  .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fxa-columns-control .fx-select-trigger, .fxa-detail-button) { width: 44px; min-width: 44px; height: 44px; }
+  .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-icon-button, .fx-select.fxa-columns-control .fx-select-trigger, .fxa-detail-button) { width: 44px; min-width: 44px; height: 44px; }
+}
+@media (pointer: coarse) {
+  .fx-app[data-ui-area='testing'] { --wm-control-height: 44px; --wm-icon-action-size: 44px; }
 }
 
 .fx-app[data-ui-area='testing'] .fx-content .fxr-integrated-sessions.fxs-page :is(.fxr-session-summary-card, .fxr-description-card) h2 { font-size: var(--wm-text-section); line-height: 1.5; }
-@media (max-width: 480px) {
-  .fx-app[data-ui-area='testing'] .fx-content .fxa-pagination .fx-select-trigger { height: 44px; min-height: 44px; }
-}
-
 /* Route chunks must not determine whether accessible headings are visible. */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

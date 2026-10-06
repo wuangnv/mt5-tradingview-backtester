@@ -1,0 +1,340 @@
+{
+  "scans": [
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "violations": [],
+      "passes": 27,
+      "incomplete": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "violations": [],
+      "passes": 27,
+      "incomplete": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "trades",
+      "theme": "dark",
+      "violations": [],
+      "passes": 28,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "analytics",
+      "theme": "dark",
+      "violations": [],
+      "passes": 29,
+      "incomplete": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "violations": [],
+      "passes": 27,
+      "incomplete": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "violations": [],
+      "passes": 27,
+      "incomplete": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "trades",
+      "theme": "light",
+      "violations": [],
+      "passes": 28,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "analytics",
+      "theme": "light",
+      "violations": [],
+      "passes": 29,
+      "incomplete": [
+        "aria-prohibited-attr",
+        "color-contrast"
+      ]
+    },
+    {
+      "route": "trades",
+      "width": 320,
+      "geometry": [
+        {
+          "x": 89,
+          "right": 133,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 133,
+          "right": 177,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 177,
+          "right": 221,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 229,
+          "right": 289,
+          "width": 60,
+          "height": 44
+        }
+      ],
+      "pass": true
+    },
+    {
+      "route": "trades",
+      "width": 360,
+      "geometry": [
+        {
+          "x": 109,
+          "right": 153,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 153,
+          "right": 197,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 197,
+          "right": 241,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 249,
+          "right": 309,
+          "width": 60,
+          "height": 44
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "contrast": [
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "dashboard",
+      "theme": "dark",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(41, 41, 41)",
+      "ratio": 14.548198465495398
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "sessions",
+      "theme": "dark",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(41, 41, 41)",
+      "ratio": 14.548198465495398
+    },
+    {
+      "route": "trades",
+      "theme": "dark",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "trades",
+      "theme": "dark",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "trades",
+      "theme": "dark",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(41, 41, 41)",
+      "ratio": 14.548198465495398
+    },
+    {
+      "route": "analytics",
+      "theme": "dark",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "analytics",
+      "theme": "dark",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(43, 43, 43)",
+      "ratio": 14.159028077509387
+    },
+    {
+      "route": "analytics",
+      "theme": "dark",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(41, 41, 41)",
+      "ratio": 14.548198465495398
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "dashboard",
+      "theme": "light",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(227, 227, 227)",
+      "ratio": 13.96922197208054
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "sessions",
+      "theme": "light",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(227, 227, 227)",
+      "ratio": 13.96922197208054
+    },
+    {
+      "route": "trades",
+      "theme": "light",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "trades",
+      "theme": "light",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "trades",
+      "theme": "light",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(227, 227, 227)",
+      "ratio": 13.96922197208054
+    },
+    {
+      "route": "analytics",
+      "theme": "light",
+      "selector": ".fx-rail-primary .is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "analytics",
+      "theme": "light",
+      "selector": ".fx-subnav-primary>a.is-active",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(222, 222, 222)",
+      "ratio": 13.3256909258091
+    },
+    {
+      "route": "analytics",
+      "theme": "light",
+      "selector": ".fx-select:not(.is-rich):not(.fxa-columns-control)>.fx-select-trigger",
+      "color": "rgb(23, 23, 23)",
+      "background": "rgb(227, 227, 227)",
+      "ratio": 13.96922197208054
+    }
+  ],
+  "blocked": [],
+  "pass": true
+}

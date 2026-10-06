@@ -1,0 +1,601 @@
+{
+  "pass": true,
+  "results": [
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 1320,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 1320,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 1320,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 1320,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 1320,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 1320,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 1320,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 1320,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 1320,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 1320,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 1320,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 1320,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 1320,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 1320,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 1320,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 1320,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 1320,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 768,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 768,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 768,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 768,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 768,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 768,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 768,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 768,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 768,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 390,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 390,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 390,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 390,
+      "theme": "dark",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 390,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 390,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 390,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 390,
+      "theme": "light",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "view": "overview",
+      "extra": "",
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "replay",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "trade",
+      "extra": "&select=1&sessions=all",
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1",
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "analytics",
+      "extra": "&select=1&analytics_source=prop",
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "view": "market-data",
+      "extra": "",
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "width": 320,
+      "coarse": false,
+      "compactTargets": true,
+      "pass": true
+    },
+    {
+      "width": 360,
+      "coarse": false,
+      "compactTargets": true,
+      "pass": true
+    },
+    {
+      "width": 1320,
+      "coarse": true,
+      "compactTargets": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

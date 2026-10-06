@@ -7,7 +7,7 @@
   --wm-content-muted: var(--fx-shell-muted, #a6afb8);
   --wm-border: var(--fx-shell-line, #252d33);
   --wm-border-strong: var(--fx-shell-line-strong, #34404a);
-  --wm-primary: #528fff;
+  --wm-primary: var(--wm-control-text);
   --wm-action-bg: #245bc4;
   --wm-action-hover: #1d4ea9;
   --wm-on-primary: #fff;
@@ -20,7 +20,7 @@
   --wm-space-control: 12px;
 }
 .fx-app[data-theme='light'] {
-  --wm-primary: #245bc4;
+  --wm-primary: var(--wm-control-text);
   --wm-positive: #247046;
   --wm-negative: #b53333;
   --wm-warning: #825209;

@@ -1,6 +1,6 @@
 /* Interaction states belong to controls and selected records, not page wrappers. */
 .fx-app.fx-shell-story {
-  --wm-control-radius: 8px;
+  --wm-control-radius: 999px;
   --wm-control-height: 40px;
   --wm-control-text: #fff;
   --wm-control-muted: #a6a6a6;
@@ -15,6 +15,25 @@
   --wm-action-hover: #fff;
   --wm-on-primary: #171717;
   --fx-shell-nav-hover: var(--wm-hover);
+  --fx-shell-bg: #030303;
+  --fx-shell-rail: #030303;
+  --fx-shell-surface: #141414;
+  --fx-shell-line: #414141;
+  --fx-shell-line-strong: #414141;
+  --fx-shell-text: #fff;
+  --fx-shell-muted: #a6a6a6;
+  --fx-shell-subtle: #8a8a8a;
+  --fx-shell-accent: var(--wm-control-text);
+  --fx-shell-nav-selected: var(--wm-selected);
+  --fx-shell-nav-selected-content: var(--wm-control-text);
+  --fx-text: var(--wm-control-text);
+  --fx-bg: var(--fx-shell-bg);
+  --fx-surface: var(--fx-shell-surface);
+  --fx-surface-raised: var(--wm-control-open);
+  --fx-muted: var(--wm-control-muted);
+  --fx-accent: var(--wm-control-text);
+  --fx-line: var(--fx-shell-line);
+  --fx-line-strong: var(--fx-shell-line-strong);
   --fx-focus-ring: var(--wm-focus);
 }
 .fx-app.fx-shell-story[data-theme='light'] {
@@ -31,7 +50,32 @@
   --wm-action-hover: #3a3a3a;
   --wm-on-primary: #fff;
   --fx-shell-nav-hover: var(--wm-hover);
+  --fx-shell-bg: #fafafa;
+  --fx-shell-rail: #f5f5f5;
+  --fx-shell-surface: #fff;
+  --fx-shell-line: #d3d3d3;
+  --fx-shell-line-strong: #b3b3b3;
+  --fx-shell-text: #171717;
+  --fx-shell-muted: #626262;
+  --fx-shell-subtle: #737373;
+  --fx-shell-nav-selected: var(--wm-selected);
+  --fx-shell-nav-selected-content: var(--wm-control-text);
   --fx-focus-ring: var(--wm-focus);
+}
+/* Shell chrome uses the same neutral palette as route controls. */
+.fx-app.fx-shell-story[data-theme] .fx-topbar { background: var(--fx-shell-bg); border-color: var(--fx-shell-line); }
+.fx-app.fx-shell-story[data-theme] .wm-demo-action .fxa-button { min-height: var(--wm-control-height); border: 1px solid transparent; border-radius: var(--wm-control-radius); background: var(--wm-control-open); color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme] .wm-demo-action .fxa-button:hover:not(:disabled) { border-color: transparent; background: var(--wm-hover); color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme] :is(.fx-menu-button, .fx-rail-section-heading, .fx-rail-section-heading .fx-nav-icon) { color: var(--wm-control-muted); }
+.fx-app.fx-shell-story[data-theme] .fx-rail-section-heading:is(.is-active, :hover, :focus-visible),
+.fx-app.fx-shell-story[data-theme] .fx-rail-section-heading:is(.is-active, :hover, :focus-visible) .fx-nav-icon { color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button) { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0; border: 1px solid transparent; border-radius: 50%; box-sizing: border-box; background: var(--wm-control-open); color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme]:not(.is-chart-workspace) .fx-menu-button { flex: 0 0 32px; margin-inline: 6px; }
+.fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button):hover { background: var(--wm-hover); border-color: transparent; color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
+@media (max-width: 480px), (pointer: coarse) {
+  .fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button) { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+  .fx-app.fx-shell-story[data-theme]:not(.is-chart-workspace) .fx-menu-button { flex-basis: 44px; margin-inline: 0; }
 }
 .fx-app :is(.wm-page, .fx-dashboard, .wm-chart-page) :is(button, a, input, select, textarea, summary) {
   transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease;

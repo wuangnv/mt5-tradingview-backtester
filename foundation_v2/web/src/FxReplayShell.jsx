@@ -38,7 +38,7 @@ const SHELL_COPY = {
     analyticsSourcesAria: 'Nguồn Analytics',
     subnav: { overview: 'Dashboard', replay: 'Sessions', trade: 'Trades', analytics: 'Analytics' },
     nav: {
-      testing: ['Testing', 'Backtesting workspace'],
+      testing: ['Testing', 'Không gian luyện tập'],
       sessions: ['Sessions', 'Chọn một phiên replay'],
       replay: ['Testing', 'Replay và backtest'],
       live: ['Live', 'Theo dõi thị trường và tài khoản'],
@@ -51,8 +51,8 @@ const SHELL_COPY = {
       myStrategies: ['My strategies', 'Chiến lược của tôi'],
       trade: ['Trades', 'Giao dịch trong phiên replay'],
       playbook: ['Strategies', 'Strategy và playbook'],
-      learn: ['Education', 'Course và glossary'],
-      settings: ['Settings', 'Workspace và kết nối'],
+      learn: ['Education', 'Học giao dịch và thuật ngữ'],
+      settings: ['Settings', 'Không gian làm việc và kết nối'],
       overview: ['Dashboard', 'Phiên đang làm và điểm tiếp theo'],
       data: ['Data desk', 'Dataset, provenance và QA'],
       marketData: ['Market Data', 'Assets và lịch sử cho Testing'],
@@ -259,9 +259,9 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
           ...(section.defaultSection ? { section: section.defaultSection } : {}),
         })}
         aria-current={active ? 'page' : undefined}
-        aria-label={`${label}: ${description}`}
+        aria-label={`${t(label)}: ${description}`}
         title={description}
-        data-nav-label={label}
+        data-nav-label={t(label)}
         onClick={drawerOpen ? onClose : undefined}
       >
         <span className="fx-nav-icon" aria-hidden="true"><RailIcon id={section.icon} /></span>
@@ -275,6 +275,12 @@ function ShellRail({ activeView, workspace, query, copy, railId, drawerOpen, onC
         <span>{copy.product}</span>
         <button className="fx-shell-help-close" type="button" onClick={onClose} aria-label={copy.closeNavigation} ref={closeButtonRef}>×</button>
       </div>}
+      <a className="fx-rail-workspace" href={hrefFor('settings', workspace, query, { area: 'settings', section: null })}
+        aria-label={`${t('Workspace')}: ${workspace} · ${t('Settings')}`} title={`${workspace} · ${t('Settings')}`} onClick={drawerOpen ? onClose : undefined}>
+        <span className="fx-nav-icon" aria-hidden="true"><RailIcon id="accounts" /></span>
+        <span className="fx-rail-workspace-copy"><small>{t('Workspace')}</small><strong>{workspace}</strong></span>
+        <span className="fx-rail-workspace-settings" aria-hidden="true"><RailIcon id="settings" /></span>
+      </a>
       <div className="fx-rail-primary">
         {primary.map(renderSectionLink)}
       </div>

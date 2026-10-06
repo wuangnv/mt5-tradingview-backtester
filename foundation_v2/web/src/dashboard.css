@@ -5,15 +5,15 @@
   --wm-content-muted: var(--fx-muted, #a6afb8);
   --wm-border: var(--fx-line, #252d33);
   --wm-border-strong: var(--fx-line-strong, #34404a);
-  --wm-primary: #528fff;
+  --wm-primary: var(--wm-control-text);
   --wm-positive: var(--fx-green, #6dc18b);
   --wm-warning: #e1ad54;
-  --dashboard-gold: #e7b34f;
-  --dashboard-purple: #bd79e3;
+  --dashboard-gold: var(--wm-primary);
+  --dashboard-purple: var(--wm-primary);
   width: 100%; padding: 24px 0 40px; color: var(--wm-content);
   font-family: var(--fx-font-sans, Inter, ui-sans-serif, system-ui, sans-serif);
 }
-.fx-app[data-theme='light'] .fx-dashboard { --wm-content-muted: #526071; --wm-primary: #245bc4; --wm-positive: #247046; --wm-warning: #825209; --dashboard-gold: #aa710b; --dashboard-purple: #8850b3; }
+.fx-app[data-theme='light'] .fx-dashboard { --wm-content-muted: var(--wm-control-muted); --wm-primary: var(--wm-control-text); --wm-positive: #247046; --wm-warning: #825209; }
 .fx-dashboard :where(a, button, input, select, summary):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 3px; }
 .fx-dashboard-inner { width: min(1400px, calc(100% - 64px)); margin: 0 auto; }
 .fx-dashboard-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 24px 0 16px; }

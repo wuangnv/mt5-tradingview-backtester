@@ -20,12 +20,25 @@ It complements `workspace-patterns.md`; it is not a product progress ledger.
 | Controls and table | 13px |
 | Metadata and help | 12px |
 
-Icons use 16px for chevrons, 18px for actions, 20px for navigation and 24px for
+Icons use 16px for chevrons and compact actions, 18px for standard actions, 20px for navigation and 24px for
 larger illustrative controls. Standard controls are 40px on desktop, 44px below
-480px, with 32px compact table actions on desktop. Chart controls retain their
-recorded compact arrangement and vendor controls keep vendor sizing.
+480px or with coarse pointers. Circular actions share the duplicate-session
+reference: 32px desktop, 44px mobile/coarse, with 16px icons. Chart controls retain their
+recorded compact arrangement and vendor controls keep vendor sizing. The compact
+mobile ledger pager shows previous/current/next; desktop also exposes first/last
+and nearby page numbers. The row-count selector remains a text pill.
 
-Spacing uses 4/8/12/16/24/32px. Borders are 1px; controls use 8px radii, popups 12px.
+Spacing uses 4/8/12/16/24/32px. Buttons and ordinary select triggers use pill
+radii, one transparent 1px border and a gray surface; primary actions use the
+Go-to-chart white/black surface. Open and keyboard-focus states remain visible.
+Rich session selectors, input fields and popups retain their field/panel geometry;
+popups use 12px radii. Inline Settings retains its underline interaction.
+
+Shell chrome and generic actions use neutral white/black/gray in both themes.
+No additional brand accent is required; financial positive/negative and data
+series colors retain their meaning. The sidebar shows the current raw workspace
+ID with a Settings link above the separated primary group. It does not imply a
+signed-in profile, tier, or workspace-switching capability.
 Icon actions are circles, filter pills retain the established rounded shape.
 Use alignment and spacing before surfaces; avoid nested cards. Dividers extend
 to the content edges; the table scroll region, header and footer remain separate.

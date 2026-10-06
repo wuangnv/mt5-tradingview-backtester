@@ -1,0 +1,166 @@
+{
+  "status": "PASS",
+  "scope": "Testing neutral shell chrome and compact/pill controls on UI5180; read-only independent review",
+  "reviewer": "fx_analytics_review",
+  "at": "2026-10-06T13:22:54.907Z",
+  "matrix": {
+    "demo": {
+      "cases": 72,
+      "routes": [
+        "Dashboard",
+        "Sessions",
+        "Trades",
+        "Analytics Sessions",
+        "Analytics Prop firm",
+        "Market data"
+      ],
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "languages": [
+        "vi",
+        "en"
+      ],
+      "widths": [
+        1320,
+        768,
+        390
+      ]
+    },
+    "actualBackendUnavailable": {
+      "cases": 12,
+      "routes": 6,
+      "languages": [
+        "vi",
+        "en"
+      ],
+      "width": 1320,
+      "backend8010": "stopped; natural UI HTTP500 read alerts, no loading stuck"
+    },
+    "coarsePointer": {
+      "cases": 1,
+      "width": 1320,
+      "compactControls": 44,
+      "rowSizeSelectHeight": 44
+    }
+  },
+  "supplement": {
+    "axeScans": 8,
+    "wcagViolations": 0,
+    "contrastSamples": 24,
+    "minComputedContrast": 13.3256909258091,
+    "narrowMobileCases": 2,
+    "widths": [
+      320,
+      360
+    ],
+    "sourcePins": [
+      {
+        "file": "FxReplayShell.jsx",
+        "sha256": "f80d4bcffb3886d41ecee68cea8f5126fa7ba9b85e033d8bb587a7960c37fbdc"
+      },
+      {
+        "file": "fx-shell-story.css",
+        "sha256": "e6741541223fe38c1a5291a546cc51fce0937354a21f82ab192f7c94a1c18027"
+      },
+      {
+        "file": "component-interactions.css",
+        "sha256": "2850fcb1a768a917d0137544cb96d12137686829451b594c0ecb81de1112a3bb"
+      },
+      {
+        "file": "testing-standard.css",
+        "sha256": "1483d2e1852b6736868ab0fb23036a2b91dc12b97d71d3f8f2fa93691466b6a0"
+      },
+      {
+        "file": "workspace-pattern.css",
+        "sha256": "1604baf0a7b1ed193b13eb6c4e5225c53a191c87dd9583bc07b8c305db062853"
+      },
+      {
+        "file": "dashboard.css",
+        "sha256": "17052a8c6b586902285201cc96ebd61c688970193a09ecc2df68ef9a21993c96"
+      },
+      {
+        "file": "testing-copy.json",
+        "sha256": "75ae57ecbb4169348f2c9da8130a31bd4bcb54cfbff28014f6f4fdd6d2566178"
+      },
+      {
+        "file": "ledger-controls.css",
+        "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+      },
+      {
+        "file": "FxTradeLedger.jsx",
+        "sha256": "571d1b01f1cb7eb50040c1e8b2f2330794dd11831a03c339b197dc753f16ca76"
+      },
+      {
+        "file": "page-layout.css",
+        "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+      }
+    ],
+    "pinBasis": "Supplement ran concurrently within the frozen85-case main matrix; the main before/after10pins and receipt-time rehash all match. Supplement did not independently capture start hashes."
+  },
+  "browserCases": 87,
+  "jsErrors": 0,
+  "blockedTraffic": 0,
+  "demoApiRequests": 0,
+  "sourceUnchanged": true,
+  "sourcePins": [
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "f80d4bcffb3886d41ecee68cea8f5126fa7ba9b85e033d8bb587a7960c37fbdc"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "e6741541223fe38c1a5291a546cc51fce0937354a21f82ab192f7c94a1c18027"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "2850fcb1a768a917d0137544cb96d12137686829451b594c0ecb81de1112a3bb"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "1483d2e1852b6736868ab0fb23036a2b91dc12b97d71d3f8f2fa93691466b6a0"
+    },
+    {
+      "file": "workspace-pattern.css",
+      "sha256": "1604baf0a7b1ed193b13eb6c4e5225c53a191c87dd9583bc07b8c305db062853"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "17052a8c6b586902285201cc96ebd61c688970193a09ecc2df68ef9a21993c96"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "75ae57ecbb4169348f2c9da8130a31bd4bcb54cfbff28014f6f4fdd6d2566178"
+    },
+    {
+      "file": "ledger-controls.css",
+      "sha256": "400753f8814db3c3e4f9c91ce7364e1af74b11172dec4e4a10485e608dfc6c6c"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "571d1b01f1cb7eb50040c1e8b2f2330794dd11831a03c339b197dc753f16ca76"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "f17340f86dd5ab20cb531f7774b56b97ca177b842161a5d4f6e2d93754ed5c4d"
+    }
+  ],
+  "limitations": [
+    "No successful actual backend journeys: API8010 was deliberately stopped.",
+    "No broker, execution, provider or write paths exercised.",
+    "Prior164-case independent acceptance is separate; this receipt covers the changed chrome/control scope only."
+  ],
+  "evidence": [
+    "report.json",
+    "accessibility.json",
+    "focus-diagnostic.json",
+    "REVIEW.md"
+  ],
+  "exploratoryEvidence": [
+    "exploratory-report.json",
+    "exploratory-progress.json",
+    "refinement-progress.json",
+    "refinement-focus-progress.json"
+  ]
+}
