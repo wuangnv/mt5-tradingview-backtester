@@ -74,8 +74,6 @@
 .fx-app .fxr-integrated-sessions.fxs-page .fxs-edit-description:hover { background: var(--fx-shell-nav-hover); color: var(--wm-content); }
 .fxs-remaining { display: inline-block; padding: 5px 10px; margin: 8px 0 0 12px; border-radius: 999px; background: var(--wm-selected); color: var(--wm-content); }
 .fxs-metric > span { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.fxs-metric-info { color: var(--wm-content-muted); cursor: help; font-size: 15px; }
-.fxs-metric-info:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 3px; border-radius: 50%; }
 .fxs-no-analytics { min-height: 64px; display: flex; align-items: center; justify-content: flex-start; color: var(--wm-content-muted); font-size: 13px; margin: 0; text-align: left; }
 .fxs-trades-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 220px; text-align: center; padding: 24px; }
 .fxs-trades-empty > svg { width: 48px; height: 48px; color: var(--wm-content-muted); }

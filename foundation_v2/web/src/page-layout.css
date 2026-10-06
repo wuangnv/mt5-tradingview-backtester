@@ -87,5 +87,3 @@ button.fxa-filter-chip:hover { background: var(--fx-shell-nav-selected); color: 
 .fxa-pagination .fx-select-chevron { margin-left: 0; }
 .fx-app .fxa-session-options > button[role='checkbox'] { justify-content: flex-start; }
 .fxa-session-options .fx-select-checkbox { min-width: 16px; flex: 0 0 16px; }
-.fxs-metric-info { display: inline-flex; align-items: center; vertical-align: middle; width: 16px; height: 16px; }
-.fxs-metric-info svg { width: 16px; height: 16px; flex: 0 0 16px; }

@@ -26,7 +26,7 @@ function PeriodBars({ title, items, currency, horizontal = false }) {
 function Metric({ title, value, detail }) {
   const { t } = useTestingLocale()
 
-  return <div className="fxs-metric"><span>{t(title)}<span className="fxs-metric-info" role="img" tabIndex={0} aria-label={detail} title={detail}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none" /></svg></span></span><strong>{value}</strong></div>
+  return <div className="fxs-metric"><span title={detail}>{t(title)}</span><strong>{value}</strong></div>
 }
 
 export default function SessionPerformance({ model, payload, item, href, chartsOnly = false }) {
