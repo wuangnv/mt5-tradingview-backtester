@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "scope": "Continuous Analytics group underline, transparent hover and rail toggle, retained keyboard focus/mobile read navigation",
+  "at": "2026-10-06T13:56:15.604Z",
+  "reviewer": "fx_analytics_review",
+  "r1": {
+    "cases": 20,
+    "status": "Preserved earlier revision; missing menu-border oracle revealed visible hover border and owner changed source afterward",
+    "sourcePins": [
+      {
+        "file": "fx-shell-story.css",
+        "sha256": "00aeb4a3664b7187a6b888710d5d6bfc30d727e7d9dc506fd4bceed757ca50c8"
+      },
+      {
+        "file": "component-interactions.css",
+        "sha256": "e62e439db74ac502e0e9e91f8acd7a5fb88a0c5003e7bb682a5cfbc612ba1929"
+      },
+      {
+        "file": "page-layout.css",
+        "sha256": "5d4007256b89ee8cd1187c37ce17cff4da19c965a859ea0f682f8871db0c4991"
+      },
+      {
+        "file": "FxReplayShell.jsx",
+        "sha256": "7928493c0051d527c4498779c3e2ed8808d164b8ebce09c5ef6ef2ef4a6c9c6f"
+      }
+    ],
+    "menuHoverBorderColorsLight": [
+      "rgb(139, 139, 139)"
+    ],
+    "authority": "not final revision"
+  },
+  "ownerCorrection": {
+    "filesChangedSinceR1": [
+      "component-interactions.css"
+    ],
+    "behavior": "Menu hover selector specificity raised with :not(:disabled); border-color transparent"
+  },
+  "r2": {
+    "cases": 4,
+    "matrix": "actual local API, dark/light ×1377/360",
+    "checks": "Menu default/hover background+border transparent, icon/text, keyboard2pxfocus retained; both sources/group geometry spotchecked",
+    "sourceUnchanged": true,
+    "sourcePins": [
+      {
+        "file": "fx-shell-story.css",
+        "sha256": "00aeb4a3664b7187a6b888710d5d6bfc30d727e7d9dc506fd4bceed757ca50c8"
+      },
+      {
+        "file": "component-interactions.css",
+        "sha256": "0f74777c3b2ab61b65a98fa0c68fec51ba3c537f13c79cd268888015c1aab78e"
+      },
+      {
+        "file": "page-layout.css",
+        "sha256": "5d4007256b89ee8cd1187c37ce17cff4da19c965a859ea0f682f8871db0c4991"
+      },
+      {
+        "file": "FxReplayShell.jsx",
+        "sha256": "7928493c0051d527c4498779c3e2ed8808d164b8ebce09c5ef6ef2ef4a6c9c6f"
+      }
+    ],
+    "apiResponses": 16,
+    "apiErrors": 0,
+    "pageErrors": 0,
+    "unexpectedBlockedTraffic": 0
+  },
+  "geometry": {
+    "snapshots": 48,
+    "height": 2,
+    "maxParentGroupGapPx": 0,
+    "maxVerticalGapPx": 0,
+    "maxPropEndGapPx": 0
+  },
+  "evidence": [
+    "r1/report.json",
+    "r2/report.json",
+    "REVIEW.md"
+  ],
+  "limitations": [
+    "UI presentation/navigation/read loading only; no financial calculation acceptance.",
+    "No API writes, MT5 sync, broker/execution or provider calls.",
+    "Only evidence files edited by reviewer; no source edit/commit. Prior receipts untouched."
+  ]
+}

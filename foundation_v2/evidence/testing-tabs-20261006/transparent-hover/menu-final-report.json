@@ -1,0 +1,69 @@
+{
+  "before": "0f74777c3b2ab61b65a98fa0c68fec51ba3c537f13c79cd268888015c1aab78e",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1377,
+      "hover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(0, 0, 0, 0)",
+        "outline": "none",
+        "color": "rgb(255, 255, 255)"
+      },
+      "focus": {
+        "visible": true,
+        "outline": "solid"
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "hover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(0, 0, 0, 0)",
+        "outline": "none",
+        "color": "rgb(255, 255, 255)"
+      },
+      "focus": {
+        "visible": true,
+        "outline": "solid"
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1377,
+      "hover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(0, 0, 0, 0)",
+        "outline": "none",
+        "color": "rgb(23, 23, 23)"
+      },
+      "focus": {
+        "visible": true,
+        "outline": "solid"
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "hover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgba(0, 0, 0, 0)",
+        "outline": "none",
+        "color": "rgb(23, 23, 23)"
+      },
+      "focus": {
+        "visible": true,
+        "outline": "solid"
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "denied": [],
+  "after": "0f74777c3b2ab61b65a98fa0c68fec51ba3c537f13c79cd268888015c1aab78e",
+  "pass": true
+}

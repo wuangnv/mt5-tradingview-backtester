@@ -72,6 +72,8 @@
 .fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button) { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0; border: 1px solid transparent; border-radius: 50%; box-sizing: border-box; background: var(--wm-control-open); color: var(--wm-control-text); }
 .fx-app.fx-shell-story[data-theme]:not(.is-chart-workspace) .fx-menu-button { flex: 0 0 32px; margin-inline: 6px; }
 .fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button):hover { background: var(--wm-hover); border-color: transparent; color: var(--wm-control-text); }
+.fx-app.fx-shell-story[data-theme] .fx-menu-button { background: transparent; color: var(--wm-control-muted); }
+.fx-app.fx-shell-story[data-theme] .fx-menu-button:hover:not(:disabled) { background: transparent; border-color: transparent; color: var(--wm-control-text); }
 .fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button):focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
 @media (max-width: 480px), (pointer: coarse) {
   .fx-app.fx-shell-story[data-theme] :is(.fx-shell-toggle, .fx-menu-button, .fx-shell-help-close, .fx-chart-icon-button) { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }

@@ -11,7 +11,7 @@
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav .fx-subnav-primary { flex: 1 1 auto; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 .fx-subnav-primary > a { flex-shrink: 0; }
 .fx-subnav-action { flex: 0 0 auto; margin-left: auto; }
-.fx-app .fx-subsubnav { flex: 0 0 auto; align-self: center; margin-inline: 0 12px; padding-inline: 0; border: 0; width: auto; }
+.fx-app .fx-subsubnav { position: relative; flex: 0 0 auto; align-self: center; margin-inline: 0 12px; padding-inline: 0; border: 0; width: auto; }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a { height: 52px; min-height: 52px; border-radius: 6px 6px 0 0; }
 .wm-demo-action { display: flex; align-items: center; gap: 8px; }
 .wm-demo-action .fxa-button { border-radius: 999px; white-space: nowrap; }
