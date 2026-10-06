@@ -16,13 +16,13 @@ export class ReplayOrderPrimitive {
     this.onProject = onProject
     this.levels = null
     this.attachment = null
-    this.theme = 'dark'
+    this.palette = null
     this.views = [{ zOrder: () => 'normal', renderer: () => ({ draw: target => this.draw(target) }) }]
   }
   attached(attachment) { this.attachment = attachment; attachment.requestUpdate() }
   detached() { this.attachment = null }
   paneViews() { return this.views }
-  setTheme(theme) { this.theme = theme; this.attachment?.requestUpdate() }
+  setPalette(palette) { this.palette = palette; this.attachment?.requestUpdate() }
   autoscaleInfo() {
     if (!this.levels || !['entry', 'stop', 'target'].every(key => Number.isFinite(this.levels[key]) && this.levels[key] > 0)) return null
     return { priceRange: { minValue: Math.min(this.levels.entry, this.levels.stop, this.levels.target), maxValue: Math.max(this.levels.entry, this.levels.stop, this.levels.target) } }
@@ -31,17 +31,16 @@ export class ReplayOrderPrimitive {
   draw(target) {
     const projection = this.attachment ? projectOrder(this.levels, this.attachment.chart, this.attachment.series) : null
     this.onProject(projection)
-    if (!projection) return
+    if (!projection || !this.palette) return
     const { entry, stop, target: profit, left, width } = projection
     target.useMediaCoordinateSpace(({ context, mediaSize }) => {
       context.save()
       context.beginPath(); context.rect(0, 0, mediaSize.width, mediaSize.height); context.clip()
-      context.fillStyle = 'rgba(12, 175, 121, .12)'
+      context.fillStyle = `${this.palette.positive}1F`
       context.fillRect(left, Math.min(profit, entry), width - left, Math.abs(profit - entry))
-      context.fillStyle = 'rgba(239, 83, 80, .12)'
+      context.fillStyle = `${this.palette.negative}1F`
       context.fillRect(left, Math.min(stop, entry), width - left, Math.abs(stop - entry))
-      const light = this.theme === 'light'
-      for (const [y, color] of [[entry, light ? '#526074' : '#8ea4c4'], [stop, light ? '#b93847' : '#f16a73'], [profit, light ? '#077556' : '#2bc897']]) {
+      for (const [y, color] of [[entry, this.palette.primary], [stop, this.palette.negative], [profit, this.palette.positive]]) {
         context.strokeStyle = color; context.lineWidth = 1; context.setLineDash(['draft', 'edit'].includes(this.levels.state) ? [4, 4] : [])
         context.beginPath(); context.moveTo(left, y); context.lineTo(width, y); context.stroke()
       }

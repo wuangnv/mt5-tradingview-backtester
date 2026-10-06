@@ -2,6 +2,11 @@
 
 The owner approved the real Dashboard trial and requested research plus application to the remaining MT5 pages. This extends the project pattern; it does not release a global UI system, change pinned shared contracts or grant broker/provider/data permissions. The Dashboard trial remains the visual reference.
 
+Current color authority (06/10/2026): [project-palette.md](project-palette.md) applies
+the owner-approved vintage palette to every workspace and both chart engines.
+It supersedes earlier literal colors below. Current Testing control geometry and
+text-only navigation hover are defined by [testing-standard.md](testing-standard.md).
+
 ## Research and choices
 
 Primary pages were read on03/10/2026; raw public HTML/text and fetch failures are retained under workspace `.artifacts/wm-pattern-migration-20261003/research/`.

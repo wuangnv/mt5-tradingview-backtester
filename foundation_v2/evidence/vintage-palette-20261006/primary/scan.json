@@ -1,0 +1,3589 @@
+[
+  {
+    "theme": "dark",
+    "view": "overview",
+    "query": "area=testing&section=dashboard&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 167,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 60,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 35,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 135, 144)",
+        {
+          "count": 18,
+          "examples": [
+            "div.fx-dashboard-card-info",
+            "h3.",
+            "div.fx-dashboard-card-facts"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 10,
+          "examples": [
+            "div.fx-dashboard-metric",
+            "div.fx-dashboard-metric",
+            "div.fx-dashboard-metric"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 6,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 3,
+          "examples": [
+            "span.fx-dashboard-days",
+            "span.fx-dashboard-days",
+            "span.fx-dashboard-days"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(157, 175, 152)",
+        {
+          "count": 1,
+          "examples": [
+            "strong.is-positive"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "replay",
+    "query": "area=testing&section=sessions&select=1&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 189,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 56,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 17,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 11,
+          "examples": [
+            "article.fxr-session-card fxr-session-summary-card",
+            "article.fxr-session-card fxr-description-card",
+            "section.fxs-chart-panel"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.92549 0.913725 0.886275 / 0.03)",
+        {
+          "count": 10,
+          "examples": [
+            "div.fxs-bar-track",
+            "div.fxs-bar-track",
+            "div.fxs-bar-track"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(69, 82, 91)",
+        {
+          "count": 10,
+          "examples": [
+            "i.fxs-bar-zero",
+            "i.fxs-bar-zero",
+            "i.fxs-bar-zero"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(143, 175, 193)",
+        {
+          "count": 7,
+          "examples": [
+            "i.fxs-bar ",
+            "i.fxs-bar ",
+            "i.fxs-bar "
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(216, 155, 149)",
+        {
+          "count": 4,
+          "examples": [
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(216, 155, 149)",
+        {
+          "count": 3,
+          "examples": [
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative"
+          ]
+        }
+      ],
+      [
+        "color:rgb(157, 175, 152)",
+        {
+          "count": 3,
+          "examples": [
+            "td.is-positive",
+            "td.is-positive",
+            "td.is-positive"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "trade",
+    "query": "area=testing&section=trades&select=1&sessions=all&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 289,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 69,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 30,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 27,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(157, 175, 152)",
+        {
+          "count": 16,
+          "examples": [
+            "span.fxa-badge is-buy",
+            "td.is-positive",
+            "td.is-positive"
+          ]
+        }
+      ],
+      [
+        "color:rgb(216, 155, 149)",
+        {
+          "count": 13,
+          "examples": [
+            "span.fxa-badge is-sell",
+            "td.is-negative",
+            "td.is-negative"
+          ]
+        }
+      ],
+      [
+        "color:rgb(255, 255, 255)",
+        {
+          "count": 11,
+          "examples": [
+            "input.",
+            "input.",
+            "input."
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 10,
+          "examples": [
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.146667 0.17898 0.201255)",
+        {
+          "count": 10,
+          "examples": [
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.18102 0.169569 0.180549)",
+        {
+          "count": 5,
+          "examples": [
+            "span.fxa-badge is-sell",
+            "span.fxa-badge is-sell",
+            "span.fxa-badge is-sell"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.153255 0.17898 0.181961)",
+        {
+          "count": 5,
+          "examples": [
+            "span.fxa-badge is-buy",
+            "span.fxa-badge is-buy",
+            "span.fxa-badge is-buy"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "analytics",
+    "query": "area=testing&section=analytics&select=1&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 327,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 269,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 61,
+          "examples": [
+            "article.fxa-outcomes is-win",
+            "article.fxa-outcomes is-loss",
+            "div.fxa-bar-track"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(69, 82, 91)",
+        {
+          "count": 34,
+          "examples": [
+            "i.fxa-bar-zero",
+            "i.fxa-bar-zero",
+            "i.fxa-bar-zero"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(157, 175, 152)",
+        {
+          "count": 27,
+          "examples": [
+            "i.fxa-bar-fill ",
+            "i.fxa-bar-fill ",
+            "i.fxa-bar-fill "
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 23,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 18,
+          "examples": [
+            "div.fxa-curve ",
+            "defs.[object SVGAnimatedString]",
+            "linearGradient.[object SVGAnimatedString]"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(216, 155, 149)",
+        {
+          "count": 7,
+          "examples": [
+            "i.fxa-bar-fill is-negative",
+            "i.fxa-bar-fill is-negative",
+            "i.fxa-bar-fill is-negative"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.142745 0.167451 0.172549)",
+        {
+          "count": 4,
+          "examples": [
+            "div.fxa-calendar-day is-positive",
+            "div.fxa-calendar-day is-positive",
+            "div.fxa-calendar-day is-positive"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(52, 63, 70)",
+        {
+          "count": 2,
+          "examples": [
+            "span.fxa-filter-chip",
+            "span.fxa-filter-chip"
+          ]
+        }
+      ],
+      [
+        "color:rgb(157, 175, 152)",
+        {
+          "count": 2,
+          "examples": [
+            "strong.",
+            "h3."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(216, 155, 149)",
+        {
+          "count": 1,
+          "examples": [
+            "h3."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.165882 0.159608 0.171373)",
+        {
+          "count": 1,
+          "examples": [
+            "div.fxa-calendar-day is-negative"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "market-data",
+    "query": "area=testing&section=market-data&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 144,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 65,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 22,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 7,
+          "examples": [
+            "input.",
+            "input.",
+            "th."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(255, 255, 255)",
+        {
+          "count": 1,
+          "examples": [
+            "input."
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "live",
+    "query": "area=live&section=calendar&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 61,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 24,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 5,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "playbook",
+    "query": "area=strategies&section=my-strategies&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 63,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 31,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 6,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 5,
+          "examples": [
+            "b.pb-status is-draft",
+            "b.pb-status is-draft",
+            "b.pb-status is-draft"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "research",
+    "query": "area=strategies",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 87,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 55,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 8,
+          "examples": [
+            "strong.",
+            "span.rs-status ",
+            "span.rs-pill is-review"
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 6,
+          "examples": [
+            "a.rs-link",
+            "span.rs-step-index",
+            "span.rs-step-index"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.171137 0.210039 0.233725)",
+        {
+          "count": 3,
+          "examples": [
+            "span.rs-step-index",
+            "span.rs-step-index",
+            "span.rs-step-index"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 1,
+          "examples": [
+            "input."
+          ]
+        }
+      ],
+      [
+        "color:rgb(23, 28, 32)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rs-button is-primary"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(143, 175, 193)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rs-button is-primary"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "risk",
+    "query": "surface=workspace",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 58,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 43,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 11,
+          "examples": [
+            "input.",
+            "input.",
+            "input."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 3,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "main.risk-workspace wm-page"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 3,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(216, 155, 149)",
+        {
+          "count": 1,
+          "examples": [
+            "strong."
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 1,
+          "examples": [
+            "strong."
+          ]
+        }
+      ],
+      [
+        "color:rgb(23, 28, 32)",
+        {
+          "count": 1,
+          "examples": [
+            "button.risk-primary"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(143, 175, 193)",
+        {
+          "count": 1,
+          "examples": [
+            "button.risk-primary"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "trade",
+    "query": "surface=workspace&intent=order",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 33,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 27,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 2,
+          "examples": [
+            "strong.",
+            "strong."
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 2,
+          "examples": [
+            "span.trade-lock-mark",
+            "a.trade-link"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "journal",
+    "query": "demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 63,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 57,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 21,
+          "examples": [
+            "span.ja-row-kicker",
+            "code.",
+            "span.ja-row-kicker"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 5,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 1,
+          "examples": [
+            "span.ja-story-status"
+          ]
+        }
+      ],
+      [
+        "color:rgb(157, 175, 152)",
+        {
+          "count": 1,
+          "examples": [
+            "strong.is-known"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "learn",
+    "query": "area=education",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 184,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 144,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 12,
+          "examples": [
+            "button.learn-resource-button ",
+            "button.learn-resource-button ",
+            "button.learn-resource-button "
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 3,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "main.learn-shell wm-page"
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 2,
+          "examples": [
+            "span.",
+            "strong."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(23, 28, 32)",
+        {
+          "count": 1,
+          "examples": [
+            "button.learn-open-current"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(143, 175, 193)",
+        {
+          "count": 1,
+          "examples": [
+            "button.learn-open-current"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "settings",
+    "query": "area=settings",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 117,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 56,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 6,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(166, 175, 179)",
+        {
+          "count": 4,
+          "examples": [
+            "i.",
+            "i.",
+            "i."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 3,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "main.settings-shell wm-page"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 3,
+          "examples": [
+            "strong.is-warn",
+            "strong.is-warn",
+            "strong.is-warn"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(157, 175, 152)",
+        {
+          "count": 1,
+          "examples": [
+            "strong.is-good"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "dark",
+    "view": "data",
+    "query": "area=strategies",
+    "palette": [
+      [
+        "canvas",
+        "#171C20"
+      ],
+      [
+        "surface",
+        "#232B30"
+      ],
+      [
+        "primary",
+        "#8FAFC1"
+      ],
+      [
+        "text",
+        "#ECE9E2"
+      ],
+      [
+        "muted",
+        "#A6AFB3"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(236, 233, 226)",
+        {
+          "count": 510,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(166, 175, 179)",
+        {
+          "count": 237,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(217, 187, 132)",
+        {
+          "count": 98,
+          "examples": [
+            "strong.",
+            "span.rd-status",
+            "span.rd-badge is-warn"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(48, 58, 64)",
+        {
+          "count": 12,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(35, 43, 48)",
+        {
+          "count": 6,
+          "examples": [
+            "input.",
+            "input.",
+            "input."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(23, 28, 32)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(143, 175, 193)",
+        {
+          "count": 4,
+          "examples": [
+            "a.rd-context-link",
+            "a.rd-context-link",
+            "button."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(27, 33, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(255, 255, 255)",
+        {
+          "count": 1,
+          "examples": [
+            "input."
+          ]
+        }
+      ],
+      [
+        "color:rgb(23, 28, 32)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rd-button is-primary"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(143, 175, 193)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rd-button is-primary"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "overview",
+    "query": "area=testing&section=dashboard&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 171,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 74,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 35,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 10,
+          "examples": [
+            "div.fx-dashboard-metric",
+            "div.fx-dashboard-metric",
+            "div.fx-dashboard-metric"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 7,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 3,
+          "examples": [
+            "span.fx-dashboard-days",
+            "span.fx-dashboard-days",
+            "span.fx-dashboard-days"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(78, 104, 74)",
+        {
+          "count": 1,
+          "examples": [
+            "strong.is-positive"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "replay",
+    "query": "area=testing&section=sessions&select=1&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 190,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 55,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 17,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.156863 0.192157 0.219608 / 0.03)",
+        {
+          "count": 10,
+          "examples": [
+            "div.fxs-bar-track",
+            "div.fxs-bar-track",
+            "div.fxs-bar-track"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(198, 206, 204)",
+        {
+          "count": 10,
+          "examples": [
+            "i.fxs-bar-zero",
+            "i.fxs-bar-zero",
+            "i.fxs-bar-zero"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 9,
+          "examples": [
+            "section.fxs-chart-panel",
+            "section.fxs-chart-panel",
+            "section.fxs-chart-panel"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 7,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(62, 98, 117)",
+        {
+          "count": 7,
+          "examples": [
+            "i.fxs-bar ",
+            "i.fxs-bar ",
+            "i.fxs-bar "
+          ]
+        }
+      ],
+      [
+        "color:rgb(152, 71, 69)",
+        {
+          "count": 4,
+          "examples": [
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(152, 71, 69)",
+        {
+          "count": 3,
+          "examples": [
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative",
+            "i.fxs-bar is-negative"
+          ]
+        }
+      ],
+      [
+        "color:rgb(78, 104, 74)",
+        {
+          "count": 3,
+          "examples": [
+            "td.is-positive",
+            "td.is-positive",
+            "td.is-positive"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "trade",
+    "query": "area=testing&section=trades&select=1&sessions=all&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 289,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 69,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 30,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 28,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(78, 104, 74)",
+        {
+          "count": 16,
+          "examples": [
+            "span.fxa-badge is-buy",
+            "td.is-positive",
+            "td.is-positive"
+          ]
+        }
+      ],
+      [
+        "color:rgb(152, 71, 69)",
+        {
+          "count": 13,
+          "examples": [
+            "span.fxa-badge is-sell",
+            "td.is-negative",
+            "td.is-negative"
+          ]
+        }
+      ],
+      [
+        "color:rgb(0, 0, 0)",
+        {
+          "count": 11,
+          "examples": [
+            "input.",
+            "input.",
+            "input."
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 10,
+          "examples": [
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.871216 0.877804 0.866039)",
+        {
+          "count": 10,
+          "examples": [
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed",
+            "span.fxa-badge is-closed"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.913569 0.865098 0.843451)",
+        {
+          "count": 5,
+          "examples": [
+            "span.fxa-badge is-sell",
+            "span.fxa-badge is-sell",
+            "span.fxa-badge is-sell"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.878745 0.880627 0.845804)",
+        {
+          "count": 5,
+          "examples": [
+            "span.fxa-badge is-buy",
+            "span.fxa-badge is-buy",
+            "span.fxa-badge is-buy"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "analytics",
+    "query": "area=testing&section=analytics&select=1&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 327,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 269,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 61,
+          "examples": [
+            "article.fxa-outcomes is-win",
+            "article.fxa-outcomes is-loss",
+            "div.fxa-bar-track"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(198, 206, 204)",
+        {
+          "count": 34,
+          "examples": [
+            "i.fxa-bar-zero",
+            "i.fxa-bar-zero",
+            "i.fxa-bar-zero"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(78, 104, 74)",
+        {
+          "count": 27,
+          "examples": [
+            "i.fxa-bar-fill ",
+            "i.fxa-bar-fill ",
+            "i.fxa-bar-fill "
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 23,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 18,
+          "examples": [
+            "div.fxa-curve ",
+            "defs.[object SVGAnimatedString]",
+            "linearGradient.[object SVGAnimatedString]"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(152, 71, 69)",
+        {
+          "count": 7,
+          "examples": [
+            "i.fxa-bar-fill is-negative",
+            "i.fxa-bar-fill is-negative",
+            "i.fxa-bar-fill is-negative"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 6,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.891765 0.891373 0.858431)",
+        {
+          "count": 4,
+          "examples": [
+            "div.fxa-calendar-day is-positive",
+            "div.fxa-calendar-day is-positive",
+            "div.fxa-calendar-day is-positive"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(220, 226, 223)",
+        {
+          "count": 2,
+          "examples": [
+            "span.fxa-filter-chip",
+            "span.fxa-filter-chip"
+          ]
+        }
+      ],
+      [
+        "color:rgb(78, 104, 74)",
+        {
+          "count": 2,
+          "examples": [
+            "strong.",
+            "h3."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(152, 71, 69)",
+        {
+          "count": 1,
+          "examples": [
+            "h3."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.920784 0.878431 0.856471)",
+        {
+          "count": 1,
+          "examples": [
+            "div.fxa-calendar-day is-negative"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "market-data",
+    "query": "area=testing&section=market-data&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 144,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 65,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 22,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 7,
+          "examples": [
+            "input.",
+            "input.",
+            "th."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(0, 0, 0)",
+        {
+          "count": 1,
+          "examples": [
+            "input."
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "live",
+    "query": "area=live&section=calendar&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 61,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 24,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 5,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "playbook",
+    "query": "area=strategies&section=my-strategies&demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 63,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 31,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 6,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 5,
+          "examples": [
+            "b.pb-status is-draft",
+            "b.pb-status is-draft",
+            "b.pb-status is-draft"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "research",
+    "query": "area=strategies",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 89,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 54,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 8,
+          "examples": [
+            "strong.",
+            "span.rs-status ",
+            "span.rs-pill is-review"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 5,
+          "examples": [
+            "a.rs-link",
+            "span.rs-step-index",
+            "span.rs-step-index"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:color(srgb 0.92502 0.929098 0.91702)",
+        {
+          "count": 3,
+          "examples": [
+            "span.rs-step-index",
+            "span.rs-step-index",
+            "span.rs-step-index"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 1,
+          "examples": [
+            "input."
+          ]
+        }
+      ],
+      [
+        "color:rgb(251, 249, 244)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rs-button is-primary"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(62, 98, 117)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rs-button is-primary"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "risk",
+    "query": "surface=workspace",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 58,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 43,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 11,
+          "examples": [
+            "input.",
+            "input.",
+            "input."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "div.fx-content"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 3,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(152, 71, 69)",
+        {
+          "count": 2,
+          "examples": [
+            "strong.",
+            "strong."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(251, 249, 244)",
+        {
+          "count": 1,
+          "examples": [
+            "button.risk-primary"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(62, 98, 117)",
+        {
+          "count": 1,
+          "examples": [
+            "button.risk-primary"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "trade",
+    "query": "surface=workspace&intent=order",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 33,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 27,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 2,
+          "examples": [
+            "strong.",
+            "strong."
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 2,
+          "examples": [
+            "span.trade-lock-mark",
+            "a.trade-link"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "journal",
+    "query": "demo=1",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 63,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 57,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 21,
+          "examples": [
+            "span.ja-row-kicker",
+            "code.",
+            "span.ja-row-kicker"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(220, 226, 223)",
+        {
+          "count": 1,
+          "examples": [
+            "button.ja-journal-row is-selected"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 1,
+          "examples": [
+            "span.ja-story-status"
+          ]
+        }
+      ],
+      [
+        "color:rgb(78, 104, 74)",
+        {
+          "count": 1,
+          "examples": [
+            "strong.is-known"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "learn",
+    "query": "area=education",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 184,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 144,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 12,
+          "examples": [
+            "button.learn-resource-button ",
+            "button.learn-resource-button ",
+            "button.learn-resource-button "
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "div.fx-content"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 4,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 2,
+          "examples": [
+            "span.",
+            "strong."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(251, 249, 244)",
+        {
+          "count": 1,
+          "examples": [
+            "button.learn-open-current"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(62, 98, 117)",
+        {
+          "count": 1,
+          "examples": [
+            "button.learn-open-current"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "settings",
+    "query": "area=settings",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 117,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 56,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 6,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 4,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "div.fx-content"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(85, 97, 102)",
+        {
+          "count": 4,
+          "examples": [
+            "i.",
+            "i.",
+            "i."
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 3,
+          "examples": [
+            "strong.is-warn",
+            "strong.is-warn",
+            "strong.is-warn"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(78, 104, 74)",
+        {
+          "count": 1,
+          "examples": [
+            "strong.is-good"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "theme": "light",
+    "view": "data",
+    "query": "area=strategies",
+    "palette": [
+      [
+        "canvas",
+        "#F4F1EB"
+      ],
+      [
+        "surface",
+        "#FBF9F4"
+      ],
+      [
+        "primary",
+        "#3E6275"
+      ],
+      [
+        "text",
+        "#283138"
+      ],
+      [
+        "muted",
+        "#556166"
+      ]
+    ],
+    "colors": [
+      [
+        "color:rgb(85, 97, 102)",
+        {
+          "count": 508,
+          "examples": [
+            "button.fx-menu-button",
+            "small.",
+            "span.fx-rail-workspace-settings"
+          ]
+        }
+      ],
+      [
+        "color:rgb(40, 49, 56)",
+        {
+          "count": 239,
+          "examples": [
+            "header.fx-topbar",
+            "div.fx-topbar-brand",
+            "span.fx-wordmark"
+          ]
+        }
+      ],
+      [
+        "color:rgb(123, 88, 38)",
+        {
+          "count": 98,
+          "examples": [
+            "strong.",
+            "span.rd-status",
+            "span.rd-badge is-warn"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(228, 232, 229)",
+        {
+          "count": 12,
+          "examples": [
+            "button.fx-shell-toggle fx-language-toggle",
+            "button.fx-shell-toggle fx-theme-toggle",
+            "button.fx-shell-toggle fx-utility-icon"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(251, 249, 244)",
+        {
+          "count": 6,
+          "examples": [
+            "input.",
+            "input.",
+            "input."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(254, 252, 248)",
+        {
+          "count": 6,
+          "examples": [
+            "th.",
+            "th.",
+            "th."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(244, 241, 235)",
+        {
+          "count": 5,
+          "examples": [
+            "header.fx-topbar",
+            "section.fx-main",
+            "nav.fx-subnav"
+          ]
+        }
+      ],
+      [
+        "color:rgb(62, 98, 117)",
+        {
+          "count": 4,
+          "examples": [
+            "a.rd-context-link",
+            "a.rd-context-link",
+            "button."
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(238, 235, 229)",
+        {
+          "count": 1,
+          "examples": [
+            "aside.fx-rail"
+          ]
+        }
+      ],
+      [
+        "color:rgb(0, 0, 0)",
+        {
+          "count": 1,
+          "examples": [
+            "input."
+          ]
+        }
+      ],
+      [
+        "color:rgb(251, 249, 244)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rd-button is-primary"
+          ]
+        }
+      ],
+      [
+        "backgroundColor:rgb(62, 98, 117)",
+        {
+          "count": 1,
+          "examples": [
+            "button.rd-button is-primary"
+          ]
+        }
+      ]
+    ],
+    "overflow": false,
+    "errors": []
+  }
+]

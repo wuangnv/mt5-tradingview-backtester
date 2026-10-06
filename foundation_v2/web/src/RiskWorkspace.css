@@ -6,8 +6,8 @@
 .trade-heading-state { display: grid; gap: 4px; min-width: 170px; border-left: 0; padding-left: 0; }
 .trade-heading-state span, .trade-heading-state small { color: var(--wm-content-muted); font-size: 12px; }
 .trade-heading-state strong { color: var(--wm-warning); font-size: 12px; }
-.trade-simulator-banner, .risk-safety-banner { display: flex; align-items: center; gap: 11px; border-bottom: 1px solid #49362b; padding: 13px 0; }
-.trade-lock-mark { display: grid; place-items: center; width: 34px; height: 22px; border: 1px solid #805d32; border-radius: 3px; color: var(--wm-primary); font-size: 12px; font-weight: 800; }
+.trade-simulator-banner, .risk-safety-banner { display: flex; align-items: center; gap: 11px; border-bottom: 1px solid var(--wm-warning); padding: 13px 0; }
+.trade-lock-mark { display: grid; place-items: center; width: 34px; height: 22px; border: 1px solid var(--wm-warning); border-radius: 3px; color: var(--wm-primary); font-size: 12px; font-weight: 800; }
 .trade-simulator-banner div, .risk-safety-banner { display: grid; gap: 3px; }
 .trade-simulator-banner strong, .risk-safety-banner strong { color: var(--wm-warning); font-size: 12px; letter-spacing: .06em; }
 .trade-simulator-banner span:last-child, .risk-safety-banner span { color: var(--wm-content-muted); font-size: 13px; line-height: 1.4; }
@@ -43,8 +43,8 @@
 .trade-draft-form { display: grid; grid-template-columns: 100px repeat(3, minmax(100px, 1fr)); align-items: end; gap: 12px; border-top: 1px solid var(--wm-border); margin-top: 15px; padding-top: 16px; }
 .trade-side-toggle { display: grid; grid-template-columns: 1fr; gap: 4px; }
 .trade-side-toggle button { min-height: 44px; border: 1px solid var(--wm-border); border-radius: 3px; background: var(--wm-surface); color: var(--wm-content-muted); font-size: 12px; font-weight: 800; cursor: pointer; }
-.trade-side-toggle button.is-buy { border-color: #4e8b68; background: color-mix(in srgb, var(--wm-positive) 12%, var(--wm-surface)); color: var(--wm-positive); }
-.trade-side-toggle button.is-sell { border-color: #8b5555; background: color-mix(in srgb, var(--wm-negative) 12%, var(--wm-surface)); color: var(--wm-negative); }
+.trade-side-toggle button.is-buy { border-color: var(--wm-positive); background: color-mix(in srgb, var(--wm-positive) 12%, var(--wm-surface)); color: var(--wm-positive); }
+.trade-side-toggle button.is-sell { border-color: var(--wm-negative); background: color-mix(in srgb, var(--wm-negative) 12%, var(--wm-surface)); color: var(--wm-negative); }
 .trade-risk-preview { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--wm-border); border-bottom: 1px solid var(--wm-border); }
 .trade-risk-preview > div { min-width: 0; padding: 13px 14px 13px 0; }
 .trade-risk-preview > div + div { border-left: 1px solid var(--wm-border); padding-left: 14px; }
@@ -73,7 +73,7 @@
 .risk-mode-lock { display: grid; gap: 4px; border-left: 0; padding: 0; }
 .risk-mode-lock strong { color: var(--wm-negative); font-size: 12px; }
 .risk-mode-lock span { color: var(--wm-content-muted); font-size: 12px; }
-.risk-safety-banner { margin-bottom: 22px; border-color: #49362b; }
+.risk-safety-banner { margin-bottom: 22px; border-color: var(--wm-warning); }
 .risk-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 30px; }
 .risk-form { min-width: 0; border-top: 1px solid var(--wm-border); padding-top: 17px; }
 .risk-form-head.is-snapshot { border-top: 1px solid var(--wm-border); margin-top: 23px; padding-top: 18px; }
@@ -89,13 +89,13 @@
 .risk-side li { display: grid; gap: 4px; border-bottom: 1px solid var(--wm-border); padding: 12px 0; }
 .risk-side li strong { color: var(--wm-content); font-size: 13px; }
 .risk-side li span { color: var(--wm-content-muted); font-size: 12px; line-height: 1.4; }
-.risk-result { margin-top: 28px; border-top: 1px solid #394b42; border-bottom: 1px solid #394b42; padding: 19px 0 0; }
-.risk-result.is-breached { border-color: #704546; }
-.risk-result-blocked { border-color: #6e542e; }
+.risk-result { margin-top: 28px; border-top: 1px solid var(--wm-positive); border-bottom: 1px solid var(--wm-positive); padding: 19px 0 0; }
+.risk-result.is-breached { border-color: var(--wm-negative); }
+.risk-result-blocked { border-color: var(--wm-warning); }
 .risk-result-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
 .risk-result-head p { max-width: 680px; margin: 7px 0 0; color: var(--wm-content-muted); font-size: 13px; line-height: 1.45; }
-.risk-status-chip { border: 1px solid #517c60; padding: 6px 8px; color: var(--wm-positive); font-size: 12px; letter-spacing: .1em; white-space: nowrap; }
-.is-breached .risk-status-chip { border-color: #845454; color: var(--wm-negative); }
+.risk-status-chip { border: 1px solid var(--wm-positive); padding: 6px 8px; color: var(--wm-positive); font-size: 12px; letter-spacing: .1em; white-space: nowrap; }
+.is-breached .risk-status-chip { border-color: var(--wm-negative); color: var(--wm-negative); }
 .risk-evaluation-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--wm-border); border-bottom: 1px solid var(--wm-border); margin-top: 16px; }
 .risk-metric { min-width: 0; padding: 13px 14px 13px 0; }
 .risk-metric + .risk-metric { border-left: 1px solid var(--wm-border); padding-left: 14px; }
@@ -112,7 +112,7 @@
 .risk-result-blocked { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; padding-bottom: 17px; }
 .risk-result-blocked p { max-width: 670px; margin: 7px 0 0; color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }
 .risk-result-blocked ul { margin: 0; padding: 0; list-style: none; }
-.risk-result-blocked li { border-bottom: 1px solid #352c20; padding: 7px 0; color: var(--wm-warning); font-size: 12px; }
+.risk-result-blocked li { border-bottom: 1px solid color-mix(in srgb, var(--wm-warning) 10%, var(--wm-canvas)); padding: 7px 0; color: var(--wm-warning); font-size: 12px; }
 
 @media (max-width: 900px) {
   .trade-grid, .risk-layout { grid-template-columns: 1fr; }

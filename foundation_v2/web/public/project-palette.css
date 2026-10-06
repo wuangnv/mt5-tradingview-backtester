@@ -1,0 +1,46 @@
+/* Project-owned palette, shared with the chart iframe. Geometry stays in components. */
+:root,
+.fx-app[data-theme='light'] {
+  --project-canvas: #F4F1EB;
+  --project-chrome: #EEEBE5;
+  --project-surface: #FBF9F4;
+  --project-raised: #FEFCF8;
+  --project-control: #E4E8E5;
+  --project-hover: #DCE2DF;
+  --project-border: #C6CECC;
+  --project-border-strong: #77858B;
+  --project-text: #283138;
+  --project-muted: #556166;
+  --project-subtle: #637078;
+  --project-primary: #3E6275;
+  --project-primary-hover: #365A6C;
+  --project-on-primary: #FBF9F4;
+  --project-highlight: #8F532F;
+  --project-positive: #4E684A;
+  --project-negative: #984745;
+  --project-warning: #7B5826;
+  --project-grid: #E1E4DF;
+}
+:root.theme-dark,
+html[data-tw-theme='dark'],
+.fx-app:not([data-theme='light']) {
+  --project-canvas: #171C20;
+  --project-chrome: #1B2126;
+  --project-surface: #232B30;
+  --project-raised: #2B343A;
+  --project-control: #303A40;
+  --project-hover: #343F46;
+  --project-border: #45525B;
+  --project-border-strong: #788992;
+  --project-text: #ECE9E2;
+  --project-muted: #A6AFB3;
+  --project-subtle: #909B9F;
+  --project-primary: #8FAFC1;
+  --project-primary-hover: #A8C2D0;
+  --project-on-primary: #171C20;
+  --project-highlight: #D6A07B;
+  --project-positive: #9DAF98;
+  --project-negative: #D89B95;
+  --project-warning: #D9BB84;
+  --project-grid: #2B343A;
+}

@@ -150,7 +150,7 @@
 .fx-wordmark {
   display: inline-block;
   width: 128px;
-  color: #f2f4f5;
+  color: var(--project-text);
   line-height: 0;
   white-space: nowrap;
 }
@@ -159,13 +159,13 @@
   display: block;
   width: 100%;
   height: auto;
-  color: #f2f4f5;
+  color: var(--project-text);
   fill: currentColor;
 }
 
 .fx-wordmark-compact {
   display: none;
-  color: #f2f4f5;
+  color: var(--project-text);
   font-family: "Arial Black", "Lato", "Nunito Sans", Inter, ui-sans-serif, sans-serif;
   font-size: 11px;
   font-weight: 900;
@@ -870,7 +870,7 @@
 }
 
 .fx-app.fx-shell-story { --fx-shell-nav-hover: #151a1e; --fx-shell-nav-selected: #202225; --fx-shell-nav-selected-content: var(--fx-shell-text); }
-.fx-app.fx-shell-story[data-theme='light'] { --fx-shell-nav-hover: #e0e7ea; --fx-shell-nav-selected: #f0e6d1; --fx-shell-nav-selected-content: #5a3a06; }
+.fx-app.fx-shell-story[data-theme='light'] { --fx-shell-nav-hover: var(--project-hover); --fx-shell-nav-selected: var(--project-control); --fx-shell-nav-selected-content: var(--project-text); }
 
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading:hover,
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-rail-section-heading:focus-visible {
@@ -1237,26 +1237,26 @@
 }
 
 .fx-app.fx-shell-story[data-theme='light'] .fx-menu-button {
-  color: #47535b;
+  color: var(--project-muted);
 }
 
 .fx-app.fx-shell-story[data-theme='light'] .fx-menu-button:hover,
 .fx-app.fx-shell-story[data-theme='light'] .fx-menu-button:focus-visible {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading {
-  color: #47535b;
+  color: var(--project-muted);
 }
 
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading .fx-nav-icon {
-  color: #47535b;
+  color: var(--project-muted);
 }
 
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading:hover,
 .fx-app.fx-shell-story[data-theme='light']:not(.is-chart-workspace) .fx-rail-section-heading:focus-visible {
   background: var(--fx-shell-nav-hover);
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 /*
@@ -1321,7 +1321,7 @@
 
 .fx-app.fx-shell-story[data-theme='light'].is-chart-workspace .fx-chart-brand,
 .fx-app.fx-shell-story[data-theme='light'].is-chart-workspace .fx-chart-session-title,
-.fx-app.fx-shell-story[data-theme='light'].is-chart-workspace .fx-chart-icon-button { color: #1d2930; }
+.fx-app.fx-shell-story[data-theme='light'].is-chart-workspace .fx-chart-icon-button { color: var(--project-text); }
 
 .fx-content:focus-visible { outline: 2px solid var(--fx-shell-accent); outline-offset: -2px; }
 

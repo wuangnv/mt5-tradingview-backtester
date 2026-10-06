@@ -1,3 +1,4 @@
+import { readProjectPalette, chartSeriesPalette } from './projectPalette.js'
 import FxSelect from './FxSelect.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -91,24 +92,22 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
   useEffect(() => {
     const host = hostRef.current
     if (!host) return undefined
+    const palette = readProjectPalette(host)
     const chart = createChart(host, {
       width: host.clientWidth, height: host.clientHeight,
-      layout: { background: { color: '#0b0d10' }, textColor: '#a4adbb', fontSize: 11 },
-      grid: { vertLines: { color: '#171b21' }, horzLines: { color: '#171b21' } },
-      rightPriceScale: { borderColor: '#252525', scaleMargins: { top: 0.12, bottom: 0.22 } },
-      timeScale: { borderColor: '#252525', timeVisible: true, secondsVisible: false, lockVisibleTimeRangeOnResize: true },
+      layout: { background: { color: palette.canvas }, textColor: palette.muted, fontSize: 11 },
+      grid: { vertLines: { color: palette.grid }, horzLines: { color: palette.grid } },
+      rightPriceScale: { borderColor: palette.border, scaleMargins: { top: 0.12, bottom: 0.22 } },
+      timeScale: { borderColor: palette.border, timeVisible: true, secondsVisible: false, lockVisibleTimeRangeOnResize: true },
       crosshair: { mode: 0 },
     })
     const seriesType = chartType === 'bars' ? BarSeries : chartType === 'line' ? LineSeries : chartType === 'area' ? AreaSeries : chartType === 'baseline' ? BaselineSeries : CandlestickSeries
     const series = chart.addSeries(seriesType, {
-      upColor: '#14b889', downColor: '#ef5350', borderVisible: false,
-      wickUpColor: '#14b889', wickDownColor: '#ef5350', color: '#d6b56f',
-      lineColor: '#63b982', topColor: 'rgba(99,185,130,.20)', bottomColor: 'rgba(99,185,130,.02)',
-      topLineColor: '#63b982', bottomLineColor: '#df7676', lineWidth: 2,
+      ...chartSeriesPalette(palette), borderVisible: false, lineWidth: 2,
     })
     const volume = chart.addSeries(HistogramSeries, { priceFormat: { type: 'volume' }, priceScaleId: 'volume', lastValueVisible: false, priceLineVisible: false })
     volume.priceScale().applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } })
-    const average = chart.addSeries(LineSeries, { color: '#e3ba69', lineWidth: 1, lastValueVisible: false, priceLineVisible: false })
+    const average = chart.addSeries(LineSeries, { color: palette.highlight, lineWidth: 1, lastValueVisible: false, priceLineVisible: false })
     const drawingPrimitive = new ReplayDrawingPrimitive()
     series.attachPrimitive(drawingPrimitive)
     const orderPrimitive = new ReplayOrderPrimitive(projection => {
@@ -168,19 +167,17 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
   }, [chartType])
 
   useEffect(() => {
-    const light = theme === 'light'
-    chartRef.current?.chart.applyOptions({
-      layout: { background: { color: light ? '#ffffff' : '#0b0d10' }, textColor: light ? '#526074' : '#a4adbb' },
-      grid: { vertLines: { color: light ? '#f0f2f5' : '#171b21' }, horzLines: { color: light ? '#f0f2f5' : '#171b21' } },
-      rightPriceScale: { borderColor: light ? '#e5e8ee' : '#242932' }, timeScale: { borderColor: light ? '#e5e8ee' : '#242932' },
+    if (!chartRef.current) return
+    const palette = readProjectPalette(hostRef.current)
+    chartRef.current.chart.applyOptions({
+      layout: { background: { color: palette.canvas }, textColor: palette.muted },
+      grid: { vertLines: { color: palette.grid }, horzLines: { color: palette.grid } },
+      rightPriceScale: { borderColor: palette.border }, timeScale: { borderColor: palette.border },
     })
-    chartRef.current?.series.applyOptions({ upColor: light ? '#07845f' : '#14b889', downColor: light ? '#ce3f47' : '#ef5350',
-      wickUpColor: light ? '#07845f' : '#14b889', wickDownColor: light ? '#ce3f47' : '#ef5350',
-      lineColor: light ? '#07845f' : '#14b889', color: light ? '#94641d' : '#d6b56f',
-      topLineColor: light ? '#07845f' : '#14b889', bottomLineColor: light ? '#ce3f47' : '#ef5350' })
-    chartRef.current?.average.applyOptions({ color: light ? '#94641d' : '#e3ba69' })
-    chartRef.current?.orderPrimitive.setTheme(theme)
-    chartRef.current?.drawingPrimitive.setTheme(theme)
+    chartRef.current.series.applyOptions(chartSeriesPalette(palette))
+    chartRef.current.average.applyOptions({ color: palette.highlight })
+    chartRef.current.orderPrimitive.setPalette(palette)
+    chartRef.current.drawingPrimitive.setPalette(palette)
   }, [chartType, theme])
 
   useEffect(() => { chartRef.current?.orderPrimitive.setLevels(levels) }, [levels, chartType])
@@ -201,7 +198,8 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
     series.applyOptions({ priceFormat: { type: 'price', precision, minMove: 10 ** -precision } })
     series.setData(chartType === 'candles' || chartType === 'bars' ? data : data.map((row) => ({ time: row.time, value: row.close })))
     if (chartType === 'baseline' && data.length) series.applyOptions({ baseValue: { type: 'price', price: data[0].close } })
-    volume.setData(rows.filter((row) => (row.volume ?? row.tick_volume) !== null && (row.volume ?? row.tick_volume) !== undefined && Number.isFinite(Number(row.volume ?? row.tick_volume))).map((row) => ({ time: Number(row.timestamp), value: Number(row.volume ?? row.tick_volume), color: Number(row.close) >= Number(row.open) ? '#264c39' : '#603737' })))
+    const palette = readProjectPalette(hostRef.current)
+    volume.setData(rows.filter((row) => (row.volume ?? row.tick_volume) !== null && (row.volume ?? row.tick_volume) !== undefined && Number.isFinite(Number(row.volume ?? row.tick_volume))).map((row) => ({ time: Number(row.timestamp), value: Number(row.volume ?? row.tick_volume), color: Number(row.close) >= Number(row.open) ? `${palette.positive}80` : `${palette.negative}80` })))
     let sum = 0
     const sma = []
     data.forEach((row, index) => {
@@ -221,7 +219,7 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
     previousRowCountRef.current = rows.length
     previousSessionRef.current = sessionId
     rangeRef.current = null
-  }, [chartType, rows, sessionId])
+  }, [chartType, rows, sessionId, theme])
 
   useEffect(() => {
     chartRef.current?.volume.applyOptions({ visible: showVolume })

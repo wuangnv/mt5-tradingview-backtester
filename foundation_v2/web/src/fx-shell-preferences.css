@@ -7,14 +7,14 @@
 
 html[data-tw-theme='light'],
 body[data-tw-theme='light'] {
-  background: #f5f7f8;
-  color: #1d2930;
+  background: var(--project-canvas);
+  color: var(--project-text);
 }
 
 html[data-tw-theme='dark'],
 body[data-tw-theme='dark'] {
-  background: #0c0e10;
-  color: #eceff3;
+  background: var(--project-canvas);
+  color: var(--project-text);
 }
 
 .fx-shell-toggle {
@@ -70,49 +70,49 @@ body[data-tw-theme='dark'] {
 
 .fx-app[data-theme='light'] {
   color-scheme: light;
-  --fx-bg: #f5f7f8;
-  --fx-surface: #ffffff;
-  --fx-surface-raised: #f0f3f4;
-  --fx-line: #d6dde1;
-  --fx-line-strong: #b5c0c7;
-  --fx-text: #1d2930;
-  --fx-muted: #53636d;
-  --fx-subtle: #6d7b84;
-  --fx-accent: #a46812;
-  --fx-blue: #23647d;
-  --fx-green: #29724b;
-  --fx-red: #a33d3d;
-  --fx-shell-bg: #f5f7f8;
-  --fx-shell-rail: #e9eef0;
-  --fx-shell-surface: #ffffff;
-  --fx-shell-line: #d6dde1;
-  --fx-shell-line-strong: #b5c0c7;
-  --fx-shell-text: #1d2930;
-  --fx-shell-muted: #53636d;
-  --fx-shell-subtle: #6d7b84;
-  --fx-shell-accent: #a46812;
-  --fx-shell-safe: #29724b;
-  --fx-shell-warn: #9a630f;
-  --fx-shell-danger: #a33d3d;
-  --ui-bg: #f5f7f8;
-  --ui-surface: #ffffff;
-  --ui-surface-2: #f0f3f4;
-  --ui-surface-hover: #e7edef;
-  --ui-border: #d6dde1;
-  --ui-border-strong: #b5c0c7;
-  --ui-text: #1d2930;
-  --ui-text-soft: #53636d;
-  --ui-muted: #6d7b84;
-  --ui-accent: #a46812;
-  --ui-accent-fg: #ffffff;
-  --ui-focus: #a46812;
-  --ui-selected: #f0e6d1;
-  --ui-selected-soft: #f7f1e6;
-  --ui-warning: #9a630f;
-  --ui-warning-text: #704609;
-  --ui-error: #a33d3d;
-  --ui-success: #29724b;
-  --ui-unknown: #6d7b84;
+  --fx-bg: var(--project-canvas);
+  --fx-surface: var(--project-surface);
+  --fx-surface-raised: var(--project-raised);
+  --fx-line: var(--project-border);
+  --fx-line-strong: var(--project-border-strong);
+  --fx-text: var(--project-text);
+  --fx-muted: var(--project-muted);
+  --fx-subtle: var(--project-subtle);
+  --fx-accent: var(--project-highlight);
+  --fx-blue: var(--project-primary);
+  --fx-green: var(--project-positive);
+  --fx-red: var(--project-negative);
+  --fx-shell-bg: var(--project-canvas);
+  --fx-shell-rail: var(--project-chrome);
+  --fx-shell-surface: var(--project-surface);
+  --fx-shell-line: var(--project-border);
+  --fx-shell-line-strong: var(--project-border-strong);
+  --fx-shell-text: var(--project-text);
+  --fx-shell-muted: var(--project-muted);
+  --fx-shell-subtle: var(--project-subtle);
+  --fx-shell-accent: var(--project-highlight);
+  --fx-shell-safe: var(--project-positive);
+  --fx-shell-warn: var(--project-warning);
+  --fx-shell-danger: var(--project-negative);
+  --ui-bg: var(--project-canvas);
+  --ui-surface: var(--project-surface);
+  --ui-surface-2: var(--project-raised);
+  --ui-surface-hover: var(--project-hover);
+  --ui-border: var(--project-border);
+  --ui-border-strong: var(--project-border-strong);
+  --ui-text: var(--project-text);
+  --ui-text-soft: var(--project-muted);
+  --ui-muted: var(--project-subtle);
+  --ui-accent: var(--project-highlight);
+  --ui-accent-fg: var(--project-surface);
+  --ui-focus: var(--project-highlight);
+  --ui-selected: var(--project-control);
+  --ui-selected-soft: var(--project-raised);
+  --ui-warning: var(--project-warning);
+  --ui-warning-text: var(--project-warning);
+  --ui-error: var(--project-negative);
+  --ui-success: var(--project-positive);
+  --ui-unknown: var(--project-subtle);
   background: var(--fx-shell-bg);
   color: var(--fx-shell-text);
 }
@@ -144,52 +144,52 @@ body[data-tw-theme='dark'] {
 }
 
 .fx-app[data-theme='light'] .fx-nav-item {
-  color: #52616a;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .fx-nav-item:hover,
 .fx-app[data-theme='light'] .fx-nav-item:focus-visible {
-  background: #e0e7ea;
-  color: #1d2930;
+  background: var(--project-hover);
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .fx-nav-item.is-active {
-  background: #f0e6d1;
-  color: #704609;
+  background: var(--project-control);
+  color: var(--project-warning);
 }
 
 .fx-app[data-theme='light'] .fx-dashboard-card {
-  border-color: #c4d0d6;
-  background: #ffffff;
-  color: #1d2930;
+  border-color: var(--project-border-strong);
+  background: var(--project-surface);
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .fx-dashboard-card.is-primary {
-  border-color: #236bd0;
+  border-color: var(--project-primary);
 }
 
 .fx-app[data-theme='light'] .fx-dashboard-card:hover,
 .fx-app[data-theme='light'] .fx-dashboard-card:focus-visible,
 .fx-app[data-theme='light'] .fx-dashboard-card:not(.is-primary):hover,
 .fx-app[data-theme='light'] .fx-dashboard-card:not(.is-primary):focus-visible {
-  border-color: #236bd0;
-  background: #f6f9fb;
+  border-color: var(--project-primary);
+  background: var(--project-canvas);
 }
 
 .fx-app[data-theme='light'] .fx-dashboard-card-copy strong {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .fx-dashboard-card-copy small,
 .fx-app[data-theme='light'] .fx-dashboard-card-info {
-  color: #5c6c76;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .fx-nav-item:hover::after,
 .fx-app[data-theme='light'] .fx-nav-item:focus-visible::after {
   border-color: var(--fx-shell-line-strong);
-  background: #ffffff;
-  color: #1d2930;
+  background: var(--project-surface);
+  color: var(--project-text);
   box-shadow: 0 8px 18px rgba(31, 48, 58, .15);
 }
 
@@ -201,43 +201,43 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .fx-session-main > strong,
 .fx-app[data-theme='light'] .fx-section-heading h2,
 .fx-app[data-theme='light'] .fx-queue-row strong {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 /* The source-aligned shell layer owns a few intentionally high-contrast dark
  * literals. Rebind those primitives here so the light toggle remains a real
  * readable theme instead of a pale surface with white logo/title text. */
 .fx-app[data-theme='light'] .fx-topbar {
-  background: #ffffff;
-  border-bottom-color: #d6dde1;
+  background: var(--project-surface);
+  border-bottom-color: var(--project-border);
 }
 .fx-app[data-theme='light'] .fx-wordmark-svg {
-  color: #1d2930;
+  color: var(--project-text);
   fill: currentColor;
 }
 .fx-app[data-theme='light'] .fx-shell-hero {
-  border-bottom-color: #d6dde1;
-  background: linear-gradient(110deg, #f5f7f8 12%, #eef3f8 56%, #dceaff 100%);
+  border-bottom-color: var(--project-border);
+  background: linear-gradient(110deg, var(--project-canvas) 12%, var(--project-control) 56%, var(--project-primary) 100%);
 }
 .fx-app[data-theme='light'] .fx-shell-hero-title h1 {
-  color: #1d2930;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .fx-subnav-link {
-  color: #53636d;
+  color: var(--project-muted);
 }
 .fx-app[data-theme='light'] .fx-subnav-link:hover,
 .fx-app[data-theme='light'] .fx-subnav-link.is-active {
-  color: #1d2930;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .fx-dashboard-metric-icon {
-  color: #30434d;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .fx-dashboard-metric > strong small {
-  color: #53636d;
+  color: var(--project-muted);
 }
 .fx-app[data-theme='light'] .fx-dashboard-info {
-  border-color: #7c8d97;
-  color: #53636d;
+  border-color: var(--project-border-strong);
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .fx-page-heading p,
@@ -245,7 +245,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .fx-queue-row small,
 .fx-app[data-theme='light'] .fx-context-list dt,
 .fx-app[data-theme='light'] .fx-settings-list small {
-  color: #5c6c76;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .fx-secondary-button,
@@ -255,9 +255,9 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-button:not(.is-primary):not(.is-danger),
 .fx-app[data-theme='light'] .learn-resource-button,
 .fx-app[data-theme='light'] .settings-refresh {
-  border-color: #b5c0c7;
-  background: #ffffff;
-  color: #30434d;
+  border-color: var(--project-border-strong);
+  background: var(--project-surface);
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .fx-secondary-button:hover,
@@ -267,9 +267,9 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-button:not(.is-primary):not(.is-danger):hover:not(:disabled),
 .fx-app[data-theme='light'] .learn-resource-button:hover:not(:disabled),
 .fx-app[data-theme='light'] .settings-refresh:hover:not(:disabled) {
-  border-color: #7c8d97;
-  background: #e9eef0;
-  color: #1d2930;
+  border-color: var(--project-border-strong);
+  background: var(--project-chrome);
+  color: var(--project-text);
 }
 
 /* Story workspaces: retain dark chart canvases for signal readability, while
@@ -284,16 +284,16 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .settings-shell,
 .fx-app[data-theme='light'] .learn-shell,
 .fx-app[data-theme='light'] .replay-shell {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .as-page {
-  --as-border: #d1dadd;
-  --as-border-soft: #e1e7e9;
-  --as-surface: #ffffff;
-  --as-surface-raised: #f0f3f4;
-  --as-muted: #53636d;
-  --as-subtle: #6d7b84;
+  --as-border: var(--project-border);
+  --as-border-soft: var(--project-border);
+  --as-surface: var(--project-surface);
+  --as-surface-raised: var(--project-raised);
+  --as-muted: var(--project-muted);
+  --as-subtle: var(--project-subtle);
 }
 
 .fx-app[data-theme='light'] .as-page-header h1,
@@ -312,7 +312,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .trade-draft-section h2,
 .fx-app[data-theme='light'] .risk-form h2,
 .fx-app[data-theme='light'] .risk-side h2 {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .as-page-header p,
@@ -329,7 +329,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .trade-message,
 .fx-app[data-theme='light'] .trade-init-section p,
 .fx-app[data-theme='light'] .risk-result-head p {
-  color: #53636d;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .as-evidence-panel,
@@ -351,8 +351,8 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .trade-context-panel,
 .fx-app[data-theme='light'] .risk-form,
 .fx-app[data-theme='light'] .risk-side {
-  border-color: #d1dadd;
-  background: #ffffff;
+  border-color: var(--project-border);
+  background: var(--project-surface);
 }
 
 .fx-app[data-theme='light'] .as-table th,
@@ -361,15 +361,15 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .ja-table td,
 .fx-app[data-theme='light'] .rd-table th,
 .fx-app[data-theme='light'] .rd-table td {
-  border-color: #dce3e6;
-  color: #30434d;
+  border-color: var(--project-border);
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .as-table th,
 .fx-app[data-theme='light'] .ja-table th,
 .fx-app[data-theme='light'] .rd-table th {
-  background: #f0f3f4;
-  color: #53636d;
+  background: var(--project-raised);
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .trade-init-form input,
@@ -380,17 +380,17 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rs-field select,
 .fx-app[data-theme='light'] .rd-field input,
 .fx-app[data-theme='light'] .rd-field select {
-  border-color: #b5c0c7;
-  background: #ffffff;
-  color: #1d2930;
+  border-color: var(--project-border-strong);
+  background: var(--project-surface);
+  color: var(--project-text);
 }
 
 /* Replay keeps the chart itself dark so candle/indicator contrast does not
  * change with the document theme.  Its controls and decision evidence follow
  * the light surface around it. */
 .fx-app[data-theme='light'] .replay-shell {
-  background: #f5f7f8;
-  color: #1d2930;
+  background: var(--project-canvas);
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .replay-topbar,
@@ -400,7 +400,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .replay-story,
 .fx-app[data-theme='light'] .replay-side,
 .fx-app[data-theme='light'] .decision-readout {
-  border-color: #d1dadd;
+  border-color: var(--project-border);
 }
 
 .fx-app[data-theme='light'] .replay-topbar h1,
@@ -409,7 +409,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .replay-jump-heading strong,
 .fx-app[data-theme='light'] .replay-evidence-strip > div strong,
 .fx-app[data-theme='light'] .bar-readout-label {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .replay-topbar p,
@@ -421,12 +421,12 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .decision-readout span,
 .fx-app[data-theme='light'] .decision-readout small,
 .fx-app[data-theme='light'] .replay-jump-heading {
-  color: #53636d;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .replay-story,
 .fx-app[data-theme='light'] .replay-side {
-  background: #ffffff;
+  background: var(--project-surface);
 }
 
 .fx-app[data-theme='light'] .replay-start,
@@ -437,20 +437,20 @@ body[data-tw-theme='dark'] {
 }
 
 .fx-app[data-theme='light'] .replay-chart {
-  border-color: #252e34;
-  background: #0d1113;
+  border-color: var(--project-border);
+  background: var(--project-surface);
 }
 
 .fx-app[data-theme='light'] .replay-chart + .chart-badge,
 .fx-app[data-theme='light'] .chart-badge {
   background: rgba(10, 14, 16, .84);
-  color: #d5dfe4;
+  color: var(--project-text);
 }
 
 /* Research and data desk are text-heavy evidence surfaces. */
 .fx-app[data-theme='light'] .rs-shell,
 .fx-app[data-theme='light'] .rd-shell {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .rs-topbar,
@@ -475,7 +475,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-job-strip,
 .fx-app[data-theme='light'] .rd-result-grid,
 .fx-app[data-theme='light'] .rd-provenance-grid {
-  border-color: #d1dadd;
+  border-color: var(--project-border);
 }
 
 .fx-app[data-theme='light'] .rs-topbar h1,
@@ -502,16 +502,16 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-provenance h3,
 .fx-app[data-theme='light'] .rd-provenance-grid code,
 .fx-app[data-theme='light'] .rd-provenance-grid strong {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .rs-step.is-terminal .rs-step-index {
-  border-color: #b35b52;
-  background: #fff0ed;
-  color: #963d35;
+  border-color: var(--project-negative);
+  background: color-mix(in srgb, var(--project-negative) 10%, var(--project-surface));
+  color: var(--project-negative);
 }
 
-.fx-app[data-theme='light'] .rs-step.is-terminal strong { color: #963d35; }
+.fx-app[data-theme='light'] .rs-step.is-terminal strong { color: var(--project-negative); }
 
 .fx-app[data-theme='light'] .rs-step,
 .fx-app[data-theme='light'] .rs-step small,
@@ -533,16 +533,16 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-provider-row small,
 .fx-app[data-theme='light'] .rd-field span,
 .fx-app[data-theme='light'] .rd-result-grid span {
-  color: #53636d;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .rs-disclosure-body pre,
 .fx-app[data-theme='light'] .rs-checkpoint-note,
 .fx-app[data-theme='light'] .rd-checkpoint,
 .fx-app[data-theme='light'] .rd-run-warning {
-  border-color: #c5d0d5;
-  background: #f0f3f4;
-  color: #53636d;
+  border-color: var(--project-border);
+  background: var(--project-raised);
+  color: var(--project-muted);
 }
 
 /* Journal and analytics panels are cards only where they communicate an
@@ -561,8 +561,8 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .as-evidence-panel,
 .fx-app[data-theme='light'] .as-inspector,
 .fx-app[data-theme='light'] .as-ledger-section {
-  border-color: #d1dadd;
-  background: #ffffff;
+  border-color: var(--project-border);
+  background: var(--project-surface);
 }
 
 .fx-app[data-theme='light'] .ja-story-intro-copy strong,
@@ -577,7 +577,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .as-secondary-metrics strong,
 .fx-app[data-theme='light'] .as-selection-outcome,
 .fx-app[data-theme='light'] .as-selection-outcome strong {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .ja-story-intro-copy > span:last-child,
@@ -594,12 +594,12 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .as-story-metric small,
 .fx-app[data-theme='light'] .as-secondary-metrics span,
 .fx-app[data-theme='light'] .as-secondary-metrics small {
-  color: #53636d;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .ja-story-page .ja-journal-row:hover,
 .fx-app[data-theme='light'] .ja-story-page .ja-journal-row.is-selected {
-  background: #eef3f4;
+  background: var(--project-hover);
 }
 
 /* Trade/Risk, Settings and Learn use the same light evidence palette. */
@@ -625,7 +625,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .learn-context-strip,
 .fx-app[data-theme='light'] .learn-module,
 .fx-app[data-theme='light'] .learn-reader {
-  border-color: #d1dadd;
+  border-color: var(--project-border);
 }
 
 .fx-app[data-theme='light'] .trade-heading h1,
@@ -641,7 +641,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .settings-heading h2,
 .fx-app[data-theme='light'] .settings-context strong,
 .fx-app[data-theme='light'] .settings-fact dd {
-  color: #1d2930;
+  color: var(--project-text);
 }
 
 .fx-app[data-theme='light'] .trade-heading p,
@@ -663,12 +663,12 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .learn-context-strip,
 .fx-app[data-theme='light'] .learn-resource-copy,
 .fx-app[data-theme='light'] .learn-footnote {
-  color: #53636d;
+  color: var(--project-muted);
 }
 
 .fx-app[data-theme='light'] .learn-module,
 .fx-app[data-theme='light'] .learn-reader {
-  background: #ffffff;
+  background: var(--project-surface);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -703,9 +703,9 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .fx-queue-row b,
 .fx-app[data-theme='light'] .fx-context-list dd,
 .fx-app[data-theme='light'] .fx-context-list code {
-  color: #53636d;
+  color: var(--project-muted);
 }
-.fx-app[data-theme='light'] .fx-queue-row:hover { background: #eef3f4; }
+.fx-app[data-theme='light'] .fx-queue-row:hover { background: var(--project-hover); }
 
 .fx-app[data-theme='light'] .replay-shell,
 .fx-app[data-theme='light'] .learn-shell,
@@ -713,7 +713,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-shell,
 .fx-app[data-theme='light'] .trade-workspace,
 .fx-app[data-theme='light'] .risk-workspace {
-  color: #1d2930;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .replay-topbar,
 .fx-app[data-theme='light'] .replay-start,
@@ -724,7 +724,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .settings-topbar,
 .fx-app[data-theme='light'] .settings-context,
 .fx-app[data-theme='light'] .settings-section {
-  border-color: #d6dde1;
+  border-color: var(--project-border);
 }
 .fx-app[data-theme='light'] .replay-topbar h1,
 .fx-app[data-theme='light'] .replay-start h2,
@@ -740,7 +740,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-panel-head h2,
 .fx-app[data-theme='light'] .trade-heading h1,
 .fx-app[data-theme='light'] .risk-heading h1 {
-  color: #1d2930;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .replay-topbar p,
 .fx-app[data-theme='light'] .replay-start p,
@@ -753,7 +753,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-panel-head p,
 .fx-app[data-theme='light'] .trade-heading p,
 .fx-app[data-theme='light'] .risk-heading p {
-  color: #53636d;
+  color: var(--project-muted);
 }
 .fx-app[data-theme='light'] .replay-lock span,
 .fx-app[data-theme='light'] .learn-readonly span,
@@ -767,7 +767,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .settings-status,
 .fx-app[data-theme='light'] .rd-statusbar,
 .fx-app[data-theme='light'] .rd-field span {
-  color: #5c6c76;
+  color: var(--project-muted);
 }
 .fx-app[data-theme='light'] .learn-course,
 .fx-app[data-theme='light'] .learn-glossary,
@@ -777,7 +777,7 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-panel,
 .fx-app[data-theme='light'] .settings-section,
 .fx-app[data-theme='light'] .settings-permissions {
-  border-color: #d6dde1;
+  border-color: var(--project-border);
 }
 .fx-app[data-theme='light'] .learn-resource-button,
 .fx-app[data-theme='light'] .learn-search input,
@@ -786,16 +786,16 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-field select,
 .fx-app[data-theme='light'] .settings-section input,
 .fx-app[data-theme='light'] .settings-section select {
-  border-color: #b5c0c7;
-  background: #ffffff;
-  color: #1d2930;
+  border-color: var(--project-border-strong);
+  background: var(--project-surface);
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .replay-side,
 .fx-app[data-theme='light'] .learn-course,
 .fx-app[data-theme='light'] .learn-glossary,
 .fx-app[data-theme='light'] .settings-section,
 .fx-app[data-theme='light'] .rd-panel {
-  background: #ffffff;
+  background: var(--project-surface);
 }
 
 .fx-app[data-theme='light'] .fx-shell-help-layer {
@@ -803,12 +803,12 @@ body[data-tw-theme='dark'] {
 }
 
 .fx-app[data-theme='light'] .fx-shell-help {
-  background: #ffffff;
+  background: var(--project-surface);
   box-shadow: 0 18px 48px rgba(31, 48, 58, .18);
 }
 
 .fx-app[data-theme='light'] .fx-shell-shortcuts kbd {
-  background: #f0f3f4;
+  background: var(--project-raised);
 }
 
 /* W7-B measured contrast repairs stay route-scoped. They do not alter the
@@ -816,20 +816,20 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .rd-shell .rd-context-link,
 .fx-app[data-theme='light'] .rs-shell .rs-link,
 .fx-app[data-theme='light'] .trade-workspace .trade-link {
-  color: #1d5860;
+  color: var(--project-primary);
 }
-.fx-app[data-theme='light'] .rd-shell .rd-warning-block strong { color: #765000; }
+.fx-app[data-theme='light'] .rd-shell .rd-warning-block strong { color: var(--project-warning); }
 .fx-app[data-theme='light'] .rd-shell .rd-table tr.is-selected td {
-  background: #e7f0f0;
-  color: #1d2930;
+  background: var(--project-control);
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .rs-shell .rs-statusbar strong,
 .fx-app[data-theme='light'] .rs-shell .rs-statusbar code {
-  color: #1d2930;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .ja-story-page .ja-story-placeholder strong,
 .fx-app[data-theme='light'] .trade-workspace .trade-empty strong {
-  color: #1d2930;
+  color: var(--project-text);
 }
 .fx-app[data-theme='light'] .trade-workspace .trade-empty span,
 .fx-app[data-theme='light'] .trade-workspace .trade-message,
@@ -837,15 +837,15 @@ body[data-tw-theme='dark'] {
 .fx-app[data-theme='light'] .risk-workspace .risk-result-head p,
 .fx-app[data-theme='light'] .risk-workspace .risk-safety-banner span,
 .fx-app[data-theme='light'] .risk-workspace .risk-mode-lock span {
-  color: #53636d;
+  color: var(--project-muted);
 }
-.fx-app[data-theme='light'] .risk-workspace .risk-side li strong { color: #1d2930; }
+.fx-app[data-theme='light'] .risk-workspace .risk-side li strong { color: var(--project-text); }
 .fx-app[data-theme='light'] .risk-workspace .risk-safety-banner strong,
 .fx-app[data-theme='light'] .risk-workspace .risk-mode-lock strong {
-  color: #7a3434;
+  color: var(--project-negative);
 }
-.fx-app[data-theme='light'] .risk-workspace .risk-result-blocked p { color: #5b4a2d; }
-.fx-app[data-theme='light'] .risk-workspace .risk-result-blocked li { color: #6a4b14; }
+.fx-app[data-theme='light'] .risk-workspace .risk-result-blocked p { color: var(--project-warning); }
+.fx-app[data-theme='light'] .risk-workspace .risk-result-blocked li { color: var(--project-warning); }
 .fx-app[data-theme='dark'] .rs-shell .rs-step small,
 .fx-app[data-theme='dark'] .pb-empty span,
-.fx-app[data-theme='dark'] .pb-message span { color: #aab7bd; }
+.fx-app[data-theme='dark'] .pb-message span { color: var(--project-muted); }

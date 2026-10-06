@@ -5,6 +5,8 @@ contract covers Dashboard, Sessions, Trades, Analytics (Sessions and Prop), Mark
 Data, session settings/actions, creation forms and application-owned chart controls.
 It complements `workspace-patterns.md`; it is not a product progress ledger.
 
+Project color roles are defined in `project-palette.md` and apply across all areas.
+
 ## Presentation
 
 `foundation_v2/web/src/testing-standard.css` owns Testing semantic tokens, scoped by
@@ -29,8 +31,8 @@ mobile ledger pager shows previous/current/next; desktop also exposes first/last
 and nearby page numbers. The row-count selector remains a text pill.
 
 Spacing uses 4/8/12/16/24/32px. Buttons and ordinary select triggers use pill
-radii, one transparent 1px border and a gray surface; primary actions use the
-Go-to-chart white/black surface. Open and keyboard-focus states remain visible.
+radii, one transparent 1px border and a muted control surface; primary actions use the
+Go-to-chart sea-blue surface with a contrasting foreground. Open and keyboard-focus states remain visible.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
 
@@ -43,14 +45,14 @@ Icon actions are circles, filter pills retain the established rounded shape.
 Use alignment and spacing before surfaces; avoid nested cards. Dividers extend
 to the content edges; the table scroll region, header and footer remain separate.
 
-Hover is neutral white/gray in both themes. Semantic positive/negative financial
+Hover uses the shared neutral surface and ivory/dark text in each theme. Semantic positive/negative financial
 values retain their colors. Selected dropdown options show a check; selection
 does not permanently apply hover background. Focus remains visible without a
 second overlapping border. Respect reduced-motion preferences.
 
 Workspace tabs use 52px height and 18px navigation icons. Hover brightens text and
 icons without a background or border; selected tabs use contrast text and a 2px underline
-(white in dark theme, dark in light theme), with no persistent fill. Analytics
+(ivory in dark theme, dark in light theme), with no persistent fill. Analytics
 source tabs stay beside Analytics on the same horizontally scrolling row, with
 no vertical separator. On Analytics, the underline runs continuously from the
 Analytics parent through both source tabs; only the selected source text is

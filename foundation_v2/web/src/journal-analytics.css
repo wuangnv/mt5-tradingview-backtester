@@ -120,11 +120,11 @@
   --wm-content-subtle: var(--fx-subtle, #69747c);
   --wm-border: var(--fx-line, #252d33);
   --wm-border-strong: var(--fx-line-strong, #34404a);
-  --wm-focus: #f0b65f;
+  --wm-focus: var(--project-primary);
   --wm-primary: var(--fx-accent, #e1ad54);
   --wm-positive: var(--fx-green, #6dc18b);
   --wm-negative: var(--fx-red, #dc7777);
-  --wm-warning: #d6a64b;
+  --wm-warning: var(--project-warning);
   --wm-radius-control: 4px;
   --wm-radius-panel: 8px;
   --wm-motion-fast: 160ms;

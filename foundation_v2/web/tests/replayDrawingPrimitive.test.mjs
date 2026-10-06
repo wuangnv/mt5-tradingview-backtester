@@ -25,7 +25,7 @@ function canvasTarget(width = 400, height = 240) {
   const calls = []
   const context = {
     measureText: (value) => ({ width: value.length * 6 }),
-    ...Object.fromEntries(['save', 'restore', 'beginPath', 'rect', 'clip', 'setLineDash', 'moveTo', 'lineTo', 'stroke', 'fill', 'arc', 'fillRect', 'strokeRect', 'fillText'].map((name) => [name, (...args) => calls.push({ name, args, strokeStyle: context.strokeStyle, lineWidth: context.lineWidth })])),
+    ...Object.fromEntries(['save', 'restore', 'beginPath', 'rect', 'clip', 'setLineDash', 'moveTo', 'lineTo', 'stroke', 'fill', 'arc', 'fillRect', 'strokeRect', 'fillText'].map((name) => [name, (...args) => calls.push({ name, args, strokeStyle: context.strokeStyle, fillStyle: context.fillStyle, lineWidth: context.lineWidth })])),
   }
   return {
     calls,
@@ -69,6 +69,7 @@ test('zero coordinates remain valid and labels remain bounded literal canvas tex
 test('native renderer redraws using current scales and pane dimensions', () => {
   const { state, chart, series } = scales()
   const primitive = new ReplayDrawingPrimitive([drawing(), drawing('horizontal-line')])
+  primitive.setPalette({ canvas: '#10151c', surface: '#10151c', highlight: '#f5bc62', primary: '#69d5e4' })
   primitive.attached({ chart, series, requestUpdate() {} })
   const views = primitive.paneViews()
   const renderer = views[0].renderer()
@@ -90,6 +91,7 @@ test('renderer covers five tools, clips to pane and distinguishes local and sele
     drawing('horizontal-line'), drawing('trendline', { local: true, selected: true }),
     drawing('zone'), drawing('text'), drawing('measure'), drawing('zone', { hidden: true }),
   ])
+  primitive.setPalette({ canvas: '#10151c', surface: '#10151c', highlight: '#f5bc62', primary: '#69d5e4' })
   primitive.attached({ chart, series, requestUpdate() {} })
   const target = canvasTarget()
   primitive.paneViews()[0].renderer().draw(target)
@@ -116,6 +118,7 @@ test('updates request a native repaint and detachment releases chart references'
   const { chart, series } = scales()
   const primitive = new ReplayDrawingPrimitive()
   let updates = 0
+  primitive.setPalette({ canvas: '#10151c', surface: '#10151c', highlight: '#f5bc62', primary: '#69d5e4' })
   primitive.attached({ chart, series, requestUpdate() { updates += 1 } })
   const items = [drawing('zone')]
   primitive.setDrawings(items)
@@ -138,8 +141,33 @@ test('off-screen labels do not become floating visible labels after panning', ()
   state.timeOffset = -1000
   state.priceOffset = -1000
   const primitive = new ReplayDrawingPrimitive([drawing('text'), drawing('zone'), drawing('horizontal-line')])
+  primitive.setPalette({ canvas: '#10151c', surface: '#10151c', highlight: '#f5bc62', primary: '#69d5e4' })
   primitive.attached({ chart, series, requestUpdate() {} })
   const target = canvasTarget()
   primitive.paneViews()[0].renderer().draw(target)
   assert.equal(target.calls.filter(({ name }) => name === 'fillText').length, 0)
+})
+
+test('changing the palette repaints labels and handles without changing drawing anchors', () => {
+  const { chart, series } = scales()
+  const item = drawing('trendline', { local: true, selected: true })
+  const before = structuredClone(item)
+  const primitive = new ReplayDrawingPrimitive([item])
+  let updates = 0
+  primitive.attached({ chart, series, requestUpdate() { updates++ } })
+  const renderer = primitive.paneViews()[0].renderer()
+  const dark = { canvas: '#171C20', surface: '#232B30', highlight: '#D6A07B', primary: '#8FAFC1' }
+  const light = { canvas: '#F4F1EB', surface: '#FBF9F4', highlight: '#8F532F', primary: '#3E6275' }
+  for (const palette of [dark, light]) {
+    primitive.setPalette(palette)
+    const target = canvasTarget()
+    renderer.draw(target)
+    assert.deepEqual(target.calls.find(c => c.name === 'lineTo').args, [200, 20])
+    assert.equal(target.calls.find(c => c.name === 'fillText').fillStyle, palette.highlight)
+    assert.equal(target.calls.find(c => c.name === 'fillRect').fillStyle, `${palette.surface}EB`)
+    assert.equal(target.calls.find(c => c.name === 'fill').fillStyle, palette.canvas)
+  }
+  assert.deepEqual(item, before)
+  assert.equal(updates, 3)
+  assert.equal(primitive.paneViews()[0].renderer(), renderer)
 })

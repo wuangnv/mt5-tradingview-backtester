@@ -44,7 +44,7 @@ export function projectDrawing(drawing, chart, series) {
   }
 }
 
-function drawLabel(context, label, x, y, mediaSize, color) {
+function drawLabel(context, label, x, y, mediaSize, color, palette) {
   if (!label) return
   // Do not pull labels for off-screen anchors back into the visible pane.
   if (x < 0 || x > mediaSize.width || y < -24 || y > mediaSize.height + 24) return
@@ -54,19 +54,19 @@ function drawLabel(context, label, x, y, mediaSize, color) {
   if (width <= 0) return
   const left = Math.max(5, Math.min(x, mediaSize.width - width - 13))
   const top = Math.max(5, Math.min(y - 10, mediaSize.height - 25))
-  context.fillStyle = 'rgba(16, 21, 28, 0.92)'
+  context.fillStyle = `${palette.surface}EB`
   context.fillRect(left, top, width + 8, 20)
   context.fillStyle = color
   context.fillText(label, left + 4, top + 10, width)
 }
 
-function drawProjected(context, drawing, mediaSize, theme) {
+function drawProjected(context, drawing, mediaSize, palette) {
   const { type, points, label, local, selected } = drawing
   const [first, second] = points
   if (type === 'horizontal-line' && (first.y < 0 || first.y > mediaSize.height)) return
-  const color = theme === 'light' ? (local ? '#956118' : '#05798c') : (local ? '#f5bc62' : '#69d5e4')
+  const color = local ? palette.highlight : palette.primary
   context.strokeStyle = color
-  context.fillStyle = local ? 'rgba(245, 188, 98, 0.13)' : 'rgba(105, 213, 228, 0.13)'
+  context.fillStyle = `${color}21`
   context.lineWidth = selected ? 2.5 : 1.5
   context.setLineDash(local ? [6, 4] : [])
   let labelX = first.x + 6
@@ -102,7 +102,7 @@ function drawProjected(context, drawing, mediaSize, theme) {
 
   if (selected) {
     context.setLineDash([])
-    context.fillStyle = '#10151c'
+    context.fillStyle = palette.canvas
     for (const point of points) {
       context.beginPath()
       context.arc(point.x, point.y, 3.5, 0, Math.PI * 2)
@@ -110,14 +110,14 @@ function drawProjected(context, drawing, mediaSize, theme) {
       context.stroke()
     }
   }
-  drawLabel(context, label, labelX, labelY, mediaSize, local ? '#f5bc62' : '#69d5e4')
+  drawLabel(context, label, labelX, labelY, mediaSize, color, palette)
 }
 
 export class ReplayDrawingPrimitive {
   constructor(drawings = []) {
     this._drawings = Array.isArray(drawings) ? [...drawings] : []
     this._attachment = null
-    this._theme = 'dark'
+    this._palette = null
     const renderer = { draw: (target) => this._draw(target) }
     this._paneViews = [{ zOrder: () => 'normal', renderer: () => renderer }]
   }
@@ -127,8 +127,8 @@ export class ReplayDrawingPrimitive {
     this._attachment?.requestUpdate()
   }
 
-  setTheme(theme) {
-    this._theme = theme
+  setPalette(palette) {
+    this._palette = palette
     this._attachment?.requestUpdate()
   }
 
@@ -146,7 +146,7 @@ export class ReplayDrawingPrimitive {
   }
 
   _draw(target) {
-    if (!this._attachment) return
+    if (!this._attachment || !this._palette) return
     const { chart, series } = this._attachment
     target.useMediaCoordinateSpace(({ context, mediaSize }) => {
       context.save()
@@ -157,7 +157,7 @@ export class ReplayDrawingPrimitive {
         for (const drawing of this._drawings) {
           // Native repaint also covers price-scale drag, pan, zoom and resize.
           const projected = projectDrawing(drawing, chart, series)
-          if (projected) drawProjected(context, projected, mediaSize, this._theme)
+          if (projected) drawProjected(context, projected, mediaSize, this._palette)
         }
       } finally {
         context.restore()

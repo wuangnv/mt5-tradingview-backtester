@@ -7,23 +7,23 @@
   --wm-content-muted: var(--fx-shell-muted, #a6afb8);
   --wm-border: var(--fx-shell-line, #252d33);
   --wm-border-strong: var(--fx-shell-line-strong, #34404a);
-  --wm-primary: var(--wm-control-text);
-  --wm-action-bg: #245bc4;
-  --wm-action-hover: #1d4ea9;
-  --wm-on-primary: #fff;
-  --wm-positive: #6dc18b;
-  --wm-negative: #ef8989;
-  --wm-warning: #e1ad54;
+  --wm-primary: var(--project-primary);
+  --wm-action-bg: var(--project-primary);
+  --wm-action-hover: var(--project-primary-hover);
+  --wm-on-primary: var(--project-on-primary);
+  --wm-positive: var(--project-positive);
+  --wm-negative: var(--project-negative);
+  --wm-warning: var(--project-warning);
   --wm-focus: var(--fx-focus-ring, #f0b65f);
   --wm-space-section: 32px;
   --wm-space-group: 24px;
   --wm-space-control: 12px;
 }
 .fx-app[data-theme='light'] {
-  --wm-primary: var(--wm-control-text);
-  --wm-positive: #247046;
-  --wm-negative: #b53333;
-  --wm-warning: #825209;
+  --wm-primary: var(--project-primary);
+  --wm-positive: var(--project-positive);
+  --wm-negative: var(--project-negative);
+  --wm-warning: var(--project-warning);
 }
 .fx-app .wm-page {
   width: min(1280px, 100%);
