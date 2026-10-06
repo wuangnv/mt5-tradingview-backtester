@@ -1,0 +1,78 @@
+{
+  "stage": "frozen-model-oracle",
+  "cases": [
+    {
+      "name": "net includes all four cost components and excludes cashflow",
+      "pass": true
+    },
+    {
+      "name": "UTC boundary separates adjacent days",
+      "pass": true
+    },
+    {
+      "name": "chosen timezone shifts calendar day consistently",
+      "pass": true
+    },
+    {
+      "name": "entry commission participates in losses",
+      "pass": true
+    },
+    {
+      "name": "side and asset filter original broker fields",
+      "pass": true
+    },
+    {
+      "name": "account mismatch produces no selected deals",
+      "pass": true
+    },
+    {
+      "name": "date range inclusive with UTC weekday",
+      "pass": true
+    },
+    {
+      "name": "missing fee leaves net unknown",
+      "pass": true
+    },
+    {
+      "name": "string profit is not silently coerced",
+      "pass": true
+    },
+    {
+      "name": "missing timestamp has no inferred calendar date",
+      "pass": true
+    },
+    {
+      "name": "no-feed summary remains unknown",
+      "pass": true
+    },
+    {
+      "name": "ready empty summary has zero known deals",
+      "pass": true
+    },
+    {
+      "name": "calendar known UTC buckets and future/edge unknown",
+      "pass": true
+    },
+    {
+      "name": "no feed calendar never asserts zero P/L",
+      "pass": true
+    },
+    {
+      "name": "calendar includes weekday Monday first and adjacent dates",
+      "pass": true
+    },
+    {
+      "name": "cumulative realized net series chronological",
+      "pass": true
+    },
+    {
+      "name": "unknown cost keeps subsequent cumulative result unknown",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "before": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737",
+  "after": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737",
+  "sourceUnchanged": true,
+  "pass": true
+}

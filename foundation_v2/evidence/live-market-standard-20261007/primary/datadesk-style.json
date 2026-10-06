@@ -1,0 +1,11 @@
+{
+  "geometry": {
+    "display": "flex",
+    "height": 56,
+    "selectWidth": 64.015625,
+    "width": 1128
+  },
+  "errors": [],
+  "blocked": [],
+  "fixture": "explicit intercepted catalog; canonical view=data without area opt-in"
+}

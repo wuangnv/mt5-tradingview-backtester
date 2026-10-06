@@ -4598,5 +4598,533 @@
   "Phiên khớp bộ lọc": {
     "vi": "Phiên khớp bộ lọc",
     "en": "Sessions matching filters"
+  },
+  "Reading account data…": {
+    "vi": "Đang đọc dữ liệu tài khoản…",
+    "en": "Reading account data…"
+  },
+  "Previous snapshot · connection interrupted": {
+    "vi": "Dữ liệu lần trước · kết nối bị gián đoạn",
+    "en": "Previous snapshot · connection interrupted"
+  },
+  "Synced · read only": {
+    "vi": "Đã đồng bộ · chỉ đọc",
+    "en": "Synced · read only"
+  },
+  "This workspace cannot read account data.": {
+    "vi": "Workspace này không có quyền đọc dữ liệu tài khoản.",
+    "en": "This workspace cannot read account data."
+  },
+  "No account connected": {
+    "vi": "Chưa kết nối tài khoản",
+    "en": "No account connected"
+  },
+  "Account data access is locked.": {
+    "vi": "Quyền đọc dữ liệu tài khoản đang bị khóa.",
+    "en": "Account data access is locked."
+  },
+  "Could not read account data.": {
+    "vi": "Không đọc được dữ liệu tài khoản.",
+    "en": "Could not read account data."
+  },
+  "Sample account data": {
+    "vi": "Dữ liệu tài khoản mẫu",
+    "en": "Sample account data"
+  },
+  "Data source and access": {
+    "vi": "Nguồn dữ liệu và quyền truy cập",
+    "en": "Data source and access"
+  },
+  "Last snapshot (UTC)": {
+    "vi": "Lần đồng bộ gần nhất (UTC)",
+    "en": "Last snapshot (UTC)"
+  },
+  "History from (UTC)": {
+    "vi": "Lịch sử từ (UTC)",
+    "en": "History from (UTC)"
+  },
+  "Account data is read only. This page does not send orders or connect a broker.": {
+    "vi": "Dữ liệu tài khoản chỉ được đọc. Trang này không gửi lệnh hoặc kết nối broker.",
+    "en": "Account data is read only. This page does not send orders or connect a broker."
+  },
+  "Read only": {
+    "vi": "Chỉ đọc",
+    "en": "Read only"
+  },
+  "Account views": {
+    "vi": "Chế độ xem tài khoản",
+    "en": "Account views"
+  },
+  "Connect": {
+    "vi": "Kết nối",
+    "en": "Connect"
+  },
+  "Transactions": {
+    "vi": "Giao dịch tài khoản",
+    "en": "Transactions"
+  },
+  "New note": {
+    "vi": "Ghi chú mới",
+    "en": "New note"
+  },
+  "Add trade": {
+    "vi": "Thêm giao dịch",
+    "en": "Add trade"
+  },
+  "Manual account": {
+    "vi": "Tài khoản thủ công",
+    "en": "Manual account"
+  },
+  "Interface preview": {
+    "vi": "Bản xem thử giao diện",
+    "en": "Interface preview"
+  },
+  "This layout is a preview. Changes are not saved and no connection is made.": {
+    "vi": "Đây là bản xem thử bố cục. Thay đổi chưa được lưu và chưa kết nối tài khoản.",
+    "en": "This layout is a preview. Changes are not saved and no connection is made."
+  },
+  "CSV file import": {
+    "vi": "Nhập tệp CSV",
+    "en": "CSV file import"
+  },
+  "Import settings will be added later.": {
+    "vi": "Phần thiết lập nhập dữ liệu sẽ được bổ sung sau.",
+    "en": "Import settings will be added later."
+  },
+  "Upload file": {
+    "vi": "Tải tệp lên",
+    "en": "Upload file"
+  },
+  "Table columns": {
+    "vi": "Cột hiển thị",
+    "en": "Table columns"
+  },
+  "Advanced filters": {
+    "vi": "Bộ lọc nâng cao",
+    "en": "Advanced filters"
+  },
+  "All assets": {
+    "vi": "Tất cả tài sản",
+    "en": "All assets"
+  },
+  "All sides": {
+    "vi": "Tất cả chiều lệnh",
+    "en": "All sides"
+  },
+  "Deal result": {
+    "vi": "Kết quả deal",
+    "en": "Deal result"
+  },
+  "All results": {
+    "vi": "Tất cả kết quả",
+    "en": "All results"
+  },
+  "Positive P/L": {
+    "vi": "P/L dương",
+    "en": "Positive P/L"
+  },
+  "Negative P/L": {
+    "vi": "P/L âm",
+    "en": "Negative P/L"
+  },
+  "Zero P/L": {
+    "vi": "P/L bằng 0",
+    "en": "Zero P/L"
+  },
+  "All accounts": {
+    "vi": "Tất cả tài khoản",
+    "en": "All accounts"
+  },
+  "All days": {
+    "vi": "Tất cả ngày",
+    "en": "All days"
+  },
+  "Start date must not be after end date.": {
+    "vi": "Ngày bắt đầu phải trước hoặc trùng ngày kết thúc.",
+    "en": "Start date must not be after end date."
+  },
+  "Net deal P/L": {
+    "vi": "P/L ròng từ deal",
+    "en": "Net deal P/L"
+  },
+  "Filled deals": {
+    "vi": "Deal khớp lệnh",
+    "en": "Filled deals"
+  },
+  "No analytics yet": {
+    "vi": "Chưa có dữ liệu phân tích",
+    "en": "No analytics yet"
+  },
+  "No deals in this selection.": {
+    "vi": "Chưa có deal trong phạm vi đã chọn.",
+    "en": "No deals in this selection."
+  },
+  "Select a connected account to view analytics.": {
+    "vi": "Chọn tài khoản đã kết nối để xem phân tích.",
+    "en": "Select a connected account to view analytics."
+  },
+  "Includes deal costs. Return requires opening capital; deals have not been paired into trades.": {
+    "vi": "Đã tính phí deal. Tỷ suất lợi nhuận cần vốn đầu kỳ; deal chưa được ghép thành trade hoàn chỉnh.",
+    "en": "Includes deal costs. Return requires opening capital; deals have not been paired into trades."
+  },
+  "Cumulative deal P/L": {
+    "vi": "P/L tích lũy từ deal",
+    "en": "Cumulative deal P/L"
+  },
+  "P/L will appear when complete deal data is available.": {
+    "vi": "P/L sẽ hiển thị khi có dữ liệu deal và phí đầy đủ.",
+    "en": "P/L will appear when complete deal data is available."
+  },
+  "Curve stops where deal costs are incomplete.": {
+    "vi": "Biểu đồ dừng tại deal chưa có đầy đủ phí.",
+    "en": "Curve stops where deal costs are incomplete."
+  },
+  "Previous year": {
+    "vi": "Năm trước",
+    "en": "Previous year"
+  },
+  "Next year": {
+    "vi": "Năm sau",
+    "en": "Next year"
+  },
+  "Percentage requires opening capital.": {
+    "vi": "Cần vốn đầu kỳ để tính phần trăm.",
+    "en": "Percentage requires opening capital."
+  },
+  "Share": {
+    "vi": "Chia sẻ",
+    "en": "Share"
+  },
+  "Monthly review": {
+    "vi": "Tổng kết tháng",
+    "en": "Monthly review"
+  },
+  "Booked deal P/L · {zone}": {
+    "vi": "P/L đã ghi nhận từ deal · {zone}",
+    "en": "Booked deal P/L · {zone}"
+  },
+  "P/L calendar": {
+    "vi": "Lịch P/L",
+    "en": "P/L calendar"
+  },
+  "{count} filled deals": {
+    "vi": "{count} deal khớp lệnh",
+    "en": "Filled deals: {count}"
+  },
+  "Week {count}": {
+    "vi": "Tuần {count}",
+    "en": "Week {count}"
+  },
+  "Month total": {
+    "vi": "Tổng tháng",
+    "en": "Month total"
+  },
+  "Totals cover synced deals only. — means data is unavailable or the day is not fully covered.": {
+    "vi": "Tổng chỉ tính deal đã đồng bộ. — nghĩa là chưa có dữ liệu hoặc chưa đồng bộ đủ ngày.",
+    "en": "Totals cover synced deals only. — means data is unavailable or the day is not fully covered."
+  },
+  "No deals recorded for this day.": {
+    "vi": "Chưa ghi nhận deal trong ngày này.",
+    "en": "No deals recorded for this day."
+  },
+  "Data for this day is unavailable or incomplete.": {
+    "vi": "Dữ liệu ngày này chưa có hoặc chưa đầy đủ.",
+    "en": "Data for this day is unavailable or incomplete."
+  },
+  "Edit notes": {
+    "vi": "Chỉnh sửa ghi chú",
+    "en": "Edit notes"
+  },
+  "Note filters": {
+    "vi": "Bộ lọc ghi chú",
+    "en": "Note filters"
+  },
+  "Add note group": {
+    "vi": "Thêm nhóm ghi chú",
+    "en": "Add note group"
+  },
+  "No notes yet": {
+    "vi": "Chưa có ghi chú",
+    "en": "No notes yet"
+  },
+  "Keep your observations and review notes here.": {
+    "vi": "Lưu quan sát và ghi chú tổng kết tại đây.",
+    "en": "Keep your observations and review notes here."
+  },
+  "Add note": {
+    "vi": "Thêm ghi chú",
+    "en": "Add note"
+  },
+  "P/L by tag": {
+    "vi": "P/L theo nhãn",
+    "en": "P/L by tag"
+  },
+  "Hide tag list": {
+    "vi": "Ẩn danh sách nhãn",
+    "en": "Hide tag list"
+  },
+  "Show tag list": {
+    "vi": "Hiện danh sách nhãn",
+    "en": "Show tag list"
+  },
+  "No tag analysis yet": {
+    "vi": "Chưa có phân tích theo nhãn",
+    "en": "No tag analysis yet"
+  },
+  "Synced broker deals do not include journal tags.": {
+    "vi": "Deal từ broker chưa có nhãn nhật ký.",
+    "en": "Synced broker deals do not include journal tags."
+  },
+  "Tag list": {
+    "vi": "Danh sách nhãn",
+    "en": "Tag list"
+  },
+  "Search tags": {
+    "vi": "Tìm nhãn",
+    "en": "Search tags"
+  },
+  "No tags available.": {
+    "vi": "Chưa có nhãn.",
+    "en": "No tags available."
+  },
+  "Tag summary": {
+    "vi": "Tổng hợp theo nhãn",
+    "en": "Tag summary"
+  },
+  "Smart Picks": {
+    "vi": "Smart Picks",
+    "en": "Smart Picks"
+  },
+  "Explore": {
+    "vi": "Khám phá",
+    "en": "Explore"
+  },
+  "Add account": {
+    "vi": "Thêm tài khoản",
+    "en": "Add account"
+  },
+  "Format your file before importing.": {
+    "vi": "Chuẩn hóa tệp trước khi nhập dữ liệu.",
+    "en": "Format your file before importing."
+  },
+  "CSV template": {
+    "vi": "Mẫu CSV",
+    "en": "CSV template"
+  },
+  "Import your trade history": {
+    "vi": "Nhập lịch sử giao dịch của bạn",
+    "en": "Import your trade history"
+  },
+  "or": {
+    "vi": "hoặc",
+    "en": "or"
+  },
+  "Manual": {
+    "vi": "Thủ công",
+    "en": "Manual"
+  },
+  "Create a manual account": {
+    "vi": "Tạo tài khoản thủ công",
+    "en": "Create a manual account"
+  },
+  "Sync with broker": {
+    "vi": "Đồng bộ với broker",
+    "en": "Sync with broker"
+  },
+  "Connection options · interface preview": {
+    "vi": "Các lựa chọn kết nối · bản xem thử",
+    "en": "Connection options · interface preview"
+  },
+  "Connected accounts": {
+    "vi": "Tài khoản đã kết nối",
+    "en": "Connected accounts"
+  },
+  "Search accounts": {
+    "vi": "Tìm tài khoản",
+    "en": "Search accounts"
+  },
+  "Account filter": {
+    "vi": "Bộ lọc tài khoản",
+    "en": "Account filter"
+  },
+  "No matching accounts": {
+    "vi": "Không có tài khoản phù hợp",
+    "en": "No matching accounts"
+  },
+  "No accounts yet": {
+    "vi": "Chưa có tài khoản",
+    "en": "No accounts yet"
+  },
+  "Add an account to keep your trade history in one place.": {
+    "vi": "Thêm tài khoản để tập hợp lịch sử giao dịch tại một nơi.",
+    "en": "Add an account to keep your trade history in one place."
+  },
+  "No trades yet": {
+    "vi": "Chưa có giao dịch",
+    "en": "No trades yet"
+  },
+  "Your synced deals will appear here.": {
+    "vi": "Deal đã đồng bộ sẽ hiển thị tại đây.",
+    "en": "Your synced deals will appear here."
+  },
+  "Broker snapshot": {
+    "vi": "Dữ liệu broker",
+    "en": "Broker snapshot"
+  },
+  "Open positions": {
+    "vi": "Vị thế đang mở",
+    "en": "Open positions"
+  },
+  "No open positions in this snapshot.": {
+    "vi": "Không có vị thế mở trong lần đồng bộ này.",
+    "en": "No open positions in this snapshot."
+  },
+  "Position data is unavailable.": {
+    "vi": "Chưa có dữ liệu vị thế.",
+    "en": "Position data is unavailable."
+  },
+  "Pending orders": {
+    "vi": "Lệnh chờ",
+    "en": "Pending orders"
+  },
+  "No pending orders in this snapshot.": {
+    "vi": "Không có lệnh chờ trong lần đồng bộ này.",
+    "en": "No pending orders in this snapshot."
+  },
+  "Order data is unavailable.": {
+    "vi": "Chưa có dữ liệu lệnh.",
+    "en": "Order data is unavailable."
+  },
+  "Latest broker quotes": {
+    "vi": "Giá broker gần nhất",
+    "en": "Latest broker quotes"
+  },
+  "Tick time (UTC)": {
+    "vi": "Thời gian tick (UTC)",
+    "en": "Tick time (UTC)"
+  },
+  "Stale quote": {
+    "vi": "Giá cũ",
+    "en": "Stale quote"
+  },
+  "No quotes in this snapshot.": {
+    "vi": "Lần đồng bộ này chưa có dữ liệu giá.",
+    "en": "No quotes in this snapshot."
+  },
+  "Search symbol or ticket": {
+    "vi": "Tìm mã sản phẩm hoặc ticket",
+    "en": "Search symbol or ticket"
+  },
+  "Deposits, withdrawals and other non-trading events are listed separately.": {
+    "vi": "Nạp, rút tiền và các sự kiện ngoài giao dịch được liệt kê riêng.",
+    "en": "Deposits, withdrawals and other non-trading events are listed separately."
+  },
+  "Each row is a filled deal; entries and exits have not been paired into trades.": {
+    "vi": "Mỗi dòng là một deal khớp lệnh; deal vào và thoát chưa được ghép thành trade hoàn chỉnh.",
+    "en": "Each row is a filled deal; entries and exits have not been paired into trades."
+  },
+  "No transactions yet": {
+    "vi": "Chưa có giao dịch tài khoản",
+    "en": "No transactions yet"
+  },
+  "Time (UTC) / Ticket": {
+    "vi": "Thời gian (UTC) / Ticket",
+    "en": "Time (UTC) / Ticket"
+  },
+  "Side / Entry": {
+    "vi": "Chiều lệnh / Loại khớp",
+    "en": "Side / Entry"
+  },
+  "Fill price": {
+    "vi": "Giá khớp",
+    "en": "Fill price"
+  },
+  "Reversal": {
+    "vi": "Đảo chiều",
+    "en": "Reversal"
+  },
+  "Close by": {
+    "vi": "Đóng đối ứng",
+    "en": "Close by"
+  },
+  "Position": {
+    "vi": "Vị thế",
+    "en": "Position"
+  },
+  "MT5 type": {
+    "vi": "Loại MT5",
+    "en": "MT5 type"
+  },
+  "Live data pagination": {
+    "vi": "Phân trang dữ liệu Live",
+    "en": "Live data pagination"
+  },
+  "Paging synced data locally": {
+    "vi": "Phân trang trên dữ liệu đã đồng bộ",
+    "en": "Paging synced data locally"
+  },
+  "Thông tin dữ liệu": {
+    "vi": "Thông tin dữ liệu",
+    "en": "Data information"
+  },
+  "Đã tải {count} sản phẩm": {
+    "vi": "Đã tải {count} sản phẩm",
+    "en": "Downloaded products: {count}"
+  },
+  "Tradovate": {
+    "vi": "Tradovate",
+    "en": "Tradovate"
+  },
+  "NinjaTrader": {
+    "vi": "NinjaTrader",
+    "en": "NinjaTrader"
+  },
+  "Alpaca": {
+    "vi": "Alpaca",
+    "en": "Alpaca"
+  },
+  "Webull": {
+    "vi": "Webull",
+    "en": "Webull"
+  },
+  "MetaTrader": {
+    "vi": "MetaTrader",
+    "en": "MetaTrader"
+  },
+  "TradeLocker": {
+    "vi": "TradeLocker",
+    "en": "TradeLocker"
+  },
+  "cTrader": {
+    "vi": "cTrader",
+    "en": "cTrader"
+  },
+  "Calendar": {
+    "en": "Calendar",
+    "vi": "Lịch"
+  },
+  "Trading accounts": {
+    "en": "Trading accounts",
+    "vi": "Tài khoản giao dịch"
+  },
+  "Tag analytics": {
+    "en": "Tag analytics",
+    "vi": "Phân tích nhãn"
+  },
+  "Accounts": {
+    "en": "Accounts",
+    "vi": "Tài khoản"
+  },
+  "Total": {
+    "en": "Total",
+    "vi": "Tổng"
+  },
+  "Free margin": {
+    "en": "Free margin",
+    "vi": "Margin khả dụng"
+  },
+  "Đóng": {
+    "vi": "Đóng",
+    "en": "Close"
   }
 }

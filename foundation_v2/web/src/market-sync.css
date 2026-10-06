@@ -18,3 +18,32 @@
 .market-sync-table small { display: block; margin-top: 4px; color: var(--wm-content-muted); font-size: 12px; }
 .market-sync-table tbody tr:hover { background: var(--wm-hover); }
 @media (max-width: 760px) { .market-sync-heading { flex-wrap: wrap; gap: 12px; } .market-sync-table table { min-width: 850px; } .market-sync-filters label { flex-wrap: wrap; } }
+.market-sync-heading { align-items: center; flex-wrap: wrap; }
+.market-sync-heading > span { color: var(--wm-highlight); font-size: 12px; }
+.market-sync-filters { gap: 12px; padding-block: 16px; border-block: 1px solid var(--wm-border); }
+.market-sync-search { position: relative; }
+.market-sync-search > svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--wm-content-muted); pointer-events: none; }
+.fx-app .market-sync-filters input:not([type=checkbox]) { border: 1px solid transparent; border-radius: var(--wm-control-radius); background: var(--wm-control-open); color: var(--wm-content); }
+.fx-app .market-sync-search > input { padding-left: 36px; }
+.market-sync-filters label:has(input[type=checkbox]) { min-height: var(--wm-control-height); cursor: pointer; }
+.market-sync-filters input[type=checkbox] { accent-color: var(--wm-highlight); width: 16px; height: 16px; }
+.market-sync-update { margin-left: auto; }
+.market-sync-row-actions { display: flex; align-items: center; gap: 8px; }
+.market-sync-table td:last-child button { margin-left: 0; }
+.market-sync-status { display: inline-flex; align-items: center; border-radius: 999px; background: var(--wm-control-open); padding: 4px 8px; font-size: 12px; }
+.market-sync-status.is-ready { color: var(--wm-positive); }
+.market-sync-status:is(.is-error, .is-failed) { color: var(--wm-negative); }
+.market-sync-status:is(.is-syncing, .is-queued) { color: var(--project-on-peach-soft); background: var(--project-peach-soft); }
+.market-sync-note { margin-top: 24px; border-top: 1px solid var(--wm-border); padding-top: 12px; }
+.market-sync-note summary { cursor: pointer; min-height: var(--wm-control-height); align-content: center; }
+/* The catalog also mounts in DataDesk, before Analytics route CSS is loaded. */
+.fx-app.fx-shell-story[data-theme] .market-assets :is(.fxr-button, .fxa-button) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--wm-control-height); box-sizing: border-box; padding: 8px 12px; border: 1px solid transparent; border-radius: var(--wm-control-radius); background: var(--wm-control-open); color: var(--wm-control-text); font: inherit; font-size: 13px; font-weight: 500; line-height: 20px; text-decoration: none; cursor: pointer; }
+.fx-app.fx-shell-story[data-theme] .market-assets .fxr-button-primary { --wm-control-open: var(--wm-action-bg); --wm-hover: var(--wm-action-hover); --wm-control-text: var(--wm-on-primary); }
+.fx-app.fx-shell-story[data-theme] .market-assets :is(.fxr-button, .fxa-button):hover:not(:disabled) { background: var(--wm-hover); color: var(--wm-control-text); border-color: transparent; }
+.fx-app.fx-shell-story[data-theme] .market-assets :is(.fxr-button, .fxa-button):disabled { opacity: .45; cursor: not-allowed; }
+.fx-app .market-assets :is(.fxr-button, .fxa-button) > svg { display: block; width: 18px; height: 18px; flex: 0 0 18px; }
+.fx-app .market-assets .fxa-pagination { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 56px; padding-block: 8px; font-size: 12px; color: var(--wm-content-muted); }
+.fx-app .market-assets .fxa-pagination > div { display: flex; align-items: center; gap: 8px; }
+.fx-app.fx-shell-story[data-theme] .market-assets .fxa-pagination > div:not(.fx-select) > .fxa-button { width: var(--wm-icon-action-size, 32px); height: var(--wm-icon-action-size, 32px); min-width: var(--wm-icon-action-size, 32px); min-height: var(--wm-icon-action-size, 32px); flex: 0 0 var(--wm-icon-action-size, 32px); padding: 0; border-radius: 50%; }
+@media (max-width: 480px), (pointer: coarse) { .market-assets { --wm-control-height: 44px; --wm-icon-action-size: 44px; } }
+@media (max-width: 760px) { .market-sync-update { margin-left: 0; } .market-sync-filters .market-sync-search { width: 100%; } .market-sync-search > input { width: 100%; } }

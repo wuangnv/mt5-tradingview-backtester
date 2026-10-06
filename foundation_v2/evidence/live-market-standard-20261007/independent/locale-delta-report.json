@@ -1,0 +1,28 @@
+{
+  "scope": "r6 locale-only delta after r5 frozen 64-case matrix",
+  "cases": [
+    {
+      "name": "r6-one-calendar-en-light-1440",
+      "pass": true
+    },
+    {
+      "name": "r6-one-market-data-en-light-1440",
+      "pass": true
+    },
+    {
+      "name": "r6-one-calendar-vi-dark-360",
+      "pass": true
+    },
+    {
+      "name": "r6-one-market-data-vi-dark-360",
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "before": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e",
+  "after": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e",
+  "sourceUnchanged": true,
+  "pass": true
+}

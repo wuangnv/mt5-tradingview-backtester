@@ -1,0 +1,168 @@
+{
+  "label": "Synthetic intercepted local API states; no real feed or mutation evidence",
+  "cases": [
+    {
+      "name": "synthetic-loading-release",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-ready-calendar-net",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-ready-empty-calendar",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-unavailable",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-locked",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-malformed",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-missing-cost",
+      "pass": true,
+      "requests": [
+        "tenant-a"
+      ]
+    },
+    {
+      "name": "synthetic-stale-error-denied",
+      "pass": true,
+      "requests": [
+        "tenant-a",
+        "tenant-a",
+        "tenant-a"
+      ]
+    }
+  ],
+  "failures": [],
+  "blocked": [],
+  "errors": [],
+  "before": [
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "469ec27bc31e5f3bcf10615f9e39fc47baa8bee8502340b4580e0c632b91f39f"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "0ec2194ff5ad27819a0dc9c09bc1f96a17093ef5b5cdb87908df55c8d1fb5cdb"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    }
+  ],
+  "after": [
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "469ec27bc31e5f3bcf10615f9e39fc47baa8bee8502340b4580e0c632b91f39f"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "0ec2194ff5ad27819a0dc9c09bc1f96a17093ef5b5cdb87908df55c8d1fb5cdb"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

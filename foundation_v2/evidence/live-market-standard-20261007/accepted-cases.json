@@ -1,0 +1,401 @@
+{
+  "note": "Compact index of independent accepted cases; full reports/screenshots remain local and are reproducible with committed runners. Source pins and limits are in independent/final-receipt.json.",
+  "matrix": {
+    "blocked": [],
+    "failures": [],
+    "pass": true,
+    "cases": [
+      {
+        "name": "actual-market-data-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data",
+        "pass": null
+      },
+      {
+        "name": "actual-calendar-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar",
+        "pass": null
+      },
+      {
+        "name": "actual-trades-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades",
+        "pass": null
+      },
+      {
+        "name": "actual-notes-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes",
+        "pass": null
+      },
+      {
+        "name": "actual-tag-analytics-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-analytics-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-trading-accounts-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts",
+        "pass": null
+      },
+      {
+        "name": "actual-transactions-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions",
+        "pass": null
+      },
+      {
+        "name": "actual-market-data-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data",
+        "pass": null
+      },
+      {
+        "name": "actual-calendar-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar",
+        "pass": null
+      },
+      {
+        "name": "actual-trades-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades",
+        "pass": null
+      },
+      {
+        "name": "actual-notes-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes",
+        "pass": null
+      },
+      {
+        "name": "actual-tag-analytics-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-analytics-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-trading-accounts-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts",
+        "pass": null
+      },
+      {
+        "name": "actual-transactions-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions",
+        "pass": null
+      },
+      {
+        "name": "actual-market-data-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data",
+        "pass": null
+      },
+      {
+        "name": "actual-calendar-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar",
+        "pass": null
+      },
+      {
+        "name": "actual-trades-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades",
+        "pass": null
+      },
+      {
+        "name": "actual-notes-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes",
+        "pass": null
+      },
+      {
+        "name": "actual-tag-analytics-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-analytics-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-trading-accounts-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts",
+        "pass": null
+      },
+      {
+        "name": "actual-transactions-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions",
+        "pass": null
+      },
+      {
+        "name": "actual-market-data-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data",
+        "pass": null
+      },
+      {
+        "name": "actual-calendar-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar",
+        "pass": null
+      },
+      {
+        "name": "actual-trades-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades",
+        "pass": null
+      },
+      {
+        "name": "actual-notes-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes",
+        "pass": null
+      },
+      {
+        "name": "actual-tag-analytics-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-analytics-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics",
+        "pass": null
+      },
+      {
+        "name": "actual-trading-accounts-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts",
+        "pass": null
+      },
+      {
+        "name": "actual-transactions-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions",
+        "pass": null
+      },
+      {
+        "name": "demo-market-data-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-calendar-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trades-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-notes-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-tag-analytics-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-analytics-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trading-accounts-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-transactions-dark-vi-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-market-data-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-calendar-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trades-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-notes-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-tag-analytics-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-analytics-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trading-accounts-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-transactions-light-en-1440",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-market-data-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-calendar-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trades-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-notes-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-tag-analytics-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-analytics-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trading-accounts-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-transactions-dark-en-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-market-data-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=market-data&area=testing&section=market-data&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-calendar-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=calendar&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trades-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trades&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-notes-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=notes&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-tag-analytics-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=tag-analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-analytics-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=analytics&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-trading-accounts-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&demo=1",
+        "pass": null
+      },
+      {
+        "name": "demo-transactions-light-vi-360",
+        "url": "http://127.0.0.1:5180/?workspace=tenant-a&view=live&area=live&section=trading-accounts&account_tab=transactions&demo=1",
+        "pass": null
+      }
+    ],
+    "errors": [],
+    "sourceUnchanged": true
+  },
+  "layout": {
+    "pass": true,
+    "cases": [
+      {
+        "id": "r7-demo-testing-sessions-dark-vi-1440",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-fixture-live-calendar-light-en-360",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-live-trades-light-en-360",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-testing-trades-light-en-360",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-testing-analytics-light-en-360",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-testing-sessions-light-en-360",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-fixture-live-calendar-dark-vi-1440",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-live-trades-dark-vi-1440",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-testing-trades-dark-vi-1440",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-demo-testing-analytics-dark-vi-1440",
+        "revision": "r7 unaffected by component-scoped market CSS delta"
+      },
+      {
+        "id": "r7-fixture-market-data-dark-vi-1440",
+        "revision": "r8 Market and natural DataDesk route"
+      },
+      {
+        "id": "r7-demo-market-data-dark-vi-1440",
+        "revision": "r8 Market and natural DataDesk route"
+      },
+      {
+        "id": "r7-fixture-data-desk-dark-vi-1440",
+        "revision": "r8 Market and natural DataDesk route"
+      },
+      {
+        "id": "r7-fixture-market-data-light-en-360",
+        "revision": "r8 Market and natural DataDesk route"
+      },
+      {
+        "id": "r7-demo-market-data-light-en-360",
+        "revision": "r8 Market and natural DataDesk route"
+      },
+      {
+        "id": "r7-fixture-data-desk-light-en-360",
+        "revision": "r8 Market and natural DataDesk route"
+      }
+    ]
+  }
+}

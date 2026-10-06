@@ -13,7 +13,7 @@ import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
 import { SessionSelect } from './SessionPicker.jsx'
 import MarketAssetCatalog from './MarketAssetCatalog.jsx'
-import LiveBrokerSnapshot from './LiveBrokerSnapshot.jsx'
+import LiveWorkspace from './LiveWorkspace.jsx'
 import { PlaybookList, PlaybookSummary } from './PlaybookWorkspace.jsx'
 import { JournalRow, StoryRail } from './JournalWorkspace.jsx'
 import { DEFAULT_EXTRA_FILTERS, filterAnalyticsRows, tradesCsv } from './tradingAnalyticsModel.js'
@@ -124,16 +124,6 @@ function DemoJournal() {
   const [record, setRecord] = useState(demoNotes[0])
   return <section className="ja-page journal-page ja-story-page wm-page" aria-label={t("Journal")}><h1>{t("Journal")}</h1><div className="ja-workspace-grid"><div className="ja-list">{demoNotes.map(item => <JournalRow key={item.record_id} record={item} selected={record.record_id === item.record_id} onSelect={setRecord} />)}</div><StoryRail record={record} context={{}} /></div></section>
 }
-function DemoLive({ query }) {
-  const { t } = useTestingLocale()
-
-  const section = query.get('section') || 'calendar'
-  if (section === 'trades' || section === 'trading-accounts') return <section className="wm-page live-workspace" aria-label={t("Live")}><LiveBrokerSnapshot payload={DEMO_LIVE} section={section} preview /></section>
-  if (section === 'notes') return <DemoJournal />
-  if (section === 'tag-analytics') return <DemoReports />
-  return <section className="wm-page live-workspace" aria-label={t("Market calendar")}><h1>{t("Market calendar")}</h1><div className="live-table-scroll" role="region" tabIndex={0} aria-label={t("Lịch sự kiện mẫu")}><table><thead><tr><th>{t("UTC")}</th><th>{t("Currency")}</th><th>{t("Event")}</th><th>{t("Impact")}</th><th>{t("Previous")}</th><th>{t("Forecast")}</th></tr></thead><tbody>{[['08:00', 'EUR', 'Services PMI', 'Medium', '52,3', '52,5'], ['12:30', 'USD', 'Non-farm payrolls', 'High', '142K', '150K'], ['14:00', 'USD', 'ISM services', 'High', '51,5', '52,0']].map(([time, ...values]) => <tr key={time}><td>{time}</td>{values.map((value, i) => <td key={i}>{value}</td>)}</tr>)}</tbody></table></div></section>
-}
-
 export default function DemoPreview({ view, workspace, query }) {
   const { t } = useTestingLocale()
 
@@ -141,8 +131,8 @@ export default function DemoPreview({ view, workspace, query }) {
   if (view === 'replay') return <DemoSessions workspace={workspace} query={query} />
   if (view === 'trade') return <DemoReports ledgerOnly />
   if (view === 'analytics' || view === 'testing' || view === 'prop') return <DemoReports query={query} prop={view !== 'analytics' || query.get('analytics_source') === 'prop'} />
-  if (view === 'market-data') return <main className="wm-page market-data-workspace" aria-label={t("Market Data")}><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} preview={DEMO_ASSETS} /></main>
-  if (view === 'live') return <DemoLive query={query} />
+  if (view === 'market-data') return <section className="wm-page market-data-workspace" aria-label={t("Market Data")}><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} preview={DEMO_ASSETS} /></section>
+  if (view === 'live') return <LiveWorkspace workspace={workspace} query={query} preview={DEMO_LIVE} />
   if (view === 'playbook') return <DemoStrategies />
   return <DemoJournal />
 }

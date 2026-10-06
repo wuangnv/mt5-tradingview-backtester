@@ -55,7 +55,7 @@ export function TimeFilter({ value, onChange }) {
   return <FilterPopover label={t("Time")} title={t("Time filter")}><div className="fx-time-range">{[['timeStart', 'Start'], ['timeEnd', 'End']].map(([key, label]) => <label key={key}>{t(label)}<input type="time" step="60" aria-label={t(`Time ${label}`)} value={value[key] || ''} onChange={event => onChange({ [key]: event.target.value, hour: 'all' })} /></label>)}</div><button type="button" className="fx-filter-clear" onClick={() => onChange({ timeStart: '', timeEnd: '', hour: 'all' })}>{t("Clear")}</button></FilterPopover>
 }
 
-export function DateFilter({ value, onChange }) {
+export function DateFilter({ value, onChange, label = 'Backtesting Date', title = 'Backtesting date filter', calendarLabel = 'Chọn khoảng ngày đóng UTC' }) {
   const { t, locale } = useTestingLocale()
 
   const [month, setMonth] = useState(() => {
@@ -70,10 +70,10 @@ export function DateFilter({ value, onChange }) {
     if (endpoint === 'from') { onChange({ from: date, to: '' }); setEndpoint('to') }
     else { onChange(date < value.from ? { from: date, to: value.from } : { to: date }); setEndpoint('from') }
   }
-  return <FilterPopover label={t("Backtesting Date")} title={t("Backtesting date filter")} icon="calendar">
+  return <FilterPopover label={t(label)} title={t(title)} icon="calendar">
     <div className="fx-date-range">{[['from', 'Start'], ['to', 'End']].map(([key, label]) => <label key={key}>{t(label)}<input type="date" aria-label={t(`Analytics ${key} date`)} value={value[key]} onFocus={() => setEndpoint(key)} onChange={event => { onChange({ [key]: event.target.value }); if (event.target.value) setMonth(event.target.value.slice(0, 7)) }} /></label>)}</div>
     <div className="fx-calendar-heading"><button type="button" aria-label={t("Previous month")} onClick={() => shiftMonth(-1)}>‹</button><strong aria-live="polite">{first.toLocaleDateString(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' })}</strong><button type="button" aria-label={t("Next month")} onClick={() => shiftMonth(1)}>›</button></div>
-    <div className="fx-calendar" role="group" aria-label={t("Chọn khoảng ngày đóng UTC")}>{['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => <span key={day}>{t(day)}</span>)}{Array.from({ length: first.getUTCDay() }, (_, i) => <span key={`blank-${i}`} />)}{Array.from({ length: days }, (_, i) => {
+    <div className="fx-calendar" role="group" aria-label={t(calendarLabel)}>{['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => <span key={day}>{t(day)}</span>)}{Array.from({ length: first.getUTCDay() }, (_, i) => <span key={`blank-${i}`} />)}{Array.from({ length: days }, (_, i) => {
       const date = `${month}-${String(i + 1).padStart(2, '0')}`, selected = date === value.from || date === value.to
       return <button key={date} type="button" aria-label={date} aria-pressed={selected} className={selected ? 'is-endpoint' : value.from && value.to && date > value.from && date < value.to ? 'is-in-range' : ''} onClick={() => choose(date)}>{i + 1}</button>
     })}</div><button type="button" className="fx-filter-clear" onClick={() => { onChange({ from: '', to: '' }); setEndpoint('from') }}>{t("Clear")}</button>

@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "draft Apply filters deal net without click-event contamination",
+    "Clear restores snapshot scope",
+    "preview Escape restores focus",
+    "timezone list remains open while scrolling",
+    "filter changes reset local paging",
+    "calendar total sums net deal costs",
+    "shared DataDesk consumer fits viewport"
+  ],
+  "errors": [],
+  "blocked": [],
+  "fixture": "explicit intercepted ready snapshot"
+}

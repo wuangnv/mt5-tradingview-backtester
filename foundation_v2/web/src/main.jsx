@@ -83,7 +83,7 @@ function App() {
     content = <DataDeskWorkspace workspace={workspace} query={query} />
     mode = 'Data'
   } else if (activeView === 'market-data') {
-    content = <main className="wm-page market-data-workspace" aria-label="Market Data"><h1 className="sr-only">Market Data</h1><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} /></main>
+    content = <section className="wm-page market-data-workspace"><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} /></section>
     mode = 'Data'
   } else if (activeView === 'overview') {
     content = <WorkspaceOverview workspace={workspace} query={query} />

@@ -1,32 +1,35 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useTestingLocale } from './testingLocale.jsx'
 import { formatUtc } from './researchDataApi.js'
+import FxSelect from './FxSelect.jsx'
+import TestingIcon from './TestingIcon.jsx'
+import { dealNet } from './liveWorkspaceModel.js'
 
-const number = value => typeof value === 'number' && Number.isFinite(value) ? value.toLocaleString('vi-VN', { maximumFractionDigits: 5 }) : 'N/A'
-const entry = { 0: 'Vào', 1: 'Thoát', 2: 'Đảo chiều', 3: 'Close by' }
-
-export default function LiveBrokerSnapshot({ payload, section, preview = false }) {
-  const [search, setSearch] = useState(''), [page, setPage] = useState(1)
+export default function LiveBrokerSnapshot({ payload, section, deals: filteredDeals, filterKey = '' }) {
+  const { t, fmt, locale } = useTestingLocale()
+  const [search, setSearch] = useState(''), [page, setPage] = useState(1), [pageSize, setPageSize] = useState(20)
+  useEffect(() => setPage(1), [search, pageSize, filterKey])
   const account = payload.account
   if (!account) return null
-  const deals = (payload.deals || []).filter(deal => `${deal.symbol} ${deal.ticket}`.toLowerCase().includes(search.toLowerCase()))
-  const pages = Math.max(1, Math.ceil(deals.length / 20)), current = Math.min(page, pages)
-  const visible = deals.slice((current - 1) * 20, current * 20)
-  return <section className="live-broker" aria-label="Snapshot broker" data-testid="live-broker-snapshot">
-    <div className="live-section-heading"><h2>{payload.source} · {account.account_ref} · Demo</h2><span className="live-badge">{preview ? 'Dữ liệu mẫu' : payload.stale ? 'Dữ liệu cũ / mất kết nối' : 'Đã đồng bộ'}</span></div>
-    {!preview && <p className="live-snapshot-time">Snapshot {new Date(payload.captured_at_utc).toLocaleString('vi-VN', { timeZone: 'UTC' })} UTC · Đọc lại khoảng {payload.poll_seconds}s · Broker send đã khóa</p>}
-    <dl className="live-account-values">{[['Balance', account.balance], ['Equity', account.equity], ['Floating P/L', account.profit], ['Margin', account.margin], ['Free margin', account.margin_free]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{number(value)} <small>{account.currency}</small></dd></div>)}</dl>
-    {section === 'trading-accounts' && <>
-      <h3>Vị thế đang mở ({payload.positions?.length || 0})</h3>
-      {!payload.positions?.length ? <p>Broker không có vị thế mở tại snapshot này.</p> : <div className="live-table-scroll" tabIndex={0} role="region" aria-label="Bảng dữ liệu broker"><table><thead><tr><th>Ticket</th><th>Symbol</th><th>Side</th><th>Lot</th><th>Entry</th><th>SL / TP</th><th>P/L</th></tr></thead><tbody>{payload.positions.map(item => <tr key={item.ticket}><td>{item.ticket}</td><td>{item.symbol}</td><td>{item.type === 0 ? 'Buy' : 'Sell'}</td><td>{number(item.volume)}</td><td>{number(item.price_open)}</td><td>{number(item.sl)} / {number(item.tp)}</td><td>{number(item.profit)} {account.currency}</td></tr>)}</tbody></table></div>}
-      <h3>Lệnh chờ ({payload.orders?.length || 0})</h3>
-      {!payload.orders?.length ? <p>Broker không có lệnh chờ tại snapshot này.</p> : <div className="live-table-scroll" tabIndex={0} role="region" aria-label="Bảng dữ liệu broker"><table><thead><tr><th>Ticket</th><th>Symbol</th><th>Loại MT5</th><th>Lot</th><th>Giá</th></tr></thead><tbody>{payload.orders.map(item => <tr key={item.ticket}><td>{item.ticket}</td><td>{item.symbol}</td><td>{item.type}</td><td>{number(item.volume_current)}</td><td>{number(item.price_open)}</td></tr>)}</tbody></table></div>}
-      <h3>Giá broker gần nhất</h3><div className="live-table-scroll" tabIndex={0} role="region" aria-label="Bảng dữ liệu broker"><table><thead><tr><th>Symbol</th><th>Bid</th><th>Ask</th><th>Thời điểm tick UTC</th></tr></thead><tbody>{(payload.quotes || []).map(quote => <tr key={quote.symbol}><td>{quote.symbol}</td><td>{number(quote.bid)}</td><td>{number(quote.ask)}</td><td>{formatUtc(quote.time_msc / 1000)}{Date.now() - quote.time_msc > 120000 && ' · Giá cũ'}</td></tr>)}</tbody></table></div>
-    </>}
-    {section === 'trades' && <>
-      <div className="live-deals-toolbar"><h3>Broker deals ({payload.deal_count})</h3><input type="search" aria-label="Tìm deal broker" placeholder="Symbol hoặc ticket…" value={search} onChange={event => { setSearch(event.target.value); setPage(1) }} /></div>
-      <p>Mỗi dòng là một deal khớp lệnh, chưa gộp thành trade. Nạp/rút tiền được tách riêng. Phạm vi đồng bộ bắt đầu {new Date(payload.history_from_utc).toLocaleDateString('vi-VN', { timeZone: 'UTC' })} UTC; giữ deals đã đọc qua các lần mở app.</p>
-      {!deals.length ? <p data-testid="live-deals-empty">Chưa có deal BUY/SELL trong dữ liệu đã đồng bộ.</p> : <div className="live-table-scroll" tabIndex={0} role="region" aria-label="Bảng dữ liệu broker"><table><thead><tr><th>UTC / Ticket</th><th>Symbol</th><th>Side / Entry</th><th>Lot</th><th>Giá khớp</th><th>Profit</th><th>Commission</th><th>Swap</th><th>Fee</th></tr></thead><tbody>{visible.map(deal => <tr key={deal.ticket}><td>{formatUtc(deal.time_msc / 1000)}<small>#{deal.ticket} · Position {deal.position_id}</small></td><td>{deal.symbol}</td><td>{deal.type === 0 ? 'Buy' : 'Sell'} · {entry[deal.entry] || 'Chưa rõ'}</td><td>{number(deal.volume)}</td><td>{number(deal.price)}</td><td>{number(deal.profit)}</td><td>{number(deal.commission)}</td><td>{number(deal.swap)}</td><td>{number(deal.fee)}</td></tr>)}</tbody></table></div>}
-      <div className="live-deals-toolbar"><span>Đơn vị tiền: {account.currency} · {payload.cashflows?.length || 0} sự kiện khác BUY/SELL</span><div><button type="button" disabled={current === 1} onClick={() => setPage(current - 1)}>Trước</button><span> {current} / {pages} </span><button type="button" disabled={current >= pages} onClick={() => setPage(current + 1)}>Sau</button></div></div>
+  const currency = account.currency || '', money = value => fmt(value, currency ? ` ${currency}` : '')
+  const time = value => typeof value === 'number' && Number.isFinite(value) ? formatUtc(value / 1000, locale) : '—'
+  const side = value => value === 0 ? t('Buy') : value === 1 ? t('Sell') : '—'
+  const entries = ['Entry', 'Exit', 'Reversal', 'Close by']
+  const deals = (section === 'transactions' ? payload.cashflows || [] : filteredDeals || payload.deals || []).filter(deal => `${deal.symbol || ''} ${deal.ticket}`.toLowerCase().includes(search.toLowerCase()))
+  const pages = Math.max(1, Math.ceil(deals.length / pageSize)), current = Math.min(page, pages), visible = deals.slice((current - 1) * pageSize, current * pageSize)
+  const table = (label, headers, rows) => <div className="live-table-scroll" tabIndex={0} role="region" aria-label={t(label)}><table><thead><tr>{headers.map(label => <th key={label}>{t(label)}</th>)}</tr></thead><tbody>{rows}</tbody></table></div>
+  return <section className="live-broker" aria-label={t('Broker snapshot')} data-testid="live-broker-snapshot">
+    {section === 'trading-accounts' ? <>
+      <div className="live-section-heading"><h2>{payload.source} · {account.account_ref}</h2><span className="live-badge">{t('Read only')}</span></div>
+      <dl className="live-account-values">{[['Balance', account.balance], ['Equity', account.equity], ['Floating P/L', account.profit], ['Margin', account.margin], ['Free margin', account.margin_free]].map(([label, value]) => <div key={label}><dt>{t(label)}</dt><dd>{money(value)}</dd></div>)}</dl>
+      <details className="live-account-detail"><summary>{t('Open positions')} ({Array.isArray(payload.positions) ? payload.positions.length : '—'})</summary>{payload.positions?.length ? table('Open positions', ['Ticket', 'Asset', 'Side', 'Lot', 'Entry price', 'SL / TP', 'P/L'], payload.positions.map(item => <tr key={item.ticket}><td>{item.ticket}</td><td>{item.symbol}</td><td>{side(item.type)}</td><td>{fmt(item.volume, '', 5)}</td><td>{fmt(item.price_open, '', 5)}</td><td>{fmt(item.sl, '', 5)} / {fmt(item.tp, '', 5)}</td><td>{money(item.profit)}</td></tr>)) : <p>{t(Array.isArray(payload.positions) ? 'No open positions in this snapshot.' : 'Position data is unavailable.')}</p>}</details>
+      <details className="live-account-detail"><summary>{t('Pending orders')} ({Array.isArray(payload.orders) ? payload.orders.length : '—'})</summary>{payload.orders?.length ? table('Pending orders', ['Ticket', 'Asset', 'MT5 type', 'Lot', 'Price'], payload.orders.map(item => <tr key={item.ticket}><td>{item.ticket}</td><td>{item.symbol}</td><td>{item.type}</td><td>{fmt(item.volume_current, '', 5)}</td><td>{fmt(item.price_open, '', 5)}</td></tr>)) : <p>{t(Array.isArray(payload.orders) ? 'No pending orders in this snapshot.' : 'Order data is unavailable.')}</p>}</details>
+      <details className="live-account-detail"><summary>{t('Latest broker quotes')}</summary>{payload.quotes?.length ? table('Latest broker quotes', ['Asset', 'Bid', 'Ask', 'Tick time (UTC)'], payload.quotes.map(quote => <tr key={quote.symbol}><td>{quote.symbol}</td><td>{fmt(quote.bid, '', 5)}</td><td>{fmt(quote.ask, '', 5)}</td><td>{time(quote.time_msc)}{Date.now() - quote.time_msc > 120000 && ` · ${t('Stale quote')}`}</td></tr>)) : <p>{t('No quotes in this snapshot.')}</p>}</details>
+    </> : <>
+      <div className="live-deals-toolbar"><h2>{t(section === 'transactions' ? 'Transactions' : 'Filled deals')} · {deals.length}</h2><label className="live-search"><TestingIcon kind="search" /><input type="search" aria-label={t('Search symbol or ticket')} placeholder={t('Search symbol or ticket')} value={search} onChange={event => setSearch(event.target.value)} /></label></div>
+      <p className="live-muted">{t(section === 'transactions' ? 'Deposits, withdrawals and other non-trading events are listed separately.' : 'Each row is a filled deal; entries and exits have not been paired into trades.')}</p>
+      {!deals.length ? <div className="live-empty" data-testid="live-deals-empty"><TestingIcon kind={section === 'transactions' ? 'account' : 'journal'} size={48} /><h3>{t(section === 'transactions' ? 'No transactions yet' : 'No deals in this selection.')}</h3></div> : section === 'transactions' ? table('Transactions', ['Time (UTC)', 'Ticket', 'MT5 type', 'Amount', 'Comment'], visible.map(deal => <tr key={deal.ticket}><td>{time(deal.time_msc)}</td><td>{deal.ticket}</td><td>{deal.type}</td><td>{money(deal.profit)}</td><td>{deal.comment || '—'}</td></tr>)) : table('Broker deals', ['Time (UTC) / Ticket', 'Asset', 'Side / Entry', 'Lot', 'Fill price', 'Profit', 'Commission', 'Swap', 'Fee', 'Net P/L'], visible.map(deal => <tr key={deal.ticket}><td>{time(deal.time_msc)}<small>#{deal.ticket} · {t('Position')} {deal.position_id ?? '—'}</small></td><td>{deal.symbol}</td><td>{side(deal.type)} · {entries[deal.entry] ? t(entries[deal.entry]) : '—'}</td><td>{fmt(deal.volume, '', 5)}</td><td>{fmt(deal.price, '', 5)}</td><td>{fmt(deal.profit)}</td><td>{fmt(deal.commission)}</td><td>{fmt(deal.swap)}</td><td>{fmt(deal.fee)}</td><td className={dealNet(deal) > 0 ? 'is-gain' : dealNet(deal) < 0 ? 'is-loss' : ''}>{fmt(dealNet(deal))}</td></tr>))}
+      {deals.length > 0 && <nav className="fxa-pagination" aria-label={t('Live data pagination')}><div><button type="button" className="fxa-button" aria-label={t('Trang trước')} disabled={current === 1} onClick={() => setPage(current - 1)}>‹</button><span>{current} / {pages}</span><button type="button" className="fxa-button" aria-label={t('Trang sau')} disabled={current === pages} onClick={() => setPage(current + 1)}>›</button></div><span className="live-muted">{currency} · {t('Paging synced data locally')}</span><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10, 20, 50, 100].map(value => ({ value, label: String(value) }))} /></nav>}
     </>}
   </section>
 }

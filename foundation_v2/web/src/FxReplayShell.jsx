@@ -42,8 +42,8 @@ const SHELL_COPY = {
       sessions: ['Sessions', 'Chọn một phiên replay'],
       replay: ['Testing', 'Replay và backtest'],
       live: ['Live', 'Theo dõi thị trường và tài khoản'],
-      calendar: ['Calendar', 'Lịch thị trường'],
-      liveTrades: ['Trades', 'Giao dịch live read-only'],
+      calendar: ['Calendar', 'P/L giao dịch theo ngày'],
+      liveTrades: ['Trades', 'Deal khớp lệnh đã đồng bộ'],
       notes: ['Notes', 'Ghi chú thị trường'],
       tagAnalytics: ['Tag analytics', 'Phân tích theo tag'],
       tradingAccounts: ['Trading accounts', 'Tài khoản giao dịch'],
@@ -94,8 +94,8 @@ const SHELL_COPY = {
       sessions: ['Sessions', 'Choose a replay session'],
       replay: ['Testing', 'Replay and backtesting'],
       live: ['Live', 'Market and account workspace'],
-      calendar: ['Calendar', 'Market calendar'],
-      liveTrades: ['Trades', 'Read-only live trades'],
+      calendar: ['Calendar', 'Daily deal P/L'],
+      liveTrades: ['Trades', 'Synced broker deals'],
       notes: ['Notes', 'Market notes'],
       tagAnalytics: ['Tag analytics', 'Tag-based analytics'],
       tradingAccounts: ['Trading accounts', 'Trading accounts'],
@@ -142,6 +142,7 @@ const SIDEBAR_SECTIONS = [
       { id: 'live-trades', copyKey: 'liveTrades', icon: 'trades', route: 'live', activeViews: ['live'], section: 'trades' },
       { id: 'live-notes', copyKey: 'notes', icon: 'notes', route: 'live', activeViews: ['live'], section: 'notes' },
       { id: 'live-tag-analytics', copyKey: 'tagAnalytics', icon: 'tags', route: 'live', activeViews: ['live'], section: 'tag-analytics' },
+      { id: 'live-analytics', copyKey: 'analytics', icon: 'analytics', route: 'live', activeViews: ['live'], section: 'analytics' },
       { id: 'live-accounts', copyKey: 'tradingAccounts', icon: 'accounts', route: 'live', activeViews: ['live'], section: 'trading-accounts' },
     ],
   },
@@ -178,7 +179,7 @@ function activeSectionId(activeView, query) {
 
 function isNavItemActive(item, activeView, query, sectionId) {
   if (!item.activeViews?.includes(activeView)) return false
-  if (sectionId !== 'testing' && query?.get('section') !== item.section) return false
+  if (sectionId !== 'testing' && (query?.get('section') || (sectionId === 'live' ? 'calendar' : '')) !== item.section) return false
   if (sectionId === 'testing' && query?.get('area') === 'live') return false
   return !query?.get('section') || query.get('section') === item.section || sectionId === 'testing'
 }
@@ -335,6 +336,9 @@ function ShellSubnav({ activeView, workspace, query, copy, action }) {
             {[['sessions', 'Sessions'], ['prop', 'Prop firm']].map(([source, label]) => <a key={source}
               href={hrefFor('analytics', workspace, query, { select: '1', analytics_source: source, area: 'testing', section: 'analytics', prop_session: query.get('prop_session'), attempt: query.get('attempt') })}
               aria-current={(query.get('analytics_source') === 'prop' ? 'prop' : 'sessions') === source ? 'page' : undefined}>{t(label)}</a>)}
+          </nav>}
+          {item.section === 'trading-accounts' && sectionId === 'live' && active && <nav className="fx-subsubnav" aria-label={t('Account views')}>
+            {[['connect', 'Connect'], ['transactions', 'Transactions']].map(([tab, label]) => <a key={tab} href={hrefFor('live', workspace, query, { area: 'live', section: 'trading-accounts', account_tab: tab })} aria-current={(query.get('account_tab') === 'transactions' ? 'transactions' : 'connect') === tab ? 'page' : undefined}>{t(label)}</a>)}
           </nav>}
           </React.Fragment>
         )
@@ -616,7 +620,7 @@ export default function FxReplayShell({ children, workspace, query = currentQuer
         <ShellTopbar copy={copy} language={language} setLanguage={handleLanguage} theme={theme} setTheme={handleTheme} railCollapsed={displayedRailCollapsed} onToggleRail={handleRail} chartWorkspace={chartWorkspace} query={query} workspace={workspace} helpOpen={helpOpen} onToggleHelp={() => setHelpOpen((value) => !value)} helpButtonRef={helpButtonRef} railId="fxreplay-rail" mobileNavigation={mobileNavigation} drawerOpen={drawerOpen} menuButtonRef={menuButtonRef} />
         {drawerOpen && <div className="fx-mobile-nav-backdrop" aria-hidden="true" onClick={() => setMobileNavigationOpen(false)} />}
         {!chartWorkspace && <ShellRail activeView={activeView} workspace={workspace} query={query} copy={copy} railId="fxreplay-rail" drawerOpen={drawerOpen} onClose={() => setMobileNavigationOpen(false)} closeButtonRef={navigationCloseRef} />}
-        <section className="fx-main" aria-label={copy.contentAria} inert={drawerOpen}>
+        <section className="fx-main" role={['live', 'market-data'].includes(activeView) ? 'main' : undefined} aria-label={copy.contentAria} inert={drawerOpen}>
           <ShellSubnav activeView={activeView} workspace={workspace} query={query} copy={copy} action={subnavAction} />
           {helpOpen && <ShellHelp copy={copy} helpCloseRef={helpCloseRef} onClose={() => setHelpOpen(false)} />}
           <div className="fx-content" tabIndex={0}>{children}</div>

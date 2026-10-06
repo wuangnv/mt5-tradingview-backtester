@@ -1,0 +1,390 @@
+{
+  "status": "PASS",
+  "scope": "Canonical Testing Market Data and all Live presentation/read-only surfaces",
+  "acceptance": {
+    "source": true,
+    "UI": true,
+    "actualLocalReadRoutes": true,
+    "demoJourneys": true,
+    "syntheticStates": true,
+    "fullBrokerFinancialAcceptance": "NOT_EVALUATED",
+    "brokerExecution": "NOT_AUTHORIZED_OR_ATTEMPTED",
+    "integrationsOrPersistence": "PREVIEW_ONLY"
+  },
+  "counts": {
+    "actualRoutes": 32,
+    "demoRoutes": 32,
+    "totalRouteCases": 64,
+    "axeScans": 16,
+    "axeViolations": 0,
+    "syntheticStateCases": 8,
+    "independentModelOracles": 17,
+    "demoInteractionJourneys": 8,
+    "localeDeltaCases": 4,
+    "layoutDeltaCases": 16,
+    "inlineSvgSamples": 404,
+    "maximumInlineSvgVerticalDelta": 0
+  },
+  "errors": [],
+  "blockedRequests": [],
+  "actualWrites": 0,
+  "versionBoundary": {
+    "baseline": "r5 64-case frozen matrix plus states/model/journeys",
+    "localeDelta": "r6 testing-copy.json only: localized Close and count wording; 4 focused EN/VI cases",
+    "layoutDelta": "r7 testing-standard.css shared pager/action base; r8 market-sync.css scoped eager catalog ownership; 16 focused layout cases with natural DataDesk route",
+    "changedAfterBaseline": [
+      "market-sync.css",
+      "testing-copy.json",
+      "testing-standard.css"
+    ],
+    "extraPinnedForLayout": [
+      "AnalyticsFilterControls.jsx",
+      "FxAnalytics.jsx",
+      "FxTradeLedger.jsx",
+      "SessionPicker.jsx"
+    ]
+  },
+  "beforeBaseline": [
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a"
+    },
+    {
+      "file": "demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "bb23dde18712fc4e16d4e9cb88b30cd7afd16c753265a1c1a253c8cb13025b3e"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "469ec27bc31e5f3bcf10615f9e39fc47baa8bee8502340b4580e0c632b91f39f"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "0ec2194ff5ad27819a0dc9c09bc1f96a17093ef5b5cdb87908df55c8d1fb5cdb"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "84ef2fee41e783d1b478178d4d6ccfa3b89e86e0f5e852b90371387b1d9e36ef"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    }
+  ],
+  "afterBaseline": [
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a"
+    },
+    {
+      "file": "demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "bb23dde18712fc4e16d4e9cb88b30cd7afd16c753265a1c1a253c8cb13025b3e"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "469ec27bc31e5f3bcf10615f9e39fc47baa8bee8502340b4580e0c632b91f39f"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "0ec2194ff5ad27819a0dc9c09bc1f96a17093ef5b5cdb87908df55c8d1fb5cdb"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "84ef2fee41e783d1b478178d4d6ccfa3b89e86e0f5e852b90371387b1d9e36ef"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    }
+  ],
+  "finalPins": [
+    {
+      "file": "AnalyticsFilterControls.jsx",
+      "sha256": "55bbef1fc0fdd9b2fc5739f076f2ceeda3d7ccedb3e5f0441f323dbe02767c85"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "45eaa6857381649538303313cc59ebceba11496622b0529c1fbc6bc446dfe335"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a"
+    },
+    {
+      "file": "SessionPicker.jsx",
+      "sha256": "88119ecc6637f3f530ce476b5404ef6474dfc086258b6ef17ad0a062b2b07d9e"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "84ef2fee41e783d1b478178d4d6ccfa3b89e86e0f5e852b90371387b1d9e36ef"
+    },
+    {
+      "file": "TestingReadState.jsx",
+      "sha256": "972785e6a2bb5b77f383f6b47ad016143efd9d6f6d3e2fda4cd0321fcbc893a2"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a"
+    },
+    {
+      "file": "demoMode.js",
+      "sha256": "cd4e78b8a5135287c804cbdfe2a3870ce600057c099431a72a28b8698366d220"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "4bd891752671845dc1d9772eb42e85493c50233514c161e8b8958594f34153dc"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "894ee84e3eb1dbe5f0ad48a299237a71bdd00ae346ccbb9a40f3d51068e22133"
+    },
+    {
+      "file": "testingLocale.jsx",
+      "sha256": "3166df279bde3da292fdeae96cc4908e20e03b52db58432156ffdaebebb96399"
+    },
+    {
+      "file": "workspaceContext.js",
+      "sha256": "73afbba56703db617f95892018ed9da1b21f9bba2369752cbd0918d05e056b71"
+    }
+  ],
+  "localeDelta": {
+    "before": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e",
+    "after": "a0ba1af2c80e5ca6f19c4a0251cb83f5ccf25aa4e8c9b78ad5bbdf89f548322e"
+  },
+  "visualReview": [
+    "demo-calendar-dark-vi-1440.png",
+    "demo-trading-accounts-dark-vi-1440.png",
+    "demo-market-data-dark-vi-1440.png",
+    "demo-trades-light-vi-360.png",
+    "demo-calendar-dark-en-360-landing.png",
+    "demo-trading-accounts-light-vi-360-landing.png",
+    "demo-notes-light-en-360-journey-dialog.png",
+    "actual-calendar-light-en-1440.png",
+    "r6-one-calendar-en-light-1440-dialog.png",
+    "r7-fixture-market-data-dark-vi-1440.png",
+    "r7-demo-market-data-dark-vi-1440.png",
+    "r7-fixture-market-data-light-en-360.png",
+    "r7-fixture-data-desk-dark-vi-1440.png"
+  ],
+  "repairedFindings": [
+    "Apply click event mistaken for filter override",
+    "same-count filter change retained pagination",
+    "unknown calendar day displayed no-deals assertion",
+    "preview Escape did not return focus",
+    "nested main/complementary landmarks and missing Market h1",
+    "EN Close translation absent",
+    "positive actual Market and natural DataDesk pager depended on lazy Analytics CSS"
+  ],
+  "retainedDiagnostics": [
+    "matrix-r1-oracles-and-source-crossed.json",
+    "matrix-r2-demo-axe-diagnostic.json",
+    "matrix-r3-aside-axe-diagnostic.json",
+    "matrix-r4-64-pass-source-crossed.json",
+    "journeys-r1-label-oracle-source-crossed.json",
+    "layout-r1-shell-font-oracle.json",
+    "layout-r2-compact-size-oracle.json",
+    "layout-r3-r7-accepted-desktop.json",
+    "final-receipt-r6-before-layout-delta.json"
+  ],
+  "limitations": [
+    "Actual local account endpoint was unavailable during route verification; positive account/deal arithmetic remains labeled synthetic/demo evidence.",
+    "Calendar aggregates filled broker deals with costs, not paired trades. Return percent is unknown without opening capital.",
+    "Notes/import/manual-account/provider-connect/new-trade actions are presentation previews; no persistence or integrations are asserted.",
+    "No market download/update/practice action, account mutation, provider call, broker send, or service restart was performed."
+  ]
+}

@@ -10,7 +10,9 @@ Project color roles are defined in `project-palette.md` and apply across all are
 ## Presentation
 
 `foundation_v2/web/src/testing-standard.css` owns Testing semantic tokens, scoped by
-`data-ui-area="testing"`. Reuse existing components before adding another control.
+`data-ui-area="testing"`. Live explicitly opts into the same rules through
+`data-ui-area="live"`; its layout and data semantics are defined in
+`live-market-standard.md`. Reuse existing components before adding another control.
 
 | Role | Size |
 | --- | --- |
@@ -37,7 +39,10 @@ Destructive actions use a filled red surface with white text in resting and hove
 states. Remaining-days badges use the softer peach surface/text pair. Dashboard keeps a compact Delete icon; the Sessions toolbar uses the text
 Delete session pill. The Recent Sessions filter toggle shares compact icon sizing.
 Trades toolbar icons and text controls align around one vertical center.
-Text buttons and select triggers use a 20px line box. Action SVGs have a fixed,
+Text buttons and select triggers use a 20px line box. Text buttons use
+500 weight and 8px/12px padding; compact circles override padding to zero.
+Pagination flex layout belongs to the shared standard, so a standalone Market
+Data or Live route never depends on lazily loaded Analytics styles. Action SVGs have a fixed,
 non-shrinking box (18px standard, 16px compact) and no inline baseline gap.
 Metric icons align with the label's first 18px line when the label wraps; search
 icons track the input's vertical center. Market Data fields follow the shared

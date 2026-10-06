@@ -1,0 +1,181 @@
+{
+  "pass": true,
+  "cases": [
+    {
+      "name": "demo-trades-dark-en-1440-journey",
+      "pass": true,
+      "evidence": "journeys-r1-label-oracle-source-crossed.json"
+    },
+    {
+      "name": "demo-trading-accounts-dark-en-1440-journey",
+      "pass": true,
+      "evidence": "journeys-r1-label-oracle-source-crossed.json"
+    },
+    {
+      "name": "demo-notes-dark-en-1440-journey",
+      "pass": true,
+      "evidence": "journeys-r1-label-oracle-source-crossed.json"
+    },
+    {
+      "name": "demo-trades-light-en-360-journey",
+      "pass": true,
+      "evidence": "journeys-r1-label-oracle-source-crossed.json"
+    },
+    {
+      "name": "demo-trading-accounts-light-en-360-journey",
+      "pass": true,
+      "evidence": "journeys-r1-label-oracle-source-crossed.json"
+    },
+    {
+      "name": "demo-notes-light-en-360-journey",
+      "pass": true,
+      "evidence": "journeys-r1-label-oracle-source-crossed.json"
+    },
+    {
+      "name": "demo-market-data-dark-en-1440-journey",
+      "pass": true,
+      "evidence": "journeys-report.json"
+    },
+    {
+      "name": "demo-market-data-light-en-360-journey",
+      "pass": true,
+      "evidence": "journeys-report.json"
+    }
+  ],
+  "before": [
+    {
+      "file": "demoFixtures.js",
+      "sha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "bb23dde18712fc4e16d4e9cb88b30cd7afd16c753265a1c1a253c8cb13025b3e"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "469ec27bc31e5f3bcf10615f9e39fc47baa8bee8502340b4580e0c632b91f39f"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "0ec2194ff5ad27819a0dc9c09bc1f96a17093ef5b5cdb87908df55c8d1fb5cdb"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "84ef2fee41e783d1b478178d4d6ccfa3b89e86e0f5e852b90371387b1d9e36ef"
+    }
+  ],
+  "after": [
+    {
+      "file": "demoFixtures.js",
+      "sha256": "c46845af5be465081c2709364b456ea5d769e712d0e79027058a5df553f5194a"
+    },
+    {
+      "file": "DemoPreview.jsx",
+      "sha256": "2af4e39c15643233c2a8862acfe6678a9283e8b9a363d31f7b3b38bd26fcc9df"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "54e3ba81592ee74e8b3b877471b35e9679fb950c04680ff808d6c5beddf4c1dc"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "live-workspace.css",
+      "sha256": "ed94e9459e09047834caa5bfefdc1bfda9b8fc8aaede55f0be3ccd2c9ce6aeac"
+    },
+    {
+      "file": "LiveBrokerSnapshot.jsx",
+      "sha256": "4fe6b205b677d48ed4d970647ce45f1ce2a814b95d61a1991354e594624a5de0"
+    },
+    {
+      "file": "LiveSurfaces.jsx",
+      "sha256": "2b2e8888e44fd42538ddee2dcf688149887fbc934046bf6a9107ff5a55e324b2"
+    },
+    {
+      "file": "LiveWorkspace.jsx",
+      "sha256": "03018397d7497bb5668ded3dda3603cc9c6e9579476a0401743ee4f08384fc4b"
+    },
+    {
+      "file": "liveWorkspaceModel.js",
+      "sha256": "d2348e0ce419668816de0b203264abedef045bac4ce35a6bfd0ef0affc4db737"
+    },
+    {
+      "file": "main.jsx",
+      "sha256": "9b156a7093595ce8cd447176d4caf0c015c03b6df0da5788782e6c960ef2824c"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "bb23dde18712fc4e16d4e9cb88b30cd7afd16c753265a1c1a253c8cb13025b3e"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "83adf995b7556fd39da35e9608f3c4f4202efeca0c627f282e7217356a74f89a"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "469ec27bc31e5f3bcf10615f9e39fc47baa8bee8502340b4580e0c632b91f39f"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "0ec2194ff5ad27819a0dc9c09bc1f96a17093ef5b5cdb87908df55c8d1fb5cdb"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "84ef2fee41e783d1b478178d4d6ccfa3b89e86e0f5e852b90371387b1d9e36ef"
+    }
+  ],
+  "sourceUnchanged": true,
+  "errors": [],
+  "blocked": [],
+  "note": "Retained 6 successful r5 cases from an 8-case run; Search assets label oracle corrected and only affected 2 Market cases rerun."
+}
