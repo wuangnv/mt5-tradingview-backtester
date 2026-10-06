@@ -37,6 +37,11 @@ Destructive actions use a filled red surface with white text in resting and hove
 states. Remaining-days badges use the softer peach surface/text pair. Dashboard keeps a compact Delete icon; the Sessions toolbar uses the text
 Delete session pill. The Recent Sessions filter toggle shares compact icon sizing.
 Trades toolbar icons and text controls align around one vertical center.
+Text buttons and select triggers use a 20px line box. Action SVGs have a fixed,
+non-shrinking box (18px standard, 16px compact) and no inline baseline gap.
+Metric icons align with the label's first 18px line when the label wraps; search
+icons track the input's vertical center. Market Data fields follow the shared
+40/44px control height, including date fields.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
 
@@ -60,7 +65,8 @@ icons without a background or border; selected tabs use contrast text and a 2px 
 source tabs stay beside Analytics on the same horizontally scrolling row, with
 no vertical separator. On Analytics, the underline runs continuously from the
 Analytics parent through both source tabs in peach. The parent text/icon is
-peach, while both source labels remain neutral. Other selected tabs retain the
+peach. Source labels are muted at rest and brighten on hover; only the selected
+source uses full-contrast text. Hover never adds a fill. Other selected tabs retain the
 ivory/dark underline. The rail toggle has a transparent background and brightens its icon
 on hover. Keyboard focus retains its visible outline.
 
@@ -177,7 +183,14 @@ Recent session headers expand on non-action clicks, with hover feedback and a
 darker expanded surface. The existing chevron supplies keyboard activation and
 `aria-expanded`/`aria-controls`; actions within the header do not expand it.
 Empty expanded reports use a single left-aligned message; known balance curves
-remain visible even if no full ledger is available. The peach list count shows
-filtered matches / entire catalog, independent of page size. It is local catalog
+remain visible even if no full ledger is available. The peach list count uses
+prose (e.g. "1 phiên trong tổng số 6") for filtered matches against the entire
+catalog, independent of page size. It is local catalog
 filtering, not server paging. Popup search fields share transparent background
 against the raised menu surface and the same underline/focus treatment.
+
+Dashboard presets **Tuần trước / Last week** and **Tháng trước / Last month**
+use the completed Monday–Sunday week and completed calendar month in UTC.
+**Tất cả / All time** removes date bounds; **Tuỳ chọn / Custom** keeps explicit
+ISO bounds. Previously saved rolling 7/30/90-day ranges retain their original
+bounds and an accurate rolling label when they still match today's range.

@@ -1,0 +1,327 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "language": "vi",
+      "width": 1440,
+      "count": "1 phiên trong tổng số 6",
+      "periods": [
+        "Tuần trước",
+        "Tháng trước",
+        "Tất cả✓",
+        "Tuỳ chọn"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(166, 175, 179)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(214, 160, 123)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        40,
+        40,
+        40
+      ]
+    },
+    {
+      "theme": "dark",
+      "language": "vi",
+      "width": 360,
+      "count": "1 phiên trong tổng số 6",
+      "periods": [
+        "Tuần trước",
+        "Tháng trước",
+        "Tất cả✓",
+        "Tuỳ chọn"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(166, 175, 179)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(214, 160, 123)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        44,
+        44,
+        44
+      ]
+    },
+    {
+      "theme": "dark",
+      "language": "en",
+      "width": 1440,
+      "count": "Showing 1 of 6",
+      "periods": [
+        "Last week",
+        "Last month",
+        "All time✓",
+        "Custom"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(166, 175, 179)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(214, 160, 123)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        40,
+        40,
+        40
+      ]
+    },
+    {
+      "theme": "dark",
+      "language": "en",
+      "width": 360,
+      "count": "Showing 1 of 6",
+      "periods": [
+        "Last week",
+        "Last month",
+        "All time✓",
+        "Custom"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(166, 175, 179)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(214, 160, 123)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(236, 233, 226)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        44,
+        44,
+        44
+      ]
+    },
+    {
+      "theme": "light",
+      "language": "vi",
+      "width": 1440,
+      "count": "1 phiên trong tổng số 6",
+      "periods": [
+        "Tuần trước",
+        "Tháng trước",
+        "Tất cả✓",
+        "Tuỳ chọn"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(85, 97, 102)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(143, 83, 47)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        40,
+        40,
+        40
+      ]
+    },
+    {
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "count": "1 phiên trong tổng số 6",
+      "periods": [
+        "Tuần trước",
+        "Tháng trước",
+        "Tất cả✓",
+        "Tuỳ chọn"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(85, 97, 102)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(143, 83, 47)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        44,
+        44,
+        44
+      ]
+    },
+    {
+      "theme": "light",
+      "language": "en",
+      "width": 1440,
+      "count": "Showing 1 of 6",
+      "periods": [
+        "Last week",
+        "Last month",
+        "All time✓",
+        "Custom"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(85, 97, 102)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(143, 83, 47)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        40,
+        40,
+        40
+      ]
+    },
+    {
+      "theme": "light",
+      "language": "en",
+      "width": 360,
+      "count": "Showing 1 of 6",
+      "periods": [
+        "Last week",
+        "Last month",
+        "All time✓",
+        "Custom"
+      ],
+      "metrics": [],
+      "nav": {
+        "rest": {
+          "color": "rgb(85, 97, 102)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "selected": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "parent": {
+          "color": "rgb(143, 83, 47)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        },
+        "hover": {
+          "color": "rgb(40, 49, 56)",
+          "bg": "rgba(0, 0, 0, 0)",
+          "lineHeight": "normal"
+        }
+      },
+      "marketFieldHeights": [
+        44,
+        44,
+        44
+      ]
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "pass": true
+}

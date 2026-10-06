@@ -1,0 +1,823 @@
+{
+  "cases": [
+    {
+      "name": "settings-dark-vi-1440",
+      "fields": [
+        {
+          "tab": "Thông tin phiên",
+          "fields": [
+            {
+              "label": "Tên",
+              "readOnly": false,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Chiến lược",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Bố cục biểu đồ",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Mô tảReal Exness demo history. Current symbol snapshot; historic costs/spec changes unverified. Replay simulation, no broker execution.",
+              "readOnly": false,
+              "width": 631,
+              "height": 106
+            }
+          ]
+        },
+        {
+          "tab": "Số dư và tài sản",
+          "fields": [
+            {
+              "label": "Số dư tài khoản",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            }
+          ]
+        },
+        {
+          "tab": "Chi phí",
+          "fields": []
+        },
+        {
+          "tab": "Khoảng ngày",
+          "fields": [
+            {
+              "label": "Đầu bộ dữ liệu · UTC",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Cuối bộ dữ liệu · UTC",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Vị trí replay · UTC",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Tự cập nhật ngày kết thúc",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            },
+            {
+              "label": "Làm mượt nến",
+              "readOnly": true,
+              "width": 631,
+              "height": 43
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "create-dark-vi-1440",
+      "controls": [
+        {
+          "label": "EURUSDm · 60s · review · 82 khoảng gián đoạn",
+          "width": 459.015625,
+          "height": 40,
+          "lineHeight": "20px"
+        },
+        {
+          "label": "number",
+          "width": 130,
+          "height": 38,
+          "lineHeight": "normal"
+        },
+        {
+          "label": "Bắt đầu phát lại",
+          "width": 126.5625,
+          "height": 36,
+          "lineHeight": "normal"
+        }
+      ]
+    },
+    {
+      "name": "time-date-dark-vi-1440",
+      "popups": [
+        {
+          "text": "Lọc giờ đóng lệnhBắt đầuKết thúcXóa",
+          "x": 795,
+          "y": 201,
+          "width": 340,
+          "height": 190,
+          "controls": [
+            {
+              "label": "Giờ bắt đầu",
+              "w": 147,
+              "h": 44
+            },
+            {
+              "label": "Giờ kết thúc",
+              "w": 147,
+              "h": 44
+            },
+            {
+              "label": "Xóa",
+              "w": 21.90625,
+              "h": 36
+            }
+          ]
+        },
+        {
+          "text": "Lọc ngày đóng lệnh kiểm thửBắt đầuKết thúc‹tháng 10 năm 2026›CNT2T3T4T5T6T712345678910111213141516171819202122232425262728293031Xóa",
+          "x": 1061.015625,
+          "y": 201,
+          "width": 340,
+          "height": 467,
+          "controls": [
+            {
+              "label": "Ngày bắt đầu phân tích",
+              "w": 147,
+              "h": 44
+            },
+            {
+              "label": "Ngày kết thúc phân tích",
+              "w": 147,
+              "h": 44
+            },
+            {
+              "label": "Tháng trước",
+              "w": 34,
+              "h": 34
+            },
+            {
+              "label": "Tháng sau",
+              "w": 34,
+              "h": 34
+            },
+            {
+              "label": "2026-10-01",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-02",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-03",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-04",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-05",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-06",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-07",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-08",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-09",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-10",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-11",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-12",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-13",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-14",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-15",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-16",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-17",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-18",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-19",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-20",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-21",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-22",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-23",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-24",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-25",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-26",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-27",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-28",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-29",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-30",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "2026-10-31",
+              "w": 41.140625,
+              "h": 34
+            },
+            {
+              "label": "Xóa",
+              "w": 21.90625,
+              "h": 36
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "settings-light-en-360",
+      "fields": [
+        {
+          "tab": "Session info",
+          "fields": [
+            {
+              "label": "Name",
+              "readOnly": false,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Strategy",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Chart layout",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Description",
+              "readOnly": false,
+              "width": 327,
+              "height": 106
+            }
+          ]
+        },
+        {
+          "tab": "Balance and assets",
+          "fields": [
+            {
+              "label": "Account balance",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            }
+          ]
+        },
+        {
+          "tab": "Costs",
+          "fields": []
+        },
+        {
+          "tab": "Date range",
+          "fields": [
+            {
+              "label": "Dataset start · UTC",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Dataset end · UTC",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Replay position · UTC",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Auto-update end date",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            },
+            {
+              "label": "Smooth candles",
+              "readOnly": true,
+              "width": 327,
+              "height": 43
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "create-light-en-360",
+      "controls": [
+        {
+          "label": "EURUSDm · 60s · review · 82 data gaps",
+          "width": 360,
+          "height": 44,
+          "lineHeight": "20px"
+        },
+        {
+          "label": "number",
+          "width": 360,
+          "height": 38,
+          "lineHeight": "normal"
+        },
+        {
+          "label": "Start replay",
+          "width": 360,
+          "height": 36,
+          "lineHeight": "normal"
+        }
+      ]
+    },
+    {
+      "name": "time-date-light-en-360",
+      "popups": [
+        {
+          "text": "Close-time filterStartEndClear",
+          "x": 70,
+          "y": 361,
+          "width": 278,
+          "height": 190,
+          "controls": [
+            {
+              "label": "Start time",
+              "w": 116,
+              "h": 44
+            },
+            {
+              "label": "End time",
+              "w": 116,
+              "h": 44
+            },
+            {
+              "label": "Clear",
+              "w": 29.140625,
+              "h": 36
+            }
+          ]
+        },
+        {
+          "text": "Backtesting close-date filterStartEnd‹October 2026›SunMonTueWedThuFriSat12345678910111213141516171819202122232425262728293031Clear",
+          "x": 70,
+          "y": 465,
+          "width": 278,
+          "height": 467,
+          "controls": [
+            {
+              "label": "Analytics start date",
+              "w": 116,
+              "h": 44
+            },
+            {
+              "label": "Analytics end date",
+              "w": 116,
+              "h": 44
+            },
+            {
+              "label": "Previous month",
+              "w": 34,
+              "h": 34
+            },
+            {
+              "label": "Next month",
+              "w": 34,
+              "h": 34
+            },
+            {
+              "label": "2026-10-01",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-02",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-03",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-04",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-05",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-06",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-07",
+              "w": 32.296875,
+              "h": 34
+            },
+            {
+              "label": "2026-10-08",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-09",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-10",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-11",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-12",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-13",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-14",
+              "w": 32.296875,
+              "h": 34
+            },
+            {
+              "label": "2026-10-15",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-16",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-17",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-18",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-19",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-20",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-21",
+              "w": 32.296875,
+              "h": 34
+            },
+            {
+              "label": "2026-10-22",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-23",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-24",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-25",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-26",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-27",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-28",
+              "w": 32.296875,
+              "h": 34
+            },
+            {
+              "label": "2026-10-29",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-30",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "2026-10-31",
+              "w": 32.28125,
+              "h": 34
+            },
+            {
+              "label": "Clear",
+              "w": 29.140625,
+              "h": 36
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "before": [
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "af0d41ccd934edd63b07a45ed3c4229544cdf0ca2471929f0bb5ee9344b30536"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6b647fbc3789ef90f72bd314461bd1bc39eca153cbc083a7d490462332dac720"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "c13aa42f05d0df868e1e128ee4f8a236e2251827703c09414ce1a94845229897"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "e8417038650bf77e31281de12702cc13220a9da17af1976e371483e6910e7323"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "5415af1da23008472bea6cc55658f034f2bd4d943ad155d6c1ca642f56660360"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "08b6f9fed40df30aff80e02538b3f10bb5fb3e28728704c760afcb4b4e14ef2f"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "e284c46d3e339d2915e3c310586071aa115849ce9c497b13301c7071258737e6"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "45eaa6857381649538303313cc59ebceba11496622b0529c1fbc6bc446dfe335"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "2f6935a70830ad7f3e0c98603e466a5d675bd131b2b68815701a951c1779bc59"
+    }
+  ],
+  "after": [
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "af0d41ccd934edd63b07a45ed3c4229544cdf0ca2471929f0bb5ee9344b30536"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6b647fbc3789ef90f72bd314461bd1bc39eca153cbc083a7d490462332dac720"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "c13aa42f05d0df868e1e128ee4f8a236e2251827703c09414ce1a94845229897"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "e8417038650bf77e31281de12702cc13220a9da17af1976e371483e6910e7323"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "5415af1da23008472bea6cc55658f034f2bd4d943ad155d6c1ca642f56660360"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "08b6f9fed40df30aff80e02538b3f10bb5fb3e28728704c760afcb4b4e14ef2f"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "e284c46d3e339d2915e3c310586071aa115849ce9c497b13301c7071258737e6"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "45eaa6857381649538303313cc59ebceba11496622b0529c1fbc6bc446dfe335"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "2f6935a70830ad7f3e0c98603e466a5d675bd131b2b68815701a951c1779bc59"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

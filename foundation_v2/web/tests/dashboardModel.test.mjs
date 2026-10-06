@@ -22,6 +22,24 @@ test('recent period ranges use inclusive UTC calendar days across month boundari
   assert.deepEqual(dashboardPeriodRange('lifetime', now), { from: '', to: '' })
 })
 
+test('last week and month cover completed UTC calendar periods, preserving saved rolling scopes', () => {
+  for (const date of ['2026-10-05T00:00:00Z', '2026-10-11T23:59:59Z']) {
+    const now = new Date(date)
+    const week = { from: '2026-09-28', to: '2026-10-04' }
+    assert.deepEqual(dashboardPeriodRange('last-week', now), week)
+    assert.equal(dashboardPeriod(week, now), 'last-week')
+    assert.deepEqual(dashboardPeriodRange('last-month', now), { from: '2026-09-01', to: '2026-09-30' })
+  }
+  const january = new Date('2027-01-01T01:00:00Z')
+  assert.deepEqual(dashboardPeriodRange('last-week', january), { from: '2026-12-21', to: '2026-12-27' })
+  assert.deepEqual(dashboardPeriodRange('last-month', january), { from: '2026-12-01', to: '2026-12-31' })
+  const leap = new Date('2024-03-31T23:59:59Z')
+  const february = { from: '2024-02-01', to: '2024-02-29' }
+  assert.deepEqual(dashboardPeriodRange('last-month', leap), february)
+  assert.equal(dashboardPeriod(february, leap), 'last-month')
+  assert.equal(dashboardPeriod({ from: '2026-09-27', to: '2026-10-03' }, new Date('2026-10-07T12:00:00Z')), 'custom')
+})
+
 test('Dashboard combines search/status/sort without mixing archived and active status', () => {
   const items = [
     { record_id: 'a', instrument_id: 'EURUSD', status: 'paused', updated_at_utc: '2026-10-01' },

@@ -6,7 +6,7 @@
 .market-sync-heading p, .market-sync-note { color: var(--wm-content-muted); font-size: 13px; line-height: 1.6; }
 .market-sync-facts, .market-sync-filters { display: flex; gap: 12px 24px; flex-wrap: wrap; align-items: center; margin: 16px 0; font-size: 13px; }
 .market-sync-filters label { display: flex; gap: 8px; align-items: center; }
-.market-sync-filters input:not([type=checkbox]), .market-sync-filters select { min-height: 40px; padding: 0 12px; background: var(--wm-surface); color: var(--wm-content); border: 1px solid var(--wm-border); border-radius: 6px; }
+.market-sync-filters input:not([type=checkbox]), .market-sync-filters select { box-sizing: border-box; min-height: var(--wm-control-height); padding: 0 12px; line-height: 20px; background: var(--wm-surface); color: var(--wm-content); border: 1px solid var(--wm-border); border-radius: 6px; }
 .market-sync-filters input[type=search] { width: 220px; }
 .market-sync-table { overflow: auto; max-height: 520px; }
 .market-sync-table:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }

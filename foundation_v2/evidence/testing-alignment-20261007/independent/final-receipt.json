@@ -1,0 +1,175 @@
+{
+  "status": "PASS",
+  "scope": "Testing label/nav and optical alignment UI acceptance only",
+  "matrix": {
+    "cases": 60,
+    "canonicalActualCases": 56,
+    "demoDashboardCases": 4,
+    "routes": [
+      "Dashboard",
+      "Sessions",
+      "Trades",
+      "Analytics Sessions",
+      "Analytics Prop Firm",
+      "Market Data (market-data)",
+      "Testing Component Reference"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "languages": [
+      "vi",
+      "en"
+    ],
+    "widths": [
+      1440,
+      360
+    ]
+  },
+  "calendar": {
+    "cases": 6,
+    "semantics": "Previous complete Monday-Sunday week and previous calendar month in UTC",
+    "boundaries": [
+      "Monday and midweek",
+      "Year rollover",
+      "Leap February"
+    ]
+  },
+  "opticalAlignment": {
+    "directContentControlSvgSamples": 504,
+    "maxVerticalCenterDeltaPx": 0,
+    "metricFirstLineSamples": 48,
+    "maxMetricInkCenterDeltaPx": 0,
+    "controlTolerancePx": 1,
+    "metricInkTolerancePx": 2.5
+  },
+  "analyticsNav": {
+    "parentPeach": true,
+    "childSelectedAndHoverContent": true,
+    "childInactiveMuted": true,
+    "transparentHover": true,
+    "minChildTextContrast": 5.665565193756608
+  },
+  "forms": {
+    "cases": 6,
+    "configs": [
+      "dark/VI/1440",
+      "light/EN/360"
+    ],
+    "journeys": [
+      "Actual/demo Session Settings tabs and Escape return focus",
+      "Fresh create form Dataset popup and back to Sessions without submit",
+      "Time and Date popup focus/clipping/Escape return focus"
+    ]
+  },
+  "sourceUnchanged": true,
+  "finalPins": [
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "af0d41ccd934edd63b07a45ed3c4229544cdf0ca2471929f0bb5ee9344b30536"
+    },
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "f21a6194f31e1393ffd3d25bd0e72e6ca3a83ca2bed6cd7a3ed2450ed06ba921"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "9dd32028ad2892b4feb428b377ee21a61fdef4a09826a14b1c9965512f3e267e"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "6b647fbc3789ef90f72bd314461bd1bc39eca153cbc083a7d490462332dac720"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "c13aa42f05d0df868e1e128ee4f8a236e2251827703c09414ce1a94845229897"
+    },
+    {
+      "file": "fx-shell-story.css",
+      "sha256": "68c52ca03297769ebb3482c6e6b99ad5fefbcdec36c282796c7598c79ef70807"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "e8417038650bf77e31281de12702cc13220a9da17af1976e371483e6910e7323"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "5415af1da23008472bea6cc55658f034f2bd4d943ad155d6c1ca642f56660360"
+    },
+    {
+      "file": "component-interactions.css",
+      "sha256": "7c541a50edc12f8115d2a435c332c204a612036b5d56770e1c0921dbb4451203"
+    },
+    {
+      "file": "FxSelect.jsx",
+      "sha256": "7cdd02abd6231813280fd9ca83cbf72c16951cec3dab2196a2316eb77766cc39"
+    },
+    {
+      "file": "fx-select.css",
+      "sha256": "6ff12fb7ef472a1779cf59138d9d3a15e87f47e836fa0822f799ea969f8baa7e"
+    },
+    {
+      "file": "SessionDetails.jsx",
+      "sha256": "c482db4806b9d6f7ddb19084d313a059549c6af554a087f17bc0730a421ab98e"
+    },
+    {
+      "file": "session-performance.css",
+      "sha256": "08b6f9fed40df30aff80e02538b3f10bb5fb3e28728704c760afcb4b4e14ef2f"
+    },
+    {
+      "file": "MarketAssetCatalog.jsx",
+      "sha256": "c93faf8d1a70f9d8addb2ff8e2c1511989de64d8f2c4f6af36d022c1a87c1a0e"
+    },
+    {
+      "file": "market-sync.css",
+      "sha256": "e284c46d3e339d2915e3c310586071aa115849ce9c497b13301c7071258737e6"
+    },
+    {
+      "file": "TestingComponentReference.jsx",
+      "sha256": "9225b838d14b5ae5b4908dc35e2f101c3db9dcd1663a7424a53fc630c03b0327"
+    },
+    {
+      "file": "FxTradeLedger.jsx",
+      "sha256": "bed3be0038d608a495afa053b8128f27a4f54c830b7deaf2055b58d80a2053b3"
+    },
+    {
+      "file": "FxAnalytics.jsx",
+      "sha256": "45eaa6857381649538303313cc59ebceba11496622b0529c1fbc6bc446dfe335"
+    },
+    {
+      "file": "page-layout.css",
+      "sha256": "ae51c28a7c053fb3045a9897306b74c5aca73e8fb4b011800050f5b479394c11"
+    },
+    {
+      "file": "TestingIcon.jsx",
+      "sha256": "2f6935a70830ad7f3e0c98603e466a5d675bd131b2b68815701a951c1779bc59"
+    }
+  ],
+  "docsPins": [
+    {
+      "file": "ui/testing-standard.md",
+      "sha256": "89a80f9f116e77c68d55ec3b6c95cd0b38fe7d780f1606600864df71d81afb62"
+    }
+  ],
+  "pageErrors": 0,
+  "blockedRequests": 0,
+  "actualWrites": 0,
+  "retainedDiagnostic": "report-r1-option-label-oracle.json",
+  "visualReview": [
+    "actual-dashboard-dark-vi-1440-metrics.png",
+    "actual-sessions-dark-vi-360.png",
+    "actual-market-dark-vi-360.png",
+    "time-date-light-en-360-date.png",
+    "create-dark-vi-1440.png",
+    "settings-light-en-360.png"
+  ],
+  "limits": [
+    "Direct content SVG/frame and first-line font-ink alignment tested; arrow/triangle optical horizontal offsets are not forced to geometric center.",
+    "Native field/calendar rendering and tab scrolling remain browser-specific.",
+    "Actual unavailable Market Data and Prop report states retained honestly.",
+    "DataDesk shares MarketAssetCatalog by source and root representative audit; canonical market-data is independently tested.",
+    "No new full Axe scan; this run uses computed nav contrast, geometry, screenshots and focused form behavior. Prior accessibility baseline is separate.",
+    "No session creation/save/update, broker/provider, trading canvas, financial calculation or whole-product acceptance."
+  ]
+}

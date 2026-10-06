@@ -32,9 +32,23 @@ export function dashboardFilterError(filters) {
 
 export function dashboardPeriodRange(period, now = new Date()) {
   if (period === 'lifetime') return { from: '', to: '' }
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  if (period === 'last-week' || period === 'last-month') {
+    const start = new Date(today), end = new Date(today)
+    if (period === 'last-week') {
+      start.setUTCDate(start.getUTCDate() - (start.getUTCDay() + 6) % 7 - 7)
+      end.setTime(start.getTime())
+      end.setUTCDate(end.getUTCDate() + 6)
+    } else {
+      start.setUTCDate(1)
+      start.setUTCMonth(start.getUTCMonth() - 1)
+      end.setUTCDate(0)
+    }
+    return { from: start.toISOString().slice(0, 10), to: end.toISOString().slice(0, 10) }
+  }
   const days = period === '7d' ? 7 : period === '30d' ? 30 : period === '90d' ? 90 : 0
   if (!days) return { from: '', to: '' }
-  const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  const end = today
   const start = new Date(end)
   start.setUTCDate(start.getUTCDate() - days + 1)
   return { from: start.toISOString().slice(0, 10), to: end.toISOString().slice(0, 10) }
@@ -42,7 +56,7 @@ export function dashboardPeriodRange(period, now = new Date()) {
 
 export function dashboardPeriod(filters, now = new Date()) {
   if (!filters.from && !filters.to) return 'lifetime'
-  return ['7d', '30d', '90d'].find(period => {
+  return ['last-week', 'last-month', '7d', '30d', '90d'].find(period => {
     const range = dashboardPeriodRange(period, now)
     return range.from === filters.from && range.to === filters.to
   }) || 'custom'

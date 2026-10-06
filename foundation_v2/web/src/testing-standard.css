@@ -26,6 +26,8 @@
 .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-metric, .fxs-metric, .fx-dashboard-metric) > span { font-size: var(--wm-text-meta); line-height: 1.5; }
 .fx-app[data-ui-area='testing'] .fx-content small { font-size: var(--wm-text-meta); line-height: 1.5; }
 .fx-app[data-ui-area='testing'] .fx-content :is(table, button, input, select, textarea, .fx-select) { font-size: var(--wm-text-control); }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button, .fx-dashboard-card-summary, .fx-dashboard-result-button) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; line-height: 20px; }
+.fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button) > svg { display: block; width: 18px; height: 18px; flex: 0 0 18px; }
 .fx-app[data-ui-area='testing'] .fx-content :is(.fxa-button, .fxr-button, .fx-select-trigger, .fx-dashboard-refresh, .fx-dashboard-icon-button) { min-height: var(--wm-control-height); box-sizing: border-box; }
 .fx-app[data-ui-area='testing'] .fx-content :is(.fx-select-menu, .fxa-session-menu, .fx-filter-popover) { border-radius: var(--wm-popup-radius); }
 .fx-app.fx-shell-story[data-ui-area='testing'][data-theme] .fx-content :is(.fxa-button, .fxr-button, .fxa-session-trigger, .fx-select:not(.is-rich) .fx-select-trigger, .fx-dashboard-card-summary, .fx-dashboard-result-button) {

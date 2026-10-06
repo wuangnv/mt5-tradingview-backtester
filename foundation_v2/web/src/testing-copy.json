@@ -480,20 +480,28 @@
     "en": "Backtesting · all sessions"
   },
   "Last week": {
-    "vi": "7 ngày gần nhất",
-    "en": "Last 7 days"
+    "vi": "Tuần trước",
+    "en": "Last week"
   },
   "Last month": {
-    "vi": "30 ngày gần nhất",
-    "en": "Last 30 days"
+    "vi": "Tháng trước",
+    "en": "Last month"
   },
   "Lifetime": {
-    "vi": "Toàn bộ thời gian",
+    "vi": "Tất cả",
     "en": "All time"
   },
   "Khoảng tùy chọn": {
-    "vi": "Khoảng tùy chọn",
-    "en": "Custom range"
+    "vi": "Tuỳ chọn",
+    "en": "Custom"
+  },
+  "7 ngày gần nhất": {
+    "vi": "7 ngày gần nhất",
+    "en": "Last 7 days"
+  },
+  "30 ngày gần nhất": {
+    "vi": "30 ngày gần nhất",
+    "en": "Last 30 days"
   },
   "90 ngày gần nhất": {
     "vi": "90 ngày gần nhất",
@@ -520,15 +528,15 @@
     "en": "Recent sessions"
   },
   "Newest to oldest": {
-    "vi": "Mới nhất trước",
+    "vi": "Mới nhất",
     "en": "Newest first"
   },
   "Oldest to newest": {
-    "vi": "Cũ nhất trước",
+    "vi": "Cũ nhất",
     "en": "Oldest first"
   },
   "Last updated": {
-    "vi": "Cập nhật gần nhất",
+    "vi": "Mới cập nhật",
     "en": "Recently updated"
   },
   "Most profit": {
@@ -4584,8 +4592,8 @@
     "en": "This session is linked to a prop firm challenge and cannot be deleted. Reports and history remain available."
   },
   "{count} of {total} sessions": {
-    "vi": "{count} / {total} phiên",
-    "en": "{count} of {total} sessions"
+    "vi": "{count} phiên trong tổng số {total}",
+    "en": "Showing {count} of {total}"
   },
   "Phiên khớp bộ lọc": {
     "vi": "Phiên khớp bộ lọc",

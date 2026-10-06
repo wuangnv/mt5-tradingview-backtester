@@ -16,6 +16,8 @@ function ActionIcon({ kind }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'backtest' ? <path d="M12 4v16M4 12h16" /> : kind === 'prop' ? <><path d="M8 3h8v7a4 4 0 0 1-8 0ZM8 5H4v3a4 4 0 0 0 4 4M16 5h4v3a4 4 0 0 1-4 4M12 14v6M8 21h8" /></> : <><path d="m2 9 10-5 10 5-10 5ZM6 11v6c4 3 8 3 12 0v-6M22 9v7" /></>}</svg>
 }
 
+const periodLabels = { 'last-week': 'Last week', 'last-month': 'Last month', lifetime: 'Lifetime', custom: 'Khoảng tùy chọn', '7d': '7 ngày gần nhất', '30d': '30 ngày gần nhất', '90d': '90 ngày gần nhất' }
+
 export default function DashboardSessions({ workspace, query, preview = null }) {
   const { t } = useTestingLocale()
 
@@ -135,7 +137,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   }
   const performanceControls = <>
     <FxSelect label={t("Phạm vi Performance")} value={source} icon="performance" onChange={value => { setSource(value); updateQuery({ dashboard_source: value === 'backtest' ? '' : value }) }} options={[{ value: 'backtest', label: 'Backtesting' }, { value: 'battles', label: 'Battles', disabled: true, detail: 'Chưa có nguồn dữ liệu Battles' }, { value: 'prop', label: 'Prop Firm' }, { value: 'all', label: 'All' }]} />
-    {source !== 'prop' && <FxSelect label={t("Thời gian Performance")} value={period} icon="calendar" onChange={changePeriod} triggerContent={source === 'all' ? t('Backtesting') + ' · ' + t(({ '7d': 'Last week', '30d': 'Last month', lifetime: 'Lifetime', custom: 'Khoảng tùy chọn', '90d': '90 ngày gần nhất' }[period])) : null} options={[{ value: '7d', label: 'Last week' }, { value: '30d', label: 'Last month' }, { value: 'lifetime', label: 'Lifetime' }, { value: 'custom', label: 'Khoảng tùy chọn' }, ...(period === '90d' ? [{ value: '90d', label: '90 ngày gần nhất' }] : [])]} />}
+    {source !== 'prop' && <FxSelect label={t("Thời gian Performance")} value={period} icon="calendar" onChange={changePeriod} triggerContent={source === 'all' ? t('Backtesting') + ' · ' + t(periodLabels[period]) : null} options={['last-week', 'last-month', 'lifetime', 'custom', ...(['7d', '30d', '90d'].includes(period) ? [period] : [])].map(value => ({ value, label: periodLabels[value] }))} />}
   </>
   const currencies = new Set(matching.map(item => details[item.record_id]).filter(value => value?.pnl != null).map(value => value.currency))
   const detailsLoading = catalog.items.some(item => !details[item.record_id] || details[item.record_id].status === 'loading')
