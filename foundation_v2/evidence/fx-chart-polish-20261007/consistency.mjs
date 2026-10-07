@@ -29,7 +29,7 @@ try {
   assert.ok(grips.every(g=>g.dots===6&&g.radius==='1.5'))
   const quantity=page.locator('.legacy-quantity-control');await quantity.locator('input').hover();await page.waitForTimeout(180)
   const hover=await quantity.evaluate(e=>{const s=getComputedStyle(e),input=e.querySelector('input'),i=getComputedStyle(input);return {bg:s.backgroundColor,border:s.borderColor,radius:s.borderRadius,projectHover:s.getPropertyValue('--project-hover').trim(),inputBg:i.backgroundColor,inputBorder:i.borderWidth,inputShadow:i.boxShadow,width:e.getBoundingClientRect().width}})
-  assert.equal(hover.bg,theme==='dark'?'rgb(42, 42, 42)':'rgb(235, 235, 235)');assert.equal(hover.inputBg,'rgba(0, 0, 0, 0)');assert.equal(hover.inputBorder,'0px');assert.equal(hover.inputShadow,'none')
+  assert.equal(hover.bg,'rgba(0, 0, 0, 0)');assert.equal(hover.inputBg,'rgba(0, 0, 0, 0)');assert.equal(hover.inputBorder,'0px');assert.equal(hover.inputShadow,'none')
   await page.screenshot({path:fileURLToPath(new URL(`consistency-${theme}-${width}.png`,out))})
   if(width===1080)await quantity.screenshot({path:fileURLToPath(new URL('consistency-quantity-hover.png',out))})
   await quantity.locator('input').focus()

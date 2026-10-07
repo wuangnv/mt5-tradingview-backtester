@@ -317,7 +317,7 @@ beside Quick Search. App-owned popovers, compact overflow, order dialog and draw
 share Testing's Inter baseline, project focus/hover/disabled tokens and 140ms
 feedback with reduced-motion support. Native chart typography, compact dimensions,
 blue trading actions and candle/Buy/Sell semantics remain chart-owned. Quantity
-hover/focus belongs to its single outer container; all six-dot grips use filled
+focus belongs to its single outer container; hover fills only the individual spinner arrow while the input stays transparent. All six-dot grips use filled
 circles. Popovers focus the selected enabled item, dismiss on focus leaving,
 restore the opener on Escape/explicit dismissal and preserve native form editing.
 Evidence: `foundation_v2/evidence/fx-chart-polish-20261007/consistency-report.json`

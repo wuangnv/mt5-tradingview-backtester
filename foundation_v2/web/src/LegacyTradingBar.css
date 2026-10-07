@@ -3,15 +3,14 @@
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-trading-bar .chart-trading-actions :is(.buy,.sell) { color: #fff; padding-inline: 14px; font-size: 12px; font-weight: 500; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-trading-bar .chart-trading-actions :is(.buy,.sell):hover:not(:disabled) { filter: brightness(1.08); box-shadow: none; }
 .legacy-trading-bar .legacy-quantity-control { display: flex; align-items: stretch; flex:0 0 auto; height: 30px; width: 115px; border: 1px solid var(--chart-line); border-radius: 16px; overflow: hidden; box-sizing: border-box; background: transparent; transition:background-color 140ms,border-color 140ms; }
-.legacy-trading-bar .legacy-quantity-control:hover:not(:has(input:disabled)) { background:var(--project-hover); border-color:var(--project-border-strong); }
 .legacy-trading-bar .legacy-quantity-control:has(:focus-visible) { border-color:var(--project-primary); outline:2px solid var(--project-primary); outline-offset:-2px; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control input { flex: 1; min-width: 0; width: 75px; min-height: 0; height: 28px; margin: 0; padding: 0 8px 0 12px; border: 0; outline-offset: -2px; border-radius: 0; background: transparent; box-shadow: none; appearance: textfield; font: 12px Arial,sans-serif; color: var(--chart-text); }
 .legacy-quantity-control input::-webkit-inner-spin-button, .legacy-quantity-control input::-webkit-outer-spin-button { appearance: none; margin: 0; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control input:is(:hover,:focus-visible) { background:transparent; outline:none; box-shadow:none; }
-.legacy-quantity-control > div { display: grid; width: 24px; padding: 2px 3px; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control button { min-height: 0; height: 12px; width: 18px; padding: 0; border-radius: 2px; display: grid; place-items: center; background: transparent; color: var(--chart-muted); }
+.legacy-quantity-control > div { display: grid; grid-template-rows: repeat(2,minmax(0,1fr)); flex: 0 0 24px; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control button { min-height: 0; height: 100%; width: 100%; padding: 0; border-radius: 0; display: grid; place-items: center; background: transparent; color: var(--chart-muted); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control button svg { width: 12px; height: 12px; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control button:hover:not(:disabled) { color:var(--chart-text); background:transparent; box-shadow:none; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control button:hover:not(:disabled) { color:var(--chart-text); background:var(--project-hover); box-shadow:none; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control button:focus-visible { outline:none; box-shadow:none; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-trading-bar .legacy-scalper-button { border-radius: 6px; background: var(--chart-hover); width: 34px; padding: 0; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-trading-bar .legacy-scalper-button.is-enabled { background: #2962ff; color: #fff; }
