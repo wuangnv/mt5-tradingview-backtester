@@ -1,0 +1,138 @@
+{
+  "scope": "Actual native header GET, local API actions; activity fixture only",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "actual native interval selector5m preserves causal prefix",
+        "actual native settings reachable",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 395,
+          "scroll": 395,
+          "contentClient": 363,
+          "contentScroll": 363
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1662,
+          "height": 935,
+          "top": 0,
+          "right": 1662,
+          "bottom": 935,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 1598,
+            "y": 42,
+            "width": 64,
+            "height": 826,
+            "top": 42,
+            "right": 1662,
+            "bottom": 868,
+            "left": 1598
+          },
+          {
+            "x": 1598,
+            "y": 868,
+            "width": 64,
+            "height": 28,
+            "top": 868,
+            "right": 1662,
+            "bottom": 896,
+            "left": 1598
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "actual native interval selector5m preserves causal prefix",
+        "actual native settings reachable",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 395,
+          "scroll": 395,
+          "contentClient": 363,
+          "contentScroll": 363
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1662,
+          "height": 935,
+          "top": 0,
+          "right": 1662,
+          "bottom": 935,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 1598,
+            "y": 42,
+            "width": 64,
+            "height": 826,
+            "top": 42,
+            "right": 1662,
+            "bottom": 868,
+            "left": 1598
+          },
+          {
+            "x": 1598,
+            "y": 868,
+            "width": 64,
+            "height": 28,
+            "top": 868,
+            "right": 1662,
+            "bottom": 896,
+            "left": 1598
+          }
+        ]
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorBlocked": [
+    "http://www.google-analytics.com/analytics.js"
+  ],
+  "axe": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "violations": []
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "violations": []
+    }
+  ],
+  "pass": false,
+  "failure": "TimeoutError: locator.click: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-value=\"5\"][class*=MenuItem]')\u001b[22m\n"
+}

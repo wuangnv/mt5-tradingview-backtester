@@ -1,0 +1,109 @@
+{
+  "pass": true,
+  "scope": "Native TradingView header restoration and official FX extensions; price-axis/dock/replaybar/footer UI correction",
+  "generatedAt": "2026-10-07T07:28:20.831Z",
+  "matrixCases": 5,
+  "widths": [
+    360,
+    768,
+    1300,
+    1710
+  ],
+  "themes": [
+    "dark",
+    "light"
+  ],
+  "languages": [
+    "vi",
+    "en"
+  ],
+  "focusedAxeScans": 5,
+  "axeViolations": 0,
+  "independentUnitTests": {
+    "command": "node --test foundation_v2/web/tests/advancedChart.test.mjs",
+    "pass": 7,
+    "fail": 0
+  },
+  "pageErrors": 0,
+  "unexpectedRequests": 0,
+  "knownVendorBlocked": [
+    "http://www.google-analytics.com/analytics.js"
+  ],
+  "sourcePins": [
+    {
+      "file": "foundation_v2/web/src/LegacyChartHeader.jsx",
+      "sha256": "471e9e461f86f7734f7a4fa723585e3aec12078c2e2830af3275ea61796be4a1"
+    },
+    {
+      "file": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+      "sha256": "9ca72b25d0e4f20875211ec4b9e44cd08dceaf53c757a19b8673af15d8fdc7da"
+    },
+    {
+      "file": "foundation_v2/web/src/ReplayWorkspace.jsx",
+      "sha256": "cb480152944b9d711473e8d26eb56e53637ea377e6d319e0f17cc3b1d1382e7f"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartFloatingToolbar.jsx",
+      "sha256": "1af4f2f72e9c0831d331a18bff9fbec79f3515c0ec70b84baa4bca85624f1529"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartWorkbench.css",
+      "sha256": "fed70469858dcd634c7db17d2d31dc1693ae94bfc334c087032442691ce2db8d"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartHeaderPreview.jsx",
+      "sha256": "1ccbfe31c725a101c855ee0014e02fcbd749961696ef097a93e4bcf7aaad6dc1"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartIcon.jsx",
+      "sha256": "38f82bf8a250947c514c6dfc580f856ebf7ce24422e807e6640ad024b1401c21"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "053e3916179582911ef760bdb582b20adcce1cabf2bb6092dfa3b35758199b3c"
+    },
+    {
+      "file": "foundation_v2/web/public/chart-legacy.css",
+      "sha256": "8164e59269d006ab0afc764d10e5e99a873290590808988f52fda37173a80f69"
+    },
+    {
+      "file": "foundation_v2/web/src/nativeChartPalette.js",
+      "sha256": "41f7191ae553904ace855ec2894e6cdb4be8fa3dcc1f21fcf539cb894c3c409e"
+    },
+    {
+      "file": "foundation_v2/web/src/advancedReplayDatafeed.js",
+      "sha256": "146453a786ba9dfd405b60e8b583acd84ddc3c1e6002d6b9c56d2433a2575656"
+    },
+    {
+      "file": "ui/workspace-patterns.md",
+      "sha256": "a13c359fc93d0f2fdf076b091c82af3dfea6ead8623eee63203c08bb2f6fccf3"
+    }
+  ],
+  "reference": {
+    "path": "C:/Users/MIIKEY/AppData/Local/Temp/codex-clipboard-8737fcc4-4ea1-446d-90d6-47d3eec42fdf.png",
+    "inspected": true
+  },
+  "resolvedFindings": [
+    "Mobile extension tools originally outside iframe; final hit-testing and bounds pass.",
+    "Mobile selected interval was hidden by :has-only active rule; direct active class retained.",
+    "Desktop quickactions overlapped replaybar; new preference key and defaulty220 separate them.",
+    "Mobile replaybar slider specificity and absolute checkbox margin caused overflow; strict final toolbar/content widths match.",
+    "Native interval change event published old chart.resolution() value; final5→15 header/bar/API sync passes.",
+    "Compact menu resize now restores a visible iframe opener.",
+    "Indicators/Undo/Redo reachable through compact menu with official actions; EN label reuses existing translation."
+  ],
+  "limits": [
+    "Actual localhost services GET. Exact current-session activity POST fulfilled by labeled native-independent fixture; no actual step/order/create/seek/activity storage performed. Other writes/external origins/WebSockets blocked.",
+    "Widget constructor Proxy observes options/API only; native header markup not replaced or force-enabled by tests.",
+    "5Axe scans focus only application extensions inside native iframe, not native vendor controls/whole-page accessibility.",
+    "Indicators dialog opened and closed on360VI/768EN; Undo/Redo presence and source official action wiring reviewed, no fresh drawing history mutation required.",
+    "Native header pauseNative pointerdown/keydown capture and cleanup reviewed in source. A diagnostic confirmed native interval click does not emit widget mouse_down; actual autoplay/timing writes are outside reviewer scope.",
+    "Native header5m and replaybar15m synchronize and retain symbol/cutoff/visible rows. Screenshot waits native legend15 after asynchronous repaint.",
+    "Populated positions/other project pages were not retested in this correction slice; prior receipts retain their own scope.",
+    "Parent reports separate primary6case/build/runtime evidence. Parent observed stale and fresh localhost IAB tabs with blank/about:blank chart iframe while the external FX reference loaded. Bundled v23 uses Blob/createObjectURL and has no observed iframe_loading compatibility feature; no vendor or architecture bypass was attempted. Playwright service PASS does not certify IAB readiness.",
+    "Compare/Layout/Editor/Mentor previews remain explicitly disabled for unsupported execution/provider actions. No FX logo or redundant footerTrade/SIM added.",
+    "No broker/live execution, whole-product completion or pixel-identical reference claim."
+  ],
+  "productSourceEditedByReviewer": false,
+  "stagingOrCommit": false
+}

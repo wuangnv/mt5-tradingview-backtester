@@ -5200,5 +5200,6 @@
   "Phí hoa hồng": { "vi": "Phí hoa hồng", "en": "Commission" },
   "Không có lệnh trong mục này.": { "vi": "Không có lệnh trong mục này.", "en": "No positions in this section." },
   "Chưa có dữ liệu lệnh tại cutoff này.": { "vi": "Chưa có dữ liệu lệnh tại cutoff này.", "en": "Position data is unavailable at this cutoff." },
-  "Scalper mode": { "vi": "Scalper mode", "en": "Scalper mode" }
+  "Scalper mode": { "vi": "Scalper mode", "en": "Scalper mode" },
+  "{speed}× mỗi giây": { "vi": "{speed}× mỗi giây", "en": "{speed}x per sec" }
 }

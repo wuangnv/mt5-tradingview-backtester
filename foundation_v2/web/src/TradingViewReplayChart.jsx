@@ -55,9 +55,10 @@ export default function TradingViewReplayChart(props) {
 
   useEffect(() => {
     let cancelled = false, saveTimer, restoringImports = false, importedShapes = [], lines = []
-    let widget, adapter, chart, headerSlots, chartReady = false, fittedLevels = ''
-    const publishHeader = () => {
-      if (!cancelled && chartReady && headerSlots) latest.current.onHeaderSlots?.({ ...headerSlots, interval: chart.resolution(), chartType: chart.chartType() })
+    let widget, adapter, chart, headerSlots, headerObserver, nativeHeader, chartReady = false, fittedLevels = ''
+    const pauseNative = () => latest.current.onOrderDragStart()
+    const publishHeader = interval => {
+      if (!cancelled && chartReady && headerSlots?.market) latest.current.onHeaderSlots?.({ ...headerSlots, interval: typeof interval === 'string' ? interval : chart.resolution(), chartType: chart.chartType(), compact: host.current.clientWidth < 1180, headerHeight: headerSlots.market.ownerDocument.querySelector('.layout__area--top')?.getBoundingClientRect().height || 38 })
     }
     const loadingTimer = setTimeout(() => {
       if (cancelled || chartReady) return
@@ -90,10 +91,10 @@ export default function TradingViewReplayChart(props) {
         container: host.current, library_path: '/charting_library/', datafeed: adapter.datafeed,
         symbol, interval: restoredInterval, locale: locale.slice(0, 2), timezone: 'Etc/UTC', theme: theme === 'light' ? 'Light' : 'Dark', autosize: true,
         ...(saved ? { saved_data: saved } : {}),
-        custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles', 'Bars', 'Line', 'Area', 'Heikin Ashi'] },
+        custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles'] },
         header_widget_buttons_mode: 'adaptive',
         enabled_features: ['seconds_resolution', 'items_favoriting'],
-        disabled_features: ['header_widget', 'header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
+        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
         overrides: paneAppearance(theme),
         studies_overrides: Object.fromEntries(Object.entries(volumeAppearance(theme)).map(([key, value]) => [`volume.${key}`, value])),
       })
@@ -181,8 +182,6 @@ export default function TradingViewReplayChart(props) {
             widget.applyOverrides(paneAppearance(latest.current.theme))
             applyVolumeAppearance(widget, chart, latest.current.theme)
             refresh(); importAnnotations()
-            const prefix = latest.current.rows
-            if (!saved && prefix.length > 1) chart.setVisibleRange({ from: Number(prefix[Math.max(0, prefix.length - 100)].timestamp), to: Number(prefix.at(-1).timestamp) }).catch(() => {})
             setStatus('ready')
             chartReady = true
             publishHeader()
@@ -223,6 +222,22 @@ export default function TradingViewReplayChart(props) {
             } catch (error) { if (!cancelled) setMessage(`Không chụp được chart: ${error.message || error}`) }
           },
         }
+        widget.headerReady().then(() => {
+          if (cancelled) return
+          // Official extension hosts; native controls and their menus remain library-owned.
+          for (const [key, align] of [['market', 'left'], ['layout', 'left'], ['session', 'right'], ['search', 'right'], ['tools', 'right']]) {
+            const slot = widget.createButton({ align, useTradingViewStyle: false })
+            slot.className = `legacy-${key}-host`
+            slot.parentElement.parentElement.classList.add(`legacy-${key}-group`)
+            headerSlots[key] = slot
+          }
+          nativeHeader = headerSlots.market.ownerDocument.querySelector('.layout__area--top')
+          nativeHeader.addEventListener('pointerdown', pauseNative, true)
+          nativeHeader.addEventListener('keydown', pauseNative, true)
+          headerObserver = new ResizeObserver(publishHeader)
+          headerObserver.observe(host.current)
+          publishHeader()
+        })
         chart.onIntervalChanged().subscribe(null, publishHeader)
         chart.onChartTypeChanged().subscribe(null, publishHeader)
         publishHeader()
@@ -230,7 +245,7 @@ export default function TradingViewReplayChart(props) {
       })
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
-      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); instance.current = null
+      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); headerObserver?.disconnect(); nativeHeader?.removeEventListener('pointerdown', pauseNative, true); nativeHeader?.removeEventListener('keydown', pauseNative, true); instance.current = null
       latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }

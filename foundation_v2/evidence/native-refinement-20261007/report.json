@@ -1,0 +1,1357 @@
+{
+  "scope": "Actual service GET; activity fixture; native chart UI; no replay/orders/provider writes",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "geometry": {
+        "nativeHeader": {
+          "left": 0,
+          "right": 1662,
+          "top": 0,
+          "height": 38
+        },
+        "cap": {
+          "x": 1666,
+          "y": 0,
+          "width": 44,
+          "height": 42,
+          "top": 0,
+          "right": 1710,
+          "bottom": 42,
+          "left": 1666
+        },
+        "viewport": 1710,
+        "overflow": 0,
+        "centerRight": 1662,
+        "iframeWidth": 1662,
+        "bars": [
+          {
+            "name": "Replay",
+            "rect": {
+              "x": 850,
+              "y": 140,
+              "width": 397,
+              "height": 46,
+              "top": 140,
+              "right": 1247,
+              "bottom": 186,
+              "left": 850
+            },
+            "scroll": [
+              363,
+              363
+            ]
+          },
+          {
+            "name": "Thao tác nhanh trên biểu đồ",
+            "rect": {
+              "x": 1100,
+              "y": 220,
+              "width": 407.15625,
+              "height": 44,
+              "top": 220,
+              "right": 1507.15625,
+              "bottom": 264,
+              "left": 1100
+            },
+            "scroll": [
+              369,
+              369
+            ]
+          }
+        ],
+        "headerControls": [
+          {
+            "label": "Trở về danh sách phiên",
+            "rect": {
+              "x": 1,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 37,
+              "bottom": 38,
+              "left": 1
+            }
+          },
+          {
+            "label": "EURUSDm",
+            "rect": {
+              "x": 37,
+              "y": 0,
+              "width": 104.6875,
+              "height": 38,
+              "top": 0,
+              "right": 141.6875,
+              "bottom": 38,
+              "left": 37
+            }
+          },
+          {
+            "label": "So sánh mã",
+            "rect": {
+              "x": 141.6875,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 177.6875,
+              "bottom": 38,
+              "left": 141.6875
+            }
+          },
+          {
+            "label": "New Layout",
+            "rect": {
+              "x": 568.390625,
+              "y": 0,
+              "width": 89.28125,
+              "height": 38,
+              "top": 0,
+              "right": 657.671875,
+              "bottom": 38,
+              "left": 568.390625
+            }
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1436.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1474.203125,
+              "bottom": 38,
+              "left": 1436.203125
+            }
+          },
+          {
+            "label": "Chi tiết và nhánh",
+            "rect": {
+              "x": 841.609375,
+              "y": 0,
+              "width": 120,
+              "height": 38,
+              "top": 0,
+              "right": 961.609375,
+              "bottom": 38,
+              "left": 841.609375
+            }
+          },
+          {
+            "label": "Bố cục chart",
+            "rect": {
+              "x": 961.609375,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 997.609375,
+              "bottom": 38,
+              "left": 961.609375
+            }
+          },
+          {
+            "label": "Lưu chart",
+            "rect": {
+              "x": 997.609375,
+              "y": 0,
+              "width": 130,
+              "height": 38,
+              "top": 0,
+              "right": 1127.609375,
+              "bottom": 38,
+              "left": 997.609375
+            }
+          },
+          {
+            "label": "Quản lý layout",
+            "rect": {
+              "x": 1127.609375,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1163.609375,
+              "bottom": 38,
+              "left": 1127.609375
+            }
+          },
+          {
+            "label": "Tìm công cụ",
+            "rect": {
+              "x": 1398.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1434.203125,
+              "bottom": 38,
+              "left": 1398.203125
+            }
+          },
+          {
+            "label": "Chụp biểu đồ PNG",
+            "rect": {
+              "x": 1475.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1511.203125,
+              "bottom": 38,
+              "left": 1475.203125
+            }
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1511.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1590,
+              "bottom": 38,
+              "left": 1511.203125
+            }
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1590,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1626,
+              "bottom": 38,
+              "left": 1590
+            }
+          },
+          {
+            "label": "Đổi giao diện",
+            "rect": {
+              "x": 1626,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1662,
+              "bottom": 38,
+              "left": 1626
+            }
+          }
+        ]
+      },
+      "compact": false,
+      "nativeActions": true,
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 1273,
+      "theme": "dark",
+      "language": "en",
+      "geometry": {
+        "nativeHeader": {
+          "left": 0,
+          "right": 1225,
+          "top": 0,
+          "height": 38
+        },
+        "cap": {
+          "x": 1229,
+          "y": 0,
+          "width": 44,
+          "height": 42,
+          "top": 0,
+          "right": 1273,
+          "bottom": 42,
+          "left": 1229
+        },
+        "viewport": 1273,
+        "overflow": 0,
+        "centerRight": 1225,
+        "iframeWidth": 1225,
+        "bars": [
+          {
+            "name": "Replay",
+            "rect": {
+              "x": 828,
+              "y": 140,
+              "width": 397,
+              "height": 46,
+              "top": 140,
+              "right": 1225,
+              "bottom": 186,
+              "left": 828
+            },
+            "scroll": [
+              363,
+              363
+            ]
+          },
+          {
+            "name": "Chart quick actions",
+            "rect": {
+              "x": 821,
+              "y": 220,
+              "width": 403.625,
+              "height": 44,
+              "top": 220,
+              "right": 1224.625,
+              "bottom": 264,
+              "left": 821
+            },
+            "scroll": [
+              366,
+              366
+            ]
+          }
+        ],
+        "headerControls": [
+          {
+            "label": "Back to sessions",
+            "rect": {
+              "x": 1,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 37,
+              "bottom": 38,
+              "left": 1
+            }
+          },
+          {
+            "label": "EURUSDm",
+            "rect": {
+              "x": 37,
+              "y": 0,
+              "width": 104.6875,
+              "height": 38,
+              "top": 0,
+              "right": 141.6875,
+              "bottom": 38,
+              "left": 37
+            }
+          },
+          {
+            "label": "Compare symbols",
+            "rect": {
+              "x": 141.6875,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 177.6875,
+              "bottom": 38,
+              "left": 141.6875
+            }
+          },
+          {
+            "label": "New Layout",
+            "rect": {
+              "x": 558.6875,
+              "y": 0,
+              "width": 89.28125,
+              "height": 38,
+              "top": 0,
+              "right": 647.96875,
+              "bottom": 38,
+              "left": 558.6875
+            }
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1042,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1080,
+              "bottom": 38,
+              "left": 1042
+            }
+          },
+          {
+            "label": "Details and branches",
+            "rect": {
+              "x": 750.96875,
+              "y": 0,
+              "width": 75,
+              "height": 38,
+              "top": 0,
+              "right": 825.96875,
+              "bottom": 38,
+              "left": 750.96875
+            }
+          },
+          {
+            "label": "Chart layout",
+            "rect": {
+              "x": 825.96875,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 861.96875,
+              "bottom": 38,
+              "left": 825.96875
+            }
+          },
+          {
+            "label": "Save chart",
+            "rect": {
+              "x": 861.96875,
+              "y": 0,
+              "width": 95,
+              "height": 38,
+              "top": 0,
+              "right": 956.96875,
+              "bottom": 38,
+              "left": 861.96875
+            }
+          },
+          {
+            "label": "Manage layouts",
+            "rect": {
+              "x": 956.96875,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 992.96875,
+              "bottom": 38,
+              "left": 956.96875
+            }
+          },
+          {
+            "label": "Quick Search",
+            "rect": {
+              "x": 1004,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1040,
+              "bottom": 38,
+              "left": 1004
+            }
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 1081,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1117,
+              "bottom": 38,
+              "left": 1081
+            }
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1117,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1153,
+              "bottom": 38,
+              "left": 1117
+            }
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1153,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1189,
+              "bottom": 38,
+              "left": 1153
+            }
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 1189,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1225,
+              "bottom": 38,
+              "left": 1189
+            }
+          }
+        ]
+      },
+      "compact": false,
+      "nativeActions": true,
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "geometry": {
+        "nativeHeader": {
+          "left": 0,
+          "right": 720,
+          "top": 0,
+          "height": 38
+        },
+        "cap": {
+          "x": 724,
+          "y": 0,
+          "width": 44,
+          "height": 42,
+          "top": 0,
+          "right": 768,
+          "bottom": 42,
+          "left": 724
+        },
+        "viewport": 768,
+        "overflow": 0,
+        "centerRight": 720,
+        "iframeWidth": 720,
+        "bars": [
+          {
+            "name": "Replay",
+            "rect": {
+              "x": 323,
+              "y": 140,
+              "width": 397,
+              "height": 46,
+              "top": 140,
+              "right": 720,
+              "bottom": 186,
+              "left": 323
+            },
+            "scroll": [
+              363,
+              363
+            ]
+          }
+        ],
+        "headerControls": [
+          {
+            "label": "Back to sessions",
+            "rect": {
+              "x": 1,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 27,
+              "bottom": 38,
+              "left": 1
+            }
+          },
+          {
+            "label": "EURUSDm",
+            "rect": {
+              "x": 27,
+              "y": 0,
+              "width": 71.6875,
+              "height": 38,
+              "top": 0,
+              "right": 98.6875,
+              "bottom": 38,
+              "left": 27
+            }
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 629,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 667,
+              "bottom": 38,
+              "left": 629
+            }
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 668,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 694,
+              "bottom": 38,
+              "left": 668
+            }
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 694,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 720,
+              "bottom": 38,
+              "left": 694
+            }
+          }
+        ]
+      },
+      "compact": true,
+      "nativeActions": true,
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "geometry": {
+        "nativeHeader": {
+          "left": 0,
+          "right": 354,
+          "top": 0,
+          "height": 38
+        },
+        "cap": {
+          "x": 358,
+          "y": 0,
+          "width": 32,
+          "height": 42,
+          "top": 0,
+          "right": 390,
+          "bottom": 42,
+          "left": 358
+        },
+        "viewport": 390,
+        "overflow": 0,
+        "centerRight": 354,
+        "iframeWidth": 354,
+        "bars": [
+          {
+            "name": "Replay",
+            "rect": {
+              "x": 100,
+              "y": 140,
+              "width": 254,
+              "height": 46,
+              "top": 140,
+              "right": 354,
+              "bottom": 186,
+              "left": 100
+            },
+            "scroll": [
+              220,
+              220
+            ]
+          }
+        ],
+        "headerControls": [
+          {
+            "label": "Back to sessions",
+            "rect": {
+              "x": 1,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 27,
+              "bottom": 38,
+              "left": 1
+            }
+          },
+          {
+            "label": "EURUSDm",
+            "rect": {
+              "x": 27,
+              "y": 0,
+              "width": 71.6875,
+              "height": 38,
+              "top": 0,
+              "right": 98.6875,
+              "bottom": 38,
+              "left": 27
+            }
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 263,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 301,
+              "bottom": 38,
+              "left": 263
+            }
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 302,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 328,
+              "bottom": 38,
+              "left": 302
+            }
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 328,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 354,
+              "bottom": 38,
+              "left": 328
+            }
+          }
+        ]
+      },
+      "compact": true,
+      "nativeActions": true,
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "language": "vi",
+      "geometry": {
+        "nativeHeader": {
+          "left": 0,
+          "right": 324,
+          "top": 0,
+          "height": 38
+        },
+        "cap": {
+          "x": 328,
+          "y": 0,
+          "width": 32,
+          "height": 42,
+          "top": 0,
+          "right": 360,
+          "bottom": 42,
+          "left": 328
+        },
+        "viewport": 360,
+        "overflow": 0,
+        "centerRight": 324,
+        "iframeWidth": 324,
+        "bars": [
+          {
+            "name": "Replay",
+            "rect": {
+              "x": 70,
+              "y": 140,
+              "width": 254,
+              "height": 46,
+              "top": 140,
+              "right": 324,
+              "bottom": 186,
+              "left": 70
+            },
+            "scroll": [
+              220,
+              220
+            ]
+          }
+        ],
+        "headerControls": [
+          {
+            "label": "Trở về danh sách phiên",
+            "rect": {
+              "x": 1,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 27,
+              "bottom": 38,
+              "left": 1
+            }
+          },
+          {
+            "label": "EURUSDm",
+            "rect": {
+              "x": 27,
+              "y": 0,
+              "width": 71.6875,
+              "height": 38,
+              "top": 0,
+              "right": 98.6875,
+              "bottom": 38,
+              "left": 27
+            }
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 233,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 271,
+              "bottom": 38,
+              "left": 233
+            }
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 272,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 298,
+              "bottom": 38,
+              "left": 272
+            }
+          },
+          {
+            "label": "Công cụ biểu đồ",
+            "rect": {
+              "x": 298,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 324,
+              "bottom": 38,
+              "left": 298
+            }
+          }
+        ]
+      },
+      "compact": true,
+      "nativeActions": true,
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "geometry": {
+        "nativeHeader": {
+          "left": 0,
+          "right": 1662,
+          "top": 0,
+          "height": 38
+        },
+        "cap": {
+          "x": 1666,
+          "y": 0,
+          "width": 44,
+          "height": 42,
+          "top": 0,
+          "right": 1710,
+          "bottom": 42,
+          "left": 1666
+        },
+        "viewport": 1710,
+        "overflow": 0,
+        "centerRight": 1662,
+        "iframeWidth": 1662,
+        "bars": [
+          {
+            "name": "Replay",
+            "rect": {
+              "x": 850,
+              "y": 140,
+              "width": 397,
+              "height": 46,
+              "top": 140,
+              "right": 1247,
+              "bottom": 186,
+              "left": 850
+            },
+            "scroll": [
+              363,
+              363
+            ]
+          },
+          {
+            "name": "Chart quick actions",
+            "rect": {
+              "x": 1100,
+              "y": 220,
+              "width": 403.625,
+              "height": 44,
+              "top": 220,
+              "right": 1503.625,
+              "bottom": 264,
+              "left": 1100
+            },
+            "scroll": [
+              366,
+              366
+            ]
+          }
+        ],
+        "headerControls": [
+          {
+            "label": "Back to sessions",
+            "rect": {
+              "x": 1,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 37,
+              "bottom": 38,
+              "left": 1
+            }
+          },
+          {
+            "label": "EURUSDm",
+            "rect": {
+              "x": 37,
+              "y": 0,
+              "width": 104.6875,
+              "height": 38,
+              "top": 0,
+              "right": 141.6875,
+              "bottom": 38,
+              "left": 37
+            }
+          },
+          {
+            "label": "Compare symbols",
+            "rect": {
+              "x": 141.6875,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 177.6875,
+              "bottom": 38,
+              "left": 141.6875
+            }
+          },
+          {
+            "label": "New Layout",
+            "rect": {
+              "x": 558.6875,
+              "y": 0,
+              "width": 89.28125,
+              "height": 38,
+              "top": 0,
+              "right": 647.96875,
+              "bottom": 38,
+              "left": 558.6875
+            }
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1436.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1474.203125,
+              "bottom": 38,
+              "left": 1436.203125
+            }
+          },
+          {
+            "label": "Details and branches",
+            "rect": {
+              "x": 819.765625,
+              "y": 0,
+              "width": 120,
+              "height": 38,
+              "top": 0,
+              "right": 939.765625,
+              "bottom": 38,
+              "left": 819.765625
+            }
+          },
+          {
+            "label": "Chart layout",
+            "rect": {
+              "x": 939.765625,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 975.765625,
+              "bottom": 38,
+              "left": 939.765625
+            }
+          },
+          {
+            "label": "Save chart",
+            "rect": {
+              "x": 975.765625,
+              "y": 0,
+              "width": 130,
+              "height": 38,
+              "top": 0,
+              "right": 1105.765625,
+              "bottom": 38,
+              "left": 975.765625
+            }
+          },
+          {
+            "label": "Manage layouts",
+            "rect": {
+              "x": 1105.765625,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1141.765625,
+              "bottom": 38,
+              "left": 1105.765625
+            }
+          },
+          {
+            "label": "Quick Search",
+            "rect": {
+              "x": 1398.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1434.203125,
+              "bottom": 38,
+              "left": 1398.203125
+            }
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 1475.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1511.203125,
+              "bottom": 38,
+              "left": 1475.203125
+            }
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1511.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1590,
+              "bottom": 38,
+              "left": 1511.203125
+            }
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1590,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1626,
+              "bottom": 38,
+              "left": 1590
+            }
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 1626,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1662,
+              "bottom": 38,
+              "left": 1626
+            }
+          }
+        ]
+      },
+      "compact": false,
+      "nativeActions": true,
+      "cutoffPreserved": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "current": {
+    "width": 1710,
+    "geometry": {
+      "nativeHeader": {
+        "left": 0,
+        "right": 1662,
+        "top": 0,
+        "height": 38
+      },
+      "cap": {
+        "x": 1666,
+        "y": 0,
+        "width": 44,
+        "height": 42,
+        "top": 0,
+        "right": 1710,
+        "bottom": 42,
+        "left": 1666
+      },
+      "viewport": 1710,
+      "overflow": 0,
+      "centerRight": 1662,
+      "iframeWidth": 1662,
+      "bars": [
+        {
+          "name": "Replay",
+          "rect": {
+            "x": 850,
+            "y": 140,
+            "width": 397,
+            "height": 46,
+            "top": 140,
+            "right": 1247,
+            "bottom": 186,
+            "left": 850
+          },
+          "scroll": [
+            363,
+            363
+          ]
+        },
+        {
+          "name": "Chart quick actions",
+          "rect": {
+            "x": 1100,
+            "y": 220,
+            "width": 403.625,
+            "height": 44,
+            "top": 220,
+            "right": 1503.625,
+            "bottom": 264,
+            "left": 1100
+          },
+          "scroll": [
+            366,
+            366
+          ]
+        }
+      ],
+      "headerControls": [
+        {
+          "label": "Back to sessions",
+          "rect": {
+            "x": 1,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 37,
+            "bottom": 38,
+            "left": 1
+          }
+        },
+        {
+          "label": "EURUSDm",
+          "rect": {
+            "x": 37,
+            "y": 0,
+            "width": 104.6875,
+            "height": 38,
+            "top": 0,
+            "right": 141.6875,
+            "bottom": 38,
+            "left": 37
+          }
+        },
+        {
+          "label": "Compare symbols",
+          "rect": {
+            "x": 141.6875,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 177.6875,
+            "bottom": 38,
+            "left": 141.6875
+          }
+        },
+        {
+          "label": "New Layout",
+          "rect": {
+            "x": 558.6875,
+            "y": 0,
+            "width": 89.28125,
+            "height": 38,
+            "top": 0,
+            "right": 647.96875,
+            "bottom": 38,
+            "left": 558.6875
+          }
+        },
+        {
+          "label": "",
+          "rect": {
+            "x": 1436.203125,
+            "y": 0,
+            "width": 38,
+            "height": 38,
+            "top": 0,
+            "right": 1474.203125,
+            "bottom": 38,
+            "left": 1436.203125
+          }
+        },
+        {
+          "label": "Details and branches",
+          "rect": {
+            "x": 819.765625,
+            "y": 0,
+            "width": 120,
+            "height": 38,
+            "top": 0,
+            "right": 939.765625,
+            "bottom": 38,
+            "left": 819.765625
+          }
+        },
+        {
+          "label": "Chart layout",
+          "rect": {
+            "x": 939.765625,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 975.765625,
+            "bottom": 38,
+            "left": 939.765625
+          }
+        },
+        {
+          "label": "Save chart",
+          "rect": {
+            "x": 975.765625,
+            "y": 0,
+            "width": 130,
+            "height": 38,
+            "top": 0,
+            "right": 1105.765625,
+            "bottom": 38,
+            "left": 975.765625
+          }
+        },
+        {
+          "label": "Manage layouts",
+          "rect": {
+            "x": 1105.765625,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 1141.765625,
+            "bottom": 38,
+            "left": 1105.765625
+          }
+        },
+        {
+          "label": "Quick Search",
+          "rect": {
+            "x": 1398.203125,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 1434.203125,
+            "bottom": 38,
+            "left": 1398.203125
+          }
+        },
+        {
+          "label": "Capture chart as PNG",
+          "rect": {
+            "x": 1475.203125,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 1511.203125,
+            "bottom": 38,
+            "left": 1475.203125
+          }
+        },
+        {
+          "label": "Editor",
+          "rect": {
+            "x": 1511.203125,
+            "y": 0,
+            "width": 78.796875,
+            "height": 38,
+            "top": 0,
+            "right": 1590,
+            "bottom": 38,
+            "left": 1511.203125
+          }
+        },
+        {
+          "label": "AI Mentor",
+          "rect": {
+            "x": 1590,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 1626,
+            "bottom": 38,
+            "left": 1590
+          }
+        },
+        {
+          "label": "Change theme",
+          "rect": {
+            "x": 1626,
+            "y": 0,
+            "width": 36,
+            "height": 38,
+            "top": 0,
+            "right": 1662,
+            "bottom": 38,
+            "left": 1626
+          }
+        }
+      ]
+    }
+  },
+  "pass": true
+}

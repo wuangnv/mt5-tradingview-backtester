@@ -214,12 +214,20 @@ AI Mentor, theme and fullscreen. Alerts is absent; no FX Replay logo is added.
 The rocket beside quantity is Scalper mode, distinct from the Mentor sparkle.
 The replay switch is timeframe sync; it stays disabled until its semantics are implemented.
 
-`LegacyChartHeader` owns one 40px row spanning the entire workspace, above the
-chart and application dock. The vendor header is disabled. Supported intervals,
-chart type, indicators, undo/redo and chart settings use the official widget API.
-Changing interval still aggregates the same causal prefix and never advances replay.
-Mobile tools use an overflow menu; menus handle outside click and Escape in both
-documents. There is no separate header tail or cross-document portal opener.
+Advanced Charts owns the native header, including intervals, chart styles,
+indicators, undo/redo and chart settings. `LegacyChartHeader` renders only the
+application-specific controls through five official `createButton` extension
+hosts (market, layout, session, search, tools). A fullscreen cap at the top of
+the right rail continues the header to the viewport edge, without covering the
+price scale. CSS ordering targets this pinned v23 distribution; a vendor upgrade
+requires renewed visual QA. The application dock overlays below the header,
+preserving widget width. The default native viewport is retained unless a local
+layout was saved. Changing interval aggregates the same causal prefix and never
+advances replay; the native event interval synchronizes the replay bar selector.
+Mobile tools use an overflow menu, including native indicator/undo/redo actions
+that do not fit the row. Menus handle outside click and Escape in both documents
+and restore focus when the opener disappears during resize. Native header
+pointer/keyboard interaction pauses replay before operating a chart control.
 
 Compare, multi-chart layout creation, Editor, AI Mentor and Scalper mode retain
 explicit preview states. Mentor text is local UI state and cannot send to a provider.
@@ -241,4 +249,5 @@ Dark chart: #0F0F0F pane, #000000 chrome, #202020 grid, #DBDBDB scale text;
 light: #FFFFFF. Up/down candles and Buy/Sell use #26A69A / #EF5350.
 Project pages use the stronger semantic palette in [project-palette.md](project-palette.md).
 Testing state/language/paging contract remains [testing-standard.md](testing-standard.md).
-Scoped receipt: foundation_v2/evidence/legacy-match-20261007/CHECKPOINT.md.
+Initial receipt: foundation_v2/evidence/legacy-match-20261007/CHECKPOINT.md.
+Native header correction: foundation_v2/evidence/native-refinement-20261007/CHECKPOINT.md.

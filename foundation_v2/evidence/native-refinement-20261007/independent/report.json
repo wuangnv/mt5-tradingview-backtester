@@ -1,0 +1,326 @@
+{
+  "scope": "Actual native header GET, local API actions; activity fixture only",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "actual native interval selector5m/replaybar sync preserves causal prefix",
+        "actual native settings reachable",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 395,
+          "scroll": 395,
+          "contentClient": 363,
+          "contentScroll": 363
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1662,
+          "height": 935,
+          "top": 0,
+          "right": 1662,
+          "bottom": 935,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 1598,
+            "y": 42,
+            "width": 64,
+            "height": 826,
+            "top": 42,
+            "right": 1662,
+            "bottom": 868,
+            "left": 1598
+          },
+          {
+            "x": 1598,
+            "y": 868,
+            "width": 64,
+            "height": 28,
+            "top": 868,
+            "right": 1662,
+            "bottom": 896,
+            "left": 1598
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "actual native interval selector5m/replaybar sync preserves causal prefix",
+        "actual native settings reachable",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 395,
+          "scroll": 395,
+          "contentClient": 363,
+          "contentScroll": 363
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1662,
+          "height": 935,
+          "top": 0,
+          "right": 1662,
+          "bottom": 935,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 1598,
+            "y": 42,
+            "width": 64,
+            "height": 826,
+            "top": 42,
+            "right": 1662,
+            "bottom": 868,
+            "left": 1598
+          },
+          {
+            "x": 1598,
+            "y": 868,
+            "width": 64,
+            "height": 28,
+            "top": 868,
+            "right": 1662,
+            "bottom": 896,
+            "left": 1598
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "compact menu768→1710 resize returns visible focus",
+        "actual native interval selector5m/replaybar sync preserves causal prefix",
+        "actual native settings reachable",
+        "compact overflow Indicators native dialog + Undo/Redo present",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 395,
+          "scroll": 395,
+          "contentClient": 363,
+          "contentScroll": 363
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 720,
+          "height": 935,
+          "top": 0,
+          "right": 720,
+          "bottom": 935,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 656,
+            "y": 42,
+            "width": 64,
+            "height": 826,
+            "top": 42,
+            "right": 720,
+            "bottom": 868,
+            "left": 656
+          },
+          {
+            "x": 656,
+            "y": 868,
+            "width": 64,
+            "height": 28,
+            "top": 868,
+            "right": 720,
+            "bottom": 896,
+            "left": 656
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "language": "vi",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "actual native interval selector5m/replaybar sync preserves causal prefix",
+        "actual native settings reachable",
+        "compact overflow Indicators native dialog + Undo/Redo present",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 252,
+          "scroll": 252,
+          "contentClient": 220,
+          "contentScroll": 220
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 324,
+          "height": 897,
+          "top": 0,
+          "right": 324,
+          "bottom": 897,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 260,
+            "y": 42,
+            "width": 64,
+            "height": 788,
+            "top": 42,
+            "right": 324,
+            "bottom": 830,
+            "left": 260
+          },
+          {
+            "x": 260,
+            "y": 830,
+            "width": 64,
+            "height": 28,
+            "top": 830,
+            "right": 324,
+            "bottom": 858,
+            "left": 260
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "width": 1300,
+      "theme": "dark",
+      "language": "vi",
+      "checks": [
+        "library-owned header controls,5official extensions, no recreated row",
+        "FX previews/dock below native header/keyboard close focus",
+        "actual native interval selector5m/replaybar sync preserves causal prefix",
+        "actual native settings reachable",
+        "replaybar no overflow/quickbar overlap, footer3buttons/noSIM, price axis fits"
+      ],
+      "layout": {
+        "overflow": 0,
+        "replay": {
+          "client": 395,
+          "scroll": 395,
+          "contentClient": 363,
+          "contentScroll": 363
+        },
+        "overlap": false,
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1252,
+          "height": 935,
+          "top": 0,
+          "right": 1252,
+          "bottom": 935,
+          "left": 0
+        },
+        "redundant": 0,
+        "scale": [
+          {
+            "x": 1188,
+            "y": 42,
+            "width": 64,
+            "height": 826,
+            "top": 42,
+            "right": 1252,
+            "bottom": 868,
+            "left": 1188
+          },
+          {
+            "x": 1188,
+            "y": 868,
+            "width": 64,
+            "height": 28,
+            "top": 868,
+            "right": 1252,
+            "bottom": 896,
+            "left": 1188
+          }
+        ]
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorBlocked": [
+    "http://www.google-analytics.com/analytics.js"
+  ],
+  "axe": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "violations": []
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "violations": []
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "language": "en",
+      "violations": []
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "language": "vi",
+      "violations": []
+    },
+    {
+      "width": 1300,
+      "theme": "dark",
+      "language": "vi",
+      "violations": []
+    }
+  ],
+  "pass": true
+}

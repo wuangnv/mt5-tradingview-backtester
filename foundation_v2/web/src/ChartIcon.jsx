@@ -1,6 +1,7 @@
 import React from 'react'
 
 const paths = {
+  'place-order': 'M12 8v8M8 12h8M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
   'arrow-left': 'M20 12H4M10 6l-6 6 6 6', down: 'm6 9 6 6 6-6',
   undo: 'M9 4 3 10l6 6M3 10h10a7 7 0 0 1 7 7', redo: 'm15 4 6 6-6 6M21 10H11a7 7 0 0 0-7 7',
   settings: 'm7 3-5 9 5 9h10l5-9-5-9zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8',

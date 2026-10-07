@@ -1,0 +1,34 @@
+[
+  {
+    "path": "foundation_v2/web/public/chart-legacy.css",
+    "sha256": "8164e59269d006ab0afc764d10e5e99a873290590808988f52fda37173a80f69"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartIcon.jsx",
+    "sha256": "38f82bf8a250947c514c6dfc580f856ebf7ce24422e807e6640ad024b1401c21"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartWorkbench.css",
+    "sha256": "fed70469858dcd634c7db17d2d31dc1693ae94bfc334c087032442691ce2db8d"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyChartHeader.jsx",
+    "sha256": "471e9e461f86f7734f7a4fa723585e3aec12078c2e2830af3275ea61796be4a1"
+  },
+  {
+    "path": "foundation_v2/web/src/ReplayWorkspace.jsx",
+    "sha256": "cb480152944b9d711473e8d26eb56e53637ea377e6d319e0f17cc3b1d1382e7f"
+  },
+  {
+    "path": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+    "sha256": "9ca72b25d0e4f20875211ec4b9e44cd08dceaf53c757a19b8673af15d8fdc7da"
+  },
+  {
+    "path": "foundation_v2/web/src/testing-copy.json",
+    "sha256": "053e3916179582911ef760bdb582b20adcce1cabf2bb6092dfa3b35758199b3c"
+  },
+  {
+    "path": "ui/workspace-patterns.md",
+    "sha256": "a13c359fc93d0f2fdf076b091c82af3dfea6ead8623eee63203c08bb2f6fccf3"
+  }
+]
