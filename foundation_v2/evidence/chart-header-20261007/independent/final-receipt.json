@@ -1,0 +1,66 @@
+{
+  "pass": true,
+  "scope": "Chart header reference UI and retained native chart actions; independent review only",
+  "generatedAt": "2026-10-07T05:44:17.138Z",
+  "matrixCases": 7,
+  "edgeCases": 4,
+  "axeScans": 14,
+  "axeViolations": 0,
+  "axeScope": "new .chart-header-preview content only",
+  "pageErrors": 0,
+  "unexpectedRequests": 0,
+  "sourcePins": [
+    {
+      "file": "foundation_v2/web/src/ReplayWorkspace.jsx",
+      "sha256": "e1c2be086915b76441b988deae9e9993ac17d3607871fb3d363ccc3a4c006961"
+    },
+    {
+      "file": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+      "sha256": "c497e529ae47c66f5e4c85735fda859f62d33ca09c6606cc7428d59754d3c221"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartHeaderPreview.jsx",
+      "sha256": "eae07ab2d5efa423563152075f3bbad202d7aba511f52bbe225e91e608d9ec57"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartHeaderTail.jsx",
+      "sha256": "c111f29c7b0a5afba0fe2bbd913859f45229c2c6b91b6d0cabc01f3cf2b26923"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartIcon.jsx",
+      "sha256": "0444a5135dcc9f5e5876d922fe49491a7780972ee51d95ecd7bec1f1a9a3346b"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartWorkbench.css",
+      "sha256": "818510f555be75d0827a52e4c22b84a3858a86c7267a4040c6d4568261c09dc5"
+    },
+    {
+      "file": "foundation_v2/web/public/chart-legacy.css",
+      "sha256": "ba924492f5a431b0b9a9d0407a80200f9d72f454241cadc9042cebd7331d01f4"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "189bd7ef56a054d5e12cfd6738323a06604c2ad13c54eb27c9c5ba6d1b0c56e7"
+    },
+    {
+      "file": "ui/workspace-patterns.md",
+      "sha256": "93142dd4023864a54904c4a22a50813af5af8d1eee01e471a3af13bc0b330371"
+    }
+  ],
+  "resolvedFindings": [
+    "Overflow menu clipped by utility rail; chart-frame portal independently exercised.",
+    "Original opener unmounted by menu; persistent overflow opener restored.",
+    "Dock1300 shrinks native header then expands; focus restoration waits iframe/host/compact state agreement.",
+    "Duplicate translation key removed."
+  ],
+  "limits": [
+    "Actual chart/localhost GET; all activity POSTs intercepted using labeled fixtures; other writes/external/WebSockets blocked.",
+    "Fullscreen success exercised through browser API; denial injected as an explicit fixture.",
+    "Reference tools have editable preview fields/local layout selection, but creation/comparison/alerts/Pine execution stay disabled.",
+    "Chart preservation asserts actual session symbol,resolution,cutoff,visible-row count and shape count; no broker/execution acceptance.",
+    "Existing nested complementary landmark finding on .replay-side retained separately; final focused Axe does not certify whole-page accessibility.",
+    "Root build/focused unit tests and primary QA are separately attributed, not independently executed here."
+  ],
+  "stagingOrCommit": false,
+  "productSourceEditedByReviewer": false
+}

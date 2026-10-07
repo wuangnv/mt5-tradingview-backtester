@@ -55,7 +55,10 @@ export default function TradingViewReplayChart(props) {
 
   useEffect(() => {
     let cancelled = false, saveTimer, restoringImports = false, importedShapes = [], lines = []
-    let widget, adapter, chart, fitButton, headerSlots, chartReady = false, fittedLevels = ''
+    let widget, adapter, chart, headerSlots, headerResizeObserver, chartReady = false, fittedLevels = ''
+    const publishHeader = () => {
+      if (!cancelled && chartReady && headerSlots) latest.current.onHeaderSlots?.({ ...headerSlots, compact: host.current.clientWidth <= 1100 })
+    }
     const loadingTimer = setTimeout(() => {
       if (cancelled || chartReady) return
       setStatus('error')
@@ -90,7 +93,7 @@ export default function TradingViewReplayChart(props) {
         custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles', 'Bars', 'Line', 'Area', 'Heikin Ashi'] },
         header_widget_buttons_mode: 'adaptive',
         enabled_features: ['seconds_resolution', 'items_favoriting'],
-        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'widget_logo'],
+        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
         overrides: paneAppearance(theme),
         studies_overrides: Object.fromEntries(Object.entries(volumeAppearance(theme)).map(([key, value]) => [`volume.${key}`, value])),
       })
@@ -108,7 +111,6 @@ export default function TradingViewReplayChart(props) {
           for (const line of lines) line.remove()
           lines = []
           const state = latest.current
-          if (fitButton) fitButton.style.display = state.levels ? '' : 'none'
           if (state.levels) for (const kind of ['entry', 'stop', 'target']) {
             const line = chart.createOrderLine()
             if (!line) continue
@@ -183,7 +185,7 @@ export default function TradingViewReplayChart(props) {
             if (!saved && prefix.length > 1) chart.setVisibleRange({ from: Number(prefix[Math.max(0, prefix.length - 100)].timestamp), to: Number(prefix.at(-1).timestamp) }).catch(() => {})
             setStatus('ready')
             chartReady = true
-            if (headerSlots) latest.current.onHeaderSlots?.(headerSlots)
+            publishHeader()
           }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
         }
         instance.current = { widget, adapter, chart, refresh, importAnnotations, save }
@@ -207,9 +209,14 @@ export default function TradingViewReplayChart(props) {
           // v23 wraps official custom buttons in a toolbar group. Keep the
           // market identity first without moving the library-owned controls.
           marketHost.parentElement.parentElement.classList.add('legacy-market-group')
+          const toolsHost = widget.createButton({ align: 'left', useTradingViewStyle: false })
+          toolsHost.className = 'legacy-tools-host'
+          toolsHost.parentElement.parentElement.classList.add('legacy-tools-group')
           const sessionHost = widget.createButton({ align: 'right', useTradingViewStyle: false })
           sessionHost.className = 'legacy-session-host'
-          headerSlots = { market: marketHost, session: sessionHost,
+          sessionHost.parentElement.parentElement.classList.add('legacy-session-group')
+          headerSlots = { market: marketHost, tools: toolsHost, session: sessionHost, save, fitOrder,
+            headerHeight: marketHost.closest('.header-toolbar')?.getBoundingClientRect().height || 38,
             selectDrawing: tool => { if (!cancelled) { latest.current.onOrderDragStart(); widget.selectLineTool(tool) } },
             openTree: () => { if (!cancelled) chart.executeActionById('paneObjectTree') },
             capture: async () => {
@@ -228,29 +235,15 @@ export default function TradingViewReplayChart(props) {
               } catch (error) { if (!cancelled) setMessage(`Không chụp được chart: ${error.message || error}`) }
             },
           }
-          if (chartReady) latest.current.onHeaderSlots?.(headerSlots)
-          const button = widget.createButton()
-          button.textContent = t('Lưu chart')
-          button.title = t('Lưu layout và công cụ vẽ theo session/cutoff trên trình duyệt này')
-          button.addEventListener('click', save)
-          fitButton = widget.createButton()
-          fitButton.textContent = t('Vừa lệnh')
-          fitButton.title = t('Hiển thị đầy đủ Entry, Stop loss và Take profit mô phỏng')
-          fitButton.style.display = latest.current.levels ? '' : 'none'
-          fitButton.addEventListener('click', fitOrder)
-          for (const control of [button, fitButton]) {
-            control.setAttribute('role', 'button')
-            control.tabIndex = 0
-            control.addEventListener('keydown', event => {
-              if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); control.click() }
-            })
-          }
+          headerResizeObserver = new ResizeObserver(publishHeader)
+          headerResizeObserver.observe(host.current)
+          publishHeader()
         })
         chart.dataReady(ready)
       })
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
-      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); instance.current = null
+      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); headerResizeObserver?.disconnect(); instance.current = null
       latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }

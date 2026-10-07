@@ -1,0 +1,28 @@
+{
+  "scope": "Actual GET; activity POST fixtures; dock-to-overflow focus and denied fullscreen",
+  "cases": [
+    {
+      "width": 1300,
+      "name": "dock changes from native to overflow and returns focus to visible Editor/overflow",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "name": "dock changes from native to overflow and returns focus to visible Editor/overflow",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "name": "keyboard Enter opens overflow/Compare; Escape returns persistent opener",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "name": "fullscreen denied fixture visibly explained, no fullscreen or writes",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

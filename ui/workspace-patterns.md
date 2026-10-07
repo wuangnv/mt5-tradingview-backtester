@@ -253,3 +253,22 @@ The owner confirmed logo-removal rights. The pinned v23 `widget_logo` featureset
 disabled through widget options; vendor source and assets remain untouched.
 
 Testing component/state/language/paging contract: [testing-standard.md](testing-standard.md).
+
+## Chart header reference — 07/10/2026
+
+The reference header keeps native chart controls, a back link and symbol picker,
+adds comparison (+), New Layout, Alerts and Editor, and has no FX Replay logo.
+The four additions are explicitly UI previews: fields/layout choices can be
+reviewed, while creation/comparison/script execution remain disabled. They do
+not create records, compile Pine Script, send alerts or change the dataset.
+Current Save chart, local PNG export, theme and fullscreen remain functional.
+Pause status is owned by replay controls; Fit order lives beside order actions.
+
+The fullscreen/header-tools tail fills the 48px utility rail's top edge (36px
+on mobile), continuing the native header to the right viewport edge without
+covering the price scale. At an actual iframe width of 1100px or less, custom
+tools move into an overflow panel; dock resizing also updates this breakpoint.
+The overflow is portaled into the chart frame to escape rail scrolling/clipping,
+stays inside the fullscreen app, and handles outside click/Escape in both the
+parent document and same-origin chart iframe. Closing a dock restores focus to
+the persistent opener. Scope: header UI only, not acceptance of pending tools.

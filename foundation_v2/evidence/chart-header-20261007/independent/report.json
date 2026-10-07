@@ -1,0 +1,338 @@
+{
+  "scope": "Actual chart localhost GET; labeled activity POST fixture; local layout/download/fullscreen only",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 1662
+        },
+        "tail": {
+          "x": 1663,
+          "y": 0,
+          "right": 1710,
+          "height": 38
+        },
+        "rail": {
+          "x": 1662,
+          "right": 1710
+        }
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "en",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 1662
+        },
+        "tail": {
+          "x": 1663,
+          "y": 0,
+          "right": 1710,
+          "height": 38
+        },
+        "rail": {
+          "x": 1662,
+          "right": 1710
+        }
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "language": "en",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "compact menu Escape and iframe outside dismissal",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 720
+        },
+        "tail": {
+          "x": 721,
+          "y": 0,
+          "right": 768,
+          "height": 38
+        },
+        "rail": {
+          "x": 720,
+          "right": 768
+        }
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "language": "vi",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "compact menu Escape and iframe outside dismissal",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 720
+        },
+        "tail": {
+          "x": 721,
+          "y": 0,
+          "right": 768,
+          "height": 38
+        },
+        "rail": {
+          "x": 720,
+          "right": 768
+        }
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "language": "vi",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "compact menu Escape and iframe outside dismissal",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 354
+        },
+        "tail": {
+          "x": 355,
+          "y": 0,
+          "right": 390,
+          "height": 38
+        },
+        "rail": {
+          "x": 354,
+          "right": 390
+        }
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "compact menu Escape and iframe outside dismissal",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 324
+        },
+        "tail": {
+          "x": 325,
+          "y": 0,
+          "right": 360,
+          "height": 38
+        },
+        "rail": {
+          "x": 324,
+          "right": 360
+        }
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1300,
+      "language": "en",
+      "checks": [
+        "compare: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "layout: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "alerts: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "editor: inputs/local choice, execution disabled, chart preserved, Escape/focus",
+        "local save/client PNG retained",
+        "actual fullscreen enter/exit with all header controls retained",
+        "tail aligns native header and spans rail; reload has one control group"
+      ],
+      "rects": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "right": 1252
+        },
+        "tail": {
+          "x": 1253,
+          "y": 0,
+          "right": 1300,
+          "height": 38
+        },
+        "rail": {
+          "x": 1252,
+          "right": 1300
+        }
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorAnalyticsBlocked": [],
+  "activityFixtures": 36,
+  "axe": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "tool": "editor",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "en",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "en",
+      "tool": "editor",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "language": "en",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "language": "en",
+      "tool": "editor",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "language": "vi",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "language": "vi",
+      "tool": "editor",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "language": "vi",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "language": "vi",
+      "tool": "editor",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "tool": "editor",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 1300,
+      "language": "en",
+      "tool": "layout",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 1300,
+      "language": "en",
+      "tool": "editor",
+      "violations": []
+    }
+  ],
+  "pass": true
+}

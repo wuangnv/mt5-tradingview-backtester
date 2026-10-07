@@ -4,14 +4,15 @@
   --legacy-active: #2962ff;
 }
 .theme-dark { --legacy-text: #b2b5be; --legacy-muted: #9598a1; --legacy-hover: #2a2e39; }
-.legacy-market-host, .legacy-session-host { display: flex; align-items: center; height: 36px; padding: 0 2px; color: var(--legacy-text); font: 12px Arial, sans-serif; }
+.legacy-market-host, .legacy-tools-host, .legacy-session-host { display: flex; align-items: center; height: 36px; padding: 0 2px; color: var(--legacy-text); font: 13px Arial, sans-serif; }
 .legacy-market-group { order: -1; }
-.legacy-header-identity, .legacy-header-session { display: flex; align-items: center; gap: 4px; }
-.legacy-header-identity a, .legacy-header-identity button, .legacy-header-session button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 0 8px; border: 0; border-radius: 3px; background: transparent; color: var(--legacy-text); font: inherit; cursor: pointer; text-decoration: none; }
-.legacy-header-identity :is(a,button):hover, .legacy-header-session button:hover { background: var(--legacy-hover); }
-.legacy-header-identity svg, .legacy-header-session svg { width: 16px; height: 16px; }
-.legacy-header-session strong { font-weight: 500; font-style: italic; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.legacy-header-session [data-testid='replay-status'] { font-size: 12px; color: var(--legacy-muted); }
-.legacy-header-identity :is(a,button):focus-visible, .legacy-header-session button:focus-visible { outline: 2px solid var(--legacy-active); outline-offset: -2px; }
-@media (max-width: 1100px) { .legacy-header-session strong, .legacy-header-session [data-testid='replay-status'] { display: none; } }
-@media (max-width: 600px) { .legacy-header-identity button { padding: 0 4px; } .legacy-session-host { display: none; } }
+.legacy-header-identity, .legacy-header-tools, .legacy-header-session { display: flex; align-items: center; gap: 2px; white-space: nowrap; }
+.legacy-header-identity a, .legacy-header-identity button, .legacy-header-tools button, .legacy-header-session button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 30px; padding: 0 8px; border: 0; border-radius: 3px; background: transparent; color: var(--legacy-text); font: inherit; line-height: 1; cursor: pointer; text-decoration: none; box-sizing: border-box; }
+.legacy-header-identity :is(a,button):hover, .legacy-header-tools button:hover, .legacy-header-session button:hover { background: var(--legacy-hover); }
+.legacy-header-identity svg, .legacy-header-tools svg, .legacy-header-session svg { display: block; flex-shrink: 0; width: 18px; height: 18px; }
+.legacy-header-session strong { font-weight: 500; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legacy-session-name svg { width: 14px; transform: rotate(90deg); }
+.legacy-header-separator { width: 1px; height: 22px; background: var(--tv-color-platform-background, var(--legacy-hover)); margin: 0 4px; }
+.legacy-header-identity :is(a,button):focus-visible, .legacy-header-tools button:focus-visible, .legacy-header-session button:focus-visible { outline: 2px solid var(--legacy-active); outline-offset: -2px; }
+@media (max-width: 1100px) { .legacy-tools-group, .legacy-session-group { display: none !important; } }
+@media (max-width: 600px) { .legacy-header-identity :is(a,button) { padding-inline: 4px; } }
