@@ -22,13 +22,13 @@
 .fx-dashboard-refresh svg { width: 20px; height: 20px; }
 .fx-dashboard-quick-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; max-width: 752px; gap: 16px; margin-bottom: 32px; }
 .fx-dashboard-quick-action { display: flex; align-items: center; gap: 16px; padding: 20px; min-height: 92px; border: 1px solid var(--wm-border-strong); border-radius: 10px; color: var(--wm-content); text-decoration: none; min-width: 0; }
-.fx-dashboard-quick-action.is-primary { border-color: var(--project-highlight); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-dashboard .fx-dashboard-quick-actions .fx-dashboard-quick-action { box-sizing:border-box; min-height:92px; padding:20px; gap:16px; border:1px solid var(--wm-control-border); border-radius:10px; background:transparent; color:var(--wm-content); text-align:left; font:inherit; cursor:pointer; }
 .fx-dashboard-quick-action > svg { width: 24px; height: 24px; color: var(--project-highlight); flex-shrink: 0; }
 .fx-dashboard-quick-action > span:not(.fx-dashboard-action-arrow) { min-width: 0; }
 .fx-dashboard-quick-action strong { display: block; font-size: 14px; font-weight: 600; }
 .fx-dashboard-quick-action small { display: block; margin-top: 6px; color: var(--wm-content-muted); font-size: 12px; line-height: 1.5; }
 .fx-dashboard-action-arrow { margin-left: auto; color: var(--wm-content-muted); }
-.fx-app.fx-shell-story[data-theme] .fx-dashboard .fx-dashboard-quick-action:hover:not(:disabled) { background: var(--project-peach-soft); border-color: var(--project-highlight); color: var(--wm-content); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-dashboard .fx-dashboard-quick-actions .fx-dashboard-quick-action:hover:not(:disabled) { background: var(--project-peach-soft); border-color: var(--project-highlight); color: var(--wm-content); }
 .fx-app.fx-shell-story[data-theme] .fx-dashboard .fx-dashboard-quick-action:hover > svg { color: var(--project-highlight); }
 .fx-dashboard-quick-action:hover .fx-dashboard-action-arrow { color: var(--wm-primary); }
 .fx-dashboard-section-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
@@ -142,7 +142,7 @@
 .fx-dashboard-catalog-status { padding: 24px 0; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; color: var(--wm-content-muted); font-size: 13px; overflow-wrap: anywhere; }
 @media (max-width: 1100px) {
   .fx-dashboard-metric, .fx-dashboard-chart-panel { padding: 20px; }
-  .fx-dashboard-quick-action { padding: 16px; gap: 12px; }
+  .fx-app.fx-shell-story[data-theme] .fx-content .fx-dashboard .fx-dashboard-quick-actions .fx-dashboard-quick-action { padding: 16px; gap: 12px; }
   .fx-dashboard-performance-layout { grid-template-columns: minmax(0, 1fr); }
   .fx-dashboard-performance-layout > .fx-dashboard-chart-panel { min-height: 280px; }
   .fx-dashboard-session-row { grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; }
@@ -152,7 +152,7 @@
 @media (max-width: 768px) {
   .fx-dashboard-inner { width: calc(100% - 32px); }
   .fx-dashboard-quick-actions { gap: 10px; }
-  .fx-dashboard-quick-action { align-items: flex-start; flex-wrap: wrap; gap: 10px; padding: 14px; }
+  .fx-app.fx-shell-story[data-theme] .fx-content .fx-dashboard .fx-dashboard-quick-actions .fx-dashboard-quick-action { align-items: flex-start; flex-wrap: wrap; gap: 10px; padding: 14px; }
   .fx-dashboard-action-arrow { display: none; }
   .fx-dashboard-quick-action > span { width: 100%; }
   .fx-dashboard-section-head { flex-wrap: wrap; }
@@ -167,7 +167,7 @@
 }
 @media (max-width: 480px) {
   .fx-dashboard-quick-actions { grid-template-columns: minmax(0, 1fr); margin-bottom: 28px; }
-  .fx-dashboard-quick-action { align-items: center; flex-wrap: nowrap; padding: 16px; min-height: 82px; }
+  .fx-app.fx-shell-story[data-theme] .fx-content .fx-dashboard .fx-dashboard-quick-actions .fx-dashboard-quick-action { align-items: center; flex-wrap: nowrap; padding: 16px; min-height: 82px; }
   .fx-dashboard-quick-action > span { width: auto; }
   .fx-dashboard-action-arrow { display: block; }
   .fx-dashboard-performance { gap: 12px; }

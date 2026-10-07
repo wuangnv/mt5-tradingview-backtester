@@ -1,0 +1,1262 @@
+{
+  "scope": "Read-only local browser plus intercepted strategy/replay fixtures; no live writes",
+  "cases": [
+    {
+      "width": 1368,
+      "theme": "dark",
+      "actions": [
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        }
+      ],
+      "text": "Tạo phiên nhanh\nPhiên nâng cao\n×\nPhiên backtest\nPhiên prop firm\nTên *\nSố dư tài khoản · USD *\n$\nChiến lược\nChọn chiến lược hoặc tạo mới\n+ Tạo chiến lược mới\nTài sản *\nKho dữ liệu\nChọn tài sản\nĐang tải danh mục dữ liệu…\nChọn bố cục chart (Tuỳ chọn)\nBố cục mặc định\nCông cụ biểu đồ\n\nChọn một lần cho phiên này.\n\nNew Chart Chưa khả dụng\nLegacy Chart\nHủy\nTạo phiên",
+      "currency": {
+        "input": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "borderWidth": "0px",
+          "border": "rgb(255, 255, 255)"
+        },
+        "group": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "border": "rgb(255, 255, 255)"
+        },
+        "content": "rgb(255, 255, 255)"
+      },
+      "strategy": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(58, 58, 58)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetLink": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(255, 255, 255)",
+          "borderWidth": "0px",
+          "outline": "rgb(255, 255, 255) none 3px",
+          "shadow": "none",
+          "color": "rgb(255, 255, 255)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(184, 184, 184)",
+          "borderWidth": "0px",
+          "outline": "rgb(184, 184, 184) none 3px",
+          "shadow": "none",
+          "color": "rgb(184, 184, 184)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        }
+      },
+      "pass": true
+    },
+    {
+      "width": 1710,
+      "theme": "dark",
+      "actions": [
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        }
+      ],
+      "text": "Tạo phiên nhanh\nPhiên nâng cao\n×\nPhiên backtest\nPhiên prop firm\nTên *\nSố dư tài khoản · USD *\n$\nChiến lược\nChọn chiến lược hoặc tạo mới\n+ Tạo chiến lược mới\nTài sản *\nKho dữ liệu\nChọn tài sản\nĐang tải danh mục dữ liệu…\nChọn bố cục chart (Tuỳ chọn)\nBố cục mặc định\nCông cụ biểu đồ\n\nChọn một lần cho phiên này.\n\nNew Chart Chưa khả dụng\nLegacy Chart\nHủy\nTạo phiên",
+      "currency": {
+        "input": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "borderWidth": "0px",
+          "border": "rgb(255, 255, 255)"
+        },
+        "group": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "border": "rgb(255, 255, 255)"
+        },
+        "content": "rgb(255, 255, 255)"
+      },
+      "strategy": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(58, 58, 58)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetLink": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(255, 255, 255)",
+          "borderWidth": "0px",
+          "outline": "rgb(255, 255, 255) none 3px",
+          "shadow": "none",
+          "color": "rgb(255, 255, 255)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(184, 184, 184)",
+          "borderWidth": "0px",
+          "outline": "rgb(184, 184, 184) none 3px",
+          "shadow": "none",
+          "color": "rgb(184, 184, 184)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        }
+      },
+      "pass": true
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "actions": [
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(59, 36, 24)",
+            "border": "rgb(255, 173, 124)",
+            "borderWidth": "1px",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "color": "rgb(255, 255, 255)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "icon": "rgb(255, 173, 124)"
+        }
+      ],
+      "text": "Tạo phiên nhanh\nPhiên nâng cao\n×\nPhiên backtest\nPhiên prop firm\nTên *\nSố dư tài khoản · USD *\n$\nChiến lược\nChọn chiến lược hoặc tạo mới\n+ Tạo chiến lược mới\nTài sản *\nKho dữ liệu\nChọn tài sản\nĐang tải danh mục dữ liệu…\nChọn bố cục chart (Tuỳ chọn)\nBố cục mặc định\nCông cụ biểu đồ\n\nChọn một lần cho phiên này.\n\nNew Chart Chưa khả dụng\nLegacy Chart\nHủy\nTạo phiên",
+      "currency": {
+        "input": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "borderWidth": "0px",
+          "border": "rgb(255, 255, 255)"
+        },
+        "group": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "border": "rgb(255, 255, 255)"
+        },
+        "content": "rgb(255, 255, 255)"
+      },
+      "strategy": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(58, 58, 58)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "strategyHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "strategyOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "assetHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "assetOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(115, 115, 115)",
+        "borderWidth": "1px",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "shadow": "none",
+        "color": "rgb(255, 255, 255)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "assetLink": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(255, 255, 255)",
+          "borderWidth": "0px",
+          "outline": "rgb(255, 255, 255) none 3px",
+          "shadow": "none",
+          "color": "rgb(255, 255, 255)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(184, 184, 184)",
+          "borderWidth": "0px",
+          "outline": "rgb(184, 184, 184) none 3px",
+          "shadow": "none",
+          "color": "rgb(184, 184, 184)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        }
+      },
+      "pass": true
+    },
+    {
+      "width": 1368,
+      "theme": "light",
+      "actions": [
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        }
+      ],
+      "text": "Tạo phiên nhanh\nPhiên nâng cao\n×\nPhiên backtest\nPhiên prop firm\nTên *\nSố dư tài khoản · USD *\n$\nChiến lược\nChọn chiến lược hoặc tạo mới\n+ Tạo chiến lược mới\nTài sản *\nKho dữ liệu\nChọn tài sản\nĐang tải danh mục dữ liệu…\nChọn bố cục chart (Tuỳ chọn)\nBố cục mặc định\nCông cụ biểu đồ\n\nChọn một lần cho phiên này.\n\nNew Chart Chưa khả dụng\nLegacy Chart\nHủy\nTạo phiên",
+      "currency": {
+        "input": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "borderWidth": "0px",
+          "border": "rgb(17, 17, 17)"
+        },
+        "group": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "border": "rgb(17, 17, 17)"
+        },
+        "content": "rgb(17, 17, 17)"
+      },
+      "strategy": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(210, 210, 210)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetLink": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(17, 17, 17)",
+          "borderWidth": "0px",
+          "outline": "rgb(17, 17, 17) none 3px",
+          "shadow": "none",
+          "color": "rgb(17, 17, 17)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(82, 82, 82)",
+          "borderWidth": "0px",
+          "outline": "rgb(82, 82, 82) none 3px",
+          "shadow": "none",
+          "color": "rgb(82, 82, 82)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        }
+      },
+      "pass": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "actions": [
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "20px",
+            "minHeight": "92px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        }
+      ],
+      "text": "Tạo phiên nhanh\nPhiên nâng cao\n×\nPhiên backtest\nPhiên prop firm\nTên *\nSố dư tài khoản · USD *\n$\nChiến lược\nChọn chiến lược hoặc tạo mới\n+ Tạo chiến lược mới\nTài sản *\nKho dữ liệu\nChọn tài sản\nĐang tải danh mục dữ liệu…\nChọn bố cục chart (Tuỳ chọn)\nBố cục mặc định\nCông cụ biểu đồ\n\nChọn một lần cho phiên này.\n\nNew Chart Chưa khả dụng\nLegacy Chart\nHủy\nTạo phiên",
+      "currency": {
+        "input": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "borderWidth": "0px",
+          "border": "rgb(17, 17, 17)"
+        },
+        "group": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "border": "rgb(17, 17, 17)"
+        },
+        "content": "rgb(17, 17, 17)"
+      },
+      "strategy": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(210, 210, 210)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "strategyOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "40px",
+        "decoration": "none"
+      },
+      "assetLink": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(17, 17, 17)",
+          "borderWidth": "0px",
+          "outline": "rgb(17, 17, 17) none 3px",
+          "shadow": "none",
+          "color": "rgb(17, 17, 17)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(82, 82, 82)",
+          "borderWidth": "0px",
+          "outline": "rgb(82, 82, 82) none 3px",
+          "shadow": "none",
+          "color": "rgb(82, 82, 82)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        }
+      },
+      "pass": true
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "actions": [
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        },
+        {
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "hover": {
+            "background": "rgb(255, 229, 213)",
+            "border": "rgb(164, 71, 21)",
+            "borderWidth": "1px",
+            "outline": "rgb(17, 17, 17) none 3px",
+            "shadow": "none",
+            "color": "rgb(17, 17, 17)",
+            "radius": "10px",
+            "padding": "16px",
+            "minHeight": "82px",
+            "decoration": "none"
+          },
+          "icon": "rgb(164, 71, 21)"
+        }
+      ],
+      "text": "Tạo phiên nhanh\nPhiên nâng cao\n×\nPhiên backtest\nPhiên prop firm\nTên *\nSố dư tài khoản · USD *\n$\nChiến lược\nChọn chiến lược hoặc tạo mới\n+ Tạo chiến lược mới\nTài sản *\nKho dữ liệu\nChọn tài sản\nĐang tải danh mục dữ liệu…\nChọn bố cục chart (Tuỳ chọn)\nBố cục mặc định\nCông cụ biểu đồ\n\nChọn một lần cho phiên này.\n\nNew Chart Chưa khả dụng\nLegacy Chart\nHủy\nTạo phiên",
+      "currency": {
+        "input": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "borderWidth": "0px",
+          "border": "rgb(17, 17, 17)"
+        },
+        "group": {
+          "outline": "none",
+          "outlineWidth": "3px",
+          "shadow": "none",
+          "border": "rgb(17, 17, 17)"
+        },
+        "content": "rgb(17, 17, 17)"
+      },
+      "strategy": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(210, 210, 210)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "strategyHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "strategyOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "assetHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "assetOpen": {
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "rgb(136, 136, 136)",
+        "borderWidth": "1px",
+        "outline": "rgb(17, 17, 17) none 3px",
+        "shadow": "none",
+        "color": "rgb(17, 17, 17)",
+        "radius": "12px",
+        "padding": "8px 12px",
+        "minHeight": "44px",
+        "decoration": "none"
+      },
+      "assetLink": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(17, 17, 17)",
+          "borderWidth": "0px",
+          "outline": "rgb(17, 17, 17) none 3px",
+          "shadow": "none",
+          "color": "rgb(17, 17, 17)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "rgb(82, 82, 82)",
+          "borderWidth": "0px",
+          "outline": "rgb(82, 82, 82) none 3px",
+          "shadow": "none",
+          "color": "rgb(82, 82, 82)",
+          "radius": "0px",
+          "padding": "0px",
+          "minHeight": "auto",
+          "decoration": "underline"
+        }
+      },
+      "pass": true
+    }
+  ],
+  "fixtures": [
+    {
+      "books": "populated",
+      "status": 201,
+      "traffic": {
+        "strategies": [
+          {
+            "body": {
+              "name": "Independent new strategy",
+              "status": "draft",
+              "execution_capability": "needs-definition",
+              "rules": {}
+            },
+            "workspace": "tenant-a"
+          }
+        ],
+        "sessions": [
+          {
+            "name": "Independent replay",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "100000",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": "",
+            "playbook_id": "independent-new-strategy",
+            "playbook_revision": 1
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "books": "empty",
+      "status": 201,
+      "traffic": {
+        "strategies": [
+          {
+            "body": {
+              "name": "Independent new strategy",
+              "status": "draft",
+              "execution_capability": "needs-definition",
+              "rules": {}
+            },
+            "workspace": "tenant-a"
+          }
+        ],
+        "sessions": [
+          {
+            "name": "Independent replay",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "100000",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": "",
+            "playbook_id": "independent-new-strategy",
+            "playbook_revision": 1
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "books": "empty",
+      "status": 422,
+      "traffic": {
+        "strategies": [
+          {
+            "body": {
+              "name": "Independent new strategy",
+              "status": "draft",
+              "execution_capability": "needs-definition",
+              "rules": {}
+            },
+            "workspace": "tenant-a"
+          }
+        ],
+        "sessions": []
+      },
+      "pass": true
+    },
+    {
+      "books": "empty",
+      "status": 500,
+      "traffic": {
+        "strategies": [
+          {
+            "body": {
+              "name": "Independent new strategy",
+              "status": "draft",
+              "execution_capability": "needs-definition",
+              "rules": {}
+            },
+            "workspace": "tenant-a"
+          }
+        ],
+        "sessions": []
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true,
+  "sourceHashes": {
+    "web/src/QuickSessionDialog.jsx": "4fad794f90fed6a1ad2c2a57be9f67f898ee2568a97665a55d3bb3d1ea723d80",
+    "web/src/quick-session.css": "8f2977d29dd8dd330ad2ad7ae984590fbe800f7a5f1f4f2c18e337421ddaa62a",
+    "web/src/FxSelect.jsx": "1fde73973df41412d53cf8e44431c58803d0a46bc911f482c6eab93526fdb231",
+    "web/src/playbookApi.js": "1e2c6de0b66578ec06e6dd6cee81b4ea54c67be78a49a422655ff15bbe264679",
+    "web/src/testing-copy.json": "6b2a61a174858098e33120049a3eb2630e010090721a9677b9d94b1ec43cb68f",
+    "web/src/dashboard.css": "fffcd98b339256e462134731634480cc9aefdfb54b8dad9f82fedf95c65920f0"
+  }
+}

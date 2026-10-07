@@ -1,10 +1,9 @@
 /**
- * Read-only Playbook API helpers.
+ * Playbook catalog and manual draft helpers.
  *
- * The Playbook backend owns revisions and lineage.  This module deliberately
- * exposes only GET operations so the first supported UI cannot accidentally
- * freeze, fork, or mutate a strategy while the workflow is still being
- * reviewed.
+ * The Playbook backend owns revisions and lineage.
+ * Quick session creation can add a needs-definition draft. Freeze, fork and
+ * automated execution remain separate capabilities.
  */
 
 function requestHeaders(workspace) {
@@ -13,7 +12,11 @@ function requestHeaders(workspace) {
 
 async function readJson(response) {
   const payload = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(String(payload.detail || `HTTP ${response.status}`))
+  if (!response.ok) {
+    const error = new Error(String(payload.detail || `HTTP ${response.status}`))
+    error.status = response.status
+    throw error
+  }
   return payload
 }
 
@@ -24,6 +27,13 @@ export async function fetchPlaybooks(workspace, signal) {
   })
   const payload = await readJson(response)
   return Array.isArray(payload?.items) ? payload.items : []
+}
+
+export async function createPlaybookDraft(workspace, name) {
+  return readJson(await fetch('/api/v2/playbooks', {
+    method: 'POST', headers: { ...requestHeaders(workspace), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, status: 'draft', execution_capability: 'needs-definition', rules: {} }),
+  }))
 }
 
 export async function fetchPlaybookRevisions(workspace, playbookId, signal) {

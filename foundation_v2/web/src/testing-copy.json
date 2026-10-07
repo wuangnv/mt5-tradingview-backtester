@@ -5446,7 +5446,7 @@
   "Chưa đọc được chiến lược. Bạn vẫn có thể tạo phiên không gắn chiến lược.": {"vi":"Chưa đọc được chiến lược. Bạn vẫn có thể tạo phiên không gắn chiến lược.","en":"Strategies are unavailable. You can still create a session without one."},
   "Chọn tài sản": {"vi":"Chọn tài sản","en":"Select an asset"},
   "Tìm tài sản…": {"vi":"Tìm tài sản…","en":"Search assets…"},
-  "Select Chart Layout (Optional)": {"vi":"Chọn bố cục chart (không bắt buộc)","en":"Select Chart Layout (Optional)"},
+  "Select Chart Layout (Optional)": {"vi":"Chọn bố cục chart (Tuỳ chọn)","en":"Select Chart Layout (Optional)"},
   "Bố cục mặc định": {"vi":"Bố cục mặc định","en":"Default layout"},
   "Chưa có layout dùng chung. Chart được lưu riêng theo phiên trên trình duyệt.": {"vi":"Chưa có layout dùng chung. Chart được lưu riêng theo phiên trên trình duyệt.","en":"Shared layouts are not available yet. Charts are saved per session in this browser."},
   "Charting engine": {"vi":"Công cụ biểu đồ","en":"Charting engine"},
@@ -5459,5 +5459,11 @@
   "Thiết lập thử thách với quy tắc, mục tiêu và giới hạn rủi ro ở trang Prop Firm.": {"vi":"Thiết lập thử thách với quy tắc, mục tiêu và giới hạn rủi ro ở trang Prop Firm.","en":"Configure challenge rules, targets and risk limits on the Prop Firm page."},
   "Không tạo được phiên: {error}": {"vi":"Không tạo được phiên: {error}","en":"Could not create the session: {error}"},
   "Chưa xác định phiên đã tạo hay chưa. Kiểm tra danh sách phiên trước khi tạo lại.": {"vi":"Chưa xác định phiên đã tạo hay chưa. Kiểm tra danh sách phiên trước khi tạo lại.","en":"The creation result is uncertain. Check your session list before creating another."},
-  "Xem danh sách phiên": {"vi":"Xem danh sách phiên","en":"View sessions"}
+  "Xem danh sách phiên": {"vi":"Xem danh sách phiên","en":"View sessions"},
+  "Chọn chiến lược hoặc tạo mới": {"vi":"Chọn chiến lược hoặc tạo mới","en":"Select a strategy or create new one"},
+  "Không tìm thấy kết quả": {"vi":"Không tìm thấy kết quả","en":"No results found"},
+  "Bỏ chọn chiến lược": {"vi":"Bỏ chọn chiến lược","en":"Clear strategy"},
+  "Tên chiến lược": {"vi":"Tên chiến lược","en":"Strategy name"},
+  "Tạo chiến lược": {"vi":"Tạo chiến lược","en":"Create strategy"},
+  "Chưa xác định chiến lược đã tạo hay chưa. Kiểm tra danh sách chiến lược trước khi thử lại.": {"vi":"Chưa xác định chiến lược đã tạo hay chưa. Kiểm tra danh sách chiến lược trước khi thử lại.","en":"The creation result is uncertain. Check your strategies before trying again."}
 }

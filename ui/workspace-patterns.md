@@ -355,3 +355,15 @@ existing setup. No execution snapshot or broker order is fabricated at creation.
 A failed 4xx response permits editing/retry. An uncertain network/5xx response
 blocks another submission and directs the user to inspect the sessions list.
 Evidence: `foundation_v2/evidence/quick-session-20261007/CHECKPOINT.md`.
+
+Owner refinement: quick-dialog fields use transparent outlined controls and neutral
+focus; the balance group owns its single outer focus contour. Strategy's empty
+popup shows only a no-results row, without a duplicate selected-value header or
+synthetic None choice. Its inline create action saves a needs-definition draft
+through the existing playbook endpoint, then selects that record/revision. Pending
+blocks navigation and repeat submission; uncertain creation requires checking the
+strategy catalog. This does not freeze or enable execution of a strategy.
+Redundant layout/Legacy explanation is removed; optional layout stays disabled.
+The asset link is underlined with muted hover and no hover surface. Dashboard's
+three quick actions share border, padding and geometry, with peach hover.
+Evidence: `foundation_v2/evidence/quick-session-polish-20261007/CHECKPOINT.md`.
