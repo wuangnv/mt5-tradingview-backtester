@@ -9,7 +9,6 @@ const AnalyticsWorkspace = lazy(() => import('./AnalyticsWorkspace.jsx'))
 const JournalWorkspace = lazy(() => import('./JournalWorkspace.jsx'))
 const SettingsWorkspace = lazy(() => import('./SettingsWorkspace.jsx'))
 const DataDeskWorkspace = lazy(() => import('./DataDeskWorkspace.jsx'))
-const MarketAssetCatalog = lazy(() => import('./MarketAssetCatalog.jsx'))
 const ResearchWorkspaceV2 = lazy(() => import('./ResearchWorkspace.jsx'))
 const TradeWorkspace = lazy(() => import('./TradeWorkspace.jsx'))
 const RiskWorkspace = lazy(() => import('./RiskWorkspace.jsx'))
@@ -59,7 +58,11 @@ function App() {
   const workspace = query.get('workspace') || 'tenant-a'
   const requestedView = query.get('view')
   // Preserve deep links emitted by the research/learn flows while keeping a bare root on the overview.
-  const activeView = requestedView || (query.has('job') ? 'research' : query.has('session') || query.has('dataset') ? 'replay' : 'overview')
+  const activeView = requestedView === 'data' ? 'market-data' : requestedView || (query.has('job') ? 'research' : query.has('session') || query.has('dataset') ? 'replay' : 'overview')
+  if (activeView === 'market-data') {
+    query.set('area', 'testing')
+    query.set('section', 'market-data')
+  }
   // Trading tabs open persisted reports. Order entry is an explicit chart action.
   const showSessionPicker = query.get('surface') !== 'workspace' && (query.get('select') === '1' || query.get('mode') === 'Practice')
   const showTradeLedger = query.get('intent') !== 'order'
@@ -79,11 +82,8 @@ function App() {
     content = showSessionPicker ? <SessionPicker kind="replay" workspace={workspace} query={query} /> : <ReplayWorkspace workspace={workspace} query={query} />
   } else if (activeView === 'research') {
     content = <ResearchWorkspaceV2 workspace={workspace} query={query} />
-  } else if (activeView === 'data') {
-    content = <DataDeskWorkspace workspace={workspace} query={query} />
-    mode = 'Data'
   } else if (activeView === 'market-data') {
-    content = <section className="wm-page market-data-workspace"><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} /></section>
+    content = <DataDeskWorkspace key={workspace} workspace={workspace} query={query} />
     mode = 'Data'
   } else if (activeView === 'overview') {
     content = <WorkspaceOverview workspace={workspace} query={query} />

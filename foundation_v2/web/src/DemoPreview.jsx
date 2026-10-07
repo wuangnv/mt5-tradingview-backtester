@@ -12,13 +12,14 @@ import { SessionActions, SessionActionDialog } from './SessionActions.jsx'
 import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
 import { SessionSummaryCard, SessionDescriptionCard } from './SessionDetails.jsx'
 import { SessionSelect } from './SessionPicker.jsx'
-import MarketAssetCatalog from './MarketAssetCatalog.jsx'
+import DataDeskWorkspace from './DataDeskWorkspace.jsx'
 import LiveWorkspace from './LiveWorkspace.jsx'
 import { PlaybookList, PlaybookSummary } from './PlaybookWorkspace.jsx'
 import { JournalRow, StoryRail } from './JournalWorkspace.jsx'
 import { DEFAULT_EXTRA_FILTERS, filterAnalyticsRows, tradesCsv } from './tradingAnalyticsModel.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_ASSETS, DEMO_LIVE, DEMO_DATASETS, demoDashboardAnalytics, demoReplayContext, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
+import { DEMO_SESSIONS, DEMO_LEDGER, DEMO_LIVE, DEMO_DATASETS, demoDashboardAnalytics, demoReplayContext, demoResult, demoOverview, demoFilterRows } from './demoFixtures.js'
+const DEMO_DATA_LIBRARY = { datasets:DEMO_DATASETS, providers:[] }
 
 function Objectives({ model }) {
 
@@ -131,7 +132,7 @@ export default function DemoPreview({ view, workspace, query }) {
   if (view === 'replay') return <DemoSessions workspace={workspace} query={query} />
   if (view === 'trade') return <DemoReports ledgerOnly />
   if (view === 'analytics' || view === 'testing' || view === 'prop') return <DemoReports query={query} prop={view !== 'analytics' || query.get('analytics_source') === 'prop'} />
-  if (view === 'market-data') return <section className="wm-page market-data-workspace" aria-label={t("Market Data")}><MarketAssetCatalog workspace={workspace} query={query} showHeading={false} preview={DEMO_ASSETS} /></section>
+  if (view === 'market-data') return <DataDeskWorkspace workspace={workspace} query={query} preview={DEMO_DATA_LIBRARY} />
   if (view === 'live') return <LiveWorkspace workspace={workspace} query={query} preview={DEMO_LIVE} />
   if (view === 'playbook') return <DemoStrategies />
   return <DemoJournal />

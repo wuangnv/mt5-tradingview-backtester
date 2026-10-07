@@ -385,3 +385,39 @@ fractional digits and pasted grouping commas are removed before storing.
 The smaller muted currency suffix remains next to the amount, and clicking the
 field's blank area focuses the input. The group retains one neutral focus edge.
 Evidence: `foundation_v2/evidence/quick-session-wallet-20261007/REVIEW.md`.
+
+### Offline data library
+
+Practice's Market Data route owns offline historical datasets and local CSV
+import. It reads the existing workspace dataset catalog, with source/search
+filters, paging and per-dataset quick-session creation. Saved MT5 history retains
+its actual provenance and is explicitly labelled an offline snapshot; it is not
+a live connection. Existing sessions/dataset artifacts are not modified.
+The existing QuickSessionDialog receives the selected dataset ID; session creation
+continues through its existing validation/API and Legacy Chart engine.
+Quality/provenance, provider access and local CSV import remain disclosures rather
+than separate pages. Successful CSV import clears filters, selects the imported
+dataset, opens its details and refreshes the server-owned catalog.
+
+`view=data` is a compatible alias of `view=market-data`. Both select the Testing
+sidebar area. Legacy `data_tab=sync` no longer mounts broker history controls or
+starts MT5 polling. Practice does not read market-assets/live-status endpoints.
+Provider metadata failure does not hide saved datasets. Unknown dataset links do not
+silently select an unrelated dataset.
+
+The owner prioritized offline first. MT5 connection/sync UI work is deferred;
+existing Live screens remain unchanged. No new Data Desk sidebar entry is created.
+Dukascopy downloads remain disabled under the existing provider gate; the page
+states that status rather than offering a nonfunctional downloader. CSV import
+reuses the deterministic preview and immutable artifact APIs.
+The header's Import CSV action opens the existing disclosure and focuses the
+file picker, respecting reduced motion. Required CSV columns/time formats are
+shown before selection. Preview/import locks the form until the request settles,
+so metadata cannot change underneath a pending quality report.
+Demo uses fixture catalogs and disables session creation/import; Research detail
+links preserve preview state and clear stale replay-session context.
+
+The new table/shell labels, counts and UTC dates use the current VI/EN locale.
+Existing advanced CSV/provider/detail prose retains its prior mixed-language copy;
+this consolidation does not claim a full translation migration.
+Evidence: `foundation_v2/evidence/offline-library-20261007/REVIEW.md`.

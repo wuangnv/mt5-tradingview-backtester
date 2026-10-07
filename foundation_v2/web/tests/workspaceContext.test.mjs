@@ -2,6 +2,20 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { buildWorkspaceHref, readWorkspaceContext } from '../src/workspaceContext.js'
 
+test('legacy Data Desk links use the unified library while preserving workspace and dataset', () => {
+  const href = buildWorkspaceHref('data', 'desk-1', '?dataset=eurusd&mode=Practice&demo=1&job=stale', { area:'testing', section:'market-data' })
+  const params = new URL(href, 'http://localhost').searchParams
+  assert.equal(params.get('view'), 'market-data')
+  assert.equal(params.get('workspace'), 'desk-1')
+  assert.equal(params.get('dataset'), 'eurusd')
+  assert.equal(params.get('mode'), 'Practice')
+  assert.equal(params.get('demo'), '1')
+  assert.equal(params.get('area'), 'testing')
+  assert.equal(params.get('section'), 'market-data')
+  assert.equal(params.has('data_tab'), false)
+  assert.equal(params.has('job'), false)
+})
+
 test('readWorkspaceContext normalizes canonical values and legacy aliases', () => {
   const context = readWorkspaceContext('?workspace=desk-1&replay_session=abc&dataset_id=eurusd&cursor_index=12&decision_cutoff=2026-09-29T12%3A00%3A00Z&mode=Practice')
   assert.deepEqual(context, {

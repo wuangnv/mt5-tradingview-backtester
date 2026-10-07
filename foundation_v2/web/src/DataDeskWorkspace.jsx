@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   datasetRange,
   fetchDatasets,
@@ -11,7 +11,12 @@ import {
 } from './researchDataApi.js'
 import { importLocalCsv, previewLocalCsv } from './dataDeskApi.js'
 import './research-data.css'
-import MarketAssetCatalog from './MarketAssetCatalog.jsx'
+import { useTestingLocale } from './testingLocale.jsx'
+import { buildWorkspaceHref } from './workspaceContext.js'
+import FxSelect from './FxSelect.jsx'
+import TestingIcon from './TestingIcon.jsx'
+import QuickSessionDialog from './QuickSessionDialog.jsx'
+import './data-library.css'
 
 const CSV_LIMIT_BYTES = 10 * 1024 * 1024
 const MAX_GET_RETRIES = 3
@@ -33,21 +38,15 @@ const DEFAULT_IMPORT_FORM = {
   timeframeSeconds: '3600',
 }
 
-function queryHref(view, workspace, params = {}) {
-  const next = new URLSearchParams({ view, workspace })
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== null && value !== undefined && value !== '') next.set(key, String(value))
-  })
-  return `/?${next.toString()}`
-}
-
 function QualityBadge({ dataset }) {
+  const { t } = useTestingLocale()
   const quality = qualityLabel(dataset)
   const tone = quality === 'Đã xác minh' ? 'is-good' : quality === 'Fixture / QA only' ? 'is-muted' : 'is-warn'
-  return <span className={`rd-badge ${tone}`}>{quality}</span>
+  return <span className={`rd-badge ${tone}`}>{t(quality)}</span>
 }
 
-function DatasetDetails({ dataset, workspace }) {
+function DatasetDetails({ dataset, workspace, query }) {
+  const { t, fmt, locale } = useTestingLocale()
   if (!dataset) {
     return (
       <div className="rd-empty-callout" data-testid="data-desk-empty-selection">
@@ -64,14 +63,14 @@ function DatasetDetails({ dataset, workspace }) {
         <div>
           <h2>Provenance và QA</h2>
         </div>
-        <a className="rd-context-link" href={queryHref('research', workspace, { dataset: dataset.dataset_id })}>Mở trong Research →</a>
+        <a className="rd-context-link" href={buildWorkspaceHref('research', workspace, query, { dataset: dataset.dataset_id, session:null, cursor:null, cutoff:null })}>{t('Mở trong Research')} →</a>
       </div>
       <dl className="rd-detail-grid">
         <div><dt>Dataset</dt><dd><strong>{dataset.dataset_id}</strong></dd></div>
         <div><dt>Provider</dt><dd>{dataset.provider_id || source.provider || 'Chưa xác định'}</dd></div>
         <div><dt>Instrument / TF</dt><dd>{dataset.instrument_id || 'N/A'} · {dataset.timeframe || 'N/A'}</dd></div>
-        <div><dt>Số nến</dt><dd>{formatNumber(dataset.row_count, 0)}</dd></div>
-        <div><dt>Range UTC</dt><dd>{formatUtc(range.start)} → {formatUtc(range.end)}</dd></div>
+        <div><dt>{t('Số nến')}</dt><dd>{fmt(dataset.row_count, '', 0)}</dd></div>
+        <div><dt>Range UTC</dt><dd>{t(formatUtc(range.start, locale))} → {t(formatUtc(range.end, locale))}</dd></div>
         <div><dt>License</dt><dd>{source.license_use || 'Chưa xác minh'}</dd></div>
         <div><dt>Quality</dt><dd><QualityBadge dataset={dataset} /></dd></div>
         <div><dt>Holdout</dt><dd><span className={`rd-badge ${dataset.holdout_access ? 'is-good' : 'is-warn'}`}>{holdoutLabel(dataset)}</span></dd></div>
@@ -131,6 +130,7 @@ function LocalCsvQualityReport({ preview }) {
 }
 
 function LocalCsvImport({ workspace, onImported }) {
+  const { t } = useTestingLocale()
   const [form, setForm] = useState(DEFAULT_IMPORT_FORM)
   const [retrievedAtUtc, setRetrievedAtUtc] = useState(() => new Date().toISOString())
   const [upload, setUpload] = useState({ status: 'idle', file: null, csvText: '', payload: null, preview: null, error: null, imported: null })
@@ -238,15 +238,14 @@ function LocalCsvImport({ workspace, onImported }) {
   return (
     <section className="rd-import-panel" aria-labelledby="data-desk-import-title" data-testid="data-desk-import">
       <div className="rd-panel-head">
-        <div><h2 id="data-desk-import-title">Thêm dữ liệu từ CSV</h2><p>File được đọc bằng browser; server chỉ nhận nội dung sau khi bạn bấm Preview. Không gửi đường dẫn file.</p></div>
-        <span className="rd-badge is-muted">BROKER LOCKED</span>
+        <div><h2 id="data-desk-import-title">{t('Thêm dữ liệu từ CSV')}</h2><p>{t('Cột bắt buộc: time, open, high, low, close. Thời gian dùng Unix giây hoặc ISO có múi giờ; volume là tuỳ chọn.')}</p></div>
       </div>
       <div className="rd-import-grid">
-        <div className="rd-import-form">
-          <label className="rd-field is-wide"><span>CSV file</span><input type="file" accept=".csv,text/csv" onChange={handleFile} data-testid="data-desk-file-input" /></label>
+        <fieldset className="rd-import-form" disabled={busy}>
+          <label className="rd-field is-wide"><span>{t('File CSV')}</span><input type="file" accept=".csv,text/csv" onChange={handleFile} data-testid="data-desk-file-input" /></label>
           <div className="rd-import-fields">
-            <label className="rd-field"><span>Instrument ID</span><input name="instrumentId" value={form.instrumentId} onChange={updateForm} /></label>
-            <label className="rd-field"><span>Timeframe seconds</span><input name="timeframeSeconds" inputMode="numeric" value={form.timeframeSeconds} onChange={updateForm} /></label>
+            <label className="rd-field"><span>{t('Mã sản phẩm')}</span><input name="instrumentId" value={form.instrumentId} onChange={updateForm} /></label>
+            <label className="rd-field"><span>{t('Khung thời gian (giây)')}</span><input name="timeframeSeconds" inputMode="numeric" value={form.timeframeSeconds} onChange={updateForm} /></label>
           </div>
           <details className="rd-import-advanced">
             <summary>Provenance và instrument spec</summary>
@@ -266,15 +265,15 @@ function LocalCsvImport({ workspace, onImported }) {
             </div>
           </details>
           <div className="rd-import-actions">
-            <button type="button" className="rd-button is-primary" onClick={previewFile} disabled={!upload.file || busy} data-testid="data-desk-preview-button">{busy && upload.status !== 'importing' ? 'Đang kiểm tra…' : 'Preview quality'}</button>
-            <button type="button" className="rd-button" onClick={importFile} disabled={!canImport || busy} data-testid="data-desk-import-button">{upload.status === 'importing' ? 'Đang import…' : 'Import dataset'}</button>
+            <button type="button" className="rd-button is-primary" onClick={previewFile} disabled={!upload.file || busy} data-testid="data-desk-preview-button">{t(busy && upload.status !== 'importing' ? 'Đang kiểm tra…' : 'Kiểm tra dữ liệu')}</button>
+            <button type="button" className="rd-button" onClick={importFile} disabled={!canImport || busy} data-testid="data-desk-import-button">{t(upload.status === 'importing' ? 'Đang lưu…' : 'Lưu vào kho')}</button>
           </div>
           {upload.file && <p className="rd-import-file-state" data-testid="data-desk-file-state">{upload.file.name} · {(upload.file.size / 1024).toFixed(1)} KiB · {upload.status === 'stale' ? 'Preview cũ; cần chạy lại' : upload.status === 'imported' ? 'Đã import' : 'Chưa gửi lên server'}</p>}
           {upload.preview?.quality?.disposition === 'review' && (
             <label className="rd-import-review-check"><input type="checkbox" checked={Boolean(upload.acceptReview)} onChange={(event) => setUpload((current) => ({ ...current, acceptReview: event.target.checked }))} /> Tôi hiểu dataset đang cần review và chỉ muốn lưu để kiểm tra.</label>
           )}
           {upload.imported && <p className="rd-import-success" role="status" data-testid="data-desk-import-success">Đã thêm dataset <code>{upload.imported.dataset_id}</code> vào catalog workspace.</p>}
-        </div>
+        </fieldset>
         <div className="rd-import-report-column">
           {!upload.preview && upload.status === 'idle' && <div className="rd-import-empty" data-testid="data-desk-preview-empty"><strong>Chưa có preview</strong><span>Chọn file CSV, kiểm tra quality, rồi mới quyết định import.</span></div>}
           {!upload.preview && upload.status === 'selected' && <div className="rd-import-empty"><strong>Sẵn sàng kiểm tra</strong><span>File chỉ nằm trong trình duyệt cho tới khi bạn bấm Preview.</span></div>}
@@ -289,15 +288,19 @@ function LocalCsvImport({ workspace, onImported }) {
   )
 }
 
-export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(window.location.search) }) {
+export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(window.location.search), preview }) {
+  const { t, fmt, locale } = useTestingLocale(), id = useId()
   const requestedDataset = query.get('dataset') || ''
   const [state, setState] = useState({ status: 'loading', datasets: [], providers: [], error: null })
   const [selectedId, setSelectedId] = useState(requestedDataset)
   const [providerFilter, setProviderFilter] = useState('all')
+  const [search, setSearch] = useState(''), [page, setPage] = useState(1), [pageSize, setPageSize] = useState(25)
+  const [detailsOpen, setDetailsOpen] = useState(Boolean(requestedDataset)), [creatingDataset, setCreatingDataset] = useState(null)
   const [catalogRevision, setCatalogRevision] = useState(0)
   const [catalogRetryCount, setCatalogRetryCount] = useState(0)
   const catalogRequestSeq = useRef(0)
   const catalogRetryCountRef = useRef(0)
+  const csvDisclosure = useRef(null)
 
   useEffect(() => {
     catalogRetryCountRef.current = 0
@@ -305,13 +308,20 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   }, [workspace])
 
   useEffect(() => {
+    if (preview) {
+      setState({ status:'ready', datasets:preview.datasets, providers:preview.providers, error:null })
+      setSelectedId(current => current || preview.datasets[0]?.dataset_id || '')
+      return
+    }
     const controller = new AbortController()
     const requestSeq = ++catalogRequestSeq.current
     setState((current) => ({ ...current, status: 'loading', error: null }))
-    Promise.all([fetchDatasets(workspace, controller.signal), fetchProviders(workspace, controller.signal)])
-      .then(([datasets, providers]) => {
+    Promise.allSettled([fetchDatasets(workspace, controller.signal), fetchProviders(workspace, controller.signal)])
+      .then(([datasetResult, providerResult]) => {
         if (requestSeq !== catalogRequestSeq.current) return
-        setState({ status: 'ready', datasets, providers, error: null })
+        if (datasetResult.status === 'rejected') throw datasetResult.reason
+        const datasets = datasetResult.value, providers = providerResult.status === 'fulfilled' ? providerResult.value : []
+        setState({ status: 'ready', datasets, providers, error: null, providerError: providerResult.status === 'rejected' ? providerResult.reason.message : null })
         catalogRetryCountRef.current = 0
         setCatalogRetryCount(0)
         setSelectedId((current) => current || datasets[0]?.dataset_id || '')
@@ -322,7 +332,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         }
       })
     return () => controller.abort()
-  }, [catalogRevision, workspace])
+  }, [catalogRevision, workspace, preview])
 
   const retryCatalog = () => {
     if (catalogRetryCountRef.current >= MAX_GET_RETRIES || state.status === 'loading') return
@@ -334,64 +344,57 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const catalogRetryExhausted = catalogRetryCount >= MAX_GET_RETRIES
 
   const providers = state.providers
-  const filteredDatasets = useMemo(() => state.datasets.filter((item) => providerFilter === 'all' || item.provider_id === providerFilter), [providerFilter, state.datasets])
-  const selected = state.datasets.find((item) => item.dataset_id === selectedId) || filteredDatasets[0] || null
-  const holdoutAccess = state.datasets.some((item) => item.holdout_access === true)
+  const sources = [...new Set(state.datasets.map(item => item.source?.provider || item.provider_id).filter(Boolean))].sort()
+  const filteredDatasets = useMemo(() => state.datasets.filter(item => (providerFilter === 'all' || (item.source?.provider || item.provider_id) === providerFilter)
+    && `${item.instrument_id} ${item.timeframe} ${item.source?.provider || ''}`.toLowerCase().includes(search.toLowerCase())), [providerFilter, search, state.datasets])
+  const selected = state.datasets.find(item => item.dataset_id === selectedId) || null
+  const pages = Math.max(1, Math.ceil(filteredDatasets.length / pageSize)), currentPage = Math.min(page, pages)
+  const pageItems = filteredDatasets.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  useEffect(() => setPage(1), [providerFilter, search, pageSize])
 
   return (
-    <main className="rd-shell wm-page" data-testid="data-desk-root">
+    <section className="rd-shell wm-page data-library" data-testid="data-desk-root" aria-labelledby={`${id}-title`}>
       <header className="rd-topbar wm-page-header">
         <div>
-          <h1>Data Desk</h1>
+          <h1 id={`${id}-title`}>{t('Market Data')}</h1>
+          <p>{t('Bản dữ liệu offline cho replay và backtest.')}</p>
         </div>
-        <div className="rd-actions">
-          <a className="rd-context-link" href={queryHref('research', workspace, selected ? { dataset: selected.dataset_id } : {})}>Research</a>
-          <a className="rd-context-link" href={queryHref('replay', workspace, selected ? { dataset: selected.dataset_id } : {})}>Replay</a>
-          <div className="rd-safety"><strong>RESEARCH / SIMULATION</strong><span>Broker locked · holdout không mở</span></div>
-        </div>
+        <div className="rd-actions"><button type="button" className="fxa-button" disabled={Boolean(preview)} onClick={() => {
+          csvDisclosure.current.open = true
+          csvDisclosure.current.scrollIntoView({ block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+          csvDisclosure.current.querySelector('input[type=file]')?.focus({ preventScroll:true })
+        }}>{t('Nhập CSV')}</button></div>
       </header>
-      <MarketAssetCatalog workspace={workspace} query={query} />
-      <div className="rd-statusbar" role="group" aria-label="Trạng thái Data Desk">
-        <span>Workspace <strong>{workspace}</strong></span>
-        <span>Datasets <strong>{state.datasets.length}</strong></span>
-        <span>Providers <strong>{providers.length}</strong></span>
-        <span className={holdoutAccess ? 'rd-status is-ready' : 'rd-status'}>{holdoutAccess ? 'Holdout được cấp' : 'Holdout khóa'}</span>
-      </div>
+      <p className="data-library-offline-note">{t('CSV có thể nhập ngay. Nguồn tải Dukascopy chưa được bật. Lịch sử MT5 đã lưu vẫn giữ nguyên nguồn và dùng như bản offline; replay không đọc giá trực tiếp.')}</p>
 
-      {state.status === 'loading' && <div className="rd-message" role="status">Đang đọc catalog và capability provider…</div>}
-      {state.status === 'error' && <div className="rd-message is-error" role="alert">Không đọc được Data Desk: {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại'}</button>{catalogRetryExhausted && <>{' '}<small id="data-desk-retry-note">Đã thử lại {MAX_GET_RETRIES} lần. Kiểm tra backend trước khi tiếp tục.</small></>}</div>}
+      {state.status === 'loading' && <div className="rd-message" role="status">{t('Đang đọc dữ liệu đã lưu…')}</div>}
+      {state.status === 'error' && <div className="rd-message is-error" role="alert">{t('Không đọc được kho dữ liệu:')} {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{t(catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại')}</button>{catalogRetryExhausted && <small id="data-desk-retry-note">{t('Kiểm tra nguồn dữ liệu trước khi thử lại.')}</small>}</div>}
 
       {state.status === 'ready' && (
-        <div className="rd-main-grid">
+        <div>
           <section className="rd-panel" aria-label="Dataset catalog">
             <div className="rd-panel-head">
-              <div><h2>Dataset catalog</h2><p>Chỉ hiển thị dữ liệu thuộc workspace hiện tại.</p></div>
-              <label className="rd-field" style={{ minWidth: 150 }}>
-                <span>Provider</span>
-                <select aria-label="Lọc provider" value={providerFilter} onChange={(event) => setProviderFilter(event.target.value)}>
-                  <option value="all">Tất cả</option>
-                  {providers.map((provider) => <option key={provider.provider_id} value={provider.provider_id}>{provider.provider_id}</option>)}
-                </select>
-              </label>
+              <span className="data-library-count">{t('{count} bộ dữ liệu đã lưu', { count:fmt(state.datasets.length,'',0) })}</span>
+              <div className="data-library-filters"><label className="data-library-search"><TestingIcon kind="search" /><input type="search" aria-label={t('Tìm asset')} placeholder={t('Tìm asset…')} value={search} onChange={event => setSearch(event.target.value)} /></label><FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={[{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]} /></div>
             </div>
             {filteredDatasets.length === 0 ? (
-              <div className="rd-message is-empty" data-testid="data-desk-empty">Workspace chưa có dataset nào phù hợp. Không thể bắt đầu research từ dữ liệu trống.</div>
+              <div className="rd-message is-empty" data-testid="data-desk-empty">{t(state.datasets.length ? 'Không có dữ liệu phù hợp bộ lọc.' : 'Chưa có dữ liệu offline. Nhập CSV để bắt đầu.')}</div>
             ) : (
-              <div className="rd-table-wrap">
+              <div className="rd-table-wrap" tabIndex={0} role="region" aria-label={t('Dữ liệu đã có')}>
                 <table className="rd-table" data-testid="data-desk-dataset-table">
-                  <thead><tr><th>Dataset</th><th>Instrument</th><th>Range</th><th>QA</th><th>Holdout</th><th>Rows</th></tr></thead>
+                  <thead><tr>{['Sản phẩm','Nguồn','Lịch sử UTC','Số nến','Chất lượng','Thao tác'].map(label => <th key={label}>{t(label)}</th>)}</tr></thead>
                   <tbody>
-                    {filteredDatasets.map((dataset) => {
+                    {pageItems.map((dataset) => {
                       const range = datasetRange(dataset)
                       const active = dataset.dataset_id === selected?.dataset_id
                       return (
                         <tr key={dataset.dataset_id} className={active ? 'is-selected' : ''}>
-                          <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => setSelectedId(dataset.dataset_id)}><strong>{dataset.instrument_id || 'Instrument chưa xác định'} · {dataset.timeframe || 'TF chưa xác định'}</strong><small title={dataset.dataset_id}>{dataset.dataset_id}</small><small>{dataset.provider_id || dataset.source?.provider || 'provider unknown'}</small></button></td>
-                          <td>{dataset.instrument_id || 'N/A'}<small>{dataset.timeframe || 'TF unknown'}</small></td>
-                          <td>{formatUtc(range.start)}<small>→ {formatUtc(range.end)}</small></td>
+                          <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => { setSelectedId(dataset.dataset_id); setDetailsOpen(true) }}><strong>{dataset.instrument_id || '—'}</strong><small>{dataset.timeframe || '—'}</small></button></td>
+                          <td>{dataset.source?.provider || dataset.provider_id || '—'}<small>{t('Bản offline')}</small></td>
+                          <td>{t(formatUtc(range.start, locale))}<small>→ {t(formatUtc(range.end, locale))}</small></td>
+                          <td>{fmt(dataset.row_count, '', 0)}</td>
                           <td><QualityBadge dataset={dataset} /></td>
-                          <td><span className={`rd-badge ${dataset.holdout_access ? 'is-good' : 'is-warn'}`}>{dataset.holdout_access ? 'Mở' : 'Khóa'}</span></td>
-                          <td>{formatNumber(dataset.row_count, 0)}</td>
+                          <td><button type="button" className="rd-button data-library-create" disabled={Boolean(preview)} aria-label={t('Tạo phiên với {asset}', {asset:dataset.instrument_id})} onClick={() => setCreatingDataset(dataset.dataset_id)}>{t('Tạo phiên')}</button></td>
                         </tr>
                       )
                     })}
@@ -399,10 +402,13 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                 </table>
               </div>
             )}
-            <DatasetDetails dataset={selected} workspace={workspace} />
+            <nav className="data-library-paging" aria-label={t('Phân trang kho dữ liệu')}><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10,25,50].map(value => ({value,label:String(value)}))} /><div><button type="button" className="rd-button" aria-label={t('Trang trước')} disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</button><span>{currentPage} / {pages}</span><button type="button" className="rd-button" aria-label={t('Trang sau')} disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>›</button></div></nav>
+            {requestedDataset && !selected && <p role="status">{t('Dataset trong đường dẫn chưa có trong kho này. Hãy chọn dữ liệu khác.')}</p>}
+            <details className="data-library-disclosure" open={detailsOpen} onToggle={event => setDetailsOpen(event.currentTarget.open)}><summary>{t('Chi tiết dữ liệu và chất lượng')}{selected && <span>{selected.instrument_id} · {selected.timeframe}</span>}</summary><DatasetDetails dataset={selected} workspace={workspace} query={query} /></details>
           </section>
 
-          <aside className="rd-panel" aria-label="Provider capabilities">
+          <details className="data-library-disclosure"><summary>{t('Nguồn dữ liệu và quyền truy cập')}</summary><section className="rd-panel" aria-label="Provider capabilities">
+            {state.providerError && <p role="status">{t('Chưa đọc được thông tin nguồn. Dữ liệu đã lưu vẫn dùng được.')}</p>}
             <div className="rd-panel-head"><div><h2>Provider capabilities</h2><p>Capability khai báo không đồng nghĩa đã có quyền đọc history hoặc holdout.</p></div></div>
             {providers.length === 0 ? <div className="rd-message is-empty">Chưa có provider capability nào.</div> : (
               <div className="rd-provider-list">
@@ -430,16 +436,21 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
               </div>
             )}
             <div className="rd-warning-block"><strong>Quy tắc an toàn</strong><ul><li>Local CSV import chỉ tạo artifact immutable trong workspace hiện tại.</li><li>Không mở holdout, không gọi provider ngoài và không gửi lệnh broker.</li><li>Dataset chưa verified vẫn phải gắn nhãn trước khi dùng.</li></ul></div>
-          </aside>
+          </section></details>
         </div>
       )}
-      <LocalCsvImport
+      <details ref={csvDisclosure} className="data-library-disclosure"><summary><TestingIcon kind="upload" />{t('Nhập dữ liệu từ CSV')}</summary>{preview ? <p>{t('Dữ liệu mẫu chỉ để xem giao diện. Chuyển về dữ liệu thật để nhập CSV.')}</p> : <LocalCsvImport
         workspace={workspace}
         onImported={(dataset) => {
           setSelectedId(dataset?.dataset_id || '')
+          setSearch('')
+          setProviderFilter('all')
+          setPage(1)
+          setDetailsOpen(true)
           setCatalogRevision((current) => current + 1)
         }}
-      />
-    </main>
+      />}</details>
+      {creatingDataset && <QuickSessionDialog workspace={workspace} query={query} initialDataset={creatingDataset} onClose={() => setCreatingDataset(null)} />}
+    </section>
   )
 }

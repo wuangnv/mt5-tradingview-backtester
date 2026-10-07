@@ -84,6 +84,7 @@ export function readWorkspaceContext(queryLike) {
  * stale session when starting a new dataset without losing workspace identity.
  */
 export function buildWorkspaceHref(view, workspace, queryLike, overrides = {}) {
+  if (view === 'data') view = 'market-data'
   const source = asSearchParams(queryLike)
   const context = readWorkspaceContext(source)
   const params = new URLSearchParams()

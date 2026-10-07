@@ -1,0 +1,1178 @@
+{
+  "cases": [
+    {
+      "name": "real-dark-vi-360",
+      "countText": "44 bộ dữ liệu đã lưu",
+      "title": "Kho dữ liệu",
+      "searchGeometry": {
+        "iconLeft": 86,
+        "inputLeft": 74,
+        "iconRight": 102,
+        "inputRight": 344,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Sản phẩm\tNguồn\tPhạm vi lịch sử (UTC)\tSố nến\tChất lượng\tThao tác\n",
+      "quality": "Chưa xác minh",
+      "firstDates": "05:18 7/7/26\n→ 05:17 5/10/26",
+      "firstCount": "88.014",
+      "keyboardScroll": 40,
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-dark-en-360",
+      "countText": "44 saved datasets",
+      "title": "Market data",
+      "searchGeometry": {
+        "iconLeft": 86,
+        "inputLeft": 74,
+        "iconRight": 102,
+        "inputRight": 344,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Product\tSource\tHistory range (UTC)\tCandles\tQuality\tActions\n",
+      "quality": "Unverified",
+      "firstDates": "7/7/26, 5:18 AM\n→ 10/5/26, 5:17 AM",
+      "firstCount": "88,014",
+      "keyboardScroll": 40,
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-dark-vi-1710",
+      "countText": "44 bộ dữ liệu đã lưu",
+      "title": "Kho dữ liệu",
+      "searchGeometry": {
+        "iconLeft": 1350.078125,
+        "inputLeft": 1338.078125,
+        "iconRight": 1366.078125,
+        "inputRight": 1535.078125,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Sản phẩm\tNguồn\tPhạm vi lịch sử (UTC)\tSố nến\tChất lượng\tThao tác\n",
+      "quality": "Chưa xác minh",
+      "firstDates": "05:18 7/7/26\n→ 05:17 5/10/26",
+      "firstCount": "88.014",
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-dark-en-1710",
+      "countText": "44 saved datasets",
+      "title": "Market data",
+      "searchGeometry": {
+        "iconLeft": 1363.421875,
+        "inputLeft": 1351.421875,
+        "iconRight": 1379.421875,
+        "inputRight": 1548.421875,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Product\tSource\tHistory range (UTC)\tCandles\tQuality\tActions\n",
+      "quality": "Unverified",
+      "firstDates": "7/7/26, 5:18 AM\n→ 10/5/26, 5:17 AM",
+      "firstCount": "88,014",
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-light-vi-360",
+      "countText": "44 bộ dữ liệu đã lưu",
+      "title": "Kho dữ liệu",
+      "searchGeometry": {
+        "iconLeft": 86,
+        "inputLeft": 74,
+        "iconRight": 102,
+        "inputRight": 344,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Sản phẩm\tNguồn\tPhạm vi lịch sử (UTC)\tSố nến\tChất lượng\tThao tác\n",
+      "quality": "Chưa xác minh",
+      "firstDates": "05:18 7/7/26\n→ 05:17 5/10/26",
+      "firstCount": "88.014",
+      "keyboardScroll": 40,
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-light-en-360",
+      "countText": "44 saved datasets",
+      "title": "Market data",
+      "searchGeometry": {
+        "iconLeft": 86,
+        "inputLeft": 74,
+        "iconRight": 102,
+        "inputRight": 344,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Product\tSource\tHistory range (UTC)\tCandles\tQuality\tActions\n",
+      "quality": "Unverified",
+      "firstDates": "7/7/26, 5:18 AM\n→ 10/5/26, 5:17 AM",
+      "firstCount": "88,014",
+      "keyboardScroll": 40,
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-light-vi-1710",
+      "countText": "44 bộ dữ liệu đã lưu",
+      "title": "Kho dữ liệu",
+      "searchGeometry": {
+        "iconLeft": 1350.078125,
+        "inputLeft": 1338.078125,
+        "iconRight": 1366.078125,
+        "inputRight": 1535.078125,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Sản phẩm\tNguồn\tPhạm vi lịch sử (UTC)\tSố nến\tChất lượng\tThao tác\n",
+      "quality": "Chưa xác minh",
+      "firstDates": "05:18 7/7/26\n→ 05:17 5/10/26",
+      "firstCount": "88.014",
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "real-light-en-1710",
+      "countText": "44 saved datasets",
+      "title": "Market data",
+      "searchGeometry": {
+        "iconLeft": 1363.421875,
+        "inputLeft": 1351.421875,
+        "iconRight": 1379.421875,
+        "inputRight": 1548.421875,
+        "centerDelta": 0
+      },
+      "primaryCopy": "Product\tSource\tHistory range (UTC)\tCandles\tQuality\tActions\n",
+      "quality": "Unverified",
+      "firstDates": "7/7/26, 5:18 AM\n→ 10/5/26, 5:17 AM",
+      "firstCount": "88,014",
+      "initialAsset": "USTECm",
+      "writes": [
+        {
+          "path": "/api/v2/replay/sessions",
+          "body": {
+            "name": "Independent data library",
+            "dataset_id": "dataset-08a4cb7c723611642371695fc262562234b1295e9c6722164b020af4918aa5e8",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/playbooks",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/replay/sessions",
+          "workspace": "tenant-a"
+        }
+      ],
+      "overflow": 0,
+      "pass": true
+    },
+    {
+      "name": "legacy-deeplink-sync-ignored",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "unknown-deeplink",
+      "pass": true
+    },
+    {
+      "name": "legacy-stale-area",
+      "area": "testing",
+      "activeSubnav": "Kho dữ liệu",
+      "canonical": "/?workspace=tenant-a&view=market-data&demo=1&dataset=chosen",
+      "pass": true
+    },
+    {
+      "name": "fixture-partial",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-failed",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-empty",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-denied",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-recovery",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "demo-vi",
+      "traffic": [],
+      "pass": true
+    },
+    {
+      "name": "demo-en",
+      "traffic": [],
+      "pass": true
+    },
+    {
+      "name": "csv-preview-import-isolated",
+      "writes": [
+        {
+          "path": "/api/v2/data/csv/preview",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:00.885Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        },
+        {
+          "path": "/api/v2/data/csv/preview",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm2": "EURUSDm2"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:00.885Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm2",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        },
+        {
+          "path": "/api/v2/data/csv/import",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm2": "EURUSDm2"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:00.885Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm2",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "csv-empty",
+      "writes": [],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "csv-error",
+      "writes": [
+        {
+          "path": "/api/v2/data/csv/preview",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:04.205Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/preview",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "csv-review",
+      "writes": [
+        {
+          "path": "/api/v2/data/csv/preview",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:05.355Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        },
+        {
+          "path": "/api/v2/data/csv/import",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:05.355Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/preview",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/import",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "csv-missing",
+      "writes": [
+        {
+          "path": "/api/v2/data/csv/preview",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:06.622Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/preview",
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "csv-header-keyboard-360",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "focus": true,
+      "reducedMotion": true,
+      "pass": true
+    },
+    {
+      "name": "csv-header-keyboard-1710",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets",
+          "workspace": "tenant-a"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers",
+          "workspace": "tenant-a"
+        }
+      ],
+      "focus": true,
+      "reducedMotion": true,
+      "pass": true
+    },
+    {
+      "name": "csv-pending-controls",
+      "writes": [
+        {
+          "path": "/api/v2/data/csv/preview",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:07.675Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        },
+        {
+          "path": "/api/v2/data/csv/import",
+          "body": {
+            "csv_text": "time,open,high,low,close\n2026-01-01T00:00:00Z,1,2,1,2\n2026-01-01T01:00:00Z,2,3,2,3\n",
+            "source": {
+              "source_id": "local-csv-upload",
+              "provider": "local-csv",
+              "instrument_mapping": {
+                "EURUSDm": "EURUSDm"
+              },
+              "license_use": "user-supplied-local",
+              "retrieved_at_utc": "2026-10-07T15:15:07.675Z",
+              "export_settings": "browser-file-text-v1"
+            },
+            "instrument": {
+              "instrument_id": "EURUSDm",
+              "asset_class": "fx",
+              "base_ccy": "EUR",
+              "quote_ccy": "USD",
+              "account_ccy": "USD",
+              "tick_size": "0.00001",
+              "pip_size": "0.0001",
+              "contract_size": "100000",
+              "quantity_min": "0.01",
+              "quantity_step": "0.01",
+              "effective_from_utc": "1970-01-01T00:00:00Z",
+              "effective_to_utc": ""
+            },
+            "timeframe_seconds": 3600,
+            "holdout_policy": {
+              "mode": "none"
+            }
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "previewLocked": true,
+      "importLocked": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "baseline": {
+    "count": 44,
+    "sources": [
+      "Exness-MT5Trial14 / MT5"
+    ]
+  },
+  "pass": true,
+  "hashes": {
+    "main.jsx": "5d6a44c0dd607fd51b9398c9d1172505fd2dcb06a6aa549d4495124972922d23",
+    "workspaceContext.js": "a9a96d7b3f2e5c200f739b91867c8be07118e8a262915224e0faa713f36623b0",
+    "DataDeskWorkspace.jsx": "93d1b59a02f9414fbd4a8fd32ef128f4a80fc9ac254ec35b2248500ccc2465c3",
+    "MarketAssetCatalog.jsx": "43b3dc2bd6a35335885942a42c0d217c859250dfdf94b40873116d7f23127b19",
+    "QuickSessionDialog.jsx": "098cce29ee26fb38893a39c21c3a5c8f51bbac743394df0aebd089f685cee2a4",
+    "DemoPreview.jsx": "d70014cfab4b2695b21c88d66d1f684ea3572241e41b303840b0c8001b8955c7",
+    "testing-copy.json": "8f12f4de4c3897f77a4a4dac4d2084381395688b8a7406105c369bb04247dcf1",
+    "data-library.css": "5af66db9aa3132c4637b5ef19e0b074461940e2b833dc99be4181122a908456e"
+  },
+  "scope": "Offline-only composite:23initial +8headeraffected +15visualaffected +8CSVfinal;26unique cases",
+  "unchangedAgainstHEAD": [
+    "LiveWorkspace.jsx",
+    "FxReplayShell.jsx",
+    "live-workspace.css",
+    "MarketAssetCatalog.jsx",
+    "web/tests/marketSync.browser.mjs"
+  ]
+}

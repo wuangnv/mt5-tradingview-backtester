@@ -13,7 +13,7 @@ test('Data Desk catalog has explicit retry and stale-response fencing', () => {
   assert.match(source, /catalogRetryCount/)
   assert.match(source, /catalogRetryExhausted/)
   assert.match(source, /aria-describedby=\{catalogRetryExhausted \? 'data-desk-retry-note' : undefined\}/)
-  assert.match(source, /Đã thử lại \{MAX_GET_RETRIES\} lần/)
+  assert.match(source, /Kiểm tra nguồn dữ liệu trước khi thử lại\./)
   assert.match(source, /if \(catalogRetryCountRef\.current >= MAX_GET_RETRIES \|\| state\.status === 'loading'\) return/)
   assert.match(source, /useRef/)
   assert.match(source, /catalogRequestSeq/)

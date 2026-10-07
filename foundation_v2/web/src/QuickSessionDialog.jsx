@@ -10,11 +10,11 @@ import './quick-session.css'
 
 const formatBalance = value => value.replace(/^(\d+)/, digits => digits.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
 
-export default function QuickSessionDialog({ workspace, query, onClose }) {
+export default function QuickSessionDialog({ workspace, query, onClose, initialDataset = '' }) {
   const { t } = useTestingLocale(), id = useId()
   const dialog = useRef(null), nameInput = useRef(null), opener = useRef(document.activeElement), submitLock = useRef(false)
   const [mode, setMode] = useState('backtest'), [advanced, setAdvanced] = useState(false)
-  const [draft, setDraft] = useState({ name: '', balance: '100000', dataset: '', strategy: '', description: '', start: '0' })
+  const [draft, setDraft] = useState({ name: '', balance: '100000', dataset: initialDataset, strategy: '', description: '', start: '0' })
   const balanceInput = useRef(null), balanceCaret = useRef(null)
   const balanceDisplay = formatBalance(draft.balance)
   const [data, setData] = useState({ status: 'loading', items: [], error: '' })
