@@ -2,10 +2,11 @@
 .data-library-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px; }
 .data-library .rd-panel-head { flex-wrap:wrap; gap:16px; }
 .data-library-filters { display:flex; flex:1 1 auto; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:10px; margin-left:auto; min-width:0; }
-.data-library-search { display:block; position:relative; flex:1 1 240px; max-width:360px; min-width:0; }
+.data-library-search { display:block; position:relative; flex:1 1 260px; max-width:420px; min-width:0; }
 .data-library-search > svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--wm-content-muted); pointer-events:none; }
-.data-library-search input { box-sizing:border-box; width:100%; min-height:var(--wm-control-height); padding:8px 12px 8px 36px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:transparent; color:var(--wm-content); font:inherit; font-size:13px; }
-.data-library-search input:focus-visible { outline:0; border-color:var(--wm-focus); }
+.fx-app.fx-shell-story[data-theme] .data-library .data-library-search input { box-sizing:border-box; width:100%; min-height:44px; padding:8px 12px 8px 38px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:var(--wm-canvas); color:var(--wm-content); font:inherit; font-size:13px; line-height:normal; outline:none; box-shadow:none; }
+.fx-app.fx-shell-story[data-theme] .data-library .data-library-search input:is(:hover, :focus-visible) { border-color:var(--wm-control-hover-border); outline:none; box-shadow:none; }
+.data-library-search input::placeholder { color:var(--wm-content-muted); opacity:1; }
 .fx-app .data-library .data-library-filter-toggle { display:grid; place-items:center; flex-shrink:0; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); border-radius:50%; padding:0; background:transparent; font-size:24px; }
 .data-library-filter-toggle svg { width:20px; height:20px; }
 .fx-app .data-library .data-library-filter-toggle[aria-expanded=true] { background:var(--wm-selected); }
