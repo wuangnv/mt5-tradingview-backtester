@@ -1,3 +1,4 @@
+@import url('/chart-controls.css');
 /* Project-owned Legacy chart chrome. Vendor sources stay untouched. */
 :root {
   --tv-color-platform-background: #DADADA;
@@ -38,10 +39,17 @@
 .legacy-native-extension svg { width: 20px; height: 20px; display: block; flex-shrink: 0; }
 .legacy-native-market strong { font-weight: 600; }
 .legacy-native-session { max-width: 330px; }
-.legacy-native-session .legacy-session-name { display: block; text-align: left; line-height: 38px; min-width: 0; max-width: 120px; overflow: hidden; text-overflow: ellipsis; font-style: italic; font-size: 13px; font-weight: 600; }
+.legacy-native-session .legacy-session-name { display: block; padding:0 8px; text-align: left; line-height: 38px; min-width: 0; max-width: 120px; overflow: hidden; text-overflow: ellipsis; font-style: italic; font-size: 13px; font-weight: 600; }
 .legacy-native-session .legacy-save-layout { display: flex; flex-direction: column; gap: 0; min-width: 0; width: 130px; padding-inline: 5px; }
 .legacy-save-layout span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-size: 12px; }
 .legacy-save-layout small { font-size: 10px; color: #76ABFF; }
+.legacy-native-extension button:disabled { cursor:default; }
+.legacy-native-extension button:disabled:hover { background:transparent; color:inherit; }
+.legacy-save-layout:disabled small { color:var(--tv-color-toolbar-button-text); opacity:.65; }
+.legacy-save-layout[data-save-state=error] small { color:#ef5350; }
+.legacy-native-extension .legacy-divider { height:24px; width:1px; margin-inline:3px; background:var(--tv-color-platform-background); flex-shrink:0; }
+.layout__area--top [class^='group-'] { position:relative; }
+.layout__area--top [class^='group-']:not(.legacy-market-group)::before { content:''; position:absolute; left:-1px; top:7px; height:24px; width:1px; background:var(--tv-color-platform-background); }
 .legacy-native-tools .legacy-editor, .legacy-native-tools .legacy-mentor { color: #76ABFF; }
 :root:not(.theme-dark) .legacy-native-tools :is(.legacy-editor, .legacy-mentor), :root:not(.theme-dark) .legacy-save-layout small { color: #205BBC; }
 .legacy-native-tools .chart-header-overflow { display: none; }

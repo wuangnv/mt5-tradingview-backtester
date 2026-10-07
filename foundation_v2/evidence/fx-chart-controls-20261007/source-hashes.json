@@ -1,0 +1,70 @@
+[
+  {
+    "path": "foundation_v2/web/src/advancedChartSave.js",
+    "sha256": "0EC12A569FEFF4C97073FE99DF9C4327086179D1293E8624E3049E96898CE6B9"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyPopover.jsx",
+    "sha256": "9D9DADE746998DD28E09F2F1D710D2C9F5430F9826727C6C256B810B2A34B64A"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyLayoutMenu.jsx",
+    "sha256": "28319FC3975508389331B12F5BEA26D644B161594F6B6EEC8343BFB33984FAB3"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyOrderDialog.jsx",
+    "sha256": "A46A9519E0AB08E137C928556891D1A94E12A9B14D91BB52FD543EA15E1EDD9A"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyJournal.jsx",
+    "sha256": "891E69FDA72D526B91EF773DEC2236027909F80D3BFA4D752EF8D4813BBEC5EB"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyObjectTree.jsx",
+    "sha256": "E11F2FA13DC5DD5F5FA395C86E8F0F19FB84E7444A6EBA5D78030952E0E12F67"
+  },
+  {
+    "path": "foundation_v2/web/src/legacyChartTrades.js",
+    "sha256": "242D6CA6E3D4E468479F074754889936E81CDCBDC6E12990238A5FAA4A9A32E9"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyChartHeader.jsx",
+    "sha256": "6DB717E6C256BCFBCF174F84E22F021A2CCD68C2EB91A9BF268A5EB3285FC0C7"
+  },
+  {
+    "path": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+    "sha256": "9D818140187D181F96F373BE8B88A36CA4A6B8159434EA39654999E16BCA43F4"
+  },
+  {
+    "path": "foundation_v2/web/src/ReplayWorkspace.jsx",
+    "sha256": "B11B6D828591CC9D53AC257DA920E7DEBE3411005F750015222DCD8EB40C8986"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartOrderPanel.jsx",
+    "sha256": "080E1A6B1C7FBCDFA5F1D3B561DDB22BDA3C731ADDCC16CC8E1271A8A987DDFB"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartWorkbench.css",
+    "sha256": "FB7556E8C09B2D6F24A763516B0FD68AECF45FC9BFB9C4E984BF5411325ACB65"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartIcon.jsx",
+    "sha256": "6806DD5B2E3BE65F4A4A622EF132FE54C31FA0046F229BCAAA84DC80659E0D36"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyPositions.jsx",
+    "sha256": "2884FD37BB9A7B6E006700D7CEA21D88751CF0E853E5A3617CC0E7A17C2A037E"
+  },
+  {
+    "path": "foundation_v2/web/src/testing-copy.json",
+    "sha256": "B36D39A7650D016B5C725A044DB5EE094B684D5773AE8897597C4A35441F3340"
+  },
+  {
+    "path": "foundation_v2/web/public/chart-controls.css",
+    "sha256": "EDB645B96372316407BA8BF6F77C8AEEA580CBA0171A7198747E72351BF9DE9D"
+  },
+  {
+    "path": "foundation_v2/web/public/chart-legacy.css",
+    "sha256": "2036FEA122E2D54CD67C3F0597F00626AD97FD7C77A322E6EA18622B4CD5DA33"
+  }
+]

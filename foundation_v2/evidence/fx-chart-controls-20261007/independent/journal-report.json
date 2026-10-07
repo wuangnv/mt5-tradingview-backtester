@@ -1,0 +1,32 @@
+{
+  "scope": "Labeled execution ledger fixture on real Journal; no actual session writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "name": "fractionalprecision/side search/UTCdayPnl/monthyearfilter/zero trade",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "name": "fractionalprecision/side search/UTCdayPnl/monthyearfilter/zero trade",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "axe": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "violations": []
+    }
+  ],
+  "pass": true
+}

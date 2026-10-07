@@ -26,6 +26,10 @@ import useReplayActivity from './useReplayActivity.js'
 import ChartHeaderPreview from './ChartHeaderPreview.jsx'
 import LegacyChartHeader, { intervalLabel } from './LegacyChartHeader.jsx'
 import LegacyPositions from './LegacyPositions.jsx'
+import LegacyPopover from './LegacyPopover.jsx'
+import LegacyOrderDialog from './LegacyOrderDialog.jsx'
+import LegacyJournal from './LegacyJournal.jsx'
+import LegacyObjectTree from './LegacyObjectTree.jsx'
 import { orderLevels, marketQuotes } from './replayOrderModel.js'
 import { ReplayOrderPrimitive } from './replayOrderPrimitive.js'
 import './ReplayWorkspace.css'
@@ -338,6 +342,8 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [sidePanel, setSidePanel] = useState('context')
   const [headerSlot, setHeaderSlot] = useState(null)
   const [nativeHeaderSlots, setNativeHeaderSlots] = useState(null)
+  const [goToPopup, setGoToPopup] = useState(null)
+  const [goToCustom, setGoToCustom] = useState(false)
   const [positionsOpen, setPositionsOpen] = useState(false)
   const [balanceHidden, setBalanceHidden] = useState(false)
   const [quickActionsVisible, setQuickActionsVisible] = useState(true)
@@ -369,9 +375,12 @@ export default function ReplayWorkspace({ workspace, query }) {
     const focused = document.activeElement
     const trigger = source || (focused?.tagName === 'IFRAME' ? focused.contentDocument?.activeElement : focused)
     if (trigger?.focus && trigger !== trigger.ownerDocument?.body && !sideRef.current?.contains(trigger)) sideTriggerRef.current = trigger
+    if (advancedChart && panel === 'goto') { setIsPlaying(false); setGoToCustom(false); setGoToPopup(current => current ? null : trigger); return }
+    setGoToPopup(null)
     if (panel === 'order') setIsPlaying(false)
     setSidePanel(panel); setSideOpen(true)
   }
+  const fullscreenChart = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.querySelector('.fx-app').requestFullscreen() } catch { setChartNotice('Không mở được chế độ toàn màn hình.') } }
 
   const rememberSession = useCallback((nextSessionId, preserveCursor = false, cursor = null, dataset = null) => {
     setSessionId(nextSessionId)
@@ -754,7 +763,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const dataDeskHref = routeHref('data')
 
   return (
-    <main style={advancedChart ? { '--legacy-header-height': `${(nativeHeaderSlots?.headerHeight || 38) + 4}px` } : undefined} className={`replay-shell wm-chart-page ${sideOpen ? 'is-panel-open' : ''} ${replay ? 'has-replay' : ''} ${advancedChart && replay ? 'is-legacy-chart' : ''}`}>
+    <main style={advancedChart ? { '--legacy-header-height': `${(nativeHeaderSlots?.headerHeight || 38) + 4}px` } : undefined} className={`replay-shell wm-chart-page ${sideOpen ? 'is-panel-open' : ''} ${sideOpen && sidePanel === 'journal' ? 'is-journal-open' : ''} ${sideOpen && sidePanel === 'native-objects' ? 'is-native-tree-open' : ''} ${replay ? 'has-replay' : ''} ${advancedChart && replay ? 'is-legacy-chart' : ''}`}>
       {headerSlot && replay && !advancedChart && createPortal(<div className="chart-command-row" role="group" aria-label={t("Thanh công cụ chart")}>
         <button type="button" className="chart-market-command" onClick={() => openPanel('data')} title={t("Đổi instrument/timeframe bằng dataset local")}><strong>{replayContext.instrument}</strong>{!advancedChart && <span>{replayContext.timeframe}</span>}</button>
         {!advancedChart && <><label className="chart-type-command"><ChartIcon name="candles" /><FxSelect  label={t("Kiểu chart")} value={chartType} onChange={value => setChartType(value)} localizeOptions={false} options={[...CHART_TYPES.map(type => ({ value: type.id, label: type.label, localize: false }))]} /></label>
@@ -852,7 +861,7 @@ export default function ReplayWorkspace({ workspace, query }) {
             </section>
           )}
 
-          {advancedChart && <LegacyChartHeader controls={nativeHeaderSlots} symbol={replayContext.instrument} name={replay.payload.name || t('Replay')} backHref={routeHref('replay', { surface: null, select: '1' })} theme={theme} onTheme={() => applyAppearance({ ...appearance, theme: theme === 'dark' ? 'light' : 'dark' })} onOpenTool={openPanel} onError={setChartNotice} />}
+          {advancedChart && <LegacyChartHeader controls={nativeHeaderSlots} symbol={replayContext.instrument} name={replay.payload.name || t('Replay')} backHref={routeHref('replay', { surface: null, select: '1' })} theme={theme} onTheme={() => applyAppearance({ ...appearance, theme: theme === 'dark' ? 'light' : 'dark' })} onOpenTool={openPanel} onFullscreen={fullscreenChart} />}
           <section className="replay-workspace">
             <div className="replay-main">
               <div className={`chart-frame ${advancedChart ? 'has-advanced-chart' : ''}`}>
@@ -884,7 +893,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     <button type="button" data-testid="step-1" aria-label={t("Tiến một nến")} title={t("→ Tiến một nến")} aria-keyshortcuts="ArrowRight" onClick={() => mutate('step', { expected_revision: revision, steps: 1 })} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}><ChartIcon name="step" /></button>
                     {advancedChart ? <><select aria-label={t('Khung thời gian chart')} title={t('Khung chart · replay vẫn tiến theo nến của dataset')} value={nativeHeaderSlots?.interval || ''} disabled={!nativeHeaderSlots} onChange={event => nativeHeaderSlots.setInterval(event.target.value)}>{nativeHeaderSlots?.intervals.map(value => <option key={value} value={value}>{intervalLabel(value)}</option>)}</select><label className="legacy-sync-toggle" title={t('Chưa hỗ trợ đồng bộ khung replay')}><input type="checkbox" role="switch" aria-label={t('Đồng bộ khung replay · chưa hỗ trợ')} disabled /><span /></label></> : <><button type="button" data-testid="step-10" aria-label={t("Tiến mười nến")} title={t("Shift + → Tiến mười nến")} aria-keyshortcuts="Shift+ArrowRight" onClick={() => mutate('step', { expected_revision: revision, steps: 10 })} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}>10</button><FxSelect label={t("Tốc độ replay")} value={speed} onChange={value => setSpeed(value)} disabled={Boolean(pendingAction)} localizeOptions={false} options={['0.5', '1', '2', '4'].map(value => ({ value, label: value + '×', localize: false }))} /><span className="chart-float-cutoff" title={formatTimestamp(replay.cutoff_timestamp) + ' UTC'}>#{cursor}</span></>}
                   </ChartFloatingToolbar>
-                  {advancedChart && quickActionsVisible && <ChartFloatingToolbar name="Hành động nhanh chart" className="legacy-quick-actions" minimal storageKey={`tw:chart:quick-toolbar:native-refined:${workspace}`} initialPosition={{ x: 1100, y: 220 }} compactMinimumY={86} insetLeft={54}><button type="button" onClick={() => openPanel('goto')}><ChartIcon name="goto" />{t('Go To')}</button><button type="button" onClick={() => openPanel('order')}><ChartIcon name="order" />{t('Order')}</button><button type="button" onClick={() => openPanel('news')}><ChartIcon name="news" />{t('News')}</button><a href={journalHref}><ChartIcon name="journal" />{t('Journal')}</a><button type="button" aria-label={t('Ẩn thanh thao tác nhanh')} onClick={() => setQuickActionsVisible(false)}><ChartIcon name="close" /></button></ChartFloatingToolbar>}
+                  {advancedChart && quickActionsVisible && <ChartFloatingToolbar name="Hành động nhanh chart" className="legacy-quick-actions" minimal storageKey={`tw:chart:quick-toolbar:native-refined:${workspace}`} initialPosition={{ x: 1100, y: 220 }} compactMinimumY={86} insetLeft={54}><button type="button" onClick={() => openPanel('goto')}><ChartIcon name="goto" />{t('Go To')}</button><button type="button" onClick={() => openPanel('order')}><ChartIcon name="order" />{t('Order')}</button><button type="button" onClick={() => openPanel('news')}><ChartIcon name="news" />{t('News')}</button><button type="button" onClick={() => openPanel('journal')}><ChartIcon name="journal" />{t('Journal')}</button><button type="button" aria-label={t('Ẩn thanh thao tác nhanh')} onClick={() => setQuickActionsVisible(false)}><ChartIcon name="close" /></button></ChartFloatingToolbar>}
                   {advancedChart ? <TradingViewReplayChart key={`${sessionId}:${replay.payload.dataset_id}:${historicalView ? cursor : 'canonical'}`}
                     workspace={workspace} datasetId={replay.payload.dataset_id} symbol={replayContext.instrument} assetClass={order.instrument?.asset_class} seconds={activeDataset?.timeframe_seconds || replay.payload.execution?.timeframe_seconds}
                     cutoff={Number(replay.cutoff_timestamp)} theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`}
@@ -895,10 +904,9 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <div className="chart-badge chart-badge-right">{replay.historical_view ? t("HISTORICAL CUTOFF") : t("LIVE REPLAY CURSOR")}</div>
                 </div>
                 <nav className="chart-utility-rail" aria-label={t("Tiện ích replay")}>
-                  {advancedChart && <div className="legacy-rail-cap"><button type="button" aria-label={t('Toàn màn hình')} onClick={async event => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await event.currentTarget.closest('.fx-app').requestFullscreen() } catch { setChartNotice('Không mở được chế độ toàn màn hình.') } }}><ChartIcon name="fit" /></button></div>}
-                  {advancedChart && <div className="legacy-rail-tools"><button type="button" aria-label={t('Cây đối tượng chart')} title={t('Cây đối tượng chart')} disabled={!nativeHeaderSlots} onClick={() => nativeHeaderSlots.openTree()}><ChartIcon name="layers" /></button></div>}
+                  {advancedChart && <div className="legacy-rail-tools"><button type="button" aria-label={t('Cây đối tượng chart')} title={t('Cây đối tượng chart')} disabled={!nativeHeaderSlots} aria-pressed={sideOpen && sidePanel==='native-objects'} onClick={() => sideOpen && sidePanel==='native-objects' ? closeSide() : openPanel('native-objects')}><ChartIcon name="layers" /></button></div>}
                   {(advancedChart ? [['order', 'Lệnh mô phỏng', 'place-order', 'Order'], ['goto', 'Đi tới cutoff', 'goto', 'Go To'], ['news', 'Tin tức', 'news', 'News']] : [['order', 'Lệnh mô phỏng', 'order'], ['objects', 'Danh sách đối tượng', 'objects'], ['data', 'Danh sách dữ liệu', 'data'], ['context', 'Chi tiết replay', 'info']]).map(([panel, label, icon, caption]) => <button key={panel} type="button" aria-label={t(label)} title={t(label)} aria-pressed={sideOpen && sidePanel === panel} onClick={() => sideOpen && sidePanel === panel ? closeSide() : openPanel(panel)}><ChartIcon name={icon} />{caption && <span>{t(caption)}</span>}</button>)}
-                  <a aria-label={t("Journal tại cutoff này")} title={t("Journal tại cutoff này")} href={journalHref}><ChartIcon name="journal" />{advancedChart && <span>{t("Journal")}</span>}</a>
+                  {advancedChart ? <button type="button" aria-label={t('Journal tại cutoff này')} title={t('Journal tại cutoff này')} aria-pressed={sideOpen && sidePanel==='journal'} onClick={() => sideOpen && sidePanel==='journal' ? closeSide() : openPanel('journal')}><ChartIcon name="journal" /><span>{t('Journal')}</span></button> : <a aria-label={t('Journal tại cutoff này')} href={journalHref}><ChartIcon name="journal" /></a>}
                   {advancedChart && <button type="button" aria-label={t('Cài đặt phiên')} title={t('Cài đặt phiên')} onClick={() => openPanel('context')}><ChartIcon name="settings" /></button>}
                   {advancedChart && <button type="button" className="legacy-mobile-theme" onClick={() => applyAppearance({ ...appearance, theme: theme === 'dark' ? 'light' : 'dark' })} aria-label={theme === 'dark' ? t("Chuyển giao diện sáng") : t("Chuyển giao diện tối")}><ChartIcon name={theme === 'dark' ? 'moon' : 'sun'} /></button>}
                 </nav>
@@ -966,7 +974,8 @@ export default function ReplayWorkspace({ workspace, query }) {
               </div>
             </div>
 
-            <aside className="replay-side" id="replay-context-panel" aria-label={t("Chi tiết replay và nhánh")} ref={sideRef} tabIndex={-1} onKeyDown={(event) => { if (event.key === 'Escape') closeSide() }}>
+            {!(advancedChart && sidePanel==='order') && <aside className={`replay-side ${sidePanel==='journal' ? 'is-journal' : ''}`} id="replay-context-panel" aria-label={t(sidePanel==='journal' ? 'Journal' : 'Chi tiết replay và nhánh')} ref={sideRef} tabIndex={-1} onKeyDown={(event) => { if (event.key === 'Escape') closeSide() }}>
+              {advancedChart && sidePanel==='journal' ? <LegacyJournal execution={order.execution} symbol={replayContext.instrument} cutoff={replay.cutoff_timestamp} onClose={closeSide} onOpenJournal={journalHref} /> : advancedChart && sidePanel==='native-objects' ? <><header className="chart-dock-heading"><strong>{t('Cây đối tượng chart')}</strong><button type="button" className="replay-panel-close" aria-label={t('Đóng panel')} onClick={closeSide}><ChartIcon name="close" /></button></header><LegacyObjectTree controls={nativeHeaderSlots} symbol={replayContext.instrument} /></> : <>
               <header className="chart-dock-heading"><strong>{t(({ order: 'Lệnh', objects: 'Đối tượng', data: 'Dữ liệu', context: 'Chi tiết & nhánh', goto: 'Go To', news: 'News', compare: 'So sánh mã', layout: 'New Layout', mentor: 'AI Mentor', search: 'Quick Search', scalper: 'Scalper mode', editor: 'Editor' })[sidePanel])}</strong><button type="button" className="replay-panel-close" aria-label={t("Đóng panel")} onClick={closeSide}><ChartIcon name="close" /></button></header>
               {!['goto', 'news', 'compare', 'layout', 'mentor', 'search', 'scalper', 'editor'].includes(sidePanel) && <nav className="chart-dock-tabs" aria-label={t("Panel replay")}>{[['order', 'Lệnh'], ['objects', 'Đối tượng'], ['data', 'Dữ liệu'], ['context', 'Chi tiết']].map(([panel, label]) => <button key={panel} type="button" aria-pressed={sidePanel === panel} onClick={() => { if (panel === 'order') setIsPlaying(false); setSidePanel(panel) }}>{t(label)}</button>)}</nav>}
               {['compare', 'layout', 'mentor', 'search', 'scalper', 'editor'].includes(sidePanel) && <ChartHeaderPreview key={`${sessionId}:${sidePanel}`} tool={sidePanel} symbol={replayContext.instrument} onOpenTool={panel => setSidePanel(panel)} />}
@@ -1087,7 +1096,14 @@ export default function ReplayWorkspace({ workspace, query }) {
                 </dl>
               </section>
               </>}
-            </aside>
+              </>}
+            </aside>}
+            {advancedChart && sideOpen && sidePanel==='order' && <LegacyOrderDialog order={order} blockedReason={orderBlockedReason} theme={theme} chartDocument={nativeHeaderSlots?.market?.ownerDocument} onClose={closeSide} onJournal={() => openPanel('journal')} />}
+            {advancedChart && goToPopup && <LegacyPopover anchor={goToPopup} theme={theme} label={t('Go To')} onClose={() => setGoToPopup(null)}>
+              {!goToCustom ? <>{[['Đầu ngày kế tiếp','Y'],['Tin tức kế tiếp','W'],['Phiên kế tiếp','Z'],['Giá','']].map(([label,key]) => <button type="button" key={label} disabled title={t('Chưa có điều hướng này cho dataset')}><span>{t(label)}</span>{key && <kbd>{key}</kbd>}</button>)}<hr /><button type="button" onClick={() => setGoToCustom(true)}>{t('Tùy chỉnh')}</button><p className="legacy-menu-note">{t('Chỉ điều hướng trong dữ liệu đã mở.')}</p></> : <>
+                <h3>{t('Tùy chỉnh')}</h3><form onSubmit={event => { event.preventDefault(); jumpToCursor(); setGoToPopup(null) }}><label>{t('Nến đã mở')}<input type="number" aria-label={t('Số nến cutoff')} min="0" max={canonicalCursor} step="1" value={jumpDraft} onChange={event => setJumpDraft(event.target.value)} /></label><button type="submit" disabled={conflict || Boolean(pendingAction) || state.status!=='ready' || !Number.isInteger(Number(jumpDraft)) || Number(jumpDraft)<0 || Number(jumpDraft)>canonicalCursor || Number(jumpDraft)===cursor}>{t('Mở cutoff này')}</button></form><form onSubmit={event => { event.preventDefault(); goToDate() }}><label>{t('Đi tới thời điểm UTC đã mở')}<input type="datetime-local" value={goToDateDraft} onChange={event => setGoToDateDraft(event.target.value)} /></label><button type="submit" disabled={!goToDateDraft || Boolean(pendingAction)}>{t('Mở cutoff theo thời điểm')}</button></form>
+              </>}
+            </LegacyPopover>}
           </section>
         </>
       )}

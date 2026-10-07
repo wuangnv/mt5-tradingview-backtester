@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
+import { closedChartTrades } from './legacyChartTrades.js'
 
 export default function LegacyPositions({ execution, symbol }) {
   const { t, fmt } = useTestingLocale()
   const [tab, setTab] = useState('open'), [page, setPage] = useState(0), [size, setSize] = useState(10)
   const open = execution?.position
   const pending = execution?.pending_market_order
-  const closed = (execution?.ledger || []).filter(event => event.kind === 'protective_fill').map(event => {
-    const details = event.details
-    const entry = execution.ledger.find(item => item.kind === 'market_fill' && item.details.position_id === details.position_id)
-    return { ...details.closed_position, key: event.sequence, side: details.side || entry?.details.side, quantity: details.quantity || entry?.details.quantity, realized: details.net_pnl, commission: details.cost_breakdown?.commission_account }
-  })
+  const closed = closedChartTrades(execution)
   const rows = tab === 'open' ? (open ? [{ ...open, key: open.position_id, unrealized: execution.floating_pl }] : []) : tab === 'pending' ? (pending ? [{ ...pending, key: pending.operation_id }] : []) : closed
   const pages = Math.max(1, Math.ceil(rows.length / size)), current = Math.min(page, pages - 1)
   return <section className="legacy-positions" aria-label={t('Lệnh trong phiên replay')}>

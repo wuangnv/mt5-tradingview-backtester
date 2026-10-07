@@ -1,0 +1,90 @@
+{
+  "scope": "Real useChartOrder + LegacyOrderDialog, labeled submit callback fixture, no service writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "pass": true,
+      "market": {
+        "fixture": "fx-controls-independent",
+        "endpoint": "orders/market",
+        "body": {
+          "operation_id": "chart-492aba2e-310b-4ffe-ba0f-05bada551087",
+          "side": "BUY",
+          "quantity": "0.001",
+          "stop_loss": "1.098",
+          "take_profit": "1.1041"
+        }
+      },
+      "protection": {
+        "fixture": "fx-controls-independent",
+        "endpoint": "orders/protection",
+        "body": {
+          "operation_id": "chart-39c379a1-b3a7-4eec-a653-edf740f720e4",
+          "target_id": "FIXTURE-position",
+          "stop_loss": "1.0979",
+          "take_profit": "1.104"
+        }
+      },
+      "checks": [
+        "real hook validation blocks invalidSL",
+        "error and false keep modal open",
+        "pending disables Save",
+        "successfulmarket closes + Journalcallback",
+        "active protectioncontract preserves target",
+        "blocked and nonFX units",
+        "Axe focused 0"
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "pass": true,
+      "market": {
+        "fixture": "fx-controls-independent",
+        "endpoint": "orders/market",
+        "body": {
+          "operation_id": "chart-af05db14-e5fe-4607-a342-19ff9a168952",
+          "side": "BUY",
+          "quantity": "0.001",
+          "stop_loss": "1.098",
+          "take_profit": "1.1041"
+        }
+      },
+      "protection": {
+        "fixture": "fx-controls-independent",
+        "endpoint": "orders/protection",
+        "body": {
+          "operation_id": "chart-d053a2bb-30f5-4d65-aaea-168524c8a962",
+          "target_id": "FIXTURE-position",
+          "stop_loss": "1.0979",
+          "take_profit": "1.104"
+        }
+      },
+      "checks": [
+        "real hook validation blocks invalidSL",
+        "error and false keep modal open",
+        "pending disables Save",
+        "successfulmarket closes + Journalcallback",
+        "active protectioncontract preserves target",
+        "blocked and nonFX units",
+        "Axe focused 0"
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "axe": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "violations": []
+    }
+  ],
+  "pass": true
+}

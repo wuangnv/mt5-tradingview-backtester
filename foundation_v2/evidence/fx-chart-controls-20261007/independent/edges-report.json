@@ -1,0 +1,15 @@
+{
+  "scope": "Actual widget localStorage/screenshot/objects fixtures, no actual session writes",
+  "checks": [
+    "actual localStorage quota error enables Retry, iframeCtrlS, manualRetry saves",
+    "copyPNG actualBlob success fixture/topdocShortcut and permissionFailure/iframeShortcut notice",
+    "deferred screenshot + resolution race cancels copy; status recorded separately",
+    "Download shortcut after resolutionchange actualPNG",
+    "actual drawing local selection/hide/remove, bridge reconciles native state"
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorBlocked": [],
+  "raceStatus": [],
+  "pass": true
+}

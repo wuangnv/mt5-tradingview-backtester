@@ -27,6 +27,7 @@ export function useChartOrder({ workspace, replay, dataset, ready, blocked, subm
     try {
       const success = await submit(endpoint, body)
       if (success) setNotice({ kind: 'ok', text: endpoint === 'execution' ? 'Simulator sẵn sàng.' : endpoint.endsWith('protection') ? 'TP/SL đã lưu; áp dụng từ nến tiếp theo.' : execution?.quote_source === 'broker_bid_ask' ? 'Đã queue; fill ở tick đầu tiên của nến kế tiếp.' : 'Đã queue; fill ở giá mở nến kế tiếp.' })
+      return success
     } catch (error) { setNotice({ kind: 'error', text: error.message }) }
     finally { setPending(false) }
   }
@@ -62,11 +63,31 @@ export function useChartOrder({ workspace, replay, dataset, ready, blocked, subm
   return { draft, setDraft, execution, instrument, costs, active, reference, disabled, pending, notice, startingBalance, setStartingBalance, spread, setSpread, tick, canInitialize, initialize, save, changePrice, chooseSide }
 }
 
-export default function ChartOrderPanel({ order, blockedReason }) {
+function LegacyOrderForm({ order, blockedReason, onClose, onJournal }) {
+  const { t } = useTestingLocale()
+  const [journal, setJournal] = useState(false)
+  const { draft, setDraft, execution, disabled, instrument, active } = order
+  const change = (key, value) => setDraft(current => ({ ...current, [key]:value }))
+  return <><form className="legacy-order-form" onSubmit={async event => { event.preventDefault(); if (await order.save()) { onClose(); if (journal) onJournal() } }}>
+    <div className="legacy-order-grid"><label>{t('Hướng')}<select value={draft.side} disabled={disabled || Boolean(active)} onChange={event => order.chooseSide(event.target.value)}><option value="BUY">Buy</option><option value="SELL">Sell</option></select></label><label>{t('Loại lệnh')}<select value="market" disabled><option value="market">Market</option></select></label>
+    <label>{t(instrument?.asset_class==='fx' ? 'Khối lượng (lot)' : 'Khối lượng (quantity)')}<input aria-label={t('Khối lượng lệnh')} type="number" min={instrument?.quantity_min || '0'} step={instrument?.quantity_step || 'any'} value={draft.quantity} disabled={disabled || Boolean(active) || !execution} onChange={event => change('quantity',event.target.value)} /></label><label>{t('Giá vào lệnh')}<input type="text" readOnly value={order.reference ?? '—'} /></label></div>
+    {[['stopLoss','Stop loss'],['takeProfit','Take profit']].map(([key,label]) => <div className="legacy-protection-row" key={key} title={t('Simulator hiện yêu cầu cả SL và TP.')}><label><input type="checkbox" role="switch" checked={Boolean(execution)} disabled readOnly />{t(label)}</label>{execution && <input aria-label={t(label)} type="number" min="0" required step={instrument?.tick_size || 'any'} value={draft[key]} disabled={disabled} onChange={event => change(key,event.target.value)} />}</div>)}
+    <div className="legacy-protection-row is-unavailable" title={t('Chưa hỗ trợ tự dời SL về hòa vốn')}><label><input type="checkbox" role="switch" disabled />Auto Break-even</label><small>{t('Sắp có')}</small></div>
+    <label>{t('Chiến lược')}<select disabled><option>{t('Mặc định của phiên')}</option></select></label><button type="button" className="legacy-strategy-create" disabled>{t('+ Tạo chiến lược mới')}</button>
+    {!execution && <p role="status">{t('Chưa có dữ liệu lệnh tại cutoff này.')}</p>}
+    {blockedReason && <p role="status">{t(blockedReason)}</p>}
+    {execution && <p className="legacy-order-hint">{t(active ? 'Thay đổi TP/SL áp dụng từ nến tiếp theo.' : 'Market được queue và khớp ở nến tiếp theo; giá trên là giá tham chiếu.')} · SIM</p>}
+    {order.notice && <p role={order.notice.kind === 'error' ? 'alert' : 'status'}>{t(order.notice.text)}</p>}
+    <footer><label><input type="checkbox" checked={journal} onChange={event => setJournal(event.target.checked)} />{t('Mở nhật ký sau khi đặt lệnh')}</label><button type="button" onClick={onClose}>{t('Hủy')}</button><button type="submit" className="legacy-order-save" disabled={disabled || !execution || order.reference === null}>{t(order.pending ? 'Đang lưu…' : 'Save')}</button></footer>
+  </form>{!execution && !blockedReason && <details className="legacy-init-details"><summary>{t('Khởi tạo simulator')}</summary><ChartOrderPanel order={order} /></details>}</>
+}
+
+export default function ChartOrderPanel({ order, blockedReason, legacy = false, onClose, onJournal }) {
   const { t, fmt } = useTestingLocale()
   const money = (value, currency) => fmt(value, ` ${currency || t('Đơn vị tài khoản')}`)
 
   const { execution, draft, setDraft, active, instrument, costs, disabled, notice } = order
+  if (legacy) return <LegacyOrderForm order={order} blockedReason={blockedReason} onClose={onClose} onJournal={onJournal} />
   return <section className="chart-order-panel" aria-label={t("Lệnh mô phỏng")}>
     <div className="chart-order-mode"><strong>{t("SIMULATOR")}</strong><span>{t("Broker locked")}</span></div>
     {blockedReason && <p role="status">{t(blockedReason)}</p>}

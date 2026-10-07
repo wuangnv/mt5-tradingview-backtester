@@ -217,11 +217,11 @@ The replay switch is timeframe sync; it stays disabled until its semantics are i
 Advanced Charts owns the native header, including intervals, chart styles,
 indicators, undo/redo and chart settings. `LegacyChartHeader` renders only the
 application-specific controls through five official `createButton` extension
-hosts (market, layout, session, search, tools). A fullscreen cap at the top of
-the right rail continues the header to the viewport edge, without covering the
-price scale. CSS ordering targets this pinned v23 distribution; a vendor upgrade
-requires renewed visual QA. The application dock overlays below the header,
-preserving widget width. The default native viewport is retained unless a local
+hosts (market, layout, session, search, tools). Fullscreen belongs to the header
+tools group; the rail starts below its continuous header separator. CSS ordering
+targets this pinned v23 distribution; a vendor upgrade requires renewed visual QA.
+Context/preview docks overlay below the header. Journal and the object drawer
+resize the widget on desktop; narrow screens use an overlay. The default native viewport is retained unless a local
 layout was saved. Changing interval aggregates the same causal prefix and never
 advances replay; the native event interval synchronizes the replay bar selector.
 Mobile tools use an overflow menu, including native indicator/undo/redo actions
@@ -232,7 +232,17 @@ pointer/keyboard interaction pauses replay before operating a chart control.
 Compare, multi-chart layout creation, Editor, AI Mentor and Scalper mode retain
 explicit preview states. Mentor text is local UI state and cannot send to a provider.
 Quick Search opens existing preview tools. Save/restore remains browser-local;
-PNG remains client-only with generation/cutoff/interval guards. The owner confirmed
+Save stays visible under the layout name: clean is disabled, dirty/error is enabled,
+and saving is disabled until persistence succeeds. Ctrl+S and manual Save cancel
+the debounce. Local autosave uses five seconds after edits (project policy, not an
+assertion about FX's cadence). Edit revision, replay generation and cutoff guard
+against stale callbacks; timeout/storage failure stays retryable. Snapshots retain
+the existing workspace/session/dataset/cutoff scope. FX's live clean state and official
+FAQ confirm layout persistence of indicators, drawings and style; its cloud protocol
+and dirty-to-save timing were not mutated or inferred from the reference session.
+The camera opens Download/Copy image, using client-only PNG and guarded
+generation/cutoff/interval capture. Clipboard denial is surfaced rather than reported
+as success. The owner confirmed
 TradingView logo-removal rights; `widget_logo` stays disabled without vendor edits.
 
 The native drawing rail and bottom scale controls remain. One draggable replay
@@ -245,9 +255,28 @@ open/pending state and protective fills from its ledger. Unavailable execution
 is distinct from an empty list; unknown per-trade commission stays a dash.
 Pagination is local over the snapshot, not a claim of server paging.
 
+Order opens a focus-trapped modal using the existing simulator submission and risk
+validation. Current simulator contracts require both SL/TP; their switches are
+display-only, and unsupported order types, presets, break-even and strategy creation
+stay disabled. Successful Save can open Journal; errors leave the draft visible.
+Go To is anchored to the invoking rail or quick-bar button; custom cursor/date
+navigation preserves existing cutoff checks. Future/news/session jumps stay disabled.
+The layout selector displays reference rows 1–8 and sync controls; only one chart is
+supported. Copy/rename/open layouts remain unavailable rather than implying cloud
+storage. The session title is plain italic text.
+
+The v23 public `paneObjectTree` probe did not open a right-side native tree. The app
+drawer reads `getAllShapes`/`getAllStudies` and uses public selection, visibility and
+remove APIs, excluding imported workspace annotations. It is app chrome over native
+entities. Journal's Trades and Month/Year calendar derive closed trades from the
+cutoff-safe execution ledger; its rows are not journal-note records. Unknown execution
+stays unavailable, commission stays unknown and quantities preserve eight digits.
+Menus and Journal tabs support keyboard navigation and resize focus restoration.
+
 Dark chart: #0F0F0F pane, #000000 chrome, #202020 grid, #DBDBDB scale text;
 light: #FFFFFF. Up/down candles and Buy/Sell use #26A69A / #EF5350.
 Project pages use the stronger semantic palette in [project-palette.md](project-palette.md).
 Testing state/language/paging contract remains [testing-standard.md](testing-standard.md).
 Initial receipt: foundation_v2/evidence/legacy-match-20261007/CHECKPOINT.md.
 Native header correction: foundation_v2/evidence/native-refinement-20261007/CHECKPOINT.md.
+FX controls and Save mechanism: foundation_v2/evidence/fx-chart-controls-20261007/CHECKPOINT.md.

@@ -1,0 +1,87 @@
+{
+  "cases": [
+    {
+      "width": 360,
+      "theme": "light",
+      "language": "vi",
+      "checks": [
+        "text-onlyname, cleanSave disabled, CtrlS/topdoc and autosave native style persist locally",
+        "layout1chart supported/multi disabled/sync disabled, anchored within iframe",
+        "snapshot PNG menu Download actual browser download",
+        "tree nativeaxis fits/dock geometry desktopresize/mobileoverlay",
+        "realObjectTree studyvisibility toggles actual native state",
+        "Orderunknown cutoff cannotSubmit, modalinert/focusEscape/Axe",
+        "GoToanchored invalidfuturecursor/date rejected without fetch/write",
+        "journal nativeaxis fits/dock geometry desktopresize/mobileoverlay",
+        "JournalTrades/CalendarMonthYear/dayfilter clear/Axe with actualunknowncutoff"
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorBlocked": [],
+  "axe": [
+    {
+      "width": 360,
+      "theme": "light",
+      "scope": "order",
+      "violations": []
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "scope": "journal",
+      "violations": []
+    }
+  ],
+  "geometry": [
+    {
+      "scope": "tree",
+      "width": 360,
+      "dock": {
+        "x": 36,
+        "y": 42,
+        "width": 324,
+        "height": 945
+      },
+      "ifr": {
+        "x": 0,
+        "y": 0,
+        "width": 324,
+        "height": 897
+      },
+      "head": {
+        "x": 0,
+        "y": 0,
+        "width": 324,
+        "height": 38
+      },
+      "closedWidth": 324
+    },
+    {
+      "scope": "journal",
+      "width": 360,
+      "dock": {
+        "x": 36,
+        "y": 42,
+        "width": 324,
+        "height": 945
+      },
+      "ifr": {
+        "x": 0,
+        "y": 0,
+        "width": 324,
+        "height": 840
+      },
+      "head": {
+        "x": 0,
+        "y": 0,
+        "width": 324,
+        "height": 38
+      },
+      "closedWidth": 324
+    }
+  ],
+  "pass": true
+}

@@ -1,0 +1,71 @@
+{
+  "pass": true,
+  "scope": "Independent review of FX Legacy chart controls and focused final fixes",
+  "generatedAt": "2026-10-07T09:02:52.225Z",
+  "actualDesktopMatrixCases": 2,
+  "finalMobileMatrixCases": 1,
+  "focusedResizeCases": 1,
+  "journalLedgerFixtureCases": 2,
+  "orderRealHookFixtureCases": 2,
+  "focusedAxeScans": 10,
+  "axeViolations": 0,
+  "independentUnitTests": {
+    "command": "node --test foundation_v2/web/tests/advancedChartSave.test.mjs foundation_v2/web/tests/advancedChart.test.mjs",
+    "passed": 13,
+    "failed": 0
+  },
+  "errors": [],
+  "unexpectedRequests": [],
+  "sourcePins": {
+    "src/advancedChartSave.js": "0ec12a569feff4c97073fe99df9c4327086179d1293e8624e3049e96898ce6b9",
+    "src/TradingViewReplayChart.jsx": "9d818140187d181f96f373be8b88a36ca4a6b8159434ea39654999e16bca43f4",
+    "src/LegacyChartHeader.jsx": "6db717e6c256bcfbcf174f84e22f021a2ccd68c2eb91a9bf268a5eb3285fc0c7",
+    "src/LegacyPopover.jsx": "9d9dade746998dd28e09f2f1d710d2c9f5430f9826727c6c256b810b2a34b64a",
+    "src/LegacyLayoutMenu.jsx": "28319fc3975508389331b12f5bea26d644b161594f6b6eec8343bfb33984fab3",
+    "src/LegacyOrderDialog.jsx": "a46a9519e0ab08e137c928556891d1a94e12a9b14d91bb52fd543ea15e1edd9a",
+    "src/ChartOrderPanel.jsx": "080e1a6b1c7fbcdfa5f1d3b561ddb22bda3c731addcc16cc8e1271a8a987ddfb",
+    "src/LegacyJournal.jsx": "891e69fda72d526b91ef773dec2236027909f80d3bfa4d752ef8d4813bbec5eb",
+    "src/LegacyObjectTree.jsx": "e11f2fa13dc5dd5f5fa395c86e8f0f19fb84e7444a6eba5d78030952e0e12f67",
+    "src/legacyChartTrades.js": "242d6ca6e3d4e468479f074754889936e81cdcbdc6e12990238a5faa4a9a32e9",
+    "src/LegacyPositions.jsx": "2884fd37bb9a7b6e006700d7cea21d88751cf0e853e5a3617cc0e7a17c2a037e",
+    "src/ReplayWorkspace.jsx": "b11b6d828591cc9d53ac257da920e7debe3411005f750015222dcd8eb40c8986",
+    "src/ChartWorkbench.css": "fb7556e8c09b2d6f24a763516b0fd68aecf45fc9bfb9c4e984bf5411325acb65",
+    "src/ChartIcon.jsx": "6806dd5b2e3be65f4a4a622ef132fe54c31fa0046f229bcaaa84dc80659e0d36",
+    "src/testing-copy.json": "b36d39a7650d016b5c725a044db5ee094b684d5773ae8897597c4a35441f3340",
+    "public/chart-controls.css": "edb645b96372316407ba8bf6f77c8aeea580cba0171a7198747e72351bf9de9d",
+    "public/chart-legacy.css": "2036fea122e2d54cd67c3f0597f00626ad97fd7c77a322e6ea18622b4cd5da33"
+  },
+  "resolvedFindings": [
+    "Layout→Escape→Camera anchor retained synchronously; actual Download succeeds.",
+    "Anchorloss during768→1710 resize restores visible NewLayout focus on finalsource.",
+    "Required SL/TP switches disabled and accurate; real useChartOrder validation+submit tested.",
+    "Journal fractional quantity8digits, UTCday filters and Month/Year calendar verified.",
+    "LightJournal semantic positive/negative contrast passes populated fixture Axe.",
+    "Journal tabs support roving tabindex and Arrow/Home/End.",
+    "Actual localStorage quota branch errors/retry + iframeCtrlS verified.",
+    "Actual PNG Blob copy success/permission failure + shortcut paths verified.",
+    "Deferred screenshot after resolutionchange performs no clipboard write.",
+    "Actual native Volume visibility and local drawing select/hide/remove work through bridge.",
+    "Desktop drawer shrinks actual nativewidget/header and priceaxis fits; mobileoverlay explicit."
+  ],
+  "limitations": [
+    "Desktop actual matrix2cases passed before final anchorloss/publishHeader changes. Historical report.json retains thirdcase failure; final resize-report.json isolates and verifies fix; review-mobile fresh finalsource passes360lightVI. This receipt does not claim a fresh complete4case matrix. Parent reports separate final5case matrix/build/18unit pass; not independently rerun here.",
+    "Fullheight application object tree deliberately shrinks entire widget; FX native tree starts below header. Native vendor tree not certified.",
+    "Deferred screenshot race suppressed copy; final raceStatus empty after resolution-driven cleanup. A stale-screenshot notice was observed in one diagnostic but is not guaranteed/certified on widget disposal.",
+    "Order initialization/execution/order/protection are labeled local callback fixtures; no service or broker writes. Actualcutoff execution unavailable independently forbids Save.",
+    "Journal populated ledger is labeled fixture; actualunknowncutoff tested separately.",
+    "Only GET/HEAD/OPTIONS to localhost5180/8010; exact current-session activity POST fulfilled labeledfixture. Otherwrites/external/WebSockets blocked. Browser clipboard replaced only with labeledfixture.",
+    "Focused Axe covers application Order/Journal, not nativevendor controls or wholepage.",
+    "Native fullscreen was source-reviewed/parent QA scope, not independently certified in this slice.",
+    "No CUA/IAB readiness claim; prior IAB blankiframe issue remains scoped to parent observations.",
+    "No product source edits, staging, commits, server restarts, replay step/seek/init/order storage or livebroker authority by reviewer."
+  ],
+  "reports": {
+    "desktop": "report.json",
+    "mobile": "mobile-report.json",
+    "journal": "journal-report.json",
+    "order": "order-report.json",
+    "resize": "resize-report.json",
+    "edges": "edges-report.json"
+  }
+}

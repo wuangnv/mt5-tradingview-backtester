@@ -1,3 +1,4 @@
+@import url('/chart-controls.css');
 /* The workbench owns its chrome; the API owns candle and execution state. */
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame.has-advanced-chart { grid-template-columns: minmax(0, 1fr) 48px; }
 .advanced-chart-host { position: absolute; inset: 0; }
@@ -293,7 +294,9 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { accent-color: #5695FE; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { background: var(--chart-bg); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding: 0; border-left-width: 4px; }
-.legacy-rail-cap { display: grid; place-items: center; flex: 0 0 var(--legacy-header-height, 42px); width: 100%; box-sizing: border-box; border-bottom: 4px solid var(--chart-line); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top:var(--legacy-header-height,42px); border-left:0; }
+.is-legacy-chart .chart-utility-rail::before { content:''; position:absolute; left:0; top:38px; right:0; height:4px; background:var(--chart-line); }
+.is-legacy-chart .chart-utility-rail::after { content:''; position:absolute; left:0; top:var(--legacy-header-height,42px); bottom:0; width:4px; background:var(--chart-line); pointer-events:none; }
 .legacy-rail-tools { padding-top: 8px; }
 .is-legacy-chart .legacy-replay-toolbar { padding: 0 4px; min-height: 46px; border-radius: 3px; background: var(--chart-bg); }
 .legacy-replay-toolbar .chart-float-content { overflow: visible; flex-shrink: 0; gap: 6px; }
@@ -346,4 +349,96 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
   .is-legacy-chart .chart-trading-account span:last-child { display: none; }
   .is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { width: 36px; }
   .is-legacy-chart .chart-floating-toolbar :is([data-testid='step-10'], .chart-float-cutoff) { display: none; }
+}
+
+/* FX-style drawers resize the widget so its price scale stays fully visible. */
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open.is-journal-open .replay-workspace { grid-template-columns:minmax(0,1fr) min(560px,42vw); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open.is-native-tree-open .replay-workspace { grid-template-columns:minmax(0,1fr) 280px; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-side { position:static; width:auto; padding:0; border-left:4px solid var(--chart-line); background:var(--chart-bg); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top:var(--legacy-header-height,42px); }
+.legacy-journal { height:100%; display:flex; flex-direction:column; box-sizing:border-box; color:var(--chart-text); background:var(--chart-bg); font-size:13px; }
+.legacy-journal > header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border-bottom:1px solid var(--chart-line); }
+.legacy-journal button, .legacy-journal a, .legacy-object-tree button { border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.legacy-journal :is(button,a):focus-visible, .legacy-object-tree button:focus-visible { outline:2px solid #5695fe; outline-offset:-2px; }
+.legacy-journal header > :is(button,a) { width:28px; height:28px; display:grid; place-items:center; }
+.legacy-journal header [role=tablist] { display:flex; padding:3px; border:1px solid var(--chart-line); border-radius:14px; }
+.legacy-journal header [role=tab] { padding:8px 14px; border-radius:11px; }
+.legacy-journal [role=tab][aria-selected=true] { background:var(--chart-hover); }
+.legacy-journal > [role=tabpanel] { flex:1; min-height:0; display:flex; flex-direction:column; padding:10px; overflow:auto; }
+.legacy-journal-search { display:flex; align-items:center; gap:10px; border:1px solid var(--chart-line); border-radius:8px; padding:9px; }
+.legacy-journal-search input { width:100%; min-width:0; border:0; padding:0; background:transparent; color:var(--chart-text); font:inherit; }
+.legacy-journal-search input:focus { outline:0; }
+.legacy-journal-search:focus-within { outline:2px solid #5695fe; }
+.legacy-journal-trades { flex:1; min-height:180px; margin-top:12px; border:1px solid var(--chart-line); border-radius:6px; display:flex; flex-direction:column; }
+.legacy-journal-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:18px; padding:24px; }
+.legacy-journal-empty svg { width:90px; height:60px; color:var(--chart-line); }
+.legacy-journal-empty h3 { font-size:18px; margin:0; }
+.legacy-journal-trades article { padding:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:1px solid var(--chart-line); }
+.legacy-journal-trades article > div { display:grid; gap:6px; }
+.legacy-journal-trades article :is(time,span) { color:var(--chart-muted); font-size:11px; }
+.legacy-journal .is-profit { color:#26a69a; }
+.legacy-journal .is-loss { color:#ef5350; }
+.fx-app[data-theme=light] .legacy-journal .is-profit { color:#087f74; }
+.fx-app[data-theme=light] .legacy-journal .is-loss { color:#c52a2a; }
+.legacy-journal-day { align-self:flex-start; margin-top:8px; padding:6px; }
+.legacy-calendar-toolbar { display:flex; align-items:center; gap:10px; padding:8px 0 18px; }
+.legacy-calendar-toolbar strong { font-weight:400; }
+.legacy-calendar-toolbar > div { display:flex; margin-left:auto; border:1px solid var(--chart-line); border-radius:6px; }
+.legacy-calendar-toolbar button { padding:6px 8px; }
+.legacy-calendar-toolbar button[aria-pressed=true] { background:var(--chart-hover); }
+.legacy-calendar-month h3 { text-align:center; text-transform:capitalize; font-size:13px; font-weight:400; margin:8px 0 14px; }
+.legacy-calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; }
+.legacy-calendar-grid > :is(button,span) { text-align:center; min-width:0; padding:10px 2px; }
+.legacy-calendar-grid > button { min-height:56px; border:1px solid var(--chart-line); border-radius:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; }
+.legacy-calendar-grid > button:hover { background:var(--chart-hover); }
+.legacy-calendar-grid small { font-size:10px; }
+.legacy-calendar-grid .legacy-calendar-weekday { font-size:10px; color:var(--chart-muted); }
+.legacy-calendar-year { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px 12px; }
+.legacy-calendar-month.is-mini .legacy-calendar-grid { gap:0; }
+.legacy-calendar-month.is-mini .legacy-calendar-grid > :is(button,span) { min-height:20px; padding:4px 0; font-size:10px; border:0; }
+.legacy-object-row { display:flex; align-items:center; gap:8px; padding:5px 10px; min-height:32px; border-bottom:1px solid var(--chart-line); }
+.legacy-object-row > button { display:flex; align-items:center; justify-content:center; gap:10px; min-width:28px; min-height:30px; padding:4px; }
+.legacy-object-row > button:first-child { flex:1; justify-content:flex-start; text-align:left; }
+.legacy-object-row:hover { background:var(--chart-hover); }
+.legacy-object-row.is-hidden > button:first-child { color:var(--chart-muted); }
+.legacy-object-tree p { padding:12px; color:var(--chart-muted); }
+.legacy-order-overlay { --chart-bg:#000; --chart-text:#efefef; --chart-muted:#aaa; --chart-line:#3a3a3a; --chart-hover:#292929; --chart-surface:#0f0f0f; position:fixed; z-index:11000; inset:0; display:grid; place-items:center; padding:16px; background:#0002; color:var(--chart-text); font:14px Arial,sans-serif; }
+.legacy-order-overlay.is-light { --chart-bg:#fff; --chart-text:#222; --chart-muted:#666; --chart-line:#d6d6d6; --chart-hover:#eee; --chart-surface:#fafafa; }
+.legacy-order-modal { box-sizing:border-box; width:min(640px,100%); max-height:calc(100dvh - 32px); overflow:auto; border:1px solid var(--chart-line); border-radius:7px; background:var(--chart-bg); }
+.legacy-order-modal > header { display:flex; align-items:center; gap:8px; padding:12px; border-bottom:1px solid var(--chart-line); }
+.legacy-order-modal h2 { margin:0 auto 0 0; font-size:20px; font-weight:400; }
+.legacy-order-modal button { border:0; padding:9px 14px; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.legacy-order-modal button:hover:not(:disabled) { background:var(--chart-hover); }
+.legacy-order-modal button:disabled { opacity:.55; cursor:default; }
+.legacy-order-modal header button:last-child { padding:4px; display:grid; place-items:center; }
+.legacy-order-form { padding:16px 24px 24px; display:grid; gap:18px; }
+.legacy-order-form label { display:grid; gap:6px; color:var(--chart-muted); font-size:13px; }
+.legacy-order-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 10px; }
+.legacy-order-modal :is(input:not([type=checkbox]),select) { box-sizing:border-box; min-width:0; width:100%; min-height:40px; border:1px solid var(--chart-line); border-radius:10px; padding:9px 12px; background:var(--chart-surface); color:var(--chart-text); font:inherit; }
+.legacy-order-modal :is(input,button,select,summary):focus-visible { outline:2px solid #5695fe; outline-offset:2px; }
+.legacy-protection-row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; min-height:56px; box-sizing:border-box; border:1px solid var(--chart-line); border-radius:7px; background:var(--chart-hover); }
+.legacy-protection-row label { display:flex; align-items:center; flex-shrink:0; gap:10px; color:var(--chart-text); }
+.legacy-protection-row input[type=switch], .legacy-order-form input[role=switch] { appearance:none; width:38px; height:20px; background:#606774; border-radius:12px; margin:0; cursor:pointer; }
+.legacy-order-form input[role=switch]::before { content:''; display:block; width:16px; height:16px; margin:2px; background:#0f0f0f; border-radius:50%; }
+.legacy-order-form input[role=switch]:checked { background:#5695fe; }
+.legacy-order-form input[role=switch]:checked::before { transform:translateX(18px); }
+.legacy-protection-row.is-unavailable { opacity:.65; }
+.legacy-order-form .legacy-strategy-create { color:#76abff; text-align:left; padding:0; justify-self:start; margin-top:-12px; font-size:12px; }
+.legacy-order-form footer { display:flex; align-items:center; gap:8px; margin-top:10px; }
+.legacy-order-form footer label { margin-right:auto; color:var(--chart-text); display:flex; align-items:center; gap:8px; }
+.legacy-order-form footer .legacy-order-save { color:#fff; background:#2962ff; border-radius:22px; padding:10px 20px; }
+.legacy-order-form p { margin:0; font-size:12px; line-height:1.5; color:var(--chart-muted); }
+.legacy-order-form [role=alert] { color:#ef5350; }
+.legacy-init-details { padding:0 24px 20px; }
+.legacy-init-details .chart-order-panel { color:var(--chart-text); background:var(--chart-bg); padding-top:12px; }
+@media(max-width:1100px) {
+ .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-workspace { grid-template-columns:minmax(0,1fr); }
+ .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-side { position:absolute; top:var(--legacy-header-height,42px); right:0; bottom:0; width:min(560px,calc(100% - 36px)); z-index:25; }
+ .legacy-calendar-year { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+ .legacy-order-form { padding:14px; gap:14px; }
+ .legacy-order-form footer { flex-wrap:wrap; justify-content:flex-end; }
+ .legacy-order-form footer label { width:100%; padding-bottom:6px; }
+ .legacy-protection-row { flex-wrap:wrap; }
 }

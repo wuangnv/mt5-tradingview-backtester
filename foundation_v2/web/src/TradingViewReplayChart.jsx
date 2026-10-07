@@ -3,6 +3,7 @@ import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useRef, useState } from 'react'
 import { createAdvancedReplayDatafeed } from './advancedReplayDatafeed.js'
 import { readChartSnapshot, writeChartSnapshot } from './advancedChartStorage.js'
+import { createChartSave } from './advancedChartSave.js'
 
 let libraryPromise
 const volumeAppearance = theme => {
@@ -54,11 +55,11 @@ export default function TradingViewReplayChart(props) {
   const storageKey = `tw:advanced-chart:v1:${workspace}:${sessionId}:${datasetId}`
 
   useEffect(() => {
-    let cancelled = false, saveTimer, restoringImports = false, importedShapes = [], lines = []
+    let cancelled = false, layoutSave, saveState = 'saved', restoringImports = false, importedShapes = [], lines = []
     let widget, adapter, chart, headerSlots, headerObserver, nativeHeader, chartReady = false, fittedLevels = ''
     const pauseNative = () => latest.current.onOrderDragStart()
     const publishHeader = interval => {
-      if (!cancelled && chartReady && headerSlots?.market) latest.current.onHeaderSlots?.({ ...headerSlots, interval: typeof interval === 'string' ? interval : chart.resolution(), chartType: chart.chartType(), compact: host.current.clientWidth < 1180, headerHeight: headerSlots.market.ownerDocument.querySelector('.layout__area--top')?.getBoundingClientRect().height || 38 })
+      if (!cancelled && chartReady && host.current && headerSlots?.market) latest.current.onHeaderSlots?.({ ...headerSlots, saveState, interval: typeof interval === 'string' ? interval : chart.resolution(), chartType: chart.chartType(), compact: host.current.clientWidth < 1180, headerHeight: headerSlots.market.ownerDocument.querySelector('.layout__area--top')?.getBoundingClientRect().height || 38 })
     }
     const loadingTimer = setTimeout(() => {
       if (cancelled || chartReady) return
@@ -66,17 +67,11 @@ export default function TradingViewReplayChart(props) {
       setMessage('Advanced Charts chưa tải được. Thử mở trang này trong Chrome/Edge hoặc dùng chart dự phòng.')
     }, 20000)
     setStatus('loading'); setMessage('')
-    const save = () => {
-      if (cancelled || !widget || !chart) return
-      const generation = latest.current.orderGeneration
-      const savedCutoff = Number(latest.current.cutoff)
-      widget.save(layout => {
-        if (cancelled || generation !== latest.current.orderGeneration) return
-        try { writeChartSnapshot(localStorage, storageKey, savedCutoff, layout); setMessage('Đã lưu chart trên trình duyệt này.') }
-        catch { setMessage('Không lưu được chart: bộ nhớ trình duyệt không khả dụng hoặc đã đầy.') }
-      })
+    const save = () => layoutSave?.save()
+    const scheduleSave = () => { if (chartReady && !restoringImports) layoutSave?.dirty() }
+    const saveShortcut = event => {
+      if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === 's') { event.preventDefault(); save() }
     }
-    const scheduleSave = () => { clearTimeout(saveTimer); saveTimer = setTimeout(save, 150) }
     loadLibrary().then(() => {
       if (cancelled) return
       const current = latest.current
@@ -93,6 +88,7 @@ export default function TradingViewReplayChart(props) {
         ...(saved ? { saved_data: saved } : {}),
         custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles'] },
         header_widget_buttons_mode: 'adaptive',
+        auto_save_delay: 1,
         enabled_features: ['seconds_resolution', 'items_favoriting'],
         disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
         overrides: paneAppearance(theme),
@@ -104,6 +100,12 @@ export default function TradingViewReplayChart(props) {
         const frame = host.current?.querySelector('iframe')
         if (frame) { frame.title = t('Biểu đồ replay {symbol}', { symbol }); if (frame.contentDocument) frame.contentDocument.title = `WMReplay · ${symbol}` }
         chart = widget.activeChart()
+        layoutSave = createChartSave({
+          snapshot: callback => widget.save(callback),
+          persist: (at, layout) => writeChartSnapshot(localStorage, storageKey, at, layout),
+          context: () => ({ generation: latest.current.orderGeneration, cutoff: Number(latest.current.cutoff) }),
+          onState: value => { saveState = value; publishHeader(); if (value === 'error') setMessage('Không lưu được chart: bộ nhớ trình duyệt không khả dụng hoặc đã đầy.'); else if (value === 'saved') setMessage('Đã lưu chart trên trình duyệt này.'); else setMessage('') },
+        })
         // Restoring a layout cannot change the authoritative dataset symbol.
         if (chart.symbol() !== symbol) chart.setSymbol(symbol)
         if (!adapter.supported.includes(chart.resolution())) chart.setResolution(adapter.interval)
@@ -185,13 +187,15 @@ export default function TradingViewReplayChart(props) {
             setStatus('ready')
             chartReady = true
             publishHeader()
+            if (!saved) scheduleSave()
           }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
         }
-        instance.current = { widget, adapter, chart, refresh, importAnnotations, save }
+        instance.current = { widget, adapter, chart, refresh, importAnnotations, save, scheduleSave }
         if (!adapter.update(latest.current.rows, latest.current.cutoff)) chart.resetData()
         // Pause before native drawing/pan/order gestures, not after a drag ends.
         widget.subscribe('mouse_down', () => latest.current.onOrderDragStart())
         widget.subscribe('onAutoSaveNeeded', scheduleSave)
+        widget.subscribe('study_event', scheduleSave)
         widget.subscribe('drawing_event', (id, event) => {
           if (restoringImports) return
           if (importedShapes.includes(id)) { if (event === 'remove') setTimeout(importAnnotations, 0); return }
@@ -205,8 +209,17 @@ export default function TradingViewReplayChart(props) {
           setInterval: value => { if (!cancelled && adapter.supported.includes(value)) { latest.current.onOrderDragStart(); chart.setResolution(value) } },
           setType: value => { if (!cancelled) { latest.current.onOrderDragStart(); chart.setChartType(value) } },
           action: value => { if (!cancelled) { latest.current.onOrderDragStart(); chart.executeActionById(value) } },
-          openTree: () => { if (!cancelled) chart.executeActionById('paneObjectTree') },
-          capture: async () => {
+          objects: () => cancelled ? [] : [...chart.getAllStudies().map(item => ({ ...item, kind:'study', visible:chart.getStudyById(item.id).isVisible() })), ...chart.getAllShapes().filter(item => !importedShapes.includes(item.id)).map(item => ({ ...item, kind:'shape', visible:chart.getShapeById(item.id).getProperties().visible !== false }))],
+          objectAction: (item, action) => {
+            if (cancelled) return
+            latest.current.onOrderDragStart()
+            if (action === 'remove') chart.removeEntity(item.id)
+            else if (action === 'visibility') chart.setEntityVisibility(item.id, !item.visible)
+            else if (chart.selection().canBeAddedToSelection(item.id)) chart.selection().set(item.id)
+            if (action !== 'select') scheduleSave()
+            else publishHeader()
+          },
+          capture: async (mode = 'download') => {
             latest.current.onOrderDragStart()
             const generation = latest.current.orderGeneration, cutoff = Number(latest.current.cutoff), resolution = chart.resolution()
             try {
@@ -216,6 +229,12 @@ export default function TradingViewReplayChart(props) {
               const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
               if (cancelled || generation !== latest.current.orderGeneration || cutoff !== Number(latest.current.cutoff) || resolution !== chart.resolution()) { if (!cancelled) setMessage('Chart đã đổi; chụp lại tại mốc mới.'); return }
               if (!blob) throw new Error('Không tạo được ảnh PNG.')
+              if (mode === 'copy') {
+                if (!navigator.clipboard?.write || !window.ClipboardItem) throw new Error(t('Trình duyệt chưa hỗ trợ sao chép ảnh.'))
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+                if (!cancelled) setMessage('Đã sao chép ảnh chart.')
+                return
+              }
               const url = URL.createObjectURL(blob), link = document.createElement('a')
               link.href = url; link.download = `WMReplay-${symbol}-${resolution}-cutoff-${cutoff}.png`; link.click()
               setTimeout(() => URL.revokeObjectURL(url), 1000)
@@ -234,18 +253,20 @@ export default function TradingViewReplayChart(props) {
           nativeHeader = headerSlots.market.ownerDocument.querySelector('.layout__area--top')
           nativeHeader.addEventListener('pointerdown', pauseNative, true)
           nativeHeader.addEventListener('keydown', pauseNative, true)
+          nativeHeader.ownerDocument.addEventListener('keydown', saveShortcut, true)
+          document.addEventListener('keydown', saveShortcut, true)
           headerObserver = new ResizeObserver(publishHeader)
           headerObserver.observe(host.current)
           publishHeader()
         })
-        chart.onIntervalChanged().subscribe(null, publishHeader)
-        chart.onChartTypeChanged().subscribe(null, publishHeader)
+        chart.onIntervalChanged().subscribe(null, value => { publishHeader(value); scheduleSave() })
+        chart.onChartTypeChanged().subscribe(null, () => { publishHeader(); scheduleSave() })
         publishHeader()
         chart.dataReady(ready)
       })
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
-      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); headerObserver?.disconnect(); nativeHeader?.removeEventListener('pointerdown', pauseNative, true); nativeHeader?.removeEventListener('keydown', pauseNative, true); instance.current = null
+      cancelled = true; layoutSave?.dispose(); clearTimeout(loadingTimer); headerObserver?.disconnect(); nativeHeader?.removeEventListener('pointerdown', pauseNative, true); nativeHeader?.removeEventListener('keydown', pauseNative, true); nativeHeader?.ownerDocument.removeEventListener('keydown', saveShortcut, true); document.removeEventListener('keydown', saveShortcut, true); instance.current = null
       latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }
@@ -272,6 +293,7 @@ export default function TradingViewReplayChart(props) {
         item.widget.applyOverrides(paneAppearance(theme))
         applyVolumeAppearance(item.widget, item.chart, theme)
         item.refresh(); item.importAnnotations()
+        item.scheduleSave()
       }
     })
   }, [theme])

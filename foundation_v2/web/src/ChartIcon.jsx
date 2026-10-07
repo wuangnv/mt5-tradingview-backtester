@@ -1,6 +1,7 @@
 import React from 'react'
 
 const paths = {
+  download: 'M12 3v12M7 10l5 5 5-5M4 16v5h16v-5', copy: 'M8 8h13v13H8zM16 8V3H3v13h5', lock: 'M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5zM12 14v3', trash: 'M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7',
   'place-order': 'M12 8v8M8 12h8M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
   'arrow-left': 'M20 12H4M10 6l-6 6 6 6', down: 'm6 9 6 6 6-6',
   undo: 'M9 4 3 10l6 6M3 10h10a7 7 0 0 1 7 7', redo: 'm15 4 6 6-6 6M21 10H11a7 7 0 0 0-7 7',
@@ -21,7 +22,7 @@ const paths = {
   fit: 'M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5',
   play: 'm9 5 11 7-11 7z', pause: 'M8 5v14M16 5v14',
   step: 'm6 5 10 7-10 7zM19 5v14', back: 'm16 5-10 7 10 7zM4 5v14',
-  order: 'M12 4v16M4 12h16', journal: 'M6 3h13v18H6zM3 7h5M3 12h5M3 17h5M11 8h4M11 12h4',
+  order: 'M12 4v16M4 12h16', journal: 'M4 3h16v14H4zM4 21h16M8 7h8M8 11h5',
   analytics: 'M4 4v16h16M8 15v-4M12 15V7M16 15V9',
   data: 'M3 5h18v14H3zM3 9h18M9 5v14',
   info: 'M12 11v6M12 7h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',

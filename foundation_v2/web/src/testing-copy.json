@@ -5201,5 +5201,197 @@
   "Không có lệnh trong mục này.": { "vi": "Không có lệnh trong mục này.", "en": "No positions in this section." },
   "Chưa có dữ liệu lệnh tại cutoff này.": { "vi": "Chưa có dữ liệu lệnh tại cutoff này.", "en": "Position data is unavailable at this cutoff." },
   "Scalper mode": { "vi": "Scalper mode", "en": "Scalper mode" },
-  "{speed}× mỗi giây": { "vi": "{speed}× mỗi giây", "en": "{speed}x per sec" }
+  "{speed}× mỗi giây": { "vi": "{speed}× mỗi giây", "en": "{speed}x per sec" },
+  "Đã lưu mọi thay đổi": {
+    "vi": "Đã lưu mọi thay đổi",
+    "en": "All changes saved"
+  },
+  "Thử lưu lại chart": {
+    "vi": "Thử lưu lại chart",
+    "en": "Retry saving chart"
+  },
+  "Lưu trên trình duyệt này": {
+    "vi": "Lưu trên trình duyệt này",
+    "en": "Saved on this browser"
+  },
+  "Lưu layout": {
+    "vi": "Lưu layout",
+    "en": "Save layout"
+  },
+  "Tạo bản sao…": {
+    "vi": "Tạo bản sao…",
+    "en": "Make a copy…"
+  },
+  "Đổi tên…": {
+    "vi": "Đổi tên…",
+    "en": "Rename…"
+  },
+  "Mở layout…": {
+    "vi": "Mở layout…",
+    "en": "Open layout…"
+  },
+  "Layout lưu trên trình duyệt này. Quản lý nhiều layout chưa khả dụng.": {
+    "vi": "Layout lưu trên trình duyệt này. Quản lý nhiều layout chưa khả dụng.",
+    "en": "Layouts are saved on this browser. Managing multiple layouts is not available yet."
+  },
+  "Ảnh chart": {
+    "vi": "Ảnh chart",
+    "en": "Chart snapshot"
+  },
+  "Tải ảnh": {
+    "vi": "Tải ảnh",
+    "en": "Download image"
+  },
+  "Sao chép ảnh": {
+    "vi": "Sao chép ảnh",
+    "en": "Copy image"
+  },
+  "Trình duyệt chưa hỗ trợ sao chép ảnh.": {
+    "vi": "Trình duyệt chưa hỗ trợ sao chép ảnh.",
+    "en": "This browser does not support copying images."
+  },
+  "Đã sao chép ảnh chart.": {
+    "vi": "Đã sao chép ảnh chart.",
+    "en": "Chart image copied."
+  },
+  "biểu đồ": {
+    "vi": "biểu đồ",
+    "en": "charts"
+  },
+  "Một biểu đồ": {
+    "vi": "Một biểu đồ",
+    "en": "One chart"
+  },
+  "Chưa hỗ trợ nhiều chart trong một layout": {
+    "vi": "Chưa hỗ trợ nhiều chart trong một layout",
+    "en": "Multiple charts in one layout are not supported yet"
+  },
+  "Đồng bộ trong layout": {
+    "vi": "Đồng bộ trong layout",
+    "en": "Sync in layout"
+  },
+  "Khoảng ngày": {
+    "vi": "Khoảng ngày",
+    "en": "Date range"
+  },
+  "Hiện hỗ trợ một chart; bố cục nhiều chart chưa khả dụng.": {
+    "vi": "Hiện hỗ trợ một chart; bố cục nhiều chart chưa khả dụng.",
+    "en": "One chart is supported; multiple-chart layouts are not available yet."
+  },
+  "Đặt lệnh": {
+    "vi": "Đặt lệnh",
+    "en": "Place Order"
+  },
+  "Chưa hỗ trợ preset": {
+    "vi": "Chưa hỗ trợ preset",
+    "en": "Presets are not available yet"
+  },
+  "Preset": {
+    "vi": "Preset",
+    "en": "Preset"
+  },
+  "Loại lệnh": {
+    "vi": "Loại lệnh",
+    "en": "Type"
+  },
+  "Giá vào lệnh": {
+    "vi": "Giá vào lệnh",
+    "en": "Entry Price"
+  },
+  "Chưa hỗ trợ tự dời SL về hòa vốn": {
+    "vi": "Chưa hỗ trợ tự dời SL về hòa vốn",
+    "en": "Auto Break-even is not supported yet"
+  },
+  "Sắp có": {
+    "vi": "Sắp có",
+    "en": "Coming soon"
+  },
+  "Mặc định của phiên": {
+    "vi": "Mặc định của phiên",
+    "en": "Session default"
+  },
+  "+ Tạo chiến lược mới": {
+    "vi": "+ Tạo chiến lược mới",
+    "en": "+ Create new strategy"
+  },
+  "Thay đổi TP/SL áp dụng từ nến tiếp theo.": {
+    "vi": "Thay đổi TP/SL áp dụng từ nến tiếp theo.",
+    "en": "TP/SL changes apply from the next candle."
+  },
+  "Market được queue và khớp ở nến tiếp theo; giá trên là giá tham chiếu.": {
+    "vi": "Market được queue và khớp ở nến tiếp theo; giá trên là giá tham chiếu.",
+    "en": "Market orders are queued and filled on the next candle; the price above is a reference."
+  },
+  "Mở nhật ký sau khi đặt lệnh": {
+    "vi": "Mở nhật ký sau khi đặt lệnh",
+    "en": "Open journal after placing an order"
+  },
+  "Đầu ngày kế tiếp": {
+    "vi": "Đầu ngày kế tiếp",
+    "en": "Next Day Open"
+  },
+  "Tin tức kế tiếp": {
+    "vi": "Tin tức kế tiếp",
+    "en": "Next News Event"
+  },
+  "Phiên kế tiếp": {
+    "vi": "Phiên kế tiếp",
+    "en": "Next Session"
+  },
+  "Chưa có điều hướng này cho dataset": {
+    "vi": "Chưa có điều hướng này cho dataset",
+    "en": "This navigation is not available for this dataset"
+  },
+  "Chỉ điều hướng trong dữ liệu đã mở.": {
+    "vi": "Chỉ điều hướng trong dữ liệu đã mở.",
+    "en": "Navigate only within revealed data."
+  },
+  "Đóng nhật ký": {
+    "vi": "Đóng nhật ký",
+    "en": "Close journal panel"
+  },
+  "Mở trang nhật ký": {
+    "vi": "Mở trang nhật ký",
+    "en": "Open journal page"
+  },
+  "Tìm giao dịch": {
+    "vi": "Tìm giao dịch",
+    "en": "Search trades"
+  },
+  "Không tìm thấy giao dịch": {
+    "vi": "Không tìm thấy giao dịch",
+    "en": "No matching trades"
+  },
+  "Chưa có giao dịch đã đóng": {
+    "vi": "Chưa có giao dịch đã đóng",
+    "en": "No closed trades here yet"
+  },
+  "Khoảng trước": {
+    "vi": "Khoảng trước",
+    "en": "Previous period"
+  },
+  "Khoảng sau": {
+    "vi": "Khoảng sau",
+    "en": "Next period"
+  },
+  "Ẩn": {
+    "vi": "Ẩn",
+    "en": "Hide"
+  },
+  "Hiện": {
+    "vi": "Hiện",
+    "en": "Show"
+  },
+  "Chưa có indicator hoặc drawing": {
+    "vi": "Chưa có indicator hoặc drawing",
+    "en": "No indicators or drawings yet"
+  },
+  "Simulator hiện yêu cầu cả SL và TP.": {
+    "vi": "Simulator hiện yêu cầu cả SL và TP.",
+    "en": "The simulator currently requires both SL and TP."
+  },
+  "Khối lượng (quantity)": {
+    "vi": "Khối lượng (quantity)",
+    "en": "Position Size (Quantity)"
+  }
 }

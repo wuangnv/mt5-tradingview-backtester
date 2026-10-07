@@ -1,0 +1,16 @@
+{
+  "scope": "Final focused popup anchorlost resize regression",
+  "checks": [
+    "768 overflow Layout→1710 anchorloss closes + visible iframefocus + unchangedcutoff"
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorBlocked": [],
+  "focus": {
+    "tag": "BUTTON",
+    "class": "",
+    "text": "New Layout",
+    "width": 89.28125
+  },
+  "pass": true
+}
