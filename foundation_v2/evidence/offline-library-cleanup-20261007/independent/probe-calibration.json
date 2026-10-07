@@ -1,0 +1,201 @@
+{
+  "cases": [
+    {
+      "name": "empty-dark-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "top": 100.734375,
+        "bottom": 886.265625,
+        "viewport": 360,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 723,
+        "bodyClientHeight": 723
+      },
+      "pass": false,
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await page.locator('dialog[open]').evaluate(e=>e.contains(document.activeElement)))\n"
+    },
+    {
+      "name": "empty-dark-1428",
+      "geometry": {
+        "left": 234,
+        "right": 1194,
+        "top": 261.078125,
+        "bottom": 725.921875,
+        "viewport": 1428,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 394,
+        "bodyClientHeight": 394
+      },
+      "pass": false,
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await page.locator('dialog[open]').evaluate(e=>e.contains(document.activeElement)))\n"
+    },
+    {
+      "name": "empty-light-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "top": 100.734375,
+        "bottom": 886.265625,
+        "viewport": 360,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 723,
+        "bodyClientHeight": 723
+      },
+      "pass": false,
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await page.locator('dialog[open]').evaluate(e=>e.contains(document.activeElement)))\n"
+    },
+    {
+      "name": "empty-light-1428",
+      "geometry": {
+        "left": 234,
+        "right": 1194,
+        "top": 261.078125,
+        "bottom": 725.921875,
+        "viewport": 1428,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 394,
+        "bodyClientHeight": 394
+      },
+      "pass": false,
+      "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await page.locator('dialog[open]').evaluate(e=>e.contains(document.activeElement)))\n"
+    },
+    {
+      "name": "details-dark-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "top": 24,
+        "bottom": 963,
+        "viewport": 360,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 983,
+        "bodyClientHeight": 848
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "details-light-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "top": 24,
+        "bottom": 963,
+        "viewport": 360,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 983,
+        "bodyClientHeight": 848
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "pending-dark-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "top": 24,
+        "bottom": 963,
+        "viewport": 360,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 983,
+        "bodyClientHeight": 848
+      },
+      "interceptedWrites": [
+        "/api/v2/data/csv/preview",
+        "/api/v2/data/csv/import"
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/preview"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/import"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "pending-light-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "top": 24,
+        "bottom": 963,
+        "viewport": 360,
+        "pageOverflow": 0,
+        "bodyOverflow": 0,
+        "bodyScrollHeight": 983,
+        "bodyClientHeight": 848
+      },
+      "interceptedWrites": [
+        "/api/v2/data/csv/preview",
+        "/api/v2/data/csv/import"
+      ],
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/preview"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/csv/import"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "error-dark-360",
+      "pass": false,
+      "failure": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.data-library-count') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "error-light-360",
+      "pass": false,
+      "failure": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.data-library-count') to be visible\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": false,
+  "hashes": {
+    "DataDeskWorkspace.jsx": "b2349f7f73dda4280c43f4dc0c0b58dd3ee4c67f19cc762441f2ddb9cf0043fb",
+    "data-library.css": "a55275216b2f900187e351cbea2370c3a234d9f4bdc384cc1a1abcc52a656653"
+  }
+}

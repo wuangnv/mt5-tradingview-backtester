@@ -1,0 +1,90 @@
+{
+  "cases": [
+    {
+      "name": "real-empty-dark-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "width": 360,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "real-empty-dark-1428",
+      "geometry": {
+        "left": 234,
+        "right": 1194,
+        "width": 1428,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "real-empty-light-360",
+      "geometry": {
+        "left": 16,
+        "right": 344,
+        "width": 360,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "real-empty-light-1428",
+      "geometry": {
+        "left": 234,
+        "right": 1194,
+        "width": 1428,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-detail-filter-create-link",
+      "traffic": [
+        "GET /api/v2/data/datasets",
+        "GET /api/v2/data/datasets",
+        "GET /api/v2/playbooks",
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-error-import-remains-accessible",
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-import-pending-close-and-refresh",
+      "traffic": [
+        "GET /api/v2/data/datasets",
+        "POST /api/v2/data/csv/preview",
+        "POST /api/v2/data/csv/import",
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

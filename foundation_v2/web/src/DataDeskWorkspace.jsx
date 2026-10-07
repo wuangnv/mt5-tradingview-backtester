@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   datasetRange,
   fetchDatasets,
-  fetchProviders,
   formatNumber,
   formatUtc,
   holdoutLabel,
@@ -129,7 +128,30 @@ function LocalCsvQualityReport({ preview }) {
   )
 }
 
-function LocalCsvImport({ workspace, onImported }) {
+function DataLibraryDialog({ title, busy = false, onClose, children }) {
+  const { t } = useTestingLocale()
+  const id = useId(), dialog = useRef(null), opener = useRef(document.activeElement)
+  useEffect(() => {
+    const element = dialog.current
+    element.showModal()
+    element.querySelector('input[type=file]')?.focus()
+    return () => {
+      element.close()
+      if (opener.current?.isConnected) opener.current.focus({ preventScroll:true })
+    }
+  }, [])
+  const close = () => { if (!busy) onClose() }
+  return <dialog ref={dialog} className="data-library-dialog" aria-labelledby={id} aria-busy={busy} onCancel={event => { event.preventDefault(); close() }} onClick={event => {
+    if (event.target !== dialog.current) return
+    const bounds = dialog.current.getBoundingClientRect()
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close()
+  }}>
+    <header className="data-library-dialog-header"><h2 id={id}>{t(title)}</h2><button type="button" className="rd-button" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button></header>
+    <div className="data-library-dialog-body">{children}</div>
+  </dialog>
+}
+
+function LocalCsvImport({ workspace, onImported, onBusyChange }) {
   const { t } = useTestingLocale()
   const [form, setForm] = useState(DEFAULT_IMPORT_FORM)
   const [retrievedAtUtc, setRetrievedAtUtc] = useState(() => new Date().toISOString())
@@ -138,6 +160,7 @@ function LocalCsvImport({ workspace, onImported }) {
   const previewReady = upload.status === 'previewed' && upload.preview && upload.payload
   const canImport = Boolean(previewReady && upload.preview.quality?.disposition !== 'missing_data' && reviewAccepted)
   const busy = upload.status === 'reading' || upload.status === 'previewing' || upload.status === 'importing'
+  useEffect(() => { onBusyChange(busy) }, [busy, onBusyChange])
 
   function invalidatePreview(next = {}) {
     setUpload((current) => ({
@@ -291,16 +314,16 @@ function LocalCsvImport({ workspace, onImported }) {
 export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(window.location.search), preview }) {
   const { t, fmt, locale } = useTestingLocale()
   const requestedDataset = query.get('dataset') || ''
-  const [state, setState] = useState({ status: 'loading', datasets: [], providers: [], error: null })
+  const [state, setState] = useState({ status: 'loading', datasets: [], error: null })
   const [selectedId, setSelectedId] = useState(requestedDataset)
   const [providerFilter, setProviderFilter] = useState('all')
   const [search, setSearch] = useState(''), [page, setPage] = useState(1), [pageSize, setPageSize] = useState(25)
   const [detailsOpen, setDetailsOpen] = useState(Boolean(requestedDataset)), [creatingDataset, setCreatingDataset] = useState(null)
   const [catalogRevision, setCatalogRevision] = useState(0)
   const [catalogRetryCount, setCatalogRetryCount] = useState(0)
+  const [csvOpen, setCsvOpen] = useState(false), [csvBusy, setCsvBusy] = useState(false)
   const catalogRequestSeq = useRef(0)
   const catalogRetryCountRef = useRef(0)
-  const csvDisclosure = useRef(null)
 
   useEffect(() => {
     catalogRetryCountRef.current = 0
@@ -309,26 +332,24 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
 
   useEffect(() => {
     if (preview) {
-      setState({ status:'ready', datasets:preview.datasets, providers:preview.providers, error:null })
+      setState({ status:'ready', datasets:preview.datasets, error:null })
       setSelectedId(current => current || preview.datasets[0]?.dataset_id || '')
       return
     }
     const controller = new AbortController()
     const requestSeq = ++catalogRequestSeq.current
     setState((current) => ({ ...current, status: 'loading', error: null }))
-    Promise.allSettled([fetchDatasets(workspace, controller.signal), fetchProviders(workspace, controller.signal)])
-      .then(([datasetResult, providerResult]) => {
+    fetchDatasets(workspace, controller.signal)
+      .then(datasets => {
         if (requestSeq !== catalogRequestSeq.current) return
-        if (datasetResult.status === 'rejected') throw datasetResult.reason
-        const datasets = datasetResult.value, providers = providerResult.status === 'fulfilled' ? providerResult.value : []
-        setState({ status: 'ready', datasets, providers, error: null, providerError: providerResult.status === 'rejected' ? providerResult.reason.message : null })
+        setState({ status: 'ready', datasets, error: null })
         catalogRetryCountRef.current = 0
         setCatalogRetryCount(0)
         setSelectedId((current) => current || datasets[0]?.dataset_id || '')
       })
       .catch((error) => {
         if (error.name !== 'AbortError' && requestSeq === catalogRequestSeq.current) {
-          setState({ status: 'error', datasets: [], providers: [], error: String(error.message || error) })
+          setState({ status: 'error', datasets: [], error: String(error.message || error) })
         }
       })
     return () => controller.abort()
@@ -343,7 +364,6 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
 
   const catalogRetryExhausted = catalogRetryCount >= MAX_GET_RETRIES
 
-  const providers = state.providers
   const sources = [...new Set(state.datasets.map(item => item.source?.provider || item.provider_id).filter(Boolean))].sort()
   const filteredDatasets = useMemo(() => state.datasets.filter(item => (providerFilter === 'all' || (item.source?.provider || item.provider_id) === providerFilter)
     && `${item.instrument_id} ${item.timeframe} ${item.source?.provider || ''}`.toLowerCase().includes(search.toLowerCase())), [providerFilter, search, state.datasets])
@@ -352,11 +372,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const pageItems = filteredDatasets.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   useEffect(() => setPage(1), [providerFilter, search, pageSize])
 
-  const openCsv = () => {
-    csvDisclosure.current.open = true
-    csvDisclosure.current.scrollIntoView({ block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
-    csvDisclosure.current.querySelector('input[type=file]')?.focus({ preventScroll:true })
-  }
+  const openCsv = () => { setCsvBusy(false); setCsvOpen(true) }
 
   return (
     <section className="rd-shell wm-page data-library" data-testid="data-desk-root" aria-label={t('Market Data')}>
@@ -372,7 +388,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <div>
           <section className="rd-panel" aria-label="Dataset catalog">
             {filteredDatasets.length === 0 ? (
-              <div className="rd-message is-empty" data-testid="data-desk-empty">{t(state.datasets.length ? 'Không có dữ liệu phù hợp bộ lọc.' : 'Chưa có dữ liệu offline. Nhập CSV để bắt đầu.')}</div>
+              state.datasets.length > 0 && <div className="rd-message is-empty" data-testid="data-desk-empty">{t('Không có dữ liệu phù hợp bộ lọc.')}</div>
             ) : (
               <div className="rd-table-wrap" tabIndex={0} role="region" aria-label={t('Dữ liệu đã có')}>
                 <table className="rd-table" data-testid="data-desk-dataset-table">
@@ -396,46 +412,17 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                 </table>
               </div>
             )}
-            <nav className="data-library-paging" aria-label={t('Phân trang kho dữ liệu')}><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10,25,50].map(value => ({value,label:String(value)}))} /><div><button type="button" className="rd-button" aria-label={t('Trang trước')} disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</button><span>{currentPage} / {pages}</span><button type="button" className="rd-button" aria-label={t('Trang sau')} disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>›</button></div></nav>
+            {filteredDatasets.length > 0 && <nav className="data-library-paging" aria-label={t('Phân trang kho dữ liệu')}><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10,25,50].map(value => ({value,label:String(value)}))} /><div><button type="button" className="rd-button" aria-label={t('Trang trước')} disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</button><span>{currentPage} / {pages}</span><button type="button" className="rd-button" aria-label={t('Trang sau')} disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>›</button></div></nav>}
             {requestedDataset && !selected && <p role="status">{t('Dataset trong đường dẫn chưa có trong kho này. Hãy chọn dữ liệu khác.')}</p>}
-            <details className="data-library-disclosure" open={detailsOpen} onToggle={event => setDetailsOpen(event.currentTarget.open)}><summary>{t('Chi tiết dữ liệu và chất lượng')}{selected && <span>{selected.instrument_id} · {selected.timeframe}</span>}</summary><DatasetDetails dataset={selected} workspace={workspace} query={query} /></details>
           </section>
 
-          <details className="data-library-disclosure"><summary>{t('Nguồn dữ liệu và quyền truy cập')}</summary><section className="rd-panel" aria-label="Provider capabilities">
-            {state.providerError && <p role="status">{t('Chưa đọc được thông tin nguồn. Dữ liệu đã lưu vẫn dùng được.')}</p>}
-            <div className="rd-panel-head"><div><h2>Provider capabilities</h2><p>Capability khai báo không đồng nghĩa đã có quyền đọc history hoặc holdout.</p></div></div>
-            {providers.length === 0 ? <div className="rd-message is-empty">Chưa có provider capability nào.</div> : (
-              <div className="rd-provider-list">
-                {providers.map((provider) => {
-                  const capabilities = provider.capabilities || {}
-                  const readiness = provider.readiness || {}
-                  const available = Object.entries(capabilities).filter(([, value]) => value === true).map(([key]) => key)
-                  const blocked = Object.entries(capabilities).filter(([, value]) => value !== true).map(([key]) => key)
-                  const readinessLabel = readiness.production_ready ? 'Production đã xác minh' : 'Chưa đủ điều kiện production'
-                  return (
-                    <div className="rd-provider-row" key={provider.provider_id}>
-                      <div>
-                        <strong>{provider.provider_id}</strong>
-                        <small>{available.length ? `Có: ${available.join(', ')}` : 'Không có capability đọc được khai báo'}</small>
-                        <small className="rd-provider-readiness">{readiness.connection_mode || 'offline'} · entitlement: {readiness.entitlement_status || 'unverified'}</small>
-                      </div>
-                      <div className={`rd-provider-state ${readiness.production_ready ? 'is-ready' : 'is-blocked'}`}>
-                        <span>{readinessLabel}</span>
-                        <small>{readiness.network_access ? 'Network declared' : 'Offline / no network'}</small>
-                      </div>
-                      <div className={`rd-capability ${blocked.length ? 'is-blocked' : ''}`}>{blocked.length ? `Khóa: ${blocked.join(', ')}` : 'Đã khai báo'}</div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-            <div className="rd-warning-block"><strong>Quy tắc an toàn</strong><ul><li>Local CSV import chỉ tạo artifact immutable trong workspace hiện tại.</li><li>Không mở holdout, không gọi provider ngoài và không gửi lệnh broker.</li><li>Dataset chưa verified vẫn phải gắn nhãn trước khi dùng.</li></ul></div>
-          </section></details>
         </div>
       )}
-      <details ref={csvDisclosure} className="data-library-disclosure"><summary><TestingIcon kind="upload" />{t('Nhập dữ liệu từ CSV')}</summary>{preview ? <p>{t('Dữ liệu mẫu chỉ để xem giao diện. Chuyển về dữ liệu thật để nhập CSV.')}</p> : <LocalCsvImport
+      {csvOpen && <DataLibraryDialog title="Nhập CSV" busy={csvBusy} onClose={() => setCsvOpen(false)}><LocalCsvImport
         workspace={workspace}
+        onBusyChange={setCsvBusy}
         onImported={(dataset) => {
+          setCsvOpen(false)
           setSelectedId(dataset?.dataset_id || '')
           setSearch('')
           setProviderFilter('all')
@@ -443,7 +430,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           setDetailsOpen(true)
           setCatalogRevision((current) => current + 1)
         }}
-      />}</details>
+      /></DataLibraryDialog>}
+      {detailsOpen && selected && !csvOpen && <DataLibraryDialog title="Chi tiết dữ liệu và chất lượng" onClose={() => setDetailsOpen(false)}><DatasetDetails dataset={selected} workspace={workspace} query={query} /></DataLibraryDialog>}
       {creatingDataset && <QuickSessionDialog workspace={workspace} query={query} initialDataset={creatingDataset} onClose={() => setCreatingDataset(null)} />}
     </section>
   )
