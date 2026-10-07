@@ -1,0 +1,92 @@
+{
+  "scope": "Actual replay GET; labeled activity fixture POST; local chart state only",
+  "cases": [
+    {
+      "engine": "advanced",
+      "theme": "dark",
+      "width": 360,
+      "language": "en",
+      "checks": [
+        {
+          "theme": "dark",
+          "colors": true,
+          "logoDisabled": true
+        },
+        {
+          "theme": "light",
+          "colors": true,
+          "logoDisabled": true
+        },
+        {
+          "theme": "light",
+          "colors": true,
+          "logoDisabled": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "engine": "advanced",
+      "theme": "light",
+      "width": 1710,
+      "language": "vi",
+      "checks": [
+        {
+          "theme": "light",
+          "colors": true,
+          "logoDisabled": true
+        },
+        {
+          "theme": "dark",
+          "colors": true,
+          "logoDisabled": true
+        },
+        {
+          "theme": "dark",
+          "colors": true,
+          "logoDisabled": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "engine": "lightweight",
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "checks": [
+        {
+          "theme": "dark",
+          "canvasExactPixels": {
+            "background": 1251775,
+            "up": 18366,
+            "down": 16973
+          },
+          "logoAbsent": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "engine": "lightweight",
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "checks": [
+        {
+          "theme": "light",
+          "canvasExactPixels": {
+            "background": 208232,
+            "up": 6149,
+            "down": 5207
+          },
+          "logoAbsent": true
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

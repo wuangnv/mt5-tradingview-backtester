@@ -1,19 +1,9 @@
 /* Application-owned iframe styles; vendor files stay untouched. */
-@import url('./project-palette.css');
 :root {
-  --legacy-text: var(--project-text); --legacy-muted: var(--project-muted); --legacy-hover: var(--project-hover);
-  --tv-color-platform-background: var(--project-chrome);
-  --tv-color-pane-background: var(--project-canvas);
-  --tv-color-toolbar-button-background-hover: var(--project-hover);
-  --tv-color-toolbar-button-background-expanded: var(--project-control);
-  --tv-color-toolbar-button-background-active: var(--project-control);
-  --tv-color-toolbar-button-text: var(--project-muted);
-  --tv-color-toolbar-button-text-hover: var(--project-text);
-  --tv-color-toolbar-button-text-active: var(--project-primary);
-  --tv-color-toolbar-button-text-active-hover: var(--project-primary-hover);
-  --tv-color-item-active-text: var(--project-primary);
+  --legacy-text: #131722; --legacy-muted: #787b86; --legacy-hover: #f0f3fa;
+  --legacy-active: #2962ff;
 }
-.theme-dark [data-name='auto'], .theme-dark [data-name='logarithm'], .theme-dark [data-name='percentage'] { color: var(--project-muted); }
+.theme-dark { --legacy-text: #b2b5be; --legacy-muted: #9598a1; --legacy-hover: #2a2e39; }
 .legacy-market-host, .legacy-session-host { display: flex; align-items: center; height: 36px; padding: 0 2px; color: var(--legacy-text); font: 12px Arial, sans-serif; }
 .legacy-market-group { order: -1; }
 .legacy-header-identity, .legacy-header-session { display: flex; align-items: center; gap: 4px; }
@@ -21,7 +11,7 @@
 .legacy-header-identity :is(a,button):hover, .legacy-header-session button:hover { background: var(--legacy-hover); }
 .legacy-header-identity svg, .legacy-header-session svg { width: 16px; height: 16px; }
 .legacy-header-session strong { font-weight: 500; font-style: italic; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.legacy-header-session [data-testid='replay-status'] { font-size: 10px; color: var(--legacy-muted); }
-.legacy-header-identity :is(a,button):focus-visible, .legacy-header-session button:focus-visible { outline: 2px solid var(--project-primary); outline-offset: -2px; }
+.legacy-header-session [data-testid='replay-status'] { font-size: 12px; color: var(--legacy-muted); }
+.legacy-header-identity :is(a,button):focus-visible, .legacy-header-session button:focus-visible { outline: 2px solid var(--legacy-active); outline-offset: -2px; }
 @media (max-width: 1100px) { .legacy-header-session strong, .legacy-header-session [data-testid='replay-status'] { display: none; } }
 @media (max-width: 600px) { .legacy-header-identity button { padding: 0 4px; } .legacy-session-host { display: none; } }

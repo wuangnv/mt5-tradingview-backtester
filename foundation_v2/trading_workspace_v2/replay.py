@@ -27,6 +27,7 @@ from .replay_execution import (
     replay_event_for_snapshot,
 )
 from .store import PostgresStore
+from .replay_activity import new_timing, validate_activity
 from .tick_history import TickHistoryStore
 
 
@@ -55,6 +56,7 @@ class ReplayService:
             "parent_session_id": None,
             "parent_revision": None,
             "status": "paused",
+            "timing": new_timing(),
         }
         record = self.store.create_record(workspace_id, "replay", payload)
         return self.view(workspace_id, record["record_id"])
@@ -371,6 +373,10 @@ class ReplayService:
             "execution_view_status": execution_view_status,
         }
 
+    def record_activity(self, workspace_id, session_id, body):
+        start, end = validate_activity(body)
+        return self.store.record_replay_activity(workspace_id, session_id, body.event_id, start, end)
+
     def step(self, workspace_id: str, session_id: str, expected_revision: int, steps: int = 1) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
@@ -381,6 +387,9 @@ class ReplayService:
         _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
         current_cursor = int(payload["cursor_index"])
         cursor = min(len(rows) - 1, current_cursor + int(steps))
+        timing = dict(payload.get("timing") or new_timing(legacy_baseline=True))
+        timing["historical_time_replayed_seconds"] += max(0, int(rows[cursor]["timestamp"]) - int(rows[current_cursor]["timestamp"]))
+        payload["timing"] = timing
         execution = self._execution_snapshot(payload)
         execution_events: list[dict] = []
         if execution is not None:
@@ -501,6 +510,7 @@ class ReplayService:
             "parent_session_id": session_id,
             "parent_revision": int(expected_revision),
             "status": "paused",
+            "timing": new_timing(),
         }
         current_execution = self._execution_snapshot(record["payload"])
         if current_execution is not None:

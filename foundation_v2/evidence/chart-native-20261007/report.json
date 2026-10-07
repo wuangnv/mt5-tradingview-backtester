@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "checks": [
+    "1710: actual dark native candles/background and widget_logo disabled",
+    "1710: saved layout restores native colors and keeps interval/drawing/Volume",
+    "1710: theme toggle/reload native light",
+    "768: actual dark native candles/background and widget_logo disabled",
+    "768: saved layout restores native colors and keeps interval/drawing/Volume",
+    "768: theme toggle/reload native light",
+    "390: actual dark native candles/background and widget_logo disabled",
+    "390: saved layout restores native colors and keeps interval/drawing/Volume",
+    "390: theme toggle/reload native light"
+  ],
+  "errors": [],
+  "blocked": [
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity"
+    }
+  ]
+}

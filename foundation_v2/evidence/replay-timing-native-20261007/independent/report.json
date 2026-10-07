@@ -1,0 +1,99 @@
+{
+  "scope": "Actual localhost GET; labeled activity POST fixtures only; no persisted writes",
+  "cases": [
+    {
+      "name": "same-key-teardown-inflight",
+      "before": [
+        {
+          "event_id": "32ce0d7f-616b-4d06-bb55-ea8d97c77835",
+          "started_at_utc": "2026-10-07T04:53:10.470Z",
+          "ended_at_utc": "2026-10-07T04:53:20.470Z"
+        },
+        {
+          "event_id": "304f40b2-f0a0-415b-aab1-09a420d5a1ef",
+          "started_at_utc": "2026-10-07T04:53:20.470Z",
+          "ended_at_utc": "2026-10-07T04:53:21.491Z"
+        },
+        {
+          "event_id": "3988e08f-0712-4a78-bb2f-8cc570c3ab02",
+          "started_at_utc": "2026-10-07T04:53:21.502Z",
+          "ended_at_utc": "2026-10-07T04:53:31.502Z"
+        }
+      ],
+      "after": [
+        {
+          "event_id": "32ce0d7f-616b-4d06-bb55-ea8d97c77835",
+          "started_at_utc": "2026-10-07T04:53:10.470Z",
+          "ended_at_utc": "2026-10-07T04:53:20.470Z"
+        },
+        {
+          "event_id": "304f40b2-f0a0-415b-aab1-09a420d5a1ef",
+          "started_at_utc": "2026-10-07T04:53:20.470Z",
+          "ended_at_utc": "2026-10-07T04:53:21.491Z"
+        },
+        {
+          "event_id": "3988e08f-0712-4a78-bb2f-8cc570c3ab02",
+          "started_at_utc": "2026-10-07T04:53:21.502Z",
+          "ended_at_utc": "2026-10-07T04:53:31.502Z"
+        }
+      ],
+      "requests": [
+        {
+          "event_id": "32ce0d7f-616b-4d06-bb55-ea8d97c77835",
+          "started_at_utc": "2026-10-07T04:53:10.470Z",
+          "ended_at_utc": "2026-10-07T04:53:20.470Z"
+        },
+        {
+          "event_id": "32ce0d7f-616b-4d06-bb55-ea8d97c77835",
+          "started_at_utc": "2026-10-07T04:53:10.470Z",
+          "ended_at_utc": "2026-10-07T04:53:20.470Z"
+        },
+        {
+          "event_id": "32ce0d7f-616b-4d06-bb55-ea8d97c77835",
+          "started_at_utc": "2026-10-07T04:53:10.470Z",
+          "ended_at_utc": "2026-10-07T04:53:20.470Z"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "reload-hidden-focus",
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "engine": "advanced",
+      "requests": 5,
+      "pass": true
+    },
+    {
+      "name": "reload-hidden-focus",
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "engine": "advanced",
+      "requests": 6,
+      "pass": true
+    },
+    {
+      "name": "reload-hidden-focus",
+      "theme": "dark",
+      "width": 360,
+      "language": "en",
+      "engine": "lightweight",
+      "requests": 5,
+      "pass": true
+    },
+    {
+      "name": "reload-hidden-focus",
+      "theme": "light",
+      "width": 1710,
+      "language": "vi",
+      "engine": "lightweight",
+      "requests": 6,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

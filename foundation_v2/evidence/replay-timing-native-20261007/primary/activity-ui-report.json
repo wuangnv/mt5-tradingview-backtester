@@ -1,0 +1,27 @@
+{
+  "scope": "Actual replay GET, intercepted activity POST only; no persisted writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "requests": 15,
+      "accepted": 14,
+      "retryEvent": "55e5d9da-c029-47f1-b4b8-f8700cbcffb8",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "requests": 14,
+      "accepted": 13,
+      "retryEvent": "105a7dce-d578-4222-983e-f4015af5c1bc",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorAnalyticsBlocked": [],
+  "pass": true
+}

@@ -1,0 +1,28 @@
+{
+  "scope": "Real hook isolated React mount; activity POST fixture only",
+  "cases": [
+    {
+      "field": "schema_version",
+      "pass": true,
+      "requests": 3
+    },
+    {
+      "field": "event_id",
+      "pass": true,
+      "requests": 3
+    },
+    {
+      "field": "session_id",
+      "pass": true,
+      "requests": 3
+    },
+    {
+      "field": "accepted_seconds",
+      "pass": true,
+      "requests": 3
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "pass": true
+}

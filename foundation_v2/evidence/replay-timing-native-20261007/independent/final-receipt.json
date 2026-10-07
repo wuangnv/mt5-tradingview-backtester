@@ -1,0 +1,111 @@
+{
+  "pass": true,
+  "scope": "Measured replay timing and native chart palette/logo only; independent reviewer",
+  "generatedAt": "2026-10-07T04:57:56.368Z",
+  "browserCases": 13,
+  "activityCases": 5,
+  "nativeCases": 4,
+  "negativeReceiptCases": 4,
+  "independentBackendFocusedTests": {
+    "passed": 9,
+    "databaseCasesDeselected": 1,
+    "command": ".\\foundation_v2\\.venv\\Scripts\\python.exe -m pytest foundation_v2/tests/test_replay_activity.py -q -k \"not real_postgres\""
+  },
+  "independentClockTests": {
+    "passed": 5,
+    "command": "node --test foundation_v2/web/tests/replayActivityClock.test.mjs"
+  },
+  "diffCheck": true,
+  "pageErrors": 0,
+  "unexpectedRequests": 0,
+  "activityPost": "all intercepted, labeled fixtures; zero writes to persisted workspace",
+  "backendDatabaseEvidence": "Root separately ran disposable database integration/regression. Reviewer audited source but did not independently execute DB writes.",
+  "axeScans": 0,
+  "sourcePins": [
+    {
+      "file": "foundation_v2/trading_workspace_v2/api.py",
+      "sha256": "a25ea899072a03b4dea62bae737c8d76247933b34d99e469352cb677414bf7f7"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/contracts.py",
+      "sha256": "398fb97ef626c24fd0a7705adf53a0e80b936eccf566d116923f9fd6fc2c54f4"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/dashboard_read_model.py",
+      "sha256": "61f4d1e9bb01e5eb0bbdc0a5781426ed8a1eab907211d69a4fcacdc87a9e7b66"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/replay.py",
+      "sha256": "caf81d4a4b6dfe437f72aa3bf712aa8c1f792f0139d13557e60c226ce1220002"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/replay_activity.py",
+      "sha256": "7dcf5520c868fb6017c8613a2d9fab5b6ef68dbe16ee1e2ecaa1269b4cbc9270"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/store.py",
+      "sha256": "060bae0f99451c4955b46826ade1f9a579340536d9a51d786619660551840bc4"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "8b7f2b72d608389d794ca2eb4f99814c9c681ebd483928beb746b43d620536b3"
+    },
+    {
+      "file": "foundation_v2/web/src/ReplayWorkspace.jsx",
+      "sha256": "f4db6f1de03732f20f62187f68922ca9147b3468abbbd6396bb5961a2c1be7c8"
+    },
+    {
+      "file": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+      "sha256": "7c71d91ae79136d5c0e9e2cfa9321c63c43f4a3de9dab156547d9000cd5e05e4"
+    },
+    {
+      "file": "foundation_v2/web/src/nativeChartPalette.js",
+      "sha256": "a928b1457facd10e6389c60ff9933469aa87276eac24775cabb45c356ba84351"
+    },
+    {
+      "file": "foundation_v2/web/src/replayActivityClock.js",
+      "sha256": "e7ef840de0447988503eb41f0e55b3e0fbf8938b9f2dfb921d62cbcf7717cddd"
+    },
+    {
+      "file": "foundation_v2/web/src/useReplayActivity.js",
+      "sha256": "8d61820957e5b71a21f5714edb8253c73231d21f40a35f4cd8055678cd38dc5c"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "02949abd13eaeecad1442a546a72f1518defc431ee0dfdef51f6310928011046"
+    },
+    {
+      "file": "foundation_v2/web/public/chart-legacy.css",
+      "sha256": "6b04bcdd412610d42469a76548d927df9b067d97d04ba8d4671d3d7863867f9c"
+    },
+    {
+      "file": "foundation_v2/tests/test_replay_activity.py",
+      "sha256": "c794dcbe1d3c19949ccfbd6cbb9ee5c3c726667e887f8407d9dd5c67ea6708d3"
+    },
+    {
+      "file": "foundation_v2/web/tests/replayActivityClock.test.mjs",
+      "sha256": "0675b8ac731f1c84ca6c29b64116abc971583d4e4ca0f7e90442f626ee94f1c7"
+    },
+    {
+      "file": "ui/project-palette.md",
+      "sha256": "ec808255983bace2fa7f131c10e466eb40722d9add21022e89232250d4d878fd"
+    },
+    {
+      "file": "ui/testing-standard.md",
+      "sha256": "cea1dc84f0607864afc770c75230dea40ea970dcb991c3f026fedaaa93edae5e"
+    },
+    {
+      "file": "ui/workspace-patterns.md",
+      "sha256": "b6eac5ce5dc093415590b064b0627eedde8a55256a07d46bbb56a4963385b888"
+    }
+  ],
+  "findings": [],
+  "resolvedSourceConcern": "Disposed hook may not alter replacement effect outbox; tested held old POST after same-key re-entry with new pending events.",
+  "limitations": [
+    "Focused scope, not whole-product or broker acceptance.",
+    "Hidden/focus flags are deterministic browser getter/event fixtures; no OS minimized-window journey.",
+    "Idle/iframe wake coverage relies on root primary script; reviewer independently ran pure clock tests and reload/hidden/focus browser tests.",
+    "Native vendor colors/logo verified through actual chart layout API/config/screenshots; fallback through exact rendered canvas pixels.",
+    "Legacy missing timer history remains unknown; no inferred backfill."
+  ]
+}

@@ -1,4 +1,5 @@
-import { readProjectPalette, chartSeriesPalette } from './projectPalette.js'
+import { chartSeriesPalette } from './projectPalette.js'
+import { nativeChartPalette } from './nativeChartPalette.js'
 import FxSelect from './FxSelect.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -21,6 +22,7 @@ import ChartIcon from './ChartIcon.jsx'
 import ChartFloatingToolbar from './ChartFloatingToolbar.jsx'
 import ChartOrderPanel, { useChartOrder } from './ChartOrderPanel.jsx'
 import TradingViewReplayChart from './TradingViewReplayChart.jsx'
+import useReplayActivity from './useReplayActivity.js'
 import { orderLevels, marketQuotes } from './replayOrderModel.js'
 import { ReplayOrderPrimitive } from './replayOrderPrimitive.js'
 import './ReplayWorkspace.css'
@@ -92,10 +94,10 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
   useEffect(() => {
     const host = hostRef.current
     if (!host) return undefined
-    const palette = readProjectPalette(host)
+    const palette = nativeChartPalette(theme)
     const chart = createChart(host, {
       width: host.clientWidth, height: host.clientHeight,
-      layout: { background: { color: palette.canvas }, textColor: palette.muted, fontSize: 11 },
+      layout: { background: { color: palette.canvas }, textColor: palette.text, fontSize: 12, attributionLogo: false },
       grid: { vertLines: { color: palette.grid }, horzLines: { color: palette.grid } },
       rightPriceScale: { borderColor: palette.border, scaleMargins: { top: 0.12, bottom: 0.22 } },
       timeScale: { borderColor: palette.border, timeVisible: true, secondsVisible: false, lockVisibleTimeRangeOnResize: true },
@@ -168,9 +170,9 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
 
   useEffect(() => {
     if (!chartRef.current) return
-    const palette = readProjectPalette(hostRef.current)
+    const palette = nativeChartPalette(theme)
     chartRef.current.chart.applyOptions({
-      layout: { background: { color: palette.canvas }, textColor: palette.muted },
+      layout: { background: { color: palette.canvas }, textColor: palette.text },
       grid: { vertLines: { color: palette.grid }, horzLines: { color: palette.grid } },
       rightPriceScale: { borderColor: palette.border }, timeScale: { borderColor: palette.border },
     })
@@ -198,7 +200,7 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
     series.applyOptions({ priceFormat: { type: 'price', precision, minMove: 10 ** -precision } })
     series.setData(chartType === 'candles' || chartType === 'bars' ? data : data.map((row) => ({ time: row.time, value: row.close })))
     if (chartType === 'baseline' && data.length) series.applyOptions({ baseValue: { type: 'price', price: data[0].close } })
-    const palette = readProjectPalette(hostRef.current)
+    const palette = nativeChartPalette(theme)
     volume.setData(rows.filter((row) => (row.volume ?? row.tick_volume) !== null && (row.volume ?? row.tick_volume) !== undefined && Number.isFinite(Number(row.volume ?? row.tick_volume))).map((row) => ({ time: Number(row.timestamp), value: Number(row.volume ?? row.tick_volume), color: Number(row.close) >= Number(row.open) ? `${palette.positive}80` : `${palette.negative}80` })))
     let sum = 0
     const sma = []
@@ -517,6 +519,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const historicalView = Boolean(replay?.historical_view)
   const revision = Number(replay?.revision ?? 0)
   const visibleRows = replay?.visible_rows || []
+  const activityWaiting = useReplayActivity({ workspace, sessionId: replay?.record_id, enabled: Boolean(replay) && state.status !== 'error' && query.get('demo') !== '1' })
   const visibleRowCount = replay?.visible_row_count ?? (replay ? visibleRows.length : null)
   const currentBar = visibleRows.length ? visibleRows[visibleRows.length - 1] : null
   const activeDataset = useMemo(
@@ -918,6 +921,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="chart-trading-account">{advancedChart && <a className="legacy-analytics-link" href={routeHref('analytics', { surface: 'workspace' })}><ChartIcon name="analytics" />{t("Analytics")}</a>}<span>{t("Balance")}<strong>{money(order.execution?.balance, order.costs?.account_ccy)}</strong></span><span>{t("Equity")}<strong>{money(order.execution?.equity, order.costs?.account_ccy)}</strong></span><span>{t("P/L")} <strong>{money(order.execution?.floating_pl, order.costs?.account_ccy)}</strong></span></div>
               </div>
 
+              {activityWaiting && <div className="chart-notice" role="status">{t('Chưa lưu được thời gian luyện tập. Đang thử lại…')}</div>}
               {chartNotice && <div className="chart-notice" role="status">{t(chartNotice)}<button type="button" aria-label={t("Đóng thông báo")} onClick={() => setChartNotice('')}>×</button></div>}
 
               <div className="replay-evidence-strip" role="group" aria-label={t("Bằng chứng chart")}>

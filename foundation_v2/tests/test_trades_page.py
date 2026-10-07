@@ -192,6 +192,9 @@ def test_http_opt_in_unpaged_compatibility_auth_and_date_boundaries(monkeypatch,
         def list_records(self, workspace, kind):
             assert workspace == 'tenant-a'
             return [source] if kind == 'replay' else []
+        def list_replay_activity(self, workspace):
+            assert workspace == 'tenant-a'
+            return []
 
     monkeypatch.setattr(api, 'PostgresStore', FakeStore)
     app = api.create_app(dsn='unused', artifact_root=tmp_path, learn_roots={},

@@ -16,6 +16,13 @@ function Metric({ title, value, detail, icon, children }) {
   return <div className="fx-dashboard-metric"><span title={detail || undefined}><span className="fx-dashboard-metric-icon" aria-hidden="true"><TestingIcon kind={icon} /></span>{t(title)}</span><strong>{value}</strong>{children}{detail && <small>{t(detail)}</small>}</div>
 }
 
+function timingDetail(performance, kind, t) {
+  const scope = performance?.timing_scope
+  if (!scope) return t('Thời gian đã ghi nhận')
+  const measured = scope[`${kind}_measured_session_count`], unknown = scope[`unknown_${kind}_session_count`]
+  return unknown > 0 ? t('{measured}/{total} phiên được ghi nhận', { measured, total: measured + unknown }) : t('Từ khi bật theo dõi · toàn phiên')
+}
+
 function SideSplit({ counts, total }) {
   const { t, locale } = useTestingLocale()
   const buy = counts?.buy, sell = counts?.sell
@@ -97,8 +104,8 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
     {sourceHeading && <h3 className="fx-dashboard-source-heading">{sourceHeading}</h3>}
     <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{t(notice)}</span>}{['error', 'stale'].includes(state.status) && <button type="button" className="fxa-button" onClick={() => setRetry(value => value + 1)}>{t('Thử lại')}</button>}</div>
     {loading ? <TestingSkeleton label="Đang tải Performance…" /> : <><div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">
-      <Metric title={t("Time invested")} value={<Duration seconds={performance?.time_invested_seconds} />} detail={dashboardDurationParts(performance?.time_invested_seconds) ? previewPayload ? t("Thời gian luyện tập mẫu") : t("Thời gian đã ghi nhận") : t("Chưa có dữ liệu thời gian luyện tập")} icon="clock" />
-      <Metric title={t("Historical time replayed")} value={<Duration seconds={performance?.historical_time_replayed_seconds} />} detail={dashboardDurationParts(performance?.historical_time_replayed_seconds) ? previewPayload ? t("Thời gian replay mẫu") : t("Thời gian đã ghi nhận") : t("Chưa có dữ liệu thời gian replay")} icon="history" />
+      <Metric title={t("Time invested")} value={<Duration seconds={performance?.time_invested_seconds} />} detail={dashboardDurationParts(performance?.time_invested_seconds) ? previewPayload ? t("Thời gian luyện tập mẫu") : timingDetail(performance, 'practice', t) : t("Chưa có dữ liệu thời gian luyện tập")} icon="clock" />
+      <Metric title={t("Historical time replayed")} value={<Duration seconds={performance?.historical_time_replayed_seconds} />} detail={dashboardDurationParts(performance?.historical_time_replayed_seconds) ? previewPayload ? t("Thời gian replay mẫu") : timingDetail(performance, 'historical', t) : t("Chưa có dữ liệu thời gian replay")} icon="history" />
       <Metric title={t("Trades taken")} value={dashboardNumber(metrics?.closed_trade_count)} icon="trades">
         <SideSplit counts={performance?.side_counts} total={metrics?.closed_trade_count} />
       </Metric>

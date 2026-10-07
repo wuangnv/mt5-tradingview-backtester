@@ -1,26 +1,26 @@
-import { readProjectPalette } from './projectPalette.js'
+import { nativeChartPalette } from './nativeChartPalette.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useRef, useState } from 'react'
 import { createAdvancedReplayDatafeed } from './advancedReplayDatafeed.js'
 import { readChartSnapshot, writeChartSnapshot } from './advancedChartStorage.js'
 
 let libraryPromise
-const volumeAppearance = host => {
-  const p = readProjectPalette(host)
+const volumeAppearance = theme => {
+  const p = nativeChartPalette(theme)
   return { 'volume.color.0': p.negative, 'volume.color.1': p.positive, 'volume ma.color': p.highlight }
 }
-function applyVolumeAppearance(widget, chart, host) {
-  const overrides = volumeAppearance(host)
+function applyVolumeAppearance(widget, chart, theme) {
+  const overrides = volumeAppearance(theme)
   widget.applyStudiesOverrides(Object.fromEntries(Object.entries(overrides).map(([key, value]) => [`volume.${key}`, value])))
   // Restored Volume studies carry their own styles; defaults alone cannot repaint them.
   for (const study of chart.getAllStudies()) if (study.name === 'Volume') chart.getStudyById(study.id).applyOverrides(overrides)
 }
-const paneAppearance = host => {
-  const p = readProjectPalette(host)
+const paneAppearance = theme => {
+  const p = nativeChartPalette(theme)
   return {
     'paneProperties.backgroundType': 'solid', 'paneProperties.background': p.canvas,
     'paneProperties.vertGridProperties.color': p.grid, 'paneProperties.horzGridProperties.color': p.grid,
-    'scalesProperties.textColor': p.muted, 'scalesProperties.lineColor': p.border,
+    'scalesProperties.textColor': p.text, 'scalesProperties.lineColor': p.border,
     ...Object.fromEntries(['candleStyle', 'hollowCandleStyle', 'haStyle'].flatMap(style =>
       ['upColor', 'borderUpColor', 'wickUpColor', 'downColor', 'borderDownColor', 'wickDownColor'].map(key =>
         [`mainSeriesProperties.${style}.${key}`, key.includes('Up') || key === 'upColor' ? p.positive : p.negative]))),
@@ -90,9 +90,9 @@ export default function TradingViewReplayChart(props) {
         custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles', 'Bars', 'Line', 'Area', 'Heikin Ashi'] },
         header_widget_buttons_mode: 'adaptive',
         enabled_features: ['seconds_resolution', 'items_favoriting'],
-        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot'],
-        overrides: paneAppearance(host.current),
-        studies_overrides: Object.fromEntries(Object.entries(volumeAppearance(host.current)).map(([key, value]) => [`volume.${key}`, value])),
+        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'widget_logo'],
+        overrides: paneAppearance(theme),
+        studies_overrides: Object.fromEntries(Object.entries(volumeAppearance(theme)).map(([key, value]) => [`volume.${key}`, value])),
       })
       widget.onChartReady(() => {
         if (cancelled) return
@@ -113,7 +113,7 @@ export default function TradingViewReplayChart(props) {
             const line = chart.createOrderLine()
             if (!line) continue
             const value = state.levels[kind]
-            const palette = readProjectPalette(host.current)
+            const palette = nativeChartPalette(state.theme)
             const color = kind === 'stop' ? palette.negative : kind === 'target' ? palette.positive : palette.primary
             line.setPrice(value).setText(kind === 'entry' ? `${state.levels.side} · ${state.levels.state}${state.levels.floating == null ? '' : ` · P/L ${state.levels.floating} ${state.levels.currency}`}` : kind === 'stop' ? 'SL · SIM' : 'TP · SIM')
               .setQuantity('SIM').setLineColor(color).setBodyBorderColor(color).setQuantityBorderColor(color).setEditable(kind !== 'entry' && state.orderEditable).setCancellable(false)
@@ -162,7 +162,7 @@ export default function TradingViewReplayChart(props) {
                 trendline: 'trend_line', zone: 'rectangle', text: 'text', arrow: payload.anchors.length > 1 ? 'arrow' : 'arrow_up' }[payload.annotation_type]
               if (!shape) continue
               const points = payload.anchors.map(anchor => ({ time: Number(anchor.timestamp), price: Number(anchor.price) }))
-              const palette = readProjectPalette(host.current)
+              const palette = nativeChartPalette(latest.current.theme)
               const color = payload.annotation_type === 'sl' ? palette.negative : payload.annotation_type === 'tp' ? palette.positive : record.local ? palette.highlight : palette.primary
               const options = { shape, text: payload.label, lock: true, disableSelection: true, disableSave: true, disableUndo: true, showInObjectsTree: false,
                 overrides: { linecolor: color, color, textColor: color, backgroundColor: color, transparency: 85 } }
@@ -173,11 +173,11 @@ export default function TradingViewReplayChart(props) {
         }
         const ready = () => {
           if (cancelled) return
-          // Saved layouts carry palette values; the shell's current theme wins.
+          // Saved layouts carry palette values; repaint with the native chart theme.
           widget.changeTheme(latest.current.theme === 'light' ? 'Light' : 'Dark').then(() => {
             if (cancelled) return
-            widget.applyOverrides(paneAppearance(host.current))
-            applyVolumeAppearance(widget, chart, host.current)
+            widget.applyOverrides(paneAppearance(latest.current.theme))
+            applyVolumeAppearance(widget, chart, latest.current.theme)
             refresh(); importAnnotations()
             const prefix = latest.current.rows
             if (!saved && prefix.length > 1) chart.setVisibleRange({ from: Number(prefix[Math.max(0, prefix.length - 100)].timestamp), to: Number(prefix.at(-1).timestamp) }).catch(() => {})
@@ -274,8 +274,8 @@ export default function TradingViewReplayChart(props) {
     if (!item) return
     item.widget.changeTheme(theme === 'light' ? 'Light' : 'Dark').then(() => {
       if (item === instance.current) {
-        item.widget.applyOverrides(paneAppearance(host.current))
-        applyVolumeAppearance(item.widget, item.chart, host.current)
+        item.widget.applyOverrides(paneAppearance(theme))
+        applyVolumeAppearance(item.widget, item.chart, theme)
         item.refresh(); item.importAnnotations()
       }
     })

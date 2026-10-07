@@ -8,6 +8,7 @@ from decimal import Decimal
 
 from .analytics_read_model import AnalyticsValidationError, normalize_filters, serialize_filters
 from .replay_analytics import build_replay_analytics_view
+from .replay_activity import dashboard_timing
 
 
 def _root_session(record: dict, records: dict[str, dict]) -> str | None:
@@ -59,6 +60,7 @@ def build_dashboard_performance(
     include_ledger: bool = False,
     side: str = "all",
     outcome: str = "all",
+    activity_intervals: list[dict] | None = None,
 ) -> dict:
     """Aggregate unique replay closures, keeping source failures visible.
 
@@ -189,8 +191,7 @@ def build_dashboard_performance(
         "sessions": sessions,
         "sources": sources,
         "excluded": excluded,
-        "time_invested_seconds": None,
-        "historical_time_replayed_seconds": None,
+        **dashboard_timing(selected, activity_intervals or []),
     }
     if include_ledger:
         result["ledger"] = trades

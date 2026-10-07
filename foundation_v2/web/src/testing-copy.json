@@ -3,6 +3,9 @@
   "duration.hour": { "vi": "giờ", "en": "hr" },
   "duration.minute": { "vi": "phút", "en": "min" },
   "Thời gian đã ghi nhận": { "vi": "Thời gian đã ghi nhận", "en": "Recorded time" },
+  "Chưa lưu được thời gian luyện tập. Đang thử lại…": { "vi": "Chưa lưu được thời gian luyện tập. Đang thử lại…", "en": "Practice time has not been saved. Retrying…" },
+  "Từ khi bật theo dõi · toàn phiên": { "vi": "Từ khi bật theo dõi · toàn phiên", "en": "Since tracking started · session totals" },
+  "{measured}/{total} phiên được ghi nhận": { "vi": "Đã ghi nhận {measured} trên {total} phiên", "en": "Recorded for {measured} of {total} sessions" },
   "Settings": {
     "vi": "Cài đặt",
     "en": "Settings"

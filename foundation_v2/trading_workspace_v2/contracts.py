@@ -3,9 +3,10 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from decimal import Decimal
 import re
+from uuid import UUID
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_serializer, model_validator
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_serializer, model_validator
 
 from .strategy_contracts import StrategyResearchSpec
 from .replay_execution import ReplayResearchMargin
@@ -331,6 +332,14 @@ class ReplayCreate(BaseModel):
 
     dataset_id: str = Field(min_length=1)
     start_index: int = Field(default=0, ge=0)
+
+
+class ReplayActivityRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    event_id: UUID
+    started_at_utc: AwareDatetime
+    ended_at_utc: AwareDatetime
 
 
 class ReplaySessionCatalogItem(BaseModel):

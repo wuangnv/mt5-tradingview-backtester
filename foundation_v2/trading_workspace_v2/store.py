@@ -395,6 +395,21 @@ CREATE TABLE IF NOT EXISTS workspace_record_revisions (
 CREATE INDEX IF NOT EXISTS idx_workspace_records_kind_updated
     ON workspace_records(workspace_id, kind, updated_at_utc DESC);
 
+CREATE TABLE IF NOT EXISTS replay_activity_intervals (
+    workspace_id text NOT NULL,
+    kind text NOT NULL DEFAULT 'replay' CHECK (kind = 'replay'),
+    session_id text NOT NULL,
+    event_id uuid NOT NULL,
+    started_at_utc timestamptz NOT NULL,
+    ended_at_utc timestamptz NOT NULL,
+    PRIMARY KEY (workspace_id, session_id, event_id),
+    CHECK (ended_at_utc > started_at_utc AND ended_at_utc <= started_at_utc + interval '30 seconds'),
+    FOREIGN KEY (workspace_id, kind, session_id)
+        REFERENCES workspace_records(workspace_id, kind, record_id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_replay_activity_start
+    ON replay_activity_intervals(workspace_id, session_id, started_at_utc);
+
 ALTER TABLE workspace_records DROP CONSTRAINT IF EXISTS workspace_records_kind_check;
 ALTER TABLE workspace_records ADD CONSTRAINT workspace_records_kind_check
     CHECK (kind IN ('playbook','journal','annotation','replay'));
@@ -1343,6 +1358,58 @@ class PostgresStore:
             )
             conn.commit()
         return True
+
+    def record_replay_activity(self, workspace_id, session_id, event_id, start, end):
+        # Share the record lock with delete; never resurrect a deleted session.
+        with self.connect() as conn:
+            record = conn.execute("""
+                SELECT v.deleted FROM workspace_records r
+                JOIN workspace_record_revisions v
+                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                 AND v.revision=r.current_revision
+                WHERE r.workspace_id=%s AND r.kind='replay' AND r.record_id=%s
+                FOR UPDATE OF r
+            """, (workspace_id, session_id)).fetchone()
+            if record is None or record["deleted"]:
+                raise LookupError("replay session not found")
+            inserted = conn.execute("""
+                INSERT INTO replay_activity_intervals(workspace_id,session_id,event_id,started_at_utc,ended_at_utc)
+                VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING RETURNING event_id
+            """, (workspace_id, session_id, event_id, start, end)).fetchone()
+            if inserted is None:
+                prior = conn.execute("""
+                    SELECT started_at_utc,ended_at_utc FROM replay_activity_intervals
+                    WHERE workspace_id=%s AND session_id=%s AND event_id=%s
+                """, (workspace_id, session_id, event_id)).fetchone()
+                if prior["started_at_utc"] != start or prior["ended_at_utc"] != end:
+                    raise RuntimeError("activity_event_id_conflict")
+            conn.commit()
+        return {"schema_version": "replay-activity-v1", "session_id": session_id,
+                "event_id": str(event_id), "duplicate": inserted is None,
+                "accepted_seconds": (end - start).total_seconds()}
+
+    def list_replay_activity(self, workspace_id):
+        # Merge adjacent/overlapping heartbeat intervals per session in SQL so
+        # Dashboard never transfers every heartbeat from a long practice run.
+        with self.connect() as conn:
+            rows = conn.execute("""
+                WITH ordered AS (
+                    SELECT session_id,event_id,started_at_utc,ended_at_utc,
+                        max(ended_at_utc) OVER (
+                            PARTITION BY session_id ORDER BY started_at_utc,ended_at_utc,event_id
+                            ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS previous_end
+                    FROM replay_activity_intervals WHERE workspace_id=%s
+                ), islands AS (
+                    SELECT *, sum(CASE WHEN previous_end IS NULL OR started_at_utc > previous_end
+                                      THEN 1 ELSE 0 END) OVER (
+                        PARTITION BY session_id ORDER BY started_at_utc,ended_at_utc,event_id
+                        ROWS UNBOUNDED PRECEDING) AS island
+                    FROM ordered
+                )
+                SELECT session_id,min(started_at_utc) AS started_at_utc,max(ended_at_utc) AS ended_at_utc
+                FROM islands GROUP BY session_id,island
+            """, (workspace_id,)).fetchall()
+        return rows
 
     def create_record(self, workspace_id: str, kind: str, payload: dict, *, source_key: str | None = None) -> dict:
         self.ensure_workspace(workspace_id)

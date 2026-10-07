@@ -3,7 +3,8 @@
 The owner approved the real Dashboard trial and requested research plus application to the remaining MT5 pages. This extends the project pattern; it does not release a global UI system, change pinned shared contracts or grant broker/provider/data permissions. The Dashboard trial remains the visual reference.
 
 Current color authority (06/10/2026): [project-palette.md](project-palette.md) applies
-the owner-approved vintage palette to every workspace and both chart engines.
+the owner-approved vintage palette to every workspace. The trading chart exception
+selected on 07/10/2026 is recorded in the native-palette section below.
 It supersedes earlier literal colors below. Current Testing control geometry and
 text-only navigation hover are defined by [testing-standard.md](testing-standard.md).
 
@@ -239,5 +240,16 @@ native server screenshot upload stays disabled. App chrome shares Arial with the
 fixed 30px floating controls, 32px trading controls and centered 46px labeled rail actions.
 Floating tools start in separate desktop positions/mobile rows and retain move/pin/collapse.
 Scoped receipt: foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md.
+
+## Trading chart colors — native palette, 07/10/2026
+
+The owner selected TradingView's standard chart colors independently of the project's
+vintage palette: teal `#26A69A` up candles, red `#EF5350` down candles, blue `#2962FF`
+line/area, dark `#131722` or light `#FFFFFF` pane. Native toolbar styling remains in
+the vendor theme; application header portals use matching native text/hover colors.
+Saved layouts are repainted after restore and theme changes, including existing Volume
+studies, while drawings, interval and cutoff retain their previous local ownership.
+The owner confirmed logo-removal rights. The pinned v23 `widget_logo` featureset is
+disabled through widget options; vendor source and assets remain untouched.
 
 Testing component/state/language/paging contract: [testing-standard.md](testing-standard.md).

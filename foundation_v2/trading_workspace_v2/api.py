@@ -32,6 +32,7 @@ from .contracts import (
     PlaybookFreezeRequest,
     PropEvaluationRequest,
     ReplayBranch,
+    ReplayActivityRequest,
     ReplayCreate,
     ReplayExecutionInitialize,
     ReplayMarketOrderRequest,
@@ -328,6 +329,7 @@ def create_app(
                 session_id=session_id,
                 from_close_utc=from_close_utc,
                 to_close_utc=to_close_utc,
+                activity_intervals=store.list_replay_activity(workspace),
             )
         except LookupError as exc:
             raise HTTPException(status_code=404, detail="replay_not_found") from exc
@@ -352,6 +354,7 @@ def create_app(
                 store.list_records(workspace, "replay"), workspace,
                 session_ids=selected, include_ledger=True, side=side, outcome=outcome,
                 from_close_utc=from_close_utc, to_close_utc=to_close_utc,
+                activity_intervals=store.list_replay_activity(workspace),
             )
             if page is None:
                 return report
@@ -1068,6 +1071,17 @@ def create_app(
             return replay.view(workspace, session_id, cursor_index=cursor_index)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post("/api/v2/replay/sessions/{session_id}/activity")
+    def record_replay_activity(session_id: str, body: ReplayActivityRequest, workspace: str = Depends(workspace_id)):
+        try:
+            return replay.record_activity(workspace, session_id, body)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 

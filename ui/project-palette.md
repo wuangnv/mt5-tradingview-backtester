@@ -1,15 +1,17 @@
 # Project palette
 
-Owner-approved vintage colors apply to every MT5 web workspace, including the
-application-owned chart UI. Continue the existing flat layout, sizes and navigation.
+Owner-approved vintage colors apply to every MT5 web workspace and application
+controls. The trading chart uses the native TradingView palette selected on
+07/10/2026; report charts retain the stronger report palette below. Continue the
+existing flat layout, sizes and navigation.
 This is a project contract, not a change to the pinned shared UI foundation.
 
 `foundation_v2/web/public/project-palette.css` owns both theme values. The HTML
-loads it before the application; `chart-legacy.css` imports it inside the chart
-iframe. `component-interactions.css` maps project colors to existing shell, WM,
-FX and UI roles. Canvas/chart engines read these CSS roles through
-`projectPalette.js`; theme changes repaint series, volume and overlays. Saved
-chart layouts cannot restore an older application palette.
+loads it before the application. `component-interactions.css` maps project colors
+to existing shell, WM, FX and UI roles. Trading chart engines use
+`nativeChartPalette.js`; `chart-legacy.css` leaves the vendor theme intact.
+Theme changes repaint series, volume and overlays. Saved trading layouts cannot
+restore the earlier pastel chart palette.
 
 | Role | Dark | Light | Usage |
 | --- | --- | --- | --- |
@@ -21,7 +23,7 @@ chart layouts cannot restore an older application palette.
 | Hover | `#343F46` | `#DCE2DF` | Interactive surface |
 | Text | `#ECE9E2` | `#283138` | Content and selected navigation |
 | Muted | `#A6AFB3` | `#556166` | Metadata |
-| Sea blue | `#8FAFC1` | `#3E6275` | Trading chart series and keyboard focus |
+| Sea blue | `#8FAFC1` | `#3E6275` | Progress, secondary accents and keyboard focus |
 | On primary | `#171C20` | `#FBF9F4` | Text on filled actions |
 | Highlight | `#D6A07B` | `#8F532F` | Parent tab with source tabs, quick-action icons, session counts, draft drawings |
 | Positive | `#9DAF98` | `#4E684A` | Gains, success, target |

@@ -6,6 +6,8 @@ Data, session settings/actions, creation forms and application-owned chart contr
 It complements `workspace-patterns.md`; it is not a product progress ledger.
 
 Project color roles are defined in `project-palette.md` and apply across all areas.
+Trading chart panes use their separate native TradingView palette; application
+controls and report charts retain their project roles.
 
 ## Presentation
 
@@ -63,6 +65,25 @@ green/red Buy/Sell split from the same deduplicated, filtered closure aggregate;
 percentages appear only for a positive total with complete side counts. Monthly counts
 stay labeled as trades until measured activity time is available. Report bars
 use solid peach/blue/violet and aligned dashed grids; zero values have zero area.
+
+Replay timing follows the public [FX Replay definitions](https://support.fxreplay.com/faqs):
+practice time is active interaction; historical time is market time moved through.
+Exact FX Replay idle/multi-tab/skip algorithms are not public. Our replay workspace
+counts visible, focused interaction (including chart iframe input and paused
+analysis), with a 120-second idle cutoff. Ten-second flushes submit immutable
+segments of at most 30 seconds; the server unions overlaps across selected
+sessions to avoid counting simultaneous tabs twice. Heartbeats do not change
+execution revisions. Failed saves retry the same event ID, with a per-tab browser
+queue capped at 120 events; unsupported storage retains only in-memory retries.
+Crash/close before a successful flush can lose a short unsaved tail.
+
+Historical time adds real timestamp differences only on successful canonical
+forward steps. Read-only seek/reload does not add time; a new branch starts at
+zero and does not inherit the parent's counters. Legacy sessions are measured
+from activation, never backfilled from creation dates or old cursor positions.
+Dashboard timing totals are for the selected sessions, independently of trade
+date/side/outcome filters; since-tracking and partially measured scopes remain
+visible. Practice/replay metrics can be measured even without closed trades.
 
 Shell chrome and generic actions use neutral white/black/gray in both themes.
 Primary actions use peach; financial positive/negative colors and the separate
