@@ -1,0 +1,46 @@
+{
+  "scope": "Mocked download API; no historical downloads or product writes",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true,
+      "requests": {
+        "datasetReads": 3,
+        "downloadReads": 6
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "language": "vi",
+      "pass": true,
+      "requests": {
+        "datasetReads": 3,
+        "downloadReads": 6
+      }
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "pass": true,
+      "requests": {
+        "datasetReads": 3,
+        "downloadReads": 6
+      }
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "pass": true,
+      "requests": {
+        "datasetReads": 3,
+        "downloadReads": 6
+      }
+    }
+  ],
+  "errors": []
+}

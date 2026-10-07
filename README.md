@@ -55,6 +55,7 @@ npm ci
 node --test tests/*.test.mjs
 npm run build
 Pop-Location
+npm ci --prefix foundation_v2/data_worker --ignore-scripts --no-audit --no-fund
 ```
 
 Dependency Python và web được khóa riêng trong [`foundation_v2/uv.lock`](foundation_v2/uv.lock)
@@ -107,12 +108,15 @@ Trang không đọc giá trực tiếp hay khởi động collector MT5; xem
 [kiểm chứng kho offline](foundation_v2/evidence/offline-library-20261007/REVIEW.md).
 
 Ngày 07/10/2026, theo yêu cầu owner, 44 dataset Exness cũ, 6 phiên replay phụ thuộc
-và file lịch sử/cache của chúng đã được xoá khỏi runtime local tenant-a. Kho hiện
-trống; receipt tại [offline data purge](foundation_v2/evidence/offline-data-purge-20261007/RECEIPT.md).
-Dukascopy là hướng nguồn offline tiếp theo, chưa có downloader được bật hoặc dữ
-liệu Dukascopy được nhập. MT5/online được để lại sau; collector trong API đang chạy
-không được bật. Các checkpoint Exness/tick/market-sync cũ là bằng chứng lịch sử,
-không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
+và file lịch sử/cache của chúng đã được xoá khỏi runtime local tenant-a. Kho trống
+sau lượt xoá; receipt tại [offline data purge](foundation_v2/evidence/offline-data-purge-20261007/RECEIPT.md).
+Ngày 08/10/2026, Kho dữ liệu đã tích hợp catalog Dukascopy không cần key và worker
+`dukascopy-node` 1.50.0 để tải M1/Bid theo khoảng ngày UTC, có tiến độ, hủy và tải
+tiếp. Một ngày EUR/USD đã được tải thực tế; khoảng thiếu nến được giữ và đánh dấu
+cần kiểm tra. Dữ liệu giá không tự gán quy cách broker. MT5/online được để lại sau;
+collector trong API đang chạy không được bật. Các checkpoint Exness/tick/market-sync
+cũ là bằng chứng lịch sử, không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
+Xem [receipt Dukascopy](foundation_v2/evidence/dukascopy-integration-20261008/RECEIPT.md).
 
 Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
 hình database, artifacts và authorization đã có:

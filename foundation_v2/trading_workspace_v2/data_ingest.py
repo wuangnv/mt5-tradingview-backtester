@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 import sqlite3
 import tempfile
 from datetime import datetime, timezone
@@ -154,17 +155,25 @@ def _holdout_snapshot(value: dict | None) -> dict:
 def preview_csv(
     path: str | Path,
     source: DatasetSource | dict,
-    instrument: InstrumentSpec | dict,
+    instrument: InstrumentSpec | dict | str,
     timeframe_seconds: int,
     *,
     holdout_policy: dict | None = None,
     gap_classifier=None,
+    requested_range: tuple[int, int] | None = None,
 ) -> dict:
     path = Path(path)
     if not path.is_file():
         raise DataImportError("import source does not exist")
     source = source if isinstance(source, DatasetSource) else DatasetSource.model_validate(source)
-    instrument = instrument if isinstance(instrument, InstrumentSpec) else InstrumentSpec.from_mapping(instrument)
+    # Public price feeds do not establish broker lot sizes or trading permissions.
+    if isinstance(instrument, str):
+        if not re.fullmatch(r"[A-Z0-9][A-Z0-9._/+-]{0,79}", instrument):
+            raise DataImportError("invalid price-only instrument identifier")
+        instrument_snapshot = {"instrument_id": instrument, "metadata_kind": "price_only"}
+    else:
+        instrument = instrument if isinstance(instrument, InstrumentSpec) else InstrumentSpec.from_mapping(instrument)
+        instrument_snapshot = _instrument_snapshot(instrument)
     try:
         timeframe_seconds = int(timeframe_seconds)
     except (TypeError, ValueError) as exc:
@@ -246,7 +255,6 @@ def preview_csv(
             columns = []
     disposition = "missing_data" if row_count == 0 else "review" if duplicate_count or out_of_order_count or gaps or overlapping_interval_count else "pass"
     source_snapshot = source.model_dump(mode="json")
-    instrument_snapshot = _instrument_snapshot(instrument)
     holdout = _holdout_snapshot(holdout_policy)
     if holdout["mode"] == "metadata_only" and last_time is not None and int(last_time) >= int(holdout["from_utc"]):
         raise DataImportError("import source crosses the locked holdout boundary")
@@ -275,6 +283,17 @@ def preview_csv(
         "holdout_policy": holdout,
         "transform_version": TRANSFORM_VERSION,
     }
+    if requested_range is not None:
+        start, end = requested_range
+        if type(start) is not int or type(end) is not int or start >= end or (first_time is not None and (first_time < start or last_time >= end)):
+            raise DataImportError("invalid requested coverage range")
+        leading = (first_time - start) // timeframe_seconds if first_time is not None else (end - start) // timeframe_seconds
+        trailing = max(0, (end - last_time - timeframe_seconds) // timeframe_seconds) if last_time is not None else 0
+        preview['quality']['coverage'] = {'requested_from_utc': start, 'requested_to_exclusive_utc': end,
+                                          'leading_missing_intervals': leading, 'trailing_missing_intervals': trailing,
+                                          'classification': 'unknown'}
+        if row_count and (leading or trailing):
+            preview['quality']['disposition'] = 'review'
     preview["preview_id"] = _canonical_hash(preview)
     preview["dataset_id"] = "dataset-" + _canonical_hash(
         {
@@ -301,10 +320,11 @@ class DataIngestService:
         workspace_id: str,
         path: str | Path,
         source: DatasetSource | dict,
-        instrument: InstrumentSpec | dict,
+        instrument: InstrumentSpec | dict | str,
         timeframe_seconds: int,
         holdout_policy: dict | None = None,
         gap_classifier=None,
+        requested_range: tuple[int, int] | None = None,
     ) -> DatasetManifest:
         preview = preview_csv(
             path,
@@ -313,6 +333,7 @@ class DataIngestService:
             timeframe_seconds,
             holdout_policy=holdout_policy,
             gap_classifier=gap_classifier,
+            requested_range=requested_range,
         )
         if preview["row_count"] < 2:
             raise DataImportError("dataset requires at least two rows")
@@ -341,7 +362,7 @@ class DataIngestService:
             raw_artifact_path=raw_path,
             raw_sha256=raw_sha256,
             normalized_sha256=preview["normalized_sha256"],
-            instrument_spec=preview["instrument"],
+            instrument_spec=None if isinstance(instrument, str) else preview["instrument"],
             timeframe_seconds=int(timeframe_seconds),
             available_range=preview["available_range"],
             quality=preview["quality"],

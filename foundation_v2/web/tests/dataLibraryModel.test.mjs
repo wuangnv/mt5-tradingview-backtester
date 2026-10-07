@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { categoryOf, categoryLabel, filterLibrary, libraryRows } from '../src/dataLibraryModel.js'
+import { categoryOf, categoryLabel, filterLibrary, libraryRows, canDownloadAsset, defaultDownloadDates, downloadRangeError } from '../src/dataLibraryModel.js'
 
 const saved = [
   { dataset_id:'old',instrument_id:'EURUSD',timeframe:'1m',source:{provider:'CSV'},instrument_spec:{asset_class:'fx'},created_at_utc:'2026-01-01Z' },
@@ -12,6 +12,28 @@ test('loaded versions remain distinct; matching catalog asset does not duplicate
   assert.deepEqual(rows.map(row => row.key),['old','new','gold','other:EURUSD'])
   assert.deepEqual(rows.map(row => row.downloaded),[true,true,true,false])
   assert.equal(rows.at(-1).row_count,undefined)
+})
+
+test('downloads require supported Dukascopy metadata and are never available in preview', () => {
+  const asset = {instrument_id:'EUR/USD',provider_id:'dukascopy'}
+  const download = {available:true,supported_instruments:['EUR/USD']}
+  assert.equal(canDownloadAsset(asset,download),true)
+  assert.equal(canDownloadAsset({...asset,provider_id:'csv'},download),false)
+  assert.equal(canDownloadAsset(asset,download,true),false)
+  assert.equal(canDownloadAsset(asset,{...download,available:false}),false)
+  assert.equal(canDownloadAsset(asset,{...download,supported_instruments:['EURUSD']}),false)
+  assert.equal(categoryLabel(categoryOf({asset_class:'bonds'})),'Trái phiếu')
+  assert.equal(categoryLabel(categoryOf({asset_class:'etfs'})),'ETF')
+})
+
+test('date validation uses inclusive completed UTC days without local timezone drift', () => {
+  const now = new Date('2026-10-08T00:05:00Z')
+  assert.deepEqual(defaultDownloadDates(now),{from_date:'2026-09-08',to_date:'2026-10-07'})
+  assert.equal(downloadRangeError('2026-10-07','2026-10-07',now),'')
+  assert.equal(downloadRangeError('2026-10-08','2026-10-08',now),'Chỉ tải ngày đã kết thúc theo UTC.')
+  assert.equal(downloadRangeError('2025-01-01','2026-01-01',now),'')
+  assert.equal(downloadRangeError('2025-01-01','2026-01-02',now),'Mỗi lần tải tối đa 366 ngày.')
+  for (const [from,to] of [['2026-02-30','2026-03-01'],['2026-13-01','2026-13-02'],['',''],['2026-09-20','2026-09-01']]) assert.equal(downloadRangeError(from,to,now),'Chọn khoảng ngày hợp lệ.')
 })
 test('catalog category uses declared metadata, never guesses from the symbol', () => {
   assert.equal(categoryOf(saved[2]),'metal')

@@ -1,16 +1,40 @@
 export const CATEGORIES = [
   ['stock', 'Cổ phiếu'], ['futures', 'Hợp đồng tương lai'], ['fx', 'Forex'],
   ['crypto', 'Crypto'], ['index', 'Chỉ số'], ['metal', 'Kim loại'],
-  ['energy', 'Năng lượng'], ['agriculture', 'Nông sản'],
+  ['energy', 'Năng lượng'], ['agriculture', 'Nông sản'], ['etf', 'ETF'], ['bond', 'Trái phiếu'],
 ]
 
-const aliases = { stocks:'stock', equities:'stock', forex:'fx', indices:'index', metals:'metal', energies:'energy' }
+const aliases = { stocks:'stock', equities:'stock', forex:'fx', indices:'index', metals:'metal', energies:'energy', etfs:'etf', bonds:'bond' }
 export function categoryOf(item) {
   const value = item.asset_class || item.instrument_spec?.asset_class || ''
   return aliases[value] || value
 }
 export const categoryLabel = value => CATEGORIES.find(([key]) => key === value)?.[1] || 'Chưa phân loại'
 export const sourceOf = item => item.source?.provider || item.provider || item.provider_id || '—'
+
+export function canDownloadAsset(asset, download, preview = false) {
+  return !preview && Boolean(download?.available) && Array.isArray(download.supported_instruments)
+    && download.supported_instruments.includes(asset.instrument_id)
+    && sourceOf(asset).toLowerCase() === 'dukascopy'
+}
+
+export function defaultDownloadDates(now = new Date()) {
+  const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - 86400000)
+  return { to_date:end.toISOString().slice(0,10), from_date:new Date(end.getTime() - 29 * 86400000).toISOString().slice(0,10) }
+}
+
+export function downloadRangeError(from, to, now = new Date()) {
+  const date = value => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return NaN
+    const parsed = new Date(`${value}T00:00:00Z`)
+    return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0,10) === value ? parsed.getTime() : NaN
+  }
+  const start = date(from), end = date(to)
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start > end) return 'Chọn khoảng ngày hợp lệ.'
+  if (to > defaultDownloadDates(now).to_date) return 'Chỉ tải ngày đã kết thúc theo UTC.'
+  if ((end - start) / 86400000 + 1 > 366) return 'Mỗi lần tải tối đa 366 ngày.'
+  return ''
+}
 
 export function libraryRows(datasets, instruments = []) {
   // Keep dataset versions separate: a saved session pins one immutable version.

@@ -38,28 +38,57 @@ PATH-2. Follow the root README when developing this foundation.
 
 ## Offline instrument catalog
 
-The local imported-history launcher configures a Dukascopy **metadata-only**
-catalog. Set `TW_DUKASCOPY_API_KEY` in the backend launch process using your own
-issued Trading Tools key. Never put it in a `VITE_` variable, source file, URL
-you share, or the browser. Obtain access through
-[Dukascopy Trading Tools](https://www.dukascopy.com/trading-tools/api/documentation).
-Restart the local API after changing that process configuration.
+The local imported-history launcher configures the public, keyless Dukascopy
+catalog at `https://jetta.dukascopy.com/v1/instruments`. Trading Tools keys are
+not used. The catalog preserves display symbols, API codes, upstream group
+classification and unknown metadata; it does not establish history coverage.
 
 Authorized GET `/api/v2/data/datasets` reads cached `catalog_items` and
-`catalog_state`; it makes no Dukascopy request. The first UI open with a configured
-key and no cache requests POST `/api/v2/data/catalog/refresh`. Later refreshes
+`catalog_state`; it makes no Dukascopy request. The first UI open without a cache
+requests POST `/api/v2/data/catalog/refresh`. Later refreshes
 require **Cập nhật danh sách**. There is no scheduler, quote stream or automatic
 refresh of stale data. Snapshots survive API restarts under the artifact root at
 `catalog/dukascopy-instruments.json`; a failed request retains the previous file.
 A 60-second server cooldown prevents repeated requests; 429 extends it to five
 minutes. Seven-day-old metadata is marked stale but remains usable offline.
 
-The API returns documented names only; categories absent from that response stay
-unknown. This catalog does not prove historical availability, complete date
-ranges, quality, history-download permission or broker execution. Download buttons
-remain unavailable pending the separate history adapter and provider-use gate.
-Missing/rejected keys and invalid/rate-limited responses are reported without
-exposing credentials. No key or fabricated instrument list is bundled.
+Install the separate data worker from the locked npm release of
+[dukascopy-node](https://github.com/Leo4815162342/dukascopy-node/tree/v1.50.0):
+
+```powershell
+npm ci --prefix foundation_v2/data_worker --ignore-scripts --no-audit --no-fund
+npm test --prefix foundation_v2/data_worker
+```
+
+The worker requires Node >=18 and pins `dukascopy-node` 1.50.0. It is not bundled
+into the web client. POST `/api/v2/data/downloads` accepts an upstream-supported
+instrument and inclusive UTC dates, up to 366 completed days. This slice imports
+M1/Bid candles only. GET `/api/v2/data/downloads`, POST `/{job_id}/resume` and
+POST `/{job_id}/cancel` restore progress across reload/restart. All routes are
+workspace-authorized; PostgreSQL advisory locks enforce one network worker and
+identify the active job across API processes. Restarted orphan jobs pause until
+explicit resume, never automatically retry. A 429 sets a shared cooldown;
+timeouts/unavailable responses retain completed raw buckets and never complete
+a partial job. No background quote or MT5 collector is enabled by this feature.
+
+Raw day responses and checksums are retained at
+`dukascopy/<workspace-hash>/<job-id>/raw`, with `buckets.json` provenance. Only
+original timestamps survive the library decoder; inserted flat candles are
+removed while original zero-volume candles are preserved. CSV validation and
+immutable Parquet ingest are reused. Job completion means every requested day
+bucket was fetched and decoded; internal and requested-range boundary gaps remain
+visible as `quality.disposition=review`,
+not asserted complete market coverage. Each range import creates an immutable
+version. Same-job retries recover its existing dataset identity.
+
+These are price-only datasets (`instrument_spec=null`): public quotes do not
+establish broker contract/lot sizes. Replay chart viewing works; execution needs
+a separately configured instrument spec and cost model. Bid candles do not prove
+spread or intrabar stop/target ordering. The library's MIT license covers code,
+not permission to redistribute market data; this local owner-requested research
+integration does not grant public/commercial data rights.
+
+Scoped checks and limitations: [integration receipt](evidence/dukascopy-integration-20261008/RECEIPT.md).
 
 Session management in Dashboard and Sessions distinguishes archive/restore from
 delete. `POST /api/v2/replay/sessions/{id}/delete` requires a strict positive

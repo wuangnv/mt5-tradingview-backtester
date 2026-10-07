@@ -3,7 +3,7 @@ import { readJson, workspaceHeaders } from './researchDataApi.js'
 export async function fetchOfflineLibrary(workspace, signal) {
   const response = await fetch('/api/v2/data/datasets', { headers:workspaceHeaders(workspace), signal })
   const payload = await readJson(response)
-  return { datasets:Array.isArray(payload.items) ? payload.items : [], instruments:Array.isArray(payload.catalog_items) ? payload.catalog_items : [], catalog:payload.catalog_state || null }
+  return { datasets:Array.isArray(payload.items) ? payload.items : [], instruments:Array.isArray(payload.catalog_items) ? payload.catalog_items : [], catalog:payload.catalog_state || null, download:payload.download_state || null }
 }
 
 export async function refreshInstrumentCatalog(workspace, signal) {
@@ -27,4 +27,21 @@ export function previewLocalCsv(workspace, payload) {
 
 export function importLocalCsv(workspace, payload) {
   return postCsv(workspace, '/api/v2/data/csv/import', payload)
+}
+
+export async function fetchDownloads(workspace, signal) {
+  const response = await fetch('/api/v2/data/downloads', { headers:workspaceHeaders(workspace), signal })
+  const payload = await readJson(response)
+  return { items:Array.isArray(payload.items) ? payload.items : [], available:Boolean(payload.available) }
+}
+
+export async function startDownload(workspace, payload, signal) {
+  const response = await fetch('/api/v2/data/downloads', { method:'POST', headers:workspaceHeaders(workspace, { 'Content-Type':'application/json' }), body:JSON.stringify(payload), signal })
+  return readJson(response)
+}
+
+export async function updateDownload(workspace, jobId, action, signal) {
+  if (!['resume','cancel'].includes(action)) throw new Error('Invalid download action')
+  const response = await fetch(`/api/v2/data/downloads/${encodeURIComponent(jobId)}/${action}`, { method:'POST', headers:workspaceHeaders(workspace), signal })
+  return readJson(response)
 }

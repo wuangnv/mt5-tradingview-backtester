@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { useTestingLocale } from './testingLocale.jsx'
 import TestingIcon from './TestingIcon.jsx'
 
-export default function DataLibraryActions({ asset, onDetails, onImport, disabled }) {
+export default function DataLibraryActions({ asset, onDetails, onImport, onDownload, canDownload = false, disabled }) {
   const { t } = useTestingLocale()
   const [open, setOpen] = useState(false), [position, setPosition] = useState({left:0,top:0})
   const trigger = useRef(null), menu = useRef(null), id = useId()
@@ -36,6 +36,7 @@ export default function DataLibraryActions({ asset, onDetails, onImport, disable
       else if (['ArrowDown','ArrowUp','Home','End'].includes(event.key)) { event.preventDefault(); buttons[event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length-1 : (index+(event.key === 'ArrowDown' ? 1 : buttons.length-1))%buttons.length]?.focus() }
     }}>
       <button type="button" role="menuitem" disabled={!asset.downloaded} onClick={() => { close(); onDetails(asset) }}><TestingIcon kind="info" />{t('Xem chi tiết')}</button>
+      {asset.downloaded && <button type="button" role="menuitem" disabled={!canDownload} onClick={() => { close(); onDownload(asset) }}><TestingIcon kind="download" />{t('Tải khoảng khác')}</button>}
       <button type="button" role="menuitem" onClick={() => { close(); onImport(asset) }}><TestingIcon kind="upload" />{t(asset.downloaded ? 'Nhập bản cập nhật' : 'Nhập CSV cho tài sản')}</button>
     </div>, trigger.current.closest('.fx-app') || document.body)}
   </>

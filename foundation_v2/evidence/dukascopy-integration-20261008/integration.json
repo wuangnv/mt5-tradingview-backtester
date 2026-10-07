@@ -1,0 +1,34 @@
+{
+  "scope": "UUID disposable DB, one real anonymous EUR/USD M1/Bid day, no MT5",
+  "checks": [
+    "requested range edges remain unknown and require review when absent",
+    "keyless real catalog",
+    "date/support validation",
+    "auth and cross-workspace denial",
+    "real price-only immutable ingest",
+    "no synthetic timestamps",
+    "duplicate request idempotency",
+    "replay session created",
+    "restart reads saved jobs without upstream request",
+    "fault-injected 429 cooldown, no phantom dataset, cancel, orphan recovery, remote-owner resume denied"
+  ],
+  "catalog_count": 1504,
+  "real_job": {
+    "job_id": "54417db1743147ce89d5c695e3e79b75",
+    "instrument_id": "EUR/USD",
+    "from_date": "2026-10-05",
+    "to_date": "2026-10-05",
+    "status": "completed",
+    "error": null,
+    "completed_days": 1,
+    "total_days": 1,
+    "dataset_id": "dataset-820e02d8cedf8bd3538a723a06ec007e776e30dccd046a770db718650af41b23",
+    "created_at_utc": "2026-10-07T17:51:41.499055+00:00",
+    "buckets_sha256": "d98f9b5b228a7160be5219c5a0eea38bc22da5d01c1cadfae21d1425b3ee99eb",
+    "quality": "review",
+    "retry_after_seconds": 0
+  },
+  "replay_created": true,
+  "qa_url": "http://127.0.0.1:8031",
+  "pass": true
+}

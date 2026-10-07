@@ -1,4 +1,4 @@
-"""Serve imported Exness history, optionally enabling read-only MT5 synchronization."""
+"""Serve local offline data and Dukascopy downloads; MT5 sync requires explicit options."""
 
 import argparse
 import os
@@ -14,6 +14,7 @@ from trading_workspace_v2.api import create_app
 from trading_workspace_v2.auth import LocalWorkspaceAuthorization
 from trading_workspace_v2.market_sync import MarketRuntime
 from trading_workspace_v2.dukascopy_catalog import DukascopyCatalog
+from trading_workspace_v2.dukascopy_downloads import DukascopyDownloads
 
 
 def main():
@@ -42,9 +43,10 @@ def main():
         authorization=LocalWorkspaceAuthorization.for_local_owner(['tenant-a'], identity_id='local-owner'),
         learn_roots={'tenant-a': repo.parent.parent / 'education'},
         market_runtime_factory=runtime,
-        instrument_catalog=DukascopyCatalog(artifacts / 'catalog/dukascopy-instruments.json', os.getenv('TW_DUKASCOPY_API_KEY')),
+        instrument_catalog=DukascopyCatalog(artifacts / 'catalog/dukascopy-instruments.json'),
+        dukascopy_downloads_factory=DukascopyDownloads,
     )
-    print(f'Exness imported-history API: loopback port {args.port}; paper execution only.', flush=True)
+    print(f'Offline market-data API: loopback port {args.port}; paper execution only.', flush=True)
     uvicorn.run(app, host='127.0.0.1', port=args.port)
 
 

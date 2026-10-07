@@ -137,6 +137,13 @@ class CsvDataImportRequest(BaseModel):
 CSV_PAYLOAD_MAX_BYTES = 10 * 1024 * 1024
 
 
+class OfflineDownloadRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    instrument_id: str = Field(min_length=1, max_length=80)
+    from_date: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
+    to_date: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
+
+
 class MarketHistoryUpdateRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     symbol: str | None = Field(default=None, max_length=64, pattern=r'^[A-Za-z0-9_]+$')
@@ -191,6 +198,7 @@ def create_app(
     notion_oauth: NotionOAuthService | None = None,
     market_runtime_factory=None,
     instrument_catalog=None,
+    dukascopy_downloads_factory=None,
 ) -> FastAPI:
     dsn = dsn or os.environ["TW_V2_DATABASE_URL"]
     artifact_root = artifact_root or os.environ["TW_V2_ARTIFACT_ROOT"]
@@ -222,6 +230,7 @@ def create_app(
         )
 
     market_runtime = market_runtime_factory(store, artifacts) if market_runtime_factory else None
+    downloads = dukascopy_downloads_factory(store, artifacts, instrument_catalog, authorization) if dukascopy_downloads_factory else None
 
     @asynccontextmanager
     async def lifespan(app):
@@ -230,6 +239,8 @@ def create_app(
         try:
             yield
         finally:
+            if downloads:
+                downloads.stop()
             if market_runtime:
                 market_runtime.stop()
 
@@ -237,6 +248,7 @@ def create_app(
     app.state.store = store
     app.state.service = service
     app.state.ingest = ingest
+    app.state.downloads = downloads
     app.state.product = product
     app.state.replay = replay
     app.state.data_registry = data_registry
@@ -549,9 +561,15 @@ def create_app(
 
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
-        return {"items": data_registry.list_datasets(workspace),
-                "catalog_items": data_registry.list_instruments(workspace), "holdout_access": False,
-                "catalog_state": instrument_catalog.status() if instrument_catalog else None}
+        instruments = data_registry.list_instruments(workspace)
+        classes = {item['instrument_id']: item.get('asset_class', '') for item in instruments if item.get('provider') == 'Dukascopy'}
+        datasets = data_registry.list_datasets(workspace)
+        for item in datasets:
+            if item.get('source', {}).get('provider') == 'Dukascopy':
+                item['asset_class'] = classes.get(item['instrument_id'], '')
+        return {"items": datasets, "catalog_items": instruments, "holdout_access": False,
+                "catalog_state": instrument_catalog.status() if instrument_catalog else None,
+                "download_state": downloads.availability() if downloads else {'available':False, 'supported_instruments':[]}}
 
     @app.post("/api/v2/data/catalog/refresh")
     def refresh_instrument_catalog(workspace: str = Depends(workspace_id)):
@@ -560,6 +578,32 @@ def create_app(
         instrument_catalog.refresh()
         return {"catalog_items": data_registry.list_instruments(workspace),
                 "catalog_state": instrument_catalog.status()}
+
+    @app.get('/api/v2/data/downloads')
+    def list_offline_downloads(workspace: str = Depends(workspace_id)):
+        return downloads.list_jobs(workspace) if downloads else {'available':False, 'items':[]}
+
+    def download_action(action, *args):
+        if downloads is None:
+            raise HTTPException(status_code=503, detail='worker_unavailable')
+        try:
+            return getattr(downloads, action)(*args)
+        except ValueError as exc:
+            raise HTTPException(status_code=404 if str(exc) == 'download_not_found' else 422, detail=str(exc)) from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409 if str(exc) in {'download_busy','download_cooldown'} else 503, detail=str(exc)) from exc
+
+    @app.post('/api/v2/data/downloads', status_code=202)
+    def request_offline_download(body: OfflineDownloadRequest, workspace: str = Depends(workspace_id)):
+        return download_action('request', workspace, body.instrument_id, body.from_date, body.to_date)
+
+    @app.post('/api/v2/data/downloads/{job_id}/resume', status_code=202)
+    def resume_offline_download(job_id: str, workspace: str = Depends(workspace_id)):
+        return download_action('resume', workspace, job_id)
+
+    @app.post('/api/v2/data/downloads/{job_id}/cancel')
+    def cancel_offline_download(job_id: str, workspace: str = Depends(workspace_id)):
+        return download_action('cancel', workspace, job_id)
 
     @app.get('/api/v2/data/market-assets')
     def market_assets(workspace: str = Depends(workspace_id)):
