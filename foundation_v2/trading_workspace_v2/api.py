@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
+from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, Response
 from fastapi.responses import PlainTextResponse
 from psycopg.errors import UniqueViolation
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -1065,10 +1065,12 @@ def create_app(
     def get_replay(
         session_id: str,
         cursor_index: int | None = None,
+        advance_interval_seconds: int | None = Query(default=None, ge=1, le=86400),
         workspace: str = Depends(workspace_id),
     ):
         try:
-            return replay.view(workspace, session_id, cursor_index=cursor_index)
+            return replay.view(workspace, session_id, cursor_index=cursor_index,
+                               advance_interval_seconds=advance_interval_seconds)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
         except ValueError as exc:
@@ -1237,7 +1239,8 @@ def create_app(
     @app.post("/api/v2/replay/sessions/{session_id}/step")
     def step_replay(session_id: str, body: ReplayStep, workspace: str = Depends(workspace_id)):
         try:
-            return replay.step(workspace, session_id, body.expected_revision, body.steps)
+            return replay.step(workspace, session_id, body.expected_revision, body.steps,
+                               replay_interval_seconds=body.replay_interval_seconds)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
         except RuntimeError as exc:

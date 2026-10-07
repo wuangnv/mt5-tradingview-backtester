@@ -1,0 +1,83 @@
+{
+  "scope": "Actual local GET plus labeled execution fixture; activity intercepted; all execution mutations blocked",
+  "cases": [
+    {
+      "width": 1920,
+      "theme": "dark",
+      "language": "vi",
+      "fixture": false,
+      "geometry": {
+        "rect": {
+          "x": 0,
+          "y": 889,
+          "width": 1920,
+          "height": 51,
+          "top": 889,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "buy": "rgb(255, 255, 255)",
+        "sell": "rgb(255, 255, 255)",
+        "quantityBorder": "1px",
+        "inputBorder": "0px",
+        "overflow": 0
+      },
+      "balance": "Equity\n—\nP/L đã chốt\n—\nP/L chưa chốt\n—",
+      "pass": true
+    },
+    {
+      "width": 1611,
+      "theme": "dark",
+      "language": "en",
+      "fixture": true,
+      "geometry": {
+        "rect": {
+          "x": 0,
+          "y": 889,
+          "width": 1611,
+          "height": 51,
+          "top": 889,
+          "right": 1611,
+          "bottom": 940,
+          "left": 0
+        },
+        "buy": "rgb(255, 255, 255)",
+        "sell": "rgb(255, 255, 255)",
+        "quantityBorder": "1px",
+        "inputBorder": "0px",
+        "overflow": 0
+      },
+      "balance": "Equity\n$9,490.00\nRealized PnL\n-$500.00\nUnrealized PnL\n-$10.00",
+      "pass": true
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "language": "en",
+      "fixture": false,
+      "geometry": {
+        "rect": {
+          "x": 0,
+          "y": 848,
+          "width": 360,
+          "height": 92,
+          "top": 848,
+          "right": 360,
+          "bottom": 940,
+          "left": 0
+        },
+        "buy": "rgb(255, 255, 255)",
+        "sell": "rgb(255, 255, 255)",
+        "quantityBorder": "1px",
+        "inputBorder": "0px",
+        "overflow": 0
+      },
+      "balance": "Equity\n—\nRealized PnL\n—\nUnrealized PnL\n—",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "pass": true
+}

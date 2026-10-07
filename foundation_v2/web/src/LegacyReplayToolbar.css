@@ -1,0 +1,24 @@
+.is-legacy-chart .legacy-replay-toolbar.legacy-fx-playback { min-height: 40px; padding: 0 5px 0 1px; border: 1px solid var(--chart-line); border-radius: 4px; }
+.is-legacy-chart .legacy-fx-playback .chart-float-content { gap: 3px; }
+.is-legacy-chart .legacy-fx-playback .chart-float-grip { width: 22px; padding: 2px; }
+.is-legacy-chart .legacy-fx-playback .legacy-speed-control { margin: 0 5px; }
+.is-legacy-chart .legacy-fx-playback .legacy-speed-slider { width: 72px; height: 16px; padding: 0; border: 0; background: transparent; accent-color: #5695fe; }
+.is-legacy-chart .legacy-fx-playback .legacy-speed-control > span { color: #fff; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-fx-playback .legacy-replay-interval { order: 4; display: inline-flex; align-items: center; justify-content: center; gap: 3px; width: 49px; font-size: 13px; font-weight: 500; }
+.legacy-fx-playback .legacy-sync-toggle { width: 32px; height: 18px; margin: 0 3px 0 5px; padding: 0; border: 0; background: transparent; }
+.legacy-fx-playback .legacy-sync-toggle span { width: 32px; height: 18px; background: #3c3f48; }
+.legacy-fx-playback .legacy-sync-toggle span::before { width: 14px; height: 14px; transition: transform .12s ease; }
+.legacy-fx-playback .legacy-sync-toggle input:checked + span { background: #5695fe; }
+.legacy-fx-playback .legacy-sync-toggle input:checked + span::before { transform: translateX(14px); }
+.legacy-fx-playback .legacy-sync-toggle input:focus-visible + span { outline: 2px solid var(--chart-text); outline-offset: 3px; }
+.legacy-fx-playback .legacy-sync-toggle input:disabled + span { opacity: .4; }
+.legacy-replay-intervals { display: grid; width: 132px; max-height: min(420px, 65vh); overflow-y: auto; }
+.legacy-replay-intervals button { display: flex; justify-content: space-between; min-height: 31px; border-radius: 3px; }
+.legacy-replay-intervals button[aria-pressed='true'] { color: #5695fe; }
+@media (max-width: 600px) {
+  .is-legacy-chart .legacy-fx-playback .chart-float-content { gap: 1px; }
+  .is-legacy-chart .legacy-fx-playback .legacy-speed-slider { width: 40px; }
+  .is-legacy-chart .legacy-fx-playback .legacy-speed-control { margin-inline: 2px; }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-fx-playback .legacy-replay-interval { width: 38px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .legacy-fx-playback .legacy-sync-toggle span::before { transition: none; } }

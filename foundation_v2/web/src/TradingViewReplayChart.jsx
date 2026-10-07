@@ -56,7 +56,18 @@ export default function TradingViewReplayChart(props) {
 
   useEffect(() => {
     let cancelled = false, layoutSave, saveState = 'saved', restoringImports = false, importedShapes = [], lines = []
-    let widget, adapter, chart, headerSlots, headerObserver, nativeHeader, chartReady = false, fittedLevels = ''
+    let widget, adapter, chart, headerSlots, headerObserver, nativeHeader, chartReady = false, fittedLevels = '', reservedWidth = -1
+    const resizeChrome = () => {
+      const frame = host.current?.querySelector('iframe'), canvas = host.current?.closest('.chart-canvas')
+      if (!frame?.contentDocument || !canvas) return
+      canvas.closest('.replay-shell')?.style.setProperty('--legacy-frame-height', `${canvas.closest('.chart-frame').clientHeight}px`)
+      const reserved = Math.max(0, Math.round(host.current.clientWidth - canvas.clientWidth))
+      if (reserved === reservedWidth) return
+      reservedWidth = reserved
+      frame.contentDocument.documentElement.style.setProperty('--legacy-reserved-width', `${reserved}px`)
+      // v23 measures body on resize. Resizing the canvas alone clips the native price scale.
+      frame.contentWindow.dispatchEvent(new Event('resize'))
+    }
     const pauseNative = () => latest.current.onOrderDragStart()
     const publishHeader = interval => {
       if (!cancelled && chartReady && host.current && headerSlots?.market) latest.current.onHeaderSlots?.({ ...headerSlots, saveState, interval: typeof interval === 'string' ? interval : chart.resolution(), chartType: chart.chartType(), compact: host.current.clientWidth < 1180, headerHeight: headerSlots.market.ownerDocument.querySelector('.layout__area--top')?.getBoundingClientRect().height || 38 })
@@ -80,7 +91,7 @@ export default function TradingViewReplayChart(props) {
       try { saved = readChartSnapshot(localStorage, storageKey, Number(current.cutoff)) }
       catch { setMessage('Không đọc được chart đã lưu trên trình duyệt này.') }
       const seriesState = saved?.charts?.[0]?.panes?.flatMap(pane => pane.sources || []).find(source => source.type === 'MainSeries')?.state
-      const restoredInterval = adapter.supported.includes(seriesState?.interval) ? seriesState.interval : adapter.interval
+      const restoredInterval = adapter.supported.includes(current.preferredInterval) ? current.preferredInterval : adapter.supported.includes(seriesState?.interval) ? seriesState.interval : adapter.interval
       if (seriesState) { seriesState.symbol = symbol; seriesState.interval = restoredInterval }
       widget = new window.TradingView.widget({
         container: host.current, library_path: '/charting_library/', datafeed: adapter.datafeed,
@@ -193,7 +204,14 @@ export default function TradingViewReplayChart(props) {
         instance.current = { widget, adapter, chart, refresh, importAnnotations, save, scheduleSave }
         if (!adapter.update(latest.current.rows, latest.current.cutoff)) chart.resetData()
         // Pause before native drawing/pan/order gestures, not after a drag ends.
-        widget.subscribe('mouse_down', () => latest.current.onOrderDragStart())
+        let replayHoverRow = null
+        widget.subscribe('mouse_down', () => {
+          latest.current.onOrderDragStart()
+          if (!latest.current.selectingReplayBar) return
+          // Crosshair updates from the same native pointer event may arrive
+          // after mouse_down. Read that event before selecting a known candle.
+          requestAnimationFrame(() => { if (!cancelled && latest.current.selectingReplayBar && replayHoverRow) latest.current.onReplayBarSelect?.(Number(replayHoverRow.timestamp)) })
+        })
         widget.subscribe('onAutoSaveNeeded', scheduleSave)
         widget.subscribe('study_event', scheduleSave)
         widget.subscribe('drawing_event', (id, event) => {
@@ -203,6 +221,7 @@ export default function TradingViewReplayChart(props) {
         })
         chart.crossHairMoved().subscribe(null, event => {
           const row = latest.current.rows.find(row => Number(row.timestamp) === Number(event.time))
+          replayHoverRow = row || null
           latest.current.onCrosshair?.(row ? { row } : null)
         })
         headerSlots = { save, fitOrder, intervals: adapter.supported,
@@ -255,8 +274,10 @@ export default function TradingViewReplayChart(props) {
           nativeHeader.addEventListener('keydown', pauseNative, true)
           nativeHeader.ownerDocument.addEventListener('keydown', saveShortcut, true)
           document.addEventListener('keydown', saveShortcut, true)
-          headerObserver = new ResizeObserver(publishHeader)
+          headerObserver = new ResizeObserver(() => { resizeChrome(); publishHeader() })
           headerObserver.observe(host.current)
+          headerObserver.observe(host.current.closest('.chart-canvas'))
+          resizeChrome()
           publishHeader()
         })
         chart.onIntervalChanged().subscribe(null, value => { publishHeader(value); scheduleSave() })
@@ -264,6 +285,21 @@ export default function TradingViewReplayChart(props) {
         publishHeader()
         chart.dataReady(ready)
       })
+      if (new URLSearchParams(window.location.search).get('chart_iframe') === 'srcdoc') {
+        // v23 always navigates to blob:. Some embedded browsers cancel that
+        // navigation; load the same generated document with its original hash.
+        const frame = host.current?.querySelector('iframe')
+        if (!frame || !frame.src.startsWith('blob:')) throw new Error('Advanced Charts v23 iframe source is unavailable.')
+        const source = new URL(frame.src)
+        fetch(source.href.split('#')[0]).then(response => {
+          if (!response.ok) throw new Error('Advanced Charts iframe document could not be loaded.')
+          return response.text()
+        }).then(html => {
+          if (cancelled || !frame.isConnected) return
+          const hash = JSON.stringify(source.hash).replaceAll('<', '\\u003c')
+          frame.srcdoc = html.replace(/<head[^>]*>/i, head => `${head}<script>location.hash=${hash};</script>`)
+        }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
+      }
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
       cancelled = true; layoutSave?.dispose(); clearTimeout(loadingTimer); headerObserver?.disconnect(); nativeHeader?.removeEventListener('pointerdown', pauseNative, true); nativeHeader?.removeEventListener('keydown', pauseNative, true); nativeHeader?.ownerDocument.removeEventListener('keydown', saveShortcut, true); document.removeEventListener('keydown', saveShortcut, true); instance.current = null

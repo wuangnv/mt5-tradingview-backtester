@@ -1,0 +1,40 @@
+{
+  "scope": "Explicit srcdoc Chromium actualGET; local chart settings/storage only, all owner step/order writes blocked.",
+  "errors": [],
+  "blocked": [],
+  "initial": {
+    "srcdoc": 7607,
+    "frameUrl": "about:srcdoc#symbol=EURUSDm&interval=1&widgetbar=%7B%22details%22%3Afalse%2C%22watchlist%22%3Afalse%2C%22watchlist_settings%22%3A%7B%22default_symbols%22%3A%5B%5D%7D%7D&timeFrames=%5B%7B%22text%22%3A%225y%22%2C%22resolution%22%3A%221W%22%7D%2C%7B%22text%22%3A%221y%22%2C%22resolution%22%3A%221W%22%7D%2C%7B%22text%22%3A%226m%22%2C%22resolution%22%3A%22120%22%7D%2C%7B%22text%22%3A%223m%22%2C%22resolution%22%3A%2260%22%7D%2C%7B%22text%22%3A%221m%22%2C%22resolution%22%3A%2230%22%7D%2C%7B%22text%22%3A%225d%22%2C%22resolution%22%3A%225%22%7D%2C%7B%22text%22%3A%221d%22%2C%22resolution%22%3A%221%22%7D%5D&locale=vi&uid=tradingview_c5272&clientId=0&userId=0&chartsStorageVer=1.0&customCSS=%2Fchart-legacy.css&autoSaveDelay=1&debug=false&timezone=Etc%2FUTC&theme=Dark&header_widget_buttons_mode=adaptive",
+    "origin": "http://127.0.0.1:5180",
+    "readyCount": 1,
+    "interval": "1",
+    "cutoff": "1783315500",
+    "topWidth": 1920,
+    "centerRight": 1872,
+    "headerHit": "Toàn màn hình"
+  },
+  "localSaved": true,
+  "reloaded": {
+    "srcdoc": 7607,
+    "frameUrl": "about:srcdoc#symbol=EURUSDm&interval=5&widgetbar=%7B%22details%22%3Afalse%2C%22watchlist%22%3Afalse%2C%22watchlist_settings%22%3A%7B%22default_symbols%22%3A%5B%5D%7D%7D&timeFrames=%5B%7B%22text%22%3A%225y%22%2C%22resolution%22%3A%221W%22%7D%2C%7B%22text%22%3A%221y%22%2C%22resolution%22%3A%221W%22%7D%2C%7B%22text%22%3A%226m%22%2C%22resolution%22%3A%22120%22%7D%2C%7B%22text%22%3A%223m%22%2C%22resolution%22%3A%2260%22%7D%2C%7B%22text%22%3A%221m%22%2C%22resolution%22%3A%2230%22%7D%2C%7B%22text%22%3A%225d%22%2C%22resolution%22%3A%225%22%7D%2C%7B%22text%22%3A%221d%22%2C%22resolution%22%3A%221%22%7D%5D&locale=vi&uid=tradingview_8cd68&clientId=0&userId=0&chartsStorageVer=1.0&customCSS=%2Fchart-legacy.css&autoSaveDelay=1&debug=false&timezone=Etc%2FUTC&theme=Dark&header_widget_buttons_mode=adaptive",
+    "origin": "http://127.0.0.1:5180",
+    "readyCount": 1,
+    "interval": "5",
+    "cutoff": "1783315500",
+    "topWidth": 1920,
+    "centerRight": 1872,
+    "headerHit": "Toàn màn hình"
+  },
+  "drawer": {
+    "srcdoc": 7607,
+    "frameUrl": "about:srcdoc#symbol=EURUSDm&interval=5&widgetbar=%7B%22details%22%3Afalse%2C%22watchlist%22%3Afalse%2C%22watchlist_settings%22%3A%7B%22default_symbols%22%3A%5B%5D%7D%7D&timeFrames=%5B%7B%22text%22%3A%225y%22%2C%22resolution%22%3A%221W%22%7D%2C%7B%22text%22%3A%221y%22%2C%22resolution%22%3A%221W%22%7D%2C%7B%22text%22%3A%226m%22%2C%22resolution%22%3A%22120%22%7D%2C%7B%22text%22%3A%223m%22%2C%22resolution%22%3A%2260%22%7D%2C%7B%22text%22%3A%221m%22%2C%22resolution%22%3A%2230%22%7D%2C%7B%22text%22%3A%225d%22%2C%22resolution%22%3A%225%22%7D%2C%7B%22text%22%3A%221d%22%2C%22resolution%22%3A%221%22%7D%5D&locale=vi&uid=tradingview_8cd68&clientId=0&userId=0&chartsStorageVer=1.0&customCSS=%2Fchart-legacy.css&autoSaveDelay=1&debug=false&timezone=Etc%2FUTC&theme=Dark&header_widget_buttons_mode=adaptive",
+    "origin": "http://127.0.0.1:5180",
+    "readyCount": 1,
+    "interval": "5",
+    "cutoff": "1783315500",
+    "topWidth": 1920,
+    "centerRight": 1592,
+    "headerHit": "Toàn màn hình"
+  },
+  "pass": true
+}

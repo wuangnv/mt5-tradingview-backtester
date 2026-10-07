@@ -1,6 +1,9 @@
 import React from 'react'
 
 const paths = {
+  wallet: 'M4 6h14V3H6a3 3 0 0 0-3 3v14h18V7H4M21 11h-6v5h6M17 13.5h.01',
+  'grip-horizontal': 'M6 9h.01M12 9h.01M18 9h.01M6 15h.01M12 15h.01M18 15h.01',
+  restore: 'M9 3h12v12M15 9H3v12h12z',
   download: 'M12 3v12M7 10l5 5 5-5M4 16v5h16v-5', copy: 'M8 8h13v13H8zM16 8V3H3v13h5', lock: 'M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5zM12 14v3', trash: 'M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7',
   'place-order': 'M12 8v8M8 12h8M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
   'arrow-left': 'M20 12H4M10 6l-6 6 6 6', down: 'm6 9 6 6 6-6',

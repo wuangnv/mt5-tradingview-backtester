@@ -1,6 +1,6 @@
 @import url('/chart-controls.css');
 /* The workbench owns its chrome; the API owns candle and execution state. */
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame.has-advanced-chart { grid-template-columns: minmax(0, 1fr) 48px; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame.has-advanced-chart { grid-template-columns: minmax(0, 1fr); }
 .advanced-chart-host { position: absolute; inset: 0; }
 .advanced-replay-chart { position: relative; }
 .is-legacy-chart .chart-utility-rail { position: relative; }
@@ -241,6 +241,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-quick-actions :is(button, a):hover { background: var(--chart-hover); }
 .legacy-quick-actions :is(button, a):focus-visible { outline: 2px solid var(--project-primary); outline-offset: -2px; }
 .is-legacy-chart { font-family: Arial, sans-serif; }
+.is-legacy-chart .chart-floating-toolbar { z-index:19; }
 .is-legacy-chart :is(.chart-floating-toolbar, .legacy-quick-actions, .chart-utility-rail, .chart-trading-bar) :is(button, a, input, select) { box-sizing: border-box; font-family: inherit; line-height: 1; }
 .is-legacy-chart :is(.chart-floating-toolbar, .legacy-quick-actions, .chart-utility-rail, .chart-trading-bar) svg { display: block; flex: 0 0 auto; width: 18px; height: 18px; }
 .is-legacy-chart .chart-floating-toolbar { background: var(--chart-bg); border-radius: 4px; min-height: 38px; padding: 3px; box-sizing: border-box; }
@@ -351,11 +352,25 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
   .is-legacy-chart .chart-floating-toolbar :is([data-testid='step-10'], .chart-float-cutoff) { display: none; }
 }
 
-/* FX-style drawers resize the widget so its price scale stays fully visible. */
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open.is-journal-open .replay-workspace { grid-template-columns:minmax(0,1fr) min(560px,42vw); }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open.is-native-tree-open .replay-workspace { grid-template-columns:minmax(0,1fr) 280px; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-side { position:static; width:auto; padding:0; border-left:4px solid var(--chart-line); background:var(--chart-bg); }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top:var(--legacy-header-height,42px); }
+/* One native header spans the viewport; docks reserve canvas space below it. */
+.replay-shell.is-legacy-chart { --legacy-rail-width:48px; --legacy-dock-width:0px; --legacy-reserved-width:calc(var(--legacy-rail-width) + var(--legacy-dock-width)); }
+.replay-shell.is-legacy-chart.is-panel-open { --legacy-dock-width:min(360px, calc(100vw - 104px)); }
+.replay-shell.is-legacy-chart.is-panel-open.is-native-tree-open { --legacy-dock-width:min(280px, calc(100vw - 104px)); }
+.replay-shell.is-legacy-chart.is-panel-open.is-journal-open { --legacy-dock-width:min(560px, 42vw); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart .replay-workspace { grid-template-columns:minmax(0,1fr); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart .chart-frame.has-advanced-chart { padding-right:var(--legacy-reserved-width); box-sizing:border-box; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart .advanced-replay-chart { width:calc(100% + var(--legacy-reserved-width)); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart .chart-canvas { overflow:visible; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart .chart-utility-rail { position:absolute; top:var(--legacy-header-height,42px); right:0; bottom:0; width:var(--legacy-rail-width); padding:0; border-left:4px solid var(--chart-line); box-sizing:border-box; }
+.is-legacy-chart .chart-utility-rail::before, .is-legacy-chart .chart-utility-rail::after { display:none; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open .replay-side { position:absolute; right:var(--legacy-rail-width); top:var(--legacy-header-height,42px); height:calc(var(--legacy-frame-height,100%) - var(--legacy-header-height,42px)); bottom:auto; width:var(--legacy-dock-width); border-left:4px solid var(--chart-line); background:var(--chart-bg); box-sizing:border-box; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-side { padding:0; }
+@media (max-width:600px) {
+  .replay-shell.is-legacy-chart { --legacy-rail-width:36px; }
+  .replay-shell.is-legacy-chart.is-panel-open { --legacy-reserved-width:var(--legacy-rail-width); }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open .replay-side { width:calc(100vw - 92px); }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .chart-frame.has-advanced-chart { grid-template-columns:minmax(0,1fr); }
+}
 .legacy-journal { height:100%; display:flex; flex-direction:column; box-sizing:border-box; color:var(--chart-text); background:var(--chart-bg); font-size:13px; }
 .legacy-journal > header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border-bottom:1px solid var(--chart-line); }
 .legacy-journal button, .legacy-journal a, .legacy-object-tree button { border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
@@ -432,8 +447,6 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-init-details { padding:0 24px 20px; }
 .legacy-init-details .chart-order-panel { color:var(--chart-text); background:var(--chart-bg); padding-top:12px; }
 @media(max-width:1100px) {
- .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-workspace { grid-template-columns:minmax(0,1fr); }
- .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open:is(.is-journal-open,.is-native-tree-open) .replay-side { position:absolute; top:var(--legacy-header-height,42px); right:0; bottom:0; width:min(560px,calc(100% - 36px)); z-index:25; }
  .legacy-calendar-year { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media(max-width:600px) {

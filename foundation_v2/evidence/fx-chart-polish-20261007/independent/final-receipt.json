@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "reviewScope": "Actual local GET UI5cases + optional srcdoc load/reload + source audit. No real owner replay/order writes.",
+  "backendIntervalTests": 14,
+  "jsModelTests": 13,
+  "srcdoc": {
+    "pass": true,
+    "readinessPerLoad": 1,
+    "localLayoutRestore": true,
+    "nativeMenu": true,
+    "cutoffPreserved": true
+  },
+  "sourceHashes": {
+    "web/src/ReplayWorkspace.jsx": "4eb24348577d3504d7229c143c7b7f600ee7c893b920891c0eb0f468919859cc",
+    "web/src/TradingViewReplayChart.jsx": "57ab7c679b2f6eff8ebe8c29460985d0bff78f1f1ae6261ef55da32a4b5dffaf",
+    "web/src/ChartWorkbench.css": "5260840edbd9374dd9209ea2e9c6c42340577930d1fd62a8e084166a068cbc4d",
+    "web/public/chart-legacy.css": "d22bfc222f1f4af92bd3e1c74cab008331433248e39181872e91fe4e09ac6ac2",
+    "web/src/LegacyReplayToolbar.jsx": "7474b1f770c70f4a277867d4ae5e9e89a3baecf5a8c2266a069f243370d2f8ea",
+    "web/src/LegacyTradingBar.jsx": "e3f6905f918e02bfc27d188914a760edf079a8d96544b61b358711a64ab214aa",
+    "web/src/LegacyTradingBar.css": "b8999b6f89db9e9df23b2ff50a239255af701a4b36fd442b48919eee3d5497f7",
+    "web/src/legacyReplayModel.js": "5051e735fa99cc70317526bc4e50b314c23c94412bdbc7972b7dd3a9c541474e",
+    "web/src/legacyScalperPreset.js": "9485ce4e6d9d70fed7dfec0542eab67a0c58c88a513dfd1a841f7c68f4a107c7",
+    "trading_workspace_v2/replay_interval.py": "47018b37e44ab4b2ace8d1394330d2042228eb50b35086020daa41b706c38dca",
+    "trading_workspace_v2/replay.py": "8977f75a0d26a64a2bffe699743c30e4a3660b720bc76016b2d1fe10b7e151cf",
+    "trading_workspace_v2/contracts.py": "c9841673ca52a54187296eb5251e5aaa060cc21351077e7769efe2296ebcfa1c",
+    "trading_workspace_v2/api.py": "bea6f226490213742843b3d0c5259c704ebc831c562041e65d99954e49d93bea"
+  }
+}

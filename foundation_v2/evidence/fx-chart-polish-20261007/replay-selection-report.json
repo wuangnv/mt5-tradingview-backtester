@@ -1,0 +1,16 @@
+{
+  "scope": "Real native canvas click and actual historical GET. All POST except fixture activity blocked.",
+  "errors": [],
+  "gets": [
+    "?cursor_index=500",
+    "?cursor_index=340"
+  ],
+  "writes": [],
+  "pass": true,
+  "target": {
+    "time": 1783305900,
+    "index": 340,
+    "x": 782.4000000000001,
+    "y": 380.8
+  }
+}

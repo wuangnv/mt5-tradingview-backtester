@@ -220,16 +220,26 @@ application-specific controls through five official `createButton` extension
 hosts (market, layout, session, search, tools). Fullscreen belongs to the header
 tools group; the rail starts below its continuous header separator. CSS ordering
 targets this pinned v23 distribution; a vendor upgrade requires renewed visual QA.
-Context/preview docks overlay below the header. Journal and the object drawer
-resize the widget on desktop; narrow screens use an overlay. The default native viewport is retained unless a local
+All desktop docks reserve space below the full-width header. The iframe stays
+full width, its body reserves the dock/rail width, and a native resize updates the
+canvas and price scale. Both document body and outer canvas allow header overflow;
+checking header bounds alone does not prove the rightmost controls are visible.
+Screens at 600px or less use a dock overlay because v23 has a minimum chart width.
+Codex's embedded browser can cancel v23 blob iframe navigation. The explicit
+`chart_iframe=srcdoc` URL option loads the same generated local document and options
+hash using srcdoc; normal blob transport remains the default. Vendor assets are
+unchanged. Retest this version-specific adapter on any chart-library upgrade.
+The default native viewport is retained unless a local
 layout was saved. Changing interval aggregates the same causal prefix and never
-advances replay; the native event interval synchronizes the replay bar selector.
+advances replay. The replay timeframe is independent until its sync switch is on;
+native interval events then drive the replay selector. Rewind/remount retains the
+chosen native interval without reusing a saved layout from a later cutoff.
 Mobile tools use an overflow menu, including native indicator/undo/redo actions
 that do not fit the row. Menus handle outside click and Escape in both documents
 and restore focus when the opener disappears during resize. Native header
 pointer/keyboard interaction pauses replay before operating a chart control.
 
-Compare, multi-chart layout creation, Editor, AI Mentor and Scalper mode retain
+Compare, multi-chart layout creation, Editor and AI Mentor retain
 explicit preview states. Mentor text is local UI state and cannot send to a provider.
 Quick Search opens existing preview tools. Save/restore remains browser-local;
 Save stays visible under the layout name: clean is disabled, dirty/error is enabled,
@@ -249,16 +259,33 @@ The native drawing rail and bottom scale controls remain. One draggable replay
 bar and one draggable quick-action bar match the reference; the extra app drawing
 palette is removed. Quick actions can be hidden and restored from session settings.
 The right rail follows Object tree / Order / Go To / News / Journal / Settings.
-Buy/Sell retains simulated order ownership. Footer balance visibility and position
-expansion are UI state only. Positions read the cutoff-safe execution snapshot:
+Replay speed has sixteen positions (1–16 requested advances per second). Only one
+revisioned request runs at a time, so service latency can reduce the actual speed.
+Bar Replay arms selection of a previously visible candle; it does not reset to
+the dataset start. Forward replay resolves the first available underlying candle
+in the next UTC interval bucket on the server, capped at 1000 traversed bars;
+all fills/protections still process each bar. Historical forward is a bounded GET
+up to the canonical cursor; rewind selects the previous occupied interval bucket.
+Unsupported sub-dataset intervals and calendar resolutions stay unavailable.
+Buy/Sell retains simulated order ownership with white labels. Quantity has one
+outline with a separate spinner. The center grip resizes the positions list;
+the footer maximize button expands that list below the header, while header
+fullscreen uses the browser Fullscreen API. Replay/quick toolbars remain visible
+above the expanded list. The wallet popup shows cutoff-safe equity and P/L;
+uninitialized execution stays unknown rather than inventing an account balance.
+Footer balance visibility and position expansion are UI state only. Positions read the cutoff-safe execution snapshot:
 open/pending state and protective fills from its ledger. Unavailable execution
 is distinct from an empty list; unknown per-trade commission stays a dash.
 Pagination is local over the snapshot, not a claim of server paging.
 
 Order opens a focus-trapped modal using the existing simulator submission and risk
 validation. Current simulator contracts require both SL/TP; their switches are
-display-only, and unsupported order types, presets, break-even and strategy creation
-stay disabled. Successful Save can open Journal; errors leave the draft visible.
+display-only, and unsupported order types, break-even and strategy creation stay
+disabled. A separate local Scalper preset converts positive distances in percent,
+pips or supported ticks to protective draft prices. It persists by workspace and
+session in browser storage and still opens the existing confirmation dialog;
+it does not claim FX's instant order execution. Successful Save can open Journal;
+errors leave the draft visible.
 Go To is anchored to the invoking rail or quick-bar button; custom cursor/date
 navigation preserves existing cutoff checks. Future/news/session jumps stay disabled.
 The layout selector displays reference rows 1–8 and sync controls; only one chart is
@@ -280,3 +307,4 @@ Testing state/language/paging contract remains [testing-standard.md](testing-sta
 Initial receipt: foundation_v2/evidence/legacy-match-20261007/CHECKPOINT.md.
 Native header correction: foundation_v2/evidence/native-refinement-20261007/CHECKPOINT.md.
 FX controls and Save mechanism: foundation_v2/evidence/fx-chart-controls-20261007/CHECKPOINT.md.
+Header/rail/footer and replay polish: foundation_v2/evidence/fx-chart-polish-20261007/CHECKPOINT.md.

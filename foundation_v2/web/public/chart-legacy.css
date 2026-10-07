@@ -1,5 +1,9 @@
 @import url('/chart-controls.css');
 /* Project-owned Legacy chart chrome. Vendor sources stay untouched. */
+body.chart-page { width: calc(100% - var(--legacy-reserved-width, 0px)); overflow:visible; }
+.layout__area--top { width: calc(100% + var(--legacy-reserved-width, 0px)) !important; }
+/* v23's Ctrl+zoom teaching hint; leave dialogs, alerts and errors visible. */
+.container-vZPBcQQO { display: none !important; }
 :root {
   --tv-color-platform-background: #DADADA;
   --tv-color-pane-background: #FFFFFF;

@@ -28,6 +28,7 @@ from .replay_execution import (
 )
 from .store import PostgresStore
 from .replay_activity import new_timing, validate_activity
+from .replay_interval import next_interval_cursor
 from .tick_history import TickHistoryStore
 
 
@@ -334,7 +335,8 @@ class ReplayService:
         self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
 
-    def view(self, workspace_id: str, session_id: str, cursor_index: int | None = None) -> dict:
+    def view(self, workspace_id: str, session_id: str, cursor_index: int | None = None,
+             advance_interval_seconds: int | None = None) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
             raise LookupError("replay session not found")
@@ -348,6 +350,9 @@ class ReplayService:
             raise ValueError("view cursor must be nonnegative")
         if view_cursor > canonical_cursor:
             raise ValueError("view cursor cannot exceed current replay cursor")
+        if advance_interval_seconds is not None:
+            view_cursor = next_interval_cursor(rows, view_cursor, canonical_cursor,
+                advance_interval_seconds, getattr(manifest, "timeframe_seconds", None))
         visible = rows[: view_cursor + 1]
         execution_view_status = "current" if payload.get("execution") else "not_initialized"
         if view_cursor != canonical_cursor and payload.get("execution"):
@@ -377,16 +382,25 @@ class ReplayService:
         start, end = validate_activity(body)
         return self.store.record_replay_activity(workspace_id, session_id, body.event_id, start, end)
 
-    def step(self, workspace_id: str, session_id: str, expected_revision: int, steps: int = 1) -> dict:
+    def step(self, workspace_id: str, session_id: str, expected_revision: int, steps: int = 1,
+             replay_interval_seconds: int | None = None) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
             raise LookupError("replay session not found")
         if record["revision"] != expected_revision:
             raise RuntimeError("record revision conflict")
         payload = dict(record["payload"])
-        _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
+        manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
         current_cursor = int(payload["cursor_index"])
-        cursor = min(len(rows) - 1, current_cursor + int(steps))
+        if isinstance(steps, bool) or not isinstance(steps, int) or not 1 <= steps <= 1000:
+            raise ValueError("replay steps must be an integer between 1 and 1000")
+        if replay_interval_seconds is not None:
+            if steps != 1:
+                raise ValueError("choose either replay interval or a bar count")
+            cursor = next_interval_cursor(rows, current_cursor, len(rows) - 1,
+                replay_interval_seconds, getattr(manifest, "timeframe_seconds", None))
+        else:
+            cursor = min(len(rows) - 1, current_cursor + steps)
         timing = dict(payload.get("timing") or new_timing(legacy_baseline=True))
         timing["historical_time_replayed_seconds"] += max(0, int(rows[cursor]["timestamp"]) - int(rows[current_cursor]["timestamp"]))
         payload["timing"] = timing

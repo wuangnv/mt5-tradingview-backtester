@@ -388,6 +388,13 @@ class ReplayStep(BaseModel):
 
     expected_revision: int = Field(ge=1)
     steps: int = Field(default=1, ge=1, le=1000)
+    replay_interval_seconds: int | None = Field(default=None, ge=1, le=86400, strict=True)
+
+    @model_validator(mode="after")
+    def interval_or_bar_count(self):
+        if self.replay_interval_seconds is not None and self.steps != 1:
+            raise ValueError("choose either replay interval or a bar count")
+        return self
 
 
 class ReplayDelete(BaseModel):

@@ -1,0 +1,45 @@
+{
+  "scope": "Real service GET and actual native chart; all POST intercepted. Step returns revision conflict fixture, no order/session writes.",
+  "errors": [],
+  "writes": [
+    {
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity",
+      "body": {
+        "event_id": "587a8bfe-e3d5-4be1-98df-b96b91dd2700",
+        "started_at_utc": "2026-10-07T09:48:18.277Z",
+        "ended_at_utc": "2026-10-07T09:48:26.527Z"
+      }
+    },
+    {
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/activity",
+      "body": {
+        "event_id": "f4f2583e-eaa1-433b-8f5c-6fc646809d75",
+        "started_at_utc": "2026-10-07T09:48:26.526Z",
+        "ended_at_utc": "2026-10-07T09:48:26.529Z"
+      }
+    },
+    {
+      "path": "/api/v2/replay/sessions/476f4b498e1a49ed9d48a75719f4d270/step",
+      "body": {
+        "expected_revision": 2,
+        "steps": 1,
+        "replay_interval_seconds": 3600
+      }
+    }
+  ],
+  "gets": [
+    "?cursor_index=500",
+    "?cursor_index=495",
+    "?cursor_index=495&advance_interval_seconds=300",
+    "?cursor_index=475",
+    "?cursor_index=475&advance_interval_seconds=900",
+    "?cursor_index=500"
+  ],
+  "cases": [
+    "Independent5m rewind/forward is actual historical GET, native chart remains1m",
+    "Sync15m stays across historical remount and uses occupied UTC bucket boundary",
+    "Bar selection arms and native-frame Escape cancels",
+    "Canonical1h dispatches typed3600seconds; single request in flight, Pause works while pending and409 locks playback"
+  ],
+  "pass": true
+}

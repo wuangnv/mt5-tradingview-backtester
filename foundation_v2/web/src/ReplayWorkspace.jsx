@@ -20,12 +20,15 @@ import { DRAWING_LABELS, useReplayDrawings } from './useReplayDrawings.js'
 import ReplayObjects from './ReplayObjects.jsx'
 import ChartIcon from './ChartIcon.jsx'
 import ChartFloatingToolbar from './ChartFloatingToolbar.jsx'
+import LegacyReplayToolbar from './LegacyReplayToolbar.jsx'
+import { replayResolution, resolutionSeconds } from './advancedReplayDatafeed.js'
+import { replayIntervalSteps, replayAdvance, replayRewind, replayRewindBucket, replaySelectionCursor, replayDelay } from './legacyReplayModel.js'
 import ChartOrderPanel, { useChartOrder } from './ChartOrderPanel.jsx'
 import TradingViewReplayChart from './TradingViewReplayChart.jsx'
 import useReplayActivity from './useReplayActivity.js'
 import ChartHeaderPreview from './ChartHeaderPreview.jsx'
-import LegacyChartHeader, { intervalLabel } from './LegacyChartHeader.jsx'
-import LegacyPositions from './LegacyPositions.jsx'
+import LegacyChartHeader from './LegacyChartHeader.jsx'
+import LegacyTradingBar from './LegacyTradingBar.jsx'
 import LegacyPopover from './LegacyPopover.jsx'
 import LegacyOrderDialog from './LegacyOrderDialog.jsx'
 import LegacyJournal from './LegacyJournal.jsx'
@@ -300,7 +303,7 @@ function replaceSessionInUrl(sessionId, preserveCursor = false, cursor = null, d
 
 function isEditableTarget(target) {
   if (!target || typeof target !== 'object') return false
-  if (target.isContentEditable) return true
+  if (target.isContentEditable || target.closest?.('input, textarea, select, button, [role="button"], [role="menu"], [role="listbox"], [role="dialog"], [role="slider"]')) return true
   const tagName = String(target.tagName || '').toUpperCase()
   return tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT' || tagName === 'BUTTON'
 }
@@ -332,6 +335,11 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [startDraft, setStartDraft] = useState(Number.isFinite(requestedStart) ? Math.max(0, requestedStart) : 0)
   const [jumpDraft, setJumpDraft] = useState(0)
   const [speed, setSpeed] = useState('1')
+  const [replayInterval, setReplayInterval] = useState('1')
+  const [replaySync, setReplaySync] = useState(false)
+  const [selectingReplayBar, setSelectingReplayBar] = useState(false)
+  const replayIntervalInitialized = useRef('')
+  const lastReplayDispatch = useRef(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [crosshair, setCrosshair] = useState(null)
   const [annotationDraft, setAnnotationDraft] = useState(null)
@@ -342,10 +350,9 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [sidePanel, setSidePanel] = useState('context')
   const [headerSlot, setHeaderSlot] = useState(null)
   const [nativeHeaderSlots, setNativeHeaderSlots] = useState(null)
+  const nativeIntervalRef = useRef(null)
   const [goToPopup, setGoToPopup] = useState(null)
   const [goToCustom, setGoToCustom] = useState(false)
-  const [positionsOpen, setPositionsOpen] = useState(false)
-  const [balanceHidden, setBalanceHidden] = useState(false)
   const [quickActionsVisible, setQuickActionsVisible] = useState(true)
   const [indicatorsOpen, setIndicatorsOpen] = useState(false)
   const [drawingTool, setDrawingTool] = useState('cross')
@@ -388,16 +395,19 @@ export default function ReplayWorkspace({ workspace, query }) {
     replaceSessionInUrl(nextSessionId, preserveCursor, cursor, dataset)
   }, [storageKey])
 
-  const loadSession = useCallback(async (targetSessionId, targetCursor = null) => {
-    if (!targetSessionId) return
+  const loadSession = useCallback(async (targetSessionId, targetCursor = null, options = {}) => {
+    if (!targetSessionId || actionLock.current) return
     sessionRequest.current?.abort()
     const controller = new AbortController()
     sessionRequest.current = controller
-    setIsPlaying(false)
+    if (!options.keepPlaying) setIsPlaying(false)
     setState((current) => ({ status: 'loading', payload: current.payload, error: null }))
     setConflict(false)
     try {
-      const suffix = targetCursor === null ? '' : `?cursor_index=${encodeURIComponent(targetCursor)}`
+      const params = new URLSearchParams()
+      if (targetCursor !== null) params.set('cursor_index', String(targetCursor))
+      if (options.advanceIntervalSeconds) params.set('advance_interval_seconds', String(options.advanceIntervalSeconds))
+      const suffix = params.size ? `?${params}` : ''
       const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(targetSessionId)}${suffix}`, {
         signal: controller.signal,
         headers: { 'X-Workspace-Id': workspace },
@@ -411,6 +421,8 @@ export default function ReplayWorkspace({ workspace, query }) {
       setState({ status: 'ready', payload, error: null })
     } catch (error) {
       if (!controller.signal.aborted) setState({ status: 'error', payload: null, error: String(error.message || error) })
+    } finally {
+      if (sessionRequest.current === controller) sessionRequest.current = null
     }
   }, [rememberSession, workspace])
 
@@ -498,7 +510,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   useEffect(() => () => sessionRequest.current?.abort(), [])
 
   const mutate = useCallback(async (kind, body) => {
-    if (!sessionId || !state.payload || state.status !== 'ready' || actionLock.current) return
+    if (!sessionId || !state.payload || state.status !== 'ready' || actionLock.current || sessionRequest.current) return
     actionLock.current = true
     setPendingAction(kind)
     setConflict(false)
@@ -542,6 +554,17 @@ export default function ReplayWorkspace({ workspace, query }) {
     () => datasetState.items.find((item) => item.dataset_id === replay?.payload?.dataset_id) || null,
     [datasetState.items, replay?.payload?.dataset_id],
   )
+  const datasetSeconds = Number(activeDataset?.timeframe_seconds || replay?.payload?.execution?.timeframe_seconds)
+  const effectiveReplayInterval = replaySync && nativeHeaderSlots?.interval ? nativeHeaderSlots.interval : replayInterval
+  const intervalSteps = advancedChart ? replayIntervalSteps(effectiveReplayInterval, datasetSeconds) : 1
+  const replayIntervalSeconds = advancedChart && intervalSteps !== null ? resolutionSeconds(effectiveReplayInterval) : undefined
+  useEffect(() => {
+    if (!Number.isSafeInteger(datasetSeconds) || datasetSeconds < 1 || replayIntervalInitialized.current === sessionId) return
+    replayIntervalInitialized.current = sessionId
+    try { setReplayInterval(replayResolution(datasetSeconds)) } catch { setReplayInterval('1') }
+    setReplaySync(false)
+    setSelectingReplayBar(false)
+  }, [datasetSeconds, sessionId])
 
   // Keep the story grounded in the same API-visible replay payload. Dataset
   // metadata is an enhancement when the catalog is available; it must never
@@ -614,7 +637,7 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   useEffect(() => {
     const cancelDrawing = event => {
-      if (event.key === 'Escape') { setPendingAnchor(null); setChartNotice('') }
+      if (event.key === 'Escape') { setPendingAnchor(null); setSelectingReplayBar(false); setChartNotice('') }
     }
     window.addEventListener('keydown', cancelDrawing)
     return () => window.removeEventListener('keydown', cancelDrawing)
@@ -667,47 +690,64 @@ export default function ReplayWorkspace({ workspace, query }) {
     loadSession(sessionId, target)
   }, [canonicalCursor, jumpDraft, loadSession, replay, sessionId])
 
+  const canReplayForward = Boolean(replayAdvance({ cursor, canonicalCursor, historical: historicalView, completed, steps: intervalSteps }))
+  const advanceReplay = useCallback((keepPlaying = false, multiplier = 1) => {
+    if (!replay || state.status !== 'ready' || conflict || pendingAction || actionLock.current) return
+    const steps = intervalSteps == null ? null : Math.min(1000, intervalSteps * multiplier)
+    const action = replayAdvance({ cursor, canonicalCursor, historical: historicalView, completed, steps, intervalSeconds: replayIntervalSeconds })
+    if (!action) { setIsPlaying(false); return }
+    lastReplayDispatch.current = performance.now()
+    if (!keepPlaying) setIsPlaying(false)
+    if (action.kind === 'read') loadSession(sessionId, action.cursor, { keepPlaying, advanceIntervalSeconds: action.advanceIntervalSeconds })
+    else mutate('step', { expected_revision: revision, steps: action.steps, ...(action.replayIntervalSeconds ? { replay_interval_seconds: action.replayIntervalSeconds } : {}) })
+  }, [canonicalCursor, completed, conflict, cursor, historicalView, intervalSteps, loadSession, mutate, pendingAction, replay, replayIntervalSeconds, revision, sessionId, state.status])
+  const rewindReplay = useCallback(() => {
+    if (state.status !== 'ready' || conflict || pendingAction || actionLock.current) return
+    const target = advancedChart ? replayRewindBucket(visibleRows, cursor, replayIntervalSeconds) : replayRewind(cursor, intervalSteps)
+    if (target !== null) loadSession(sessionId, target)
+  }, [advancedChart, conflict, cursor, intervalSteps, loadSession, pendingAction, replayIntervalSeconds, sessionId, state.status, visibleRows])
+  const selectReplayBar = useCallback(timestamp => {
+    if (!selectingReplayBar || state.status !== 'ready' || conflict || pendingAction || actionLock.current) return
+    const target = replaySelectionCursor(visibleRows, Number(timestamp), cursor)
+    if (target === null) return
+    setSelectingReplayBar(false)
+    setChartNotice('')
+    loadSession(sessionId, target)
+  }, [conflict, cursor, loadSession, pendingAction, selectingReplayBar, sessionId, state.status, visibleRows])
+  const toggleReplay = () => {
+    if (!isPlaying) { lastReplayDispatch.current = performance.now(); setSelectingReplayBar(false); setChartNotice('') }
+    setIsPlaying(current => !current)
+  }
   useEffect(() => {
-    if (!isPlaying || !replay || historicalView || completed || conflict || pendingAction) return undefined
-    const delay = Math.max(180, 1100 / Math.max(0.5, Number(speed) || 1))
-    const timer = window.setInterval(() => {
-      mutate('step', { expected_revision: Number(replay.revision || 0), steps: 1 })
-    }, delay)
-    return () => window.clearInterval(timer)
-  }, [completed, conflict, historicalView, isPlaying, mutate, pendingAction, replay, speed])
+    if (!isPlaying || !replay || !canReplayForward || conflict || pendingAction || state.status !== 'ready') return undefined
+    const delay = advancedChart ? replayDelay(speed, lastReplayDispatch.current, performance.now()) : Math.max(0, 1000 / Math.max(.5, Number(speed) || 1) - (performance.now() - lastReplayDispatch.current))
+    // One request at a time. Response latency may lower playback speed, but we
+    // never flood the revisioned API with concurrent or catch-up mutations.
+    const timer = window.setTimeout(() => advanceReplay(true), delay)
+    return () => window.clearTimeout(timer)
+  }, [advanceReplay, advancedChart, canReplayForward, conflict, isPlaying, pendingAction, replay, speed, state.status])
 
   useEffect(() => {
-    if (completed || historicalView || conflict || state.status === 'error') setIsPlaying(false)
-  }, [completed, conflict, historicalView, state.status])
+    if ((completed && !historicalView) || conflict || intervalSteps === null || state.status === 'error') setIsPlaying(false)
+  }, [completed, conflict, historicalView, intervalSteps, state.status])
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      // Keep native text/range controls usable. ArrowRight is a replay shortcut only
-      // when the page itself owns focus, so adjusting the branch range never steps bars.
-      if (
-        event.defaultPrevented
-        || event.metaKey
-        || event.ctrlKey
-        || event.altKey
-        || isEditableTarget(event.target)
-        || event.key !== 'ArrowRight'
-        || !replay
-        || historicalView
-        || completed
-        || conflict
-        || pendingAction
-      ) return
-
+    const handleKeyDown = event => {
+      if (event.key === 'Escape' && selectingReplayBar) { setSelectingReplayBar(false); setChartNotice(''); return }
+      // Native text, range and menu controls retain their own keyboard behavior.
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey || isEditableTarget(event.target) || !replay || conflict || pendingAction || state.status !== 'ready') return
+      if (!['ArrowRight', 'ArrowLeft', ' '].includes(event.key)) return
+      if (event.key === ' ' && !canReplayForward && !isPlaying) return
       event.preventDefault()
-      mutate('step', {
-        expected_revision: revision,
-        steps: event.shiftKey ? 10 : 1,
-      })
+      event.stopPropagation()
+      if (event.key === 'ArrowLeft') rewindReplay()
+      else if (event.key === 'ArrowRight') advanceReplay(false, event.shiftKey && !advancedChart ? 10 : 1)
+      else { lastReplayDispatch.current = performance.now(); setSelectingReplayBar(false); setIsPlaying(current => !current) }
     }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [completed, conflict, historicalView, mutate, pendingAction, replay, revision])
+    const docs = [...new Set([document, nativeHeaderSlots?.market?.ownerDocument].filter(Boolean))]
+    docs.forEach(doc => doc.addEventListener('keydown', handleKeyDown, true))
+    return () => docs.forEach(doc => doc.removeEventListener('keydown', handleKeyDown, true))
+  }, [advanceReplay, advancedChart, canReplayForward, conflict, isPlaying, nativeHeaderSlots, pendingAction, replay, rewindReplay, selectingReplayBar, state.status])
 
   useEffect(() => {
     if (sideOpen) sideRef.current?.focus()
@@ -885,20 +925,25 @@ export default function ReplayWorkspace({ workspace, query }) {
                     {['cross', 'level', 'trendline', 'zone', 'text', 'measure'].map(tool => <button key={tool} type="button" aria-label={`Công cụ nhanh ${tool}`} title={tool === 'level' ? t("Đường giá") : DRAWING_LABELS[tool] || t("Crosshair")} aria-pressed={drawingTool === tool} onClick={() => chooseDrawingTool(tool)}><ChartIcon name={tool} /></button>)}
                     {drawingTool === 'text' && <input aria-label={t("Nội dung ghi chú chart")} maxLength={256} value={drawingLabel} onChange={event => setDrawingLabel(event.target.value)} placeholder={t("Ghi chú tại mốc")} />}
                   </ChartFloatingToolbar></>}
-                  <ChartFloatingToolbar name="Replay" minimal={advancedChart} compactRow={1} className={advancedChart ? "legacy-replay-toolbar" : ""} compactMinimumY={advancedChart ? 100 : undefined} insetLeft={advancedChart ? 54 : 0} storageKey={`tw:chart:replay-toolbar:${advancedChart ? 'native-refined:' : ''}${workspace}`} initialPosition={{ x: advancedChart ? 850 : 330, y: advancedChart ? 140 : 46 }}>
-                    {advancedChart && <button type="button" className="legacy-replay-reset" aria-label={t('Về nến đầu tiên')} onClick={() => loadSession(sessionId, 0)} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}><ChartIcon name="back" /></button>}
-                    <button type="button" className="legacy-replay-previous" aria-label={t("Lùi một nến")} title={t("Lùi một nến (chỉ đọc)")} onClick={() => loadSession(sessionId, Math.max(0, cursor - 1))} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}><ChartIcon name="back" /></button>
-                    {advancedChart && <label className="legacy-speed-control"><span>{t("{speed}× mỗi giây", { speed })}</span><input type="range" className="legacy-speed-slider" aria-label={t("Điều chỉnh tốc độ replay")} min="0" max="3" step="1" value={['0.5', '1', '2', '4'].indexOf(String(speed))} onChange={event => setSpeed(['0.5', '1', '2', '4'][Number(event.target.value)])} disabled={Boolean(pendingAction)} /></label>}
-                    <button type="button" className="chart-play" data-testid="play-toggle" aria-label={isPlaying ? t("Tạm dừng") : t("Phát replay")} title={t("Phát / tạm dừng replay")} onClick={() => setIsPlaying(current => !current)} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}><ChartIcon name={isPlaying ? 'pause' : 'play'} /></button>
-                    <button type="button" data-testid="step-1" aria-label={t("Tiến một nến")} title={t("→ Tiến một nến")} aria-keyshortcuts="ArrowRight" onClick={() => mutate('step', { expected_revision: revision, steps: 1 })} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}><ChartIcon name="step" /></button>
-                    {advancedChart ? <><select aria-label={t('Khung thời gian chart')} title={t('Khung chart · replay vẫn tiến theo nến của dataset')} value={nativeHeaderSlots?.interval || ''} disabled={!nativeHeaderSlots} onChange={event => nativeHeaderSlots.setInterval(event.target.value)}>{nativeHeaderSlots?.intervals.map(value => <option key={value} value={value}>{intervalLabel(value)}</option>)}</select><label className="legacy-sync-toggle" title={t('Chưa hỗ trợ đồng bộ khung replay')}><input type="checkbox" role="switch" aria-label={t('Đồng bộ khung replay · chưa hỗ trợ')} disabled /><span /></label></> : <><button type="button" data-testid="step-10" aria-label={t("Tiến mười nến")} title={t("Shift + → Tiến mười nến")} aria-keyshortcuts="Shift+ArrowRight" onClick={() => mutate('step', { expected_revision: revision, steps: 10 })} disabled={historicalView || completed || conflict || Boolean(pendingAction) || state.status !== 'ready'}>10</button><FxSelect label={t("Tốc độ replay")} value={speed} onChange={value => setSpeed(value)} disabled={Boolean(pendingAction)} localizeOptions={false} options={['0.5', '1', '2', '4'].map(value => ({ value, label: value + '×', localize: false }))} /><span className="chart-float-cutoff" title={formatTimestamp(replay.cutoff_timestamp) + ' UTC'}>#{cursor}</span></>}
-                  </ChartFloatingToolbar>
+                  {advancedChart ? <LegacyReplayToolbar workspace={workspace} theme={theme} speed={speed} onSpeed={setSpeed}
+                    interval={effectiveReplayInterval} datasetSeconds={datasetSeconds} sync={replaySync} syncAvailable={Boolean(nativeHeaderSlots)}
+                    onSync={value => { setIsPlaying(false); setReplaySync(value) }} onInterval={value => { setIsPlaying(false); setReplaySync(false); setReplayInterval(value) }}
+                    busy={Boolean(pendingAction)} available={!conflict && state.status === 'ready'} canBack={cursor > 0} canForward={canReplayForward}
+                    playing={isPlaying} onPlay={toggleReplay} onBack={rewindReplay} onForward={() => advanceReplay()} selecting={selectingReplayBar}
+                    onSelect={() => { setIsPlaying(false); setSelectingReplayBar(current => !current); setChartNotice(selectingReplayBar ? '' : 'Bấm một nến trước cutoff hiện tại để bắt đầu replay; Escape để hủy.') }} />
+                    : <ChartFloatingToolbar name="Replay" compactRow={1} storageKey={`tw:chart:replay-toolbar:${workspace}`} initialPosition={{ x: 330, y: 46 }}>
+                    <button type="button" aria-label={t("Lùi một nến")} title={t("Lùi một nến (chỉ đọc)")} onClick={rewindReplay} disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || cursor <= 0}><ChartIcon name="back" /></button>
+                    <button type="button" className="chart-play" data-testid="play-toggle" aria-label={isPlaying ? t("Tạm dừng") : t("Phát replay")} title={t("Phát / tạm dừng replay")} onClick={toggleReplay} disabled={!isPlaying && (!canReplayForward || conflict || Boolean(pendingAction) || state.status !== 'ready')}><ChartIcon name={isPlaying ? 'pause' : 'play'} /></button>
+                    <button type="button" data-testid="step-1" aria-label={t("Tiến một nến")} title={t("→ Tiến một nến")} aria-keyshortcuts="ArrowRight" onClick={() => advanceReplay()} disabled={!canReplayForward || conflict || Boolean(pendingAction) || state.status !== 'ready'}><ChartIcon name="step" /></button>
+                    <button type="button" data-testid="step-10" aria-label={t("Tiến mười nến")} title={t("Shift + → Tiến mười nến")} aria-keyshortcuts="Shift+ArrowRight" onClick={() => advanceReplay(false, 10)} disabled={!canReplayForward || conflict || Boolean(pendingAction) || state.status !== 'ready'}>10</button>
+                    <FxSelect label={t("Tốc độ replay")} value={speed} onChange={setSpeed} disabled={Boolean(pendingAction)} localizeOptions={false} options={['0.5', '1', '2', '4'].map(value => ({ value, label: value + '×', localize: false }))} /><span className="chart-float-cutoff" title={formatTimestamp(replay.cutoff_timestamp) + ' UTC'}>#{cursor}</span>
+                  </ChartFloatingToolbar>}
                   {advancedChart && quickActionsVisible && <ChartFloatingToolbar name="Hành động nhanh chart" className="legacy-quick-actions" minimal storageKey={`tw:chart:quick-toolbar:native-refined:${workspace}`} initialPosition={{ x: 1100, y: 220 }} compactMinimumY={86} insetLeft={54}><button type="button" onClick={() => openPanel('goto')}><ChartIcon name="goto" />{t('Go To')}</button><button type="button" onClick={() => openPanel('order')}><ChartIcon name="order" />{t('Order')}</button><button type="button" onClick={() => openPanel('news')}><ChartIcon name="news" />{t('News')}</button><button type="button" onClick={() => openPanel('journal')}><ChartIcon name="journal" />{t('Journal')}</button><button type="button" aria-label={t('Ẩn thanh thao tác nhanh')} onClick={() => setQuickActionsVisible(false)}><ChartIcon name="close" /></button></ChartFloatingToolbar>}
                   {advancedChart ? <TradingViewReplayChart key={`${sessionId}:${replay.payload.dataset_id}:${historicalView ? cursor : 'canonical'}`}
                     workspace={workspace} datasetId={replay.payload.dataset_id} symbol={replayContext.instrument} assetClass={order.instrument?.asset_class} seconds={activeDataset?.timeframe_seconds || replay.payload.execution?.timeframe_seconds}
                     cutoff={Number(replay.cutoff_timestamp)} theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`}
                     onOrderDragStart={() => setIsPlaying(false)} tickSize={order.instrument?.tick_size} onOrderPriceChange={order.changePrice} rows={visibleRows} sessionId={sessionId}
-                    viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} onHeaderSlots={setNativeHeaderSlots} />
+                    viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} preferredInterval={nativeIntervalRef.current?.sessionId === sessionId ? nativeIntervalRef.current.interval : undefined} onHeaderSlots={slots => { if (slots?.interval) nativeIntervalRef.current = { sessionId, interval: slots.interval }; setNativeHeaderSlots(slots) }} selectingReplayBar={selectingReplayBar} onReplayBarSelect={selectReplayBar} />
                     : <ReplayChart theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`} onOrderDragStart={() => setIsPlaying(false)} tickSize={order.instrument?.tick_size} onOrderPriceChange={order.changePrice} rows={visibleRows} sessionId={sessionId} chartType={chartType} showVolume={showVolume} showAverage={showAverage} viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} onAnchorSelect={handleChartAnchor} />}
                   <div className="chart-badge chart-badge-left">{replay.payload.dataset_id}</div>
                   <div className="chart-badge chart-badge-right">{replay.historical_view ? t("HISTORICAL CUTOFF") : t("LIVE REPLAY CURSOR")}</div>
@@ -927,15 +972,14 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="chart-bottom-status"><span className="status-dot" /> {t("Paper replay")} <strong>{replayContext.instrument}</strong></div>
               </div>
 
-              <div className="chart-trading-bar" role="group" aria-label={t("Giao dịch mô phỏng")}>
+              {advancedChart ? <LegacyTradingBar key={`${workspace}:${sessionId}`} workspace={workspace} sessionId={sessionId} order={order} quotes={quotes} onBeginOrder={beginOrder} analyticsHref={routeHref('analytics', { surface: 'workspace' })} symbol={replayContext.instrument} theme={theme} /> : <div className="chart-trading-bar" role="group" aria-label={t("Giao dịch mô phỏng")}>
                 <div className="chart-trading-actions">
                   {['BUY', 'SELL'].map(side => <button key={side} type="button" className={side.toLowerCase()} disabled={order.disabled || Boolean(order.active)} onClick={() => beginOrder(side)} title={`${side === 'BUY' ? 'Ask' : 'Bid'} mô phỏng tại cutoff; fill ở nến kế tiếp`}>{side === 'BUY' ? t("Buy") : t("Sell")} <strong>{formatPrice(side === 'BUY' ? quotes.ask : quotes.bid)}</strong></button>)}
                   <label>{t("Size")}<input aria-label={t("Khối lượng nhanh")} type="number" min={order.instrument?.quantity_min || '0'} step={order.instrument?.quantity_step || 'any'} value={order.draft.quantity} disabled={order.disabled || Boolean(order.active)} onChange={event => order.setDraft(current => ({ ...current, quantity: event.target.value }))} /></label>
-                  {advancedChart && <button type="button" aria-label="Scalper mode" title="Scalper mode" onClick={event => openPanel('scalper', event.currentTarget)}><ChartIcon name="rocket" /></button>}{!advancedChart && <><span className="chart-sim-tag">{t("SIM")}</span><button type="button" aria-expanded={sideOpen && sidePanel === 'order'} onClick={() => openPanel('order')}>{t("Lệnh")}{order.active ? '· 1' : ''}</button></>}
+                  <span className="chart-sim-tag">{t("SIM")}</span><button type="button" aria-expanded={sideOpen && sidePanel === 'order'} onClick={() => openPanel('order')}>{t("Lệnh")}{order.active ? '· 1' : ''}</button>
                 </div>
-                <div className="chart-trading-account">{advancedChart ? <><a className="legacy-analytics-link" href={routeHref('analytics', { surface: 'workspace' })}><ChartIcon name="analytics" />{t('Analytics')}</a><span className="legacy-balance" title={t('Balance')}><strong>{balanceHidden ? '••••••' : money(order.execution?.balance, order.costs?.account_ccy)}</strong></span><button type="button" aria-label={t(balanceHidden ? 'Hiện số dư' : 'Ẩn số dư')} aria-pressed={balanceHidden} onClick={() => setBalanceHidden(value => !value)}><ChartIcon name={balanceHidden ? 'eye' : 'eye-off'} /></button><button type="button" aria-label={t(positionsOpen ? 'Thu gọn danh sách lệnh' : 'Mở danh sách lệnh')} aria-expanded={positionsOpen} onClick={() => setPositionsOpen(value => !value)}><ChartIcon name="down" style={{ transform: positionsOpen ? '' : 'rotate(180deg)' }} /></button><button type="button" aria-label={t('Toàn màn hình chart')} onClick={async event => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await event.currentTarget.closest('.fx-app').requestFullscreen() } catch { setChartNotice('Không mở được chế độ toàn màn hình.') } }}><ChartIcon name="fit" /></button></> : <><span>{t('Balance')}<strong>{money(order.execution?.balance, order.costs?.account_ccy)}</strong></span><span>{t('Equity')}<strong>{money(order.execution?.equity, order.costs?.account_ccy)}</strong></span><span>{t('P/L')}<strong>{money(order.execution?.floating_pl, order.costs?.account_ccy)}</strong></span></>}</div>
-              </div>
-              {advancedChart && positionsOpen && <LegacyPositions execution={order.execution} symbol={replayContext.instrument} />}
+                <div className="chart-trading-account"><span>{t('Balance')}<strong>{money(order.execution?.balance, order.costs?.account_ccy)}</strong></span><span>{t('Equity')}<strong>{money(order.execution?.equity, order.costs?.account_ccy)}</strong></span><span>{t('P/L')}<strong>{money(order.execution?.floating_pl, order.costs?.account_ccy)}</strong></span></div>
+              </div>}
               {activityWaiting && <div className="chart-notice" role="status">{t('Chưa lưu được thời gian luyện tập. Đang thử lại…')}</div>}
               {chartNotice && <div className="chart-notice" role="status">{t(chartNotice)}<button type="button" aria-label={t("Đóng thông báo")} onClick={() => setChartNotice('')}>×</button></div>}
 

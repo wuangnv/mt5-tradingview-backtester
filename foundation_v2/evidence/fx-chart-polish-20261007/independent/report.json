@@ -1,0 +1,5944 @@
+{
+  "scope": "Independent actual GET only; no backend mutations, localStorage-only UI controls.",
+  "cases": [
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "dark",
+      "language": "vi",
+      "initial": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 889,
+          "top": 0,
+          "right": 1920,
+          "bottom": 889,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 1816,
+          "height": 847,
+          "top": 42,
+          "right": 1872,
+          "bottom": 889,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 38,
+          "top": 0,
+          "right": 1920,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 1872,
+          "y": 42,
+          "width": 48,
+          "height": 847,
+          "top": 42,
+          "right": 1920,
+          "bottom": 889,
+          "left": 1872
+        },
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "toolbar": {
+          "x": 850,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 1228,
+          "bottom": 180,
+          "left": 850
+        },
+        "bar": {
+          "x": 0,
+          "y": 889,
+          "width": 1920,
+          "height": 51,
+          "top": 889,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerHit": "Toàn màn hình",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 138,
+              "top": 0,
+              "right": 1920,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1872,
+              "height": 889,
+              "top": 0,
+              "right": 1872,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1872,
+              "height": 889,
+              "top": 0,
+              "right": 1872,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-dark",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 889,
+              "top": 0,
+              "right": 1920,
+              "bottom": 889,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Cài đặt biểu đồ",
+            "rect": {
+              "x": 1651.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1689.203125,
+              "bottom": 38,
+              "left": 1651.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1613.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1649.203125,
+              "bottom": 38,
+              "left": 1613.203125
+            },
+            "display": "block"
+          },
+          {
+            "label": "Chụp biểu đồ PNG",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1726.203125,
+              "bottom": 38,
+              "left": 1690.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1733.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1812,
+              "bottom": 38,
+              "left": 1733.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1812,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1848,
+              "bottom": 38,
+              "left": 1812
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Đổi giao diện",
+            "rect": {
+              "x": 1848,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1884,
+              "bottom": 38,
+              "left": 1848
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Toàn màn hình",
+            "rect": {
+              "x": 1884,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1884
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Công cụ biểu đồ",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 1872,
+          "height": 889,
+          "top": 0,
+          "right": 1872,
+          "bottom": 889,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1752,
+              "height": 780,
+              "top": 42,
+              "right": 1808,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1752,
+              "height": 780,
+              "top": 42,
+              "right": 1808,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1808,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1872,
+              "bottom": 822,
+              "left": 1808
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1808,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1872,
+              "bottom": 822,
+              "left": 1808
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1752,
+              "height": 28,
+              "top": 822,
+              "right": 1808,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1752,
+              "height": 28,
+              "top": 822,
+              "right": 1808,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 1808,
+              "y": 822,
+              "width": 64,
+              "height": 28,
+              "top": 822,
+              "right": 1872,
+              "bottom": 850,
+              "left": 1808
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "tree": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 889,
+          "top": 0,
+          "right": 1920,
+          "bottom": 889,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 1536,
+          "height": 847,
+          "top": 42,
+          "right": 1592,
+          "bottom": 889,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 38,
+          "top": 0,
+          "right": 1920,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 1872,
+          "y": 42,
+          "width": 48,
+          "height": 847,
+          "top": 42,
+          "right": 1920,
+          "bottom": 889,
+          "left": 1872
+        },
+        "side": {
+          "x": 1592,
+          "y": 42,
+          "width": 280,
+          "height": 847,
+          "top": 42,
+          "right": 1872,
+          "bottom": 889,
+          "left": 1592
+        },
+        "toolbar": {
+          "x": 850,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 1228,
+          "bottom": 180,
+          "left": 850
+        },
+        "bar": {
+          "x": 0,
+          "y": 889,
+          "width": 1920,
+          "height": 51,
+          "top": 889,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerHit": "Toàn màn hình",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 138,
+              "top": 0,
+              "right": 1920,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1592,
+              "height": 889,
+              "top": 0,
+              "right": 1592,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1592,
+              "height": 889,
+              "top": 0,
+              "right": 1592,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-dark",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 889,
+              "top": 0,
+              "right": 1920,
+              "bottom": 889,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Cài đặt biểu đồ",
+            "rect": {
+              "x": 1651.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1689.203125,
+              "bottom": 38,
+              "left": 1651.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1613.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1649.203125,
+              "bottom": 38,
+              "left": 1613.203125
+            },
+            "display": "block"
+          },
+          {
+            "label": "Chụp biểu đồ PNG",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1726.203125,
+              "bottom": 38,
+              "left": 1690.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1733.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1812,
+              "bottom": 38,
+              "left": 1733.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1812,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1848,
+              "bottom": 38,
+              "left": 1812
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Đổi giao diện",
+            "rect": {
+              "x": 1848,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1884,
+              "bottom": 38,
+              "left": 1848
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Toàn màn hình",
+            "rect": {
+              "x": 1884,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1884
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Công cụ biểu đồ",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 1592,
+          "height": 889,
+          "top": 0,
+          "right": 1592,
+          "bottom": 889,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1472,
+              "height": 780,
+              "top": 42,
+              "right": 1528,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1472,
+              "height": 780,
+              "top": 42,
+              "right": 1528,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1528,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1592,
+              "bottom": 822,
+              "left": 1528
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1528,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1592,
+              "bottom": 822,
+              "left": 1528
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1472,
+              "height": 28,
+              "top": 822,
+              "right": 1528,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1472,
+              "height": 28,
+              "top": 822,
+              "right": 1528,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 1528,
+              "y": 822,
+              "width": 64,
+              "height": 28,
+              "top": 822,
+              "right": 1592,
+              "bottom": 850,
+              "left": 1528
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "intervalOptions": [
+        {
+          "text": "5s",
+          "disabled": true
+        },
+        {
+          "text": "10s",
+          "disabled": true
+        },
+        {
+          "text": "15s",
+          "disabled": true
+        },
+        {
+          "text": "30s",
+          "disabled": true
+        },
+        {
+          "text": "1m✓",
+          "disabled": false
+        },
+        {
+          "text": "3m",
+          "disabled": false
+        },
+        {
+          "text": "5m",
+          "disabled": false
+        },
+        {
+          "text": "10m",
+          "disabled": false
+        },
+        {
+          "text": "15m",
+          "disabled": false
+        },
+        {
+          "text": "30m",
+          "disabled": false
+        },
+        {
+          "text": "1h",
+          "disabled": false
+        },
+        {
+          "text": "4h",
+          "disabled": false
+        }
+      ],
+      "rewindCursor": 495,
+      "forwardCursor": 500,
+      "maxSpeed": "15",
+      "positionsHeight": 130,
+      "maximized": {
+        "class": "legacy-trading-workspace is-maximized",
+        "rect": {
+          "x": 0,
+          "y": 42,
+          "width": 1920,
+          "height": 898,
+          "top": 42,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        }
+      },
+      "scalper": "Scalper mode\nCắt lỗ\n%\nPips\nChốt lời\n%\nPips\nAuto Break-even\nChiến lược\nMặc định của phiên\n\nPreset áp dụng vào lệnh nháp; bạn vẫn xác nhận trước khi đặt lệnh.\n\nHủy\nLưu",
+      "balance": "Equity\n—\nP/L đã chốt\n—\nP/L chưa chốt\n—"
+    },
+    {
+      "width": 1611,
+      "height": 1259,
+      "theme": "dark",
+      "language": "en",
+      "initial": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1611,
+          "height": 1208,
+          "top": 0,
+          "right": 1611,
+          "bottom": 1208,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 1507,
+          "height": 1166,
+          "top": 42,
+          "right": 1563,
+          "bottom": 1208,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 1611,
+          "height": 38,
+          "top": 0,
+          "right": 1611,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 1563,
+          "y": 42,
+          "width": 48,
+          "height": 1166,
+          "top": 42,
+          "right": 1611,
+          "bottom": 1208,
+          "left": 1563
+        },
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "toolbar": {
+          "x": 850,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 1228,
+          "bottom": 180,
+          "left": 850
+        },
+        "bar": {
+          "x": 0,
+          "y": 1208,
+          "width": 1611,
+          "height": 51,
+          "top": 1208,
+          "right": 1611,
+          "bottom": 1259,
+          "left": 0
+        },
+        "headerHit": "Fullscreen",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 138,
+              "top": 0,
+              "right": 1611,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1563,
+              "height": 1208,
+              "top": 0,
+              "right": 1563,
+              "bottom": 1208,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1563,
+              "height": 1208,
+              "top": 0,
+              "right": 1563,
+              "bottom": 1208,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-dark",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 1208,
+              "top": 0,
+              "right": 1611,
+              "bottom": 1208,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Chart settings",
+            "rect": {
+              "x": 1342.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1380.203125,
+              "bottom": 38,
+              "left": 1342.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1304.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1340.203125,
+              "bottom": 38,
+              "left": 1304.203125
+            },
+            "display": "block"
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1417.203125,
+              "bottom": 38,
+              "left": 1381.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1424.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1503,
+              "bottom": 38,
+              "left": 1424.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1503,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1539,
+              "bottom": 38,
+              "left": 1503
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 1539,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1575,
+              "bottom": 38,
+              "left": 1539
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Fullscreen",
+            "rect": {
+              "x": 1575,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1575
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 1563,
+          "height": 1208,
+          "top": 0,
+          "right": 1563,
+          "bottom": 1208,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1443,
+              "height": 1099,
+              "top": 42,
+              "right": 1499,
+              "bottom": 1141,
+              "left": 56
+            },
+            "width": 1443,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1443,
+              "height": 1099,
+              "top": 42,
+              "right": 1499,
+              "bottom": 1141,
+              "left": 56
+            },
+            "width": 1443,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 1499,
+              "y": 42,
+              "width": 64,
+              "height": 1099,
+              "top": 42,
+              "right": 1563,
+              "bottom": 1141,
+              "left": 1499
+            },
+            "width": 64,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 1499,
+              "y": 42,
+              "width": 64,
+              "height": 1099,
+              "top": 42,
+              "right": 1563,
+              "bottom": 1141,
+              "left": 1499
+            },
+            "width": 64,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 1141,
+              "width": 1443,
+              "height": 28,
+              "top": 1141,
+              "right": 1499,
+              "bottom": 1169,
+              "left": 56
+            },
+            "width": 1443,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 1141,
+              "width": 1443,
+              "height": 28,
+              "top": 1141,
+              "right": 1499,
+              "bottom": 1169,
+              "left": 56
+            },
+            "width": 1443,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 1499,
+              "y": 1141,
+              "width": 64,
+              "height": 28,
+              "top": 1141,
+              "right": 1563,
+              "bottom": 1169,
+              "left": 1499
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "tree": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1611,
+          "height": 1208,
+          "top": 0,
+          "right": 1611,
+          "bottom": 1208,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 1227,
+          "height": 1166,
+          "top": 42,
+          "right": 1283,
+          "bottom": 1208,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 1611,
+          "height": 38,
+          "top": 0,
+          "right": 1611,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 1563,
+          "y": 42,
+          "width": 48,
+          "height": 1166,
+          "top": 42,
+          "right": 1611,
+          "bottom": 1208,
+          "left": 1563
+        },
+        "side": {
+          "x": 1283,
+          "y": 42,
+          "width": 280,
+          "height": 1166,
+          "top": 42,
+          "right": 1563,
+          "bottom": 1208,
+          "left": 1283
+        },
+        "toolbar": {
+          "x": 850,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 1228,
+          "bottom": 180,
+          "left": 850
+        },
+        "bar": {
+          "x": 0,
+          "y": 1208,
+          "width": 1611,
+          "height": 51,
+          "top": 1208,
+          "right": 1611,
+          "bottom": 1259,
+          "left": 0
+        },
+        "headerHit": "Fullscreen",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1381.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 138,
+              "top": 0,
+              "right": 1611,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1283,
+              "height": 1208,
+              "top": 0,
+              "right": 1283,
+              "bottom": 1208,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1283,
+              "height": 1208,
+              "top": 0,
+              "right": 1283,
+              "bottom": 1208,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-dark",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1611,
+              "height": 1208,
+              "top": 0,
+              "right": 1611,
+              "bottom": 1208,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Chart settings",
+            "rect": {
+              "x": 1342.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1380.203125,
+              "bottom": 38,
+              "left": 1342.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1304.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1340.203125,
+              "bottom": 38,
+              "left": 1304.203125
+            },
+            "display": "block"
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 1381.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1417.203125,
+              "bottom": 38,
+              "left": 1381.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1424.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1503,
+              "bottom": 38,
+              "left": 1424.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1503,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1539,
+              "bottom": 38,
+              "left": 1503
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 1539,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1575,
+              "bottom": 38,
+              "left": 1539
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Fullscreen",
+            "rect": {
+              "x": 1575,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1611,
+              "bottom": 38,
+              "left": 1575
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 1283,
+          "height": 1208,
+          "top": 0,
+          "right": 1283,
+          "bottom": 1208,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1163,
+              "height": 1099,
+              "top": 42,
+              "right": 1219,
+              "bottom": 1141,
+              "left": 56
+            },
+            "width": 1163,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1163,
+              "height": 1099,
+              "top": 42,
+              "right": 1219,
+              "bottom": 1141,
+              "left": 56
+            },
+            "width": 1163,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 1219,
+              "y": 42,
+              "width": 64,
+              "height": 1099,
+              "top": 42,
+              "right": 1283,
+              "bottom": 1141,
+              "left": 1219
+            },
+            "width": 64,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 1219,
+              "y": 42,
+              "width": 64,
+              "height": 1099,
+              "top": 42,
+              "right": 1283,
+              "bottom": 1141,
+              "left": 1219
+            },
+            "width": 64,
+            "height": 1099
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 1141,
+              "width": 1163,
+              "height": 28,
+              "top": 1141,
+              "right": 1219,
+              "bottom": 1169,
+              "left": 56
+            },
+            "width": 1163,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 1141,
+              "width": 1163,
+              "height": 28,
+              "top": 1141,
+              "right": 1219,
+              "bottom": 1169,
+              "left": 56
+            },
+            "width": 1163,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 1219,
+              "y": 1141,
+              "width": 64,
+              "height": 28,
+              "top": 1141,
+              "right": 1283,
+              "bottom": 1169,
+              "left": 1219
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "intervalOptions": [
+        {
+          "text": "5s",
+          "disabled": true
+        },
+        {
+          "text": "10s",
+          "disabled": true
+        },
+        {
+          "text": "15s",
+          "disabled": true
+        },
+        {
+          "text": "30s",
+          "disabled": true
+        },
+        {
+          "text": "1m✓",
+          "disabled": false
+        },
+        {
+          "text": "3m",
+          "disabled": false
+        },
+        {
+          "text": "5m",
+          "disabled": false
+        },
+        {
+          "text": "10m",
+          "disabled": false
+        },
+        {
+          "text": "15m",
+          "disabled": false
+        },
+        {
+          "text": "30m",
+          "disabled": false
+        },
+        {
+          "text": "1h",
+          "disabled": false
+        },
+        {
+          "text": "4h",
+          "disabled": false
+        }
+      ],
+      "maxSpeed": "15",
+      "positionsHeight": 130,
+      "maximized": {
+        "class": "legacy-trading-workspace is-maximized",
+        "rect": {
+          "x": 0,
+          "y": 42,
+          "width": 1611,
+          "height": 1217,
+          "top": 42,
+          "right": 1611,
+          "bottom": 1259,
+          "left": 0
+        }
+      },
+      "scalper": "Scalper mode\nStop loss\n%\nPips\nTake profit\n%\nPips\nAuto Break-even\nStrategies\nSession default\n\nThe preset prepares an order draft; confirm before placing it.\n\nDiscard\nSave",
+      "balance": "Equity\n—\nRealized PnL\n—\nUnrealized PnL\n—"
+    },
+    {
+      "width": 768,
+      "height": 987,
+      "theme": "dark",
+      "language": "vi",
+      "initial": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 936,
+          "top": 0,
+          "right": 768,
+          "bottom": 936,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 664,
+          "height": 894,
+          "top": 42,
+          "right": 720,
+          "bottom": 936,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 38,
+          "top": 0,
+          "right": 768,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 720,
+          "y": 42,
+          "width": 48,
+          "height": 894,
+          "top": 42,
+          "right": 768,
+          "bottom": 936,
+          "left": 720
+        },
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "toolbar": {
+          "x": 342,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 720,
+          "bottom": 180,
+          "left": 342
+        },
+        "bar": {
+          "x": 0,
+          "y": 936,
+          "width": 768,
+          "height": 51,
+          "top": 936,
+          "right": 768,
+          "bottom": 987,
+          "left": 0
+        },
+        "headerHit": "Công cụ biểu đồ",
+        "hitTag": "<button type=\"button\" aria-label=\"Công cụ biểu đồ\" title=\"Công cụ biểu đồ\" class=\"chart-header-overflow\" aria-expanded=\"false\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusa",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 782.390625,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 782.390625,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 138,
+              "top": 0,
+              "right": 768,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 720,
+              "height": 936,
+              "top": 0,
+              "right": 720,
+              "bottom": 936,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 720,
+              "height": 936,
+              "top": 0,
+              "right": 720,
+              "bottom": 936,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-dark",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 936,
+              "top": 0,
+              "right": 768,
+              "bottom": 936,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Cài đặt biểu đồ",
+            "rect": {
+              "x": 671.390625,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 709.390625,
+              "bottom": 38,
+              "left": 671.390625
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "block"
+          },
+          {
+            "label": "Chụp biểu đồ PNG",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 746.390625,
+              "bottom": 38,
+              "left": 710.390625
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Đổi giao diện",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Toàn màn hình",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Công cụ biểu đồ",
+            "rect": {
+              "x": 746.390625,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 746.390625
+            },
+            "display": "flex"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 720,
+          "height": 936,
+          "top": 0,
+          "right": 720,
+          "bottom": 936,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 600,
+              "height": 827,
+              "top": 42,
+              "right": 656,
+              "bottom": 869,
+              "left": 56
+            },
+            "width": 600,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 600,
+              "height": 827,
+              "top": 42,
+              "right": 656,
+              "bottom": 869,
+              "left": 56
+            },
+            "width": 600,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 656,
+              "y": 42,
+              "width": 64,
+              "height": 827,
+              "top": 42,
+              "right": 720,
+              "bottom": 869,
+              "left": 656
+            },
+            "width": 64,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 656,
+              "y": 42,
+              "width": 64,
+              "height": 827,
+              "top": 42,
+              "right": 720,
+              "bottom": 869,
+              "left": 656
+            },
+            "width": 64,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 869,
+              "width": 600,
+              "height": 28,
+              "top": 869,
+              "right": 656,
+              "bottom": 897,
+              "left": 56
+            },
+            "width": 600,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 869,
+              "width": 600,
+              "height": 28,
+              "top": 869,
+              "right": 656,
+              "bottom": 897,
+              "left": 56
+            },
+            "width": 600,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 656,
+              "y": 869,
+              "width": 64,
+              "height": 28,
+              "top": 869,
+              "right": 720,
+              "bottom": 897,
+              "left": 656
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "tree": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 936,
+          "top": 0,
+          "right": 768,
+          "bottom": 936,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 384,
+          "height": 894,
+          "top": 42,
+          "right": 440,
+          "bottom": 936,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 38,
+          "top": 0,
+          "right": 768,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 720,
+          "y": 42,
+          "width": 48,
+          "height": 894,
+          "top": 42,
+          "right": 768,
+          "bottom": 936,
+          "left": 720
+        },
+        "side": {
+          "x": 440,
+          "y": 42,
+          "width": 280,
+          "height": 894,
+          "top": 42,
+          "right": 720,
+          "bottom": 936,
+          "left": 440
+        },
+        "toolbar": {
+          "x": 62,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 440,
+          "bottom": 180,
+          "left": 62
+        },
+        "bar": {
+          "x": 0,
+          "y": 936,
+          "width": 768,
+          "height": 51,
+          "top": 936,
+          "right": 768,
+          "bottom": 987,
+          "left": 0
+        },
+        "headerHit": "Công cụ biểu đồ",
+        "hitTag": "<button type=\"button\" aria-label=\"Công cụ biểu đồ\" title=\"Công cụ biểu đồ\" class=\"chart-header-overflow\" aria-expanded=\"false\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusa",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 72,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 710.390625
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 782.390625,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 782.390625,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 138,
+              "top": 0,
+              "right": 768,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 38,
+              "top": 0,
+              "right": 768,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 440,
+              "height": 936,
+              "top": 0,
+              "right": 440,
+              "bottom": 936,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 440,
+              "height": 936,
+              "top": 0,
+              "right": 440,
+              "bottom": 936,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-dark",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 936,
+              "top": 0,
+              "right": 768,
+              "bottom": 936,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Cài đặt biểu đồ",
+            "rect": {
+              "x": 671.390625,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 709.390625,
+              "bottom": 38,
+              "left": 671.390625
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "block"
+          },
+          {
+            "label": "Chụp biểu đồ PNG",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 710.390625,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 746.390625,
+              "bottom": 38,
+              "left": 710.390625
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Đổi giao diện",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Toàn màn hình",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Công cụ biểu đồ",
+            "rect": {
+              "x": 746.390625,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 782.390625,
+              "bottom": 38,
+              "left": 746.390625
+            },
+            "display": "flex"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 440,
+          "height": 936,
+          "top": 0,
+          "right": 440,
+          "bottom": 936,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 320,
+              "height": 827,
+              "top": 42,
+              "right": 376,
+              "bottom": 869,
+              "left": 56
+            },
+            "width": 320,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 320,
+              "height": 827,
+              "top": 42,
+              "right": 376,
+              "bottom": 869,
+              "left": 56
+            },
+            "width": 320,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 376,
+              "y": 42,
+              "width": 64,
+              "height": 827,
+              "top": 42,
+              "right": 440,
+              "bottom": 869,
+              "left": 376
+            },
+            "width": 64,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 376,
+              "y": 42,
+              "width": 64,
+              "height": 827,
+              "top": 42,
+              "right": 440,
+              "bottom": 869,
+              "left": 376
+            },
+            "width": 64,
+            "height": 827
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 869,
+              "width": 320,
+              "height": 28,
+              "top": 869,
+              "right": 376,
+              "bottom": 897,
+              "left": 56
+            },
+            "width": 320,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 869,
+              "width": 320,
+              "height": 28,
+              "top": 869,
+              "right": 376,
+              "bottom": 897,
+              "left": 56
+            },
+            "width": 320,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 376,
+              "y": 869,
+              "width": 64,
+              "height": 28,
+              "top": 869,
+              "right": 440,
+              "bottom": 897,
+              "left": 376
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "intervalOptions": [
+        {
+          "text": "5s",
+          "disabled": true
+        },
+        {
+          "text": "10s",
+          "disabled": true
+        },
+        {
+          "text": "15s",
+          "disabled": true
+        },
+        {
+          "text": "30s",
+          "disabled": true
+        },
+        {
+          "text": "1m✓",
+          "disabled": false
+        },
+        {
+          "text": "3m",
+          "disabled": false
+        },
+        {
+          "text": "5m",
+          "disabled": false
+        },
+        {
+          "text": "10m",
+          "disabled": false
+        },
+        {
+          "text": "15m",
+          "disabled": false
+        },
+        {
+          "text": "30m",
+          "disabled": false
+        },
+        {
+          "text": "1h",
+          "disabled": false
+        },
+        {
+          "text": "4h",
+          "disabled": false
+        }
+      ],
+      "maxSpeed": "15",
+      "positionsHeight": 130,
+      "maximized": {
+        "class": "legacy-trading-workspace is-maximized",
+        "rect": {
+          "x": 0,
+          "y": 42,
+          "width": 768,
+          "height": 945,
+          "top": 42,
+          "right": 768,
+          "bottom": 987,
+          "left": 0
+        }
+      },
+      "scalper": "Scalper mode\nCắt lỗ\n%\nPips\nChốt lời\n%\nPips\nAuto Break-even\nChiến lược\nMặc định của phiên\n\nPreset áp dụng vào lệnh nháp; bạn vẫn xác nhận trước khi đặt lệnh.\n\nHủy\nLưu",
+      "balance": "Equity\n—\nP/L đã chốt\n—\nP/L chưa chốt\n—"
+    },
+    {
+      "width": 360,
+      "height": 987,
+      "theme": "light",
+      "language": "en",
+      "initial": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 895,
+          "top": 0,
+          "right": 360,
+          "bottom": 895,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 268,
+          "height": 853,
+          "top": 42,
+          "right": 324,
+          "bottom": 895,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 38,
+          "top": 0,
+          "right": 360,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 324,
+          "y": 42,
+          "width": 36,
+          "height": 853,
+          "top": 42,
+          "right": 360,
+          "bottom": 895,
+          "left": 324
+        },
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "toolbar": {
+          "x": 73,
+          "y": 140,
+          "width": 251,
+          "height": 40,
+          "top": 140,
+          "right": 324,
+          "bottom": 180,
+          "left": 73
+        },
+        "bar": {
+          "x": 0,
+          "y": 895,
+          "width": 360,
+          "height": 92,
+          "top": 895,
+          "right": 360,
+          "bottom": 987,
+          "left": 0
+        },
+        "headerHit": "Chart tools",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M5 12h.01M12 12h.01M19 12h.01\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 138,
+              "top": 0,
+              "right": 360,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 324,
+              "height": 895,
+              "top": 0,
+              "right": 324,
+              "bottom": 895,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 324,
+              "height": 895,
+              "top": 0,
+              "right": 324,
+              "bottom": 895,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-light",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 895,
+              "top": 0,
+              "right": 360,
+              "bottom": 895,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Chart settings",
+            "rect": {
+              "x": 269,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 307,
+              "bottom": 38,
+              "left": 269
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "block"
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 334,
+              "bottom": 38,
+              "left": 308
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Fullscreen",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 334,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 334
+            },
+            "display": "flex"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 324,
+          "height": 895,
+          "top": 0,
+          "right": 324,
+          "bottom": 895,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 204,
+              "height": 786,
+              "top": 42,
+              "right": 260,
+              "bottom": 828,
+              "left": 56
+            },
+            "width": 204,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 204,
+              "height": 786,
+              "top": 42,
+              "right": 260,
+              "bottom": 828,
+              "left": 56
+            },
+            "width": 204,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 260,
+              "y": 42,
+              "width": 64,
+              "height": 786,
+              "top": 42,
+              "right": 324,
+              "bottom": 828,
+              "left": 260
+            },
+            "width": 64,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 260,
+              "y": 42,
+              "width": 64,
+              "height": 786,
+              "top": 42,
+              "right": 324,
+              "bottom": 828,
+              "left": 260
+            },
+            "width": 64,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 828,
+              "width": 204,
+              "height": 28,
+              "top": 828,
+              "right": 260,
+              "bottom": 856,
+              "left": 56
+            },
+            "width": 204,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 828,
+              "width": 204,
+              "height": 28,
+              "top": 828,
+              "right": 260,
+              "bottom": 856,
+              "left": 56
+            },
+            "width": 204,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 260,
+              "y": 828,
+              "width": 64,
+              "height": 28,
+              "top": 828,
+              "right": 324,
+              "bottom": 856,
+              "left": 260
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "tree": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 895,
+          "top": 0,
+          "right": 360,
+          "bottom": 895,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 268,
+          "height": 853,
+          "top": 42,
+          "right": 324,
+          "bottom": 895,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 38,
+          "top": 0,
+          "right": 360,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 324,
+          "y": 42,
+          "width": 36,
+          "height": 853,
+          "top": 42,
+          "right": 360,
+          "bottom": 895,
+          "left": 324
+        },
+        "side": {
+          "x": 56,
+          "y": 42,
+          "width": 268,
+          "height": 853,
+          "top": 42,
+          "right": 324,
+          "bottom": 895,
+          "left": 56
+        },
+        "toolbar": {
+          "x": 73,
+          "y": 140,
+          "width": 251,
+          "height": 40,
+          "top": 140,
+          "right": 324,
+          "bottom": 180,
+          "left": 73
+        },
+        "bar": {
+          "x": 0,
+          "y": 895,
+          "width": 360,
+          "height": 92,
+          "top": 895,
+          "right": 360,
+          "bottom": 987,
+          "left": 0
+        },
+        "headerHit": "Chart tools",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M5 12h.01M12 12h.01M19 12h.01\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 52,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 308
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 138,
+              "top": 0,
+              "right": 360,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 324,
+              "height": 895,
+              "top": 0,
+              "right": 324,
+              "bottom": 895,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 324,
+              "height": 895,
+              "top": 0,
+              "right": 324,
+              "bottom": 895,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-light",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 360,
+              "height": 895,
+              "top": 0,
+              "right": 360,
+              "bottom": 895,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Chart settings",
+            "rect": {
+              "x": 269,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 307,
+              "bottom": 38,
+              "left": 269
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "block"
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 308,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 334,
+              "bottom": 38,
+              "left": 308
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Fullscreen",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 334,
+              "y": 0,
+              "width": 26,
+              "height": 38,
+              "top": 0,
+              "right": 360,
+              "bottom": 38,
+              "left": 334
+            },
+            "display": "flex"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 324,
+          "height": 895,
+          "top": 0,
+          "right": 324,
+          "bottom": 895,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 204,
+              "height": 786,
+              "top": 42,
+              "right": 260,
+              "bottom": 828,
+              "left": 56
+            },
+            "width": 204,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 204,
+              "height": 786,
+              "top": 42,
+              "right": 260,
+              "bottom": 828,
+              "left": 56
+            },
+            "width": 204,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 260,
+              "y": 42,
+              "width": 64,
+              "height": 786,
+              "top": 42,
+              "right": 324,
+              "bottom": 828,
+              "left": 260
+            },
+            "width": 64,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 260,
+              "y": 42,
+              "width": 64,
+              "height": 786,
+              "top": 42,
+              "right": 324,
+              "bottom": 828,
+              "left": 260
+            },
+            "width": 64,
+            "height": 786
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 828,
+              "width": 204,
+              "height": 28,
+              "top": 828,
+              "right": 260,
+              "bottom": 856,
+              "left": 56
+            },
+            "width": 204,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 828,
+              "width": 204,
+              "height": 28,
+              "top": 828,
+              "right": 260,
+              "bottom": 856,
+              "left": 56
+            },
+            "width": 204,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 260,
+              "y": 828,
+              "width": 64,
+              "height": 28,
+              "top": 828,
+              "right": 324,
+              "bottom": 856,
+              "left": 260
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "intervalOptions": [
+        {
+          "text": "5s",
+          "disabled": true
+        },
+        {
+          "text": "10s",
+          "disabled": true
+        },
+        {
+          "text": "15s",
+          "disabled": true
+        },
+        {
+          "text": "30s",
+          "disabled": true
+        },
+        {
+          "text": "1m✓",
+          "disabled": false
+        },
+        {
+          "text": "3m",
+          "disabled": false
+        },
+        {
+          "text": "5m",
+          "disabled": false
+        },
+        {
+          "text": "10m",
+          "disabled": false
+        },
+        {
+          "text": "15m",
+          "disabled": false
+        },
+        {
+          "text": "30m",
+          "disabled": false
+        },
+        {
+          "text": "1h",
+          "disabled": false
+        },
+        {
+          "text": "4h",
+          "disabled": false
+        }
+      ],
+      "maxSpeed": "15",
+      "positionsHeight": 130,
+      "maximized": {
+        "class": "legacy-trading-workspace is-maximized",
+        "rect": {
+          "x": 0,
+          "y": 42,
+          "width": 360,
+          "height": 945,
+          "top": 42,
+          "right": 360,
+          "bottom": 987,
+          "left": 0
+        }
+      },
+      "scalper": "Scalper mode\nStop loss\n%\nPips\nTake profit\n%\nPips\nAuto Break-even\nStrategies\nSession default\n\nThe preset prepares an order draft; confirm before placing it.\n\nDiscard\nSave",
+      "balance": "Equity\n—\nRealized PnL\n—\nUnrealized PnL\n—"
+    },
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "light",
+      "language": "en",
+      "initial": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 889,
+          "top": 0,
+          "right": 1920,
+          "bottom": 889,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 1816,
+          "height": 847,
+          "top": 42,
+          "right": 1872,
+          "bottom": 889,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 38,
+          "top": 0,
+          "right": 1920,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 1872,
+          "y": 42,
+          "width": 48,
+          "height": 847,
+          "top": 42,
+          "right": 1920,
+          "bottom": 889,
+          "left": 1872
+        },
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "toolbar": {
+          "x": 850,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 1228,
+          "bottom": 180,
+          "left": 850
+        },
+        "bar": {
+          "x": 0,
+          "y": 889,
+          "width": 1920,
+          "height": 51,
+          "top": 889,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerHit": "Fullscreen",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 138,
+              "top": 0,
+              "right": 1920,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1872,
+              "height": 889,
+              "top": 0,
+              "right": 1872,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1872,
+              "height": 889,
+              "top": 0,
+              "right": 1872,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-light",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 889,
+              "top": 0,
+              "right": 1920,
+              "bottom": 889,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Chart settings",
+            "rect": {
+              "x": 1651.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1689.203125,
+              "bottom": 38,
+              "left": 1651.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1613.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1649.203125,
+              "bottom": 38,
+              "left": 1613.203125
+            },
+            "display": "block"
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1726.203125,
+              "bottom": 38,
+              "left": 1690.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1733.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1812,
+              "bottom": 38,
+              "left": 1733.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1812,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1848,
+              "bottom": 38,
+              "left": 1812
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 1848,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1884,
+              "bottom": 38,
+              "left": 1848
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Fullscreen",
+            "rect": {
+              "x": 1884,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1884
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 1872,
+          "height": 889,
+          "top": 0,
+          "right": 1872,
+          "bottom": 889,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1752,
+              "height": 780,
+              "top": 42,
+              "right": 1808,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1752,
+              "height": 780,
+              "top": 42,
+              "right": 1808,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1808,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1872,
+              "bottom": 822,
+              "left": 1808
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1808,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1872,
+              "bottom": 822,
+              "left": 1808
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1752,
+              "height": 28,
+              "top": 822,
+              "right": 1808,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1752,
+              "height": 28,
+              "top": 822,
+              "right": 1808,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1752,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 1808,
+              "y": 822,
+              "width": 64,
+              "height": 28,
+              "top": 822,
+              "right": 1872,
+              "bottom": 850,
+              "left": 1808
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "tree": {
+        "iframe": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 889,
+          "top": 0,
+          "right": 1920,
+          "bottom": 889,
+          "left": 0
+        },
+        "center": {
+          "x": 56,
+          "y": 42,
+          "width": 1536,
+          "height": 847,
+          "top": 42,
+          "right": 1592,
+          "bottom": 889,
+          "left": 56
+        },
+        "top": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 38,
+          "top": 0,
+          "right": 1920,
+          "bottom": 38,
+          "left": 0
+        },
+        "rail": {
+          "x": 1872,
+          "y": 42,
+          "width": 48,
+          "height": 847,
+          "top": 42,
+          "right": 1920,
+          "bottom": 889,
+          "left": 1872
+        },
+        "side": {
+          "x": 1592,
+          "y": 42,
+          "width": 280,
+          "height": 847,
+          "top": 42,
+          "right": 1872,
+          "bottom": 889,
+          "left": 1592
+        },
+        "toolbar": {
+          "x": 850,
+          "y": 140,
+          "width": 378,
+          "height": 40,
+          "top": 140,
+          "right": 1228,
+          "bottom": 180,
+          "left": 850
+        },
+        "bar": {
+          "x": 0,
+          "y": 889,
+          "width": 1920,
+          "height": 51,
+          "top": 889,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerHit": "Fullscreen",
+        "hitTag": "<svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5\"></path></svg>",
+        "clippingAncestors": [
+          {
+            "tag": "DIV",
+            "class": "legacy-native-extension legacy-native-tools",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "legacy-tools-host",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-H6XRnLaC",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "group-T57LDNqT legacy-tools-group",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 229.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1690.203125
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-7mUBPdQo",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "content-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "scrollWrap-sfzcrPlH noScrollBar-sfzcrPlH",
+            "overflow": "auto hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 138,
+              "top": 0,
+              "right": 1920,
+              "bottom": 138,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrap-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "wrapOverflow-sfzcrPlH",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "inner-Kbdz4qEM",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "overflowWrap-ymEQuMuZ",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "toolbar-ymEQuMuZ",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "layout__area--top",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 0
+            }
+          },
+          {
+            "tag": "DIV",
+            "class": "js-rootresizer__contents layout-with-border-radius",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1592,
+              "height": 889,
+              "top": 0,
+              "right": 1592,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "BODY",
+            "class": "chart-page unselectable on-widget",
+            "overflow": "visible",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1592,
+              "height": 889,
+              "top": 0,
+              "right": 1592,
+              "bottom": 889,
+              "left": 0
+            }
+          },
+          {
+            "tag": "HTML",
+            "class": "feature-no-touch feature-no-mobiletouch theme-light",
+            "overflow": "hidden",
+            "clip": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 1920,
+              "height": 889,
+              "top": 0,
+              "right": 1920,
+              "bottom": 889,
+              "left": 0
+            }
+          }
+        ],
+        "headerTools": [
+          {
+            "label": "Chart settings",
+            "rect": {
+              "x": 1651.203125,
+              "y": 0,
+              "width": 38,
+              "height": 38,
+              "top": 0,
+              "right": 1689.203125,
+              "bottom": 38,
+              "left": 1651.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "",
+            "rect": {
+              "x": 1613.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1649.203125,
+              "bottom": 38,
+              "left": 1613.203125
+            },
+            "display": "block"
+          },
+          {
+            "label": "Capture chart as PNG",
+            "rect": {
+              "x": 1690.203125,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1726.203125,
+              "bottom": 38,
+              "left": 1690.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Editor",
+            "rect": {
+              "x": 1733.203125,
+              "y": 0,
+              "width": 78.796875,
+              "height": 38,
+              "top": 0,
+              "right": 1812,
+              "bottom": 38,
+              "left": 1733.203125
+            },
+            "display": "flex"
+          },
+          {
+            "label": "AI Mentor",
+            "rect": {
+              "x": 1812,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1848,
+              "bottom": 38,
+              "left": 1812
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Change theme",
+            "rect": {
+              "x": 1848,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1884,
+              "bottom": 38,
+              "left": 1848
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Fullscreen",
+            "rect": {
+              "x": 1884,
+              "y": 0,
+              "width": 36,
+              "height": 38,
+              "top": 0,
+              "right": 1920,
+              "bottom": 38,
+              "left": 1884
+            },
+            "display": "flex"
+          },
+          {
+            "label": "Chart tools",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "display": "none"
+          }
+        ],
+        "overflow": 0,
+        "body": {
+          "x": 0,
+          "y": 0,
+          "width": 1592,
+          "height": 889,
+          "top": 0,
+          "right": 1592,
+          "bottom": 889,
+          "left": 0
+        },
+        "centerCanvas": [
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1472,
+              "height": 780,
+              "top": 42,
+              "right": 1528,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 42,
+              "width": 1472,
+              "height": 780,
+              "top": 42,
+              "right": 1528,
+              "bottom": 822,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1528,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1592,
+              "bottom": 822,
+              "left": 1528
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 1528,
+              "y": 42,
+              "width": 64,
+              "height": 780,
+              "top": 42,
+              "right": 1592,
+              "bottom": 822,
+              "left": 1528
+            },
+            "width": 64,
+            "height": 780
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1472,
+              "height": 28,
+              "top": 822,
+              "right": 1528,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 56,
+              "y": 822,
+              "width": 1472,
+              "height": 28,
+              "top": 822,
+              "right": 1528,
+              "bottom": 850,
+              "left": 56
+            },
+            "width": 1472,
+            "height": 28
+          },
+          {
+            "rect": {
+              "x": 1528,
+              "y": 822,
+              "width": 64,
+              "height": 28,
+              "top": 822,
+              "right": 1592,
+              "bottom": 850,
+              "left": 1528
+            },
+            "width": 64,
+            "height": 28
+          }
+        ]
+      },
+      "intervalOptions": [
+        {
+          "text": "5s",
+          "disabled": true
+        },
+        {
+          "text": "10s",
+          "disabled": true
+        },
+        {
+          "text": "15s",
+          "disabled": true
+        },
+        {
+          "text": "30s",
+          "disabled": true
+        },
+        {
+          "text": "1m✓",
+          "disabled": false
+        },
+        {
+          "text": "3m",
+          "disabled": false
+        },
+        {
+          "text": "5m",
+          "disabled": false
+        },
+        {
+          "text": "10m",
+          "disabled": false
+        },
+        {
+          "text": "15m",
+          "disabled": false
+        },
+        {
+          "text": "30m",
+          "disabled": false
+        },
+        {
+          "text": "1h",
+          "disabled": false
+        },
+        {
+          "text": "4h",
+          "disabled": false
+        }
+      ],
+      "maxSpeed": "15",
+      "positionsHeight": 130,
+      "maximized": {
+        "class": "legacy-trading-workspace is-maximized",
+        "rect": {
+          "x": 0,
+          "y": 42,
+          "width": 1920,
+          "height": 898,
+          "top": 42,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        }
+      },
+      "scalper": "Scalper mode\nStop loss\n%\nPips\nTake profit\n%\nPips\nAuto Break-even\nStrategies\nSession default\n\nThe preset prepares an order draft; confirm before placing it.\n\nDiscard\nSave",
+      "balance": "Equity\n—\nRealized PnL\n—\nUnrealized PnL\n—"
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}
