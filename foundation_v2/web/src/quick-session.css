@@ -20,8 +20,10 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-fields a { color:var(--wm-accent,var(--wm-content)); width:fit-content; text-decoration:none; font-size:12px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-field-title { display:flex; align-items:center; gap:16px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance { display:flex; border:1px solid var(--wm-control-border); border-radius:12px; overflow:hidden; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance > span { display:grid; place-items:center; width:40px; flex:0 0 40px; border-right:1px solid var(--wm-border); }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance input { border:0; border-radius:0; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance > span { display:grid; place-items:center; padding:0 8px; flex:0 0 auto; color:var(--wm-content-muted); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance > .quick-session-money-icon { width:40px; padding:0; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance input { min-width:0; flex:0 1 auto; padding:9px 0; border:0; border-radius:0; font-variant-numeric:tabular-nums; appearance:textfield; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance input::-webkit-inner-spin-button, .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance input::-webkit-outer-spin-button { margin:0; appearance:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance:focus-within { border-color:var(--wm-content); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-field .fx-select { width:100%; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-field .fx-select-trigger { width:100%; min-height:40px; justify-content:space-between; }
@@ -58,6 +60,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-text-action { width:fit-content; padding:0; min-height:0; border:0; border-radius:0; background:transparent; color:var(--wm-content-muted); font-size:12px; text-align:left; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-new-strategy { color:var(--project-highlight); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-text-action:hover:not(:disabled) { background:transparent; color:var(--wm-content); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-text-action.quick-session-new-strategy:hover:not(:disabled) { color:var(--project-highlight); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field-title a { padding:0; border:0; border-radius:0; background:transparent; color:var(--wm-content-muted); text-decoration:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field-title a:hover { background:transparent; color:var(--wm-content); text-decoration:underline; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create { display:grid; gap:8px; }

@@ -368,3 +368,10 @@ The asset link is muted at rest, with content-colored text and an underline on
 hover, and no hover surface. Dashboard's three quick actions share border,
 padding and geometry, with peach hover.
 Evidence: `foundation_v2/evidence/quick-session-polish-20261007/CHECKPOINT.md`.
+
+The balance field retains its left money symbol and places the currency code
+immediately after the editable amount, inside the single neutral outer contour.
+The amount width follows its value so the unit stays adjacent while editing.
+The new-strategy text action keeps the same orange color and transparent surface
+at rest and on pointer hover; keyboard focus remains visible.
+Evidence: `foundation_v2/evidence/quick-session-unit-20261007/REVIEW.md`.
