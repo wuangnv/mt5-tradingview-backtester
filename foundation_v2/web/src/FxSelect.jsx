@@ -29,13 +29,15 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       const menu = root.current?.querySelector('.fx-select-menu')
       if (!menu) return
       // Popups must fit the scrolling content, which also clips the sidebar edge.
-      const container = root.current.closest('.fx-content')
+      const container = root.current.closest('.quick-session-body, .fx-content')
       const clip = container?.getBoundingClientRect()
       const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip ? clip.left + container.clientWidth : window.innerWidth) - 12)
       menu.style.maxWidth = `${right - left}px`
       menu.style.transform = ''
       menu.style.top = 'calc(100% + 8px)'
       menu.style.bottom = 'auto'
+      const list = menu.querySelector('[role="listbox"]')
+      list.style.maxHeight = '300px'
       const bounds = menu.getBoundingClientRect()
       const shift = bounds.left < left ? left - bounds.left : bounds.right > right ? right - bounds.right : 0
       menu.style.transform = `translateX(${shift}px)`
@@ -44,7 +46,6 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       const above = anchor.top - Math.max(0, clip?.top || 0) - 18
       const upwards = bounds.height > below && above > below
       if (upwards) { menu.style.top = 'auto'; menu.style.bottom = 'calc(100% + 8px)' }
-      const list = menu.querySelector('[role="listbox"]')
       const chromeHeight = bounds.height - list.getBoundingClientRect().height
       list.style.maxHeight = `${Math.max(44, Math.min(300, (upwards ? above : below) - chromeHeight))}px`
     }
@@ -54,7 +55,9 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
     const outside = event => { if (!root.current?.contains(event.target)) setOpen(false) }
     document.addEventListener('pointerdown', outside)
     window.addEventListener('resize', positionMenu)
-    return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', positionMenu) }
+    const scroller = root.current.closest('.quick-session-body')
+    scroller?.addEventListener('scroll', positionMenu)
+    return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', positionMenu); scroller?.removeEventListener('scroll', positionMenu) }
   }, [open, searchable])
   return <div className={`fx-select ${className}`} ref={root} onBlur={event => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); close() }

@@ -1044,9 +1044,9 @@ def create_app(
     @app.post("/api/v2/replay/sessions", status_code=201)
     def create_replay(body: ReplayCreate, workspace: str = Depends(workspace_id)):
         try:
-            return replay.create(workspace, body.dataset_id, body.start_index)
-        except LookupError:
-            raise HTTPException(status_code=404, detail="dataset_not_found")
+            return replay.create(workspace, **body.model_dump())
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="playbook_not_found" if str(exc) == "playbook not found" else "dataset_not_found")
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc))
 

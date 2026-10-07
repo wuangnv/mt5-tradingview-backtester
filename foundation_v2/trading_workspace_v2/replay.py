@@ -46,10 +46,26 @@ class ReplayService:
         rows = self.artifacts.read_dataset(manifest.artifact_path, manifest.artifact_sha256)
         return manifest, rows
 
-    def create(self, workspace_id: str, dataset_id: str, start_index: int = 0) -> dict:
-        _, rows = self._dataset_rows(workspace_id, dataset_id)
-        if start_index >= len(rows):
+    def create(self, workspace_id: str, dataset_id: str, start_index: int = 0, *, name=None,
+               description="", starting_balance=None, playbook_id=None, playbook_revision=None,
+               chart_engine="legacy") -> dict:
+        manifest, rows = self._dataset_rows(workspace_id, dataset_id)
+        if start_index < 0 or start_index >= len(rows):
             raise ValueError("start_index exceeds dataset")
+        if chart_engine != "legacy":
+            raise ValueError("chart engine is unavailable")
+        if (playbook_id is None) != (playbook_revision is None):
+            raise ValueError("playbook id and revision must be supplied together")
+        if playbook_id:
+            strategy = self.store.get_record_revision(workspace_id, "playbook", playbook_id, playbook_revision)
+            if strategy is None or strategy.get("deleted"):
+                raise LookupError("playbook not found")
+        if len(description) > 2000:
+            raise ValueError("description is too long")
+        if starting_balance is not None:
+            starting_balance = Decimal(str(starting_balance))
+            if not starting_balance.is_finite() or starting_balance <= 0:
+                raise ValueError("starting balance must be finite and positive")
         payload = {
             "dataset_id": dataset_id,
             "cursor_index": int(start_index),
@@ -58,7 +74,19 @@ class ReplayService:
             "parent_revision": None,
             "status": "paused",
             "timing": new_timing(),
+            "chart_engine": chart_engine,
         }
+        if name is not None:
+            if not name.strip() or len(name.strip()) > 160:
+                raise ValueError("name is invalid")
+            payload["name"] = name.strip()
+        if description:
+            payload["description"] = description
+        if starting_balance is not None:
+            payload["starting_balance"] = str(starting_balance)
+            payload["starting_balance_ccy"] = (getattr(manifest, "instrument_spec", None) or {}).get("account_ccy", "USD")
+        if playbook_id:
+            payload.update(playbook_id=playbook_id, playbook_revision=playbook_revision)
         record = self.store.create_record(workspace_id, "replay", payload)
         return self.view(workspace_id, record["record_id"])
 
@@ -517,7 +545,9 @@ class ReplayService:
             raise ValueError("branch cursor cannot exceed current replay cursor")
         child_session_id = uuid4().hex
         child_branch_id = uuid4().hex
+        configuration = {key: record["payload"][key] for key in ("name", "description", "starting_balance", "starting_balance_ccy", "playbook_id", "playbook_revision", "chart_engine") if key in record["payload"]}
         payload = {
+            **configuration,
             "dataset_id": record["payload"]["dataset_id"],
             "cursor_index": int(cursor_index),
             "branch_id": child_branch_id,

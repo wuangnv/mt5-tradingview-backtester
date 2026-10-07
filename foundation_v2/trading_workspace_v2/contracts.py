@@ -328,10 +328,29 @@ class AIRequest(BaseModel):
 
 
 class ReplayCreate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
     dataset_id: str = Field(min_length=1)
     start_index: int = Field(default=0, ge=0)
+    name: str | None = Field(default=None, min_length=1, max_length=160)
+    description: str = Field(default="", max_length=2000)
+    starting_balance: Decimal | None = Field(default=None, gt=0)
+    playbook_id: str | None = Field(default=None, min_length=1, max_length=128)
+    playbook_revision: int | None = Field(default=None, ge=1, strict=True)
+    chart_engine: Literal["legacy"] = "legacy"
+
+    @field_validator("name")
+    @classmethod
+    def trim_name(cls, value):
+        if value is not None and not value.strip():
+            raise ValueError("name cannot be blank")
+        return value.strip() if value is not None else None
+
+    @model_validator(mode="after")
+    def paired_playbook(self):
+        if (self.playbook_id is None) != (self.playbook_revision is None):
+            raise ValueError("playbook id and revision must be supplied together")
+        return self
 
 
 class ReplayActivityRequest(BaseModel):

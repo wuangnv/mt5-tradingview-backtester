@@ -26,7 +26,7 @@ export default function LegacyTradingBar({ order, quotes, onBeginOrder, analytic
   positionsLayout.current = { open: positionsOpen, maximized, height }
   useEffect(() => () => { clearTimeout(hideBalance.current); cancelAnimationFrame(resizeFrame.current) }, [])
   useEffect(() => { try { localStorage.setItem(storageKey, JSON.stringify(preset)) } catch { /* The confirmation flow works without browser storage. */ } }, [storageKey, preset])
-  const execution = order.execution, disabled = order.disabled || Boolean(order.active), currency = order.costs?.account_ccy
+  const execution = order.execution, disabled = order.disabled || Boolean(order.active), currency = execution?.cost_model?.account_ccy || order.configuredCurrency || order.costs?.account_ccy
   const money = value => {
     const amount = finiteNumber(value)
     if (amount === null) return '—'
@@ -119,7 +119,7 @@ export default function LegacyTradingBar({ order, quotes, onBeginOrder, analytic
         onKeyDown={event => { if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return; event.preventDefault(); event.stopPropagation(); resize(event.key === 'Home' ? 0 : event.key === 'End' ? 10000 : (maximized ? resizeBounds().full : positionsOpen ? height : 100) + (event.key === 'ArrowUp' ? 30 : -30)) }}><ChartIcon name="grip-horizontal" /></button>
       <div className="chart-trading-account">
         <a className="legacy-analytics-link" href={analyticsHref}><ChartIcon name="analytics" />{t('Analytics')}</a>
-        <button type="button" className="legacy-balance-pill" aria-label={t('Thông tin tài khoản')} aria-expanded={Boolean(balanceAnchor)} onPointerEnter={event => showBalance(event.currentTarget)} onPointerLeave={dismissBalance} onFocus={event => showBalance(event.currentTarget)} onBlur={dismissBalance} onClick={event => balanceAnchor ? setBalanceAnchor(null) : showBalance(event.currentTarget)}><ChartIcon name="wallet" /><strong>{balanceHidden ? '••••••' : money(execution?.balance)}</strong></button>
+        <button type="button" className="legacy-balance-pill" aria-label={t('Thông tin tài khoản')} aria-expanded={Boolean(balanceAnchor)} onPointerEnter={event => showBalance(event.currentTarget)} onPointerLeave={dismissBalance} onFocus={event => showBalance(event.currentTarget)} onBlur={dismissBalance} onClick={event => balanceAnchor ? setBalanceAnchor(null) : showBalance(event.currentTarget)}><ChartIcon name="wallet" /><strong>{balanceHidden ? '••••••' : money(execution?.balance ?? order.configuredBalance)}</strong></button>
         <button type="button" aria-label={t(balanceHidden ? 'Hiện số dư' : 'Ẩn số dư')} aria-pressed={balanceHidden} onClick={() => setBalanceHidden(value => !value)}><ChartIcon name={balanceHidden ? 'eye' : 'eye-off'} /></button>
         <button type="button" aria-label={t(positionsOpen ? 'Thu gọn danh sách lệnh' : 'Mở danh sách lệnh')} aria-expanded={positionsOpen} onClick={() => {
           if (positionsOpen) { setMaximized(false); setPositionsOpen(false); return }
@@ -131,7 +131,7 @@ export default function LegacyTradingBar({ order, quotes, onBeginOrder, analytic
     </div>
     {positionsOpen && <div className="legacy-resizable-positions" style={maximized ? undefined : { height }}><LegacyPositions execution={execution} symbol={symbol} /></div>}
     {error && !scalperAnchor && <p className="legacy-preset-error" role="alert">{t(error)}<button type="button" onClick={() => setError('')} aria-label={t('Đóng thông báo')}>×</button></p>}
-    {balanceAnchor && <LegacyPopover anchor={balanceAnchor} theme={theme} label={t('Thông tin tài khoản')} onClose={() => { clearTimeout(hideBalance.current); setBalanceAnchor(null) }}><dl className="legacy-account-details" onPointerEnter={() => clearTimeout(hideBalance.current)} onPointerLeave={dismissBalance}>{[['Equity', execution?.equity], ['Realized PnL', realized], ['Unrealized PnL', execution?.floating_pl]].map(([label, value]) => <div key={label}><dt>{t(label)}</dt><dd>{balanceHidden ? '••••••' : money(value)}</dd></div>)}</dl></LegacyPopover>}
+    {balanceAnchor && <LegacyPopover anchor={balanceAnchor} theme={theme} label={t('Thông tin tài khoản')} onClose={() => { clearTimeout(hideBalance.current); setBalanceAnchor(null) }}><dl className="legacy-account-details" onPointerEnter={() => clearTimeout(hideBalance.current)} onPointerLeave={dismissBalance}>{(execution ? [['Equity', execution.equity], ['Realized PnL', realized], ['Unrealized PnL', execution.floating_pl]] : [['Account Balance', order.configuredBalance]]).map(([label, value]) => <div key={label}><dt>{t(label)}</dt><dd>{balanceHidden ? '••••••' : money(value)}</dd></div>)}</dl></LegacyPopover>}
     {scalperAnchor && <LegacyPopover anchor={scalperAnchor} theme={theme} label="Scalper mode" wide onClose={() => { setScalperAnchor(null); setError('') }}><form className="legacy-scalper-settings" onSubmit={event => {
       event.preventDefault()
       try {

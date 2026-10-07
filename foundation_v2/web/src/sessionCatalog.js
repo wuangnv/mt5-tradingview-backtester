@@ -63,6 +63,10 @@ export async function fetchReplaySessions(workspace, signal) {
   return normalizeSessionCatalog(await request('/api/v2/replay/sessions', workspace, { signal }))
 }
 
+export function createReplaySession(workspace, configuration) {
+  return request('/api/v2/replay/sessions', workspace, { method: 'POST', body: JSON.stringify(configuration) })
+}
+
 export function updateSessionMetadata(workspace, session, changes) {
   return request(`/api/v2/replay/sessions/${encodeURIComponent(session.record_id)}`, workspace, {
     method: 'PATCH', body: JSON.stringify({ ...changes, expected_revision: session.revision }),

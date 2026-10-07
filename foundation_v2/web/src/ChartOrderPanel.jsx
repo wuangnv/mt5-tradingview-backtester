@@ -10,12 +10,13 @@ export function useChartOrder({ workspace, replay, dataset, ready, blocked, subm
   const [draft, setDraft] = useState(() => orderDraft(replay, instrument))
   const [notice, setNotice] = useState(null)
   const [startingBalance, setStartingBalance] = useState('10000')
+  useEffect(() => { setStartingBalance(String(replay?.payload?.starting_balance ?? '10000')) }, [replay?.record_id])
   const [spread, setSpread] = useState('0.0002')
   const [pending, setPending] = useState(false)
   const tick = useReplayTickOptions(workspace, replay)
   useEffect(() => { setDraft(orderDraft(replay, instrument)); setNotice(null) }, [replay?.record_id, replay?.revision, instrument])
   const active = execution?.position || execution?.pending_market_order
-  const costs = execution?.cost_model || (dataset ? DEFAULT_COST_MODEL : null)
+  const costs = execution?.cost_model || (dataset ? { ...DEFAULT_COST_MODEL, account_ccy: dataset.instrument_spec?.account_ccy || DEFAULT_COST_MODEL.account_ccy } : null)
   const quotes = marketQuotes(replay)
   const reference = active ? protectionReference(replay) : execution ? (draft.side === 'BUY' ? quotes.ask : quotes.bid) : protectionReference(replay)
   const disabled = !ready || blocked || pending
@@ -60,7 +61,7 @@ export function useChartOrder({ workspace, replay, dataset, ready, blocked, subm
     return run('execution', { instrument_spec: instrument, cost_model: costs, spread_price: String(spreadValue), timeframe_seconds: Number(dataset.timeframe_seconds), starting_balance: String(balance),
       ...(tick.useTicks ? { tick_snapshot_id: tick.options.snapshot_id, research_margin: { version: 'fixed-starting-balance-leverage-v1', leverage: String(leverage) } } : {}) })
   }
-  return { draft, setDraft, execution, instrument, costs, active, reference, disabled, pending, notice, startingBalance, setStartingBalance, spread, setSpread, tick, canInitialize, initialize, save, changePrice, chooseSide }
+  return { draft, setDraft, execution, instrument, costs, active, reference, disabled, pending, notice, startingBalance, configuredBalance: replay?.payload?.starting_balance, configuredCurrency: replay?.payload?.starting_balance_ccy, setStartingBalance, spread, setSpread, tick, canInitialize, initialize, save, changePrice, chooseSide }
 }
 
 function LegacyOrderForm({ order, blockedReason, onClose, onJournal }) {

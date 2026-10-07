@@ -318,7 +318,6 @@ export default function ReplayWorkspace({ workspace, query }) {
 
   const { updateMarketContext, appearance, applyAppearance } = useFxReplayContext()
   const theme = appearance?.theme || 'dark'
-  const advancedChart = query.get('chart_engine') !== 'lightweight'
   const storageKey = `tw:replay:last:${workspace}`
   const requestedSession = query.get('session') || ''
   const requestedDataset = query.get('dataset') || ''
@@ -329,6 +328,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const requestedCursorValid = requestedCursor === null || (Number.isInteger(requestedCursor) && requestedCursor >= 0)
   const [sessionId, setSessionId] = useState(requestedSession)
   const [state, setState] = useState({ status: 'idle', payload: null, error: null })
+  const advancedChart = state.payload?.payload?.chart_engine ? state.payload.payload.chart_engine === 'legacy' : query.get('chart_engine') !== 'lightweight'
   const [datasetState, setDatasetState] = useState({ status: 'loading', items: [], error: null })
   const [pendingAction, setPendingAction] = useState('')
   const [conflict, setConflict] = useState(false)

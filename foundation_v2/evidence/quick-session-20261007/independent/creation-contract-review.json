@@ -1,0 +1,102 @@
+{
+  "scope": "In-memory model/service creation review only",
+  "cases": [
+    {
+      "case": "One atomic metadata record before simulator initialization",
+      "pass": true
+    },
+    {
+      "case": "Branch retains configuration and currency with fresh timing",
+      "pass": true
+    },
+    {
+      "case": "API model rejects name",
+      "pass": true
+    },
+    {
+      "case": "API model rejects name",
+      "pass": true
+    },
+    {
+      "case": "API model rejects description",
+      "pass": true
+    },
+    {
+      "case": "API model rejects starting_balance",
+      "pass": true
+    },
+    {
+      "case": "API model rejects starting_balance",
+      "pass": true
+    },
+    {
+      "case": "API model rejects starting_balance",
+      "pass": true
+    },
+    {
+      "case": "API model rejects starting_balance",
+      "pass": true
+    },
+    {
+      "case": "API model rejects start_index",
+      "pass": true
+    },
+    {
+      "case": "API model rejects chart_engine",
+      "pass": true
+    },
+    {
+      "case": "API model rejects playbook_id",
+      "pass": true
+    },
+    {
+      "case": "API model rejects playbook_revision",
+      "pass": true
+    },
+    {
+      "case": "API model rejects playbook_revision",
+      "pass": true
+    },
+    {
+      "case": "API model rejects unexpected",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: dataset_id",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: start_index",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: start_index",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: description",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: playbook_id",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: playbook_revision",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: starting_balance",
+      "pass": true
+    },
+    {
+      "case": "Service rejects before record: chart_engine",
+      "pass": true
+    },
+    {
+      "case": "Existing dataset-only request remains compatible",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

@@ -18,9 +18,9 @@ export function sessionSettingsFacts(item, dataset, payload, model, record) {
   const costs = execution?.cost_model
   return {
     strategy: payload?.provenance?.playbook_id || record?.payload?.playbook_id || 'Chưa gắn strategy',
-    balance: execution?.balance ?? model?.endingBalance ?? null,
-    startingBalance: execution?.starting_balance ?? model?.startBalance ?? null,
-    currency: costs?.account_ccy || model?.result?.account_currency || payload?.metrics?.account_currency,
+    balance: execution?.balance ?? record?.payload?.starting_balance ?? model?.endingBalance ?? null,
+    startingBalance: execution?.starting_balance ?? record?.payload?.starting_balance ?? model?.startBalance ?? null,
+    currency: costs?.account_ccy || record?.payload?.starting_balance_ccy || model?.result?.account_currency || payload?.metrics?.account_currency,
     asset: item?.instrument_id || dataset?.instrument_id || '—',
     first: dataset?.first_timestamp,
     last: dataset?.last_timestamp,

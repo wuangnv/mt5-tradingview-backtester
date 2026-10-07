@@ -336,3 +336,22 @@ The positions grip remains usable while maximized. Dragging follows the pointer 
 Dark chart chrome uses the same #0F0F0F surface as its pane, above a #000000 trading footer. This changes backgrounds only. Drawing separators are inset 8px; the left native object-tree shortcut is hidden because the right app rail owns that entry. Quick Search, chart properties and screenshot form one header group with no internal vertical separators. Session Settings has an inset divider above its right-rail button.
 
 The chart opens the same SessionSettingsDrawer as the session pages. Name/description saves use the existing revision-guarded metadata API; chart rows, viewed cutoff and reconstructed execution remain intact. A conflict or uncertain result blocks resubmission until closing the dialog refetches the current record at the same cutoff. Quantity keyboard focus uses its single neutral outer contour, while input hover stays transparent and only a hovered spinner arrow fills.
+
+### Dashboard quick session
+
+Dashboard's Backtesting Session action opens a centered native dialog with a fixed
+header/footer and a scrolling form. It reuses FxSelect and the Testing locale and
+project tokens. Popups clamp to the dialog body so the footer cannot clip options.
+Name, positive account balance (default 100000), one local asset/dataset and an
+optional saved strategy revision are submitted together through the existing
+replay-create API. Advanced mode adds description and the starting candle.
+Strategy lookup is tenant-scoped; missing/deleted revisions fail before creation.
+
+The current TradingView Advanced Charts engine is explicitly Legacy Chart. This
+choice is stored on the session and preserved on branches. New Chart and shared
+chart layouts remain unavailable; Prop Firm links to its existing setup workflow.
+Saved capital/currency appear before simulator initialization and seed that
+existing setup. No execution snapshot or broker order is fabricated at creation.
+A failed 4xx response permits editing/retry. An uncertain network/5xx response
+blocks another submission and directs the user to inspect the sessions list.
+Evidence: `foundation_v2/evidence/quick-session-20261007/CHECKPOINT.md`.
