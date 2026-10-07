@@ -1,0 +1,445 @@
+{
+  "scope": "Independent compact replay menu, native selected interval and positions chevron. Actual guarded local GET, browser-local preferences only.",
+  "cases": [
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "dark",
+      "nativeInitial": [
+        {
+          "value": "1",
+          "text": "1m",
+          "color": "rgb(86, 149, 254)",
+          "child": "rgb(86, 149, 254)",
+          "weight": "600",
+          "bg": "rgb(52, 52, 52)",
+          "rect": {
+            "x": 179.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 211.9375,
+            "bottom": 38,
+            "left": 179.6875
+          }
+        }
+      ],
+      "nativeFive": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(86, 149, 254)",
+          "child": "rgb(86, 149, 254)",
+          "weight": "600",
+          "bg": "rgb(52, 52, 52)",
+          "rect": {
+            "x": 242.625,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 274.875,
+            "bottom": 38,
+            "left": 242.625
+          }
+        }
+      ],
+      "nativeHover": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(86, 149, 254)",
+          "child": "rgb(86, 149, 254)",
+          "weight": "600",
+          "bg": "rgb(52, 52, 52)",
+          "rect": {
+            "x": 242.625,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 274.875,
+            "bottom": 38,
+            "left": 242.625
+          }
+        }
+      ],
+      "menu": {
+        "outer": {
+          "x": 995,
+          "y": 179,
+          "width": 146,
+          "height": 422,
+          "top": 179,
+          "right": 1141,
+          "bottom": 601,
+          "left": 995
+        },
+        "child": {
+          "x": 1002,
+          "y": 186,
+          "width": 132,
+          "height": 408,
+          "top": 186,
+          "right": 1134,
+          "bottom": 594,
+          "left": 1002
+        },
+        "focus": true
+      },
+      "firstOpen": 296,
+      "initialLayout": {
+        "available": 790,
+        "bar": 51,
+        "chart": 443,
+        "footer": 790,
+        "overflow": 0
+      },
+      "shortReopen": 296,
+      "largeDrag": 346,
+      "largeReopen": 346,
+      "afterMaxReopen": 346,
+      "finalLayout": {
+        "available": 790,
+        "bar": 51,
+        "chart": 393,
+        "footer": 790,
+        "overflow": 0
+      },
+      "pass": true
+    },
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "light",
+      "nativeInitial": [
+        {
+          "value": "1",
+          "text": "1m",
+          "color": "rgb(41, 98, 255)",
+          "child": "rgb(41, 98, 255)",
+          "weight": "600",
+          "bg": "rgb(224, 224, 224)",
+          "rect": {
+            "x": 179.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 211.9375,
+            "bottom": 38,
+            "left": 179.6875
+          }
+        }
+      ],
+      "nativeFive": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(41, 98, 255)",
+          "child": "rgb(41, 98, 255)",
+          "weight": "600",
+          "bg": "rgb(224, 224, 224)",
+          "rect": {
+            "x": 242.625,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 274.875,
+            "bottom": 38,
+            "left": 242.625
+          }
+        }
+      ],
+      "nativeHover": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(41, 98, 255)",
+          "child": "rgb(41, 98, 255)",
+          "weight": "600",
+          "bg": "rgb(224, 224, 224)",
+          "rect": {
+            "x": 242.625,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 274.875,
+            "bottom": 38,
+            "left": 242.625
+          }
+        }
+      ],
+      "menu": {
+        "outer": {
+          "x": 995,
+          "y": 179,
+          "width": 146,
+          "height": 422,
+          "top": 179,
+          "right": 1141,
+          "bottom": 601,
+          "left": 995
+        },
+        "child": {
+          "x": 1002,
+          "y": 186,
+          "width": 132,
+          "height": 408,
+          "top": 186,
+          "right": 1134,
+          "bottom": 594,
+          "left": 1002
+        },
+        "focus": true
+      },
+      "firstOpen": 296,
+      "initialLayout": {
+        "available": 790,
+        "bar": 51,
+        "chart": 443,
+        "footer": 790,
+        "overflow": 0
+      },
+      "shortReopen": 296,
+      "largeDrag": 346,
+      "largeReopen": 346,
+      "afterMaxReopen": 346,
+      "finalLayout": {
+        "available": 790,
+        "bar": 51,
+        "chart": 393,
+        "footer": 790,
+        "overflow": 0
+      },
+      "pass": true
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "nativeInitial": [
+        {
+          "value": "1",
+          "text": "1m",
+          "color": "rgb(86, 149, 254)",
+          "child": "rgb(86, 149, 254)",
+          "weight": "600",
+          "bg": "rgb(52, 52, 52)",
+          "rect": {
+            "x": 100.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 132.9375,
+            "bottom": 38,
+            "left": 100.6875
+          }
+        }
+      ],
+      "nativeFive": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(86, 149, 254)",
+          "child": "rgb(86, 149, 254)",
+          "weight": "600",
+          "bg": "rgb(52, 52, 52)",
+          "rect": {
+            "x": 98.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 130.9375,
+            "bottom": 38,
+            "left": 98.6875
+          }
+        }
+      ],
+      "nativeHover": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(86, 149, 254)",
+          "child": "rgb(86, 149, 254)",
+          "weight": "600",
+          "bg": "rgb(52, 52, 52)",
+          "rect": {
+            "x": 98.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 130.9375,
+            "bottom": 38,
+            "left": 98.6875
+          }
+        }
+      ],
+      "menu": {
+        "outer": {
+          "x": 109,
+          "y": 179,
+          "width": 146,
+          "height": 422,
+          "top": 179,
+          "right": 255,
+          "bottom": 601,
+          "left": 109
+        },
+        "child": {
+          "x": 116,
+          "y": 186,
+          "width": 132,
+          "height": 408,
+          "top": 186,
+          "right": 248,
+          "bottom": 594,
+          "left": 116
+        },
+        "focus": true
+      },
+      "firstOpen": 301,
+      "initialLayout": {
+        "available": 844,
+        "bar": 92,
+        "chart": 451,
+        "footer": 844,
+        "overflow": 0
+      },
+      "shortReopen": 301,
+      "largeDrag": 351,
+      "largeReopen": 351,
+      "afterMaxReopen": 351,
+      "finalLayout": {
+        "available": 844,
+        "bar": 92,
+        "chart": 401,
+        "footer": 844,
+        "overflow": 0
+      },
+      "pass": true
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "nativeInitial": [
+        {
+          "value": "1",
+          "text": "1m",
+          "color": "rgb(41, 98, 255)",
+          "child": "rgb(41, 98, 255)",
+          "weight": "600",
+          "bg": "rgb(224, 224, 224)",
+          "rect": {
+            "x": 100.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 132.9375,
+            "bottom": 38,
+            "left": 100.6875
+          }
+        }
+      ],
+      "nativeFive": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(41, 98, 255)",
+          "child": "rgb(41, 98, 255)",
+          "weight": "600",
+          "bg": "rgb(224, 224, 224)",
+          "rect": {
+            "x": 98.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 130.9375,
+            "bottom": 38,
+            "left": 98.6875
+          }
+        }
+      ],
+      "nativeHover": [
+        {
+          "value": "5",
+          "text": "5m",
+          "color": "rgb(41, 98, 255)",
+          "child": "rgb(41, 98, 255)",
+          "weight": "600",
+          "bg": "rgb(224, 224, 224)",
+          "rect": {
+            "x": 98.6875,
+            "y": 0,
+            "width": 32.25,
+            "height": 38,
+            "top": 0,
+            "right": 130.9375,
+            "bottom": 38,
+            "left": 98.6875
+          }
+        }
+      ],
+      "menu": {
+        "outer": {
+          "x": 109,
+          "y": 179,
+          "width": 146,
+          "height": 422,
+          "top": 179,
+          "right": 255,
+          "bottom": 601,
+          "left": 109
+        },
+        "child": {
+          "x": 116,
+          "y": 186,
+          "width": 132,
+          "height": 408,
+          "top": 186,
+          "right": 248,
+          "bottom": 594,
+          "left": 116
+        },
+        "focus": true
+      },
+      "firstOpen": 301,
+      "initialLayout": {
+        "available": 844,
+        "bar": 92,
+        "chart": 451,
+        "footer": 844,
+        "overflow": 0
+      },
+      "shortReopen": 301,
+      "largeDrag": 351,
+      "largeReopen": 351,
+      "afterMaxReopen": 351,
+      "finalLayout": {
+        "available": 844,
+        "bar": 92,
+        "chart": 401,
+        "footer": 844,
+        "overflow": 0
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true,
+  "sourceHashes": {
+    "web/src/LegacyReplayToolbar.css": "aea364a7e8f336f823926c5573b6ba38b8b5e97e722286ce86d94b3affdfd5ed",
+    "web/public/chart-legacy.css": "b04faf79e28890fc2c0ee7e4dc128ebbf6691075df11ae64e5fc12e8cc67a687",
+    "web/src/LegacyTradingBar.jsx": "313b48fb4b82918cd0bdfb8aea971b753f4e507fed0657c8f591632db17adf76"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "errors": [],
+  "blocked": [],
+  "native": {
+    "markup": "<div class=\"wrap-H6XRnLaC\" id=\"header-toolbar-intervals\"><div data-value=\"1\" data-role=\"button\" class=\"button-cXbh8Gcw first-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isActive-9pA37sIi isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"1 phút\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">1m</div></div></div><div data-value=\"3\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"3 phút\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">3m</div></div></div><div data-value=\"5\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"5 phút\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">5m</div></div></div><div data-value=\"15\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"15 phút\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">15m</div></div></div><div data-value=\"30\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"30 phút\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">30m</div></div></div><div data-value=\"60\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"1 giờ\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">1h</div></div></div><div data-value=\"120\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"2 giờ\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">2h</div></div></div><div data-value=\"240\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"4 giờ\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">4h</div></div></div><div data-value=\"1D\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"1 ngày\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">D</div></div></div><div data-value=\"1W\" data-role=\"button\" class=\"button-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"1 tuần\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">W</div></div></div><div data-value=\"1M\" data-role=\"button\" class=\"button-cXbh8Gcw last-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isInteractive-9pA37sIi isGrouped-9pA37sIi\" title=\"1 tháng\"><div class=\"js-button-text text-9pA37sIi\"><div class=\"value-e0RYyFXU\">M</div></div></div><div class=\"menu-cXbh8Gcw button-khcLBZEz apply-common-tooltip\" title=\"Khoảng thời gian\" data-tooltip-hotkey=\"{&amp;quot;keys&amp;quot;:[&amp;quot;,&amp;quot;],&amp;quot;text&amp;quot;:&amp;quot;Số hoặc {hotKey_0}&amp;quot;}\" data-role=\"button\"><div class=\"arrow-khcLBZEz\"><div class=\"arrowWrap-khcLBZEz\"><span class=\"icon-AL2odtws\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 8\" width=\"16\" height=\"8\"><path fill=\"currentColor\" d=\"M0 1.475l7.396 6.04.596.485.593-.49L16 1.39 14.807 0 7.393 6.122 8.58 6.12 1.186.08z\"></path></svg></span></div></div></div></div>",
+    "styles": [
+      {
+        "tag": "DIV",
+        "class": "button-cXbh8Gcw first-cXbh8Gcw button-2Vex9IkU button-9pA37sIi apply-common-tooltip isActive-9pA37sIi isInteractive-9pA37sIi isGrouped-9pA37sIi",
+        "role": null,
+        "pressed": null,
+        "style": "rgb(255, 255, 255)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "tag": "DIV",
+        "class": "js-button-text text-9pA37sIi",
+        "role": null,
+        "pressed": null,
+        "style": "rgb(255, 255, 255)",
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "tag": "DIV",
+        "class": "value-e0RYyFXU",
+        "role": null,
+        "pressed": null,
+        "style": "rgb(255, 255, 255)",
+        "bg": "rgba(0, 0, 0, 0)"
+      }
+    ]
+  },
+  "popover": {
+    "rect": {
+      "x": 877,
+      "y": 179,
+      "width": 264,
+      "height": 422,
+      "top": 179,
+      "right": 1141,
+      "bottom": 601,
+      "left": 877
+    },
+    "child": {
+      "x": 884,
+      "y": 186,
+      "width": 132,
+      "height": 408,
+      "top": 186,
+      "right": 1016,
+      "bottom": 594,
+      "left": 884
+    }
+  },
+  "firstOpen": {
+    "x": 0,
+    "y": 560,
+    "width": 1368,
+    "height": 230,
+    "top": 560,
+    "right": 1368,
+    "bottom": 790,
+    "left": 0
+  },
+  "reopened": {
+    "x": 0,
+    "y": 660,
+    "width": 1368,
+    "height": 130,
+    "top": 660,
+    "right": 1368,
+    "bottom": 790,
+    "left": 0
+  }
+}

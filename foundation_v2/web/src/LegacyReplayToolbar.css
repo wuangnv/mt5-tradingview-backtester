@@ -12,7 +12,8 @@
 .legacy-fx-playback .legacy-sync-toggle input:checked + span::before { transform: translateX(14px); }
 .legacy-fx-playback .legacy-sync-toggle input:focus-visible + span { outline: 2px solid var(--project-primary); outline-offset: 2px; }
 .legacy-fx-playback .legacy-sync-toggle input:disabled + span { opacity: .4; }
-.legacy-replay-intervals { display: grid; width: 132px; max-height: min(420px, 65vh); overflow-y: auto; }
+.legacy-popover:has(> .legacy-replay-intervals) { width: 146px; }
+.legacy-replay-intervals { display: grid; width: 100%; max-height: min(420px, 65vh); overflow-y: auto; }
 .legacy-replay-intervals button { display: flex; justify-content: space-between; min-height: 31px; border-radius: 3px; }
 .legacy-replay-intervals button[aria-pressed='true'] { color: #5695fe; }
 @media (max-width: 600px) {

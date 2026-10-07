@@ -121,7 +121,11 @@ export default function LegacyTradingBar({ order, quotes, onBeginOrder, analytic
         <a className="legacy-analytics-link" href={analyticsHref}><ChartIcon name="analytics" />{t('Analytics')}</a>
         <button type="button" className="legacy-balance-pill" aria-label={t('Thông tin tài khoản')} aria-expanded={Boolean(balanceAnchor)} onPointerEnter={event => showBalance(event.currentTarget)} onPointerLeave={dismissBalance} onFocus={event => showBalance(event.currentTarget)} onBlur={dismissBalance} onClick={event => balanceAnchor ? setBalanceAnchor(null) : showBalance(event.currentTarget)}><ChartIcon name="wallet" /><strong>{balanceHidden ? '••••••' : money(execution?.balance)}</strong></button>
         <button type="button" aria-label={t(balanceHidden ? 'Hiện số dư' : 'Ẩn số dư')} aria-pressed={balanceHidden} onClick={() => setBalanceHidden(value => !value)}><ChartIcon name={balanceHidden ? 'eye' : 'eye-off'} /></button>
-        <button type="button" aria-label={t(positionsOpen ? 'Thu gọn danh sách lệnh' : 'Mở danh sách lệnh')} aria-expanded={positionsOpen} onClick={() => { setMaximized(false); setPositionsOpen(value => !value) }}><ChartIcon name="down" style={{ transform: positionsOpen ? '' : 'rotate(180deg)' }} /></button>
+        <button type="button" aria-label={t(positionsOpen ? 'Thu gọn danh sách lệnh' : 'Mở danh sách lệnh')} aria-expanded={positionsOpen} onClick={() => {
+          if (positionsOpen) { setMaximized(false); setPositionsOpen(false); return }
+          const bounds = resizeBounds()
+          resize(Math.min(bounds.normal, Math.max(height, 260, Math.round(bounds.full * 0.4))), bounds)
+        }}><ChartIcon name="down" style={{ transform: positionsOpen ? '' : 'rotate(180deg)' }} /></button>
         <button type="button" aria-label={t(maximized ? 'Thu nhỏ danh sách lệnh' : 'Mở rộng danh sách lệnh')} aria-pressed={maximized} onClick={() => { setPositionsOpen(true); setMaximized(value => !value) }}><ChartIcon name={maximized ? 'contract-corners' : 'fit'} /></button>
       </div>
     </div>
