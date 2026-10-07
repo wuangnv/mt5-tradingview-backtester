@@ -1,0 +1,563 @@
+{
+  "cases": [
+    {
+      "name": "dark-360",
+      "closed": {
+        "bounds": {
+          "left": 58,
+          "right": 360
+        },
+        "wrapper": {
+          "left": 58,
+          "right": 360
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          }
+        ],
+        "cells": {
+          "first": "16px",
+          "last": "16px",
+          "gutter": "16px"
+        },
+        "pageOverflow": 0
+      },
+      "pagination": {
+        "text": "1 / 2",
+        "lines": 1,
+        "width": 26.21875
+      },
+      "provenance": {
+        "table": "MT5",
+        "details": "Exness-MT5Trial14 / MT5",
+        "providerId": "local-catalog"
+      },
+      "expanded": {
+        "bounds": {
+          "left": 58,
+          "right": 360
+        },
+        "wrapper": {
+          "left": 58,
+          "right": 360
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          }
+        ],
+        "cells": {
+          "first": "16px",
+          "last": "16px",
+          "gutter": "16px"
+        },
+        "pageOverflow": 0
+      },
+      "importFocus": true,
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "dark-1428",
+      "closed": {
+        "bounds": {
+          "left": 248,
+          "right": 1428
+        },
+        "wrapper": {
+          "left": 248,
+          "right": 1428
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          }
+        ],
+        "cells": {
+          "first": "32px",
+          "last": "32px",
+          "gutter": "32px"
+        },
+        "pageOverflow": 0
+      },
+      "pagination": {
+        "text": "1 / 2",
+        "lines": 1,
+        "width": 26.21875
+      },
+      "provenance": {
+        "table": "MT5",
+        "details": "Exness-MT5Trial14 / MT5",
+        "providerId": "local-catalog"
+      },
+      "expanded": {
+        "bounds": {
+          "left": 248,
+          "right": 1428
+        },
+        "wrapper": {
+          "left": 248,
+          "right": 1428
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(58, 58, 58)"
+          }
+        ],
+        "cells": {
+          "first": "32px",
+          "last": "32px",
+          "gutter": "32px"
+        },
+        "pageOverflow": 0
+      },
+      "importFocus": true,
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "light-360",
+      "closed": {
+        "bounds": {
+          "left": 58,
+          "right": 360
+        },
+        "wrapper": {
+          "left": 58,
+          "right": 360
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          }
+        ],
+        "cells": {
+          "first": "16px",
+          "last": "16px",
+          "gutter": "16px"
+        },
+        "pageOverflow": 0
+      },
+      "pagination": {
+        "text": "1 / 2",
+        "lines": 1,
+        "width": 26.21875
+      },
+      "provenance": {
+        "table": "MT5",
+        "details": "Exness-MT5Trial14 / MT5",
+        "providerId": "local-catalog"
+      },
+      "expanded": {
+        "bounds": {
+          "left": 58,
+          "right": 360
+        },
+        "wrapper": {
+          "left": 58,
+          "right": 360
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 58,
+            "right": 360,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          }
+        ],
+        "cells": {
+          "first": "16px",
+          "last": "16px",
+          "gutter": "16px"
+        },
+        "pageOverflow": 0
+      },
+      "importFocus": true,
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "light-1428",
+      "closed": {
+        "bounds": {
+          "left": 248,
+          "right": 1428
+        },
+        "wrapper": {
+          "left": 248,
+          "right": 1428
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          }
+        ],
+        "cells": {
+          "first": "32px",
+          "last": "32px",
+          "gutter": "32px"
+        },
+        "pageOverflow": 0
+      },
+      "pagination": {
+        "text": "1 / 2",
+        "lines": 1,
+        "width": 26.21875
+      },
+      "provenance": {
+        "table": "MT5",
+        "details": "Exness-MT5Trial14 / MT5",
+        "providerId": "local-catalog"
+      },
+      "expanded": {
+        "bounds": {
+          "left": 248,
+          "right": 1428
+        },
+        "wrapper": {
+          "left": 248,
+          "right": 1428
+        },
+        "lines": [
+          {
+            "class": "data-library-paging",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "rd-provider-row",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          },
+          {
+            "class": "data-library-disclosure",
+            "left": 248,
+            "right": 1428,
+            "height": "1px",
+            "color": "rgb(210, 210, 210)"
+          }
+        ],
+        "cells": {
+          "first": "32px",
+          "last": "32px",
+          "gutter": "32px"
+        },
+        "pageOverflow": 0
+      },
+      "importFocus": true,
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-empty",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-failed",
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v2/data/providers"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true,
+  "hashes": {
+    "DataDeskWorkspace.jsx": "b86f20a1dd00211b6688713abae279186d89f4b5168770e9cbf77ce9bdcfbfdc",
+    "data-library.css": "3bf204d4af92b41e2bbffddf69e1979fa48fa19355eb13cc4bbcee8ee191839c"
+  }
+}

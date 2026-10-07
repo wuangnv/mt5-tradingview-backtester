@@ -421,3 +421,11 @@ The new table/shell labels, counts and UTC dates use the current VI/EN locale.
 Existing advanced CSV/provider/detail prose retains its prior mixed-language copy;
 this consolidation does not claim a full translation migration.
 Evidence: `foundation_v2/evidence/offline-library-20261007/REVIEW.md`.
+
+The library uses one compact count/search/source/import toolbar; its navigation
+tab already names the page, so no duplicate title or offline explanation appears
+above the table. MT5 rows omit the repeated offline badge and show a short MT5
+source label. Details preserve the actual source provider/server, rather than
+the local catalog adapter ID. Table and section separators extend through the
+shared page gutter while controls and cell text retain that inset.
+Polish evidence: `foundation_v2/evidence/offline-library-polish-20261007/REVIEW.md`.

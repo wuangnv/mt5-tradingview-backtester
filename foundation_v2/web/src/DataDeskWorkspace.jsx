@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   datasetRange,
   fetchDatasets,
@@ -67,7 +67,7 @@ function DatasetDetails({ dataset, workspace, query }) {
       </div>
       <dl className="rd-detail-grid">
         <div><dt>Dataset</dt><dd><strong>{dataset.dataset_id}</strong></dd></div>
-        <div><dt>Provider</dt><dd>{dataset.provider_id || source.provider || 'Chưa xác định'}</dd></div>
+        <div><dt>{t('Nguồn dữ liệu')}</dt><dd>{source.provider || dataset.provider_id || '—'}</dd></div>
         <div><dt>Instrument / TF</dt><dd>{dataset.instrument_id || 'N/A'} · {dataset.timeframe || 'N/A'}</dd></div>
         <div><dt>{t('Số nến')}</dt><dd>{fmt(dataset.row_count, '', 0)}</dd></div>
         <div><dt>Range UTC</dt><dd>{t(formatUtc(range.start, locale))} → {t(formatUtc(range.end, locale))}</dd></div>
@@ -289,7 +289,7 @@ function LocalCsvImport({ workspace, onImported }) {
 }
 
 export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new URLSearchParams(window.location.search), preview }) {
-  const { t, fmt, locale } = useTestingLocale(), id = useId()
+  const { t, fmt, locale } = useTestingLocale()
   const requestedDataset = query.get('dataset') || ''
   const [state, setState] = useState({ status: 'loading', datasets: [], providers: [], error: null })
   const [selectedId, setSelectedId] = useState(requestedDataset)
@@ -352,20 +352,18 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const pageItems = filteredDatasets.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   useEffect(() => setPage(1), [providerFilter, search, pageSize])
 
+  const openCsv = () => {
+    csvDisclosure.current.open = true
+    csvDisclosure.current.scrollIntoView({ block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+    csvDisclosure.current.querySelector('input[type=file]')?.focus({ preventScroll:true })
+  }
+
   return (
-    <section className="rd-shell wm-page data-library" data-testid="data-desk-root" aria-labelledby={`${id}-title`}>
-      <header className="rd-topbar wm-page-header">
-        <div>
-          <h1 id={`${id}-title`}>{t('Market Data')}</h1>
-          <p>{t('Bản dữ liệu offline cho replay và backtest.')}</p>
-        </div>
-        <div className="rd-actions"><button type="button" className="fxa-button" disabled={Boolean(preview)} onClick={() => {
-          csvDisclosure.current.open = true
-          csvDisclosure.current.scrollIntoView({ block:'start', behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
-          csvDisclosure.current.querySelector('input[type=file]')?.focus({ preventScroll:true })
-        }}>{t('Nhập CSV')}</button></div>
-      </header>
-      <p className="data-library-offline-note">{t('CSV có thể nhập ngay. Nguồn tải Dukascopy chưa được bật. Lịch sử MT5 đã lưu vẫn giữ nguyên nguồn và dùng như bản offline; replay không đọc giá trực tiếp.')}</p>
+    <section className="rd-shell wm-page data-library" data-testid="data-desk-root" aria-label={t('Market Data')}>
+      <div className="data-library-toolbar">
+        {state.status === 'ready' && <span className="data-library-count">{t('{count} bộ dữ liệu đã lưu', { count:fmt(state.datasets.length,'',0) })}</span>}
+        <div className="data-library-filters"><label className="data-library-search"><TestingIcon kind="search" /><input type="search" aria-label={t('Tìm asset')} placeholder={t('Tìm asset…')} value={search} onChange={event => setSearch(event.target.value)} /></label><FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={[{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]} /><button type="button" className="fxa-button data-library-import" disabled={Boolean(preview)} onClick={openCsv}>{t('Nhập CSV')}</button></div>
+      </div>
 
       {state.status === 'loading' && <div className="rd-message" role="status">{t('Đang đọc dữ liệu đã lưu…')}</div>}
       {state.status === 'error' && <div className="rd-message is-error" role="alert">{t('Không đọc được kho dữ liệu:')} {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{t(catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại')}</button>{catalogRetryExhausted && <small id="data-desk-retry-note">{t('Kiểm tra nguồn dữ liệu trước khi thử lại.')}</small>}</div>}
@@ -373,10 +371,6 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       {state.status === 'ready' && (
         <div>
           <section className="rd-panel" aria-label="Dataset catalog">
-            <div className="rd-panel-head">
-              <span className="data-library-count">{t('{count} bộ dữ liệu đã lưu', { count:fmt(state.datasets.length,'',0) })}</span>
-              <div className="data-library-filters"><label className="data-library-search"><TestingIcon kind="search" /><input type="search" aria-label={t('Tìm asset')} placeholder={t('Tìm asset…')} value={search} onChange={event => setSearch(event.target.value)} /></label><FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={[{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]} /></div>
-            </div>
             {filteredDatasets.length === 0 ? (
               <div className="rd-message is-empty" data-testid="data-desk-empty">{t(state.datasets.length ? 'Không có dữ liệu phù hợp bộ lọc.' : 'Chưa có dữ liệu offline. Nhập CSV để bắt đầu.')}</div>
             ) : (
@@ -390,7 +384,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       return (
                         <tr key={dataset.dataset_id} className={active ? 'is-selected' : ''}>
                           <td><button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => { setSelectedId(dataset.dataset_id); setDetailsOpen(true) }}><strong>{dataset.instrument_id || '—'}</strong><small>{dataset.timeframe || '—'}</small></button></td>
-                          <td>{dataset.source?.provider || dataset.provider_id || '—'}<small>{t('Bản offline')}</small></td>
+                          <td>{dataset.source?.provider?.endsWith(' / MT5') ? 'MT5' : dataset.source?.provider || dataset.provider_id || '—'}</td>
                           <td>{t(formatUtc(range.start, locale))}<small>→ {t(formatUtc(range.end, locale))}</small></td>
                           <td>{fmt(dataset.row_count, '', 0)}</td>
                           <td><QualityBadge dataset={dataset} /></td>
