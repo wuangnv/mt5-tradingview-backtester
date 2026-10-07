@@ -27,7 +27,11 @@ Project color roles are defined in `project-palette.md` and apply across all are
 Icons use 16px for chevrons and compact actions, 18px for standard actions, 20px for navigation and 24px for
 larger illustrative controls. Standard controls are 40px on desktop, 44px below
 480px or with coarse pointers. Circular actions share the duplicate-session
-reference: 32px desktop, 44px mobile/coarse, with 16px icons. Chart controls retain their
+reference: 32px desktop, 44px mobile/coarse, with 16px icons.
+Summary uses the same compact height beside session icon actions, with 13px/500
+text. Dashboard remaining-days text aligns with the action row and uses sea blue;
+the progress track sits above it. Empty session expansion uses one text line plus
+bottom padding, without a minimum chart height. Chart controls retain their
 recorded compact arrangement and vendor controls keep vendor sizing. The compact
 mobile ledger pager shows previous/current/next; desktop also exposes first/last
 and nearby page numbers. The row-count selector remains a text pill.
@@ -49,6 +53,15 @@ icons track the input's vertical center. Market Data fields follow the shared
 40/44px control height, including date fields.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
+
+Dashboard KPI values use 32px/600 numerals; duration units use 14px text aligned
+on the numeral baseline. Durations come from typed seconds, shown as elapsed
+days/hours/minutes, never inferred calendar months. Unknown durations remain
+“—”; demo durations remain explicitly sample data. There are no information
+icons. Win-rate supporting bars represent wins/losses/breakeven from the same
+closed-trade aggregate, not an unavailable Buy/Sell distribution. Monthly counts
+stay labeled as trades until measured activity time is available. Report bars
+use solid peach/blue/violet and aligned dashed grids; zero values have zero area.
 
 Shell chrome and generic actions use neutral white/black/gray in both themes.
 Primary actions use peach; financial positive/negative colors and the separate

@@ -1,6 +1,15 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, readDashboardReplayContext, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions } from '../src/dashboardModel.js'
+import { dashboardDurationParts, dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, readDashboardReplayContext, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions } from '../src/dashboardModel.js'
+
+test('duration retains unknown, measured zero and whole elapsed days without calendar-month guesses', () => {
+  for (const value of [null, undefined, '', false, '60', NaN, Infinity, -1]) assert.equal(dashboardDurationParts(value), null)
+  assert.deepEqual(dashboardDurationParts(0), [[0, 'minute']])
+  assert.deepEqual(dashboardDurationParts(59), [[0, 'minute']])
+  assert.deepEqual(dashboardDurationParts(67200), [[18, 'hour'], [40, 'minute']])
+  assert.deepEqual(dashboardDurationParts(3135600), [[36, 'day'], [7, 'hour']])
+  assert.deepEqual(dashboardDurationParts(86460), [[1, 'day'], [1, 'minute']])
+})
 
 test('dashboard keeps unknown distinct from measured zero', () => {
   for (const unknown of [null, undefined, '', false, NaN, Infinity, 'not-a-number']) assert.equal(dashboardNumber(unknown), '—')

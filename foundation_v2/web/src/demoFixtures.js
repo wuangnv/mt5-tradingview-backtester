@@ -35,7 +35,7 @@ export function demoOverview(rows = DEMO_LEDGER) {
     return { month, closed_trade_count: group.length, win_rate_pct: group.filter(row => row.net_pnl > 0).length / group.length * 100 }
   })
   return { performance: { schema_version: 'dashboard-replay-performance-v1', status: 'ready', scope: { session_count: 3, readable_session_count: 3 }, metrics, months,
-    preview_times: { invested: '18h 40m', replayed: '36d 7h' },
+    time_invested_seconds: 67200, historical_time_replayed_seconds: 3135600,
     symbols: DEMO_SESSIONS.map(session => ({ symbol: session.instrument_id, closed_trade_count: rows.filter(row => row.symbol === session.instrument_id).length })), sessions: [], sources: [], excluded: [] } }
 }
 

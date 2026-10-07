@@ -1,4 +1,8 @@
 {
+  "duration.day": { "vi": "ngày", "en": "d" },
+  "duration.hour": { "vi": "giờ", "en": "hr" },
+  "duration.minute": { "vi": "phút", "en": "min" },
+  "Thời gian đã ghi nhận": { "vi": "Thời gian đã ghi nhận", "en": "Recorded time" },
   "Settings": {
     "vi": "Cài đặt",
     "en": "Settings"

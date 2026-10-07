@@ -1,0 +1,234 @@
+{
+  "scope": "Synthetic independent intercepted GET states; not actual positive feed evidence",
+  "before": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "37839d98bed3ca0870f37021e8779781de4496fa4dd6627b4dd6579d5b8246f8"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "a6c02a1dcc10a279af304476f7692e4de4f116a0e12df4bfac0de95626809eaf"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "a1909f12f58688b9b26fd5749baf7b6e1c6e1cdafc8ddc149c6c6a5729ceb836"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "8170c42f364f372cf88979382d742f6d0cffaff99091301c83b97fe269a7a79b"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    }
+  ],
+  "cases": [
+    {
+      "name": "positive-empty-session-dark-en-1440",
+      "zeroBars": [
+        {
+          "width": 96,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 96,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 0,
+          "height": 30,
+          "axis": "width"
+        }
+      ],
+      "heights": [
+        {
+          "value": "2026-09: 4",
+          "barHeight": 199.390625,
+          "trackHeight": 199.390625
+        },
+        {
+          "value": "2026-10: 0",
+          "barHeight": 0,
+          "trackHeight": 199.390625
+        },
+        {
+          "value": "2026-09: 50%",
+          "barHeight": 71,
+          "trackHeight": 142
+        },
+        {
+          "value": "2026-10: 0%",
+          "barHeight": 0,
+          "trackHeight": 142
+        }
+      ],
+      "emptyHeight": 39.5
+    },
+    {
+      "name": "unknown-dark-en-1440"
+    },
+    {
+      "name": "zero-dark-en-1440",
+      "zeroBars": [
+        {
+          "width": 96,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 96,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 0,
+          "height": 30,
+          "axis": "width"
+        }
+      ]
+    },
+    {
+      "name": "blocked-dark-en-1440"
+    },
+    {
+      "name": "loading-dark-en-1440"
+    },
+    {
+      "name": "error-dark-en-1440"
+    },
+    {
+      "name": "stale-dark-en-1440"
+    },
+    {
+      "name": "positive-empty-session-light-vi-360",
+      "zeroBars": [
+        {
+          "width": 68.5,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 68.5,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 0,
+          "height": 30,
+          "axis": "width"
+        }
+      ],
+      "heights": [
+        {
+          "value": "2026-09: 4",
+          "barHeight": 142,
+          "trackHeight": 142
+        },
+        {
+          "value": "2026-10: 0",
+          "barHeight": 0,
+          "trackHeight": 142
+        },
+        {
+          "value": "2026-09: 50%",
+          "barHeight": 71,
+          "trackHeight": 142
+        },
+        {
+          "value": "2026-10: 0%",
+          "barHeight": 0,
+          "trackHeight": 142
+        }
+      ],
+      "emptyHeight": 33.5
+    },
+    {
+      "name": "unknown-light-vi-360"
+    },
+    {
+      "name": "zero-light-vi-360",
+      "zeroBars": [
+        {
+          "width": 96,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 96,
+          "height": 0,
+          "axis": "height"
+        },
+        {
+          "width": 0,
+          "height": 30,
+          "axis": "width"
+        }
+      ]
+    },
+    {
+      "name": "blocked-light-vi-360"
+    },
+    {
+      "name": "loading-light-vi-360"
+    },
+    {
+      "name": "error-light-vi-360"
+    },
+    {
+      "name": "stale-light-vi-360"
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "after": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "37839d98bed3ca0870f37021e8779781de4496fa4dd6627b4dd6579d5b8246f8"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "a6c02a1dcc10a279af304476f7692e4de4f116a0e12df4bfac0de95626809eaf"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "a1909f12f58688b9b26fd5749baf7b6e1c6e1cdafc8ddc149c6c6a5729ceb836"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "8170c42f364f372cf88979382d742f6d0cffaff99091301c83b97fe269a7a79b"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

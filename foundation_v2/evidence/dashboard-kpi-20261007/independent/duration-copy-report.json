@@ -1,0 +1,259 @@
+{
+  "scope": "Final localized duration-detail delta, synthetic GET fixtures; broad geometry acceptance retained",
+  "before": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "dc7e73f23eb817c80357c29182d19f0d145112032d160dd871b06bed79b7325b"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "a6c02a1dcc10a279af304476f7692e4de4f116a0e12df4bfac0de95626809eaf"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "a1909f12f58688b9b26fd5749baf7b6e1c6e1cdafc8ddc149c6c6a5729ceb836"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "f41c81a910b567ade434f9a7a2746dd1686c7236bc2fedada763ef028701deb2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    },
+    {
+      "file": "ui/project-palette.md",
+      "sha256": "02fce038b8fe9bb98490cc237fc91d691a578403f61681de68c56891d26fca94"
+    }
+  ],
+  "cases": [
+    {
+      "name": "null",
+      "theme": "dark",
+      "language": "en",
+      "width": 1440,
+      "metrics": [
+        {
+          "value": "—",
+          "detail": "Practice-time data is unavailable"
+        },
+        {
+          "value": "—",
+          "detail": "Replay-time data is unavailable"
+        }
+      ],
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "invalid",
+      "theme": "dark",
+      "language": "en",
+      "width": 1440,
+      "metrics": [
+        {
+          "value": "—",
+          "detail": "Practice-time data is unavailable"
+        },
+        {
+          "value": "—",
+          "detail": "Replay-time data is unavailable"
+        }
+      ]
+    },
+    {
+      "name": "zero",
+      "theme": "dark",
+      "language": "en",
+      "width": 1440,
+      "metrics": [
+        {
+          "value": "0min",
+          "detail": "Recorded time"
+        },
+        {
+          "value": "0min",
+          "detail": "Recorded time"
+        }
+      ],
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "positive",
+      "theme": "dark",
+      "language": "en",
+      "width": 1440,
+      "metrics": [
+        {
+          "value": "18hr40min",
+          "detail": "Recorded time"
+        },
+        {
+          "value": "36d7hr",
+          "detail": "Recorded time"
+        }
+      ]
+    },
+    {
+      "name": "null",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "metrics": [
+        {
+          "value": "—",
+          "detail": "Chưa có dữ liệu thời gian luyện tập"
+        },
+        {
+          "value": "—",
+          "detail": "Chưa có dữ liệu thời gian replay"
+        }
+      ],
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "invalid",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "metrics": [
+        {
+          "value": "—",
+          "detail": "Chưa có dữ liệu thời gian luyện tập"
+        },
+        {
+          "value": "—",
+          "detail": "Chưa có dữ liệu thời gian replay"
+        }
+      ]
+    },
+    {
+      "name": "zero",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "metrics": [
+        {
+          "value": "0phút",
+          "detail": "Thời gian đã ghi nhận"
+        },
+        {
+          "value": "0phút",
+          "detail": "Thời gian đã ghi nhận"
+        }
+      ],
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "positive",
+      "theme": "light",
+      "language": "vi",
+      "width": 360,
+      "metrics": [
+        {
+          "value": "18giờ40phút",
+          "detail": "Thời gian đã ghi nhận"
+        },
+        {
+          "value": "36ngày7giờ",
+          "detail": "Thời gian đã ghi nhận"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "sourceDelta": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "dc7e73f23eb817c80357c29182d19f0d145112032d160dd871b06bed79b7325b"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2"
+    }
+  ],
+  "after": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "dc7e73f23eb817c80357c29182d19f0d145112032d160dd871b06bed79b7325b"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "a6c02a1dcc10a279af304476f7692e4de4f116a0e12df4bfac0de95626809eaf"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "a1909f12f58688b9b26fd5749baf7b6e1c6e1cdafc8ddc149c6c6a5729ceb836"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "f41c81a910b567ade434f9a7a2746dd1686c7236bc2fedada763ef028701deb2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    },
+    {
+      "file": "ui/project-palette.md",
+      "sha256": "02fce038b8fe9bb98490cc237fc91d691a578403f61681de68c56891d26fca94"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

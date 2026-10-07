@@ -21,12 +21,12 @@
 .fx-dashboard-card-facts > span { display: inline-flex; align-items: center; gap: 6px; }
 .fx-dashboard-card-facts svg, .fx-dashboard-card-actions svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-dashboard-card-asset { display: inline-block; }
-.fx-dashboard-card-progress { display: grid; gap: 6px; text-align: center; min-width: 0; }
-.fx-dashboard-card-progress small { color: var(--wm-content-muted); font-size: 10px; }
-.fx-dashboard-card-progress progress { appearance: none; width: 100%; height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
+.fx-dashboard-card-progress { position: relative; display: flex; align-items: center; justify-content: center; min-height: 40px; text-align: center; min-width: 0; }
+.fx-dashboard-card-progress small { color: var(--project-primary); font-weight: 500; }
+.fx-dashboard-card-progress progress { position: absolute; top: 0; left: 0; appearance: none; width: 100%; height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
 .fx-dashboard-card-progress progress::-webkit-progress-bar { background: var(--wm-control-open); }
-.fx-dashboard-card-progress progress::-webkit-progress-value { background: var(--wm-content-muted); }
-.fx-dashboard-card-progress progress::-moz-progress-bar { background: var(--wm-content-muted); }
+.fx-dashboard-card-progress progress::-webkit-progress-value { background: var(--project-primary); }
+.fx-dashboard-card-progress progress::-moz-progress-bar { background: var(--project-primary); }
 .fx-dashboard-card-actions { display: flex; align-items: center; gap: 8px; }
 .fx-app .fx-dashboard .fx-dashboard-card-icon { display: inline-flex; justify-content: center; align-items: center; flex: 0 0 32px; width: 32px; min-height: 32px; padding: 0; border: 0; border-radius: 50%; background: var(--wm-control-open); color: var(--wm-content); text-decoration: none; }
 .fx-app .fx-dashboard .fx-dashboard-card-icon.is-danger { color: var(--wm-negative); }
@@ -36,6 +36,7 @@
 .fx-dashboard-card-expand[aria-expanded='true'] svg { rotate: 180deg; }
 .fx-dashboard-card-charts { padding: 0 20px 20px; }
 .fx-dashboard-card-charts .fxs-performance { margin: 0; }
+.fx-dashboard-card-charts .fxs-no-analytics { min-height: 0; padding-block: 0; line-height: 1.5; }
 .fx-dashboard-card-charts .fxs-charts { gap: 16px; }
 .fx-dashboard-card-charts .fxs-chart-panel { background: transparent; }
 .fx-dashboard-card-charts > p { margin: 12px 0 0; font-size: 13px; color: var(--wm-content-muted); }
@@ -53,6 +54,7 @@
 @media (max-width: 1250px) {
   .fx-dashboard-session-card-head { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 14px; }
   .fx-dashboard-card-progress { grid-column: 2; grid-row: 2; width: min(160px, 100%); text-align: left; }
+  .fx-dashboard-card-progress { justify-content: flex-start; }
   .fx-dashboard-card-actions { grid-column: 3; grid-row: 1 / span 2; }
 }
 @media (max-width: 960px) {

@@ -1,0 +1,137 @@
+{
+  "pass": true,
+  "report": [
+    {
+      "title": "Trades by month",
+      "axis": [
+        {
+          "text": "22",
+          "y": 779.171875
+        },
+        {
+          "text": "11",
+          "y": 850.171875
+        },
+        {
+          "text": "0",
+          "y": 921.171875
+        }
+      ],
+      "grid": [
+        779.171875,
+        850.171875,
+        921.171875
+      ],
+      "scrollHeight": 205,
+      "clientHeight": 190
+    },
+    {
+      "title": "Win rate by month",
+      "axis": [
+        {
+          "text": "100%",
+          "y": 1098.171875
+        },
+        {
+          "text": "80%",
+          "y": 1126.578125
+        },
+        {
+          "text": "60%",
+          "y": 1154.96875
+        },
+        {
+          "text": "40%",
+          "y": 1183.375
+        },
+        {
+          "text": "20%",
+          "y": 1211.765625
+        },
+        {
+          "text": "0%",
+          "y": 1240.171875
+        }
+      ],
+      "grid": [
+        1098.171875,
+        1126.5625,
+        1154.96875,
+        1183.359375,
+        1211.765625,
+        1240.171875
+      ],
+      "scrollHeight": 205,
+      "clientHeight": 190
+    },
+    {
+      "title": "Trades by symbol",
+      "axis": [],
+      "grid": []
+    }
+  ],
+  "scrollChecks": [
+    {
+      "x": 91,
+      "after": 91,
+      "scrollLeft": 53,
+      "max": 53,
+      "axisStyle": "sticky",
+      "ticks": [
+        779.171875,
+        850.171875,
+        921.171875
+      ],
+      "grid": [
+        779.171875,
+        850.171875,
+        921.171875
+      ]
+    },
+    {
+      "x": 91,
+      "after": 91,
+      "scrollLeft": 53,
+      "max": 53,
+      "axisStyle": "sticky",
+      "ticks": [
+        475.171875,
+        503.578125,
+        531.96875,
+        560.375,
+        588.765625,
+        617.171875
+      ],
+      "grid": [
+        475.171875,
+        503.5625,
+        531.96875,
+        560.359375,
+        588.765625,
+        617.171875
+      ]
+    }
+  ],
+  "blocked": [],
+  "before": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "37839d98bed3ca0870f37021e8779781de4496fa4dd6627b4dd6579d5b8246f8"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    }
+  ],
+  "after": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "37839d98bed3ca0870f37021e8779781de4496fa4dd6627b4dd6579d5b8246f8"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    }
+  ],
+  "sourceUnchanged": true
+}

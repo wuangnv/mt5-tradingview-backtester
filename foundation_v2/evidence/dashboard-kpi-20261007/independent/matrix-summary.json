@@ -1,0 +1,464 @@
+{
+  "scope": "Frozen Dashboard KPI refinement only; actual/demo read-only UI",
+  "pass": true,
+  "before": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "37839d98bed3ca0870f37021e8779781de4496fa4dd6627b4dd6579d5b8246f8"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "a6c02a1dcc10a279af304476f7692e4de4f116a0e12df4bfac0de95626809eaf"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "a1909f12f58688b9b26fd5749baf7b6e1c6e1cdafc8ddc149c6c6a5729ceb836"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "f41c81a910b567ade434f9a7a2746dd1686c7236bc2fedada763ef028701deb2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "8170c42f364f372cf88979382d742f6d0cffaff99091301c83b97fe269a7a79b"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    },
+    {
+      "file": "ui/project-palette.md",
+      "sha256": "02fce038b8fe9bb98490cc237fc91d691a578403f61681de68c56891d26fca94"
+    }
+  ],
+  "after": [
+    {
+      "file": "DashboardPerformance.jsx",
+      "sha256": "37839d98bed3ca0870f37021e8779781de4496fa4dd6627b4dd6579d5b8246f8"
+    },
+    {
+      "file": "dashboard.css",
+      "sha256": "7b45ddbdcfdbc1574a2a955dc9c358632dde3847ef59923d868e34dd60a67951"
+    },
+    {
+      "file": "dashboard-session.css",
+      "sha256": "a6c02a1dcc10a279af304476f7692e4de4f116a0e12df4bfac0de95626809eaf"
+    },
+    {
+      "file": "dashboardModel.js",
+      "sha256": "a1909f12f58688b9b26fd5749baf7b6e1c6e1cdafc8ddc149c6c6a5729ceb836"
+    },
+    {
+      "file": "demoFixtures.js",
+      "sha256": "f41c81a910b567ade434f9a7a2746dd1686c7236bc2fedada763ef028701deb2"
+    },
+    {
+      "file": "testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "testing-copy.json",
+      "sha256": "8170c42f364f372cf88979382d742f6d0cffaff99091301c83b97fe269a7a79b"
+    },
+    {
+      "file": "FxReplayShell.jsx",
+      "sha256": "d7cc488599426315b596beeba91af87017711284628547ac1f65171f54148f54"
+    },
+    {
+      "file": "DashboardSessionCard.jsx",
+      "sha256": "cec49e690f009c89849d261290a15f0835c0a63dfa8b4e90f6647b743790e639"
+    },
+    {
+      "file": "DashboardSessions.jsx",
+      "sha256": "fdee6f5663f3f25b0797d62297689c0ff851101ff7be74e872b6d9952b5665b1"
+    },
+    {
+      "file": "SessionPerformance.jsx",
+      "sha256": "2160e37dea70b39112fd6d31145a3864321fd76bc2ebac17c8a5351f1721f671"
+    },
+    {
+      "file": "ui/project-palette.md",
+      "sha256": "02fce038b8fe9bb98490cc237fc91d691a578403f61681de68c56891d26fca94"
+    }
+  ],
+  "sourceUnchanged": true,
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "cases": [
+    {
+      "name": "actual-dark-vi-1440",
+      "config": {
+        "demo": false,
+        "theme": "dark",
+        "language": "vi",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "actual-dark-vi-768",
+      "config": {
+        "demo": false,
+        "theme": "dark",
+        "language": "vi",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "actual-dark-vi-360",
+      "config": {
+        "demo": false,
+        "theme": "dark",
+        "language": "vi",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 33.5,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "actual-dark-en-1440",
+      "config": {
+        "demo": false,
+        "theme": "dark",
+        "language": "en",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "actual-dark-en-768",
+      "config": {
+        "demo": false,
+        "theme": "dark",
+        "language": "en",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "actual-dark-en-360",
+      "config": {
+        "demo": false,
+        "theme": "dark",
+        "language": "en",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 33.5,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "actual-light-vi-1440",
+      "config": {
+        "demo": false,
+        "theme": "light",
+        "language": "vi",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "actual-light-vi-768",
+      "config": {
+        "demo": false,
+        "theme": "light",
+        "language": "vi",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "actual-light-vi-360",
+      "config": {
+        "demo": false,
+        "theme": "light",
+        "language": "vi",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 33.5,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "actual-light-en-1440",
+      "config": {
+        "demo": false,
+        "theme": "light",
+        "language": "en",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "actual-light-en-768",
+      "config": {
+        "demo": false,
+        "theme": "light",
+        "language": "en",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 39.5,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "actual-light-en-360",
+      "config": {
+        "demo": false,
+        "theme": "light",
+        "language": "en",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "emptyPanelHeight": 33.5,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-dark-vi-1440",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "vi",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-dark-vi-768",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "vi",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "demo-dark-vi-360",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "vi",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "demo-dark-en-1440",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "en",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "demo-dark-en-768",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "en",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-dark-en-360",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "en",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-light-vi-1440",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "vi",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-light-vi-768",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "vi",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "demo-light-vi-360",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "vi",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "demo-light-en-1440",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "en",
+        "width": 1440,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    },
+    {
+      "name": "demo-light-en-768",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "en",
+        "width": 768,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-light-en-360",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "en",
+        "width": 360,
+        "coarse": false
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px",
+      "axe": {
+        "violations": []
+      }
+    },
+    {
+      "name": "demo-dark-en-1440-coarse",
+      "config": {
+        "demo": true,
+        "theme": "dark",
+        "language": "en",
+        "width": 1440,
+        "coarse": true
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(143, 175, 193) solid 2px"
+    },
+    {
+      "name": "demo-light-en-1440-coarse",
+      "config": {
+        "demo": true,
+        "theme": "light",
+        "language": "en",
+        "width": 1440,
+        "coarse": true
+      },
+      "overflow": 0,
+      "summaryFocus": "rgb(62, 98, 117) solid 2px"
+    }
+  ]
+}

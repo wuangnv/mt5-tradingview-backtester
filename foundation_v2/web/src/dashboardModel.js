@@ -3,6 +3,12 @@ import { recentSessions } from './sessionCatalog.js'
 const numberFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 })
 const moneyFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 })
 
+export function dashboardDurationParts(seconds) {
+  if (typeof seconds !== 'number' || !Number.isFinite(seconds) || seconds < 0) return null
+  const minutes = Math.floor(seconds / 60)
+  return [[Math.floor(minutes / 1440), 'day'], [Math.floor(minutes % 1440 / 60), 'hour'], [minutes % 60, 'minute']].filter(([value, unit]) => value > 0 || unit === 'minute' && minutes === 0)
+}
+
 export function dashboardMoney(value, currency) {
   if (dashboardNumber(value) === '—') return '—'
   return `${moneyFormatter.format(Number(value))} ${currency || 'đơn vị tài khoản'}`

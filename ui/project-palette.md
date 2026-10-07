@@ -53,8 +53,8 @@ surfaces and primary/semantic action foregrounds in both themes.
 
 `--project-action` maps to `--wm-action-bg`, with matching hover and foreground.
 Use filled peach for New session, Go to chart, Apply, and primary submit actions.
-Secondary actions remain neutral. Remaining-days badges use soft peach, rather
-than competing with the action. Destructive session controls use filled red with
+Secondary actions remain neutral. Remaining-days badges use soft peach. Dashboard
+remaining-days progress uses sea blue for contrast with peach actions. Destructive session controls use filled red with
 white text; reset filters is a neutral text action with a trash icon and hover.
 
 ## Report charts (outside the trading chart)
@@ -75,5 +75,5 @@ Use opaque line colors and clear column edges; existing columns may use restrain
 shaded fills. Area fills stay low-opacity. Keep neutral gridlines,
 axis labels, units and tooltips. Positive/negative text retains the project
 financial roles; only plotted data uses the report variants. Violet and gold are
-available for additional named comparison series, not assigned arbitrarily to
+available for additional named comparison series (Dashboard symbol counts use violet), not assigned arbitrarily to
 individual Monte Carlo paths. Labels and position remain necessary alongside color.
