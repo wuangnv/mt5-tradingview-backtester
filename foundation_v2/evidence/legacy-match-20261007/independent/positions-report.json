@@ -1,0 +1,68 @@
+{
+  "scope": "Real LegacyPositions rendered with labeled execution fixtures; no persisted writes",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "name": "open fractional quantity8digits and zero floating preserved",
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "name": "BAR entry join, tick closed snapshot/costs, rejected excluded and keyboard tabs",
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "name": "pagination26 rows/page size resets without writes",
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "name": "null cutoff remains explicit unknown, focusedAxe",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "name": "open fractional quantity8digits and zero floating preserved",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "name": "BAR entry join, tick closed snapshot/costs, rejected excluded and keyboard tabs",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "name": "pagination26 rows/page size resets without writes",
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "name": "null cutoff remains explicit unknown, focusedAxe",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "axe": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "violations": []
+    }
+  ],
+  "pass": true
+}

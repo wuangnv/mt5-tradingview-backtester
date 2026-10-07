@@ -4,20 +4,6 @@
 .advanced-replay-chart { position: relative; }
 .is-legacy-chart .chart-utility-rail { position: relative; }
 .is-legacy-chart .chart-frame { position: relative; }
-.chart-header-tail { position: absolute; inset: 0 0 auto; z-index: 10; display: grid; place-items: center; box-sizing: border-box; border-bottom: 1px solid #2a2e39; background: #131722; color: #b2b5be; }
-.fx-app[data-theme='light'] .chart-header-tail { border-color: #e0e3eb; background: #fff; color: #131722; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-header-tail > button { width: 30px; height: 30px; min-height: 30px; padding: 0; color: inherit; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-header-tail button:hover { background: #2a2e39; }
-.fx-app[data-theme='light'] .fx-content > .is-legacy-chart .chart-header-tail button:hover { background: #f0f3fa; }
-.chart-header-overflow { display: none !important; }
-.chart-header-menu { position: absolute; z-index: 20; top: calc(100% + 4px); right: 4px; width: 210px; padding: 4px; border: 1px solid #2a2e39; border-radius: 4px; background: #1e222d; color: #b2b5be; }
-.fx-app[data-theme='light'] .chart-header-menu { border-color: #e0e3eb; background: #fff; color: #131722; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-header-menu button { display: flex; align-items: center; justify-content: flex-start; gap: 10px; box-sizing: border-box; width: 100%; height: 36px; min-height: 36px; padding: 0 10px; border: 0; border-radius: 3px; background: transparent; color: inherit; font: 13px Arial, sans-serif; cursor: pointer; }
-.chart-header-menu button:hover { background: #2a2e39 !important; }
-.fx-app[data-theme='light'] .chart-header-menu button:hover { background: #f0f3fa !important; }
-.chart-header-menu button:focus-visible { outline: 2px solid #2962ff; outline-offset: -2px; }
-.chart-header-tail.is-compact .chart-header-fullscreen { display: none !important; }
-.chart-header-tail.is-compact .chart-header-overflow { display: flex !important; }
 .chart-header-preview { display: grid; gap: 18px; padding-block: 12px; font-size: 13px; }
 .chart-header-preview p { margin: 0; color: var(--chart-muted); line-height: 1.5; }
 .chart-header-preview label { display: grid; gap: 8px; }
@@ -225,19 +211,59 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
   .chart-trading-actions button strong { display: none; }
 }
 
-/* Legacy workspace shares the native header; application panels own replay state. */
+/* Legacy workspace owns one continuous header; the vendor API owns chart actions. */
+.legacy-chart-header { position: relative; z-index: 22; display: flex; align-items: center; flex: 0 0 40px; min-width: 0; padding: 0 4px; gap: 2px; box-sizing: border-box; background: var(--chart-bg); color: var(--chart-muted); border-bottom: 1px solid var(--chart-line); font: 12px Arial, sans-serif; }
+.legacy-chart-header > :where(div:not(.legacy-header-menu)) { display: flex; align-items: center; min-width: 0; }
+.legacy-chart-header :is(button, a) { display: inline-flex; align-items: center; justify-content: center; gap: 5px; box-sizing: border-box; flex-shrink: 0; height: 30px; min-height: 30px; padding: 0 7px; border: 0; border-radius: 3px; background: transparent; color: inherit; font: inherit; line-height: 1; text-decoration: none; white-space: nowrap; cursor: pointer; }
+.legacy-chart-header :is(button, a):hover { color: var(--chart-text); background: var(--chart-hover); }
+.legacy-chart-header button[aria-pressed='true'] { color: var(--chart-text); background: var(--chart-hover); }
+.legacy-chart-header button:disabled { opacity: .4; cursor: default; }
+.legacy-chart-header :is(button, a):focus-visible { outline: 2px solid #5695FE; outline-offset: -2px; }
+.legacy-chart-header svg { width: 18px; height: 18px; display: block; flex: 0 0 auto; }
+.legacy-chart-header .legacy-header-market, .legacy-chart-header .legacy-header-intervals, .legacy-chart-header .legacy-header-chart-tools { border-right: 1px solid var(--chart-line); padding-right: 5px; margin-right: 3px; }
+.legacy-header-intervals button { padding-inline: 6px; }
+.legacy-chart-header .legacy-header-layout { margin-left: auto; flex: 0 1 280px; }
+.legacy-chart-header .legacy-session-name { overflow: hidden; text-overflow: ellipsis; max-width: 140px; min-width: 0; flex-shrink: 1; font-style: italic; font-weight: 600; }
+.legacy-chart-header .legacy-save-layout { flex: 1; min-width: 0; }
+.legacy-save-layout span { overflow: hidden; text-overflow: ellipsis; }
+.legacy-chart-header .legacy-header-actions { margin-left: auto; flex-shrink: 0; }
+.legacy-chart-header .legacy-mentor { color: #76ABFF; }
+.legacy-chart-header .legacy-editor { color: #90B9FF; }
+.fx-app[data-theme='light'] .legacy-chart-header :is(.legacy-mentor, .legacy-editor) { color: #205BBC; }
+.legacy-chart-header .chart-header-overflow { display: none; }
+.legacy-chart-header .legacy-interval-menu { display: none; }
+.legacy-chart-header .legacy-header-menu { position: absolute; top: 43px; right: 4px; display: grid; z-index: 30; width: 210px; max-height: min(600px, calc(100dvh - 50px)); overflow: auto; padding: 4px; border: 1px solid var(--chart-line); border-radius: 4px; background: var(--chart-surface); }
+.legacy-chart-header .legacy-header-menu button { width: 100%; justify-content: flex-start; height: 34px; }
+@media (max-width: 1400px) {
+  .legacy-chart-header .legacy-header-layout { flex-basis: 180px; }
+  .legacy-chart-header .legacy-session-name { max-width: 90px; }
+  .legacy-chart-header .legacy-header-intervals button { padding-inline: 4px; }
+  .legacy-chart-header .legacy-editor span { display: none; }
+}
+@media (max-width: 1180px) {
+  .legacy-chart-header .legacy-header-layout, .legacy-chart-header .legacy-wide-action, .legacy-chart-header .legacy-new-layout { display: none; }
+  .legacy-chart-header .chart-header-overflow { display: inline-flex; }
+}
+@media (max-width: 720px) {
+  .legacy-chart-header .legacy-header-intervals, .legacy-chart-header .legacy-header-chart-tools { display: none; }
+  .legacy-chart-header .legacy-interval-menu { display: inline-flex; }
+}
 .fx-app.fx-shell-story.is-chart-workspace:has(.is-legacy-chart) {
-  --chart-bg: var(--project-canvas); --chart-surface: var(--project-surface); --chart-line: var(--project-border);
-  --chart-text: var(--project-text); --chart-muted: var(--project-muted); --chart-hover: var(--project-hover);
+  --chart-bg: #000000; --chart-surface: #0F0F0F; --chart-line: #303030;
+  --chart-text: #FFFFFF; --chart-muted: #BDBDBD; --chart-hover: #292929;
   grid-template-rows: minmax(0, 1fr);
 }
 .fx-app.fx-shell-story.is-chart-workspace[data-theme='light']:has(.is-legacy-chart) {
-  --chart-bg: var(--project-canvas); --chart-surface: var(--project-surface); --chart-line: var(--project-border);
-  --chart-text: var(--project-text); --chart-muted: var(--project-muted); --chart-hover: var(--project-hover);
+  --chart-bg: #FFFFFF; --chart-surface: #FFFFFF; --chart-line: #DADADA;
+  --chart-text: #111111; --chart-muted: #525252; --chart-hover: #EBEBEB;
 }
 .fx-app.is-chart-workspace:has(.is-legacy-chart) > .fx-chart-topbar { display: none !important; }
 .fx-app.is-chart-workspace:has(.is-legacy-chart) > .fx-main { grid-row: 1; }
-.is-legacy-chart .legacy-quick-actions { position: absolute; z-index: 8; top: 44px; right: 20px; display: flex; align-items: center; background: var(--chart-bg); border: 1px solid var(--chart-line); border-radius: 6px; }
+.is-legacy-chart .legacy-quick-actions { background: var(--chart-bg); border: 1px solid var(--chart-line); border-radius: 6px; padding: 0; }
+.legacy-quick-actions .chart-float-content { gap: 0; }
+.is-legacy-chart .legacy-quick-actions :is(button, a) { width: auto; flex-shrink: 0; white-space: nowrap; padding: 0 12px; height: 36px; min-height: 36px; }
+.is-legacy-chart .legacy-quick-actions > .chart-float-grip { width: 30px; padding: 0; }
+.is-legacy-chart .legacy-quick-actions .chart-float-content > :last-child { width: 32px; padding: 0; }
 .legacy-quick-actions :is(button, a) { display: flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 12px; border: 0; border-right: 1px solid var(--chart-line); background: transparent; color: var(--chart-text); font: inherit; font-size: 11px; cursor: pointer; text-decoration: none; }
 .legacy-quick-actions > :last-child { border: 0; }
 .legacy-quick-actions :is(button, a):hover { background: var(--chart-hover); }
@@ -252,7 +278,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .is-legacy-chart .chart-floating-toolbar button.chart-play { background: transparent; color: var(--chart-text); }
 .is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { width: 96px; height: 30px; flex-shrink: 0; padding: 0; margin: 0 5px; border: 0; accent-color: var(--project-primary); cursor: pointer; }
 .is-legacy-chart .chart-floating-toolbar .chart-float-cutoff { color: var(--chart-muted); }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { align-items: center; padding-top: 40px; gap: 4px; border-left: 1px solid var(--chart-line); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { align-items: center; padding-top: 8px; gap: 4px; border-left: 1px solid var(--chart-line); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { min-height: 0; overflow-y: auto; }
 .legacy-rail-tools { display: grid; justify-items: center; gap: 4px; margin-bottom: auto; flex-shrink: 0; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail :is(button, a) { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; height: 36px; min-height: 36px; text-decoration: none; }
@@ -267,8 +293,35 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .is-legacy-chart .chart-trading-actions :is(button, label), .is-legacy-chart .legacy-analytics-link { display: inline-flex; align-items: center; justify-content: center; height: 32px; min-height: 32px; box-sizing: border-box; white-space: nowrap; }
 .is-legacy-chart .chart-trading-actions input { height: 30px; min-height: 30px; }
 .is-legacy-chart .chart-trading-actions button { border-radius: 20px; gap: 8px; }
-.is-legacy-chart .chart-trading-actions button.buy { background: var(--project-positive); }
-.is-legacy-chart .chart-trading-actions button.sell { background: var(--project-negative); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-trading-bar { background: var(--chart-bg); }
+.is-legacy-chart .chart-trading-actions button.buy { background: #26A69A; color: #000; }
+.is-legacy-chart .chart-trading-actions button.sell { background: #EF5350; color: #000; }
+.is-legacy-chart .chart-trading-actions :is(.buy, .sell) strong { display: none; }
+.is-legacy-chart .chart-trading-actions > label { font-size: 0; border-radius: 10px; padding-left: 6px; }
+.is-legacy-chart .chart-trading-actions input { font-size: 12px; width: 130px; }
+.is-legacy-chart .chart-trading-account .legacy-balance { padding: 8px 12px; border-radius: 18px; background: var(--chart-surface); }
+.is-legacy-chart .chart-trading-account .legacy-balance strong { margin: 0; }
+.is-legacy-chart .chart-trading-account button { width: 30px; height: 30px; display: grid; place-items: center; border: 0; background: transparent; color: var(--chart-muted); cursor: pointer; }
+.legacy-positions { flex: 0 0 auto; max-height: 230px; overflow: auto; background: var(--chart-bg); color: var(--chart-text); font-size: 12px; }
+.legacy-position-tabs { display: flex; gap: 20px; padding-inline: 20px; border-bottom: 1px solid var(--chart-line); }
+.legacy-position-tabs button { padding: 12px 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--chart-muted); cursor: pointer; font: inherit; }
+.legacy-position-tabs button[aria-selected='true'] { border-color: var(--chart-text); color: var(--chart-text); }
+.legacy-position-scroll { overflow-x: auto; }
+.legacy-positions table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+.legacy-positions :is(th, td) { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--chart-line); font-weight: 400; }
+.legacy-positions th { color: var(--chart-muted); }
+.legacy-positions td[colspan] { text-align: center; color: var(--chart-muted); padding: 24px; }
+.legacy-position-paging { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 10px 16px; }
+.legacy-position-paging label { display: flex; align-items: center; gap: 8px; }
+.legacy-position-paging :is(select, button) { background: var(--chart-bg); color: var(--chart-text); border: 1px solid var(--chart-line); border-radius: 4px; padding: 5px; }
+.legacy-position-paging button:disabled { opacity: .4; }
+.legacy-sync-toggle { position: relative; width: 38px; height: 22px; display: inline-flex; align-items: center; flex-shrink: 0; }
+.legacy-sync-toggle input { position: absolute; width: 100%; height: 100%; opacity: 0; }
+.legacy-sync-toggle span { display: block; width: 38px; height: 22px; border-radius: 12px; background: #383C45; }
+.legacy-sync-toggle span::before { content: ''; display: block; width: 18px; height: 18px; margin: 2px; border-radius: 50%; background: #EFEFEF; }
+.is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { accent-color: #5695FE; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { background: var(--chart-bg); }
+.legacy-quick-actions .chart-float-grip { width: 32px; cursor: grab; }
 .is-legacy-chart .chart-trading-actions button:hover:not(:disabled) { filter: none; box-shadow: inset 0 0 0 1px currentColor; }
 .is-legacy-chart .chart-trading-actions label { border: 1px solid var(--chart-line); border-radius: 20px; padding-left: 12px; }
 .is-legacy-chart .chart-trading-actions input { border: 0; background: transparent; border-radius: 20px; width: 100px; }
@@ -290,7 +343,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 }
 @media (max-width: 600px) {
   .is-legacy-chart .legacy-quick-actions { display: none; }
-  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top: 40px; }
+  .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top: 8px; }
   .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail .legacy-mobile-theme { display: flex; }
   .is-legacy-chart .chart-trading-actions input { width: 56px; }
   .is-legacy-chart .chart-trading-account { flex-wrap: wrap; }

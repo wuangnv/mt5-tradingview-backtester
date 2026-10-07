@@ -1,0 +1,169 @@
+{
+  "scope": "Actual GET; activity fixture POST; local native chart actions only",
+  "cases": [
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "en",
+      "checks": [
+        "compare: open/close, explicit preview or local search, cutoff preserved",
+        "layout: open/close, explicit preview or local search, cutoff preserved",
+        "editor: open/close, explicit preview or local search, cutoff preserved",
+        "mentor: open/close, explicit preview or local search, cutoff preserved",
+        "search: open/close, explicit preview or local search, cutoff preserved",
+        "footer balance visibility/positions toggle with actual unknown cutoff preserved",
+        "quick actions keyboard drag12px, local preference only",
+        "native5m resolution with unchanged canonical cutoff",
+        "native chart style with unchanged cutoff",
+        "native series settings dialog desktop/mobile",
+        "iframe outside dismissal"
+      ],
+      "geometry": {
+        "left": 0,
+        "right": 1710,
+        "top": 0,
+        "scroll": 0,
+        "badControls": []
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "checks": [
+        "compare: open/close, explicit preview or local search, cutoff preserved",
+        "layout: open/close, explicit preview or local search, cutoff preserved",
+        "editor: open/close, explicit preview or local search, cutoff preserved",
+        "mentor: open/close, explicit preview or local search, cutoff preserved",
+        "search: open/close, explicit preview or local search, cutoff preserved",
+        "footer balance visibility/positions toggle with actual unknown cutoff preserved",
+        "quick actions keyboard drag12px, local preference only",
+        "native5m resolution with unchanged canonical cutoff",
+        "native chart style with unchanged cutoff",
+        "native series settings dialog desktop/mobile",
+        "iframe outside dismissal"
+      ],
+      "geometry": {
+        "left": 0,
+        "right": 1710,
+        "top": 0,
+        "scroll": 0,
+        "badControls": []
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "vi",
+      "checks": [
+        "compare: open/close, explicit preview or local search, cutoff preserved",
+        "layout: open/close, explicit preview or local search, cutoff preserved",
+        "editor: open/close, explicit preview or local search, cutoff preserved",
+        "mentor: open/close, explicit preview or local search, cutoff preserved",
+        "search: open/close, explicit preview or local search, cutoff preserved",
+        "footer balance visibility/positions toggle with actual unknown cutoff preserved",
+        "native5m resolution with unchanged canonical cutoff",
+        "native chart style with unchanged cutoff",
+        "native series settings dialog desktop/mobile",
+        "iframe outside dismissal"
+      ],
+      "geometry": {
+        "left": 0,
+        "right": 360,
+        "top": 0,
+        "scroll": 0,
+        "badControls": []
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "language": "en",
+      "checks": [
+        "compare: open/close, explicit preview or local search, cutoff preserved",
+        "layout: open/close, explicit preview or local search, cutoff preserved",
+        "editor: open/close, explicit preview or local search, cutoff preserved",
+        "mentor: open/close, explicit preview or local search, cutoff preserved",
+        "search: open/close, explicit preview or local search, cutoff preserved",
+        "footer balance visibility/positions toggle with actual unknown cutoff preserved",
+        "native5m resolution with unchanged canonical cutoff",
+        "native chart style with unchanged cutoff",
+        "native series settings dialog desktop/mobile",
+        "iframe outside dismissal"
+      ],
+      "geometry": {
+        "left": 0,
+        "right": 768,
+        "top": 0,
+        "scroll": 0,
+        "badControls": []
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1300,
+      "language": "vi",
+      "checks": [
+        "compare: open/close, explicit preview or local search, cutoff preserved",
+        "layout: open/close, explicit preview or local search, cutoff preserved",
+        "editor: open/close, explicit preview or local search, cutoff preserved",
+        "mentor: open/close, explicit preview or local search, cutoff preserved",
+        "search: open/close, explicit preview or local search, cutoff preserved",
+        "footer balance visibility/positions toggle with actual unknown cutoff preserved",
+        "quick actions keyboard drag12px, local preference only",
+        "native5m resolution with unchanged canonical cutoff",
+        "native chart style with unchanged cutoff",
+        "native series settings dialog desktop/mobile",
+        "iframe outside dismissal"
+      ],
+      "geometry": {
+        "left": 0,
+        "right": 1300,
+        "top": 0,
+        "scroll": 0,
+        "badControls": []
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "vendorBlocked": [],
+  "axe": [
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "en",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "violations": []
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "vi",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "language": "en",
+      "violations": []
+    },
+    {
+      "theme": "dark",
+      "width": 1300,
+      "language": "vi",
+      "violations": []
+    }
+  ],
+  "pass": true
+}

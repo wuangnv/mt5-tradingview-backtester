@@ -1,0 +1,108 @@
+{
+  "scope": "Actual service GET, fixture activity POST, browser-local layout only",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "language": "vi",
+      "geometry": {
+        "right": 1710,
+        "top": 0,
+        "height": 40,
+        "viewport": 1710,
+        "overflow": 0
+      },
+      "panels": 4,
+      "native": {
+        "up": "#26A69A",
+        "down": "#EF5350",
+        "logo": true
+      },
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "language": "en",
+      "geometry": {
+        "right": 1710,
+        "top": 0,
+        "height": 40,
+        "viewport": 1710,
+        "overflow": 0
+      },
+      "panels": 4,
+      "native": {
+        "up": "#26A69A",
+        "down": "#EF5350",
+        "logo": true
+      },
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "language": "vi",
+      "geometry": {
+        "right": 768,
+        "top": 0,
+        "height": 40,
+        "viewport": 768,
+        "overflow": 0
+      },
+      "panels": 4,
+      "native": {
+        "up": "#26A69A",
+        "down": "#EF5350",
+        "logo": true
+      },
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "language": "en",
+      "geometry": {
+        "right": 390,
+        "top": 0,
+        "height": 40,
+        "viewport": 390,
+        "overflow": 0
+      },
+      "panels": 4,
+      "native": {
+        "up": "#26A69A",
+        "down": "#EF5350",
+        "logo": true
+      },
+      "cutoffPreserved": true,
+      "pass": true
+    },
+    {
+      "width": 1300,
+      "theme": "dark",
+      "language": "vi",
+      "geometry": {
+        "right": 1300,
+        "top": 0,
+        "height": 40,
+        "viewport": 1300,
+        "overflow": 0
+      },
+      "panels": 4,
+      "native": {
+        "up": "#26A69A",
+        "down": "#EF5350",
+        "logo": true
+      },
+      "cutoffPreserved": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "pass": true
+}

@@ -55,9 +55,9 @@ export default function TradingViewReplayChart(props) {
 
   useEffect(() => {
     let cancelled = false, saveTimer, restoringImports = false, importedShapes = [], lines = []
-    let widget, adapter, chart, headerSlots, headerResizeObserver, chartReady = false, fittedLevels = ''
+    let widget, adapter, chart, headerSlots, chartReady = false, fittedLevels = ''
     const publishHeader = () => {
-      if (!cancelled && chartReady && headerSlots) latest.current.onHeaderSlots?.({ ...headerSlots, compact: host.current.clientWidth <= 1100 })
+      if (!cancelled && chartReady && headerSlots) latest.current.onHeaderSlots?.({ ...headerSlots, interval: chart.resolution(), chartType: chart.chartType() })
     }
     const loadingTimer = setTimeout(() => {
       if (cancelled || chartReady) return
@@ -93,7 +93,7 @@ export default function TradingViewReplayChart(props) {
         custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles', 'Bars', 'Line', 'Area', 'Heikin Ashi'] },
         header_widget_buttons_mode: 'adaptive',
         enabled_features: ['seconds_resolution', 'items_favoriting'],
-        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
+        disabled_features: ['header_widget', 'header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
         overrides: paneAppearance(theme),
         studies_overrides: Object.fromEntries(Object.entries(volumeAppearance(theme)).map(([key, value]) => [`volume.${key}`, value])),
       })
@@ -202,48 +202,35 @@ export default function TradingViewReplayChart(props) {
           const row = latest.current.rows.find(row => Number(row.timestamp) === Number(event.time))
           latest.current.onCrosshair?.(row ? { row } : null)
         })
-        widget.headerReady().then(() => {
-          if (cancelled) return
-          const marketHost = widget.createButton({ align: 'left', useTradingViewStyle: false })
-          marketHost.className = 'legacy-market-host'
-          // v23 wraps official custom buttons in a toolbar group. Keep the
-          // market identity first without moving the library-owned controls.
-          marketHost.parentElement.parentElement.classList.add('legacy-market-group')
-          const toolsHost = widget.createButton({ align: 'left', useTradingViewStyle: false })
-          toolsHost.className = 'legacy-tools-host'
-          toolsHost.parentElement.parentElement.classList.add('legacy-tools-group')
-          const sessionHost = widget.createButton({ align: 'right', useTradingViewStyle: false })
-          sessionHost.className = 'legacy-session-host'
-          sessionHost.parentElement.parentElement.classList.add('legacy-session-group')
-          headerSlots = { market: marketHost, tools: toolsHost, session: sessionHost, save, fitOrder,
-            headerHeight: marketHost.closest('.header-toolbar')?.getBoundingClientRect().height || 38,
-            selectDrawing: tool => { if (!cancelled) { latest.current.onOrderDragStart(); widget.selectLineTool(tool) } },
-            openTree: () => { if (!cancelled) chart.executeActionById('paneObjectTree') },
-            capture: async () => {
-              latest.current.onOrderDragStart()
-              const generation = latest.current.orderGeneration, cutoff = Number(latest.current.cutoff), resolution = chart.resolution()
-              try {
-                // Client-only export; native takeScreenshot() uploads to a server.
-                const canvas = await widget.takeClientScreenshot()
-                if (cancelled || generation !== latest.current.orderGeneration) { if (!cancelled) setMessage('Cutoff đã đổi; chụp lại chart tại mốc mới.'); return }
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
-                if (cancelled || generation !== latest.current.orderGeneration || cutoff !== Number(latest.current.cutoff) || resolution !== chart.resolution()) { if (!cancelled) setMessage('Chart đã đổi; chụp lại tại mốc mới.'); return }
-                if (!blob) throw new Error('Không tạo được ảnh PNG.')
-                const url = URL.createObjectURL(blob), link = document.createElement('a')
-                link.href = url; link.download = `WMReplay-${symbol}-${resolution}-cutoff-${cutoff}.png`; link.click()
-                setTimeout(() => URL.revokeObjectURL(url), 1000)
-              } catch (error) { if (!cancelled) setMessage(`Không chụp được chart: ${error.message || error}`) }
-            },
-          }
-          headerResizeObserver = new ResizeObserver(publishHeader)
-          headerResizeObserver.observe(host.current)
-          publishHeader()
-        })
+        headerSlots = { save, fitOrder, intervals: adapter.supported,
+          setInterval: value => { if (!cancelled && adapter.supported.includes(value)) { latest.current.onOrderDragStart(); chart.setResolution(value) } },
+          setType: value => { if (!cancelled) { latest.current.onOrderDragStart(); chart.setChartType(value) } },
+          action: value => { if (!cancelled) { latest.current.onOrderDragStart(); chart.executeActionById(value) } },
+          openTree: () => { if (!cancelled) chart.executeActionById('paneObjectTree') },
+          capture: async () => {
+            latest.current.onOrderDragStart()
+            const generation = latest.current.orderGeneration, cutoff = Number(latest.current.cutoff), resolution = chart.resolution()
+            try {
+              // Client-only export; native takeScreenshot() uploads to a server.
+              const canvas = await widget.takeClientScreenshot()
+              if (cancelled || generation !== latest.current.orderGeneration) { if (!cancelled) setMessage('Cutoff đã đổi; chụp lại chart tại mốc mới.'); return }
+              const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
+              if (cancelled || generation !== latest.current.orderGeneration || cutoff !== Number(latest.current.cutoff) || resolution !== chart.resolution()) { if (!cancelled) setMessage('Chart đã đổi; chụp lại tại mốc mới.'); return }
+              if (!blob) throw new Error('Không tạo được ảnh PNG.')
+              const url = URL.createObjectURL(blob), link = document.createElement('a')
+              link.href = url; link.download = `WMReplay-${symbol}-${resolution}-cutoff-${cutoff}.png`; link.click()
+              setTimeout(() => URL.revokeObjectURL(url), 1000)
+            } catch (error) { if (!cancelled) setMessage(`Không chụp được chart: ${error.message || error}`) }
+          },
+        }
+        chart.onIntervalChanged().subscribe(null, publishHeader)
+        chart.onChartTypeChanged().subscribe(null, publishHeader)
+        publishHeader()
         chart.dataReady(ready)
       })
     }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
     return () => {
-      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); headerResizeObserver?.disconnect(); instance.current = null
+      cancelled = true; clearTimeout(saveTimer); clearTimeout(loadingTimer); instance.current = null
       latest.current.onHeaderSlots?.(null)
       adapter?.dispose(); widget?.remove()
     }

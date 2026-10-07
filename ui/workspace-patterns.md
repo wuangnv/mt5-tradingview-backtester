@@ -205,70 +205,40 @@ never tracked/copied into the app bundle. Missing assets show a real error and e
 rollback. See foundation_v2/evidence/ui-advanced-chart-20261004/CHECKPOINT.md for scoped
 runtime evidence; full U4/product, real-data, performance and manual WCAG gates stay open.
 
-## Chart workspace — Legacy arrangement, 05/10/2026
+## Legacy reference refinement — 07/10/2026
 
-The FX Replay Legacy reference is implemented on the authorized Advanced Charts engine.
-The native header is the only header once both chart and custom header slots are ready.
-Official `createButton` hosts carry React portals for Sessions navigation, current dataset,
-theme and context. Application-owned `/chart-legacy.css` styles the iframe; the pinned v23
-market button group receives one ordering class. Vendor source/assets remain unchanged.
-Before readiness or on missing assets, the shell header retains navigation and rollback.
+Direct inspection of the owner's FX Legacy session identified all header icons:
+back, symbol search, comparison, timeframes, chart type, New Layout, Indicators,
+Undo/Redo, session name, layout selector, Quick Search, Settings, snapshot, Editor,
+AI Mentor, theme and fullscreen. Alerts is absent; no FX Replay logo is added.
+The rocket beside quantity is Scalper mode, distinct from the Mentor sparkle.
+The replay switch is timeframe sync; it stays disabled until its semantics are implemented.
 
-The black pane, native drawing rail, supported favorite intervals (including causal 3m/2h),
-floating speed/play controls, top-right Go To/Order/News/Journal actions and bottom
-Buy/Sell/Size/Analytics follow the reference. The redundant application range row is hidden
-at the canonical cursor; history retains the action back to the latest cursor. Mobile
-quick actions move to the utility rail and theme remains reachable at tablet widths.
-Replay overlays clear the native left rail and mobile OHLC/Volume legend, remain movable,
-pinnable/collapsible, and use a separate Legacy preference key. DOM order follows Buy,
-Sell, Size for keyboard users.
+`LegacyChartHeader` owns one 40px row spanning the entire workspace, above the
+chart and application dock. The vendor header is disabled. Supported intervals,
+chart type, indicators, undo/redo and chart settings use the official widget API.
+Changing interval still aggregates the same causal prefix and never advances replay.
+Mobile tools use an overflow menu; menus handle outside click and Escape in both
+documents. There is no separate header tail or cross-document portal opener.
 
-Iframe portal triggers preserve their actual focus owner; outer panels receive focus and
-Escape returns it across documents. Dataset catalog refresh retains the last metadata while
-loading or failing, so focus changes do not tear down the chart. Session data/revisions,
-cutoff, order state and native local snapshots keep the previous ownership contracts.
-Go To accepts only already-opened candles/timestamps. News shows a real empty state:
-this dataset has no historical event feed, and no economic markers are invented.
-Supported datasets now offer UTC D/W/M aggregation of the same causal prefix: days start
-at midnight, weeks on Monday, and months on their actual calendar boundary. Dataset bars
-must divide a day exactly; coarser/straddling source bars do not enable these shortcuts.
-Changing chart interval does not change replay stepping or next-source-bar order fill.
-The adaptive native header shows favorite intervals/styles when space permits. Six quick
-drawing actions call official `selectLineTool`; the native object tree manages their shapes.
-PNG export uses client-only `takeClientScreenshot`, with cutoff/generation/interval guards;
-native server screenshot upload stays disabled. App chrome shares Arial with the widget,
-fixed 30px floating controls, 32px trading controls and centered 46px labeled rail actions.
-Floating tools start in separate desktop positions/mobile rows and retain move/pin/collapse.
-Scoped receipt: foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md.
+Compare, multi-chart layout creation, Editor, AI Mentor and Scalper mode retain
+explicit preview states. Mentor text is local UI state and cannot send to a provider.
+Quick Search opens existing preview tools. Save/restore remains browser-local;
+PNG remains client-only with generation/cutoff/interval guards. The owner confirmed
+TradingView logo-removal rights; `widget_logo` stays disabled without vendor edits.
 
-## Trading chart colors — native palette, 07/10/2026
+The native drawing rail and bottom scale controls remain. One draggable replay
+bar and one draggable quick-action bar match the reference; the extra app drawing
+palette is removed. Quick actions can be hidden and restored from session settings.
+The right rail follows Object tree / Order / Go To / News / Journal / Settings.
+Buy/Sell retains simulated order ownership. Footer balance visibility and position
+expansion are UI state only. Positions read the cutoff-safe execution snapshot:
+open/pending state and protective fills from its ledger. Unavailable execution
+is distinct from an empty list; unknown per-trade commission stays a dash.
+Pagination is local over the snapshot, not a claim of server paging.
 
-The owner selected TradingView's standard chart colors independently of the project's
-vintage palette: teal `#26A69A` up candles, red `#EF5350` down candles, blue `#2962FF`
-line/area, dark `#131722` or light `#FFFFFF` pane. Native toolbar styling remains in
-the vendor theme; application header portals use matching native text/hover colors.
-Saved layouts are repainted after restore and theme changes, including existing Volume
-studies, while drawings, interval and cutoff retain their previous local ownership.
-The owner confirmed logo-removal rights. The pinned v23 `widget_logo` featureset is
-disabled through widget options; vendor source and assets remain untouched.
-
-Testing component/state/language/paging contract: [testing-standard.md](testing-standard.md).
-
-## Chart header reference — 07/10/2026
-
-The reference header keeps native chart controls, a back link and symbol picker,
-adds comparison (+), New Layout, Alerts and Editor, and has no FX Replay logo.
-The four additions are explicitly UI previews: fields/layout choices can be
-reviewed, while creation/comparison/script execution remain disabled. They do
-not create records, compile Pine Script, send alerts or change the dataset.
-Current Save chart, local PNG export, theme and fullscreen remain functional.
-Pause status is owned by replay controls; Fit order lives beside order actions.
-
-The fullscreen/header-tools tail fills the 48px utility rail's top edge (36px
-on mobile), continuing the native header to the right viewport edge without
-covering the price scale. At an actual iframe width of 1100px or less, custom
-tools move into an overflow panel; dock resizing also updates this breakpoint.
-The overflow is portaled into the chart frame to escape rail scrolling/clipping,
-stays inside the fullscreen app, and handles outside click/Escape in both the
-parent document and same-origin chart iframe. Closing a dock restores focus to
-the persistent opener. Scope: header UI only, not acceptance of pending tools.
+Dark chart: #0F0F0F pane, #000000 chrome, #202020 grid, #DBDBDB scale text;
+light: #FFFFFF. Up/down candles and Buy/Sell use #26A69A / #EF5350.
+Project pages use the stronger semantic palette in [project-palette.md](project-palette.md).
+Testing state/language/paging contract remains [testing-standard.md](testing-standard.md).
+Scoped receipt: foundation_v2/evidence/legacy-match-20261007/CHECKPOINT.md.

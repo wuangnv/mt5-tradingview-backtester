@@ -1,0 +1,105 @@
+{
+  "pass": true,
+  "scope": "Independent review of legacy reference chart chrome, native header actions, readonly positions snapshot and project contrast palette",
+  "generatedAt": "2026-10-07T06:31:08.827Z",
+  "matrixCases": 5,
+  "readinessCases": 3,
+  "positionFixtureChecks": 8,
+  "paletteChecks": 10,
+  "focusedAxeScans": 17,
+  "axeViolations": 0,
+  "independentUnitTests": {
+    "command": "node --test foundation_v2/web/tests/advancedChart.test.mjs",
+    "pass": 7,
+    "fail": 0
+  },
+  "pageErrors": 0,
+  "unexpectedRequests": 0,
+  "sourcePins": [
+    {
+      "file": "foundation_v2/web/src/LegacyChartHeader.jsx",
+      "sha256": "b6b4ec85631ceb666b3ebf669de080abedc7475f91f96d429d4449aa36adbd58"
+    },
+    {
+      "file": "foundation_v2/web/src/LegacyPositions.jsx",
+      "sha256": "209a5a8d88c6b1803d5b97029a63eb3fd20b9380b9a0a956c4e192fb91f6f171"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartFloatingToolbar.jsx",
+      "sha256": "1af4f2f72e9c0831d331a18bff9fbec79f3515c0ec70b84baa4bca85624f1529"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartHeaderPreview.jsx",
+      "sha256": "1ccbfe31c725a101c855ee0014e02fcbd749961696ef097a93e4bcf7aaad6dc1"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartIcon.jsx",
+      "sha256": "6982edfcc66eddc8a4c7b63ed876c6eec4fd23a05deebde35a84827e8e12c3cc"
+    },
+    {
+      "file": "foundation_v2/web/src/ChartWorkbench.css",
+      "sha256": "3fae35090c5fed462e633da2f55616642b37bba01356017e9acd874003dbcf48"
+    },
+    {
+      "file": "foundation_v2/web/src/ReplayWorkspace.jsx",
+      "sha256": "8e26495f8c0fabd7738355abfe0c9230a986af4c34a2aeb32f3ec3ebf1f638f0"
+    },
+    {
+      "file": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+      "sha256": "679d09bcdf4b9b97b86fbe717e73f688d945b1bb3fdd8d81e90be0b2ba29cc40"
+    },
+    {
+      "file": "foundation_v2/web/src/nativeChartPalette.js",
+      "sha256": "41f7191ae553904ace855ec2894e6cdb4be8fa3dcc1f21fcf539cb894c3c409e"
+    },
+    {
+      "file": "foundation_v2/web/src/advancedReplayDatafeed.js",
+      "sha256": "146453a786ba9dfd405b60e8b583acd84ddc3c1e6002d6b9c56d2433a2575656"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "2a3e544042369c64386a8e3c9bdf47c39b07ba7b8aa541768c1a81b16c36b39e"
+    },
+    {
+      "file": "foundation_v2/web/public/project-palette.css",
+      "sha256": "afe198f01c4fa841137e8967059b4bb626e8db091bab133e9c7f1436d91a3925"
+    },
+    {
+      "file": "foundation_v2/web/public/chart-legacy.css",
+      "sha256": "22adc3c125ed93ae7829d5a6ce5edd2155cef69908102bdb716b1f10750b8e63"
+    },
+    {
+      "file": "ui/project-palette.md",
+      "sha256": "167dca88b036ec4b8ebf2d55cf43ed18030366f2fe98a5852b9c418f81b8ce46"
+    },
+    {
+      "file": "ui/workspace-patterns.md",
+      "sha256": "c14b3f586071a3311407197ec02fd6d56a8a033f9bace66f602ea70788d23b16"
+    }
+  ],
+  "deletedSources": [
+    "foundation_v2/web/src/ChartHeaderTail.jsx"
+  ],
+  "knownVendorBlocked": [],
+  "resolvedFindings": [
+    "Light Editor/Mentor contrast corrected.",
+    "Mobile overflow exposes chart style, Undo/Redo; disabled controls avoid readiness null calls.",
+    "Header generic display specificity fixed so mobile groups hide.",
+    "Resize with style menu open restores visible button focus.",
+    "Position quantity/prices retain8digit precision; tick closed snapshot and commission_account preserved; BAR unknown metadata remains dash.",
+    "Positions tabs have roving keyboard navigation.",
+    "Scrollable positions table is focusable and uses selected tab label to distinguish regions."
+  ],
+  "limits": [
+    "Actual localhost GET; native chart5m/style/settings use browser-local API. No step/order/create/seek write performed.",
+    "Only exact current-session activity POST fulfilled by labeled fixture; all other writes/external/WebSockets blocked. Known vendor analytics GET separately blocked.",
+    "Header scoped Axe5, positions scoped Axe2; palette color-contrast-only10. This is not whole-page/native iframe accessibility acceptance.",
+    "Position open/pending/BAR/tick/pagination/null data verified on real component with labeled fixtures; actual chart snapshot at requested cutoff correctly remains unknown.",
+    "Editor, AI Mentor, Compare, New Layout and Scalper mode are explicit UI previews; execution/provider integrations remain disabled.",
+    "Quick actions keyboard move12px and desktop/mobile layout verified; whole dragging persistence/reset lifecycle not independently certified here.",
+    "Palette10checks use actual readonly4routes, with mobileDashboard and reload in both themes. Root20pagecases/build/other tests independently attributed to root.",
+    "No broker/live execution, financial correctness or whole-product acceptance."
+  ],
+  "productSourceEditedByReviewer": false,
+  "stagingOrCommit": false
+}

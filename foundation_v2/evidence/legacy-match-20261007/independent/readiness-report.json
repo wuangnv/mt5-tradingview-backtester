@@ -1,0 +1,49 @@
+{
+  "scope": "Real header isolated React mount with labeled controls fixture; no activity or persisted writes",
+  "cases": [
+    {
+      "name": "null controls disables native actions before readiness",
+      "pass": true
+    },
+    {
+      "name": "readiness lost while style menu open disables choices, no null call",
+      "pass": true
+    },
+    {
+      "name": "resize while style menu open returns focus to visible opener",
+      "focused": {
+        "tag": "BUTTON",
+        "label": "Công cụ biểu đồ",
+        "width": 32
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "resizeStyle": {
+    "innerWidth": 360,
+    "display": "none",
+    "css": [
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/fx-shell-story.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/fx-shell-preferences.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/styles.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/dashboard.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/workspace-pattern.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/page-layout.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/component-interactions.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/testing-standard.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/analytics-story.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/fx-analytics.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/fx-select.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/analytics-filter-controls.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/ledger-controls.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/session-actions.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/dashboard-session.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/session-performance.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/session-settings.css",
+      "D:/ANNAM/TradingWorkspace/projects/mt5-tradingview-backtester/foundation_v2/web/src/ChartWorkbench.css"
+    ]
+  },
+  "pass": true
+}

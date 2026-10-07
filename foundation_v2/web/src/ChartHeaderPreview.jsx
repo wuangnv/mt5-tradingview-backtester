@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
 
-export default function ChartHeaderPreview({ tool, symbol, price }) {
+export default function ChartHeaderPreview({ tool, symbol, onOpenTool }) {
   const { t, language } = useTestingLocale()
   const [panes, setPanes] = useState(1)
+  const [query, setQuery] = useState('')
   return <section className="chart-header-preview" data-testid={`chart-preview-${tool}`}>
-    <p className="chart-preview-status">{t('Giao diện mẫu · chưa kích hoạt chức năng')}</p>
+    {tool !== 'search' && <p className="chart-preview-status">{t('Giao diện mẫu · chưa kích hoạt chức năng')}</p>}
     {tool === 'compare' && <>
       <label>{t('Tìm mã giao dịch')}<input type="search" placeholder={t('Nhập mã giao dịch')} /></label>
       <p>{t('Chart hiện tại')}: <strong>{symbol}</strong></p>
@@ -17,12 +18,21 @@ export default function ChartHeaderPreview({ tool, symbol, price }) {
       <button type="button" disabled>{t('Tạo layout')}</button>
       <p>{t('Lưu chart vẫn lưu bố cục hiện tại trên trình duyệt này.')}</p>
     </>}
-    {tool === 'alerts' && <>
-      <p>{t('Mã giao dịch')}: <strong>{symbol}</strong></p>
-      <label>{t('Điều kiện')}<select defaultValue="cross"><option value="cross">{t('Giá cắt qua')}</option><option value="above">{t('Giá lớn hơn')}</option><option value="below">{t('Giá nhỏ hơn')}</option></select></label>
-      <label>{t('Mức giá')}<input type="number" step="any" defaultValue={price ?? ''} /></label>
-      <label>{t('Thông báo')}<input placeholder={t('Nội dung cảnh báo')} /></label>
-      <button type="button" disabled>{t('Tạo cảnh báo')}</button>
+    {tool === 'mentor' && <>
+      <h2>AI Mentor</h2>
+      <p>{t('Trao đổi về kế hoạch giao dịch, tâm lý và phiên replay hiện tại.')}</p>
+      <textarea aria-label={t('Tin nhắn cho AI Mentor')} placeholder={t('Bạn muốn hỏi điều gì?')} />
+      <button type="button" disabled>{t('Gửi tin nhắn')}</button>
+      <p>{t('Chưa kết nối dịch vụ AI. Nội dung nhập tại đây không được gửi đi.')}</p>
+    </>}
+    {tool === 'scalper' && <>
+      <h2>Scalper mode</h2>
+      <p>{t('Giao diện đặt lệnh nhanh. Chưa kích hoạt chế độ giao dịch một chạm.')}</p>
+      <button type="button" disabled>{t('Bật Scalper mode')}</button>
+    </>}
+    {tool === 'search' && <>
+      <label>{t('Tìm công cụ chart')}<input type="search" value={query} onChange={event => setQuery(event.target.value)} /></label>
+      {['New Layout', 'Editor', 'AI Mentor'].filter(label => label.toLowerCase().includes(query.toLowerCase())).map(label => <button key={label} type="button" onClick={() => onOpenTool(({ 'New Layout': 'layout', Editor: 'editor', 'AI Mentor': 'mentor' })[label])}>{label}</button>)}
     </>}
     {tool === 'editor' && <>
       <div className="chart-editor-heading"><span>Pine Script</span><button type="button" disabled>{t('Thêm vào chart')}</button></div>

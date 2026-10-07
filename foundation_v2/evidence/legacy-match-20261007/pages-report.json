@@ -1,0 +1,187 @@
+{
+  "cases": [
+    {
+      "name": "dashboard",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "dashboard",
+      "width": 390,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "sessions",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "trades",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "analytics",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "market-data",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "market-data",
+      "width": 390,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "live",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "live",
+      "width": 390,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "settings",
+      "width": 1710,
+      "theme": "dark",
+      "canvas": "#080808",
+      "text": "#FFFFFF",
+      "action": "#FFAD7C",
+      "overflow": 0
+    },
+    {
+      "name": "dashboard",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "dashboard",
+      "width": 390,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "sessions",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "trades",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "analytics",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "market-data",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "market-data",
+      "width": 390,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "live",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "live",
+      "width": 390,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    },
+    {
+      "name": "settings",
+      "width": 1710,
+      "theme": "light",
+      "canvas": "#FFFFFF",
+      "text": "#111111",
+      "action": "#B85018",
+      "overflow": 0
+    }
+  ],
+  "errors": [],
+  "deniedWrites": [],
+  "pass": true
+}

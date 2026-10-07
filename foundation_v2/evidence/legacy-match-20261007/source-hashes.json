@@ -1,0 +1,58 @@
+[
+  {
+    "path": "foundation_v2/web/src/LegacyChartHeader.jsx",
+    "sha256": "b6b4ec85631ceb666b3ebf669de080abedc7475f91f96d429d4449aa36adbd58"
+  },
+  {
+    "path": "foundation_v2/web/src/LegacyPositions.jsx",
+    "sha256": "209a5a8d88c6b1803d5b97029a63eb3fd20b9380b9a0a956c4e192fb91f6f171"
+  },
+  {
+    "path": "foundation_v2/web/src/TradingViewReplayChart.jsx",
+    "sha256": "679d09bcdf4b9b97b86fbe717e73f688d945b1bb3fdd8d81e90be0b2ba29cc40"
+  },
+  {
+    "path": "foundation_v2/web/src/ReplayWorkspace.jsx",
+    "sha256": "8e26495f8c0fabd7738355abfe0c9230a986af4c34a2aeb32f3ec3ebf1f638f0"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartWorkbench.css",
+    "sha256": "3fae35090c5fed462e633da2f55616642b37bba01356017e9acd874003dbcf48"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartFloatingToolbar.jsx",
+    "sha256": "1af4f2f72e9c0831d331a18bff9fbec79f3515c0ec70b84baa4bca85624f1529"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartHeaderPreview.jsx",
+    "sha256": "1ccbfe31c725a101c855ee0014e02fcbd749961696ef097a93e4bcf7aaad6dc1"
+  },
+  {
+    "path": "foundation_v2/web/src/ChartIcon.jsx",
+    "sha256": "6982edfcc66eddc8a4c7b63ed876c6eec4fd23a05deebde35a84827e8e12c3cc"
+  },
+  {
+    "path": "foundation_v2/web/src/nativeChartPalette.js",
+    "sha256": "41f7191ae553904ace855ec2894e6cdb4be8fa3dcc1f21fcf539cb894c3c409e"
+  },
+  {
+    "path": "foundation_v2/web/src/testing-copy.json",
+    "sha256": "2a3e544042369c64386a8e3c9bdf47c39b07ba7b8aa541768c1a81b16c36b39e"
+  },
+  {
+    "path": "foundation_v2/web/public/chart-legacy.css",
+    "sha256": "22adc3c125ed93ae7829d5a6ce5edd2155cef69908102bdb716b1f10750b8e63"
+  },
+  {
+    "path": "foundation_v2/web/public/project-palette.css",
+    "sha256": "afe198f01c4fa841137e8967059b4bb626e8db091bab133e9c7f1436d91a3925"
+  },
+  {
+    "path": "ui/project-palette.md",
+    "sha256": "167dca88b036ec4b8ebf2d55cf43ed18030366f2fe98a5852b9c418f81b8ce46"
+  },
+  {
+    "path": "ui/workspace-patterns.md",
+    "sha256": "c14b3f586071a3311407197ec02fd6d56a8a033f9bace66f602ea70788d23b16"
+  }
+]

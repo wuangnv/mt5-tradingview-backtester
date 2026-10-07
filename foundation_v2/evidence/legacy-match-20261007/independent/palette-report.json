@@ -1,0 +1,158 @@
+{
+  "scope": "Actual readonly pages; independent project palette and focused contrast QA",
+  "cases": [
+    {
+      "name": "dashboard",
+      "theme": "dark",
+      "width": 1710,
+      "geometry": {
+        "theme": "dark",
+        "canvas": "#080808",
+        "text": "#FFFFFF",
+        "positive": "#72CFA1",
+        "negative": "#FF828B",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "theme": "dark",
+      "width": 360,
+      "geometry": {
+        "theme": "dark",
+        "canvas": "#080808",
+        "text": "#FFFFFF",
+        "positive": "#72CFA1",
+        "negative": "#FF828B",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "trades",
+      "theme": "dark",
+      "width": 1710,
+      "geometry": {
+        "theme": "dark",
+        "canvas": "#080808",
+        "text": "#FFFFFF",
+        "positive": "#72CFA1",
+        "negative": "#FF828B",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "analytics",
+      "theme": "dark",
+      "width": 1710,
+      "geometry": {
+        "theme": "dark",
+        "canvas": "#080808",
+        "text": "#FFFFFF",
+        "positive": "#72CFA1",
+        "negative": "#FF828B",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "market",
+      "theme": "dark",
+      "width": 1710,
+      "geometry": {
+        "theme": "dark",
+        "canvas": "#080808",
+        "text": "#FFFFFF",
+        "positive": "#72CFA1",
+        "negative": "#FF828B",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "theme": "light",
+      "width": 1710,
+      "geometry": {
+        "theme": "light",
+        "canvas": "#FFFFFF",
+        "text": "#111111",
+        "positive": "#24724B",
+        "negative": "#B5373C",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "theme": "light",
+      "width": 360,
+      "geometry": {
+        "theme": "light",
+        "canvas": "#FFFFFF",
+        "text": "#111111",
+        "positive": "#24724B",
+        "negative": "#B5373C",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "trades",
+      "theme": "light",
+      "width": 1710,
+      "geometry": {
+        "theme": "light",
+        "canvas": "#FFFFFF",
+        "text": "#111111",
+        "positive": "#24724B",
+        "negative": "#B5373C",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "analytics",
+      "theme": "light",
+      "width": 1710,
+      "geometry": {
+        "theme": "light",
+        "canvas": "#FFFFFF",
+        "text": "#111111",
+        "positive": "#24724B",
+        "negative": "#B5373C",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    },
+    {
+      "name": "market",
+      "theme": "light",
+      "width": 1710,
+      "geometry": {
+        "theme": "light",
+        "canvas": "#FFFFFF",
+        "text": "#111111",
+        "positive": "#24724B",
+        "negative": "#B5373C",
+        "overflow": 0
+      },
+      "contrastViolations": [],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}
