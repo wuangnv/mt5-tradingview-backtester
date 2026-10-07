@@ -1,0 +1,434 @@
+{
+  "scope": "Actual local GET UI; owner mutations and external requests blocked, browser preferences isolated.",
+  "cases": [
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "dark",
+      "geometry": {
+        "top": {
+          "left": 0,
+          "right": 1920,
+          "width": 1920
+        },
+        "separators": [
+          {
+            "id": "header-toolbar-intervals",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-chart-styles",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-indicators",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-undo-redo",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "group-T57LDNqT legacy-layout-group",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "group-T57LDNqT legacy-search-group",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          }
+        ],
+        "name": {
+          "left": 841.609375,
+          "right": 1386.609375,
+          "width": 545
+        },
+        "save": {
+          "left": 1422.609375,
+          "right": 1576.203125,
+          "width": 153.59375
+        },
+        "session": {
+          "left": 841.609375,
+          "right": 1612.203125,
+          "width": 770.59375
+        },
+        "search": {
+          "left": 1613.203125,
+          "right": 1650.203125,
+          "width": 37
+        },
+        "sessionSeparator": "none",
+        "mentorBorders": [
+          "1px",
+          "1px"
+        ],
+        "themeBorder": "1px"
+      },
+      "grips": [
+        {
+          "dots": 6,
+          "color": "rgb(255, 255, 255)",
+          "radius": "1.5"
+        },
+        {
+          "dots": 6,
+          "color": "rgb(255, 255, 255)",
+          "radius": "1.5"
+        }
+      ],
+      "hover": {
+        "bg": "rgb(42, 42, 42)",
+        "border": "rgb(115, 115, 115)",
+        "radius": "16px",
+        "projectHover": "#2A2A2A",
+        "inputBg": "rgba(0, 0, 0, 0)",
+        "inputBorder": "0px",
+        "inputShadow": "none",
+        "width": 115
+      },
+      "focus": {
+        "outline": "2px",
+        "color": "rgb(122, 187, 230)",
+        "inputOutline": "3px",
+        "inputStyle": "none"
+      },
+      "typography": {
+        "font": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "line": "20px",
+        "focus": "rgb(86, 149, 254)"
+      }
+    },
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "light",
+      "geometry": {
+        "top": {
+          "left": 0,
+          "right": 1920,
+          "width": 1920
+        },
+        "separators": [
+          {
+            "id": "header-toolbar-intervals",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(218, 218, 218)"
+          },
+          {
+            "id": "header-toolbar-chart-styles",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(218, 218, 218)"
+          },
+          {
+            "id": "header-toolbar-indicators",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(218, 218, 218)"
+          },
+          {
+            "id": "header-toolbar-undo-redo",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(218, 218, 218)"
+          },
+          {
+            "id": "group-T57LDNqT legacy-layout-group",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(218, 218, 218)"
+          },
+          {
+            "id": "group-T57LDNqT legacy-search-group",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(218, 218, 218)"
+          }
+        ],
+        "name": {
+          "left": 841.609375,
+          "right": 1386.609375,
+          "width": 545
+        },
+        "save": {
+          "left": 1422.609375,
+          "right": 1576.203125,
+          "width": 153.59375
+        },
+        "session": {
+          "left": 841.609375,
+          "right": 1612.203125,
+          "width": 770.59375
+        },
+        "search": {
+          "left": 1613.203125,
+          "right": 1650.203125,
+          "width": 37
+        },
+        "sessionSeparator": "none",
+        "mentorBorders": [
+          "1px",
+          "1px"
+        ],
+        "themeBorder": "1px"
+      },
+      "grips": [
+        {
+          "dots": 6,
+          "color": "rgb(17, 17, 17)",
+          "radius": "1.5"
+        },
+        {
+          "dots": 6,
+          "color": "rgb(17, 17, 17)",
+          "radius": "1.5"
+        }
+      ],
+      "hover": {
+        "bg": "rgb(235, 235, 235)",
+        "border": "rgb(136, 136, 136)",
+        "radius": "16px",
+        "projectHover": "#EBEBEB",
+        "inputBg": "rgba(0, 0, 0, 0)",
+        "inputBorder": "0px",
+        "inputShadow": "none",
+        "width": 115
+      },
+      "focus": {
+        "outline": "2px",
+        "color": "rgb(36, 101, 139)",
+        "inputOutline": "3px",
+        "inputStyle": "none"
+      },
+      "typography": {
+        "font": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "line": "20px",
+        "focus": "rgb(86, 149, 254)"
+      }
+    },
+    {
+      "width": 1080,
+      "height": 844,
+      "theme": "dark",
+      "geometry": {
+        "top": {
+          "left": 0,
+          "right": 1080,
+          "width": 1080
+        },
+        "separators": [
+          {
+            "id": "header-toolbar-intervals",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-chart-styles",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-indicators",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-undo-redo",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          }
+        ],
+        "name": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "save": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "session": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "search": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "sessionSeparator": "none",
+        "mentorBorders": [
+          "1px",
+          "1px"
+        ],
+        "themeBorder": "1px"
+      },
+      "grips": [
+        {
+          "dots": 6,
+          "color": "rgb(255, 255, 255)",
+          "radius": "1.5"
+        },
+        {
+          "dots": 6,
+          "color": "rgb(255, 255, 255)",
+          "radius": "1.5"
+        }
+      ],
+      "hover": {
+        "bg": "rgb(42, 42, 42)",
+        "border": "rgb(115, 115, 115)",
+        "radius": "16px",
+        "projectHover": "#2A2A2A",
+        "inputBg": "rgba(0, 0, 0, 0)",
+        "inputBorder": "0px",
+        "inputShadow": "none",
+        "width": 115
+      },
+      "focus": {
+        "outline": "2px",
+        "color": "rgb(122, 187, 230)",
+        "inputOutline": "3px",
+        "inputStyle": "none"
+      },
+      "typography": {
+        "font": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "line": "20px",
+        "focus": "rgb(86, 149, 254)"
+      }
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "geometry": {
+        "top": {
+          "left": 0,
+          "right": 360,
+          "width": 360
+        },
+        "separators": [
+          {
+            "id": "header-toolbar-intervals",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-chart-styles",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          },
+          {
+            "id": "header-toolbar-undo-redo",
+            "left": "0px",
+            "width": "1px",
+            "height": "24px",
+            "bg": "rgb(48, 48, 48)"
+          }
+        ],
+        "name": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "save": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "session": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "search": {
+          "left": 0,
+          "right": 0,
+          "width": 0
+        },
+        "sessionSeparator": "none",
+        "mentorBorders": [
+          "1px",
+          "1px"
+        ],
+        "themeBorder": "1px"
+      },
+      "grips": [
+        {
+          "dots": 6,
+          "color": "rgb(255, 255, 255)",
+          "radius": "1.5"
+        },
+        {
+          "dots": 6,
+          "color": "rgb(255, 255, 255)",
+          "radius": "1.5"
+        }
+      ],
+      "hover": {
+        "bg": "rgb(42, 42, 42)",
+        "border": "rgb(115, 115, 115)",
+        "radius": "16px",
+        "projectHover": "#2A2A2A",
+        "inputBg": "rgba(0, 0, 0, 0)",
+        "inputBorder": "0px",
+        "inputShadow": "none",
+        "width": 105
+      },
+      "focus": {
+        "outline": "2px",
+        "color": "rgb(122, 187, 230)",
+        "inputOutline": "3px",
+        "inputStyle": "none"
+      },
+      "typography": {
+        "font": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "line": "20px",
+        "focus": "rgb(86, 149, 254)"
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "external": [],
+  "pass": true
+}

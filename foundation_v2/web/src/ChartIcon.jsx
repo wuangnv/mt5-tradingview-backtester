@@ -2,7 +2,6 @@ import React from 'react'
 
 const paths = {
   wallet: 'M4 6h14V3H6a3 3 0 0 0-3 3v14h18V7H4M21 11h-6v5h6M17 13.5h.01',
-  'grip-horizontal': 'M6 9h.01M12 9h.01M18 9h.01M6 15h.01M12 15h.01M18 15h.01',
   restore: 'M9 3h12v12M15 9H3v12h12z',
   download: 'M12 3v12M7 10l5 5 5-5M4 16v5h16v-5', copy: 'M8 8h13v13H8zM16 8V3H3v13h5', lock: 'M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5zM12 14v3', trash: 'M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7',
   'place-order': 'M12 8v8M8 12h8M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
@@ -31,7 +30,6 @@ const paths = {
   info: 'M12 11v6M12 7h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
   pin: 'm8 3 8 0-1 6 4 4H5l4-4zM12 13v8',
   collapse: 'm8 5 7 7-7 7', expand: 'm15 5-7 7 7 7', close: 'm6 6 12 12M18 6 6 18',
-  grip: 'M8 6h.01M16 6h.01M8 12h.01M16 12h.01M8 18h.01M16 18h.01',
   candles: 'M6 3v18M3 7h6v8H3zM17 3v18M14 10h6v8h-6z',
   search: 'M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14M15 15l6 6',
   moon: 'M20 15A9 9 0 0 1 9 4a9 9 0 1 0 11 11',
@@ -52,5 +50,6 @@ const paths = {
 }
 
 export default function ChartIcon({ name, ...props }) {
-  return <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}><path d={paths[name] || paths.info} /></svg>
+  const dots = name === 'grip' ? [[8,6],[16,6],[8,12],[16,12],[8,18],[16,18]] : name === 'grip-horizontal' ? [[6,9],[12,9],[18,9],[6,15],[12,15],[18,15]] : null
+  return <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}>{dots ? dots.map(([cx,cy]) => <circle key={`${cx}:${cy}`} cx={cx} cy={cy} r="1.5" fill="currentColor" stroke="none" />) : <path d={paths[name] || paths.info} />}</svg>
 }

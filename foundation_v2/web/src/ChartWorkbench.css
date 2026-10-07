@@ -6,9 +6,9 @@
 .is-legacy-chart .chart-utility-rail { position: relative; }
 .is-legacy-chart .chart-frame { position: relative; }
 .legacy-native-menu { position: absolute; z-index: 40; top: var(--legacy-header-height, 42px); right: 48px; display: grid; width: 210px; max-height: calc(100dvh - 100px); overflow: auto; padding: 4px; border: 1px solid var(--chart-line); border-radius: 4px; background: var(--chart-surface); }
-.legacy-native-menu button { width: 100%; padding: 9px 12px; border: 0; text-align: left; background: transparent; color: var(--chart-text); font: 13px Arial, sans-serif; cursor: pointer; }
+.legacy-native-menu button { width: 100%; padding: 9px 12px; border: 0; text-align: left; background: transparent; color: var(--chart-text); font:inherit; line-height:20px; cursor: pointer; }
 .legacy-native-menu button:hover { background: var(--chart-hover); }
-.legacy-native-menu button:focus-visible { outline: 2px solid #5695FE; outline-offset: -2px; }
+.legacy-native-menu button:focus-visible { outline: 2px solid var(--project-primary); outline-offset: -2px; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart .replay-workspace { position: relative; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open .replay-workspace { grid-template-columns: minmax(0, 1fr); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell.is-legacy-chart.is-panel-open .replay-side { position: absolute; right: 0; top: var(--legacy-header-height, 42px); bottom: 0; width: min(360px, 100%); box-sizing: border-box; z-index: 25; }
@@ -231,19 +231,10 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 }
 .fx-app.is-chart-workspace:has(.is-legacy-chart) > .fx-chart-topbar { display: none !important; }
 .fx-app.is-chart-workspace:has(.is-legacy-chart) > .fx-main { grid-row: 1; }
-.is-legacy-chart .legacy-quick-actions { background: var(--chart-bg); border: 1px solid var(--chart-line); border-radius: 6px; padding: 0; }
-.legacy-quick-actions .chart-float-content { gap: 0; }
-.is-legacy-chart .legacy-quick-actions :is(button, a) { width: auto; flex-shrink: 0; white-space: nowrap; padding: 0 12px; height: 36px; min-height: 36px; }
-.is-legacy-chart .legacy-quick-actions > .chart-float-grip { width: 30px; padding: 0; }
-.is-legacy-chart .legacy-quick-actions .chart-float-content > :last-child { width: 32px; padding: 0; }
-.legacy-quick-actions :is(button, a) { display: flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 12px; border: 0; border-right: 1px solid var(--chart-line); background: transparent; color: var(--chart-text); font: inherit; font-size: 11px; cursor: pointer; text-decoration: none; }
-.legacy-quick-actions > :last-child { border: 0; }
-.legacy-quick-actions :is(button, a):hover { background: var(--chart-hover); }
-.legacy-quick-actions :is(button, a):focus-visible { outline: 2px solid var(--project-primary); outline-offset: -2px; }
 .is-legacy-chart { font-family: Arial, sans-serif; }
 .is-legacy-chart .chart-floating-toolbar { z-index:19; }
-.is-legacy-chart :is(.chart-floating-toolbar, .legacy-quick-actions, .chart-utility-rail, .chart-trading-bar) :is(button, a, input, select) { box-sizing: border-box; font-family: inherit; line-height: 1; }
-.is-legacy-chart :is(.chart-floating-toolbar, .legacy-quick-actions, .chart-utility-rail, .chart-trading-bar) svg { display: block; flex: 0 0 auto; width: 18px; height: 18px; }
+.is-legacy-chart :is(.chart-floating-toolbar, .chart-utility-rail, .chart-trading-bar) :is(button, a, input, select) { box-sizing: border-box; font-family: inherit; line-height: 1; }
+.is-legacy-chart :is(.chart-floating-toolbar, .chart-utility-rail, .chart-trading-bar) svg { display: block; flex: 0 0 auto; width: 18px; height: 18px; }
 .is-legacy-chart .chart-floating-toolbar { background: var(--chart-bg); border-radius: 4px; min-height: 38px; padding: 3px; box-sizing: border-box; }
 .is-legacy-chart .chart-floating-toolbar :is(button, select) { height: 30px; min-height: 30px; flex-shrink: 0; }
 .is-legacy-chart .chart-floating-toolbar select { cursor: pointer; border-radius: 4px; }
@@ -321,7 +312,6 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
   .legacy-replay-toolbar .legacy-sync-toggle, .legacy-replay-toolbar .legacy-sync-toggle span { width: 32px; }
   .legacy-replay-toolbar .legacy-sync-toggle { margin-right: 0; }
 }
-.legacy-quick-actions .chart-float-grip { width: 32px; cursor: grab; }
 .is-legacy-chart .chart-trading-actions button:hover:not(:disabled) { filter: none; box-shadow: inset 0 0 0 1px currentColor; }
 .is-legacy-chart .chart-trading-actions label { border: 1px solid var(--chart-line); border-radius: 20px; padding-left: 12px; }
 .is-legacy-chart .chart-trading-actions input { border: 0; background: transparent; border-radius: 20px; width: 100px; }
@@ -335,14 +325,12 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-news-empty button:hover { background: var(--chart-hover); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail .legacy-mobile-theme { display: none; }
 @media (max-width: 900px) {
-  .is-legacy-chart .legacy-quick-actions { display: none; }
   .is-legacy-chart .chart-trading-actions input { width: 68px; }
 }
 @media (max-width: 1100px) {
   .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail .legacy-mobile-theme { display: flex; }
 }
 @media (max-width: 600px) {
-  .is-legacy-chart .legacy-quick-actions { display: none; }
   .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top: 0; }
   .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail .legacy-mobile-theme { display: flex; }
   .is-legacy-chart .chart-trading-actions input { width: 56px; }
@@ -374,7 +362,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-journal { height:100%; display:flex; flex-direction:column; box-sizing:border-box; color:var(--chart-text); background:var(--chart-bg); font-size:13px; }
 .legacy-journal > header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border-bottom:1px solid var(--chart-line); }
 .legacy-journal button, .legacy-journal a, .legacy-object-tree button { border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
-.legacy-journal :is(button,a):focus-visible, .legacy-object-tree button:focus-visible { outline:2px solid #5695fe; outline-offset:-2px; }
+.legacy-journal :is(button,a):focus-visible, .legacy-object-tree button:focus-visible { outline:2px solid var(--project-primary); outline-offset:-2px; }
 .legacy-journal header > :is(button,a) { width:28px; height:28px; display:grid; place-items:center; }
 .legacy-journal header [role=tablist] { display:flex; padding:3px; border:1px solid var(--chart-line); border-radius:14px; }
 .legacy-journal header [role=tab] { padding:8px 14px; border-radius:11px; }
@@ -383,7 +371,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-journal-search { display:flex; align-items:center; gap:10px; border:1px solid var(--chart-line); border-radius:8px; padding:9px; }
 .legacy-journal-search input { width:100%; min-width:0; border:0; padding:0; background:transparent; color:var(--chart-text); font:inherit; }
 .legacy-journal-search input:focus { outline:0; }
-.legacy-journal-search:focus-within { outline:2px solid #5695fe; }
+.legacy-journal-search:focus-within { outline:2px solid var(--project-primary); }
 .legacy-journal-trades { flex:1; min-height:180px; margin-top:12px; border:1px solid var(--chart-line); border-radius:6px; display:flex; flex-direction:column; }
 .legacy-journal-empty { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:18px; padding:24px; }
 .legacy-journal-empty svg { width:90px; height:60px; color:var(--chart-line); }
@@ -430,7 +418,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-order-form label { display:grid; gap:6px; color:var(--chart-muted); font-size:13px; }
 .legacy-order-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 10px; }
 .legacy-order-modal :is(input:not([type=checkbox]),select) { box-sizing:border-box; min-width:0; width:100%; min-height:40px; border:1px solid var(--chart-line); border-radius:10px; padding:9px 12px; background:var(--chart-surface); color:var(--chart-text); font:inherit; }
-.legacy-order-modal :is(input,button,select,summary):focus-visible { outline:2px solid #5695fe; outline-offset:2px; }
+.legacy-order-modal :is(input,button,select,summary):focus-visible { outline:2px solid var(--project-primary); outline-offset:2px; }
 .legacy-protection-row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; min-height:56px; box-sizing:border-box; border:1px solid var(--chart-line); border-radius:7px; background:var(--chart-hover); }
 .legacy-protection-row label { display:flex; align-items:center; flex-shrink:0; gap:10px; color:var(--chart-text); }
 .legacy-protection-row input[type=switch], .legacy-order-form input[role=switch] { appearance:none; width:38px; height:20px; background:#606774; border-radius:12px; margin:0; cursor:pointer; }
@@ -454,4 +442,21 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
  .legacy-order-form footer { flex-wrap:wrap; justify-content:flex-end; }
  .legacy-order-form footer label { width:100%; padding-bottom:6px; }
  .legacy-protection-row { flex-wrap:wrap; }
+}
+
+/* App-owned menus/forms share Testing's type and interaction rules. Native
+   TradingView controls retain their own typography, density and active colors. */
+.legacy-native-menu, .legacy-order-overlay, .is-legacy-chart :is(.replay-side,.legacy-journal,.legacy-object-tree,.chart-header-preview) { font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:13px; line-height:20px; }
+.legacy-native-menu { border-radius:10px; padding:6px; background:var(--project-raised); }
+.legacy-native-menu button { border-radius:6px; }
+.legacy-native-menu button:disabled { opacity:.5; cursor:default; }
+.legacy-native-menu button:hover:not(:disabled) { background:var(--project-hover); }
+.legacy-native-menu button:disabled:hover { background:transparent; }
+.legacy-native-menu button, .legacy-order-modal :is(button,input,select), .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select) { transition:background-color 140ms,border-color 140ms,color 140ms; }
+.is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select):focus-visible { outline:2px solid var(--project-primary); outline-offset:-2px; }
+.legacy-order-modal :is(input,select):hover:not(:disabled) { background:var(--project-hover); border-color:var(--project-border-strong); }
+.legacy-order-modal :is(input,select):disabled { opacity:.5; cursor:default; }
+.is-legacy-chart .chart-floating-toolbar button.chart-float-grip { color:var(--chart-text); }
+@media (prefers-reduced-motion:reduce) {
+ .legacy-native-menu button, .legacy-order-modal :is(button,input,select), .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select) { transition:none; }
 }

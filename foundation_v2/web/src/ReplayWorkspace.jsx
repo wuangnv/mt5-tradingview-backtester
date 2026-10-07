@@ -353,7 +353,6 @@ export default function ReplayWorkspace({ workspace, query }) {
   const nativeIntervalRef = useRef(null)
   const [goToPopup, setGoToPopup] = useState(null)
   const [goToCustom, setGoToCustom] = useState(false)
-  const [quickActionsVisible, setQuickActionsVisible] = useState(true)
   const [indicatorsOpen, setIndicatorsOpen] = useState(false)
   const [drawingTool, setDrawingTool] = useState('cross')
   const [pendingAnchor, setPendingAnchor] = useState(null)
@@ -938,7 +937,6 @@ export default function ReplayWorkspace({ workspace, query }) {
                     <button type="button" data-testid="step-10" aria-label={t("Tiến mười nến")} title={t("Shift + → Tiến mười nến")} aria-keyshortcuts="Shift+ArrowRight" onClick={() => advanceReplay(false, 10)} disabled={!canReplayForward || conflict || Boolean(pendingAction) || state.status !== 'ready'}>10</button>
                     <FxSelect label={t("Tốc độ replay")} value={speed} onChange={setSpeed} disabled={Boolean(pendingAction)} localizeOptions={false} options={['0.5', '1', '2', '4'].map(value => ({ value, label: value + '×', localize: false }))} /><span className="chart-float-cutoff" title={formatTimestamp(replay.cutoff_timestamp) + ' UTC'}>#{cursor}</span>
                   </ChartFloatingToolbar>}
-                  {advancedChart && quickActionsVisible && <ChartFloatingToolbar name="Hành động nhanh chart" className="legacy-quick-actions" minimal storageKey={`tw:chart:quick-toolbar:native-refined:${workspace}`} initialPosition={{ x: 1100, y: 220 }} compactMinimumY={86} insetLeft={54}><button type="button" onClick={() => openPanel('goto')}><ChartIcon name="goto" />{t('Go To')}</button><button type="button" onClick={() => openPanel('order')}><ChartIcon name="order" />{t('Order')}</button><button type="button" onClick={() => openPanel('news')}><ChartIcon name="news" />{t('News')}</button><button type="button" onClick={() => openPanel('journal')}><ChartIcon name="journal" />{t('Journal')}</button><button type="button" aria-label={t('Ẩn thanh thao tác nhanh')} onClick={() => setQuickActionsVisible(false)}><ChartIcon name="close" /></button></ChartFloatingToolbar>}
                   {advancedChart ? <TradingViewReplayChart key={`${sessionId}:${replay.payload.dataset_id}:${historicalView ? cursor : 'canonical'}`}
                     workspace={workspace} datasetId={replay.payload.dataset_id} symbol={replayContext.instrument} assetClass={order.instrument?.asset_class} seconds={activeDataset?.timeframe_seconds || replay.payload.execution?.timeframe_seconds}
                     cutoff={Number(replay.cutoff_timestamp)} theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`}
@@ -1027,7 +1025,6 @@ export default function ReplayWorkspace({ workspace, query }) {
               {sidePanel === 'goto' && <div className="legacy-goto"><p>{t("Chọn một nến đã mở trong phiên. Các nến sau cutoff vẫn được ẩn.")}</p><form className="replay-date-jump" onSubmit={event => { event.preventDefault(); jumpToCursor() }}><label>{t("Nến đã mở")}<input type="number" aria-label={t("Số nến cutoff")} min="0" max={canonicalCursor} step="1" value={jumpDraft} onChange={event => setJumpDraft(event.target.value)} /></label><button type="submit" disabled={conflict || Boolean(pendingAction) || state.status !== 'ready' || !Number.isInteger(Number(jumpDraft)) || Number(jumpDraft) < 0 || Number(jumpDraft) > canonicalCursor || Number(jumpDraft) === cursor}>{t("Mở cutoff này")}</button></form></div>}
               {sidePanel === 'order' && <ChartOrderPanel order={order} blockedReason={orderBlockedReason} />}
               {sidePanel === 'context' && <div className="chart-context-content">
-              {advancedChart && <button type="button" onClick={() => setQuickActionsVisible(value => !value)}>{t(quickActionsVisible ? 'Ẩn thanh thao tác nhanh' : 'Hiện thanh thao tác nhanh')}</button>}
               <section className="decision-panel">
                 <div className="side-heading">
                   <div>

@@ -308,3 +308,17 @@ Initial receipt: foundation_v2/evidence/legacy-match-20261007/CHECKPOINT.md.
 Native header correction: foundation_v2/evidence/native-refinement-20261007/CHECKPOINT.md.
 FX controls and Save mechanism: foundation_v2/evidence/fx-chart-controls-20261007/CHECKPOINT.md.
 Header/rail/footer and replay polish: foundation_v2/evidence/fx-chart-polish-20261007/CHECKPOINT.md.
+
+Owner follow-up: remove the floating quick-action toolbar and its visibility setting.
+The rail retains those destinations. Header separators render inside clipped v23
+groups; session name centers in the remaining space between left undo/redo and
+right layout/save controls, without an internal separator. Layout controls end
+beside Quick Search. App-owned popovers, compact overflow, order dialog and drawers
+share Testing's Inter baseline, project focus/hover/disabled tokens and 140ms
+feedback with reduced-motion support. Native chart typography, compact dimensions,
+blue trading actions and candle/Buy/Sell semantics remain chart-owned. Quantity
+hover/focus belongs to its single outer container; all six-dot grips use filled
+circles. Popovers focus the selected enabled item, dismiss on focus leaving,
+restore the opener on Escape/explicit dismissal and preserve native form editing.
+Evidence: `foundation_v2/evidence/fx-chart-polish-20261007/consistency-report.json`
+and `consistency-review.md`.

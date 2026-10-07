@@ -33,8 +33,18 @@ export default function LegacyChartHeader({ controls, symbol, name, backHref, th
       if (event.type === 'keydown') opener.current?.focus()
     }
     const docs = [document, controls.market.ownerDocument]
-    docs.forEach(doc => { doc.addEventListener('pointerdown', close); doc.addEventListener('keydown', close) })
-    return () => docs.forEach(doc => { doc.removeEventListener('pointerdown', close); doc.removeEventListener('keydown', close) })
+    const focusOutside = event => { if (!menuRef.current?.contains(event.target) && !opener.current?.contains(event.target)) setMenu(false) }
+    const blur = event => { if (!menuRef.current?.contains(event.relatedTarget) && !opener.current?.contains(event.relatedTarget)) setMenu(false) }
+    const navigate = event => {
+      if (!menuRef.current?.contains(event.target) || !['ArrowDown','ArrowUp','Home','End'].includes(event.key)) return
+      event.preventDefault(); event.stopPropagation()
+      const entries = [...menuRef.current.querySelectorAll('button:not(:disabled)')], index = entries.indexOf(event.target)
+      entries[event.key === 'Home' ? 0 : event.key === 'End' ? entries.length - 1 : (index + (event.key === 'ArrowDown' ? 1 : entries.length - 1)) % entries.length]?.focus()
+    }
+    docs.forEach(doc => { doc.addEventListener('pointerdown', close); doc.addEventListener('keydown', close); doc.addEventListener('keydown', navigate); doc.addEventListener('focusin', focusOutside) })
+    const node = menuRef.current
+    node?.addEventListener('focusout', blur)
+    return () => { node?.removeEventListener('focusout', blur); docs.forEach(doc => { doc.removeEventListener('pointerdown', close); doc.removeEventListener('keydown', close); doc.removeEventListener('keydown', navigate); doc.removeEventListener('focusin', focusOutside) }) }
   }, [menu, controls?.market])
   useEffect(() => {
     setMenu(false)
@@ -65,7 +75,6 @@ export default function LegacyChartHeader({ controls, symbol, name, backHref, th
     {createPortal(<div className="legacy-native-extension"><button type="button" onClick={show('layout')}>New Layout</button></div>, controls.layout)}
     {createPortal(<div className="legacy-native-extension legacy-native-session">
       <span className="legacy-session-name" title={name}>{name}</span>
-      <span className="legacy-divider" />
       {button('Bố cục chart', 'single-pane', show('layout'), { 'aria-expanded': popup?.kind === 'layout' })}
       <button type="button" className="legacy-save-layout" data-save-state={controls.saveState} aria-label={t(saveLabel)} title={`${t(saveLabel)} · ${t('Lưu trên trình duyệt này')}`} disabled={saved || saving} onClick={controls.save}><span>{name}</span><small>{t(saving ? 'Đang lưu…' : 'Save')}</small></button>
       {button('Quản lý layout', 'down', show('manage'), { 'aria-expanded': popup?.kind === 'manage' })}
