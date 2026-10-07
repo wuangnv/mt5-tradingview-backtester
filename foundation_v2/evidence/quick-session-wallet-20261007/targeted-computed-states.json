@@ -1,0 +1,1320 @@
+{
+  "scope": "Targeted always-grouped modal; real local reads; isolated EUR response and POST422 fixtures",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "unit": "USD",
+      "catalog": "actual USD catalog",
+      "base": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "USD",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(184, 184, 184)",
+        "muted": "#B8B8B8",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "inputRight": 147.828125,
+        "unitLeft": 147.828125,
+        "unitRight": 186.875,
+        "groupRight": 339,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(58, 58, 58)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "unit": "EUR",
+      "catalog": "isolated EUR response",
+      "base": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "EUR",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(184, 184, 184)",
+        "muted": "#B8B8B8",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "inputRight": 147.828125,
+        "unitLeft": 147.828125,
+        "unitRight": 185.328125,
+        "groupRight": 339,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(58, 58, 58)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "unit": "USD",
+      "catalog": "actual USD catalog",
+      "base": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "USD",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(184, 184, 184)",
+        "muted": "#B8B8B8",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "inputRight": 638.828125,
+        "unitLeft": 638.828125,
+        "unitRight": 677.875,
+        "groupRight": 1198,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(58, 58, 58)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "unit": "EUR",
+      "catalog": "isolated EUR response",
+      "base": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(255, 173, 124)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "EUR",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(184, 184, 184)",
+        "muted": "#B8B8B8",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(255, 255, 255)",
+        "content": "rgb(255, 255, 255)",
+        "inputRight": 638.828125,
+        "unitLeft": 638.828125,
+        "unitRight": 676.328125,
+        "groupRight": 1198,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(58, 58, 58)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "unit": "USD",
+      "catalog": "actual USD catalog",
+      "base": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "USD",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(82, 82, 82)",
+        "muted": "#525252",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(17, 17, 17)",
+        "content": "rgb(17, 17, 17)",
+        "inputRight": 147.828125,
+        "unitLeft": 147.828125,
+        "unitRight": 186.875,
+        "groupRight": 339,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(210, 210, 210)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "unit": "EUR",
+      "catalog": "isolated EUR response",
+      "base": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "EUR",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(82, 82, 82)",
+        "muted": "#525252",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(17, 17, 17)",
+        "content": "rgb(17, 17, 17)",
+        "inputRight": 147.828125,
+        "unitLeft": 147.828125,
+        "unitRight": 185.328125,
+        "groupRight": 339,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(210, 210, 210)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "unit": "USD",
+      "catalog": "actual USD catalog",
+      "base": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "USD",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(82, 82, 82)",
+        "muted": "#525252",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(17, 17, 17)",
+        "content": "rgb(17, 17, 17)",
+        "inputRight": 638.828125,
+        "unitLeft": 638.828125,
+        "unitRight": 677.875,
+        "groupRight": 1198,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(210, 210, 210)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "unit": "EUR",
+      "catalog": "isolated EUR response",
+      "base": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "hover": {
+        "color": "rgb(164, 71, 21)",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "state": {
+        "value": "25,000.75",
+        "unit": "EUR",
+        "described": "_r_3_-currency",
+        "unitId": "_r_3_-currency",
+        "iconText": "",
+        "iconHidden": "true",
+        "walletWidth": "18px",
+        "walletHeight": "18px",
+        "numberSize": "14px",
+        "numberWeight": "500",
+        "unitSize": "12px",
+        "unitColor": "rgb(82, 82, 82)",
+        "muted": "#525252",
+        "inputBorder": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "groupBorder": "rgb(17, 17, 17)",
+        "content": "rgb(17, 17, 17)",
+        "inputRight": 638.828125,
+        "unitLeft": 638.828125,
+        "unitRight": 676.328125,
+        "groupRight": 1198,
+        "iconGap": 12,
+        "divider": {
+          "width": "1px",
+          "top": "0px",
+          "bottom": "0px",
+          "height": "40px",
+          "iconHeight": 40,
+          "background": "rgb(210, 210, 210)"
+        }
+      },
+      "edits": [
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 9,
+          "end": 9,
+          "key": "text:8",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.6",
+          "start": 9,
+          "end": 9,
+          "key": "text:7",
+          "value": "12,345.67"
+        },
+        {
+          "initial": "12345.67",
+          "start": 3,
+          "end": 3,
+          "key": "text:9",
+          "value": "129.67"
+        },
+        {
+          "initial": "1234.56",
+          "start": 2,
+          "end": 2,
+          "key": "text:9",
+          "value": "194.56"
+        },
+        {
+          "initial": "1234",
+          "start": 0,
+          "end": 0,
+          "key": "Backspace",
+          "value": "234"
+        },
+        {
+          "initial": "1234",
+          "start": 1,
+          "end": 1,
+          "key": "Delete",
+          "value": "134"
+        },
+        {
+          "initial": "1234567",
+          "start": 3,
+          "end": 3,
+          "key": "Backspace",
+          "value": "123,567"
+        },
+        {
+          "initial": "1234.56",
+          "start": 5,
+          "end": 5,
+          "key": "Delete",
+          "value": "123,456"
+        }
+      ],
+      "invalid": [
+        {
+          "value": "",
+          "disabled": true
+        },
+        {
+          "value": "0",
+          "disabled": true
+        },
+        {
+          "value": ".",
+          "disabled": true
+        },
+        {
+          "value": "0.",
+          "disabled": true
+        },
+        {
+          "value": "abc",
+          "rejected": true
+        },
+        {
+          "value": "-10",
+          "rejected": true
+        },
+        {
+          "value": "1e4",
+          "rejected": true
+        },
+        {
+          "value": "1.234",
+          "rejected": true
+        }
+      ],
+      "groupedInsertion": true,
+      "blankClick": true,
+      "focusBlurStable": true,
+      "writes": [
+        {
+          "body": {
+            "name": "Independent grouped wallet",
+            "dataset_id": "dataset-262639d819219431b8bbfd00a665d4fb7fde4c646a4fa0c5020608c1e1c3572d",
+            "starting_balance": "25000.75",
+            "chart_engine": "legacy",
+            "start_index": 0,
+            "description": ""
+          },
+          "workspace": "tenant-a"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "startHashes": {
+    "QuickSessionDialog.jsx": "9cb82f0f21f114fc88b1df8fa057386045b4cf64c8e36c806a9530a25386bb2c",
+    "quick-session.css": "af36a67d7910d25eef13b9b2e05fc87dfc708d461c8e14a3c17c927e0ad1a11e"
+  },
+  "pass": true,
+  "hashes": {
+    "QuickSessionDialog.jsx": "9cb82f0f21f114fc88b1df8fa057386045b4cf64c8e36c806a9530a25386bb2c",
+    "quick-session.css": "af36a67d7910d25eef13b9b2e05fc87dfc708d461c8e14a3c17c927e0ad1a11e"
+  }
+}

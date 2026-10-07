@@ -375,3 +375,13 @@ The amount width follows its value so the unit stays adjacent while editing.
 The new-strategy text action keeps the same orange color and transparent surface
 at rest and on pointer hover; keyboard focus remains visible.
 Evidence: `foundation_v2/evidence/quick-session-unit-20261007/REVIEW.md`.
+
+The approved balance refinement replaces the currency symbol with the existing
+wallet icon, separated from the amount by a full-height vertical divider. The amount
+keeps comma-separated thousands while editing and at rest, preserving the caret
+by its offset within the unformatted value. Backspace/Delete skip separators.
+The draft/API value remains unformatted. Decimal input accepts up to two
+fractional digits and pasted grouping commas are removed before storing.
+The smaller muted currency suffix remains next to the amount, and clicking the
+field's blank area focuses the input. The group retains one neutral focus edge.
+Evidence: `foundation_v2/evidence/quick-session-wallet-20261007/REVIEW.md`.

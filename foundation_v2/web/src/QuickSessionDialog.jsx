@@ -1,17 +1,22 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
 import FxSelect from './FxSelect.jsx'
+import ChartIcon from './ChartIcon.jsx'
 import { readDashboardDatasets } from './dashboardModel.js'
 import { createPlaybookDraft, fetchPlaybooks } from './playbookApi.js'
 import { createReplaySession, rememberSession, sessionNavigationHref } from './sessionCatalog.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './quick-session.css'
 
+const formatBalance = value => value.replace(/^(\d+)/, digits => digits.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+
 export default function QuickSessionDialog({ workspace, query, onClose }) {
   const { t } = useTestingLocale(), id = useId()
   const dialog = useRef(null), nameInput = useRef(null), opener = useRef(document.activeElement), submitLock = useRef(false)
   const [mode, setMode] = useState('backtest'), [advanced, setAdvanced] = useState(false)
   const [draft, setDraft] = useState({ name: '', balance: '100000', dataset: '', strategy: '', description: '', start: '0' })
+  const balanceInput = useRef(null), balanceCaret = useRef(null)
+  const balanceDisplay = formatBalance(draft.balance)
   const [data, setData] = useState({ status: 'loading', items: [], error: '' })
   const [strategies, setStrategies] = useState({ items: [], error: '', status: 'loading' })
   const [addingStrategy, setAddingStrategy] = useState(false), [strategyName, setStrategyName] = useState('')
@@ -25,6 +30,11 @@ export default function QuickSessionDialog({ workspace, query, onClose }) {
   const start = advanced ? Number(draft.start) : 0
   const valid = draft.name.trim() && Number(draft.balance) > 0 && Number.isFinite(Number(draft.balance)) && selected && Number.isInteger(start) && start >= 0 && start < selected.row_count
   const change = (key, value) => setDraft(current => ({ ...current, [key]: value }))
+  useLayoutEffect(() => {
+    if (balanceCaret.current === null) return
+    balanceInput.current?.setSelectionRange(balanceCaret.current, balanceCaret.current)
+    balanceCaret.current = null
+  })
   useEffect(() => {
     if (addingStrategy) strategyInput.current?.focus()
     else if (wasAddingStrategy.current) strategyOpener.current?.focus()
@@ -92,7 +102,24 @@ export default function QuickSessionDialog({ workspace, query, onClose }) {
         <div role="tabpanel" id={`${id}-panel`} aria-labelledby={`${id}-${mode}`} className="quick-session-fields">
           {mode === 'prop' ? <p>{t('Thiết lập thử thách với quy tắc, mục tiêu và giới hạn rủi ro ở trang Prop Firm.')}</p> : <>
             <label>{t('Name')} *<input ref={nameInput} required maxLength={160} placeholder={t('Đặt tên phiên của bạn')} value={draft.name} disabled={busy} onChange={event => change('name', event.target.value)} /></label>
-            <label>{t('Account Balance')} *<div className="quick-session-balance"><span className="quick-session-money-icon" aria-hidden="true">$</span><input required type="number" min="0.01" step="0.01" style={{ width: `${Math.max(1, draft.balance.length) + 0.5}ch` }} aria-label={t('Account Balance')} aria-describedby={`${id}-currency`} value={draft.balance} disabled={busy} onChange={event => change('balance',event.target.value)} /><span id={`${id}-currency`}>{currency}</span></div></label>
+            <label>{t('Account Balance')} *<div className="quick-session-balance" onClick={() => balanceInput.current?.focus()}><span className="quick-session-money-icon" aria-hidden="true"><ChartIcon name="wallet" /></span><input ref={balanceInput} required type="text" inputMode="decimal" style={{ width: `${Math.max(1, balanceDisplay.length) + 0.5}ch` }} aria-label={t('Account Balance')} aria-describedby={`${id}-currency`} value={balanceDisplay} disabled={busy} onKeyDown={event => {
+              const input = event.currentTarget, caret = input.selectionStart
+              if (caret !== input.selectionEnd) return
+              if (event.key === 'Backspace' && input.value[caret - 1] === ',') input.setSelectionRange(caret - 1, caret - 1)
+              if (event.key === 'Delete' && input.value[caret] === ',') input.setSelectionRange(caret + 1, caret + 1)
+            }} onChange={event => {
+              const input = event.currentTarget, value = input.value.replaceAll(',', '')
+              if (!/^\d*(?:\.\d{0,2})?$/.test(value)) return
+              const rawCaret = input.value.slice(0, input.selectionStart).replaceAll(',', '').length
+              const formatted = formatBalance(value)
+              let caret = 0, digits = 0
+              while (caret < formatted.length && digits < rawCaret) {
+                if (formatted[caret] !== ',') digits++
+                caret++
+              }
+              balanceCaret.current = caret
+              change('balance', value)
+            }} /><span id={`${id}-currency`}>{currency}</span></div></label>
             <div className="quick-session-field quick-session-strategy"><span>{t('Strategy')}</span><FxSelect searchable={strategies.items.length > 0} label={t('Strategy')} value={draft.strategy} disabled={busy || strategies.status === 'loading'} onChange={value => change('strategy',value)} className={draft.strategy ? '' : 'is-placeholder'} triggerContent={selectedStrategy?.payload?.name || t('Chọn chiến lược hoặc tạo mới')} localizeOptions={false} placeholder={t('Tìm chiến lược…')} emptyLabel={t('Không tìm thấy kết quả')} options={strategies.items.map(item => ({ value:item.record_id, label:item.payload?.name || item.record_id, localize:false }))} />{draft.strategy && <button type="button" className="quick-session-text-action" disabled={busy} onClick={() => change('strategy','')}>{t('Bỏ chọn chiến lược')}</button>}{!addingStrategy ? <button type="button" ref={strategyOpener} className="quick-session-text-action quick-session-new-strategy" disabled={busy || strategies.status === 'loading'} onClick={() => setAddingStrategy(true)}>{t('+ Tạo chiến lược mới')}</button> : <div className="quick-session-strategy-create"><label>{t('Tên chiến lược')}<input ref={strategyInput} maxLength={160} value={strategyName} disabled={strategyPending} onChange={event => setStrategyName(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); addStrategy() } }} /></label><div><button type="button" disabled={!strategyName.trim() || strategyPending || strategyProblem?.uncertain} onClick={addStrategy}>{t(strategyPending ? 'Đang tạo…' : 'Tạo chiến lược')}</button><button type="button" disabled={strategyPending} onClick={() => setAddingStrategy(false)}>{t('Cancel')}</button></div>{strategyProblem && <small role="alert">{strategyProblem.uncertain ? t('Chưa xác định chiến lược đã tạo hay chưa. Kiểm tra danh sách chiến lược trước khi thử lại.') : strategyProblem.text}{strategyProblem.uncertain && <a aria-disabled={busy || undefined} onClick={event => { if (busy) event.preventDefault() }} href={buildWorkspaceHref('playbook',workspace,query)}>{t('Quản lý chiến lược')}</a>}</small>}</div>}{strategies.error && <small>{t('Chưa đọc được chiến lược. Bạn vẫn có thể tạo phiên không gắn chiến lược.')}</small>}</div>
             <div className="quick-session-field"><div className="quick-session-field-title"><span>{t('Assets')} *</span><a aria-disabled={busy || undefined} onClick={event => { if (busy) event.preventDefault() }} href={buildWorkspaceHref('data',workspace,query)}>{t('Kho dữ liệu')}</a></div><FxSelect selectionField searchable label={t('Chọn tài sản')} value={draft.dataset} disabled={busy || data.status !== 'ready'} onChange={value => change('dataset',value)} placeholder={t('Tìm tài sản…')} options={[{value:'',label:'Chọn tài sản'}, ...data.items.map(item => ({value:item.dataset_id,label:item.instrument_id || item.dataset_id,localize:false,detail:`${item.timeframe || item.timeframe_seconds + 's'} · ${item.source?.provider || 'Local'} · ${item.row_count} ${t('nến')}`}))]} />{data.status === 'loading' ? <small role="status">{t('Đang đọc danh mục dữ liệu…')}</small> : data.status === 'error' ? <div role="alert">{t('Không đọc được danh mục:')} {data.error}<button type="button" onClick={() => setReload(value => value + 1)}>{t('Thử lại')}</button></div> : !data.items.length && <small>{t('Chưa có dataset local trong workspace này.')}</small>}</div>
             <div className="quick-session-field"><span>{t('Select Chart Layout (Optional)')}</span><FxSelect label={t('Chart Layout')} value="default" disabled options={[{value:'default',label:'Bố cục mặc định'}]} onChange={() => {}} /></div>
