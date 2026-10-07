@@ -1,0 +1,17 @@
+{
+  "scope": "post-purge readonly real local API/UI",
+  "datasets": 0,
+  "sessions": 0,
+  "deletedSessionStatuses": [
+    404,
+    404,
+    404,
+    404,
+    404,
+    404
+  ],
+  "errors": [],
+  "blocked": [],
+  "emptyText": "Chưa có dữ liệu offline. Nhập CSV để bắt đầu.",
+  "pass": true
+}

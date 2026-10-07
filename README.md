@@ -101,24 +101,18 @@ ghi chú workspace vẫn thuộc API và được hiển thị riêng trên char
 Chart workspace dùng bố cục Legacy với một header native, thanh replay nổi và
 Buy/Sell phía dưới; xem [checkpoint Legacy](foundation_v2/evidence/ui-legacy-chart-20261005/CHECKPOINT.md).
 
-Kho Testing/Prop luyện tập hiện dùng lịch sử Exness demo đã lưu local, tách khỏi QA.
-35 assets mặc định đã tải M1 (28 Forex, 2 metals CFD, 3 indices CFD, 2 crypto CFD);
-Tab **Market Data** ở cuối sub-header Testing cho tìm trong 356 symbols broker,
-lọc nhóm, xem lịch sử đã lưu và mở phiên luyện tập M1/tick. Data Desk vẫn giữ
-luồng CSV/provenance; xem [kiểm chứng điều hướng Market Data](foundation_v2/evidence/market-data-nav-20261005/CHECKPOINT.md).
-Khi bật collector và MT5
-kết nối, API tự tải bù mỗi ngày UTC; session cũ giữ nguyên dataset. Live đọc snapshot
-tài khoản/deals khoảng 5 giây, không gửi lệnh. Không cần MT5 để replay dữ liệu đã lưu.
-EURUSDm và XAUUSDm đã tải tick Bid/Ask cho khoảng 90 ngày, khoảng 472,6 MiB gồm bản gốc
-và kho nén. “Luyện tick” mô phỏng bằng Bid/Ask lịch sử, SL/TP theo tick chạm trước; chart vẫn
-hiển thị M1 và khung lớn hơn. Thêm `--ticks` vào launcher đồng bộ để tự tải bù
-các ngày UTC đã đóng. Phí lịch sử/gaps và equity Prop trong từng phút chưa được
-chứng nhận đầy đủ; xem [tick replay và kiểm chứng](foundation_v2/evidence/tick-replay-20261005/CHECKPOINT.md).
-Xem [đồng bộ Testing/Live và cách chạy](foundation_v2/evidence/market-sync-20261005/CHECKPOINT.md)
-và [phiên EURUSD ban đầu](foundation_v2/evidence/real-history-20261005/CHECKPOINT.md).
-Lệnh replay vẫn mô phỏng; historical costs và gaps còn cần xác minh. Advanced Charts
-đã chạy trong Chromium; Codex in-app browser hiện hủy iframe blob, có thông báo lỗi
-và link chart dự phòng thay vì tải mãi.
+**Luyện tập → Kho dữ liệu** gom catalog offline và luồng CSV vào một trang:
+nhập → kiểm tra → lưu → tạo phiên. `view=data` là alias của `view=market-data`.
+Trang không đọc giá trực tiếp hay khởi động collector MT5; xem
+[kiểm chứng kho offline](foundation_v2/evidence/offline-library-20261007/REVIEW.md).
+
+Ngày 07/10/2026, theo yêu cầu owner, 44 dataset Exness cũ, 6 phiên replay phụ thuộc
+và file lịch sử/cache của chúng đã được xoá khỏi runtime local tenant-a. Kho hiện
+trống; receipt tại [offline data purge](foundation_v2/evidence/offline-data-purge-20261007/RECEIPT.md).
+Dukascopy là hướng nguồn offline tiếp theo, chưa có downloader được bật hoặc dữ
+liệu Dukascopy được nhập. MT5/online được để lại sau; collector trong API đang chạy
+không được bật. Các checkpoint Exness/tick/market-sync cũ là bằng chứng lịch sử,
+không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
 
 Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
 hình database, artifacts và authorization đã có:
