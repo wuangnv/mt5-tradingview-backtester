@@ -3,7 +3,7 @@
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-trading-bar .chart-trading-actions :is(.buy,.sell) { color: #fff; padding-inline: 14px; font-size: 12px; font-weight: 500; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-trading-bar .chart-trading-actions :is(.buy,.sell):hover:not(:disabled) { filter: brightness(1.08); box-shadow: none; }
 .legacy-trading-bar .legacy-quantity-control { display: flex; align-items: stretch; flex:0 0 auto; height: 30px; width: 115px; border: 1px solid var(--chart-line); border-radius: 16px; overflow: hidden; box-sizing: border-box; background: transparent; transition:background-color 140ms,border-color 140ms; }
-.legacy-trading-bar .legacy-quantity-control:has(:focus-visible) { border-color:var(--project-primary); outline:2px solid var(--project-primary); outline-offset:-2px; }
+.legacy-trading-bar .legacy-quantity-control:has(:focus-visible) { border-color:var(--chart-text); outline:2px solid var(--chart-text); outline-offset:-2px; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control input { flex: 1; min-width: 0; width: 75px; min-height: 0; height: 28px; margin: 0; padding: 0 8px 0 12px; border: 0; outline-offset: -2px; border-radius: 0; background: transparent; box-shadow: none; appearance: textfield; font: 12px Arial,sans-serif; color: var(--chart-text); }
 .legacy-quantity-control input::-webkit-inner-spin-button, .legacy-quantity-control input::-webkit-outer-spin-button { appearance: none; margin: 0; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-quantity-control input:is(:hover,:focus-visible) { background:transparent; outline:none; box-shadow:none; }

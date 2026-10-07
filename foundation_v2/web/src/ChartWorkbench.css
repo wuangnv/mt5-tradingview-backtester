@@ -235,7 +235,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .is-legacy-chart .chart-floating-toolbar { z-index:19; }
 .is-legacy-chart :is(.chart-floating-toolbar, .chart-utility-rail, .chart-trading-bar) :is(button, a, input, select) { box-sizing: border-box; font-family: inherit; line-height: 1; }
 .is-legacy-chart :is(.chart-floating-toolbar, .chart-utility-rail, .chart-trading-bar) svg { display: block; flex: 0 0 auto; width: 18px; height: 18px; }
-.is-legacy-chart .chart-floating-toolbar { background: var(--chart-bg); border-radius: 4px; min-height: 38px; padding: 3px; box-sizing: border-box; }
+.is-legacy-chart .chart-floating-toolbar { background: var(--chart-surface); border-radius: 4px; min-height: 38px; padding: 3px; box-sizing: border-box; }
 .is-legacy-chart .chart-floating-toolbar :is(button, select) { height: 30px; min-height: 30px; flex-shrink: 0; }
 .is-legacy-chart .chart-floating-toolbar select { cursor: pointer; border-radius: 4px; }
 .is-legacy-chart .chart-floating-toolbar select:hover { background: var(--chart-hover); }
@@ -290,13 +290,15 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-sync-toggle span { display: block; width: 38px; height: 22px; border-radius: 12px; background: #383C45; }
 .legacy-sync-toggle span::before { content: ''; display: block; width: 18px; height: 18px; margin: 2px; border-radius: 50%; background: #EFEFEF; }
 .is-legacy-chart .chart-floating-toolbar .legacy-speed-slider { accent-color: #5695FE; }
-.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { background: var(--chart-bg); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { background: var(--chart-surface); }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding: 0; border-left-width: 4px; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .chart-utility-rail { padding-top:var(--legacy-header-height,42px); border-left:0; }
 .is-legacy-chart .chart-utility-rail::before { content:''; position:absolute; left:0; top:38px; right:0; height:4px; background:var(--chart-line); }
 .is-legacy-chart .chart-utility-rail::after { content:''; position:absolute; left:0; top:var(--legacy-header-height,42px); bottom:0; width:4px; background:var(--chart-line); pointer-events:none; }
 .legacy-rail-tools { padding-top: 8px; }
-.is-legacy-chart .legacy-replay-toolbar { padding: 0 4px; min-height: 46px; border-radius: 3px; background: var(--chart-bg); }
+.is-legacy-chart .chart-utility-rail .legacy-session-settings { position:relative; margin-top:8px; }
+.is-legacy-chart .legacy-session-settings::before { content:''; position:absolute; left:8px; right:8px; top:-5px; height:1px; background:var(--chart-line); pointer-events:none; }
+.is-legacy-chart .legacy-replay-toolbar { padding: 0 4px; min-height: 46px; border-radius: 3px; background: var(--chart-surface); }
 .legacy-replay-toolbar .chart-float-content { overflow: visible; flex-shrink: 0; gap: 6px; }
 .legacy-replay-toolbar .legacy-replay-reset { order: 0; }
 .legacy-replay-toolbar .legacy-speed-control { position: relative; order: 1; display: flex; align-items: center; }

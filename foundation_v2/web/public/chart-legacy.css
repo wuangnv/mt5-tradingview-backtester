@@ -22,7 +22,7 @@ body.chart-page { width: calc(100% - var(--legacy-reserved-width, 0px)); overflo
   --tv-color-toolbar-button-text-hover: #FFFFFF;
   --tv-color-toolbar-button-text-active: #FFFFFF;
 }
-.theme-dark :is(.layout__area--top, .layout__area--left, .layout__area--bottom) { background: #000000; }
+.theme-dark :is(.layout__area--top, .layout__area--left, .layout__area--bottom) { background: #0F0F0F; }
 
 /* v23 extension groups only. Native intervals/style/indicator/undo/settings keep their markup. */
 .legacy-market-group { order: 0; }
@@ -39,9 +39,12 @@ body.chart-page { width: calc(100% - var(--legacy-reserved-width, 0px)); overflo
 .legacy-native-extension { display: flex; align-items: center; color: var(--tv-color-toolbar-button-text); font: 14px -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; }
 .legacy-native-extension :is(button, a) { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 38px; min-width: 32px; padding: 0 8px; box-sizing: border-box; border: 0; border-radius: 6px; background: transparent; color: inherit; font: inherit; white-space: nowrap; text-decoration: none; cursor: pointer; transition:background-color 140ms,color 140ms; }
 .layout__area--top :is(.button-9pA37sIi, .button-khcLBZEz) { border-radius:6px; }
-#header-toolbar-intervals > [data-value][class*='isActive-'] { color: #2962FF; background: var(--tv-color-toolbar-button-background-active); font-weight: 600; }
-.theme-dark #header-toolbar-intervals > [data-value][class*='isActive-'] { color: #5695FE; }
+#header-toolbar-intervals > [data-value][class*='isActive-'] { color: var(--tv-color-toolbar-button-text-active); background: var(--tv-color-toolbar-button-background-active); font-weight: 600; }
 .layout__area--left .button-G7o5fBfa { border-radius:6px; }
+/* The app's right rail owns the object tree entry point. */
+.layout__area--left [data-name='showObjectsTree'] { display:none; }
+.layout__area--left .group-3e32hIe9 + .group-3e32hIe9 { margin-top:0; position:relative; }
+.layout__area--left .group-3e32hIe9 + .group-3e32hIe9::before { content:''; position:absolute; left:8px; right:8px; top:0; height:1px; background:var(--tv-color-platform-background); pointer-events:none; }
 .legacy-native-extension :is(button, a):hover { background: var(--tv-color-toolbar-button-background-hover); color: var(--tv-color-toolbar-button-text-hover); }
 .legacy-native-extension :is(button, a):focus-visible { outline: 2px solid var(--project-primary); outline-offset: -2px; }
 .legacy-native-extension svg { width: 20px; height: 20px; display: block; flex-shrink: 0; }
@@ -62,6 +65,7 @@ body.chart-page { width: calc(100% - var(--legacy-reserved-width, 0px)); overflo
 /* Draw inside v23's clipped group so the separator remains visible. */
 .layout__area--top [class^='group-']:not(.legacy-market-group)::before { content:''; position:absolute; left:0; top:7px; height:24px; width:1px; background:var(--tv-color-platform-background); pointer-events:none; z-index:1; }
 .legacy-session-group::before { display:none; }
+.layout__area--top :is(.legacy-tools-group, [class^='group-']:has(> [data-name='header-toolbar-properties']))::before { display:none; }
 .legacy-native-tools :is(.legacy-mentor, [data-testid='theme-toggle']) { position:relative; }
 .legacy-native-tools .legacy-mentor::before, .legacy-native-tools .legacy-mentor::after, .legacy-native-tools [data-testid='theme-toggle']::after { content:''; position:absolute; top:7px; bottom:7px; width:1px; background:var(--tv-color-platform-background); pointer-events:none; }
 .legacy-native-tools .legacy-mentor::before { left:0; }

@@ -33,6 +33,8 @@ import LegacyPopover from './LegacyPopover.jsx'
 import LegacyOrderDialog from './LegacyOrderDialog.jsx'
 import LegacyJournal from './LegacyJournal.jsx'
 import LegacyObjectTree from './LegacyObjectTree.jsx'
+import SessionSettingsDrawer from './SessionSettingsDrawer.jsx'
+import { updateSessionMetadata } from './sessionCatalog.js'
 import { orderLevels, marketQuotes } from './replayOrderModel.js'
 import { ReplayOrderPrimitive } from './replayOrderPrimitive.js'
 import './ReplayWorkspace.css'
@@ -360,6 +362,8 @@ export default function ReplayWorkspace({ workspace, query }) {
   const [viewportRequest, setViewportRequest] = useState(null)
   const [goToDateDraft, setGoToDateDraft] = useState('')
   const [chartNotice, setChartNotice] = useState('')
+  const [sessionSettings, setSessionSettings] = useState(null)
+  const settingsSaveLock = useRef(false)
   const actionLock = useRef(false)
   const sessionRequest = useRef(null)
   const sideToggleRef = useRef(null)
@@ -553,6 +557,47 @@ export default function ReplayWorkspace({ workspace, query }) {
     () => datasetState.items.find((item) => item.dataset_id === replay?.payload?.dataset_id) || null,
     [datasetState.items, replay?.payload?.dataset_id],
   )
+  const openSessionSettings = () => {
+    if (!replay || state.status !== 'ready' || pendingAction || conflict) return
+    setIsPlaying(false)
+    setGoToPopup(null)
+    setSessionSettings({ item: {
+      record_id: replay.record_id, revision: replay.revision,
+      name: replay.payload.name || '', description: replay.payload.description || '',
+      instrument_id: activeDataset?.instrument_id,
+    }, pending: false, blocked: false, error: null })
+  }
+  const closeSessionSettings = () => {
+    if (settingsSaveLock.current) return
+    const refresh = sessionSettings?.blocked
+    setSessionSettings(null)
+    if (refresh) loadSession(sessionId, cursor)
+  }
+  const saveSessionSettings = async draft => {
+    if (!sessionSettings || sessionSettings.blocked || settingsSaveLock.current) return
+    if (revision !== sessionSettings.item.revision || state.status !== 'ready') {
+      setSessionSettings(current => ({ ...current, blocked: true, error: t('Phiên đã thay đổi. Đóng cài đặt để tải lại trước khi lưu.') }))
+      return
+    }
+    settingsSaveLock.current = true
+    setSessionSettings(current => ({ ...current, pending: true, error: null }))
+    try {
+      const saved = await updateSessionMetadata(workspace, sessionSettings.item, draft)
+      if (saved.record_id !== replay.record_id || saved.revision !== revision + 1 || !saved.payload) throw new Error('Phản hồi lưu phiên không đúng định dạng.')
+      // Metadata saves must preserve the viewed cutoff and reconstructed execution.
+      setState(current => current.payload?.record_id === saved.record_id && current.payload.revision === revision ? {
+        ...current, payload: { ...current.payload, revision: saved.revision, updated_at_utc: saved.updated_at_utc,
+          payload: { ...current.payload.payload, name: saved.payload.name, description: saved.payload.description } },
+      } : current)
+      setSessionSettings(null)
+    } catch (error) {
+      const blocked = !error.status || error.status >= 500 || [404, 409].includes(error.status)
+      const message = error.status === 409 ? t('Phiên đã thay đổi. Đóng cài đặt để tải lại trước khi lưu.') : blocked ? t('Chưa xác định thay đổi đã lưu hay chưa. Đóng cài đặt để tải lại trước khi thử lại.') : t('Không lưu được phiên: {error}', { error: error.message })
+      setSessionSettings(current => ({ ...current, pending: false, blocked, error: message }))
+    } finally {
+      settingsSaveLock.current = false
+    }
+  }
   const datasetSeconds = Number(activeDataset?.timeframe_seconds || replay?.payload?.execution?.timeframe_seconds)
   const effectiveReplayInterval = replaySync && nativeHeaderSlots?.interval ? nativeHeaderSlots.interval : replayInterval
   const intervalSteps = advancedChart ? replayIntervalSteps(effectiveReplayInterval, datasetSeconds) : 1
@@ -950,7 +995,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   {advancedChart && <div className="legacy-rail-tools"><button type="button" aria-label={t('Cây đối tượng chart')} title={t('Cây đối tượng chart')} disabled={!nativeHeaderSlots} aria-pressed={sideOpen && sidePanel==='native-objects'} onClick={() => sideOpen && sidePanel==='native-objects' ? closeSide() : openPanel('native-objects')}><ChartIcon name="layers" /></button></div>}
                   {(advancedChart ? [['order', 'Lệnh mô phỏng', 'place-order', 'Order'], ['goto', 'Đi tới cutoff', 'goto', 'Go To'], ['news', 'Tin tức', 'news', 'News']] : [['order', 'Lệnh mô phỏng', 'order'], ['objects', 'Danh sách đối tượng', 'objects'], ['data', 'Danh sách dữ liệu', 'data'], ['context', 'Chi tiết replay', 'info']]).map(([panel, label, icon, caption]) => <button key={panel} type="button" aria-label={t(label)} title={t(label)} aria-pressed={sideOpen && sidePanel === panel} onClick={() => sideOpen && sidePanel === panel ? closeSide() : openPanel(panel)}><ChartIcon name={icon} />{caption && <span>{t(caption)}</span>}</button>)}
                   {advancedChart ? <button type="button" aria-label={t('Journal tại cutoff này')} title={t('Journal tại cutoff này')} aria-pressed={sideOpen && sidePanel==='journal'} onClick={() => sideOpen && sidePanel==='journal' ? closeSide() : openPanel('journal')}><ChartIcon name="journal" /><span>{t('Journal')}</span></button> : <a aria-label={t('Journal tại cutoff này')} href={journalHref}><ChartIcon name="journal" /></a>}
-                  {advancedChart && <button type="button" aria-label={t('Cài đặt phiên')} title={t('Cài đặt phiên')} onClick={() => openPanel('context')}><ChartIcon name="settings" /></button>}
+                  {advancedChart && <button type="button" className="legacy-session-settings" aria-label={t('Cài đặt phiên')} title={t('Cài đặt phiên')} disabled={state.status !== 'ready' || Boolean(pendingAction) || conflict} onClick={openSessionSettings}><ChartIcon name="settings" /></button>}
                   {advancedChart && <button type="button" className="legacy-mobile-theme" onClick={() => applyAppearance({ ...appearance, theme: theme === 'dark' ? 'light' : 'dark' })} aria-label={theme === 'dark' ? t("Chuyển giao diện sáng") : t("Chuyển giao diện tối")}><ChartIcon name={theme === 'dark' ? 'moon' : 'sun'} /></button>}
                 </nav>
               </div>
@@ -1148,6 +1193,7 @@ export default function ReplayWorkspace({ workspace, query }) {
           </section>
         </>
       )}
+      {sessionSettings && <SessionSettingsDrawer item={sessionSettings.item} dataset={activeDataset} replayRecord={replay} workspace={workspace} pending={sessionSettings.pending} blocked={sessionSettings.blocked} error={sessionSettings.error} onClose={closeSessionSettings} onSubmit={saveSessionSettings} />}
     </main>
   )
 }

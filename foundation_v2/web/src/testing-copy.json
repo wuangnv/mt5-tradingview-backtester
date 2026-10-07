@@ -5419,6 +5419,14 @@
     "vi": "trên {total}",
     "en": "of {total}"
   },
+  "Phiên đã thay đổi. Đóng cài đặt để tải lại trước khi lưu.": {
+    "vi": "Phiên đã thay đổi. Đóng cài đặt để tải lại trước khi lưu.",
+    "en": "The session has changed. Close settings to reload before saving."
+  },
+  "Chưa xác định thay đổi đã lưu hay chưa. Đóng cài đặt để tải lại trước khi thử lại.": {
+    "vi": "Chưa xác định thay đổi đã lưu hay chưa. Đóng cài đặt để tải lại trước khi thử lại.",
+    "en": "The save result is uncertain. Close settings to reload before trying again."
+  },
   "Khối lượng (quantity)": {
     "vi": "Khối lượng (quantity)",
     "en": "Position Size (Quantity)"

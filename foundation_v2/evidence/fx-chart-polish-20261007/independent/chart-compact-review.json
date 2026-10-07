@@ -9,8 +9,8 @@
         {
           "value": "1",
           "text": "1m",
-          "color": "rgb(86, 149, 254)",
-          "child": "rgb(86, 149, 254)",
+          "color": "rgb(255, 255, 255)",
+          "child": "rgb(255, 255, 255)",
           "weight": "600",
           "bg": "rgb(52, 52, 52)",
           "rect": {
@@ -29,8 +29,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(86, 149, 254)",
-          "child": "rgb(86, 149, 254)",
+          "color": "rgb(255, 255, 255)",
+          "child": "rgb(255, 255, 255)",
           "weight": "600",
           "bg": "rgb(52, 52, 52)",
           "rect": {
@@ -49,8 +49,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(86, 149, 254)",
-          "child": "rgb(86, 149, 254)",
+          "color": "rgb(255, 255, 255)",
+          "child": "rgb(255, 255, 255)",
           "weight": "600",
           "bg": "rgb(52, 52, 52)",
           "rect": {
@@ -117,8 +117,8 @@
         {
           "value": "1",
           "text": "1m",
-          "color": "rgb(41, 98, 255)",
-          "child": "rgb(41, 98, 255)",
+          "color": "rgb(0, 0, 0)",
+          "child": "rgb(0, 0, 0)",
           "weight": "600",
           "bg": "rgb(224, 224, 224)",
           "rect": {
@@ -137,8 +137,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(41, 98, 255)",
-          "child": "rgb(41, 98, 255)",
+          "color": "rgb(0, 0, 0)",
+          "child": "rgb(0, 0, 0)",
           "weight": "600",
           "bg": "rgb(224, 224, 224)",
           "rect": {
@@ -157,8 +157,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(41, 98, 255)",
-          "child": "rgb(41, 98, 255)",
+          "color": "rgb(0, 0, 0)",
+          "child": "rgb(0, 0, 0)",
           "weight": "600",
           "bg": "rgb(224, 224, 224)",
           "rect": {
@@ -225,8 +225,8 @@
         {
           "value": "1",
           "text": "1m",
-          "color": "rgb(86, 149, 254)",
-          "child": "rgb(86, 149, 254)",
+          "color": "rgb(255, 255, 255)",
+          "child": "rgb(255, 255, 255)",
           "weight": "600",
           "bg": "rgb(52, 52, 52)",
           "rect": {
@@ -245,8 +245,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(86, 149, 254)",
-          "child": "rgb(86, 149, 254)",
+          "color": "rgb(255, 255, 255)",
+          "child": "rgb(255, 255, 255)",
           "weight": "600",
           "bg": "rgb(52, 52, 52)",
           "rect": {
@@ -265,8 +265,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(86, 149, 254)",
-          "child": "rgb(86, 149, 254)",
+          "color": "rgb(255, 255, 255)",
+          "child": "rgb(255, 255, 255)",
           "weight": "600",
           "bg": "rgb(52, 52, 52)",
           "rect": {
@@ -333,8 +333,8 @@
         {
           "value": "1",
           "text": "1m",
-          "color": "rgb(41, 98, 255)",
-          "child": "rgb(41, 98, 255)",
+          "color": "rgb(0, 0, 0)",
+          "child": "rgb(0, 0, 0)",
           "weight": "600",
           "bg": "rgb(224, 224, 224)",
           "rect": {
@@ -353,8 +353,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(41, 98, 255)",
-          "child": "rgb(41, 98, 255)",
+          "color": "rgb(0, 0, 0)",
+          "child": "rgb(0, 0, 0)",
           "weight": "600",
           "bg": "rgb(224, 224, 224)",
           "rect": {
@@ -373,8 +373,8 @@
         {
           "value": "5",
           "text": "5m",
-          "color": "rgb(41, 98, 255)",
-          "child": "rgb(41, 98, 255)",
+          "color": "rgb(0, 0, 0)",
+          "child": "rgb(0, 0, 0)",
           "weight": "600",
           "bg": "rgb(224, 224, 224)",
           "rect": {
@@ -439,7 +439,7 @@
   "pass": true,
   "sourceHashes": {
     "web/src/LegacyReplayToolbar.css": "aea364a7e8f336f823926c5573b6ba38b8b5e97e722286ce86d94b3affdfd5ed",
-    "web/public/chart-legacy.css": "b04faf79e28890fc2c0ee7e4dc128ebbf6691075df11ae64e5fc12e8cc67a687",
+    "web/public/chart-legacy.css": "de2403950404dda44159cb39a7cfcfa89966b7b2fb716830efcfcf3799e835fc",
     "web/src/LegacyTradingBar.jsx": "313b48fb4b82918cd0bdfb8aea971b753f4e507fed0657c8f591632db17adf76"
   }
 }

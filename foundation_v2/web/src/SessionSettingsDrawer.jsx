@@ -26,6 +26,9 @@ export default function SessionSettingsDrawer({ item, dataset, payload, model, w
     return () => { element.close(); if (opener.current?.isConnected) opener.current.focus({ preventScroll: true }) }
   }, [])
   useEffect(() => {
+    dialog.current?.querySelector('.fxs-settings-tabs [aria-selected="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' })
+  }, [tab])
+  useEffect(() => {
     if (tab !== 'costs' || replayRecord || preview || !workspace) return
     const controller = new AbortController()
     setRecord({ status: 'loading', record: null })
