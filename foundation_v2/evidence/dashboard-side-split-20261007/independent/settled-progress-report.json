@@ -1,0 +1,212 @@
+{
+  "before": [
+    {
+      "file": "foundation_v2/trading_workspace_v2/dashboard_read_model.py",
+      "sha256": "db5ee5232d142b8cbc55e96cb6623ca373e4ff3772b2ccf0bb30ed7f8eed56e5"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/replay_analytics.py",
+      "sha256": "6295d299673a0cd68de68689e45fb24174dfcf7e74da8a7a8e7e898a514279a1"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "9697d2c96afe5238909866830f647ee4188d01e4da2af101b77c3ba778c750cf"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "46733fcc5af76447c4096b7ec02aa5e7e73ad8579929a902e529ffea4b4a4765"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "3159166b8ec867d01e4303d0720604c67299b777aaae4267a84b12fcea650b9b"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "702ca00774903b91f115444eebab864d5623ae92ee4c5b23e20122b3691bdce2"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2"
+    },
+    {
+      "file": "ui/testing-standard.md",
+      "sha256": "fe6e02061dba290ebf9548001e83c59bbfdc1f14ffb511037bf59ae7e693f038"
+    }
+  ],
+  "cases": [
+    {
+      "theme": "dark",
+      "language": "en",
+      "width": 1710,
+      "id": "476f4b498e1a49ed9d48a75719f4d270",
+      "days": "91 days",
+      "label": "91 days remaining",
+      "group": {
+        "y": 829.75,
+        "bottom": 861.75,
+        "height": 32,
+        "cy": 845.75
+      },
+      "track": {
+        "y": 830.75,
+        "bottom": 836.75,
+        "height": 6,
+        "cy": 833.75
+      },
+      "text": {
+        "y": 842.75,
+        "bottom": 860.75,
+        "height": 18,
+        "cy": 851.75
+      },
+      "actions": {
+        "y": 829.75,
+        "bottom": 861.75,
+        "height": 32,
+        "cy": 845.75
+      }
+    },
+    {
+      "theme": "light",
+      "language": "vi",
+      "width": 1710,
+      "id": "476f4b498e1a49ed9d48a75719f4d270",
+      "days": "91 ngày",
+      "label": "Còn 91 ngày",
+      "group": {
+        "y": 829.75,
+        "bottom": 861.75,
+        "height": 32,
+        "cy": 845.75
+      },
+      "track": {
+        "y": 830.75,
+        "bottom": 836.75,
+        "height": 6,
+        "cy": 833.75
+      },
+      "text": {
+        "y": 842.75,
+        "bottom": 860.75,
+        "height": 18,
+        "cy": 851.75
+      },
+      "actions": {
+        "y": 829.75,
+        "bottom": 861.75,
+        "height": 32,
+        "cy": 845.75
+      }
+    },
+    {
+      "theme": "dark",
+      "language": "vi",
+      "width": 768,
+      "id": "476f4b498e1a49ed9d48a75719f4d270",
+      "days": "91 ngày",
+      "label": "Còn 91 ngày",
+      "group": {
+        "y": 807.5,
+        "bottom": 839.5,
+        "height": 32,
+        "cy": 823.5
+      },
+      "track": {
+        "y": 808.5,
+        "bottom": 814.5,
+        "height": 6,
+        "cy": 811.5
+      },
+      "text": {
+        "y": 820.5,
+        "bottom": 838.5,
+        "height": 18,
+        "cy": 829.5
+      },
+      "actions": {
+        "y": 853.5,
+        "bottom": 885.5,
+        "height": 32,
+        "cy": 869.5
+      }
+    },
+    {
+      "theme": "light",
+      "language": "en",
+      "width": 360,
+      "id": "476f4b498e1a49ed9d48a75719f4d270",
+      "days": "91 days",
+      "label": "91 days remaining",
+      "group": {
+        "y": 744.28125,
+        "bottom": 788.28125,
+        "height": 44,
+        "cy": 766.28125
+      },
+      "track": {
+        "y": 751.28125,
+        "bottom": 757.28125,
+        "height": 6,
+        "cy": 754.28125
+      },
+      "text": {
+        "y": 763.28125,
+        "bottom": 781.28125,
+        "height": 18,
+        "cy": 772.28125
+      },
+      "actions": {
+        "y": 800.28125,
+        "bottom": 892.28125,
+        "height": 92,
+        "cy": 846.28125
+      }
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "after": [
+    {
+      "file": "foundation_v2/trading_workspace_v2/dashboard_read_model.py",
+      "sha256": "db5ee5232d142b8cbc55e96cb6623ca373e4ff3772b2ccf0bb30ed7f8eed56e5"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/replay_analytics.py",
+      "sha256": "6295d299673a0cd68de68689e45fb24174dfcf7e74da8a7a8e7e898a514279a1"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "9697d2c96afe5238909866830f647ee4188d01e4da2af101b77c3ba778c750cf"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "46733fcc5af76447c4096b7ec02aa5e7e73ad8579929a902e529ffea4b4a4765"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "3159166b8ec867d01e4303d0720604c67299b777aaae4267a84b12fcea650b9b"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "702ca00774903b91f115444eebab864d5623ae92ee4c5b23e20122b3691bdce2"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2"
+    },
+    {
+      "file": "ui/testing-standard.md",
+      "sha256": "fe6e02061dba290ebf9548001e83c59bbfdc1f14ffb511037bf59ae7e693f038"
+    }
+  ],
+  "sourceUnchanged": true,
+  "pass": true
+}

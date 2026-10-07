@@ -29,8 +29,8 @@ larger illustrative controls. Standard controls are 40px on desktop, 44px below
 480px or with coarse pointers. Circular actions share the duplicate-session
 reference: 32px desktop, 44px mobile/coarse, with 16px icons.
 Summary uses the same compact height beside session icon actions, with 13px/500
-text. Dashboard remaining-days text aligns with the action row and uses sea blue;
-the progress track sits above it. Empty session expansion uses one text line plus
+text. Dashboard remaining-days track and text form a centered group beside the
+action row and use sea blue. Empty session expansion uses one text line plus
 bottom padding, without a minimum chart height. Chart controls retain their
 recorded compact arrangement and vendor controls keep vendor sizing. The compact
 mobile ledger pager shows previous/current/next; desktop also exposes first/last
@@ -58,8 +58,9 @@ Dashboard KPI values use 32px/600 numerals; duration units use 14px text aligned
 on the numeral baseline. Durations come from typed seconds, shown as elapsed
 days/hours/minutes, never inferred calendar months. Unknown durations remain
 “—”; demo durations remain explicitly sample data. There are no information
-icons. Win-rate supporting bars represent wins/losses/breakeven from the same
-closed-trade aggregate, not an unavailable Buy/Sell distribution. Monthly counts
+icons. Overall win rate shows only its percentage. The closed-trade card uses a
+green/red Buy/Sell split from the same deduplicated, filtered closure aggregate;
+percentages appear only for a positive total with complete side counts. Monthly counts
 stay labeled as trades until measured activity time is available. Report bars
 use solid peach/blue/violet and aligned dashed grids; zero values have zero area.
 
@@ -118,6 +119,11 @@ providing trading capital, not an investment fund; this product's simulated
 source is labeled **Prop Firm**, and its simulated evaluation workflow is
 labeled **Thử thách prop firm**. Date filters use **Ngày backtest**. Keep English labels and API
 identifiers intact. Do not imply that a simulated result earns real funding.
+
+Use **Mã giao dịch** for the generic instrument/symbol label throughout the
+project (short **Mã** in compact labels). **Cặp tiền** applies only to Forex
+contexts; metals, indices, stocks and crypto are also valid instruments. Keep
+actual identifiers such as EURUSDm and XAUUSDm raw and English labels as Symbol.
 
 Journal and trade-detail entry controls share the 16px notebook glyph in
 `TestingIcon`; the ledger entry still opens its existing trade inspector.

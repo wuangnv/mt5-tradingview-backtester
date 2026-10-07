@@ -37,6 +37,28 @@ def test_summary_counts_real_engine_fills_and_keeps_source_revision():
     assert result["time_invested_seconds"] is None
     assert result["historical_time_replayed_seconds"] is None
     assert "net_pnl" not in result["metrics"]
+    assert result["side_counts"] == {"buy": 1, "sell": 0}
+
+
+def test_side_counts_share_deduplication_selection_and_close_time_scope():
+    buy = closed_trade_record()
+    child = fork(buy, "copied-buy")
+    queued = queue_market_order(initial_state(), operation_id="sell-1", side="SELL", quantity="0.10",
+                                stop_loss="1.1100", take_profit="1.0980")
+    advanced = advance_replay_execution(queued,
+        bar={"timestamp": 1700000000, "open": 1.1000, "high": 1.1030, "low": 1.0970, "close": 1.0980},
+        cursor_index=1)
+    sell = fork(record(advanced.snapshot), "independent-sell", parent=False)
+    records = [buy, child, sell]
+    result = build_dashboard_performance(records, "tenant-a")
+    assert result["metrics"]["closed_trade_count"] == 2
+    assert result["side_counts"] == {"buy": 1, "sell": 1}
+    assert result["scope"]["duplicate_trade_count"] == 1
+    assert build_dashboard_performance(records, "tenant-a", session_id="independent-sell")["side_counts"] == {"buy": 0, "sell": 1}
+    assert build_dashboard_performance(records, "tenant-a", side="buy")["side_counts"] == {"buy": 1, "sell": 0}
+    assert build_dashboard_performance(records, "tenant-a", from_close_utc="2026-01-01T00:00:00Z")["side_counts"] == {"buy": 0, "sell": 0}
+    assert build_dashboard_performance([], "tenant-a")["side_counts"] == {"buy": 0, "sell": 0}
+    assert build_dashboard_performance([record()], "tenant-a")["side_counts"] == {"buy": None, "sell": None}
 
 
 def test_forks_share_history_but_unrelated_sessions_keep_identical_fills():

@@ -1,0 +1,223 @@
+{
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "demo": false,
+      "values": [
+        "—",
+        "—",
+        "1",
+        "0%"
+      ],
+      "split": {
+        "text": "0,00% Mua · 100,00% Bán",
+        "buy": "0%",
+        "sell": "100%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "actions": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 1710,
+      "theme": "dark",
+      "demo": true,
+      "values": [
+        "18giờ40phút",
+        "36ngày7giờ",
+        "60",
+        "50%"
+      ],
+      "split": {
+        "text": "50,00% Mua · 50,00% Bán",
+        "buy": "50%",
+        "sell": "50%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "actions": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "demo": false,
+      "values": [
+        "—",
+        "—",
+        "1",
+        "0%"
+      ],
+      "split": {
+        "text": "0,00% Mua · 100,00% Bán",
+        "buy": "0%",
+        "sell": "100%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "actions": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "demo": true,
+      "values": [
+        "18giờ40phút",
+        "36ngày7giờ",
+        "60",
+        "50%"
+      ],
+      "split": {
+        "text": "50,00% Mua · 50,00% Bán",
+        "buy": "50%",
+        "sell": "50%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "actions": {
+          "cy": 1205.75,
+          "height": 32
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "demo": false,
+      "values": [
+        "—",
+        "—",
+        "1",
+        "0%"
+      ],
+      "split": {
+        "text": "0,00% Mua · 100,00% Bán",
+        "buy": "0%",
+        "sell": "100%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 2241.28125,
+          "height": 44
+        },
+        "actions": {
+          "cy": 2321.28125,
+          "height": 92
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "demo": true,
+      "values": [
+        "18giờ40phút",
+        "36ngày7giờ",
+        "60",
+        "50%"
+      ],
+      "split": {
+        "text": "50,00% Mua · 50,00% Bán",
+        "buy": "50%",
+        "sell": "50%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 2221.671875,
+          "height": 44
+        },
+        "actions": {
+          "cy": 2301.671875,
+          "height": 92
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "demo": false,
+      "values": [
+        "—",
+        "—",
+        "1",
+        "0%"
+      ],
+      "split": {
+        "text": "0,00% Mua · 100,00% Bán",
+        "buy": "0%",
+        "sell": "100%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 2241.28125,
+          "height": 44
+        },
+        "actions": {
+          "cy": 2321.28125,
+          "height": 92
+        },
+        "overflow": false
+      }
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "demo": true,
+      "values": [
+        "18giờ40phút",
+        "36ngày7giờ",
+        "60",
+        "50%"
+      ],
+      "split": {
+        "text": "50,00% Mua · 50,00% Bán",
+        "buy": "50%",
+        "sell": "50%"
+      },
+      "geo": {
+        "progress": {
+          "cy": 2221.671875,
+          "height": 44
+        },
+        "actions": {
+          "cy": 2301.671875,
+          "height": 92
+        },
+        "overflow": false
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

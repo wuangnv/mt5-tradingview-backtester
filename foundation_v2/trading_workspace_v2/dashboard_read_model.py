@@ -182,6 +182,8 @@ def build_dashboard_performance(
             "timezone": "UTC",
         },
         "metrics": metrics,
+        "side_counts": {"buy": sum(trade["side"] == "BUY" for trade in trades),
+                        "sell": sum(trade["side"] == "SELL" for trade in trades)} if not (selected and not sources) else {"buy": None, "sell": None},
         "months": [{"month": month, **_counts(items)} for month, items in sorted(by_month.items())],
         "symbols": [{"symbol": symbol, **_counts(items)} for symbol, items in sorted(by_symbol.items(), key=lambda item: (-len(item[1]), item[0]))],
         "sessions": sessions,

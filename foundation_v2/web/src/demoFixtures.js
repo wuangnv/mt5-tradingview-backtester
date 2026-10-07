@@ -36,6 +36,7 @@ export function demoOverview(rows = DEMO_LEDGER) {
   })
   return { performance: { schema_version: 'dashboard-replay-performance-v1', status: 'ready', scope: { session_count: 3, readable_session_count: 3 }, metrics, months,
     time_invested_seconds: 67200, historical_time_replayed_seconds: 3135600,
+    side_counts: { buy: rows.filter(row => row.side === 'buy').length, sell: rows.filter(row => row.side === 'sell').length },
     symbols: DEMO_SESSIONS.map(session => ({ symbol: session.instrument_id, closed_trade_count: rows.filter(row => row.symbol === session.instrument_id).length })), sessions: [], sources: [], excluded: [] } }
 }
 

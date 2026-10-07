@@ -13,7 +13,19 @@ function Duration({ seconds }) {
 function Metric({ title, value, detail, icon, children }) {
   const { t } = useTestingLocale()
 
-  return <div className="fx-dashboard-metric"><span title={detail}><span className="fx-dashboard-metric-icon" aria-hidden="true"><TestingIcon kind={icon} /></span>{t(title)}</span><strong>{value}</strong>{children}<small>{t(detail)}</small></div>
+  return <div className="fx-dashboard-metric"><span title={detail || undefined}><span className="fx-dashboard-metric-icon" aria-hidden="true"><TestingIcon kind={icon} /></span>{t(title)}</span><strong>{value}</strong>{children}{detail && <small>{t(detail)}</small>}</div>
+}
+
+function SideSplit({ counts, total }) {
+  const { t, locale } = useTestingLocale()
+  const buy = counts?.buy, sell = counts?.sell
+  if (!Number.isSafeInteger(buy) || !Number.isSafeInteger(sell) || buy < 0 || sell < 0 || !Number.isSafeInteger(total) || total <= 0 || buy + sell !== total) return null
+  const buyRate = buy / total * 100, sellRate = sell / total * 100
+  const percent = value => new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value) + '%'
+  return <div className="fx-dashboard-side-split">
+    <div className="fx-dashboard-side-bar" aria-hidden="true"><span className="is-buy" style={{ width: `${buyRate}%` }} /><span className="is-sell" style={{ width: `${sellRate}%` }} /></div>
+    <small><span className="is-buy">{percent(buyRate)} {t('Buy')}</span><span aria-hidden="true"> · </span><span className="is-sell">{percent(sellRate)} {t('Sell')}</span></small>
+  </div>
 }
 
 function MonthlyChart({ title, items, field, rate = false, accent = 'gold' }) {
@@ -87,10 +99,10 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
     {loading ? <TestingSkeleton label="Đang tải Performance…" /> : <><div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">
       <Metric title={t("Time invested")} value={<Duration seconds={performance?.time_invested_seconds} />} detail={dashboardDurationParts(performance?.time_invested_seconds) ? previewPayload ? t("Thời gian luyện tập mẫu") : t("Thời gian đã ghi nhận") : t("Chưa có dữ liệu thời gian luyện tập")} icon="clock" />
       <Metric title={t("Historical time replayed")} value={<Duration seconds={performance?.historical_time_replayed_seconds} />} detail={dashboardDurationParts(performance?.historical_time_replayed_seconds) ? previewPayload ? t("Thời gian replay mẫu") : t("Thời gian đã ghi nhận") : t("Chưa có dữ liệu thời gian replay")} icon="history" />
-      <Metric title={t("Trades taken")} value={dashboardNumber(metrics?.closed_trade_count)} detail={t("Giao dịch đã đóng · đã loại trùng")} icon="trades" />
-      <Metric title={t("Overall win rate")} value={dashboardNumber(metrics?.win_rate_pct, '%')} detail={metrics?.wins != null ? t("{wins} thắng · {losses} thua · {breakeven} hòa", { wins: dashboardNumber(metrics.wins), losses: dashboardNumber(metrics.losses), breakeven: dashboardNumber(metrics.breakeven) }) : t("Chưa có kết quả giao dịch")} icon="target">
-        {metrics?.closed_trade_count > 0 && <div className="fx-dashboard-outcome-bar" aria-hidden="true">{['wins', 'losses', 'breakeven'].map(outcome => <span key={outcome} className={`is-${outcome}`} style={{ width: `${metrics[outcome] / metrics.closed_trade_count * 100}%` }} />)}</div>}
+      <Metric title={t("Trades taken")} value={dashboardNumber(metrics?.closed_trade_count)} icon="trades">
+        <SideSplit counts={performance?.side_counts} total={metrics?.closed_trade_count} />
       </Metric>
+      <Metric title={t("Overall win rate")} value={dashboardNumber(metrics?.win_rate_pct, '%')} icon="target" />
     </div><MonthlyChart title={t("Giao dịch theo tháng")} items={performance?.months || []} field="closed_trade_count" /></div>
     <div className="fx-dashboard-secondary-charts"><MonthlyChart title={t("Win rate by month")} items={performance?.months || []} field="win_rate_pct" rate accent="blue" /><SymbolChart items={performance?.symbols || []} /></div></>}
   </section>

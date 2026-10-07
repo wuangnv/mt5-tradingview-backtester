@@ -21,9 +21,9 @@
 .fx-dashboard-card-facts > span { display: inline-flex; align-items: center; gap: 6px; }
 .fx-dashboard-card-facts svg, .fx-dashboard-card-actions svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-dashboard-card-asset { display: inline-block; }
-.fx-dashboard-card-progress { position: relative; display: flex; align-items: center; justify-content: center; min-height: 40px; text-align: center; min-width: 0; }
+.fx-dashboard-card-progress { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: var(--wm-icon-action-size); text-align: center; min-width: 0; }
 .fx-dashboard-card-progress small { color: var(--project-primary); font-weight: 500; }
-.fx-dashboard-card-progress progress { position: absolute; top: 0; left: 0; appearance: none; width: 100%; height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
+.fx-dashboard-card-progress progress { display: block; flex-shrink: 0; appearance: none; width: 100%; height: 6px; border: 0; border-radius: 999px; overflow: hidden; background: var(--wm-control-open); }
 .fx-dashboard-card-progress progress::-webkit-progress-bar { background: var(--wm-control-open); }
 .fx-dashboard-card-progress progress::-webkit-progress-value { background: var(--project-primary); }
 .fx-dashboard-card-progress progress::-moz-progress-bar { background: var(--project-primary); }
@@ -54,7 +54,7 @@
 @media (max-width: 1250px) {
   .fx-dashboard-session-card-head { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 14px; }
   .fx-dashboard-card-progress { grid-column: 2; grid-row: 2; width: min(160px, 100%); text-align: left; }
-  .fx-dashboard-card-progress { justify-content: flex-start; }
+  .fx-dashboard-card-progress { align-items: flex-start; }
   .fx-dashboard-card-actions { grid-column: 3; grid-row: 1 / span 2; }
 }
 @media (max-width: 960px) {

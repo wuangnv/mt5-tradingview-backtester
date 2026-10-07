@@ -1,0 +1,107 @@
+{
+  "pass": true,
+  "scope": "Dashboard Buy/Sell split, minimal overall-win card, centered remaining-days cluster",
+  "matrixCases": 24,
+  "edgeCases": 24,
+  "settledProgressCases": 4,
+  "axeScans": 16,
+  "axeViolations": 0,
+  "sourcePins": [
+    {
+      "file": "foundation_v2/trading_workspace_v2/dashboard_read_model.py",
+      "sha256": "db5ee5232d142b8cbc55e96cb6623ca373e4ff3772b2ccf0bb30ed7f8eed56e5",
+      "finalSha256": "db5ee5232d142b8cbc55e96cb6623ca373e4ff3772b2ccf0bb30ed7f8eed56e5"
+    },
+    {
+      "file": "foundation_v2/trading_workspace_v2/replay_analytics.py",
+      "sha256": "6295d299673a0cd68de68689e45fb24174dfcf7e74da8a7a8e7e898a514279a1",
+      "finalSha256": "6295d299673a0cd68de68689e45fb24174dfcf7e74da8a7a8e7e898a514279a1"
+    },
+    {
+      "file": "foundation_v2/web/src/DashboardPerformance.jsx",
+      "sha256": "9697d2c96afe5238909866830f647ee4188d01e4da2af101b77c3ba778c750cf",
+      "finalSha256": "9697d2c96afe5238909866830f647ee4188d01e4da2af101b77c3ba778c750cf"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard.css",
+      "sha256": "46733fcc5af76447c4096b7ec02aa5e7e73ad8579929a902e529ffea4b4a4765",
+      "finalSha256": "46733fcc5af76447c4096b7ec02aa5e7e73ad8579929a902e529ffea4b4a4765"
+    },
+    {
+      "file": "foundation_v2/web/src/dashboard-session.css",
+      "sha256": "3159166b8ec867d01e4303d0720604c67299b777aaae4267a84b12fcea650b9b",
+      "finalSha256": "3159166b8ec867d01e4303d0720604c67299b777aaae4267a84b12fcea650b9b"
+    },
+    {
+      "file": "foundation_v2/web/src/demoFixtures.js",
+      "sha256": "702ca00774903b91f115444eebab864d5623ae92ee4c5b23e20122b3691bdce2",
+      "finalSha256": "702ca00774903b91f115444eebab864d5623ae92ee4c5b23e20122b3691bdce2"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-standard.css",
+      "sha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573",
+      "finalSha256": "cf1bda426f885566782e519d9a98c3462a4a3998dc1f64243b90288c545a6573"
+    },
+    {
+      "file": "foundation_v2/web/src/testing-copy.json",
+      "sha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2",
+      "finalSha256": "c86b83f834d9167365aff30ea4d48cda076a7d77802b81550ccfde9dd9ce76d2"
+    },
+    {
+      "file": "ui/testing-standard.md",
+      "sha256": "fe6e02061dba290ebf9548001e83c59bbfdc1f14ffb511037bf59ae7e693f038",
+      "finalSha256": "fe6e02061dba290ebf9548001e83c59bbfdc1f14ffb511037bf59ae7e693f038"
+    }
+  ],
+  "actualOracle": {
+    "counts": {
+      "buy": 0,
+      "sell": 1
+    },
+    "ledgerCount": 1,
+    "sideCounts": {
+      "buy": 0,
+      "sell": 1
+    },
+    "duplicateCount": 0
+  },
+  "settledDays": [
+    {
+      "theme": "dark",
+      "language": "en",
+      "width": 1710,
+      "days": "91 days",
+      "label": "91 days remaining"
+    },
+    {
+      "theme": "light",
+      "language": "vi",
+      "width": 1710,
+      "days": "91 ngày",
+      "label": "Còn 91 ngày"
+    },
+    {
+      "theme": "dark",
+      "language": "vi",
+      "width": 768,
+      "days": "91 ngày",
+      "label": "Còn 91 ngày"
+    },
+    {
+      "theme": "light",
+      "language": "en",
+      "width": 360,
+      "days": "91 days",
+      "label": "91 days remaining"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "boundaries": [
+    "Actual current dataset is SELL-only; buy-only/balanced/malformed cases synthetic",
+    "Actual API timing remains null, no timer added",
+    "Backend tests/build owned by primary checkpoint",
+    "No mutations, broker/provider calls, or earlier Live acceptance rerun"
+  ],
+  "review": "REVIEW.md"
+}

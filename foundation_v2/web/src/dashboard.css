@@ -60,10 +60,13 @@
 .fx-dashboard-duration { display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .fx-dashboard-duration > span { display: inline-flex; align-items: baseline; gap: 4px; }
 .fx-app[data-ui-area='testing'] .fx-content .fx-dashboard-duration small { font-size: 14px; font-weight: 400; color: var(--wm-content-muted); }
-.fx-dashboard-outcome-bar { display: flex; height: 5px; overflow: hidden; border-radius: 999px; margin-bottom: 8px; flex-shrink: 0; }
-.fx-dashboard-outcome-bar .is-wins { background: var(--report-positive); }
-.fx-dashboard-outcome-bar .is-losses { background: var(--report-negative); }
-.fx-dashboard-outcome-bar .is-breakeven { background: var(--project-muted); }
+.fx-dashboard-side-split { margin-top: auto; }
+.fx-dashboard-side-bar { display: flex; height: 5px; overflow: hidden; border-radius: 999px; margin-bottom: 6px; }
+.fx-dashboard-side-bar .is-buy { background: var(--report-positive); }
+.fx-dashboard-side-bar .is-sell { background: var(--report-negative); }
+.fx-dashboard-side-split small { display: block; }
+.fx-dashboard-side-split small .is-buy { color: var(--report-positive); }
+.fx-dashboard-side-split small .is-sell { color: var(--report-negative); }
 .fx-dashboard-metric .is-positive { color: var(--wm-positive); }
 .fx-dashboard-chart-panel h3 { font-size: 14px; font-weight: 600; margin: 0 0 28px; }
 .fx-dashboard-chart-panel { --chart-accent: var(--dashboard-gold); display: flex; flex-direction: column; }
