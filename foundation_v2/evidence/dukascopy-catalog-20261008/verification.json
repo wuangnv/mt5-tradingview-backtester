@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "name": "real-missing-key-1710-dark",
+      "pass": true
+    },
+    {
+      "name": "real-missing-key-1710-light",
+      "pass": true
+    },
+    {
+      "name": "real-missing-key-360-dark",
+      "pass": true
+    },
+    {
+      "name": "real-missing-key-360-light",
+      "pass": true
+    },
+    {
+      "name": "fixture-cached",
+      "posts": 0,
+      "pass": true
+    },
+    {
+      "name": "fixture-stale",
+      "posts": 0,
+      "pass": true
+    },
+    {
+      "name": "fixture-bootstrap",
+      "posts": 1,
+      "pass": true
+    },
+    {
+      "name": "fixture-failed",
+      "posts": 1,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

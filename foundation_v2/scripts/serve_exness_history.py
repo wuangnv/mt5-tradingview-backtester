@@ -13,6 +13,7 @@ sys.path[:0] = [str(repo / 'foundation_v2'), str(repo)]
 from trading_workspace_v2.api import create_app
 from trading_workspace_v2.auth import LocalWorkspaceAuthorization
 from trading_workspace_v2.market_sync import MarketRuntime
+from trading_workspace_v2.dukascopy_catalog import DukascopyCatalog
 
 
 def main():
@@ -41,6 +42,7 @@ def main():
         authorization=LocalWorkspaceAuthorization.for_local_owner(['tenant-a'], identity_id='local-owner'),
         learn_roots={'tenant-a': repo.parent.parent / 'education'},
         market_runtime_factory=runtime,
+        instrument_catalog=DukascopyCatalog(artifacts / 'catalog/dukascopy-instruments.json', os.getenv('TW_DUKASCOPY_API_KEY')),
     )
     print(f'Exness imported-history API: loopback port {args.port}; paper execution only.', flush=True)
     uvicorn.run(app, host='127.0.0.1', port=args.port)

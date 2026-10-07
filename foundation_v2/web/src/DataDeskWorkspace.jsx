@@ -7,7 +7,7 @@ import {
   qualityLabel,
   datasetWarnings,
 } from './researchDataApi.js'
-import { fetchOfflineLibrary, importLocalCsv, previewLocalCsv } from './dataDeskApi.js'
+import { fetchOfflineLibrary, refreshInstrumentCatalog, importLocalCsv, previewLocalCsv } from './dataDeskApi.js'
 import './research-data.css'
 import { useTestingLocale } from './testingLocale.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
@@ -332,6 +332,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const [catalogRevision, setCatalogRevision] = useState(0)
   const [catalogRetryCount, setCatalogRetryCount] = useState(0)
   const [csvOpen, setCsvOpen] = useState(false), [csvBusy, setCsvBusy] = useState(false)
+  const [catalogBusy, setCatalogBusy] = useState(false), [catalogRefreshError, setCatalogRefreshError] = useState(false)
   const catalogRequestSeq = useRef(0)
   const catalogRetryCountRef = useRef(0)
 
@@ -348,11 +349,20 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     }
     const controller = new AbortController()
     const requestSeq = ++catalogRequestSeq.current
+    setCatalogBusy(false)
+    setCatalogRefreshError(false)
     setState((current) => ({ ...current, status: 'loading', error: null }))
     fetchOfflineLibrary(workspace, controller.signal)
-      .then(({ datasets, instruments }) => {
+      .then(async payload => {
+        if (requestSeq !== catalogRequestSeq.current || controller.signal.aborted) return
+        // Only bootstrap an empty configured catalog. Cached/stale reads never poll the provider.
+        if (payload.catalog?.status === 'empty' && payload.catalog.configured && !payload.catalog.error) {
+          try { payload = { ...payload, ...await refreshInstrumentCatalog(workspace, controller.signal) } }
+          catch (error) { if (error.name === 'AbortError') return; setCatalogRefreshError(true) }
+        }
+        const { datasets, instruments, catalog } = payload
         if (requestSeq !== catalogRequestSeq.current) return
-        setState({ status: 'ready', datasets, instruments, error: null })
+        setState({ status: 'ready', datasets, instruments, catalog, error: null })
         catalogRetryCountRef.current = 0
         setCatalogRetryCount(0)
         setSelectedId((current) => current || datasets[0]?.dataset_id || '')
@@ -374,6 +384,28 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
 
   const catalogRetryExhausted = catalogRetryCount >= MAX_GET_RETRIES
 
+  useEffect(() => {
+    const catalog = state.catalog
+    if (!catalog?.configured || catalog.refresh_available || !catalog.retry_after_seconds) return
+    const timer = setTimeout(() => setState(current => ({ ...current, catalog:{ ...current.catalog, refresh_available:true, retry_after_seconds:0 } })), catalog.retry_after_seconds * 1000)
+    return () => clearTimeout(timer)
+  }, [state.catalog])
+
+  const refreshCatalog = async () => {
+    if (catalogBusy || !state.catalog?.refresh_available) return
+    const requestSeq = catalogRequestSeq.current
+    setCatalogBusy(true)
+    setCatalogRefreshError(false)
+    try {
+      const payload = await refreshInstrumentCatalog(workspace)
+      if (requestSeq === catalogRequestSeq.current) setState(current => ({ ...current, ...payload }))
+    } catch { if (requestSeq === catalogRequestSeq.current) setCatalogRefreshError(true) }
+    finally { if (requestSeq === catalogRequestSeq.current) setCatalogBusy(false) }
+  }
+  const catalogError = catalogRefreshError ? 'source_unavailable' : state.catalog?.error
+  const catalogMessages = { missing_key:'Chưa cấu hình Dukascopy API key.', key_rejected:'Dukascopy không chấp nhận API key.', rate_limited:'Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.', source_unavailable:'Không cập nhật được danh sách Dukascopy.', invalid_response:'Danh sách Dukascopy trả về không hợp lệ.', invalid_cache:'Bản lưu danh sách Dukascopy không hợp lệ.', cache_write_failed:'Không lưu được danh sách Dukascopy.' }
+  const catalogMessage = catalogMessages[catalogError] || (!state.catalog?.configured && state.catalog?.status === 'empty' ? catalogMessages.missing_key : state.catalog?.stale ? 'Danh sách Dukascopy đã cũ.' : '')
+
   const rows = useMemo(() => libraryRows(state.datasets, state.instruments), [state.datasets, state.instruments])
   const sources = [...new Set(rows.map(sourceOf))].sort()
   const filteredDatasets = useMemo(() => filterLibrary(rows,{category:categoryFilter,provider:providerFilter,search,sort}), [categoryFilter,providerFilter,search,sort,rows])
@@ -393,11 +425,13 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           <button type="button" className="fxa-button fxa-icon-button data-library-filter-toggle" aria-label={t(filtersOpen ? 'Ẩn bộ lọc dữ liệu' : 'Hiện bộ lọc dữ liệu')} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) { setCategoryFilter('all'); setProviderFilter('all') } setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
           {filtersOpen && <><FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} /><FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={[{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]} /></>}
           <FxSelect label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'downloaded',label:'Đã tải trước'},{value:'newest',label:'Mới lưu nhất'}]} />
+          {state.catalog && <button type="button" className="fxa-button data-library-refresh" onClick={refreshCatalog} disabled={Boolean(preview) || state.status !== 'ready' || catalogBusy || !state.catalog.refresh_available} aria-busy={catalogBusy} title={state.catalog.retrieved_at_utc ? `${t('Danh sách cập nhật lúc')} ${formatUtc(state.catalog.retrieved_at_utc, locale)}` : t('Lấy danh sách tài sản Dukascopy')}><TestingIcon kind="history" />{t(catalogBusy ? 'Đang cập nhật…' : 'Cập nhật danh sách')}</button>}
           <button type="button" className="fxa-button data-library-import" disabled={Boolean(preview)} onClick={() => openCsv()}><TestingIcon kind="upload" />{t('Nhập CSV')}</button>
         </div>
       </div>
 
       {state.status === 'loading' && <div className="rd-message" role="status">{t('Đang đọc dữ liệu đã lưu…')}</div>}
+      {state.status === 'ready' && catalogMessage && <p className="data-library-catalog-status" role="status">{t(catalogMessage)}{state.catalog?.status === 'cached' && ` ${t('Đang dùng bản đã lưu.')}`}</p>}
       {state.status === 'error' && <div className="rd-message is-error" role="alert">{t('Không đọc được kho dữ liệu:')} {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{t(catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại')}</button>{catalogRetryExhausted && <small id="data-desk-retry-note">{t('Kiểm tra nguồn dữ liệu trước khi thử lại.')}</small>}</div>}
 
       {state.status === 'ready' && (

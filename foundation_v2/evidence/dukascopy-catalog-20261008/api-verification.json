@@ -1,0 +1,8 @@
+{
+  "scope": "disposable PostgreSQL, mock upstream, temporary cache",
+  "checks": [
+    "authorized refresh, unauthorized no I/O, GET no I/O, no history dataset, cooldown, no exposed key",
+    "restart without key reuses cached list; missing-key refresh retains rows"
+  ],
+  "pass": true
+}

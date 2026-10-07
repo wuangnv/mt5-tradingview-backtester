@@ -10,7 +10,8 @@
 .fx-app .data-library .data-library-filter-toggle { display:grid; place-items:center; flex-shrink:0; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); border-radius:50%; padding:0; background:transparent; font-size:24px; }
 .data-library-filter-toggle svg { width:20px; height:20px; }
 .fx-app .data-library .data-library-filter-toggle[aria-expanded=true] { background:var(--wm-selected); }
-.data-library .data-library-import { display:flex; align-items:center; gap:8px; white-space:nowrap; }
+.data-library :is(.data-library-import, .data-library-refresh) { display:flex; align-items:center; gap:8px; white-space:nowrap; }
+.data-library-catalog-status { margin:0 0 16px; font-size:13px; color:var(--wm-content-muted); }
 .data-library .rd-table-wrap { overflow:auto; max-height:560px; margin-inline:calc(-1 * var(--wm-page-gutter)); width:calc(100% + 2 * var(--wm-page-gutter)); }
 .data-library .rd-table th { position:sticky; top:0; background:var(--wm-surface); z-index:1; }
 .data-library .rd-table :is(th, td):first-child { padding-left:var(--wm-page-gutter); }

@@ -36,6 +36,31 @@ This foundation does not enable live execution, read holdout data or deploy to
 cloud. Existing root launch scripts still start Flask legacy; they do not launch
 PATH-2. Follow the root README when developing this foundation.
 
+## Offline instrument catalog
+
+The local imported-history launcher configures a Dukascopy **metadata-only**
+catalog. Set `TW_DUKASCOPY_API_KEY` in the backend launch process using your own
+issued Trading Tools key. Never put it in a `VITE_` variable, source file, URL
+you share, or the browser. Obtain access through
+[Dukascopy Trading Tools](https://www.dukascopy.com/trading-tools/api/documentation).
+Restart the local API after changing that process configuration.
+
+Authorized GET `/api/v2/data/datasets` reads cached `catalog_items` and
+`catalog_state`; it makes no Dukascopy request. The first UI open with a configured
+key and no cache requests POST `/api/v2/data/catalog/refresh`. Later refreshes
+require **Cập nhật danh sách**. There is no scheduler, quote stream or automatic
+refresh of stale data. Snapshots survive API restarts under the artifact root at
+`catalog/dukascopy-instruments.json`; a failed request retains the previous file.
+A 60-second server cooldown prevents repeated requests; 429 extends it to five
+minutes. Seven-day-old metadata is marked stale but remains usable offline.
+
+The API returns documented names only; categories absent from that response stay
+unknown. This catalog does not prove historical availability, complete date
+ranges, quality, history-download permission or broker execution. Download buttons
+remain unavailable pending the separate history adapter and provider-use gate.
+Missing/rejected keys and invalid/rate-limited responses are reported without
+exposing credentials. No key or fabricated instrument list is bundled.
+
 Session management in Dashboard and Sessions distinguishes archive/restore from
 delete. `POST /api/v2/replay/sessions/{id}/delete` requires a strict positive
 `expected_revision` and the exact current `confirmation_name`. It appends a

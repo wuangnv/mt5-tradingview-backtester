@@ -1,0 +1,1222 @@
+{
+  "cases": [
+    {
+      "name": "missing-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "missing-dark-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "missing-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "missing-light-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "cached-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "cached-dark-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "cached-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "cached-light-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "stale-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "stale-dark-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "stale-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "stale-light-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "error-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "error-dark-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "error-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "error-light-1710",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 1211.3125,
+            "right": 1243.3125,
+            "top": 147,
+            "bottom": 179
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 1253.3125,
+            "right": 1378.875,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 1388.875,
+            "right": 1556.765625,
+            "top": 143,
+            "bottom": 183
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 1566.765625,
+            "right": 1678,
+            "top": 143,
+            "bottom": 183
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "bootstrap-success-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "bootstrap-success-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "bootstrap-http-error-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "bootstrap-http-error-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "manual-success-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "manual-success-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "manual-http-error-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "manual-http-error-light-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 1,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v2/data/catalog/refresh"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "cooldown-dark-360",
+      "geometry": {
+        "overflow": 0,
+        "buttons": [
+          {
+            "label": "Hiện bộ lọc dữ liệu",
+            "left": 164.4375,
+            "right": 208.4375,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Sắp xếp dữ liệu",
+            "left": 218.4375,
+            "right": 344,
+            "top": 201,
+            "bottom": 245
+          },
+          {
+            "label": "Cập nhật danh sách",
+            "left": 176.109375,
+            "right": 344,
+            "top": 255,
+            "bottom": 299
+          },
+          {
+            "label": "Nhập CSV",
+            "left": 232.765625,
+            "right": 344,
+            "top": 309,
+            "bottom": 353
+          }
+        ]
+      },
+      "requests": {
+        "posts": 0,
+        "gets": 1
+      },
+      "traffic": [
+        {
+          "method": "GET",
+          "path": "/api/v2/data/datasets"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true,
+  "hashes": {
+    "web/src/DataDeskWorkspace.jsx": "3357b9009c813af443b7765e678a12c811ff72c103fbc86ab0b0ef67947d175c",
+    "web/src/dataDeskApi.js": "3bb73cda3bd474e8a492f77776dbddfe290ad62af95c1bdc7b0da6a80b85007e",
+    "web/src/data-library.css": "247e673246a6d12417a4465a3369ef4ff5cdc1fd3c2141504cea250e406338bf",
+    "trading_workspace_v2/dukascopy_catalog.py": "e6abb4e6561e855829096c9ad56284191e0c0c4973cabc67e694ccd4aa0939d4",
+    "trading_workspace_v2/api.py": "106460fed73aff2f7a8f34ce0795d57e9467edcc3fe2f7b3a63972cd51a2b5cd",
+    "scripts/serve_exness_history.py": "55e647dc419f47b85500abd39d31ff39686978571d4f092d40faf1dc46577e40"
+  }
+}

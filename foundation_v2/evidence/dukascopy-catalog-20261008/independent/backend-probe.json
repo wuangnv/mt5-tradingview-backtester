@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "name": "missing-key",
+      "pass": true,
+      "evidence": "missing_key without HTTP"
+    },
+    {
+      "name": "sanitize-reload-capabilities",
+      "pass": true,
+      "evidence": "sanitized UTF8 public fields, cache reload, metadata-only"
+    },
+    {
+      "name": "concurrent-refresh-cached-get",
+      "pass": true,
+      "evidence": {
+        "cached_read_seconds": 1.579998934175819e-05,
+        "mock_request_count": 1
+      }
+    },
+    {
+      "name": "error-cooldown-retains-cache",
+      "pass": true,
+      "evidence": [
+        {
+          "http": 403,
+          "error": "key_rejected",
+          "cached_count": 1
+        },
+        {
+          "http": 429,
+          "error": "rate_limited",
+          "cached_count": 1
+        },
+        {
+          "http": 302,
+          "error": "source_unavailable",
+          "cached_count": 1
+        },
+        {
+          "http": 503,
+          "error": "source_unavailable",
+          "cached_count": 1
+        },
+        {
+          "http": 200,
+          "error": "invalid_response",
+          "cached_count": 1
+        },
+        {
+          "http": 200,
+          "error": "invalid_response",
+          "cached_count": 1
+        },
+        {
+          "http": 200,
+          "error": "invalid_response",
+          "cached_count": 1
+        }
+      ]
+    },
+    {
+      "name": "corrupt-cache",
+      "pass": true,
+      "evidence": "corrupt digest rejected without network"
+    }
+  ],
+  "pass": true,
+  "source_sha256": "e6abb4e6561e855829096c9ad56284191e0c0c4973cabc67e694ccd4aa0939d4"
+}

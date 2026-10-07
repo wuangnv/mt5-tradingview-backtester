@@ -395,7 +395,7 @@ symbol-name guesses. Table columns are product, category, source, UTC historical
 range, candle count, quality and actions. Session creation belongs to Sessions
 and Dashboard; this page has no create-session action.
 Search is left-aligned. Right-aligned controls reuse the Recent Sessions pattern:
-compact filter toggle, optional category/source pills, sort and CSV import.
+compact filter toggle, optional category/source pills, sort, instrument-list refresh and CSV import.
 Closing filters resets category/source; search and sort remain independent.
 There is no count, duplicate title or permanent explanatory block above the grid.
 Table separators extend through the shared page gutter while text stays inset.
@@ -421,8 +421,15 @@ Unknown dataset links do not silently select an unrelated dataset.
 
 The owner prioritized offline first. MT5 connection/sync UI work is deferred;
 existing Live screens remain unchanged. No new Data Desk sidebar entry is created.
-Dukascopy is not configured. No inventory or history is fabricated in an empty
-real workspace. Loaded rows show disabled Downloaded; metadata-only rows currently
+The imported-history launcher now configures a metadata-only Dukascopy catalog.
+The backend process reads TW_DUKASCOPY_API_KEY; it is never returned to the UI.
+Ordinary catalog GETs read an atomically saved local snapshot, without external I/O.
+An empty configured catalog is fetched once on page entry; cached lists only refresh
+through the toolbar action. Seven-day-old lists are marked stale, with no polling.
+Failure retains cached rows; missing key, denied key, 429 and invalid-cache states
+remain explicit. A local UI cooldown timer re-enables the button without network I/O.
+No inventory or history is fabricated when the real workspace lacks key/cache.
+Loaded rows show disabled Downloaded; metadata-only rows currently
 show disabled Download with an unavailable-source tooltip. Enabling that action
 requires a separately configured and verified history adapter. CSV import reuses
 the deterministic preview and immutable artifact APIs.

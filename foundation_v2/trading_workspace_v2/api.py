@@ -190,6 +190,7 @@ def create_app(
     learn_roots: Mapping[str, str | Path] | None = None,
     notion_oauth: NotionOAuthService | None = None,
     market_runtime_factory=None,
+    instrument_catalog=None,
 ) -> FastAPI:
     dsn = dsn or os.environ["TW_V2_DATABASE_URL"]
     artifact_root = artifact_root or os.environ["TW_V2_ARTIFACT_ROOT"]
@@ -200,7 +201,7 @@ def create_app(
     ingest = DataIngestService(store, artifacts)
     replay = ReplayService(store, artifacts)
     product = ProductService(store, ai_service=ai_service)
-    data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store)])
+    data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store), *([instrument_catalog] if instrument_catalog else [])])
     if learn_roots is None:
         learn_workspace = os.getenv("TW_V2_LEARN_WORKSPACE_ID")
         education_root = os.getenv("TW_V2_EDUCATION_ROOT")
@@ -549,7 +550,16 @@ def create_app(
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
         return {"items": data_registry.list_datasets(workspace),
-                "catalog_items": data_registry.list_instruments(workspace), "holdout_access": False}
+                "catalog_items": data_registry.list_instruments(workspace), "holdout_access": False,
+                "catalog_state": instrument_catalog.status() if instrument_catalog else None}
+
+    @app.post("/api/v2/data/catalog/refresh")
+    def refresh_instrument_catalog(workspace: str = Depends(workspace_id)):
+        if instrument_catalog is None:
+            raise HTTPException(status_code=503, detail="instrument_catalog_not_configured")
+        instrument_catalog.refresh()
+        return {"catalog_items": data_registry.list_instruments(workspace),
+                "catalog_state": instrument_catalog.status()}
 
     @app.get('/api/v2/data/market-assets')
     def market_assets(workspace: str = Depends(workspace_id)):

@@ -1,0 +1,33 @@
+{
+  "raw_bytes": 1390000,
+  "max_bytes": 2097152,
+  "cache_bytes": 1390218,
+  "before": {
+    "provider_id": "dukascopy-catalog",
+    "configured": true,
+    "status": "cached",
+    "retrieved_at_utc": "2026-10-07T17:12:58.528994+00:00",
+    "item_count": 5000,
+    "stale": false,
+    "error": null,
+    "refresh_available": false,
+    "retry_after_seconds": 60
+  },
+  "after_reload": {
+    "provider_id": "dukascopy-catalog",
+    "configured": false,
+    "status": "cached",
+    "retrieved_at_utc": "2026-10-07T17:12:58.528994+00:00",
+    "item_count": 5000,
+    "stale": false,
+    "error": null,
+    "refresh_available": false,
+    "retry_after_seconds": 0
+  },
+  "mock_requests": [
+    {
+      "method": "GET",
+      "host": "freeserv.dukascopy.com"
+    }
+  ]
+}
