@@ -5411,6 +5411,14 @@
     "vi": "Simulator hiện yêu cầu cả SL và TP.",
     "en": "The simulator currently requires both SL and TP."
   },
+  "Trang hiện tại": {
+    "vi": "Trang hiện tại",
+    "en": "Current page"
+  },
+  "trên {total}": {
+    "vi": "trên {total}",
+    "en": "of {total}"
+  },
   "Khối lượng (quantity)": {
     "vi": "Khối lượng (quantity)",
     "en": "Position Size (Quantity)"

@@ -321,4 +321,10 @@ hover/focus belongs to its single outer container; all six-dot grips use filled
 circles. Popovers focus the selected enabled item, dismiss on focus leaving,
 restore the opener on Escape/explicit dismissal and preserve native form editing.
 Evidence: `foundation_v2/evidence/fx-chart-polish-20261007/consistency-report.json`
-and `consistency-review.md`.
+and `independent/consistency-review.md`.
+
+### Chart hover and positions follow-up
+
+Compact chart action controls use rounded hover geometry. Six-dot drag grips do not react visually to pointer hover; keyboard focus remains available. Quantity focus belongs to the single outer edge, including when either spinner is focused.
+
+Position tabs use transparent hover with text contrast, an active underline across the full button and continuous top/bottom dividers. The table header uses project-raised in both themes. Rows-per-page sits left, page navigation right, and the pager remains at the bottom of the positions viewport with a top divider. Maximizing positions hides the chart's floating replay toolbar so it cannot cover table tabs/rows; restoring the chart preserves that toolbar's state and position.

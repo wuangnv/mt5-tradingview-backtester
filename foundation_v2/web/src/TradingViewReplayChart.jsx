@@ -101,7 +101,8 @@ export default function TradingViewReplayChart(props) {
         header_widget_buttons_mode: 'adaptive',
         auto_save_delay: 1,
         enabled_features: ['seconds_resolution', 'items_favoriting'],
-        disabled_features: ['header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
+        // v23's sampled analytics assumes an http document URL and fails on srcdoc.
+        disabled_features: ['14851', 'header_symbol_search', 'symbol_search_hot_key', 'compare_symbol', 'header_compare', 'header_saveload', 'use_localstorage_for_settings', 'header_screenshot', 'header_fullscreen_button', 'widget_logo'],
         overrides: paneAppearance(theme),
         studies_overrides: Object.fromEntries(Object.entries(volumeAppearance(theme)).map(([key, value]) => [`volume.${key}`, value])),
       })

@@ -267,18 +267,24 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .is-legacy-chart .chart-trading-account .legacy-balance strong { margin: 0; }
 .is-legacy-chart .chart-trading-account button { width: 30px; height: 30px; display: grid; place-items: center; border: 0; background: transparent; color: var(--chart-muted); cursor: pointer; }
 .legacy-positions { flex: 0 0 auto; max-height: 230px; overflow: auto; background: var(--chart-bg); color: var(--chart-text); font-size: 12px; }
-.legacy-position-tabs { display: flex; gap: 20px; padding-inline: 20px; border-bottom: 1px solid var(--chart-line); }
-.legacy-position-tabs button { padding: 12px 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--chart-muted); cursor: pointer; font: inherit; }
+.legacy-position-tabs { display: flex; gap: 0; padding: 0; border-block: 1px solid var(--chart-line); }
+.legacy-position-tabs button { padding: 16px; border: 0; border-bottom: 1px solid transparent; border-radius:0; background: transparent; color: var(--chart-muted); cursor: pointer; font: inherit; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-position-tabs button:hover:not(:disabled) { background:transparent; color:var(--chart-text); border-bottom-color:transparent; box-shadow:none; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .legacy-position-tabs button[aria-selected='true']:hover { border-bottom-color:var(--chart-text); }
 .legacy-position-tabs button[aria-selected='true'] { border-color: var(--chart-text); color: var(--chart-text); }
 .legacy-position-scroll { overflow-x: auto; }
 .legacy-positions table { width: 100%; border-collapse: collapse; white-space: nowrap; }
 .legacy-positions :is(th, td) { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--chart-line); font-weight: 400; }
-.legacy-positions th { color: var(--chart-muted); }
+.legacy-positions th { background:var(--project-raised); color:var(--chart-text); }
 .legacy-positions td[colspan] { text-align: center; color: var(--chart-muted); padding: 24px; }
-.legacy-position-paging { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 10px 16px; }
+.legacy-position-paging { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; min-height:64px; box-sizing:border-box; border-top:1px solid var(--chart-line); }
 .legacy-position-paging label { display: flex; align-items: center; gap: 8px; }
-.legacy-position-paging :is(select, button) { background: var(--chart-bg); color: var(--chart-text); border: 1px solid var(--chart-line); border-radius: 4px; padding: 5px; }
+.legacy-position-navigation { display:flex; align-items:center; gap:10px; }
+.legacy-position-paging select { background:var(--chart-bg); color:var(--chart-text); border:1px solid var(--chart-line); border-radius:20px; padding:8px 10px; font:inherit; }
+.legacy-position-paging button { display:grid; place-items:center; width:30px; height:30px; background:transparent; color:var(--chart-text); border:0; border-radius:6px; padding:5px; }
+.legacy-position-paging button:hover:not(:disabled) { background:var(--project-hover); }
 .legacy-position-paging button:disabled { opacity: .4; }
+@media (max-width:480px) { .legacy-position-paging { padding-inline:8px; gap:6px; font-size:11px; } .legacy-position-navigation { gap:4px; } }
 .legacy-sync-toggle { position: relative; width: 38px; height: 22px; display: inline-flex; align-items: center; flex-shrink: 0; }
 .legacy-sync-toggle input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; }
 .legacy-sync-toggle span { display: block; width: 38px; height: 22px; border-radius: 12px; background: #383C45; }
@@ -457,6 +463,8 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-order-modal :is(input,select):hover:not(:disabled) { background:var(--project-hover); border-color:var(--project-border-strong); }
 .legacy-order-modal :is(input,select):disabled { opacity:.5; cursor:default; }
 .is-legacy-chart .chart-floating-toolbar button.chart-float-grip { color:var(--chart-text); }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-account) :is(button,a):not(.legacy-balance-pill):not(.legacy-analytics-link) { border-radius:6px; }
+.fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart :is(.chart-float-grip,.legacy-positions-grip):hover:not(:disabled) { background:transparent; color:var(--chart-text); box-shadow:none; filter:none; }
 @media (prefers-reduced-motion:reduce) {
  .legacy-native-menu button, .legacy-order-modal :is(button,input,select), .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select) { transition:none; }
 }

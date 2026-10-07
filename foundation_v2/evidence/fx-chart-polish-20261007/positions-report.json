@@ -1,0 +1,480 @@
+{
+  "scope": "Actual local GET, isolated contexts; writes blocked, activity receipts fulfilled locally.",
+  "cases": [
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "dark",
+      "replayGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(115, 115, 115)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "positionsGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "3px",
+        "border": "0px none rgb(115, 115, 115)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "quantityFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "16px",
+        "border": "1px solid rgb(48, 48, 48)",
+        "outlineStyle": "solid",
+        "offset": "-2px"
+      },
+      "inputFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "0px none rgb(255, 255, 255)",
+        "outlineStyle": "none",
+        "offset": "-2px"
+      },
+      "headerHover": {
+        "background": "rgba(41, 41, 41, 0.125)",
+        "color": "rgb(224, 224, 224)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(224, 224, 224)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "normalFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64
+      },
+      "tabBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(189, 189, 189)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "tabHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "geometry": {
+        "overflow": 0,
+        "paging": {
+          "x": 0,
+          "y": 726,
+          "width": 1368,
+          "height": 64,
+          "top": 726,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "topBorder": "1px",
+        "tabsTop": "1px",
+        "headerBg": "rgb(29, 29, 29)",
+        "tableBg": "rgb(0, 0, 0)",
+        "sizeLabel": {
+          "x": 16,
+          "y": 742,
+          "width": 167.109375,
+          "height": 33,
+          "top": 742,
+          "right": 183.109375,
+          "bottom": 775,
+          "left": 16
+        },
+        "navigation": {
+          "x": 1177.5,
+          "y": 740.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 740.5,
+          "right": 1352,
+          "bottom": 776.5,
+          "left": 1177.5
+        }
+      }
+    },
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "light",
+      "replayGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(136, 136, 136)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "positionsGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "3px",
+        "border": "0px none rgb(136, 136, 136)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "quantityFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "16px",
+        "border": "1px solid rgb(218, 218, 218)",
+        "outlineStyle": "solid",
+        "offset": "-2px"
+      },
+      "inputFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "0px none rgb(17, 17, 17)",
+        "outlineStyle": "none",
+        "offset": "-2px"
+      },
+      "headerHover": {
+        "background": "rgba(235, 235, 235, 0.384)",
+        "color": "rgb(31, 31, 31)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(31, 31, 31)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "normalFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64
+      },
+      "tabBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(82, 82, 82)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "tabHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "geometry": {
+        "overflow": 0,
+        "paging": {
+          "x": 0,
+          "y": 726,
+          "width": 1368,
+          "height": 64,
+          "top": 726,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "topBorder": "1px",
+        "tabsTop": "1px",
+        "headerBg": "rgb(250, 250, 250)",
+        "tableBg": "rgb(255, 255, 255)",
+        "sizeLabel": {
+          "x": 16,
+          "y": 742,
+          "width": 167.109375,
+          "height": 33,
+          "top": 742,
+          "right": 183.109375,
+          "bottom": 775,
+          "left": 16
+        },
+        "navigation": {
+          "x": 1177.5,
+          "y": 740.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 740.5,
+          "right": 1352,
+          "bottom": 776.5,
+          "left": 1177.5
+        }
+      }
+    },
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "dark",
+      "replayGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(115, 115, 115)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "positionsGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "3px",
+        "border": "0px none rgb(115, 115, 115)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "quantityFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "16px",
+        "border": "1px solid rgb(57, 66, 71)",
+        "outlineStyle": "solid",
+        "offset": "-2px"
+      },
+      "inputFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "0px none rgb(255, 255, 255)",
+        "outlineStyle": "none",
+        "offset": "-2px"
+      },
+      "headerHover": {
+        "background": "rgba(41, 41, 41, 0.616)",
+        "color": "rgb(241, 241, 241)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(241, 241, 241)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "normalFooter": {
+        "x": 0,
+        "y": 876,
+        "width": 1920,
+        "height": 64
+      },
+      "tabBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(189, 189, 189)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "tabHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "geometry": {
+        "overflow": 0,
+        "paging": {
+          "x": 0,
+          "y": 876,
+          "width": 1920,
+          "height": 64,
+          "top": 876,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "topBorder": "1px",
+        "tabsTop": "1px",
+        "headerBg": "rgb(29, 29, 29)",
+        "tableBg": "rgb(0, 0, 0)",
+        "sizeLabel": {
+          "x": 16,
+          "y": 892,
+          "width": 167.109375,
+          "height": 33,
+          "top": 892,
+          "right": 183.109375,
+          "bottom": 925,
+          "left": 16
+        },
+        "navigation": {
+          "x": 1729.5,
+          "y": 890.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 890.5,
+          "right": 1904,
+          "bottom": 926.5,
+          "left": 1729.5
+        }
+      }
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "replayGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(115, 115, 115)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "positionsGrip": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "3px",
+        "border": "0px none rgb(115, 115, 115)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "quantityFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "16px",
+        "border": "1px solid rgb(48, 48, 48)",
+        "outlineStyle": "solid",
+        "offset": "-2px"
+      },
+      "inputFocus": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "0px none rgb(255, 255, 255)",
+        "outlineStyle": "none",
+        "offset": "-2px"
+      },
+      "headerHover": {
+        "background": "rgba(41, 41, 41, 0.38)",
+        "color": "rgb(233, 233, 233)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "6px",
+        "border": "0px none rgb(233, 233, 233)",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "normalFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64
+      },
+      "tabBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(189, 189, 189)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "tabHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none",
+        "radius": "0px",
+        "border": "",
+        "outlineStyle": "none",
+        "offset": "0px"
+      },
+      "geometry": {
+        "overflow": 0,
+        "paging": {
+          "x": 0,
+          "y": 780,
+          "width": 360,
+          "height": 64,
+          "top": 780,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "topBorder": "1px",
+        "tabsTop": "1px",
+        "headerBg": "rgb(29, 29, 29)",
+        "tableBg": "rgb(0, 0, 0)",
+        "sizeLabel": {
+          "x": 8,
+          "y": 796,
+          "width": 158.9375,
+          "height": 33,
+          "top": 796,
+          "right": 166.9375,
+          "bottom": 829,
+          "left": 8
+        },
+        "navigation": {
+          "x": 198.046875,
+          "y": 794.5,
+          "width": 153.953125,
+          "height": 36,
+          "top": 794.5,
+          "right": 352,
+          "bottom": 830.5,
+          "left": 198.046875
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}

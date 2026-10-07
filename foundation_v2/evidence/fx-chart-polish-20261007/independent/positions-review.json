@@ -1,0 +1,4612 @@
+{
+  "scope": "Positions and focus polish. Real local GET + isolated response-only 35-closed-trade fixture. No persisted replay/order/activity writes.",
+  "cases": [
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "dark",
+      "header": {
+        "width": 1368,
+        "buttons": [
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Chọn bộ dữ liệu đã tải",
+            "radius": "6px"
+          },
+          {
+            "title": "So sánh mã",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "Bố cục chart",
+            "radius": "6px"
+          },
+          {
+            "title": "Lưu chart · Lưu trên trình duyệt này",
+            "radius": "6px"
+          },
+          {
+            "title": "Quản lý layout",
+            "radius": "6px"
+          },
+          {
+            "title": "Tìm công cụ",
+            "radius": "6px"
+          },
+          {
+            "title": "Chụp biểu đồ PNG",
+            "radius": "6px"
+          },
+          {
+            "title": "Editor",
+            "radius": "6px"
+          },
+          {
+            "title": "AI Mentor",
+            "radius": "6px"
+          },
+          {
+            "title": "Đổi giao diện",
+            "radius": "6px"
+          },
+          {
+            "title": "Toàn màn hình",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Đo lường",
+            "radius": "6px"
+          },
+          {
+            "title": "Phóng to",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Giữ nguyên Chế độ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "Khóa Tất cả Công cụ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Hiện Danh sách đối tượng",
+            "radius": "6px"
+          }
+        ],
+        "overflow": 0
+      },
+      "grips": [
+        {
+          "cls": ".chart-float-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(115, 115, 115)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(115, 115, 115)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          }
+        },
+        {
+          "cls": ".legacy-positions-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 662,
+              "y": 747,
+              "width": 44,
+              "height": 36,
+              "top": 747,
+              "right": 706,
+              "bottom": 783,
+              "left": 662
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(115, 115, 115)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(115, 115, 115)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 662,
+              "y": 747,
+              "width": 44,
+              "height": 36,
+              "top": 747,
+              "right": 706,
+              "bottom": 783,
+              "left": 662
+            }
+          }
+        }
+      ],
+      "quantity": [
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 131.703125,
+              "y": 751,
+              "width": 89,
+              "height": 28,
+              "top": 751,
+              "right": 220.703125,
+              "bottom": 779,
+              "left": 131.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(48, 48, 48)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(48, 48, 48)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 750,
+              "width": 115,
+              "height": 30,
+              "top": 750,
+              "right": 245.703125,
+              "bottom": 780,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(189, 189, 189)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(189, 189, 189)",
+            "borderColor": "rgb(189, 189, 189)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(189, 189, 189)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 753,
+              "width": 18,
+              "height": 12,
+              "top": 753,
+              "right": 241.703125,
+              "bottom": 765,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(57, 66, 71)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(57, 66, 71)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 750,
+              "width": 115,
+              "height": 30,
+              "top": 750,
+              "right": 245.703125,
+              "bottom": 780,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(189, 189, 189)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(189, 189, 189)",
+            "borderColor": "rgb(189, 189, 189)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(189, 189, 189)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 765,
+              "width": 18,
+              "height": 12,
+              "top": 765,
+              "right": 241.703125,
+              "bottom": 777,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(57, 66, 71)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(57, 66, 71)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 750,
+              "width": 115,
+              "height": 30,
+              "top": 750,
+              "right": 245.703125,
+              "bottom": 780,
+              "left": 130.703125
+            }
+          }
+        }
+      ],
+      "tabs": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(189, 189, 189)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(189, 189, 189)",
+          "borderColor": "rgb(189, 189, 189) rgb(189, 189, 189) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 561,
+            "width": 86.796875,
+            "height": 48,
+            "top": 561,
+            "right": 207.546875,
+            "bottom": 609,
+            "left": 120.75
+          }
+        },
+        "active": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(255, 255, 255)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(255, 255, 255)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 561,
+            "width": 120.75,
+            "height": 48,
+            "top": 561,
+            "right": 120.75,
+            "bottom": 609,
+            "left": 0
+          }
+        },
+        "container": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(48, 48, 48) rgb(255, 255, 255)",
+          "borderTop": "1px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(48, 48, 48)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 560,
+            "width": 1368,
+            "height": 50,
+            "top": 560,
+            "right": 1368,
+            "bottom": 610,
+            "left": 0
+          }
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(115, 115, 115) rgb(115, 115, 115) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 561,
+            "width": 86.796875,
+            "height": 48,
+            "top": 561,
+            "right": 207.546875,
+            "bottom": 609,
+            "left": 120.75
+          }
+        }
+      },
+      "normal": {
+        "paging": {
+          "x": 0,
+          "y": 726,
+          "width": 1368,
+          "height": 64,
+          "top": 726,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 560,
+          "width": 1368,
+          "height": 230,
+          "top": 560,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "headerBg": "rgb(29, 29, 29)",
+        "sectionBg": "rgb(0, 0, 0)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 742,
+          "width": 167.109375,
+          "height": 33,
+          "top": 742,
+          "right": 183.109375,
+          "bottom": 775,
+          "left": 16
+        },
+        "right": {
+          "x": 1177.5,
+          "y": 740.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 740.5,
+          "right": 1352,
+          "bottom": 776.5,
+          "left": 1177.5
+        }
+      },
+      "maximized": {
+        "paging": {
+          "x": 0,
+          "y": 726,
+          "width": 1368,
+          "height": 64,
+          "top": 726,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 93,
+          "width": 1368,
+          "height": 697,
+          "top": 93,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "headerBg": "rgb(29, 29, 29)",
+        "sectionBg": "rgb(0, 0, 0)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 742,
+          "width": 167.109375,
+          "height": 33,
+          "top": 742,
+          "right": 183.109375,
+          "bottom": 775,
+          "left": 16
+        },
+        "right": {
+          "x": 1177.5,
+          "y": 740.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 740.5,
+          "right": 1352,
+          "bottom": 776.5,
+          "left": 1177.5
+        },
+        "replayVisibility": "hidden"
+      }
+    },
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "light",
+      "header": {
+        "width": 1368,
+        "buttons": [
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Chọn bộ dữ liệu đã tải",
+            "radius": "6px"
+          },
+          {
+            "title": "So sánh mã",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "Bố cục chart",
+            "radius": "6px"
+          },
+          {
+            "title": "Lưu chart · Lưu trên trình duyệt này",
+            "radius": "6px"
+          },
+          {
+            "title": "Quản lý layout",
+            "radius": "6px"
+          },
+          {
+            "title": "Tìm công cụ",
+            "radius": "6px"
+          },
+          {
+            "title": "Chụp biểu đồ PNG",
+            "radius": "6px"
+          },
+          {
+            "title": "Editor",
+            "radius": "6px"
+          },
+          {
+            "title": "AI Mentor",
+            "radius": "6px"
+          },
+          {
+            "title": "Đổi giao diện",
+            "radius": "6px"
+          },
+          {
+            "title": "Toàn màn hình",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Đo lường",
+            "radius": "6px"
+          },
+          {
+            "title": "Phóng to",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Giữ nguyên Chế độ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "Khóa Tất cả Công cụ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Hiện Danh sách đối tượng",
+            "radius": "6px"
+          }
+        ],
+        "overflow": 0
+      },
+      "grips": [
+        {
+          "cls": ".chart-float-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(136, 136, 136)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(136, 136, 136)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          }
+        },
+        {
+          "cls": ".legacy-positions-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 662,
+              "y": 747,
+              "width": 44,
+              "height": 36,
+              "top": 747,
+              "right": 706,
+              "bottom": 783,
+              "left": 662
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(136, 136, 136)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(136, 136, 136)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 662,
+              "y": 747,
+              "width": 44,
+              "height": 36,
+              "top": 747,
+              "right": 706,
+              "bottom": 783,
+              "left": 662
+            }
+          }
+        }
+      ],
+      "quantity": [
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "0px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 131.703125,
+              "y": 751,
+              "width": 89,
+              "height": 28,
+              "top": 751,
+              "right": 220.703125,
+              "bottom": 779,
+              "left": 131.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(195, 203, 208)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(195, 203, 208)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 750,
+              "width": 115,
+              "height": 30,
+              "top": 750,
+              "right": 245.703125,
+              "bottom": 780,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(82, 82, 82)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(82, 82, 82)",
+            "borderColor": "rgb(82, 82, 82)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(82, 82, 82)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 753,
+              "width": 18,
+              "height": 12,
+              "top": 753,
+              "right": 241.703125,
+              "bottom": 765,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(195, 203, 208)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(195, 203, 208)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 750,
+              "width": 115,
+              "height": 30,
+              "top": 750,
+              "right": 245.703125,
+              "bottom": 780,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(82, 82, 82)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(82, 82, 82)",
+            "borderColor": "rgb(82, 82, 82)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(82, 82, 82)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 765,
+              "width": 18,
+              "height": 12,
+              "top": 765,
+              "right": 241.703125,
+              "bottom": 777,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(195, 203, 208)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(195, 203, 208)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 750,
+              "width": 115,
+              "height": 30,
+              "top": 750,
+              "right": 245.703125,
+              "bottom": 780,
+              "left": 130.703125
+            }
+          }
+        }
+      ],
+      "tabs": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(82, 82, 82)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(82, 82, 82)",
+          "borderColor": "rgb(82, 82, 82) rgb(82, 82, 82) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 561,
+            "width": 86.796875,
+            "height": 48,
+            "top": 561,
+            "right": 207.546875,
+            "bottom": 609,
+            "left": 120.75
+          }
+        },
+        "active": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(17, 17, 17)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(17, 17, 17)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 561,
+            "width": 120.75,
+            "height": 48,
+            "top": 561,
+            "right": 120.75,
+            "bottom": 609,
+            "left": 0
+          }
+        },
+        "container": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(218, 218, 218) rgb(17, 17, 17)",
+          "borderTop": "1px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(218, 218, 218)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 560,
+            "width": 1368,
+            "height": 50,
+            "top": 560,
+            "right": 1368,
+            "bottom": 610,
+            "left": 0
+          }
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(136, 136, 136) rgb(136, 136, 136) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 561,
+            "width": 86.796875,
+            "height": 48,
+            "top": 561,
+            "right": 207.546875,
+            "bottom": 609,
+            "left": 120.75
+          }
+        }
+      },
+      "normal": {
+        "paging": {
+          "x": 0,
+          "y": 726,
+          "width": 1368,
+          "height": 64,
+          "top": 726,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 560,
+          "width": 1368,
+          "height": 230,
+          "top": 560,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "headerBg": "rgb(250, 250, 250)",
+        "sectionBg": "rgb(255, 255, 255)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 742,
+          "width": 167.109375,
+          "height": 33,
+          "top": 742,
+          "right": 183.109375,
+          "bottom": 775,
+          "left": 16
+        },
+        "right": {
+          "x": 1177.5,
+          "y": 740.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 740.5,
+          "right": 1352,
+          "bottom": 776.5,
+          "left": 1177.5
+        }
+      },
+      "maximized": {
+        "paging": {
+          "x": 0,
+          "y": 726,
+          "width": 1368,
+          "height": 64,
+          "top": 726,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 93,
+          "width": 1368,
+          "height": 697,
+          "top": 93,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "headerBg": "rgb(250, 250, 250)",
+        "sectionBg": "rgb(255, 255, 255)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 742,
+          "width": 167.109375,
+          "height": 33,
+          "top": 742,
+          "right": 183.109375,
+          "bottom": 775,
+          "left": 16
+        },
+        "right": {
+          "x": 1177.5,
+          "y": 740.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 740.5,
+          "right": 1352,
+          "bottom": 776.5,
+          "left": 1177.5
+        },
+        "replayVisibility": "hidden"
+      }
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "header": {
+        "width": 360,
+        "buttons": [
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Chọn bộ dữ liệu đã tải",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "AI Mentor",
+            "radius": "6px"
+          },
+          {
+            "title": "Công cụ biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Đo lường",
+            "radius": "6px"
+          },
+          {
+            "title": "Phóng to",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Giữ nguyên Chế độ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "Khóa Tất cả Công cụ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Hiện Danh sách đối tượng",
+            "radius": "6px"
+          }
+        ],
+        "overflow": 0
+      },
+      "grips": [
+        {
+          "cls": ".chart-float-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 75,
+              "y": 145,
+              "width": 24,
+              "height": 30,
+              "top": 145,
+              "right": 99,
+              "bottom": 175,
+              "left": 75
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(115, 115, 115)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(115, 115, 115)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 75,
+              "y": 145,
+              "width": 24,
+              "height": 30,
+              "top": 145,
+              "right": 99,
+              "bottom": 175,
+              "left": 75
+            }
+          }
+        },
+        {
+          "cls": ".legacy-positions-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 320,
+              "y": 760,
+              "width": 32,
+              "height": 36,
+              "top": 760,
+              "right": 352,
+              "bottom": 796,
+              "left": 320
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(115, 115, 115)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(115, 115, 115)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 320,
+              "y": 760,
+              "width": 32,
+              "height": 36,
+              "top": 760,
+              "right": 352,
+              "bottom": 796,
+              "left": 320
+            }
+          }
+        }
+      ],
+      "quantity": [
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 121.703125,
+              "y": 764,
+              "width": 79,
+              "height": 28,
+              "top": 764,
+              "right": 200.703125,
+              "bottom": 792,
+              "left": 121.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(48, 48, 48)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(48, 48, 48)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 120.703125,
+              "y": 763,
+              "width": 105,
+              "height": 30,
+              "top": 763,
+              "right": 225.703125,
+              "bottom": 793,
+              "left": 120.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(189, 189, 189)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(189, 189, 189)",
+            "borderColor": "rgb(189, 189, 189)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(189, 189, 189)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 203.703125,
+              "y": 766,
+              "width": 18,
+              "height": 12,
+              "top": 766,
+              "right": 221.703125,
+              "bottom": 778,
+              "left": 203.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(48, 48, 48)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(48, 48, 48)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 120.703125,
+              "y": 763,
+              "width": 105,
+              "height": 30,
+              "top": 763,
+              "right": 225.703125,
+              "bottom": 793,
+              "left": 120.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(189, 189, 189)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(189, 189, 189)",
+            "borderColor": "rgb(189, 189, 189)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(189, 189, 189)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 203.703125,
+              "y": 778,
+              "width": 18,
+              "height": 12,
+              "top": 778,
+              "right": 221.703125,
+              "bottom": 790,
+              "left": 203.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(48, 48, 48)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(48, 48, 48)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 120.703125,
+              "y": 763,
+              "width": 105,
+              "height": 30,
+              "top": 763,
+              "right": 225.703125,
+              "bottom": 793,
+              "left": 120.703125
+            }
+          }
+        }
+      ],
+      "tabs": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(189, 189, 189)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(189, 189, 189)",
+          "borderColor": "rgb(189, 189, 189) rgb(189, 189, 189) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 615,
+            "width": 86.796875,
+            "height": 48,
+            "top": 615,
+            "right": 207.546875,
+            "bottom": 663,
+            "left": 120.75
+          }
+        },
+        "active": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(255, 255, 255)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(255, 255, 255)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 615,
+            "width": 120.75,
+            "height": 48,
+            "top": 615,
+            "right": 120.75,
+            "bottom": 663,
+            "left": 0
+          }
+        },
+        "container": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(48, 48, 48) rgb(255, 255, 255)",
+          "borderTop": "1px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(48, 48, 48)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 614,
+            "width": 360,
+            "height": 50,
+            "top": 614,
+            "right": 360,
+            "bottom": 664,
+            "left": 0
+          }
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(115, 115, 115) rgb(115, 115, 115) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 615,
+            "width": 86.796875,
+            "height": 48,
+            "top": 615,
+            "right": 207.546875,
+            "bottom": 663,
+            "left": 120.75
+          }
+        }
+      },
+      "normal": {
+        "paging": {
+          "x": 0,
+          "y": 780,
+          "width": 360,
+          "height": 64,
+          "top": 780,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 614,
+          "width": 360,
+          "height": 230,
+          "top": 614,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "headerBg": "rgb(29, 29, 29)",
+        "sectionBg": "rgb(0, 0, 0)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 8,
+          "y": 796,
+          "width": 158.9375,
+          "height": 33,
+          "top": 796,
+          "right": 166.9375,
+          "bottom": 829,
+          "left": 8
+        },
+        "right": {
+          "x": 198.046875,
+          "y": 794.5,
+          "width": 153.953125,
+          "height": 36,
+          "top": 794.5,
+          "right": 352,
+          "bottom": 830.5,
+          "left": 198.046875
+        }
+      },
+      "maximized": {
+        "paging": {
+          "x": 0,
+          "y": 780,
+          "width": 360,
+          "height": 64,
+          "top": 780,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 134,
+          "width": 360,
+          "height": 710,
+          "top": 134,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "headerBg": "rgb(29, 29, 29)",
+        "sectionBg": "rgb(0, 0, 0)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 8,
+          "y": 796,
+          "width": 158.9375,
+          "height": 33,
+          "top": 796,
+          "right": 166.9375,
+          "bottom": 829,
+          "left": 8
+        },
+        "right": {
+          "x": 198.046875,
+          "y": 794.5,
+          "width": 153.953125,
+          "height": 36,
+          "top": 794.5,
+          "right": 352,
+          "bottom": 830.5,
+          "left": 198.046875
+        },
+        "replayVisibility": "hidden"
+      }
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "header": {
+        "width": 360,
+        "buttons": [
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Chọn bộ dữ liệu đã tải",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "AI Mentor",
+            "radius": "6px"
+          },
+          {
+            "title": "Công cụ biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Đo lường",
+            "radius": "6px"
+          },
+          {
+            "title": "Phóng to",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Giữ nguyên Chế độ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "Khóa Tất cả Công cụ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Hiện Danh sách đối tượng",
+            "radius": "6px"
+          }
+        ],
+        "overflow": 0
+      },
+      "grips": [
+        {
+          "cls": ".chart-float-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 75,
+              "y": 145,
+              "width": 24,
+              "height": 30,
+              "top": 145,
+              "right": 99,
+              "bottom": 175,
+              "left": 75
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(136, 136, 136)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(136, 136, 136)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 75,
+              "y": 145,
+              "width": 24,
+              "height": 30,
+              "top": 145,
+              "right": 99,
+              "bottom": 175,
+              "left": 75
+            }
+          }
+        },
+        {
+          "cls": ".legacy-positions-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 320,
+              "y": 760,
+              "width": 32,
+              "height": 36,
+              "top": 760,
+              "right": 352,
+              "bottom": 796,
+              "left": 320
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(136, 136, 136)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(136, 136, 136)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 320,
+              "y": 760,
+              "width": 32,
+              "height": 36,
+              "top": 760,
+              "right": 352,
+              "bottom": 796,
+              "left": 320
+            }
+          }
+        }
+      ],
+      "quantity": [
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "0px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 121.703125,
+              "y": 764,
+              "width": 79,
+              "height": 28,
+              "top": 764,
+              "right": 200.703125,
+              "bottom": 792,
+              "left": 121.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(218, 218, 218)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(218, 218, 218)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 120.703125,
+              "y": 763,
+              "width": 105,
+              "height": 30,
+              "top": 763,
+              "right": 225.703125,
+              "bottom": 793,
+              "left": 120.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(82, 82, 82)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(82, 82, 82)",
+            "borderColor": "rgb(82, 82, 82)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(82, 82, 82)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 203.703125,
+              "y": 766,
+              "width": 18,
+              "height": 12,
+              "top": 766,
+              "right": 221.703125,
+              "bottom": 778,
+              "left": 203.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(195, 203, 208)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(195, 203, 208)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 120.703125,
+              "y": 763,
+              "width": 105,
+              "height": 30,
+              "top": 763,
+              "right": 225.703125,
+              "bottom": 793,
+              "left": 120.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(82, 82, 82)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(82, 82, 82)",
+            "borderColor": "rgb(82, 82, 82)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(82, 82, 82)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 203.703125,
+              "y": 778,
+              "width": 18,
+              "height": 12,
+              "top": 778,
+              "right": 221.703125,
+              "bottom": 790,
+              "left": 203.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(170, 187, 197)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(170, 187, 197)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 120.703125,
+              "y": 763,
+              "width": 105,
+              "height": 30,
+              "top": 763,
+              "right": 225.703125,
+              "bottom": 793,
+              "left": 120.703125
+            }
+          }
+        }
+      ],
+      "tabs": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(82, 82, 82)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(82, 82, 82)",
+          "borderColor": "rgb(82, 82, 82) rgb(82, 82, 82) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 615,
+            "width": 86.796875,
+            "height": 48,
+            "top": 615,
+            "right": 207.546875,
+            "bottom": 663,
+            "left": 120.75
+          }
+        },
+        "active": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(17, 17, 17)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(17, 17, 17)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 615,
+            "width": 120.75,
+            "height": 48,
+            "top": 615,
+            "right": 120.75,
+            "bottom": 663,
+            "left": 0
+          }
+        },
+        "container": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(218, 218, 218) rgb(17, 17, 17)",
+          "borderTop": "1px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(218, 218, 218)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 614,
+            "width": 360,
+            "height": 50,
+            "top": 614,
+            "right": 360,
+            "bottom": 664,
+            "left": 0
+          }
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(136, 136, 136) rgb(136, 136, 136) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 615,
+            "width": 86.796875,
+            "height": 48,
+            "top": 615,
+            "right": 207.546875,
+            "bottom": 663,
+            "left": 120.75
+          }
+        }
+      },
+      "normal": {
+        "paging": {
+          "x": 0,
+          "y": 780,
+          "width": 360,
+          "height": 64,
+          "top": 780,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 614,
+          "width": 360,
+          "height": 230,
+          "top": 614,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "headerBg": "rgb(250, 250, 250)",
+        "sectionBg": "rgb(255, 255, 255)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 8,
+          "y": 796,
+          "width": 158.9375,
+          "height": 33,
+          "top": 796,
+          "right": 166.9375,
+          "bottom": 829,
+          "left": 8
+        },
+        "right": {
+          "x": 198.046875,
+          "y": 794.5,
+          "width": 153.953125,
+          "height": 36,
+          "top": 794.5,
+          "right": 352,
+          "bottom": 830.5,
+          "left": 198.046875
+        }
+      },
+      "maximized": {
+        "paging": {
+          "x": 0,
+          "y": 780,
+          "width": 360,
+          "height": 64,
+          "top": 780,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 134,
+          "width": 360,
+          "height": 710,
+          "top": 134,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "headerBg": "rgb(250, 250, 250)",
+        "sectionBg": "rgb(255, 255, 255)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 8,
+          "y": 796,
+          "width": 158.9375,
+          "height": 33,
+          "top": 796,
+          "right": 166.9375,
+          "bottom": 829,
+          "left": 8
+        },
+        "right": {
+          "x": 198.046875,
+          "y": 794.5,
+          "width": 153.953125,
+          "height": 36,
+          "top": 794.5,
+          "right": 352,
+          "bottom": 830.5,
+          "left": 198.046875
+        },
+        "replayVisibility": "hidden"
+      }
+    },
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "dark",
+      "header": {
+        "width": 1920,
+        "buttons": [
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Chọn bộ dữ liệu đã tải",
+            "radius": "6px"
+          },
+          {
+            "title": "So sánh mã",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "Bố cục chart",
+            "radius": "6px"
+          },
+          {
+            "title": "Lưu chart · Lưu trên trình duyệt này",
+            "radius": "6px"
+          },
+          {
+            "title": "Quản lý layout",
+            "radius": "6px"
+          },
+          {
+            "title": "Tìm công cụ",
+            "radius": "6px"
+          },
+          {
+            "title": "Chụp biểu đồ PNG",
+            "radius": "6px"
+          },
+          {
+            "title": "Editor",
+            "radius": "6px"
+          },
+          {
+            "title": "AI Mentor",
+            "radius": "6px"
+          },
+          {
+            "title": "Đổi giao diện",
+            "radius": "6px"
+          },
+          {
+            "title": "Toàn màn hình",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Đo lường",
+            "radius": "6px"
+          },
+          {
+            "title": "Phóng to",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Giữ nguyên Chế độ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "Khóa Tất cả Công cụ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Hiện Danh sách đối tượng",
+            "radius": "6px"
+          }
+        ],
+        "overflow": 0
+      },
+      "grips": [
+        {
+          "cls": ".chart-float-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(115, 115, 115)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(115, 115, 115)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          }
+        },
+        {
+          "cls": ".legacy-positions-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 938,
+              "y": 897,
+              "width": 44,
+              "height": 36,
+              "top": 897,
+              "right": 982,
+              "bottom": 933,
+              "left": 938
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(115, 115, 115)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(115, 115, 115)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 938,
+              "y": 897,
+              "width": 44,
+              "height": 36,
+              "top": 897,
+              "right": 982,
+              "bottom": 933,
+              "left": 938
+            }
+          }
+        }
+      ],
+      "quantity": [
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(255, 255, 255)",
+            "borderColor": "rgb(255, 255, 255)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 131.703125,
+              "y": 901,
+              "width": 89,
+              "height": 28,
+              "top": 901,
+              "right": 220.703125,
+              "bottom": 929,
+              "left": 131.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(48, 48, 48)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(48, 48, 48)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 900,
+              "width": 115,
+              "height": 30,
+              "top": 900,
+              "right": 245.703125,
+              "bottom": 930,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(189, 189, 189)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(189, 189, 189)",
+            "borderColor": "rgb(189, 189, 189)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(189, 189, 189)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 903,
+              "width": 18,
+              "height": 12,
+              "top": 903,
+              "right": 241.703125,
+              "bottom": 915,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(57, 66, 71)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(57, 66, 71)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 900,
+              "width": 115,
+              "height": 30,
+              "top": 900,
+              "right": 245.703125,
+              "bottom": 930,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(189, 189, 189)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(189, 189, 189)",
+            "borderColor": "rgb(189, 189, 189)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(189, 189, 189)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 915,
+              "width": 18,
+              "height": 12,
+              "top": 915,
+              "right": 241.703125,
+              "bottom": 927,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(255, 255, 255)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(122, 187, 230)",
+            "borderColor": "rgb(57, 66, 71)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(57, 66, 71)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 900,
+              "width": 115,
+              "height": 30,
+              "top": 900,
+              "right": 245.703125,
+              "bottom": 930,
+              "left": 130.703125
+            }
+          }
+        }
+      ],
+      "tabs": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(189, 189, 189)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(189, 189, 189)",
+          "borderColor": "rgb(189, 189, 189) rgb(189, 189, 189) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 711,
+            "width": 86.796875,
+            "height": 48,
+            "top": 711,
+            "right": 207.546875,
+            "bottom": 759,
+            "left": 120.75
+          }
+        },
+        "active": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(255, 255, 255)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(255, 255, 255)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 711,
+            "width": 120.75,
+            "height": 48,
+            "top": 711,
+            "right": 120.75,
+            "bottom": 759,
+            "left": 0
+          }
+        },
+        "container": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(48, 48, 48) rgb(255, 255, 255)",
+          "borderTop": "1px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(48, 48, 48)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 710,
+            "width": 1920,
+            "height": 50,
+            "top": 710,
+            "right": 1920,
+            "bottom": 760,
+            "left": 0
+          }
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "borderColor": "rgb(115, 115, 115) rgb(115, 115, 115) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 711,
+            "width": 86.796875,
+            "height": 48,
+            "top": 711,
+            "right": 207.546875,
+            "bottom": 759,
+            "left": 120.75
+          }
+        }
+      },
+      "normal": {
+        "paging": {
+          "x": 0,
+          "y": 876,
+          "width": 1920,
+          "height": 64,
+          "top": 876,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 710,
+          "width": 1920,
+          "height": 230,
+          "top": 710,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerBg": "rgb(29, 29, 29)",
+        "sectionBg": "rgb(0, 0, 0)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 892,
+          "width": 167.109375,
+          "height": 33,
+          "top": 892,
+          "right": 183.109375,
+          "bottom": 925,
+          "left": 16
+        },
+        "right": {
+          "x": 1729.5,
+          "y": 890.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 890.5,
+          "right": 1904,
+          "bottom": 926.5,
+          "left": 1729.5
+        }
+      },
+      "maximized": {
+        "paging": {
+          "x": 0,
+          "y": 876,
+          "width": 1920,
+          "height": 64,
+          "top": 876,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 93,
+          "width": 1920,
+          "height": 847,
+          "top": 93,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerBg": "rgb(29, 29, 29)",
+        "sectionBg": "rgb(0, 0, 0)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 892,
+          "width": 167.109375,
+          "height": 33,
+          "top": 892,
+          "right": 183.109375,
+          "bottom": 925,
+          "left": 16
+        },
+        "right": {
+          "x": 1729.5,
+          "y": 890.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 890.5,
+          "right": 1904,
+          "bottom": 926.5,
+          "left": 1729.5
+        },
+        "replayVisibility": "hidden"
+      }
+    },
+    {
+      "width": 1920,
+      "height": 940,
+      "theme": "light",
+      "header": {
+        "width": 1920,
+        "buttons": [
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Chọn bộ dữ liệu đã tải",
+            "radius": "6px"
+          },
+          {
+            "title": "So sánh mã",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "Bố cục chart",
+            "radius": "6px"
+          },
+          {
+            "title": "Lưu chart · Lưu trên trình duyệt này",
+            "radius": "6px"
+          },
+          {
+            "title": "Quản lý layout",
+            "radius": "6px"
+          },
+          {
+            "title": "Tìm công cụ",
+            "radius": "6px"
+          },
+          {
+            "title": "Chụp biểu đồ PNG",
+            "radius": "6px"
+          },
+          {
+            "title": "Editor",
+            "radius": "6px"
+          },
+          {
+            "title": "AI Mentor",
+            "radius": "6px"
+          },
+          {
+            "title": "Đổi giao diện",
+            "radius": "6px"
+          },
+          {
+            "title": "Toàn màn hình",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "3 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "5 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "15 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "30 phút",
+            "radius": "6px"
+          },
+          {
+            "title": "1 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "2 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "4 giờ",
+            "radius": "6px"
+          },
+          {
+            "title": "1 ngày",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tuần",
+            "radius": "6px"
+          },
+          {
+            "title": "1 tháng",
+            "radius": "6px"
+          },
+          {
+            "title": "Khoảng thời gian",
+            "radius": "6px"
+          },
+          {
+            "title": "Biểu đồ nến",
+            "radius": "6px"
+          },
+          {
+            "title": "Các Chỉ báo & Chiến lược",
+            "radius": "6px"
+          },
+          {
+            "title": "Khôi phục sử dụng chủ đề cho biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Cài đặt biểu đồ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Đo lường",
+            "radius": "6px"
+          },
+          {
+            "title": "Phóng to",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Giữ nguyên Chế độ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "Khóa Tất cả Công cụ vẽ",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "",
+            "radius": "6px"
+          },
+          {
+            "title": "Hiện Danh sách đối tượng",
+            "radius": "6px"
+          }
+        ],
+        "overflow": 0
+      },
+      "grips": [
+        {
+          "cls": ".chart-float-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(136, 136, 136)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(136, 136, 136)",
+            "radius": "6px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 852,
+              "y": 145,
+              "width": 22,
+              "height": 30,
+              "top": 145,
+              "right": 874,
+              "bottom": 175,
+              "left": 852
+            }
+          }
+        },
+        {
+          "cls": ".legacy-positions-grip",
+          "base": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 938,
+              "y": 897,
+              "width": 44,
+              "height": 36,
+              "top": 897,
+              "right": 982,
+              "bottom": 933,
+              "left": 938
+            }
+          },
+          "hover": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "0px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(136, 136, 136)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(136, 136, 136)",
+            "radius": "3px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 938,
+              "y": 897,
+              "width": 44,
+              "height": 36,
+              "top": 897,
+              "right": 982,
+              "bottom": 933,
+              "left": 938
+            }
+          }
+        }
+      ],
+      "quantity": [
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(17, 17, 17)",
+            "borderColor": "rgb(17, 17, 17)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(17, 17, 17)",
+            "radius": "0px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 131.703125,
+              "y": 901,
+              "width": 89,
+              "height": 28,
+              "top": 901,
+              "right": 220.703125,
+              "bottom": 929,
+              "left": 131.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(195, 203, 208)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(195, 203, 208)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 900,
+              "width": 115,
+              "height": 30,
+              "top": 900,
+              "right": 245.703125,
+              "bottom": 930,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(82, 82, 82)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(82, 82, 82)",
+            "borderColor": "rgb(82, 82, 82)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(82, 82, 82)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 903,
+              "width": 18,
+              "height": 12,
+              "top": 903,
+              "right": 241.703125,
+              "bottom": 915,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(195, 203, 208)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(195, 203, 208)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 900,
+              "width": 115,
+              "height": 30,
+              "top": 900,
+              "right": 245.703125,
+              "bottom": 930,
+              "left": 130.703125
+            }
+          }
+        },
+        {
+          "child": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(82, 82, 82)",
+            "outlineStyle": "none",
+            "outlineWidth": "3px",
+            "outlineOffset": "2px",
+            "outlineColor": "rgb(82, 82, 82)",
+            "borderColor": "rgb(82, 82, 82)",
+            "borderTop": "0px",
+            "borderBottom": "0px",
+            "borderBottomColor": "rgb(82, 82, 82)",
+            "radius": "2px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 223.703125,
+              "y": 915,
+              "width": 18,
+              "height": 12,
+              "top": 915,
+              "right": 241.703125,
+              "bottom": 927,
+              "left": 223.703125
+            }
+          },
+          "group": {
+            "background": "rgba(0, 0, 0, 0)",
+            "color": "rgb(17, 17, 17)",
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "-2px",
+            "outlineColor": "rgb(36, 101, 139)",
+            "borderColor": "rgb(170, 187, 197)",
+            "borderTop": "1px",
+            "borderBottom": "1px",
+            "borderBottomColor": "rgb(170, 187, 197)",
+            "radius": "16px",
+            "shadow": "none",
+            "filter": "none",
+            "rect": {
+              "x": 130.703125,
+              "y": 900,
+              "width": 115,
+              "height": 30,
+              "top": 900,
+              "right": 245.703125,
+              "bottom": 930,
+              "left": 130.703125
+            }
+          }
+        }
+      ],
+      "tabs": {
+        "base": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(82, 82, 82)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(82, 82, 82)",
+          "borderColor": "rgb(82, 82, 82) rgb(82, 82, 82) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 711,
+            "width": 86.796875,
+            "height": 48,
+            "top": 711,
+            "right": 207.546875,
+            "bottom": 759,
+            "left": 120.75
+          }
+        },
+        "active": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(17, 17, 17)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(17, 17, 17)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 711,
+            "width": 120.75,
+            "height": 48,
+            "top": 711,
+            "right": 120.75,
+            "bottom": 759,
+            "left": 0
+          }
+        },
+        "container": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(218, 218, 218) rgb(17, 17, 17)",
+          "borderTop": "1px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgb(218, 218, 218)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 0,
+            "y": 710,
+            "width": 1920,
+            "height": 50,
+            "top": 710,
+            "right": 1920,
+            "bottom": 760,
+            "left": 0
+          }
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(17, 17, 17)",
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px",
+          "outlineColor": "rgb(17, 17, 17)",
+          "borderColor": "rgb(136, 136, 136) rgb(136, 136, 136) rgba(0, 0, 0, 0)",
+          "borderTop": "0px",
+          "borderBottom": "1px",
+          "borderBottomColor": "rgba(0, 0, 0, 0)",
+          "radius": "0px",
+          "shadow": "none",
+          "filter": "none",
+          "rect": {
+            "x": 120.75,
+            "y": 711,
+            "width": 86.796875,
+            "height": 48,
+            "top": 711,
+            "right": 207.546875,
+            "bottom": 759,
+            "left": 120.75
+          }
+        }
+      },
+      "normal": {
+        "paging": {
+          "x": 0,
+          "y": 876,
+          "width": 1920,
+          "height": 64,
+          "top": 876,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 710,
+          "width": 1920,
+          "height": 230,
+          "top": 710,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerBg": "rgb(250, 250, 250)",
+        "sectionBg": "rgb(255, 255, 255)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 892,
+          "width": 167.109375,
+          "height": 33,
+          "top": 892,
+          "right": 183.109375,
+          "bottom": 925,
+          "left": 16
+        },
+        "right": {
+          "x": 1729.5,
+          "y": 890.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 890.5,
+          "right": 1904,
+          "bottom": 926.5,
+          "left": 1729.5
+        }
+      },
+      "maximized": {
+        "paging": {
+          "x": 0,
+          "y": 876,
+          "width": 1920,
+          "height": 64,
+          "top": 876,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "section": {
+          "x": 0,
+          "y": 93,
+          "width": 1920,
+          "height": 847,
+          "top": 93,
+          "right": 1920,
+          "bottom": 940,
+          "left": 0
+        },
+        "headerBg": "rgb(250, 250, 250)",
+        "sectionBg": "rgb(255, 255, 255)",
+        "overflow": 0,
+        "pagingBorder": "1px",
+        "left": {
+          "x": 16,
+          "y": 892,
+          "width": 167.109375,
+          "height": 33,
+          "top": 892,
+          "right": 183.109375,
+          "bottom": 925,
+          "left": 16
+        },
+        "right": {
+          "x": 1729.5,
+          "y": 890.5,
+          "width": 174.5,
+          "height": 36,
+          "top": 890.5,
+          "right": 1904,
+          "bottom": 926.5,
+          "left": 1729.5
+        },
+        "replayVisibility": "hidden"
+      }
+    }
+  ],
+  "fixture": [
+    {
+      "theme": "dark",
+      "directPage": {
+        "value": "3",
+        "rows": 5,
+        "table": [
+          "EURUSDmBUY31———310",
+          "EURUSDmBUY32———320",
+          "EURUSDmBUY33———330",
+          "EURUSDmBUY34———340",
+          "EURUSDmBUY35———350"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "directPage": {
+        "value": "3",
+        "rows": 5,
+        "table": [
+          "EURUSDmBUY31———310",
+          "EURUSDmBUY32———320",
+          "EURUSDmBUY33———330",
+          "EURUSDmBUY34———340",
+          "EURUSDmBUY35———350"
+        ]
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "telemetry": [
+    {
+      "transport": "blob",
+      "sampledRandom": 0,
+      "pass": true
+    },
+    {
+      "transport": "srcdoc",
+      "sampledRandom": 0,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "sourceHashes": {
+    "web/public/chart-legacy.css": "5efc45ea9b7e73b2e25bb9eb5d3c43d3e4bddd3e5a02fcdc4d966fd96d522941",
+    "web/src/ChartWorkbench.css": "41eb6bcb44d4baff64c9244c00e8e487e6d65af87ce0acadf46c2695f21eb784",
+    "web/src/LegacyTradingBar.css": "1d692492dae9c8bb4e71c2ad2f25e850b886f81769fbd2adeaf44296abf82e04",
+    "web/src/LegacyPositions.jsx": "d438483d93de8364d01d3a997ded5868b6828385fae2325c827c1e90923778e1",
+    "web/src/testing-copy.json": "6587b02bab887093207aa57b562f6d573b85151322d7f49fa9f82e22cc67167c",
+    "web/src/TradingViewReplayChart.jsx": "0278b542acc0d6a3bfe5b5e2892a972c1b698c80c8061bceda8192b839a6dce0"
+  }
+}
