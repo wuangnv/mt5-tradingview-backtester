@@ -364,6 +364,7 @@ through the existing playbook endpoint, then selects that record/revision. Pendi
 blocks navigation and repeat submission; uncertain creation requires checking the
 strategy catalog. This does not freeze or enable execution of a strategy.
 Redundant layout/Legacy explanation is removed; optional layout stays disabled.
-The asset link is underlined with muted hover and no hover surface. Dashboard's
-three quick actions share border, padding and geometry, with peach hover.
+The asset link is muted at rest, with content-colored text and an underline on
+hover, and no hover surface. Dashboard's three quick actions share border,
+padding and geometry, with peach hover.
 Evidence: `foundation_v2/evidence/quick-session-polish-20261007/CHECKPOINT.md`.

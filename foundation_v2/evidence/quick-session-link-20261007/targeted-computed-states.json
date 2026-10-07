@@ -1,0 +1,59 @@
+{
+  "scope": "Targeted actual modal dark/light; local reads only",
+  "cases": [
+    {
+      "theme": "dark",
+      "base": {
+        "color": "rgb(184, 184, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "decoration": "none",
+        "muted": "#B8B8B8",
+        "content": "rgb(255, 255, 255)"
+      },
+      "hover": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "decoration": "underline",
+        "muted": "#B8B8B8",
+        "content": "rgb(255, 255, 255)"
+      },
+      "restored": {
+        "color": "rgb(184, 184, 184)",
+        "background": "rgba(0, 0, 0, 0)",
+        "decoration": "none",
+        "muted": "#B8B8B8",
+        "content": "rgb(255, 255, 255)"
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "base": {
+        "color": "rgb(82, 82, 82)",
+        "background": "rgba(0, 0, 0, 0)",
+        "decoration": "none",
+        "muted": "#525252",
+        "content": "rgb(17, 17, 17)"
+      },
+      "hover": {
+        "color": "rgb(17, 17, 17)",
+        "background": "rgba(0, 0, 0, 0)",
+        "decoration": "underline",
+        "muted": "#525252",
+        "content": "rgb(17, 17, 17)"
+      },
+      "restored": {
+        "color": "rgb(82, 82, 82)",
+        "background": "rgba(0, 0, 0, 0)",
+        "decoration": "none",
+        "muted": "#525252",
+        "content": "rgb(17, 17, 17)"
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true,
+  "sourceSHA256": "0d50fb16cf2690422cb2fc3a32e1912842bf3a0e41f786ce59b6a9473ecd9a29"
+}

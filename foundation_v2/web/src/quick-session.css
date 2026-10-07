@@ -58,8 +58,8 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-text-action { width:fit-content; padding:0; min-height:0; border:0; border-radius:0; background:transparent; color:var(--wm-content-muted); font-size:12px; text-align:left; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-new-strategy { color:var(--project-highlight); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-text-action:hover:not(:disabled) { background:transparent; color:var(--wm-content); }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field-title a { padding:0; border:0; border-radius:0; background:transparent; color:var(--wm-content); text-decoration:underline; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field-title a:hover { background:transparent; color:var(--wm-content-muted); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field-title a { padding:0; border:0; border-radius:0; background:transparent; color:var(--wm-content-muted); text-decoration:none; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field-title a:hover { background:transparent; color:var(--wm-content); text-decoration:underline; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create { display:grid; gap:8px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create > div { display:flex; gap:8px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create > div button { padding:8px 14px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:transparent; }
