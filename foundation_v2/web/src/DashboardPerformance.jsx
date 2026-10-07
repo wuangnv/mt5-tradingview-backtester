@@ -98,7 +98,7 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
   const partial = performance?.status === 'partial'
   const blocked = performance?.status === 'blocked' || performance?.scope?.readable_session_count === 0 && performance?.scope?.session_count > 0
   const partialNotice = partial && !blocked ? t("Performance chỉ tổng hợp {readable}/{total} phiên có dữ liệu.", { readable: performance.scope.readable_session_count, total: performance.scope.session_count }) : ''
-  const notice = filterError || (loading ? 'Đang tải Performance…' : state.status === 'error' ? 'Chưa tải được Performance.' : state.status === 'stale' ? 'Dữ liệu chưa cập nhật.' : blocked ? 'Chưa đủ dữ liệu thực thi để tính Performance.' : metrics?.closed_trade_count === 0 ? 'Không có giao dịch đóng trong phạm vi này.' : '')
+  const notice = filterError || (loading ? 'Đang tải Performance…' : state.status === 'error' ? 'Chưa tải được Performance.' : state.status === 'stale' ? 'Dữ liệu chưa cập nhật.' : blocked ? 'Chưa đủ dữ liệu thực thi để tính Performance.' : '')
   return <section className="fx-dashboard-results" aria-label={t("Performance")} aria-busy={loading || Boolean(state.refreshing)} aria-description={partialNotice || undefined}>
     <div className="fx-dashboard-section-head"><h2 className="fx-dashboard-performance-heading">{t("Performance")}</h2><div className="fx-dashboard-performance-filters">{controls}{dateControls}</div></div>
     {sourceHeading && <h3 className="fx-dashboard-source-heading">{sourceHeading}</h3>}

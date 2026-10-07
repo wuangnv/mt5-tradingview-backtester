@@ -1,18 +1,35 @@
 .data-library.rd-shell { width:100%; max-width:none; min-width:0; }
 .data-library-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px; }
 .data-library .rd-panel-head { flex-wrap:wrap; gap:16px; }
-.data-library-count { color:var(--wm-content-muted); font-size:13px; }
-.data-library-filters { display:flex; flex-wrap:wrap; gap:12px; margin-left:auto; }
-.data-library-search { display:block; position:relative; }
+.data-library-filters { display:flex; flex:1 1 auto; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:10px; margin-left:auto; min-width:0; }
+.data-library-search { display:block; position:relative; flex:1 1 240px; max-width:360px; min-width:0; }
 .data-library-search > svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--wm-content-muted); pointer-events:none; }
-.data-library-filters input { min-height:var(--wm-control-height); max-width:100%; padding:8px 12px 8px 36px; border:1px solid transparent; border-radius:var(--wm-control-radius); background:var(--wm-control-open); color:var(--wm-content); font:inherit; font-size:13px; }
+.data-library-search input { box-sizing:border-box; width:100%; min-height:var(--wm-control-height); padding:8px 12px 8px 36px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:transparent; color:var(--wm-content); font:inherit; font-size:13px; }
+.data-library-search input:focus-visible { outline:0; border-color:var(--wm-focus); }
+.fx-app .data-library .data-library-filter-toggle { display:grid; place-items:center; flex-shrink:0; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); border-radius:50%; padding:0; background:transparent; font-size:24px; }
+.data-library-filter-toggle svg { width:20px; height:20px; }
+.fx-app .data-library .data-library-filter-toggle[aria-expanded=true] { background:var(--wm-selected); }
+.data-library .data-library-import { display:flex; align-items:center; gap:8px; white-space:nowrap; }
 .data-library .rd-table-wrap { overflow:auto; max-height:560px; margin-inline:calc(-1 * var(--wm-page-gutter)); width:calc(100% + 2 * var(--wm-page-gutter)); }
 .data-library .rd-table th { position:sticky; top:0; background:var(--wm-surface); z-index:1; }
 .data-library .rd-table :is(th, td):first-child { padding-left:var(--wm-page-gutter); }
 .data-library .rd-table :is(th, td):last-child { padding-right:var(--wm-page-gutter); }
 .data-library .rd-table tr.is-selected td:first-child { padding-left:var(--wm-page-gutter); }
 .data-library .rd-table button { width:auto; }
-.data-library .data-library-create { white-space:nowrap; }
+.data-library .rd-table { min-width:940px; }
+.data-library .rd-table td { vertical-align:middle; }
+.data-library-row-actions { display:flex; align-items:center; justify-content:flex-end; gap:8px; white-space:nowrap; }
+.data-library .data-library-download { display:flex; align-items:center; justify-content:center; gap:8px; padding:8px 12px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); min-height:var(--wm-control-height); background:transparent; cursor:default; white-space:nowrap; }
+.data-library .data-library-more { display:grid; place-items:center; width:36px; height:36px; border:1px solid transparent; border-radius:50%; padding:8px; }
+.data-library-more svg { width:18px; height:18px; }
+.data-library .data-library-more:hover:not(:disabled), .data-library .data-library-more[aria-expanded=true] { background:var(--wm-hover); border-color:var(--wm-control-hover-border); }
+.data-library-muted { color:var(--wm-content-muted); }
+.data-library-action-menu { position:fixed; z-index:70; width:224px; max-width:calc(100vw - 16px); padding:6px; box-sizing:border-box; border:1px solid var(--wm-control-border); border-radius:10px; background:var(--wm-popup); box-shadow:0 8px 24px #0003; color:var(--wm-content); font:inherit; }
+.fx-app .data-library-action-menu button { display:flex; align-items:center; gap:10px; width:100%; min-height:40px; padding:9px 10px; box-sizing:border-box; border:0; border-radius:6px; background:transparent; color:var(--wm-control-text); font:inherit; font-size:13px; text-align:left; cursor:pointer; }
+.data-library-action-menu button svg { flex-shrink:0; }
+.fx-app .data-library-action-menu button:hover:not(:disabled), .fx-app .data-library-action-menu button:focus-visible { background:var(--wm-hover); }
+.data-library-action-menu button:focus-visible { outline:2px solid var(--wm-focus); outline-offset:-2px; }
+.data-library-action-menu button:disabled { opacity:.5; cursor:default; }
 .data-library-paging { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px; padding:16px 0; }
 .data-library-paging > div { display:flex; flex-shrink:0; align-items:center; gap:12px; margin-left:auto; white-space:nowrap; font-size:13px; }
 .data-library .rd-panel { border-top:0; }
@@ -28,4 +45,6 @@
 .data-library-dialog-body { padding:0 20px 20px; min-height:0; overflow:auto; overscroll-behavior:contain; }
 .data-library-dialog .rd-import-panel { margin:0; border-top:0; }
 @media(max-width:760px) { .data-library-dialog .rd-import-grid { grid-template-columns:minmax(0,1fr); gap:20px; } .data-library-dialog .rd-import-report-column { border-left:0; border-top:1px solid var(--wm-border); padding:16px 0 0; } }
-@media(max-width:600px) { .data-library-filters { margin-left:0; width:100%; } .data-library-filters > label, .data-library-filters > label input { width:100%; } .data-library-dialog-header { padding:14px 12px; } .data-library-dialog-body { padding:0 12px 16px; } }
+@media(max-width:760px) { .data-library-search { max-width:none; flex-basis:100%; } .data-library-filters { margin-left:0; width:100%; } }
+@media(max-width:600px) { .data-library-filters > .fx-select { min-width:0; max-width:100%; } .data-library-dialog-header { padding:14px 12px; } .data-library-dialog-body { padding:0 12px 16px; } }
+@media(pointer:coarse) { .data-library .data-library-more { width:44px; height:44px; } .fx-app .data-library-action-menu button { min-height:44px; } }

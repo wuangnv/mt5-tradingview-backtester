@@ -1,5 +1,11 @@
 import { readJson, workspaceHeaders } from './researchDataApi.js'
 
+export async function fetchOfflineLibrary(workspace, signal) {
+  const response = await fetch('/api/v2/data/datasets', { headers:workspaceHeaders(workspace), signal })
+  const payload = await readJson(response)
+  return { datasets:Array.isArray(payload.items) ? payload.items : [], instruments:Array.isArray(payload.catalog_items) ? payload.catalog_items : [] }
+}
+
 async function postCsv(workspace, route, payload) {
   const response = await fetch(route, {
     method: 'POST',

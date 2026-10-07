@@ -1,0 +1,106 @@
+[
+  {
+    "width": 360,
+    "method": "click",
+    "attempt": 0,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 690.3999999910593
+      }
+    ]
+  },
+  {
+    "width": 360,
+    "method": "click",
+    "attempt": 1,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 616.7999999970198
+      }
+    ]
+  },
+  {
+    "width": 360,
+    "method": "keyboard",
+    "attempt": 0,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 578.2999999970198
+      }
+    ]
+  },
+  {
+    "width": 360,
+    "method": "keyboard",
+    "attempt": 1,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 629.5999999940395
+      }
+    ]
+  },
+  {
+    "width": 1428,
+    "method": "click",
+    "attempt": 0,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 601.3999999910593
+      }
+    ]
+  },
+  {
+    "width": 1428,
+    "method": "click",
+    "attempt": 1,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 600.5999999940395
+      }
+    ]
+  },
+  {
+    "width": 1428,
+    "method": "keyboard",
+    "attempt": 0,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 578.7000000029802
+      }
+    ]
+  },
+  {
+    "width": 1428,
+    "method": "keyboard",
+    "attempt": 1,
+    "open": "true",
+    "menuCount": 1,
+    "scrollEvents": [
+      {
+        "type": "rd-table-wrap",
+        "time": 579.8000000119209
+      }
+    ]
+  }
+]

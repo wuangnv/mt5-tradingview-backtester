@@ -86,6 +86,18 @@ class DataProviderRegistry:
                 datasets.append(normalized)
         return datasets
 
+    def list_instruments(self, workspace_id: str) -> list[dict]:
+        """Only configured providers may declare catalog metadata; no discovery I/O."""
+        instruments = []
+        for provider_id, provider in sorted(self._providers.items()):
+            listing = getattr(provider, "list_instruments", None)
+            if not callable(listing) or not provider.capabilities.get("read_metadata", False):
+                continue
+            for item in listing(workspace_id):
+                # Metadata does not grant historical-download authority.
+                instruments.append({**dict(item), "provider_id": provider_id})
+        return instruments
+
 
 class LocalCatalogProvider:
     provider_id = "local-catalog"

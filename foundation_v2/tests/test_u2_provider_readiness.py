@@ -19,6 +19,20 @@ from trading_workspace_v2.data_sources import (  # noqa: E402
 
 
 class U2ProviderReadinessTests(unittest.TestCase):
+    def test_instrument_catalog_is_opt_in_scoped_metadata_without_remote_authority(self):
+        class CatalogProvider(StaticMetadataProvider):
+            def list_instruments(self, workspace):
+                return [{"instrument_id": "EURUSD", "provider": "fixture", "asset_class": "fx"}] if workspace == "a" else []
+
+        provider = CatalogProvider("fixture", {})
+        registry = DataProviderRegistry([provider])
+        self.assertEqual(registry.list_instruments("a"), [{"instrument_id": "EURUSD", "provider": "fixture", "asset_class": "fx", "provider_id": "fixture"}])
+        self.assertEqual(registry.list_instruments("b"), [])
+        self.assertFalse(registry.capabilities()[0]["readiness"]["network_access"])
+        provider.capabilities = {**provider.capabilities, "read_metadata": False}
+        self.assertEqual(registry.list_instruments("a"), [])
+        self.assertEqual(DataProviderRegistry([StaticMetadataProvider("local", {})]).list_instruments("a"), [])
+
     def test_offline_provider_discloses_capability_and_non_entitlement(self):
         registry = DataProviderRegistry([StaticMetadataProvider("offline-fake", {})])
 

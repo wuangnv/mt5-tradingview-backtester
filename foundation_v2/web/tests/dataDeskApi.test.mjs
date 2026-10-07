@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import { importLocalCsv, previewLocalCsv } from '../src/dataDeskApi.js'
+import { fetchOfflineLibrary, importLocalCsv, previewLocalCsv } from '../src/dataDeskApi.js'
 
 const payload = {
   csv_text: 'time,open,high,low,close\n1,1,2,1,1.5\n2,1.5,2,1,1.6\n',
@@ -10,6 +10,19 @@ const payload = {
   timeframe_seconds: 3600,
   holdout_policy: { mode: 'none' },
 }
+
+test('library reads optional catalog metadata through the existing scoped endpoint', async () => {
+  const originalFetch = globalThis.fetch, calls = [], controller = new AbortController()
+  globalThis.fetch = async (url, options) => { calls.push({url,options}); return {ok:true,json:async () => ({items:[{dataset_id:'saved'}],catalog_items:[{instrument_id:'not-yet-saved'}]})} }
+  try {
+    assert.deepEqual(await fetchOfflineLibrary('tenant-b',controller.signal), {datasets:[{dataset_id:'saved'}],instruments:[{instrument_id:'not-yet-saved'}]})
+    assert.equal(calls[0].url,'/api/v2/data/datasets')
+    assert.equal(calls[0].options.headers['X-Workspace-Id'],'tenant-b')
+    assert.equal(calls[0].options.signal,controller.signal)
+    globalThis.fetch = async () => ({ok:true,json:async () => ({items:[]})})
+    assert.deepEqual(await fetchOfflineLibrary('tenant-b'),{datasets:[],instruments:[]})
+  } finally { globalThis.fetch = originalFetch }
+})
 
 test('Data Desk CSV helpers send browser text and workspace scope', async () => {
   const originalFetch = globalThis.fetch

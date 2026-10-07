@@ -548,7 +548,8 @@ def create_app(
 
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
-        return {"items": data_registry.list_datasets(workspace), "holdout_access": False}
+        return {"items": data_registry.list_datasets(workspace),
+                "catalog_items": data_registry.list_instruments(workspace), "holdout_access": False}
 
     @app.get('/api/v2/data/market-assets')
     def market_assets(workspace: str = Depends(workspace_id)):

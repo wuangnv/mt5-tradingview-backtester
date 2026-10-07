@@ -389,46 +389,53 @@ Evidence: `foundation_v2/evidence/quick-session-wallet-20261007/REVIEW.md`.
 ### Offline data library
 
 Practice's Market Data route owns offline historical datasets and local CSV
-import. It reads the existing workspace dataset catalog, with source/search
-filters, paging and per-dataset quick-session creation. Saved MT5 history retains
-its actual provenance and is explicitly labelled an offline snapshot; it is not
-a live connection. Existing sessions/dataset artifacts are not modified.
-The existing QuickSessionDialog receives the selected dataset ID; session creation
-continues through its existing validation/API and Legacy Chart engine.
+import. It combines configured provider instrument metadata and saved dataset
+versions in one table. Categories come from declared asset_class metadata, never
+symbol-name guesses. Table columns are product, category, source, UTC historical
+range, candle count, quality and actions. Session creation belongs to Sessions
+and Dashboard; this page has no create-session action.
+Search is left-aligned. Right-aligned controls reuse the Recent Sessions pattern:
+compact filter toggle, optional category/source pills, sort and CSV import.
+Closing filters resets category/source; search and sort remain independent.
+There is no count, duplicate title or permanent explanatory block above the grid.
+Table separators extend through the shared page gutter while text stays inset.
 Dataset rows open quality/provenance in a native dialog. The toolbar's Import CSV
-action opens a separate native dialog; no permanent disclosure rows remain on the
-library page. Successful CSV import closes the import dialog, clears filters,
-selects the imported dataset, opens its details and refreshes the server-owned catalog.
+action opens a separate native dialog. A row's ellipsis opens an action menu with
+View details and Import an update. The latter preselects source, instrument,
+category and specification in the CSV form; saving creates a new immutable dataset
+version. Earlier versions remain separate rows and existing sessions keep their
+pinned dataset. Metadata-only rows have no historical range, candle count or
+quality assertion; details are disabled and CSV import remains available.
+Successful CSV import clears filters, selects the imported version, opens its
+details and refreshes the server-owned catalog. Escape/outside dismissal and
+keyboard menu navigation return focus; menus reposition during scrolling rather
+than dismissing during a trigger's delayed automatic scroll into view.
 
 `view=data` is a compatible alias of `view=market-data`. Both select the Testing
 sidebar area. Legacy `data_tab=sync` no longer mounts broker history controls or
 starts MT5 polling. Practice does not read market-assets/live-status endpoints.
-The library reads only the saved dataset catalog, without a provider-metadata request.
-Unknown dataset links do not
-silently select an unrelated dataset.
+The existing dataset endpoint now also returns optional catalog_items from
+configured providers declaring read_metadata and list_instruments(workspace).
+This is metadata only: it grants no network, download, trading or holdout authority.
+Unknown dataset links do not silently select an unrelated dataset.
 
 The owner prioritized offline first. MT5 connection/sync UI work is deferred;
 existing Live screens remain unchanged. No new Data Desk sidebar entry is created.
-Dukascopy downloads remain disabled under the existing provider gate. CSV import
-reuses the deterministic preview and immutable artifact APIs.
+Dukascopy is not configured. No inventory or history is fabricated in an empty
+real workspace. Loaded rows show disabled Downloaded; metadata-only rows currently
+show disabled Download with an unavailable-source tooltip. Enabling that action
+requires a separately configured and verified history adapter. CSV import reuses
+the deterministic preview and immutable artifact APIs.
 The import dialog focuses the file picker and restores toolbar focus when closed.
 Required CSV columns/time formats are shown before selection. Preview/import locks
 the form and dialog close until the request settles, so metadata cannot change
-underneath a pending quality report. A blank catalog shows only the toolbar/count;
+underneath a pending quality report. A blank catalog shows the toolbar and headers;
 pagination appears only when there are matching rows. Filter misses and read errors
 retain useful feedback.
-Demo uses fixture catalogs and disables session creation/import; Research detail
+Demo uses fixture catalogs and disables imports; Research detail
 links preserve preview state and clear stale replay-session context.
 
-The new table/shell labels, counts and UTC dates use the current VI/EN locale.
+The new table/shell labels and UTC dates use the current VI/EN locale.
 Existing advanced CSV/detail prose retains its prior mixed-language copy;
 this consolidation does not claim a full translation migration.
-Evidence: `foundation_v2/evidence/offline-library-20261007/REVIEW.md`.
-
-The library uses one compact count/search/source/import toolbar; its navigation
-tab already names the page, so no duplicate title or offline explanation appears
-above the table. MT5 rows omit the repeated offline badge and show a short MT5
-source label. Details preserve the actual source provider/server, rather than
-the local catalog adapter ID. Table and section separators extend through the
-shared page gutter while controls and cell text retain that inset.
-Polish evidence: `foundation_v2/evidence/offline-library-polish-20261007/REVIEW.md`.
+Evidence: `foundation_v2/evidence/offline-library-grid-20261007/RECEIPT.md`.

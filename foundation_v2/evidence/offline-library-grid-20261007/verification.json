@@ -1,0 +1,126 @@
+{
+  "cases": [
+    {
+      "name": "fixture-layout-dark-vi-1710",
+      "geometry": {
+        "searchLeft": 280,
+        "toolbarLeft": 280,
+        "controlsRight": 1678,
+        "toolbarRight": 1678,
+        "overflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-layout-light-vi-1260",
+      "geometry": {
+        "searchLeft": 280,
+        "toolbarLeft": 280,
+        "controlsRight": 1228,
+        "toolbarRight": 1228,
+        "overflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-layout-dark-vi-768",
+      "geometry": {
+        "searchLeft": 106,
+        "toolbarLeft": 106,
+        "controlsRight": 736,
+        "toolbarRight": 736,
+        "overflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-layout-light-vi-360",
+      "geometry": {
+        "searchLeft": 74,
+        "toolbarLeft": 74,
+        "controlsRight": 344,
+        "toolbarRight": 344,
+        "overflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-layout-dark-en-360",
+      "geometry": {
+        "searchLeft": 74,
+        "toolbarLeft": 74,
+        "controlsRight": 344,
+        "toolbarRight": 344,
+        "overflow": 0
+      },
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-filter-sort-menu-update",
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "real-empty-dark",
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "real-empty-light",
+      "traffic": [
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-error-retry-import",
+      "traffic": [
+        "GET /api/v2/data/datasets",
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "fixture-csv-pending-category-import",
+      "traffic": [
+        "GET /api/v2/data/datasets",
+        "POST /api/v2/data/csv/preview",
+        "POST /api/v2/data/csv/import",
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    },
+    {
+      "name": "real-dashboard-empty-notice-removed",
+      "traffic": [
+        "GET /api/v2/data/datasets",
+        "GET /api/v2/overview",
+        "GET /api/v2/replay/sessions",
+        "GET /api/v2/data/datasets"
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true
+}
