@@ -1,0 +1,313 @@
+{
+  "scope": "Independent positions restore-icon and drag review. Actual guarded local GETs; no replay/order/activity persistence or external changes.",
+  "cases": [
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "dark",
+      "maxCover": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1368,
+          "height": 790,
+          "top": 0,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "hit": true
+      },
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "gripBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "gripHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "clickRemainsMax": true,
+      "dragFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64,
+        "top": 726,
+        "right": 1368,
+        "bottom": 790,
+        "left": 0
+      },
+      "restoredHeight": 467,
+      "continuedDown": 437,
+      "continuedUp": 457,
+      "releaseStops": true,
+      "newDragHeight": 482,
+      "cancelStops": true,
+      "newDragAfterCancel": true,
+      "keyboardArrowRestores": true,
+      "keyboardEndHeight": 739,
+      "endFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64,
+        "top": 726,
+        "right": 1368,
+        "bottom": 790,
+        "left": 0
+      },
+      "keyboardHomeCollapses": true,
+      "dragToTopMaximizes": true,
+      "topFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64,
+        "top": 726,
+        "right": 1368,
+        "bottom": 790,
+        "left": 0
+      },
+      "downFromTopRestores": true,
+      "pass": true
+    },
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "light",
+      "maxCover": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1368,
+          "height": 790,
+          "top": 0,
+          "right": 1368,
+          "bottom": 790,
+          "left": 0
+        },
+        "hit": true
+      },
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "gripBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "gripHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "clickRemainsMax": true,
+      "dragFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64,
+        "top": 726,
+        "right": 1368,
+        "bottom": 790,
+        "left": 0
+      },
+      "restoredHeight": 467,
+      "continuedDown": 437,
+      "continuedUp": 457,
+      "releaseStops": true,
+      "newDragHeight": 482,
+      "cancelStops": true,
+      "newDragAfterCancel": true,
+      "keyboardArrowRestores": true,
+      "keyboardEndHeight": 739,
+      "endFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64,
+        "top": 726,
+        "right": 1368,
+        "bottom": 790,
+        "left": 0
+      },
+      "keyboardHomeCollapses": true,
+      "dragToTopMaximizes": true,
+      "topFooter": {
+        "x": 0,
+        "y": 726,
+        "width": 1368,
+        "height": 64,
+        "top": 726,
+        "right": 1368,
+        "bottom": 790,
+        "left": 0
+      },
+      "downFromTopRestores": true,
+      "pass": true
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "maxCover": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 844,
+          "top": 0,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "hit": true
+      },
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "gripBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "gripHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(255, 255, 255)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "clickRemainsMax": true,
+      "dragFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64,
+        "top": 780,
+        "right": 360,
+        "bottom": 844,
+        "left": 0
+      },
+      "restoredHeight": 480,
+      "continuedDown": 450,
+      "continuedUp": 470,
+      "releaseStops": true,
+      "newDragHeight": 495,
+      "cancelStops": true,
+      "newDragAfterCancel": true,
+      "keyboardArrowRestores": true,
+      "keyboardEndHeight": 752,
+      "endFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64,
+        "top": 780,
+        "right": 360,
+        "bottom": 844,
+        "left": 0
+      },
+      "keyboardHomeCollapses": true,
+      "dragToTopMaximizes": true,
+      "topFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64,
+        "top": 780,
+        "right": 360,
+        "bottom": 844,
+        "left": 0
+      },
+      "downFromTopRestores": true,
+      "pass": true
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "light",
+      "maxCover": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 360,
+          "height": 844,
+          "top": 0,
+          "right": 360,
+          "bottom": 844,
+          "left": 0
+        },
+        "hit": true
+      },
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "gripBase": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "gripHover": {
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(17, 17, 17)",
+        "shadow": "none",
+        "filter": "none"
+      },
+      "clickRemainsMax": true,
+      "dragFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64,
+        "top": 780,
+        "right": 360,
+        "bottom": 844,
+        "left": 0
+      },
+      "restoredHeight": 480,
+      "continuedDown": 450,
+      "continuedUp": 470,
+      "releaseStops": true,
+      "newDragHeight": 495,
+      "cancelStops": true,
+      "newDragAfterCancel": true,
+      "keyboardArrowRestores": true,
+      "keyboardEndHeight": 752,
+      "endFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64,
+        "top": 780,
+        "right": 360,
+        "bottom": 844,
+        "left": 0
+      },
+      "keyboardHomeCollapses": true,
+      "dragToTopMaximizes": true,
+      "topFooter": {
+        "x": 0,
+        "y": 780,
+        "width": 360,
+        "height": 64,
+        "top": 780,
+        "right": 360,
+        "bottom": 844,
+        "left": 0
+      },
+      "downFromTopRestores": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": true,
+  "sourceHashes": {
+    "web/src/ChartIcon.jsx": "95202364d27aca445a91d977b524e6d55885138fe9a33694943d3350ef968186",
+    "web/src/LegacyTradingBar.jsx": "9ec7a1cb91fda20cf566467ec92ef8ef27ab15c07286906c16c4acec69da0fab",
+    "web/src/LegacyTradingBar.css": "9862295809b8c5451d04fb6a908a7ff835fac39ff66bd6a1881f6ded9f79ddc7"
+  }
+}

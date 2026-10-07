@@ -44,9 +44,19 @@ export default function LegacyTradingBar({ order, quotes, onBeginOrder, analytic
     if ((minimum !== null && next < minimum) || (maximum !== null && next > maximum)) return
     order.setDraft(value => ({ ...value, quantity: String(next) }))
   }
+  const resizeBounds = () => {
+    const main = workspaceRef.current?.closest('.replay-main')
+    const available = main?.clientHeight || 600
+    const barHeight = workspaceRef.current?.querySelector('.legacy-trading-bar')?.offsetHeight || 48
+    const chart = main?.querySelector('.chart-frame')
+    const chartMinimum = chart ? parseFloat(getComputedStyle(chart).minHeight) || 240 : 240
+    return { normal: Math.max(0, available - barHeight - chartMinimum - 2), full: available - barHeight - 8 }
+  }
   const resize = value => {
-    const available = workspaceRef.current?.closest('.replay-main')?.clientHeight || 600
-    const next = Math.max(0, Math.min(value, Math.max(0, available - 292)))
+    const bounds = resizeBounds()
+    if (value >= bounds.full) { setPositionsOpen(true); setMaximized(true); return }
+    const next = Math.max(0, Math.min(value, bounds.normal))
+    setMaximized(false)
     setPositionsOpen(next > 48); if (next > 48) setHeight(Math.max(130, next))
   }
   const dismissBalance = () => { hideBalance.current = setTimeout(() => setBalanceAnchor(null), 160) }
@@ -65,16 +75,21 @@ export default function LegacyTradingBar({ order, quotes, onBeginOrder, analytic
           setDraft(next); setError(''); setScalperAnchor(event.currentTarget)
         }}><ChartIcon name="rocket" /></button>
       </div>
-      <button type="button" className="legacy-positions-grip" aria-label={t('Kéo để chỉnh chiều cao danh sách lệnh')} title={t('Kéo để chỉnh chiều cao danh sách lệnh')} aria-expanded={positionsOpen} disabled={maximized}
-        onPointerDown={event => { if (event.button !== 0) return; event.currentTarget.setPointerCapture(event.pointerId); drag.current = { y: event.clientY, height: positionsOpen ? height : 0 }; event.preventDefault() }}
-        onPointerMove={event => { if (drag.current) resize(drag.current.height + drag.current.y - event.clientY) }} onPointerUp={() => { drag.current = null }} onPointerCancel={() => { drag.current = null }}
+      <button type="button" className="legacy-positions-grip" aria-label={t('Kéo để chỉnh chiều cao danh sách lệnh')} title={t('Kéo để chỉnh chiều cao danh sách lệnh')} aria-expanded={positionsOpen}
+        onPointerDown={event => {
+          if (event.button !== 0) return
+          event.currentTarget.setPointerCapture(event.pointerId)
+          drag.current = { y: event.clientY, height: maximized ? resizeBounds().normal : positionsOpen ? height : 0 }
+          event.preventDefault()
+        }}
+        onPointerMove={event => { if (drag.current && Math.abs(drag.current.y - event.clientY) > 3) resize(drag.current.height + drag.current.y - event.clientY) }} onPointerUp={() => { drag.current = null }} onPointerCancel={() => { drag.current = null }}
         onKeyDown={event => { if (!['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return; event.preventDefault(); event.stopPropagation(); resize(event.key === 'Home' ? 0 : event.key === 'End' ? 10000 : (positionsOpen ? height : 100) + (event.key === 'ArrowUp' ? 30 : -30)) }}><ChartIcon name="grip-horizontal" /></button>
       <div className="chart-trading-account">
         <a className="legacy-analytics-link" href={analyticsHref}><ChartIcon name="analytics" />{t('Analytics')}</a>
         <button type="button" className="legacy-balance-pill" aria-label={t('Thông tin tài khoản')} aria-expanded={Boolean(balanceAnchor)} onPointerEnter={event => showBalance(event.currentTarget)} onPointerLeave={dismissBalance} onFocus={event => showBalance(event.currentTarget)} onBlur={dismissBalance} onClick={event => balanceAnchor ? setBalanceAnchor(null) : showBalance(event.currentTarget)}><ChartIcon name="wallet" /><strong>{balanceHidden ? '••••••' : money(execution?.balance)}</strong></button>
         <button type="button" aria-label={t(balanceHidden ? 'Hiện số dư' : 'Ẩn số dư')} aria-pressed={balanceHidden} onClick={() => setBalanceHidden(value => !value)}><ChartIcon name={balanceHidden ? 'eye' : 'eye-off'} /></button>
         <button type="button" aria-label={t(positionsOpen ? 'Thu gọn danh sách lệnh' : 'Mở danh sách lệnh')} aria-expanded={positionsOpen} onClick={() => { setMaximized(false); setPositionsOpen(value => !value) }}><ChartIcon name="down" style={{ transform: positionsOpen ? '' : 'rotate(180deg)' }} /></button>
-        <button type="button" aria-label={t(maximized ? 'Thu nhỏ danh sách lệnh' : 'Mở rộng danh sách lệnh')} aria-pressed={maximized} onClick={() => { setPositionsOpen(true); setMaximized(value => !value) }}><ChartIcon name={maximized ? 'restore' : 'fit'} /></button>
+        <button type="button" aria-label={t(maximized ? 'Thu nhỏ danh sách lệnh' : 'Mở rộng danh sách lệnh')} aria-pressed={maximized} onClick={() => { setPositionsOpen(true); setMaximized(value => !value) }}><ChartIcon name={maximized ? 'contract-corners' : 'fit'} /></button>
       </div>
     </div>
     {positionsOpen && <div className="legacy-resizable-positions" style={maximized ? undefined : { height }}><LegacyPositions execution={execution} symbol={symbol} /></div>}

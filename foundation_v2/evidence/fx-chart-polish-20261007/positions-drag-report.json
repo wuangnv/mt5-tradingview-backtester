@@ -1,0 +1,80 @@
+{
+  "cases": [
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "dark",
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "afterRestore": {
+        "x": 0,
+        "y": 363,
+        "width": 1368,
+        "height": 427
+      },
+      "afterDown": {
+        "x": 0,
+        "y": 413,
+        "width": 1368,
+        "height": 377
+      },
+      "afterUp": {
+        "x": 0,
+        "y": 373,
+        "width": 1368,
+        "height": 417
+      }
+    },
+    {
+      "width": 1368,
+      "height": 790,
+      "theme": "light",
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "afterRestore": {
+        "x": 0,
+        "y": 363,
+        "width": 1368,
+        "height": 427
+      },
+      "afterDown": {
+        "x": 0,
+        "y": 413,
+        "width": 1368,
+        "height": 377
+      },
+      "afterUp": {
+        "x": 0,
+        "y": 373,
+        "width": 1368,
+        "height": 417
+      }
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "theme": "dark",
+      "icon": "M9 3v6H3M15 3v6h6M3 15h6v6M21 15h-6v6",
+      "afterRestore": {
+        "x": 0,
+        "y": 404,
+        "width": 360,
+        "height": 440
+      },
+      "afterDown": {
+        "x": 0,
+        "y": 454,
+        "width": 360,
+        "height": 390
+      },
+      "afterUp": {
+        "x": 0,
+        "y": 414,
+        "width": 360,
+        "height": 430
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "scope": "Actual local GET. Replay/order writes blocked; activity receipts nonpersistent fixtures.",
+  "pass": true
+}

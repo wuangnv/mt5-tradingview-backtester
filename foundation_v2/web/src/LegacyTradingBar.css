@@ -29,7 +29,7 @@
 .legacy-resizable-positions .legacy-position-scroll { flex: 1; min-height: 0; overflow: auto; }
 .legacy-resizable-positions .legacy-position-paging { flex: 0 0 auto; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .is-legacy-chart .replay-main:has(.legacy-trading-workspace.is-maximized) { position: relative; }
-.legacy-trading-workspace.is-maximized { position: absolute; inset: var(--legacy-header-height,42px) 0 0; z-index: 18; display: flex; flex-direction: column; background: var(--chart-bg); }
+.legacy-trading-workspace.is-maximized { position: absolute; inset: 0; z-index: 18; display: flex; flex-direction: column; background: var(--chart-bg); }
 .legacy-trading-workspace.is-maximized .legacy-resizable-positions { flex: 1; }
 .legacy-trading-workspace.is-maximized .legacy-trading-bar { flex: 0 0 auto; }
 /* The floating chart controls must not cover tabs or rows in the expanded table. */
