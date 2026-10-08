@@ -68,7 +68,8 @@ export function originalCandles(url, buffer, start, end) {
   return rows
 }
 
-export async function download(requestPath, { fetchFn = fetch, notify = emit, pauseMs = 1000 } = {}) {
+export async function download(requestPath, { fetchFn = fetch, notify = emit, pauseMs = 1000, concurrency = 3, progressIntervalMs = 250 } = {}) {
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 4) throw Error('invalid_concurrency')
   const folder = dirname(resolve(requestPath)), request = JSON.parse(await readFile(requestPath, 'utf8'))
   const meta = metadata.find(item => item.name === request.instrument_id)
   if (!meta) throw Error('instrument_not_supported')
@@ -84,14 +85,19 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
   try { receipt = JSON.parse(await readFile(receiptPath,'utf8')) } catch (error) { if (error.code !== 'ENOENT') throw Error('invalid_source_data') }
   if (receipt.instrument_id !== request.instrument_id || receipt.version !== 1) throw Error('invalid_source_data')
   const output = await open(join(folder,'candles.csv.tmp'),'w')
-  let rowCount = 0, transferredBytes = Number(request.transferred_bytes) || 0, cachedBytes = 0
-  const progress = completed => notify({event:'progress',completed_days:completed,total_days:total,
-    transferred_bytes:transferredBytes,cached_bytes:cachedBytes,stage:'downloading'})
+  let rowCount = 0, transferredBytes = Number(request.transferred_bytes) || 0, cachedBytes = 0, completedDays = 0, lastProgressAt = -Infinity
+  const progress = (force = false) => {
+    const now = performance.now()
+    if (!force && now - lastProgressAt < progressIntervalMs) return
+    lastProgressAt = now
+    notify({event:'progress',completed_days:completedDays,total_days:total,
+      transferred_bytes:transferredBytes,cached_bytes:cachedBytes,stage:'downloading'})
+  }
   try {
-    await output.write('time,open,high,low,close,volume\n')
+    await output.writeFile('time,open,high,low,close,volume\n')
     const urls = generateUrls({instrument:meta.id,timeframe:'m1',priceType:'bid',startDate:new Date(start),endDate:new Date(end)})
     if (urls.length !== total || urls.some(url => url.includes('?'))) throw Error('invalid_date_range')
-    for (const [i,url] of urls.entries()) {
+    const readBucket = async (url, i) => {
       const fileName = hash(url) + '.json', rawPath = join(folder,'raw',fileName)
       let buffer, cached = false
       let bucket = receipt.buckets[url]
@@ -103,7 +109,7 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
         cached = true
         cachedBytes += buffer.length
       } else {
-        const fetcher = new BufferFetcher({batchSize:1,retryCount:0,fetcherFn:value => fetchRaw(value,fetchFn,bytes => { transferredBytes += bytes; progress(i) })})
+        const fetcher = new BufferFetcher({batchSize:1,retryCount:0,fetcherFn:value => fetchRaw(value,fetchFn,bytes => { transferredBytes += bytes; progress() })})
         const objects = await fetcher.fetch([url])
         if (objects.length !== 1) throw Error('invalid_source_data')
         buffer = objects[0].buffer
@@ -117,10 +123,28 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
         await atomicJson(rawPath+'.receipt.json',bucket)
       }
       receipt.buckets[url] = bucket
-      for (const row of rows) await output.write([row[0]/1000,...row.slice(1)].join(',')+'\n')
-      rowCount += rows.length
-      progress(i+1)
-      if (!cached && i+1 < urls.length) await new Promise(resolve => setTimeout(resolve,pauseMs))
+      return { rows, cached }
+    }
+    for (let offset = 0; offset < urls.length; offset += concurrency) {
+      let firstFailure
+      // Drain the bounded batch even on failure. Successful buckets remain durable for resume,
+      // and no work from a later batch can escape the rate-limit/cancellation boundary.
+      const batch = await Promise.allSettled(urls.slice(offset, offset + concurrency).map((url, index) =>
+        readBucket(url, offset + index).catch(error => {
+          if (!firstFailure || error.message === 'source_rate_limited') firstFailure = error
+          throw error
+        })))
+      if (firstFailure) throw firstFailure
+      let fetched = false
+      for (const result of batch) {
+        const { rows, cached } = result.value
+        if (rows.length) await output.writeFile(rows.map(row => [row[0]/1000,...row.slice(1)].join(',')).join('\n')+'\n')
+        rowCount += rows.length
+        completedDays++
+        fetched ||= !cached
+        progress(true)
+      }
+      if (fetched && offset + concurrency < urls.length && pauseMs > 0) await new Promise(resolve => setTimeout(resolve,pauseMs))
     }
   } finally { await output.close() }
   if (rowCount < 2 && !/^dataset-[a-f0-9]{64}$/.test(request.parent_dataset_id || '')) throw Error('empty_range')

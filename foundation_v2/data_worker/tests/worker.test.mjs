@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtemp, writeFile, readFile, rm } from 'node:fs/promises'
+import { mkdtemp, writeFile, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { download, originalCandles, fetchRaw } from '../index.mjs'
@@ -115,5 +115,81 @@ test('empty and one-bar update tails are allowed only when parent is identified;
     await writeFile(oneRequest,JSON.stringify({...input,parent_dataset_id:'dataset-'+ 'a'.repeat(64)}))
     const one={...raw,times:[0],opens:[0],highs:[0],lows:[0],closes:[0],volumes:[1]}
     assert.equal(await download(oneRequest,{fetchFn:async()=>new Response(JSON.stringify(one)),notify:()=>{},pauseMs:0}),1)
+  } finally {await rm(root,{recursive:true,force:true})}
+})
+
+test('bounded concurrent buckets commit candles in date order and cache avoids requests', async () => {
+  const root=await mkdtemp(join(tmpdir(),'tw-dukascopy-order-'))
+  try {
+    const request=join(root,'request.json')
+    await writeFile(request,JSON.stringify({instrument_id:'EUR/USD',from_date:'2026-01-05',to_date:'2026-01-10'}))
+    let active=0, maxActive=0, calls=0
+    const completion=[]
+    const fetchFn=async url=> {
+      const day=Number(url.split('/').at(-1))
+      active++; calls++; maxActive=Math.max(maxActive,active)
+      await new Promise(resolve=>setTimeout(resolve,(11-day)*5))
+      active--; completion.push(day)
+      return new Response(JSON.stringify({...raw,timestamp:start+(day-5)*86400000}))
+    }
+    const events=[]
+    assert.equal(await download(request,{fetchFn,notify:event=>events.push(event),pauseMs:0}),12)
+    assert.equal(maxActive,3)
+    assert.deepEqual(completion.slice(0,3),[7,6,5])
+    const csv=await readFile(join(root,'candles.csv'),'utf8')
+    const timestamps=csv.trim().split('\n').slice(1).map(line=>Number(line.split(',')[0]))
+    assert.deepEqual(timestamps,[...timestamps].sort((a,b)=>a-b))
+    assert.deepEqual(events.filter(event=>event.event==='progress').map(event=>event.completed_days).filter(days=>days>0),[1,2,3,4,5,6])
+    assert.equal(await download(request,{fetchFn:async()=>assert.fail('all buckets cached'),notify:()=>{},pauseMs:0}),12)
+    assert.equal(calls,6)
+    assert.equal(await readFile(join(root,'candles.csv'),'utf8'),csv)
+    await assert.rejects(download(request,{concurrency:5}),/invalid_concurrency/)
+  } finally {await rm(root,{recursive:true,force:true})}
+})
+
+test('failed batch drains inflight work, preserves successful receipts, stops scheduling and prioritizes 429', async () => {
+  const root=await mkdtemp(join(tmpdir(),'tw-dukascopy-failed-batch-'))
+  try {
+    const request=join(root,'request.json')
+    await writeFile(request,JSON.stringify({instrument_id:'EUR/USD',from_date:'2026-01-05',to_date:'2026-01-10'}))
+    const calls=[]
+    let active=0
+    await assert.rejects(download(request,{fetchFn:async url=> {
+      const day=Number(url.split('/').at(-1))
+      calls.push(day); active++
+      await new Promise(resolve=>setTimeout(resolve,(day-4)*10))
+      active--
+      if(day===5) return new Response('',{status:503})
+      if(day===6) return new Response('',{status:429,headers:{'retry-after':'700'}})
+      return new Response(JSON.stringify({...raw,timestamp:start+(day-5)*86400000}))
+    },notify:()=>{},pauseMs:0}),error=>error.message==='source_rate_limited'&&error.retryAfter===700)
+    assert.equal(active,0)
+    assert.deepEqual(calls,[5,6,7])
+    assert.equal((await readdir(join(root,'raw'))).filter(name=>name.endsWith('.receipt.json')).length,1)
+    await assert.rejects(readFile(join(root,'candles.csv')),error=>error.code==='ENOENT')
+    const resumed=[]
+    assert.equal(await download(request,{fetchFn:async url=> {
+      const day=Number(url.split('/').at(-1)); resumed.push(day)
+      assert.notEqual(day,7,'success from failed batch must resume from durable receipt')
+      return new Response(JSON.stringify({...raw,timestamp:start+(day-5)*86400000}))
+    },notify:()=>{},pauseMs:0}),12)
+    assert.deepEqual(resumed.sort((a,b)=>a-b),[5,6,8,9,10])
+  } finally {await rm(root,{recursive:true,force:true})}
+})
+
+test('byte progress is throttled without losing exact transfer counts or final day events', async () => {
+  const root=await mkdtemp(join(tmpdir(),'tw-dukascopy-progress-'))
+  try {
+    const request=join(root,'request.json')
+    await writeFile(request,JSON.stringify({instrument_id:'EUR/USD',from_date:'2026-01-05',to_date:'2026-01-05'}))
+    const body=Buffer.from(JSON.stringify(raw)), events=[]
+    const fetchFn=async()=>new Response(new ReadableStream({start(controller){
+      for(const byte of body) controller.enqueue(Uint8Array.of(byte))
+      controller.close()
+    }}))
+    assert.equal(await download(request,{fetchFn,notify:event=>events.push(event),pauseMs:0,progressIntervalMs:60000}),2)
+    assert.deepEqual(events.map(event=>[event.event,event.completed_days]),[['progress',0],['progress',1],['complete',undefined]])
+    assert.equal(events.at(-1).transferred_bytes,body.length)
+    assert.equal(events[1].transferred_bytes,body.length)
   } finally {await rm(root,{recursive:true,force:true})}
 })
