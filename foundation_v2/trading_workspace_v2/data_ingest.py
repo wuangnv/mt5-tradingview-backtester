@@ -6,6 +6,7 @@ import json
 import re
 import sqlite3
 import tempfile
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -19,16 +20,19 @@ from .store import PostgresStore
 TRANSFORM_VERSION = "u2-normalize-v3"
 REQUIRED_COLUMNS = ("time", "open", "high", "low", "close")
 GAP_CLASSES = {"scheduled_closed", "missing_expected", "source_sparse", "unknown"}
+MAX_GAP_DETAILS = 1000
 
 
 class DataImportError(ValueError):
     pass
 
 
-def _hash_file(path: Path) -> str:
+def _hash_file(path: Path, continue_check=None) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
+            if continue_check is not None:
+                continue_check()
             digest.update(block)
     return digest.hexdigest()
 
@@ -161,6 +165,7 @@ def preview_csv(
     holdout_policy: dict | None = None,
     gap_classifier=None,
     requested_range: tuple[int, int] | None = None,
+    continue_check=None,
 ) -> dict:
     path = Path(path)
     if not path.is_file():
@@ -181,7 +186,7 @@ def preview_csv(
     if timeframe_seconds <= 0:
         raise DataImportError("timeframe_seconds must be positive")
 
-    raw_sha256 = _hash_file(path)
+    raw_sha256 = _hash_file(path, continue_check)
     normalized_digest = hashlib.sha256()
     row_count = 0
     duplicate_count = 0
@@ -197,6 +202,8 @@ def preview_csv(
             timestamp_batch = []
             for row in _read_rows(path):
                 row_count += 1
+                if continue_check is not None and row_count % 10_000 == 1:
+                    continue_check()
                 timestamp = int(row["timestamp"])
                 if previous_input_time is not None and timestamp < previous_input_time:
                     out_of_order_count += 1
@@ -218,12 +225,15 @@ def preview_csv(
             unique_row_count = int(timestamps.execute("SELECT count(*) FROM timestamps").fetchone()[0])
             duplicate_count = row_count - unique_row_count
             gaps = []
+            gap_count = 0
             previous_time = None
             cursor = timestamps.execute("SELECT time_utc FROM timestamps ORDER BY time_utc")
             while True:
                 ordered = cursor.fetchmany(10_000)
                 if not ordered:
                     break
+                if continue_check is not None:
+                    continue_check()
                 for (current_time,) in ordered:
                     if previous_time is not None:
                         delta = int(current_time) - int(previous_time)
@@ -235,14 +245,16 @@ def preview_csv(
                                 classification = str(gap_classifier(int(previous_time), int(current_time)) or "unknown")
                             if classification not in GAP_CLASSES:
                                 raise DataImportError("gap_classifier returned unsupported classification")
-                            gaps.append(
-                                {
-                                    "from_utc": int(previous_time),
-                                    "to_utc": int(current_time),
-                                    "missing_intervals": max(0, delta // timeframe_seconds - 1),
-                                    "classification": classification,
-                                }
-                            )
+                            gap_count += 1
+                            if len(gaps) < MAX_GAP_DETAILS:
+                                gaps.append(
+                                    {
+                                        "from_utc": int(previous_time),
+                                        "to_utc": int(current_time),
+                                        "missing_intervals": max(0, delta // timeframe_seconds - 1),
+                                        "classification": classification,
+                                    }
+                                )
                     previous_time = current_time
         finally:
             timestamps.close()
@@ -253,7 +265,7 @@ def preview_csv(
             columns = [str(column).strip() for column in next(reader)]
         except StopIteration:
             columns = []
-    disposition = "missing_data" if row_count == 0 else "review" if duplicate_count or out_of_order_count or gaps or overlapping_interval_count else "pass"
+    disposition = "missing_data" if row_count == 0 else "review" if duplicate_count or out_of_order_count or gap_count or overlapping_interval_count else "pass"
     source_snapshot = source.model_dump(mode="json")
     holdout = _holdout_snapshot(holdout_policy)
     if holdout["mode"] == "metadata_only" and last_time is not None and int(last_time) >= int(holdout["from_utc"]):
@@ -278,6 +290,8 @@ def preview_csv(
             "out_of_order": out_of_order_count,
             "overlapping_intervals": overlapping_interval_count,
             "gaps": gaps,
+            "gap_count": gap_count,
+            "gap_details_truncated": gap_count > len(gaps),
             "disposition": disposition,
         },
         "holdout_policy": holdout,
@@ -325,8 +339,11 @@ class DataIngestService:
         holdout_policy: dict | None = None,
         gap_classifier=None,
         requested_range: tuple[int, int] | None = None,
+        continue_check=None,
+        validated_preview: dict | None = None,
+        publication_guard=None,
     ) -> DatasetManifest:
-        preview = preview_csv(
+        preview = validated_preview or preview_csv(
             path,
             source,
             instrument,
@@ -334,41 +351,76 @@ class DataIngestService:
             holdout_policy=holdout_policy,
             gap_classifier=gap_classifier,
             requested_range=requested_range,
+            continue_check=continue_check,
         )
+        if validated_preview is not None:
+            source_snapshot = source.model_dump(mode='json') if isinstance(source, DatasetSource) else DatasetSource.model_validate(source).model_dump(mode='json')
+            instrument_snapshot = {'instrument_id':instrument,'metadata_kind':'price_only'} if isinstance(instrument, str) else _instrument_snapshot(instrument if isinstance(instrument, InstrumentSpec) else InstrumentSpec.from_mapping(instrument))
+            coverage = preview['quality'].get('coverage')
+            requested_coverage = ((coverage or {}).get('requested_from_utc'), (coverage or {}).get('requested_to_exclusive_utc'))
+            if (preview['raw_sha256'] != _hash_file(Path(path), continue_check)
+                    or preview['source'] != source_snapshot or preview['instrument'] != instrument_snapshot
+                    or preview['timeframe_seconds'] != int(timeframe_seconds)
+                    or preview['holdout_policy'] != _holdout_snapshot(holdout_policy)
+                    or (requested_range is not None and requested_coverage != requested_range)):
+                raise DataImportError('validated preview no longer matches import source')
+        if continue_check is not None:
+            continue_check()
         if preview["row_count"] < 2:
             raise DataImportError("dataset requires at least two rows")
         dataset_id = preview["dataset_id"]
-        if self.store.get_dataset(workspace_id, dataset_id) is not None:
-            raise DataImportError("dataset already exists; immutable import refuses overwrite")
-        self.store.ensure_workspace(workspace_id)
-        raw_path, raw_sha256 = self.artifacts.write_raw_source(workspace_id, dataset_id, path)
-        artifact_path, artifact_sha256 = self.artifacts.write_dataset_iter(
-            workspace_id,
-            dataset_id,
-            _parquet_rows(Path(path)),
-        )
-        source_model = source if isinstance(source, DatasetSource) else DatasetSource.model_validate(source)
-        manifest = DatasetManifest(
-            dataset_id=dataset_id,
-            workspace_id=workspace_id,
-            source=source_model,
-            instrument_id=preview["instrument"]["instrument_id"],
-            timeframe=f"{int(timeframe_seconds)}s",
-            row_count=int(preview["row_count"]),
-            first_timestamp=int(preview["available_range"]["from_utc"]),
-            last_timestamp=int(preview["available_range"]["to_utc"]),
-            artifact_path=artifact_path,
-            artifact_sha256=artifact_sha256,
-            raw_artifact_path=raw_path,
-            raw_sha256=raw_sha256,
-            normalized_sha256=preview["normalized_sha256"],
-            instrument_spec=None if isinstance(instrument, str) else preview["instrument"],
-            timeframe_seconds=int(timeframe_seconds),
-            available_range=preview["available_range"],
-            quality=preview["quality"],
-            holdout_policy=preview["holdout_policy"],
-            transform_version=TRANSFORM_VERSION,
-            created_at_utc=utc_now_iso(),
-        )
-        self.store.put_dataset(manifest)
-        return manifest
+        mutation = getattr(self.store, 'dataset_mutation', None)
+        with mutation(workspace_id, dataset_id) if mutation is not None else nullcontext():
+            if self.store.get_dataset(workspace_id, dataset_id) is not None:
+                raise DataImportError("dataset already exists; immutable import refuses overwrite")
+            self.store.ensure_workspace(workspace_id)
+            check_options = {'continue_check': continue_check} if continue_check is not None else {}
+            raw_path, raw_sha256 = self.artifacts.write_raw_source(workspace_id, dataset_id, path, **check_options)
+            try:
+                artifact_path, artifact_sha256 = self.artifacts.write_dataset_iter(
+                    workspace_id,
+                    dataset_id,
+                    _parquet_rows(Path(path)),
+                    **check_options,
+                )
+            except BaseException:
+                raw_target = (self.artifacts.root / raw_path).resolve()
+                if self.artifacts.root in raw_target.parents:
+                    raw_target.unlink(missing_ok=True)
+                raise
+            source_model = source if isinstance(source, DatasetSource) else DatasetSource.model_validate(source)
+            manifest = DatasetManifest(
+                dataset_id=dataset_id,
+                workspace_id=workspace_id,
+                source=source_model,
+                instrument_id=preview["instrument"]["instrument_id"],
+                timeframe=f"{int(timeframe_seconds)}s",
+                row_count=int(preview["row_count"]),
+                first_timestamp=int(preview["available_range"]["from_utc"]),
+                last_timestamp=int(preview["available_range"]["to_utc"]),
+                artifact_path=artifact_path,
+                artifact_sha256=artifact_sha256,
+                raw_artifact_path=raw_path,
+                raw_sha256=raw_sha256,
+                normalized_sha256=preview["normalized_sha256"],
+                instrument_spec=None if isinstance(instrument, str) else preview["instrument"],
+                timeframe_seconds=int(timeframe_seconds),
+                available_range=preview["available_range"],
+                quality=preview["quality"],
+                holdout_policy=preview["holdout_policy"],
+                transform_version=TRANSFORM_VERSION,
+                created_at_utc=utc_now_iso(),
+            )
+            try:
+                with publication_guard if publication_guard is not None else nullcontext():
+                    if continue_check is not None:
+                        continue_check()
+                    self.store.put_dataset(manifest)
+            except BaseException:
+                if self.store.get_dataset(workspace_id, dataset_id) is None:
+                    for relative_path in (raw_path, artifact_path):
+                        target = (self.artifacts.root / relative_path).resolve()
+                        if self.artifacts.root in target.parents:
+                            target.unlink(missing_ok=True)
+                raise
+            return manifest

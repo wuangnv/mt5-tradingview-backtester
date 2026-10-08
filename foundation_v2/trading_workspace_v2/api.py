@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import tempfile
 from collections.abc import Mapping
-from contextlib import asynccontextmanager, contextmanager
+from contextlib import asynccontextmanager, contextmanager, nullcontext
 from pathlib import Path
 from typing import Literal
 from urllib.parse import urlparse
@@ -46,6 +46,7 @@ from .contracts import (
 )
 from .data_sources import DataProviderRegistry, LocalCatalogProvider
 from .data_ingest import DataImportError, DataIngestService, preview_csv
+from .local_datasets import LocalDatasetService, DatasetInUse
 from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .dashboard_read_model import build_dashboard_performance
@@ -144,6 +145,12 @@ class OfflineDownloadRequest(BaseModel):
     to_date: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
 
 
+class OfflineFullDownloadRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    instrument_id: str = Field(min_length=1, max_length=80)
+    dataset_id: str | None = Field(default=None, min_length=1, max_length=100)
+
+
 class MarketHistoryUpdateRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     symbol: str | None = Field(default=None, max_length=64, pattern=r'^[A-Za-z0-9_]+$')
@@ -205,11 +212,12 @@ def create_app(
     store = PostgresStore(dsn)
     store.initialize()
     artifacts = ArtifactStore(artifact_root)
+    local_datasets = LocalDatasetService(store, artifacts)
     service = ResearchService(store, artifacts)
     ingest = DataIngestService(store, artifacts)
     replay = ReplayService(store, artifacts)
     product = ProductService(store, ai_service=ai_service)
-    data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store), *([instrument_catalog] if instrument_catalog else [])])
+    data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store, artifacts), *([instrument_catalog] if instrument_catalog else [])])
     if learn_roots is None:
         learn_workspace = os.getenv("TW_V2_LEARN_WORKSPACE_ID")
         education_root = os.getenv("TW_V2_EDUCATION_ROOT")
@@ -567,9 +575,26 @@ def create_app(
         for item in datasets:
             if item.get('source', {}).get('provider') == 'Dukascopy':
                 item['asset_class'] = classes.get(item['instrument_id'], '')
+            item.update(downloads.dataset_update_state(workspace, item) if downloads else {'update_available': False})
         return {"items": datasets, "catalog_items": instruments, "holdout_access": False,
                 "catalog_state": instrument_catalog.status() if instrument_catalog else None,
                 "download_state": downloads.availability() if downloads else {'available':False, 'supported_instruments':[]}}
+
+    @app.delete('/api/v2/data/datasets/{dataset_id}')
+    def delete_local_dataset(dataset_id: str, workspace: str = Depends(workspace_id)):
+        try:
+            with downloads.dataset_mutation_guard() if downloads else nullcontext():
+                return local_datasets.delete_dataset(workspace, dataset_id)
+        except DatasetInUse as exc:
+            raise HTTPException(status_code=409, detail='dataset_in_use') from exc
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail='dataset_not_found') from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail='invalid_dataset_artifact_path') from exc
+        except OSError as exc:
+            raise HTTPException(status_code=503, detail='dataset_cleanup_failed') from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail='download_busy') from exc
 
     @app.post("/api/v2/data/catalog/refresh")
     def refresh_instrument_catalog(workspace: str = Depends(workspace_id)):
@@ -596,6 +621,10 @@ def create_app(
     @app.post('/api/v2/data/downloads', status_code=202)
     def request_offline_download(body: OfflineDownloadRequest, workspace: str = Depends(workspace_id)):
         return download_action('request', workspace, body.instrument_id, body.from_date, body.to_date)
+
+    @app.post('/api/v2/data/downloads/full', status_code=202)
+    def request_full_offline_download(body: OfflineFullDownloadRequest, workspace: str = Depends(workspace_id)):
+        return download_action('request_full', workspace, body.instrument_id, body.dataset_id)
 
     @app.post('/api/v2/data/downloads/{job_id}/resume', status_code=202)
     def resume_offline_download(job_id: str, workspace: str = Depends(workspace_id)):
@@ -673,7 +702,7 @@ def create_app(
         """Import one validated local CSV as an immutable dataset artifact."""
 
         try:
-            with _materialize_csv_payload(body.csv_text) as path:
+            with downloads.dataset_mutation_guard() if downloads else nullcontext(), _materialize_csv_payload(body.csv_text) as path:
                 manifest = ingest.import_csv(
                     workspace_id=workspace,
                     path=path,
@@ -686,6 +715,8 @@ def create_app(
             raise HTTPException(status_code=422, detail=str(exc)) from exc
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail='download_busy') from exc
         return {
             "schema_version": "u2-data-desk-import-view-v1",
             "execution_capability": False,

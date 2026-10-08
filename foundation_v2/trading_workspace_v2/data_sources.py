@@ -111,8 +111,9 @@ class LocalCatalogProvider:
         "production_ready": False,
     }
 
-    def __init__(self, store: PostgresStore):
+    def __init__(self, store: PostgresStore, artifacts=None):
         self.store = store
+        self.artifacts = artifacts
 
     def list_datasets(self, workspace_id: str) -> list[dict]:
         items = []
@@ -120,6 +121,7 @@ class LocalCatalogProvider:
             items.append(
                 {
                     **manifest.model_dump(mode="json"),
+                    "size_bytes": self.artifacts.dataset_size_bytes(manifest) if self.artifacts else None,
                     "quality_status": "fixture-only" if manifest.source.license_use == "qa-only" else "unverified",
                     "holdout_access": False,
                 }

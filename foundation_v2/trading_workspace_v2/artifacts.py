@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import shutil
 from collections.abc import Iterable
 from pathlib import Path
 from uuid import uuid4
@@ -33,10 +32,12 @@ def _safe_component(value: str, label: str) -> str:
     return value
 
 
-def sha256_file(path: Path) -> str:
+def sha256_file(path: Path, continue_check=None) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
+            if continue_check is not None:
+                continue_check()
             digest.update(block)
     return digest.hexdigest()
 
@@ -67,6 +68,7 @@ class ArtifactStore:
         rows: Iterable[dict],
         *,
         batch_size: int = 50_000,
+        continue_check=None,
     ) -> tuple[str, str]:
         if batch_size <= 0:
             raise ValueError("batch_size must be positive")
@@ -81,6 +83,8 @@ class ArtifactStore:
             for row in rows:
                 batch.append(row)
                 if len(batch) >= batch_size:
+                    if continue_check is not None:
+                        continue_check()
                     table = pa.Table.from_pylist(batch)
                     if writer is None:
                         writer = pq.ParquetWriter(temp, table.schema, compression="zstd")
@@ -89,6 +93,8 @@ class ArtifactStore:
                     writer.write_table(table)
                     batch.clear()
             if batch:
+                if continue_check is not None:
+                    continue_check()
                 table = pa.Table.from_pylist(batch)
                 if writer is None:
                     writer = pq.ParquetWriter(temp, table.schema, compression="zstd")
@@ -99,15 +105,18 @@ class ArtifactStore:
                 raise ValueError("dataset requires at least one row")
             writer.close()
             writer = None
+            digest = sha256_file(temp, continue_check)
+            if continue_check is not None:
+                continue_check()
             os.replace(temp, target)
         finally:
             if writer is not None:
                 writer.close()
             if temp.exists():
                 temp.unlink()
-        return str(target.relative_to(self.root)), sha256_file(target)
+        return str(target.relative_to(self.root)), digest
 
-    def write_raw_source(self, workspace_id: str, dataset_id: str, source_path: str | Path) -> tuple[str, str]:
+    def write_raw_source(self, workspace_id: str, dataset_id: str, source_path: str | Path, *, continue_check=None) -> tuple[str, str]:
         source = Path(source_path)
         if not source.is_file():
             raise FileNotFoundError(source)
@@ -120,14 +129,50 @@ class ArtifactStore:
         temp = target.with_name(f".{target.name}.{uuid4().hex}.tmp")
         try:
             with source.open("rb") as source_handle, temp.open("wb") as target_handle:
-                shutil.copyfileobj(source_handle, target_handle, length=1024 * 1024)
+                for block in iter(lambda: source_handle.read(1024 * 1024), b""):
+                    if continue_check is not None:
+                        continue_check()
+                    target_handle.write(block)
                 target_handle.flush()
                 os.fsync(target_handle.fileno())
+            digest = sha256_file(temp, continue_check)
+            if continue_check is not None:
+                continue_check()
             os.replace(temp, target)
         finally:
             if temp.exists():
                 temp.unlink()
-        return str(target.relative_to(self.root)), sha256_file(target)
+        return str(target.relative_to(self.root)), digest
+
+    def dataset_paths(self, workspace_id, dataset_id, artifact_path, raw_artifact_path=None):
+        workspace = _safe_component(workspace_id, 'workspace_id')
+        dataset = _safe_component(dataset_id, 'dataset_id')
+        paths = [Path(workspace) / 'datasets' / f'{dataset}.parquet']
+        declared = [artifact_path]
+        if raw_artifact_path is not None:
+            paths.append(Path(workspace) / 'raw' / dataset / 'source.csv')
+            declared.append(raw_artifact_path)
+        for relative, value in zip(paths, declared):
+            if not isinstance(value, str) or Path(value) != relative:
+                raise ValueError('invalid_dataset_artifact_path')
+            path = self.root / relative
+            for component in (path, *path.parents):
+                if component == self.root:
+                    break
+                if component.is_symlink() or getattr(component, 'is_junction', lambda: False)():
+                    raise ValueError('invalid_dataset_artifact_path')
+            if self.root not in path.resolve().parents:
+                raise ValueError('invalid_dataset_artifact_path')
+            if path.exists() and not path.is_file():
+                raise ValueError('invalid_dataset_artifact_path')
+        return [self.root / relative for relative in paths]
+
+    def dataset_size_bytes(self, manifest):
+        try:
+            paths = self.dataset_paths(manifest.workspace_id, manifest.dataset_id, manifest.artifact_path, manifest.raw_artifact_path)
+            return paths[0].stat().st_size
+        except (OSError, ValueError):
+            return None
 
     def read_dataset(self, relative_path: str, expected_sha256: str) -> list[dict]:
         path = (self.root / relative_path).resolve()

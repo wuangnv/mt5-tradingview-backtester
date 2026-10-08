@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from uuid import uuid4
 
@@ -904,6 +905,53 @@ class PostgresStore:
             conn.commit()
         return {"duplicate": False, "receipt": self._connector_row(updated)}
 
+    @contextmanager
+    def dataset_mutation(self, workspace_id, dataset_id):
+        key = int.from_bytes(hashlib.sha256(f'dataset-mutation:{workspace_id}:{dataset_id}'.encode()).digest()[:8], 'big', signed=True)
+        with self.connect() as conn:
+            conn.execute('SELECT pg_advisory_lock(%s)', (key,))
+            try:
+                yield
+            finally:
+                conn.execute('SELECT pg_advisory_unlock(%s)', (key,))
+
+    @contextmanager
+    def dataset_removal(self, workspace_id, dataset_id):
+        from .local_datasets import DatasetInUse
+        with self.connect() as conn:
+            row = conn.execute('SELECT manifest_json FROM datasets WHERE workspace_id=%s AND dataset_id=%s FOR UPDATE', (workspace_id, dataset_id)).fetchone()
+            if row:
+                research = conn.execute('SELECT 1 FROM research_jobs WHERE workspace_id=%s AND dataset_id=%s LIMIT 1', (workspace_id, dataset_id)).fetchone()
+                replay = conn.execute("SELECT 1 FROM workspace_record_revisions WHERE workspace_id=%s AND kind='replay' AND payload_json->>'dataset_id'=%s LIMIT 1", (workspace_id, dataset_id)).fetchone()
+                prop = conn.execute("SELECT 1 FROM prop_attempt_revisions WHERE workspace_id=%s AND jsonb_path_exists(resume_json, '$.**.dataset_id ? (@ == $id)', %s::jsonb) LIMIT 1", (workspace_id, json.dumps({'id': dataset_id}))).fetchone()
+                if research or replay or prop:
+                    raise DatasetInUse('dataset_in_use')
+            yield DatasetManifest.model_validate(row['manifest_json']) if row else None
+            if row:
+                conn.execute('DELETE FROM datasets WHERE workspace_id=%s AND dataset_id=%s', (workspace_id, dataset_id))
+            conn.commit()
+
+    @staticmethod
+    def _lock_replay_dataset(conn, workspace_id, kind, payload):
+        if kind == 'replay' and payload.get('dataset_id'):
+            row = conn.execute('SELECT 1 FROM datasets WHERE workspace_id=%s AND dataset_id=%s FOR KEY SHARE', (workspace_id, payload['dataset_id'])).fetchone()
+            if not row:
+                raise LookupError('dataset_not_found')
+
+    @staticmethod
+    def _lock_resume_datasets(conn, workspace_id, resume):
+        pending, identifiers = [resume], set()
+        while pending:
+            value = pending.pop()
+            if isinstance(value, dict):
+                if isinstance(value.get('dataset_id'), str):
+                    identifiers.add(value['dataset_id'])
+                pending.extend(value.values())
+            elif isinstance(value, list):
+                pending.extend(value)
+        for dataset_id in sorted(identifiers):
+            PostgresStore._lock_replay_dataset(conn, workspace_id, 'replay', {'dataset_id': dataset_id})
+
     def put_dataset(self, manifest: DatasetManifest) -> None:
         with self.connect() as conn:
             conn.execute(
@@ -1416,6 +1464,7 @@ class PostgresStore:
         record_id = uuid4().hex
         now = utc_now_iso()
         with self.connect() as conn:
+            self._lock_replay_dataset(conn, workspace_id, kind, payload)
             conn.execute(
                 """
                 INSERT INTO workspace_records(
@@ -1565,6 +1614,7 @@ class PostgresStore:
         now = utc_now_iso()
         payload_json = json.dumps(payload, sort_keys=True)
         with self.connect() as conn:
+            self._lock_replay_dataset(conn, workspace_id, kind, payload)
             current = conn.execute(
                 """
                 SELECT r.current_revision,r.source_key,r.created_at_utc,v.deleted FROM workspace_records r
@@ -2339,6 +2389,7 @@ class PostgresStore:
 
     @staticmethod
     def _lock_resume_replay(conn, workspace_id: str, resume: dict | None) -> None:
+        PostgresStore._lock_resume_datasets(conn, workspace_id, resume)
         binding = (resume or {}).get("replay_binding")
         if not isinstance(binding, dict) or not binding.get("replay_session_id"):
             return

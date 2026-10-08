@@ -15,7 +15,7 @@ export async function atomicJson(path, value) {
   await rename(path + '.tmp', path)
 }
 
-export async function fetchRaw(url, fetchFn = fetch) {
+export async function fetchRaw(url, fetchFn = fetch, onBytes = () => {}) {
   if (!/^https:\/\/jetta\.dukascopy\.com\/v1\/candles\/minute\/[^/?]+\/BID\/\d{4}\/\d{1,2}\/\d{1,2}$/.test(url)) throw Error('invalid_source_url')
   let response
   try { response = await fetchFn(url, { signal:AbortSignal.timeout(15000), redirect:'error' }) }
@@ -35,6 +35,7 @@ export async function fetchRaw(url, fetchFn = fetch) {
       const { done, value } = await reader.read()
       if (done) break
       bytes += value.byteLength
+      onBytes(value.byteLength)
       if (bytes > MAX_BYTES) throw Error('invalid_source_data')
       chunks.push(Buffer.from(value))
     }
@@ -73,7 +74,9 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
   if (!meta) throw Error('instrument_not_supported')
   const start = Date.parse(request.from_date + 'T00:00:00Z'), end = Date.parse(request.to_date + 'T00:00:00Z') + DAY
   const total = (end-start)/DAY
-  if (!Number.isInteger(total) || total < 1 || total > 366 || end > Math.floor(Date.now()/DAY)*DAY
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(request.from_date) || !/^\d{4}-\d{2}-\d{2}$/.test(request.to_date)
+      || !Number.isInteger(total) || total < 1 || end > Math.floor(Date.now()/DAY)*DAY
+      || new Date(start).toISOString().slice(0,10) !== request.from_date || new Date(end-DAY).toISOString().slice(0,10) !== request.to_date
       || start < Date.parse(meta.startDayForMinuteCandles.slice(0,10) + 'T00:00:00Z')) throw Error('invalid_date_range')
   await mkdir(join(folder,'raw'), {recursive:true})
   const receiptPath = join(folder,'buckets.json')
@@ -81,7 +84,9 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
   try { receipt = JSON.parse(await readFile(receiptPath,'utf8')) } catch (error) { if (error.code !== 'ENOENT') throw Error('invalid_source_data') }
   if (receipt.instrument_id !== request.instrument_id || receipt.version !== 1) throw Error('invalid_source_data')
   const output = await open(join(folder,'candles.csv.tmp'),'w')
-  let rowCount = 0
+  let rowCount = 0, transferredBytes = Number(request.transferred_bytes) || 0, cachedBytes = 0
+  const progress = completed => notify({event:'progress',completed_days:completed,total_days:total,
+    transferred_bytes:transferredBytes,cached_bytes:cachedBytes,stage:'downloading'})
   try {
     await output.write('time,open,high,low,close,volume\n')
     const urls = generateUrls({instrument:meta.id,timeframe:'m1',priceType:'bid',startDate:new Date(start),endDate:new Date(end)})
@@ -89,12 +94,16 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
     for (const [i,url] of urls.entries()) {
       const fileName = hash(url) + '.json', rawPath = join(folder,'raw',fileName)
       let buffer, cached = false
-      if (receipt.buckets[url]) {
+      let bucket = receipt.buckets[url]
+      try { bucket = JSON.parse(await readFile(rawPath+'.receipt.json','utf8')) }
+      catch (error) { if (error.code !== 'ENOENT') throw Error('invalid_source_data') }
+      if (bucket) {
         buffer = await readFile(rawPath)
-        if (buffer.length > MAX_BYTES || hash(buffer) !== receipt.buckets[url].sha256) throw Error('invalid_source_data')
+        if (buffer.length > MAX_BYTES || hash(buffer) !== bucket.sha256) throw Error('invalid_source_data')
         cached = true
+        cachedBytes += buffer.length
       } else {
-        const fetcher = new BufferFetcher({batchSize:1,retryCount:0,fetcherFn:value => fetchRaw(value,fetchFn)})
+        const fetcher = new BufferFetcher({batchSize:1,retryCount:0,fetcherFn:value => fetchRaw(value,fetchFn,bytes => { transferredBytes += bytes; progress(i) })})
         const objects = await fetcher.fetch([url])
         if (objects.length !== 1) throw Error('invalid_source_data')
         buffer = objects[0].buffer
@@ -103,18 +112,21 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
       if (!cached) {
         await writeFile(rawPath+'.tmp',buffer)
         await rename(rawPath+'.tmp',rawPath)
-        receipt.buckets[url] = {sha256:hash(buffer),file:'raw/'+fileName,row_count:rows.length}
-        await atomicJson(receiptPath,receipt)
+        bucket = {sha256:hash(buffer),file:'raw/'+fileName,row_count:rows.length}
+        // Persist one bounded bucket receipt; rewriting the full index daily is quadratic for decades of M1.
+        await atomicJson(rawPath+'.receipt.json',bucket)
       }
+      receipt.buckets[url] = bucket
       for (const row of rows) await output.write([row[0]/1000,...row.slice(1)].join(',')+'\n')
       rowCount += rows.length
-      notify({event:'progress',completed_days:i+1,total_days:total})
+      progress(i+1)
       if (!cached && i+1 < urls.length) await new Promise(resolve => setTimeout(resolve,pauseMs))
     }
   } finally { await output.close() }
-  if (rowCount < 2) throw Error('empty_range')
+  if (rowCount < 2 && !/^dataset-[a-f0-9]{64}$/.test(request.parent_dataset_id || '')) throw Error('empty_range')
+  await atomicJson(receiptPath,receipt)
   await rename(join(folder,'candles.csv.tmp'),join(folder,'candles.csv'))
-  notify({event:'complete',row_count:rowCount,buckets_sha256:hash(await readFile(receiptPath))})
+  notify({event:'complete',row_count:rowCount,buckets_sha256:hash(await readFile(receiptPath)),transferred_bytes:transferredBytes,cached_bytes:cachedBytes,stage:'processing'})
   return rowCount
 }
 
