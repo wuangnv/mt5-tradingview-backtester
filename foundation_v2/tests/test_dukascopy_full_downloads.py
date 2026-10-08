@@ -161,6 +161,77 @@ class FullDownloadTests(unittest.TestCase):
             with self.service.dataset_mutation_guard():
                 self.fail('busy mutation was entered')
 
+    def test_pause_preserves_journal_and_blocks_publication_until_worker_exits(self):
+        job = self.service.request_full('a','EUR/USD')
+        saved = self.service._read('a',job['job_id'])
+        saved.update(status='running',completed_days=42,transferred_bytes=123456)
+        self.service._save(saved)
+        process = SimpleNamespace(terminate=lambda:None)
+        self.service.process = process
+        paused = self.service.pause('a',job['job_id'])
+        self.assertEqual(paused['status'],'pausing')
+        self.assertEqual(paused['completed_days'],42)
+        self.assertEqual(paused['transferred_bytes'],123456)
+        self.assertEqual(self.service.resume('a',job['job_id'])['status'],'pausing')
+        with self.assertRaisesRegex(RuntimeError,'download_paused'):
+            self.service._continue_check(saved)
+        self.service.active = None
+        self.assertEqual(self.service.list_jobs('a')['items'][0]['status'],'paused')
+        resumed = self.service.resume('a',job['job_id'])
+        self.assertEqual(resumed['status'],'queued')
+        self.assertEqual(resumed['completed_days'],42)
+        self.assertEqual(resumed['transferred_bytes'],123456)
+
+    def test_pause_is_idempotent_and_does_not_resurrect_cancelled_or_completed_jobs(self):
+        job = self.service.request_full('a','EUR/USD')
+        self.service.active = None
+        self.assertEqual(self.service.pause('a',job['job_id'])['status'],'paused')
+        self.assertEqual(self.service.pause('a',job['job_id'])['status'],'paused')
+        self.assertEqual(self.service.cancel('a',job['job_id'])['status'],'cancelled')
+        self.assertEqual(self.service.pause('a',job['job_id'])['status'],'cancelled')
+        with self.assertRaisesRegex(ValueError,'download_cancelled'):
+            self.service.resume('a',job['job_id'])
+        saved = self.service._read('a',job['job_id'])
+        saved.update(status='completed')
+        self.service._save(saved)
+        self.assertEqual(self.service.pause('a',job['job_id'])['status'],'completed')
+
+    def test_pause_refuses_to_overwrite_remote_worker_journal(self):
+        job = self.service.request_full('a','EUR/USD')
+        self.service.active = None
+        @contextmanager
+        def remote_owner():
+            yield SimpleNamespace(execute=lambda *args:SimpleNamespace(fetchone=lambda:{'owned':False}),commit=lambda:None)
+        self.store.connect = remote_owner
+        with self.assertRaisesRegex(RuntimeError,'download_busy'):
+            self.service.pause('a',job['job_id'])
+        self.assertEqual(self.service._read('a',job['job_id'])['status'],'queued')
+
+    def test_worker_finalizes_manual_pause_and_keeps_resumable_progress(self):
+        job = self.service.request_full('a','EUR/USD')
+        private = self.service._read('a',job['job_id'])
+        self.service.node, self.service.worker = 'mock-node', Path('mock-worker')
+        terminated = []
+        class Output:
+            def __iter__(stream):
+                yield json.dumps({'event':'progress','completed_days':7,'transferred_bytes':999})
+                self.service.pause('a',job['job_id'])
+                yield json.dumps({'event':'progress','completed_days':8,'transferred_bytes':1200})
+            def close(stream):
+                pass
+        process = SimpleNamespace(stdout=Output(),terminate=lambda:terminated.append(True),poll=lambda:0,wait=lambda **kwargs:0)
+        with patch('trading_workspace_v2.dukascopy_downloads.subprocess.Popen',return_value=process):
+            self.service._run(private)
+        paused = self.service._read('a',job['job_id'])
+        self.assertEqual(paused['status'],'paused')
+        self.assertIsNone(paused['error'])
+        self.assertEqual(paused['completed_days'],7)
+        self.assertEqual(paused['transferred_bytes'],999)
+        self.assertEqual(len(terminated),1)
+        self.assertIsNone(self.service.active)
+        self.assertFalse(self.store.datasets)
+        self.assertEqual(self.service.resume('a',job['job_id'])['status'],'queued')
+
     def test_long_parse_does_not_block_cancel_and_never_publishes_cancelled_dataset(self):
         job = self.service.request_full('a','EUR/USD')
         folder = self.service._folder('a',job['job_id'])
@@ -204,6 +275,47 @@ class FullDownloadTests(unittest.TestCase):
         self.assertFalse(list(self.artifacts.root.glob('a/raw/**/source.csv')))
         self.assertFalse(list(self.artifacts.root.glob('a/datasets/*.parquet')))
         self.assertFalse(self.store.datasets)
+
+    def test_pause_during_processing_never_publishes_incomplete_dataset(self):
+        job = self.service.request_full('a','EUR/USD')
+        folder = self.service._folder('a',job['job_id'])
+        (folder/'candles.csv').write_text('time,open,high,low,close\n1052006400,1,2,1,1\n1052006460,1,2,1,1\n')
+        private = self.service._read('a',job['job_id'])
+        private['buckets_sha256'] = 'mock'
+        real_preview = preview_csv
+        def interrupted_preview(*args, **kwargs):
+            self.service.pause('a',job['job_id'])
+            return real_preview(*args, **kwargs)
+        with patch('trading_workspace_v2.dukascopy_downloads.preview_csv',side_effect=interrupted_preview):
+            with self.assertRaisesRegex(RuntimeError,'download_paused'):
+                self.service._complete(private,folder)
+        self.assertEqual(self.service._read('a',job['job_id'])['status'],'pausing')
+        self.assertFalse(self.store.datasets)
+        self.assertFalse(list(self.artifacts.root.glob('a/datasets/*.parquet')))
+
+    def test_paused_publication_rolls_back_new_artifacts_and_keeps_download_cache(self):
+        job = self.service.request_full('a','EUR/USD')
+        folder = self.service._folder('a',job['job_id'])
+        cached = folder/'raw'/'bucket.json'
+        cached.parent.mkdir()
+        cached.write_text('cached raw bucket')
+        csv = folder/'candles.csv'
+        csv.write_text('time,open,high,low,close\n60,1,2,1,1\n120,1,2,1,1\n')
+        @contextmanager
+        def pause_before_publication():
+            self.service.pause('a',job['job_id'])
+            self.service._continue_check(self.service._read('a',job['job_id']))
+            yield
+        with self.assertRaisesRegex(RuntimeError,'download_paused'):
+            self.service.ingest.import_csv(workspace_id='a',path=csv,
+                source=source('2003-05-04',self.yesterday.isoformat()),instrument='EUR/USD',
+                timeframe_seconds=60,publication_guard=pause_before_publication())
+        self.assertFalse(list(self.artifacts.root.glob('a/raw/**/source.csv')))
+        self.assertFalse(list(self.artifacts.root.glob('a/datasets/*.parquet')))
+        self.assertFalse(self.store.datasets)
+        self.assertEqual(cached.read_text(),'cached raw bucket')
+        self.assertTrue(csv.is_file())
+        self.assertEqual(self.service._read('a',job['job_id'])['status'],'pausing')
 
     def test_remote_cancel_cannot_overwrite_active_owner_progress_or_publication(self):
         job = self.service.request_full('a','EUR/USD')

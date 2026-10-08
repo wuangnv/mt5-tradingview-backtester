@@ -36,7 +36,7 @@ export function downloadRangeError(from, to, now = new Date()) {
   return ''
 }
 
-export function libraryRows(datasets, instruments = []) {
+export function libraryRows(datasets, instruments = [], jobs = []) {
   // Keep dataset versions separate: a saved session pins one immutable version.
   const rows = datasets.map(item => ({ ...item, key:item.dataset_id, downloaded:true }))
   for (const item of instruments) {
@@ -44,14 +44,18 @@ export function libraryRows(datasets, instruments = []) {
       rows.push({ ...item, key:`${item.provider_id}:${item.instrument_id}`, downloaded:false })
     }
   }
-  return rows
+  return rows.map(item => ({ ...item, downloadJob: sourceOf(item) === 'Dukascopy'
+    ? jobs.find(job => job.instrument_id === item.instrument_id && ['queued','running','pausing','paused','failed'].includes(job.status)) : undefined }))
 }
 
 export function filterLibrary(rows, { category = 'all', provider = 'all', downloadStatus = 'all', search = '', sort = 'asset-asc' } = {}) {
   const term = search.trim().toLocaleLowerCase('vi')
   const filtered = rows.filter(item => (category === 'all' || categoryOf(item) === category)
     && (provider === 'all' || sourceOf(item) === provider)
-    && (downloadStatus === 'all' || (downloadStatus === 'downloaded' ? item.downloaded : !item.downloaded))
+    && (downloadStatus === 'all'
+      || (downloadStatus === 'downloading' && ['queued','running','pausing'].includes(item.downloadJob?.status))
+      || (downloadStatus === 'downloaded' && item.downloaded)
+      || (downloadStatus === 'not-downloaded' && !item.downloaded && !['queued','running','pausing'].includes(item.downloadJob?.status)))
     && `${item.instrument_id} ${item.name || ''} ${item.timeframe || ''} ${sourceOf(item)} ${categoryLabel(categoryOf(item))}`.toLocaleLowerCase('vi').includes(term))
   const assetCompare = (a, b) => `${a.instrument_id || ''} ${a.timeframe || ''}`.localeCompare(`${b.instrument_id || ''} ${b.timeframe || ''}`, 'en', { numeric:true }) || a.key.localeCompare(b.key)
   return filtered.sort((a, b) => sort === 'asset-desc' ? assetCompare(b,a)

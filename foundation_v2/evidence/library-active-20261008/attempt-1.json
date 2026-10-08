@@ -1,0 +1,346 @@
+{
+  "scope": "Isolated mocked API at actual frontend5180; ALL API intercepted; no actual backend/provider/download action.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "mode": "new",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 30.453125,
+          "width": 148,
+          "cellWidth": 290.453125,
+          "label": "Tiến độ tải EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 186.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Tạm dừng",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 226.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Huỷ tải",
+          "clippedText": false
+        }
+      ],
+      "actions": [
+        "pause",
+        "resume",
+        "cancel"
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "lang": "en",
+      "mode": "new",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 18.0625,
+          "width": 148,
+          "cellWidth": 278.0625,
+          "label": "Download progress for EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 174.0625,
+          "width": 32,
+          "cellWidth": 278.0625,
+          "label": "Pause",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 214.0625,
+          "width": 32,
+          "cellWidth": 278.0625,
+          "label": "Cancel download",
+          "clippedText": false
+        }
+      ],
+      "pass": false,
+      "error": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\nExpected: \"Paused\"\nReceived: \"Pause\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)') with timeout 5000ms\n  - waiting for locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\n    14 × locator resolved to <td>…</td>\n       - unexpected value \"Pause\"\n"
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "en",
+      "mode": "new",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 10.0625,
+          "width": 148,
+          "cellWidth": 278.0625,
+          "label": "Download progress for EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 166.0625,
+          "width": 44,
+          "cellWidth": 278.0625,
+          "label": "Pause",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 218.0625,
+          "width": 44,
+          "cellWidth": 278.0625,
+          "label": "Cancel download",
+          "clippedText": false
+        }
+      ],
+      "pass": false,
+      "error": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\nExpected: \"Paused\"\nReceived: \"Pause\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)') with timeout 5000ms\n  - waiting for locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\n    14 × locator resolved to <td>…</td>\n       - unexpected value \"Pause\"\n"
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "lang": "vi",
+      "mode": "new",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 30.453125,
+          "width": 148,
+          "cellWidth": 290.453125,
+          "label": "Tiến độ tải EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 186.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Tạm dừng",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 226.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Huỷ tải",
+          "clippedText": false
+        }
+      ],
+      "actions": [
+        "pause",
+        "resume",
+        "cancel"
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "lang": "en",
+      "mode": "new",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 18.0625,
+          "width": 148,
+          "cellWidth": 278.0625,
+          "label": "Download progress for EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 174.0625,
+          "width": 32,
+          "cellWidth": 278.0625,
+          "label": "Pause",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 214.0625,
+          "width": 32,
+          "cellWidth": 278.0625,
+          "label": "Cancel download",
+          "clippedText": false
+        }
+      ],
+      "pass": false,
+      "error": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\nExpected: \"Paused\"\nReceived: \"Pause\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)') with timeout 5000ms\n  - waiting for locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\n    14 × locator resolved to <td>…</td>\n       - unexpected value \"Pause\"\n"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "en",
+      "mode": "new",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 10.0625,
+          "width": 148,
+          "cellWidth": 278.0625,
+          "label": "Download progress for EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 166.0625,
+          "width": 44,
+          "cellWidth": 278.0625,
+          "label": "Pause",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 218.0625,
+          "width": 44,
+          "cellWidth": 278.0625,
+          "label": "Cancel download",
+          "clippedText": false
+        }
+      ],
+      "pass": false,
+      "error": "Error: expect(locator).toHaveText(expected) failed\n\nLocator:  locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\nExpected: \"Paused\"\nReceived: \"Pause\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveText\" locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)') with timeout 5000ms\n  - waiting for locator('.rd-table tbody tr').filter({ has: locator('td:first-child strong').filter({ hasText: 'EUR/USD' }) }).locator('td:nth-child(7)')\n    14 × locator resolved to <td>…</td>\n       - unexpected value \"Pause\"\n"
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "mode": "update",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 30.453125,
+          "width": 148,
+          "cellWidth": 290.453125,
+          "label": "Tiến độ tải EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 186.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Tạm dừng",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 226.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Huỷ tải",
+          "clippedText": false
+        }
+      ],
+      "actions": [
+        "pause",
+        "resume",
+        "cancel"
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "mode": "new",
+      "supportsPause": false,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 30.453125,
+          "width": 148,
+          "cellWidth": 290.453125,
+          "label": "Tiến độ tải EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 186.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Tạm dừng",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 226.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Huỷ tải",
+          "clippedText": false
+        }
+      ],
+      "actions": [
+        "cancel"
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "mode": "empty",
+      "supportsPause": true,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "mode": "error",
+      "supportsPause": true,
+      "geometry": [
+        {
+          "class": "data-library-progress",
+          "x": 30.453125,
+          "width": 148,
+          "cellWidth": 290.453125,
+          "label": "Tiến độ tải EUR/USD",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 186.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Tạm dừng",
+          "clippedText": false
+        },
+        {
+          "class": "fxa-button fxa-icon-button data-library-job-control",
+          "x": 226.453125,
+          "width": 32,
+          "cellWidth": 290.453125,
+          "label": "Huỷ tải",
+          "clippedText": false
+        }
+      ],
+      "actions": [
+        "pause"
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": false
+}

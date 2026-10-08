@@ -5609,5 +5609,12 @@
   "Không tìm thấy lượt tải này.": {"vi":"Không tìm thấy lượt tải này.","en":"This download could not be found."},
   "Cần kiểm tra chất lượng": {"vi":"Cần kiểm tra chất lượng","en":"Quality review required"},
   "Khoảng trống dữ liệu": {"vi":"Khoảng trống dữ liệu","en":"Data gaps"},
-  "Nến trùng": {"vi":"Nến trùng","en":"Duplicate candles"}
+  "Nến trùng": {"vi":"Nến trùng","en":"Duplicate candles"},
+  "Đã tạm dừng": {"vi":"Đã tạm dừng","en":"Paused"},
+  "Sau khi tải": {"vi":"Sau khi tải","en":"After download"},
+  "Đã nhận": {"vi":"Đã nhận","en":"Received"},
+  "Có sẵn · M1/Bid": {"vi":"Có sẵn · M1/Bid","en":"Available · M1/Bid"},
+  "Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.": {"vi":"Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.","en":"Downloadable range from M1/Bid metadata; coverage has not been verified."},
+  "Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.": {"vi":"Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.","en":"The exact candle count is known only after reading source data."},
+  "Dung lượng replay chỉ xác định sau khi tải và xử lý.": {"vi":"Dung lượng replay chỉ xác định sau khi tải và xử lý.","en":"Replay size is known only after downloading and processing."}
 }

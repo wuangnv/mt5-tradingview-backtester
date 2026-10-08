@@ -396,8 +396,10 @@ range, candle count, storage size, quality and actions. Session creation belongs
 and Dashboard; this page has no create-session action.
 Search is left-aligned. Right-aligned controls reuse the Recent Sessions pattern:
 always-visible category/source/download-status pills, sort, asset catalog and CSV import.
-Status filters all/saved/unsaved rows; sort only reorders by name or recent update.
-Search and sort remain independent of these filters.
+Status filters all/saved/unsaved/downloading rows; queued and pausing jobs count as
+downloading, including updates of a saved version. Unsaved active downloads are
+excluded from Not downloaded. Sort only reorders by name or recent update.
+Clear filters resets search/category/source/status and page, preserving sort and page size.
 There is no count, duplicate title or permanent explanatory block above the grid.
 Table separators extend through the shared page gutter while text stays inset.
 Dataset rows open quality/provenance in a native dialog. The toolbar's Import CSV
@@ -405,8 +407,14 @@ action opens a separate native dialog. A row's ellipsis opens an action menu wit
 View details, Update and Delete. Update is enabled only when newer coverage is
 available and shares the inline download progress. Saving creates a new immutable
 dataset version. Earlier versions remain separate rows and existing sessions keep
-their pinned dataset. Metadata-only rows have no historical range, candle count or
-quality assertion; details/update/delete are disabled and CSV import remains available.
+their pinned dataset. Metadata-only Dukascopy rows show the bundled M1/Bid start
+date through yesterday UTC as available history, with a tooltip separating this
+from verified downloaded coverage. Exact candle count and replay size remain
+unknown until download/processing. Active rows show received payload bytes and
+the real job status rather than Not downloaded; no quality assertion is made.
+The ellipsis becomes Pause/Cancel while downloading and Resume/Cancel while
+paused or failed. Pause keeps per-bucket checksummed cache; Cancel ends the job.
+Pause stays disabled when the running backend does not advertise supports_pause.
 Successful CSV import clears filters, selects the imported version, opens its
 details and refreshes the server-owned catalog. Escape/outside dismissal and
 keyboard menu navigation return focus; menus reposition during scrolling rather
@@ -423,17 +431,18 @@ Unknown dataset links do not silently select an unrelated dataset.
 The owner prioritized offline first. MT5 connection/sync UI work is deferred;
 existing Live screens remain unchanged. No new Data Desk sidebar entry is created.
 The imported-history launcher now configures a metadata-only Dukascopy catalog.
-The backend process reads TW_DUKASCOPY_API_KEY; it is never returned to the UI.
+The current catalog uses Dukascopy's public metadata endpoint without an API key.
 Ordinary catalog GETs read an atomically saved local snapshot, without external I/O.
 An empty configured catalog is fetched once on page entry; cached lists only refresh
 through the toolbar action. Seven-day-old lists are marked stale, with no polling.
-Failure retains cached rows; missing key, denied key, 429 and invalid-cache states
+Failure retains cached rows; unavailable source, 429 and invalid-cache states
 remain explicit. A local UI cooldown timer re-enables the button without network I/O.
-No inventory or history is fabricated when the real workspace lacks key/cache.
-Loaded rows show disabled Downloaded; metadata-only rows currently
-show disabled Download with an unavailable-source tooltip. Enabling that action
-requires a separately configured and verified history adapter. CSV import reuses
-the deterministic preview and immutable artifact APIs.
+No inventory or history is fabricated when the real workspace lacks metadata/cache.
+Loaded rows show disabled Downloaded. Supported catalog rows download full M1/Bid
+history via pinned dukascopy-node. Three daily buckets are fetched concurrently,
+with a one-second pause per batch, ordered daily CSV writes and bounded progress
+events. 429 retains global cooldown; failed batches preserve successful receipts
+and start no later requests. CSV import reuses deterministic preview and immutable artifacts.
 The import dialog focuses the file picker and restores toolbar focus when closed.
 Required CSV columns/time formats are shown before selection. Preview/import locks
 the form and dialog close until the request settles, so metadata cannot change

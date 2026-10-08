@@ -16,7 +16,7 @@ import TestingIcon from './TestingIcon.jsx'
 import DataLibraryActions from './DataLibraryActions.jsx'
 import DataLibraryProgress from './DataLibraryProgress.jsx'
 import PaginationFooter from './PaginationFooter.jsx'
-import { CATEGORIES, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset } from './dataLibraryModel.js'
+import { CATEGORIES, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
 import './data-library.css'
 import './session-settings.css'
 
@@ -170,7 +170,7 @@ function DataLibraryDialog({ title, busy = false, onClose, compact = false, draw
   </dialog>
 }
 
-const DOWNLOAD_STATUS = { queued:'Đang chờ tải', running:'Đang tải', paused:'Tạm dừng', failed:'Tải thất bại', completed:'Đã lưu vào kho', cancelled:'Đã huỷ tải' }
+const DOWNLOAD_STATUS = { queued:'Đang chờ tải', running:'Đang tải', pausing:'Đang tạm dừng…', paused:'Đã tạm dừng', failed:'Tải thất bại', completed:'Đã lưu vào kho', cancelled:'Đã huỷ tải' }
 const DOWNLOAD_ERRORS = { source_rate_limited:'Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.', source_unavailable:'Không kết nối được Dukascopy. Tiến độ đã tải được giữ lại.', invalid_source_data:'Dữ liệu nguồn không hợp lệ; chưa lưu vào kho.', empty_range:'Không có dữ liệu trong khoảng ngày đã chọn.', worker_unavailable:'Bộ tải dữ liệu chưa sẵn sàng.', download_interrupted:'Tải bị gián đoạn. Có thể tiếp tục từ tiến độ đã lưu.', quality_rejected:'Dữ liệu chưa đạt kiểm tra chất lượng; chưa lưu vào kho.', download_busy:'Đang có một lượt tải khác. Hãy chờ hoặc huỷ lượt đó.', invalid_date_range:'Chọn khoảng ngày hợp lệ.', instrument_not_supported:'Tài sản này chưa hỗ trợ tải.', download_cooldown:'Chưa hết thời gian chờ. Hãy thử lại sau.', download_cancelled:'Lượt tải đã huỷ. Hãy bắt đầu lượt tải mới.', download_not_found:'Không tìm thấy lượt tải này.' }
 const downloadErrorMessage = error => {
   const code = typeof error === 'string' ? error : error?.payload?.detail?.code || error?.payload?.detail || error?.message
@@ -417,7 +417,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           newlyCompleted.forEach(job => completedJobs.current.add(job.job_id))
           setCatalogRevision(current => current + 1)
         }
-        if (payload.items.some(job => ['queued','running'].includes(job.status))) timer = setTimeout(poll,2000)
+        if (payload.items.some(job => ['queued','running','pausing'].includes(job.status))) timer = setTimeout(poll,2000)
       } catch (error) {
         if (!disposed && !scopeSignal.aborted && error.name !== 'AbortError') setPollError('Không đọc được tiến độ tải. Thử lại để xem trạng thái hiện tại.')
       }
@@ -432,12 +432,18 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     return () => clearInterval(timer)
   }, [downloads])
 
-  const activeDownload = downloads.items.some(job => ['queued','running'].includes(job.status))
+  const activeDownload = downloads.items.some(job => ['queued','running','pausing'].includes(job.status))
   const changeDownload = async (job, action) => {
     if (jobAction) return
     const signal = downloadController.signal
     setJobAction(job.job_id); setDownloadError('')
-    try { await updateDownload(workspace,job.job_id,action,signal); if (!signal.aborted) setDownloadRevision(current => current + 1) }
+    try {
+      const updated = await updateDownload(workspace,job.job_id,action,signal)
+      if (!signal.aborted) {
+        setDownloads(current => ({...current,items:current.items.map(item => item.job_id === job.job_id ? updated : item)}))
+        setDownloadRevision(current => current + 1)
+      }
+    }
     catch (error) { if (!signal.aborted) setDownloadError(downloadErrorMessage(error)) }
     finally { if (!signal.aborted) setJobAction('') }
   }
@@ -523,7 +529,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const catalogMessages = { rate_limited:'Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.', source_unavailable:'Không cập nhật được danh sách Dukascopy.', invalid_response:'Danh sách Dukascopy trả về không hợp lệ.', invalid_cache:'Bản lưu danh sách Dukascopy không hợp lệ.', cache_write_failed:'Không lưu được danh sách Dukascopy.' }
   const catalogMessage = catalogMessages[catalogError] || (state.catalog?.stale ? 'Danh sách Dukascopy đã cũ.' : '')
 
-  const rows = useMemo(() => libraryRows(state.datasets, state.instruments), [state.datasets, state.instruments])
+  const rows = useMemo(() => libraryRows(state.datasets, state.instruments, downloads.items), [state.datasets, state.instruments, downloads.items])
   const sources = [...new Set([...rows.map(sourceOf), ...(state.catalog ? ['Dukascopy'] : [])])].sort()
   const sourceOptions = [{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]
   const catalogSourceSelected = catalogProvider === 'all' || catalogProvider === 'Dukascopy'
@@ -535,6 +541,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const pages = Math.max(1, Math.ceil(filteredDatasets.length / pageSize)), currentPage = Math.min(page, pages)
   const pageItems = filteredDatasets.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   useEffect(() => setPage(1), [categoryFilter,providerFilter,downloadFilter,search,sort,pageSize])
+  const filtersApplied = categoryFilter !== 'all' || providerFilter !== 'all' || downloadFilter !== 'all' || Boolean(search)
+  const clearFilters = () => { setCategoryFilter('all'); setProviderFilter('all'); setDownloadFilter('all'); setSearch(''); setPage(1) }
 
   const openCsv = (asset = null) => { setImportAsset(asset); setCsvBusy(false); setCsvOpen(true) }
   const openDetails = asset => { setSelectedId(asset.dataset_id); setDetailsOpen(true) }
@@ -552,10 +560,10 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     } catch(error) { if (!signal.aborted) setDownloadError(downloadErrorMessage(error)) }
     finally { if (!signal.aborted) setStartingAsset('') }
   }
-  const visibleDownloads = downloads.items.filter(job => ['queued', 'running', 'paused', 'failed'].includes(job.status))
+  const visibleDownloads = downloads.items.filter(job => ['queued', 'running', 'pausing', 'paused', 'failed'].includes(job.status))
   useEffect(() => { if (!visibleDownloads.length) setDownloadProgressOpen(false) }, [downloads.items])
   const eligibleDownload = asset => state.download?.supports_full === true && canDownloadAsset(asset,state.download,preview) && !activeDownload && !jobAction && !deleteBusy && !startingAsset
-  const jobForAsset = asset => sourceOf(asset) === 'Dukascopy' ? visibleDownloads.find(job => job.instrument_id === asset.instrument_id) : null
+  const jobForAsset = asset => asset.downloadJob
   const openDelete = asset => { setDetailsOpen(false); setDeleteError(''); setDeleteAsset(asset) }
   const removeDataset = async () => {
     if (!deleteAsset?.dataset_id || deleteBusy || preview) return
@@ -581,8 +589,9 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <div className="data-library-filters">
           <FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} />
           <FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={sourceOptions} />
-          <FxSelect label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'all',label:'Tất cả trạng thái'},{value:'downloaded',label:'Đã tải'},{value:'not-downloaded',label:'Chưa tải'}]} />
+          <FxSelect label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'all',label:'Tất cả trạng thái'},{value:'downloaded',label:'Đã tải'},{value:'not-downloaded',label:'Chưa tải'},{value:'downloading',label:'Đang tải'}]} />
           <FxSelect className="data-library-sort" label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'newest',label:'Mới cập nhật'}]} />
+          <button type="button" className="fxa-clear-filters" disabled={!filtersApplied} onClick={clearFilters}><TestingIcon kind="delete" />{t('Clear filters')}</button>
           {state.catalog && <button type="button" className="data-library-catalog-trigger" onClick={() => setCatalogOpen(true)} aria-haspopup="dialog" aria-expanded={catalogOpen}>{t('Danh mục tài sản')}</button>}
           {visibleDownloads.length > 0 && !pageItems.some(jobForAsset) && <button type="button" className="data-library-catalog-trigger" onClick={() => setDownloadProgressOpen(true)}>{t('Tiến độ tải dữ liệu')}</button>}
           <button type="button" className="fxa-button is-primary data-library-import" disabled={Boolean(preview)} onClick={() => openCsv()}><TestingIcon kind="upload" />{t('Nhập CSV')}</button>
@@ -598,7 +607,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       {downloadProgressOpen && <DataLibraryDialog compact title="Tiến độ tải dữ liệu" onClose={() => setDownloadProgressOpen(false)}><section className="data-library-download-jobs" aria-label={t('Tiến độ tải dữ liệu')}>
         {visibleDownloads.map(job => {
           const retrySeconds = Math.max(0,Math.ceil((job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000))
-          const active = ['queued','running'].includes(job.status)
+          const active = ['queued','running','pausing'].includes(job.status)
           return <div key={job.job_id} className="data-library-download-job" data-testid={`download-job-${job.job_id}`}>
             <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{job.from_date} → {job.to_date}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')} · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</span></div>
             {active && <progress aria-label={t('Tiến độ tải {asset}',{asset:job.instrument_id})} value={job.completed_days || 0} max={Math.max(1,job.total_days || 1)} />}
@@ -607,7 +616,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
             {job.stage === 'processing' && <p role="status">{t('Đang lưu dữ liệu…')}</p>}
             <div className="data-library-job-actions">{retrySeconds > 0 && <span>{t('Thử lại sau {seconds} giây',{seconds:retrySeconds})}</span>}
               {['paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={!downloads.available || activeDownload || Boolean(jobAction) || retrySeconds > 0} onClick={() => changeDownload(job,'resume')}>{t('Tiếp tục tải')}</button>}
-              {['queued','running','paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}>{t('Huỷ tải')}</button>}
+              {['queued','running','pausing'].includes(job.status) && <button type="button" className="rd-button" disabled={!downloads.supportsPause || Boolean(jobAction) || job.status === 'pausing'} onClick={() => changeDownload(job,'pause')}>{t(job.status === 'pausing' ? 'Đang tạm dừng…' : 'Tạm dừng')}</button>}
+              {['queued','running','pausing','paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}>{t('Huỷ tải')}</button>}
             </div>
           </div>
         })}
@@ -625,16 +635,21 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const range = datasetRange(dataset)
                       const active = Boolean(dataset.dataset_id && dataset.dataset_id === selected?.dataset_id)
                       const job = jobForAsset(dataset)
+                      const downloading = job && ['queued','running','pausing'].includes(job.status)
+                      const availableStart = sourceOf(dataset) === 'Dukascopy' ? state.download?.earliest_dates?.[dataset.instrument_id] : null
                       return (
                         <tr key={dataset.key} className={active ? 'is-selected' : ''}>
                           <td>{dataset.downloaded ? <button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => openDetails(dataset)}><strong>{dataset.instrument_id || '—'}</strong><small>{dataset.timeframe || '—'}</small></button> : <><strong>{dataset.instrument_id}</strong>{dataset.name && <small>{dataset.name}</small>}</>}</td>
                           <td>{t(categoryLabel(categoryOf(dataset)))}</td>
                           <td>{sourceOf(dataset)}</td>
-                          <td>{dataset.downloaded ? <>{t(formatUtc(range.start, locale))}<small>→ {t(formatUtc(range.end, locale))}</small></> : '—'}</td>
-                          <td>{fmt(dataset.row_count, '', 0)}</td>
-                          <td>{formatDatasetSize(dataset.size_bytes, fmt)}</td>
-                          <td>{dataset.downloaded ? <QualityBadge dataset={dataset} /> : <span className="data-library-muted">{t('Chưa tải')}</span>}</td>
-                          <td><div className="data-library-row-actions">{job ? <DataLibraryProgress job={job} fmt={fmt} onClick={() => setDownloadProgressOpen(true)} /> : <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}<DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} /></div></td>
+                          <td title={!dataset.downloaded && availableStart ? t('Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.') : undefined}>{dataset.downloaded ? <>{t(formatUtc(range.start, locale))}<small>→ {t(formatUtc(range.end, locale))}</small></> : availableStart ? <>{availableStart}<small>→ {defaultDownloadDates().to_date}</small><small>{t('Có sẵn · M1/Bid')}</small></> : <span className="data-library-muted">{t('Chưa xác định')}</span>}</td>
+                          <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>{t('Sau khi tải')}</span>}</td>
+                          <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : downloading ? <>{formatDatasetSize(job.transferred_bytes, fmt)}<small>{t('Đã nhận')}</small></> : <span className="data-library-muted">{t('Sau khi tải')}</span>}</td>
+                          <td>{job ? <span className="data-library-muted">{t(DOWNLOAD_STATUS[job.status])}</span> : dataset.downloaded ? <QualityBadge dataset={dataset} /> : <span className="data-library-muted">{t('Chưa tải')}</span>}</td>
+                          <td><div className="data-library-row-actions">{job ? <DataLibraryProgress job={job} fmt={fmt} onClick={() => setDownloadProgressOpen(true)} /> : <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
+                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || Math.max(0,(job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000) > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
+                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t('Huỷ tải')} disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="stop" /></button>
+                          </> : <DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} />}</div></td>
                         </tr>
                       )
                     })}

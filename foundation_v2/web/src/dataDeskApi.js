@@ -32,7 +32,7 @@ export function importLocalCsv(workspace, payload) {
 export async function fetchDownloads(workspace, signal) {
   const response = await fetch('/api/v2/data/downloads', { headers:workspaceHeaders(workspace), signal })
   const payload = await readJson(response)
-  return { items:Array.isArray(payload.items) ? payload.items : [], available:Boolean(payload.available) }
+  return { items:Array.isArray(payload.items) ? payload.items : [], available:Boolean(payload.available), supportsPause:payload.supports_pause === true }
 }
 
 export async function startDownload(workspace, payload, signal) {
@@ -46,7 +46,7 @@ export async function deleteLocalDataset(workspace, datasetId, signal) {
 }
 
 export async function updateDownload(workspace, jobId, action, signal) {
-  if (!['resume','cancel'].includes(action)) throw new Error('Invalid download action')
+  if (!['resume','pause','cancel'].includes(action)) throw new Error('Invalid download action')
   const response = await fetch(`/api/v2/data/downloads/${encodeURIComponent(jobId)}/${action}`, { method:'POST', headers:workspaceHeaders(workspace), signal })
   return readJson(response)
 }

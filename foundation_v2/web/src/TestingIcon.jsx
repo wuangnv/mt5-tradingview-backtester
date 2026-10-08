@@ -2,6 +2,9 @@ import React from 'react'
 
 export default function TestingIcon({ kind = 'info', size = 18 }) {
   const paths = {
+    pause: <><path d="M8 5v14M16 5v14" /></>,
+    stop: <rect x="5" y="5" width="14" height="14" rx="1" />,
+    play: <path d="m8 4 12 8-12 8Z" />,
     search: <><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></>,
     upload: <><path d="M12 16V3m-5 5 5-5 5 5M4 14v6h16v-6" /></>,
     download: <><path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4" /></>,

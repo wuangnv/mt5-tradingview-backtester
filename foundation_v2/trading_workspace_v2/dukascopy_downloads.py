@@ -147,8 +147,8 @@ class DukascopyDownloads:
 
     def _public(self, job):
         result = {key: value for key, value in job.items() if key != 'workspace_id'}
-        if job['status'] in {'running', 'queued'} and self.active != (job['workspace_id'], job['job_id']) and not self._remote_owner(job):
-            result.update(status='paused', error='download_interrupted')
+        if job['status'] in {'running', 'queued', 'pausing'} and self.active != (job['workspace_id'], job['job_id']) and not self._remote_owner(job):
+            result.update(status='paused', error=None if job['status'] == 'pausing' else 'download_interrupted')
         result['retry_after_seconds'] = max(0, int(job.get('retry_at', 0) - time.time()) + 1) if job.get('retry_at') else 0
         result.pop('retry_at', None)
         return result
@@ -170,7 +170,7 @@ class DukascopyDownloads:
                     jobs.append(self._public(self._read(workspace, path.parent.name)))
                 except ValueError:
                     continue
-            return {'available': bool(self.meta), 'items': sorted(jobs, key=lambda item: item['created_at_utc'], reverse=True)[:20]}
+            return {'available': bool(self.meta), 'supports_pause': True, 'items': sorted(jobs, key=lambda item: item['created_at_utc'], reverse=True)[:20]}
 
     def request(self, workspace, instrument_id, from_date, to_date):
         return self._request(workspace, instrument_id, from_date, to_date, range_limit=366)
@@ -219,7 +219,7 @@ class DukascopyDownloads:
             job = self._read(workspace, job_id)
             if job['status'] == 'completed' or self.active == (workspace, job_id):
                 return self._public(job)
-            if job['status'] in {'queued','running'} and self._remote_owner(job):
+            if job['status'] in {'queued','running','pausing'} and self._remote_owner(job):
                 raise RuntimeError('download_busy')
             if job['status'] == 'cancelled':
                 raise ValueError('download_cancelled')
@@ -240,18 +240,26 @@ class DukascopyDownloads:
         self.thread.start()
 
     def cancel(self, workspace, job_id):
+        return self._interrupt(workspace, job_id, 'cancelled')
+
+    def pause(self, workspace, job_id):
+        return self._interrupt(workspace, job_id, 'pausing')
+
+    def _interrupt(self, workspace, job_id, status):
         self.authorization.authorize(workspace)
         with self.lock:
-            def cancel_owned():
+            def interrupt_owned():
                 job = self._read(workspace, job_id)
-                if job['status'] != 'completed':
-                    job.update(status='cancelled', error=None)
+                terminal = {'completed', 'cancelled'} if status == 'cancelled' else {'completed', 'cancelled', 'paused', 'failed'}
+                if job['status'] not in terminal:
+                    job.update(status=status if self.active == (workspace, job_id) or status == 'cancelled' else 'paused', error=None)
+                    job.pop('retry_at', None)
                     self._save(job)
                     if self.active == (workspace, job_id) and self.process:
                         self.process.terminate()
                 return self._public(job)
             if self.active == (workspace, job_id):
-                return cancel_owned()
+                return interrupt_owned()
             job = self._read(workspace, job_id)
             # Remote owners hold this lock for progress and publication. Never overwrite their job journal.
             with self.store.connect() as owner:
@@ -259,7 +267,7 @@ class DukascopyDownloads:
                 if not claimed:
                     raise RuntimeError('download_busy')
                 owner.commit()
-                return cancel_owned()
+                return interrupt_owned()
 
     def _run(self, job):
         workspace, job_id = job['workspace_id'], job['job_id']
@@ -281,7 +289,7 @@ class DukascopyDownloads:
                         cooldown = int(until - time.time()) + 1
                         raise RuntimeError('source_rate_limited')
                 with self.lock:
-                    if self._read(workspace, job_id)['status'] == 'cancelled':
+                    if self._read(workspace, job_id)['status'] in {'cancelled', 'pausing'}:
                         return
                     if self.stopping:
                         raise RuntimeError('download_interrupted')
@@ -297,7 +305,7 @@ class DukascopyDownloads:
                 for line in self.process.stdout:
                     payload = json.loads(line)
                     with self.lock:
-                        if self._read(workspace, job_id)['status'] == 'cancelled':
+                        if self._read(workspace, job_id)['status'] in {'cancelled', 'pausing'}:
                             return
                         if payload['event'] == 'progress':
                             job['completed_days'] = payload['completed_days']
@@ -323,7 +331,7 @@ class DukascopyDownloads:
                      'worker_unavailable','download_interrupted','download_cancelled','quality_rejected','invalid_date_range','instrument_not_supported','dataset_not_supported'}
             error = str(exc) if str(exc) in known else 'quality_rejected' if isinstance(exc, DataImportError) else 'download_interrupted'
             with self.lock:
-                if self._read(workspace, job_id)['status'] != 'cancelled' and not (error == 'download_busy' and self._remote_owner(job)):
+                if self._read(workspace, job_id)['status'] not in {'cancelled', 'pausing'} and not (error == 'download_busy' and self._remote_owner(job)):
                     job.update(status='paused' if error in {'source_rate_limited','source_unavailable','download_busy','download_interrupted'} else 'failed',
                                error=error, retry_at=time.time()+cooldown)
                     self._save(job)
@@ -337,12 +345,21 @@ class DukascopyDownloads:
                     self.process.wait(timeout=5)
                     self.process.stdout.close()
                 self.process = None
-                self.active = None
+                try:
+                    latest = self._read(workspace, job_id)
+                    if latest['status'] == 'pausing':
+                        latest.update(status='paused', error=None)
+                        self._save(latest)
+                finally:
+                    self.active = None
 
     def _continue_check(self, job):
         with self.lock:
-            if self._read(job['workspace_id'], job['job_id'])['status'] == 'cancelled':
+            status = self._read(job['workspace_id'], job['job_id'])['status']
+            if status == 'cancelled':
                 raise RuntimeError('download_cancelled')
+            if status == 'pausing':
+                raise RuntimeError('download_paused')
             if self.stopping:
                 raise RuntimeError('download_interrupted')
 

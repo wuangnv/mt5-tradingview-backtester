@@ -630,6 +630,10 @@ def create_app(
     def resume_offline_download(job_id: str, workspace: str = Depends(workspace_id)):
         return download_action('resume', workspace, job_id)
 
+    @app.post('/api/v2/data/downloads/{job_id}/pause', status_code=202)
+    def pause_offline_download(job_id: str, workspace: str = Depends(workspace_id)):
+        return download_action('pause', workspace, job_id)
+
     @app.post('/api/v2/data/downloads/{job_id}/cancel')
     def cancel_offline_download(job_id: str, workspace: str = Depends(workspace_id)):
         return download_action('cancel', workspace, job_id)
