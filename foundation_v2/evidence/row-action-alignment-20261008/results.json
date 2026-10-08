@@ -1,0 +1,47 @@
+[
+  {
+    "theme": "dark",
+    "width": 1710,
+    "button": {
+      "width": 32,
+      "height": 32
+    },
+    "icon": {
+      "width": 16,
+      "height": 16
+    },
+    "dx": 0,
+    "dy": 0,
+    "padding": "0px"
+  },
+  {
+    "theme": "light",
+    "width": 1710,
+    "button": {
+      "width": 32,
+      "height": 32
+    },
+    "icon": {
+      "width": 16,
+      "height": 16
+    },
+    "dx": 0,
+    "dy": 0,
+    "padding": "0px"
+  },
+  {
+    "theme": "dark",
+    "width": 360,
+    "button": {
+      "width": 44,
+      "height": 44
+    },
+    "icon": {
+      "width": 16,
+      "height": 16
+    },
+    "dx": 0,
+    "dy": 0,
+    "padding": "0px"
+  }
+]

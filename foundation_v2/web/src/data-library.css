@@ -65,8 +65,8 @@
 .data-library-progress-rate { white-space:nowrap; font-size:12px; line-height:16px; color:var(--wm-content-muted); }
 .fx-app .data-library .rd-table .data-library-progress:hover:not(:disabled) { background:var(--wm-control-hover); border-color:transparent; }
 .data-library .data-library-progress:focus-visible { outline:2px solid var(--wm-focus); outline-offset:2px; }
-.fx-app.fx-shell-story[data-theme] .fx-content .data-library .data-library-row-actions .data-library-more { display:grid; place-items:center; box-sizing:border-box; flex:0 0 auto; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); min-height:var(--wm-icon-action-size); border:1px solid transparent; border-radius:50%; padding:8px; }
-.data-library-more svg { width:18px; height:18px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .data-library .data-library-row-actions .data-library-more { display:grid; place-items:center; box-sizing:border-box; flex:0 0 auto; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); min-height:var(--wm-icon-action-size); border:1px solid transparent; border-radius:50%; padding:0; }
+.data-library-more svg { display:block; width:16px; height:16px; }
 .data-library .data-library-more:hover:not(:disabled), .data-library .data-library-more[aria-expanded=true] { background:var(--wm-control-hover); border-color:transparent; }
 .data-library-muted { color:var(--wm-content-muted); }
 .data-library-action-menu { position:fixed; z-index:70; width:224px; max-width:calc(100vw - 16px); padding:6px; box-sizing:border-box; border:1px solid var(--wm-control-border); border-radius:10px; background:var(--wm-popup); box-shadow:0 8px 24px #0003; color:var(--wm-content); font:inherit; }

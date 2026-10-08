@@ -1,0 +1,147 @@
+{
+  "scope": "Actual Library local GET-only. Read-only menu/hover inspection, no mutation or download state changes.",
+  "cases": [
+    {
+      "width": 1710,
+      "states": {
+        "rest": {
+          "button": {
+            "x": 1636,
+            "y": 270.75,
+            "width": 32,
+            "height": 32
+          },
+          "svg": {
+            "x": 1644,
+            "y": 278.75,
+            "width": 16,
+            "height": 16
+          },
+          "delta": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": "0px",
+          "border": "1px",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "hover": {
+          "button": {
+            "x": 1636,
+            "y": 270.75,
+            "width": 32,
+            "height": 32
+          },
+          "svg": {
+            "x": 1644,
+            "y": 278.75,
+            "width": 16,
+            "height": 16
+          },
+          "delta": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": "0px",
+          "border": "1px",
+          "background": "rgb(42, 42, 42)"
+        },
+        "open": {
+          "button": {
+            "x": 1636,
+            "y": 270.75,
+            "width": 32,
+            "height": 32
+          },
+          "svg": {
+            "x": 1644,
+            "y": 278.75,
+            "width": 16,
+            "height": 16
+          },
+          "delta": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": "0px",
+          "border": "1px",
+          "background": "rgb(42, 42, 42)"
+        }
+      },
+      "note": "No actual download controls currently present for EUR/USD; source audit only for common compact icon geometry.",
+      "pass": true
+    },
+    {
+      "width": 360,
+      "states": {
+        "rest": {
+          "button": {
+            "x": 300,
+            "y": 542.5,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 314,
+            "y": 556.5,
+            "width": 16,
+            "height": 16
+          },
+          "delta": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": "0px",
+          "border": "1px",
+          "background": "rgba(0, 0, 0, 0)"
+        },
+        "hover": {
+          "button": {
+            "x": 300,
+            "y": 542.5,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 314,
+            "y": 556.5,
+            "width": 16,
+            "height": 16
+          },
+          "delta": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": "0px",
+          "border": "1px",
+          "background": "rgb(42, 42, 42)"
+        },
+        "open": {
+          "button": {
+            "x": 300,
+            "y": 542.5,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 314,
+            "y": 556.5,
+            "width": 16,
+            "height": 16
+          },
+          "delta": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": "0px",
+          "border": "1px",
+          "background": "rgb(42, 42, 42)"
+        }
+      },
+      "note": "No actual download controls currently present for EUR/USD; source audit only for common compact icon geometry.",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}
