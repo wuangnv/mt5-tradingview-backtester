@@ -60,7 +60,7 @@ icons track the input's vertical center. Market Data fields follow the shared
 40/44px control height, including date fields.
 
 Market Data keeps category, source and download-status filters visible beside the
-sort control. Download status limits the rows to all, saved or unsaved assets;
+sort control. Download status limits the rows to all, saved, downloading or unsaved assets;
 sort changes only their order (name ascending/descending or recently updated).
 Search stays on the left; controls wrap on narrow screens. Data-library dialog
 actions use the shared button treatment, with `.is-danger` for delete confirmation
@@ -70,6 +70,14 @@ Library history uses two fixed-width columns, From date (UTC) and To date (UTC),
 with dd/mm/yyyy on one line. Saved rows use observed dataset boundaries; unsaved
 Dukascopy rows use downloadable metadata and retain the coverage disclaimer.
 Unknown dates stay “—”. Exact saved timestamps remain in Details and date tooltips.
+Active, paused and failed transfers show their state, percentage, progress track
+and transferred bytes in the Status column; speed appears only during downloading.
+The existing progress dialog remains available by activating this status control.
+Actions align to their column's left content edge, like the other headers/cells.
+Download and Pause/Resume share a fixed text-button slot; More/Cancel use the
+adjacent circular icon slot, keeping alignment stable across transfer states.
+Sticky header cells own their bottom divider with an inset line, so it remains
+visible during scrolling without a duplicate border on the first body row.
 The table scroll viewport has no bottom border: PaginationFooter owns the single
 full-width divider, regardless of scroll position.
 Body row separators are quieter than the structural header/footer divider, so a

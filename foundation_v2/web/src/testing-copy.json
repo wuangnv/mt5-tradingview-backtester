@@ -5589,6 +5589,7 @@
   "Đã lưu vào kho": {"vi":"Đã lưu vào kho","en":"Saved to library"},
   "Đã huỷ tải": {"vi":"Đã huỷ tải","en":"Download cancelled"},
   "Tiếp tục tải": {"vi":"Tiếp tục tải","en":"Resume download"},
+  "Tiếp tục": {"vi":"Tiếp tục","en":"Resume"},
   "Huỷ tải": {"vi":"Huỷ tải","en":"Cancel download"},
   "Thử lại sau {seconds} giây": {"vi":"Thử lại sau {seconds} giây","en":"Retry in {seconds} seconds"},
   "Đang có một lượt tải khác.": {"vi":"Đang có một lượt tải khác.","en":"Another download is in progress."},
