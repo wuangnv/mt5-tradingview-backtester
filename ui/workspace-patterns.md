@@ -486,10 +486,10 @@ History grid uses separate start/end date columns; Details retains timestamp pre
 Unknown counts/sizes show —. The Actions column combines the transfer meter and
 icon-only pause/resume and cancel controls with accessible names/tooltips. Its 308px
 width preserves the preceding columns. The meter puts the thin bar and percentage
-above received bytes/speed and approximate time remaining; generic Running text is
-omitted, as is the paused label above the bar. Pause remains explicit in the
-accessible name/details and Resume icon; queued/failed/saving labels stay visible.
-A source cooldown shows Wait mm:ss in the lower metadata and an explanation on
+above received bytes/speed and approximate time remaining. All transfer state
+labels are omitted from visible row content; the accessible name, tooltip and
+details retain the full state and errors. A source cooldown shows only mm:ss
+in the lower metadata and an explanation on
 Resume; its countdown re-enables Resume locally at expiry without restarting or
 automatically downloading. The row and details share the same receipt-based timer.
 Speed uses a rolling 30-second sample window. Approximate download ETA uses recent

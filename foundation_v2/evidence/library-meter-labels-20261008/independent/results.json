@@ -1,0 +1,892 @@
+{
+  "scope": "Actual local GET-only paused job plus explicitly labeled transfer meter fixtures. No mutation/provider requests.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "fixture": true,
+      "estimate": false,
+      "checks": [
+        {
+          "name": "All visible state labels removed, ARIA/title retain states, bare cooldown, stable meter/control geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 431,
+                "metaTop": 436,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n02:00",
+              "aria": "Tiến độ tải PAUSED: Đã tạm dừng, 4%, 9.999 GiB, Thời gian còn lại: 02:00"
+            },
+            {
+              "asset": "RUNNING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 719,
+                "metaTop": 724,
+                "track": 157.234375,
+                "trackHeight": 4,
+                "fill": 15.71875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n10.197 GiB\n50.511,21 MiB/s\n—",
+              "aria": "Tiến độ tải RUNNING: Đang tải, 10%, 10.197 GiB, 50.511,21 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "UPDATE",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 856.5,
+                "metaTop": 861.5,
+                "track": 157.234375,
+                "trackHeight": 4,
+                "fill": 15.71875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n10.197 GiB\n50.511,21 MiB/s\n—",
+              "aria": "Tiến độ tải UPDATE: Đang tải, 10%, 10.197 GiB, 50.511,21 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "FAILED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 359,
+                "metaTop": 364,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải FAILED: Tải thất bại, 4%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "QUEUED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 647,
+                "metaTop": 652,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải QUEUED: Đang chờ tải, 4%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "PAUSING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 503,
+                "metaTop": 508,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải PAUSING: Đang tạm dừng…, 4%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "PROCESSING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 575,
+                "metaTop": 580,
+                "track": 150.765625,
+                "trackHeight": 4,
+                "fill": 150.765625,
+                "percent": 100,
+                "metaOverflow": false
+              },
+              "text": "100%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải PROCESSING: Đang lưu dữ liệu…, 100%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "CACHE",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 287,
+                "metaTop": 292,
+                "track": 157.234375,
+                "trackHeight": 4,
+                "fill": 15.71875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n9.999 GiB\n0 MiB/s\n—",
+              "aria": "Tiến độ tải CACHE: Đang tải, 10%, 9.999 GiB, 0 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "ZERO",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 559.5,
+                "metaTop": 564.5,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 0,
+                "percent": 0,
+                "metaOverflow": false
+              },
+              "text": "0%\n0 KiB\n0 MiB/s\n—",
+              "aria": "Tiến độ tải ZERO: Đang tải, 0%, 0 KiB, 0 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "WARMUP",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 487.5,
+                "metaTop": 492.5,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 1.625,
+                "percent": 1,
+                "metaOverflow": false
+              },
+              "text": "1%\n10.197 GiB\n50.511,21 MiB/s\n—",
+              "aria": "Tiến độ tải WARMUP: Đang tải, 1%, 10.197 GiB, 50.511,21 MiB/s, Thời gian còn lại: —"
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "vi",
+      "fixture": true,
+      "estimate": false,
+      "checks": [
+        {
+          "name": "All visible state labels removed, ARIA/title retain states, bare cooldown, stable meter/control geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 707,
+                "metaTop": 712,
+                "track": 155.703125,
+                "trackHeight": 4,
+                "fill": 6.21875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n02:00",
+              "aria": "Tiến độ tải PAUSED: Đã tạm dừng, 4%, 9.999 GiB, Thời gian còn lại: 02:00"
+            },
+            {
+              "asset": "RUNNING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 690,
+                "metaTop": 695,
+                "track": 149.234375,
+                "trackHeight": 4,
+                "fill": 14.921875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n10.197 GiB\n50.536,39 MiB/s\n—",
+              "aria": "Tiến độ tải RUNNING: Đang tải, 10%, 10.197 GiB, 50.536,39 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "UPDATE",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 831,
+                "metaTop": 836,
+                "track": 149.234375,
+                "trackHeight": 4,
+                "fill": 14.921875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n10.197 GiB\n50.536,39 MiB/s\n—",
+              "aria": "Tiến độ tải UPDATE: Đang tải, 10%, 10.197 GiB, 50.536,39 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "FAILED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 635,
+                "metaTop": 640,
+                "track": 155.703125,
+                "trackHeight": 4,
+                "fill": 6.21875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải FAILED: Tải thất bại, 4%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "QUEUED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 690,
+                "metaTop": 695,
+                "track": 155.703125,
+                "trackHeight": 4,
+                "fill": 6.21875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải QUEUED: Đang chờ tải, 4%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "PAUSING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 546,
+                "metaTop": 551,
+                "track": 155.703125,
+                "trackHeight": 4,
+                "fill": 6.21875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải PAUSING: Đang tạm dừng…, 4%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "PROCESSING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 618,
+                "metaTop": 623,
+                "track": 142.765625,
+                "trackHeight": 4,
+                "fill": 142.765625,
+                "percent": 100,
+                "metaOverflow": false
+              },
+              "text": "100%\n9.999 GiB\n—",
+              "aria": "Tiến độ tải PROCESSING: Đang lưu dữ liệu…, 100%, 9.999 GiB, Thời gian còn lại: —"
+            },
+            {
+              "asset": "CACHE",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 563,
+                "metaTop": 568,
+                "track": 149.234375,
+                "trackHeight": 4,
+                "fill": 14.921875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n9.999 GiB\n0 MiB/s\n—",
+              "aria": "Tiến độ tải CACHE: Đang tải, 10%, 9.999 GiB, 0 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "ZERO",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 690,
+                "metaTop": 695,
+                "track": 155.703125,
+                "trackHeight": 4,
+                "fill": 0,
+                "percent": 0,
+                "metaOverflow": false
+              },
+              "text": "0%\n0 KiB\n0 MiB/s\n—",
+              "aria": "Tiến độ tải ZERO: Đang tải, 0%, 0 KiB, 0 MiB/s, Thời gian còn lại: —"
+            },
+            {
+              "asset": "WARMUP",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 292,
+                "gap": 8,
+                "meterWidth": 180,
+                "iconWidths": [
+                  44,
+                  44
+                ]
+              },
+              "shape": {
+                "width": 180,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 618,
+                "metaTop": 623,
+                "track": 155.703125,
+                "trackHeight": 4,
+                "fill": 1.546875,
+                "percent": 1,
+                "metaOverflow": false
+              },
+              "text": "1%\n10.197 GiB\n50.536,39 MiB/s\n—",
+              "aria": "Tiến độ tải WARMUP: Đang tải, 1%, 10.197 GiB, 50.536,39 MiB/s, Thời gian còn lại: —"
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "en",
+      "fixture": true,
+      "estimate": false,
+      "checks": [
+        {
+          "name": "All visible state labels removed, ARIA/title retain states, bare cooldown, stable meter/control geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 431,
+                "metaTop": 436,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9,999 GiB\n02:00",
+              "aria": "Download progress for PAUSED: Paused, 4%, 9,999 GiB, Time remaining: 02:00"
+            },
+            {
+              "asset": "RUNNING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 719,
+                "metaTop": 724,
+                "track": 157.234375,
+                "trackHeight": 4,
+                "fill": 15.71875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n10,197 GiB\n50,486.06 MiB/s\n—",
+              "aria": "Download progress for RUNNING: Downloading, 10%, 10,197 GiB, 50,486.06 MiB/s, Time remaining: —"
+            },
+            {
+              "asset": "UPDATE",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 856.5,
+                "metaTop": 861.5,
+                "track": 157.234375,
+                "trackHeight": 4,
+                "fill": 15.71875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n10,197 GiB\n50,486.06 MiB/s\n—",
+              "aria": "Download progress for UPDATE: Downloading, 10%, 10,197 GiB, 50,486.06 MiB/s, Time remaining: —"
+            },
+            {
+              "asset": "FAILED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 359,
+                "metaTop": 364,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9,999 GiB\n—",
+              "aria": "Download progress for FAILED: Download failed, 4%, 9,999 GiB, Time remaining: —"
+            },
+            {
+              "asset": "QUEUED",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 647,
+                "metaTop": 652,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9,999 GiB\n—",
+              "aria": "Download progress for QUEUED: Queued, 4%, 9,999 GiB, Time remaining: —"
+            },
+            {
+              "asset": "PAUSING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 503,
+                "metaTop": 508,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 6.546875,
+                "percent": 4,
+                "metaOverflow": false
+              },
+              "text": "4%\n9,999 GiB\n—",
+              "aria": "Download progress for PAUSING: Pausing…, 4%, 9,999 GiB, Time remaining: —"
+            },
+            {
+              "asset": "PROCESSING",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 575,
+                "metaTop": 580,
+                "track": 150.765625,
+                "trackHeight": 4,
+                "fill": 150.765625,
+                "percent": 100,
+                "metaOverflow": false
+              },
+              "text": "100%\n9,999 GiB\n—",
+              "aria": "Download progress for PROCESSING: Saving data…, 100%, 9,999 GiB, Time remaining: —"
+            },
+            {
+              "asset": "CACHE",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 287,
+                "metaTop": 292,
+                "track": 157.234375,
+                "trackHeight": 4,
+                "fill": 15.71875,
+                "percent": 10,
+                "metaOverflow": false
+              },
+              "text": "10%\n9,999 GiB\n0 MiB/s\n—",
+              "aria": "Download progress for CACHE: Downloading, 10%, 9,999 GiB, 0 MiB/s, Time remaining: —"
+            },
+            {
+              "asset": "ZERO",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 559.5,
+                "metaTop": 564.5,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 0,
+                "percent": 0,
+                "metaOverflow": false
+              },
+              "text": "0%\n0 KiB\n0 MiB/s\n—",
+              "aria": "Download progress for ZERO: Downloading, 0%, 0 KiB, 0 MiB/s, Time remaining: —"
+            },
+            {
+              "asset": "WARMUP",
+              "geometry": {
+                "width": 308,
+                "left": 8,
+                "right": 276,
+                "gap": 8,
+                "meterWidth": 188,
+                "iconWidths": [
+                  32,
+                  32
+                ]
+              },
+              "shape": {
+                "width": 188,
+                "height": 47,
+                "overflow": false,
+                "barBottom": 487.5,
+                "metaTop": 492.5,
+                "track": 163.703125,
+                "trackHeight": 4,
+                "fill": 1.625,
+                "percent": 1,
+                "metaOverflow": false
+              },
+              "text": "1%\n10,197 GiB\n50,486.06 MiB/s\n—",
+              "aria": "Download progress for WARMUP: Downloading, 1%, 10,197 GiB, 50,486.06 MiB/s, Time remaining: —"
+            }
+          ]
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

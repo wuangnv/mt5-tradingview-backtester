@@ -1,0 +1,11 @@
+{
+  "scope": "Initial fixture QA run before updating inherited cooldown title oracle",
+  "pass": false,
+  "errors": [],
+  "cases": [
+    {"theme":"dark","width":1710,"language":"vi","fixture":true,"pass":false,"error":"AssertionError: cooldown Resume title was 'Chưa hết thời gian chờ. Hãy thử lại sau.', inherited oracle incorrectly expected 'Tiếp tục tải'"},
+    {"theme":"light","width":360,"language":"vi","fixture":true,"pass":false,"error":"AssertionError: cooldown Resume title was 'Chưa hết thời gian chờ. Hãy thử lại sau.', inherited oracle incorrectly expected 'Tiếp tục tải'"},
+    {"theme":"dark","width":1710,"language":"en","fixture":true,"pass":false,"error":"AssertionError: cooldown Resume title was 'The waiting period has not ended. Try again later.', inherited oracle incorrectly expected 'Resume download'"}
+  ],
+  "resolution": "Oracle updated to accept existing truthful cooldown tooltip for the paused fixture; source was unchanged. Final results.json records three passing cases."
+}
