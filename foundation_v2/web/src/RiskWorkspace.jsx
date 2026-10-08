@@ -1,3 +1,4 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
 import React, { useMemo, useState } from 'react'
 import './RiskWorkspace.css'
 
@@ -123,7 +124,7 @@ export default function RiskWorkspace({ workspace, initialSnapshot = null }) {
         <div className="risk-form-grid">
           <label>Profile ID<input value={form.profileId} onChange={(event) => update('profileId', event.target.value)} /></label>
           <label>Terms version<input value={form.termsVersion} onChange={(event) => update('termsVersion', event.target.value)} /></label>
-          <label>Effective from<input type="date" value={form.effectiveFrom} onChange={(event) => update('effectiveFrom', event.target.value)} /></label>
+          <label>Effective from<ProjectDateInput type="date" value={form.effectiveFrom} onChange={(event) => update('effectiveFrom', event.target.value)} /></label>
           <label>Total drawdown<input type="number" min="0" step="0.01" value={form.totalAmount} onChange={(event) => update('totalAmount', event.target.value)} /></label>
           <label>Type<select value={form.totalType} onChange={(event) => update('totalType', event.target.value)}><option value="static">Static</option><option value="trailing">Trailing</option></select></label>
           <label>Overall basis<select value={form.totalBasis} onChange={(event) => update('totalBasis', event.target.value)}><option value="equity">Equity</option><option value="balance">Balance</option></select></label>

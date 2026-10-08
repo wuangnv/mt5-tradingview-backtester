@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import { useEffect, useRef, useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
 import FxSelect from './FxSelect.jsx'
@@ -70,7 +71,7 @@ function FilterBar({ section, payload, draft, setDraft, applied, onApply, onClea
         </div>
       </div>{show && <div className="live-filter-fields">{fields}</div>}
     </>}
-    {chips.length > 0 && <div className="live-filter-chips">{chips.map(([key, value]) => <span key={key}>{t(labels[key])}: {values[key]?.[value] ? t(values[key][value]) : value}</span>)}<button type="button" className="fxa-clear-filters" onClick={onClear}><TestingIcon kind="delete" />{t('Clear filters')}</button></div>}
+    {chips.length > 0 && <div className="live-filter-chips">{chips.map(([key, value]) => <span key={key}>{t(labels[key])}: {['from', 'to'].includes(key) ? displayDate(value) : values[key]?.[value] ? t(values[key][value]) : value}</span>)}<button type="button" className="fxa-clear-filters" onClick={onClear}><TestingIcon kind="delete" />{t('Clear filters')}</button></div>}
     {draft.from && draft.to && draft.from > draft.to && <p role="alert">{t('Start date must not be after end date.')}</p>}
   </section>
 }
@@ -114,12 +115,12 @@ function Calendar({ payload, deals, filters, onPreview }) {
     </div>
     <div className="live-calendar-scroll" role="region" aria-label={`${t('P/L calendar')} · ${filters.timezone}`} tabIndex={0}><div className="live-calendar-grid">
       {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Total'].map(day => <div className="live-calendar-dayname" key={day}>{t(day)}</div>)}
-      {weeks.map((week, index) => <div className="live-calendar-week" key={week[0].key}>{week.map(day => <button type="button" key={day.key} className={`live-calendar-cell${!day.inMonth ? ' is-outside' : ''}${day.net > 0 ? ' is-gain' : day.net < 0 ? ' is-loss' : ''}`} disabled={!day.inMonth} aria-pressed={selected === day.key} aria-label={`${day.key} · ${fmt(day.net, currency ? ` ${currency}` : '')}`} onClick={() => setSelected(selected === day.key ? '' : day.key)}>
+      {weeks.map((week, index) => <div className="live-calendar-week" key={week[0].key}>{week.map(day => <button type="button" key={day.key} className={`live-calendar-cell${!day.inMonth ? ' is-outside' : ''}${day.net > 0 ? ' is-gain' : day.net < 0 ? ' is-loss' : ''}`} disabled={!day.inMonth} aria-pressed={selected === day.key} aria-label={`${displayDate(day.key)} · ${fmt(day.net, currency ? ` ${currency}` : '')}`} onClick={() => setSelected(selected === day.key ? '' : day.key)}>
         <span className="live-day-number">{day.date.getUTCDate()}</span><strong>{day.inMonth ? fmt(day.net) : ''}</strong>{day.count !== null && day.count > 0 && <small>{t('{count} filled deals', { count: day.count })}</small>}
       </button>)}<div className="live-week-total"><span>{t('Week {count}', { count: index + 1 })}</span><strong>{fmt(week.filter(day => day.inMonth).every(day => day.net !== null) ? week.filter(day => day.inMonth).reduce((sum, day) => sum + day.net, 0) : null)}</strong></div></div>)}
     </div></div>
     <div className="live-month-total"><span>{t('Month total')}</span><strong>{fmt(total.net, currency ? ` ${currency}` : '')}</strong><span>{total.count !== null ? t('{count} filled deals', { count: total.count }) : '—'}</span></div>
-    {selected && <div className="live-day-detail"><h3>{selected}</h3>{deals.filter(deal => dayKey(deal.time_msc, filters.timezone) === selected).length ? <ul>{deals.filter(deal => dayKey(deal.time_msc, filters.timezone) === selected).map(deal => <li key={deal.ticket}><span>{deal.symbol} · #{deal.ticket}</span><strong>{fmt(dealNet(deal), currency ? ` ${currency}` : '')}</strong></li>)}</ul> : <p>{t(weeks.flat().find(day => day.key === selected)?.covered ? 'No deals recorded for this day.' : 'Data for this day is unavailable or incomplete.')}</p>}</div>}
+    {selected && <div className="live-day-detail"><h3>{displayDate(selected)}</h3>{deals.filter(deal => dayKey(deal.time_msc, filters.timezone) === selected).length ? <ul>{deals.filter(deal => dayKey(deal.time_msc, filters.timezone) === selected).map(deal => <li key={deal.ticket}><span>{deal.symbol} · #{deal.ticket}</span><strong>{fmt(dealNet(deal), currency ? ` ${currency}` : '')}</strong></li>)}</ul> : <p>{t(weeks.flat().find(day => day.key === selected)?.covered ? 'No deals recorded for this day.' : 'Data for this day is unavailable or incomplete.')}</p>}</div>}
   </section><Summary payload={payload} deals={rows} sidebar /></div>
 }
 

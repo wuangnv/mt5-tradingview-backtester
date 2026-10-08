@@ -1,3 +1,5 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
+import { displayDate } from './dateFormat.js'
 import FxSelect from './FxSelect.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -31,11 +33,7 @@ function formatPropUtc(value, locale = 'vi-VN') {
   if (!value) return 'N/A'
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) return 'N/A'
-  return new Intl.DateTimeFormat(locale, {
-    dateStyle: 'short',
-    timeStyle: 'short',
-    timeZone: 'UTC',
-  }).format(parsed)
+  return displayDate(parsed, { timeStyle: 'short' })
 }
 
 function slugify(value) {
@@ -621,7 +619,7 @@ export default function PropWorkspace({ workspace }) {
               </label>
               <label className="prop-field">
                 <span>{t("Bắt đầu (UTC)")}</span>
-                <input aria-label={t("Bắt đầu UTC")} type="datetime-local" value={draft.startUtc} onChange={(event) => updateDraft('startUtc', event.target.value)} />
+                <ProjectDateInput aria-label={t("Bắt đầu UTC")} type="datetime-local" value={draft.startUtc} onChange={(event) => updateDraft('startUtc', event.target.value)} />
               </label>
               <label className="prop-field">
                 <span>{t("Max days")}</span>

@@ -1,3 +1,4 @@
+import { displayTime } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useState } from 'react'
 import { DRAWING_LABELS } from './useReplayDrawings.js'
@@ -11,7 +12,7 @@ function DrawingRow({ record, drawings }) {
   return <li className="replay-object" data-testid="replay-object" data-record-id={record.record_id} data-type={record.payload.annotation_type}>
     <div className="replay-object-heading"><strong>{t(typeLabel)}</strong><span>{record.local ? t("Nháp local") : `Đã lưu · r${record.revision}`}</span></div>
     <label>{t("Nhãn")}<input aria-label={`Nhãn ${typeLabel}`} maxLength={256} value={label} disabled={record.locked || busy} onChange={event => setLabel(event.target.value)} /></label>
-    <small>{record.payload.anchors.map(anchor => `${new Date(anchor.timestamp * 1000).toISOString().slice(11, 19)} UTC · ${Number(anchor.price).toFixed(5)}`).join(' → ')}</small>
+    <small>{record.payload.anchors.map(anchor => `${displayTime(anchor.timestamp, { seconds: true })} UTC · ${Number(anchor.price).toFixed(5)}`).join(' → ')}</small>
     <div className="replay-object-actions">
       <button type="button" onClick={() => drawings.toggleHidden(record.record_id)} aria-pressed={!record.hidden}>{t("Hiển thị")}</button>
       <button type="button" onClick={() => drawings.toggleLocked(record.record_id)} aria-pressed={record.locked}>{t("Khóa")}</button>

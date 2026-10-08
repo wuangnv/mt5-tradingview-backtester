@@ -12,6 +12,14 @@ export function categoryOf(item) {
 export const categoryLabel = value => CATEGORIES.find(([key]) => key === value)?.[1] || 'Chưa phân loại'
 export const sourceOf = item => item.source?.provider || item.provider || item.provider_id || '—'
 
+export function libraryDataType(item, availableStart) {
+  if (!item.downloaded) return availableStart ? { timeframe: 'M1', price: 'Bid' } : { timeframe: '—' }
+  let settings
+  try { settings = JSON.parse(item.source?.export_settings || '{}') } catch { /* CSV provenance can be free text. */ }
+  const price = { bid: 'Bid', ask: 'Ask', mid: 'Mid' }[settings?.price]
+  return { timeframe: item.timeframe || '—', price }
+}
+
 export function canDownloadAsset(asset, download, preview = false) {
   return !preview && Boolean(download?.available) && Array.isArray(download.supported_instruments)
     && download.supported_instruments.includes(asset.instrument_id)

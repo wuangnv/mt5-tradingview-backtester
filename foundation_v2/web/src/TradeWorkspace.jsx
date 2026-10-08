@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import './TradeWorkspace.css'
@@ -348,7 +349,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
       {!hasSession && state.status !== 'loading' && <div className="trade-empty"><strong>Mở Practice trước</strong><span>Trade draft cần session, dataset và decision cutoff. Hãy mở một replay session rồi quay lại Trade desk.</span><a className="trade-link" href={`/?workspace=${encodeURIComponent(workspace)}&view=replay`}>Mở Practice →</a></div>}
       {replay && (
         <>
-          <div className="trade-context-strip"><span><b>Instrument</b>{instrument?.instrument_id || 'Chưa xác định'}</span><span><b>Dataset catalog</b>{catalogContextLabel}</span><span><b>Cutoff</b>{replay.cutoff_timestamp ? new Date(Number(replay.cutoff_timestamp) * 1000).toISOString().replace('T', ' ').slice(0, 16) : 'N/A'} UTC</span><span><b>Revision</b>r{revision}</span><span><b>Giá tham chiếu</b>{formatPrice(entryReference)}</span></div>
+          <div className="trade-context-strip"><span><b>Instrument</b>{instrument?.instrument_id || 'Chưa xác định'}</span><span><b>Dataset catalog</b>{catalogContextLabel}</span><span><b>Cutoff</b>{replay.cutoff_timestamp ? displayDate(replay.cutoff_timestamp, { timeStyle: 'short' }) : 'N/A'} UTC</span><span><b>Revision</b>r{revision}</span><span><b>Giá tham chiếu</b>{formatPrice(entryReference)}</span></div>
           {!execution && (
             <section className="trade-init-section" aria-labelledby="trade-init-title">
               <div><span className="trade-eyebrow">STEP 01</span><h2 id="trade-init-title">Khởi tạo simulator state</h2><p>Execution state được gắn vào session và giữ cùng provenance. Chi phí dưới đây là fixture/model, chưa phải báo giá broker.</p></div>

@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { TestingSkeleton } from './TestingReadState.jsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -41,7 +42,7 @@ function valueOf(row, key, model, sessionName) {
 }
 function display(row, key, model, sessionName, { fmt, locale, t }) {
   const value = valueOf(row, key, model, sessionName)
-  if (key.endsWith('_time_utc') || key === 'recorded_at_utc') return closeTime(value) ? new Intl.DateTimeFormat(locale, { timeZone: 'UTC', dateStyle: 'short', timeStyle: 'short' }).format(closeTime(value)) : '—'
+  if (key.endsWith('_time_utc') || key === 'recorded_at_utc') return closeTime(value) ? displayDate(closeTime(value), { timeStyle: 'short' }) : '—'
   if (['net_pnl', 'gross_pnl', 'fees'].includes(key)) return fmt(value, model.result?.multi_session ? ` ${row.account_currency || t('Đơn vị tài khoản')}` : '')
   if (key === 'return_pct') return fmt(value, '%')
   if (key === 'realized_r') return fmt(value, ' R')

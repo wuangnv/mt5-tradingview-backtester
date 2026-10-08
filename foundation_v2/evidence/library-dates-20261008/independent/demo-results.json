@@ -1,0 +1,157 @@
+{
+  "scope": "Shipped explicitly labeled UI demo; local GET only, no actual service mutations",
+  "cases": [
+    {
+      "view": "overview",
+      "dates": [
+        "06/07/2026",
+        "05/10/2026",
+        "06/07/2026",
+        "05/10/2026",
+        "06/07/2026",
+        "05/10/2026"
+      ],
+      "rawIsoDates": [],
+      "amPm": false,
+      "buttons": [
+        "Backtesting sessionCreate a backtesting session",
+        "Prop firm sessionStart a simulated challenge",
+        "Backtesting",
+        "All time",
+        "Newest first"
+      ]
+    },
+    {
+      "view": "trade",
+      "dates": [
+        "05/10/2026 08:00",
+        "26/09/2026 21:00",
+        "26/09/2026 22:05",
+        "05/10/2026 08:00",
+        "25/09/2026 20:00",
+        "25/09/2026 20:50",
+        "05/10/2026 08:00",
+        "23/09/2026 19:00",
+        "23/09/2026 19:35",
+        "05/10/2026 08:00",
+        "22/09/2026 18:00",
+        "22/09/2026 18:20",
+        "05/10/2026 08:00",
+        "21/09/2026 17:00",
+        "21/09/2026 19:05",
+        "05/10/2026 08:00",
+        "19/09/2026 16:00",
+        "19/09/2026 17:50",
+        "05/10/2026 08:00",
+        "18/09/2026 15:00",
+        "18/09/2026 16:35",
+        "05/10/2026 08:00",
+        "16/09/2026 14:00",
+        "16/09/2026 15:20",
+        "05/10/2026 08:00",
+        "15/09/2026 13:00",
+        "15/09/2026 14:05",
+        "05/10/2026 08:00",
+        "14/09/2026 12:00",
+        "14/09/2026 12:50"
+      ],
+      "rawIsoDates": [],
+      "amPm": false,
+      "buttons": [
+        "All sessions",
+        "Basic",
+        "Tags",
+        "Session",
+        "Type",
+        "Source",
+        "Recorded time (UTC)",
+        "Entry time (chart UTC)",
+        "Asset",
+        "Side",
+        "Order type",
+        "Net P/L (USD)",
+        "Return (%)",
+        "Return (R)",
+        "Trade rating",
+        "Entry price"
+      ]
+    },
+    {
+      "view": "analytics",
+      "dates": [],
+      "rawIsoDates": [],
+      "amPm": false,
+      "buttons": [
+        "Type",
+        "Assets",
+        "Side",
+        "Outcome",
+        "Tags",
+        "Session",
+        "Strategy",
+        "Day",
+        "Time",
+        "Timezone",
+        "Backtesting date",
+        "Apply",
+        "Clear filters",
+        "Performance",
+        "Drawdown",
+        "Simulation"
+      ],
+      "dateFilterClearPass": true,
+      "appliedDateChipPass": true
+    },
+    {
+      "view": "replay",
+      "dates": [
+        "06/07/2026",
+        "06/07/2026",
+        "05/10/2026",
+        "23/09/2026 19:35",
+        "19/09/2026 17:50",
+        "15/09/2026 14:05",
+        "11/09/2026 10:20",
+        "07/09/2026 08:35"
+      ],
+      "rawIsoDates": [],
+      "amPm": false,
+      "buttons": [
+        "London BreakoutEURUSD · M1Closed balance: 10,960 USDCreated: 06/07/2026 · UTC",
+        "New session",
+        "Analytics",
+        "Session settings",
+        "Delete session",
+        "Go to chart",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "view": "journal",
+      "dates": [
+        "06/07/2026 14:20",
+        "07/07/2026 15:35",
+        "08/07/2026 16:50",
+        "10/07/2026 18:05",
+        "11/07/2026 19:20",
+        "13/07/2026 20:35"
+      ],
+      "rawIsoDates": [],
+      "amPm": false,
+      "buttons": [
+        "Quyết địnhLondon Breakout · EURUSD: chờ đóng nến xác nhận06/07/2026 14:20 · r1 · source · demo-londondemo-londonbreakout · review",
+        "Quyết địnhNew York Reversal · GBPUSD: chờ đóng nến xác nhận07/07/2026 15:35 · r1 · source · demo-newyorkdemo-newyorkreversal · planned",
+        "Quyết địnhGold Swing · XAUUSD: chờ đóng nến xác nhận08/07/2026 16:50 · r1 · source · demo-golddemo-goldbreakout · planned",
+        "Quyết địnhLondon Breakout · EURUSD: chờ đóng nến xác nhận10/07/2026 18:05 · r1 · source · demo-londondemo-londonreversal · review",
+        "Quyết địnhNew York Reversal · GBPUSD: chờ đóng nến xác nhận11/07/2026 19:20 · r1 · source · demo-newyorkdemo-newyorkbreakout · planned",
+        "Quyết địnhGold Swing · XAUUSD: chờ đóng nến xác nhận13/07/2026 20:35 · r1 · source · demo-golddemo-goldreversal · planned"
+      ]
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

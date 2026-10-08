@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import { useEffect, useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
 import { TestingSkeleton } from './TestingReadState.jsx'
@@ -73,8 +74,8 @@ export default function LiveWorkspace({ workspace = 'tenant-a', query = new URLS
     <details className="live-source-details"><summary>{t('Data source and access')}</summary><dl>
       <div><dt>{t('Workspace')}</dt><dd>{workspace}</dd></div>
       <div><dt>{t('Source')}</dt><dd>{state.payload?.source || '—'}</dd></div>
-      <div><dt>{t('Last snapshot (UTC)')}</dt><dd>{state.payload?.captured_at_utc ? new Date(state.payload.captured_at_utc).toLocaleString(locale, { timeZone: 'UTC' }) : '—'}</dd></div>
-      <div><dt>{t('History from (UTC)')}</dt><dd>{state.payload?.history_from_utc ? new Date(state.payload.history_from_utc).toLocaleString(locale, { timeZone: 'UTC' }) : '—'}</dd></div>
+      <div><dt>{t('Last snapshot (UTC)')}</dt><dd>{state.payload?.captured_at_utc ? displayDate(state.payload.captured_at_utc, { timeStyle: 'medium' }) : '—'}</dd></div>
+      <div><dt>{t('History from (UTC)')}</dt><dd>{state.payload?.history_from_utc ? displayDate(state.payload.history_from_utc, { timeStyle: 'medium' }) : '—'}</dd></div>
     </dl><p>{t('Account data is read only. This page does not send orders or connect a broker.')}</p><p>{t('Includes deal costs. Return requires opening capital; deals have not been paired into trades.')}</p><p>{t('Totals cover synced deals only. — means data is unavailable or the day is not fully covered.')}</p></details>
   </section>
 }

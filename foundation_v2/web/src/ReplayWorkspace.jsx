@@ -1,3 +1,5 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
+import { displayDate } from './dateFormat.js'
 import { chartSeriesPalette } from './projectPalette.js'
 import { nativeChartPalette } from './nativeChartPalette.js'
 import FxSelect from './FxSelect.jsx'
@@ -42,11 +44,7 @@ import './ChartWorkbench.css'
 
 function formatTimestamp(timestamp, locale = 'vi-VN') {
   if (timestamp === null || timestamp === undefined || !Number.isFinite(Number(timestamp))) return 'Chưa có dữ liệu'
-  return new Intl.DateTimeFormat(locale, {
-    dateStyle: 'short',
-    timeStyle: 'medium',
-    timeZone: 'UTC',
-  }).format(new Date(Number(timestamp) * 1000))
+  return displayDate(new Date(Number(timestamp) * 1000), { timeStyle: 'medium' })
 }
 
 function formatPrice(value, locale = 'vi-VN') {
@@ -89,7 +87,7 @@ const CHART_TYPES = [
 
 function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, viewportRequest, drawings, onCrosshair, onAnchorSelect, theme, levels, orderEditable, tickSize, onOrderPriceChange, orderGeneration, onOrderDragStart }) {
   const { t, locale, fmt } = useTestingLocale()
-  const formatTimestamp = value => value === null || value === undefined || !Number.isFinite(Number(value)) ? '—' : new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium', timeZone: 'UTC' }).format(new Date(Number(value) * 1000))
+  const formatTimestamp = value => value === null || value === undefined || !Number.isFinite(Number(value)) ? '—' : displayDate(new Date(Number(value) * 1000), { timeStyle: 'medium' })
   const formatPrice = value => fmt(value, '', 8)
   const money = (value, currency) => fmt(value, ' ' + (currency || t('Đơn vị tài khoản')))
 
@@ -114,6 +112,7 @@ function ReplayChart({ rows, sessionId, chartType, showVolume, showAverage, view
       rightPriceScale: { borderColor: palette.border, scaleMargins: { top: 0.12, bottom: 0.22 } },
       timeScale: { borderColor: palette.border, timeVisible: true, secondsVisible: false, lockVisibleTimeRangeOnResize: true },
       crosshair: { mode: 0 },
+      localization: { locale: 'vi-VN', timeFormatter: time => displayDate(typeof time === 'object' ? new Date(Date.UTC(time.year, time.month - 1, time.day)) : time, { timeStyle: typeof time === 'number' ? 'short' : undefined }) },
     })
     const seriesType = chartType === 'bars' ? BarSeries : chartType === 'line' ? LineSeries : chartType === 'area' ? AreaSeries : chartType === 'baseline' ? BaselineSeries : CandlestickSeries
     const series = chart.addSeries(seriesType, {
@@ -312,7 +311,7 @@ function isEditableTarget(target) {
 
 export default function ReplayWorkspace({ workspace, query }) {
   const { t, locale, fmt } = useTestingLocale()
-  const formatTimestamp = value => value === null || value === undefined || !Number.isFinite(Number(value)) ? '—' : new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'medium', timeZone: 'UTC' }).format(new Date(Number(value) * 1000))
+  const formatTimestamp = value => value === null || value === undefined || !Number.isFinite(Number(value)) ? '—' : displayDate(new Date(Number(value) * 1000), { timeStyle: 'medium' })
   const formatPrice = value => fmt(value, '', 8)
   const money = (value, currency) => fmt(value, ' ' + (currency || t('Đơn vị tài khoản')))
 
@@ -1115,7 +1114,7 @@ export default function ReplayWorkspace({ workspace, query }) {
               </>}
               {['context', 'goto'].includes(sidePanel) && <>
               <form className="replay-date-jump" onSubmit={(event) => { event.preventDefault(); goToDate() }}>
-                <label>{t("Đi tới thời điểm UTC đã mở")}<input type="datetime-local" aria-label={t("Thời điểm replay UTC")} value={goToDateDraft} onChange={(event) => setGoToDateDraft(event.target.value)} /></label>
+                <label>{t("Đi tới thời điểm UTC đã mở")}<ProjectDateInput type="datetime-local" aria-label={t("Thời điểm replay UTC")} value={goToDateDraft} onChange={(event) => setGoToDateDraft(event.target.value)} /></label>
                 <button type="submit" disabled={!goToDateDraft || Boolean(pendingAction) || state.status !== 'ready'}>{t("Mở cutoff theo thời điểm")}</button>
               </form>
               </>}
@@ -1187,7 +1186,7 @@ export default function ReplayWorkspace({ workspace, query }) {
             {advancedChart && sideOpen && sidePanel==='order' && <LegacyOrderDialog order={order} blockedReason={orderBlockedReason} theme={theme} chartDocument={nativeHeaderSlots?.market?.ownerDocument} onClose={closeSide} onJournal={() => openPanel('journal')} />}
             {advancedChart && goToPopup && <LegacyPopover anchor={goToPopup} theme={theme} label={t('Go To')} onClose={() => setGoToPopup(null)}>
               {!goToCustom ? <>{[['Đầu ngày kế tiếp','Y'],['Tin tức kế tiếp','W'],['Phiên kế tiếp','Z'],['Giá','']].map(([label,key]) => <button type="button" key={label} disabled title={t('Chưa có điều hướng này cho dataset')}><span>{t(label)}</span>{key && <kbd>{key}</kbd>}</button>)}<hr /><button type="button" onClick={() => setGoToCustom(true)}>{t('Tùy chỉnh')}</button><p className="legacy-menu-note">{t('Chỉ điều hướng trong dữ liệu đã mở.')}</p></> : <>
-                <h3>{t('Tùy chỉnh')}</h3><form onSubmit={event => { event.preventDefault(); jumpToCursor(); setGoToPopup(null) }}><label>{t('Nến đã mở')}<input type="number" aria-label={t('Số nến cutoff')} min="0" max={canonicalCursor} step="1" value={jumpDraft} onChange={event => setJumpDraft(event.target.value)} /></label><button type="submit" disabled={conflict || Boolean(pendingAction) || state.status!=='ready' || !Number.isInteger(Number(jumpDraft)) || Number(jumpDraft)<0 || Number(jumpDraft)>canonicalCursor || Number(jumpDraft)===cursor}>{t('Mở cutoff này')}</button></form><form onSubmit={event => { event.preventDefault(); goToDate() }}><label>{t('Đi tới thời điểm UTC đã mở')}<input type="datetime-local" value={goToDateDraft} onChange={event => setGoToDateDraft(event.target.value)} /></label><button type="submit" disabled={!goToDateDraft || Boolean(pendingAction)}>{t('Mở cutoff theo thời điểm')}</button></form>
+                <h3>{t('Tùy chỉnh')}</h3><form onSubmit={event => { event.preventDefault(); jumpToCursor(); setGoToPopup(null) }}><label>{t('Nến đã mở')}<input type="number" aria-label={t('Số nến cutoff')} min="0" max={canonicalCursor} step="1" value={jumpDraft} onChange={event => setJumpDraft(event.target.value)} /></label><button type="submit" disabled={conflict || Boolean(pendingAction) || state.status!=='ready' || !Number.isInteger(Number(jumpDraft)) || Number(jumpDraft)<0 || Number(jumpDraft)>canonicalCursor || Number(jumpDraft)===cursor}>{t('Mở cutoff này')}</button></form><form onSubmit={event => { event.preventDefault(); goToDate() }}><label>{t('Đi tới thời điểm UTC đã mở')}<ProjectDateInput type="datetime-local" value={goToDateDraft} onChange={event => setGoToDateDraft(event.target.value)} /></label><button type="submit" disabled={!goToDateDraft || Boolean(pendingAction)}>{t('Mở cutoff theo thời điểm')}</button></form>
               </>}
             </LegacyPopover>}
           </section>

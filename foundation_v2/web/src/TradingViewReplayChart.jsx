@@ -1,3 +1,4 @@
+import { displayDate, displayTime } from './dateFormat.js'
 import { nativeChartPalette } from './nativeChartPalette.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useRef, useState } from 'react'
@@ -97,6 +98,7 @@ export default function TradingViewReplayChart(props) {
         container: host.current, library_path: '/charting_library/', datafeed: adapter.datafeed,
         symbol, interval: restoredInterval, locale: locale.slice(0, 2), timezone: 'Etc/UTC', theme: theme === 'light' ? 'Light' : 'Dark', autosize: true,
         ...(saved ? { saved_data: saved } : {}),
+        custom_formatters: { dateFormatter: { format: date => displayDate(date), formatLocal: date => displayDate(date, { timeZone: null }) }, timeFormatter: { format: date => displayTime(date, { seconds: true }), formatLocal: date => displayTime(date, { seconds: true, timeZone: null }) } },
         custom_css_url: '/chart-legacy.css', favorites: { intervals: adapter.supported, chartTypes: ['Candles'] },
         header_widget_buttons_mode: 'adaptive',
         auto_save_delay: 1,

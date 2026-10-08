@@ -1,3 +1,5 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
+import { displayDate } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useId, useRef, useState } from 'react'
 import { FilterIcon, SelectChevron } from './FxSelect.jsx'
@@ -52,7 +54,7 @@ function FilterPopover({ label, title, icon, children }) {
 export function TimeFilter({ value, onChange }) {
   const { t } = useTestingLocale()
 
-  return <FilterPopover label={t("Time")} title={t("Time filter")}><div className="fx-time-range">{[['timeStart', 'Start'], ['timeEnd', 'End']].map(([key, label]) => <label key={key}>{t(label)}<input type="time" step="60" aria-label={t(`Time ${label}`)} value={value[key] || ''} onChange={event => onChange({ [key]: event.target.value, hour: 'all' })} /></label>)}</div><button type="button" className="fx-filter-clear" onClick={() => onChange({ timeStart: '', timeEnd: '', hour: 'all' })}>{t("Clear")}</button></FilterPopover>
+  return <FilterPopover label={t("Time")} title={t("Time filter")}><div className="fx-time-range">{[['timeStart', 'Start'], ['timeEnd', 'End']].map(([key, label]) => <label key={key}>{t(label)}<ProjectDateInput type="time" step="60" aria-label={t(`Time ${label}`)} value={value[key] || ''} onChange={event => onChange({ [key]: event.target.value, hour: 'all' })} /></label>)}</div><button type="button" className="fx-filter-clear" onClick={() => onChange({ timeStart: '', timeEnd: '', hour: 'all' })}>{t("Clear")}</button></FilterPopover>
 }
 
 export function DateFilter({ value, onChange, label = 'Backtesting Date', title = 'Backtesting date filter', calendarLabel = 'Chọn khoảng ngày đóng UTC' }) {
@@ -71,11 +73,11 @@ export function DateFilter({ value, onChange, label = 'Backtesting Date', title 
     else { onChange(date < value.from ? { from: date, to: value.from } : { to: date }); setEndpoint('from') }
   }
   return <FilterPopover label={t(label)} title={t(title)} icon="calendar">
-    <div className="fx-date-range">{[['from', 'Start'], ['to', 'End']].map(([key, label]) => <label key={key}>{t(label)}<input type="date" aria-label={t(`Analytics ${key} date`)} value={value[key]} onFocus={() => setEndpoint(key)} onChange={event => { onChange({ [key]: event.target.value }); if (event.target.value) setMonth(event.target.value.slice(0, 7)) }} /></label>)}</div>
+    <div className="fx-date-range">{[['from', 'Start'], ['to', 'End']].map(([key, label]) => <label key={key}>{t(label)}<ProjectDateInput type="date" aria-label={t(`Analytics ${key} date`)} value={value[key]} onFocus={() => setEndpoint(key)} onChange={event => { onChange({ [key]: event.target.value }); if (event.target.value) setMonth(event.target.value.slice(0, 7)) }} /></label>)}</div>
     <div className="fx-calendar-heading"><button type="button" aria-label={t("Previous month")} onClick={() => shiftMonth(-1)}>‹</button><strong aria-live="polite">{first.toLocaleDateString(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' })}</strong><button type="button" aria-label={t("Next month")} onClick={() => shiftMonth(1)}>›</button></div>
     <div className="fx-calendar" role="group" aria-label={t(calendarLabel)}>{['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(day => <span key={day}>{t(day)}</span>)}{Array.from({ length: first.getUTCDay() }, (_, i) => <span key={`blank-${i}`} />)}{Array.from({ length: days }, (_, i) => {
       const date = `${month}-${String(i + 1).padStart(2, '0')}`, selected = date === value.from || date === value.to
-      return <button key={date} type="button" aria-label={date} aria-pressed={selected} className={selected ? 'is-endpoint' : value.from && value.to && date > value.from && date < value.to ? 'is-in-range' : ''} onClick={() => choose(date)}>{i + 1}</button>
+      return <button key={date} type="button" aria-label={displayDate(date)} aria-pressed={selected} className={selected ? 'is-endpoint' : value.from && value.to && date > value.from && date < value.to ? 'is-in-range' : ''} onClick={() => choose(date)}>{i + 1}</button>
     })}</div><button type="button" className="fx-filter-clear" onClick={() => { onChange({ from: '', to: '' }); setEndpoint('from') }}>{t("Clear")}</button>
   </FilterPopover>
 }

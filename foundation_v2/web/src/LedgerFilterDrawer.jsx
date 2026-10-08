@@ -1,3 +1,4 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import React, { useEffect, useRef, useState } from 'react'
 import FxSelect, { FilterIcon } from './FxSelect.jsx'
@@ -44,7 +45,7 @@ export default function LedgerFilterDrawer({ initialTab, filters, extra, rows, f
     ['Side', <Choices label={t("Side")} value={draftExtra.sides} options={[["buy", 'Buy'], ["sell", 'Sell']]} onChange={sides => change({ sides })} />],
     ['Outcome', <Choices label={t("Outcome")} value={draftExtra.outcomes} options={[["win", 'Win'], ["loss", 'Loss'], ["breakeven", 'Breakeven'], ["unknown", 'Unknown']]} onChange={outcomes => change({ outcomes })} />],
     ['Type', <Choices rawLabels label={t("Type")} value={draftExtra.types} options={unique('entry_type').map(value => [value, value])} onChange={types => change({ types })} />],
-    ['Date range', <div className="fxl-fields"><label className="fxl-field">{t("From · close date (UTC)")}<input type="date" aria-label={t("Analytics from date")} value={draft.from} max={draft.to || undefined} onChange={event => setDraft(value => ({ ...value, from: event.target.value }))} /></label><label className="fxl-field">{t("To · close date (UTC)")}<input type="date" aria-label={t("Analytics to date")} value={draft.to} min={draft.from || undefined} onChange={event => setDraft(value => ({ ...value, to: event.target.value }))} /></label></div>],
+    ['Date range', <div className="fxl-fields"><label className="fxl-field">{t("From · close date (UTC)")}<ProjectDateInput type="date" aria-label={t("Analytics from date")} value={draft.from} max={draft.to || undefined} onChange={event => setDraft(value => ({ ...value, from: event.target.value }))} /></label><label className="fxl-field">{t("To · close date (UTC)")}<ProjectDateInput type="date" aria-label={t("Analytics to date")} value={draft.to} min={draft.from || undefined} onChange={event => setDraft(value => ({ ...value, to: event.target.value }))} /></label></div>],
     ['Year', <Choices label={t("Year")} value={draftExtra.years} options={years.map(value => [value, value])} onChange={years => change({ years })} />],
     ['Month', <Choices label={t("Month")} value={draftExtra.months} options={Array.from({ length: 12 }, (_, i) => [i + 1, String(i + 1)])} onChange={months => change({ months })} />],
     ['Days', <Choices label={t("Days")} value={draftExtra.days} options={WEEKDAYS.map((value, index) => [index, value])} onChange={days => change({ days })} />],

@@ -1,3 +1,4 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useState } from 'react'
 import { readJson, workspaceHeaders, formatUtc as formatMarketUtc } from './researchDataApi.js'
@@ -74,7 +75,7 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
     <div className="market-sync-filters">
       <label className="market-sync-search"><TestingIcon kind="search" /><input type="search" aria-label={t("Tìm asset")} placeholder={t("Tìm asset…")} value={search} onChange={event => setSearch(event.target.value)} /></label>
       <FxSelect label={t("Nhóm asset")} value={group} onChange={setGroup} options={[{ value: 'all', label: 'Tất cả nhóm' }, ...groups.map(value => ({ value, label: value, localize: false }))]} />
-      <label>{t("Tải từ ngày")}<input type="date" aria-label={t("Ngày bắt đầu tải lịch sử")} value={fromDate} onChange={event => setFromDate(event.target.value)} /></label>
+      <label>{t("Tải từ ngày")}<ProjectDateInput type="date" aria-label={t("Ngày bắt đầu tải lịch sử")} value={fromDate} onChange={event => setFromDate(event.target.value)} /></label>
       <label><input type="checkbox" checked={all} onChange={event => setAll(event.target.checked)} />{t("Hiện toàn bộ danh mục broker")}</label>
       <button type="button" className="fxr-button fxr-button-primary market-sync-update" onClick={() => update(null)} disabled={Boolean(preview) || pending || !items.length || Boolean(state.queued) || Boolean(state.running)}><TestingIcon kind="download" />{t("Cập nhật dữ liệu")}</button>
     </div>

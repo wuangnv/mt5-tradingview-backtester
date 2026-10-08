@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -16,9 +17,6 @@ function firstKnown(...values) {
   return values.find((value) => finite(value))
 }
 
-const DATE_TIME_FORMATTER_VI = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'medium', timeZone: 'UTC' })
-const DATE_FORMATTER_VI_UTC = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' })
-const SHORT_DATE_FORMATTER_VI_UTC = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeZone: 'UTC' })
 
 function dateFromValue(value) {
   if (value === null || value === undefined || value === '') return null
@@ -35,7 +33,7 @@ function dateFromValue(value) {
 
 function formatDate(value) {
   const parsed = dateFromValue(value)
-  return !parsed ? 'N/A' : DATE_TIME_FORMATTER_VI.format(parsed)
+  return !parsed ? 'N/A' : displayDate(parsed, { timeStyle: 'medium' })
 }
 
 function formatNumber(value, digits = 2, suffix = '') {
@@ -78,8 +76,8 @@ export function buildAnalyticsModel(result, reportKind = 'app') {
   const observedStart = observedRange.start_utc || observedRange.start || observedRange.from_utc || observedRange.from
   const observedEnd = observedRange.end_utc || observedRange.end || observedRange.to_utc || observedRange.to
   const ledgerDates = ledger.flatMap((trade) => [trade?.open_time_utc, trade?.close_time_utc]).map(dateFromValue).filter(Boolean).sort((a, b) => a - b)
-  const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : DATE_FORMATTER_VI_UTC.format(date) }
-  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, report_kind: reportKind, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? DATE_TIME_FORMATTER_VI.format(date) : 'N/A' } })
+  const dateLabel = (value) => { const date = dateFromValue(value); return !date ? 'N/A' : displayDate(date) }
+  const rows = ledger.map((trade, index) => { const pnl = finite(trade?.net_pnl) ? Number(trade.net_pnl) : null; const date = dateFromValue(trade?.close_time_utc); return { ...trade, report_kind: reportKind, rowIndex: index, tradeId: trade?.trade_id || `trade-${index + 1}`, pnl, outcome: pnl === null ? 'unknown' : pnl > 0 ? 'win' : pnl < 0 ? 'loss' : 'breakeven', source: trade?.source?.session_id || trade?.session_id || trade?.source_id || 'research ledger', closeDate: date ? displayDate(date, { timeStyle: 'medium' }) : 'N/A' } })
   const realizedRValues = (Array.isArray(metrics.realized_r_values) ? metrics.realized_r_values : rows.map((trade) => trade.realized_r)).filter(finite).map(Number)
   const metricDefinitions = metrics.definitions && typeof metrics.definitions === 'object'
     ? Object.entries(metrics.definitions).slice(0, 16).reduce((out, [key, value]) => {
@@ -213,7 +211,7 @@ function ContextValue({ label, value, code = false }) {
 
 export function ProvenanceInspector({ model, selectedTrade, journalCount, links }) {
   const formatNumber = (value, digits = 2, suffix = '') => fmt(value, suffix, digits)
-  const formatDate = value => dateFromValue(value) ? new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(dateFromValue(value)) : '—'
+  const formatDate = value => dateFromValue(value) ? displayDate(dateFromValue(value), { timeStyle: 'short' }) : '—'
 
   const { t, locale, fmt } = useTestingLocale()
 

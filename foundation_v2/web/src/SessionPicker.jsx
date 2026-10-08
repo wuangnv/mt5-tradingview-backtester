@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -33,11 +34,11 @@ function sessionOptionLabel(item) {
 }
 
 function createdLabel(item) {
-  return Number.isFinite(Date.parse(item?.created_at_utc)) ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(item.created_at_utc)) : 'Chưa rõ ngày tạo'
+  return Number.isFinite(Date.parse(item?.created_at_utc)) ? displayDate(new Date(item.created_at_utc)) : 'Chưa rõ ngày tạo'
 }
 
 export function SessionSelect({ selected, catalog, onSelect, disabled, balance }) {
-  const createdLabel = item => Number.isFinite(Date.parse(item?.created_at_utc)) ? new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeZone: 'UTC' }).format(new Date(item.created_at_utc)) : t('Chưa rõ ngày tạo')
+  const createdLabel = item => Number.isFinite(Date.parse(item?.created_at_utc)) ? displayDate(new Date(item.created_at_utc)) : t('Chưa rõ ngày tạo')
 
   const { t, locale } = useTestingLocale()
 

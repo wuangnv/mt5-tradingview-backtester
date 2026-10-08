@@ -391,8 +391,10 @@ Evidence: `foundation_v2/evidence/quick-session-wallet-20261007/REVIEW.md`.
 Practice's Market Data route owns offline historical datasets and local CSV
 import. It combines configured provider instrument metadata and saved dataset
 versions in one table. Categories come from declared asset_class metadata, never
-symbol-name guesses. Table columns are product, category, source, UTC historical
-range, candle count, storage size, quality and actions. Session creation belongs to Sessions
+symbol-name guesses. Table columns are product, category, source, data type, UTC historical
+range, candle count, storage size, download status and actions. Data type shows timeframe
+and declared Bid/Ask/Mid; unknown price types stay unknown. Quality stays in Details.
+Session creation belongs to Sessions
 and Dashboard; this page has no create-session action.
 Search is left-aligned. Right-aligned controls reuse the Recent Sessions pattern:
 always-visible category/source/download-status pills, sort, asset catalog and CSV import.
@@ -412,7 +414,7 @@ dataset version. Earlier versions remain separate rows and existing sessions kee
 their pinned dataset. Metadata-only Dukascopy rows show the bundled M1/Bid start
 date through yesterday UTC as available history, with a tooltip separating this
 from verified downloaded coverage. Exact candle count and replay size remain
-unknown until download/processing. Active rows show received payload bytes and
+unknown until download/processing. Active rows show received payload bytes in progress and
 the real job status rather than Not downloaded; no quality assertion is made.
 The ellipsis becomes Pause/Cancel while downloading and Resume/Cancel while
 paused or failed. Pause keeps per-bucket checksummed cache; Cancel ends the job.
@@ -456,7 +458,33 @@ jobs are hidden; active, paused and failed jobs retain progress and recovery con
 Demo uses fixture catalogs and disables imports; Research detail
 links preserve preview state and clear stale replay-session context.
 
-The new table/shell labels and UTC dates use the current VI/EN locale.
+The table/shell labels use the current VI/EN language. Date/time presentation follows
+the project contract below in both languages.
 Existing advanced CSV/detail prose retains its prior mixed-language copy;
 this consolidation does not claim a full translation migration.
 Evidence: `foundation_v2/evidence/offline-library-grid-20261007/RECEIPT.md`.
+
+### Date and time presentation
+
+All full dates in application UI use `dd/mm/yyyy`; time uses 24-hour `HH:mm`,
+or `HH:mm:ss` where second precision matters. Example: `08/10/2026 17:03:09`.
+This contract belongs to project UI, including Practice, other workspace surfaces,
+and chart full-date/crosshair labels. Month/year calendar headings and abbreviated
+axis ticks retain their contextual granularity. Preserve each surface's existing
+timezone and explicit UTC labels; Vietnamese formatting does not mean UTC+7.
+
+`foundation_v2/web/src/dateFormat.js` owns formatting and input parsing.
+Use `displayDate` / `displayTime` rather than per-page locale dateStyle defaults.
+`ProjectDateInput` displays day-first editable text and 24-hour time, while its
+calendar/time picker still uses the browser. Typing and picker changes emit ISO
+values to the existing form boundary. Incomplete/impossible/out-of-bounds input
+emits an empty value and clears on blur; external selection/reset replaces the draft.
+ISO API/storage keys, filter values, sorting and serialized provenance stay unchanged.
+Raw JSON/export fields retain machine formats rather than rewriting the data itself.
+
+History grid cells use two compact date lines; Details retains timestamp precision.
+Unknown counts/sizes show —. Download status appears once in its own column.
+Inline progress shows percentage and received bytes (plus speed while transferring)
+with a thin bar; pause/resume and cancel remain separate labelled controls.
+Total byte size is not invented when upstream does not declare it.
+Paused/failed states retain cached bytes.

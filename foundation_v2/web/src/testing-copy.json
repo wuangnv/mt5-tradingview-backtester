@@ -1901,7 +1901,7 @@
     "en": "Source"
   },
   "Lịch sử UTC": {
-    "vi": "Phạm vi lịch sử (UTC)",
+    "vi": "Lịch sử (UTC)",
     "en": "History range (UTC)"
   },
   "Thao tác": {
@@ -5616,5 +5616,7 @@
   "Có sẵn · M1/Bid": {"vi":"Có sẵn · M1/Bid","en":"Available · M1/Bid"},
   "Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.": {"vi":"Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.","en":"Downloadable range from M1/Bid metadata; coverage has not been verified."},
   "Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.": {"vi":"Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.","en":"The exact candle count is known only after reading source data."},
-  "Dung lượng replay chỉ xác định sau khi tải và xử lý.": {"vi":"Dung lượng replay chỉ xác định sau khi tải và xử lý.","en":"Replay size is known only after downloading and processing."}
+  "Dung lượng replay chỉ xác định sau khi tải và xử lý.": {"vi":"Dung lượng replay chỉ xác định sau khi tải và xử lý.","en":"Replay size is known only after downloading and processing."},
+  "Ngày giờ không hợp lệ": { "vi": "Ngày giờ không hợp lệ", "en": "Invalid date or time" },
+  "Chọn ngày": { "vi": "Chọn ngày", "en": "Choose date" }
 }

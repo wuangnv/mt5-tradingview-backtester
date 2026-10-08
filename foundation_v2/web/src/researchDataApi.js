@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 export async function readJson(response) {
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) {
@@ -91,7 +92,7 @@ export function formatUtc(value, locale = 'vi-VN') {
     ? new Date(raw > 10_000_000_000 ? raw : raw * 1000)
     : new Date(value)
   if (Number.isNaN(date.getTime())) return String(value)
-  return new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(date)
+  return displayDate(date, { timeStyle: 'short' })
 }
 
 export function qualityLabel(dataset) {

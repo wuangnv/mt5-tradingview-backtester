@@ -1,0 +1,6 @@
+.project-date-input { position:relative; display:flex; min-width:0; width:100%; align-items:center; }
+.project-date-input > input[type=text] { box-sizing:border-box; width:100%; min-width:0; padding-right:36px; font-variant-numeric:tabular-nums; }
+.fx-app .project-date-input > .project-date-native { position:absolute; width:1px; height:1px; min-height:0; opacity:0; padding:0; border:0; pointer-events:none; }
+.fx-app .project-date-input > .project-date-picker { position:absolute; right:2px; top:2px; bottom:2px; width:32px; min-height:0; display:grid; place-items:center; padding:0; border:0; background:transparent; color:var(--wm-content-muted); border-radius:var(--wm-control-radius); cursor:pointer; }
+.fx-app .project-date-input > .project-date-picker:hover:not(:disabled) { color:var(--wm-content); background:var(--wm-hover); }
+.project-date-picker:focus-visible { outline:2px solid var(--wm-focus); outline-offset:-2px; }

@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useId, useMemo, useState } from 'react'
 import { dashboardCurve } from './dashboardModel.js'
@@ -36,7 +37,6 @@ export default function SessionPerformance({ model, payload, item, href, chartsO
 
   const { t, locale, fmt } = useTestingLocale()
 
-  const dateFormat = new Intl.DateTimeFormat(locale, { timeZone: 'UTC', dateStyle: 'short', timeStyle: 'short' })
   const gradientId = useId()
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(5)
@@ -66,11 +66,11 @@ export default function SessionPerformance({ model, payload, item, href, chartsO
       <Metric title={t("Win rate")} value={dashboardNumber(model?.winRate, '%')} detail={t('{wins} thắng · {losses} thua', { wins: dashboardNumber(model?.wins), losses: dashboardNumber(model?.losses) })} />
       <Metric title={t("Lời/lỗ trung bình")} value={dashboardNumber(model?.payoffRatio)} detail={t("Lãi TB / độ lớn lỗ TB · chưa biết nếu thiếu nguồn")} />
       <Metric title={t("P/L tháng")} value={dashboardMoney(periods.month, currency)} detail={anchor ? t("Tháng {month} · UTC", { month: anchor.slice(0, 7) }) : t("Chưa có ngày đóng")} />
-      <Metric title={t("P/L tuần")} value={dashboardMoney(periods.week, currency)} detail={anchor ? t("Tuần T2–CN chứa {date} · UTC", { date: anchor }) : t("Chưa có ngày đóng")} />
-      <Metric title={t("P/L ngày")} value={dashboardMoney(periods.day, currency)} detail={anchor ? `${anchor} · UTC` : t("Chưa có ngày đóng")} />
+      <Metric title={t("P/L tuần")} value={dashboardMoney(periods.week, currency)} detail={anchor ? t("Tuần T2–CN chứa {date} · UTC", { date: displayDate(anchor) }) : t("Chưa có ngày đóng")} />
+      <Metric title={t("P/L ngày")} value={dashboardMoney(periods.day, currency)} detail={anchor ? `${displayDate(anchor)} · UTC` : t("Chưa có ngày đóng")} />
     </section>
     <section className="fxs-recent"><div className="fxs-section-heading"><h2>{t("Recent Trades")}</h2>{href && <a className="fxr-button fxr-button-secondary fxs-journal" href={href('journal')}><TestingIcon kind="journal" size={16} />{t("Journal")}</a>}</div>
-      {rows.length ? <><div className="fxs-table-scroll" role="region" aria-label={t("Giao dịch gần đây")} tabIndex={0}><table><thead><tr><th>{t("Phiên / lệnh")}</th><th>{t("Đóng lệnh (UTC)")}</th><th>{t("Symbol")}</th><th>{t("Net P/L")}</th></tr></thead><tbody>{visible.map(trade => <tr key={trade.tradeId}><td>{model?.result?.preview ? <span>{item.name || item.record_id}<small>{trade.side ? t(String(trade.side).toLowerCase() === "buy" ? "Buy" : "Sell") : "—"}</small></span> : <a href={href('analytics', { trade: trade.tradeId })}>{item.name || item.record_id}<small>{trade.tradeId} · {trade.side ? t(String(trade.side).toLowerCase() === 'buy' ? 'Buy' : 'Sell') : '—'}</small></a>}</td><td>{closeTime(trade.close_time_utc) ? dateFormat.format(closeTime(trade.close_time_utc)) : '—'}</td><td>{trade.symbol || model.result?.instrument_id || '—'}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{dashboardMoney(trade.pnl, currency)}</td></tr>)}</tbody></table></div>
+      {rows.length ? <><div className="fxs-table-scroll" role="region" aria-label={t("Giao dịch gần đây")} tabIndex={0}><table><thead><tr><th>{t("Phiên / lệnh")}</th><th>{t("Đóng lệnh (UTC)")}</th><th>{t("Symbol")}</th><th>{t("Net P/L")}</th></tr></thead><tbody>{visible.map(trade => <tr key={trade.tradeId}><td>{model?.result?.preview ? <span>{item.name || item.record_id}<small>{trade.side ? t(String(trade.side).toLowerCase() === "buy" ? "Buy" : "Sell") : "—"}</small></span> : <a href={href('analytics', { trade: trade.tradeId })}>{item.name || item.record_id}<small>{trade.tradeId} · {trade.side ? t(String(trade.side).toLowerCase() === 'buy' ? 'Buy' : 'Sell') : '—'}</small></a>}</td><td>{closeTime(trade.close_time_utc) ? displayDate(closeTime(trade.close_time_utc), { timeStyle: 'short' }) : '—'}</td><td>{trade.symbol || model.result?.instrument_id || '—'}</td><td className={trade.pnl > 0 ? 'is-positive' : trade.pnl < 0 ? 'is-negative' : ''}>{dashboardMoney(trade.pnl, currency)}</td></tr>)}</tbody></table></div>
       <PaginationFooter label="Phân trang giao dịch" page={current} pages={pages} onPageChange={setPage} pageSize={pageSize} onPageSizeChange={value => { setPageSize(value); setPage(1) }} sizes={[5,10,20]} /></> : <div className="fxs-trades-empty" data-testid="session-trades-empty"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M10 12h28v24H10ZM10 20h28M16 27h8m-8 5h16" /></svg><h3>{t("Chưa có giao dịch đóng")}</h3><p>{!model ? t("Mở chart để bắt đầu phiên luyện tập.") : t("Giao dịch đã đóng sẽ xuất hiện tại đây.")}</p>{!model?.result?.preview && !item.archived && item.dataset_available && <SessionChartLink href={href('replay', { select: null, surface: 'workspace' })} />}</div>}
     </section></>}
   </section>

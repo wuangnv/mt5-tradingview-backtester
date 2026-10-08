@@ -1,6 +1,7 @@
+import { displayDate } from './dateFormat.js'
 export function sessionDate(value, time = false, locale = 'vi-VN') {
   if (value == null || value === '' || typeof value === 'boolean' || !Number.isFinite(Number(value))) return '—'
-  return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', ...(time ? { timeStyle: 'short' } : {}), timeZone: 'UTC' }).format(new Date(Number(value) * 1000))
+  return displayDate(new Date(Number(value) * 1000), { timeStyle: time ? 'short' : undefined })
 }
 
 export function sessionRemainingDays(dataset, payload, record) {

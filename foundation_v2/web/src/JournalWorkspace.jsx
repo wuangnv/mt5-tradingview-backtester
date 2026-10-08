@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import './journal-analytics.css'
 import './journal-story.css'
@@ -69,7 +70,7 @@ function formatDate(value) {
   if (!value) return 'Chưa có thời gian'
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) return 'Chưa có thời gian'
-  return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short' }).format(parsed)
+  return displayDate(parsed, { timeStyle: 'short', timeZone: null })
 }
 
 function formatContextTimestamp(value) {

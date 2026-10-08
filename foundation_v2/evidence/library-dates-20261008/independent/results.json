@@ -1,0 +1,176 @@
+{
+  "scope": "Read-only actual catalog plus explicitly labeled fixtures; no writes, external origins, live API or WebSockets",
+  "cases": [
+    {
+      "fixture": true,
+      "theme": "dark",
+      "width": 1710,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "largeSpeedBounded": true,
+      "fixtureRows": [
+        "CATALOG\nFixture CATALOG\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tChưa tải\t\nTải về",
+        "NO-RANGE\nFixture NO-RANGE\n\tForex\tDukascopy\t—\tChưa xác định\t—\t—\tChưa tải\t\nTải về",
+        "PAUSED\nFixture PAUSED\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐã tạm dừng\t\n30%\n1 MiB",
+        "RUNNING\nFixture RUNNING\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐang tải\t\n30%\n4,1 GiB\n31,95 MiB/s",
+        "SAVED-CSV\n\tChưa phân loại\tlocal-csv\tH1\t29/02/2024\n→ 01/03/2024\n\t0\t0 B\tĐã tải\t\nĐã tải",
+        "SAVED-DUKA\n\tChưa phân loại\tDukascopy\tM1\nBid\n\t02/01/2026\n→ 03/01/2026\n\t31\t7,9 KiB\tĐã tải\t\nĐã tải"
+      ],
+      "pass": true
+    },
+    {
+      "fixture": true,
+      "theme": "dark",
+      "width": 768,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "fixtureRows": [
+        "CATALOG\nFixture CATALOG\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tChưa tải\t\nTải về",
+        "NO-RANGE\nFixture NO-RANGE\n\tForex\tDukascopy\t—\tChưa xác định\t—\t—\tChưa tải\t\nTải về",
+        "PAUSED\nFixture PAUSED\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐã tạm dừng\t\n30%\n1 MiB",
+        "RUNNING\nFixture RUNNING\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐang tải\t\n30%\n4 GiB",
+        "SAVED-CSV\n\tChưa phân loại\tlocal-csv\tH1\t29/02/2024\n→ 01/03/2024\n\t0\t0 B\tĐã tải\t\nĐã tải",
+        "SAVED-DUKA\n\tChưa phân loại\tDukascopy\tM1\nBid\n\t02/01/2026\n→ 03/01/2026\n\t31\t7,9 KiB\tĐã tải\t\nĐã tải"
+      ],
+      "pass": true
+    },
+    {
+      "fixture": true,
+      "theme": "dark",
+      "width": 360,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "fixtureRows": [
+        "CATALOG\nFixture CATALOG\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tChưa tải\t\nTải về",
+        "NO-RANGE\nFixture NO-RANGE\n\tForex\tDukascopy\t—\tChưa xác định\t—\t—\tChưa tải\t\nTải về",
+        "PAUSED\nFixture PAUSED\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐã tạm dừng\t\n30%\n1 MiB",
+        "RUNNING\nFixture RUNNING\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐang tải\t\n30%\n4 GiB",
+        "SAVED-CSV\n\tChưa phân loại\tlocal-csv\tH1\t29/02/2024\n→ 01/03/2024\n\t0\t0 B\tĐã tải\t\nĐã tải",
+        "SAVED-DUKA\n\tChưa phân loại\tDukascopy\tM1\nBid\n\t02/01/2026\n→ 03/01/2026\n\t31\t7,9 KiB\tĐã tải\t\nĐã tải"
+      ],
+      "pass": true
+    },
+    {
+      "fixture": true,
+      "theme": "light",
+      "width": 1710,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "fixtureRows": [
+        "CATALOG\nFixture CATALOG\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tChưa tải\t\nTải về",
+        "NO-RANGE\nFixture NO-RANGE\n\tForex\tDukascopy\t—\tChưa xác định\t—\t—\tChưa tải\t\nTải về",
+        "PAUSED\nFixture PAUSED\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐã tạm dừng\t\n30%\n1 MiB",
+        "RUNNING\nFixture RUNNING\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐang tải\t\n30%\n4 GiB",
+        "SAVED-CSV\n\tChưa phân loại\tlocal-csv\tH1\t29/02/2024\n→ 01/03/2024\n\t0\t0 B\tĐã tải\t\nĐã tải",
+        "SAVED-DUKA\n\tChưa phân loại\tDukascopy\tM1\nBid\n\t02/01/2026\n→ 03/01/2026\n\t31\t7,9 KiB\tĐã tải\t\nĐã tải"
+      ],
+      "pass": true
+    },
+    {
+      "fixture": true,
+      "theme": "light",
+      "width": 768,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "fixtureRows": [
+        "CATALOG\nFixture CATALOG\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tChưa tải\t\nTải về",
+        "NO-RANGE\nFixture NO-RANGE\n\tForex\tDukascopy\t—\tChưa xác định\t—\t—\tChưa tải\t\nTải về",
+        "PAUSED\nFixture PAUSED\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐã tạm dừng\t\n30%\n1 MiB",
+        "RUNNING\nFixture RUNNING\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐang tải\t\n30%\n4 GiB",
+        "SAVED-CSV\n\tChưa phân loại\tlocal-csv\tH1\t29/02/2024\n→ 01/03/2024\n\t0\t0 B\tĐã tải\t\nĐã tải",
+        "SAVED-DUKA\n\tChưa phân loại\tDukascopy\tM1\nBid\n\t02/01/2026\n→ 03/01/2026\n\t31\t7,9 KiB\tĐã tải\t\nĐã tải"
+      ],
+      "pass": true
+    },
+    {
+      "fixture": true,
+      "theme": "light",
+      "width": 360,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "fixtureRows": [
+        "CATALOG\nFixture CATALOG\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tChưa tải\t\nTải về",
+        "NO-RANGE\nFixture NO-RANGE\n\tForex\tDukascopy\t—\tChưa xác định\t—\t—\tChưa tải\t\nTải về",
+        "PAUSED\nFixture PAUSED\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐã tạm dừng\t\n30%\n1 MiB",
+        "RUNNING\nFixture RUNNING\n\tForex\tDukascopy\tM1\nBid\n\t04/05/2003\n→ 07/10/2026\n\t—\t—\tĐang tải\t\n30%\n4 GiB",
+        "SAVED-CSV\n\tChưa phân loại\tlocal-csv\tH1\t29/02/2024\n→ 01/03/2024\n\t0\t0 B\tĐã tải\t\nĐã tải",
+        "SAVED-DUKA\n\tChưa phân loại\tDukascopy\tM1\nBid\n\t02/01/2026\n→ 03/01/2026\n\t31\t7,9 KiB\tĐã tải\t\nĐã tải"
+      ],
+      "pass": true
+    },
+    {
+      "fixture": false,
+      "theme": "dark",
+      "width": 1710,
+      "headers": [
+        "Sản phẩm",
+        "Danh mục",
+        "Nguồn",
+        "Dữ liệu",
+        "Lịch sử (UTC)",
+        "Số nến",
+        "Dung lượng",
+        "Trạng thái",
+        "Thao tác"
+      ],
+      "actualRows": 25,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

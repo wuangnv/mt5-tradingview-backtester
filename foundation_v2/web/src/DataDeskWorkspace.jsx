@@ -1,3 +1,5 @@
+import ProjectDateInput from './ProjectDateInput.jsx'
+import { displayDate } from './dateFormat.js'
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   datasetRange,
@@ -16,7 +18,7 @@ import TestingIcon from './TestingIcon.jsx'
 import DataLibraryActions from './DataLibraryActions.jsx'
 import DataLibraryProgress from './DataLibraryProgress.jsx'
 import PaginationFooter from './PaginationFooter.jsx'
-import { CATEGORIES, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
+import { CATEGORIES, libraryDataType, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
 import './data-library.css'
 import './session-settings.css'
 
@@ -325,7 +327,7 @@ function LocalCsvImport({ workspace, onImported, onBusyChange, asset }) {
               <label className="rd-field"><span>Contract size</span><input name="contractSize" value={form.contractSize} onChange={updateForm} /></label>
               <label className="rd-field"><span>Quantity min</span><input name="quantityMin" value={form.quantityMin} onChange={updateForm} /></label>
               <label className="rd-field"><span>Quantity step</span><input name="quantityStep" value={form.quantityStep} onChange={updateForm} /></label>
-              <label className="rd-field"><span>Effective from UTC</span><input name="effectiveFromUtc" value={form.effectiveFromUtc} onChange={updateForm} /></label>
+              <label className="rd-field"><span>Effective from UTC</span><ProjectDateInput type="datetime-local" step="1" utc name="effectiveFromUtc" value={form.effectiveFromUtc} onChange={updateForm} /></label>
             </div>
           </details>
           <div className="rd-import-actions">
@@ -608,7 +610,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           const retrySeconds = Math.max(0,Math.ceil((job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000))
           const active = ['queued','running','pausing'].includes(job.status)
           return <div key={job.job_id} className="data-library-download-job" data-testid={`download-job-${job.job_id}`}>
-            <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{job.from_date} → {job.to_date}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')} · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</span></div>
+            <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{displayDate(job.from_date)} → {displayDate(job.to_date)}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')} · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</span></div>
             {active && <progress aria-label={t('Tiến độ tải {asset}',{asset:job.instrument_id})} value={job.completed_days || 0} max={Math.max(1,job.total_days || 1)} />}
             {job.error && <p className="data-library-job-error">{t(downloadErrorMessage(job.error))}</p>}
             <p className="data-library-muted">{t('Dung lượng đã tải')}: {formatDatasetSize(job.transferred_bytes,fmt)} · {t('Tổng dung lượng chưa xác định.')}</p>
@@ -627,8 +629,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           <section className="rd-panel" aria-label="Dataset catalog">
               <div className="rd-table-wrap" tabIndex={0} role="region" aria-label={t('Dữ liệu đã có')}>
                 <table className="rd-table" data-testid="data-desk-dataset-table">
-                  <colgroup>{['asset','category','source','history','count','size','quality','actions'].map(name => <col key={name} className={`data-library-column-${name}`} />)}</colgroup>
-                  <thead><tr>{['Sản phẩm','Danh mục','Nguồn','Lịch sử UTC','Số nến','Dung lượng','Chất lượng','Thao tác'].map(label => <th key={label} scope="col" title={label === 'Dung lượng' ? t('Dữ liệu replay; không gồm bản nguồn và cache tải.') : undefined}>{t(label)}</th>)}</tr></thead>
+                  <colgroup>{['asset','category','source','data','history','count','size','status','actions'].map(name => <col key={name} className={`data-library-column-${name}`} />)}</colgroup>
+                  <thead><tr>{['Sản phẩm','Danh mục','Nguồn','Dữ liệu','Lịch sử UTC','Số nến','Dung lượng','Trạng thái','Thao tác'].map(label => <th key={label} scope="col" title={label === 'Dung lượng' ? t('Dữ liệu replay; không gồm bản nguồn và cache tải.') : undefined}>{t(label)}</th>)}</tr></thead>
                   <tbody>
                     {pageItems.map((dataset) => {
                       const range = datasetRange(dataset)
@@ -636,15 +638,17 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const job = jobForAsset(dataset)
                       const downloading = job && ['queued','running','pausing'].includes(job.status)
                       const availableStart = sourceOf(dataset) === 'Dukascopy' ? state.download?.earliest_dates?.[dataset.instrument_id] : null
+                      const dataType = libraryDataType(dataset, availableStart)
                       return (
                         <tr key={dataset.key} className={active ? 'is-selected' : ''}>
-                          <td>{dataset.downloaded ? <button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => openDetails(dataset)}><strong>{dataset.instrument_id || '—'}</strong><small>{dataset.timeframe || '—'}</small></button> : <><strong>{dataset.instrument_id}</strong>{dataset.name && <small>{dataset.name}</small>}</>}</td>
+                          <td>{dataset.downloaded ? <button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => openDetails(dataset)}><strong>{dataset.instrument_id || '—'}</strong></button> : <><strong>{dataset.instrument_id}</strong>{dataset.name && <small>{dataset.name}</small>}</>}</td>
                           <td>{t(categoryLabel(categoryOf(dataset)))}</td>
                           <td>{sourceOf(dataset)}</td>
-                          <td title={!dataset.downloaded && availableStart ? t('Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.') : undefined}>{dataset.downloaded ? <>{t(formatUtc(range.start, locale))}<small>→ {t(formatUtc(range.end, locale))}</small></> : availableStart ? <>{availableStart}<small>→ {defaultDownloadDates().to_date}</small><small>{t('Có sẵn · M1/Bid')}</small></> : <span className="data-library-muted">{t('Chưa xác định')}</span>}</td>
-                          <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>{t('Sau khi tải')}</span>}</td>
-                          <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : downloading ? <>{formatDatasetSize(job.transferred_bytes, fmt)}<small>{t('Đã nhận')}</small></> : <span className="data-library-muted">{t('Sau khi tải')}</span>}</td>
-                          <td>{job ? <span className="data-library-muted">{t(DOWNLOAD_STATUS[job.status])}</span> : dataset.downloaded ? <QualityBadge dataset={dataset} /> : <span className="data-library-muted">{t('Chưa tải')}</span>}</td>
+                          <td>{dataType.timeframe}{dataType.price && <small>{dataType.price}</small>}</td>
+                          <td title={!dataset.downloaded && availableStart ? t('Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.') : undefined}>{dataset.downloaded ? <>{displayDate(range.start)}<small>→ {displayDate(range.end)}</small></> : availableStart ? <>{displayDate(availableStart)}<small>→ {displayDate(defaultDownloadDates().to_date)}</small></> : <span className="data-library-muted">{t('Chưa xác định')}</span>}</td>
+                          <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>—</span>}</td>
+                          <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : <span className="data-library-muted">—</span>}</td>
+                          <td>{job ? <span className="data-library-muted">{t(job.status === 'running' && job.stage === 'processing' ? 'Đang lưu dữ liệu…' : DOWNLOAD_STATUS[job.status])}</span> : dataset.downloaded ? <span>{t('Đã tải')}</span> : <span className="data-library-muted">{t('Chưa tải')}</span>}</td>
                           <td><div className="data-library-row-actions">{job ? <DataLibraryProgress job={job} fmt={fmt} onClick={() => setDownloadProgressOpen(true)} /> : <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || Math.max(0,(job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000) > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t('Huỷ tải')} disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="stop" /></button>

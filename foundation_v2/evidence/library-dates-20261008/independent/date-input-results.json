@@ -1,0 +1,16 @@
+{
+  "scope": "Isolated browser component fixture using actual Vite modules; local reads only",
+  "errors": [],
+  "checks": [
+    "Initial leap date dd/mm/yyyy",
+    "Typed date -> ISO callback",
+    "Typed 24h wall time -> ISO callback",
+    "Invalid leap day blocks native validity",
+    "Native picker ISO change -> Vietnamese text"
+  ],
+  "invalidAfterExternalClear": "",
+  "invalidClearValidity": true,
+  "validityAfterChangingMax": false,
+  "isoAfterChangingMax": "2024-02-29",
+  "pickerClickNoError": true
+}

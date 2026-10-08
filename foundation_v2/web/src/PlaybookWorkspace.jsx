@@ -1,3 +1,4 @@
+import { displayDate } from './dateFormat.js'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
 import { diffPayloads, fetchPlaybookRevisions, fetchPlaybooks } from './playbookApi.js'
@@ -26,7 +27,7 @@ function revisionPayload(revision) {
 function formatUtc(value) {
   if (!value) return 'Chưa xác định'
   const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? String(value) : date.toISOString().replace('T', ' ').replace('.000Z', ' UTC')
+  return Number.isNaN(date.getTime()) ? String(value) : `${displayDate(date, { timeStyle: 'medium' })} UTC`
 }
 
 function capabilityLabel(value) {
