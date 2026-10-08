@@ -435,7 +435,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   }, [workspace,preview,downloadRevision,downloadController])
 
   useEffect(() => {
-    if (!downloads.items.some(job => job.retry_after_seconds > 0)) return
+    if (!downloads.items.some(job => job.retry_after_seconds > 0 || ['queued','running','pausing'].includes(job.status))) return
     const timer = setInterval(() => setClockNow(Date.now()),1000)
     return () => clearInterval(timer)
   }, [downloads])
@@ -662,7 +662,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                           <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>—</span>}</td>
                           <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : <span className="data-library-muted">—</span>}</td>
                           <td><div className="data-library-row-actions">{!job && <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
-                            <DataLibraryProgress job={job} fmt={fmt} retrySeconds={retrySeconds} onClick={() => setDownloadProgressOpen(true)} />
+                            <DataLibraryProgress job={job} fmt={fmt} retrySeconds={retrySeconds} now={clockNow} onClick={() => setDownloadProgressOpen(true)} />
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={retrySeconds > 0 ? t(downloadErrorMessage(job.error || 'download_cooldown')) : t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || retrySeconds > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t(job.supports_cancel === false ? QDM_ERRORS.qdm_control_unsupported : 'Huỷ tải')} disabled={Boolean(jobAction) || job.supports_cancel === false} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="close" /></button>
                           </> : <DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} />}</div></td>

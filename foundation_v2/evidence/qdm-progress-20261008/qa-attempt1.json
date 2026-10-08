@@ -1,0 +1,27 @@
+{
+  "scope": "Labeled progress fixtures plus read-only live services; no job mutations",
+  "cases": [
+    {
+      "scenario": "unknown",
+      "pass": true,
+      "text": "00:03:00"
+    },
+    {
+      "scenario": "known",
+      "pass": true,
+      "text": "42%\n00:03:00"
+    },
+    {
+      "scenario": "paused",
+      "pass": true,
+      "text": ""
+    },
+    {
+      "scenario": "failed",
+      "pass": true,
+      "text": ""
+    }
+  ],
+  "pass": false,
+  "error": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.data-library-progress') to be visible\u001b[22m\n"
+}

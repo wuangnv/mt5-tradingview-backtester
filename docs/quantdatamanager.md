@@ -122,8 +122,10 @@ Cập nhật dataset chỉ xuất phần ngày mới và nối với bản ngu�
 cũ/phiên replay đang dùng nó được giữ nguyên. Ngày hiện tại UTC không được nhập.
 Các kiểm tra không tự chứng nhận dữ liệu không có gap: cờ `review` vẫn được giữ.
 
-QDM báo phần trăm theo **bước hiện tại**, không phải tổng tiến độ. Dung lượng tải,
-tốc độ mạng và ETA chưa có dữ liệu đáng tin nên hiển thị `—`. Chưa xác minh API
+QDM báo phần trăm theo **bước hiện tại**, không phải tổng tiến độ. Khi chưa có
+phần trăm, grid dùng thanh indeterminate và đồng hồ thời gian từ lúc bắt đầu;
+bấm thanh để xem bước hiện tại. Dung lượng tải, tốc độ mạng và ETA chưa có dữ
+liệu đáng tin nên không hiển thị các số này trong grid. Chưa xác minh API
 tạm dừng/huỷ an toàn giữa lúc QDM ghi file; hai nút này bị vô hiệu trong adapter.
 
 Nếu API/mạng bị ngắt, job không được công nhận hoàn thành khi chưa qua import.

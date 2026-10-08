@@ -1,4 +1,5 @@
 {
+  "Thời gian từ lúc bắt đầu": {"vi":"Thời gian từ lúc bắt đầu","en":"Time since start"},
   "QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.": {"vi":"QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.","en":"QuantDataManager is open or running another command. Close it after it finishes, then try again."},
   "Chưa cài QuantDataManager trong project.": {"vi":"Chưa cài QuantDataManager trong project.","en":"QuantDataManager is not installed in this project."},
   "QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.": {"vi":"QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.","en":"QuantDataManager requires a valid license. Activate it in QDM."},

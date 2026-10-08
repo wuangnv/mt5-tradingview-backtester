@@ -1,0 +1,44 @@
+{
+  "scope": "Labeled progress fixtures plus read-only live services; no job mutations",
+  "cases": [
+    {
+      "scenario": "unknown",
+      "pass": true,
+      "text": "00:03:00"
+    },
+    {
+      "scenario": "known",
+      "pass": true,
+      "text": "42%\n00:03:00"
+    },
+    {
+      "scenario": "paused",
+      "pass": true,
+      "text": ""
+    },
+    {
+      "scenario": "failed",
+      "pass": true,
+      "text": ""
+    },
+    {
+      "scenario": "node",
+      "pass": true,
+      "text": "10%\n1 MiB\n—"
+    },
+    {
+      "scenario": "reduced-motion",
+      "pass": true,
+      "text": "00:03:00"
+    }
+  ],
+  "live": [
+    {
+      "status": "completed",
+      "stage": "processing",
+      "error": null,
+      "dataset_id": "dataset-cf6f34c36ef44bfb76fe32e7b9d7d01c00bba077154767411ec747777568316c"
+    }
+  ],
+  "pass": true
+}

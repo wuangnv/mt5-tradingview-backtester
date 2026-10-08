@@ -72,6 +72,10 @@
 .data-library-progress-eta { flex:0 0 auto; text-align:right; }
 .data-library-progress-track { display:block; flex:1; min-width:0; height:4px; border-radius:2px; overflow:hidden; background:var(--wm-control-open); }
 .data-library-progress-fill { display:block; height:100%; background:var(--wm-focus); transition:width 200ms linear; }
+.data-library-progress-track.is-indeterminate .data-library-progress-fill { width:35%; animation:data-library-indeterminate 1.6s ease-in-out infinite; }
+.data-library-progress-elapsed { display:flex; align-items:center; gap:6px; font-size:12px; line-height:16px; color:var(--wm-content-muted); }
+@keyframes data-library-indeterminate { from { transform:translateX(-100%); } to { transform:translateX(286%); } }
+@media(prefers-reduced-motion:reduce) { .data-library-progress-track.is-indeterminate .data-library-progress-fill { animation:none; transform:translateX(93%); } }
 .fx-app .data-library .rd-table .data-library-progress:hover:not(:disabled) { background:var(--wm-control-hover); border-color:transparent; }
 .data-library .data-library-progress:focus-visible { outline:2px solid var(--wm-focus); outline-offset:2px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .data-library .data-library-row-actions .data-library-more { display:grid; place-items:center; box-sizing:border-box; flex:0 0 auto; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); min-height:var(--wm-icon-action-size); border:1px solid transparent; border-radius:50%; padding:0; }
