@@ -46,6 +46,16 @@ test('search and category/source compose without changing the source list', () =
   assert.equal(filterLibrary(rows,{category:'fx',provider:'Other'}).length,0)
   assert.deepEqual(rows.map(row => row.key),['old','new','gold'])
 })
+
+test('download status filters saved and catalog rows independently of sorting', () => {
+  const rows = libraryRows(saved,[{instrument_id:'AUDUSD',provider:'CSV',provider_id:'csv',asset_class:'fx'}])
+  assert.equal(filterLibrary(rows,{downloadStatus:'all'}).length,4)
+  assert.deepEqual(filterLibrary(rows,{downloadStatus:'downloaded',sort:'newest'}).map(row => row.key),['new','old','gold'])
+  assert.deepEqual(filterLibrary(rows,{downloadStatus:'not-downloaded',category:'fx',provider:'CSV'}).map(row => row.key),['csv:AUDUSD'])
+  assert.equal(filterLibrary(rows,{downloadStatus:'not-downloaded',category:'metal'}).length,0)
+  assert.deepEqual(filterLibrary(rows,{downloadStatus:'downloaded',category:'metal',provider:'CSV',search:'xau'}).map(row => row.key),['gold'])
+  assert.equal(rows.length,4)
+})
 test('sorting keeps missing dates deterministic and puts downloaded assets first', () => {
   const rows = libraryRows(saved,[{instrument_id:'AUDUSD',provider:'CSV',provider_id:'csv'}])
   assert.equal(filterLibrary(rows,{sort:'downloaded'}).at(-1).downloaded,false)

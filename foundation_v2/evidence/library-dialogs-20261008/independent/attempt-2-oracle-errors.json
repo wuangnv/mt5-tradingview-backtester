@@ -1,0 +1,3315 @@
+{
+  "cases": [
+    {
+      "name": "library-dark-vi-1710",
+      "details": {
+        "left": 375,
+        "right": 1335,
+        "top": 150.859375,
+        "bottom": 836.140625,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "detailsClose": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgb(115, 115, 115)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "delete": {
+        "left": 595,
+        "right": 1115,
+        "top": 379.25,
+        "bottom": 607.75,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "danger": {
+        "rest": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 48.453125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(204, 65, 75)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 48.453125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 48.453125,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "neutral": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteCloseDisabled": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteNeutralDisabled": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csv": {
+        "left": 375,
+        "right": 1335,
+        "top": 224.078125,
+        "bottom": 762.921875,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "primaryDisabled": {
+        "bg": "rgb(255, 173, 124)",
+        "color": "rgb(8, 8, 8)",
+        "border": "rgba(0, 0, 0, 0)",
+        "radius": "999px",
+        "height": 40,
+        "width": 120.015625,
+        "outline": "none",
+        "outlineWidth": "3px",
+        "opacity": "0.45",
+        "focusVisible": false,
+        "tokens": {
+          "--wm-control-open": "#FFAD7C",
+          "--wm-hover": "#FFC49F",
+          "--wm-control-text": "#080808",
+          "--wm-action-bg": "#FFAD7C",
+          "--wm-action-hover": "#FFC49F",
+          "--wm-on-primary": "#080808",
+          "--wm-focus": "#7ABBE6",
+          "--project-danger-action": "#C53E48",
+          "--project-danger-hover": "#CC414B",
+          "--project-on-danger": "#FFFFFF"
+        }
+      },
+      "primary": {
+        "rest": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.015625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(255, 196, 159)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.015625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.015625,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvCloseDisabled": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvPrimaryBusy": {
+        "rest": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.1875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.1875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "progress": {
+        "left": 595,
+        "right": 1115,
+        "top": 379.5,
+        "bottom": 607.5,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "resume": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 91.734375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 91.734375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 91.734375,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "resumeFocusGeometry": {
+        "left": 922.046875,
+        "right": 1021.78125,
+        "top": 526.5,
+        "bottom": 574.5,
+        "extent": 4,
+        "clips": [
+          {
+            "class": "data-library-dialog-body",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 596,
+            "right": 1114,
+            "top": 449.5,
+            "bottom": 606.5
+          },
+          {
+            "class": "data-library-dialog is-compact",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 596,
+            "right": 1114,
+            "top": 380.5,
+            "bottom": 606.5
+          },
+          {
+            "class": "fx-content",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 248,
+            "right": 1710,
+            "top": 117,
+            "bottom": 987
+          },
+          {
+            "class": "fx-main",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 248,
+            "right": 1710,
+            "top": 64,
+            "bottom": 987
+          },
+          {
+            "class": "fx-app fx-shell-story    ",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 0,
+            "right": 1710,
+            "top": 0,
+            "bottom": 987
+          }
+        ]
+      },
+      "catalog": {
+        "left": 1030,
+        "right": 1710,
+        "top": 0,
+        "bottom": 987,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "catalogClose": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgb(115, 115, 115)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "catalogPrimary": {
+        "rest": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 141.046875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(255, 196, 159)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 141.046875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 141.046875,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "pass": false,
+      "failure": "TimeoutError: locator.hover: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('dialog[open]').locator('.fx-chart-icon-button')\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" aria-label=\"Đóng\" class=\"fxs-drawer-close fx-chart-icon-button\">×</button>\u001b[22m\n\u001b[2m  - attempting hover action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and stable\u001b[22m\n\u001b[2m      - element is visible and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div role=\"status\" class=\"data-library-update-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying hover action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and stable\u001b[22m\n\u001b[2m      - element is visible and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div role=\"status\" class=\"data-library-update-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying hover action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible and stable\u001b[22m\n\u001b[2m       - element is visible and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div role=\"status\" class=\"data-library-update-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m     - retrying hover action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "session-delete-dark-vi-1710",
+      "danger": {
+        "rest": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 85.3125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(204, 65, 75)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 85.3125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 85.3125,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "geometry": {
+        "left": 595,
+        "right": 1115,
+        "top": 309.609375,
+        "bottom": 677.390625,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [],
+      "pass": true
+    },
+    {
+      "name": "library-dark-en-360",
+      "details": {
+        "left": 16,
+        "right": 344,
+        "top": 24,
+        "bottom": 963,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "detailsClose": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgb(115, 115, 115)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "delete": {
+        "left": 16,
+        "right": 344,
+        "top": 367.5,
+        "bottom": 619.5,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "danger": {
+        "rest": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(204, 65, 75)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "neutral": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteCloseDisabled": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteNeutralDisabled": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csv": {
+        "left": 16,
+        "right": 344,
+        "top": 55.734375,
+        "bottom": 931.265625,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "primaryDisabled": {
+        "bg": "rgb(255, 173, 124)",
+        "color": "rgb(8, 8, 8)",
+        "border": "rgba(0, 0, 0, 0)",
+        "radius": "999px",
+        "height": 44,
+        "width": 302,
+        "outline": "none",
+        "outlineWidth": "3px",
+        "opacity": "0.45",
+        "focusVisible": false,
+        "tokens": {
+          "--wm-control-open": "#FFAD7C",
+          "--wm-hover": "#FFC49F",
+          "--wm-control-text": "#080808",
+          "--wm-action-bg": "#FFAD7C",
+          "--wm-action-hover": "#FFC49F",
+          "--wm-on-primary": "#080808",
+          "--wm-focus": "#7ABBE6",
+          "--project-danger-action": "#C53E48",
+          "--project-danger-hover": "#CC414B",
+          "--project-on-danger": "#FFFFFF"
+        }
+      },
+      "primary": {
+        "rest": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(255, 196, 159)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvCloseDisabled": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvPrimaryBusy": {
+        "rest": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(255, 173, 124)",
+          "color": "rgb(8, 8, 8)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#FFAD7C",
+            "--wm-hover": "#FFC49F",
+            "--wm-control-text": "#080808",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "progress": {
+        "left": 16,
+        "right": 344,
+        "top": 328,
+        "bottom": 659,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "resume": {
+        "rest": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(42, 42, 42)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(35, 35, 35)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#232323",
+            "--wm-hover": "#2A2A2A",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "pass": false,
+      "failure": "AssertionError [ERR_ASSERTION]: {\"left\":25,\"right\":335,\"top\":526,\"bottom\":578,\"extent\":4,\"clips\":[{\"class\":\"data-library-dialog-body\",\"overflowX\":\"auto\",\"overflowY\":\"auto\",\"left\":17,\"right\":343,\"top\":402,\"bottom\":658},{\"class\":\"data-library-dialog is-compact\",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":17,\"right\":343,\"top\":329,\"bottom\":658},{\"class\":\"fx-content\",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":58,\"right\":360,\"top\":117,\"bottom\":987},{\"class\":\"fx-main\",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":58,\"right\":360,\"top\":64,\"bottom\":987},{\"class\":\"fx-app fx-shell-story is-rail-collapsed   \",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":0,\"right\":360,\"top\":0,\"bottom\":987}]}"
+    },
+    {
+      "name": "session-delete-dark-en-360",
+      "danger": {
+        "rest": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 110.109375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(204, 65, 75)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 110.109375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(197, 62, 72)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 110.109375,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#C53E48",
+            "--wm-hover": "#CC414B",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#FFAD7C",
+            "--wm-action-hover": "#FFC49F",
+            "--wm-on-primary": "#080808",
+            "--wm-focus": "#7ABBE6",
+            "--project-danger-action": "#C53E48",
+            "--project-danger-hover": "#CC414B",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "geometry": {
+        "left": 17,
+        "right": 343,
+        "top": 304.40625,
+        "bottom": 682.578125,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [],
+      "pass": true
+    },
+    {
+      "name": "library-light-vi-1710",
+      "details": {
+        "left": 375,
+        "right": 1335,
+        "top": 150.859375,
+        "bottom": 836.140625,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "detailsClose": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgb(136, 136, 136)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "delete": {
+        "left": 595,
+        "right": 1115,
+        "top": 379.25,
+        "bottom": 607.75,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "danger": {
+        "rest": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 48.453125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(152, 41, 47)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 48.453125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 48.453125,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "neutral": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteCloseDisabled": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteNeutralDisabled": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 49.765625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csv": {
+        "left": 375,
+        "right": 1335,
+        "top": 224.078125,
+        "bottom": 762.921875,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "primaryDisabled": {
+        "bg": "rgb(184, 80, 24)",
+        "color": "rgb(255, 255, 255)",
+        "border": "rgba(0, 0, 0, 0)",
+        "radius": "999px",
+        "height": 40,
+        "width": 120.015625,
+        "outline": "none",
+        "outlineWidth": "3px",
+        "opacity": "0.45",
+        "focusVisible": false,
+        "tokens": {
+          "--wm-control-open": "#B85018",
+          "--wm-hover": "#993E10",
+          "--wm-control-text": "#FFFFFF",
+          "--wm-action-bg": "#B85018",
+          "--wm-action-hover": "#993E10",
+          "--wm-on-primary": "#FFFFFF",
+          "--wm-focus": "#24658B",
+          "--project-danger-action": "#B5373C",
+          "--project-danger-hover": "#98292F",
+          "--project-on-danger": "#FFFFFF"
+        }
+      },
+      "primary": {
+        "rest": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.015625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(153, 62, 16)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.015625,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.015625,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvCloseDisabled": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvPrimaryBusy": {
+        "rest": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.1875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 120.1875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "progress": {
+        "left": 595,
+        "right": 1115,
+        "top": 379.5,
+        "bottom": 607.5,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "resume": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 91.734375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 91.734375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 91.734375,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "resumeFocusGeometry": {
+        "left": 922.046875,
+        "right": 1021.78125,
+        "top": 526.5,
+        "bottom": 574.5,
+        "extent": 4,
+        "clips": [
+          {
+            "class": "data-library-dialog-body",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 596,
+            "right": 1114,
+            "top": 449.5,
+            "bottom": 606.5
+          },
+          {
+            "class": "data-library-dialog is-compact",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 596,
+            "right": 1114,
+            "top": 380.5,
+            "bottom": 606.5
+          },
+          {
+            "class": "fx-content",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 248,
+            "right": 1710,
+            "top": 117,
+            "bottom": 987
+          },
+          {
+            "class": "fx-main",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 248,
+            "right": 1710,
+            "top": 64,
+            "bottom": 987
+          },
+          {
+            "class": "fx-app fx-shell-story    ",
+            "overflowX": "hidden",
+            "overflowY": "hidden",
+            "left": 0,
+            "right": 1710,
+            "top": 0,
+            "bottom": 987
+          }
+        ]
+      },
+      "catalog": {
+        "left": 1030,
+        "right": 1710,
+        "top": 0,
+        "bottom": 987,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "catalogClose": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgb(136, 136, 136)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 32,
+          "width": 32,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "catalogPrimary": {
+        "rest": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 141.046875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(153, 62, 16)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 141.046875,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 141.046875,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "pass": false,
+      "failure": "TimeoutError: locator.hover: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('dialog[open]').locator('.fx-chart-icon-button')\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" aria-label=\"Đóng\" class=\"fxs-drawer-close fx-chart-icon-button\">×</button>\u001b[22m\n\u001b[2m  - attempting hover action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and stable\u001b[22m\n\u001b[2m      - element is visible and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div role=\"status\" class=\"data-library-update-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying hover action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and stable\u001b[22m\n\u001b[2m      - element is visible and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div role=\"status\" class=\"data-library-update-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying hover action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible and stable\u001b[22m\n\u001b[2m       - element is visible and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div role=\"status\" class=\"data-library-update-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m     - retrying hover action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "session-delete-light-vi-1710",
+      "danger": {
+        "rest": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 85.3125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(152, 41, 47)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 85.3125,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 40,
+          "width": 85.3125,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "geometry": {
+        "left": 595,
+        "right": 1115,
+        "top": 309.609375,
+        "bottom": 677.390625,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [],
+      "pass": true
+    },
+    {
+      "name": "library-light-en-360",
+      "details": {
+        "left": 16,
+        "right": 344,
+        "top": 24,
+        "bottom": 963,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "detailsClose": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgb(136, 136, 136)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "delete": {
+        "left": 16,
+        "right": 344,
+        "top": 367.5,
+        "bottom": 619.5,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "danger": {
+        "rest": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(152, 41, 47)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "neutral": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteCloseDisabled": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "deleteNeutralDisabled": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 145,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csv": {
+        "left": 16,
+        "right": 344,
+        "top": 55.734375,
+        "bottom": 931.265625,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "primaryDisabled": {
+        "bg": "rgb(184, 80, 24)",
+        "color": "rgb(255, 255, 255)",
+        "border": "rgba(0, 0, 0, 0)",
+        "radius": "999px",
+        "height": 44,
+        "width": 302,
+        "outline": "none",
+        "outlineWidth": "3px",
+        "opacity": "0.45",
+        "focusVisible": false,
+        "tokens": {
+          "--wm-control-open": "#B85018",
+          "--wm-hover": "#993E10",
+          "--wm-control-text": "#FFFFFF",
+          "--wm-action-bg": "#B85018",
+          "--wm-action-hover": "#993E10",
+          "--wm-on-primary": "#FFFFFF",
+          "--wm-focus": "#24658B",
+          "--project-danger-action": "#B5373C",
+          "--project-danger-hover": "#98292F",
+          "--project-on-danger": "#FFFFFF"
+        }
+      },
+      "primary": {
+        "rest": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(153, 62, 16)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvCloseDisabled": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "50%",
+          "height": 44,
+          "width": 44,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "csvPrimaryBusy": {
+        "rest": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(184, 80, 24)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "0.45",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B85018",
+            "--wm-hover": "#993E10",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "progress": {
+        "left": 16,
+        "right": 344,
+        "top": 328,
+        "bottom": 659,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "resume": {
+        "rest": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(235, 235, 235)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(244, 244, 244)",
+          "color": "rgb(17, 17, 17)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 302,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#F4F4F4",
+            "--wm-hover": "#EBEBEB",
+            "--wm-control-text": "#111111",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "pass": false,
+      "failure": "AssertionError [ERR_ASSERTION]: {\"left\":25,\"right\":335,\"top\":526,\"bottom\":578,\"extent\":4,\"clips\":[{\"class\":\"data-library-dialog-body\",\"overflowX\":\"auto\",\"overflowY\":\"auto\",\"left\":17,\"right\":343,\"top\":402,\"bottom\":658},{\"class\":\"data-library-dialog is-compact\",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":17,\"right\":343,\"top\":329,\"bottom\":658},{\"class\":\"fx-content\",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":58,\"right\":360,\"top\":117,\"bottom\":987},{\"class\":\"fx-main\",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":58,\"right\":360,\"top\":64,\"bottom\":987},{\"class\":\"fx-app fx-shell-story is-rail-collapsed   \",\"overflowX\":\"hidden\",\"overflowY\":\"hidden\",\"left\":0,\"right\":360,\"top\":0,\"bottom\":987}]}"
+    },
+    {
+      "name": "session-delete-light-en-360",
+      "danger": {
+        "rest": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 110.109375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "hover": {
+          "bg": "rgb(152, 41, 47)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 110.109375,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "opacity": "1",
+          "focusVisible": false,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        },
+        "focus": {
+          "bg": "rgb(181, 55, 60)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgba(0, 0, 0, 0)",
+          "radius": "999px",
+          "height": 44,
+          "width": 110.109375,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "opacity": "1",
+          "focusVisible": true,
+          "tokens": {
+            "--wm-control-open": "#B5373C",
+            "--wm-hover": "#98292F",
+            "--wm-control-text": "#FFFFFF",
+            "--wm-action-bg": "#B85018",
+            "--wm-action-hover": "#993E10",
+            "--wm-on-primary": "#FFFFFF",
+            "--wm-focus": "#24658B",
+            "--project-danger-action": "#B5373C",
+            "--project-danger-hover": "#98292F",
+            "--project-on-danger": "#FFFFFF"
+          }
+        }
+      },
+      "geometry": {
+        "left": 17,
+        "right": 343,
+        "top": 304.40625,
+        "bottom": 682.578125,
+        "overflow": 0,
+        "bodyOverflow": 0
+      },
+      "traffic": [],
+      "pass": true
+    },
+    {
+      "name": "csv-success-dark-vi-1710",
+      "pass": false,
+      "failure": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('dialog[open]').locator('.data-library-detail-grid') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "csv-success-light-en-360",
+      "pass": false,
+      "failure": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('dialog[open]').locator('.data-library-detail-grid') to be visible\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "pass": false,
+  "hashes": {
+    "DataDeskWorkspace.jsx": "f8bffc2e5cff73576fcf971e608afcf35bdca969b6179f51a2b95240bbf55057",
+    "data-library.css": "6fac1dfa99576f1f3b294ea52495ecfc6b7c9e9b233ff8ecec311fcf225f6a06",
+    "testing-standard.css": "3aad75c0706c43b9c4c111c98e89d7fde1ab34458c26201a2aa4938ec959a0ed",
+    "component-interactions.css": "be56d7731d312e4eafcf1cd3dfea705ddb04ebd712a631c9192fb8710a27e3c4"
+  }
+}

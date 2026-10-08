@@ -392,20 +392,21 @@ Practice's Market Data route owns offline historical datasets and local CSV
 import. It combines configured provider instrument metadata and saved dataset
 versions in one table. Categories come from declared asset_class metadata, never
 symbol-name guesses. Table columns are product, category, source, UTC historical
-range, candle count, quality and actions. Session creation belongs to Sessions
+range, candle count, storage size, quality and actions. Session creation belongs to Sessions
 and Dashboard; this page has no create-session action.
 Search is left-aligned. Right-aligned controls reuse the Recent Sessions pattern:
-compact filter toggle, optional category/source pills, sort, instrument-list refresh and CSV import.
-Closing filters resets category/source; search and sort remain independent.
+always-visible category/source/download-status pills, sort, asset catalog and CSV import.
+Status filters all/saved/unsaved rows; sort only reorders by name or recent update.
+Search and sort remain independent of these filters.
 There is no count, duplicate title or permanent explanatory block above the grid.
 Table separators extend through the shared page gutter while text stays inset.
 Dataset rows open quality/provenance in a native dialog. The toolbar's Import CSV
 action opens a separate native dialog. A row's ellipsis opens an action menu with
-View details and Import an update. The latter preselects source, instrument,
-category and specification in the CSV form; saving creates a new immutable dataset
-version. Earlier versions remain separate rows and existing sessions keep their
-pinned dataset. Metadata-only rows have no historical range, candle count or
-quality assertion; details are disabled and CSV import remains available.
+View details, Update and Delete. Update is enabled only when newer coverage is
+available and shares the inline download progress. Saving creates a new immutable
+dataset version. Earlier versions remain separate rows and existing sessions keep
+their pinned dataset. Metadata-only rows have no historical range, candle count or
+quality assertion; details/update/delete are disabled and CSV import remains available.
 Successful CSV import clears filters, selects the imported version, opens its
 details and refreshes the server-owned catalog. Escape/outside dismissal and
 keyboard menu navigation return focus; menus reposition during scrolling rather

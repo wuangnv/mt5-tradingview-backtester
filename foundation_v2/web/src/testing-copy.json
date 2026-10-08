@@ -3920,6 +3920,8 @@
     "vi": "Trạng thái dữ liệu",
     "en": "Data states"
   },
+  "Trạng thái tải": { "vi": "Trạng thái tải", "en": "Download status" },
+  "Tất cả trạng thái": { "vi": "Tất cả trạng thái", "en": "All statuses" },
   "Đã chọn": {
     "vi": "Đã chọn",
     "en": "Selected"

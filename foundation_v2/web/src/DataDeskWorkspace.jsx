@@ -11,7 +11,7 @@ import { fetchOfflineLibrary, refreshInstrumentCatalog, importLocalCsv, previewL
 import './research-data.css'
 import { useTestingLocale } from './testingLocale.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import FxSelect, { FilterIcon } from './FxSelect.jsx'
+import FxSelect from './FxSelect.jsx'
 import TestingIcon from './TestingIcon.jsx'
 import DataLibraryActions from './DataLibraryActions.jsx'
 import DataLibraryProgress from './DataLibraryProgress.jsx'
@@ -164,7 +164,7 @@ function DataLibraryDialog({ title, busy = false, onClose, compact = false, draw
     const bounds = dialog.current.getBoundingClientRect()
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close()
   }}>
-    {drawer ? <><button type="button" className="fxs-drawer-close" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button><header><h2 id={id}>{t(title)}</h2></header></> : <header className="data-library-dialog-header"><h2 id={id}>{t(title)}</h2><button type="button" className="rd-button" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button></header>}
+    {drawer ? <><button type="button" className="fxs-drawer-close fx-chart-icon-button" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button><header><h2 id={id}>{t(title)}</h2></header></> : <header className="data-library-dialog-header"><h2 id={id}>{t(title)}</h2><button type="button" className="fx-chart-icon-button" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button></header>}
     <div className={drawer ? 'fxs-settings-panel' : 'data-library-dialog-body'} inert={drawer && busy}>{children}</div>
     {drawer && busy && blockingStatus}
   </dialog>
@@ -359,7 +359,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const [selectedId, setSelectedId] = useState(requestedDataset)
   const [providerFilter, setProviderFilter] = useState('all')
   const [catalogProvider, setCatalogProvider] = useState('all')
-  const [categoryFilter, setCategoryFilter] = useState('all'), [sort, setSort] = useState('asset-asc'), [filtersOpen, setFiltersOpen] = useState(false)
+  const [categoryFilter, setCategoryFilter] = useState('all'), [sort, setSort] = useState('asset-asc'), [downloadFilter, setDownloadFilter] = useState('all')
   const [search, setSearch] = useState(''), [page, setPage] = useState(1), [pageSize, setPageSize] = useState(25)
   const [detailsOpen, setDetailsOpen] = useState(Boolean(requestedDataset)), [importAsset, setImportAsset] = useState(null)
   const [catalogRevision, setCatalogRevision] = useState(0)
@@ -530,11 +530,11 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const sourceRows = rows.filter(item => catalogProvider === 'all' || sourceOf(item) === catalogProvider)
   const sourceAssetCount = new Set(sourceRows.map(item => JSON.stringify([sourceOf(item),item.instrument_id]))).size
   const latestSourceSave = sourceRows.map(item => item.created_at_utc || item.source?.retrieved_at_utc).filter(value => Number.isFinite(Date.parse(value))).sort((a,b) => Date.parse(b)-Date.parse(a))[0]
-  const filteredDatasets = useMemo(() => filterLibrary(rows,{category:categoryFilter,provider:providerFilter,search,sort}), [categoryFilter,providerFilter,search,sort,rows])
+  const filteredDatasets = useMemo(() => filterLibrary(rows,{category:categoryFilter,provider:providerFilter,downloadStatus:downloadFilter,search,sort}), [categoryFilter,providerFilter,downloadFilter,search,sort,rows])
   const selected = state.datasets.find(item => item.dataset_id === selectedId) || null
   const pages = Math.max(1, Math.ceil(filteredDatasets.length / pageSize)), currentPage = Math.min(page, pages)
   const pageItems = filteredDatasets.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-  useEffect(() => setPage(1), [categoryFilter,providerFilter,search,sort,pageSize])
+  useEffect(() => setPage(1), [categoryFilter,providerFilter,downloadFilter,search,sort,pageSize])
 
   const openCsv = (asset = null) => { setImportAsset(asset); setCsvBusy(false); setCsvOpen(true) }
   const openDetails = asset => { setSelectedId(asset.dataset_id); setDetailsOpen(true) }
@@ -579,9 +579,10 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       <div className="data-library-toolbar">
         <label className="data-library-search"><TestingIcon kind="search" /><input type="search" aria-label={t('Tìm asset')} placeholder={t('Tìm asset…')} value={search} onChange={event => setSearch(event.target.value)} /></label>
         <div className="data-library-filters">
-          <button type="button" className="fxa-button fxa-icon-button data-library-filter-toggle" aria-label={t(filtersOpen ? 'Ẩn bộ lọc dữ liệu' : 'Hiện bộ lọc dữ liệu')} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) { setCategoryFilter('all'); setProviderFilter('all') } setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
-          {filtersOpen && <><FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} /><FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={sourceOptions} /></>}
-          <FxSelect className="data-library-sort" label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'downloaded',label:'Đã tải'},{value:'not-downloaded',label:'Chưa tải'},{value:'newest',label:'Mới cập nhật'}]} />
+          <FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} />
+          <FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={sourceOptions} />
+          <FxSelect label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'all',label:'Tất cả trạng thái'},{value:'downloaded',label:'Đã tải'},{value:'not-downloaded',label:'Chưa tải'}]} />
+          <FxSelect className="data-library-sort" label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'newest',label:'Mới cập nhật'}]} />
           {state.catalog && <button type="button" className="data-library-catalog-trigger" onClick={() => setCatalogOpen(true)} aria-haspopup="dialog" aria-expanded={catalogOpen}>{t('Danh mục tài sản')}</button>}
           {visibleDownloads.length > 0 && !pageItems.some(jobForAsset) && <button type="button" className="data-library-catalog-trigger" onClick={() => setDownloadProgressOpen(true)}>{t('Tiến độ tải dữ liệu')}</button>}
           <button type="button" className="fxa-button is-primary data-library-import" disabled={Boolean(preview)} onClick={() => openCsv()}><TestingIcon kind="upload" />{t('Nhập CSV')}</button>
@@ -655,7 +656,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         {catalogSourceSelected && (catalogMessage ? <p className="data-library-catalog-status" role="status">{t(catalogMessage)}</p> : catalogUpdated && <p className="data-library-catalog-status" role="status">{t('Đã cập nhật danh mục.')}</p>)}
         {catalogSourceSelected && !catalogBusy && state.catalog?.configured && !state.catalog.refresh_available && !catalogMessage && <p className="data-library-catalog-status" role="status">{t('Vui lòng chờ trước khi cập nhật lại.')}</p>}
         {!catalogSourceSelected && <p className="data-library-catalog-status">{t('Nguồn này dùng dữ liệu nhập từ CSV.')}</p>}
-        <button type="button" className="fxs-settings-save" onClick={refreshCatalog} disabled={Boolean(preview) || state.status !== 'ready' || catalogBusy || !catalogSourceSelected || !state.catalog?.refresh_available}>{t('Cập nhật danh mục')}</button>
+        <button type="button" className="fxs-settings-save fxa-button is-primary" onClick={refreshCatalog} disabled={Boolean(preview) || state.status !== 'ready' || catalogBusy || !catalogSourceSelected || !state.catalog?.refresh_available}>{t('Cập nhật danh mục')}</button>
       </DataLibraryDialog>}
       {csvOpen && <DataLibraryDialog title="Nhập CSV" busy={csvBusy} onClose={() => setCsvOpen(false)}><LocalCsvImport
         workspace={workspace}
@@ -667,12 +668,13 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           setSearch('')
           setProviderFilter('all')
           setCategoryFilter('all')
+          setDownloadFilter('all')
           setPage(1)
           setDetailsOpen(true)
           setCatalogRevision((current) => current + 1)
         }}
       /></DataLibraryDialog>}
-      {deleteAsset && <DataLibraryDialog compact title="Xoá dữ liệu" busy={deleteBusy} onClose={() => setDeleteAsset(null)}><div className="data-library-delete-confirm"><strong>{deleteAsset.instrument_id} · {deleteAsset.timeframe}</strong><p>{t('Xoá bản dữ liệu đã lưu trên máy? Tài sản vẫn nằm trong danh mục để tải lại.')}</p>{deleteError && <p className="rd-message is-error" role="alert">{t(deleteError)}</p>}<div className="data-library-delete-actions"><button type="button" className="rd-button" disabled={deleteBusy} onClick={() => setDeleteAsset(null)}>{t('Hủy')}</button><button type="button" className="rd-button is-destructive" disabled={deleteBusy} onClick={removeDataset}>{t(deleteBusy ? 'Đang xoá…' : 'Xoá')}</button></div></div></DataLibraryDialog>}
+      {deleteAsset && <DataLibraryDialog compact title="Xoá dữ liệu" busy={deleteBusy} onClose={() => setDeleteAsset(null)}><div className="data-library-delete-confirm"><strong>{deleteAsset.instrument_id} · {deleteAsset.timeframe}</strong><p>{t('Xoá bản dữ liệu đã lưu trên máy? Tài sản vẫn nằm trong danh mục để tải lại.')}</p>{deleteError && <p className="rd-message is-error" role="alert">{t(deleteError)}</p>}<div className="data-library-delete-actions"><button type="button" className="rd-button" disabled={deleteBusy} onClick={() => setDeleteAsset(null)}>{t('Hủy')}</button><button type="button" className="rd-button is-danger" disabled={deleteBusy} onClick={removeDataset}>{t(deleteBusy ? 'Đang xoá…' : 'Xoá')}</button></div></div></DataLibraryDialog>}
       {detailsOpen && selected && !csvOpen && <DataLibraryDialog title="Chi tiết dữ liệu và chất lượng" onClose={() => setDetailsOpen(false)}><DatasetDetails dataset={selected} workspace={workspace} query={query} /></DataLibraryDialog>}
     </section>
   )

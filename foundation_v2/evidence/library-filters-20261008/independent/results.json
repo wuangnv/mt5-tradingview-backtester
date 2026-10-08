@@ -1,0 +1,63 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": false,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": true,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "en",
+      "fixture": false,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "en",
+      "fixture": true,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": false,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": true,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "en",
+      "fixture": false,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "en",
+      "fixture": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "scope": "Actual cached GET plus controlled category/source/status fixture; all mutations/provider/live blocked",
+  "pass": true
+}

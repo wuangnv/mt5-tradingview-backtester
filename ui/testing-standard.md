@@ -58,6 +58,14 @@ non-shrinking box (18px standard, 16px compact) and no inline baseline gap.
 Metric icons align with the label's first 18px line when the label wraps; search
 icons track the input's vertical center. Market Data fields follow the shared
 40/44px control height, including date fields.
+
+Market Data keeps category, source and download-status filters visible beside the
+sort control. Download status limits the rows to all, saved or unsaved assets;
+sort changes only their order (name ascending/descending or recently updated).
+Search stays on the left; controls wrap on narrow screens. Data-library dialog
+actions use the shared button treatment, with `.is-danger` for delete confirmation
+and compact circular close buttons. Their busy/disabled states retain native
+button semantics and cannot submit an action.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
 

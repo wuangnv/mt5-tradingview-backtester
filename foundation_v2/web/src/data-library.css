@@ -17,9 +17,6 @@
 .fx-app.fx-shell-story[data-theme] .data-library .data-library-search input { box-sizing:border-box; width:100%; min-height:44px; padding:8px 12px 8px 38px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:var(--wm-canvas); color:var(--wm-content); font:inherit; font-size:13px; line-height:normal; outline:none; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .data-library .data-library-search input:is(:hover, :focus-visible) { border-color:var(--wm-control-hover-border); outline:none; box-shadow:none; }
 .data-library-search input::placeholder { color:var(--wm-content-muted); opacity:1; }
-.fx-app .data-library .data-library-filter-toggle { display:grid; place-items:center; flex-shrink:0; width:var(--wm-icon-action-size); height:var(--wm-icon-action-size); border-radius:50%; padding:0; background:transparent; font-size:24px; }
-.data-library-filter-toggle svg { width:20px; height:20px; }
-.fx-app .data-library .data-library-filter-toggle[aria-expanded=true] { background:var(--wm-selected); }
 .data-library .data-library-import { display:flex; align-items:center; gap:8px; white-space:nowrap; }
 .data-library-catalog-status { margin:0 0 16px; font-size:13px; color:var(--wm-content-muted); }
 .fx-app.fx-shell-story[data-theme] .fx-content .data-library .data-library-catalog-trigger,
@@ -83,7 +80,7 @@
 .data-library-dialog[open] { display:flex; flex-direction:column; }
 .data-library-dialog-header { display:flex; align-items:center; gap:16px; padding:18px 20px; border-bottom:1px solid var(--wm-border); flex-shrink:0; }
 .data-library-dialog-header h2 { margin:0 auto 0 0; font-size:20px; font-weight:600; }
-.data-library-dialog-header .rd-button { width:32px; min-height:32px; padding:0; font-size:24px; }
+.data-library-dialog-header .fx-chart-icon-button { flex-shrink:0; font-size:24px; }
 .data-library-dialog-body { padding:0 20px 20px; min-height:0; overflow:auto; overscroll-behavior:contain; }
 .data-library-dialog .rd-import-panel { margin:0; border-top:0; }
 .fx-app.fx-shell-story[data-theme] .fx-content .data-library-dialog.is-compact { width:min(520px,calc(100vw - 32px)); }
@@ -92,9 +89,8 @@
 .data-library-download-submit { display:flex; justify-content:flex-end; }
 .data-library-delete-confirm { padding-top:20px; font-size:14px; line-height:1.5; }
 .data-library-delete-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:24px; }
-.fx-app .data-library-delete-actions .is-destructive { border-color:var(--wm-negative); color:var(--wm-negative); }
 .data-library-download-jobs { margin:0 0 24px; border-block:1px solid var(--wm-border); }
-.data-library-dialog .data-library-download-jobs { max-height:none; margin:0; border:0; }
+.data-library-dialog .data-library-download-jobs { max-height:none; margin:0; border:0; overflow:visible; }
 .data-library-download-job { padding:16px 0; font-size:13px; }
 .data-library-download-job + .data-library-download-job { border-top:1px solid var(--wm-border); }
 .data-library-job-heading { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; }

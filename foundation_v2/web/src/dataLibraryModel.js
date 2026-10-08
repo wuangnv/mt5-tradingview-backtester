@@ -47,10 +47,11 @@ export function libraryRows(datasets, instruments = []) {
   return rows
 }
 
-export function filterLibrary(rows, { category = 'all', provider = 'all', search = '', sort = 'asset-asc' } = {}) {
+export function filterLibrary(rows, { category = 'all', provider = 'all', downloadStatus = 'all', search = '', sort = 'asset-asc' } = {}) {
   const term = search.trim().toLocaleLowerCase('vi')
   const filtered = rows.filter(item => (category === 'all' || categoryOf(item) === category)
     && (provider === 'all' || sourceOf(item) === provider)
+    && (downloadStatus === 'all' || (downloadStatus === 'downloaded' ? item.downloaded : !item.downloaded))
     && `${item.instrument_id} ${item.name || ''} ${item.timeframe || ''} ${sourceOf(item)} ${categoryLabel(categoryOf(item))}`.toLocaleLowerCase('vi').includes(term))
   const assetCompare = (a, b) => `${a.instrument_id || ''} ${a.timeframe || ''}`.localeCompare(`${b.instrument_id || ''} ${b.timeframe || ''}`, 'en', { numeric:true }) || a.key.localeCompare(b.key)
   return filtered.sort((a, b) => sort === 'asset-desc' ? assetCompare(b,a)
