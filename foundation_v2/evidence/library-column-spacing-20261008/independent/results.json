@@ -1,0 +1,4199 @@
+{
+  "scope": "Actual local GET-only and labeled presentation fixtures for paused/running/update/failed/queued/pausing/processing. No job mutations or provider requests.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1505,
+      "fixture": true,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1307,
+            "actionLeft": 1307,
+            "cellLeft": 1299,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 266,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 266,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 638,
+            "scrollHeight": 1782
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 32
+            }
+          ],
+          "rest": {
+            "x": 1307,
+            "y": 710.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(35, 35, 35)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 1307,
+            "y": 710.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(42, 42, 42)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n9.999 GiB",
+              "geometry": {
+                "x": 1127,
+                "y": 402,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n10.197 GiB\n50.486,06 MiB/s",
+              "geometry": {
+                "x": 1127,
+                "y": 722,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n10.197 GiB\n50.486,06 MiB/s",
+              "geometry": {
+                "x": 1127,
+                "y": 848.5,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n9.999 GiB",
+              "geometry": {
+                "x": 1127,
+                "y": 303,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n9.999 GiB",
+              "geometry": {
+                "x": 1127,
+                "y": 623,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n9.999 GiB",
+              "geometry": {
+                "x": 1127,
+                "y": 463,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n10.197 GiB",
+              "geometry": {
+                "x": 1127,
+                "y": 543,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1299,
+                "cellRight": 1495,
+                "left": 1307,
+                "right": 1463
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": true,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1512,
+            "actionLeft": 1512,
+            "cellLeft": 1504,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1782
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 32
+            }
+          ],
+          "rest": {
+            "x": 1512,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(35, 35, 35)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 1512,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(42, 42, 42)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 346,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n10.197 GiB\n50.612,08 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 666,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n10.197 GiB\n50.612,08 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 811.5,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 266,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 586,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 426,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n10.197 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 506,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1920,
+      "fixture": true,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1722,
+            "actionLeft": 1722,
+            "cellLeft": 1714,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1782
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 32
+            }
+          ],
+          "rest": {
+            "x": 1722,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(35, 35, 35)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 1722,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(42, 42, 42)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n9.999 GiB",
+              "geometry": {
+                "x": 1542,
+                "y": 346,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n10.197 GiB\n50.410,74 MiB/s",
+              "geometry": {
+                "x": 1542,
+                "y": 666,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n10.197 GiB\n50.410,74 MiB/s",
+              "geometry": {
+                "x": 1542,
+                "y": 811.5,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n9.999 GiB",
+              "geometry": {
+                "x": 1542,
+                "y": 266,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n9.999 GiB",
+              "geometry": {
+                "x": 1542,
+                "y": 586,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n9.999 GiB",
+              "geometry": {
+                "x": 1542,
+                "y": 426,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n10.197 GiB",
+              "geometry": {
+                "x": 1542,
+                "y": 506,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1714,
+                "cellRight": 1910,
+                "left": 1722,
+                "right": 1878
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "fixture": true,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 162,
+            "actionLeft": 162,
+            "cellLeft": 154,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 486,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 486,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 414,
+            "scrollHeight": 1845
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 44
+            }
+          ],
+          "rest": {
+            "x": 234,
+            "y": 670.5,
+            "width": 116,
+            "height": 44,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(35, 35, 35)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 234,
+            "y": 670.5,
+            "width": 116,
+            "height": 44,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(42, 42, 42)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 622,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n10.197 GiB\n49.259,48 MiB/s",
+              "geometry": {
+                "x": 58,
+                "y": 665,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n10.197 GiB\n49.259,48 MiB/s",
+              "geometry": {
+                "x": 58,
+                "y": 814,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 542,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 845,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 685,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n10.197 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 765,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "fixture": true,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1512,
+            "actionLeft": 1512,
+            "cellLeft": 1504,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1782
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 32
+            }
+          ],
+          "rest": {
+            "x": 1512,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(244, 244, 244)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 1512,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(235, 235, 235)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 346,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n10.197 GiB\n50.561,6 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 666,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 71.171875,
+                    "height": 16,
+                    "left": 86.828125,
+                    "right": 158,
+                    "scrollWidth": 71,
+                    "clientWidth": 71
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n10.197 GiB\n50.561,6 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 811.5,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 71.171875,
+                    "height": 16,
+                    "left": 86.828125,
+                    "right": 158,
+                    "scrollWidth": 71,
+                    "clientWidth": 71
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 266,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 586,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n9.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 426,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n10.197 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 506,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "fixture": true,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 162,
+            "actionLeft": 162,
+            "cellLeft": 154,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 486,
+            "border": "0px",
+            "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 486,
+            "border": "0px",
+            "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 414,
+            "scrollHeight": 1845
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 44
+            }
+          ],
+          "rest": {
+            "x": 234,
+            "y": 670.5,
+            "width": 116,
+            "height": 44,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(244, 244, 244)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 234,
+            "y": 670.5,
+            "width": 116,
+            "height": 44,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(235, 235, 235)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 622,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n10.197 GiB\n50.460,93 MiB/s",
+              "geometry": {
+                "x": 58,
+                "y": 665,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n10.197 GiB\n50.460,93 MiB/s",
+              "geometry": {
+                "x": 58,
+                "y": 814,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 542,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 845,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n9.999 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 685,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n10.197 GiB",
+              "geometry": {
+                "x": 58,
+                "y": 765,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(244, 244, 244)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 44,
+                "height": 44
+              },
+              "contain": {
+                "cellLeft": 230,
+                "cellRight": 426,
+                "left": 238,
+                "right": 406
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 44
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1505,
+      "fixture": false,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1307,
+            "actionLeft": 1307,
+            "cellLeft": 1299,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 266,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 266,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 638,
+            "scrollHeight": 1681
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": false,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1512,
+            "actionLeft": 1512,
+            "cellLeft": 1504,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1681
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1920,
+      "fixture": false,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1722,
+            "actionLeft": 1722,
+            "cellLeft": 1714,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1681
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "fixture": false,
+      "language": "vi",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 162,
+            "actionLeft": 162,
+            "cellLeft": 154,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 486,
+            "border": "0px",
+            "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 486,
+            "border": "0px",
+            "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 414,
+            "scrollHeight": 1768
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": true,
+      "language": "en",
+      "stress": false,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1512,
+            "actionLeft": 1512,
+            "cellLeft": 1504,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1782
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 32
+            }
+          ],
+          "rest": {
+            "x": 1512,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(35, 35, 35)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 1512,
+            "y": 673.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(42, 42, 42)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Paused\n40%\n9,999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 346,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Downloading\n50%\n10,197 GiB\n50,335.65 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 666,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Downloading\n70%\n10,197 GiB\n50,335.65 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 811.5,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  },
+                  {
+                    "width": 77.09375,
+                    "height": 16,
+                    "left": 80.90625,
+                    "right": 158,
+                    "scrollWidth": 77,
+                    "clientWidth": 77
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Download failed\n30%\n9,999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 266,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Queued\n0%\n9,999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 586,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Pausing…\n50%\n9,999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 426,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 45.640625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 45.640625,
+                    "scrollWidth": 46,
+                    "clientWidth": 46
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Saving data…\n100%\n10,197 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 506,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 51.5625,
+                    "height": 16,
+                    "left": 0,
+                    "right": 51.5625,
+                    "scrollWidth": 52,
+                    "clientWidth": 52
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": true,
+      "language": "vi",
+      "stress": true,
+      "checks": [
+        {
+          "name": "Fixed status180px/actions196px and content gap180px",
+          "columns": {
+            "status": 180,
+            "actions": 196,
+            "contentGap": 180
+          }
+        },
+        {
+          "name": "Header and action group share left content edge",
+          "edge": {
+            "headerLeft": 1512,
+            "actionLeft": 1512,
+            "cellLeft": 1504,
+            "paddingLeft": "8px"
+          }
+        },
+        {
+          "name": "Sticky header divider persists with real vertical scroll without first-row duplicate",
+          "headerBefore": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+            "firstRowBorder": "0px"
+          },
+          "headerAfter": {
+            "y": 210,
+            "border": "0px",
+            "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset"
+          },
+          "scroll": {
+            "top": 250,
+            "height": 704,
+            "scrollHeight": 1782
+          }
+        },
+        {
+          "name": "Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus",
+          "ordinarySlots": [
+            {
+              "x": 8,
+              "width": 116
+            },
+            {
+              "x": 132,
+              "width": 32
+            }
+          ],
+          "rest": {
+            "x": 1512,
+            "y": 681.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(35, 35, 35)",
+            "padding": "8px 12px",
+            "border": "1px"
+          },
+          "hover": {
+            "x": 1512,
+            "y": 681.5,
+            "width": 116,
+            "height": 40,
+            "scrollWidth": 114,
+            "clientWidth": 114,
+            "background": "rgb(42, 42, 42)",
+            "padding": "8px 12px",
+            "border": "1px"
+          }
+        },
+        {
+          "name": "Progress is in status; all states/large byte+speed/update/disabled/cancel geometry",
+          "states": [
+            {
+              "asset": "PAUSED",
+              "text": "Đã tạm dừng\n40%\n999.999.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 346,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 77.671875,
+                    "height": 16,
+                    "left": 0,
+                    "right": 77.671875,
+                    "scrollWidth": 78,
+                    "clientWidth": 78
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 63.1875,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "RUNNING",
+              "text": "Đang tải\n50%\n1.019.999.997 GiB\n5.107.231.409,48 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 666,
+                "width": 160,
+                "height": 71,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 32,
+                "children": [
+                  {
+                    "width": 85.984375,
+                    "height": 16,
+                    "left": 0,
+                    "right": 85.984375,
+                    "scrollWidth": 86,
+                    "clientWidth": 86
+                  },
+                  {
+                    "width": 111.515625,
+                    "height": 16,
+                    "left": 46.484375,
+                    "right": 158,
+                    "scrollWidth": 112,
+                    "clientWidth": 112
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "UPDATE",
+              "text": "Đang tải\n70%\n1.019.999.997 GiB\n5.107.231.409,48 MiB/s",
+              "geometry": {
+                "x": 1332,
+                "y": 827.5,
+                "width": 160,
+                "height": 71,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 32,
+                "children": [
+                  {
+                    "width": 85.984375,
+                    "height": 16,
+                    "left": 0,
+                    "right": 85.984375,
+                    "scrollWidth": 86,
+                    "clientWidth": 86
+                  },
+                  {
+                    "width": 111.515625,
+                    "height": 16,
+                    "left": 46.484375,
+                    "right": 158,
+                    "scrollWidth": 112,
+                    "clientWidth": 112
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 110.59375,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "FAILED",
+              "text": "Tải thất bại\n30%\n999.999.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 266,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 77.671875,
+                    "height": 16,
+                    "left": 0,
+                    "right": 77.671875,
+                    "scrollWidth": 78,
+                    "clientWidth": 78
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 47.390625,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "QUEUED",
+              "text": "Đang chờ tải\n0%\n999.999.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 586,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 77.671875,
+                    "height": 16,
+                    "left": 0,
+                    "right": 77.671875,
+                    "scrollWidth": 78,
+                    "clientWidth": 78
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 0,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PAUSING",
+              "text": "Đang tạm dừng…\n50%\n999.999.999 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 426,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 77.671875,
+                    "height": 16,
+                    "left": 0,
+                    "right": 77.671875,
+                    "scrollWidth": 78,
+                    "clientWidth": 78
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 79,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            },
+            {
+              "asset": "PROCESSING",
+              "text": "Đang lưu dữ liệu…\n100%\n1.019.999.997 GiB",
+              "geometry": {
+                "x": 1332,
+                "y": 506,
+                "width": 160,
+                "height": 55,
+                "scrollWidth": 158,
+                "clientWidth": 158,
+                "background": "rgba(0, 0, 0, 0)",
+                "padding": "4px 0px",
+                "border": "1px"
+              },
+              "meta": {
+                "width": 158,
+                "height": 16,
+                "children": [
+                  {
+                    "width": 85.984375,
+                    "height": 16,
+                    "left": 0,
+                    "right": 85.984375,
+                    "scrollWidth": 86,
+                    "clientWidth": 86
+                  }
+                ]
+              },
+              "track": {
+                "width": 158,
+                "height": 3,
+                "fill": 158,
+                "background": "rgb(35, 35, 35)"
+              },
+              "centers": {
+                "x": 0,
+                "y": 0,
+                "width": 32,
+                "height": 32
+              },
+              "contain": {
+                "cellLeft": 1504,
+                "cellRight": 1700,
+                "left": 1512,
+                "right": 1668
+              },
+              "slots": [
+                {
+                  "x": 8,
+                  "width": 116
+                },
+                {
+                  "x": 132,
+                  "width": 32
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

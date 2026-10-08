@@ -40,14 +40,14 @@
 .data-library .rd-table tr.is-selected td:first-child { padding-left:var(--wm-page-gutter); }
 .data-library .rd-table button { width:auto; }
 .data-library .rd-table { min-width:1390px; table-layout:fixed; }
-.data-library-column-asset { width:16%; }
+.data-library-column-asset { width:auto; }
 .data-library-column-category, .data-library-column-source { width:8%; }
 .data-library-column-data { width:6%; }
 .data-library-column-from, .data-library-column-to { width:8%; }
 .data-library-column-count { width:7%; }
 .data-library-column-size { width:8%; }
-.data-library-column-status { width:16%; }
-.data-library-column-actions { width:15%; }
+.data-library-column-status { width:180px; }
+.data-library-column-actions { width:196px; }
 .data-library .rd-table td { vertical-align:middle; }
 .fx-app.fx-shell-story[data-theme] .data-library .rd-table tbody tr + tr td { border-top-color:color-mix(in srgb, var(--wm-content) 8%, var(--wm-canvas)); }
 .data-library .rd-table td:not(:last-child) { overflow-wrap:anywhere; }
@@ -65,7 +65,8 @@
 .fx-app .data-library .rd-table .data-library-progress { display:flex; flex-direction:column; justify-content:center; gap:5px; box-sizing:border-box; width:100%; max-width:none; min-height:52px; padding:4px 0; border:1px solid transparent; border-radius:6px; background:transparent; text-align:left; font-variant-numeric:tabular-nums; }
 .data-library-progress-label, .data-library-progress-meta { display:flex; align-items:baseline; justify-content:space-between; gap:8px; width:100%; white-space:nowrap; line-height:16px; }
 .data-library-progress-label { font-size:13px; font-weight:500; }
-.data-library-progress-meta { font-size:12px; color:var(--wm-content-muted); }
+.data-library-progress-meta { flex-wrap:wrap; row-gap:0; font-size:12px; color:var(--wm-content-muted); }
+.data-library-progress-meta > span:last-child:not(:first-child) { margin-left:auto; }
 .data-library-progress-track { display:block; width:100%; height:3px; border-radius:2px; overflow:hidden; background:var(--wm-control-open); }
 .data-library-progress-fill { display:block; height:100%; background:var(--wm-focus); transition:width 200ms linear; }
 .fx-app .data-library .rd-table .data-library-progress:hover:not(:disabled) { background:var(--wm-control-hover); border-color:transparent; }

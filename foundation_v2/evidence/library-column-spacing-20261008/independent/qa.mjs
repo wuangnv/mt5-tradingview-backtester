@@ -1,0 +1,77 @@
+import assert from 'node:assert/strict'
+import {chromium} from '../../../web/node_modules/playwright/index.mjs'
+import {mkdir,writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
+import copy from '../../../web/src/testing-copy.json' with {type:'json'}
+const out=new URL('./',import.meta.url),origin='http://127.0.0.1:5180'
+await mkdir(out,{recursive:true})
+const browser=await chromium.launch({ignoreDefaultArgs:['--hide-scrollbars']})
+const report={scope:'Actual local GET-only and labeled presentation fixtures for paused/running/update/failed/queued/pausing/processing. No job mutations or provider requests.',cases:[],errors:[]}
+const definitions={PAUSED:['paused','downloading',4],RUNNING:['running','downloading',5],UPDATE:['running','downloading',7],FAILED:['failed','downloading',3],QUEUED:['queued','downloading',0],PAUSING:['pausing','downloading',5],PROCESSING:['running','processing',10]}
+const assets=Object.keys(definitions).map(instrument_id=>({instrument_id,name:'Explicit job layout fixture',provider:'Dukascopy',provider_id:'dukascopy-catalog',asset_class:'fx'}))
+assets.push({instrument_id:'UNSAVED',name:'Explicit unsaved fixture',provider:'Dukascopy',provider_id:'dukascopy-catalog',asset_class:'fx'})
+for(let i=0;i<20;i++)assets.push({instrument_id:`ZZ-FILLER-${String(i).padStart(2,'0')}`,name:'Explicit scrolling fixture',provider:'Dukascopy',provider_id:'dukascopy-catalog',asset_class:'fx'})
+const saved={dataset_id:'fixture-update',instrument_id:'UPDATE',source:{provider:'Dukascopy',export_settings:'{"price":"bid"}'},asset_class:'fx',timeframe:'M1',timeframe_seconds:60,row_count:100,size_bytes:102400,first_timestamp:1704067200,last_timestamp:1704153600,update_available:true,created_at_utc:'2026-10-08T00:00:00Z'}
+async function geometry(locator){return locator.evaluate(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el);return {x:r.x,y:r.y,width:r.width,height:r.height,scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,background:s.backgroundColor,padding:s.padding,border:s.borderWidth}})}
+async function shot(page,name){await page.screenshot({path:fileURLToPath(new URL(name+'.png',out))})}
+async function run(theme,width,fixture,language='vi',stress=false){
+ const c={theme,width,fixture,language,stress,checks:[]};report.cases.push(c)
+ const t=key=>copy[key]?.[language]||key
+ const context=await browser.newContext({viewport:{width,height:987}});context.setDefaultTimeout(7000)
+ await context.addInitScript(({theme,language})=>{localStorage.setItem('tw-theme',theme);localStorage.setItem('tw-language',language)},{theme,language})
+ let polls=0;const writes=[]
+ await context.routeWebSocket('**/*',socket=>socket.close())
+ await context.route('**/*',route=>{const req=route.request(),url=new URL(req.url());if(url.origin!==origin||url.pathname.startsWith('/api/v2/live'))return route.abort();if(!['GET','HEAD','OPTIONS'].includes(req.method())){writes.push(req.url());return route.abort()}
+  if(fixture&&url.pathname==='/api/v2/data/datasets')return route.fulfill({json:{items:[saved],catalog_items:assets,catalog_state:{status:'cached',configured:true,item_count:assets.length},download_state:{available:true,supports_full:true,supported_instruments:assets.map(a=>a.instrument_id),earliest_dates:Object.fromEntries(assets.map(a=>[a.instrument_id,'2003-05-04']))}}})
+  if(fixture&&url.pathname==='/api/v2/data/downloads'){polls++;return route.fulfill({json:{items:Object.entries(definitions).map(([instrument_id,[status,stage,completed_days]])=>({job_id:`fixture-${instrument_id}`,instrument_id,status,stage,completed_days,total_days:10,from_date:'2026-09-01',to_date:'2026-09-10',transferred_bytes:((stress?999999999:9999)+(status==='running'?polls*(stress?9999999:99):0))*1024**3,retry_after_seconds:instrument_id==='PAUSED'?120:0,error:status==='failed'?'source_unavailable':null})),available:true,supports_pause:true}})}
+  return route.continue()
+ })
+ const page=await context.newPage();page.on('pageerror',e=>report.errors.push(String(e)))
+ try{
+  await page.goto(`${origin}/?workspace=tenant-a&view=market-data&area=testing&section=market-data`);await page.locator('.rd-table tbody tr').first().waitFor({timeout:15000})
+  if(!fixture)await shot(page,`actual-${theme}-${width}-initial-left`)
+  const headers=page.locator('.rd-table th');assert.equal(await headers.count(),10);assert.equal(await headers.last().evaluate(el=>getComputedStyle(el).textAlign),'left')
+  const ordinary=page.locator('.rd-table tbody tr').filter({has:page.locator('strong',{hasText:fixture?'UNSAVED':'0005.HK/HKD'})}).first()
+  await ordinary.locator('td').last().scrollIntoViewIfNeeded()
+  const columns=await headers.evaluateAll(h=>{const s=h[8],a=h[9],sr=s.getBoundingClientRect(),ar=a.getBoundingClientRect();return {status:sr.width,actions:ar.width,contentGap:ar.left+parseFloat(getComputedStyle(a).paddingLeft)-sr.left-parseFloat(getComputedStyle(s).paddingLeft)}});assert(Math.abs(columns.status-180)<.01,'Status column not fixed180px');assert(Math.abs(columns.actions-196)<.01,'Actions column not fixed196px');assert(Math.abs(columns.contentGap-180)<.01,'Status→Actions content gap not180px');c.checks.push({name:'Fixed status180px/actions196px and content gap180px',columns})
+  const edge=await ordinary.locator('td').last().evaluate(td=>{const th=document.querySelector('.rd-table th:last-child'),t=th.getBoundingClientRect(),r=td.getBoundingClientRect(),a=td.querySelector('.data-library-row-actions button').getBoundingClientRect();return {headerLeft:t.left+parseFloat(getComputedStyle(th).paddingLeft),actionLeft:a.left,cellLeft:r.left,paddingLeft:getComputedStyle(td).paddingLeft}});assert(Math.abs(edge.headerLeft-edge.actionLeft)<.01,'header/actions left edges differ');c.checks.push({name:'Header and action group share left content edge',edge})
+  await page.locator('.rd-table-wrap').evaluate(el=>{el.scrollTop=0})
+  const headerBefore=await headers.first().evaluate(el=>({y:el.getBoundingClientRect().top,border:getComputedStyle(el).borderBottomWidth,shadow:getComputedStyle(el).boxShadow,firstRowBorder:getComputedStyle(document.querySelector('.rd-table tbody tr:first-child td')).borderTopWidth}));assert.equal(headerBefore.border,'0px');assert.match(headerBefore.shadow,/inset/);assert.equal(headerBefore.firstRowBorder,'0px')
+  const headerShot=async suffix=>{const r=await page.locator('.rd-table-wrap').boundingBox();await page.screenshot({path:fileURLToPath(new URL(`header-${fixture?'fixture':'actual'}-${theme}-${width}-${language}-${suffix}.png`,out)),clip:{x:Math.max(0,r.x),y:r.y,width:Math.min(r.width,width-r.x),height:55}})}
+  await headerShot('before')
+  const scroll=await page.locator('.rd-table-wrap').evaluate(el=>{el.scrollTop=250;return {top:el.scrollTop,height:el.clientHeight,scrollHeight:el.scrollHeight}});assert(scroll.top>0,'header check did not actually scroll');const headerAfter=await headers.first().evaluate(el=>({y:el.getBoundingClientRect().top,border:getComputedStyle(el).borderBottomWidth,shadow:getComputedStyle(el).boxShadow}));assert.equal(headerAfter.y,headerBefore.y);assert.equal(headerAfter.shadow,headerBefore.shadow);await headerShot('after');c.checks.push({name:'Sticky header divider persists with real vertical scroll without first-row duplicate',headerBefore,headerAfter,scroll})
+  await page.locator('.rd-table-wrap').evaluate(el=>{el.scrollTop=0})
+  if(fixture){
+   await page.waitForFunction(()=>[...document.querySelectorAll('.data-library-progress')].some(el=>/MiB\/s/.test(el.textContent)),null,{timeout:7000})
+   const labels=Object.fromEntries(Object.entries({PAUSED:'Đã tạm dừng',RUNNING:'Đang tải',UPDATE:'Đang tải',FAILED:'Tải thất bại',QUEUED:'Đang chờ tải',PAUSING:'Đang tạm dừng…',PROCESSING:'Đang lưu dữ liệu…'}).map(([asset,key])=>[asset,t(key)]))
+   const states=[]
+   for(const [asset,label] of Object.entries(labels)){
+    const row=page.locator('.rd-table tbody tr').filter({has:page.locator('strong',{hasText:asset})}).first(),status=row.locator('td').nth(8),actions=row.locator('td').nth(9),progress=status.locator('.data-library-progress')
+    assert.equal(await progress.count(),1);assert.equal(await actions.locator('.data-library-progress').count(),0);assert.match(await status.innerText(),new RegExp(label));assert.match(await status.innerText(),/%/);assert.match(await status.innerText(),/GiB/)
+    await progress.scrollIntoViewIfNeeded();const g=await geometry(progress);assert(g.scrollWidth<=g.clientWidth,'progress overflows own width')
+    const meta=await progress.locator('.data-library-progress-meta').evaluate(el=>{const r=el.getBoundingClientRect();return {width:r.width,height:r.height,children:[...el.children].map(ch=>{const b=ch.getBoundingClientRect();return {width:b.width,height:b.height,left:b.left-r.left,right:b.right-r.left,scrollWidth:ch.scrollWidth,clientWidth:ch.clientWidth}})}});assert(meta.children.every(ch=>ch.left>=0&&ch.right<=meta.width+.01&&ch.scrollWidth<=ch.clientWidth),'progress metadata overflows')
+    if(stress&&asset==='RUNNING')assert.equal(meta.height,32,'extreme metadata does not wrap into readable lines')
+    const percent=100*definitions[asset][2]/10;assert.match(await progress.innerText(),new RegExp(`${percent}%`));assert.match(await progress.getAttribute('aria-label'),new RegExp(`${label}.*${percent}%`))
+    const track=await progress.locator('.data-library-progress-track').evaluate(el=>({width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,fill:el.firstElementChild.getBoundingClientRect().width,background:getComputedStyle(el).backgroundColor}));assert.equal(track.height,3);assert(Math.abs(track.width-(g.width-2))<.01,'track not full inner width');assert(Math.abs(track.fill-track.width*percent/100)<.02,'fill does not match progress')
+    assert.equal(await actions.locator('button').count(),2);assert.equal(await actions.getByRole('button',{name:t(definitions[asset][0]==='paused'||definitions[asset][0]==='failed'?'Tiếp tục tải':'Tạm dừng'),exact:true}).count(),1)
+    const firstAction=actions.locator('button').first();assert.notEqual((await geometry(firstAction)).background,'rgba(0, 0, 0, 0)','transfer action missing filled secondary surface')
+    const cancel=actions.getByRole('button',{name:t('Huỷ tải'),exact:true});assert.equal(await cancel.count(),1)
+    const centers=await cancel.evaluate(el=>{const r=el.getBoundingClientRect(),s=el.querySelector('svg').getBoundingClientRect();return {x:s.x+s.width/2-r.x-r.width/2,y:s.y+s.height/2-r.y-r.height/2,width:r.width,height:r.height}});assert(Math.abs(centers.x)<.01&&Math.abs(centers.y)<.01);assert.equal(centers.width,centers.height)
+    const contain=await actions.evaluate(td=>{const r=td.getBoundingClientRect(),children=[...td.querySelectorAll('button')].map(el=>el.getBoundingClientRect());return {cellLeft:r.left,cellRight:r.right,left:Math.min(...children.map(r=>r.left)),right:Math.max(...children.map(r=>r.right))}});assert(contain.left>=contain.cellLeft&&contain.right<=contain.cellRight,'action spills neighboring column')
+    if(asset==='PAUSED')assert(await actions.getByRole('button',{name:t('Tiếp tục tải'),exact:true}).isDisabled())
+    if(asset==='PAUSING')assert(await actions.getByRole('button',{name:t('Tạm dừng'),exact:true}).isDisabled())
+    const slots=await actions.evaluate(td=>{const r=td.getBoundingClientRect(),buttons=[...td.querySelectorAll('button')].map(el=>el.getBoundingClientRect());return buttons.map(b=>({x:b.x-r.x,width:b.width}))});states.push({asset,text:await status.innerText(),geometry:g,meta,track,centers,contain,slots})
+   }
+   for(const state of states)assert.deepEqual(state.slots,states[0].slots,'action positions vary across transfer states')
+   const ordinarySlots=await ordinary.locator('td').last().evaluate(td=>{const r=td.getBoundingClientRect();return [...td.querySelectorAll('button')].map(el=>{const b=el.getBoundingClientRect();return {x:b.x-r.x,width:b.width}})});assert.deepEqual(ordinarySlots,states[0].slots,'download/more slots differ from transfer/cancel')
+   const running=page.locator('.rd-table tbody tr').filter({has:page.locator('strong',{hasText:'RUNNING'})}).first(),pause=running.getByRole('button',{name:t('Tạm dừng'),exact:true});await pause.scrollIntoViewIfNeeded();await page.mouse.move(0,0);await page.waitForTimeout(250);const rest=await geometry(pause);await pause.hover();await page.waitForTimeout(250);const hover=await geometry(pause);assert.notEqual(rest.background,hover.background,'transfer hover does not differ');assert.deepEqual([rest.width,rest.height],[hover.width,hover.height],'hover changes action geometry');await pause.focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');assert.notEqual(await pause.evaluate(el=>getComputedStyle(el).outlineStyle),'none','keyboard transfer focus lost');c.checks.push({name:'Ordinary/transfer slots identical; hover is distinct without geometry shift; keyboard focus',ordinarySlots,rest,hover})
+   c.checks.push({name:'Progress is in status; all states/large byte+speed/update/disabled/cancel geometry',states})
+   const progress=page.locator('.data-library-progress').first();await progress.click();const dialog=page.getByRole('dialog',{name:t('Tiến độ tải dữ liệu'),exact:true});await dialog.waitFor();assert.equal(await dialog.locator('.data-library-download-job').count(),7);await page.keyboard.press('Escape');assert.equal(await progress.evaluate(el=>document.activeElement===el),true);await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');assert.notEqual(await progress.evaluate(el=>getComputedStyle(el).outlineStyle),'none','keyboard progress focus lost')
+   await page.locator('.data-library-progress').first().scrollIntoViewIfNeeded()
+  }
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await shot(page,`${fixture?'fixture':'actual'}-${theme}-${width}${language==='en'?'-en':''}${stress?'-stress':''}`);assert.equal(writes.length,0);c.pass=true
+ }catch(error){c.pass=false;c.error=String(error);await shot(page,`FAIL-${fixture?'fixture':'actual'}-${theme}-${width}`).catch(()=>{})}
+ finally{await context.close()}
+}
+try{for(const width of [1505,1710,1920,360])await run('dark',width,true);for(const width of [1710,360])await run('light',width,true);for(const width of [1505,1710,1920])await run('dark',width,false);await run('light',360,false);await run('dark',1710,true,'en');await run('dark',1710,true,'vi',true)}
+finally{report.pass=report.cases.every(c=>c.pass)&&!report.errors.length;await writeFile(new URL('results.json',out),JSON.stringify(report,null,2));await browser.close();console.log(JSON.stringify(report));if(!report.pass)process.exitCode=1}

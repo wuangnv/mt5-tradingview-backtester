@@ -74,6 +74,9 @@ Active, paused and failed transfers show their state, percentage, progress track
 and transferred bytes in the Status column; speed appears only during downloading.
 The existing progress dialog remains available by activating this status control.
 Actions align to their column's left content edge, like the other headers/cells.
+Status and Actions use fixed 180px/196px columns so the gap between them does
+not grow on wider viewports; Asset absorbs the remaining width. Progress bytes
+and speed may wrap for unusually long values rather than overflow or shrink text.
 Download and Pause/Resume share a fixed text-button slot; More/Cancel use the
 adjacent circular icon slot, keeping alignment stable across transfer states.
 Sticky header cells own their bottom divider with an inset line, so it remains
