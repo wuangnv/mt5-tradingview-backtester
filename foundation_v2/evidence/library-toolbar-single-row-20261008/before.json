@@ -1,0 +1,368 @@
+[
+  {
+    "viewport": 1710,
+    "shell": {
+      "x": 280,
+      "y": 117,
+      "width": 1398,
+      "height": 870,
+      "scrollWidth": 1430
+    },
+    "toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1398,
+      "height": 44,
+      "scrollWidth": 1398
+    },
+    "search": {
+      "x": 280,
+      "y": 141,
+      "width": 420,
+      "height": 44,
+      "scrollWidth": 420
+    },
+    "filters": {
+      "x": 739.1875,
+      "y": 143,
+      "width": 938.8125,
+      "height": 40,
+      "scrollWidth": 939
+    },
+    "children": [
+      {
+        "text": "Tất cả danh mục",
+        "width": 150.6875
+      },
+      {
+        "text": "Tất cả nguồn",
+        "width": 130.921875
+      },
+      {
+        "text": "Đã tải",
+        "width": 150
+      },
+      {
+        "text": "Tên A–Z",
+        "width": 125.5625
+      },
+      {
+        "text": "Xóa bộ lọc",
+        "width": 111.0625
+      },
+      {
+        "text": "Danh mục tài sản",
+        "width": 99.34375
+      },
+      {
+        "text": "Nhập CSV",
+        "width": 111.234375
+      }
+    ]
+  },
+  {
+    "viewport": 1526,
+    "shell": {
+      "x": 280,
+      "y": 117,
+      "width": 1214,
+      "height": 870,
+      "scrollWidth": 1246
+    },
+    "toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1214,
+      "height": 44,
+      "scrollWidth": 1214
+    },
+    "search": {
+      "x": 280,
+      "y": 141,
+      "width": 259.1875,
+      "height": 44,
+      "scrollWidth": 259
+    },
+    "filters": {
+      "x": 555.1875,
+      "y": 143,
+      "width": 938.8125,
+      "height": 40,
+      "scrollWidth": 939
+    },
+    "children": [
+      {
+        "text": "Tất cả danh mục",
+        "width": 150.6875
+      },
+      {
+        "text": "Tất cả nguồn",
+        "width": 130.921875
+      },
+      {
+        "text": "Đã tải",
+        "width": 150
+      },
+      {
+        "text": "Tên A–Z",
+        "width": 125.5625
+      },
+      {
+        "text": "Xóa bộ lọc",
+        "width": 111.0625
+      },
+      {
+        "text": "Danh mục tài sản",
+        "width": 99.34375
+      },
+      {
+        "text": "Nhập CSV",
+        "width": 111.234375
+      }
+    ]
+  },
+  {
+    "viewport": 1448,
+    "shell": {
+      "x": 280,
+      "y": 117,
+      "width": 1136,
+      "height": 870,
+      "scrollWidth": 1168
+    },
+    "toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1136,
+      "height": 100,
+      "scrollWidth": 1136
+    },
+    "search": {
+      "x": 280,
+      "y": 141,
+      "width": 1136,
+      "height": 44,
+      "scrollWidth": 1136
+    },
+    "filters": {
+      "x": 280,
+      "y": 201,
+      "width": 1136,
+      "height": 40,
+      "scrollWidth": 1136
+    },
+    "children": [
+      {
+        "text": "Tất cả danh mục",
+        "width": 150.6875
+      },
+      {
+        "text": "Tất cả nguồn",
+        "width": 130.921875
+      },
+      {
+        "text": "Đã tải",
+        "width": 150
+      },
+      {
+        "text": "Tên A–Z",
+        "width": 125.5625
+      },
+      {
+        "text": "Xóa bộ lọc",
+        "width": 111.0625
+      },
+      {
+        "text": "Danh mục tài sản",
+        "width": 99.34375
+      },
+      {
+        "text": "Nhập CSV",
+        "width": 111.234375
+      }
+    ]
+  },
+  {
+    "viewport": 1440,
+    "shell": {
+      "x": 280,
+      "y": 117,
+      "width": 1128,
+      "height": 870,
+      "scrollWidth": 1160
+    },
+    "toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1128,
+      "height": 100,
+      "scrollWidth": 1128
+    },
+    "search": {
+      "x": 280,
+      "y": 141,
+      "width": 1128,
+      "height": 44,
+      "scrollWidth": 1128
+    },
+    "filters": {
+      "x": 280,
+      "y": 201,
+      "width": 1128,
+      "height": 40,
+      "scrollWidth": 1128
+    },
+    "children": [
+      {
+        "text": "Tất cả danh mục",
+        "width": 150.6875
+      },
+      {
+        "text": "Tất cả nguồn",
+        "width": 130.921875
+      },
+      {
+        "text": "Đã tải",
+        "width": 150
+      },
+      {
+        "text": "Tên A–Z",
+        "width": 125.5625
+      },
+      {
+        "text": "Xóa bộ lọc",
+        "width": 111.0625
+      },
+      {
+        "text": "Danh mục tài sản",
+        "width": 99.34375
+      },
+      {
+        "text": "Nhập CSV",
+        "width": 111.234375
+      }
+    ]
+  },
+  {
+    "viewport": 1366,
+    "shell": {
+      "x": 280,
+      "y": 117,
+      "width": 1054,
+      "height": 870,
+      "scrollWidth": 1086
+    },
+    "toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1054,
+      "height": 100,
+      "scrollWidth": 1054
+    },
+    "search": {
+      "x": 280,
+      "y": 141,
+      "width": 1054,
+      "height": 44,
+      "scrollWidth": 1054
+    },
+    "filters": {
+      "x": 280,
+      "y": 201,
+      "width": 1054,
+      "height": 40,
+      "scrollWidth": 1054
+    },
+    "children": [
+      {
+        "text": "Tất cả danh mục",
+        "width": 150.6875
+      },
+      {
+        "text": "Tất cả nguồn",
+        "width": 130.921875
+      },
+      {
+        "text": "Đã tải",
+        "width": 150
+      },
+      {
+        "text": "Tên A–Z",
+        "width": 125.5625
+      },
+      {
+        "text": "Xóa bộ lọc",
+        "width": 111.0625
+      },
+      {
+        "text": "Danh mục tài sản",
+        "width": 99.34375
+      },
+      {
+        "text": "Nhập CSV",
+        "width": 111.234375
+      }
+    ]
+  },
+  {
+    "viewport": 1280,
+    "shell": {
+      "x": 280,
+      "y": 117,
+      "width": 968,
+      "height": 870,
+      "scrollWidth": 1000
+    },
+    "toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 968,
+      "height": 100,
+      "scrollWidth": 968
+    },
+    "search": {
+      "x": 280,
+      "y": 141,
+      "width": 968,
+      "height": 44,
+      "scrollWidth": 968
+    },
+    "filters": {
+      "x": 280,
+      "y": 201,
+      "width": 968,
+      "height": 40,
+      "scrollWidth": 968
+    },
+    "children": [
+      {
+        "text": "Tất cả danh mục",
+        "width": 150.6875
+      },
+      {
+        "text": "Tất cả nguồn",
+        "width": 130.921875
+      },
+      {
+        "text": "Đã tải",
+        "width": 150
+      },
+      {
+        "text": "Tên A–Z",
+        "width": 125.5625
+      },
+      {
+        "text": "Xóa bộ lọc",
+        "width": 111.0625
+      },
+      {
+        "text": "Danh mục tài sản",
+        "width": 99.34375
+      },
+      {
+        "text": "Nhập CSV",
+        "width": 111.234375
+      }
+    ]
+  }
+]

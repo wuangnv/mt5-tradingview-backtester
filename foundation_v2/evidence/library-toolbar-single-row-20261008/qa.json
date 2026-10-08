@@ -1,0 +1,374 @@
+{
+  "scope": "UI fixtures with real QDM catalog payload; no API mutations/downloads",
+  "cases": [
+    {
+      "width": 1710,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 280,
+          "y": 141,
+          "width": 1398,
+          "height": 44
+        },
+        "search": {
+          "x": 280,
+          "y": 141,
+          "width": 420,
+          "height": 44
+        },
+        "status": {
+          "x": 1040.796875,
+          "y": 143,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 739.1875,
+          "y": 143,
+          "width": 938.8125,
+          "height": 40
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 1526,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 280,
+          "y": 141,
+          "width": 1214,
+          "height": 44
+        },
+        "search": {
+          "x": 280,
+          "y": 141,
+          "width": 259.1875,
+          "height": 44
+        },
+        "status": {
+          "x": 856.796875,
+          "y": 143,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 555.1875,
+          "y": 143,
+          "width": 938.8125,
+          "height": 40
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 1448,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 280,
+          "y": 141,
+          "width": 1136,
+          "height": 44
+        },
+        "search": {
+          "x": 280,
+          "y": 141,
+          "width": 181.1875,
+          "height": 44
+        },
+        "status": {
+          "x": 778.796875,
+          "y": 143,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 477.1875,
+          "y": 143,
+          "width": 938.8125,
+          "height": 40
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 1440,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 280,
+          "y": 141,
+          "width": 1128,
+          "height": 44
+        },
+        "search": {
+          "x": 280,
+          "y": 141,
+          "width": 173.1875,
+          "height": 44
+        },
+        "status": {
+          "x": 770.796875,
+          "y": 143,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 469.1875,
+          "y": 143,
+          "width": 938.8125,
+          "height": 40
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 1366,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 280,
+          "y": 141,
+          "width": 1054,
+          "height": 100
+        },
+        "search": {
+          "x": 280,
+          "y": 141,
+          "width": 1054,
+          "height": 44
+        },
+        "status": {
+          "x": 581.609375,
+          "y": 201,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 280,
+          "y": 201,
+          "width": 1054,
+          "height": 40
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 1280,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 280,
+          "y": 141,
+          "width": 968,
+          "height": 100
+        },
+        "search": {
+          "x": 280,
+          "y": 141,
+          "width": 968,
+          "height": 44
+        },
+        "status": {
+          "x": 581.609375,
+          "y": 201,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 280,
+          "y": 201,
+          "width": 968,
+          "height": 40
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 768,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 106,
+          "y": 141,
+          "width": 630,
+          "height": 150
+        },
+        "search": {
+          "x": 106,
+          "y": 141,
+          "width": 630,
+          "height": 44
+        },
+        "status": {
+          "x": 407.609375,
+          "y": 201,
+          "width": 150,
+          "height": 40
+        },
+        "filters": {
+          "x": 106,
+          "y": 201,
+          "width": 630,
+          "height": 90
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    },
+    {
+      "width": 360,
+      "pass": true,
+      "baseline": {
+        "toolbar": {
+          "x": 74,
+          "y": 141,
+          "width": 270,
+          "height": 320
+        },
+        "search": {
+          "x": 74,
+          "y": 141,
+          "width": 270,
+          "height": 44
+        },
+        "status": {
+          "x": 74,
+          "y": 309,
+          "width": 150,
+          "height": 44
+        },
+        "filters": {
+          "x": 74,
+          "y": 201,
+          "width": 270,
+          "height": 260
+        }
+      },
+      "states": [
+        "Tất cả trạng thái",
+        "Đang tải",
+        "Chưa tải",
+        "Đã tải"
+      ],
+      "checks": [
+        "stable toolbar across status choices",
+        "clear restores downloaded",
+        "default clear disabled",
+        "category/provider/search reset",
+        "pagination reset",
+        "sort stays separate",
+        "reload default",
+        "no overflow/errors"
+      ]
+    }
+  ],
+  "pass": true
+}
