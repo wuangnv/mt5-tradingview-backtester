@@ -47,6 +47,13 @@
 }
 .fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content :is(.fx-dashboard-card-play):not(:disabled):not(.is-unavailable) { --wm-control-open: var(--wm-action-bg); --wm-hover: var(--wm-action-hover); --wm-control-text: var(--wm-on-primary); background: var(--wm-action-bg); color: var(--wm-on-primary); }
 .fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content :is(.fxa-icon-button, .fx-select.fxa-columns-control .fx-select-trigger, .fxa-detail-button, .fx-dashboard-card-icon, .fx-dashboard-card-play, .fx-dashboard-refresh, .fx-dashboard-icon-button, .fx-dashboard-filter-toggle, .fxs-action-button, .fxs-edit-description):hover:not(:disabled) { background: var(--wm-hover); border-color: transparent; color: var(--wm-control-text); }
+/* Row controls stay quiet until pointed at; row hover never supplies their surface. */
+.fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content :is(.data-library .data-library-row-actions :is(.data-library-download, .data-library-more, .data-library-job-control), .fxa-detail-button, .fxs-action-button, .fx-dashboard .fx-dashboard-card-actions :is(.fx-dashboard-card-icon, .fx-dashboard-card-summary)):where(:not(.is-danger)) {
+  background:transparent; border-color:transparent;
+}
+.fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content :is(.data-library .data-library-row-actions :is(.data-library-download, .data-library-more, .data-library-job-control), .fxa-detail-button, .fxs-action-button, .fx-dashboard .fx-dashboard-card-actions :is(.fx-dashboard-card-icon, .fx-dashboard-card-summary)):where(:not(.is-danger)):is(:hover, [aria-expanded='true']):not(:disabled) {
+  background:var(--wm-control-hover); border-color:transparent;
+}
 /* Semantic actions supply local control roles, including shared hover rules. */
 .fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content :is(button, a):is(.is-danger, .fxr-button-danger, .fxs-delete-confirm),
 .fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content :is(button, a):is(.is-danger, .fxr-button-danger, .fxs-delete-confirm):hover:not(:disabled) { --wm-control-open: var(--project-danger-action); --wm-hover: var(--project-danger-hover); --wm-control-text: var(--project-on-danger); color: var(--project-on-danger); border-color: transparent; background: var(--project-danger-action); }

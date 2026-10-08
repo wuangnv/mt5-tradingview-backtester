@@ -19,7 +19,7 @@
 .market-sync-table td:last-child { white-space: nowrap; }
 .market-sync-table td:last-child button { margin-left: 8px; }
 .market-sync-table small { display: block; margin-top: 4px; color: var(--wm-content-muted); font-size: 12px; }
-.market-sync-table tbody tr:hover { background: var(--wm-hover); }
+.market-sync-table tbody tr:hover { background: var(--wm-row-hover); }
 @media (max-width: 760px) { .market-sync-heading { flex-wrap: wrap; gap: 12px; } .market-sync-table table { min-width: 850px; } .market-sync-filters label { flex-wrap: wrap; } }
 .market-sync-heading { align-items: center; flex-wrap: wrap; }
 .market-sync-heading > span { color: var(--wm-highlight); font-size: 12px; }

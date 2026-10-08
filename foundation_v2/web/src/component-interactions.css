@@ -7,7 +7,10 @@
   --wm-control-border: var(--project-border);
   --wm-control-hover-border: var(--project-border-strong);
   --wm-control-open: var(--project-control);
-  --wm-hover: var(--project-hover);
+  --wm-control-hover: var(--project-hover);
+  --wm-row-hover: color-mix(in srgb, var(--project-text) 6%, var(--project-canvas));
+  --wm-row-selected: color-mix(in srgb, var(--project-text) 10%, var(--project-canvas));
+  --wm-hover: var(--wm-control-hover);
   --wm-selected: var(--project-control);
   --wm-selected-border: var(--project-border-strong);
   --wm-focus: var(--project-primary);
@@ -116,11 +119,6 @@
   accent-color: var(--wm-action-bg);
   flex-shrink: 0;
 }
-.fx-app :is(.wm-page, .fx-dashboard) :is(button[class*='secondary'], button[class*='quiet'], .fx-dashboard-refresh, .as-filter-reset, .as-ledger-pagination button):hover:not(:disabled) {
-  background: var(--wm-hover);
-  border-color: var(--wm-border-strong);
-  color: var(--wm-content);
-}
 .fx-app :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .ja-button-primary, .as-primary-button, .learn-open-current):active:not(:disabled) {
   background: var(--wm-action-hover);
 }
@@ -128,17 +126,17 @@
   border-radius: 6px;
   transition: background-color 140ms ease, box-shadow 140ms ease;
 }
-.fx-app :is(.wm-page, .fx-dashboard) :is(.ja-journal-row, .pb-list-row, .prop-session-list > button, .learn-resource-button, .fx-dashboard-session-row):hover {
-  background: var(--wm-hover);
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) :is(.ja-journal-row, .pb-list-row, .prop-session-list > button, .learn-resource-button, .fx-dashboard-session-row):hover {
+  background: var(--wm-row-hover);
 }
-.fx-app :is(.wm-page, .fx-dashboard) :is(.ja-journal-row, .pb-list-row, .prop-session-list > button, .learn-resource-button, .fx-dashboard-session-row):is(.is-selected, [aria-pressed='true'], [aria-current='page']) {
-  background: var(--wm-selected);
+.fx-app.fx-shell-story[data-theme] :is(.wm-page, .fx-dashboard) :is(.ja-journal-row, .pb-list-row, .prop-session-list > button, .learn-resource-button, .fx-dashboard-session-row):is(.is-selected, [aria-pressed='true'], [aria-current='page']) {
+  background: var(--wm-row-selected);
   box-shadow: inset 0 0 0 1px var(--wm-selected-border);
 }
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr { transition: background-color 140ms ease; }
-.fx-app .wm-page :is(.rd-table, .as-table) tbody tr:hover { background: var(--wm-hover); }
-.fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected,
-.fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected > td { background: var(--wm-selected); }
+.fx-app.fx-shell-story[data-theme] .wm-page :is(.rd-table, .as-table) tbody tr:hover { background: var(--wm-row-hover); }
+.fx-app.fx-shell-story[data-theme] .wm-page :is(.rd-table, .as-table) tbody tr.is-selected,
+.fx-app.fx-shell-story[data-theme] .wm-page :is(.rd-table, .as-table) tbody tr.is-selected > td { background: var(--wm-row-selected); }
 .fx-app .wm-page :is(.rd-table, .as-table) tbody tr.is-selected > td:first-child button { color: var(--wm-primary); }
 .fx-app .wm-chart-page :is(.replay-object-actions, .chart-controls) > button:hover:not(:disabled) { background: var(--wm-hover); border-color: var(--wm-border-strong); }
 .fx-app .wm-chart-page .replay-object-actions button[aria-pressed='true'] {
@@ -166,16 +164,14 @@
 .fx-app :is(.wm-page, .fx-dashboard) details[open] > summary { color: var(--wm-control-text); }
 .fx-app :is(.wm-page, .fx-dashboard) details[open] > summary::marker { color: var(--wm-control-text); }
 
-/* Hover is neutral throughout the product; price/risk marks retain their colors. */
-.fx-app.fx-shell-story[data-theme] :is(button, a, summary):not(:disabled):not(:where(.is-danger, .fxr-button-danger, .buy, .sell, .is-buy, .is-sell, .chart-order-level, .trade-inline-retry)):hover {
-  color: var(--wm-control-text);
-  border-color: var(--wm-control-hover-border);
+/* Style action roles explicitly: a row/header/text link is not a generic button. */
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-page, .fx-dashboard) :is(.ja-button:not(.ja-button-primary), .rs-button:not(.is-primary):not(.is-danger), .as-secondary-button, .pb-retry-button, .prop-refresh) {
+  border:1px solid transparent; border-radius:var(--wm-control-radius); background:var(--wm-control-open); color:var(--wm-control-text);
 }
-.fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-page, .fx-dashboard, .replay-shell) button:not(:disabled):not(:where(.is-danger, .fxr-button-danger, .buy, .sell, .is-buy, .is-sell, .chart-order-level, .trade-inline-retry)):hover {
-  background: var(--wm-hover);
-  color: var(--wm-control-text);
-  border-color: var(--wm-control-hover-border);
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-page, .fx-dashboard) :is(.ja-button:not(.ja-button-primary), .rs-button:not(.is-primary):not(.is-danger), .as-secondary-button, .pb-retry-button, .prop-refresh):hover:not(:disabled) {
+  background:var(--wm-control-hover); color:var(--wm-control-text); border-color:transparent;
 }
+.fx-app.fx-shell-story[data-theme] .wm-page .pb-retry-button:hover:not(:focus-visible) { outline:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-page, .fx-dashboard) :is(.fxr-button-primary, .fxa-apply-button, .fxa-button.is-primary, .trade-primary, .risk-primary, .prop-create, .learn-open-current, .ja-button-primary, .rs-button.is-primary, .rd-button.is-primary, .as-primary-button, .primary-action):hover:not(:disabled),
 .fx-app.fx-shell-story[data-theme] .settings-appearance-actions button[type='submit']:hover:not(:disabled) {
   background: var(--wm-action-hover);

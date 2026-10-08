@@ -1,0 +1,137 @@
+{
+  "scope": "Independent UI state review. Actual local GET-only catalog plus explicitly labeled response fixtures; writes, external origins and WebSockets blocked.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": false,
+      "checks": [
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(115, 115, 115)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "row": {
+            "bg": "color(srgb 0.0894902 0.0894902 0.0894902)",
+            "border": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1452,
+            "height": 65.5
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "opened": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "focused": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Actual paused progress distinct from row; resume/cancel untouched",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 148,
+            "height": 44
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 148,
+            "height": 44
+          }
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

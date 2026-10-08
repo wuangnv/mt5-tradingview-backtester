@@ -1,0 +1,1103 @@
+{
+  "scope": "Independent UI state review. Actual local GET-only catalog plus explicitly labeled response fixtures; writes, external origins and WebSockets blocked.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Library interaction assertions also run after loading other lazy route CSS"
+        },
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(115, 115, 115)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "row": {
+            "bg": "color(srgb 0.0894902 0.0894902 0.0894902)",
+            "border": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1452,
+            "height": 65
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "opened": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "focused": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Disabled update and filled danger",
+          "dangerBase": {
+            "bg": "rgb(197, 62, 72)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          },
+          "dangerHover": {
+            "bg": "rgb(204, 65, 75)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          }
+        },
+        {
+          "name": "Enabled Dashboard danger red/white at rest and hover",
+          "deleteBase": {
+            "bg": "rgb(197, 62, 72)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "deleteHover": {
+            "bg": "rgb(204, 65, 75)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Demo Dashboard nested icon/delete dialog and Trades detail/pager"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Library interaction assertions also run after loading other lazy route CSS"
+        },
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 420,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(115, 115, 115)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 420,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "row": {
+            "bg": "color(srgb 0.0894902 0.0894902 0.0894902)",
+            "border": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1390,
+            "height": 65
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "opened": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "focused": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Disabled update and filled danger",
+          "dangerBase": {
+            "bg": "rgb(197, 62, 72)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          },
+          "dangerHover": {
+            "bg": "rgb(204, 65, 75)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          }
+        },
+        {
+          "name": "Enabled Dashboard danger red/white at rest and hover",
+          "deleteBase": {
+            "bg": "rgb(197, 62, 72)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "deleteHover": {
+            "bg": "rgb(204, 65, 75)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Demo Dashboard nested icon/delete dialog and Trades detail/pager"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Library interaction assertions also run after loading other lazy route CSS"
+        },
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 270,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(115, 115, 115)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 270,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 44
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 44
+          },
+          "row": {
+            "bg": "color(srgb 0.0894902 0.0894902 0.0894902)",
+            "border": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1390,
+            "height": 68.5
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          },
+          "opened": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          },
+          "focused": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "name": "Disabled update and filled danger",
+          "dangerBase": {
+            "bg": "rgb(197, 62, 72)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 145,
+            "height": 44
+          },
+          "dangerHover": {
+            "bg": "rgb(204, 65, 75)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 145,
+            "height": 44
+          }
+        },
+        {
+          "name": "Enabled Dashboard danger red/white at rest and hover",
+          "deleteBase": {
+            "bg": "rgb(197, 62, 72)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          },
+          "deleteHover": {
+            "bg": "rgb(204, 65, 75)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "name": "Demo Dashboard nested icon/delete dialog and Trades detail/pager"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Library interaction assertions also run after loading other lazy route CSS"
+        },
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(255, 255, 255)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(255, 255, 255)",
+            "border": "rgb(136, 136, 136)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "hovered": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "row": {
+            "bg": "color(srgb 0.944 0.944 0.944)",
+            "border": "rgb(17, 17, 17)",
+            "borderWidth": "0px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1452,
+            "height": 65
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "opened": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "focused": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Disabled update and filled danger",
+          "dangerBase": {
+            "bg": "rgb(181, 55, 60)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          },
+          "dangerHover": {
+            "bg": "rgb(152, 41, 47)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          }
+        },
+        {
+          "name": "Enabled Dashboard danger red/white at rest and hover",
+          "deleteBase": {
+            "bg": "rgb(181, 55, 60)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "deleteHover": {
+            "bg": "rgb(152, 41, 47)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Demo Dashboard nested icon/delete dialog and Trades detail/pager"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Library interaction assertions also run after loading other lazy route CSS"
+        },
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(255, 255, 255)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 420,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(255, 255, 255)",
+            "border": "rgb(136, 136, 136)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 420,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "hovered": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "row": {
+            "bg": "color(srgb 0.944 0.944 0.944)",
+            "border": "rgb(17, 17, 17)",
+            "borderWidth": "0px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1390,
+            "height": 65
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "opened": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "focused": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Disabled update and filled danger",
+          "dangerBase": {
+            "bg": "rgb(181, 55, 60)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          },
+          "dangerHover": {
+            "bg": "rgb(152, 41, 47)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 48.453125,
+            "height": 40
+          }
+        },
+        {
+          "name": "Enabled Dashboard danger red/white at rest and hover",
+          "deleteBase": {
+            "bg": "rgb(181, 55, 60)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "deleteHover": {
+            "bg": "rgb(152, 41, 47)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Demo Dashboard nested icon/delete dialog and Trades detail/pager"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Library interaction assertions also run after loading other lazy route CSS"
+        },
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(255, 255, 255)",
+            "border": "rgb(210, 210, 210)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 270,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(255, 255, 255)",
+            "border": "rgb(136, 136, 136)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 270,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 44
+          },
+          "hovered": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 44
+          },
+          "row": {
+            "bg": "color(srgb 0.944 0.944 0.944)",
+            "border": "rgb(17, 17, 17)",
+            "borderWidth": "0px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1390,
+            "height": 68.5
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          },
+          "opened": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          },
+          "focused": {
+            "bg": "rgb(235, 235, 235)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(17, 17, 17)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "name": "Disabled update and filled danger",
+          "dangerBase": {
+            "bg": "rgb(181, 55, 60)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 145,
+            "height": 44
+          },
+          "dangerHover": {
+            "bg": "rgb(152, 41, 47)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 145,
+            "height": 44
+          }
+        },
+        {
+          "name": "Enabled Dashboard danger red/white at rest and hover",
+          "deleteBase": {
+            "bg": "rgb(181, 55, 60)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          },
+          "deleteHover": {
+            "bg": "rgb(152, 41, 47)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "name": "Demo Dashboard nested icon/delete dialog and Trades detail/pager"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": false,
+      "checks": [
+        {
+          "name": "Search keyboard focus visible",
+          "inputBase": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(58, 58, 58)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          },
+          "inputFocus": {
+            "bg": "rgb(8, 8, 8)",
+            "border": "rgb(115, 115, 115)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 351.984375,
+            "height": 44
+          }
+        },
+        {
+          "name": "Nested Download hover distinct and no layout shift",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "999px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 86.4375,
+            "height": 40
+          },
+          "row": {
+            "bg": "color(srgb 0.0894902 0.0894902 0.0894902)",
+            "border": "rgb(255, 255, 255)",
+            "borderWidth": "0px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "0px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 1452,
+            "height": 65.5
+          }
+        },
+        {
+          "name": "Ellipsis round/open/focus",
+          "moreHover": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "opened": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 32,
+            "height": 32
+          },
+          "focused": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "50%",
+            "outline": "solid",
+            "outlineWidth": "2px",
+            "width": 32,
+            "height": 32
+          }
+        },
+        {
+          "name": "Actual paused progress distinct from row; resume/cancel untouched",
+          "base": {
+            "bg": "rgba(0, 0, 0, 0)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 148,
+            "height": 44
+          },
+          "hovered": {
+            "bg": "rgb(42, 42, 42)",
+            "border": "rgba(0, 0, 0, 0)",
+            "borderWidth": "1px",
+            "color": "rgb(255, 255, 255)",
+            "radius": "6px",
+            "outline": "none",
+            "outlineWidth": "3px",
+            "width": 148,
+            "height": 44
+          }
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

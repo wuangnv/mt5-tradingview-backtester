@@ -252,3 +252,33 @@ use the completed Monday–Sunday week and completed calendar month in UTC.
 **Tất cả / All time** removes date bounds; **Tuỳ chọn / Custom** keeps explicit
 ISO bounds. Previously saved rolling 7/30/90-day ranges retain their original
 bounds and an accurate rolling label when they still match today's range.
+
+
+## Pointer and keyboard states
+
+Interaction colors are project roles owned by `component-interactions.css`;
+component geometry/button roles are owned by `testing-standard.css`.
+Never add a catch-all hover rule for every button/link: table headings, text links,
+menu options, tabs, price controls and record rows have different semantics.
+
+| Role | Rest | Pointer hover | Keyboard / open |
+| --- | --- | --- | --- |
+| Record/table row | Canvas | Subtle `--wm-row-hover` | Selection `--wm-row-selected`; selected record remains distinct |
+| Secondary toolbar/dialog action | Neutral control surface | `--wm-control-hover` | Focus ring; 1px transparent border stays reserved |
+| Inline table/session action | Transparent | `--wm-control-hover`, distinct from row | Same surface while menu open; keyboard focus ring |
+| Primary action | Peach | Peach hover | Focus ring; never converted to neutral gray |
+| Destructive confirmation | Red, white text | Red hover, white text | Focus ring |
+| Text action | Transparent | Underline/foreground only | Focus ring; no filled box |
+| Field/select | Field geometry with border | Border strengthens | Focus/open indication retained |
+| Disabled action | Muted, native disabled | No hover change | No activation or keyboard tab stop |
+
+Buttons reserve their border geometry and do not gain a visible outline merely
+from pointer hover. Focus-visible is an independent keyboard indication, not the
+same thing as hover. Text Catalog/Settings actions stay flat and underlined on hover;
+New Strategy retains its owner-requested orange. Dashboard quick actions retain
+their existing orange hover. Financial markings and native chart controls keep
+their established semantics. Table actions use 32px circles on desktop and 44px
+on mobile/coarse pointers. Download/progress stay text controls, never oval icon areas.
+Row and control tokens are separate so a nested hovered action cannot merge into
+its row, including selected rows. Popup option hover uses the control surface;
+menus retain their panel border even though their individual items do not.

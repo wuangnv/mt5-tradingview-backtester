@@ -3,7 +3,7 @@
 .wm-pagination-controls { gap:16px; max-width:100%; }
 .wm-pagination-pages { gap:4px; }
 .fx-app .fx-content .wm-pagination .wm-pagination-button { box-sizing:border-box; display:inline-flex; justify-content:center; align-items:center; flex:0 0 auto; width:36px; height:36px; min-width:36px; min-height:36px; padding:0; border:1px solid transparent; border-radius:50%; background:transparent; color:var(--wm-content-muted); font:inherit; font-variant-numeric:tabular-nums; cursor:pointer; }
-.fx-app .fx-content .wm-pagination .wm-pagination-button:hover:not(:disabled) { background:var(--wm-hover); color:var(--wm-content); border-color:var(--wm-control-hover-border); }
+.fx-app .fx-content .wm-pagination .wm-pagination-button:hover:not(:disabled) { background:var(--wm-hover); color:var(--wm-content); border-color:transparent; }
 .fx-app .fx-content .wm-pagination .wm-pagination-button[aria-current='page'] { background:var(--wm-selected); color:var(--wm-content); }
 .fx-app .fx-content .wm-pagination .wm-pagination-button:disabled { opacity:.45; cursor:default; }
 .wm-pagination-button:focus-visible { outline:2px solid var(--wm-focus); outline-offset:2px; }
