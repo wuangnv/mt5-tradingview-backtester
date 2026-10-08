@@ -1,0 +1,1105 @@
+{
+  "scope": "Read-only actual Library and explicitly labeled Pause/Resume presentation fixtures. No mutation/provider requests.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 64.59375,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Tải về",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1539.78125,
+              "right": 1600.21875,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tải về",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1539.78125,
+              "right": 1600.21875,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(42, 42, 42)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "en",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 40.484375,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Download",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1526.921875,
+              "right": 1613.0625,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Download",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1526.921875,
+              "right": 1613.0625,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(42, 42, 42)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "language": "vi",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 64.59375,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Tải về",
+            "button": {
+              "x": 172,
+              "y": 542,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 199.78125,
+              "right": 260.21875,
+              "top": 555,
+              "bottom": 573
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tải về",
+            "button": {
+              "x": 172,
+              "y": 542,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 199.78125,
+              "right": 260.21875,
+              "top": 555,
+              "bottom": 573
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(42, 42, 42)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "language": "en",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 40.484375,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Download",
+            "button": {
+              "x": 172,
+              "y": 488,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 186.921875,
+              "right": 273.0625,
+              "top": 501,
+              "bottom": 519
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Download",
+            "button": {
+              "x": 172,
+              "y": 488,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 186.921875,
+              "right": 273.0625,
+              "top": 501,
+              "bottom": 519
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(42, 42, 42)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "vi",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 64.59375,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Tải về",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1539.78125,
+              "right": 1600.21875,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tải về",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1539.78125,
+              "right": 1600.21875,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(235, 235, 235)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "language": "en",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 40.484375,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Download",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1526.921875,
+              "right": 1613.0625,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Download",
+            "button": {
+              "x": 1512,
+              "y": 266.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1526.921875,
+              "right": 1613.0625,
+              "top": 277.25,
+              "bottom": 295.25
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(235, 235, 235)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "vi",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 64.59375,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Tải về",
+            "button": {
+              "x": 172,
+              "y": 542,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 199.78125,
+              "right": 260.21875,
+              "top": 555,
+              "bottom": 573
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tải về",
+            "button": {
+              "x": 172,
+              "y": 542,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 199.78125,
+              "right": 260.21875,
+              "top": 555,
+              "bottom": 573
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(235, 235, 235)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "fixture": false,
+      "checks": [
+        {
+          "asset": "0005.HK/HKD",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 40.484375,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Download",
+            "button": {
+              "x": 172,
+              "y": 488,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 186.921875,
+              "right": 273.0625,
+              "top": 501,
+              "bottom": 519
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Download",
+            "button": {
+              "x": 172,
+              "y": 488,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 186.921875,
+              "right": 273.0625,
+              "top": 501,
+              "bottom": 519
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(235, 235, 235)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "fixture": true,
+      "checks": [
+        {
+          "asset": "UNSAVED",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 64.59375,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Tải về",
+            "button": {
+              "x": 1512,
+              "y": 468.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1539.78125,
+              "right": 1600.21875,
+              "top": 479.25,
+              "bottom": 497.25
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tải về",
+            "button": {
+              "x": 1512,
+              "y": 468.25,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1539.78125,
+              "right": 1600.21875,
+              "top": 479.25,
+              "bottom": 497.25
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.78125,
+              "right": 27.78125,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": true
+        },
+        {
+          "asset": "PAUSED",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 45.3125,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Tiếp tục",
+            "button": {
+              "x": 1512,
+              "y": 280,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1533.359375,
+              "right": 1606.640625,
+              "top": 291,
+              "bottom": 309
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 21.359375,
+              "right": 21.359375,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(35, 35, 35)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tiếp tục",
+            "button": {
+              "x": 1512,
+              "y": 280,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1533.359375,
+              "right": 1606.640625,
+              "top": 291,
+              "bottom": 309
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 21.359375,
+              "right": 21.359375,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(35, 35, 35)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": true
+        },
+        {
+          "asset": "RUNNING",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 68.703125,
+            "buttonRight": 1628,
+            "cellRight": 1700,
+            "scrollLeft": 0
+          },
+          "rest": {
+            "text": "Tạm dừng",
+            "button": {
+              "x": 1512,
+              "y": 381,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1526.78125,
+              "right": 1613.203125,
+              "top": 392,
+              "bottom": 410
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.78125,
+              "right": 14.796875,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(35, 35, 35)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Tạm dừng",
+            "button": {
+              "x": 1512,
+              "y": 381,
+              "width": 116,
+              "height": 40
+            },
+            "union": {
+              "left": 1526.78125,
+              "right": 1613.203125,
+              "top": 392,
+              "bottom": 410
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.78125,
+              "right": 14.796875,
+              "top": 11,
+              "bottom": 11
+            },
+            "background": "rgb(42, 42, 42)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "fixture": true,
+      "checks": [
+        {
+          "asset": "UNSAVED",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 40.484375,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Download",
+            "button": {
+              "x": 172,
+              "y": 690,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 186.921875,
+              "right": 273.0625,
+              "top": 703,
+              "bottom": 721
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Download",
+            "button": {
+              "x": 172,
+              "y": 690,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 186.921875,
+              "right": 273.0625,
+              "top": 703,
+              "bottom": 721
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 14.921875,
+              "right": 14.9375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgba(0, 0, 0, 0)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": true
+        },
+        {
+          "asset": "PAUSED",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 75.5,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Resume",
+            "button": {
+              "x": 172,
+              "y": 500,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 193.859375,
+              "right": 266.140625,
+              "top": 513,
+              "bottom": 531
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 21.859375,
+              "right": 21.859375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(244, 244, 244)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Resume",
+            "button": {
+              "x": 172,
+              "y": 500,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 193.859375,
+              "right": 266.140625,
+              "top": 513,
+              "bottom": 531
+            },
+            "center": {
+              "x": 0,
+              "y": 0
+            },
+            "gaps": {
+              "left": 21.859375,
+              "right": 21.859375,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(244, 244, 244)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": true
+        },
+        {
+          "asset": "RUNNING",
+          "metrics": {
+            "status": 112,
+            "actions": 196
+          },
+          "placement": {
+            "buttonOffset": 8,
+            "statusWidth": 112,
+            "outerGap": 44.1875,
+            "buttonRight": 288,
+            "cellRight": 360,
+            "scrollLeft": 1088
+          },
+          "rest": {
+            "text": "Pause",
+            "button": {
+              "x": 172,
+              "y": 601,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 199.9375,
+              "right": 260.046875,
+              "top": 614,
+              "bottom": 632
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.9375,
+              "right": 27.953125,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(244, 244, 244)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "hover": {
+            "text": "Pause",
+            "button": {
+              "x": 172,
+              "y": 601,
+              "width": 116,
+              "height": 44
+            },
+            "union": {
+              "left": 199.9375,
+              "right": 260.046875,
+              "top": 614,
+              "bottom": 632
+            },
+            "center": {
+              "x": -0.0078125,
+              "y": 0
+            },
+            "gaps": {
+              "left": 27.9375,
+              "right": 27.953125,
+              "top": 13,
+              "bottom": 13
+            },
+            "background": "rgb(235, 235, 235)",
+            "justify": "center",
+            "svgDisplay": "block"
+          },
+          "disabled": false
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

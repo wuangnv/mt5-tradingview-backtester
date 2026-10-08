@@ -57,7 +57,7 @@
 .data-library .rd-table .data-library-date { white-space:nowrap; overflow-wrap:normal; }
 .data-library .rd-table td:nth-child(n+5):nth-child(-n+8) { font-variant-numeric:tabular-nums; }
 .data-library-row-actions { display:flex; align-items:center; justify-content:flex-start; gap:8px; white-space:nowrap; }
-.fx-app .data-library .rd-table .data-library-row-actions :is(.data-library-download, .data-library-transfer-control) { flex:0 0 116px; width:116px; box-sizing:border-box; justify-content:flex-start; }
+.fx-app .data-library .rd-table .data-library-row-actions :is(.data-library-download, .data-library-transfer-control) { flex:0 0 116px; width:116px; box-sizing:border-box; justify-content:center; }
 .data-library-job-control { flex:0 0 auto; }
 .data-library .data-library-download { display:flex; align-items:center; justify-content:center; gap:8px; padding:8px 12px; border:1px solid transparent; border-radius:var(--wm-control-radius); min-height:var(--wm-control-height); background:transparent; cursor:default; white-space:nowrap; }
 .data-library .data-library-download:not(:disabled) { cursor:pointer; }

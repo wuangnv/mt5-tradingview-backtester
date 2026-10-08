@@ -77,8 +77,9 @@ The existing progress dialog remains available by activating this status control
 Actions align to their column's left content edge, like the other headers/cells.
 Status and Actions use fixed 112px/196px columns so ordinary status text does not
 leave a wide reserved progress area before the actions. Asset absorbs remaining
-width. Action icons/text align to the start of their button's padding; progress
-uses height rather than extra column width and retains the shared typography.
+width. Action buttons align to the column start while each icon/text group is
+centered inside its button. Progress uses height rather than extra column width
+and retains the shared typography.
 Download and Pause/Resume share a fixed text-button slot; More/Cancel use the
 adjacent circular icon slot, keeping alignment stable across transfer states.
 Sticky header cells own their bottom divider with an inset line, so it remains
