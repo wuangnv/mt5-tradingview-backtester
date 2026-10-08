@@ -118,6 +118,21 @@ collector trong API đang chạy không được bật. Các checkpoint Exness/t
 cũ là bằng chứng lịch sử, không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
 Xem [receipt Dukascopy](foundation_v2/evidence/dukascopy-integration-20261008/RECEIPT.md).
 
+Để restart API offline local ở cổng 8010 trên Windows, double-click
+[`restart-offline-api.bat`](restart-offline-api.bat), hoặc chạy từ gốc repo:
+
+```powershell
+.\restart-offline-api.bat
+```
+
+File dùng Python trong `foundation_v2/.venv`, đọc `TW_V2_DATABASE_URL` từ môi trường
+hiện tại hoặc biến môi trường tài khoản Windows; không lưu mật khẩu vào script.
+Nếu đang tải, tạm dừng và chờ trạng thái đã dừng trước khi chạy. Script kiểm tra
+đúng tiến trình offline rồi mới restart; giữ cache và các lượt tải đã tạm dừng.
+Khi báo `Offline API is ready`, reload trang và bấm tiếp tục tải nếu cần.
+Log khởi động nằm trong `foundation_v2/.runtime/manual-api-*.log`.
+Chạy `.\restart-offline-api.bat -CheckOnly` để chỉ kiểm tra, không stop/start API.
+
 Learn đọc course local khi API được khởi động với cả hai biến sau, bên cạnh cấu
 hình database, artifacts và authorization đã có:
 
