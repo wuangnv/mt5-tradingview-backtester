@@ -17,6 +17,7 @@ import FxSelect from './FxSelect.jsx'
 import TestingIcon from './TestingIcon.jsx'
 import DataLibraryActions from './DataLibraryActions.jsx'
 import DataLibraryProgress from './DataLibraryProgress.jsx'
+import { sampleDownloadMetrics } from './dataLibraryDownloadMetrics.js'
 import PaginationFooter from './PaginationFooter.jsx'
 import { CATEGORIES, libraryDataType, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
 import './data-library.css'
@@ -407,11 +408,9 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         if (disposed || scopeSignal.aborted) return
         const now = Date.now()
         const items = payload.items.map(job => {
-          const previous = downloadSamples.current.get(job.job_id)
-          const delta = previous ? Math.max(0,(job.transferred_bytes || 0) - previous.bytes) : 0
-          const bytes_per_second = previous && now > previous.time ? delta * 1000 / (now - previous.time) : null
-          downloadSamples.current.set(job.job_id,{bytes:job.transferred_bytes || 0,time:now})
-          return {...job,bytes_per_second}
+          const { state: sample, metrics } = sampleDownloadMetrics(downloadSamples.current.get(job.job_id),job,now)
+          downloadSamples.current.set(job.job_id,sample)
+          return {...job,...metrics}
         })
         setDownloads({...payload,items,receivedAt:now}); setClockNow(now); setPollError('')
         const newlyCompleted = payload.items.filter(job => job.status === 'completed' && !completedJobs.current.has(job.job_id))
@@ -555,7 +554,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     try {
       const job = await startDownload(workspace,{instrument_id:asset.instrument_id,...(asset.downloaded ? {dataset_id:asset.dataset_id} : {})},signal)
       if (!signal.aborted) {
-        downloadSamples.current.set(job.job_id,{bytes:job.transferred_bytes || 0,time:Date.now()})
+        downloadSamples.current.set(job.job_id,sampleDownloadMetrics(null,job,Date.now()).state)
         setDownloads(current => ({...current,items:[job,...current.items.filter(item => item.job_id !== job.job_id)],receivedAt:Date.now()}))
         setDownloadRevision(current => current + 1)
       }
@@ -629,8 +628,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           <section className="rd-panel" aria-label="Dataset catalog">
               <div className="rd-table-wrap" tabIndex={0} role="region" aria-label={t('Dữ liệu đã có')}>
                 <table className="rd-table" data-testid="data-desk-dataset-table">
-                  <colgroup>{['asset','category','source','data','from','to','count','size','status','actions'].map(name => <col key={name} className={`data-library-column-${name}`} />)}</colgroup>
-                  <thead><tr>{['Sản phẩm','Danh mục','Nguồn','Dữ liệu','Từ ngày (UTC)','Đến ngày (UTC)','Số nến','Dung lượng','Trạng thái','Thao tác'].map(label => <th key={label} scope="col" title={label === 'Dung lượng' ? t('Dữ liệu replay; không gồm bản nguồn và cache tải.') : undefined}>{t(label)}</th>)}</tr></thead>
+                  <colgroup>{['asset','category','source','data','from','to','count','size','actions'].map(name => <col key={name} className={`data-library-column-${name}`} />)}</colgroup>
+                  <thead><tr>{['Sản phẩm','Danh mục','Nguồn','Dữ liệu','Từ ngày (UTC)','Đến ngày (UTC)','Số nến','Dung lượng','Thao tác'].map(label => <th key={label} scope="col" title={label === 'Dung lượng' ? t('Dữ liệu replay; không gồm bản nguồn và cache tải.') : undefined}>{t(label)}</th>)}</tr></thead>
                   <tbody>
                     {pageItems.map((dataset) => {
                       const range = datasetRange(dataset)
@@ -652,9 +651,9 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                           <td className="data-library-date" title={dateTitle(toDate)}>{displayDate(toDate)}</td>
                           <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>—</span>}</td>
                           <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : <span className="data-library-muted">—</span>}</td>
-                          <td>{job ? <DataLibraryProgress job={job} fmt={fmt} onClick={() => setDownloadProgressOpen(true)} /> : dataset.downloaded ? <span>{t('Đã tải')}</span> : <span className="data-library-muted">{t('Chưa tải')}</span>}</td>
                           <td><div className="data-library-row-actions">{!job && <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
-                            <button type="button" className="fxa-button data-library-job-control data-library-transfer-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || Math.max(0,(job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000) > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} />{t(downloading ? 'Tạm dừng' : 'Tiếp tục')}</button>
+                            <DataLibraryProgress job={job} fmt={fmt} onClick={() => setDownloadProgressOpen(true)} />
+                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || Math.max(0,(job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000) > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t('Huỷ tải')} disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="close" /></button>
                           </> : <DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} />}</div></td>
                         </tr>

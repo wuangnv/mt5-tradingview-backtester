@@ -392,7 +392,7 @@ Practice's Market Data route owns offline historical datasets and local CSV
 import. It combines configured provider instrument metadata and saved dataset
 versions in one table. Categories come from declared asset_class metadata, never
 symbol-name guesses. Table columns are product, category, source, data type, UTC historical
-range, candle count, storage size, download status and actions. Data type shows timeframe
+start/end dates, candle count, storage size and actions. There is no separate status column. Data type shows timeframe
 and declared Bid/Ask/Mid; unknown price types stay unknown. Quality stays in Details.
 Session creation belongs to Sessions
 and Dashboard; this page has no create-session action.
@@ -482,9 +482,17 @@ emits an empty value and clears on blur; external selection/reset replaces the d
 ISO API/storage keys, filter values, sorting and serialized provenance stay unchanged.
 Raw JSON/export fields retain machine formats rather than rewriting the data itself.
 
-History grid cells use two compact date lines; Details retains timestamp precision.
-Unknown counts/sizes show —. Download status appears once in its own column.
-Inline progress shows percentage and received bytes (plus speed while transferring)
-with a thin bar; pause/resume and cancel remain separate labelled controls.
+History grid uses separate start/end date columns; Details retains timestamp precision.
+Unknown counts/sizes show —. The Actions column combines the transfer meter and
+icon-only pause/resume and cancel controls with accessible names/tooltips. Its 308px
+width preserves the preceding columns. The meter puts the thin bar and percentage
+above received bytes/speed and approximate time remaining; generic Running text is
+omitted, while paused/queued/failed/saving states remain explicit.
+Speed uses a rolling 30-second sample window. Approximate download ETA uses recent
+calendar-day throughput after at least 10 seconds and 3 completed days; it expires
+after 15 seconds without day progress. Pause/resume, processing, counter rollback,
+range changes and polling gaps reset the baseline. Saving is excluded from ETA.
+Unknown/warmup ETA displays —; a measured zero network speed remains 0.
+Both full downloads and updates use the same meter and sampling contract.
 Total byte size is not invented when upstream does not declare it.
 Paused/failed states retain cached bytes.

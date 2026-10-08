@@ -1,4 +1,5 @@
 import { useTestingLocale } from './testingLocale.jsx'
+import { downloadEtaDuration } from './dataLibraryDownloadMetrics.js'
 
 export default function DataLibraryProgress({ job, onClick, fmt }) {
   const { t } = useTestingLocale()
@@ -7,9 +8,11 @@ export default function DataLibraryProgress({ job, onClick, fmt }) {
   const amount = bytes >= 1024 ** 3 ? `${fmt(bytes / 1024 ** 3,'',1)} GiB` : bytes >= 1024 ** 2 ? `${fmt(bytes / 1024 ** 2,'',1)} MiB` : `${fmt(bytes / 1024,'',1)} KiB`
   const speed = job.status === 'running' && job.stage !== 'processing' && Number.isFinite(job.bytes_per_second) ? `${fmt(job.bytes_per_second / 1024 ** 2,'',2)} MiB/s` : null
   const label = job.status === 'queued' ? 'Đang chờ tải' : job.status === 'pausing' ? 'Đang tạm dừng…' : job.status === 'paused' ? 'Đã tạm dừng' : job.status === 'failed' ? 'Tải thất bại' : job.stage === 'processing' ? 'Đang lưu dữ liệu…' : 'Đang tải'
-  return <button type="button" className="data-library-progress" aria-label={`${t('Tiến độ tải {asset}',{asset:job.instrument_id})}: ${t(label)}, ${fmt(progress,'',0)}%, ${amount}${speed ? `, ${speed}` : ''}`} onClick={onClick} title={`${t(label)} · ${job.completed_days || 0} / ${job.total_days || 0} ${t('ngày')}`}>
-    <span className="data-library-progress-label">{t(label)}</span>
+  const duration = downloadEtaDuration(job.estimated_seconds_remaining)
+  const eta = duration ? `≈ ${fmt(duration.count,'',0)} ${t(duration.unit)}` : '—'
+  return <button type="button" className="data-library-progress" aria-label={`${t('Tiến độ tải {asset}',{asset:job.instrument_id})}: ${t(label)}, ${fmt(progress,'',0)}%, ${amount}${speed ? `, ${speed}` : ''}, ${t('Thời gian còn lại')}: ${eta}`} onClick={onClick} title={`${t(label)} · ${job.completed_days || 0} / ${job.total_days || 0} ${t('ngày')}. ${t('Ước tính theo tốc độ tải các ngày gần đây; chưa gồm thời gian lưu dữ liệu.')}`}>
+    {label !== 'Đang tải' && <span className="data-library-progress-label">{t(label)}</span>}
     <span className="data-library-progress-bar"><span className="data-library-progress-track" aria-hidden="true"><span className="data-library-progress-fill" style={{width:`${progress}%`}} /></span><span className="data-library-progress-percent">{fmt(progress,'',0)}%</span></span>
-    <span className="data-library-progress-meta"><span>{amount}</span>{speed && <span>{speed}</span>}</span>
+    <span className="data-library-progress-meta"><span className="data-library-progress-transfer">{amount}{speed && <span>{speed}</span>}</span><span className="data-library-progress-eta" title={t('Thời gian còn lại')}>{eta}</span></span>
   </button>
 }

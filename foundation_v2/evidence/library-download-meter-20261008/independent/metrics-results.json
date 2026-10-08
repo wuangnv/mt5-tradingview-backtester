@@ -1,0 +1,15 @@
+{
+  "pass": true,
+  "checks": [
+    "Warmup waits10s and3 days; ETA uses remaining days divided by recent day rate",
+    "ETA becomes unknown after more than15s without day advance; byte speed is rolling average",
+    "Pause/resume signature resets warmup instead of counting paused time",
+    "Polling gap>10s resets samples",
+    "Byte/day rollback and non-monotonic clock reset samples",
+    "Cached-day progress permits ETA with measured0 byte/s; zero is a valid rate",
+    "Processing/error states expose no transfer ETA",
+    "Unknown total calendar days do not produce ETA",
+    "Rolling window retains at most30s of sample history",
+    "Duration rejects unknown/nonpositive values and rounds estimates upward with units"
+  ]
+}
