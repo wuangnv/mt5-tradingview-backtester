@@ -66,6 +66,14 @@ Search stays on the left; controls wrap on narrow screens. Data-library dialog
 actions use the shared button treatment, with `.is-danger` for delete confirmation
 and compact circular close buttons. Their busy/disabled states retain native
 button semantics and cannot submit an action.
+Library history uses two fixed-width columns, From date (UTC) and To date (UTC),
+with dd/mm/yyyy on one line. Saved rows use observed dataset boundaries; unsaved
+Dukascopy rows use downloadable metadata and retain the coverage disclaimer.
+Unknown dates stay “—”. Exact saved timestamps remain in Details and date tooltips.
+The table scroll viewport has no bottom border: PaginationFooter owns the single
+full-width divider, regardless of scroll position.
+Body row separators are quieter than the structural header/footer divider, so a
+partially clipped row near the footer does not look like a second frame boundary.
 Rich session selectors, input fields and popups retain their field/panel geometry;
 popups use 12px radii. Inline Settings retains its underline interaction.
 

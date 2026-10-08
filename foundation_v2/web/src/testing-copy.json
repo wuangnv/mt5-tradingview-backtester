@@ -5618,5 +5618,7 @@
   "Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.": {"vi":"Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.","en":"The exact candle count is known only after reading source data."},
   "Dung lượng replay chỉ xác định sau khi tải và xử lý.": {"vi":"Dung lượng replay chỉ xác định sau khi tải và xử lý.","en":"Replay size is known only after downloading and processing."},
   "Ngày giờ không hợp lệ": { "vi": "Ngày giờ không hợp lệ", "en": "Invalid date or time" },
-  "Chọn ngày": { "vi": "Chọn ngày", "en": "Choose date" }
+  "Chọn ngày": { "vi": "Chọn ngày", "en": "Choose date" },
+  "M1: mỗi nến tổng hợp giá trong 1 phút.": {"vi":"M1: mỗi nến tổng hợp giá trong 1 phút.","en":"M1: each candle summarizes prices within one minute."},
+  "Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.": {"vi":"Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.","en":"Bid: the buyer's quoted price; excludes Ask prices and actual spreads."}
 }

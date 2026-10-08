@@ -1,0 +1,512 @@
+{
+  "scope": "Actual GET-only catalog and labeled saved/unknown metadata fixtures. No backend writes, provider refresh/download or WebSockets.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": false,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.108863 0.108863 0.108863)",
+            "header": "rgb(58, 58, 58)",
+            "footer": "rgb(58, 58, 58)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": [
+              {
+                "index": 11,
+                "y": 909,
+                "height": 65.5,
+                "borderTop": "1px"
+              }
+            ]
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            232.3125,
+            116.15625,
+            116.15625,
+            87.109375,
+            116.15625,
+            116.15625,
+            101.625,
+            116.15625,
+            174.234375,
+            275.9375
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "fixture": false,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.108863 0.108863 0.108863)",
+            "header": "rgb(58, 58, 58)",
+            "footer": "rgb(58, 58, 58)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 910,
+            "footerY": 910,
+            "footerHeight": 77,
+            "documentOverflow": false,
+            "scrollbarHeight": 10,
+            "nearBottomRows": []
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 910,
+            "footerY": 910,
+            "footerHeight": 77,
+            "documentOverflow": false,
+            "scrollbarHeight": 10,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            222.390625,
+            111.1875,
+            111.1875,
+            83.390625,
+            111.1875,
+            111.1875,
+            97.296875,
+            111.1875,
+            166.796875,
+            264.1875
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "fixture": false,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.925333 0.925333 0.925333)",
+            "header": "rgb(210, 210, 210)",
+            "footer": "rgb(210, 210, 210)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": [
+              {
+                "index": 11,
+                "y": 909,
+                "height": 65.5,
+                "borderTop": "1px"
+              }
+            ]
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            232.3125,
+            116.15625,
+            116.15625,
+            87.109375,
+            116.15625,
+            116.15625,
+            101.625,
+            116.15625,
+            174.234375,
+            275.9375
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "fixture": false,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.925333 0.925333 0.925333)",
+            "header": "rgb(210, 210, 210)",
+            "footer": "rgb(210, 210, 210)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 910,
+            "footerY": 910,
+            "footerHeight": 77,
+            "documentOverflow": false,
+            "scrollbarHeight": 10,
+            "nearBottomRows": []
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 910,
+            "footerY": 910,
+            "footerHeight": 77,
+            "documentOverflow": false,
+            "scrollbarHeight": 10,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            222.390625,
+            111.1875,
+            111.1875,
+            83.390625,
+            111.1875,
+            111.1875,
+            97.296875,
+            111.1875,
+            166.796875,
+            264.1875
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.108863 0.108863 0.108863)",
+            "header": "rgb(58, 58, 58)",
+            "footer": "rgb(58, 58, 58)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": [
+              {
+                "index": 11,
+                "y": 916,
+                "height": 65.5,
+                "borderTop": "1px"
+              }
+            ]
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            232.3125,
+            116.15625,
+            116.15625,
+            87.109375,
+            116.15625,
+            116.15625,
+            101.625,
+            116.15625,
+            174.234375,
+            275.9375
+          ]
+        },
+        {
+          "name": "Paused fixture action controls contained in narrowed column",
+          "actionBounds": {
+            "cellLeft": 1424.0625,
+            "cellRight": 1700,
+            "buttonsLeft": 1440,
+            "buttonsRight": 1668
+          }
+        },
+        {
+          "name": "Saved actual bounds vs metadata bounds; unknown remains —; M1/Bid tooltip"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.925333 0.925333 0.925333)",
+            "header": "rgb(210, 210, 210)",
+            "footer": "rgb(210, 210, 210)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": [
+              {
+                "index": 11,
+                "y": 916,
+                "height": 65.5,
+                "borderTop": "1px"
+              }
+            ]
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 914,
+            "footerY": 914,
+            "footerHeight": 73,
+            "documentOverflow": false,
+            "scrollbarHeight": 0,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            232.3125,
+            116.15625,
+            116.15625,
+            87.109375,
+            116.15625,
+            116.15625,
+            101.625,
+            116.15625,
+            174.234375,
+            275.9375
+          ]
+        },
+        {
+          "name": "Paused fixture action controls contained in narrowed column",
+          "actionBounds": {
+            "cellLeft": 1424.0625,
+            "cellRight": 1700,
+            "buttonsLeft": 1440,
+            "buttonsRight": 1668
+          }
+        },
+        {
+          "name": "Saved actual bounds vs metadata bounds; unknown remains —; M1/Bid tooltip"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "fixture": true,
+      "checks": [
+        {
+          "name": "Body separators remain subordinate to header/footer",
+          "dividerColors": {
+            "row": "color(srgb 0.108863 0.108863 0.108863)",
+            "header": "rgb(58, 58, 58)",
+            "footer": "rgb(58, 58, 58)"
+          }
+        },
+        {
+          "name": "10 columns, dd/mm/yyyy, stable widths/page two, single divider and fixed footer",
+          "headers": [
+            "Sản phẩm",
+            "Danh mục",
+            "Nguồn",
+            "Dữ liệu",
+            "Từ ngày (UTC)",
+            "Đến ngày (UTC)",
+            "Số nến",
+            "Dung lượng",
+            "Trạng thái",
+            "Thao tác"
+          ],
+          "before": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 910,
+            "footerY": 910,
+            "footerHeight": 77,
+            "documentOverflow": false,
+            "scrollbarHeight": 10,
+            "nearBottomRows": []
+          },
+          "scrolled": {
+            "wrapBottom": "0px",
+            "footerTop": "1px",
+            "wrapY": 910,
+            "footerY": 910,
+            "footerHeight": 77,
+            "documentOverflow": false,
+            "scrollbarHeight": 10,
+            "nearBottomRows": []
+          },
+          "initialWidths": [
+            222.390625,
+            111.1875,
+            111.1875,
+            83.390625,
+            111.1875,
+            111.1875,
+            97.296875,
+            111.1875,
+            166.796875,
+            264.1875
+          ]
+        },
+        {
+          "name": "Paused fixture action controls contained in narrowed column",
+          "actionBounds": {
+            "cellLeft": 1183.8125,
+            "cellRight": 1448,
+            "buttonsLeft": 1191.8125,
+            "buttonsRight": 1432
+          }
+        },
+        {
+          "name": "Saved actual bounds vs metadata bounds; unknown remains —; M1/Bid tooltip"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}
