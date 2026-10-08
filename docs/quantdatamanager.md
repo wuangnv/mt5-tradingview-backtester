@@ -48,7 +48,7 @@ profile không sửa khác biệt giá giữa nguồn và broker. Một dataset 
 được nghiên cứu với nhiều profile, nhưng mỗi kết quả phải pin profile/cost/rules
 riêng; chưa có UI cấu hình profile QDM/prop trong lát tích hợp này.
 
-Owner chọn mục tiêu **FTMO, MT5**. Khuyến nghị giữ cache giá Dukascopy/QDM ở UTC,
+Owner chọn mục tiêu **FTMO, MT5, cả 1-Step và 2-Step**. Giữ cache giá Dukascopy/QDM ở UTC,
 gắn profile FTMO ở session/backtest; không tải lại cùng lịch sử chỉ để đổi quỹ.
 Thông số cần đối chiếu với tài khoản MT5 mục tiêu: contract size, tick size/value,
 lot min/step, margin/leverage, commission/swap, spread/slippage và trading session.
@@ -59,9 +59,31 @@ Theo [FTMO account specifications](https://ftmo.com/en/faq/what-are-the-account-
 MT5 dùng GMT+2 + DST. Theo [Trading Objectives](https://ftmo.com/en/trading-objectives/),
 daily loss reset theo 00:00 CE(S)T (Prague); không gộp hai đồng hồ này thành UTC
 hoặc cùng một midnight của server. Hiển thị dd/mm/yyyy, HH:mm vẫn giữ nhãn timezone.
-FTMO 1-Step và 2-Step có rule khác nhau; hiện chưa chọn gói, Standard/Swing,
-giai đoạn Challenge/Verification/Account, size/currency hoặc server cụ thể.
-Không gán 5%/10% hay chi phí mặc định thành cấu hình FTMO đã xác minh.
+Hai cấu hình mục tiêu theo tài liệu được kiểm tra ngày 08/10/2026:
+
+| Rule đánh giá | FTMO 1-Step | FTMO 2-Step |
+| --- | --- | --- |
+| Các phase | Challenge | Challenge → Verification |
+| Profit target | 10% | 10% → 5% |
+| Daily loss | 3% vốn ban đầu | 5% vốn ban đầu |
+| Max loss | 10%, trailing theo balance cuối ngày | 10%, ngưỡng cố định |
+| Minimum trading days | Không đặt minimum | 4 ngày mỗi phase |
+| Best Day | Tối đa 50% tổng lợi nhuận của các ngày lãi | Không có rule này |
+| Reset ngày | 00:00 Europe/Prague | 00:00 Europe/Prague |
+
+Best Day vượt 50% ngăn kết luận pass, không phải breach khiến fail. Daily floor
+được neo theo balance đầu ngày, còn kiểm vi phạm theo equity có chi phí/floating.
+Không lấy cùng một công thức tổng drawdown cho hai gói. Snapshot rule phải pin
+phiên bản/ngày kiểm tra; không tự đổi rule của attempt đang chạy nếu hãng cập nhật.
+
+Đây là cấu hình mục tiêu, **chưa là hai preset FTMO chạy trong evaluator**.
+Review code hiện tại thấy daily reset anchor đi theo basis balance/equity của
+LossRule, trong khi FTMO cần anchor balance và đánh giá equity riêng. Chưa có
+Best Day evaluator. Không đổi tên Generic practice thành FTMO hoặc coi chọn
+Broker Profile QDM là đã đánh giá đủ FTMO. Việc nối rule vào session/evaluator
+cần lát triển khai và kiểm chứng riêng; adapter QDM đã hoàn thành scope tải giá.
+Account Standard/Swing, size/currency và server cụ thể vẫn chưa chọn; chi phí
+và quy cách broker không được lấy mặc định để tuyên bố backtest FTMO chính xác.
 
 Nút tải → job lưu trên đĩa → CLI quản lý symbol `EURUSD_TW` → QDM cập nhật lịch sử
 → xuất CSV UTC tự động → chuẩn hoá → kiểm tra → đăng ký dataset bất biến trong
