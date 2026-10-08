@@ -1,4 +1,4 @@
-"""Serve local offline data and Dukascopy downloads; MT5 sync requires explicit options."""
+"""Serve local offline data and licensed QDM downloads; MT5 sync requires explicit options."""
 
 import argparse
 import os
@@ -15,11 +15,15 @@ from trading_workspace_v2.auth import LocalWorkspaceAuthorization
 from trading_workspace_v2.market_sync import MarketRuntime
 from trading_workspace_v2.dukascopy_catalog import DukascopyCatalog
 from trading_workspace_v2.dukascopy_downloads import DukascopyDownloads
+from trading_workspace_v2.qdm_cli import QdmCatalog, QdmCli
+from trading_workspace_v2.qdm_downloads import QdmDownloads
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8010)
+    parser.add_argument('--download-engine', choices=['qdm', 'dukascopy'], default='qdm')
+    parser.add_argument('--qdm-home', type=Path, default=repo / 'foundation_v2/.runtime/quantdatamanager')
     parser.add_argument('--mt5-python', type=Path, help='Python environment containing the audited MetaTrader5 SDK; enables read-only sync.')
     parser.add_argument('--ticks', action='store_true', help='Daily closed-day Bid/Ask tick catch-up for EURUSDm and XAUUSDm.')
     parser.add_argument('--terminal', type=Path, default=Path('C:/Program Files/MetaTrader 5/terminal64.exe'))
@@ -43,8 +47,8 @@ def main():
         authorization=LocalWorkspaceAuthorization.for_local_owner(['tenant-a'], identity_id='local-owner'),
         learn_roots={'tenant-a': repo.parent.parent / 'education'},
         market_runtime_factory=runtime,
-        instrument_catalog=DukascopyCatalog(artifacts / 'catalog/dukascopy-instruments.json'),
-        dukascopy_downloads_factory=DukascopyDownloads,
+        instrument_catalog=QdmCatalog(QdmCli(args.qdm_home)) if args.download_engine == 'qdm' else DukascopyCatalog(artifacts / 'catalog/dukascopy-instruments.json'),
+        dukascopy_downloads_factory=QdmDownloads if args.download_engine == 'qdm' else DukascopyDownloads,
     )
     print(f'Offline market-data API: loopback port {args.port}; paper execution only.', flush=True)
     uvicorn.run(app, host='127.0.0.1', port=args.port)

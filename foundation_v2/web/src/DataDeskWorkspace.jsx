@@ -177,8 +177,9 @@ const DOWNLOAD_STATUS = { queued:'Đang chờ tải', running:'Đang tải', pau
 const DOWNLOAD_ERRORS = { source_access_challenge:'Dukascopy yêu cầu xác minh truy cập. Bộ tải tự động chưa thể tiếp tục; dữ liệu đã tải được giữ lại.', source_rate_limited:'Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.', source_unavailable:'Không kết nối được Dukascopy. Tiến độ đã tải được giữ lại.', invalid_source_data:'Dữ liệu nguồn không hợp lệ; chưa lưu vào kho.', empty_range:'Không có dữ liệu trong khoảng ngày đã chọn.', worker_unavailable:'Bộ tải dữ liệu chưa sẵn sàng.', download_interrupted:'Tải bị gián đoạn. Có thể tiếp tục từ tiến độ đã lưu.', quality_rejected:'Dữ liệu chưa đạt kiểm tra chất lượng; chưa lưu vào kho.', download_busy:'Đang có một lượt tải khác. Hãy chờ hoặc huỷ lượt đó.', invalid_date_range:'Chọn khoảng ngày hợp lệ.', instrument_not_supported:'Tài sản này chưa hỗ trợ tải.', download_cooldown:'Chưa hết thời gian chờ. Hãy thử lại sau.', download_cancelled:'Lượt tải đã huỷ. Hãy bắt đầu lượt tải mới.', download_not_found:'Không tìm thấy lượt tải này.' }
 const downloadErrorMessage = error => {
   const code = typeof error === 'string' ? error : error?.payload?.detail?.code || error?.payload?.detail || error?.message
-  return code === 'already_current' ? 'Dữ liệu đã cập nhật đến ngày mới nhất.' : DOWNLOAD_ERRORS[code] || 'Không xử lý được lượt tải. Hãy thử lại.'
+  return code === 'already_current' ? 'Dữ liệu đã cập nhật đến ngày mới nhất.' : QDM_ERRORS[code] || DOWNLOAD_ERRORS[code] || 'Không xử lý được lượt tải. Hãy thử lại.'
 }
+const QDM_ERRORS = { qdm_busy:'QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.', qdm_not_configured:'Chưa cài QuantDataManager trong project.', qdm_license_required:'QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.', qdm_version_unsupported:'Bản QuantDataManager này chưa hỗ trợ định dạng xuất cần thiết.', qdm_command_failed:'Lệnh QuantDataManager không hoàn tất. Kiểm tra QDM trước khi thử lại.', qdm_symbol_mismatch:'Cấu hình tài sản trong QDM không khớp nguồn Dukascopy/M1.', qdm_control_unsupported:'QDM CLI chưa hỗ trợ tạm dừng hoặc huỷ an toàn giữa lệnh.' }
 
 function formatDatasetSize(bytes, fmt) {
   if (!Number.isFinite(bytes) || bytes < 0) return '—'
@@ -532,13 +533,14 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     return ()=>clearInterval(timer)
   },[catalogBusy])
   const catalogError = catalogRefreshError ? 'source_unavailable' : state.catalog?.error
-  const catalogMessages = { rate_limited:'Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.', source_unavailable:'Không cập nhật được danh sách Dukascopy.', invalid_response:'Danh sách Dukascopy trả về không hợp lệ.', invalid_cache:'Bản lưu danh sách Dukascopy không hợp lệ.', cache_write_failed:'Không lưu được danh sách Dukascopy.' }
+  const catalogMessages = { ...QDM_ERRORS, rate_limited:'Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.', source_unavailable:'Không cập nhật được danh sách Dukascopy.', invalid_response:'Danh sách Dukascopy trả về không hợp lệ.', invalid_cache:'Bản lưu danh sách Dukascopy không hợp lệ.', cache_write_failed:'Không lưu được danh sách Dukascopy.' }
   const catalogMessage = catalogMessages[catalogError] || (state.catalog?.stale ? 'Danh sách Dukascopy đã cũ.' : '')
 
   const rows = useMemo(() => libraryRows(state.datasets, state.instruments, downloads.items), [state.datasets, state.instruments, downloads.items])
-  const sources = [...new Set([...rows.map(sourceOf), ...(state.catalog ? ['Dukascopy'] : [])])].sort()
+  const catalogSource = state.catalog?.provider || 'Dukascopy'
+  const sources = [...new Set([...rows.map(sourceOf), ...(state.catalog ? [catalogSource] : [])])].sort()
   const sourceOptions = [{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]
-  const catalogSourceSelected = catalogProvider === 'all' || catalogProvider === 'Dukascopy'
+  const catalogSourceSelected = catalogProvider === 'all' || catalogProvider === catalogSource
   const sourceRows = rows.filter(item => catalogProvider === 'all' || sourceOf(item) === catalogProvider)
   const sourceAssetCount = new Set(sourceRows.map(item => JSON.stringify([sourceOf(item),item.instrument_id]))).size
   const latestSourceSave = sourceRows.map(item => item.created_at_utc || item.source?.retrieved_at_utc).filter(value => Number.isFinite(Date.parse(value))).sort((a,b) => Date.parse(b)-Date.parse(a))[0]
@@ -559,6 +561,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     try {
       const job = await startDownload(workspace,{instrument_id:asset.instrument_id,...(asset.downloaded ? {dataset_id:asset.dataset_id} : {})},signal)
       if (!signal.aborted) {
+        setDownloadFilter(current => current === 'not-downloaded' ? 'downloading' : current)
         downloadSamples.current.set(job.job_id,sampleDownloadMetrics(null,job,Date.now()).state)
         setDownloads(current => ({...current,items:[job,...current.items.filter(item => item.job_id !== job.job_id)],receivedAt:Date.now()}))
         setDownloadRevision(current => current + 1)
@@ -615,14 +618,14 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           const active = ['queued','running','pausing'].includes(job.status)
           return <div key={job.job_id} className="data-library-download-job" data-testid={`download-job-${job.job_id}`}>
             <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{displayDate(job.from_date)} → {displayDate(job.to_date)}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')} · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</span></div>
-            {active && <progress aria-label={t('Tiến độ tải {asset}',{asset:job.instrument_id})} value={job.completed_days || 0} max={Math.max(1,job.total_days || 1)} />}
+            {active && <progress aria-label={t('Tiến độ tải {asset}',{asset:job.instrument_id})} value={job.progress_scope === 'phase' ? job.progress_percent ?? undefined : job.completed_days || 0} max={job.progress_scope === 'phase' ? 100 : Math.max(1,job.total_days || 1)} />}
             {job.error && <p className="data-library-job-error">{t(downloadErrorMessage(job.error))}</p>}
             <p className="data-library-muted">{t('Dung lượng đã tải')}: {formatDatasetSize(job.transferred_bytes,fmt)} · {t('Tổng dung lượng chưa xác định.')}</p>
             {job.stage === 'processing' && <p role="status">{t('Đang lưu dữ liệu…')}</p>}
             <div className="data-library-job-actions">{retrySeconds > 0 && <span>{t('Thử lại sau {seconds} giây',{seconds:retrySeconds})}</span>}
               {['paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={!downloads.available || activeDownload || Boolean(jobAction) || retrySeconds > 0} onClick={() => changeDownload(job,'resume')}>{t('Tiếp tục tải')}</button>}
               {['queued','running','pausing'].includes(job.status) && <button type="button" className="rd-button" disabled={!downloads.supportsPause || Boolean(jobAction) || job.status === 'pausing'} onClick={() => changeDownload(job,'pause')}>{t(job.status === 'pausing' ? 'Đang tạm dừng…' : 'Tạm dừng')}</button>}
-              {['queued','running','pausing','paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}>{t('Huỷ tải')}</button>}
+              {['queued','running','pausing','paused','failed'].includes(job.status) && <button type="button" className="rd-button" title={job.supports_cancel === false ? t(QDM_ERRORS.qdm_control_unsupported) : undefined} disabled={Boolean(jobAction) || !downloads.supportsCancel} onClick={() => changeDownload(job,'cancel')}>{t('Huỷ tải')}</button>}
             </div>
           </div>
         })}
@@ -642,16 +645,16 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const job = jobForAsset(dataset)
                       const downloading = job && ['queued','running','pausing'].includes(job.status)
                       const retrySeconds = job ? downloadRetrySeconds(job,downloads.receivedAt,clockNow) : 0
-                      const availableStart = sourceOf(dataset) === 'Dukascopy' ? state.download?.earliest_dates?.[dataset.instrument_id] : null
+                      const availableStart = sourceOf(dataset) === (state.download?.provider || 'Dukascopy') ? state.download?.earliest_dates?.[dataset.instrument_id] : null
                       const dataType = libraryDataType(dataset, availableStart)
                       const fromDate = dataset.downloaded ? range.start : availableStart
                       const toDate = dataset.downloaded ? range.end : availableStart ? defaultDownloadDates().to_date : null
-                      const dateTitle = value => dataset.downloaded ? value == null ? undefined : displayDate(value, { timeStyle: 'medium' }) : availableStart ? t('Phạm vi có thể tải theo metadata M1/Bid; chưa kiểm chứng độ phủ.') : undefined
+                      const dateTitle = value => dataset.downloaded ? value == null ? undefined : displayDate(value, { timeStyle: 'medium' }) : availableStart ? t('Phạm vi có thể tải theo metadata M1; chưa kiểm chứng độ phủ.') : undefined
                       return (
                         <tr key={dataset.key} className={active ? 'is-selected' : ''}>
                           <td>{dataset.downloaded ? <button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => openDetails(dataset)}><strong>{dataset.instrument_id || '—'}</strong></button> : <><strong>{dataset.instrument_id}</strong>{dataset.name && <small>{dataset.name}</small>}</>}</td>
                           <td>{t(categoryLabel(categoryOf(dataset)))}</td>
-                          <td>{sourceOf(dataset)}</td>
+                          <td title={sourceOf(dataset)}>{sourceOf(dataset) === 'QuantDataManager' ? 'QDM' : sourceOf(dataset)}</td>
                           <td><span title={dataType.timeframe === 'M1' ? t('M1: mỗi nến tổng hợp giá trong 1 phút.') : undefined}>{dataType.timeframe}</span>{dataType.price && <small title={dataType.price === 'Bid' ? t('Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.') : undefined}>{dataType.price}</small>}</td>
                           <td className="data-library-date" title={dateTitle(fromDate)}>{displayDate(fromDate)}</td>
                           <td className="data-library-date" title={dateTitle(toDate)}>{displayDate(toDate)}</td>
@@ -660,7 +663,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                           <td><div className="data-library-row-actions">{!job && <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
                             <DataLibraryProgress job={job} fmt={fmt} retrySeconds={retrySeconds} onClick={() => setDownloadProgressOpen(true)} />
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={retrySeconds > 0 ? t(downloadErrorMessage(job.error || 'download_cooldown')) : t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || retrySeconds > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
-                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t('Huỷ tải')} disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="close" /></button>
+                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t(job.supports_cancel === false ? QDM_ERRORS.qdm_control_unsupported : 'Huỷ tải')} disabled={Boolean(jobAction) || job.supports_cancel === false} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="close" /></button>
                           </> : <DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} />}</div></td>
                         </tr>
                       )
@@ -678,7 +681,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <div className="data-library-catalog-source"><span>{t('Nguồn dữ liệu')}</span><FxSelect label="Nguồn dữ liệu" value={catalogProvider} onChange={setCatalogProvider} options={sourceOptions} disabled={catalogBusy} /></div>
         <dl className="data-library-catalog-facts">
           <div><dt>{t('Số tài sản')}</dt><dd>{fmt(sourceAssetCount, '', 0)}</dd></div>
-          <div><dt>{t(catalogSourceSelected ? catalogProvider === 'all' ? 'Cập nhật Dukascopy (UTC)' : 'Cập nhật lần cuối (UTC)' : 'Lần lưu gần nhất (UTC)')}</dt><dd>{(catalogSourceSelected ? state.catalog?.retrieved_at_utc : latestSourceSave) ? formatUtc(catalogSourceSelected ? state.catalog.retrieved_at_utc : latestSourceSave, locale) : '—'}</dd></div>
+          <div><dt>{t(catalogSourceSelected ? 'Cập nhật lần cuối (UTC)' : 'Lần lưu gần nhất (UTC)')}</dt><dd>{(catalogSourceSelected ? state.catalog?.retrieved_at_utc : latestSourceSave) ? formatUtc(catalogSourceSelected ? state.catalog.retrieved_at_utc : latestSourceSave, locale) : '—'}</dd></div>
         </dl>
         {catalogSourceSelected && (catalogMessage ? <p className="data-library-catalog-status" role="status">{t(catalogMessage)}</p> : catalogUpdated && <p className="data-library-catalog-status" role="status">{t('Đã cập nhật danh mục.')}</p>)}
         {catalogSourceSelected && !catalogBusy && state.catalog?.configured && !state.catalog.refresh_available && !catalogMessage && <p className="data-library-catalog-status" role="status">{t('Vui lòng chờ trước khi cập nhật lại.')}</p>}

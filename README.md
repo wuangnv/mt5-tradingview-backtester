@@ -118,6 +118,13 @@ collector trong API đang chạy không được bật. Các checkpoint Exness/t
 cũ là bằng chứng lịch sử, không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
 Xem [receipt Dukascopy](foundation_v2/evidence/dukascopy-integration-20261008/RECEIPT.md).
 
+Launcher offline hiện mặc định thử nghiệm **QuantDataManager CLI** cho EUR/USD
+M1/UTC, tự tải → xuất CSV → kiểm tra → nhập kho. Bộ cài QDM nằm trong
+`foundation_v2/.runtime/quantdatamanager/` trên máy và không được commit;
+GitHub giữ adapter/test/hướng dẫn. Clone mới cần cài QDM riêng. Xem
+[setup và giới hạn QDM](docs/quantdatamanager.md); `--download-engine dukascopy`
+giữ engine cũ làm rollback. Pilot chưa hỗ trợ pause/cancel an toàn giữa lệnh.
+
 Bộ tải giữ cache để tiếp tục, thử lại lỗi mạng tạm thời có giới hạn và phân biệt
 HTTP 429 với yêu cầu xác minh AWS WAF. Kiểm tra nguồn ngày 08/10/2026 gặp WAF
 challenge; restart/giảm nhịp không bảo đảm nguồn cho phép tải. Xem

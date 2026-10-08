@@ -1,4 +1,13 @@
 {
+  "QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.": {"vi":"QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.","en":"QuantDataManager is open or running another command. Close it after it finishes, then try again."},
+  "Chưa cài QuantDataManager trong project.": {"vi":"Chưa cài QuantDataManager trong project.","en":"QuantDataManager is not installed in this project."},
+  "QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.": {"vi":"QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.","en":"QuantDataManager requires a valid license. Activate it in QDM."},
+  "Bản QuantDataManager này chưa hỗ trợ định dạng xuất cần thiết.": {"vi":"Bản QuantDataManager này chưa hỗ trợ định dạng xuất cần thiết.","en":"This QuantDataManager version does not support the required export format."},
+  "Lệnh QuantDataManager không hoàn tất. Kiểm tra QDM trước khi thử lại.": {"vi":"Lệnh QuantDataManager không hoàn tất. Kiểm tra QDM trước khi thử lại.","en":"The QuantDataManager command did not complete. Check QDM before retrying."},
+  "Cấu hình tài sản trong QDM không khớp nguồn Dukascopy/M1.": {"vi":"Cấu hình tài sản trong QDM không khớp nguồn Dukascopy/M1.","en":"The QDM symbol configuration does not match Dukascopy/M1 in UTC."},
+  "QDM CLI chưa hỗ trợ tạm dừng hoặc huỷ an toàn giữa lệnh.": {"vi":"QDM CLI chưa hỗ trợ tạm dừng hoặc huỷ an toàn giữa lệnh.","en":"The QDM CLI adapter does not support safe pause or cancellation during a command."},
+  "Phạm vi có thể tải theo metadata M1; chưa kiểm chứng độ phủ.": {"vi":"Phạm vi có thể tải theo metadata M1; chưa kiểm chứng độ phủ.","en":"Downloadable range from M1 metadata; coverage has not been verified."},
+  "Tiến độ của bước hiện tại trong QDM; chưa phải tổng tiến độ. Dung lượng, tốc độ và thời gian còn lại chưa xác định.": {"vi":"Tiến độ của bước hiện tại trong QDM; chưa phải tổng tiến độ. Dung lượng, tốc độ và thời gian còn lại chưa xác định.","en":"Progress for the current QDM phase, not the whole job. Size, speed and remaining time are unknown."},
   "Dữ liệu replay; không gồm bản nguồn và cache tải.": {"vi":"Dữ liệu replay; không gồm bản nguồn và cache tải.","en":"Replay data; excludes source files and download cache."},
   "Đạt kiểm tra cơ bản": {"vi":"Đạt kiểm tra cơ bản","en":"Basic checks passed"},
   "Dữ liệu đã cập nhật đến ngày mới nhất.": {"vi":"Dữ liệu đã cập nhật đến ngày mới nhất.","en":"Data is already up to date."},

@@ -9,7 +9,7 @@ export async function fetchOfflineLibrary(workspace, signal) {
 export async function refreshInstrumentCatalog(workspace, signal) {
   const response = await fetch('/api/v2/data/catalog/refresh', { method:'POST', headers:workspaceHeaders(workspace), signal })
   const payload = await readJson(response)
-  return { instruments:Array.isArray(payload.catalog_items) ? payload.catalog_items : [], catalog:payload.catalog_state || null }
+  return { instruments:Array.isArray(payload.catalog_items) ? payload.catalog_items : [], catalog:payload.catalog_state || null, ...(payload.download_state ? {download:payload.download_state} : {}) }
 }
 
 async function postCsv(workspace, route, payload) {
@@ -32,7 +32,7 @@ export function importLocalCsv(workspace, payload) {
 export async function fetchDownloads(workspace, signal) {
   const response = await fetch('/api/v2/data/downloads', { headers:workspaceHeaders(workspace), signal })
   const payload = await readJson(response)
-  return { items:Array.isArray(payload.items) ? payload.items : [], available:Boolean(payload.available), supportsPause:payload.supports_pause === true }
+  return { items:Array.isArray(payload.items) ? payload.items : [], available:Boolean(payload.available), supportsPause:payload.supports_pause === true, supportsCancel:payload.supports_cancel !== false }
 }
 
 export async function startDownload(workspace, payload, signal) {

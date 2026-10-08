@@ -570,11 +570,12 @@ def create_app(
     @app.get("/api/v2/data/datasets")
     def list_datasets(workspace: str = Depends(workspace_id)):
         instruments = data_registry.list_instruments(workspace)
-        classes = {item['instrument_id']: item.get('asset_class', '') for item in instruments if item.get('provider') == 'Dukascopy'}
+        classes = {(item.get('provider'), item['instrument_id']): item.get('asset_class', '') for item in instruments}
         datasets = data_registry.list_datasets(workspace)
         for item in datasets:
-            if item.get('source', {}).get('provider') == 'Dukascopy':
-                item['asset_class'] = classes.get(item['instrument_id'], '')
+            category = classes.get((item.get('source', {}).get('provider'), item['instrument_id']))
+            if category is not None:
+                item['asset_class'] = category
             item.update(downloads.dataset_update_state(workspace, item) if downloads else {'update_available': False})
         return {"items": datasets, "catalog_items": instruments, "holdout_access": False,
                 "catalog_state": instrument_catalog.status() if instrument_catalog else None,
@@ -602,7 +603,8 @@ def create_app(
             raise HTTPException(status_code=503, detail="instrument_catalog_not_configured")
         instrument_catalog.refresh()
         return {"catalog_items": data_registry.list_instruments(workspace),
-                "catalog_state": instrument_catalog.status()}
+                "catalog_state": instrument_catalog.status(),
+                "download_state": downloads.availability() if downloads else {'available':False, 'supported_instruments':[]}}
 
     @app.get('/api/v2/data/downloads')
     def list_offline_downloads(workspace: str = Depends(workspace_id)):

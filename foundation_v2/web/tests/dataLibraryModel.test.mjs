@@ -35,6 +35,20 @@ test('date validation uses inclusive completed UTC days without local timezone d
   assert.equal(downloadRangeError('2025-01-01','2026-01-02',now),'Mỗi lần tải tối đa 366 ngày.')
   for (const [from,to] of [['2026-02-30','2026-03-01'],['2026-13-01','2026-13-02'],['',''],['2026-09-20','2026-09-01']]) assert.equal(downloadRangeError(from,to,now),'Chọn khoảng ngày hợp lệ.')
 })
+
+test('QDM downloads and jobs are scoped to their provider, including saved updates', () => {
+  const catalog = ['QuantDataManager','Dukascopy'].map(provider => ({instrument_id:'EUR/USD',provider,provider_id:provider}))
+  const jobs = [{instrument_id:'EUR/USD',provider:'QuantDataManager',status:'running'}]
+  const rows = libraryRows([],catalog,jobs)
+  const download = {available:true,provider:'QuantDataManager',supported_instruments:['EUR/USD']}
+  assert.equal(canDownloadAsset(rows[0],download),true)
+  assert.equal(canDownloadAsset(rows[1],download),false)
+  assert.equal(rows[0].downloadJob,jobs[0])
+  assert.equal(rows[1].downloadJob,undefined)
+  const saved = libraryRows([{dataset_id:'qdm',instrument_id:'EUR/USD',source:{provider:'QuantDataManager'}}],catalog,jobs)
+  assert.equal(saved.length,2)
+  assert.equal(saved[0].downloadJob,jobs[0])
+})
 test('catalog category uses declared metadata, never guesses from the symbol', () => {
   assert.equal(categoryOf(saved[2]),'metal')
   assert.equal(categoryOf({instrument_id:'XAUUSD'}),'')

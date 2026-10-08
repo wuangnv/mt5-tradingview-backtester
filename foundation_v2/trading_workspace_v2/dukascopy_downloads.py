@@ -24,6 +24,10 @@ PACING_LEVELS = ((3, 1000), (2, 2000), (1, 4000), (1, 8000), (1, 16000), (1, 300
 
 
 class DukascopyDownloads:
+    provider = 'Dukascopy'
+    library = 'dukascopy-node@1.50.0'
+    price = 'bid'
+
     def __init__(self, store, artifacts, catalog, authorization, *, node=None, worker=None):
         self.store, self.artifacts, self.catalog, self.authorization = store, artifacts, catalog, authorization
         self.root = artifacts.root / 'dukascopy'
@@ -51,7 +55,7 @@ class DukascopyDownloads:
         self.ingest = DataIngestService(store, artifacts)
 
     def availability(self):
-        return {'available': bool(self.meta), 'supported_instruments': sorted(self.meta),
+        return {'available': bool(self.meta), 'provider': self.provider, 'supported_instruments': sorted(self.meta),
                 'earliest_dates': {name: item['startDayForMinuteCandles'][:10] for name, item in self.meta.items()},
                 'timeframe': 'm1', 'price_type': 'bid', 'supports_full': True}
 
@@ -69,12 +73,12 @@ class DukascopyDownloads:
 
     def _dataset_scope(self, workspace, manifest):
         if (manifest is None or manifest.workspace_id != workspace or manifest.instrument_id not in self.meta
-                or manifest.source.provider.lower() != 'dukascopy' or manifest.timeframe_seconds != 60
+                or manifest.source.provider.lower() != self.provider.lower() or manifest.timeframe_seconds != 60
                 or manifest.holdout_policy.get('mode', 'none') != 'none'):
             raise ValueError('dataset_not_supported')
         try:
             settings = json.loads(manifest.source.export_settings)
-            if settings['library'] != 'dukascopy-node@1.50.0' or settings['price'] != 'bid' or settings['timeframe'] != 'm1':
+            if settings['library'] != self.library or settings['price'] != self.price or settings['timeframe'] != 'm1':
                 raise ValueError('dataset_not_supported')
             start = date.fromisoformat(settings['requested_from'])
             end = date.fromisoformat(settings['requested_to'])
@@ -431,14 +435,7 @@ class DukascopyDownloads:
                         output.write(b'\n')
             csv = merged
             parent_hash = parent.raw_sha256
-        source = {'source_id': 'dukascopy-public-m1-bid', 'provider': 'Dukascopy',
-            'instrument_mapping': {self.meta[symbol]['code']: symbol},
-            'license_use': 'owner-requested local research; redistribution not granted',
-            'retrieved_at_utc': job['created_at_utc'],
-            'export_settings': json.dumps({'library':'dukascopy-node@1.50.0', 'timeframe':'m1', 'price':'bid',
-                'timezone':'UTC', 'synthetic_bars':False, 'volume_units':'units', 'requested_from':full_start,
-                'requested_to':job['to_date'], 'raw_buckets_sha256':job['buckets_sha256'], 'price_only':True,
-                'parent_dataset_id':job.get('parent_dataset_id'), 'parent_raw_sha256':parent_hash}, sort_keys=True)}
+        source = self._source(job, full_start, parent_hash)
         requested_range = (int(datetime.fromisoformat(full_start).replace(tzinfo=timezone.utc).timestamp()),
                            int((datetime.fromisoformat(job['to_date']).replace(tzinfo=timezone.utc)+timedelta(days=1)).timestamp()))
         preview = preview_csv(csv, source, symbol, 60, requested_range=requested_range, continue_check=check)
@@ -461,6 +458,16 @@ class DukascopyDownloads:
             with publication():
                 pass
 
+    def _source(self, job, full_start, parent_hash):
+        symbol = job['instrument_id']
+        return {'source_id': 'dukascopy-public-m1-bid', 'provider': 'Dukascopy',
+            'instrument_mapping': {self.meta[symbol]['code']: symbol},
+            'license_use': 'owner-requested local research; redistribution not granted',
+            'retrieved_at_utc': job['created_at_utc'],
+            'export_settings': json.dumps({'library':'dukascopy-node@1.50.0', 'timeframe':'m1', 'price':'bid',
+                'timezone':'UTC', 'synthetic_bars':False, 'volume_units':'units', 'requested_from':full_start,
+                'requested_to':job['to_date'], 'raw_buckets_sha256':job['buckets_sha256'], 'price_only':True,
+                'parent_dataset_id':job.get('parent_dataset_id'), 'parent_raw_sha256':parent_hash}, sort_keys=True)}
     def stop(self):
         with self.lock:
             self.stopping = True

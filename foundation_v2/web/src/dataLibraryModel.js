@@ -13,7 +13,7 @@ export const categoryLabel = value => CATEGORIES.find(([key]) => key === value)?
 export const sourceOf = item => item.source?.provider || item.provider || item.provider_id || '—'
 
 export function libraryDataType(item, availableStart) {
-  if (!item.downloaded) return availableStart ? { timeframe: 'M1', price: 'Bid' } : { timeframe: '—' }
+  if (!item.downloaded) return availableStart ? { timeframe: 'M1', ...(sourceOf(item) === 'QuantDataManager' ? {} : { price: 'Bid' }) } : { timeframe: '—' }
   let settings
   try { settings = JSON.parse(item.source?.export_settings || '{}') } catch { /* CSV provenance can be free text. */ }
   const price = { bid: 'Bid', ask: 'Ask', mid: 'Mid' }[settings?.price]
@@ -23,7 +23,7 @@ export function libraryDataType(item, availableStart) {
 export function canDownloadAsset(asset, download, preview = false) {
   return !preview && Boolean(download?.available) && Array.isArray(download.supported_instruments)
     && download.supported_instruments.includes(asset.instrument_id)
-    && sourceOf(asset).toLowerCase() === 'dukascopy'
+    && sourceOf(asset).toLowerCase() === (download.provider || 'Dukascopy').toLowerCase()
 }
 
 export function defaultDownloadDates(now = new Date()) {
@@ -52,8 +52,8 @@ export function libraryRows(datasets, instruments = [], jobs = []) {
       rows.push({ ...item, key:`${item.provider_id}:${item.instrument_id}`, downloaded:false })
     }
   }
-  return rows.map(item => ({ ...item, downloadJob: sourceOf(item) === 'Dukascopy'
-    ? jobs.find(job => job.instrument_id === item.instrument_id && ['queued','running','pausing','paused','failed'].includes(job.status)) : undefined }))
+  return rows.map(item => ({ ...item, downloadJob: jobs.find(job => (job.provider || 'Dukascopy') === sourceOf(item)
+    && job.instrument_id === item.instrument_id && ['queued','running','pausing','paused','failed'].includes(job.status)) }))
 }
 
 export function filterLibrary(rows, { category = 'all', provider = 'all', downloadStatus = 'all', search = '', sort = 'asset-asc' } = {}) {
