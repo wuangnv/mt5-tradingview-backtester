@@ -1,0 +1,28 @@
+{
+  "scope": "Owner requested project restart on 2026-10-08; real existing job resumed, no new full download, no MT5/live actions",
+  "api": "http://127.0.0.1:8010",
+  "web": "http://127.0.0.1:5180",
+  "supports_pause": true,
+  "job": {
+    "job_id": "97a9dd0c822d49ff85758a618446e6b3",
+    "instrument_id": "EUR/USD",
+    "from_date": "2003-05-04",
+    "to_date": "2026-10-07",
+    "status": "paused",
+    "error": "source_rate_limited",
+    "completed_days": 624,
+    "total_days": 8558,
+    "dataset_id": null,
+    "transferred_bytes": 13185308,
+    "cached_bytes": 13168924,
+    "stage": "downloading",
+    "full_from_date": "2003-05-04",
+    "parent_dataset_id": null,
+    "created_at_utc": "2026-10-08T06:09:52.543548+00:00",
+    "retry_after_seconds": 151
+  },
+  "cache_before_resume_bytes": 13168924,
+  "completed_days_before_resume": 624,
+  "result": "New API/web started; same job resumed from checksummed bucket cache. Upstream returned 429 again; cooldown preserved and job paused. UI read-only smoke shows Paused 7%, resume disabled during cooldown.",
+  "smoke_probe_note": "First probe expected EURUSD on unfiltered first page and timed out. Corrected probe searched EUR/USD; passed."
+}
