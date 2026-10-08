@@ -1,0 +1,279 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "updateProgress": true,
+      "requests": [
+        {
+          "path": "/api/v2/data/datasets/dsASSET00"
+        },
+        {
+          "path": "/api/v2/data/datasets/dsASSET03"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET01"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/cancel"
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/resume"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET09",
+            "dataset_id": "dsASSET09"
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "en",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "updateProgress": true,
+      "requests": [
+        {
+          "path": "/api/v2/data/datasets/dsASSET00"
+        },
+        {
+          "path": "/api/v2/data/datasets/dsASSET03"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET01"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/cancel"
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/resume"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET09",
+            "dataset_id": "dsASSET09"
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "vi",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "updateProgress": true,
+      "requests": [
+        {
+          "path": "/api/v2/data/datasets/dsASSET00"
+        },
+        {
+          "path": "/api/v2/data/datasets/dsASSET03"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET01"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/cancel"
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/resume"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET09",
+            "dataset_id": "dsASSET09"
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "lang": "en",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "updateProgress": true,
+      "requests": [
+        {
+          "path": "/api/v2/data/datasets/dsASSET00"
+        },
+        {
+          "path": "/api/v2/data/datasets/dsASSET03"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET01"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/cancel"
+        },
+        {
+          "path": "/api/v2/data/downloads/qa-job/resume"
+        },
+        {
+          "path": "/api/v2/data/downloads/full",
+          "body": {
+            "instrument_id": "ASSET09",
+            "dataset_id": "dsASSET09"
+          }
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "scope": "Explicit mock dataset/download/catalog GET and DELETE/full/resume/cancel POST; no actual data mutations/provider/live",
+  "pass": true
+}

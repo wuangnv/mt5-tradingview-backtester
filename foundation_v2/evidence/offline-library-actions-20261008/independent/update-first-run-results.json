@@ -1,0 +1,171 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('button', { name: 'Đóng', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"rd-button\" aria-label=\"Đóng\">×</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n"
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "en",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('button', { name: 'Close', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"rd-button\" aria-label=\"Close\">×</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "vi",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('button', { name: 'Đóng', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"rd-button\" aria-label=\"Đóng\">×</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "lang": "en",
+      "columns": [
+        {
+          "x": 0,
+          "w": 278
+        },
+        {
+          "x": 278,
+          "w": 125.09375
+        },
+        {
+          "x": 403.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 528.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 750.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 847.875,
+          "w": 111.1875
+        },
+        {
+          "x": 959.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1139.75,
+          "w": 250.25
+        }
+      ],
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('button', { name: 'Close', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"rd-button\" aria-label=\"Close\">×</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "scope": "Explicit mock dataset/download/catalog GET and DELETE/full/resume/cancel POST; no actual data mutations/provider/live",
+  "pass": false
+}
