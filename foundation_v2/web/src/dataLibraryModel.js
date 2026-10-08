@@ -53,9 +53,9 @@ export function filterLibrary(rows, { category = 'all', provider = 'all', downlo
   const filtered = rows.filter(item => (category === 'all' || categoryOf(item) === category)
     && (provider === 'all' || sourceOf(item) === provider)
     && (downloadStatus === 'all'
-      || (downloadStatus === 'downloading' && ['queued','running','pausing'].includes(item.downloadJob?.status))
+      || (downloadStatus === 'downloading' && Boolean(item.downloadJob))
       || (downloadStatus === 'downloaded' && item.downloaded)
-      || (downloadStatus === 'not-downloaded' && !item.downloaded && !['queued','running','pausing'].includes(item.downloadJob?.status)))
+      || (downloadStatus === 'not-downloaded' && !item.downloaded && !item.downloadJob))
     && `${item.instrument_id} ${item.name || ''} ${item.timeframe || ''} ${sourceOf(item)} ${categoryLabel(categoryOf(item))}`.toLocaleLowerCase('vi').includes(term))
   const assetCompare = (a, b) => `${a.instrument_id || ''} ${a.timeframe || ''}`.localeCompare(`${b.instrument_id || ''} ${b.timeframe || ''}`, 'en', { numeric:true }) || a.key.localeCompare(b.key)
   return filtered.sort((a, b) => sort === 'asset-desc' ? assetCompare(b,a)

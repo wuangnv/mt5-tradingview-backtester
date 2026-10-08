@@ -1,0 +1,21 @@
+{
+  "scope": "Actual cached local GET and explicit status fixture; all writes, external origins and WebSockets blocked",
+  "cases": [
+    {
+      "fixture": false,
+      "theme": "dark",
+      "width": 1710,
+      "actualStatus": "EUR/USD paused, visible in Downloading filter",
+      "pass": true
+    },
+    {
+      "fixture": true,
+      "theme": "light",
+      "width": 360,
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.data-library-toolbar').getByRole('button', { name: 'Xoá bộ lọc', exact: true })\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "pass": false
+}

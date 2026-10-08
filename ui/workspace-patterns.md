@@ -396,9 +396,11 @@ range, candle count, storage size, quality and actions. Session creation belongs
 and Dashboard; this page has no create-session action.
 Search is left-aligned. Right-aligned controls reuse the Recent Sessions pattern:
 always-visible category/source/download-status pills, sort, asset catalog and CSV import.
-Status filters all/saved/unsaved/downloading rows; queued and pausing jobs count as
-downloading, including updates of a saved version. Unsaved active downloads are
-excluded from Not downloaded. Sort only reorders by name or recent update.
+Status options are All, Downloaded, Downloading, Not downloaded. Downloading groups
+unfinished jobs (queued/running/pausing/paused/failed), including saved-version updates,
+so interruption does not remove the row or its recovery actions. Each row keeps its
+actual job status. These rows are excluded from Not downloaded; completed/cancelled
+jobs leave this group. Sort only reorders by name or recent update.
 Clear filters resets search/category/source/status and page, preserving sort and page size.
 There is no count, duplicate title or permanent explanatory block above the grid.
 Table separators extend through the shared page gutter while text stays inset.
@@ -415,6 +417,7 @@ the real job status rather than Not downloaded; no quality assertion is made.
 The ellipsis becomes Pause/Cancel while downloading and Resume/Cancel while
 paused or failed. Pause keeps per-bucket checksummed cache; Cancel ends the job.
 Pause stays disabled when the running backend does not advertise supports_pause.
+There is no toolbar progress launcher; progress details open from the row's progress button.
 Successful CSV import clears filters, selects the imported version, opens its
 details and refreshes the server-owned catalog. Escape/outside dismissal and
 keyboard menu navigation return focus; menus reposition during scrolling rather

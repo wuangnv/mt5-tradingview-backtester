@@ -589,11 +589,10 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <div className="data-library-filters">
           <FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} />
           <FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={sourceOptions} />
-          <FxSelect label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'all',label:'Tất cả trạng thái'},{value:'downloaded',label:'Đã tải'},{value:'not-downloaded',label:'Chưa tải'},{value:'downloading',label:'Đang tải'}]} />
+          <FxSelect label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'all',label:'Tất cả trạng thái'},{value:'downloaded',label:'Đã tải'},{value:'downloading',label:'Đang tải'},{value:'not-downloaded',label:'Chưa tải'}]} />
           <FxSelect className="data-library-sort" label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'newest',label:'Mới cập nhật'}]} />
           <button type="button" className="fxa-clear-filters" disabled={!filtersApplied} onClick={clearFilters}><TestingIcon kind="delete" />{t('Clear filters')}</button>
           {state.catalog && <button type="button" className="data-library-catalog-trigger" onClick={() => setCatalogOpen(true)} aria-haspopup="dialog" aria-expanded={catalogOpen}>{t('Danh mục tài sản')}</button>}
-          {visibleDownloads.length > 0 && !pageItems.some(jobForAsset) && <button type="button" className="data-library-catalog-trigger" onClick={() => setDownloadProgressOpen(true)}>{t('Tiến độ tải dữ liệu')}</button>}
           <button type="button" className="fxa-button is-primary data-library-import" disabled={Boolean(preview)} onClick={() => openCsv()}><TestingIcon kind="upload" />{t('Nhập CSV')}</button>
         </div>
       </div>

@@ -68,13 +68,14 @@ test('sorting keeps missing dates deterministic and puts downloaded assets first
 })
 
 test('active jobs filter both new downloads and saved updates without mislabelling other sources', () => {
-  const assets = ['A','B','C','D'].map(instrument_id => ({instrument_id,provider:'Dukascopy',provider_id:'dukascopy'}))
-  const jobs = [{instrument_id:'A',status:'running'}, {instrument_id:'B',status:'pausing'}, {instrument_id:'C',status:'paused'}, {instrument_id:'D',status:'cancelled'}]
+  const assets = ['A','B','C','D','E','F'].map(instrument_id => ({instrument_id,provider:'Dukascopy',provider_id:'dukascopy'}))
+  const jobs = [{instrument_id:'A',status:'running'}, {instrument_id:'B',status:'pausing'}, {instrument_id:'C',status:'paused'}, {instrument_id:'D',status:'cancelled'}, {instrument_id:'E',status:'failed'}, {instrument_id:'F',status:'completed'}]
   const rows = libraryRows([{dataset_id:'update',instrument_id:'A',source:{provider:'Dukascopy'}}, {dataset_id:'csv',instrument_id:'A',source:{provider:'CSV'}}],assets,jobs)
-  assert.deepEqual(filterLibrary(rows,{downloadStatus:'downloading'}).map(row=>row.instrument_id),['A','B'])
-  assert.deepEqual(filterLibrary(rows,{downloadStatus:'not-downloaded'}).map(row=>row.instrument_id),['C','D'])
+  assert.deepEqual(filterLibrary(rows,{downloadStatus:'downloading'}).map(row=>row.instrument_id),['A','B','C','E'])
+  assert.deepEqual(filterLibrary(rows,{downloadStatus:'not-downloaded'}).map(row=>row.instrument_id),['D','F'])
   assert.equal(filterLibrary(rows,{downloadStatus:'downloaded'}).length,2)
   assert.equal(filterLibrary(rows,{downloadStatus:'downloading',provider:'CSV'}).length,0)
   assert.equal(filterLibrary(libraryRows([],assets,[]),{downloadStatus:'downloading'}).length,0)
   assert.equal(rows.find(row=>row.instrument_id==='D').downloadJob,undefined)
+  assert.equal(filterLibrary(rows,{downloadStatus:'downloading'}).find(row=>row.instrument_id==='C').downloadJob.status,'paused')
 })
