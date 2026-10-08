@@ -1,4 +1,12 @@
 {
+  "Danh mục tài sản": {"vi":"Danh mục tài sản","en":"Asset catalog"},
+  "Cập nhật danh mục": {"vi":"Cập nhật danh mục","en":"Update catalog"},
+  "Đang cập nhật danh mục…": {"vi":"Đang cập nhật danh mục…","en":"Updating catalog…"},
+  "Đã cập nhật danh mục.": {"vi":"Đã cập nhật danh mục.","en":"Catalog updated."},
+  "Đã chờ {seconds} giây": {"vi":"Đã chờ {seconds} giây","en":"Elapsed: {seconds} s"},
+  "Số tài sản": {"vi":"Số tài sản","en":"Assets"},
+  "Cập nhật lần cuối (UTC)": {"vi":"Cập nhật lần cuối (UTC)","en":"Last updated (UTC)"},
+  "Vui lòng chờ trước khi cập nhật lại.": {"vi":"Vui lòng chờ trước khi cập nhật lại.","en":"Please wait before updating again."},
   "Phân trang phiên gần đây": { "vi": "Phân trang phiên gần đây", "en": "Recent sessions pagination" },
   "Nến chưa có ở đầu/cuối khoảng chọn": {"vi":"Nến chưa có ở đầu/cuối khoảng chọn","en":"Unavailable bars at the requested range edges"},
   "Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.": { "vi": "Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.", "en": "Dukascopy is rate limiting requests. Try again later." },

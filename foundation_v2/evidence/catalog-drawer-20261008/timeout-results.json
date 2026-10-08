@@ -1,0 +1,4 @@
+{
+  "scope": "Delayed mocked POST and virtual browser clock, no real catalog write",
+  "pass": true
+}

@@ -17,6 +17,7 @@ import DataLibraryActions from './DataLibraryActions.jsx'
 import PaginationFooter from './PaginationFooter.jsx'
 import { CATEGORIES, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates, downloadRangeError } from './dataLibraryModel.js'
 import './data-library.css'
+import './session-settings.css'
 
 const CSV_LIMIT_BYTES = 10 * 1024 * 1024
 const MAX_GET_RETRIES = 3
@@ -134,7 +135,7 @@ function LocalCsvQualityReport({ preview }) {
   )
 }
 
-function DataLibraryDialog({ title, busy = false, onClose, compact = false, children }) {
+function DataLibraryDialog({ title, busy = false, onClose, compact = false, drawer = false, blockingStatus, children }) {
   const { t } = useTestingLocale()
   const id = useId(), dialog = useRef(null), opener = useRef(document.activeElement)
   useEffect(() => {
@@ -146,14 +147,24 @@ function DataLibraryDialog({ title, busy = false, onClose, compact = false, chil
       if (opener.current?.isConnected) opener.current.focus({ preventScroll:true })
     }
   }, [])
+  useEffect(() => {
+    if (drawer && busy) dialog.current?.focus()
+    else if (drawer && document.activeElement === dialog.current) dialog.current?.querySelector('button:not(:disabled)')?.focus()
+  },[drawer,busy])
   const close = () => { if (!busy) onClose() }
-  return <dialog ref={dialog} className={`data-library-dialog${compact ? ' is-compact' : ''}`} aria-labelledby={id} aria-busy={busy} onCancel={event => { event.preventDefault(); close() }} onClick={event => {
+  return <dialog ref={dialog} tabIndex={drawer ? -1 : undefined} className={drawer ? 'fxs-settings-drawer data-library-catalog-drawer' : `data-library-dialog${compact ? ' is-compact' : ''}`} aria-labelledby={id} aria-busy={busy} onCancel={event => { event.preventDefault(); close() }} onKeyDown={event => {
+    if (!drawer || event.key !== 'Tab') return
+    const elements = [...event.currentTarget.querySelectorAll('button, input, [href], [tabindex]')].filter(element => !element.disabled && !element.closest('[inert]') && element.tabIndex >= 0 && element.getClientRects().length)
+    const first = elements[0], last = elements[elements.length - 1]
+    if (!first || (event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) { event.preventDefault(); (event.shiftKey ? last : first)?.focus() }
+  }} onClick={event => {
     if (event.target !== dialog.current) return
     const bounds = dialog.current.getBoundingClientRect()
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close()
   }}>
-    <header className="data-library-dialog-header"><h2 id={id}>{t(title)}</h2><button type="button" className="rd-button" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button></header>
-    <div className="data-library-dialog-body">{children}</div>
+    {drawer ? <><button type="button" className="fxs-drawer-close" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button><header><h2 id={id}>{t(title)}</h2></header></> : <header className="data-library-dialog-header"><h2 id={id}>{t(title)}</h2><button type="button" className="rd-button" aria-label={t('Đóng')} disabled={busy} onClick={close}>×</button></header>}
+    <div className={drawer ? 'fxs-settings-panel' : 'data-library-dialog-body'} inert={drawer && busy}>{children}</div>
+    {drawer && busy && blockingStatus}
   </dialog>
 }
 
@@ -371,6 +382,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const [catalogRetryCount, setCatalogRetryCount] = useState(0)
   const [csvOpen, setCsvOpen] = useState(false), [csvBusy, setCsvBusy] = useState(false)
   const [catalogBusy, setCatalogBusy] = useState(false), [catalogRefreshError, setCatalogRefreshError] = useState(false)
+  const [catalogOpen, setCatalogOpen] = useState(false), [catalogElapsed, setCatalogElapsed] = useState(0), [catalogUpdated, setCatalogUpdated] = useState(false)
   const [downloadAsset, setDownloadAsset] = useState(null), [downloadBusy, setDownloadBusy] = useState(false)
   const [downloads, setDownloads] = useState({items:[],available:false,receivedAt:0})
   const [downloadRevision, setDownloadRevision] = useState(0), [downloadError, setDownloadError] = useState(''), [pollError,setPollError] = useState('')
@@ -386,6 +398,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   }, [workspace])
 
   useEffect(() => {
+    setCatalogOpen(false); setCatalogUpdated(false); setCatalogBusy(false)
     setDownloadAsset(null); setDownloadBusy(false); setDownloadError(''); setPollError(''); setJobAction('')
     setDownloads({items:[],available:false,receivedAt:0})
     completedJobs.current = new Set()
@@ -439,7 +452,6 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
     }
     const controller = new AbortController()
     const requestSeq = ++catalogRequestSeq.current
-    setCatalogBusy(false)
     setCatalogRefreshError(false)
     setState((current) => ({ ...current, status: 'loading', error: null }))
     fetchOfflineLibrary(workspace, controller.signal)
@@ -482,16 +494,33 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   }, [state.catalog])
 
   const refreshCatalog = async () => {
-    if (catalogBusy || !state.catalog?.refresh_available) return
+    if (preview || state.status !== 'ready' || catalogBusy || !state.catalog?.refresh_available) return
     const requestSeq = catalogRequestSeq.current
+    const controller = new AbortController(), scopeSignal = downloadController.signal
+    const abort = () => controller.abort()
+    if (scopeSignal.aborted) return
+    scopeSignal.addEventListener('abort', abort, {once:true})
+    const timeout = setTimeout(abort,45000)
     setCatalogBusy(true)
     setCatalogRefreshError(false)
+    setCatalogUpdated(false)
     try {
-      const payload = await refreshInstrumentCatalog(workspace)
-      if (requestSeq === catalogRequestSeq.current) setState(current => ({ ...current, ...payload }))
-    } catch { if (requestSeq === catalogRequestSeq.current) setCatalogRefreshError(true) }
-    finally { if (requestSeq === catalogRequestSeq.current) setCatalogBusy(false) }
+      const payload = await refreshInstrumentCatalog(workspace,controller.signal)
+      if (!scopeSignal.aborted) {
+        if (requestSeq === catalogRequestSeq.current) setState(current => ({ ...current, ...payload }))
+        else setCatalogRevision(current => current + 1)
+        setCatalogUpdated(!payload.catalog?.error && payload.catalog?.status === 'cached')
+      }
+    } catch { if (!scopeSignal.aborted) setCatalogRefreshError(true) }
+    finally { clearTimeout(timeout); scopeSignal.removeEventListener('abort',abort); if (!scopeSignal.aborted) setCatalogBusy(false) }
   }
+  useEffect(() => {
+    if (!catalogBusy) return
+    const started=Date.now()
+    setCatalogElapsed(0)
+    const timer=setInterval(()=>setCatalogElapsed(Math.floor((Date.now()-started)/1000)),1000)
+    return ()=>clearInterval(timer)
+  },[catalogBusy])
   const catalogError = catalogRefreshError ? 'source_unavailable' : state.catalog?.error
   const catalogMessages = { rate_limited:'Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.', source_unavailable:'Không cập nhật được danh sách Dukascopy.', invalid_response:'Danh sách Dukascopy trả về không hợp lệ.', invalid_cache:'Bản lưu danh sách Dukascopy không hợp lệ.', cache_write_failed:'Không lưu được danh sách Dukascopy.' }
   const catalogMessage = catalogMessages[catalogError] || (state.catalog?.stale ? 'Danh sách Dukascopy đã cũ.' : '')
@@ -518,8 +547,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           <button type="button" className="fxa-button fxa-icon-button data-library-filter-toggle" aria-label={t(filtersOpen ? 'Ẩn bộ lọc dữ liệu' : 'Hiện bộ lọc dữ liệu')} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) { setCategoryFilter('all'); setProviderFilter('all') } setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
           {filtersOpen && <><FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} /><FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={[{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]} /></>}
           <FxSelect label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'downloaded',label:'Đã tải trước'},{value:'newest',label:'Mới lưu nhất'}]} />
-          {state.catalog && <button type="button" className="fxa-button data-library-refresh" onClick={refreshCatalog} disabled={Boolean(preview) || state.status !== 'ready' || catalogBusy || !state.catalog.refresh_available} aria-busy={catalogBusy} title={state.catalog.retrieved_at_utc ? `${t('Danh sách cập nhật lúc')} ${formatUtc(state.catalog.retrieved_at_utc, locale)}` : t('Lấy danh sách tài sản Dukascopy')}><TestingIcon kind="history" />{t(catalogBusy ? 'Đang cập nhật…' : 'Cập nhật danh sách')}</button>}
-          <button type="button" className="fxa-button data-library-import" disabled={Boolean(preview)} onClick={() => openCsv()}><TestingIcon kind="upload" />{t('Nhập CSV')}</button>
+          {state.catalog && <button type="button" className="data-library-catalog-trigger" onClick={() => setCatalogOpen(true)} aria-haspopup="dialog" aria-expanded={catalogOpen}>{t('Danh mục tài sản')}</button>}
+          <button type="button" className="fxa-button is-primary data-library-import" disabled={Boolean(preview)} onClick={() => openCsv()}><TestingIcon kind="upload" />{t('Nhập CSV')}</button>
         </div>
       </div>
 
@@ -576,6 +605,16 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
 
         </div>
       )}
+      {catalogOpen && <DataLibraryDialog drawer title="Danh mục tài sản" busy={catalogBusy} onClose={() => setCatalogOpen(false)} blockingStatus={<div className="data-library-update-overlay" role="status"><strong>{t('Đang cập nhật danh mục…')}</strong><progress aria-label={t('Đang cập nhật danh mục…')} /><span aria-live="off">{t('Đã chờ {seconds} giây',{seconds:catalogElapsed})}</span></div>}>
+        <dl className="data-library-catalog-facts">
+          <div><dt>{t('Nguồn dữ liệu')}</dt><dd>Dukascopy</dd></div>
+          <div><dt>{t('Số tài sản')}</dt><dd>{fmt(state.catalog?.item_count ?? state.instruments.length, '', 0)}</dd></div>
+          <div><dt>{t('Cập nhật lần cuối (UTC)')}</dt><dd>{state.catalog?.retrieved_at_utc ? formatUtc(state.catalog.retrieved_at_utc, locale) : '—'}</dd></div>
+        </dl>
+        {catalogMessage ? <p className="data-library-catalog-status" role="status">{t(catalogMessage)}</p> : catalogUpdated && <p className="data-library-catalog-status" role="status">{t('Đã cập nhật danh mục.')}</p>}
+        {!catalogBusy && state.catalog?.configured && !state.catalog.refresh_available && !catalogMessage && <p className="data-library-catalog-status" role="status">{t('Vui lòng chờ trước khi cập nhật lại.')}</p>}
+        <button type="button" className="fxs-settings-save" onClick={refreshCatalog} disabled={Boolean(preview) || state.status !== 'ready' || catalogBusy || !state.catalog?.refresh_available}>{t('Cập nhật danh mục')}</button>
+      </DataLibraryDialog>}
       {csvOpen && <DataLibraryDialog title="Nhập CSV" busy={csvBusy} onClose={() => setCsvOpen(false)}><LocalCsvImport
         workspace={workspace}
         asset={importAsset}

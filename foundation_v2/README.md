@@ -46,11 +46,18 @@ classification and unknown metadata; it does not establish history coverage.
 Authorized GET `/api/v2/data/datasets` reads cached `catalog_items` and
 `catalog_state`; it makes no Dukascopy request. The first UI open without a cache
 requests POST `/api/v2/data/catalog/refresh`. Later refreshes
-require **Cập nhật danh sách**. There is no scheduler, quote stream or automatic
+require **Cập nhật danh mục**. There is no scheduler, quote stream or automatic
 refresh of stale data. Snapshots survive API restarts under the artifact root at
 `catalog/dukascopy-instruments.json`; a failed request retains the previous file.
 A 60-second server cooldown prevents repeated requests; 429 extends it to five
 minutes. Seven-day-old metadata is marked stale but remains usable offline.
+
+The **Danh mục tài sản** toolbar action opens the right drawer used for catalog
+facts and **Cập nhật danh mục**. Filters remain independent; group editing is
+deferred. During an update, the modal blocks interactions and shows elapsed time
+with indeterminate progress. Success/error restores controls, and the UI releases
+the lock after a 45-second request timeout. Opening the drawer only reads the
+existing page state and never refreshes Dukascopy.
 
 Install the separate data worker from the locked npm release of
 [dukascopy-node](https://github.com/Leo4815162342/dukascopy-node/tree/v1.50.0):

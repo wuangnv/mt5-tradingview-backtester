@@ -1,0 +1,115 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "mode": "actual",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "lang": "en",
+      "mode": "actual",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "mode": "actual",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "vi",
+      "mode": "actual",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "lang": "en",
+      "mode": "actual",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "lang": "vi",
+      "mode": "actual",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "mode": "actual",
+      "touch": true,
+      "pass": true,
+      "posts": 0
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "mode": "success",
+      "touch": false,
+      "pass": true,
+      "posts": 1
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "en",
+      "mode": "success",
+      "touch": false,
+      "pass": true,
+      "posts": 1
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "mode": "failure",
+      "touch": false,
+      "pass": true,
+      "posts": 1
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "lang": "en",
+      "mode": "rate-limit",
+      "touch": false,
+      "pass": true,
+      "posts": 1
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "mode": "cooldown",
+      "touch": false,
+      "pass": true,
+      "posts": 0
+    }
+  ],
+  "errors": [],
+  "scope": "Actual cached catalog GET; refresh behavior uses separate delayed fixtures. No real provider request/data mutation.",
+  "pass": true
+}
