@@ -64,11 +64,6 @@
 .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content .fxa-clear-filters > svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content :is(.fx-select-trigger, .fxa-filter-pill) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content :is(.fxs-new-session, .fxs-journal) > svg { width: 16px; height: 16px; flex: 0 0 16px; }
-.fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content .fxa-pagination { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; min-height: 56px; padding-block: 8px; align-items: center; font-size: 12px; color: var(--wm-content-muted); }
-.fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content .fxa-pagination > div { display: flex; align-items: center; gap: 8px; }
-.fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content .fxa-pagination > div:not(.fx-select) > button.fxa-button { width: var(--wm-icon-action-size); height: var(--wm-icon-action-size); min-width: var(--wm-icon-action-size); min-height: var(--wm-icon-action-size); flex: 0 0 var(--wm-icon-action-size); padding: 0; border-radius: 50%; }
-.fx-app.fx-shell-story:is([data-ui-area='testing'], [data-ui-area='live'])[data-theme] .fx-content .fxa-pagination > div:not(.fx-select) > button.fxa-button[aria-current='page'] { background: var(--wm-selected); }
-.fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content .fxa-pagination .fx-select-trigger { height: var(--wm-control-height); min-height: var(--wm-control-height); }
 .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content :is(input, textarea):focus-visible { outline: none; border-color: var(--wm-focus); box-shadow: inset 0 0 0 1px var(--wm-focus); }
 .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content input[type='checkbox']:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
 .wm-read-state { display: flex; align-items: center; gap: 12px; padding: 16px 0; color: var(--wm-content-muted); font-size: 14px; }
@@ -86,7 +81,6 @@
 }
 @media (max-width: 480px) {
   .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) { --wm-control-height: 44px; --wm-icon-action-size: 44px; }
-  .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content .fxa-trades .fxa-pagination { padding-inline: 16px; }
   .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content :is(.fxa-button, .fxr-button, .fx-select-trigger, .fxa-detail-button) { min-height: 44px; }
   .fx-app:is([data-ui-area='testing'], [data-ui-area='live']) .fx-content :is(.fxa-icon-button, .fx-select.fxa-columns-control .fx-select-trigger, .fxa-detail-button) { width: 44px; min-width: 44px; height: 44px; }
 }

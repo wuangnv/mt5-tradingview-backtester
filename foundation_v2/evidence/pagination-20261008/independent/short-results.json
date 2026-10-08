@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "scenario": "actual",
+      "geometry": {
+        "bottom": 600,
+        "x": 58,
+        "right": 360,
+        "docOverflow": 0
+      }
+    },
+    {
+      "scenario": "running",
+      "geometry": {
+        "bottom": 600,
+        "x": 58,
+        "right": 360,
+        "docOverflow": 0
+      },
+      "jobs": {
+        "height": 75,
+        "scrollHeight": 143,
+        "scrollTop": 52,
+        "overflow": "auto"
+      }
+    },
+    {
+      "scenario": "failed",
+      "geometry": {
+        "bottom": 600,
+        "x": 58,
+        "right": 360,
+        "docOverflow": 0
+      },
+      "jobs": {
+        "height": 75,
+        "scrollHeight": 216,
+        "scrollTop": 125,
+        "overflow": "auto"
+      }
+    },
+    {
+      "scenario": "failed-many",
+      "geometry": {
+        "bottom": 600,
+        "x": 58,
+        "right": 360,
+        "docOverflow": 0
+      },
+      "jobs": {
+        "height": 75,
+        "scrollHeight": 1301,
+        "scrollTop": 1226,
+        "overflow": "auto"
+      }
+    }
+  ]
+}

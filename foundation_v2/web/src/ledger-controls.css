@@ -36,9 +36,4 @@
 .fxl-filter-drawer footer{display:flex;gap:16px;align-items:center;padding:16px 18px;border-top:1px solid var(--wm-border);flex:none}
 .fxl-filter-drawer footer .is-primary{flex:1;border-radius:24px}
 .fxl-clear{border:0;background:none;color:var(--wm-negative);font:inherit;font-size:13px;cursor:pointer;padding:10px 0}
-.fx-app .fxa-trades .fxa-pagination{justify-content:center;gap:16px;flex-wrap:nowrap}
-.fx-app .fxa-trades .fxa-pagination>div{gap:6px;flex-wrap:nowrap}
-.fx-app .fxa-trades .fxa-pagination>div button{width:36px;height:36px;min-height:36px;padding:0;border:0;border-radius:50%}
-.fx-app .fxa-trades .fxa-pagination .fx-select-trigger{min-width:78px;border-radius:12px}
 .fxa-detail-button svg{width:16px;height:16px;display:block;margin:auto}
-@media(max-width:480px){.fx-app .fxa-trades .fxa-pagination{gap:8px}.fx-app .fxa-trades .fxa-pagination>div{gap:0}.fx-app .fxa-trades .fxa-pagination>div button{width:24px;height:32px}.fx-app .fxa-trades .fxa-pagination .fx-select-trigger{min-width:60px;padding-inline:8px}}

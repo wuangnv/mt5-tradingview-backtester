@@ -1,0 +1,24 @@
+.wm-pagination { box-sizing:border-box; display:flex; flex:0 0 auto; flex-direction:column; align-items:center; justify-content:center; gap:8px; min-width:0; margin:0; padding:16px var(--wm-page-gutter); border-top:1px solid var(--wm-border); background:var(--wm-canvas); color:var(--wm-content-muted); font-size:13px; }
+.wm-pagination-controls, .wm-pagination-pages { display:flex; align-items:center; justify-content:center; flex-wrap:nowrap; }
+.wm-pagination-controls { gap:16px; max-width:100%; }
+.wm-pagination-pages { gap:4px; }
+.fx-app .fx-content .wm-pagination .wm-pagination-button { box-sizing:border-box; display:inline-flex; justify-content:center; align-items:center; flex:0 0 auto; width:36px; height:36px; min-width:36px; min-height:36px; padding:0; border:1px solid transparent; border-radius:50%; background:transparent; color:var(--wm-content-muted); font:inherit; font-variant-numeric:tabular-nums; cursor:pointer; }
+.fx-app .fx-content .wm-pagination .wm-pagination-button:hover:not(:disabled) { background:var(--wm-hover); color:var(--wm-content); border-color:var(--wm-control-hover-border); }
+.fx-app .fx-content .wm-pagination .wm-pagination-button[aria-current='page'] { background:var(--wm-selected); color:var(--wm-content); }
+.fx-app .fx-content .wm-pagination .wm-pagination-button:disabled { opacity:.45; cursor:default; }
+.wm-pagination-button:focus-visible { outline:2px solid var(--wm-focus); outline-offset:2px; }
+.wm-pagination-gap { width:20px; text-align:center; }
+.wm-pagination-size { flex:0 0 auto; }
+.fx-app .fx-content .wm-pagination .fx-select-trigger { box-sizing:border-box; width:auto; min-width:70px; height:36px; min-height:36px; padding:0 12px; gap:8px; border-radius:var(--wm-control-radius); line-height:20px; }
+.wm-pagination .fx-select-value { flex:0 0 auto; text-align:center; }
+.wm-pagination .fx-select-chevron { margin-left:0; }
+.wm-pagination-meta { text-align:center; overflow-wrap:anywhere; }
+@media (max-width:480px) {
+  .wm-pagination-controls { gap:8px; }
+  .wm-pagination-pages { gap:0; }
+  .fx-app .fx-content .wm-pagination :is(.wm-pagination-number:not(.is-current), .wm-pagination-boundary), .wm-pagination-gap { display:none; }
+}
+@media (max-width:480px), (pointer:coarse) {
+  .fx-app .fx-content .wm-pagination .wm-pagination-button { width:44px; min-width:44px; height:44px; min-height:44px; }
+  .fx-app .fx-content .wm-pagination .fx-select-trigger { height:44px; min-height:44px; }
+}

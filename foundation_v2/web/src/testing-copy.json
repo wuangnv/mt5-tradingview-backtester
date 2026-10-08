@@ -1,4 +1,5 @@
 {
+  "Phân trang phiên gần đây": { "vi": "Phân trang phiên gần đây", "en": "Recent sessions pagination" },
   "Nến chưa có ở đầu/cuối khoảng chọn": {"vi":"Nến chưa có ở đầu/cuối khoảng chọn","en":"Unavailable bars at the requested range edges"},
   "Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.": { "vi": "Dukascopy đang giới hạn yêu cầu. Hãy thử lại sau.", "en": "Dukascopy is rate limiting requests. Try again later." },
   "Không cập nhật được danh sách Dukascopy.": { "vi": "Không cập nhật được danh sách Dukascopy.", "en": "Could not update the Dukascopy instrument list." },

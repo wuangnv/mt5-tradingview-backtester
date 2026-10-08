@@ -3,7 +3,6 @@
 .market-data-workspace .market-sync-filters { margin-inline: calc(-1 * var(--wm-page-gutter)); padding-inline: var(--wm-page-gutter); }
 .market-data-workspace .market-sync-table { margin-inline: calc(-1 * var(--wm-page-gutter)); }
 .market-data-workspace .market-sync-note { margin-inline: calc(-1 * var(--wm-page-gutter)); padding-inline: var(--wm-page-gutter); }
-.fx-app .market-data-workspace .market-assets .fxa-pagination { margin-inline: calc(-1 * var(--wm-page-gutter)); padding-inline: var(--wm-page-gutter); border-top: 1px solid var(--wm-border); }
 .market-data-workspace .market-sync-heading p { margin-top: 0; }
 .market-sync-heading { display: flex; align-items: start; justify-content: space-between; gap: 24px; }
 .market-sync-heading h2 { margin: 0; font-size: 18px; }
@@ -46,8 +45,5 @@
 .fx-app.fx-shell-story[data-theme] .market-assets :is(.fxr-button, .fxa-button):hover:not(:disabled) { background: var(--wm-hover); color: var(--wm-control-text); border-color: transparent; }
 .fx-app.fx-shell-story[data-theme] .market-assets :is(.fxr-button, .fxa-button):disabled { opacity: .45; cursor: not-allowed; }
 .fx-app .market-assets :is(.fxr-button, .fxa-button) > svg { display: block; width: 18px; height: 18px; flex: 0 0 18px; }
-.fx-app .market-assets .fxa-pagination { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 56px; padding-block: 8px; font-size: 12px; color: var(--wm-content-muted); }
-.fx-app .market-assets .fxa-pagination > div { display: flex; align-items: center; gap: 8px; }
-.fx-app.fx-shell-story[data-theme] .market-assets .fxa-pagination > div:not(.fx-select) > .fxa-button { width: var(--wm-icon-action-size, 32px); height: var(--wm-icon-action-size, 32px); min-width: var(--wm-icon-action-size, 32px); min-height: var(--wm-icon-action-size, 32px); flex: 0 0 var(--wm-icon-action-size, 32px); padding: 0; border-radius: 50%; }
 @media (max-width: 480px), (pointer: coarse) { .market-assets { --wm-control-height: 44px; --wm-icon-action-size: 44px; } }
 @media (max-width: 760px) { .market-sync-update { margin-left: 0; } .market-sync-filters .market-sync-search { width: 100%; } .market-sync-search > input { width: 100%; } }

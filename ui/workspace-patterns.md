@@ -437,8 +437,9 @@ The import dialog focuses the file picker and restores toolbar focus when closed
 Required CSV columns/time formats are shown before selection. Preview/import locks
 the form and dialog close until the request settles, so metadata cannot change
 underneath a pending quality report. A blank catalog shows the toolbar and headers;
-pagination appears only when there are matching rows. Filter misses and read errors
-retain useful feedback.
+the shared pager stays at the viewport bottom, including empty/filter-miss states.
+Filter misses and read errors retain useful feedback. Completed/cancelled download
+jobs are hidden; active, paused and failed jobs retain progress and recovery controls.
 Demo uses fixture catalogs and disables imports; Research detail
 links preserve preview state and clear stale replay-session context.
 

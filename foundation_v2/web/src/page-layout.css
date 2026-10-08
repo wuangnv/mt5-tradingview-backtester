@@ -21,14 +21,12 @@
 .fxa-filter-label { align-self: center; color: var(--wm-content-muted); font-size: 12px; margin-inline: 8px 2px; }
 .fxa-filter-divider { width: 1px; height: 18px; flex: 0 0 1px; background: var(--wm-control-border); margin-inline: 4px; }
 .fxa-ledger-tools { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-block: 0 8px; color: var(--wm-content-muted); font-size: 12px; }
-.fxa-pagination button[aria-current="page"] { background: var(--fx-shell-nav-selected); color: var(--fx-shell-nav-selected-content); border-color: transparent; }
 .fxa-filter-toolbar.is-ledger .fxa-filter-actions { margin-left: auto; }
 .fxa-filter-toolbar.is-ledger .fxa-session-filter { margin-right: 0; }
 .fxa-filters { position: relative; border-bottom: 0; padding-bottom: 20px; }
 .fxa-filters::after, .fxa-report-tabs::after { content: ''; position: absolute; bottom: 0; left: calc(-1 * var(--wm-page-gutter)); right: calc(-1 * var(--wm-page-gutter)); height: 1px; background: var(--fx-shell-line); pointer-events: none; }
 .fxa-report-tabs { position: relative; border-bottom: 0; }
 .fx-app .wm-page > .fxa-trades { margin-inline: calc(-1 * var(--wm-page-gutter)); width: calc(100% + 2 * var(--wm-page-gutter)); }
-.fxa-trades .fxa-pagination { padding-inline: var(--wm-page-gutter); box-sizing: border-box; }
 /* The ledger owns the remaining viewport; only its rows scroll. */
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-content:has(> .wm-page > .fxa-trades) { overflow: hidden; padding-bottom: 0; display: flex; flex-direction: column; }
 .fx-app .fx-content > .wm-page:has(> .fxa-trades) { flex: 1; display: flex; flex-direction: column; min-height: 0; padding-top: 24px; padding-bottom: 0; }
@@ -38,7 +36,6 @@
 .wm-page:has(> .fxa-trades) > .fxa-trades:not([hidden]) { flex: 1; min-height: 0; display: flex; flex-direction: column; order: 1; }
 .fxa-trades > .fxa-table-scroll { flex: 1; min-height: 0; overscroll-behavior: contain; }
 .fxa-trades .fxa-table-scroll th { position: sticky; top: 0; z-index: 1; box-shadow: inset 0 -1px var(--wm-border); }
-.fxa-trades .fxa-pagination { flex: 0 0 auto; border-top: 1px solid var(--fx-shell-line); padding-block: 16px; margin: 0; background: var(--wm-canvas); }
 dialog.fxa-trade-inspector { width: min(760px, calc(100vw - 64px)); max-height: calc(100dvh - 64px); box-sizing: border-box; margin: auto; border: 1px solid var(--wm-border-strong); color: var(--wm-content); overflow: auto; }
 dialog.fxa-trade-inspector::backdrop { background: #0008; }
 .market-sync-update { margin-left: auto; }
@@ -83,8 +80,5 @@ button.fxa-filter-chip:hover { background: var(--fx-shell-nav-selected); color: 
 .fx-app .fxa-filter-actions .fxa-icon-button,
 .fx-app .fxa-columns-control .fx-select-trigger { width: 40px; height: 40px; min-height: 40px; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; flex-shrink: 0; }
 .fx-app .fxa-trades .fxa-detail-button { width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; vertical-align: middle; }
-.fx-app .fxa-trades .fxa-pagination .fx-select-trigger { height: 36px; min-height: 36px; min-width: 70px; padding: 0 12px; align-items: center; border-radius: 999px; line-height: 20px; }
-.fxa-pagination .fx-select-value { text-align: center; flex: 0 0 auto; }
-.fxa-pagination .fx-select-chevron { margin-left: 0; }
 .fx-app .fxa-session-options > button[role='checkbox'] { justify-content: flex-start; }
 .fxa-session-options .fx-select-checkbox { min-width: 16px; flex: 0 0 16px; }

@@ -14,6 +14,7 @@ import { buildWorkspaceHref } from './workspaceContext.js'
 import FxSelect, { FilterIcon } from './FxSelect.jsx'
 import TestingIcon from './TestingIcon.jsx'
 import DataLibraryActions from './DataLibraryActions.jsx'
+import PaginationFooter from './PaginationFooter.jsx'
 import { CATEGORIES, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates, downloadRangeError } from './dataLibraryModel.js'
 import './data-library.css'
 
@@ -506,6 +507,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const openCsv = (asset = null) => { setImportAsset(asset); setCsvBusy(false); setCsvOpen(true) }
   const openDetails = asset => { setSelectedId(asset.dataset_id); setDetailsOpen(true) }
   const openDownload = asset => { setDownloadBusy(false); setDetailsOpen(false); setDownloadAsset(asset) }
+  const visibleDownloads = downloads.items.filter(job => ['queued', 'running', 'paused', 'failed'].includes(job.status))
   const eligibleDownload = asset => canDownloadAsset(asset,state.download,preview) && !activeDownload && !jobAction
 
   return (
@@ -523,11 +525,12 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
 
       {state.status === 'loading' && <div className="rd-message" role="status">{t('Đang đọc dữ liệu đã lưu…')}</div>}
       {state.status === 'ready' && catalogMessage && <p className="data-library-catalog-status" role="status">{t(catalogMessage)}{state.catalog?.status === 'cached' && ` ${t('Đang dùng bản đã lưu.')}`}</p>}
+      {state.status === 'ready' && requestedDataset && !selected && <p className="data-library-catalog-status" role="status">{t('Dataset trong đường dẫn chưa có trong kho này. Hãy chọn dữ liệu khác.')}</p>}
       {state.status === 'error' && <div className="rd-message is-error" role="alert">{t('Không đọc được kho dữ liệu:')} {state.error} <button type="button" className="rd-inline-button" data-testid="data-desk-retry" onClick={retryCatalog} disabled={catalogRetryExhausted} aria-describedby={catalogRetryExhausted ? 'data-desk-retry-note' : undefined}>{t(catalogRetryExhausted ? 'Đã hết lượt thử' : 'Thử lại')}</button>{catalogRetryExhausted && <small id="data-desk-retry-note">{t('Kiểm tra nguồn dữ liệu trước khi thử lại.')}</small>}</div>}
 
       {(downloadError || pollError) && <p className="data-library-download-error" role="alert">{t(downloadError || pollError)} <button type="button" className="rd-inline-button" onClick={() => {setDownloadError(''); setDownloadRevision(current => current + 1)}}>{t('Thử lại')}</button></p>}
-      {downloads.items.length > 0 && <section className="data-library-download-jobs" aria-label={t('Tiến độ tải dữ liệu')}>
-        {downloads.items.map(job => {
+      {visibleDownloads.length > 0 && <section className="data-library-download-jobs" aria-label={t('Tiến độ tải dữ liệu')}>
+        {visibleDownloads.map(job => {
           const retrySeconds = Math.max(0,Math.ceil((job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000))
           const active = ['queued','running'].includes(job.status)
           return <div key={job.job_id} className="data-library-download-job" data-testid={`download-job-${job.job_id}`}>
@@ -537,14 +540,13 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
             <div className="data-library-job-actions">{retrySeconds > 0 && <span>{t('Thử lại sau {seconds} giây',{seconds:retrySeconds})}</span>}
               {['paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={!downloads.available || activeDownload || Boolean(jobAction) || retrySeconds > 0} onClick={() => changeDownload(job,'resume')}>{t('Tiếp tục tải')}</button>}
               {['queued','running','paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}>{t('Huỷ tải')}</button>}
-              {job.status === 'completed' && job.dataset_id && <button type="button" className="rd-inline-button" onClick={() => { setSelectedId(job.dataset_id); setDetailsOpen(true) }}>{t('Xem chi tiết')}</button>}
             </div>
           </div>
         })}
       </section>}
 
       {state.status === 'ready' && (
-        <div>
+        <div className="data-library-grid">
           <section className="rd-panel" aria-label="Dataset catalog">
               <div className="rd-table-wrap" tabIndex={0} role="region" aria-label={t('Dữ liệu đã có')}>
                 <table className="rd-table" data-testid="data-desk-dataset-table">
@@ -569,8 +571,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                 </table>
               </div>
             {!filteredDatasets.length && rows.length > 0 && <div className="rd-message is-empty" data-testid="data-desk-empty">{t('Không có dữ liệu phù hợp bộ lọc.')}</div>}
-            {filteredDatasets.length > 0 && <nav className="data-library-paging" aria-label={t('Phân trang kho dữ liệu')}><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10,25,50].map(value => ({value,label:String(value)}))} /><div><button type="button" className="rd-button" aria-label={t('Trang trước')} disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</button><span>{currentPage} / {pages}</span><button type="button" className="rd-button" aria-label={t('Trang sau')} disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>›</button></div></nav>}
-            {requestedDataset && !selected && <p role="status">{t('Dataset trong đường dẫn chưa có trong kho này. Hãy chọn dữ liệu khác.')}</p>}
+            <PaginationFooter label="Phân trang kho dữ liệu" page={currentPage} pages={pages} onPageChange={setPage} pageSize={pageSize} onPageSizeChange={value => { setPageSize(value); setPage(1) }} sizes={[10,25,50,100]} />
           </section>
 
         </div>

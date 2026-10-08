@@ -4,6 +4,7 @@ import { readJson, workspaceHeaders, formatUtc as formatMarketUtc } from './rese
 import { buildWorkspaceHref } from './workspaceContext.js'
 import './market-sync.css'
 import FxSelect from './FxSelect.jsx'
+import PaginationFooter from './PaginationFooter.jsx'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import TestingIcon from './TestingIcon.jsx'
 
@@ -85,7 +86,7 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
         {!preview && item.ticks?.start_index != null && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, start: item.ticks.start_index, select: null, fresh: '1', surface: 'workspace' })}>{t("Luyện tick")}</a>}
         <button type="button" className="fxr-button fxr-button-secondary" disabled={Boolean(preview) || pending || ['queued', 'syncing'].includes(item.status)} onClick={() => update(item.symbol)}><TestingIcon kind="download" />{item.dataset_id ? t("Tải bổ sung") : t("Tải lịch sử")}</button></div></td>
     </tr>)}</tbody></table>{!visible.length && <p>{t("Không có asset phù hợp bộ lọc.")}</p>}</div>}
-    {items.length > 0 && <nav className="fxa-pagination" aria-label={t('Phân trang kho dữ liệu')}><div><button className="fxa-button" aria-label={t('Trang trước')} disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</button><span>{currentPage} / {pages}</span><button className="fxa-button" aria-label={t('Trang sau')} disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>›</button></div><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10, 25, 50, 100].map(value => ({ value, label: String(value) }))} /></nav>}
+    {items.length > 0 && <PaginationFooter label="Phân trang kho dữ liệu" page={currentPage} pages={pages} onPageChange={setPage} pageSize={pageSize} onPageSizeChange={value => { setPageSize(value); setPage(1) }} />}
     {state.status === 'ready' && !items.length && <TestingReadState message="Kho dữ liệu chưa có sản phẩm." />}
     {!preview && <details className="market-sync-note"><summary>{t('Thông tin dữ liệu')}</summary><p>{t("Mặc định tải")} {state.seed_days || 90} {t("ngày; có thể chọn ngày xa hơn trong 5 năm, tùy lịch sử broker. Chỉ số, cổ phiếu và crypto ở nguồn này là CFD. Session cũ giữ nguyên dataset. Dukascopy chưa bật do quyền lưu kho chưa rõ; futures CME chưa cấu hình.")}</p></details>}
   </section>

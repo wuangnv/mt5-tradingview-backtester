@@ -60,14 +60,10 @@
 .fxs-table-scroll tr:hover { background: var(--fx-shell-nav-hover); }
 .fxs-performance .is-positive { color: var(--wm-positive); }
 .fxs-performance .is-negative { color: var(--wm-negative); }
-.fxs-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; font-size: 12px; color: var(--wm-content-muted); }
-.fxs-pagination label, .fxs-pagination > div { display: flex; align-items: center; gap: 8px; }
-.fxs-pagination select { min-width: 60px; }
-.fxs-pagination button { min-width: 44px; min-height: 44px; }
 @media (max-width: 1200px) { .fxs-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 1000px) { .fxs-charts { grid-template-columns: 1fr; } .fx-app .fxr-integrated-sessions.fxs-page .fxr-session-control { flex-basis: 100%; } .fx-app .fxr-integrated-sessions.fxs-page .fxr-session-actions { flex: 0 1 auto; width: 100%; justify-content: flex-start; padding-top: 0; } }
 @media (max-width: 768px) { .fx-app .fxr-integrated-sessions.fxs-page .fxr-session-cards { grid-template-columns: 1fr; } .fxs-summary-heading { flex-wrap: wrap; } .fxs-summary-heading > h2 { flex-basis: 100%; } .fxs-balance { text-align: left; max-width: 100%; } .fxs-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 440px) { .fx-app .fxr-integrated-sessions.fxs-page .fxr-session-card { padding: 16px; } .fxs-chart-panel { padding: 16px; } .fxs-balance-curve text { font-size: 18px; } .fxs-metrics { grid-template-columns: 1fr; } .fxs-pagination { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 440px) { .fx-app .fxr-integrated-sessions.fxs-page .fxr-session-card { padding: 16px; } .fxs-chart-panel { padding: 16px; } .fxs-balance-curve text { font-size: 18px; } .fxs-metrics { grid-template-columns: 1fr; } }
 .fxs-description-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .fx-app .fxr-integrated-sessions.fxs-page .fxs-edit-description { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--wm-content-muted); cursor: pointer; }
 .fxs-edit-description svg { width: 20px; height: 20px; }

@@ -1,0 +1,167 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "name": "library",
+      "width": 360,
+      "geometry": {
+        "x": 58,
+        "right": 360,
+        "bottom": 987,
+        "width": 302,
+        "controlsCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "trades",
+      "width": 360,
+      "geometry": {
+        "x": 58,
+        "right": 360,
+        "bottom": 987,
+        "width": 302,
+        "controlsCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "library",
+      "width": 768,
+      "geometry": {
+        "x": 74,
+        "right": 768,
+        "bottom": 987,
+        "width": 694,
+        "controlsCenter": 421,
+        "center": 421,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "trades",
+      "width": 768,
+      "geometry": {
+        "x": 74,
+        "right": 768,
+        "bottom": 987,
+        "width": 694,
+        "controlsCenter": 421,
+        "center": 421,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "library",
+      "width": 1440,
+      "geometry": {
+        "x": 248,
+        "right": 1440,
+        "bottom": 987,
+        "width": 1192,
+        "controlsCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "trades",
+      "width": 1440,
+      "geometry": {
+        "x": 248,
+        "right": 1440,
+        "bottom": 987,
+        "width": 1192,
+        "controlsCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "remote-ledger-browser-fixture",
+      "changes": [
+        {
+          "page": 14
+        },
+        {
+          "page": 1
+        },
+        {
+          "pageSize": 100,
+          "page": 1
+        }
+      ],
+      "pending": "all disabled",
+      "unknown": "page controls disabled"
+    },
+    {
+      "name": "multi-page-fixture",
+      "width": 360,
+      "geometry": {
+        "x": 0,
+        "right": 360,
+        "bottom": 987,
+        "width": 360,
+        "controlsCenter": 180,
+        "center": 180,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "multi-page-fixture",
+      "width": 768,
+      "geometry": {
+        "x": 0,
+        "right": 768,
+        "bottom": 987,
+        "width": 768,
+        "controlsCenter": 384,
+        "center": 384,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "multi-page-fixture",
+      "width": 1440,
+      "geometry": {
+        "x": 0,
+        "right": 1440,
+        "bottom": 987,
+        "width": 1440,
+        "controlsCenter": 720,
+        "center": 720,
+        "border": "1px",
+        "docOverflow": 0
+      }
+    },
+    {
+      "name": "dashboard-preview-fixture",
+      "page": 3,
+      "visibleSessions": 6
+    },
+    {
+      "name": "performance-preview-fixture",
+      "size": 20,
+      "page": 1,
+      "visibleTrades": 20
+    },
+    {
+      "name": "coarse-pointer-desktop",
+      "touchSize": {
+        "width": 44,
+        "height": 44
+      }
+    }
+  ],
+  "errors": []
+}

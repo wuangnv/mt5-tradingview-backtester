@@ -5,6 +5,7 @@ import { filterAnalyticsRows, known, outcomeOf } from './tradingAnalyticsModel.j
 import { closeTime } from './sessionPerformanceModel.js'
 import FxSelect from './FxSelect.jsx'
 import TestingIcon from './TestingIcon.jsx'
+import PaginationFooter from './PaginationFooter.jsx'
 
 const COLUMNS = [
   ['session_id', 'Session'], ['status', 'Type'], ['source', 'Source'], ['recorded_at_utc', 'Entry Date (Realtime)'], ['open_time_utc', 'Entry Date (Chart UTC)'],
@@ -56,15 +57,9 @@ export default function FxTradeLedger({ model, extra, selected, onSelect, sessio
   const [localPage, setLocalPage] = useState(0), [localSize, setLocalSize] = useState(10), [localSort, setLocalSort] = useState({ key: 'close_time_utc', direction: 'desc' })
   const page = remotePage ? remotePage.page - 1 : localPage, size = remotePage?.pageSize || localSize, sort = remotePage?.sort || localSort
   const setPage = value => { if (remotePage) { if (!remotePage.pending && remotePage.totalCount !== null) remotePage.onChange({ page: value + 1 }) } else setLocalPage(value) }
-  const setSize = value => remotePage ? remotePage.onChange({ pageSize: value, page: 1 }) : setLocalSize(value)
+  const setSize = value => { if (remotePage) remotePage.onChange({ pageSize: value, page: 1 }); else { setLocalSize(value); setLocalPage(0) } }
   const setSort = value => remotePage ? remotePage.onChange({ sort: value, page: 1 }) : setLocalSort(value)
   const [columns, setColumns] = useState(DEFAULT_COLUMNS), [checked, setChecked] = useState(new Set())
-  const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 480px)').matches)
-  useEffect(() => {
-    const media = window.matchMedia('(max-width: 480px)'), update = () => setCompact(media.matches)
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
-  }, [])
   const tableScroll = useRef(null)
   const rows = useMemo(() => remotePage ? data.rows : [...data.rows].sort((left, right) => {
     let a = valueOf(left, sort.key, model, sessionName), b = valueOf(right, sort.key, model, sessionName)
@@ -76,7 +71,6 @@ export default function FxTradeLedger({ model, extra, selected, onSelect, sessio
   }), [data.rows, model, sort, sessionName, Boolean(remotePage)])
   const total = remotePage ? remotePage.totalCount : rows.length
   const pages = Math.max(1, Math.ceil((total || 0) / size)), current = Math.min(page, pages - 1), visible = remotePage ? rows : rows.slice(current * size, (current + 1) * size)
-  const pageButtons = compact ? 1 : 5
   useEffect(() => { if (tableScroll.current) tableScroll.current.scrollTop = 0 }, [current, size, sort, extra, model.result])
   useEffect(() => { if (!remotePage) setLocalPage(0) }, [extra, model.result])
   useEffect(() => { setChecked(new Set()) }, [extra, model.result, page])
@@ -93,6 +87,6 @@ export default function FxTradeLedger({ model, extra, selected, onSelect, sessio
     {!renderFilters && <div className="fxa-ledger-tools">{columnControl}</div>}
     {checked.size > 0 && <span className="sr-only" role="status">{checked.size} {t("đã chọn")}</span>}
     <div className="fxa-table-scroll" ref={tableScroll} tabIndex={0} role="region" aria-label={t("Giao dịch, cuộn ngang để xem các cột")}><table><thead><tr><th><input ref={selectPage} disabled={remotePage?.pending} aria-checked={mixedChecked ? "mixed" : allChecked} aria-label={t("Chọn các lệnh trên trang")} type="checkbox" checked={allChecked} onChange={() => setChecked(values => { const next = new Set(values); visible.forEach(row => allChecked ? next.delete(row.tradeId) : next.add(row.tradeId)); return next })} /></th><th>{t("Actions")}</th>{shownColumns.map(([key, label]) => <th key={key} aria-sort={sort.key === key ? sort.direction === 'asc' ? 'ascending' : 'descending' : 'none'}><button type="button" disabled={remotePage?.pending} onClick={() => { setSort({ key, direction: sort.key === key && sort.direction === 'asc' ? 'desc' : 'asc' }); setPage(0) }}>{key === 'net_pnl' ? t('Net P/L') + ' (' + (model.result?.account_currency || t('Đơn vị tài khoản')) + ')' : t(label)}{sort.key === key ? sort.direction === 'asc' ? ' ↑' : ' ↓' : ''}</button></th>)}</tr></thead><tbody>{remotePage?.pending ? <tr><td colSpan={shownColumns.length + 2}><TestingSkeleton rows={3} /></td></tr> : visible.map(row => <tr key={row.tradeId} className={selected === row.tradeId ? 'is-selected' : ''}><td><input type="checkbox" aria-label={t("Chọn lệnh {id}", { id: row.tradeId })} checked={checked.has(row.tradeId)} onChange={() => toggle(row.tradeId)} /></td><td><button className="fxa-detail-button" type="button" aria-label={t("Chi tiết {id}", { id: row.tradeId })} aria-pressed={selected === row.tradeId} onClick={() => onSelect(selected === row.tradeId ? '' : row.tradeId)}><TestingIcon kind="journal" size={16} /></button></td>{shownColumns.map(([key]) => <td key={key} className={['net_pnl', 'gross_pnl'].includes(key) ? outcomeOf(row[key]) === 'win' ? 'is-positive' : outcomeOf(row[key]) === 'loss' ? 'is-negative' : '' : ''}>{['status', 'side'].includes(key) ? <span className={`fxa-badge is-${key === 'status' ? 'closed' : String(row.side).toLowerCase()}`}>{display(row, key, model, sessionName, { fmt, locale, t })}</span> : key === 'session_id' ? <span title={row.trade_id || row.tradeId}>{display(row, key, model, sessionName, { fmt, locale, t })}</span> : display(row, key, model, sessionName, { fmt, locale, t })}</td>)}</tr>)}</tbody></table>{!remotePage?.pending && total !== null && !rows.length && <p className="fxa-empty">{t("Không có giao dịch khớp bộ lọc.")}</p>}</div>
-    <nav className="fxa-pagination" aria-label={t("Trade ledger pagination")} data-testid="analytics-ledger-pagination"><div>{!compact && <button className="fxa-button" type="button" aria-label={t("Trang đầu")} disabled={remotePage?.pending || current === 0} onClick={() => setPage(0)}>«</button>}<button className="fxa-button" type="button" aria-label={t("Trang trước")} disabled={remotePage?.pending || current === 0} onClick={() => setPage(current - 1)}>‹</button>{Array.from({ length: Math.min(pages, pageButtons) }, (_, i) => Math.min(Math.max(0, current - Math.floor(pageButtons / 2)), Math.max(0, pages - pageButtons)) + i).map(index => <button key={index} type="button" className="fxa-button" aria-label={t("Trang {page}", { page: index + 1 })} disabled={remotePage?.pending || total === null} aria-current={current === index ? 'page' : undefined} onClick={() => setPage(index)}>{index + 1}</button>)}<button className="fxa-button" type="button" aria-label={t("Trang sau")} disabled={remotePage?.pending || current >= pages - 1} onClick={() => setPage(current + 1)}>›</button>{!compact && <button className="fxa-button" type="button" aria-label={t("Trang cuối")} disabled={remotePage?.pending || current >= pages - 1} onClick={() => setPage(pages - 1)}>»</button>}</div><FxSelect disabled={remotePage?.pending} label={t("Số dòng Trades")} value={size} onChange={value => { setSize(Number(value)); setPage(0) }} triggerContent={String(size)} options={[10, 25, 50, 100].map(value => ({ value, label: String(value) }))} /></nav>
+    <PaginationFooter label="Trade ledger pagination" data-testid="analytics-ledger-pagination" page={current + 1} pages={pages} onPageChange={value => setPage(value - 1)} pageSize={size} onPageSizeChange={setSize} pending={Boolean(remotePage?.pending)} unknown={total === null} />
   </section></>
 }

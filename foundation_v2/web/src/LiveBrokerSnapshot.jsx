@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
 import { formatUtc } from './researchDataApi.js'
-import FxSelect from './FxSelect.jsx'
+import PaginationFooter from './PaginationFooter.jsx'
 import TestingIcon from './TestingIcon.jsx'
 import { dealNet } from './liveWorkspaceModel.js'
 
@@ -28,7 +28,7 @@ export default function LiveBrokerSnapshot({ payload, section, deals: filteredDe
     </> : <>
       <div className="live-deals-toolbar" title={t(section === 'transactions' ? 'Deposits, withdrawals and other non-trading events are listed separately.' : 'Each row is a filled deal; entries and exits have not been paired into trades.')}><h2>{t(section === 'transactions' ? 'Transactions' : 'Filled deals')} · {deals.length}</h2><label className="live-search"><TestingIcon kind="search" /><input type="search" aria-label={t('Search symbol or ticket')} placeholder={t('Search symbol or ticket')} value={search} onChange={event => setSearch(event.target.value)} /></label></div>
       {!deals.length ? <div className="live-empty" data-testid="live-deals-empty"><TestingIcon kind={section === 'transactions' ? 'account' : 'journal'} size={48} /><h3>{t(section === 'transactions' ? 'No transactions yet' : 'No deals in this selection.')}</h3></div> : section === 'transactions' ? table('Transactions', ['Time (UTC)', 'Ticket', 'MT5 type', 'Amount', 'Comment'], visible.map(deal => <tr key={deal.ticket}><td>{time(deal.time_msc)}</td><td>{deal.ticket}</td><td>{deal.type}</td><td>{money(deal.profit)}</td><td>{deal.comment || '—'}</td></tr>)) : table('Broker deals', ['Time (UTC) / Ticket', 'Asset', 'Side / Entry', 'Lot', 'Fill price', 'Profit', 'Commission', 'Swap', 'Fee', 'Net P/L'], visible.map(deal => <tr key={deal.ticket}><td>{time(deal.time_msc)}<small>#{deal.ticket} · {t('Position')} {deal.position_id ?? '—'}</small></td><td>{deal.symbol}</td><td>{side(deal.type)} · {entries[deal.entry] ? t(entries[deal.entry]) : '—'}</td><td>{fmt(deal.volume, '', 5)}</td><td>{fmt(deal.price, '', 5)}</td><td>{fmt(deal.profit)}</td><td>{fmt(deal.commission)}</td><td>{fmt(deal.swap)}</td><td>{fmt(deal.fee)}</td><td className={dealNet(deal) > 0 ? 'is-gain' : dealNet(deal) < 0 ? 'is-loss' : ''}>{fmt(dealNet(deal))}</td></tr>))}
-      {deals.length > 0 && <nav className="fxa-pagination" aria-label={t('Live data pagination')}><div><button type="button" className="fxa-button" aria-label={t('Trang trước')} disabled={current === 1} onClick={() => setPage(current - 1)}>‹</button><span>{current} / {pages}</span><button type="button" className="fxa-button" aria-label={t('Trang sau')} disabled={current === pages} onClick={() => setPage(current + 1)}>›</button></div><span className="live-muted">{currency} · {t('Paging synced data locally')}</span><FxSelect label="Số dòng mỗi trang" value={pageSize} onChange={value => setPageSize(Number(value))} options={[10, 20, 50, 100].map(value => ({ value, label: String(value) }))} /></nav>}
+      {deals.length > 0 && <PaginationFooter label="Live data pagination" page={current} pages={pages} onPageChange={setPage} pageSize={pageSize} onPageSizeChange={value => { setPageSize(value); setPage(1) }} sizes={[10,20,50,100]} meta={<>{currency} · {t('Paging synced data locally')}</>} />}
     </>}
   </section>
 }

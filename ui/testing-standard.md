@@ -35,8 +35,13 @@ text. Dashboard remaining-days track and text form a centered group beside the
 action row and use sea blue. Empty session expansion uses one text line plus
 bottom padding, without a minimum chart height. Chart controls retain their
 recorded compact arrangement and vendor controls keep vendor sizing. The compact
-mobile ledger pager shows previous/current/next; desktop also exposes first/last
-and nearby page numbers. The row-count selector remains a text pill.
+mobile page pager shows previous/current/next; desktop also exposes first/last
+and up to five nearby page numbers with ellipses. `PaginationFooter` keeps navigation
+and the row-count text pill in one centered group. Page buttons are 36px desktop,
+44px mobile/coarse; ordinary pages are transparent and the current page uses the
+selected surface. Library and full-page trade tables keep a full-width top divider
+and the pager at the viewport bottom while rows scroll. Remote page-size changes
+reset to page one in a single request; pending or unknown totals disable navigation.
 
 Spacing uses 4/8/12/16/24/32px. Buttons and ordinary select triggers use pill
 radii, one transparent 1px border and a muted control surface; primary actions use the

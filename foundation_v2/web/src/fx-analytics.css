@@ -96,8 +96,6 @@
 .fxa-badge.is-buy{background:color-mix(in srgb,var(--wm-positive) 12%,var(--wm-canvas));color:var(--wm-positive)}
 .fxa-badge.is-sell{background:color-mix(in srgb,var(--wm-negative) 12%,var(--wm-canvas));color:var(--wm-negative)}
 .fxa-badge.is-closed{background:color-mix(in srgb,var(--wm-primary) 12%,var(--wm-canvas));color:var(--wm-primary)}
-.fxa-pagination{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:20px;font-size:12px;color:var(--wm-content-muted)}
-.fxa-pagination>div{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .fxa-column-picker{border:0;display:flex;gap:12px 20px;flex-wrap:wrap;padding:16px 0;font-size:12px}
 .fxa-column-picker legend{color:var(--wm-content-muted)}
 .fxa-column-picker label{display:flex;gap:6px;align-items:center}

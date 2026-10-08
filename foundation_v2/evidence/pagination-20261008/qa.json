@@ -1,0 +1,579 @@
+{
+  "scope": "read-only actual pages and labeled browser fixtures; no database or live access",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 987,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 987,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 987,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 74,
+        "right": 768,
+        "bottom": 987,
+        "parentLeft": 74,
+        "parentRight": 768,
+        "parentBottom": 987,
+        "clusterCenter": 421,
+        "center": 421,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "height": 987,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 74,
+        "right": 768,
+        "bottom": 987,
+        "parentLeft": 74,
+        "parentRight": 768,
+        "parentBottom": 987,
+        "clusterCenter": 421,
+        "center": 421,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 987,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 248,
+        "right": 1440,
+        "bottom": 987,
+        "parentLeft": 248,
+        "parentRight": 1440,
+        "parentBottom": 987,
+        "clusterCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 987,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 248,
+        "right": 1440,
+        "bottom": 987,
+        "parentLeft": 248,
+        "parentRight": 1440,
+        "parentBottom": 987,
+        "clusterCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 987,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 987,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 987,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 74,
+        "right": 768,
+        "bottom": 987,
+        "parentLeft": 74,
+        "parentRight": 768,
+        "parentBottom": 987,
+        "clusterCenter": 421,
+        "center": 421,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "height": 987,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 74,
+        "right": 768,
+        "bottom": 987,
+        "parentLeft": 74,
+        "parentRight": 768,
+        "parentBottom": 987,
+        "clusterCenter": 421,
+        "center": 421,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 987,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 248,
+        "right": 1440,
+        "bottom": 987,
+        "parentLeft": 248,
+        "parentRight": 1440,
+        "parentBottom": 987,
+        "clusterCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "height": 987,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 248,
+        "right": 1440,
+        "bottom": 987,
+        "parentLeft": 248,
+        "parentRight": 1440,
+        "parentBottom": 987,
+        "clusterCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 987,
+      "kind": "library",
+      "scenario": "many",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 987,
+      "kind": "library",
+      "scenario": "many",
+      "geometry": {
+        "left": 248,
+        "right": 1440,
+        "bottom": 987,
+        "parentLeft": 248,
+        "parentRight": 1440,
+        "parentBottom": 987,
+        "clusterCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 987,
+      "kind": "library",
+      "scenario": "empty",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 987,
+      "kind": "library",
+      "scenario": "running",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "height": 987,
+      "kind": "library",
+      "scenario": "failed",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 987,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 987,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 600,
+      "kind": "library",
+      "scenario": "actual",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 600,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 600,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 600,
+      "kind": "library",
+      "scenario": "running",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 600,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 600,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "height": 600,
+      "kind": "library",
+      "scenario": "failed",
+      "geometry": {
+        "left": 58,
+        "right": 360,
+        "bottom": 600,
+        "parentLeft": 58,
+        "parentRight": 360,
+        "parentBottom": 600,
+        "clusterCenter": 209,
+        "center": 209,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "height": 600,
+      "kind": "trades",
+      "scenario": "actual",
+      "geometry": {
+        "left": 58,
+        "right": 320,
+        "bottom": 600,
+        "parentLeft": 58,
+        "parentRight": 320,
+        "parentBottom": 600,
+        "clusterCenter": 189,
+        "center": 189,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(244, 244, 244)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 0,
+        "height": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "height": 987,
+      "kind": "library",
+      "scenario": "missing-dataset",
+      "geometry": {
+        "left": 248,
+        "right": 1440,
+        "bottom": 987,
+        "parentLeft": 248,
+        "parentRight": 1440,
+        "parentBottom": 987,
+        "clusterCenter": 844,
+        "center": 844,
+        "border": "1px",
+        "overflow": 0
+      },
+      "styles": {
+        "current": "rgb(35, 35, 35)",
+        "other": "rgba(0, 0, 0, 0)",
+        "width": 36,
+        "height": 36
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}
