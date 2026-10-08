@@ -487,7 +487,11 @@ Unknown counts/sizes show —. The Actions column combines the transfer meter an
 icon-only pause/resume and cancel controls with accessible names/tooltips. Its 308px
 width preserves the preceding columns. The meter puts the thin bar and percentage
 above received bytes/speed and approximate time remaining; generic Running text is
-omitted, while paused/queued/failed/saving states remain explicit.
+omitted, as is the paused label above the bar. Pause remains explicit in the
+accessible name/details and Resume icon; queued/failed/saving labels stay visible.
+A source cooldown shows Wait mm:ss in the lower metadata and an explanation on
+Resume; its countdown re-enables Resume locally at expiry without restarting or
+automatically downloading. The row and details share the same receipt-based timer.
 Speed uses a rolling 30-second sample window. Approximate download ETA uses recent
 calendar-day throughput after at least 10 seconds and 3 completed days; it expires
 after 15 seconds without day progress. Pause/resume, processing, counter rollback,

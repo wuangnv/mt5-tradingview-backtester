@@ -1,4 +1,8 @@
 // Calendar-day throughput is only an estimate: artifact sizes vary and saving is separate.
+export function downloadRetrySeconds(job, receivedAt, now) {
+  return Math.max(0, Math.ceil((job.retry_after_seconds || 0) - Math.max(0, now - receivedAt) / 1000))
+}
+
 export function sampleDownloadMetrics(previous, job, time) {
   const sample = { time, bytes: job.transferred_bytes || 0, days: job.completed_days || 0 }
   const signature = JSON.stringify([job.status, job.stage, job.total_days, job.from_date, job.to_date])

@@ -1,0 +1,30 @@
+[
+  {
+    "theme": "dark",
+    "headers": [
+      "Sản phẩm",
+      "Danh mục",
+      "Nguồn",
+      "Dữ liệu",
+      "Từ ngày (UTC)",
+      "Đến ngày (UTC)",
+      "Số nến",
+      "Dung lượng",
+      "Thao tác"
+    ]
+  },
+  {
+    "theme": "light",
+    "headers": [
+      "Sản phẩm",
+      "Danh mục",
+      "Nguồn",
+      "Dữ liệu",
+      "Từ ngày (UTC)",
+      "Đến ngày (UTC)",
+      "Số nến",
+      "Dung lượng",
+      "Thao tác"
+    ]
+  }
+]

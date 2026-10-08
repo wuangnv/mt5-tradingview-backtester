@@ -1,0 +1,88 @@
+{
+  "scope": "Actual local GET-only and paused cooldown/manual-pause fixtures. No resume or other mutations.",
+  "mathPass": true,
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "mode": "cooldown",
+      "checks": [
+        {
+          "name": "Cooldown row/dialog share remaining time, expire and enable without reload/poll",
+          "initial": {
+            "text": "16%\n27,2 MiB\nChờ 00:04",
+            "title": "Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.",
+            "disabled": true
+          },
+          "final": {
+            "text": "16%\n27,2 MiB\n—",
+            "disabled": false,
+            "title": "Tiếp tục tải"
+          },
+          "polls": 1
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "en",
+      "mode": "cooldown",
+      "checks": [
+        {
+          "name": "Cooldown row/dialog share remaining time, expire and enable without reload/poll",
+          "initial": {
+            "text": "16%\n27.2 MiB\nWait 00:04",
+            "title": "Dukascopy is limiting requests. Resume after the waiting period.",
+            "disabled": true
+          },
+          "final": {
+            "text": "16%\n27.2 MiB\n—",
+            "disabled": false,
+            "title": "Resume download"
+          },
+          "polls": 1
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "mode": "manual",
+      "checks": [
+        {
+          "name": "Manual pause no wait, Resume enabled",
+          "initial": {
+            "text": "16%\n27,2 MiB\n—",
+            "title": "Tiếp tục tải",
+            "disabled": false
+          }
+        }
+      ],
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "language": "vi",
+      "mode": "actual",
+      "checks": [
+        {
+          "name": "Actual paused presentation GET-only",
+          "initial": {
+            "text": "16%\n27,2 MiB\nChờ 00:50",
+            "title": "Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.",
+            "disabled": true
+          }
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

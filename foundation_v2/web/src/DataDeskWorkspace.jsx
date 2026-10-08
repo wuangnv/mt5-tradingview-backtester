@@ -17,7 +17,7 @@ import FxSelect from './FxSelect.jsx'
 import TestingIcon from './TestingIcon.jsx'
 import DataLibraryActions from './DataLibraryActions.jsx'
 import DataLibraryProgress from './DataLibraryProgress.jsx'
-import { sampleDownloadMetrics } from './dataLibraryDownloadMetrics.js'
+import { sampleDownloadMetrics, downloadRetrySeconds } from './dataLibraryDownloadMetrics.js'
 import PaginationFooter from './PaginationFooter.jsx'
 import { CATEGORIES, libraryDataType, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
 import './data-library.css'
@@ -606,7 +606,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       {(downloadError || pollError) && <p className="data-library-download-error" role="alert">{t(downloadError || pollError)} <button type="button" className="rd-inline-button" onClick={() => {setDownloadError(''); setDownloadRevision(current => current + 1)}}>{t('Thử lại')}</button></p>}
       {downloadProgressOpen && <DataLibraryDialog compact title="Tiến độ tải dữ liệu" onClose={() => setDownloadProgressOpen(false)}><section className="data-library-download-jobs" aria-label={t('Tiến độ tải dữ liệu')}>
         {visibleDownloads.map(job => {
-          const retrySeconds = Math.max(0,Math.ceil((job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000))
+          const retrySeconds = downloadRetrySeconds(job,downloads.receivedAt,clockNow)
           const active = ['queued','running','pausing'].includes(job.status)
           return <div key={job.job_id} className="data-library-download-job" data-testid={`download-job-${job.job_id}`}>
             <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{displayDate(job.from_date)} → {displayDate(job.to_date)}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')} · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</span></div>
@@ -636,6 +636,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const active = Boolean(dataset.dataset_id && dataset.dataset_id === selected?.dataset_id)
                       const job = jobForAsset(dataset)
                       const downloading = job && ['queued','running','pausing'].includes(job.status)
+                      const retrySeconds = job ? downloadRetrySeconds(job,downloads.receivedAt,clockNow) : 0
                       const availableStart = sourceOf(dataset) === 'Dukascopy' ? state.download?.earliest_dates?.[dataset.instrument_id] : null
                       const dataType = libraryDataType(dataset, availableStart)
                       const fromDate = dataset.downloaded ? range.start : availableStart
@@ -652,8 +653,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                           <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>—</span>}</td>
                           <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : <span className="data-library-muted">—</span>}</td>
                           <td><div className="data-library-row-actions">{!job && <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
-                            <DataLibraryProgress job={job} fmt={fmt} onClick={() => setDownloadProgressOpen(true)} />
-                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || Math.max(0,(job.retry_after_seconds || 0) - (clockNow - downloads.receivedAt) / 1000) > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
+                            <DataLibraryProgress job={job} fmt={fmt} retrySeconds={retrySeconds} onClick={() => setDownloadProgressOpen(true)} />
+                            <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={retrySeconds > 0 ? t(downloadErrorMessage(job.error || 'download_cooldown')) : t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || retrySeconds > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t('Huỷ tải')} disabled={Boolean(jobAction)} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="close" /></button>
                           </> : <DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} />}</div></td>
                         </tr>

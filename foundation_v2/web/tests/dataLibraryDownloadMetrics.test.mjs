@@ -1,6 +1,16 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { sampleDownloadMetrics, downloadEtaDuration } from '../src/dataLibraryDownloadMetrics.js'
+import { sampleDownloadMetrics, downloadEtaDuration, downloadRetrySeconds } from '../src/dataLibraryDownloadMetrics.js'
+
+test('cooldown uses receipt time, unlocks exactly at expiry and resists clock rollback', () => {
+  const job = {retry_after_seconds:2}
+  assert.equal(downloadRetrySeconds(job,10000,10999),2)
+  assert.equal(downloadRetrySeconds(job,10000,11000),1)
+  assert.equal(downloadRetrySeconds(job,10000,12000),0)
+  assert.equal(downloadRetrySeconds(job,10000,15000),0)
+  assert.equal(downloadRetrySeconds(job,10000,9000),2)
+  assert.equal(downloadRetrySeconds({},10000,10000),0)
+})
 
 const job = { status:'running', stage:'downloading', total_days:100, completed_days:10, transferred_bytes:1000 }
 const start = () => sampleDownloadMetrics(null,job,0).state
