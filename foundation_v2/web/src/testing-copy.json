@@ -5638,5 +5638,10 @@
   "Ngày giờ không hợp lệ": { "vi": "Ngày giờ không hợp lệ", "en": "Invalid date or time" },
   "Chọn ngày": { "vi": "Chọn ngày", "en": "Choose date" },
   "M1: mỗi nến tổng hợp giá trong 1 phút.": {"vi":"M1: mỗi nến tổng hợp giá trong 1 phút.","en":"M1: each candle summarizes prices within one minute."},
-  "Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.": {"vi":"Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.","en":"Bid: the buyer's quoted price; excludes Ask prices and actual spreads."}
+  "Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.": {"vi":"Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.","en":"Bid: the buyer's quoted price; excludes Ask prices and actual spreads."},
+  "Dữ liệu đã tải": {"vi":"Dữ liệu đã tải","en":"Downloaded data"},
+  "Dùng gần đây": {"vi":"Dùng gần đây","en":"Recently used"},
+  "Nhóm tài sản": {"vi":"Nhóm tài sản","en":"Asset categories"},
+  "Tìm mã hoặc tên tài sản…": {"vi":"Tìm mã hoặc tên tài sản…","en":"Search symbol or asset name…"},
+  "Không có dữ liệu đã tải phù hợp.": {"vi":"Không có dữ liệu đã tải phù hợp.","en":"No matching downloaded data."}
 }

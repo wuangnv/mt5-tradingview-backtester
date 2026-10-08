@@ -1,5 +1,5 @@
 import { useTestingLocale } from './testingLocale.jsx'
-import { useEffect, useId, useRef, useState } from 'react'
+import { Fragment, useEffect, useId, useRef, useState } from 'react'
 import './fx-select.css'
 
 export function FilterIcon({ kind }) {
@@ -10,7 +10,7 @@ export function SelectChevron() {
   return <svg className="fx-select-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg>
 }
 
-export default function FxSelect({ label, value, options: inputOptions, onChange, icon, searchable = false, placeholder = 'Tìm…', emptyLabel = 'Không có lựa chọn phù hợp.', disabled = false, triggerContent, className = '', multiple = false, iconOnly = false, selectAllLabel = 'Chọn tất cả', menuTitle, selectionField = false, clearValue, localizeOptions = true, ...triggerProps }) {
+export default function FxSelect({ label, value, options: inputOptions, onChange, icon, searchable = false, placeholder = 'Tìm…', emptyLabel = 'Không có lựa chọn phù hợp.', disabled = false, triggerContent, className = '', multiple = false, iconOnly = false, selectAllLabel = 'Chọn tất cả', menuTitle, menuHeader, renderOption, filterOption, selectionField = false, clearValue, localizeOptions = true, ...triggerProps }) {
   const { t } = useTestingLocale()
   const options = inputOptions.map(option => ({ ...option, label: option.localize === false || !localizeOptions ? option.label : t(option.label), detail: option.localize === false || !localizeOptions ? option.detail : t(option.detail) }))
 
@@ -21,7 +21,8 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
   const isSelected = option => multiple ? value.includes(option.value) : String(option.value) === String(value)
   const available = options.filter(option => !option.disabled)
   const allSelected = multiple && available.length > 0 && available.every(isSelected)
-  const visible = options.filter(option => `${option.label} ${option.detail || ''}`.toLocaleLowerCase('vi').includes(search.trim().toLocaleLowerCase('vi')))
+  const visible = options.filter(option => (!filterOption || filterOption(option)) && `${option.label} ${option.detail || ''} ${option.searchText || ''}`.toLocaleLowerCase('vi').includes(search.trim().toLocaleLowerCase('vi')))
+  const groups = Map.groupBy(visible, option => option.group || '')
   const close = () => { setOpen(false); trigger.current?.focus() }
   useEffect(() => {
     if (!open) return
@@ -50,14 +51,17 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       list.style.maxHeight = `${Math.max(44, Math.min(300, (upwards ? above : below) - chromeHeight))}px`
     }
     positionMenu()
-    if (searchable) input.current?.focus()
-    else (root.current?.querySelector('[role="option"][aria-selected="true"]:not(:disabled)') || root.current?.querySelector('[role="option"]:not(:disabled)'))?.focus()
     const outside = event => { if (!root.current?.contains(event.target)) setOpen(false) }
     document.addEventListener('pointerdown', outside)
     window.addEventListener('resize', positionMenu)
     const scroller = root.current.closest('dialog, .quick-session-body')
     scroller?.addEventListener('scroll', positionMenu)
     return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', positionMenu); scroller?.removeEventListener('scroll', positionMenu) }
+  }, [open, searchable, visible.length, menuHeader])
+  useEffect(() => {
+    if (!open) return
+    if (searchable) input.current?.focus()
+    else (root.current?.querySelector('[role="option"][aria-selected="true"]:not(:disabled)') || root.current?.querySelector('[role="option"]:not(:disabled)'))?.focus()
   }, [open, searchable])
   return <div className={`fx-select ${className}`} ref={root} onBlur={event => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) setOpen(false) }} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); close() }
@@ -78,11 +82,15 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       {selectionField && <div className="fx-filter-selection"><span>{multiple ? allSelected ? t("All") : options.filter(isSelected).map(option => option.label).join(', ') || t("None") : selected?.label}</span>{clearValue !== undefined && <button type="button" aria-label={t('Bỏ lọc {label}', { label: t(label) })} onClick={() => onChange(clearValue)}>×</button>}<SelectChevron /></div>}
       {multiple && !selectionField && <span className="fx-select-count">{value.length} / {options.length} {t("đã chọn")}</span>}
       {searchable && <input ref={input} type="search" aria-label={t('Tìm {label}', { label: t(label) })} placeholder={t(placeholder)} value={search} onChange={event => setSearch(event.target.value)} />}
+      {menuHeader}
       {multiple && <button type="button" role="checkbox" aria-checked={allSelected ? true : value.length > 0 ? 'mixed' : false} className="fx-select-all" onClick={() => onChange(allSelected ? [] : available.map(option => option.value))}><span className={`fx-select-checkbox${allSelected ? ' is-checked' : ''}`} aria-hidden="true">{allSelected ? '✓' : value.length > 0 ? '−' : ''}</span>{t(selectAllLabel)}</button>}
-      <div role="listbox" tabIndex={-1} aria-label={t(label)} aria-multiselectable={multiple || undefined}>{visible.map(option => <button type="button" role="option" key={option.value} aria-selected={isSelected(option)} disabled={option.disabled} title={option.disabled ? option.detail : undefined} onClick={() => {
+      <div role="listbox" tabIndex={-1} aria-label={t(label)} aria-multiselectable={multiple || undefined}>{[...groups].map(([group, entries]) => {
+        const content = entries.map(option => <button type="button" role="option" key={option.value} aria-selected={isSelected(option)} disabled={option.disabled} title={renderOption || option.disabled ? option.detail : undefined} onClick={() => {
         if (multiple) onChange(isSelected(option) ? value.filter(item => item !== option.value) : [...value, option.value])
         else { onChange(option.value); close() }
-      }}>{multiple && <span className={`fx-select-checkbox${isSelected(option) ? ' is-checked' : ''}`} aria-hidden="true">{isSelected(option) ? '✓' : ''}</span>}<span>{option.label}{option.detail && <small>{option.detail}</small>}</span>{!multiple && isSelected(option) && <span className="fx-select-check" aria-hidden="true">✓</span>}</button>)}</div>
+      }}>{multiple && <span className={`fx-select-checkbox${isSelected(option) ? ' is-checked' : ''}`} aria-hidden="true">{isSelected(option) ? '✓' : ''}</span>}{renderOption ? renderOption(option) : <span>{option.label}{option.detail && <small>{option.detail}</small>}</span>}{!multiple && isSelected(option) && <span className="fx-select-check" aria-hidden="true">✓</span>}</button>)
+        return group ? <div key={group} role="group" aria-label={t(group)}><div className="fx-select-group-title" aria-hidden="true">{t(group)}</div>{content}</div> : <Fragment key={group}>{content}</Fragment>
+      })}</div>
       {!visible.length && <p role="status">{t(emptyLabel)}</p>}
     </div>}
   </div>
