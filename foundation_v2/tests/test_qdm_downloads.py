@@ -71,7 +71,10 @@ class QdmTests(unittest.TestCase):
 
     def test_catalog_and_jobs_use_qdm_name_and_truthful_capabilities(self):
         self.assertEqual(self.catalog.list_instruments('a')[0]['provider'], 'QuantDataManager')
+        self.assertEqual(self.catalog.list_instruments('a')[0]['data_source'], 'Dukascopy')
+        self.assertEqual(self.catalog.status()['download_engine'], 'QuantDataManager')
         self.assertEqual(self.service.availability()['provider'], 'QuantDataManager')
+        self.assertEqual(self.service.availability()['data_source'], 'Dukascopy')
         self.assertFalse(self.service.list_jobs('a')['supports_pause'])
         self.assertFalse(self.service.list_jobs('a')['supports_cancel'])
         with self.assertRaisesRegex(RuntimeError, 'qdm_control_unsupported'):
@@ -97,6 +100,7 @@ class QdmTests(unittest.TestCase):
         self.assertEqual(manifest.row_count, 2)
         settings = json.loads(manifest.source.export_settings)
         self.assertEqual(settings['upstream_provider'], 'Dukascopy')
+        self.assertEqual(settings['download_engine'], 'QuantDataManager')
         self.assertEqual(settings['timezone'], 'UTC')
         self.assertEqual(settings['qdm_version'], '125.2692')
         original = (self.artifacts.root / manifest.raw_artifact_path).read_bytes()

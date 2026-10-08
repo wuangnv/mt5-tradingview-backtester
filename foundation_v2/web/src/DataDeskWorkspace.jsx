@@ -19,7 +19,7 @@ import DataLibraryActions from './DataLibraryActions.jsx'
 import DataLibraryProgress from './DataLibraryProgress.jsx'
 import { sampleDownloadMetrics, downloadRetrySeconds } from './dataLibraryDownloadMetrics.js'
 import PaginationFooter from './PaginationFooter.jsx'
-import { CATEGORIES, libraryDataType, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
+import { CATEGORIES, libraryDataType, categoryOf, categoryLabel, filterLibrary, libraryRows, sourceOf, downloadEngineOf, canDownloadAsset, defaultDownloadDates } from './dataLibraryModel.js'
 import './data-library.css'
 import './session-settings.css'
 
@@ -74,7 +74,8 @@ function DatasetDetails({ dataset, workspace, query }) {
       </div>
       <dl className="rd-detail-grid">
         <div><dt>Dataset</dt><dd><strong>{dataset.dataset_id}</strong></dd></div>
-        <div><dt>{t('Nguồn dữ liệu')}</dt><dd>{source.provider || dataset.provider_id || '—'}</dd></div>
+        <div><dt>{t('Nguồn dữ liệu')}</dt><dd>{sourceOf(dataset)}</dd></div>
+        {downloadEngineOf(dataset) === 'QuantDataManager' && <div><dt>{t('Công cụ tải')}</dt><dd>QuantDataManager (QDM) · CLI</dd></div>}
         <div><dt>Instrument / TF</dt><dd>{dataset.instrument_id || 'N/A'} · {dataset.timeframe || 'N/A'}</dd></div>
         <div><dt>{t('Số nến')}</dt><dd>{fmt(dataset.row_count, '', 0)}</dd></div>
         <div><dt>Range UTC</dt><dd>{t(formatUtc(range.start, locale))} → {t(formatUtc(range.end, locale))}</dd></div>
@@ -537,7 +538,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const catalogMessage = catalogMessages[catalogError] || (state.catalog?.stale ? 'Danh sách Dukascopy đã cũ.' : '')
 
   const rows = useMemo(() => libraryRows(state.datasets, state.instruments, downloads.items), [state.datasets, state.instruments, downloads.items])
-  const catalogSource = state.catalog?.provider || 'Dukascopy'
+  const catalogSource = state.catalog ? sourceOf(state.catalog) : 'Dukascopy'
   const sources = [...new Set([...rows.map(sourceOf), ...(state.catalog ? [catalogSource] : [])])].sort()
   const sourceOptions = [{value:'all',label:'Tất cả nguồn'}, ...sources.map(value => ({value,label:value,localize:false}))]
   const catalogSourceSelected = catalogProvider === 'all' || catalogProvider === catalogSource
@@ -645,7 +646,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                       const job = jobForAsset(dataset)
                       const downloading = job && ['queued','running','pausing'].includes(job.status)
                       const retrySeconds = job ? downloadRetrySeconds(job,downloads.receivedAt,clockNow) : 0
-                      const availableStart = sourceOf(dataset) === (state.download?.provider || 'Dukascopy') ? state.download?.earliest_dates?.[dataset.instrument_id] : null
+                      const availableStart = downloadEngineOf(dataset) === (state.download?.download_engine || state.download?.provider || 'Dukascopy') ? state.download?.earliest_dates?.[dataset.instrument_id] : null
                       const dataType = libraryDataType(dataset, availableStart)
                       const fromDate = dataset.downloaded ? range.start : availableStart
                       const toDate = dataset.downloaded ? range.end : availableStart ? defaultDownloadDates().to_date : null
@@ -654,7 +655,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                         <tr key={dataset.key} className={active ? 'is-selected' : ''}>
                           <td>{dataset.downloaded ? <button type="button" data-testid={`dataset-row-${dataset.dataset_id}`} aria-pressed={active} onClick={() => openDetails(dataset)}><strong>{dataset.instrument_id || '—'}</strong></button> : <><strong>{dataset.instrument_id}</strong>{dataset.name && <small>{dataset.name}</small>}</>}</td>
                           <td>{t(categoryLabel(categoryOf(dataset)))}</td>
-                          <td title={sourceOf(dataset)}>{sourceOf(dataset) === 'QuantDataManager' ? 'QDM' : sourceOf(dataset)}</td>
+                          <td title={downloadEngineOf(dataset) === 'QuantDataManager' ? `${sourceOf(dataset)} · ${t('Công cụ tải')}: QuantDataManager (QDM) · CLI` : sourceOf(dataset)}>{sourceOf(dataset)}</td>
                           <td><span title={dataType.timeframe === 'M1' ? t('M1: mỗi nến tổng hợp giá trong 1 phút.') : undefined}>{dataType.timeframe}</span>{dataType.price && <small title={dataType.price === 'Bid' ? t('Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.') : undefined}>{dataType.price}</small>}</td>
                           <td className="data-library-date" title={dateTitle(fromDate)}>{displayDate(fromDate)}</td>
                           <td className="data-library-date" title={dateTitle(toDate)}>{displayDate(toDate)}</td>
@@ -681,6 +682,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <div className="data-library-catalog-source"><span>{t('Nguồn dữ liệu')}</span><FxSelect label="Nguồn dữ liệu" value={catalogProvider} onChange={setCatalogProvider} options={sourceOptions} disabled={catalogBusy} /></div>
         {catalogSourceSelected && state.catalog?.refresh_scope === 'installed_definitions' && <p className="data-library-catalog-status">{t('Đọc danh mục Dukascopy từ bộ cài QDM. Dùng chung cho Backtest và Prop firm.')}</p>}
         <dl className="data-library-catalog-facts">
+          {catalogSourceSelected && downloadEngineOf(state.catalog) === 'QuantDataManager' && <div><dt>{t('Công cụ tải')}</dt><dd>QuantDataManager (QDM) · CLI</dd></div>}
           <div><dt>{t('Số tài sản')}</dt><dd>{fmt(sourceAssetCount, '', 0)}</dd></div>
           <div><dt>{t(catalogSourceSelected ? 'Cập nhật lần cuối (UTC)' : 'Lần lưu gần nhất (UTC)')}</dt><dd>{(catalogSourceSelected ? state.catalog?.retrieved_at_utc : latestSourceSave) ? formatUtc(catalogSourceSelected ? state.catalog.retrieved_at_utc : latestSourceSave, locale) : '—'}</dd></div>
         </dl>

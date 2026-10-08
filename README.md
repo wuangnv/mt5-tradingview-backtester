@@ -119,7 +119,8 @@ cũ là bằng chứng lịch sử, không mô tả dữ liệu đang có. Repla
 Xem [receipt Dukascopy](foundation_v2/evidence/dukascopy-integration-20261008/RECEIPT.md).
 
 Launcher offline mặc định **QuantDataManager CLI**, M1/UTC, tự tải → xuất CSV →
-kiểm tra → nhập kho. Danh mục Dukascopy đọc từ bộ cài QDM (hiện 725 tài sản),
+kiểm tra → nhập kho. UI ghi nguồn **Dukascopy**, công cụ tải **QuantDataManager
+(QDM) · CLI**. Danh mục Dukascopy đọc từ bộ cài QDM (hiện 725 tài sản),
 dùng chung cho hai mode Backtest và Prop firm; cấu hình/rule của phiên vẫn riêng.
 Bộ cài QDM nằm trong
 `foundation_v2/.runtime/quantdatamanager/` trên máy và không được commit;

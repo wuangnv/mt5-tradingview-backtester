@@ -67,6 +67,7 @@ class QdmDownloads(DukascopyDownloads):
 
     def availability(self):
         return {**super().availability(), 'available': bool(self.meta) and self.cli.executable.is_file() and not self.catalog.error,
+                'data_source': 'Dukascopy', 'download_engine': self.provider, 'integration': 'cli',
                 'price_type': self.price, 'supports_pause': False, 'supports_cancel': False,
                 'pilot': False, 'version': self.cli.version, 'error': self.catalog.error}
 
@@ -95,6 +96,7 @@ class QdmDownloads(DukascopyDownloads):
 
     def _public(self, job):
         return {**super()._public(job), 'provider': self.provider, 'supports_pause': False, 'supports_cancel': False,
+                'data_source': 'Dukascopy', 'download_engine': self.provider,
                 'transferred_bytes': None, 'progress_scope': 'phase'}
 
     def list_jobs(self, workspace):
@@ -192,7 +194,8 @@ class QdmDownloads(DukascopyDownloads):
                 'license_use': 'owner licensed local QDM research; redistribution not granted',
                 'retrieved_at_utc': job['qdm_retrieved_at_utc'],
                 'export_settings': json.dumps({'library': self.library, 'qdm_version': job['qdm_version'],
-                    'upstream_provider': 'Dukascopy', 'timeframe': 'm1', 'price': self.price, 'timezone': 'UTC',
+                    'upstream_provider': 'Dukascopy', 'download_engine': self.provider,
+                    'timeframe': 'm1', 'price': self.price, 'timezone': 'UTC',
                     'catalog_sha256': job.get('catalog_sha256'),
                     'volume_units': 'provider_defined', 'synthetic_bars': False, 'price_only': True,
                     'requested_from': full_start, 'requested_to': job['to_date'],

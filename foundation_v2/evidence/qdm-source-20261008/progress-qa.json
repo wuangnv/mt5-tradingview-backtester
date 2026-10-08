@@ -1,0 +1,48 @@
+{
+  "scope": "Intercepted UI fixtures; no real API writes or CLI calls",
+  "cases": [
+    {
+      "width": 1710,
+      "pass": true,
+      "checks": [
+        "download POST",
+        "phase progress",
+        "unknown bytes/speed/ETA",
+        "disabled pause/cancel",
+        "automatic completed reload",
+        "provider label",
+        "busy recovery via catalog refresh",
+        "no page overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "pass": true,
+      "checks": [
+        "download POST",
+        "phase progress",
+        "unknown bytes/speed/ETA",
+        "disabled pause/cancel",
+        "automatic completed reload",
+        "provider label",
+        "busy recovery via catalog refresh",
+        "no page overflow"
+      ]
+    },
+    {
+      "width": 360,
+      "pass": true,
+      "checks": [
+        "download POST",
+        "phase progress",
+        "unknown bytes/speed/ETA",
+        "disabled pause/cancel",
+        "automatic completed reload",
+        "provider label",
+        "busy recovery via catalog refresh",
+        "no page overflow"
+      ]
+    }
+  ],
+  "pass": true
+}

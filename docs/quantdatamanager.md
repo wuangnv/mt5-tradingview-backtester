@@ -1,7 +1,9 @@
 # QuantDataManager trong Trading Workspace
 
-Adapter dùng QDM **125.2692**, M1, UTC. Nguồn trong kho là **QuantDataManager**;
-provenance ghi upstream **Dukascopy**. Danh mục đọc trực tiếp định nghĩa Dukascopy
+Adapter dùng QDM **125.2692**, M1, UTC. UI ghi **Nguồn dữ liệu: Dukascopy** và
+**Công cụ tải: QuantDataManager (QDM) · CLI**. CLI là giao diện dòng lệnh mà backend
+gọi. API của Workspace điều phối job; không gọi QDM là một nguồn giá hoặc một
+API HTTP. Danh mục đọc trực tiếp định nghĩa Dukascopy
 trong bộ cài QDM: hiện có **725 tài sản**, gồm 64 Forex (có vàng/bạc), 13 hàng hoá,
 19 chỉ số, 625 cổ phiếu, 1 crypto và 3 trái phiếu. Đây là danh mục của nguồn
 Dukascopy trong QDM, chưa bao gồm mọi nguồn bên ngoài mà QDM có thể kết nối.
@@ -10,6 +12,12 @@ Dukascopy trong QDM, chưa bao gồm mọi nguồn bên ngoài mà QDM có thể
 Backtest giữ cấu hình mô phỏng/chi phí; Prop firm bổ sung bộ quy tắc quỹ và phase.
 Mỗi phiên pin dataset/version và cấu hình riêng. Đổi mode hoặc chọn FTMO 1-Step/
 2-Step không tạo bản sao danh mục, không bắt tải lại lịch sử.
+
+Giữ transport identity `provider=QuantDataManager` bên trong adapter/job và các
+manifest đã lưu để update/resume không nhầm sang dukascopy-node. Catalog/download
+API bổ sung `data_source=Dukascopy`, `download_engine=QuantDataManager`; export
+provenance giữ upstream và engine. UI lọc theo nguồn giá, ghép job/khả năng tải
+theo engine. Dataset QDM cũ vẫn hiển thị Dukascopy, không viết lại manifest/hash.
 
 ## Cài trên máy sau khi clone GitHub
 
@@ -48,6 +56,13 @@ Adapter nhập `metadata_kind=price_only`, không lấy contract size hoặc spr
 Chọn Broker Profile trong QDM/SQ cũng không tự truyền các quy tắc drawdown/target
 vào Trading Workspace. M1 không chứa đường đi tick/Bid–Ask đầy đủ nên không thể
 khẳng định thứ tự SL/TP trong cùng nến; chỉ áp mô hình execution đã khai báo.
+
+Để tải giá và nghiên cứu backtest chung, dùng SQ Default cùng Instrument mặc định
+**của từng tài sản** (EURUSD, XAUUSD, USATECHIDXUSD…), không dùng một bộ thông số
+Forex chung cho tất cả. Đây là default ở bước QDM download. Workspace hiện chỉ
+nhập price-only; bộ replay execution nhận InstrumentSpec/cost_model từ cấu hình
+phiên, chưa tự nhập default QDM. Khi mô phỏng broker/FTMO cần profile và quy cách
+của tài khoản mục tiêu; tên SQ Default không chứng nhận kết quả sát broker.
 
 [Broker Profiles của StrategyQuant](https://strategyquant.com/doc/strategyquant/broker-profiles/)
 mô tả khác biệt timezone, instrument và trading session, cùng giới hạn rằng

@@ -136,7 +136,8 @@ class QdmCatalog:
         return self.snapshot['updated_at']
 
     def status(self):
-        return {'provider': PROVIDER, 'status': 'cached' if self.instruments else 'unavailable',
+        return {'provider': PROVIDER, 'data_source': 'Dukascopy', 'download_engine': PROVIDER,
+                'integration': 'cli', 'status': 'cached' if self.instruments else 'unavailable',
                 'configured': self.cli.executable.is_file(),
                 'refresh_available': self.cli.executable.is_file(), 'stale': bool(self.error and self.instruments), 'error': self.error,
                 'version': self.cli.version, 'pilot': False, 'asset_count': len(self.instruments),
@@ -159,6 +160,7 @@ class QdmCatalog:
 
     def list_instruments(self, workspace):
         return [{'instrument_id': symbol, 'provider_code': item['code'], 'provider': PROVIDER,
+                 'data_source': 'Dukascopy', 'download_engine': PROVIDER,
                  'provider_id': self.provider_id, 'asset_class': item['asset_class'], 'name': item['name'],
                  'source_category': item['source_category'], 'source_group': item['source_group'],
                  'available_from_date': item['startDayForMinuteCandles'],

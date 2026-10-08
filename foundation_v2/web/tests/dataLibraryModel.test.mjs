@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { categoryOf, categoryLabel, filterLibrary, libraryRows, canDownloadAsset, defaultDownloadDates, downloadRangeError } from '../src/dataLibraryModel.js'
+import { categoryOf, categoryLabel, filterLibrary, libraryRows, canDownloadAsset, defaultDownloadDates, downloadRangeError, sourceOf, downloadEngineOf, libraryDataType } from '../src/dataLibraryModel.js'
 
 const saved = [
   { dataset_id:'old',instrument_id:'EURUSD',timeframe:'1m',source:{provider:'CSV'},instrument_spec:{asset_class:'fx'},created_at_utc:'2026-01-01Z' },
@@ -48,6 +48,25 @@ test('QDM downloads and jobs are scoped to their provider, including saved updat
   const saved = libraryRows([{dataset_id:'qdm',instrument_id:'EUR/USD',source:{provider:'QuantDataManager'}}],catalog,jobs)
   assert.equal(saved.length,2)
   assert.equal(saved[0].downloadJob,jobs[0])
+  assert.equal(sourceOf(rows[0]),'Dukascopy')
+  assert.equal(sourceOf(rows[1]),'Dukascopy')
+  assert.equal(filterLibrary(rows,{provider:'Dukascopy'}).length,2)
+  assert.equal(filterLibrary(rows,{provider:'QuantDataManager'}).length,0)
+  assert.deepEqual(libraryDataType(rows[0],'2003-05-05'),{timeframe:'M1'})
+  assert.deepEqual(libraryDataType(rows[1],'2003-05-05'),{timeframe:'M1',price:'Bid'})
+})
+test('source and download engine remain distinct for explicit metadata and older immutable QDM datasets', () => {
+  const old = {dataset_id:'old',instrument_id:'EUR/USD',source:{provider:'QuantDataManager',export_settings:'{"upstream_provider":"Dukascopy","price":"provider_default"}'}}
+  const newer = {instrument_id:'EUR/USD',provider:'QuantDataManager',data_source:'Dukascopy',download_engine:'QuantDataManager',provider_id:'qdm-catalog'}
+  const original = JSON.stringify(old)
+  assert.equal(sourceOf(old),'Dukascopy')
+  assert.equal(downloadEngineOf(old),'QuantDataManager')
+  assert.equal(sourceOf(newer),'Dukascopy')
+  assert.equal(libraryRows([old],[newer]).length,1)
+  assert.equal(canDownloadAsset(newer,{available:true,download_engine:'QuantDataManager',supported_instruments:['EUR/USD']}),true)
+  assert.equal(JSON.stringify(old),original)
+  assert.equal(sourceOf({source:{provider:'CSV',export_settings:'invalid'}}),'CSV')
+  assert.equal(sourceOf(null),'—')
 })
 test('catalog category uses declared metadata, never guesses from the symbol', () => {
   assert.equal(categoryOf(saved[2]),'metal')

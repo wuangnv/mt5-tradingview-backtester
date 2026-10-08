@@ -40,6 +40,8 @@ class RealQdmApiTests(unittest.TestCase):
                     catalog = client.get('/api/v2/data/datasets', headers=headers).json()
                     self.assertTrue(catalog['download_state']['available'], catalog['download_state'].get('error'))
                     self.assertEqual(catalog['catalog_items'][0]['provider'], 'QuantDataManager')
+                    self.assertEqual(catalog['catalog_items'][0]['data_source'], 'Dukascopy')
+                    self.assertEqual(catalog['download_state']['download_engine'], 'QuantDataManager')
                     assets = {row['instrument_id']: row for row in catalog['catalog_items']}
                     self.assertGreater(len(assets), 1)
                     for symbol, category, start in [('EUR/USD','fx','2003-05-05'), ('XAU/USD','metal','2003-05-05'),
@@ -73,6 +75,7 @@ class RealQdmApiTests(unittest.TestCase):
                     settings = json.loads(manifest.source.export_settings)
                     self.assertEqual(settings['timezone'], 'UTC')
                     self.assertEqual(settings['upstream_provider'], 'Dukascopy')
+                    self.assertEqual(settings['download_engine'], 'QuantDataManager')
                     saved = client.get('/api/v2/data/datasets', headers=headers).json()['items']
                     self.assertEqual(len(saved), 1)
                     self.assertEqual(saved[0]['asset_class'], 'fx')

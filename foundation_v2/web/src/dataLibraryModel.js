@@ -10,12 +10,18 @@ export function categoryOf(item) {
   return aliases[value] || value
 }
 export const categoryLabel = value => CATEGORIES.find(([key]) => key === value)?.[1] || 'Chưa phân loại'
-export const sourceOf = item => item.source?.provider || item.provider || item.provider_id || '—'
+function exportSettingsOf(item) {
+  try { return JSON.parse(item?.source?.export_settings || '{}') || {} }
+  catch { return {} }
+}
+// Keep transport identity for job/update matching, including immutable older QDM imports.
+export const downloadEngineOf = item => item?.download_engine || exportSettingsOf(item).download_engine || item?.source?.provider || item?.provider || item?.provider_id || '—'
+export const sourceOf = item => item?.data_source || exportSettingsOf(item).upstream_provider
+  || (downloadEngineOf(item) === 'QuantDataManager' ? 'Dukascopy' : item?.source?.provider || item?.provider || item?.provider_id || '—')
 
 export function libraryDataType(item, availableStart) {
-  if (!item.downloaded) return availableStart ? { timeframe: 'M1', ...(sourceOf(item) === 'QuantDataManager' ? {} : { price: 'Bid' }) } : { timeframe: '—' }
-  let settings
-  try { settings = JSON.parse(item.source?.export_settings || '{}') } catch { /* CSV provenance can be free text. */ }
+  if (!item.downloaded) return availableStart ? { timeframe: 'M1', ...(downloadEngineOf(item) === 'QuantDataManager' ? {} : { price: 'Bid' }) } : { timeframe: '—' }
+  const settings = exportSettingsOf(item)
   const price = { bid: 'Bid', ask: 'Ask', mid: 'Mid' }[settings?.price]
   return { timeframe: item.timeframe || '—', price }
 }
@@ -23,7 +29,7 @@ export function libraryDataType(item, availableStart) {
 export function canDownloadAsset(asset, download, preview = false) {
   return !preview && Boolean(download?.available) && Array.isArray(download.supported_instruments)
     && download.supported_instruments.includes(asset.instrument_id)
-    && sourceOf(asset).toLowerCase() === (download.provider || 'Dukascopy').toLowerCase()
+    && downloadEngineOf(asset).toLowerCase() === (download.download_engine || download.provider || 'Dukascopy').toLowerCase()
 }
 
 export function defaultDownloadDates(now = new Date()) {
@@ -48,11 +54,11 @@ export function libraryRows(datasets, instruments = [], jobs = []) {
   // Keep dataset versions separate: a saved session pins one immutable version.
   const rows = datasets.map(item => ({ ...item, key:item.dataset_id, downloaded:true }))
   for (const item of instruments) {
-    if (!datasets.some(dataset => dataset.instrument_id === item.instrument_id && sourceOf(dataset) === sourceOf(item))) {
+    if (!datasets.some(dataset => dataset.instrument_id === item.instrument_id && downloadEngineOf(dataset) === downloadEngineOf(item))) {
       rows.push({ ...item, key:`${item.provider_id}:${item.instrument_id}`, downloaded:false })
     }
   }
-  return rows.map(item => ({ ...item, downloadJob: jobs.find(job => (job.provider || 'Dukascopy') === sourceOf(item)
+  return rows.map(item => ({ ...item, downloadJob: jobs.find(job => (job.download_engine || job.provider || 'Dukascopy') === downloadEngineOf(item)
     && job.instrument_id === item.instrument_id && ['queued','running','pausing','paused','failed'].includes(job.status)) }))
 }
 
