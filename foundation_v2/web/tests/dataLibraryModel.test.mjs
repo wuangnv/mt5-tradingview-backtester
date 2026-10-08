@@ -49,6 +49,9 @@ test('search and category/source compose without changing the source list', () =
 test('sorting keeps missing dates deterministic and puts downloaded assets first', () => {
   const rows = libraryRows(saved,[{instrument_id:'AUDUSD',provider:'CSV',provider_id:'csv'}])
   assert.equal(filterLibrary(rows,{sort:'downloaded'}).at(-1).downloaded,false)
+  const unsavedFirst = filterLibrary(rows,{sort:'not-downloaded'})
+  assert.equal(unsavedFirst[0].downloaded,false)
+  assert.equal(unsavedFirst.filter(row => row.downloaded).length,saved.length)
   assert.equal(filterLibrary(rows,{sort:'newest'})[0].key,'new')
   assert.equal(filterLibrary(rows,{sort:'asset-asc'})[0].instrument_id,'AUDUSD')
   assert.equal(filterLibrary(rows,{sort:'asset-desc'})[0].instrument_id,'XAUUSD')

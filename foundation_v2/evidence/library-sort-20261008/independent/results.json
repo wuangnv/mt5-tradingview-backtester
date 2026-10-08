@@ -1,0 +1,191 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": false,
+      "labels": [
+        "Tên A–Z\n✓",
+        "Tên Z–A",
+        "Đã tải",
+        "Chưa tải",
+        "Mới cập nhật"
+      ],
+      "geometry": {
+        "x": 1271.421875,
+        "y": 191,
+        "width": 176,
+        "right": 1447.421875,
+        "height": 218,
+        "anchorRight": 1447.421875,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": true,
+      "labels": [
+        "Tên A–Z\n✓",
+        "Tên Z–A",
+        "Đã tải",
+        "Chưa tải",
+        "Mới cập nhật"
+      ],
+      "geometry": {
+        "x": 1271.421875,
+        "y": 191,
+        "width": 176,
+        "right": 1447.421875,
+        "height": 218,
+        "anchorRight": 1447.421875,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "en",
+      "fixture": false,
+      "labels": [
+        "Name A–Z\n✓",
+        "Name Z–A",
+        "Downloaded",
+        "Not downloaded",
+        "Recently updated"
+      ],
+      "geometry": {
+        "x": 168,
+        "y": 253,
+        "width": 176,
+        "right": 344,
+        "height": 218,
+        "anchorRight": 344,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "en",
+      "fixture": true,
+      "labels": [
+        "Name A–Z\n✓",
+        "Name Z–A",
+        "Downloaded",
+        "Not downloaded",
+        "Recently updated"
+      ],
+      "geometry": {
+        "x": 168,
+        "y": 253,
+        "width": 176,
+        "right": 344,
+        "height": 218,
+        "anchorRight": 344,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": false,
+      "labels": [
+        "Tên A–Z\n✓",
+        "Tên Z–A",
+        "Đã tải",
+        "Chưa tải",
+        "Mới cập nhật"
+      ],
+      "geometry": {
+        "x": 1271.421875,
+        "y": 191,
+        "width": 176,
+        "right": 1447.421875,
+        "height": 218,
+        "anchorRight": 1447.421875,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "lang": "vi",
+      "fixture": true,
+      "labels": [
+        "Tên A–Z\n✓",
+        "Tên Z–A",
+        "Đã tải",
+        "Chưa tải",
+        "Mới cập nhật"
+      ],
+      "geometry": {
+        "x": 1271.421875,
+        "y": 191,
+        "width": 176,
+        "right": 1447.421875,
+        "height": 218,
+        "anchorRight": 1447.421875,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "en",
+      "fixture": false,
+      "labels": [
+        "Name A–Z\n✓",
+        "Name Z–A",
+        "Downloaded",
+        "Not downloaded",
+        "Recently updated"
+      ],
+      "geometry": {
+        "x": 168,
+        "y": 253,
+        "width": 176,
+        "right": 344,
+        "height": 218,
+        "anchorRight": 344,
+        "overflow": false
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "en",
+      "fixture": true,
+      "labels": [
+        "Name A–Z\n✓",
+        "Name Z–A",
+        "Downloaded",
+        "Not downloaded",
+        "Recently updated"
+      ],
+      "geometry": {
+        "x": 168,
+        "y": 253,
+        "width": 176,
+        "right": 344,
+        "height": 218,
+        "anchorRight": 344,
+        "overflow": false
+      },
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "scope": "Actual library cached GET and separate mixed-state browser GET fixtures; POST/DELETE/provider/live blocked",
+  "pass": true
+}

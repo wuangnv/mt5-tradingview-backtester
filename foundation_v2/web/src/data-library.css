@@ -2,6 +2,7 @@
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-content:has(> .data-library) { display:flex; flex-direction:column; overflow:hidden; padding-bottom:0; }
 .fx-app .fx-content > .data-library { flex:1; display:flex; flex-direction:column; min-height:0; padding-top:24px; padding-bottom:0; }
 .data-library-toolbar { flex:0 0 auto; }
+.data-library-sort .fx-select-menu { min-width:176px; }
 .data-library-grid, .data-library-grid > .rd-panel { display:flex; flex-direction:column; flex:1; min-height:0; }
 /* Reserve the pager and table header before shrinking the download status area. */
 .data-library-grid { min-height:122px; }

@@ -55,6 +55,7 @@ export function filterLibrary(rows, { category = 'all', provider = 'all', search
   const assetCompare = (a, b) => `${a.instrument_id || ''} ${a.timeframe || ''}`.localeCompare(`${b.instrument_id || ''} ${b.timeframe || ''}`, 'en', { numeric:true }) || a.key.localeCompare(b.key)
   return filtered.sort((a, b) => sort === 'asset-desc' ? assetCompare(b,a)
     : sort === 'downloaded' ? Number(b.downloaded) - Number(a.downloaded) || assetCompare(a,b)
+    : sort === 'not-downloaded' ? Number(a.downloaded) - Number(b.downloaded) || assetCompare(a,b)
     : sort === 'newest' ? (Date.parse(b.created_at_utc) || 0) - (Date.parse(a.created_at_utc) || 0) || assetCompare(a,b)
     : assetCompare(a,b))
 }
