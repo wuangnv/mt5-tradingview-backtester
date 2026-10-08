@@ -123,9 +123,11 @@ cũ/phiên replay đang dùng nó được giữ nguyên. Ngày hiện tại UTC
 Các kiểm tra không tự chứng nhận dữ liệu không có gap: cờ `review` vẫn được giữ.
 
 QDM báo phần trăm theo **bước hiện tại**, không phải tổng tiến độ. Khi chưa có
-phần trăm, grid dùng thanh indeterminate và đồng hồ thời gian từ lúc bắt đầu;
-bấm thanh để xem bước hiện tại. Dung lượng tải, tốc độ mạng và ETA chưa có dữ
-liệu đáng tin nên không hiển thị các số này trong grid. Chưa xác minh API
+phần trăm, grid dùng thanh indeterminate; bấm thanh để xem bước hiện tại.
+Thông tin bên trái là dung lượng đã tải (thêm `/tổng` khi biết tổng) `@ MB/s`,
+ETA bên phải. Dung lượng dùng MB/GB thập phân, không đổi byte trong dữ liệu.
+QDM CLI hiện chưa trả byte tải/tổng, tốc độ và ETA đáng tin nên các số tương ứng
+vẫn là `—`; không lấy kích thước cache hoặc CSV làm byte tải qua mạng. Chưa xác minh API
 tạm dừng/huỷ an toàn giữa lúc QDM ghi file; hai nút này bị vô hiệu trong adapter.
 
 Nếu API/mạng bị ngắt, job không được công nhận hoàn thành khi chưa qua import.

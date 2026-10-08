@@ -1,0 +1,156 @@
+{
+  "scope": "Labeled telemetry fixtures and live saved EUR/USD; no API mutations",
+  "cases": [
+    {
+      "scenario": "total",
+      "pass": true,
+      "transfer": "0,6/28,8 GB @ 48 MB/s",
+      "eta": "≈ 10 phút",
+      "geometry": {
+        "left": {
+          "x": 1401,
+          "y": 284.5,
+          "right": 1513.140625,
+          "height": 16
+        },
+        "right": {
+          "x": 1538.921875,
+          "y": 284.5,
+          "right": 1587
+        },
+        "track": {
+          "x": 1401,
+          "y": 275.5,
+          "right": 1587
+        }
+      }
+    },
+    {
+      "scenario": "downloaded-only",
+      "pass": true,
+      "transfer": "600 MB @ 48 MB/s",
+      "eta": "≈ 10 phút",
+      "geometry": {
+        "left": {
+          "x": 1401,
+          "y": 284.5,
+          "right": 1494.5625,
+          "height": 16
+        },
+        "right": {
+          "x": 1538.921875,
+          "y": 284.5,
+          "right": 1587
+        },
+        "track": {
+          "x": 1401,
+          "y": 275.5,
+          "right": 1587
+        }
+      }
+    },
+    {
+      "scenario": "qdm-unknown",
+      "pass": true,
+      "transfer": "— MB @ — MB/s",
+      "eta": "—",
+      "geometry": {
+        "left": {
+          "x": 1401,
+          "y": 284.5,
+          "right": 1486.90625,
+          "height": 16
+        },
+        "right": {
+          "x": 1576,
+          "y": 284.5,
+          "right": 1587
+        },
+        "track": {
+          "x": 1401,
+          "y": 275.5,
+          "right": 1587
+        }
+      }
+    },
+    {
+      "scenario": "zero",
+      "pass": true,
+      "transfer": "0 MB @ 0 MB/s",
+      "eta": "≈ 10 phút",
+      "geometry": {
+        "left": {
+          "x": 1401,
+          "y": 284.5,
+          "right": 1476.78125,
+          "height": 16
+        },
+        "right": {
+          "x": 1538.921875,
+          "y": 284.5,
+          "right": 1587
+        },
+        "track": {
+          "x": 1401,
+          "y": 275.5,
+          "right": 1587
+        }
+      }
+    },
+    {
+      "scenario": "processing",
+      "pass": true,
+      "transfer": "600 MB @ — MB/s",
+      "eta": "—",
+      "geometry": {
+        "left": {
+          "x": 1401,
+          "y": 284.5,
+          "right": 1493.703125,
+          "height": 16
+        },
+        "right": {
+          "x": 1576,
+          "y": 284.5,
+          "right": 1587
+        },
+        "track": {
+          "x": 1401,
+          "y": 275.5,
+          "right": 1587
+        }
+      }
+    },
+    {
+      "scenario": "reduced-motion",
+      "pass": true,
+      "transfer": "— MB @ — MB/s",
+      "eta": "—",
+      "geometry": {
+        "left": {
+          "x": 1401,
+          "y": 284.5,
+          "right": 1486.90625,
+          "height": 16
+        },
+        "right": {
+          "x": 1576,
+          "y": 284.5,
+          "right": 1587
+        },
+        "track": {
+          "x": 1401,
+          "y": 275.5,
+          "right": 1587
+        }
+      }
+    }
+  ],
+  "live": {
+    "pass": true,
+    "timeframe": "M1",
+    "replaySize": "140,9 MB",
+    "apiWrites": 0
+  },
+  "pass": true
+}

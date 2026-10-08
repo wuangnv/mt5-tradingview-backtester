@@ -1,5 +1,6 @@
 import ProjectDateInput from './ProjectDateInput.jsx'
 import { displayDate } from './dateFormat.js'
+import { displayTimeframe } from './dataDisplay.js'
 import { chartSeriesPalette } from './projectPalette.js'
 import { nativeChartPalette } from './nativeChartPalette.js'
 import FxSelect from './FxSelect.jsx'
@@ -848,7 +849,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   return (
     <main style={advancedChart ? { '--legacy-header-height': `${(nativeHeaderSlots?.headerHeight || 38) + 4}px` } : undefined} className={`replay-shell wm-chart-page ${sideOpen ? 'is-panel-open' : ''} ${sideOpen && sidePanel === 'journal' ? 'is-journal-open' : ''} ${sideOpen && sidePanel === 'native-objects' ? 'is-native-tree-open' : ''} ${replay ? 'has-replay' : ''} ${advancedChart && replay ? 'is-legacy-chart' : ''}`}>
       {headerSlot && replay && !advancedChart && createPortal(<div className="chart-command-row" role="group" aria-label={t("Thanh công cụ chart")}>
-        <button type="button" className="chart-market-command" onClick={() => openPanel('data')} title={t("Đổi instrument/timeframe bằng dataset local")}><strong>{replayContext.instrument}</strong>{!advancedChart && <span>{replayContext.timeframe}</span>}</button>
+        <button type="button" className="chart-market-command" onClick={() => openPanel('data')} title={t("Đổi instrument/timeframe bằng dataset local")}><strong>{replayContext.instrument}</strong>{!advancedChart && <span>{displayTimeframe(replayContext)}</span>}</button>
         {!advancedChart && <><label className="chart-type-command"><ChartIcon name="candles" /><FxSelect  label={t("Kiểu chart")} value={chartType} onChange={value => setChartType(value)} localizeOptions={false} options={[...CHART_TYPES.map(type => ({ value: type.id, label: type.label, localize: false }))]} /></label>
         <div className="chart-indicators-command" ref={indicatorsRef}><button type="button" aria-expanded={indicatorsOpen} aria-controls={indicatorsOpen ? 'chart-indicators' : undefined} onClick={() => setIndicatorsOpen(current => !current)}>{t("Indicators")}</button>
           {indicatorsOpen && <div id="chart-indicators" className="chart-indicators-menu" onKeyDown={event => { if (event.key === 'Escape') { setIndicatorsOpen(false); event.currentTarget.previousElementSibling.focus() } }}><label><input type="checkbox" checked={showVolume} onChange={event => setShowVolume(event.target.checked)} />{t("Volume")}</label><label><input type="checkbox" checked={showAverage} onChange={event => setShowAverage(event.target.checked)} /> {t("SMA 20")}</label></div>}
@@ -878,7 +879,7 @@ export default function ReplayWorkspace({ workspace, query }) {
             <p>{t("Chọn dataset và nến bắt đầu. Replay mô phỏng, chỉ hiển thị dữ liệu tới cutoff hiện tại.")}</p>
           </div>
           <label>{t("Dataset")}<FxSelect label={t("Dataset")} value={datasetDraft} onChange={value => setDatasetDraft(value)} data-testid="dataset-id" disabled={datasetState.status === 'loading'} localizeOptions={false} options={[...(!datasetDraft ? [({ value: "", label: t("Chọn dataset…"), localize: false })] : []), ...datasetState.items.map((item) => (
-                ({ value: item.dataset_id, label: (item.instrument_id || item.dataset_id) + ' · ' + (item.timeframe || (item.timeframe_seconds > 0 ? `${item.timeframe_seconds}s` : t('TF chưa rõ'))) + ' · ' + datasetQualityLabel(item, t), localize: false })
+                ({ value: item.dataset_id, label: (item.instrument_id || item.dataset_id) + ' · ' + (displayTimeframe(item, t('TF chưa rõ'))) + ' · ' + datasetQualityLabel(item, t), localize: false })
               )), ...(datasetDraft && !datasetState.items.some((item) => item.dataset_id === datasetDraft) ? [({ value: datasetDraft, label: datasetDraft + ' · ' + t('Đang kiểm tra'), localize: false })] : [])]} />
           </label>
           <label>{t("Start index")}<input
@@ -913,7 +914,7 @@ export default function ReplayWorkspace({ workspace, query }) {
           <section className="replay-status replay-contextbar" aria-label={t("Ngữ cảnh replay")}>
             <div className="replay-context-primary">
               <span>{t("Practice context")}</span>
-              <strong>{replayContext.instrument} · {replayContext.timeframe}</strong>
+              <strong>{replayContext.instrument} · {displayTimeframe(replayContext)}</strong>
               <small>{workspace} {t("· broker locked")}</small>
             </div>
             <div><span>{t("Dataset")}</span><code>{replay.payload.dataset_id}</code></div>
@@ -961,7 +962,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div className="chart-canvas">
                   {!advancedChart && <><div className="chart-symbol-strip" role="group" aria-label={t("Thông tin symbol")}>
                     <strong>{replayContext.instrument}</strong>
-                    <span>{replayContext.timeframe} {t("· UTC")}</span>
+                    <span>{displayTimeframe(replayContext)} {t("· UTC")}</span>
                     <span className="chart-symbol-ohlc">{t("O")} {formatPrice((crosshair?.row || currentBar)?.open)} {t("· H")} {formatPrice((crosshair?.row || currentBar)?.high)} {t("· L")} {formatPrice((crosshair?.row || currentBar)?.low)} {t("· C")} {formatPrice((crosshair?.row || currentBar)?.close)} {t("· V")} {formatVolume((crosshair?.row || currentBar)?.volume ?? (crosshair?.row || currentBar)?.tick_volume)}</span>
                   </div>
                   <ChartFloatingToolbar name="Công cụ vẽ" storageKey={`tw:chart:draw-toolbar:${workspace}`} initialPosition={{ x: 22, y: 46 }}>
@@ -1107,7 +1108,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <p>{t("Đổi instrument hoặc timeframe bằng dataset đã đăng ký. Mỗi lựa chọn mở phiên mới, không đổi phiên hiện tại.")}</p>
                 {datasetState.status === 'error' && <p role="alert">{datasetState.error}</p>}
                 <ul>{datasetState.items.map(item => <li key={item.dataset_id}>
-                  <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {item.timeframe || `${item.timeframe_seconds || '?'}s`}</a>
+                  <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {displayTimeframe(item)}</a>
                   <small>{datasetQualityLabel(item, t)} · {item.row_count ?? t("N/A")} {t("nến")}</small>
                 </li>)}</ul>
               </section>
@@ -1131,7 +1132,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   </div>
                   <dl>
                     <div><dt>{t("Instrument")}</dt><dd>{replayContext.instrument}</dd></div>
-                    <div><dt>{t("Timeframe")}</dt><dd>{replayContext.timeframe}</dd></div>
+                    <div><dt>{t("Timeframe")}</dt><dd>{displayTimeframe(replayContext)}</dd></div>
                     <div><dt>{t("Quality")}</dt><dd>{replayContext.quality}</dd></div>
                     <div><dt>{t("Provider")}</dt><dd>{replayContext.provider}</dd></div>
                     <div><dt>{t("Rows")}</dt><dd>{replayContext.rowCount ?? t("N/A")}</dd></div>

@@ -1,5 +1,6 @@
 import ProjectDateInput from './ProjectDateInput.jsx'
 import { displayDate } from './dateFormat.js'
+import { displayTimeframe, formatDataSize as formatDatasetSize } from './dataDisplay.js'
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   datasetRange,
@@ -76,7 +77,7 @@ function DatasetDetails({ dataset, workspace, query }) {
         <div><dt>Dataset</dt><dd><strong>{dataset.dataset_id}</strong></dd></div>
         <div><dt>{t('Nguồn dữ liệu')}</dt><dd>{sourceOf(dataset)}</dd></div>
         {downloadEngineOf(dataset) === 'QuantDataManager' && <div><dt>{t('Công cụ tải')}</dt><dd>QuantDataManager (QDM) · CLI</dd></div>}
-        <div><dt>Instrument / TF</dt><dd>{dataset.instrument_id || 'N/A'} · {dataset.timeframe || 'N/A'}</dd></div>
+        <div><dt>Instrument / TF</dt><dd>{dataset.instrument_id || 'N/A'} · {displayTimeframe(dataset, 'N/A')}</dd></div>
         <div><dt>{t('Số nến')}</dt><dd>{fmt(dataset.row_count, '', 0)}</dd></div>
         <div><dt>Range UTC</dt><dd>{t(formatUtc(range.start, locale))} → {t(formatUtc(range.end, locale))}</dd></div>
         <div><dt>License</dt><dd>{source.license_use || 'Chưa xác minh'}</dd></div>
@@ -182,15 +183,8 @@ const downloadErrorMessage = error => {
 }
 const QDM_ERRORS = { qdm_catalog_missing:'Không tìm thấy danh mục Dukascopy trong bộ cài QDM. Kiểm tra lại bộ cài.', qdm_catalog_invalid:'Danh mục trong bộ cài QDM không hợp lệ. Giữ danh sách đã đọc thành công trước đó.', qdm_busy:'QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.', qdm_not_configured:'Chưa cài QuantDataManager trong project.', qdm_license_required:'QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.', qdm_version_unsupported:'Bản QuantDataManager này chưa hỗ trợ định dạng xuất cần thiết.', qdm_command_failed:'Lệnh QuantDataManager không hoàn tất. Kiểm tra QDM trước khi thử lại.', qdm_symbol_mismatch:'Cấu hình tài sản trong QDM không khớp nguồn Dukascopy/M1.', qdm_control_unsupported:'QDM CLI chưa hỗ trợ tạm dừng hoặc huỷ an toàn giữa lệnh.' }
 
-function formatDatasetSize(bytes, fmt) {
-  if (!Number.isFinite(bytes) || bytes < 0) return '—'
-  const unit = bytes >= 1024 ** 3 ? 'GiB' : bytes >= 1024 ** 2 ? 'MiB' : bytes >= 1024 ? 'KiB' : 'B'
-  const divisor = {GiB:1024 ** 3,MiB:1024 ** 2,KiB:1024,B:1}[unit]
-  return `${fmt(bytes / divisor, '', unit === 'B' ? 0 : 1)} ${unit}`
-}
-
 function LocalCsvImport({ workspace, onImported, onBusyChange, asset }) {
-  const { t } = useTestingLocale()
+  const { t, fmt } = useTestingLocale()
   const [form, setForm] = useState(() => {
     if (!asset) return DEFAULT_IMPORT_FORM
     const spec = asset.instrument_spec || {}, source = asset.source || {}
@@ -239,7 +233,7 @@ function LocalCsvImport({ workspace, onImported, onBusyChange, asset }) {
       return
     }
     if (file.size > CSV_LIMIT_BYTES) {
-      setUpload({ status: 'error', file, csvText: '', payload: null, preview: null, error: 'File vượt giới hạn 10 MiB của local import.', imported: null })
+      setUpload({ status: 'error', file, csvText: '', payload: null, preview: null, error: t('File vượt giới hạn {size} của local import.', { size: formatDatasetSize(CSV_LIMIT_BYTES,fmt) }), imported: null })
       return
     }
     setUpload({ status: 'selected', file, csvText: '', payload: null, preview: null, error: null, imported: null, acceptReview: false })
@@ -337,7 +331,7 @@ function LocalCsvImport({ workspace, onImported, onBusyChange, asset }) {
             <button type="button" className="rd-button is-primary" onClick={previewFile} disabled={!upload.file || busy} data-testid="data-desk-preview-button">{t(busy && upload.status !== 'importing' ? 'Đang kiểm tra…' : 'Kiểm tra dữ liệu')}</button>
             <button type="button" className="rd-button" onClick={importFile} disabled={!canImport || busy} data-testid="data-desk-import-button">{t(upload.status === 'importing' ? 'Đang lưu…' : 'Lưu vào kho')}</button>
           </div>
-          {upload.file && <p className="rd-import-file-state" data-testid="data-desk-file-state">{upload.file.name} · {(upload.file.size / 1024).toFixed(1)} KiB · {upload.status === 'stale' ? 'Preview cũ; cần chạy lại' : upload.status === 'imported' ? 'Đã import' : 'Chưa gửi lên server'}</p>}
+          {upload.file && <p className="rd-import-file-state" data-testid="data-desk-file-state">{upload.file.name} · {formatDatasetSize(upload.file.size,fmt)} · {upload.status === 'stale' ? 'Preview cũ; cần chạy lại' : upload.status === 'imported' ? 'Đã import' : 'Chưa gửi lên server'}</p>}
           {upload.preview?.quality?.disposition === 'review' && (
             <label className="rd-import-review-check"><input type="checkbox" checked={Boolean(upload.acceptReview)} onChange={(event) => setUpload((current) => ({ ...current, acceptReview: event.target.checked }))} /> Tôi hiểu dataset đang cần review và chỉ muốn lưu để kiểm tra.</label>
           )}
@@ -412,7 +406,9 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         const items = payload.items.map(job => {
           const { state: sample, metrics } = sampleDownloadMetrics(downloadSamples.current.get(job.job_id),job,now)
           downloadSamples.current.set(job.job_id,sample)
-          return {...job,...metrics}
+          return {...job,...metrics,
+            bytes_per_second:Number.isFinite(job.bytes_per_second) ? job.bytes_per_second : metrics.bytes_per_second,
+            estimated_seconds_remaining:Number.isFinite(job.estimated_seconds_remaining) ? job.estimated_seconds_remaining : metrics.estimated_seconds_remaining}
         })
         failures = 0
         setDownloads({...payload,items,receivedAt:now}); setClockNow(now); setPollError('')
@@ -435,7 +431,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   }, [workspace,preview,downloadRevision,downloadController])
 
   useEffect(() => {
-    if (!downloads.items.some(job => job.retry_after_seconds > 0 || ['queued','running','pausing'].includes(job.status))) return
+    if (!downloads.items.some(job => job.retry_after_seconds > 0)) return
     const timer = setInterval(() => setClockNow(Date.now()),1000)
     return () => clearInterval(timer)
   }, [downloads])
@@ -662,7 +658,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                           <td>{dataset.downloaded ? fmt(dataset.row_count, '', 0) : <span className="data-library-muted" title={t('Số nến chính xác chỉ xác định sau khi đọc dữ liệu nguồn.')}>—</span>}</td>
                           <td title={!dataset.downloaded ? t('Dung lượng replay chỉ xác định sau khi tải và xử lý.') : undefined}>{dataset.downloaded ? formatDatasetSize(dataset.size_bytes, fmt) : <span className="data-library-muted">—</span>}</td>
                           <td><div className="data-library-row-actions">{!job && <button type="button" className="rd-button data-library-download" disabled={dataset.downloaded || !eligibleDownload(dataset)} onClick={() => openDownload(dataset)} title={t(dataset.downloaded ? 'Dữ liệu đã được lưu trong kho' : activeDownload ? 'Đang có một lượt tải khác.' : eligibleDownload(dataset) ? 'Toàn bộ lịch sử có sẵn đến hết hôm qua (UTC).' : 'Nguồn chưa hỗ trợ tải trực tiếp trong ứng dụng')}><TestingIcon kind="download" />{t(startingAsset === dataset.instrument_id ? 'Đang bắt đầu…' : dataset.downloaded ? 'Đã tải' : 'Tải về')}</button>}{job ? <>
-                            <DataLibraryProgress job={job} fmt={fmt} retrySeconds={retrySeconds} now={clockNow} onClick={() => setDownloadProgressOpen(true)} />
+                            <DataLibraryProgress job={job} fmt={fmt} retrySeconds={retrySeconds} onClick={() => setDownloadProgressOpen(true)} />
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} title={retrySeconds > 0 ? t(downloadErrorMessage(job.error || 'download_cooldown')) : t(downloading ? 'Tạm dừng' : 'Tiếp tục tải')} disabled={Boolean(jobAction) || (downloading ? !downloads.supportsPause || job.status === 'pausing' : activeDownload || !downloads.available || retrySeconds > 0)} onClick={() => changeDownload(job,downloading ? 'pause' : 'resume')}><TestingIcon kind={downloading ? 'pause' : 'play'} /></button>
                             <button type="button" className="fxa-button fxa-icon-button data-library-job-control" aria-label={t('Huỷ tải')} title={t(job.supports_cancel === false ? QDM_ERRORS.qdm_control_unsupported : 'Huỷ tải')} disabled={Boolean(jobAction) || job.supports_cancel === false} onClick={() => changeDownload(job,'cancel')}><TestingIcon kind="close" /></button>
                           </> : <DataLibraryActions asset={dataset} onDetails={openDetails} onUpdate={openDownload} onDelete={openDelete} canUpdate={dataset.downloaded && dataset.update_available === true && eligibleDownload(dataset)} disabled={Boolean(preview) || state.status !== 'ready' || activeDownload || Boolean(startingAsset)} />}</div></td>
@@ -707,7 +703,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           setCatalogRevision((current) => current + 1)
         }}
       /></DataLibraryDialog>}
-      {deleteAsset && <DataLibraryDialog compact title="Xoá dữ liệu" busy={deleteBusy} onClose={() => setDeleteAsset(null)}><div className="data-library-delete-confirm"><strong>{deleteAsset.instrument_id} · {deleteAsset.timeframe}</strong><p>{t('Xoá bản dữ liệu đã lưu trên máy? Tài sản vẫn nằm trong danh mục để tải lại.')}</p>{deleteError && <p className="rd-message is-error" role="alert">{t(deleteError)}</p>}<div className="data-library-delete-actions"><button type="button" className="rd-button" disabled={deleteBusy} onClick={() => setDeleteAsset(null)}>{t('Hủy')}</button><button type="button" className="rd-button is-danger" disabled={deleteBusy} onClick={removeDataset}>{t(deleteBusy ? 'Đang xoá…' : 'Xoá')}</button></div></div></DataLibraryDialog>}
+      {deleteAsset && <DataLibraryDialog compact title="Xoá dữ liệu" busy={deleteBusy} onClose={() => setDeleteAsset(null)}><div className="data-library-delete-confirm"><strong>{deleteAsset.instrument_id} · {displayTimeframe(deleteAsset)}</strong><p>{t('Xoá bản dữ liệu đã lưu trên máy? Tài sản vẫn nằm trong danh mục để tải lại.')}</p>{deleteError && <p className="rd-message is-error" role="alert">{t(deleteError)}</p>}<div className="data-library-delete-actions"><button type="button" className="rd-button" disabled={deleteBusy} onClick={() => setDeleteAsset(null)}>{t('Hủy')}</button><button type="button" className="rd-button is-danger" disabled={deleteBusy} onClick={removeDataset}>{t(deleteBusy ? 'Đang xoá…' : 'Xoá')}</button></div></div></DataLibraryDialog>}
       {detailsOpen && selected && !csvOpen && <DataLibraryDialog title="Chi tiết dữ liệu và chất lượng" onClose={() => setDetailsOpen(false)}><DatasetDetails dataset={selected} workspace={workspace} query={query} /></DataLibraryDialog>}
     </section>
   )

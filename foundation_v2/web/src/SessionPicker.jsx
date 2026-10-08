@@ -1,4 +1,5 @@
 import { displayDate } from './dateFormat.js'
+import { displayTimeframe } from './dataDisplay.js'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -25,8 +26,7 @@ function datasetAvailabilityLabel(value) {
 }
 
 function timeframeLabel(item) {
-  if (item?.timeframe) return item.timeframe
-  return Number.isFinite(item?.timeframe_seconds) && item.timeframe_seconds > 0 ? `${item.timeframe_seconds}s` : 'Chưa rõ khung thời gian'
+  return displayTimeframe(item, 'Chưa rõ khung thời gian')
 }
 
 function sessionOptionLabel(item) {

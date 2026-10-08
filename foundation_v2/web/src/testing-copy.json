@@ -1,4 +1,6 @@
 {
+  "nén ·": {"vi":"nén ·","en":"compressed ·"},
+  "File vượt giới hạn {size} của local import.": {"vi":"File vượt giới hạn {size} của local import.","en":"File exceeds the local import limit of {size}."},
   "Thời gian từ lúc bắt đầu": {"vi":"Thời gian từ lúc bắt đầu","en":"Time since start"},
   "QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.": {"vi":"QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.","en":"QuantDataManager is open or running another command. Close it after it finishes, then try again."},
   "Chưa cài QuantDataManager trong project.": {"vi":"Chưa cài QuantDataManager trong project.","en":"QuantDataManager is not installed in this project."},

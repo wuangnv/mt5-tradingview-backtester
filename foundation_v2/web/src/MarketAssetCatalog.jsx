@@ -1,4 +1,5 @@
 import ProjectDateInput from './ProjectDateInput.jsx'
+import { formatDataSize } from './dataDisplay.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useState } from 'react'
 import { readJson, workspaceHeaders, formatUtc as formatMarketUtc } from './researchDataApi.js'
@@ -81,7 +82,7 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
     </div>
     {items.length > 0 && <div className="market-sync-table" tabIndex={0} role="region" aria-label={t("Danh mục lịch sử broker")}><table><thead><tr><th>{t("Asset / sản phẩm")}</th><th>{t("Nguồn")}</th><th>{t("Lịch sử UTC")}</th><th>{t("Trạng thái")}</th><th><span className="sr-only">{t("Thao tác")}</span></th></tr></thead><tbody>{pageItems.map(item => <tr key={item.symbol}>
       <td><strong>{item.symbol}</strong><small>{item.metadata?.group || '—'}</small></td><td>{state.source}</td>
-      <td>{item.dataset_id ? <>{formatUtc(item.first_timestamp)}<small>{t('đến {date} · {count} nến', { date: formatUtc(item.last_timestamp), count: fmt(item.row_count, '', 0) })}</small></> : t("Chưa có dữ liệu")}{item.ticks && <small>{t("Tick Bid/Ask:")} {fmt(item.ticks.row_count, '', 0)} · {(item.ticks.bytes / 1048576).toFixed(1)} {t("MiB nén ·")} {item.ticks.unavailable_days} {t("ngày broker trả rỗng")}</small>}</td>
+      <td>{item.dataset_id ? <>{formatUtc(item.first_timestamp)}<small>{t('đến {date} · {count} nến', { date: formatUtc(item.last_timestamp), count: fmt(item.row_count, '', 0) })}</small></> : t("Chưa có dữ liệu")}{item.ticks && <small>{t("Tick Bid/Ask:")} {fmt(item.ticks.row_count, '', 0)} · {formatDataSize(item.ticks.bytes,fmt)} {t("nén ·")} {item.ticks.unavailable_days} {t("ngày broker trả rỗng")}</small>}</td>
       <td><span className={`market-sync-status is-${item.status}`}>{statusLabel('market_asset', item.status)}</span>{item.dataset_id && <small>{item.quality === 'review' ? t("Có khoảng gián đoạn cần kiểm tra") : t("Kiểm tra cơ bản; phí lịch sử chưa xác minh")}</small>}{item.error && <small>{item.error}</small>}</td>
       <td><div className="market-sync-row-actions">{item.dataset_id && !preview && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, select: null, fresh: '1', surface: 'workspace' })}>{t("Luyện tập")}</a>}
         {!preview && item.ticks?.start_index != null && <a className="fxr-button fxr-button-secondary" href={buildWorkspaceHref('replay', workspace, query, { area: 'testing', section: 'sessions', session: null, cursor: null, cutoff: null, dataset: item.dataset_id, start: item.ticks.start_index, select: null, fresh: '1', surface: 'workspace' })}>{t("Luyện tick")}</a>}

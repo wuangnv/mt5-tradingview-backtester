@@ -1,3 +1,5 @@
+import { displayTimeframe } from './dataDisplay.js'
+
 export const CATEGORIES = [
   ['stock', 'Cổ phiếu'], ['futures', 'Hợp đồng tương lai'], ['fx', 'Forex'],
   ['crypto', 'Crypto'], ['index', 'Chỉ số'], ['metal', 'Kim loại'],
@@ -23,7 +25,7 @@ export function libraryDataType(item, availableStart) {
   if (!item.downloaded) return availableStart ? { timeframe: 'M1', ...(downloadEngineOf(item) === 'QuantDataManager' ? {} : { price: 'Bid' }) } : { timeframe: '—' }
   const settings = exportSettingsOf(item)
   const price = { bid: 'Bid', ask: 'Ask', mid: 'Mid' }[settings?.price]
-  return { timeframe: item.timeframe || '—', price }
+  return { timeframe: displayTimeframe(item), price }
 }
 
 export function canDownloadAsset(asset, download, preview = false) {
