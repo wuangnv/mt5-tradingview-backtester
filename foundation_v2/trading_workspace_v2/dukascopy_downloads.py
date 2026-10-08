@@ -181,7 +181,8 @@ class DukascopyDownloads:
         result = {key: value for key, value in job.items() if key != 'workspace_id'}
         if job['status'] in {'running', 'queued', 'pausing'} and self.active != (job['workspace_id'], job['job_id']) and not self._remote_owner(job):
             result.update(status='paused', error=None if job['status'] == 'pausing' else 'download_interrupted')
-        result['retry_after_seconds'] = max(0, int(job.get('retry_at', 0) - time.time()) + 1) if job.get('retry_at') else 0
+        retry_at = max(job.get('retry_at', 0), self._source_policy().get('until', 0)) if result['status'] in {'paused','failed'} else job.get('retry_at', 0)
+        result['retry_after_seconds'] = max(0, int(retry_at - time.time()) + 1) if retry_at else 0
         result.pop('retry_at', None)
         return result
 
@@ -233,6 +234,8 @@ class DukascopyDownloads:
                     return self.resume(workspace, old['job_id']) if old['status'] == 'paused' else old
             if self.active or self.stopping:
                 raise RuntimeError('download_busy')
+            if self._source_policy().get('until', 0) > time.time():
+                raise RuntimeError('download_cooldown')
             job = {'job_id': uuid4().hex, 'workspace_id': workspace, 'instrument_id': symbol,
                    'from_date': from_date, 'to_date': to_date, 'status': 'queued', 'error': None,
                    'completed_days': 0, 'total_days': days, 'dataset_id': None,
@@ -255,7 +258,7 @@ class DukascopyDownloads:
                 raise RuntimeError('download_busy')
             if job['status'] == 'cancelled':
                 raise ValueError('download_cancelled')
-            if job.get('retry_at', 0) > time.time():
+            if max(job.get('retry_at', 0), self._source_policy().get('until', 0)) > time.time():
                 raise RuntimeError('download_cooldown')
             if not self.meta:
                 raise RuntimeError('worker_unavailable')
@@ -328,6 +331,7 @@ class DukascopyDownloads:
                     atomic_json(folder / 'request.json', {**{key:job[key] for key in ('instrument_id','from_date','to_date')},
                         'parent_dataset_id':job.get('parent_dataset_id'),
                         'transferred_bytes':job.get('transferred_bytes',0),
+                        'completed_days':job.get('completed_days',0),
                         'pacing':self._pacing(policy)})
                     self.process = subprocess.Popen([self.node, str(self.worker), str(folder / 'request.json')],
                         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, encoding='utf-8',
@@ -346,6 +350,7 @@ class DukascopyDownloads:
                             job['completed_days'] = payload['completed_days']
                             job['transferred_bytes'] = payload.get('transferred_bytes', job.get('transferred_bytes', 0))
                             job['cached_bytes'] = payload.get('cached_bytes', 0)
+                            job['network_days'] = payload.get('network_days', 0)
                             job['stage'] = payload.get('stage', 'downloading')
                             self._save(job)
                         elif payload['event'] == 'error':
@@ -363,13 +368,13 @@ class DukascopyDownloads:
                 self._record_source_success()
                 self._complete(job, folder)
         except Exception as exc:
-            known = {'source_rate_limited','source_unavailable','invalid_source_data','empty_range','download_busy',
+            known = {'source_access_challenge','source_rate_limited','source_unavailable','invalid_source_data','empty_range','download_busy',
                      'worker_unavailable','download_interrupted','download_cancelled','quality_rejected','invalid_date_range','instrument_not_supported','dataset_not_supported'}
             error = str(exc) if str(exc) in known else 'quality_rejected' if isinstance(exc, DataImportError) else 'download_interrupted'
             with self.lock:
                 if self._read(workspace, job_id)['status'] not in {'cancelled', 'pausing'} and not (error == 'download_busy' and self._remote_owner(job)):
-                    job.update(status='paused' if error in {'source_rate_limited','source_unavailable','download_busy','download_interrupted'} else 'failed',
-                               error=error, retry_at=retry_at if retry_at is not None else time.time()+cooldown)
+                    job.update(status='paused' if error in {'source_access_challenge','source_rate_limited','source_unavailable','download_busy','download_interrupted'} else 'failed',
+                               error=error, retry_at=0 if error == 'source_access_challenge' else retry_at if retry_at is not None else time.time()+cooldown)
                     self._save(job)
         finally:
             with self.lock:

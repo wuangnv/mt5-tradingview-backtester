@@ -1,0 +1,10 @@
+{
+  "scope": "Second bounded GET to the same stalled URL, after persisted cooldown expired; response headers only. No token solving, cookie copying or alternate endpoint.",
+  "url": "https://jetta.dukascopy.com/v1/candles/minute/EUR-USD/BID/2007/1/21",
+  "observed_local_date": "2026-10-08",
+  "http_status": 202,
+  "server": "CloudFront",
+  "waf_action": "challenge",
+  "content_type": "text/html; charset=UTF-8",
+  "body_length": 0
+}

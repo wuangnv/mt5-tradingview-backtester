@@ -3,6 +3,7 @@ import json
 import sys
 import tempfile
 import threading
+import shutil
 import unittest
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -78,6 +79,51 @@ class FullDownloadTests(unittest.TestCase):
         self.assertIsNone(job['parent_dataset_id'])
         self.assertTrue(self.service.availability()['supports_full'])
 
+    def test_source_cooldown_blocks_new_jobs_and_resume_even_if_job_has_no_timer(self):
+        job = self.service.request_full('a','EUR/USD')
+        private = self.service._read('a',job['job_id'])
+        private.update(status='paused',error=None)
+        self.service._save(private)
+        self.service.active = None
+        (self.service.root/'cooldown.json').write_text(json.dumps({'until':10120,'rate_limit_level':2}))
+        with patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=10000):
+            self.assertEqual(self.service._public(private)['retry_after_seconds'],121)
+            with self.assertRaisesRegex(RuntimeError,'download_cooldown'):
+                self.service.resume('a',job['job_id'])
+            with self.assertRaisesRegex(RuntimeError,'download_cooldown'):
+                self.service.request('a','EUR/USD','2026-01-01','2026-01-02')
+            self.assertEqual(len(list(self.service._folder('a').glob('*/job.json'))),1)
+        with patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=10121):
+            self.assertEqual(self.service.resume('a',job['job_id'])['status'],'queued')
+
+    @unittest.skipUnless(shutil.which('node'), 'Node is required for the offline worker integration')
+    def test_real_node_worker_retries_transient_fixture_then_publishes_validated_artifact(self):
+        job = self.service.request('a','EUR/USD','2026-01-05','2026-01-06')
+        worker = Path(__file__).resolve().parents[1]/'data_worker/index.mjs'
+        harness = Path(self.temp.name)/'worker-fixture.mjs'
+        harness.write_text("import {download} from "+json.dumps(worker.as_uri())+";\n"+"""
+let calls=0;
+globalThis.fetch=async url=>{
+  if(++calls===1) return new Response('',{status:503});
+  const parts=url.split('/').slice(-3).map(Number);
+  return new Response(JSON.stringify({timestamp:Date.UTC(parts[0],parts[1]-1,parts[2]),
+    multiplier:0.00001,shift:60000,open:1.1,high:1.1,low:1.1,close:1.1,
+    times:[0,1],opens:[0,0],highs:[0,0],lows:[0,0],closes:[0,0],volumes:[1,1]}));
+};
+await download(process.argv[2],{sleepFn:async()=>{}});
+""",encoding='utf-8')
+        self.service.node,self.service.worker = shutil.which('node'),harness
+        self.service._run(self.service._read('a',job['job_id']))
+        completed = self.service.list_jobs('a')['items'][0]
+        self.assertEqual(completed['status'],'completed')
+        self.assertEqual(completed['completed_days'],2)
+        self.assertEqual(completed['network_days'],2)
+        manifest = self.store.get_dataset('a',completed['dataset_id'])
+        self.assertEqual(manifest.row_count,4)
+        self.assertEqual(manifest.instrument_id,'EUR/USD')
+        self.assertEqual(manifest.quality['disposition'],'review')
+        self.assertEqual(hashlib.sha256((self.artifacts.root/manifest.raw_artifact_path).read_bytes()).hexdigest(),manifest.raw_sha256)
+
     def run_failed_worker(self, job, error='source_rate_limited', retry=300):
         self.service.node, self.service.worker = 'mock-node', Path('mock-worker')
         class Output:
@@ -89,6 +135,15 @@ class FullDownloadTests(unittest.TestCase):
         with patch('trading_workspace_v2.dukascopy_downloads.subprocess.Popen',return_value=process) as spawn:
             self.service._run(self.service._read('a',job['job_id']))
         return spawn
+
+    def test_access_challenge_preserves_job_without_inventing_cooldown_or_escalating_pacing(self):
+        job = self.service.request_full('a','EUR/USD')
+        self.run_failed_worker(job,'source_access_challenge',0)
+        saved = self.service._read('a',job['job_id'])
+        self.assertEqual(saved['status'],'paused')
+        self.assertEqual(saved['error'],'source_access_challenge')
+        self.assertEqual(self.service._public(saved)['retry_after_seconds'],0)
+        self.assertEqual(self.service._source_policy(),{'rate_limit_level':0})
 
     def test_repeated_429_persists_source_pacing_backoff_and_retains_resume_cache(self):
         job = self.service.request_full('a','EUR/USD')

@@ -3,6 +3,9 @@ import assert from 'node:assert/strict'
 import { mkdtemp, writeFile, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
+import { fileURLToPath } from 'node:url'
 import { download, originalCandles, fetchRaw } from '../index.mjs'
 
 const start = Date.parse('2026-01-05T00:00:00Z')
@@ -30,6 +33,60 @@ test('429 is explicit with cooldown, redirects and oversized bodies are not data
   await assert.rejects(fetchRaw('https://example.com/',async () => { throw Error('should never run') }),/invalid_source_url/)
 })
 
+test('temporary transport and 503 failures retry the same bucket; persistent and 429 errors stop', async () => {
+  for (const failure of [() => { throw new TypeError('network offline') }, () => new Response('',{status:503})]) {
+    let calls = 0
+    const waits = []
+    const result = await fetchRaw(url,async () => ++calls < 3 ? failure() : new Response(JSON.stringify(raw)),()=>{},{sleepFn:async ms=>waits.push(ms)})
+    assert.deepEqual(JSON.parse(result.toString()),raw)
+    assert.equal(calls,3)
+    assert.deepEqual(waits,[1000,2000])
+  }
+  let calls = 0
+  await assert.rejects(fetchRaw(url,async()=>{ calls++;throw new TypeError('offline') },()=>{},{sleepFn:async()=>{}}),error=>error.message==='source_unavailable'&&error.diagnostic.attempts===3&&error.diagnostic.url===url)
+  assert.equal(calls,3)
+  for (const status of [429,403,404,302]) {
+    calls = 0
+    await assert.rejects(fetchRaw(url,async()=>{calls++;return new Response('',{status})},()=>{},{sleepFn:async()=>assert.fail('must not retry')}),error=>error.diagnostic.http_status===status&&error.diagnostic.attempts===1)
+    assert.equal(calls,1)
+  }
+})
+
+test('transient retries honor Retry-After without sleeping through a long server cooldown', async () => {
+  let calls = 0
+  const waits = []
+  await fetchRaw(url,async()=>++calls===1?new Response('',{status:503,headers:{'retry-after':'3'}}):new Response(JSON.stringify(raw)),()=>{},{sleepFn:async ms=>waits.push(ms)})
+  assert.deepEqual(waits,[3000])
+  calls = 0
+  await assert.rejects(fetchRaw(url,async()=>{calls++;return new Response('',{status:503,headers:{'retry-after':'120'}})},()=>{},{sleepFn:async()=>assert.fail('leave long cooldown to the API')}),error=>error.retryAfter===120)
+  assert.equal(calls,1)
+})
+
+test('AWS WAF challenge is distinct from throttling/network errors and never retried automatically', async () => {
+  for(const [status,action] of [[202,'challenge'],[405,'captcha'],[429,'challenge']]) {
+    let calls=0
+    await assert.rejects(fetchRaw(url,async()=>{calls++;return new Response('',{status,headers:{'x-amzn-waf-action':action,'server':'CloudFront'}})},()=>{},{sleepFn:async()=>assert.fail('access challenge must stop')}),error=>error.message==='source_access_challenge'&&error.diagnostic.waf_action===action&&error.diagnostic.http_status===status)
+    assert.equal(calls,1)
+  }
+})
+
+test('CLI persists bounded source diagnostics and never labels HTTP errors as empty successful days', async () => {
+  const root=await mkdtemp(join(tmpdir(),'tw-dukascopy-diagnostic-'))
+  try {
+    const request=join(root,'request.json')
+    await writeFile(request,JSON.stringify({instrument_id:'EUR/USD',from_date:'2026-01-05',to_date:'2026-01-05'}))
+    const preload='data:text/javascript,'+encodeURIComponent("globalThis.fetch=async()=>new Response('',{status:429,headers:{'retry-after':'600','server':'fixture','set-cookie':'must-not-log'}})")
+    let failure
+    try {await promisify(execFile)(process.execPath,['--import',preload,fileURLToPath(new URL('../index.mjs',import.meta.url)),request])} catch(error) {failure=error}
+    assert.equal(failure.code,1)
+    assert.equal(JSON.parse(failure.stdout.trim()).error,'source_rate_limited')
+    const diagnostic=JSON.parse(await readFile(join(root,'last-source-error.json'),'utf8'))
+    assert.equal(diagnostic.http_status,429);assert.equal(diagnostic.url,url);assert.equal(diagnostic.retry_after,'600');assert.equal(diagnostic.attempts,1)
+    assert(!JSON.stringify(diagnostic).includes('must-not-log'))
+    await assert.rejects(readFile(join(root,'candles.csv')),error=>error.code==='ENOENT')
+  } finally {await rm(root,{recursive:true,force:true})}
+})
+
 test('persisted pacing controls network batches, while cached resume has no artificial pause', async () => {
   const root = await mkdtemp(join(tmpdir(),'tw-dukascopy-paced-'))
   try {
@@ -43,7 +100,10 @@ test('persisted pacing controls network batches, while cached resume has no arti
     }})
     assert.deepEqual(calls,[5,6,7,8]);assert.deepEqual(waits,[4000,4000,4000])
     const csv=await readFile(join(root,'candles.csv'),'utf8')
-    await download(request,{notify:()=>{},fetchFn:async()=>assert.fail('cached buckets must not refetch'),sleepFn:async()=>assert.fail('cached batches must not wait')})
+    await writeFile(request,JSON.stringify({...input,completed_days:4}))
+    const events=[]
+    await download(request,{notify:event=>events.push(event),fetchFn:async()=>assert.fail('cached buckets must not refetch'),sleepFn:async()=>assert.fail('cached batches must not wait')})
+    assert(events.filter(event=>event.event==='progress').every(event=>event.completed_days===4&&event.network_days===0),'cached resume must retain saved progress without estimating network throughput')
     assert.equal(await readFile(join(root,'candles.csv'),'utf8'),csv)
     for (const pacing of [{concurrency:0,pause_ms:4000},{concurrency:1,pause_ms:-1},{concurrency:1,pause_ms:30001}]) {
       await writeFile(request,JSON.stringify({...input,pacing}))

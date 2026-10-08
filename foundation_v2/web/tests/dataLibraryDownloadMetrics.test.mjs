@@ -25,6 +25,16 @@ test('warmup and a measured zero speed remain distinct', () => {
   assert.equal(sampleDownloadMetrics(start(),job,2000).metrics.bytes_per_second,0)
   assert.equal(sampleDownloadMetrics(start(),{...job,completed_days:14},8000).metrics.estimated_seconds_remaining,null)
 })
+
+test('resume never treats reading cached history as network throughput', () => {
+  const initial = {...job,network_days:0}
+  let state = sampleDownloadMetrics(null,initial,0).state
+  const cached = sampleDownloadMetrics(state,{...initial,completed_days:60},10000)
+  assert.equal(cached.metrics.estimated_seconds_remaining,null)
+  state = cached.state
+  const downloaded = sampleDownloadMetrics(state,{...initial,completed_days:63,network_days:3,transferred_bytes:4000},20000)
+  assert.equal(downloaded.metrics.estimated_seconds_remaining,37*20/3)
+})
 test('pause, resume, processing, rollback and long polling gaps reset the baseline', () => {
   for (const changed of [{...job,status:'paused'}, {...job,status:'failed'}, {...job,stage:'processing'}, {...job,completed_days:9}, {...job,transferred_bytes:900}, {...job,total_days:101}]) {
     const paused = sampleDownloadMetrics(start(),changed,10000)

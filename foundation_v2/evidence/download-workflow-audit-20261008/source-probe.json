@@ -1,0 +1,23 @@
+{
+  "scope": "Read-only integrity audit of owner paused cache; at most one source request after persisted cooldown. No job mutation, no API restart.",
+  "cache": {
+    "days": 1358,
+    "rows": 1393457,
+    "bytes": 28527452,
+    "elapsed_seconds": 2.9257456,
+    "receipt_files": 1359
+  },
+  "source": {
+    "url": "https://jetta.dukascopy.com/v1/candles/minute/EUR-USD/BID/2007/1/21",
+    "date": "2007-01-21",
+    "error": "source_unavailable",
+    "http_status": 202,
+    "retry_after": null,
+    "server": "CloudFront",
+    "content_type": "text/html; charset=UTF-8",
+    "attempts": 1,
+    "retry_seconds": 60,
+    "elapsed_seconds": 0.1193191999999999,
+    "checked_at_utc": "2026-10-08T12:28:04.493Z"
+  }
+}

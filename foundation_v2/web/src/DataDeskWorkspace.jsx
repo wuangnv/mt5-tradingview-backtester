@@ -174,7 +174,7 @@ function DataLibraryDialog({ title, busy = false, onClose, compact = false, draw
 }
 
 const DOWNLOAD_STATUS = { queued:'Đang chờ tải', running:'Đang tải', pausing:'Đang tạm dừng…', paused:'Đã tạm dừng', failed:'Tải thất bại', completed:'Đã lưu vào kho', cancelled:'Đã huỷ tải' }
-const DOWNLOAD_ERRORS = { source_rate_limited:'Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.', source_unavailable:'Không kết nối được Dukascopy. Tiến độ đã tải được giữ lại.', invalid_source_data:'Dữ liệu nguồn không hợp lệ; chưa lưu vào kho.', empty_range:'Không có dữ liệu trong khoảng ngày đã chọn.', worker_unavailable:'Bộ tải dữ liệu chưa sẵn sàng.', download_interrupted:'Tải bị gián đoạn. Có thể tiếp tục từ tiến độ đã lưu.', quality_rejected:'Dữ liệu chưa đạt kiểm tra chất lượng; chưa lưu vào kho.', download_busy:'Đang có một lượt tải khác. Hãy chờ hoặc huỷ lượt đó.', invalid_date_range:'Chọn khoảng ngày hợp lệ.', instrument_not_supported:'Tài sản này chưa hỗ trợ tải.', download_cooldown:'Chưa hết thời gian chờ. Hãy thử lại sau.', download_cancelled:'Lượt tải đã huỷ. Hãy bắt đầu lượt tải mới.', download_not_found:'Không tìm thấy lượt tải này.' }
+const DOWNLOAD_ERRORS = { source_access_challenge:'Dukascopy yêu cầu xác minh truy cập. Bộ tải tự động chưa thể tiếp tục; dữ liệu đã tải được giữ lại.', source_rate_limited:'Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.', source_unavailable:'Không kết nối được Dukascopy. Tiến độ đã tải được giữ lại.', invalid_source_data:'Dữ liệu nguồn không hợp lệ; chưa lưu vào kho.', empty_range:'Không có dữ liệu trong khoảng ngày đã chọn.', worker_unavailable:'Bộ tải dữ liệu chưa sẵn sàng.', download_interrupted:'Tải bị gián đoạn. Có thể tiếp tục từ tiến độ đã lưu.', quality_rejected:'Dữ liệu chưa đạt kiểm tra chất lượng; chưa lưu vào kho.', download_busy:'Đang có một lượt tải khác. Hãy chờ hoặc huỷ lượt đó.', invalid_date_range:'Chọn khoảng ngày hợp lệ.', instrument_not_supported:'Tài sản này chưa hỗ trợ tải.', download_cooldown:'Chưa hết thời gian chờ. Hãy thử lại sau.', download_cancelled:'Lượt tải đã huỷ. Hãy bắt đầu lượt tải mới.', download_not_found:'Không tìm thấy lượt tải này.' }
 const downloadErrorMessage = error => {
   const code = typeof error === 'string' ? error : error?.payload?.detail?.code || error?.payload?.detail || error?.message
   return code === 'already_current' ? 'Dữ liệu đã cập nhật đến ngày mới nhất.' : DOWNLOAD_ERRORS[code] || 'Không xử lý được lượt tải. Hãy thử lại.'
@@ -401,7 +401,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   useEffect(() => {
     if (preview) return
     const controller = new AbortController(), scopeSignal = downloadController.signal
-    let timer, disposed = false
+    let timer, disposed = false, failures = 0
     const poll = async () => {
       try {
         const payload = await fetchDownloads(workspace, controller.signal)
@@ -412,15 +412,20 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           downloadSamples.current.set(job.job_id,sample)
           return {...job,...metrics}
         })
+        failures = 0
         setDownloads({...payload,items,receivedAt:now}); setClockNow(now); setPollError('')
         const newlyCompleted = payload.items.filter(job => job.status === 'completed' && !completedJobs.current.has(job.job_id))
         if (newlyCompleted.length) {
           newlyCompleted.forEach(job => completedJobs.current.add(job.job_id))
           setCatalogRevision(current => current + 1)
         }
-        if (payload.items.some(job => ['queued','running','pausing'].includes(job.status))) timer = setTimeout(poll,2000)
+        // Keep observing paused jobs and changes from other tabs/API restarts without retrying downloads.
+        timer = setTimeout(poll,payload.items.some(job => ['queued','running','pausing'].includes(job.status)) ? 2000 : 15000)
       } catch (error) {
-        if (!disposed && !scopeSignal.aborted && error.name !== 'AbortError') setPollError('Không đọc được tiến độ tải. Thử lại để xem trạng thái hiện tại.')
+        if (!disposed && !scopeSignal.aborted && error.name !== 'AbortError') {
+          setPollError('Không đọc được tiến độ tải. Thử lại để xem trạng thái hiện tại.')
+          timer = setTimeout(poll,Math.min(30000,5000 * 2 ** failures++))
+        }
       }
     }
     poll()

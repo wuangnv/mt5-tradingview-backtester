@@ -118,6 +118,11 @@ collector trong API đang chạy không được bật. Các checkpoint Exness/t
 cũ là bằng chứng lịch sử, không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
 Xem [receipt Dukascopy](foundation_v2/evidence/dukascopy-integration-20261008/RECEIPT.md).
 
+Bộ tải giữ cache để tiếp tục, thử lại lỗi mạng tạm thời có giới hạn và phân biệt
+HTTP 429 với yêu cầu xác minh AWS WAF. Kiểm tra nguồn ngày 08/10/2026 gặp WAF
+challenge; restart/giảm nhịp không bảo đảm nguồn cho phép tải. Xem
+[rà soát luồng download](foundation_v2/evidence/download-workflow-audit-20261008/RECEIPT.md).
+
 Để restart API offline local ở cổng 8010 trên Windows, double-click
 [`restart-offline-api.bat`](restart-offline-api.bat), hoặc chạy từ gốc repo:
 

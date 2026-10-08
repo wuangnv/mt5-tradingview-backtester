@@ -15,17 +15,27 @@ export async function atomicJson(path, value) {
   await rename(path + '.tmp', path)
 }
 
-export async function fetchRaw(url, fetchFn = fetch, onBytes = () => {}) {
+async function fetchOnce(url, fetchFn, onBytes) {
   if (!/^https:\/\/jetta\.dukascopy\.com\/v1\/candles\/minute\/[^/?]+\/BID\/\d{4}\/\d{1,2}\/\d{1,2}$/.test(url)) throw Error('invalid_source_url')
   let response
   try { response = await fetchFn(url, { signal:AbortSignal.timeout(15000), redirect:'error' }) }
-  catch { throw Error('source_unavailable') }
+  catch (cause) {
+    const error = Error('source_unavailable')
+    error.retryable = true
+    error.diagnostic = {url, transport_error:cause.cause?.code || cause.name || 'fetch_failed'}
+    throw error
+  }
   if (response.status !== 200) {
     await response.body?.cancel()
-    const error = Error(response.status === 429 ? 'source_rate_limited' : 'source_unavailable')
+    const wafAction = response.headers.get('x-amzn-waf-action')
+    const challenged = ['challenge','captcha'].includes(wafAction)
+    const error = Error(challenged ? 'source_access_challenge' : response.status === 429 ? 'source_rate_limited' : 'source_unavailable')
     const retry = response.headers.get('retry-after')
     const seconds = /^\d+$/.test(retry || '') ? Number(retry) : Math.ceil((Date.parse(retry) - Date.now()) / 1000)
     error.retryAfter = response.status === 429 ? Math.min(86400, Math.max(300, seconds || 0)) : 60
+    error.retryable = !challenged && [408,502,503,504].includes(response.status) && !(seconds > 30)
+    if (seconds > 0 && response.status !== 429) error.retryAfter = Math.min(86400,seconds)
+    error.diagnostic = {url, http_status:response.status, retry_after:retry, waf_action:wafAction, server:response.headers.get('server'), content_type:response.headers.get('content-type')}
     throw error
   }
   const reader = response.body.getReader(), chunks = []
@@ -39,8 +49,31 @@ export async function fetchRaw(url, fetchFn = fetch, onBytes = () => {}) {
       if (bytes > MAX_BYTES) throw Error('invalid_source_data')
       chunks.push(Buffer.from(value))
     }
-  } catch (error) { await reader.cancel(); throw Error(error.message === 'invalid_source_data' ? error.message : 'source_unavailable') }
+  } catch (cause) {
+    await reader.cancel()
+    const error = Error(cause.message === 'invalid_source_data' ? cause.message : 'source_unavailable')
+    error.retryable = error.message === 'source_unavailable'
+    error.diagnostic = {url, http_status:response.status, transport_error:cause.name}
+    throw error
+  }
   return Buffer.concat(chunks)
+}
+
+export async function fetchRaw(url, fetchFn = fetch, onBytes = () => {}, {sleepFn = ms => new Promise(resolve => setTimeout(resolve,ms)), canRetry = () => true} = {}) {
+  for (let attempt = 0; ; attempt++) {
+    try { return await fetchOnce(url,fetchFn,onBytes) }
+    catch (error) {
+      error.diagnostic = {...error.diagnostic, attempts:attempt+1}
+      const allowed = canRetry(error)
+      // 429 always leaves the worker: only the persisted source cooldown may allow another request.
+      if (!allowed || !error.retryable || attempt >= 2) throw error
+      const retry = Number(error.diagnostic.retry_after)
+      const dateRetry = Date.parse(error.diagnostic.retry_after)
+      const sourceWait = Number.isFinite(retry) && retry > 0 ? retry*1000 : Number.isFinite(dateRetry) ? Math.max(0,dateRetry-Date.now()) : 0
+      await sleepFn(Math.max(1000 * 2 ** attempt,sourceWait))
+      if (!canRetry(error)) throw error
+    }
+  }
 }
 
 export function originalCandles(url, buffer, start, end) {
@@ -88,13 +121,15 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
   try { receipt = JSON.parse(await readFile(receiptPath,'utf8')) } catch (error) { if (error.code !== 'ENOENT') throw Error('invalid_source_data') }
   if (receipt.instrument_id !== request.instrument_id || receipt.version !== 1) throw Error('invalid_source_data')
   const output = await open(join(folder,'candles.csv.tmp'),'w')
-  let rowCount = 0, transferredBytes = Number(request.transferred_bytes) || 0, cachedBytes = 0, completedDays = 0, lastProgressAt = -Infinity
+  let rowCount = 0, transferredBytes = Number(request.transferred_bytes) || 0, cachedBytes = 0, completedDays = 0, networkDays = 0, lastProgressAt = -Infinity
+  let sourceRateLimited = false
+  const savedDays = Number.isInteger(request.completed_days) ? Math.max(0,Math.min(total,request.completed_days)) : 0
   const progress = (force = false) => {
     const now = performance.now()
     if (!force && now - lastProgressAt < progressIntervalMs) return
     lastProgressAt = now
-    notify({event:'progress',completed_days:completedDays,total_days:total,
-      transferred_bytes:transferredBytes,cached_bytes:cachedBytes,stage:'downloading'})
+    notify({event:'progress',completed_days:Math.max(savedDays,completedDays),total_days:total,
+      transferred_bytes:transferredBytes,cached_bytes:cachedBytes,network_days:networkDays,stage:'downloading'})
   }
   try {
     await output.writeFile('time,open,high,low,close,volume\n')
@@ -112,7 +147,10 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
         cached = true
         cachedBytes += buffer.length
       } else {
-        const fetcher = new BufferFetcher({batchSize:1,retryCount:0,fetcherFn:value => fetchRaw(value,fetchFn,bytes => { transferredBytes += bytes; progress() })})
+        const fetcher = new BufferFetcher({batchSize:1,retryCount:0,fetcherFn:value => fetchRaw(value,fetchFn,bytes => { transferredBytes += bytes; progress() },{sleepFn,canRetry:error=>{
+          if (['source_rate_limited','source_access_challenge'].includes(error.message)) sourceRateLimited = true
+          return !sourceRateLimited
+        }})})
         const objects = await fetcher.fetch([url])
         if (objects.length !== 1) throw Error('invalid_source_data')
         buffer = objects[0].buffer
@@ -134,7 +172,7 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
       // and no work from a later batch can escape the rate-limit/cancellation boundary.
       const batch = await Promise.allSettled(urls.slice(offset, offset + concurrency).map((url, index) =>
         readBucket(url, offset + index).catch(error => {
-          if (!firstFailure || (error.message === 'source_rate_limited' &&
+          if (!firstFailure || error.message === 'source_access_challenge' || (firstFailure.message !== 'source_access_challenge' && error.message === 'source_rate_limited' &&
               (firstFailure.message !== 'source_rate_limited' || error.retryAfter > firstFailure.retryAfter))) firstFailure = error
           throw error
         })))
@@ -145,6 +183,7 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
         if (rows.length) await output.writeFile(rows.map(row => [row[0]/1000,...row.slice(1)].join(',')).join('\n')+'\n')
         rowCount += rows.length
         completedDays++
+        if (!cached) networkDays++
         fetched ||= !cached
         progress(true)
       }
@@ -160,5 +199,12 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   if (process.argv[2] === '--metadata') emit({version:'1.50.0',items:metadata})
-  else download(process.argv[2]).catch(error => { emit({event:'error',error:['source_rate_limited','source_unavailable','invalid_date_range','instrument_not_supported','empty_range'].includes(error.message) ? error.message : 'invalid_source_data',retry_after_seconds:error.retryAfter || 60}); process.exitCode = 1 })
+  else download(process.argv[2]).catch(async error => {
+    const failure = {event:'error',error:['source_access_challenge','source_rate_limited','source_unavailable','invalid_date_range','instrument_not_supported','empty_range'].includes(error.message) ? error.message : 'invalid_source_data',retry_after_seconds:error.message === 'source_access_challenge' ? 0 : error.retryAfter || 60}
+    if (error.diagnostic) {
+      await atomicJson(join(dirname(resolve(process.argv[2])),'last-source-error.json'),{...failure,...error.diagnostic,occurred_at_utc:new Date().toISOString()}).catch(() => {})
+    }
+    emit(failure)
+    process.exitCode = 1
+  })
 }

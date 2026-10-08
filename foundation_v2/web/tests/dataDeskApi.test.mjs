@@ -29,7 +29,7 @@ test('download operations preserve workspace, dates and abort scope', async () =
   const dates = {instrument_id:'EUR/USD',from_date:'2026-09-01',to_date:'2026-09-30'}
   globalThis.fetch = async (url,options) => { calls.push({url,options}); return {ok:true,json:async () => ({items:[{job_id:'job-a',status:'paused'}],available:true})} }
   try {
-    assert.deepEqual(await fetchDownloads('tenant-b',controller.signal),{items:[{job_id:'job-a',status:'paused'}],available:true})
+    assert.deepEqual(await fetchDownloads('tenant-b',controller.signal),{items:[{job_id:'job-a',status:'paused'}],available:true,supportsPause:false})
     await startDownload('tenant-b',dates,controller.signal)
     await updateDownload('tenant-b','job/a','resume',controller.signal)
     await updateDownload('tenant-b','job/a','cancel',controller.signal)

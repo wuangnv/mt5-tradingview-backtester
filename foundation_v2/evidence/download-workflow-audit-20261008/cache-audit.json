@@ -1,0 +1,14 @@
+{
+  "scope": "Read-only integrity audit of owner paused cache; at most one source request after persisted cooldown. No job mutation, no API restart.",
+  "cache": {
+    "days": 1358,
+    "rows": 1393457,
+    "bytes": 28527452,
+    "elapsed_seconds": 2.8580863,
+    "receipt_files": 1359
+  },
+  "source": {
+    "url": "https://jetta.dukascopy.com/v1/candles/minute/EUR-USD/BID/2007/1/21",
+    "date": "2007-01-21"
+  }
+}

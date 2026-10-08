@@ -1,0 +1,128 @@
+{
+  "scope": "UI state-machine fixtures on actual Vite source; all fixture API writes intercepted. Separate live GET-only check.",
+  "cases": [
+    {
+      "width": 1710,
+      "pass": true,
+      "polls": 9,
+      "writes": [
+        {
+          "path": "/api/v2/data/downloads/full",
+          "workspace": "tenant-a",
+          "body": {
+            "instrument_id": "EUR/USD"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/pause",
+          "workspace": "tenant-a",
+          "body": null
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/resume",
+          "workspace": "tenant-a",
+          "body": null
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/cancel",
+          "workspace": "tenant-a",
+          "body": null
+        }
+      ],
+      "checks": [
+        "start-once",
+        "poll-network-recovery",
+        "pause",
+        "persisted-reload",
+        "cooldown-disabled",
+        "resume-same-job",
+        "cancel",
+        "no-page-overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "pass": true,
+      "polls": 8,
+      "writes": [
+        {
+          "path": "/api/v2/data/downloads/full",
+          "workspace": "tenant-a",
+          "body": {
+            "instrument_id": "EUR/USD"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/pause",
+          "workspace": "tenant-a",
+          "body": null
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/resume",
+          "workspace": "tenant-a",
+          "body": null
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/cancel",
+          "workspace": "tenant-a",
+          "body": null
+        }
+      ],
+      "checks": [
+        "start-once",
+        "poll-network-recovery",
+        "pause",
+        "persisted-reload",
+        "cooldown-disabled",
+        "resume-same-job",
+        "cancel",
+        "no-page-overflow"
+      ]
+    },
+    {
+      "width": 360,
+      "pass": true,
+      "polls": 9,
+      "writes": [
+        {
+          "path": "/api/v2/data/downloads/full",
+          "workspace": "tenant-a",
+          "body": {
+            "instrument_id": "EUR/USD"
+          }
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/pause",
+          "workspace": "tenant-a",
+          "body": null
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/resume",
+          "workspace": "tenant-a",
+          "body": null
+        },
+        {
+          "path": "/api/v2/data/downloads/fixture-job/cancel",
+          "workspace": "tenant-a",
+          "body": null
+        }
+      ],
+      "checks": [
+        "start-once",
+        "poll-network-recovery",
+        "pause",
+        "persisted-reload",
+        "cooldown-disabled",
+        "resume-same-job",
+        "cancel",
+        "no-page-overflow"
+      ]
+    },
+    {
+      "scope": "Actual API GET-only",
+      "pass": true,
+      "mutations": 0
+    }
+  ],
+  "pass": true
+}

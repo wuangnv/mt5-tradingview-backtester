@@ -4,7 +4,7 @@ export function downloadRetrySeconds(job, receivedAt, now) {
 }
 
 export function sampleDownloadMetrics(previous, job, time) {
-  const sample = { time, bytes: job.transferred_bytes || 0, days: job.completed_days || 0 }
+  const sample = { time, bytes: job.transferred_bytes || 0, days: Number.isFinite(job.network_days) ? job.network_days : job.completed_days || 0 }
   const signature = JSON.stringify([job.status, job.stage, job.total_days, job.from_date, job.to_date])
   const last = previous?.samples.at(-1)
   const reset = !last || previous.signature !== signature || sample.bytes < last.bytes || sample.days < last.days || time <= last.time || time - last.time > 10000
@@ -13,7 +13,7 @@ export function sampleDownloadMetrics(previous, job, time) {
   const running = job.status === 'running' && job.stage !== 'processing'
   const bytes_per_second = running && elapsed > 0 ? (sample.bytes - first.bytes) / elapsed : null
   const lastAdvance = reset ? time : sample.days > last.days ? time : previous.lastAdvance
-  const gained = sample.days - first.days, remaining = Math.max(0, (job.total_days || 0) - sample.days)
+  const gained = sample.days - first.days, remaining = Math.max(0, (job.total_days || 0) - (job.completed_days || 0))
   const estimated_seconds_remaining = running && elapsed >= 10 && gained >= 3 && remaining > 0 && time - lastAdvance <= 15000 ? remaining * elapsed / gained : null
   return { state: { signature, samples, lastAdvance }, metrics: { bytes_per_second, estimated_seconds_remaining } }
 }
