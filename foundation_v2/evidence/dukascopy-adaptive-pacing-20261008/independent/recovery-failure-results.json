@@ -1,0 +1,8 @@
+{
+  "scope": "Isolated temporary mock; no provider/runtime/real job writes",
+  "status": "paused",
+  "dataset_id": null,
+  "error": "download_interrupted",
+  "publication_calls": 0,
+  "pass": true
+}

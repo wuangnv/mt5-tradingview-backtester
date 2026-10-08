@@ -1,0 +1,9 @@
+{
+  "scope": "read-only existing legacy cooldown; no provider calls",
+  "rate_limit_level": 1,
+  "next_pacing": {
+    "concurrency": 2,
+    "pause_ms": 2000
+  },
+  "runtime_activation": "blocked: automatic approval rejected restart API8010; old PID15968 unchanged"
+}

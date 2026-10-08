@@ -87,6 +87,21 @@ explicit resume, never automatically retry. A 429 sets a shared cooldown;
 timeouts/unavailable responses retain completed raw buckets and never complete
 a partial job. No background quote or MT5 collector is enabled by this feature.
 
+Dukascopy pacing is persisted with the source-wide cooldown in `dukascopy/cooldown.json`.
+The initial three concurrent day requests / 1s batch pause reduce after each actual
+429 to 2 / 2s, then 1 / 4s, 1 / 8s, 1 / 16s and 1 / 30s. Cooldown grows from 5 to
+10, 20, 40 and 80 minutes, respecting a longer upstream Retry-After up to the
+existing 24-hour bound. Merely encountering an already-active cooldown does not
+increase the level. Manual pause/cancel, changing assets and restarting the API do
+not reset pacing. Old until-only files initialize at the first reduced level.
+Every new worker receives the saved pacing, including explicit resume and updates;
+cached batches neither refetch nor sleep. A fully successful source transfer
+recovers one level before publication; failed ingestion still cannot publish a
+partial dataset. This is bounded throttling, not automatic retry/resume or a claim
+that a particular request rate always avoids 429. Request pacing preserves the
+same M1/Bid data, daily checksums and ordered CSV publication.
+
+
 Raw day responses and checksums are retained at
 `dukascopy/<workspace-hash>/<job-id>/raw`, with `buckets.json` provenance. Only
 original timestamps survive the library decoder; inserted flat candles are

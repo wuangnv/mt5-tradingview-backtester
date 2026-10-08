@@ -1,0 +1,24 @@
+{
+  "pass": true,
+  "scope": "Isolated mocks only",
+  "cases": [
+    {
+      "action": "pause",
+      "status": "paused",
+      "policy": {
+        "until": 10900,
+        "rate_limit_level": 1
+      },
+      "pass": true
+    },
+    {
+      "action": "cancel",
+      "status": "cancelled",
+      "policy": {
+        "until": 10900,
+        "rate_limit_level": 1
+      },
+      "pass": true
+    }
+  ]
+}

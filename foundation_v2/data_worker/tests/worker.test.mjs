@@ -29,6 +29,42 @@ test('429 is explicit with cooldown, redirects and oversized bodies are not data
   await assert.rejects(fetchRaw(url,async () => new Response('x'.repeat(2*1024*1024+1))),/invalid_source_data/)
   await assert.rejects(fetchRaw('https://example.com/',async () => { throw Error('should never run') }),/invalid_source_url/)
 })
+
+test('persisted pacing controls network batches, while cached resume has no artificial pause', async () => {
+  const root = await mkdtemp(join(tmpdir(),'tw-dukascopy-paced-'))
+  try {
+    const request = join(root,'request.json')
+    const input = {instrument_id:'EUR/USD',from_date:'2026-01-05',to_date:'2026-01-08',pacing:{concurrency:1,pause_ms:4000}}
+    await writeFile(request,JSON.stringify(input))
+    const waits=[],calls=[]
+    await download(request,{notify:()=>{},sleepFn:async ms=>waits.push(ms),fetchFn:async url=>{
+      const day=Number(url.split('/').at(-1));calls.push(day)
+      return new Response(JSON.stringify({...raw,timestamp:start+(day-5)*86400000}))
+    }})
+    assert.deepEqual(calls,[5,6,7,8]);assert.deepEqual(waits,[4000,4000,4000])
+    const csv=await readFile(join(root,'candles.csv'),'utf8')
+    await download(request,{notify:()=>{},fetchFn:async()=>assert.fail('cached buckets must not refetch'),sleepFn:async()=>assert.fail('cached batches must not wait')})
+    assert.equal(await readFile(join(root,'candles.csv'),'utf8'),csv)
+    for (const pacing of [{concurrency:0,pause_ms:4000},{concurrency:1,pause_ms:-1},{concurrency:1,pause_ms:30001}]) {
+      await writeFile(request,JSON.stringify({...input,pacing}))
+      await assert.rejects(download(request,{fetchFn:async()=>assert.fail('invalid pacing must not fetch'),notify:()=>{}}),/invalid_concurrency|invalid_pause/)
+    }
+  } finally {await rm(root,{recursive:true,force:true})}
+})
+
+test('a failed batch honors the longest Retry-After and never sleeps or schedules another batch', async () => {
+  const root = await mkdtemp(join(tmpdir(),'tw-dukascopy-backoff-'))
+  try {
+    const request = join(root,'request.json')
+    await writeFile(request,JSON.stringify({instrument_id:'EUR/USD',from_date:'2026-01-05',to_date:'2026-01-10'}))
+    let calls=0
+    await assert.rejects(download(request,{notify:()=>{},sleepFn:async()=>assert.fail('429 must stop'),fetchFn:async()=>{
+      calls++
+      return new Response('',{status:429,headers:{'retry-after':String(1200/calls)}})
+    }}),error=>error.message==='source_rate_limited'&&error.retryAfter===1200)
+    assert.equal(calls,3)
+  } finally {await rm(root,{recursive:true,force:true})}
+})
 test('resume reuses raw checksummed completed buckets and refuses tampering', async () => {
   const root = await mkdtemp(join(tmpdir(),'tw-dukascopy-'))
   try {

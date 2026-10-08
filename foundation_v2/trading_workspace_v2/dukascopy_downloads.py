@@ -20,6 +20,9 @@ from .artifacts import sha256_file
 from .contracts import DatasetManifest
 
 
+PACING_LEVELS = ((3, 1000), (2, 2000), (1, 4000), (1, 8000), (1, 16000), (1, 30000))
+
+
 class DukascopyDownloads:
     def __init__(self, store, artifacts, catalog, authorization, *, node=None, worker=None):
         self.store, self.artifacts, self.catalog, self.authorization = store, artifacts, catalog, authorization
@@ -144,6 +147,35 @@ class DukascopyDownloads:
         folder = self._folder(job['workspace_id'], job['job_id'])
         folder.mkdir(parents=True, exist_ok=True)
         atomic_json(folder / 'job.json', job)
+
+    def _source_policy(self):
+        path = self.root / 'cooldown.json'
+        policy = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+        # An old cooldown file is evidence of a previous 429, even after its wait expires.
+        level = policy.get('rate_limit_level', 1 if 'until' in policy else 0)
+        if type(level) is not int or not 0 <= level < len(PACING_LEVELS):
+            raise ValueError('invalid_source_policy')
+        return {**policy, 'rate_limit_level':level}
+
+    def _pacing(self, policy):
+        concurrency, pause_ms = PACING_LEVELS[policy['rate_limit_level']]
+        return {'concurrency':concurrency, 'pause_ms':pause_ms}
+
+    def _record_rate_limit(self, retry_seconds):
+        policy = self._source_policy()
+        level = min(len(PACING_LEVELS) - 1, policy['rate_limit_level'] + 1)
+        delay = max(retry_seconds, 300 * 2 ** (level - 1))
+        until = max(policy.get('until', 0), time.time() + delay)
+        atomic_json(self.root / 'cooldown.json', {'until':until, 'rate_limit_level':level})
+        return until
+
+    def _record_source_success(self):
+        policy = self._source_policy()
+        if policy['rate_limit_level']:
+            # Recover one level only after every source bucket succeeds. Write this
+            # before publication so policy I/O can never turn a published job into paused.
+            atomic_json(self.root / 'cooldown.json',
+                        {'until':0, 'rate_limit_level':policy['rate_limit_level'] - 1})
 
     def _public(self, job):
         result = {key: value for key, value in job.items() if key != 'workspace_id'}
@@ -272,7 +304,7 @@ class DukascopyDownloads:
     def _run(self, job):
         workspace, job_id = job['workspace_id'], job['job_id']
         folder = self._folder(workspace, job_id)
-        error, cooldown = None, 60
+        error, cooldown, retry_at = None, 60, None
         try:
             self.authorization.authorize(workspace)
             # One public-data worker across API processes connected to this database.
@@ -282,12 +314,10 @@ class DukascopyDownloads:
                     raise RuntimeError('download_busy')
                 owner.execute('SELECT pg_advisory_lock(%s)', (self._job_key(job),))
                 owner.commit()
-                cooldown_path = self.root / 'cooldown.json'
-                if cooldown_path.exists():
-                    until = json.loads(cooldown_path.read_text())['until']
-                    if until > time.time():
-                        cooldown = int(until - time.time()) + 1
-                        raise RuntimeError('source_rate_limited')
+                policy = self._source_policy()
+                if policy.get('until', 0) > time.time():
+                    retry_at = policy['until']
+                    raise RuntimeError('source_rate_limited')
                 with self.lock:
                     if self._read(workspace, job_id)['status'] in {'cancelled', 'pausing'}:
                         return
@@ -297,7 +327,8 @@ class DukascopyDownloads:
                     self._save(job)
                     atomic_json(folder / 'request.json', {**{key:job[key] for key in ('instrument_id','from_date','to_date')},
                         'parent_dataset_id':job.get('parent_dataset_id'),
-                        'transferred_bytes':job.get('transferred_bytes',0)})
+                        'transferred_bytes':job.get('transferred_bytes',0),
+                        'pacing':self._pacing(policy)})
                     self.process = subprocess.Popen([self.node, str(self.worker), str(folder / 'request.json')],
                         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, encoding='utf-8',
                         creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
@@ -305,6 +336,10 @@ class DukascopyDownloads:
                 for line in self.process.stdout:
                     payload = json.loads(line)
                     with self.lock:
+                        if payload['event'] == 'error' and payload['error'] == 'source_rate_limited':
+                            # Persist while the cross-process source lock is still held. A user
+                            # pause/cancel must not discard the source's rate-limit signal.
+                            retry_at = self._record_rate_limit(max(60, min(86400, int(payload.get('retry_after_seconds', 300)))))
                         if self._read(workspace, job_id)['status'] in {'cancelled', 'pausing'}:
                             return
                         if payload['event'] == 'progress':
@@ -325,6 +360,7 @@ class DukascopyDownloads:
                 code = self.process.wait(timeout=5)
                 if code != 0 or not done or error:
                     raise RuntimeError(error or 'download_interrupted')
+                self._record_source_success()
                 self._complete(job, folder)
         except Exception as exc:
             known = {'source_rate_limited','source_unavailable','invalid_source_data','empty_range','download_busy',
@@ -333,10 +369,8 @@ class DukascopyDownloads:
             with self.lock:
                 if self._read(workspace, job_id)['status'] not in {'cancelled', 'pausing'} and not (error == 'download_busy' and self._remote_owner(job)):
                     job.update(status='paused' if error in {'source_rate_limited','source_unavailable','download_busy','download_interrupted'} else 'failed',
-                               error=error, retry_at=time.time()+cooldown)
+                               error=error, retry_at=retry_at if retry_at is not None else time.time()+cooldown)
                     self._save(job)
-                    if error == 'source_rate_limited':
-                        atomic_json(self.root / 'cooldown.json', {'until':job['retry_at']})
         finally:
             with self.lock:
                 if self.process:

@@ -78,6 +78,112 @@ class FullDownloadTests(unittest.TestCase):
         self.assertIsNone(job['parent_dataset_id'])
         self.assertTrue(self.service.availability()['supports_full'])
 
+    def run_failed_worker(self, job, error='source_rate_limited', retry=300):
+        self.service.node, self.service.worker = 'mock-node', Path('mock-worker')
+        class Output:
+            def __iter__(stream):
+                yield json.dumps({'event':'error','error':error,'retry_after_seconds':retry})
+            def close(stream):
+                pass
+        process = SimpleNamespace(stdout=Output(),terminate=lambda:None,poll=lambda:1,wait=lambda **kwargs:1)
+        with patch('trading_workspace_v2.dukascopy_downloads.subprocess.Popen',return_value=process) as spawn:
+            self.service._run(self.service._read('a',job['job_id']))
+        return spawn
+
+    def test_repeated_429_persists_source_pacing_backoff_and_retains_resume_cache(self):
+        job = self.service.request_full('a','EUR/USD')
+        folder = self.service._folder('a',job['job_id'])
+        cache = folder/'raw'/'bucket.json'
+        cache.parent.mkdir(); cache.write_text('existing raw bucket')
+        now = 10000
+        for expected_pace, expected_level, expected_wait in [
+                ({'concurrency':3,'pause_ms':1000},1,300),
+                ({'concurrency':2,'pause_ms':2000},2,600),
+                ({'concurrency':1,'pause_ms':4000},3,1200)]:
+            with patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=now):
+                self.assertEqual(self.run_failed_worker(job).call_count,1)
+                request = json.loads((folder/'request.json').read_text())
+                self.assertEqual(request['pacing'],expected_pace)
+                policy = self.service._source_policy()
+                self.assertEqual(policy['rate_limit_level'],expected_level)
+                self.assertEqual(policy['until'],now+expected_wait)
+                saved = self.service._read('a',job['job_id'])
+                self.assertEqual(saved['status'],'paused')
+                self.assertEqual(saved['retry_at'],policy['until'])
+                with self.assertRaisesRegex(RuntimeError,'download_cooldown'):
+                    self.service.resume('a',job['job_id'])
+            now += expected_wait+1
+            with patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=now):
+                self.assertEqual(self.service.resume('a',job['job_id'])['status'],'queued')
+        self.assertEqual(cache.read_text(),'existing raw bucket')
+        self.assertFalse(self.store.datasets)
+
+    def test_global_cooldown_does_not_spawn_or_escalate_and_manual_pause_cannot_bypass(self):
+        job = self.service.request_full('a','EUR/USD')
+        with patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=10000):
+            self.run_failed_worker(job,retry=900)
+            before = self.service._source_policy()
+            self.assertEqual(before['until'],10900)
+            # This models another queued job encountering the existing source wait.
+            saved = self.service._read('a',job['job_id'])
+            saved.update(status='queued'); self.service._save(saved)
+            self.assertEqual(self.run_failed_worker(job).call_count,0)
+            self.assertEqual(self.service._source_policy(),before)
+            self.service.pause('a',job['job_id'])
+            self.assertEqual(self.service._read('a',job['job_id'])['retry_at'],10900)
+
+    def test_legacy_cooldown_migrates_and_success_recovers_one_level_only(self):
+        (self.service.root/'cooldown.json').write_text(json.dumps({'until':1}))
+        self.assertEqual(self.service._pacing(self.service._source_policy()),{'concurrency':2,'pause_ms':2000})
+        with patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=10000):
+            until = self.service._record_rate_limit(1000)
+            self.assertEqual(until,11000)
+            self.assertEqual(self.service._pacing(self.service._source_policy()),{'concurrency':1,'pause_ms':4000})
+        self.service._record_source_success()
+        self.assertEqual(self.service._source_policy(),{'until':0,'rate_limit_level':1})
+        for _ in range(10):
+            self.service._record_rate_limit(300)
+        self.assertEqual(self.service._pacing(self.service._source_policy()),{'concurrency':1,'pause_ms':30000})
+
+    def test_network_errors_do_not_increase_rate_limit_level(self):
+        job = self.service.request_full('a','EUR/USD')
+        self.run_failed_worker(job,error='source_unavailable',retry=60)
+        self.assertEqual(self.service._source_policy()['rate_limit_level'],0)
+        self.assertFalse((self.service.root/'cooldown.json').exists())
+
+    def test_pacing_write_failure_cannot_corrupt_an_already_published_completion(self):
+        job = self.service.request_full('a','EUR/USD')
+        self.service.node, self.service.worker = 'mock-node', Path('mock-worker')
+        class Output:
+            def __iter__(stream):
+                yield json.dumps({'event':'complete','buckets_sha256':'fixture','transferred_bytes':100})
+            def close(stream):
+                pass
+        process = SimpleNamespace(stdout=Output(),terminate=lambda:None,poll=lambda:0,wait=lambda **kwargs:0)
+        with patch('trading_workspace_v2.dukascopy_downloads.subprocess.Popen',return_value=process), \
+                patch.object(self.service,'_record_source_success',side_effect=OSError('policy unavailable')), \
+                patch.object(self.service,'_complete') as publish:
+            self.service._run(self.service._read('a',job['job_id']))
+        publish.assert_not_called()
+        self.assertEqual(self.service._read('a',job['job_id'])['status'],'paused')
+        self.assertFalse(self.store.datasets)
+
+    def test_429_signal_is_retained_when_owner_cancels_before_error_is_consumed(self):
+        job = self.service.request_full('a','EUR/USD')
+        self.service.node, self.service.worker = 'mock-node', Path('mock-worker')
+        class Output:
+            def __iter__(stream):
+                self.service.cancel('a',job['job_id'])
+                yield json.dumps({'event':'error','error':'source_rate_limited','retry_after_seconds':900})
+            def close(stream):
+                pass
+        process = SimpleNamespace(stdout=Output(),terminate=lambda:None,poll=lambda:1,wait=lambda **kwargs:1)
+        with patch('trading_workspace_v2.dukascopy_downloads.subprocess.Popen',return_value=process), \
+                patch('trading_workspace_v2.dukascopy_downloads.time.time',return_value=10000):
+            self.service._run(self.service._read('a',job['job_id']))
+        self.assertEqual(self.service._read('a',job['job_id'])['status'],'cancelled')
+        self.assertEqual(self.service._source_policy(),{'until':10900,'rate_limit_level':1})
+
     def test_partial_history_backfills_and_full_history_updates_only_tail(self):
         saved_end = self.yesterday-timedelta(days=2)
         partial = self.manifest(saved_end.isoformat(),saved_end.isoformat())

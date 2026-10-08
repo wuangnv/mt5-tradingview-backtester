@@ -68,9 +68,12 @@ export function originalCandles(url, buffer, start, end) {
   return rows
 }
 
-export async function download(requestPath, { fetchFn = fetch, notify = emit, pauseMs = 1000, concurrency = 3, progressIntervalMs = 250 } = {}) {
-  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 4) throw Error('invalid_concurrency')
+export async function download(requestPath, { fetchFn = fetch, notify = emit, pauseMs, concurrency, progressIntervalMs = 250, sleepFn = ms => new Promise(resolve => setTimeout(resolve,ms)) } = {}) {
   const folder = dirname(resolve(requestPath)), request = JSON.parse(await readFile(requestPath, 'utf8'))
+  concurrency ??= request.pacing?.concurrency ?? 3
+  pauseMs ??= request.pacing?.pause_ms ?? 1000
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 4) throw Error('invalid_concurrency')
+  if (!Number.isInteger(pauseMs) || pauseMs < 0 || pauseMs > 30000) throw Error('invalid_pause')
   const meta = metadata.find(item => item.name === request.instrument_id)
   if (!meta) throw Error('instrument_not_supported')
   const start = Date.parse(request.from_date + 'T00:00:00Z'), end = Date.parse(request.to_date + 'T00:00:00Z') + DAY
@@ -131,7 +134,8 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
       // and no work from a later batch can escape the rate-limit/cancellation boundary.
       const batch = await Promise.allSettled(urls.slice(offset, offset + concurrency).map((url, index) =>
         readBucket(url, offset + index).catch(error => {
-          if (!firstFailure || error.message === 'source_rate_limited') firstFailure = error
+          if (!firstFailure || (error.message === 'source_rate_limited' &&
+              (firstFailure.message !== 'source_rate_limited' || error.retryAfter > firstFailure.retryAfter))) firstFailure = error
           throw error
         })))
       if (firstFailure) throw firstFailure
@@ -144,7 +148,7 @@ export async function download(requestPath, { fetchFn = fetch, notify = emit, pa
         fetched ||= !cached
         progress(true)
       }
-      if (fetched && offset + concurrency < urls.length && pauseMs > 0) await new Promise(resolve => setTimeout(resolve,pauseMs))
+      if (fetched && offset + concurrency < urls.length && pauseMs > 0) await sleepFn(pauseMs)
     }
   } finally { await output.close() }
   if (rowCount < 2 && !/^dataset-[a-f0-9]{64}$/.test(request.parent_dataset_id || '')) throw Error('empty_range')
