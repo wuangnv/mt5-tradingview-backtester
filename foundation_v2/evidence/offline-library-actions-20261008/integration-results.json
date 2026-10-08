@@ -1,0 +1,17 @@
+{
+  "scope": "UUID disposable loopback PostgreSQL, real API/artifact writes with synthetic worker; no provider/broker/user-data actions",
+  "checks": [
+    "actual Parquet size",
+    "full request authorization/date override denied",
+    "partial backfill immutable",
+    "worker mutation guard",
+    "already-current disabled contract",
+    "cross-workspace delete denied",
+    "exact file delete/catalog retained",
+    "deleted completed job redownload",
+    "session pin deletion conflict",
+    "actual fixture-service browser journey PASS",
+    "existing U2 ingest regressions 6 PASS on disposable DB"
+  ],
+  "pass": true
+}

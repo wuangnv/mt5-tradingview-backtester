@@ -1,0 +1,103 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.wm-pagination-number').filter({ hasText: /^2$/ })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"Trang 2\" class=\"wm-pagination-button wm-pagination-number \">2</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    13 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "en",
+      "columns": [
+        {
+          "x": 248,
+          "w": 278
+        },
+        {
+          "x": 526,
+          "w": 125.09375
+        },
+        {
+          "x": 651.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 776.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 998.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 1095.875,
+          "w": 111.1875
+        },
+        {
+          "x": 1207.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1387.75,
+          "w": 250.25
+        }
+      ],
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      w: 278,\n+     x: 50\n-     x: 248\n    },\n    {\n      w: 125.09375,\n+     x: 328\n-     x: 526\n    },\n    {\n      w: 125.09375,\n+     x: 453.09375\n-     x: 651.09375\n    },\n    {\n      w: 222.390625,\n+     x: 578.1875\n-     x: 776.1875\n    },\n    {\n      w: 97.296875,\n+     x: 800.578125\n-     x: 998.578125\n    },\n    {\n      w: 111.1875,\n+     x: 897.875\n-     x: 1095.875\n    },\n    {\n      w: 180.6875,\n+     x: 1009.0625\n-     x: 1207.0625\n    },\n    {\n      w: 250.25,\n+     x: 1189.75\n-     x: 1387.75\n    }\n  ]\n"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "vi",
+      "pass": false,
+      "error": "TimeoutError: locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.wm-pagination-number').filter({ hasText: /^2$/ })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"Trang 2\" class=\"wm-pagination-button wm-pagination-number \">2</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    13 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "lang": "en",
+      "columns": [
+        {
+          "x": 248,
+          "w": 278
+        },
+        {
+          "x": 526,
+          "w": 125.09375
+        },
+        {
+          "x": 651.09375,
+          "w": 125.09375
+        },
+        {
+          "x": 776.1875,
+          "w": 222.390625
+        },
+        {
+          "x": 998.578125,
+          "w": 97.296875
+        },
+        {
+          "x": 1095.875,
+          "w": 111.1875
+        },
+        {
+          "x": 1207.0625,
+          "w": 180.6875
+        },
+        {
+          "x": 1387.75,
+          "w": 250.25
+        }
+      ],
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      w: 278,\n+     x: 50\n-     x: 248\n    },\n    {\n      w: 125.09375,\n+     x: 328\n-     x: 526\n    },\n    {\n      w: 125.09375,\n+     x: 453.09375\n-     x: 651.09375\n    },\n    {\n      w: 222.390625,\n+     x: 578.1875\n-     x: 776.1875\n    },\n    {\n      w: 97.296875,\n+     x: 800.578125\n-     x: 998.578125\n    },\n    {\n      w: 111.1875,\n+     x: 897.875\n-     x: 1095.875\n    },\n    {\n      w: 180.6875,\n+     x: 1009.0625\n-     x: 1207.0625\n    },\n    {\n      w: 250.25,\n+     x: 1189.75\n-     x: 1387.75\n    }\n  ]\n"
+    }
+  ],
+  "errors": [],
+  "scope": "Explicit mock dataset/download/catalog GET and DELETE/full/resume/cancel POST; no actual data mutations/provider/live",
+  "pass": false
+}

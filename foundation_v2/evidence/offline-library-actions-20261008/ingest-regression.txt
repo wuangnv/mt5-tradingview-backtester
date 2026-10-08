@@ -1,0 +1,11 @@
+test_holdout_metadata_never_authorizes_content_past_boundary (test_u2_data_ingest.U2DataIngestTests.test_holdout_metadata_never_authorizes_content_past_boundary) ... ok
+test_naive_time_and_insufficient_dataset_fail_closed (test_u2_data_ingest.U2DataIngestTests.test_naive_time_and_insufficient_dataset_fail_closed) ... ok
+test_overlapping_timeframes_are_not_qa_approved (test_u2_data_ingest.U2DataIngestTests.test_overlapping_timeframes_are_not_qa_approved) ... ok
+test_preview_and_import_preserve_identity_range_and_raw_copy (test_u2_data_ingest.U2DataIngestTests.test_preview_and_import_preserve_identity_range_and_raw_copy) ... ok
+test_preview_exposes_duplicates_order_gaps_and_locked_holdout_metadata (test_u2_data_ingest.U2DataIngestTests.test_preview_exposes_duplicates_order_gaps_and_locked_holdout_metadata) ... ok
+test_same_inputs_are_reproducible_and_instrument_change_changes_identity (test_u2_data_ingest.U2DataIngestTests.test_same_inputs_are_reproducible_and_instrument_change_changes_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.851s
+
+OK

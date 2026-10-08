@@ -72,9 +72,14 @@ npm test --prefix foundation_v2/data_worker
 ```
 
 The worker requires Node >=18 and pins `dukascopy-node` 1.50.0. It is not bundled
-into the web client. POST `/api/v2/data/downloads` accepts an upstream-supported
-instrument and inclusive UTC dates, up to 366 completed days. This slice imports
-M1/Bid candles only. GET `/api/v2/data/downloads`, POST `/{job_id}/resume` and
+into the web client. The library uses POST `/api/v2/data/downloads/full` with an
+instrument and optional saved dataset ID. The service derives the earliest M1
+metadata date through yesterday UTC; there is no date-range picker. Partial
+imports backfill history, while native full versions append later completed days
+into a new immutable version. Update availability describes missing calendar
+coverage; it does not assert the upstream has already published those candles.
+The older bounded date-range endpoint remains available for compatibility.
+This slice imports M1/Bid candles only. GET `/api/v2/data/downloads`, POST `/{job_id}/resume` and
 POST `/{job_id}/cancel` restore progress across reload/restart. All routes are
 workspace-authorized; PostgreSQL advisory locks enforce one network worker and
 identify the active job across API processes. Restarted orphan jobs pause until
@@ -91,6 +96,24 @@ bucket was fetched and decoded; internal and requested-range boundary gaps remai
 visible as `quality.disposition=review`,
 not asserted complete market coverage. Each range import creates an immutable
 version. Same-job retries recover its existing dataset identity.
+
+The row download action becomes inline progress. It displays actual transferred
+payload bytes, sampled MiB/s and a percentage based on completed day buckets.
+The total transfer size is unknown until fetching; cached bytes are separate from
+network bytes. Processing remains visible after downloading, with no network speed
+claim. Clicking progress opens resume/cancel actions. The grid uses fixed columns
+and a stable scrollbar gutter across pagination and job completion.
+
+The **Dung lượng** column measures the normalized Parquet file, excluding raw CSV
+and download caches; unknown/missing files show a dash. Row menus contain details,
+update (disabled when unavailable), and delete with confirmation. DELETE
+`/api/v2/data/datasets/{dataset_id}` removes exactly the local Parquet/raw CSV for
+that immutable version. It retains the public catalog, other versions and cached
+download buckets. Historical Replay/Prop pins and research references block
+deletion. A file cleanup failure retains an exact-path journal for retry; no
+session or dataset tree is recursively deleted. Reimport and deletion serialize
+publication of the same dataset ID. Long imports stream data and store at most
+1,000 gap details alongside the exact gap count.
 
 These are price-only datasets (`instrument_spec=null`): public quotes do not
 establish broker contract/lot sizes. Replay chart viewing works; execution needs

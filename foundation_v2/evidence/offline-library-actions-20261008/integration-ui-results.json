@@ -1,0 +1,17 @@
+{
+  "scope": "Actual disposable fixture API via explicit routing; synthetic worker, no user service mutations",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

@@ -36,7 +36,12 @@ export async function fetchDownloads(workspace, signal) {
 }
 
 export async function startDownload(workspace, payload, signal) {
-  const response = await fetch('/api/v2/data/downloads', { method:'POST', headers:workspaceHeaders(workspace, { 'Content-Type':'application/json' }), body:JSON.stringify(payload), signal })
+  const response = await fetch('/api/v2/data/downloads/full', { method:'POST', headers:workspaceHeaders(workspace, { 'Content-Type':'application/json' }), body:JSON.stringify(payload), signal })
+  return readJson(response)
+}
+
+export async function deleteLocalDataset(workspace, datasetId, signal) {
+  const response = await fetch(`/api/v2/data/datasets/${encodeURIComponent(datasetId)}`, { method:'DELETE', headers:workspaceHeaders(workspace), signal })
   return readJson(response)
 }
 
