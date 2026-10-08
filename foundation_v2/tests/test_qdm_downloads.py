@@ -15,6 +15,10 @@ from test_dukascopy_full_downloads import MemoryStore
 
 class FixtureCli:
     def __init__(self, root):
+        self.home = root
+        definitions = root / 'internal/plugins/DataSourceDukascopy/dukascopy.csv'
+        definitions.parent.mkdir(parents=True)
+        definitions.write_text('EURUSD;EURUSD;Forex;Majors;05.05.2003;05.05.2003;5;100000;3;0.0001;0.00001;3\n')
         self.executable = root / 'qdmcli.exe'
         self.executable.touch()
         self.version = '125.2692'
@@ -155,8 +159,8 @@ class QdmTests(unittest.TestCase):
         listing = self.cli.symbols()
         with patch.object(self.cli, 'symbols', side_effect=[[], listing]):
             self.assertEqual(self.service._ensure_symbol('EUR/USD'), 'EURUSD_TW')
-        self.assertEqual(self.cli.calls[-1], ['-symbol','action=add','symbols=EURUSD','instrument=EURUSD',
-            'datasource=dukascopy','datatype=M1','bartype=startofbar','broker=SQ Default','postfix=_TW'])
+        self.assertEqual(self.cli.calls[-1], ['-symbol','action=add','symbols=EURUSD',
+            'datasource=dukascopy','datatype=M1','bartype=startofbar','postfix=_TW'])
 
 
 if __name__ == '__main__':

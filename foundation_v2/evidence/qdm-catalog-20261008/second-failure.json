@@ -1,0 +1,37 @@
+{
+  "scope": "Real catalog payload; intercepted UI API. No download commands from browser.",
+  "cases": [
+    {
+      "width": 1710,
+      "pass": true,
+      "checks": [
+        "default downloaded/empty",
+        "725 asset pagination",
+        "stock category/name search",
+        "QDM label/M1 metadata/unknown row count",
+        "drawer count and shared scope",
+        "invalid refresh retains list and blocks downloads",
+        "refresh recovery",
+        "mode URLs share catalog",
+        "missing installation/no page overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "pass": true,
+      "checks": [
+        "default downloaded/empty",
+        "725 asset pagination",
+        "stock category/name search",
+        "QDM label/M1 metadata/unknown row count",
+        "drawer count and shared scope",
+        "invalid refresh retains list and blocks downloads",
+        "refresh recovery",
+        "mode URLs share catalog",
+        "missing installation/no page overflow"
+      ]
+    }
+  ],
+  "pass": false,
+  "error": "TimeoutError: locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Trang cuối', exact: true })\u001b[22m\n"
+}

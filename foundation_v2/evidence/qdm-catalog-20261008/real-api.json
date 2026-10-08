@@ -1,0 +1,17 @@
+{
+  "scope": "licensed QDM CLI + FastAPI + disposable loopback PostgreSQL",
+  "pass": true,
+  "catalog_assets": 725,
+  "provider": "QuantDataManager",
+  "upstream_provider": "Dukascopy",
+  "qdm_version": "125.2692",
+  "non_fx_symbols_validated": ["USATECHIDXUSD_TW", "AAPLUSUSD_TW"],
+  "real_import_instrument": "EUR/USD",
+  "real_import_day_utc": "2026-10-05",
+  "rows": 1438,
+  "quality": "review",
+  "raw_sha256": "a0e59a0e6260ec498c013484ae9771496380a2083f958246ab9fc4a2c30dd796",
+  "latest_test_elapsed_seconds": 44.237,
+  "all_asset_histories_verified": false,
+  "api_8010_restarted": false
+}

@@ -118,8 +118,10 @@ collector trong API đang chạy không được bật. Các checkpoint Exness/t
 cũ là bằng chứng lịch sử, không mô tả dữ liệu đang có. Replay vẫn chỉ mô phỏng.
 Xem [receipt Dukascopy](foundation_v2/evidence/dukascopy-integration-20261008/RECEIPT.md).
 
-Launcher offline hiện mặc định thử nghiệm **QuantDataManager CLI** cho EUR/USD
-M1/UTC, tự tải → xuất CSV → kiểm tra → nhập kho. Bộ cài QDM nằm trong
+Launcher offline mặc định **QuantDataManager CLI**, M1/UTC, tự tải → xuất CSV →
+kiểm tra → nhập kho. Danh mục Dukascopy đọc từ bộ cài QDM (hiện 725 tài sản),
+dùng chung cho hai mode Backtest và Prop firm; cấu hình/rule của phiên vẫn riêng.
+Bộ cài QDM nằm trong
 `foundation_v2/.runtime/quantdatamanager/` trên máy và không được commit;
 GitHub giữ adapter/test/hướng dẫn. Clone mới cần cài QDM riêng. Xem
 [setup và giới hạn QDM](docs/quantdatamanager.md); `--download-engine dukascopy`

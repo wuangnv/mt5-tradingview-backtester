@@ -40,6 +40,19 @@ class RealQdmApiTests(unittest.TestCase):
                     catalog = client.get('/api/v2/data/datasets', headers=headers).json()
                     self.assertTrue(catalog['download_state']['available'], catalog['download_state'].get('error'))
                     self.assertEqual(catalog['catalog_items'][0]['provider'], 'QuantDataManager')
+                    assets = {row['instrument_id']: row for row in catalog['catalog_items']}
+                    self.assertGreater(len(assets), 1)
+                    for symbol, category, start in [('EUR/USD','fx','2003-05-05'), ('XAU/USD','metal','2003-05-05'),
+                            ('AAPLUSUSD','stock','2017-01-26'), ('USATECHIDXUSD','index','2011-09-30')]:
+                        self.assertEqual(assets[symbol]['asset_class'], category)
+                        self.assertEqual(catalog['download_state']['earliest_dates'][symbol], start)
+                    refreshed = client.post('/api/v2/data/catalog/refresh', headers=headers).json()
+                    self.assertEqual(refreshed['catalog_items'], catalog['catalog_items'])
+                    for symbol in ['USATECHIDXUSD', 'AAPLUSUSD']:
+                        self.assertEqual(app.state.downloads._ensure_symbol(symbol), symbol+'_TW')
+                    if os.getenv('TW_V2_QDM_CATALOG_QA') == '1':
+                        path = Path(__file__).resolve().parents[1] / '.runtime/qdm-catalog-qa.json'
+                        path.write_text(json.dumps(catalog), encoding='utf-8')
                     self.assertEqual(client.get('/api/v2/data/datasets', headers={'X-Workspace-Id':'other'}).status_code, 403)
                     response = client.post('/api/v2/data/downloads', headers=headers,
                         json={'instrument_id':'EUR/USD', 'from_date':'2026-10-05', 'to_date':'2026-10-05'})
@@ -66,6 +79,7 @@ class RealQdmApiTests(unittest.TestCase):
                     self.assertGreater(saved[0]['size_bytes'], 0)
                     self.assertEqual(client.post(f'/api/v2/data/downloads/{job_id}/pause', headers=headers).json()['detail'], 'qdm_control_unsupported')
                     print(json.dumps({'scope':'real CLI + disposable PostgreSQL + API', 'rows':manifest.row_count,
+                        'catalog_assets':len(assets), 'non_fx_symbols_validated':['USATECHIDXUSD_TW','AAPLUSUSD_TW'],
                         'provider':manifest.source.provider, 'qdm_version':settings['qdm_version'],
                         'raw_sha256':manifest.raw_sha256, 'quality':job['quality']}))
         finally:

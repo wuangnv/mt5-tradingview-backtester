@@ -1,0 +1,6 @@
+{
+  "scope": "Real catalog payload; intercepted UI API. No download commands from browser.",
+  "cases": [],
+  "pass": false,
+  "error": "TimeoutError: locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Trang 29', exact: true })\u001b[22m\n"
+}

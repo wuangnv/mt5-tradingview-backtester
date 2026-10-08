@@ -1,0 +1,51 @@
+{
+  "scope": "Real catalog payload; intercepted UI API. No download commands from browser.",
+  "cases": [
+    {
+      "width": 1710,
+      "pass": true,
+      "checks": [
+        "default downloaded/empty",
+        "725 asset pagination",
+        "stock category/name search",
+        "QDM label/M1 metadata/unknown row count",
+        "drawer count and shared scope",
+        "invalid refresh retains list and blocks downloads",
+        "refresh recovery",
+        "mode URLs share catalog",
+        "missing installation/no page overflow"
+      ]
+    },
+    {
+      "width": 768,
+      "pass": true,
+      "checks": [
+        "default downloaded/empty",
+        "725 asset pagination",
+        "stock category/name search",
+        "QDM label/M1 metadata/unknown row count",
+        "drawer count and shared scope",
+        "invalid refresh retains list and blocks downloads",
+        "refresh recovery",
+        "mode URLs share catalog",
+        "missing installation/no page overflow"
+      ]
+    },
+    {
+      "width": 360,
+      "pass": true,
+      "checks": [
+        "default downloaded/empty",
+        "725 asset pagination",
+        "stock category/name search",
+        "QDM label/M1 metadata/unknown row count",
+        "drawer count and shared scope",
+        "invalid refresh retains list and blocks downloads",
+        "refresh recovery",
+        "mode URLs share catalog",
+        "missing installation/no page overflow"
+      ]
+    }
+  ],
+  "pass": true
+}

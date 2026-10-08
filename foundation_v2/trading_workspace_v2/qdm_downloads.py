@@ -1,4 +1,4 @@
-"""Pilot QDM executor using the existing durable import/publication lifecycle."""
+"""QDM executor using the existing durable import/publication lifecycle."""
 from __future__ import annotations
 
 import csv
@@ -12,7 +12,7 @@ from pathlib import Path
 from .artifacts import sha256_file
 from .data_ingest import DataImportError, DataIngestService
 from .dukascopy_downloads import DukascopyDownloads
-from .qdm_cli import INSTRUMENTS, PROVIDER
+from .qdm_cli import PROVIDER
 
 
 def normalize_export(source, target, from_date, to_date):
@@ -51,14 +51,43 @@ class QdmDownloads(DukascopyDownloads):
         self.lock = threading.RLock()
         self.active = self.process = self.thread = None
         self.stopping = False
-        self.meta = INSTRUMENTS
         self.ingest = DataIngestService(store, artifacts)
         catalog.refresh()
 
+    @property
+    def meta(self):
+        return self.catalog.instruments
+
+    def _save(self, job):
+        snapshot = self.catalog.snapshot
+        if 'provider_code' not in job and job['instrument_id'] in snapshot['instruments']:
+            job['provider_code'] = snapshot['instruments'][job['instrument_id']]['code']
+            job['catalog_sha256'] = snapshot['source_sha256']
+        super()._save(job)
+
     def availability(self):
-        return {**super().availability(), 'available': self.cli.executable.is_file() and not self.catalog.error,
+        return {**super().availability(), 'available': bool(self.meta) and self.cli.executable.is_file() and not self.catalog.error,
                 'price_type': self.price, 'supports_pause': False, 'supports_cancel': False,
-                'pilot': True, 'version': self.cli.version, 'error': self.catalog.error}
+                'pilot': False, 'version': self.cli.version, 'error': self.catalog.error}
+
+    def _require_source(self, workspace):
+        self.authorization.authorize(workspace)
+        if not self.cli.executable.is_file():
+            raise RuntimeError('qdm_not_configured')
+        if self.catalog.error or not self.meta:
+            raise RuntimeError(self.catalog.error or 'qdm_catalog_missing')
+
+    def _request(self, workspace, instrument_id, from_date, to_date, **options):
+        self._require_source(workspace)
+        return super()._request(workspace, instrument_id, from_date, to_date, **options)
+
+    def request_full(self, workspace, instrument_id, dataset_id=None):
+        self._require_source(workspace)
+        return super().request_full(workspace, instrument_id, dataset_id)
+
+    def resume(self, workspace, job_id):
+        self._require_source(workspace)
+        return super().resume(workspace, job_id)
 
     def _source_policy(self):
         # Node endpoint cooldowns do not describe QDM's own licensed transport.
@@ -80,17 +109,20 @@ class QdmDownloads(DukascopyDownloads):
         self.authorization.authorize(workspace)
         raise RuntimeError('qdm_control_unsupported')
 
-    def _ensure_symbol(self, symbol):
-        code = self.meta[symbol]['code']
+    def _ensure_symbol(self, symbol, provider_code=None):
+        code = provider_code or self.meta[symbol]['code']
         name = f'{code}_TW'
         existing = next((row for row in self.cli.symbols() if row['Symbol'] == name), None)
         if existing is None:
-            self.cli.run(['-symbol', 'action=add', f'symbols={code}', f'instrument={code}',
-                          'datasource=dukascopy', 'datatype=M1', 'bartype=startofbar', 'broker=SQ Default', 'postfix=_TW'])
+            # QDM resolves the source instrument and defaults to SQ Default. Its
+            # argument parser silently misreads the spaced `broker=SQ Default` value.
+            self.cli.run(['-symbol', 'action=add', f'symbols={code}',
+                          'datasource=dukascopy', 'datatype=M1', 'bartype=startofbar', 'postfix=_TW'])
             existing = next((row for row in self.cli.symbols() if row['Symbol'] == name), None)
         if (not existing or existing['Timeframe'].upper() != 'M1' or existing['Source'].lower() != 'dukascopy'
                 or existing.get('Instrument') != code
-                or existing.get('Timezone') != '(UTC) Coordinated Universal Time, DST: No'):
+                or not (existing.get('Timezone') == '(UTC) Coordinated Universal Time, DST: No'
+                        or existing.get('Timezone') == '' and existing.get('Total records') == '0')):
             raise RuntimeError('qdm_symbol_mismatch')
         return name
 
@@ -105,7 +137,7 @@ class QdmDownloads(DukascopyDownloads):
                 owner.execute('SELECT pg_advisory_lock(%s)', (self._job_key(job),))
                 owner.commit()
                 self.cli.probe()
-                name = self._ensure_symbol(job['instrument_id'])
+                name = self._ensure_symbol(job['instrument_id'], job.get('provider_code'))
                 job.update(status='running', stage='downloading', provider=self.provider,
                            qdm_version=self.cli.version, transferred_bytes=None, progress_percent=None,
                            progress_scope='phase')
@@ -121,6 +153,7 @@ class QdmDownloads(DukascopyDownloads):
                                 self._save(job)
 
                 self.cli.run(['-data', 'action=update', f'symbols={name}'], on_line=progress)
+                self._ensure_symbol(job['instrument_id'], job.get('provider_code'))
                 self._continue_check(job)
                 export_dir = folder / 'export'
                 export_dir.mkdir(exist_ok=True)
@@ -155,11 +188,12 @@ class QdmDownloads(DukascopyDownloads):
     def _source(self, job, full_start, parent_hash):
         symbol = job['instrument_id']
         return {'source_id': 'quantdatamanager-dukascopy-m1', 'provider': self.provider,
-                'instrument_mapping': {self.meta[symbol]['code']: symbol},
+                'instrument_mapping': {job['provider_code']: symbol},
                 'license_use': 'owner licensed local QDM research; redistribution not granted',
                 'retrieved_at_utc': job['qdm_retrieved_at_utc'],
                 'export_settings': json.dumps({'library': self.library, 'qdm_version': job['qdm_version'],
                     'upstream_provider': 'Dukascopy', 'timeframe': 'm1', 'price': self.price, 'timezone': 'UTC',
+                    'catalog_sha256': job.get('catalog_sha256'),
                     'volume_units': 'provider_defined', 'synthetic_bars': False, 'price_only': True,
                     'requested_from': full_start, 'requested_to': job['to_date'],
                     'qdm_export_sha256': job['qdm_export_sha256'], 'parent_dataset_id': job.get('parent_dataset_id'),

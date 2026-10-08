@@ -1,8 +1,15 @@
 # QuantDataManager trong Trading Workspace
 
-Bản thử nghiệm dùng QDM **125.2692**, EUR/USD, M1, UTC. Nguồn trong kho là
-**QuantDataManager**; provenance ghi upstream **Dukascopy**. Catalog mới chỉ có
-EUR/USD đã kiểm chứng; không lấy danh sách Dukascopy rồi gán thành tài sản QDM.
+Adapter dùng QDM **125.2692**, M1, UTC. Nguồn trong kho là **QuantDataManager**;
+provenance ghi upstream **Dukascopy**. Danh mục đọc trực tiếp định nghĩa Dukascopy
+trong bộ cài QDM: hiện có **725 tài sản**, gồm 64 Forex (có vàng/bạc), 13 hàng hoá,
+19 chỉ số, 625 cổ phiếu, 1 crypto và 3 trái phiếu. Đây là danh mục của nguồn
+Dukascopy trong QDM, chưa bao gồm mọi nguồn bên ngoài mà QDM có thể kết nối.
+
+**Backtest và Prop firm là hai mode riêng, dùng chung danh mục và dataset giá.**
+Backtest giữ cấu hình mô phỏng/chi phí; Prop firm bổ sung bộ quy tắc quỹ và phase.
+Mỗi phiên pin dataset/version và cấu hình riêng. Đổi mode hoặc chọn FTMO 1-Step/
+2-Step không tạo bản sao danh mục, không bắt tải lại lịch sử.
 
 ## Cài trên máy sau khi clone GitHub
 
@@ -27,16 +34,16 @@ Có thể dùng bộ cài tại vị trí khác qua `--qdm-home <absolute-path>`
 
 Các lớp cấu hình dành cho backtest/prop firm cần giữ rõ:
 
-| Phần | Cấu hình pilot | Khi mô phỏng broker/prop |
+| Phần | Cấu hình nhập giá | Khi mô phỏng broker/prop |
 | --- | --- | --- |
 | Công cụ tải | QuantDataManager | Giữ provenance công cụ và upstream |
 | Data source | Dukascopy | Là nguồn giá; Broker Profile không biến giá này thành giá của quỹ |
-| Instrument | EURUSD → EUR/USD; symbol riêng EURUSD_TW | Tick/pip, contract size, lot step/min, tiền tệ phải theo tài khoản mục tiêu |
+| Instrument | Mã từ danh mục QDM; Forex hiển thị EUR/USD, mã khác giữ mã nguồn; symbol riêng `<code>_TW` | Tick/pip, contract size, lot step/min, tiền tệ phải theo tài khoản mục tiêu |
 | Timeframe/timezone | M1, UTC; symbol mới tạo với startofbar | Nến lớn hơn có thể gộp; timezone/DST/session của broker được áp rõ ở mô phỏng |
 | Broker Profile | Symbol mới dùng SQ Default nội bộ QDM; chỉ nhập OHLC/volume | Spread, commission, swap, slippage, leverage và session cần cấu hình riêng |
 | Prop rules | Chưa gán | Theo quỹ/gói: daily reset timezone, daily/max drawdown, target và hạn chế giao dịch |
 
-Pilot nhập `metadata_kind=price_only`, không lấy contract size hoặc spread mặc
+Adapter nhập `metadata_kind=price_only`, không lấy contract size hoặc spread mặc
 định của QDM làm quy cách broker. Export CSV không mang toàn bộ Broker Profile.
 Chọn Broker Profile trong QDM/SQ cũng không tự truyền các quy tắc drawdown/target
 vào Trading Workspace. M1 không chứa đường đi tick/Bid–Ask đầy đủ nên không thể
@@ -85,7 +92,7 @@ cần lát triển khai và kiểm chứng riêng; adapter QDM đã hoàn thành
 Account Standard/Swing, size/currency và server cụ thể vẫn chưa chọn; chi phí
 và quy cách broker không được lấy mặc định để tuyên bố backtest FTMO chính xác.
 
-Nút tải → job lưu trên đĩa → CLI quản lý symbol `EURUSD_TW` → QDM cập nhật lịch sử
+Nút tải → job lưu trên đĩa → CLI quản lý symbol `<code>_TW` → QDM cập nhật lịch sử
 → xuất CSV UTC tự động → chuẩn hoá → kiểm tra → đăng ký dataset bất biến trong
 workspace. CSV là bước nội bộ, người dùng không phải export/import bằng tay.
 Adapter chỉ gọi lệnh cho symbol của integration, không cập nhật toàn bộ kho QDM.
@@ -102,7 +109,7 @@ Các kiểm tra không tự chứng nhận dữ liệu không có gap: cờ `rev
 
 QDM báo phần trăm theo **bước hiện tại**, không phải tổng tiến độ. Dung lượng tải,
 tốc độ mạng và ETA chưa có dữ liệu đáng tin nên hiển thị `—`. Chưa xác minh API
-tạm dừng/huỷ an toàn giữa lúc QDM ghi file; hai nút này bị vô hiệu trong pilot.
+tạm dừng/huỷ an toàn giữa lúc QDM ghi file; hai nút này bị vô hiệu trong adapter.
 
 Nếu API/mạng bị ngắt, job không được công nhận hoàn thành khi chưa qua import.
 Thử lại sẽ gọi QDM update từ cache của hãng rồi export lại; adapter không hứa
@@ -110,8 +117,27 @@ resume chính xác từng byte hoặc tự retry vô hạn. Nếu child CLI còn
 trả busy: chờ nó xong trước khi thử lại. Không kill QDM giữa lúc ghi database.
 Giá QDM được ghi `provider_default`, chưa gán Bid/Ask khi chưa có bằng chứng.
 
-Refresh danh mục trong pilot kiểm tra CLI/version/readiness của mapping EUR/USD
-đã xác minh. Thêm tài sản hoặc discovery toàn bộ catalog là phạm vi tiếp theo.
+Refresh đọc lại `internal/plugins/DataSourceDukascopy/dukascopy.csv` trong bộ cài
+QDM (Windows-1252 hoặc UTF-8). Không gọi CLI, không cần Internet và không tự
+download bản danh mục mới từ hãng; cập nhật bộ cài QDM rồi refresh để nhận thay
+đổi của hãng. Có thể xem danh mục khi GUI QDM đang mở; tải cần CLI rảnh và license
+hợp lệ. CLI/version được kiểm tra khi tải. Ngày bắt đầu M1/tick và nhóm tài sản
+theo metadata của QDM, chưa chứng minh mọi asset có dữ liệu đầy đủ đến hôm qua.
+
+Danh sách/metadata tải được thay cùng một snapshot sau khi kiểm tra toàn bộ file;
+không giữ mapping EUR/USD hard-code. Refresh lỗi giữ danh sách tốt cuối cùng để
+xem và báo stale; tạm khoá tải mới đến khi refresh thành công. Restart đọc lại
+định nghĩa trên đĩa; không tạo nguồn danh mục thứ hai hoặc commit CSV của hãng.
+Job pin mã nguồn và hash danh mục để một lượt tải không đổi mapping khi refresh.
+
+QDM CLI 125.2692 có thể báo exit thành công nhưng không tạo symbol nếu truyền
+`broker=SQ Default` có dấu cách. Adapter bỏ tham số này, dùng mặc định SQ Default,
+để QDM tạo instrument đúng theo mã nguồn và kiểm tra lại symbol sau lệnh add.
+Symbol mới chưa có records có timezone trống; chỉ chấp nhận trống khi records=0,
+kiểm tra lại sau update và export UTC rõ ràng. Không sửa symbol sai cấu hình.
+Đã kiểm CLI tạo/nhận diện `USATECHIDXUSD_TW` và `AAPLUSUSD_TW`; chưa tải/kiểm chứng
+lịch sử của tất cả 725 tài sản. Lượt import thật EUR/USD và import chỉ số bằng
+fixture là bằng chứng riêng, không gọi toàn bộ danh mục đã xác minh dữ liệu.
 
 ## Kiểm tra và rollback
 
@@ -125,6 +151,7 @@ $env:TW_V2_QDM_HOME = (Resolve-Path foundation_v2/.runtime/quantdatamanager).Pat
 Test CLI thật cần `TW_V2_DATABASE_URL` loopback với quyền tạo database thử.
 Không chạy SQL truncate trên database người dùng. Receipt:
 [QDM pilot](../foundation_v2/evidence/qdm-integration-20261008/RECEIPT.md).
+Catalog mở rộng: [receipt](../foundation_v2/evidence/qdm-catalog-20261008/RECEIPT.md).
 
 Rollback engine: dừng API offline khi không có job active, chạy launcher với
 `--download-engine dukascopy`. Không xoá dữ liệu/cache của engine còn lại:

@@ -179,7 +179,7 @@ const downloadErrorMessage = error => {
   const code = typeof error === 'string' ? error : error?.payload?.detail?.code || error?.payload?.detail || error?.message
   return code === 'already_current' ? 'Dữ liệu đã cập nhật đến ngày mới nhất.' : QDM_ERRORS[code] || DOWNLOAD_ERRORS[code] || 'Không xử lý được lượt tải. Hãy thử lại.'
 }
-const QDM_ERRORS = { qdm_busy:'QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.', qdm_not_configured:'Chưa cài QuantDataManager trong project.', qdm_license_required:'QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.', qdm_version_unsupported:'Bản QuantDataManager này chưa hỗ trợ định dạng xuất cần thiết.', qdm_command_failed:'Lệnh QuantDataManager không hoàn tất. Kiểm tra QDM trước khi thử lại.', qdm_symbol_mismatch:'Cấu hình tài sản trong QDM không khớp nguồn Dukascopy/M1.', qdm_control_unsupported:'QDM CLI chưa hỗ trợ tạm dừng hoặc huỷ an toàn giữa lệnh.' }
+const QDM_ERRORS = { qdm_catalog_missing:'Không tìm thấy danh mục Dukascopy trong bộ cài QDM. Kiểm tra lại bộ cài.', qdm_catalog_invalid:'Danh mục trong bộ cài QDM không hợp lệ. Giữ danh sách đã đọc thành công trước đó.', qdm_busy:'QuantDataManager đang mở hoặc đang chạy lệnh khác. Đóng ứng dụng sau khi hoàn tất rồi thử lại.', qdm_not_configured:'Chưa cài QuantDataManager trong project.', qdm_license_required:'QuantDataManager cần license hợp lệ. Hãy kích hoạt trong ứng dụng QDM.', qdm_version_unsupported:'Bản QuantDataManager này chưa hỗ trợ định dạng xuất cần thiết.', qdm_command_failed:'Lệnh QuantDataManager không hoàn tất. Kiểm tra QDM trước khi thử lại.', qdm_symbol_mismatch:'Cấu hình tài sản trong QDM không khớp nguồn Dukascopy/M1.', qdm_control_unsupported:'QDM CLI chưa hỗ trợ tạm dừng hoặc huỷ an toàn giữa lệnh.' }
 
 function formatDatasetSize(bytes, fmt) {
   if (!Number.isFinite(bytes) || bytes < 0) return '—'
@@ -679,6 +679,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
       )}
       {catalogOpen && <DataLibraryDialog drawer title="Danh mục tài sản" busy={catalogBusy} onClose={() => setCatalogOpen(false)} blockingStatus={<div className="data-library-update-overlay" role="status"><strong>{t('Đang cập nhật danh mục…')}</strong><progress aria-label={t('Đang cập nhật danh mục…')} /><span aria-live="off">{t('Đã chờ {seconds} giây',{seconds:catalogElapsed})}</span></div>}>
         <div className="data-library-catalog-source"><span>{t('Nguồn dữ liệu')}</span><FxSelect label="Nguồn dữ liệu" value={catalogProvider} onChange={setCatalogProvider} options={sourceOptions} disabled={catalogBusy} /></div>
+        {catalogSourceSelected && state.catalog?.refresh_scope === 'installed_definitions' && <p className="data-library-catalog-status">{t('Đọc danh mục Dukascopy từ bộ cài QDM. Dùng chung cho Backtest và Prop firm.')}</p>}
         <dl className="data-library-catalog-facts">
           <div><dt>{t('Số tài sản')}</dt><dd>{fmt(sourceAssetCount, '', 0)}</dd></div>
           <div><dt>{t(catalogSourceSelected ? 'Cập nhật lần cuối (UTC)' : 'Lần lưu gần nhất (UTC)')}</dt><dd>{(catalogSourceSelected ? state.catalog?.retrieved_at_utc : latestSourceSave) ? formatUtc(catalogSourceSelected ? state.catalog.retrieved_at_utc : latestSourceSave, locale) : '—'}</dd></div>

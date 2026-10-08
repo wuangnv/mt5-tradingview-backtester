@@ -1,0 +1,6 @@
+{
+  "scope": "Real catalog payload; intercepted UI API. No download commands from browser.",
+  "cases": [],
+  "pass": false,
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n25 !== 10\n"
+}

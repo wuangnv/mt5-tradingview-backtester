@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import re
 import subprocess
@@ -11,9 +12,42 @@ from datetime import datetime, timezone
 from .data_sources import DEFAULT_CAPABILITIES
 
 PROVIDER = 'QuantDataManager'
-# Pilot scope: this mapping has been exercised against QDM 125.2692.
-INSTRUMENTS = {'EUR/USD': {'code': 'EURUSD', 'startDayForMinuteCandles': '2003-05-05',
-                         'name': 'Euro vs US Dollar', 'asset_class': 'fx'}}
+CATALOG_PATH = Path('internal/plugins/DataSourceDukascopy/dukascopy.csv')
+
+
+def parse_catalog(raw):
+    # QDM's installed definitions use Windows-1252; newer installations may use UTF-8.
+    try:
+        text = raw.decode('utf-8-sig')
+    except UnicodeDecodeError:
+        text = raw.decode('cp1252')
+    instruments = {}
+    classes = {'Forex': 'fx', 'Stocks': 'stock', 'Indices': 'index', 'Crypto': 'crypto', 'Bond': 'bond'}
+    commodities = {'Energy': 'energy', 'Metals': 'metal', 'Soft': 'agriculture'}
+    for row in csv.reader(io.StringIO(text), delimiter=';'):
+        if not row or all(not cell.strip() for cell in row):
+            continue
+        if len(row) != 12:
+            raise ValueError('invalid_catalog')
+        code, name, category, group, tick_start, minute_start = [cell.strip() for cell in row[:6]]
+        if not re.fullmatch(r'[A-Z0-9]+', code) or not name:
+            raise ValueError('invalid_catalog')
+        tick_start = datetime.strptime(tick_start, '%d.%m.%Y').date().isoformat()
+        minute_start = datetime.strptime(minute_start, '%d.%m.%Y').date().isoformat()
+        asset_class = commodities.get(group) if category == 'Commodities' else classes.get(category)
+        if category == 'Forex' and group == 'Metals':
+            asset_class = 'metal'
+        if not asset_class:
+            raise ValueError('invalid_catalog')
+        symbol = f'{code[:3]}/{code[3:]}' if category == 'Forex' and len(code) == 6 else code
+        if symbol in instruments:
+            raise ValueError('invalid_catalog')
+        instruments[symbol] = {'code': code, 'name': name, 'asset_class': asset_class,
+                               'source_category': category, 'source_group': group,
+                               'startDayForMinuteCandles': minute_start, 'startDayForTicks': tick_start}
+    if not instruments:
+        raise ValueError('invalid_catalog')
+    return instruments
 
 
 def cli_error(output):
@@ -87,26 +121,49 @@ class QdmCatalog:
     def __init__(self, cli):
         self.cli = cli
         self.error = None
-        self.updated_at = None
+        self.snapshot = {'instruments': {}, 'source_sha256': None, 'updated_at': None}
+
+    @property
+    def instruments(self):
+        return self.snapshot['instruments']
+
+    @property
+    def source_sha256(self):
+        return self.snapshot['source_sha256']
+
+    @property
+    def updated_at(self):
+        return self.snapshot['updated_at']
 
     def status(self):
-        return {'provider': PROVIDER, 'status': 'cached', 'configured': self.cli.executable.is_file(),
-                'refresh_available': True, 'stale': False, 'error': self.error,
-                'version': self.cli.version, 'pilot': True, 'asset_count': len(INSTRUMENTS),
+        return {'provider': PROVIDER, 'status': 'cached' if self.instruments else 'unavailable',
+                'configured': self.cli.executable.is_file(),
+                'refresh_available': self.cli.executable.is_file(), 'stale': bool(self.error and self.instruments), 'error': self.error,
+                'version': self.cli.version, 'pilot': False, 'asset_count': len(self.instruments),
+                'upstream_provider': 'Dukascopy', 'refresh_scope': 'installed_definitions',
+                'source_sha256': self.source_sha256,
                 'retrieved_at_utc': self.updated_at}
 
     def refresh(self):
         try:
-            self.cli.probe()
+            raw = (self.cli.home / CATALOG_PATH).read_bytes()
+            instruments = parse_catalog(raw)
+            # Publish a complete validated replacement; failed refresh keeps the last good catalog.
+            self.snapshot = {'instruments': instruments, 'source_sha256': hashlib.sha256(raw).hexdigest(),
+                             'updated_at': datetime.now(timezone.utc).isoformat()}
             self.error = None
-            self.updated_at = datetime.now(timezone.utc).isoformat()
-        except (RuntimeError, OSError, subprocess.TimeoutExpired) as exc:
-            self.error = str(exc) if isinstance(exc, RuntimeError) else 'qdm_command_failed'
+        except OSError:
+            self.error = 'qdm_catalog_missing'
+        except (ValueError, UnicodeError, csv.Error):
+            self.error = 'qdm_catalog_invalid'
 
     def list_instruments(self, workspace):
         return [{'instrument_id': symbol, 'provider_code': item['code'], 'provider': PROVIDER,
-                 'provider_id': self.provider_id, 'asset_class': item['asset_class'], 'name': item['name']}
-                for symbol, item in INSTRUMENTS.items()]
+                 'provider_id': self.provider_id, 'asset_class': item['asset_class'], 'name': item['name'],
+                 'source_category': item['source_category'], 'source_group': item['source_group'],
+                 'available_from_date': item['startDayForMinuteCandles'],
+                 'tick_available_from_date': item['startDayForTicks']}
+                for symbol, item in self.instruments.items()]
 
     def list_datasets(self, workspace):
         return []
