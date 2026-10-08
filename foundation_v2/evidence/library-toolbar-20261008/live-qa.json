@@ -1,0 +1,15 @@
+{
+  "scope": "Live UI5180/API8010 read-only; no download/catalog mutations",
+  "pass": true,
+  "geometry": {
+    "searchCenter": 163,
+    "statusCenter": 163,
+    "toolbarHeight": 44
+  },
+  "checks": [
+    "all status shares search row",
+    "clear restores downloaded/default disabled",
+    "EUR/USD Dukascopy download button enabled",
+    "no API writes"
+  ]
+}

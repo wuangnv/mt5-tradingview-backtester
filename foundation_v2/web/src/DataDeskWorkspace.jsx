@@ -550,8 +550,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const pages = Math.max(1, Math.ceil(filteredDatasets.length / pageSize)), currentPage = Math.min(page, pages)
   const pageItems = filteredDatasets.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   useEffect(() => setPage(1), [categoryFilter,providerFilter,downloadFilter,search,sort,pageSize])
-  const filtersApplied = categoryFilter !== 'all' || providerFilter !== 'all' || downloadFilter !== 'all' || Boolean(search)
-  const clearFilters = () => { setCategoryFilter('all'); setProviderFilter('all'); setDownloadFilter('all'); setSearch(''); setPage(1) }
+  const filtersApplied = categoryFilter !== 'all' || providerFilter !== 'all' || downloadFilter !== 'downloaded' || Boolean(search)
+  const clearFilters = () => { setCategoryFilter('all'); setProviderFilter('all'); setDownloadFilter('downloaded'); setSearch(''); setPage(1) }
 
   const openCsv = (asset = null) => { setImportAsset(asset); setCsvBusy(false); setCsvOpen(true) }
   const openDetails = asset => { setSelectedId(asset.dataset_id); setDetailsOpen(true) }

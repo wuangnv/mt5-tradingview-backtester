@@ -1,0 +1,68 @@
+[
+  {
+    ".data-library-toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1214,
+      "height": 44
+    },
+    ".data-library-search": {
+      "x": 280,
+      "y": 141,
+      "width": 289.859375,
+      "height": 44
+    },
+    ".data-library-filters": {
+      "x": 585.859375,
+      "y": 143,
+      "width": 908.140625,
+      "height": 40
+    },
+    ".data-library-status": {
+      "x": 887.46875,
+      "y": 143,
+      "width": 89.46875,
+      "height": 40
+    },
+    ".fxa-clear-filters": {
+      "x": 1152.359375,
+      "y": 143,
+      "width": 111.0625,
+      "height": 40,
+      "disabled": false
+    }
+  },
+  {
+    ".data-library-toolbar": {
+      "x": 280,
+      "y": 141,
+      "width": 1214,
+      "height": 100
+    },
+    ".data-library-search": {
+      "x": 280,
+      "y": 141,
+      "width": 420,
+      "height": 44
+    },
+    ".data-library-filters": {
+      "x": 280,
+      "y": 201,
+      "width": 1214,
+      "height": 40
+    },
+    ".data-library-status": {
+      "x": 581.609375,
+      "y": 201,
+      "width": 149.21875,
+      "height": 40
+    },
+    ".fxa-clear-filters": {
+      "x": 1152.359375,
+      "y": 201,
+      "width": 111.0625,
+      "height": 40,
+      "disabled": true
+    }
+  }
+]
