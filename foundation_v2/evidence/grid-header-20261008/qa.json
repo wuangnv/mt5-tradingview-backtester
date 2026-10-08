@@ -1,0 +1,227 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "trade",
+      "demo": false,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "market-data",
+      "demo": false,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "none",
+        "filterGap": null
+      },
+      "sticky": true,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "view": "trade",
+      "demo": false,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "view": "market-data",
+      "demo": false,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "none",
+        "filterGap": null
+      },
+      "sticky": true,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "trade",
+      "demo": false,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "market-data",
+      "demo": false,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "none",
+        "filterGap": null
+      },
+      "sticky": true,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "trade",
+      "demo": false,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "market-data",
+      "demo": false,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "none",
+        "filterGap": null
+      },
+      "sticky": true,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "view": "trade",
+      "demo": false,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "view": "market-data",
+      "demo": false,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "none",
+        "filterGap": null
+      },
+      "sticky": true,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "trade",
+      "demo": false,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "view": "market-data",
+      "demo": false,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "none",
+        "filterGap": null
+      },
+      "sticky": true,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "view": "trade",
+      "demo": true,
+      "header": {
+        "background": "rgb(8, 8, 8)",
+        "canvas": "rgb(8, 8, 8)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(58, 58, 58) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "sticky": true,
+      "sortAndFocus": true,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "trade",
+      "demo": true,
+      "header": {
+        "background": "rgb(255, 255, 255)",
+        "canvas": "rgb(255, 255, 255)",
+        "height": 44,
+        "borderBottom": "0px",
+        "shadow": "rgb(210, 210, 210) 0px -1px 0px 0px inset",
+        "filterGap": 0
+      },
+      "sticky": true,
+      "sortAndFocus": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "scope": "read-only actual workspace; separate built-in demo trade fixture",
+  "pass": true
+}

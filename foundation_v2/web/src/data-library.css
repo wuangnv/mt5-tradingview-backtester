@@ -22,7 +22,7 @@
 .data-library :is(.data-library-import, .data-library-refresh) { display:flex; align-items:center; gap:8px; white-space:nowrap; }
 .data-library-catalog-status { margin:0 0 16px; font-size:13px; color:var(--wm-content-muted); }
 .data-library .rd-table-wrap { overflow:auto; max-height:none; flex:1; min-height:0; margin-inline:calc(-1 * var(--wm-page-gutter)); width:calc(100% + 2 * var(--wm-page-gutter)); }
-.data-library .rd-table th { position:sticky; top:0; background:var(--wm-surface); z-index:1; }
+.fx-app[data-theme] .data-library .rd-table th { position:sticky; top:0; background:var(--wm-canvas); height:44px; box-sizing:border-box; z-index:1; }
 .data-library .rd-table :is(th, td):first-child { padding-left:var(--wm-page-gutter); }
 .data-library .rd-table :is(th, td):last-child { padding-right:var(--wm-page-gutter); }
 .data-library .rd-table tr.is-selected td:first-child { padding-left:var(--wm-page-gutter); }
