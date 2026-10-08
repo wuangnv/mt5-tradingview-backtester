@@ -53,8 +53,12 @@ A 60-second server cooldown prevents repeated requests; 429 extends it to five
 minutes. Seven-day-old metadata is marked stale but remains usable offline.
 
 The **Danh mục tài sản** toolbar action opens the right drawer used for catalog
-facts and **Cập nhật danh mục**. Filters remain independent; group editing is
-deferred. During an update, the modal blocks interactions and shows elapsed time
+facts and **Cập nhật danh mục**. Changing the outside source filter updates the
+drawer source; changing the drawer source leaves the filter and grid untouched.
+The drawer retains its source when reopened until the outside filter changes.
+CSV sources show their distinct asset count and latest save time; only Dukascopy
+or all sources can refresh the Dukascopy catalog. Group editing is deferred.
+During an update, the modal blocks interactions and shows elapsed time
 with indeterminate progress. Success/error restores controls, and the UI releases
 the lock after a 45-second request timeout. Opening the drawer only reads the
 existing page state and never refreshes Dukascopy.

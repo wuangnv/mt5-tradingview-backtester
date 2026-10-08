@@ -1,0 +1,16 @@
+{
+  "scope": "Actual local cached service GET; all mutations and external endpoints blocked.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1440,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

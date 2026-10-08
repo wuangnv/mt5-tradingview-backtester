@@ -1,0 +1,62 @@
+{
+  "scope": "Local UI with mixed-source fixtures; mutations intercepted, no provider requests.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "empty": false,
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 2\n"
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "lang": "en",
+      "empty": false,
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /09:00/. Input:\n\n'10/8/26, 9:00 AM'\n"
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "empty": false,
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 2\n"
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "vi",
+      "empty": false,
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 2\n"
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "lang": "en",
+      "empty": false,
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /09:00/. Input:\n\n'10/8/26, 9:00 AM'\n"
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "lang": "vi",
+      "empty": false,
+      "pass": false,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 2\n"
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "empty": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": false
+}

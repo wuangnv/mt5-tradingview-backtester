@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "posts": 1,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "posts": 1,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "posts": 1,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "posts": 1,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "scope": "Explicit browser dataset/catalog/download fixtures; catalog POST mocked; all unrelated mutations/provider/live blocked",
+  "pass": true
+}

@@ -1,0 +1,56 @@
+{
+  "scope": "Local UI with mixed-source fixtures; mutations intercepted, no provider requests.",
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 360,
+      "lang": "vi",
+      "empty": false,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "lang": "en",
+      "empty": false,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "empty": false,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "lang": "vi",
+      "empty": false,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "lang": "en",
+      "empty": false,
+      "pass": true
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "lang": "vi",
+      "empty": false,
+      "pass": true
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "lang": "vi",
+      "empty": true,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

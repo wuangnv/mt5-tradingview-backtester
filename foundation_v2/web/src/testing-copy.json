@@ -1,4 +1,7 @@
 {
+  "Cập nhật Dukascopy (UTC)": {"vi":"Cập nhật Dukascopy (UTC)","en":"Dukascopy updated (UTC)"},
+  "Lần lưu gần nhất (UTC)": {"vi":"Lần lưu gần nhất (UTC)","en":"Last saved (UTC)"},
+  "Nguồn này dùng dữ liệu nhập từ CSV.": {"vi":"Nguồn này dùng dữ liệu nhập từ CSV.","en":"This source uses imported CSV data."},
   "Danh mục tài sản": {"vi":"Danh mục tài sản","en":"Asset catalog"},
   "Cập nhật danh mục": {"vi":"Cập nhật danh mục","en":"Update catalog"},
   "Đang cập nhật danh mục…": {"vi":"Đang cập nhật danh mục…","en":"Updating catalog…"},
