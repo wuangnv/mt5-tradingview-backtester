@@ -1,0 +1,28 @@
+{
+  "fixture": "30 days, 1440 source rows/day, 15ms simulated response,25ms batch pause; local IO, not live-network benchmark",
+  "measurement": "Original isolated comparison during implementation, 2026-10-08; rerunnable with benchmark.mjs. Timings vary with local load.",
+  "results": [
+    {
+      "name": "baseline",
+      "commit": "fa52a806bce492f1cb46626cb6a6a894f94d5971",
+      "cold_ms": 4295,
+      "cached_ms": 2573,
+      "calls": 30,
+      "max_active": 1,
+      "events": 61,
+      "bytes": 523440,
+      "csv_sha256": "3bcf5003538311a798df81d59cd71e65b5ba11ae6b291e2a8280d47c7b2a19c5"
+    },
+    {
+      "name": "optimized",
+      "commit": "efe87fe609fdb2874b8a4a491722c5207971b565",
+      "cold_ms": 744,
+      "cached_ms": 130,
+      "calls": 30,
+      "max_active": 3,
+      "events": 32,
+      "bytes": 523440,
+      "csv_sha256": "3bcf5003538311a798df81d59cd71e65b5ba11ae6b291e2a8280d47c7b2a19c5"
+    }
+  ]
+}
