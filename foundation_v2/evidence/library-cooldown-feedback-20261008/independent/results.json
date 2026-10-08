@@ -66,6 +66,29 @@
       "pass": true
     },
     {
+      "theme": "dark",
+      "width": 1710,
+      "language": "vi",
+      "mode": "unavailable",
+      "checks": [
+        {
+          "name": "Cooldown row/dialog share remaining time, expire and enable without reload/poll",
+          "initial": {
+            "text": "16%\n27,2 MiB\nChờ 00:04",
+            "title": "Không kết nối được Dukascopy. Tiến độ đã tải được giữ lại.",
+            "disabled": true
+          },
+          "final": {
+            "text": "16%\n27,2 MiB\n—",
+            "disabled": false,
+            "title": "Tiếp tục tải"
+          },
+          "polls": 1
+        }
+      ],
+      "pass": true
+    },
+    {
       "theme": "light",
       "width": 360,
       "language": "vi",
@@ -74,9 +97,9 @@
         {
           "name": "Actual paused presentation GET-only",
           "initial": {
-            "text": "16%\n27,2 MiB\nChờ 00:50",
-            "title": "Dukascopy đang giới hạn yêu cầu. Có thể tiếp tục sau thời gian chờ.",
-            "disabled": true
+            "text": "16%\n27,2 MiB\n—",
+            "title": "Tiếp tục tải",
+            "disabled": false
           }
         }
       ],
