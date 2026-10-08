@@ -1,0 +1,129 @@
+{
+  "scope": "UI fixtures with intercepted API, then actual local API GET-only; no source requests or download actions.",
+  "cases": [
+    {
+      "width": 1710,
+      "pass": true,
+      "checks": [
+        "downloaded-default",
+        "option-order",
+        "anchor-alignment",
+        "keyboard",
+        "status-filter",
+        "clear-all",
+        "reload",
+        "empty-below-header",
+        "empty-library",
+        "no-page-overflow"
+      ],
+      "writes": 0
+    },
+    {
+      "width": 768,
+      "pass": true,
+      "checks": [
+        "downloaded-default",
+        "option-order",
+        "anchor-alignment",
+        "keyboard",
+        "status-filter",
+        "clear-all",
+        "reload",
+        "empty-below-header",
+        "empty-library",
+        "no-page-overflow"
+      ],
+      "writes": 0
+    },
+    {
+      "width": 360,
+      "pass": true,
+      "checks": [
+        "downloaded-default",
+        "option-order",
+        "anchor-alignment",
+        "keyboard",
+        "status-filter",
+        "clear-all",
+        "reload",
+        "empty-below-header",
+        "empty-library",
+        "no-page-overflow"
+      ],
+      "writes": 0
+    }
+  ],
+  "actual": {
+    "pass": true,
+    "writes": 0,
+    "first": {
+      "time": 1791466645546,
+      "jobs": [
+        {
+          "job_id": "7eea866ba94c4e53b5e4e713a78f70df",
+          "status": "paused",
+          "stage": "downloading",
+          "error": "source_rate_limited",
+          "completed_days": 1425,
+          "total_days": 8558,
+          "transferred_bytes": 29903579,
+          "network_days": 66,
+          "retry_after_seconds": 2366
+        },
+        {
+          "job_id": "97a9dd0c822d49ff85758a618446e6b3",
+          "status": "cancelled",
+          "stage": "downloading",
+          "error": null,
+          "completed_days": 624,
+          "total_days": 8558,
+          "transferred_bytes": 13185308,
+          "retry_after_seconds": 0
+        },
+        {
+          "job_id": "30eb972c1f9347ffb7a31af0d9edb746",
+          "status": "completed",
+          "error": null,
+          "completed_days": 1,
+          "total_days": 1,
+          "retry_after_seconds": 0
+        }
+      ]
+    },
+    "second": {
+      "time": 1791466657565,
+      "jobs": [
+        {
+          "job_id": "7eea866ba94c4e53b5e4e713a78f70df",
+          "status": "paused",
+          "stage": "downloading",
+          "error": "source_rate_limited",
+          "completed_days": 1425,
+          "total_days": 8558,
+          "transferred_bytes": 29903579,
+          "network_days": 66,
+          "retry_after_seconds": 2354
+        },
+        {
+          "job_id": "97a9dd0c822d49ff85758a618446e6b3",
+          "status": "cancelled",
+          "stage": "downloading",
+          "error": null,
+          "completed_days": 624,
+          "total_days": 8558,
+          "transferred_bytes": 13185308,
+          "retry_after_seconds": 0
+        },
+        {
+          "job_id": "30eb972c1f9347ffb7a31af0d9edb746",
+          "status": "completed",
+          "error": null,
+          "completed_days": 1,
+          "total_days": 1,
+          "retry_after_seconds": 0
+        }
+      ]
+    }
+  },
+  "pass": true
+}

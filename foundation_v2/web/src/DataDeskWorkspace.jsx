@@ -362,7 +362,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   const [selectedId, setSelectedId] = useState(requestedDataset)
   const [providerFilter, setProviderFilter] = useState('all')
   const [catalogProvider, setCatalogProvider] = useState('all')
-  const [categoryFilter, setCategoryFilter] = useState('all'), [sort, setSort] = useState('asset-asc'), [downloadFilter, setDownloadFilter] = useState('all')
+  const [categoryFilter, setCategoryFilter] = useState('all'), [sort, setSort] = useState('asset-asc'), [downloadFilter, setDownloadFilter] = useState('downloaded')
   const [search, setSearch] = useState(''), [page, setPage] = useState(1), [pageSize, setPageSize] = useState(25)
   const [detailsOpen, setDetailsOpen] = useState(Boolean(requestedDataset)), [importAsset, setImportAsset] = useState(null)
   const [catalogRevision, setCatalogRevision] = useState(0)
@@ -595,7 +595,7 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
         <div className="data-library-filters">
           <FxSelect label={t('Danh mục')} value={categoryFilter} onChange={setCategoryFilter} options={[{value:'all',label:'Tất cả danh mục'}, ...CATEGORIES.map(([value,label]) => ({value,label})), ...(rows.some(item => !categoryOf(item)) ? [{value:'',label:'Chưa phân loại'}] : [])]} />
           <FxSelect label={t('Nguồn dữ liệu')} value={providerFilter} onChange={setProviderFilter} options={sourceOptions} />
-          <FxSelect label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'all',label:'Tất cả trạng thái'},{value:'downloaded',label:'Đã tải'},{value:'downloading',label:'Đang tải'},{value:'not-downloaded',label:'Chưa tải'}]} />
+          <FxSelect className="data-library-status" label={t('Trạng thái tải')} value={downloadFilter} onChange={setDownloadFilter} options={[{value:'downloaded',label:'Đã tải'},{value:'downloading',label:'Đang tải'},{value:'not-downloaded',label:'Chưa tải'},{value:'all',label:'Tất cả trạng thái'}]} />
           <FxSelect className="data-library-sort" label={t('Sắp xếp dữ liệu')} value={sort} icon="sort" onChange={setSort} options={[{value:'asset-asc',label:'Tên A–Z'},{value:'asset-desc',label:'Tên Z–A'},{value:'newest',label:'Mới cập nhật'}]} />
           <button type="button" className="fxa-clear-filters" disabled={!filtersApplied} onClick={clearFilters}><TestingIcon kind="delete" />{t('Clear filters')}</button>
           {state.catalog && <button type="button" className="data-library-catalog-trigger" onClick={() => setCatalogOpen(true)} aria-haspopup="dialog" aria-expanded={catalogOpen}>{t('Danh mục tài sản')}</button>}
@@ -667,8 +667,8 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
                     })}
                   </tbody>
                 </table>
+                {!filteredDatasets.length && rows.length > 0 && <p className="data-library-empty" role="status" data-testid="data-desk-empty">{t('Không có dữ liệu phù hợp bộ lọc.')}</p>}
               </div>
-            {!filteredDatasets.length && rows.length > 0 && <div className="rd-message is-empty" data-testid="data-desk-empty">{t('Không có dữ liệu phù hợp bộ lọc.')}</div>}
             <PaginationFooter label="Phân trang kho dữ liệu" page={currentPage} pages={pages} onPageChange={setPage} pageSize={pageSize} onPageSizeChange={value => { setPageSize(value); setPage(1) }} sizes={[10,25,50,100]} />
           </section>
 
