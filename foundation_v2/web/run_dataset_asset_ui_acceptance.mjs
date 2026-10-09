@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
 
 const base = process.env.TW_UI_BASE || 'http://127.0.0.1:5180'
-const out = '../evidence/multi-asset-session-20261009/picker'
+const out = process.env.TW_PICKER_EVIDENCE || '../evidence/multi-asset-session-20261009/picker'
 await mkdir(out, { recursive:true })
 const browser = await chromium.launch({ headless:true })
 const results = []
@@ -54,6 +54,34 @@ try {
     assert.equal(await trigger.getAttribute('aria-expanded'), 'false')
     assert.equal(await trigger.evaluate(node => node === document.activeElement), true)
     assert.equal(await page.locator('.quick-session-dialog').getAttribute('open'), '')
+    const frame = await page.locator('.quick-session-dialog').boundingBox()
+    const nav = await page.locator('.quick-session-sections').boundingBox()
+    const body = await page.locator('.quick-session-body').boundingBox()
+    const header = await page.locator('.quick-session-header').boundingBox()
+    const footer = await page.locator('.quick-session-footer').boundingBox()
+    assert.ok(frame.x >= 0 && frame.y >= 0 && frame.x + frame.width <= width && frame.y + frame.height <= 987)
+    assert.ok(width > 700 ? nav.x + nav.width <= body.x + 1 : nav.y + nav.height <= body.y + 1)
+    const tabs = await page.locator('.quick-session-tabs').boundingBox()
+    assert.ok(tabs.y >= header.y && tabs.y + tabs.height <= header.y + header.height)
+    await page.screenshot({ path:`${out}/layout-${width}.png` })
+    await page.locator('.quick-session-sections button').last().click()
+    await page.locator('.quick-session-fields textarea').fill('Layout regression draft')
+    await page.locator('.quick-session-fields > label input[type=number]').fill('1')
+    await page.locator('.quick-session-sections button').first().click()
+    assert.equal(await page.locator('.quick-session-fields textarea').count(), 0)
+    await page.locator('.quick-session-sections button').last().click()
+    assert.equal(await page.locator('.quick-session-fields textarea').inputValue(), 'Layout regression draft')
+    assert.equal(await page.locator('.quick-session-fields > label input[type=number]').inputValue(), '1')
+    await page.locator('.quick-session-body').evaluate(node => { node.scrollTop = node.scrollHeight })
+    assert.deepEqual(await page.locator('.quick-session-header').boundingBox(), header)
+    assert.deepEqual(await page.locator('.quick-session-footer').boundingBox(), footer)
+    await page.screenshot({ path:`${out}/advanced-${width}.png` })
+    await page.locator('.quick-session-tabs button').last().click()
+    assert.equal(await page.locator('.quick-session-sections button:disabled').count(), 2)
+    await page.locator('.quick-session-tabs button').first().click()
+    assert.equal(await page.locator('.quick-session-fields textarea').inputValue(), 'Layout regression draft')
+    await page.locator('.quick-session-close').click()
+    await page.locator('.quick-session-dialog').waitFor({ state:'detached' })
     results.push({ type:'live-read-only', width, pass:true })
     await page.close()
   }

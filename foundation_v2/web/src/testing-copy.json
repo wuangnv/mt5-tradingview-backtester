@@ -5658,5 +5658,8 @@
     "en": "Switch assets within this session; balance, history and replay time stay shared."
   },
   "Chờ nến mới của tài sản tại thời gian replay chung để đặt lệnh.": {"vi":"Chờ nến mới của tài sản tại thời gian replay chung để đặt lệnh.","en":"Wait for a newly closed asset bar at the shared replay time before placing an order."},
-  "Phiên nhiều tài sản sử dụng nến OHLC.": {"vi":"Phiên nhiều tài sản sử dụng nến OHLC.","en":"Multi-asset sessions use OHLC bars."}
+  "Phiên nhiều tài sản sử dụng nến OHLC.": {"vi":"Phiên nhiều tài sản sử dụng nến OHLC.","en":"Multi-asset sessions use OHLC bars."},
+  "Thiết lập phiên": {"vi":"Thiết lập phiên","en":"Session setup"},
+  "Tên, số dư, chiến lược và tài sản": {"vi":"Tên, số dư, chiến lược và tài sản","en":"Name, balance, strategy and assets"},
+  "Thêm mô tả và chọn nến bắt đầu": {"vi":"Thêm mô tả và chọn nến bắt đầu","en":"Add a description and choose the starting bar"}
 }

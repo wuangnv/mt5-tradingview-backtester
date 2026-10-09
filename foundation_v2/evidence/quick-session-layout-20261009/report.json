@@ -1,0 +1,62 @@
+[
+  {
+    "type": "live-read-only",
+    "width": 1710,
+    "pass": true
+  },
+  {
+    "type": "live-read-only",
+    "width": 1440,
+    "pass": true
+  },
+  {
+    "type": "live-read-only",
+    "width": 768,
+    "pass": true
+  },
+  {
+    "type": "live-read-only",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "type": "labeled-fixture",
+    "width": 1440,
+    "theme": "dark",
+    "language": "vi",
+    "pass": true,
+    "postedDataset": "dataset-eur-new"
+  },
+  {
+    "type": "labeled-fixture",
+    "width": 768,
+    "theme": "light",
+    "language": "en",
+    "pass": true,
+    "postedDataset": "dataset-eur-new"
+  },
+  {
+    "type": "labeled-fixture",
+    "width": 360,
+    "theme": "dark",
+    "language": "vi",
+    "pass": true,
+    "postedDataset": "dataset-eur-new"
+  },
+  {
+    "type": "labeled-fixture",
+    "state": "empty",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "type": "labeled-fixture",
+    "state": "error",
+    "width": 360,
+    "pass": true
+  },
+  {
+    "type": "shared-select-regression",
+    "pass": true
+  }
+]

@@ -94,13 +94,25 @@ export default function QuickSessionDialog({ workspace, query, onClose, initialD
     const r = event.currentTarget.getBoundingClientRect()
     if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close()
   }}>
-    <header className="quick-session-header"><h2 id={`${id}-title`}>{t(advanced ? 'Tạo phiên nâng cao' : 'Tạo phiên nhanh')}</h2><button type="button" className="quick-session-advanced" disabled={busy} onClick={() => setAdvanced(value => !value)}>{t(advanced ? 'Tạo nhanh' : 'Phiên nâng cao')}</button><button type="button" className="quick-session-close" aria-label={t('Đóng tạo phiên')} disabled={busy} onClick={close}>×</button></header>
-    <form onSubmit={create} className="quick-session-form">
-      <div className="quick-session-body">
+    <header className="quick-session-header">
+      <h2 id={`${id}-title`}>{t(advanced ? 'Tạo phiên nâng cao' : 'Tạo phiên nhanh')}</h2>
         <div className="quick-session-tabs" role="tablist" aria-label={t('Loại phiên')}>{[['backtest','Backtesting Session'],['prop','Prop Firm Session']].map(([key,label]) => <button key={key} id={`${id}-${key}`} role="tab" type="button" aria-selected={mode === key} aria-controls={`${id}-panel`} tabIndex={mode === key ? 0 : -1} disabled={busy} onClick={() => setMode(key)} onKeyDown={event => {
           if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return
           event.preventDefault(); const next = event.key === 'Home' ? 'backtest' : event.key === 'End' ? 'prop' : mode === 'backtest' ? 'prop' : 'backtest'; setMode(next); document.getElementById(`${id}-${next}`).focus()
         }}>{t(label)}</button>)}</div>
+      <button type="button" className="quick-session-close" aria-label={t('Đóng tạo phiên')} disabled={busy} onClick={close}>×</button>
+    </header>
+    <form onSubmit={create} className="quick-session-form">
+      <div className="quick-session-layout">
+        <nav className="quick-session-sections" aria-label={t('Thiết lập phiên')}>
+          <button type="button" aria-pressed={!advanced} aria-controls={`${id}-panel`} disabled={busy || mode === 'prop'} onClick={() => setAdvanced(false)}>
+            <strong>{t('Cơ bản')}</strong><span>{t('Tên, số dư, chiến lược và tài sản')}</span>
+          </button>
+          <button type="button" aria-pressed={advanced} aria-controls={`${id}-panel`} disabled={busy || mode === 'prop'} onClick={() => setAdvanced(true)}>
+            <strong>{t('Phiên nâng cao')}</strong><span>{t('Thêm mô tả và chọn nến bắt đầu')}</span>
+          </button>
+        </nav>
+        <div className="quick-session-body">
         <div role="tabpanel" id={`${id}-panel`} aria-labelledby={`${id}-${mode}`} className="quick-session-fields">
           {mode === 'prop' ? <p>{t('Thiết lập thử thách với quy tắc, mục tiêu và giới hạn rủi ro ở trang Prop Firm.')}</p> : <>
             <label><span>{t('Name')} <span className="quick-session-required" aria-hidden="true">*</span></span><input ref={nameInput} required maxLength={160} placeholder={t('Đặt tên phiên của bạn')} value={draft.name} disabled={busy} onChange={event => change('name', event.target.value)} /></label>
@@ -130,6 +142,7 @@ export default function QuickSessionDialog({ workspace, query, onClose, initialD
           </>}
           {problem && <div role="alert" className="quick-session-error">{problem.uncertain ? t('Chưa xác định phiên đã tạo hay chưa. Kiểm tra danh sách phiên trước khi tạo lại.') : t('Không tạo được phiên: {error}', {error:problem.text})}{problem.uncertain && <a aria-disabled={busy || undefined} onClick={event => { if (busy) event.preventDefault() }} href={buildWorkspaceHref('replay',workspace,query,{select:'1',surface:null,fresh:null})}>{t('Xem danh sách phiên')}</a>}</div>}
         </div>
+      </div>
       </div>
       <footer className="quick-session-footer"><button type="button" disabled={busy} onClick={close}>{t('Cancel')}</button>{mode === 'prop' ? <a className="quick-session-submit" aria-disabled={busy || undefined} onClick={event => { if (busy) event.preventDefault() }} href={buildWorkspaceHref('testing',workspace,query)}>{t('Thiết lập Prop Firm')}</a> : <button type="submit" className="quick-session-submit" disabled={!valid || busy || addingStrategy || data.status !== 'ready' || problem?.uncertain}>{t(pending ? 'Đang tạo…' : 'Create session')}</button>}</footer>
     </form>
