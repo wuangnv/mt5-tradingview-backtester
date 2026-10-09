@@ -14,8 +14,8 @@
 .wm-reference-form-grid > label > :is(input,textarea) { flex:0 0 100%; width:100%; min-width:0; }
 .wm-reference-form-grid b { color:var(--wm-negative); font-weight:500; }
 .wm-reference-choices { display:grid; gap:8px; align-content:start; }
-.wm-reference-choices label { display:flex; align-items:center; gap:8px; min-height:32px; font-size:13px; cursor:pointer; }
-.wm-reference-choices input { width:16px; height:16px; min-height:0; margin:0; }
+.wm-reference-choices label { display:grid; grid-template-columns:var(--ds-switch-width) minmax(0,1fr); align-items:center; gap:8px; min-height:32px; font-size:13px; line-height:20px; cursor:pointer; }
+.wm-reference-choices input { width:16px; height:16px; min-height:0; margin:0; justify-self:center; }
 .wm-reference-choices .wm-reference-switch { appearance:none; width:var(--ds-switch-width); height:var(--ds-switch-height); border:0; border-radius:999px; background:var(--wm-control-muted); position:relative; }
 .wm-reference-switch::before { content:''; display:block; width:12px; height:12px; margin:2px; border-radius:50%; background:var(--project-canvas); transition:transform var(--ds-motion-hover) var(--ds-ease-standard); }
 .wm-reference-switch:checked { background:var(--project-primary); }

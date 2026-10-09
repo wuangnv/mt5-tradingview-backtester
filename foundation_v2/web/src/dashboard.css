@@ -49,6 +49,7 @@
 .fx-dashboard-data-state.is-warning { color: var(--wm-warning); }
 .fx-dashboard-data-state button { flex-shrink: 0; }
 .fx-dashboard-performance-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-6); }
+.fx-dashboard-performance-layout.has-no-trades { grid-template-columns: minmax(0, 1fr); }
 .fx-dashboard-performance { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ds-space-6); }
 .fx-dashboard-metric, .fx-dashboard-chart-panel { border: 1px solid var(--wm-border); background: var(--wm-surface); border-radius: var(--ds-radius-menu); padding: var(--ds-space-6); min-width: 0; }
 .fx-dashboard-metric { display: flex; flex-direction: column; min-height: 164px; font-variant-numeric: tabular-nums; }

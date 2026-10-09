@@ -1,0 +1,277 @@
+{
+  "pass": true,
+  "checks": [
+    {
+      "case": "choice optical alignment",
+      "theme": "dark",
+      "width": 1440,
+      "geometry": [
+        {
+          "centerX": 870,
+          "centerY": 609.765625,
+          "textX": 892,
+          "textY": 609.265625
+        },
+        {
+          "centerX": 870,
+          "centerY": 649.765625,
+          "textX": 892,
+          "textY": 649.265625
+        },
+        {
+          "centerX": 870,
+          "centerY": 689.765625,
+          "textX": 892,
+          "textY": 689.265625
+        },
+        {
+          "centerX": 870,
+          "centerY": 729.765625,
+          "textX": 892,
+          "textY": 729.265625
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "choice optical alignment",
+      "theme": "dark",
+      "width": 360,
+      "geometry": [
+        {
+          "centerX": 88,
+          "centerY": 986.921875,
+          "textX": 110,
+          "textY": 986.421875
+        },
+        {
+          "centerX": 88,
+          "centerY": 1038.921875,
+          "textX": 110,
+          "textY": 1038.421875
+        },
+        {
+          "centerX": 88,
+          "centerY": 1090.921875,
+          "textX": 110,
+          "textY": 1090.421875
+        },
+        {
+          "centerX": 88,
+          "centerY": 1142.921875,
+          "textX": 110,
+          "textY": 1142.421875
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "choice optical alignment",
+      "theme": "light",
+      "width": 1440,
+      "geometry": [
+        {
+          "centerX": 870,
+          "centerY": 609.765625,
+          "textX": 892,
+          "textY": 609.265625
+        },
+        {
+          "centerX": 870,
+          "centerY": 649.765625,
+          "textX": 892,
+          "textY": 649.265625
+        },
+        {
+          "centerX": 870,
+          "centerY": 689.765625,
+          "textX": 892,
+          "textY": 689.265625
+        },
+        {
+          "centerX": 870,
+          "centerY": 729.765625,
+          "textX": 892,
+          "textY": 729.265625
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "choice optical alignment",
+      "theme": "light",
+      "width": 360,
+      "geometry": [
+        {
+          "centerX": 88,
+          "centerY": 986.921875,
+          "textX": 110,
+          "textY": 986.421875
+        },
+        {
+          "centerX": 88,
+          "centerY": 1038.921875,
+          "textX": 110,
+          "textY": 1038.421875
+        },
+        {
+          "centerX": 88,
+          "centerY": 1090.921875,
+          "textX": 110,
+          "textY": 1090.421875
+        },
+        {
+          "centerX": 88,
+          "centerY": 1142.921875,
+          "textX": 110,
+          "textY": 1142.421875
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture empty",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture blocked",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture error",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture denied",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture malformed",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "retry restores group data",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "no trades preserves measured timing and honest zero/unknown",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "partial shows visible scope notice",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "same scope refresh retains data, stale retry, revoked permission clears",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "scope change clears data during loading",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "invalid date scope has one alert and is not busy",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "Prop source stays independent when backtest has no sessions",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture empty",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture blocked",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture error",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture denied",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "Dashboard fixture malformed",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "retry restores group data",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "no trades preserves measured timing and honest zero/unknown",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "partial shows visible scope notice",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "same scope refresh retains data, stale retry, revoked permission clears",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "scope change clears data during loading",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "invalid date scope has one alert and is not busy",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "Prop source stays independent when backtest has no sessions",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "actual service read",
+      "scope": {
+        "source": "persisted_replay_execution",
+        "session_id": null,
+        "session_ids": [],
+        "session_count": 0,
+        "readable_session_count": 0,
+        "filters": {
+          "side": "all",
+          "outcome": "all",
+          "from_close_utc": null,
+          "to_close_utc": null
+        },
+        "includes_archived": true,
+        "duplicate_trade_count": 0,
+        "aggregation": "unique_closed_fills_within_root_lineage",
+        "timezone": "UTC"
+      },
+      "state": "empty",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

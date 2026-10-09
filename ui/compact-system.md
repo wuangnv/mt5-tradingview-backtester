@@ -122,6 +122,11 @@ lớp nội dung; chưa có cơ sở hứa mọi máy chạy60fps hay giống t�
   Tooltip không giữ thông tin duy nhất để hoàn thành tác vụ.
 - **Thông báo:** cạnh nội dung nó nói tới, phân biệt chưa có dữ liệu, filter trống,
   lỗi, stale và partial. Toast không thay lỗi cần sửa tại field.
+- **Căn thị giác:** trong cùng danh sách có checkbox/radio/switch, dùng vùng dấu
+  chọn28px để các tâm nằm trên một trục; chữ bắt đầu cùng vị trí sau gap8px,
+  line-height20px. Dấu checkbox/radio vẫn16px, switch28px; không kéo giãn dấu nhỏ.
+  Căn số với đơn vị theo chân chữ; icon với dòng chữ theo tâm. Không thêm offset
+  từng control khi có thể sửa bằng một grid chung.
 
 ## Trạng thái dữ liệu và phạm vi hiển thị
 
@@ -154,10 +159,15 @@ Nếu KPI và chart cùng response/API thì chung loading/error; chart lỗi ri�
 lý khi nó thật sự có nguồn hoặc bước tính độc lập.
 
 Trang mẫu có lựa chọn **Luồng Tổng quan minh hoạ** để thử các tình huống. Đây là
-contract và minh hoạ, chưa phải migration luồng Dashboard. Audit source hiện tại:
-DashboardPerformance đã gom loading/error và giữ dữ liệu khi refresh cùng phạm vi,
-nhưng các chart vẫn có thông báo empty riêng; DashboardSessions và PropAnalytics
-đọc nguồn riêng. Cần migration có test dữ liệu thực trước khi thay toàn bộ ownership.
+minh hoạ; DashboardPerformance thật đã áp dụng cùng nguyên tắc qua nguồn overview:
+loading có một skeleton; error/denied/unavailable/blocked/no-session có một thông
+báo và không dựng KPI/chart phụ thuộc. Có phiên nhưng không có giao dịch đóng vẫn
+giữ thời gian đo được, số giao dịch0, win rate— và một thông báo cho cụm chart.
+Khoảng ngày không có giao dịch có lời nhắc đổi bộ lọc; partial có số phiên đọc được
+hiển thị rõ. Refresh cùng phạm vi giữ dữ liệu, lỗi refresh báo stale; đổi phạm vi
+ẩn số cũ ngay.401/403 khi đọc lại xóa dữ liệu cache, không giữ như stale.
+DashboardSessions và PropAnalytics tiếp tục đọc nguồn riêng; không suy trạng thái
+của chúng từ overview. Chưa migration ownership/cache toàn bộ các nguồn Dashboard.
 
 ## KPI, card và biểu đồ báo cáo
 
@@ -194,7 +204,7 @@ toàn bộ renderer báo cáo, không coi contract này là mọi chart đã đ�
 | Focus/hover/disabled/selected | Một dấu focus cho field, nút có ring; selected nền trung tính, không vạch trái |
 | Form validation | Có quy tắc label/required/help/error; cần audit flow submit, pending, success và server conflict từng form |
 | KPI/card/report chart | Có chuẩn và mẫu; migration typography một phần; cần audit chart/tooltip/legend từng renderer |
-| Trạng thái page/cụm | Có contract và mẫu; migration ownership Dashboard thật chưa thực hiện |
+| Trạng thái page/cụm | Có contract/mẫu; Performance Dashboard thật đã gom theo overview; cần audit các nguồn khác riêng |
 | Search/filter/sort/pagination | Có control và pattern; cần kiểm tra thống nhất debounce, reset/default và URL qua từng trang |
 | Table/grid | Có chuẩn alignment/sticky/empty; cần kiểm kê selection, resize, virtualisation khi workflow cần |
 | Dialog/drawer/menu/tooltip | Có anatomy và motion; một số composite/vùng chạm có ngoại lệ đã ghi |
@@ -238,4 +248,5 @@ Nguồn chung: [Compact contract](../../../UI-Systems/core/tokens/compact/0.1.1/
 token JSON có version, CSS được xuất tự động. Quy tắc gắn dữ liệu trading nằm ở
 project/domain; không đổi dữ liệu, model, quyền broker hay logic tải vì refactor UI.
 Kết quả kiểm chứng: [follow-up receipt](../foundation_v2/evidence/compact-states-20261009/RECEIPT.md),
-[baseline receipt](../foundation_v2/evidence/compact-system-20261009/RECEIPT.md).
+[baseline receipt](../foundation_v2/evidence/compact-system-20261009/RECEIPT.md),
+[Dashboard states/alignment receipt](../foundation_v2/evidence/dashboard-states-20261009/RECEIPT.md).

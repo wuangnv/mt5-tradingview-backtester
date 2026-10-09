@@ -1,4 +1,4 @@
-import { TestingSkeleton } from './TestingReadState.jsx'
+import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import TestingIcon from './TestingIcon.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useState } from 'react'
@@ -87,7 +87,7 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
     readDashboardOverview(workspace, filters, controller.signal).then(payload => {
       if (!controller.signal.aborted) setState({ status: 'ready', payload, error: '', key })
     }).catch(error => {
-      if (!controller.signal.aborted) setState(current => current.key === key && current.payload ? { ...current, status: 'stale', refreshing: false, error: error.message } : { status: 'error', payload: null, error: error.message, key })
+      if (!controller.signal.aborted) setState(current => current.key === key && current.payload && ![401, 403].includes(error.status) ? { ...current, status: 'stale', refreshing: false, error: error.message } : { status: 'error', payload: null, error: error.message, httpStatus: error.status, key })
     })
     return () => controller.abort()
   }, [key, reload, retry, filterError, previewPayload])
@@ -98,19 +98,28 @@ export default function DashboardPerformance({ workspace, filters, reload, contr
   const partial = performance?.status === 'partial'
   const blocked = performance?.status === 'blocked' || performance?.scope?.readable_session_count === 0 && performance?.scope?.session_count > 0
   const partialNotice = partial && !blocked ? t("Performance chỉ tổng hợp {readable}/{total} phiên có dữ liệu.", { readable: performance.scope.readable_session_count, total: performance.scope.session_count }) : ''
-  const notice = filterError || (loading ? 'Đang tải Performance…' : state.status === 'error' ? 'Chưa tải được Performance.' : state.status === 'stale' ? 'Dữ liệu chưa cập nhật.' : blocked ? 'Chưa đủ dữ liệu thực thi để tính Performance.' : '')
-  return <section className="fx-dashboard-results" aria-label={t("Performance")} aria-busy={loading || Boolean(state.refreshing)} aria-description={partialNotice || undefined}>
+  const failed = !loading && state.key === key && state.status === 'error'
+  const denied = failed && [401, 403].includes(state.httpStatus)
+  const unavailable = failed && state.error === 'dashboard_performance_unavailable'
+  const noSessions = performance?.scope?.session_count === 0
+  const noTrades = !blocked && !noSessions && metrics?.closed_trade_count === 0
+  const groupMessage = filterError || (denied ? 'Bạn không có quyền xem Performance.' : unavailable ? 'Nguồn Performance chưa khả dụng.' : failed ? 'Chưa tải được Performance.' : blocked ? 'Chưa đủ dữ liệu thực thi để tính Performance.' : noSessions ? 'Chưa có phiên backtest trong phạm vi này. Tạo phiên đầu tiên để xem kết quả.' : '')
+  const notice = state.key === key && state.status === 'stale' ? 'Dữ liệu chưa cập nhật.' : state.key === key && state.refreshing ? 'Đang cập nhật Performance…' : ''
+  const groupState = filterError ? 'invalid' : loading ? 'loading' : denied ? 'denied' : unavailable || blocked ? 'unavailable' : failed ? 'error' : noSessions ? 'empty' : noTrades ? 'no-trades' : 'ready'
+  return <section className="fx-dashboard-results" aria-label={t("Performance")} aria-busy={loading || (!filterError && state.key === key && Boolean(state.refreshing))} aria-description={partialNotice || undefined}>
     <div className="fx-dashboard-section-head"><h2 className="fx-dashboard-performance-heading">{t("Performance")}</h2><div className="fx-dashboard-performance-filters">{controls}{dateControls}</div></div>
     {sourceHeading && <h3 className="fx-dashboard-source-heading">{sourceHeading}</h3>}
-    <div className={`fx-dashboard-data-state${filterError || state.status === 'error' || partial || blocked ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role={filterError || state.status === 'error' ? 'alert' : 'status'}>{notice && <span>{t(notice)}</span>}{['error', 'stale'].includes(state.status) && <button type="button" className="fxa-button" onClick={() => setRetry(value => value + 1)}>{t('Thử lại')}</button>}</div>
-    {loading ? <TestingSkeleton label="Đang tải Performance…" /> : <><div className="fx-dashboard-performance-layout" data-testid="dashboard-performance"><div className="fx-dashboard-performance">
+    {(notice || partialNotice) && !groupMessage && <div className={`fx-dashboard-data-state${partial || state.status === 'stale' ? ' is-warning' : ''}`} data-testid="dashboard-data-state" role="status"><span>{t(notice)}{notice && partialNotice ? ' ' : ''}{partialNotice}</span>{state.status === 'stale' && <button type="button" className="fxa-button" onClick={() => setRetry(value => value + 1)}>{t('Thử lại')}</button>}</div>}
+    <div data-testid="dashboard-result-group" data-state={groupState}>
+    {loading ? <TestingSkeleton label="Đang tải Performance…" /> : groupMessage ? <TestingReadState message={groupMessage} error={Boolean(filterError || failed)} onRetry={failed && !denied ? () => setRetry(value => value + 1) : undefined} /> : <><div className={`fx-dashboard-performance-layout${noTrades ? ' has-no-trades' : ''}`} data-testid="dashboard-performance"><div className="fx-dashboard-performance">
       <Metric title={t("Time invested")} value={<Duration seconds={performance?.time_invested_seconds} />} detail={dashboardDurationParts(performance?.time_invested_seconds) ? previewPayload ? t("Thời gian luyện tập mẫu") : timingDetail(performance, 'practice', t) : t("Chưa có dữ liệu thời gian luyện tập")} icon="clock" />
       <Metric title={t("Historical time replayed")} value={<Duration seconds={performance?.historical_time_replayed_seconds} />} detail={dashboardDurationParts(performance?.historical_time_replayed_seconds) ? previewPayload ? t("Thời gian replay mẫu") : timingDetail(performance, 'historical', t) : t("Chưa có dữ liệu thời gian replay")} icon="history" />
       <Metric title={t("Trades taken")} value={dashboardNumber(metrics?.closed_trade_count)} icon="trades">
         <SideSplit counts={performance?.side_counts} total={metrics?.closed_trade_count} />
       </Metric>
       <Metric title={t("Overall win rate")} value={dashboardNumber(metrics?.win_rate_pct, '%')} icon="target" />
-    </div><MonthlyChart title={t("Giao dịch theo tháng")} items={performance?.months || []} field="closed_trade_count" /></div>
-    <div className="fx-dashboard-secondary-charts"><MonthlyChart title={t("Win rate by month")} items={performance?.months || []} field="win_rate_pct" rate accent="blue" /><SymbolChart items={performance?.symbols || []} /></div></>}
+    </div>{!noTrades && <MonthlyChart title={t("Giao dịch theo tháng")} items={performance?.months || []} field="closed_trade_count" />}</div>
+    {noTrades ? <TestingReadState message={filters.from || filters.to ? 'Không có giao dịch đóng trong khoảng ngày đã chọn. Đổi khoảng ngày để xem kết quả.' : 'Chưa có giao dịch đóng. Biểu đồ sẽ xuất hiện sau giao dịch đầu tiên.'} /> : <div className="fx-dashboard-secondary-charts"><MonthlyChart title={t("Win rate by month")} items={performance?.months || []} field="win_rate_pct" rate accent="blue" /><SymbolChart items={performance?.symbols || []} /></div>}</>}
+    </div>
   </section>
 }

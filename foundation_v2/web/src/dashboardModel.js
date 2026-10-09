@@ -96,7 +96,7 @@ export function updateDashboardQuery(values) {
 export async function readDashboardOverview(workspace, filters, signal) {
   const response = await fetch(dashboardRequestUrl(filters), { headers: { 'X-Workspace-Id': workspace }, signal })
   const payload = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(String(payload?.detail || `HTTP ${response.status}`))
+  if (!response.ok) throw Object.assign(new Error(String(payload?.detail || `HTTP ${response.status}`)), { status: response.status })
   const performance = payload?.performance
   if (performance?.schema_version !== 'dashboard-replay-performance-v1'
       || !performance.scope || !performance.metrics
