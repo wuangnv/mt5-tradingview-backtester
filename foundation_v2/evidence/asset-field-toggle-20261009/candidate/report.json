@@ -1,0 +1,380 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(61, 65, 72)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(221, 225, 231)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(61, 65, 72)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(221, 225, 231)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(61, 65, 72)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(35, 38, 42)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(221, 225, 231)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(243, 244, 246)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "baseline": false,
+  "pass": true
+}

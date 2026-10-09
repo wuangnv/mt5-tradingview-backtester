@@ -76,7 +76,10 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       entries[next]?.focus()
     }
   }}>
-    <Field {...(selectedTags ? { className:'fx-select-tag-field', onClick:event => { if (!disabled && !event.target.closest('button')) trigger.current?.click() } } : {})}>
+    <Field {...(selectedTags ? { className:'fx-select-tag-field', onPointerDown:event => {
+      // Keep menu focus until the field click toggles it; otherwise dialog blur closes it first.
+      if (!disabled && !event.target.closest('button')) event.preventDefault()
+    }, onClick:event => { if (!disabled && !event.target.closest('button')) { trigger.current?.focus(); trigger.current?.click() } } } : {})}>
     {selectedTags?.length > 0 && <div className="fx-select-tags">{selectedTags.map(tag => <span className="fx-select-tag" key={tag.value} title={tag.detail}><span>{tag.label}</span><button type="button" disabled={disabled} aria-label={t('Bỏ tài sản {asset}',{asset:tag.label})} onClick={() => { trigger.current?.focus(); onChange(value.filter(item => item !== tag.value)) }}>×</button></span>)}</div>}
     <button {...triggerProps} type="button" className="fx-select-trigger" aria-label={t(label)} aria-haspopup={searchable ? 'dialog' : 'listbox'} aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setSearch(''); setOpen(!open) }}>
       {icon && <FilterIcon kind={icon} />}{!iconOnly && <>{!selectedTags?.length && <span className="fx-select-value">{(localizeOptions ? t(triggerContent) : triggerContent) || selected?.label || t("Chọn…")}</span>}<SelectChevron /></>}

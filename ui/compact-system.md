@@ -81,6 +81,8 @@ Dropdown nằm trong form dùng `FxSelect` với `className="is-field"`: cùng v
 hover viền đậm hơn và nền trung tính `--wm-hover`, focus bằng chuột/Tab hoặc
 đang mở dùng viền xanh biển. Ô ghép tài sản tô hover trên toàn ô ngoài;
 không thêm nền/viền riêng cho nút bên trong. Ô số dư chỉ đổi viền ngoài.
+Nhãn tài sản cao 26px, nền `--wm-control-open` và viền nhẹ để vẫn tách khỏi
+nền hover của ô. Nút bỏ mã cao 22px; không kế thừa chiều cao của control form.
 Search trong menu dùng gạch dưới. Dropdown bộ lọc dạng pill vẫn là kiểu riêng.
 UI Reference có cả mẫu dropdown form dùng được và không khả dụng.
 
