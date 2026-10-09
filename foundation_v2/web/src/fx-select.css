@@ -30,7 +30,7 @@
 .fx-select.is-rich small { display: block; margin-top: 3px; color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }
 .fx-select.is-rich .fx-select-menu { width: 100%; box-sizing: border-box; max-width: 100%; }
 .fx-select-menu { box-sizing: border-box; }
-.fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select-menu, .fxa-session-menu) > input { background: transparent; color: var(--wm-control-text); min-height: var(--wm-control-height); border: 0; border-bottom: 1px solid var(--wm-control-border); border-radius: 0; box-shadow: none; outline: none; }
-.fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select-menu, .fxa-session-menu) > input:focus-visible { border-bottom: 2px solid var(--wm-focus); outline: none; box-shadow: none; }
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select .fx-select-menu, .fxa-session-menu) > input { background: transparent; color: var(--wm-control-text); min-height: var(--wm-control-height); border: 0; border-bottom: 1px solid var(--wm-control-border); border-radius: 0; box-shadow: none; outline: none; }
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select .fx-select-menu, .fxa-session-menu) > input:focus-visible { border-bottom: 2px solid var(--wm-focus); outline: none; box-shadow: none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .fx-select .fx-select-trigger:focus-visible,
 .fx-app.fx-shell-story[data-theme] .fx-content .fxa-session-trigger:focus-visible { border-color: var(--wm-focus); outline: none; box-shadow: none; }

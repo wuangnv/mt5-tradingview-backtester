@@ -1,6 +1,4 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .dataset-asset-select .fx-select-menu { width:100%; padding:10px; background:var(--wm-canvas); border-radius:var(--ds-radius-field); }
-.fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-menu > input { padding:10px 12px; margin:0 0 10px; border:1px solid var(--wm-control-border); border-radius:8px; }
-.fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-menu > input:focus-visible { border:1px solid var(--wm-focus); }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-categories { display:flex; flex-wrap:wrap; gap:6px; padding-bottom:10px; border-bottom:1px solid var(--wm-border); }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-categories button { min-height:30px; padding:5px 10px; border:0; border-radius:6px; background:transparent; color:var(--wm-content-muted); font-size:12px; line-height:20px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-categories button:hover { background:var(--wm-hover); color:var(--wm-content); }

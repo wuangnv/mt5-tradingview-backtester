@@ -1,0 +1,124 @@
+{
+  "scope": "Actual local dashboard, real read APIs, no submitted forms or write requests",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "style": {
+        "edges": [
+          "0px",
+          "0px",
+          "2px",
+          "0px"
+        ],
+        "radius": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "color": "rgb(112, 181, 255)",
+        "token": "#70B5FF",
+        "popupBackground": "rgb(8, 8, 8)",
+        "popupOpacity": "1"
+      },
+      "normalField": {
+        "edges": [
+          "1px",
+          "1px",
+          "1px",
+          "1px"
+        ],
+        "radius": "8px"
+      },
+      "checks": "shared underline-only search; normal form geometry retained; auto focus; filter/clear; arrow selection; Escape focus return"
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "style": {
+        "edges": [
+          "0px",
+          "0px",
+          "2px",
+          "0px"
+        ],
+        "radius": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "color": "rgb(36, 102, 172)",
+        "token": "#2466AC",
+        "popupBackground": "rgb(255, 255, 255)",
+        "popupOpacity": "1"
+      },
+      "normalField": {
+        "edges": [
+          "1px",
+          "1px",
+          "1px",
+          "1px"
+        ],
+        "radius": "8px"
+      },
+      "checks": "shared underline-only search; normal form geometry retained; auto focus; filter/clear; arrow selection; Escape focus return"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "style": {
+        "edges": [
+          "0px",
+          "0px",
+          "2px",
+          "0px"
+        ],
+        "radius": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "color": "rgb(112, 181, 255)",
+        "token": "#70B5FF",
+        "popupBackground": "rgb(8, 8, 8)",
+        "popupOpacity": "1"
+      },
+      "normalField": {
+        "edges": [
+          "1px",
+          "1px",
+          "1px",
+          "1px"
+        ],
+        "radius": "8px"
+      },
+      "checks": "shared underline-only search; normal form geometry retained; auto focus; filter/clear; arrow selection; Escape focus return"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "style": {
+        "edges": [
+          "0px",
+          "0px",
+          "2px",
+          "0px"
+        ],
+        "radius": "0px",
+        "outline": "none",
+        "shadow": "none",
+        "color": "rgb(36, 102, 172)",
+        "token": "#2466AC",
+        "popupBackground": "rgb(255, 255, 255)",
+        "popupOpacity": "1"
+      },
+      "normalField": {
+        "edges": [
+          "1px",
+          "1px",
+          "1px",
+          "1px"
+        ],
+        "radius": "8px"
+      },
+      "checks": "shared underline-only search; normal form geometry retained; auto focus; filter/clear; arrow selection; Escape focus return"
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "result": "PASS"
+}

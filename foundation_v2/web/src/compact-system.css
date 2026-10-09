@@ -9,7 +9,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-button.is-success) {
   --wm-action-bg:var(--project-positive); --wm-action-hover:color-mix(in srgb, var(--project-positive) 85%, var(--project-text)); --wm-on-primary:var(--project-on-primary);
 }
-.fx-app.fx-shell-story[data-theme] .fx-content :is(.rs-field, .rd-field, .prop-field, .risk-form, .trade-init-form, .trade-draft-form, .settings-appearance-form, .quick-session-fields) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea),
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.rs-field, .rd-field, .prop-field, .risk-form, .trade-init-form, .trade-draft-form, .settings-appearance-form, .quick-session-fields) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea):not(:where(.fx-select-menu > input, .fxa-session-menu > input)),
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-field {
   min-height:var(--wm-control-height); box-sizing:border-box; border-radius:var(--ds-radius-field);
   font-size:var(--wm-text-control); line-height:var(--ds-line-control);
