@@ -12,7 +12,6 @@
 .fx-app .fx-select-menu [role='listbox'], .fx-app .fxa-session-options { scrollbar-width: auto; scrollbar-gutter: auto; scrollbar-color: var(--wm-control-muted) transparent; }
 .fx-app .fx-select-menu :is([role='option'], .fx-select-all) { display: flex; align-items: center; justify-content: flex-start; gap: 8px; width: 100%; min-height: var(--wm-control-height); padding: 8px 10px; box-sizing: border-box; border: 0; border-radius: 6px; background: transparent; color: var(--wm-control-text); font: inherit; line-height: 20px; text-align: left; white-space: normal; cursor: pointer; }
 .fx-select-option-label { flex:1; min-width:0; overflow-wrap:anywhere; }
-.fx-select-count { display:block; padding:8px 10px; color:var(--wm-content-muted); font-size:12px; line-height:20px; }
 .fx-select-group-title { padding:8px 10px; color:var(--wm-content-muted); font-size:12px; line-height:20px; }
 .fx-app .fx-select-menu .fx-select-all:hover { background:var(--wm-hover); }
 .fx-select-checkbox { flex:0 0 16px; width:16px; height:16px; }
@@ -34,8 +33,8 @@
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select .fx-select-menu, .fxa-session-menu) > input:focus-visible { border-bottom: 2px solid var(--wm-focus); outline: none; box-shadow: none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .fx-select .fx-select-trigger:focus-visible,
 .fx-app.fx-shell-story[data-theme] .fx-content .fxa-session-trigger:focus-visible { border-color: var(--wm-focus); outline: none; box-shadow: none; }
-.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field :is(.fx-select-trigger, .fx-select-tag-field) { min-height:var(--wm-control-height); border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); background:transparent; transition:border-color var(--ds-motion-hover) var(--ds-ease-standard); }
-.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field :is(.fx-select-trigger, .fx-select-tag-field):hover:not(:has(:disabled)) { border-color:var(--wm-control-hover-border); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field :is(.fx-select-trigger, .fx-select-tag-field) { min-height:var(--wm-control-height); border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); background:transparent; transition:background-color var(--ds-motion-hover) var(--ds-ease-standard), border-color var(--ds-motion-hover) var(--ds-ease-standard); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field :is(.fx-select-trigger, .fx-select-tag-field):hover:not(:disabled):not(:has(:disabled)) { background:var(--wm-hover); border-color:var(--wm-control-hover-border); }
 .fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field:not(:has(.fx-select-trigger:disabled)) :is(.fx-select-trigger, .fx-select-tag-field):is(:focus-within, :has(.fx-select-trigger[aria-expanded=true])),
-.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field .fx-select-trigger[aria-expanded=true]:not(:disabled) { border-color:var(--wm-focus); outline:none; box-shadow:none; }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field:not(:has(.fx-select-trigger:disabled)) .fx-select-trigger[aria-expanded=true]:not(:disabled) { border-color:var(--wm-focus); outline:none; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field .fx-select-trigger:disabled:hover { border-color:var(--wm-control-border); background:transparent; }

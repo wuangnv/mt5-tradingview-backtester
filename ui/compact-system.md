@@ -78,8 +78,9 @@ Owner đã bỏ phương án hover xanh đục; hover chung dùng hai độ sán
 
 Dropdown nằm trong form dùng `FxSelect` với `className="is-field"`: cùng viền
 1px, góc 8px và chiều cao một dòng 36px như textbox. Bình thường viền nhẹ,
-hover viền đậm hơn, focus bằng chuột/Tab hoặc đang mở dùng xanh biển. Ô ghép
-số dư/tài sản chỉ đổi viền ngoài; không thêm viền cho input/nút bên trong.
+hover viền đậm hơn và nền trung tính `--wm-hover`, focus bằng chuột/Tab hoặc
+đang mở dùng viền xanh biển. Ô ghép tài sản tô hover trên toàn ô ngoài;
+không thêm nền/viền riêng cho nút bên trong. Ô số dư chỉ đổi viền ngoài.
 Search trong menu dùng gạch dưới. Dropdown bộ lọc dạng pill vẫn là kiểu riêng.
 UI Reference có cả mẫu dropdown form dùng được và không khả dụng.
 
