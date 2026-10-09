@@ -1,0 +1,207 @@
+{
+  "date": "2026-10-09T10:21:49.871Z",
+  "scope": "fresh production static build intercepted in disposable browser; APIs blocked; CSS evidence only",
+  "viewports": [
+    {
+      "width": 1710,
+      "height": 987,
+      "geometry": [
+        {
+          "text": "Phân tích",
+          "selector": "fx-subnav-link is-active",
+          "top": 64,
+          "bottom": 116,
+          "height": 52,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "\"\"",
+            "bottom": "0px",
+            "height": "2px",
+            "background": "rgb(255, 173, 124)"
+          }
+        },
+        {
+          "text": "PhiênProp Firm",
+          "selector": "fx-subsubnav",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "center",
+          "dsNav": "48px",
+          "after": {
+            "content": "\"\"",
+            "bottom": "0px",
+            "height": "2px",
+            "background": "rgb(255, 173, 124)"
+          }
+        },
+        {
+          "text": "Phiên",
+          "selector": "",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "none",
+            "bottom": "auto",
+            "height": "auto",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "text": "Prop Firm",
+          "selector": "",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "none",
+            "bottom": "auto",
+            "height": "auto",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "blockedApi": 0
+    },
+    {
+      "width": 1440,
+      "height": 987,
+      "geometry": [
+        {
+          "text": "Phân tích",
+          "selector": "fx-subnav-link is-active",
+          "top": 64,
+          "bottom": 116,
+          "height": 52,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "\"\"",
+            "bottom": "0px",
+            "height": "2px",
+            "background": "rgb(255, 173, 124)"
+          }
+        },
+        {
+          "text": "PhiênProp Firm",
+          "selector": "fx-subsubnav",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "center",
+          "dsNav": "48px",
+          "after": {
+            "content": "\"\"",
+            "bottom": "0px",
+            "height": "2px",
+            "background": "rgb(255, 173, 124)"
+          }
+        },
+        {
+          "text": "Phiên",
+          "selector": "",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "none",
+            "bottom": "auto",
+            "height": "auto",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "text": "Prop Firm",
+          "selector": "",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "none",
+            "bottom": "auto",
+            "height": "auto",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "blockedApi": 0
+    },
+    {
+      "width": 768,
+      "height": 987,
+      "geometry": [
+        {
+          "text": "Phân tích",
+          "selector": "fx-subnav-link is-active",
+          "top": 64,
+          "bottom": 116,
+          "height": 52,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "\"\"",
+            "bottom": "0px",
+            "height": "2px",
+            "background": "rgb(255, 173, 124)"
+          }
+        },
+        {
+          "text": "PhiênProp Firm",
+          "selector": "fx-subsubnav",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "center",
+          "dsNav": "48px",
+          "after": {
+            "content": "\"\"",
+            "bottom": "0px",
+            "height": "2px",
+            "background": "rgb(255, 173, 124)"
+          }
+        },
+        {
+          "text": "Phiên",
+          "selector": "",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "none",
+            "bottom": "auto",
+            "height": "auto",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        },
+        {
+          "text": "Prop Firm",
+          "selector": "",
+          "top": 66,
+          "bottom": 114,
+          "height": 48,
+          "alignSelf": "auto",
+          "dsNav": "48px",
+          "after": {
+            "content": "none",
+            "bottom": "auto",
+            "height": "auto",
+            "background": "rgba(0, 0, 0, 0)"
+          }
+        }
+      ],
+      "blockedApi": 0
+    }
+  ]
+}

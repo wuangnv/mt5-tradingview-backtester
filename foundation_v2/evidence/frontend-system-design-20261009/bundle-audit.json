@@ -1,0 +1,391 @@
+{
+  "date": "2026-10-09T10:21:51.072Z",
+  "build": "Vite production; dirty CSS preserved; no backend/network timing measured",
+  "indexHtml": "<!doctype html>\n<html lang=\"vi\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>MT5 Trading Workspace · FX Replay</title>\n    <link rel=\"stylesheet\" href=\"/project-palette.css\" />\n    <script type=\"module\" crossorigin src=\"/assets/index-B36X08xx.js\"></script>\n    <link rel=\"stylesheet\" crossorigin href=\"/assets/index-IPE6dnBA.css\">\n  </head>\n  <body>\n    <div id=\"root\"></div>\n  </body>\n</html>\n",
+  "files": [
+    {
+      "file": "index-B36X08xx.js",
+      "bytes": 435919,
+      "gzipBytes": 127174,
+      "sha256": "5917577ee84f34cf1322f0960652c574c7d5961597332f57df519b72f6d284ab"
+    },
+    {
+      "file": "ReplayWorkspace-DuserIRT.js",
+      "bytes": 331258,
+      "gzipBytes": 105095,
+      "sha256": "6edb1c5885eb990956c99e20c085b558bb8aaee2dc1febdac7819726d4c5a6ed"
+    },
+    {
+      "file": "index-IPE6dnBA.css",
+      "bytes": 186756,
+      "gzipBytes": 28250,
+      "sha256": "93b361499443638fba3c0c8396040f6c609a9997ec83e161eb67e0fedabcc887"
+    },
+    {
+      "file": "ReplayWorkspace-TerrmIt7.css",
+      "bytes": 96043,
+      "gzipBytes": 15515,
+      "sha256": "45f834af3c8e009e342819de0898878c5c95bf1d088a52570d178732e43701e6"
+    },
+    {
+      "file": "PropWorkspace-2VC7byC1.js",
+      "bytes": 62400,
+      "gzipBytes": 16606,
+      "sha256": "705891078b51198f097e035a9f6be837f7148359e02df893a6da8c585d0dfd70"
+    },
+    {
+      "file": "DataDeskWorkspace-CJIsk5Va.js",
+      "bytes": 48839,
+      "gzipBytes": 15063,
+      "sha256": "449c06d5470afcddf85c870d0926b9a95685a867bf1ffda8305b86b94d106644"
+    },
+    {
+      "file": "FxAnalytics-BV3aze2q.js",
+      "bytes": 47616,
+      "gzipBytes": 16132,
+      "sha256": "3a2ab605f5af50b5ef6143ad96080c8ca0824377352c6f8a3c9d5b2f7d28d524"
+    },
+    {
+      "file": "DashboardSessions-CYYTgzQw.js",
+      "bytes": 47544,
+      "gzipBytes": 14821,
+      "sha256": "50aeefec2d23bd6aac4b85cb260bc4ee61d2d825bd69109a1e0253fc2534a04b"
+    },
+    {
+      "file": "DataDeskWorkspace-CiPFRytK.css",
+      "bytes": 34245,
+      "gzipBytes": 6144,
+      "sha256": "4718db6bceeab6f70ecb218d5db8e754c95e6c80d2db8e937dba4959382b8bd9"
+    },
+    {
+      "file": "AnalyticsWorkspace-DmrXhEP6.js",
+      "bytes": 32936,
+      "gzipBytes": 11970,
+      "sha256": "afbc057b0175941592b5459cc1aef7e8851ffad8f32e24bd70b37154660c356a"
+    },
+    {
+      "file": "AnalyticsWorkspace-BPaK2S9Z.css",
+      "bytes": 30081,
+      "gzipBytes": 5889,
+      "sha256": "e0dd092b6f6c6dbc3ca0a5bb6d307a90cb1a36ce34ebab56df93ec1a984498df"
+    },
+    {
+      "file": "LiveWorkspace-BE_BGi4M.js",
+      "bytes": 29912,
+      "gzipBytes": 9316,
+      "sha256": "66f8b58d890a40d044d33d9438b0e9d9d8b9ded2c9afbd75ad282e9b11351075"
+    },
+    {
+      "file": "SessionPicker-DRkvKHPt.css",
+      "bytes": 28915,
+      "gzipBytes": 5639,
+      "sha256": "0486453c9d8b1a0bc23e94cd90ab1b8acd5fa9a0548ea6eaa8f5878ff8a04ec5"
+    },
+    {
+      "file": "ResearchWorkspace-DRxeYODi.js",
+      "bytes": 27043,
+      "gzipBytes": 7875,
+      "sha256": "d61decbd9bd8887a2877a75ce0b41c8028293c0ecb9077cfae36f1adff820852"
+    },
+    {
+      "file": "JournalWorkspace-TXGcbyk3.css",
+      "bytes": 22480,
+      "gzipBytes": 5009,
+      "sha256": "f89d4f7ad55ff2614b50fcfebfb0f4d273d259232b07ab527f958d89388f5968"
+    },
+    {
+      "file": "TradeWorkspace-CkFniYPL.js",
+      "bytes": 21367,
+      "gzipBytes": 7107,
+      "sha256": "894ca987bff5821db1d0fe91326117664dda7f00607edc7cfdfb80569eb53bac"
+    },
+    {
+      "file": "TestingComponentReference-CzOhM5LN.js",
+      "bytes": 21250,
+      "gzipBytes": 7195,
+      "sha256": "80ef1d6ab3b2c24d2548ca1b411ba463dec5b47489c432f3cc065f5db99b893e"
+    },
+    {
+      "file": "JournalWorkspace-HSGTi8wf.js",
+      "bytes": 20269,
+      "gzipBytes": 6158,
+      "sha256": "e745df9df106e2c689288cb22403ae12c98b3301944bcbc92f438390723806b6"
+    },
+    {
+      "file": "ResearchWorkspace-llijusaB.css",
+      "bytes": 19746,
+      "gzipBytes": 3643,
+      "sha256": "37afbffb79ad208f56bbcd640c7689df7de5da34e351eebc94b1b7a21e12665b"
+    },
+    {
+      "file": "SessionActions-BSHLajLA.css",
+      "bytes": 17904,
+      "gzipBytes": 3509,
+      "sha256": "b97b02c2f050fd40f53969bb09135f751c58b1d0e66975d118694481f038f991"
+    },
+    {
+      "file": "DashboardSessions-DyG6gyE-.css",
+      "bytes": 17450,
+      "gzipBytes": 2622,
+      "sha256": "fca41f9c70a945198b5b362a1525822834170a1beca47669dd467f296d74dcd7"
+    },
+    {
+      "file": "FxAnalytics-Bh54Qstq.css",
+      "bytes": 15214,
+      "gzipBytes": 3450,
+      "sha256": "1b17a28fc184a4962be4a331794c557f9c061a681ec5dbd73550be9036ab71a7"
+    },
+    {
+      "file": "DemoPreview-Dknjb32B.js",
+      "bytes": 14979,
+      "gzipBytes": 5847,
+      "sha256": "9cc2cf083f32d807c8fe454853ebca204b03d4b6280b29351bad97d53f928464"
+    },
+    {
+      "file": "SessionActions-CakIQbWK.js",
+      "bytes": 14649,
+      "gzipBytes": 5530,
+      "sha256": "116fed70baff3337a83cb78da642bdd62f67114069576d22c19b04ff2b626319"
+    },
+    {
+      "file": "LiveWorkspace-Dv4uxVSA.css",
+      "bytes": 14107,
+      "gzipBytes": 3000,
+      "sha256": "6122a01f144d78a20e2811655b656aa21fe7ad5c01e4c0c6bb6326dca3990bbd"
+    },
+    {
+      "file": "TradeWorkspace-DOe0KjCD.css",
+      "bytes": 13931,
+      "gzipBytes": 2604,
+      "sha256": "b05dde4311380f8c0b981bc835d4bf4992c19628a4fed87484902a3d740f6013"
+    },
+    {
+      "file": "LearnWorkspace-DbVpSq-s.js",
+      "bytes": 13518,
+      "gzipBytes": 3846,
+      "sha256": "90618663554eac7808b9f625f1cc2af651d6443a91ae9508cb7693c0ac6e106b"
+    },
+    {
+      "file": "RiskWorkspace-KPqYRzKt.css",
+      "bytes": 13388,
+      "gzipBytes": 2510,
+      "sha256": "c50e5db2dab3ec8c83fa67eae5b85bdb021b6680df399922a8c1b100965ada91"
+    },
+    {
+      "file": "SessionSettingsDrawer-q-G2bOD0.js",
+      "bytes": 13325,
+      "gzipBytes": 5376,
+      "sha256": "e9c742585d3577ca599fa3c7b1ff28cd4cc9121e45da515554f381d7a8401695"
+    },
+    {
+      "file": "SettingsWorkspace-p_csWzAB.js",
+      "bytes": 12279,
+      "gzipBytes": 3857,
+      "sha256": "22e9c64621578173fb87e73df66a83e5b903aa2cd957c0d23ef9d5912eb7c267"
+    },
+    {
+      "file": "SessionPicker-Br9JgVGS.js",
+      "bytes": 12145,
+      "gzipBytes": 4595,
+      "sha256": "82dd670cbe18d9eacbf65f53449eac07ebf55c07dec9e2846fa60958ce6e5d85"
+    },
+    {
+      "file": "RiskWorkspace-DceOesgM.js",
+      "bytes": 10431,
+      "gzipBytes": 3268,
+      "sha256": "5d542fa4e6a4b206699bfa847b732d0937e80d0d173e6ad2a3a0180cbcc9a90a"
+    },
+    {
+      "file": "PlaybookWorkspace-HWPyb9IM.js",
+      "bytes": 10373,
+      "gzipBytes": 3299,
+      "sha256": "715d1595239f3583d80d48b57bd047f05646eea175b440f9c4ad5b2393b15ce3"
+    },
+    {
+      "file": "PlaybookWorkspace-D274USmv.css",
+      "bytes": 8440,
+      "gzipBytes": 2109,
+      "sha256": "7263b67d8ad0aaed6bd1fd7c405ac862ae7c4aa49a7dad3192049186d9990ce4"
+    },
+    {
+      "file": "FxSelect-1MbT8iMx.js",
+      "bytes": 7228,
+      "gzipBytes": 2957,
+      "sha256": "8aaafeff4631fbf6d4520e7faacf0ee90c8a788e79dc12999746cd25fc00330b"
+    },
+    {
+      "file": "SessionReports-CsBXmDz3.js",
+      "bytes": 6866,
+      "gzipBytes": 2877,
+      "sha256": "43815c88f70e6ff2f6c52deb7208eb2f6e8fd2634cc2092ee24d67787442d18a"
+    },
+    {
+      "file": "PropAnalytics-BEoRgPId.js",
+      "bytes": 6858,
+      "gzipBytes": 2869,
+      "sha256": "634f79267ffac90b389b4e563c8abb8c4e932db80eb4d79b8e5c2ed23569ec88"
+    },
+    {
+      "file": "LearnWorkspace-Bm-pTJzN.css",
+      "bytes": 6585,
+      "gzipBytes": 1181,
+      "sha256": "7f2758cd7478c0adfde845cb8159f8d9b9f434e4911f306e4f7ee28456209a00"
+    },
+    {
+      "file": "TestingComponentReference-Cg3-ui0q.css",
+      "bytes": 6168,
+      "gzipBytes": 1669,
+      "sha256": "57014a4fe9f2ec583c37b432f343b97c201421af96dba43201c0c5f488bdc53f"
+    },
+    {
+      "file": "scopedMutation-Bc05vG9b.js",
+      "bytes": 5435,
+      "gzipBytes": 2330,
+      "sha256": "009017758209c6b1c0dc74b911bca2d375c5a70cda8b9fffce8063b33354e8f6"
+    },
+    {
+      "file": "PropWorkspace-DwjQcrXd.css",
+      "bytes": 5381,
+      "gzipBytes": 1234,
+      "sha256": "1d92591441bc24d2d2d79201724cf2e0346a73663085687ca8617e566a74e9c6"
+    },
+    {
+      "file": "AnalyticsFilterControls-BnZScOuJ.js",
+      "bytes": 5178,
+      "gzipBytes": 2279,
+      "sha256": "de45fd2c32fdd2c1b02743c38bf55a139a80f33252995cef085a0a686b3e2cef"
+    },
+    {
+      "file": "dataLibraryModel-BTQOSVfL.js",
+      "bytes": 5143,
+      "gzipBytes": 2121,
+      "sha256": "b7c69693085c3a08a6de014659fc05ddefab58d325dc24e6ddf9798a5f4408d4"
+    },
+    {
+      "file": "FxSelect-CLX1diGs.css",
+      "bytes": 4805,
+      "gzipBytes": 1168,
+      "sha256": "51b6f74fdb372e7c0c282be374538a61f790c03eb5c3a01f599841b70b76651f"
+    },
+    {
+      "file": "SessionFilter-DwU56u8i.js",
+      "bytes": 4788,
+      "gzipBytes": 1973,
+      "sha256": "be580e643a4edf97899451d0fe6f9ba74f1ddb70d8eaf8b37215386346afee11"
+    },
+    {
+      "file": "SettingsWorkspace-DGs-V91j.css",
+      "bytes": 4638,
+      "gzipBytes": 991,
+      "sha256": "cf8ebdd398f9992b4e62441e21f135aa96f4fe3a8d90092c4d634de2149b201c"
+    },
+    {
+      "file": "sessionCatalog-C8ufuphX.js",
+      "bytes": 4064,
+      "gzipBytes": 1772,
+      "sha256": "0ab4c005fd02003bfa293925e6e026943bdccf41cd03c10c48b1f0c6d79bf273"
+    },
+    {
+      "file": "session-settings-fjfP0f8W.css",
+      "bytes": 3782,
+      "gzipBytes": 1055,
+      "sha256": "98ad886f4a63e111a508e7e91dbd224e60f55026903a47c96d8601d827d20c67"
+    },
+    {
+      "file": "ChartIcon-DHqhFBnR.js",
+      "bytes": 3461,
+      "gzipBytes": 1834,
+      "sha256": "233ba65b2307e7bc0f4e15466e302bf05567b99f6ccd1d84633739146df13ab0"
+    },
+    {
+      "file": "TestingIcon-C6MoparD.js",
+      "bytes": 2954,
+      "gzipBytes": 913,
+      "sha256": "699f99494c6262f93f58dbd36c0881735eec508278e1362c54e220557462a2cb"
+    },
+    {
+      "file": "AnalyticsFilterControls-CZaWVFmy.css",
+      "bytes": 2892,
+      "gzipBytes": 923,
+      "sha256": "3f43cdf1f418ad24e113e65c77fbd768edf5985e0f155ef33ce1a5d5038b8c4a"
+    },
+    {
+      "file": "researchDataApi-DluM-z9g.js",
+      "bytes": 2792,
+      "gzipBytes": 1312,
+      "sha256": "43b648f2d5ba2eae29a29384eb2fe42ab9c2a83185635948c6179a9861df4be7"
+    },
+    {
+      "file": "SessionFilter-BcGoz5e7.css",
+      "bytes": 2736,
+      "gzipBytes": 909,
+      "sha256": "c24fa661bafbe77585e1b910ad58bbc7ae7956d0f90e764df09f294ac8d0422d"
+    },
+    {
+      "file": "workspaceEvents-BxSTmtrb.js",
+      "bytes": 2272,
+      "gzipBytes": 1141,
+      "sha256": "5590143e196e1a0ad08e2e92cc619e4074d4d6025f69dc16851c664ba210ace8"
+    },
+    {
+      "file": "PaginationFooter-MsPOtLW5.css",
+      "bytes": 2263,
+      "gzipBytes": 720,
+      "sha256": "b10a4872771aacc825497d9f37f621b60b8b5b767efe7c9310e4922139b208eb"
+    },
+    {
+      "file": "PaginationFooter-4m7E2UeN.js",
+      "bytes": 2167,
+      "gzipBytes": 909,
+      "sha256": "e71c20f986d40927f6d88c28bf4ef200c4e7a8593a251bf529dafd5f32d1d8ef"
+    },
+    {
+      "file": "ProjectDateInput-C6ohEa5O.js",
+      "bytes": 1884,
+      "gzipBytes": 935,
+      "sha256": "60244ccc1ee548cc978a66328916110ed221fb7f08ff2c3379f3e53217c6e170"
+    },
+    {
+      "file": "analyticsSimulation-OlyHcv95.js",
+      "bytes": 1831,
+      "gzipBytes": 1139,
+      "sha256": "a7556cc8660bf075f3de0d58d9cebdf2caa7fc1353d6fae15a18d5bf1ff8c6a0"
+    },
+    {
+      "file": "dateFormat-CUo11tG9.js",
+      "bytes": 1772,
+      "gzipBytes": 936,
+      "sha256": "c51efe25bcba26ad3c11f25bdaa134fadfe1e1130e998e60c7b703edc3c2d504"
+    },
+    {
+      "file": "playbookApi-BYEniXD8.js",
+      "bytes": 1629,
+      "gzipBytes": 865,
+      "sha256": "a33c2be1682a5a07764f7eb546f6406639a63ec451106e4e7d68dc6d1f0c2753"
+    },
+    {
+      "file": "scopedRead-B_321WOJ.js",
+      "bytes": 874,
+      "gzipBytes": 512,
+      "sha256": "989f04be8dd91ad5c25077b78abd4c51d0e351b753f7a5e4e61bd78bba8b5856"
+    },
+    {
+      "file": "ProjectDateInput-C2-0QwbD.css",
+      "bytes": 867,
+      "gzipBytes": 401,
+      "sha256": "bc600f689a652944530969273a932715940b8deb20281afe721d0bc1813922b5"
+    },
+    {
+      "file": "session-settings-BhGndhoh.js",
+      "bytes": 586,
+      "gzipBytes": 443,
+      "sha256": "7390375e21f4338725566813bb4aa990a6b68b0e19df84dd16a87f948808ac3c"
+    },
+    {
+      "file": "index-DzDYKGjO.js",
+      "bytes": 66,
+      "gzipBytes": 79,
+      "sha256": "e1e019120b93140dd50f0430c8f01569ba45add962d7f253d5198e8c29b2788d"
+    }
+  ]
+}
