@@ -1,0 +1,12 @@
+{
+  "scope": "installed local project virtualenv, not running-process fingerprint",
+  "versions": {
+    "fastapi": "0.141.1",
+    "uvicorn": "0.53.0",
+    "psycopg": "3.3.6",
+    "pydantic": "2.13.5",
+    "httpx": "0.28.1",
+    "duckdb": "1.5.5",
+    "pyarrow": "21.0.0"
+  }
+}
