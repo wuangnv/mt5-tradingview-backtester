@@ -1,0 +1,20 @@
+{
+  "scope": "Actual downloaded artifacts, in-memory session store; only GET API, no user DB writes",
+  "datasets": [
+    {
+      "symbol": "EUR/USD",
+      "rows": 8755235
+    },
+    {
+      "symbol": "XAU/USD",
+      "rows": 7966491
+    }
+  ],
+  "create_ms": [
+    1787.92,
+    1857.05,
+    1803.38
+  ],
+  "full_history_reads": 0,
+  "visible_rows": 2
+}

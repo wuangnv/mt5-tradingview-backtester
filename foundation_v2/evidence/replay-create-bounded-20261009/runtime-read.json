@@ -1,0 +1,29 @@
+{
+  "samples": [
+    {
+      "assets": 2,
+      "record_id": "6428cf18b3f54a36b2e90207ef12392e",
+      "visible_rows": 2,
+      "revision": 1,
+      "ms": 702.57,
+      "status": 200
+    },
+    {
+      "assets": 2,
+      "record_id": "6428cf18b3f54a36b2e90207ef12392e",
+      "visible_rows": 2,
+      "revision": 1,
+      "ms": 413.43,
+      "status": 200
+    },
+    {
+      "assets": 2,
+      "record_id": "6428cf18b3f54a36b2e90207ef12392e",
+      "visible_rows": 2,
+      "revision": 1,
+      "ms": 492.14,
+      "status": 200
+    }
+  ],
+  "scope": "Actual Axum/Python GET of existing user session after guarded restart; no replay mutation"
+}

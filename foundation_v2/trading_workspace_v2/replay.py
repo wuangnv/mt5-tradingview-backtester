@@ -46,12 +46,29 @@ class ReplayService:
         rows = self.artifacts.read_dataset(manifest.artifact_path, manifest.artifact_sha256)
         return manifest, rows
 
+    def _dataset_timing(self, workspace_id, dataset_id, *, index=0, at_or_before=None):
+        manifest = self.store.get_dataset(workspace_id, dataset_id)
+        if manifest is None:
+            raise LookupError('dataset not found')
+        if hasattr(self.artifacts, 'read_dataset_replay_timing'):
+            timing = self.artifacts.read_dataset_replay_timing(manifest.artifact_path, manifest.artifact_sha256,
+                       index=index, at_or_before=at_or_before)
+            if timing['row_count'] != manifest.row_count:
+                raise RuntimeError('dataset row count differs from immutable manifest')
+        else:
+            from bisect import bisect_right
+            rows = self.artifacts.read_dataset(manifest.artifact_path, manifest.artifact_sha256)
+            if index < 0 or index >= len(rows):
+                raise ValueError('start_index exceeds dataset')
+            timing = {'row_count': len(rows), 'first_utc': int(rows[0]['timestamp']),
+                      'last_utc': int(rows[-1]['timestamp']), 'index_utc': int(rows[index]['timestamp']),
+                      'cursor_index': index if at_or_before is None else bisect_right(rows, at_or_before, key=lambda row: int(row['timestamp'])) - 1}
+        return manifest, timing
+
     def create(self, workspace_id: str, dataset_id: str, start_index: int = 0, *, name=None,
                description="", starting_balance=None, playbook_id=None, playbook_revision=None,
                chart_engine="legacy", dataset_ids=None) -> dict:
-        manifest, rows = self._dataset_rows(workspace_id, dataset_id)
-        if start_index < 0 or start_index >= len(rows):
-            raise ValueError("start_index exceeds dataset")
+        manifest, timing = self._dataset_timing(workspace_id, dataset_id, index=start_index)
         if chart_engine != "legacy":
             raise ValueError("chart engine is unavailable")
         if (playbook_id is None) != (playbook_revision is None):
@@ -80,7 +97,7 @@ class ReplayService:
         }
         if dataset_ids is not None:
             from .replay_portfolio import initialize_portfolio
-            payload = initialize_portfolio(self, workspace_id, payload, dataset_ids)
+            payload = initialize_portfolio(self, workspace_id, payload, dataset_ids, primary=(manifest, timing))
         if name is not None:
             if not name.strip() or len(name.strip()) > 160:
                 raise ValueError("name is invalid")

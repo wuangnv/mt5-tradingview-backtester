@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import stat
+from bisect import bisect_right
 from collections.abc import Iterable
 from pathlib import Path
 from uuid import uuid4
@@ -328,6 +329,56 @@ class ArtifactStore:
                     break
             self._verify_unchanged(path, handle, identity)
         return rows
+
+    def read_dataset_replay_timing(self, relative_path, expected_sha256, *, index=0, at_or_before=None):
+        """Resolve replay start/clock using timestamp columns, not millions of OHLC dictionaries."""
+        if isinstance(index, bool) or not isinstance(index, int) or index < 0:
+            raise ValueError('invalid dataset index')
+        if at_or_before is not None and (isinstance(at_or_before, bool) or not isinstance(at_or_before, int)):
+            raise ValueError('invalid replay timestamp')
+        path = self._path(relative_path)
+        with path.open('rb') as handle:
+            identity = self._verify_dataset(handle, expected_sha256)
+            parquet = pq.ParquetFile(handle)
+            total = parquet.metadata.num_rows
+            if index >= total:
+                raise ValueError('start_index exceeds dataset')
+            column = parquet.schema_arrow.get_field_index('timestamp')
+            if column < 0:
+                raise ValueError('dataset has no timestamp column')
+            offsets, offset = [], 0
+            for group in range(parquet.num_row_groups):
+                offsets.append(offset)
+                offset += parquet.metadata.row_group(group).num_rows
+            groups = {}
+            def times(group):
+                if group not in groups:
+                    groups[group] = parquet.read_row_group(group, columns=['timestamp']).column('timestamp')
+                return groups[group]
+            def timestamp(row_index):
+                group = bisect_right(offsets, row_index) - 1
+                return int(times(group)[row_index - offsets[group]].as_py())
+            result = {'row_count': total, 'first_utc': timestamp(0),
+                      'last_utc': timestamp(total - 1), 'index_utc': timestamp(index), 'cursor_index': index}
+            if at_or_before is not None:
+                result['cursor_index'] = -1
+                for group in range(parquet.num_row_groups - 1, -1, -1):
+                    stats = parquet.metadata.row_group(group).column(column).statistics
+                    if stats is not None and stats.has_min_max and stats.min > at_or_before:
+                        continue
+                    values = times(group)
+                    left, right = 0, len(values)
+                    while left < right:
+                        middle = (left + right) // 2
+                        if values[middle].as_py() <= at_or_before:
+                            left = middle + 1
+                        else:
+                            right = middle
+                    if left:
+                        result['cursor_index'] = offsets[group] + left - 1
+                        break
+            self._verify_unchanged(path, handle, identity)
+            return result
 
     def read_dataset_chart_window(self, relative_path, expected_sha256, *, cursor_index,
                                   period, to_utc, count_back):

@@ -20,28 +20,31 @@ def cursor_at(manifest, rows, clock):
     return bisect_right(rows, clock, key=lambda row: closed_time(manifest, row)) - 1
 
 
-def initialize_portfolio(service, workspace, payload, dataset_ids):
+def initialize_portfolio(service, workspace, payload, dataset_ids, *, primary=None):
     if (not isinstance(dataset_ids, list) or not 1 <= len(dataset_ids) <= 12
             or any(not isinstance(key, str) or not key.strip() for key in dataset_ids)
             or len(set(dataset_ids)) != len(dataset_ids) or payload['dataset_id'] != dataset_ids[0]):
         raise ValueError('choose unique datasets with the primary dataset first')
     if len(dataset_ids) == 1:
         return payload
-    assets = {key: service._dataset_rows(workspace, key) for key in dataset_ids}
+    assets = {key: primary if key == payload['dataset_id'] and primary is not None
+              else service._dataset_timing(workspace, key, index=payload['cursor_index'] if key == payload['dataset_id'] else 0)
+              for key in dataset_ids}
     symbols = [manifest.instrument_id for manifest, _ in assets.values()]
     if len(set(symbols)) != len(symbols):
         raise ValueError('choose one immutable dataset version per instrument')
     currencies = {(manifest.instrument_spec or {}).get('account_ccy', 'USD') for manifest, _ in assets.values()}
     if len(currencies) != 1:
         raise ValueError('all replay assets must use the same account currency')
-    manifest, rows = assets[payload['dataset_id']]
-    begin = max(closed_time(m, r[0]) for m, r in assets.values())
-    clock = max(begin, closed_time(manifest, rows[payload['cursor_index']]))
-    end = min(closed_time(m, r[-1]) for m, r in assets.values())
+    manifest, timing = assets[payload['dataset_id']]
+    begin = max(closed_time(m, {'timestamp': t['first_utc']}) for m, t in assets.values())
+    clock = max(begin, closed_time(manifest, {'timestamp': timing['index_utc']}))
+    end = min(closed_time(m, {'timestamp': t['last_utc']}) for m, t in assets.values())
     if clock >= end:
         raise ValueError('assets have no common replay period with future bars')
-    states = {key: {'cursor_index': cursor_at(m, r, clock), 'execution': None}
-              for key, (m, r) in assets.items()}
+    states = {key: {'cursor_index': service._dataset_timing(workspace, key,
+                  at_or_before=clock - int(m.timeframe_seconds))[1]['cursor_index'], 'execution': None}
+              for key, (m, _) in assets.items()}
     return {**payload, 'dataset_ids': dataset_ids, 'asset_states': states,
             'cursor_index': states[payload['dataset_id']]['cursor_index'],
             'replay_clock_utc': clock, 'replay_start_utc': clock, 'replay_end_utc': end}
