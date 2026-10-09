@@ -19,6 +19,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-fields small { color:var(--wm-content-muted); font-size:12px; line-height:1.5; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-fields a { color:var(--wm-accent,var(--wm-content)); width:fit-content; text-decoration:none; font-size:12px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-field-title { display:flex; align-items:center; gap:16px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-required { color:var(--wm-negative); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance { display:flex; border:1px solid var(--wm-control-border); border-radius:12px; overflow:hidden; cursor:text; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance > span { display:grid; place-items:center; padding:0 8px; flex:0 0 auto; color:var(--wm-content-muted); font-size:12px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance > .quick-session-money-icon { position:relative; width:40px; padding:0; margin-right:12px; }

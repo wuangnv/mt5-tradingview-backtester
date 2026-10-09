@@ -5644,5 +5644,19 @@
   "Dùng gần đây": {"vi":"Dùng gần đây","en":"Recently used"},
   "Nhóm tài sản": {"vi":"Nhóm tài sản","en":"Asset categories"},
   "Tìm mã hoặc tên tài sản…": {"vi":"Tìm mã hoặc tên tài sản…","en":"Search symbol or asset name…"},
-  "Không có dữ liệu đã tải phù hợp.": {"vi":"Không có dữ liệu đã tải phù hợp.","en":"No matching downloaded data."}
+  "Không có dữ liệu đã tải phù hợp.": {"vi":"Không có dữ liệu đã tải phù hợp.","en":"No matching downloaded data."},
+  "Bỏ tài sản {asset}": {
+    "vi": "Bỏ tài sản {asset}",
+    "en": "Remove asset {asset}"
+  },
+  "Các tài sản dùng chung số dư và thời gian replay. Chọn tối đa 12 mã, mỗi mã một bản dữ liệu cùng tiền tệ.": {
+    "vi": "Các tài sản dùng chung số dư và thời gian replay. Chọn tối đa 12 mã, mỗi mã một bản dữ liệu cùng tiền tệ.",
+    "en": "Assets share one balance and replay clock. Select up to 12 symbols, one dataset version per symbol in the same currency."
+  },
+  "Chuyển tài sản trong phiên; số dư, lịch sử và thời gian replay được giữ chung.": {
+    "vi": "Chuyển tài sản trong phiên; số dư, lịch sử và thời gian replay được giữ chung.",
+    "en": "Switch assets within this session; balance, history and replay time stay shared."
+  },
+  "Chờ nến mới của tài sản tại thời gian replay chung để đặt lệnh.": {"vi":"Chờ nến mới của tài sản tại thời gian replay chung để đặt lệnh.","en":"Wait for a newly closed asset bar at the shared replay time before placing an order."},
+  "Phiên nhiều tài sản sử dụng nến OHLC.": {"vi":"Phiên nhiều tài sản sử dụng nến OHLC.","en":"Multi-asset sessions use OHLC bars."}
 }

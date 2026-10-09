@@ -2,6 +2,7 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from uuid import uuid4
 
 import pytest
@@ -18,21 +19,29 @@ from foundation_v2.tests.test_ps03_prop_reports import fixture as prop_fixture
 
 
 @pytest.fixture
-def api(tmp_path):
+def api():
     dsn = os.getenv('TW_V2_DATABASE_URL')
     if not dsn:
         pytest.skip('requires disposable Postgres')
     workspace = 'delete-' + uuid4().hex
-    app = create_app(dsn=dsn, artifact_root=tmp_path, learn_roots={},
-                     authorization=LocalWorkspaceAuthorization.for_local_owner([workspace, workspace + '-other']))
-    with TestClient(app) as client:
-        yield client, app.state.store, workspace
+    # Short artifact roots keep immutable dataset paths below Windows MAX_PATH.
+    with TemporaryDirectory(prefix='tw-delete-') as folder:
+        app = create_app(dsn=dsn, artifact_root=folder, learn_roots={},
+                         authorization=LocalWorkspaceAuthorization.for_local_owner([workspace, workspace + '-other']))
+        csv = Path(folder) / 'shared.csv'
+        csv.write_text('time,open,high,low,close,volume\n60,1,2,1,1,0\n120,1,2,1,1,1\n')
+        app.state.ingest.import_csv(workspace_id=workspace, path=csv,
+            source={'source_id':'delete-test', 'provider':'Synthetic QA', 'license_use':'qa-only',
+                    'instrument_mapping':{'EUR-USD':'EUR/USD'}, 'retrieved_at_utc':'2026-01-01T00:00:00Z',
+                    'export_settings':'synthetic deletion fixture'}, instrument='EUR/USD', timeframe_seconds=60)
+        with TestClient(app) as client:
+            yield client, app.state.store, workspace
 
 
 def create(store, workspace, **changes):
     store.ensure_workspace(workspace)
     return store.create_record(workspace, 'replay', {
-        'name': 'London session', 'dataset_id': 'shared-dataset', 'cursor_index': 0,
+        'name': 'London session', 'dataset_id': store.list_datasets(workspace)[0].dataset_id, 'cursor_index': 0,
         'branch_id': 'root', 'status': 'paused', **changes,
     })
 

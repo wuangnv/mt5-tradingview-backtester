@@ -151,6 +151,28 @@ session. Binding writers lock replay before Prop to prevent a new dependency
 from racing deletion. Existing invalid/missing replay bindings are now rejected
 when writing a bundle/resume; no schema migration is required.
 
+Quick Session can create one OHLC backtest session with up to 12 instruments.
+`POST /api/v2/replay/sessions` accepts optional `dataset_ids`, with the primary
+`dataset_id` first. Members must have one immutable version per instrument,
+the same account currency, and an overlapping historical period. Existing
+single-dataset sessions keep their original behavior.
+
+Multi-asset sessions persist one replay clock and starting balance, plus
+per-instrument cursors/execution snapshots. Stepping advances every instrument
+to its last closed bar at that clock, including protection on inactive charts;
+account totals combine realized and floating P/L without duplicating capital.
+`POST /api/v2/replay/sessions/{id}/asset` switches chart using `dataset_id` and
+strict `expected_revision`, retaining account/history. Historical views and
+branches reconstruct every member; chart responses carry the latest 2,000
+visible bars with an absolute `visible_row_start` offset. Session dataset locks
+and removal references cover all members.
+
+This scope has no multi-asset tick execution, broker margin model, Prop binding,
+or portfolio price experiments. Historical portfolio reads use cursor/time,
+not an instrument-local `event_sequence`. Orders/protection changes on a stale
+instrument are rejected until it has a newly closed bar at the shared clock.
+See the [multi-asset receipt](evidence/multi-asset-session-20261009/RECEIPT.md).
+
 F7 now has a first software-baseline slice on top of the same foundation:
 
 - tenant-scoped dataset catalog with provenance and an explicit holdout lock;

@@ -48,7 +48,7 @@ class ReplayService:
 
     def create(self, workspace_id: str, dataset_id: str, start_index: int = 0, *, name=None,
                description="", starting_balance=None, playbook_id=None, playbook_revision=None,
-               chart_engine="legacy") -> dict:
+               chart_engine="legacy", dataset_ids=None) -> dict:
         manifest, rows = self._dataset_rows(workspace_id, dataset_id)
         if start_index < 0 or start_index >= len(rows):
             raise ValueError("start_index exceeds dataset")
@@ -66,6 +66,8 @@ class ReplayService:
             starting_balance = Decimal(str(starting_balance))
             if not starting_balance.is_finite() or starting_balance <= 0:
                 raise ValueError("starting balance must be finite and positive")
+        elif dataset_ids and len(dataset_ids) > 1:
+            starting_balance = Decimal('10000')
         payload = {
             "dataset_id": dataset_id,
             "cursor_index": int(start_index),
@@ -76,6 +78,9 @@ class ReplayService:
             "timing": new_timing(),
             "chart_engine": chart_engine,
         }
+        if dataset_ids is not None:
+            from .replay_portfolio import initialize_portfolio
+            payload = initialize_portfolio(self, workspace_id, payload, dataset_ids)
         if name is not None:
             if not name.strip() or len(name.strip()) > 160:
                 raise ValueError("name is invalid")
@@ -89,6 +94,16 @@ class ReplayService:
             payload.update(playbook_id=playbook_id, playbook_revision=playbook_revision)
         record = self.store.create_record(workspace_id, "replay", payload)
         return self.view(workspace_id, record["record_id"])
+
+    def _update_payload(self, workspace_id, session_id, expected_revision, payload):
+        if payload.get('asset_states'):
+            from .replay_portfolio import sync_active_state
+            payload = sync_active_state(payload)
+        return self.store.update_record(workspace_id, 'replay', session_id, expected_revision, payload)
+
+    def select_asset(self, workspace_id, session_id, expected_revision, dataset_id):
+        from .replay_portfolio import select_asset
+        return select_asset(self, workspace_id, session_id, expected_revision, dataset_id)
 
     def list_sessions(self, workspace_id: str) -> list[dict]:
         """Return a tenant-scoped catalog projection for replay sessions.
@@ -116,6 +131,8 @@ class ReplayService:
                 if dataset_id
                 else None
             )
+            dataset_ids = payload.get('dataset_ids', [dataset_id] if dataset_id else [])
+            manifests = [self.store.get_dataset(workspace_id, key) for key in dataset_ids]
             try:
                 item = ReplaySessionCatalogItem(
                     record_id=record["record_id"],
@@ -124,6 +141,8 @@ class ReplayService:
                     archived=payload.get("archived", False),
                     revision=record["revision"],
                     dataset_id=dataset_id,
+                    dataset_ids=dataset_ids,
+                    instrument_ids=[entry.instrument_id for entry in manifests if entry],
                     instrument_id=manifest.instrument_id if manifest else None,
                     timeframe=manifest.timeframe if manifest else None,
                     timeframe_seconds=manifest.timeframe_seconds if manifest else None,
@@ -133,8 +152,8 @@ class ReplayService:
                     branch_id=payload.get("branch_id"),
                     parent_session_id=payload.get("parent_session_id"),
                     parent_revision=payload.get("parent_revision"),
-                    dataset_available=manifest is not None,
-                    has_execution=payload.get("execution") is not None,
+                    dataset_available=bool(manifests) and all(entry is not None for entry in manifests),
+                    has_execution=payload.get("execution") is not None or any(state.get('execution') for state in payload.get('asset_states', {}).values()),
                     created_at_utc=record["created_at_utc"],
                     updated_at_utc=record["updated_at_utc"],
                 )
@@ -153,7 +172,7 @@ class ReplayService:
             raise ValueError("only replay metadata can be updated")
         payload = dict(record["payload"])
         payload.update(changes)
-        return self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
+        return self._update_payload(workspace_id, session_id, expected_revision, payload)
 
     @staticmethod
     def _execution_snapshot(payload: dict) -> ReplayExecutionSnapshot | None:
@@ -187,6 +206,14 @@ class ReplayService:
         if payload.get("execution") is not None:
             raise RuntimeError("replay execution is already initialized")
         manifest, _ = self._dataset_rows(workspace_id, payload["dataset_id"])
+        if payload.get('asset_states'):
+            if tick_snapshot_id or research_margin is not None:
+                raise ValueError('multi-asset replay supports bar execution without a broker margin model')
+            if Decimal(str(starting_balance)) != Decimal(payload['starting_balance']):
+                raise ValueError('multi-asset execution must use the shared starting balance')
+            if (instrument_spec.get('account_ccy') != payload['starting_balance_ccy']
+                    or cost_model.get('account_ccy') != payload['starting_balance_ccy']):
+                raise ValueError('multi-asset execution must use the shared account currency')
         if manifest.timeframe_seconds is not None and int(manifest.timeframe_seconds) != int(timeframe_seconds):
             raise ValueError("timeframe_seconds does not match the immutable dataset manifest")
         snapshot = initialize_replay_execution(
@@ -261,13 +288,15 @@ class ReplayService:
                 'event_sequence': 1, 'ledger': [quote.model_dump(mode='json')]})
             snapshot = parse_replay_execution_snapshot(snapshot.model_dump(mode='json'))
         payload["execution"] = snapshot.model_dump(mode="json")
-        self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
+        self._update_payload(workspace_id, session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
 
     def tick_options(self, workspace_id, session_id):
         record = self.store.get_record(workspace_id, 'replay', session_id)
         if record is None:
             raise LookupError('replay session not found')
+        if record['payload'].get('asset_states'):
+            return {'available': False, 'execution_capability': False, 'reason': 'Phiên nhiều tài sản sử dụng nến OHLC.'}
         manifest, rows = self._dataset_rows(workspace_id, record['payload']['dataset_id'])
         result = {'available': False, 'execution_capability': False, 'reason': 'Tick chưa được tải cho asset này.'}
         if self.ticks is None:
@@ -318,6 +347,11 @@ class ReplayService:
         snapshot = self._execution_snapshot(payload)
         if snapshot is None:
             raise ValueError("replay execution is not initialized")
+        if payload.get('asset_states'):
+            manifest, rows = self._dataset_rows(workspace_id, payload['dataset_id'])
+            from .replay_portfolio import closed_time
+            if closed_time(manifest, rows[payload['cursor_index']]) < payload['replay_clock_utc']:
+                raise ValueError('asset has no newly closed bar at the shared replay clock')
         if snapshot.cursor_index != int(payload["cursor_index"]):
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
         _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
@@ -332,7 +366,7 @@ class ReplayService:
             take_profit=take_profit,
         )
         payload["execution"] = queued.model_dump(mode="json")
-        self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
+        self._update_payload(workspace_id, session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
 
     def change_protection(self, workspace_id: str, session_id: str, expected_revision: int,
@@ -348,10 +382,14 @@ class ReplayService:
             raise ValueError("replay execution is not initialized")
         if snapshot.cursor_index != int(payload["cursor_index"]):
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
-        _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
+        manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
         if payload.get("status") == "completed" or snapshot.cursor_index >= len(rows) - 1:
             raise ValueError("protection changes require a future replay bar")
         bar = rows[snapshot.cursor_index]
+        if payload.get('asset_states'):
+            from .replay_portfolio import closed_time
+            if closed_time(manifest, bar) < payload['replay_clock_utc']:
+                raise ValueError('asset has no newly closed bar at the shared replay clock')
         protection = change_replay_protection
         if snapshot.schema_version == 'replay-execution-tick-v1':
             from .replay_tick_execution import change_tick_protection
@@ -360,7 +398,7 @@ class ReplayService:
             stop_loss=stop_loss, take_profit=take_profit, mid_close=bar["close"],
             virtual_time_utc=int(bar["timestamp"]) + snapshot.timeframe_seconds)
         payload["execution"] = changed.model_dump(mode="json")
-        self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
+        self._update_payload(workspace_id, session_id, expected_revision, payload)
         return self.view(workspace_id, session_id)
 
     def view(self, workspace_id: str, session_id: str, cursor_index: int | None = None,
@@ -381,9 +419,10 @@ class ReplayService:
         if advance_interval_seconds is not None:
             view_cursor = next_interval_cursor(rows, view_cursor, canonical_cursor,
                 advance_interval_seconds, getattr(manifest, "timeframe_seconds", None))
-        visible = rows[: view_cursor + 1]
+        visible_start = max(0, view_cursor - 1999) if payload.get('asset_states') else 0
+        visible = rows[visible_start: view_cursor + 1]
         execution_view_status = "current" if payload.get("execution") else "not_initialized"
-        if view_cursor != canonical_cursor and payload.get("execution"):
+        if view_cursor != canonical_cursor and (payload.get("execution") or payload.get("asset_states")):
             try:
                 record = self.analytics_record(workspace_id, session_id, cursor_index=view_cursor)
                 execution_view_status = "checkpoint"
@@ -392,18 +431,24 @@ class ReplayService:
                     raise
                 record = {**record, "payload": {**payload, "cursor_index": view_cursor, "execution": None}}
                 execution_view_status = "unavailable"
+        portfolio = {}
+        if payload.get('asset_states'):
+            from .replay_portfolio import account
+            portfolio = {'portfolio_account': account(record['payload'])}
         return {
             **record,
             "dataset_sha256": manifest.artifact_sha256,
             "cutoff_timestamp": int(visible[-1]["timestamp"]),
             "visible_rows": visible,
             "visible_row_count": len(visible),
+            "visible_row_start": visible_start,
             "total_row_count": len(rows),
-            "has_future_rows": view_cursor + 1 < len(rows),
+            "has_future_rows": (payload['replay_clock_utc'] < payload['replay_end_utc']) if payload.get('asset_states') else view_cursor + 1 < len(rows),
             "view_cursor_index": view_cursor,
             "canonical_cursor_index": canonical_cursor,
             "historical_view": view_cursor != canonical_cursor,
             "execution_view_status": execution_view_status,
+            **portfolio,
         }
 
     def record_activity(self, workspace_id, session_id, body):
@@ -417,6 +462,9 @@ class ReplayService:
             raise LookupError("replay session not found")
         if record["revision"] != expected_revision:
             raise RuntimeError("record revision conflict")
+        if record['payload'].get('asset_states'):
+            from .replay_portfolio import step_portfolio
+            return step_portfolio(self, workspace_id, record, steps, replay_interval_seconds)
         payload = dict(record["payload"])
         manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
         current_cursor = int(payload["cursor_index"])
@@ -452,7 +500,7 @@ class ReplayService:
             payload["execution"] = execution.model_dump(mode="json")
         payload["cursor_index"] = cursor
         payload["status"] = "completed" if cursor == len(rows) - 1 else "paused"
-        self.store.update_record(workspace_id, "replay", session_id, expected_revision, payload)
+        self._update_payload(workspace_id, session_id, expected_revision, payload)
         result = self.view(workspace_id, session_id)
         result["execution_events"] = execution_events
         return result
@@ -466,6 +514,9 @@ class ReplayService:
         if record is None:
             raise LookupError("replay session not found")
         canonical_cursor = int(record["payload"]["cursor_index"])
+        if record['payload'].get('asset_states'):
+            from .replay_portfolio import checkpoint_portfolio
+            return checkpoint_portfolio(self, workspace_id, record, cursor_index, cutoff_timestamp, event_sequence)
         if cursor_index is not None and (isinstance(cursor_index, bool) or not isinstance(cursor_index, int)):
             raise ValueError("analytics cursor must be an integer")
         if cutoff_timestamp is not None:
@@ -528,6 +579,8 @@ class ReplayService:
         from .analytics_experiments import build_replay_experiments
 
         record = self.analytics_record(workspace_id, session_id, cursor_index, cutoff_timestamp, event_sequence)
+        if record['payload'].get('asset_states'):
+            raise ValueError('portfolio experiments require an instrument-specific experiment')
         manifest, rows = self._dataset_rows(workspace_id, record["payload"]["dataset_id"])
         return build_replay_experiments({**record, "workspace_id": workspace_id}, rows,
                                        dataset_sha256=manifest.artifact_sha256, filters=filters, **config)
@@ -539,6 +592,9 @@ class ReplayService:
         if record["revision"] != expected_revision:
             raise RuntimeError("record revision conflict")
         current_cursor = int(record["payload"]["cursor_index"])
+        if record['payload'].get('asset_states'):
+            from .replay_portfolio import branch_portfolio
+            return branch_portfolio(self, workspace_id, record, cursor_index)
         if cursor_index < 0:
             raise ValueError("branch cursor must be nonnegative")
         if cursor_index > current_cursor:
@@ -641,6 +697,11 @@ class ReplayService:
         expected_parent_attempt_revision: int,
         operation_id: str,
     ) -> dict:
+        record = self.store.get_record(workspace_id, 'replay', replay_session_id)
+        if record is None:
+            raise LookupError('replay session not found')
+        if record['payload'].get('asset_states'):
+            raise ValueError('multi-asset replay is not supported by Prop lifecycle')
         result = self.store.create_prop_branch_attempt(
             workspace_id,
             replay_session_id,
@@ -673,6 +734,8 @@ class ReplayService:
         record = self.store.get_record(workspace_id, "replay", replay_session_id)
         if record is None:
             raise LookupError("replay session not found")
+        if record['payload'].get('asset_states'):
+            raise ValueError('multi-asset replay is not supported by Prop lifecycle')
         snapshot = self._execution_snapshot(record["payload"])
         if snapshot is None:
             raise ValueError("replay execution is not initialized")

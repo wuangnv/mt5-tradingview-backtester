@@ -167,6 +167,9 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .replay-watchlist li { display: grid; gap: 5px; padding: 12px 0; border-bottom: 1px solid var(--chart-line); }
 .replay-watchlist a { color: var(--chart-text); font-size: 13px; }
 .replay-watchlist a[aria-current='true'] { color: var(--project-primary); }
+.replay-watchlist li > button { padding:6px 0; border:0; background:transparent; color:var(--chart-text); text-align:left; font-size:13px; }
+.replay-watchlist li > button[aria-pressed='true'] { color:var(--project-primary); opacity:1; }
+.replay-watchlist li > button:hover:not(:disabled) { color:var(--project-primary); }
 .replay-watchlist small { color: var(--chart-muted); }
 .replay-date-jump { display: grid; gap: 12px; }
 .fx-app.fx-shell-story.is-chart-workspace .fx-content > .replay-shell .decision-panel { background: transparent; border: 0; padding: 0; }

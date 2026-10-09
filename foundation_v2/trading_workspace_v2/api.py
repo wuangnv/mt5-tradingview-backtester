@@ -33,6 +33,7 @@ from .contracts import (
     PropEvaluationRequest,
     ReplayBranch,
     ReplayActivityRequest,
+    ReplayAssetSelection,
     ReplayCreate,
     ReplayExecutionInitialize,
     ReplayMarketOrderRequest,
@@ -1174,6 +1175,17 @@ def create_app(
             return replay.record_activity(workspace, session_id, body)
         except LookupError as exc:
             raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except RuntimeError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.post('/api/v2/replay/sessions/{session_id}/asset')
+    def select_replay_asset(session_id: str, body: ReplayAssetSelection, workspace: str = Depends(workspace_id)):
+        try:
+            return replay.select_asset(workspace, session_id, body.expected_revision, body.dataset_id)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail='replay_not_found') from exc
         except RuntimeError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         except ValueError as exc:

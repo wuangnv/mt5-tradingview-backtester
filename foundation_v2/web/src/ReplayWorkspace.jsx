@@ -517,7 +517,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     actionLock.current = true
     setPendingAction(kind)
     setConflict(false)
-    const suffix = kind === 'branch' ? 'branch' : 'step'
+    const suffix = kind === 'branch' ? 'branch' : kind === 'asset' ? 'asset' : 'step'
     try {
       const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(sessionId)}/${suffix}`, {
         method: 'POST',
@@ -717,10 +717,11 @@ export default function ReplayWorkspace({ workspace, query }) {
       throw error
     } finally { actionLock.current = false; setPendingAction('') }
   }
-  const order = useChartOrder({ workspace, replay, dataset: activeDataset, ready: state.status === 'ready', blocked: historicalView || completed || conflict || Boolean(pendingAction), submit: submitOrder })
+  const assetClockStale = Boolean(replay?.payload?.asset_states && currentBar && Number(currentBar.timestamp) + Number(activeDataset?.timeframe_seconds) < replay.payload.replay_clock_utc)
+  const order = useChartOrder({ workspace, replay, dataset: activeDataset, ready: state.status === 'ready', blocked: historicalView || completed || conflict || assetClockStale || Boolean(pendingAction), submit: submitOrder })
   const priceLevels = order.active || (!historicalView && sideOpen && sidePanel === 'order') ? orderLevels(replay, order.draft) : null
   const quotes = marketQuotes(replay)
-  const orderBlockedReason = historicalView ? 'Cutoff lịch sử chỉ đọc. Về cursor mới nhất hoặc tạo nhánh để đặt lệnh.' : completed ? 'Dataset đã kết thúc; không còn nến để fill hoặc sửa lệnh.' : conflict ? 'Đang khóa vì revision đã thay đổi.' : ''
+  const orderBlockedReason = historicalView ? 'Cutoff lịch sử chỉ đọc. Về cursor mới nhất hoặc tạo nhánh để đặt lệnh.' : completed ? 'Dataset đã kết thúc; không còn nến để fill hoặc sửa lệnh.' : conflict ? 'Đang khóa vì revision đã thay đổi.' : assetClockStale ? 'Chờ nến mới của tài sản tại thời gian replay chung để đặt lệnh.' : ''
   const beginOrder = side => { setIsPlaying(false); order.chooseSide(side); openPanel('order') }
   const lineage = replay?.payload?.parent_session_id
   const canBranch = Boolean(replay) && !conflict && (
@@ -812,7 +813,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     const index = visibleRows.findIndex((row) => Number(row.timestamp) >= timestamp)
     if (index < 0) { setChartNotice('Không có nến ở thời điểm này trong phần dữ liệu đã mở.'); return }
     setChartNotice('')
-    loadSession(sessionId, index)
+    loadSession(sessionId, index + (replay?.visible_row_start || 0))
   }
   const routeContext = useMemo(() => ({
     session: sessionId || undefined,
@@ -1021,7 +1022,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   <label>{t("Size")}<input aria-label={t("Khối lượng nhanh")} type="number" min={order.instrument?.quantity_min || '0'} step={order.instrument?.quantity_step || 'any'} value={order.draft.quantity} disabled={order.disabled || Boolean(order.active)} onChange={event => order.setDraft(current => ({ ...current, quantity: event.target.value }))} /></label>
                   <span className="chart-sim-tag">{t("SIM")}</span><button type="button" aria-expanded={sideOpen && sidePanel === 'order'} onClick={() => openPanel('order')}>{t("Lệnh")}{order.active ? '· 1' : ''}</button>
                 </div>
-                <div className="chart-trading-account"><span>{t('Balance')}<strong>{money(order.execution?.balance, order.costs?.account_ccy)}</strong></span><span>{t('Equity')}<strong>{money(order.execution?.equity, order.costs?.account_ccy)}</strong></span><span>{t('P/L')}<strong>{money(order.execution?.floating_pl, order.costs?.account_ccy)}</strong></span></div>
+                <div className="chart-trading-account"><span>{t('Balance')}<strong>{money(order.account?.balance, order.costs?.account_ccy)}</strong></span><span>{t('Equity')}<strong>{money(order.account?.equity, order.costs?.account_ccy)}</strong></span><span>{t('P/L')}<strong>{money(order.account?.floating_pl, order.costs?.account_ccy)}</strong></span></div>
               </div>}
               {activityWaiting && <div className="chart-notice" role="status">{t('Chưa lưu được thời gian luyện tập. Đang thử lại…')}</div>}
               {chartNotice && <div className="chart-notice" role="status">{t(chartNotice)}<button type="button" aria-label={t("Đóng thông báo")} onClick={() => setChartNotice('')}>×</button></div>}
@@ -1030,11 +1031,11 @@ export default function ReplayWorkspace({ workspace, query }) {
                 <div><span className="story-label">{t("03 · EVIDENCE")}</span><strong>{crosshair?.row ? t("Nến đang chọn") : t("Nến tại cutoff")}</strong></div>
                 <span>{visibleRows.length} {t("nến được phép hiển thị")}</span>
                 <span>{replay.has_future_rows ? t("Nến tương lai đang ẩn") : t("Đã ở cuối dữ liệu")}</span>
-                <span>{crosshair?.row ? `Crosshair #${visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp))}` : `Cursor #${cursor}`}</span>
+                <span>{crosshair?.row ? `Crosshair #${(replay.visible_row_start || 0) + visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp))}` : `Cursor #${cursor}`}</span>
               </div>
 
               <div className="bar-readout" role="group" aria-label={t("OHLC nến hiện tại")}>
-                <span className="bar-readout-label">{crosshair?.row ? t("Crosshair") : t("Nến hiện tại")} #{crosshair?.row ? visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp)) : cursor}</span>
+                <span className="bar-readout-label">{crosshair?.row ? t("Crosshair") : t("Nến hiện tại")} #{crosshair?.row ? (replay.visible_row_start || 0) + visibleRows.findIndex((item) => Number(item.timestamp) === Number(crosshair.row.timestamp)) : cursor}</span>
                 <span>{t("O")} <strong>{formatPrice((crosshair?.row || currentBar)?.open)}</strong></span>
                 <span>{t("H")} <strong>{formatPrice((crosshair?.row || currentBar)?.high)}</strong></span>
                 <span>{t("L")} <strong>{formatPrice((crosshair?.row || currentBar)?.low)}</strong></span>
@@ -1062,7 +1063,7 @@ export default function ReplayWorkspace({ workspace, query }) {
             </div>
 
             {!(advancedChart && sidePanel==='order') && <aside className={`replay-side ${sidePanel==='journal' ? 'is-journal' : ''}`} id="replay-context-panel" aria-label={t(sidePanel==='journal' ? 'Journal' : 'Chi tiết replay và nhánh')} ref={sideRef} tabIndex={-1} onKeyDown={(event) => { if (event.key === 'Escape') closeSide() }}>
-              {advancedChart && sidePanel==='journal' ? <LegacyJournal execution={order.execution} symbol={replayContext.instrument} cutoff={replay.cutoff_timestamp} onClose={closeSide} onOpenJournal={journalHref} /> : advancedChart && sidePanel==='native-objects' ? <><header className="chart-dock-heading"><strong>{t('Cây đối tượng chart')}</strong><button type="button" className="replay-panel-close" aria-label={t('Đóng panel')} onClick={closeSide}><ChartIcon name="close" /></button></header><LegacyObjectTree controls={nativeHeaderSlots} symbol={replayContext.instrument} /></> : <>
+              {advancedChart && sidePanel==='journal' ? <LegacyJournal execution={order.execution} assetStates={order.assetStates} symbol={replayContext.instrument} cutoff={replay.cutoff_timestamp} onClose={closeSide} onOpenJournal={journalHref} /> : advancedChart && sidePanel==='native-objects' ? <><header className="chart-dock-heading"><strong>{t('Cây đối tượng chart')}</strong><button type="button" className="replay-panel-close" aria-label={t('Đóng panel')} onClick={closeSide}><ChartIcon name="close" /></button></header><LegacyObjectTree controls={nativeHeaderSlots} symbol={replayContext.instrument} /></> : <>
               <header className="chart-dock-heading"><strong>{t(({ order: 'Lệnh', objects: 'Đối tượng', data: 'Dữ liệu', context: 'Chi tiết & nhánh', goto: 'Go To', news: 'News', compare: 'So sánh mã', layout: 'New Layout', mentor: 'AI Mentor', search: 'Quick Search', scalper: 'Scalper mode', editor: 'Editor' })[sidePanel])}</strong><button type="button" className="replay-panel-close" aria-label={t("Đóng panel")} onClick={closeSide}><ChartIcon name="close" /></button></header>
               {!['goto', 'news', 'compare', 'layout', 'mentor', 'search', 'scalper', 'editor'].includes(sidePanel) && <nav className="chart-dock-tabs" aria-label={t("Panel replay")}>{[['order', 'Lệnh'], ['objects', 'Đối tượng'], ['data', 'Dữ liệu'], ['context', 'Chi tiết']].map(([panel, label]) => <button key={panel} type="button" aria-pressed={sidePanel === panel} onClick={() => { if (panel === 'order') setIsPlaying(false); setSidePanel(panel) }}>{t(label)}</button>)}</nav>}
               {['compare', 'layout', 'mentor', 'search', 'scalper', 'editor'].includes(sidePanel) && <ChartHeaderPreview key={`${sessionId}:${sidePanel}`} tool={sidePanel} symbol={replayContext.instrument} onOpenTool={panel => setSidePanel(panel)} />}
@@ -1092,7 +1093,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                   {annotationDraft?.status === 'ready' && (
                     <>
                       <strong>{annotationDraft.draft.annotation_type === 'horizontal-line' ? t("Draft horizontal line đã chọn") : t("{count} đã chọn", { count: DRAWING_LABELS[annotationDraft.draft.annotation_type] })}</strong>
-                      <span>#{visibleRows.findIndex((item) => Number(item.timestamp) === Number(annotationDraft.draft.anchors[0].timestamp))} · {formatTimestamp(annotationDraft.draft.anchors[0].timestamp)} {t("UTC · giá")} {formatPrice(annotationDraft.draft.anchors[0].price)}</span>
+                      <span>#{(replay.visible_row_start || 0) + visibleRows.findIndex((item) => Number(item.timestamp) === Number(annotationDraft.draft.anchors[0].timestamp))} · {formatTimestamp(annotationDraft.draft.anchors[0].timestamp)} {t("UTC · giá")} {formatPrice(annotationDraft.draft.anchors[0].price)}</span>
                     </>
                   )}
                   {annotationDraft?.status !== 'ready' && annotationDraft?.message && <span>{annotationDraft.message}</span>}
@@ -1105,10 +1106,10 @@ export default function ReplayWorkspace({ workspace, query }) {
               {sidePanel === 'data' && <>
               <section className="replay-watchlist" aria-label={t("Danh sách dữ liệu local")}>
                 <h2>{t("Dữ liệu local")}</h2>
-                <p>{t("Đổi instrument hoặc timeframe bằng dataset đã đăng ký. Mỗi lựa chọn mở phiên mới, không đổi phiên hiện tại.")}</p>
+                <p>{t(replay.payload.asset_states ? "Chuyển tài sản trong phiên; số dư, lịch sử và thời gian replay được giữ chung." : "Đổi instrument hoặc timeframe bằng dataset đã đăng ký. Mỗi lựa chọn mở phiên mới, không đổi phiên hiện tại.")}</p>
                 {datasetState.status === 'error' && <p role="alert">{datasetState.error}</p>}
-                <ul>{datasetState.items.map(item => <li key={item.dataset_id}>
-                  <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {displayTimeframe(item)}</a>
+                <ul>{datasetState.items.filter(item => !replay.payload.asset_states || replay.payload.dataset_ids.includes(item.dataset_id)).map(item => <li key={item.dataset_id}>
+                  {replay.payload.asset_states ? <button type="button" disabled={Boolean(pendingAction) || historicalView || conflict || item.dataset_id === replay.payload.dataset_id} aria-pressed={item.dataset_id === replay.payload.dataset_id} onClick={() => { setIsPlaying(false); mutate('asset', { expected_revision:revision, dataset_id:item.dataset_id }) }}>{item.instrument_id || item.dataset_id} · {displayTimeframe(item)}</button> : <a href={routeHref('replay', { session: null, cursor: null, cutoff: null, dataset: item.dataset_id, surface: 'workspace', fresh: '1' })} aria-current={item.dataset_id === replay?.payload?.dataset_id ? 'true' : undefined}>{item.instrument_id || item.dataset_id} · {displayTimeframe(item)}</a>}
                   <small>{datasetQualityLabel(item, t)} · {item.row_count ?? t("N/A")} {t("nến")}</small>
                 </li>)}</ul>
               </section>

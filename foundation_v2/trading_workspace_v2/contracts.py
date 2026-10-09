@@ -331,6 +331,7 @@ class ReplayCreate(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
     dataset_id: str = Field(min_length=1)
+    dataset_ids: list[str] | None = Field(default=None, min_length=1, max_length=12)
     start_index: int = Field(default=0, ge=0)
     name: str | None = Field(default=None, min_length=1, max_length=160)
     description: str = Field(default="", max_length=2000)
@@ -378,6 +379,8 @@ class ReplaySessionCatalogItem(BaseModel):
     archived: bool = False
     revision: int = Field(ge=1, strict=True)
     dataset_id: str | None = Field(default=None, min_length=1, max_length=256)
+    dataset_ids: list[str] = Field(default_factory=list)
+    instrument_ids: list[str] = Field(default_factory=list)
     instrument_id: str | None = Field(default=None, min_length=1, max_length=128)
     timeframe: str | None = Field(default=None, min_length=1, max_length=32)
     timeframe_seconds: int | None = Field(default=None, gt=0, strict=True)
@@ -400,6 +403,12 @@ class ReplayMetadataUpdate(BaseModel):
     name: str | None = Field(default=None, max_length=160)
     description: str | None = Field(default=None, max_length=2000)
     archived: bool | None = Field(default=None, strict=True)
+
+
+class ReplayAssetSelection(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    expected_revision: int = Field(ge=1, strict=True)
+    dataset_id: str = Field(min_length=1, max_length=256)
 
 
 class ReplayStep(BaseModel):

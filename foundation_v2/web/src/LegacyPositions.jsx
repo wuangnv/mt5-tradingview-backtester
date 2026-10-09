@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
-import { closedChartTrades } from './legacyChartTrades.js'
+import { sessionChartTrades } from './legacyChartTrades.js'
 import ChartIcon from './ChartIcon.jsx'
 
-export default function LegacyPositions({ execution, symbol }) {
+export default function LegacyPositions({ execution, assetStates, symbol }) {
   const { t, fmt } = useTestingLocale()
   const [tab, setTab] = useState('open'), [page, setPage] = useState(0), [size, setSize] = useState(10)
-  const open = execution?.position
-  const pending = execution?.pending_market_order
-  const closed = closedChartTrades(execution)
-  const rows = tab === 'open' ? (open ? [{ ...open, key: open.position_id, unrealized: execution.floating_pl }] : []) : tab === 'pending' ? (pending ? [{ ...pending, key: pending.operation_id }] : []) : closed
+  const executions = assetStates ? Object.entries(assetStates).filter(([, state]) => state.execution).map(([id, state]) => ({ id, execution:state.execution, symbol:state.execution.instrument_spec.instrument_id })) : [{ id:'active', execution, symbol }]
+  const rows = tab === 'closed' ? sessionChartTrades(execution, assetStates, symbol) : executions.flatMap(asset => {
+    const item = tab === 'open' ? asset.execution?.position : asset.execution?.pending_market_order
+    return item ? [{ ...item, key:`${asset.id}:${item.position_id || item.operation_id}`, symbol:asset.symbol, unrealized:tab === 'open' ? asset.execution.floating_pl : undefined }] : []
+  })
   const pages = Math.max(1, Math.ceil(rows.length / size)), current = Math.min(page, pages - 1)
   return <section className="legacy-positions" aria-label={t('Lệnh trong phiên replay')}>
     <div className="legacy-position-tabs" role="tablist" aria-label={t('Trạng thái lệnh')}>
@@ -23,8 +24,8 @@ export default function LegacyPositions({ execution, symbol }) {
     </div>
     <div id="legacy-position-panel" role="tabpanel" aria-labelledby={`position-tab-${tab}`}>
       <div className="legacy-position-scroll" tabIndex={0} role="region" aria-labelledby={`position-tab-${tab}`}><table><thead><tr>{['Mã giao dịch', 'Hướng', 'Khối lượng', 'Take profit', 'Stop loss', 'P/L chưa chốt', 'P/L đã chốt', 'Phí hoa hồng'].map(label => <th key={label}>{t(label)}</th>)}</tr></thead><tbody>
-        {rows.slice(current * size, (current + 1) * size).map(row => <tr key={row.key}><td>{symbol}</td><td>{row.side || '—'}</td><td>{fmt(row.quantity, '', 8)}</td><td>{fmt(row.take_profit, '', 8)}</td><td>{fmt(row.stop_loss, '', 8)}</td><td>{fmt(row.unrealized)}</td><td>{fmt(row.realized)}</td><td>{fmt(row.commission)}</td></tr>)}
-        {!rows.length && <tr><td colSpan="8">{t(execution ? 'Không có lệnh trong mục này.' : 'Chưa có dữ liệu lệnh tại cutoff này.')}</td></tr>}
+        {rows.slice(current * size, (current + 1) * size).map(row => <tr key={row.key}><td>{row.symbol}</td><td>{row.side || '—'}</td><td>{fmt(row.quantity, '', 8)}</td><td>{fmt(row.take_profit, '', 8)}</td><td>{fmt(row.stop_loss, '', 8)}</td><td>{fmt(row.unrealized)}</td><td>{fmt(row.realized)}</td><td>{fmt(row.commission)}</td></tr>)}
+        {!rows.length && <tr><td colSpan="8">{t(execution || assetStates ? 'Không có lệnh trong mục này.' : 'Chưa có dữ liệu lệnh tại cutoff này.')}</td></tr>}
       </tbody></table></div>
       <div className="legacy-position-paging">
         <label>{t('Số dòng mỗi trang')}<select aria-label={t('Số dòng mỗi trang')} value={size} onChange={event => { setSize(Number(event.target.value)); setPage(0) }}>{[10, 25, 50].map(value => <option key={value}>{value}</option>)}</select></label>

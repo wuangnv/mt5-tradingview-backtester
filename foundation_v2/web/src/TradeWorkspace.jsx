@@ -155,6 +155,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const replay = controlledReplay || state.replay
   const payload = replay?.payload
   const execution = payload?.execution
+  useEffect(() => { if (payload?.asset_states) setStartingBalance(String(payload.starting_balance)) }, [replay?.record_id, payload?.starting_balance])
   const rows = replay?.visible_rows || []
   const currentBar = rows[rows.length - 1]
   const quote = marketQuotes(replay)
@@ -165,6 +166,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
   const instrument = execution?.instrument_spec || catalogManifest?.instrument_spec || null
   const costModel = execution?.cost_model || (catalogManifest ? DEFAULT_COST_MODEL : null)
   const timeframeSeconds = optionalNumber(catalogManifest?.timeframe_seconds)
+  const assetClockStale = Boolean(payload?.asset_states && currentBar && Number(currentBar.timestamp) + Number(timeframeSeconds) < payload.replay_clock_utc)
   const revision = numberOr(replay?.revision, 0)
   const hasSession = Boolean(sessionId || replay?.record_id)
   const { options: tickOptions, setMode: setTickMode, leverage: tickLeverage, setLeverage: setTickLeverage, useTicks } = useReplayTickOptions(workspace, replay)
@@ -303,7 +305,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
 
   const queueOrder = useCallback(async (event) => {
     event.preventDefault()
-    if (!replay?.record_id || !Number.isFinite(entryReference)) return
+    if (!replay?.record_id || !Number.isFinite(entryReference) || assetClockStale) return
     const validation = validateDraft(draft, entryReference)
     if (validation) { setNotice({ kind: 'error', text: validation }); return }
     setPending('queue')
@@ -327,14 +329,15 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
     } catch (error) {
       setNotice({ kind: 'error', text: `Không queue được draft: ${error.message}` })
     } finally { setPending('') }
-  }, [applyReplay, draft, entryReference, replay?.record_id, revision, workspace])
+  }, [applyReplay, draft, entryReference, replay?.record_id, revision, workspace, assetClockStale])
 
   const stateLabel = state.status === 'loading' ? 'Đang tải session' : state.status === 'error' ? 'Có lỗi' : !hasSession ? 'Chưa chọn session' : execution ? 'Execution sẵn sàng' : datasetState.status === 'loading' ? 'Đang tải context' : datasetState.status === 'error' ? 'Context unavailable' : datasetId && !catalogManifest ? 'Dataset chưa xác nhận' : 'Chưa khởi tạo execution'
   const catalogContextLabel = datasetState.status === 'loading' ? 'Đang tải…' : datasetState.status === 'error' ? 'Unavailable' : datasetId && !catalogManifest ? 'Chưa xác nhận' : catalogManifest ? 'Verified' : 'Không cần'
   const canInitialize = Boolean(replay?.record_id && datasetId && datasetState.status === 'ready' && catalogManifest && instrument && costModel && Number.isFinite(timeframeSeconds) && timeframeSeconds > 0)
   const replayRetryExhausted = replayRetryCount >= MAX_GET_RETRIES
   const datasetRetryExhausted = datasetRetryCount >= MAX_GET_RETRIES
-  const account = execution ? { balance: execution.balance, equity: execution.equity, floating: execution.floating_pl } : null
+  const wallet = replay?.portfolio_account || execution
+  const account = wallet ? { balance:wallet.balance, equity:wallet.equity, floating:wallet.floating_pl } : null
 
   return (
     <main className="trade-workspace wm-page" data-testid="trade-workspace">
@@ -354,7 +357,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
             <section className="trade-init-section" aria-labelledby="trade-init-title">
               <div><span className="trade-eyebrow">STEP 01</span><h2 id="trade-init-title">Khởi tạo simulator state</h2><p>Execution state được gắn vào session và giữ cùng provenance. Chi phí dưới đây là fixture/model, chưa phải báo giá broker.</p></div>
               {canInitialize ? <form className="trade-init-form" onSubmit={initialize}>
-                <label>Starting balance<input type="number" min="1" step="0.01" value={startingBalance} onChange={(event) => setStartingBalance(event.target.value)} /></label>
+                <label>Starting balance<input type="number" min="1" step="0.01" value={startingBalance} disabled={Boolean(payload?.asset_states)} onChange={(event) => setStartingBalance(event.target.value)} /></label>
                 <label className="replay-tick-toggle"><input type="checkbox" checked={Boolean(useTicks)} disabled={!tickOptions?.available} onChange={event => setTickMode(event.target.checked ? 'tick' : 'bar')} />Khớp lệnh bằng tick Bid/Ask</label>
                 <p className="replay-tick-status" role="status">{tickOptions?.reason || 'Đang kiểm tra lịch sử tick…'}</p>
                 {useTicks ? <label>Đòn bẩy mô phỏng<input type="number" min="1" max="1000" step="1" value={tickLeverage} onChange={event => setTickLeverage(event.target.value)} /></label> : <label>Spread (price)<input type="number" min="0" step="0.00001" value={spread} onChange={(event) => setSpread(event.target.value)} /></label>}
@@ -379,7 +382,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
                       <label>Stop loss<input type="number" min="0" step={instrument?.tick_size || undefined} value={draft.stopLoss} onChange={(event) => setDraft((current) => ({ ...current, stopLoss: event.target.value }))} /></label>
                       <label>Take profit<input type="number" min="0" step={instrument?.tick_size || undefined} value={draft.takeProfit} onChange={(event) => setDraft((current) => ({ ...current, takeProfit: event.target.value }))} /></label>
                       <RiskPreview draft={draft} entry={entryReference} instrument={instrument} costModel={costModel} />
-                      <div className="trade-form-actions"><button className="trade-primary" type="submit" disabled={Boolean(pending) || !Number.isFinite(entryReference)}>{pending === 'queue' ? 'Đang queue…' : 'Queue vào simulator'}</button><span>Không gửi broker · operation sẽ gắn vào ledger local</span></div>
+                      <div className="trade-form-actions"><button className="trade-primary" type="submit" disabled={Boolean(pending) || assetClockStale || !Number.isFinite(entryReference)}>{pending === 'queue' ? 'Đang queue…' : 'Queue vào simulator'}</button><span>Không gửi broker · operation sẽ gắn vào ledger local</span></div>
                     </form>
                   )}
                 </section>

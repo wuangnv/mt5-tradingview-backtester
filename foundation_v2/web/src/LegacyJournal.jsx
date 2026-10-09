@@ -1,7 +1,7 @@
 import { displayDate } from './dateFormat.js'
 import { useState } from 'react'
 import ChartIcon from './ChartIcon.jsx'
-import { closedChartTrades } from './legacyChartTrades.js'
+import { sessionChartTrades } from './legacyChartTrades.js'
 import { useTestingLocale } from './testingLocale.jsx'
 
 function Month({ date, trades, compact, onDay, locale, t, fmt }) {
@@ -12,10 +12,10 @@ function Month({ date, trades, compact, onDay, locale, t, fmt }) {
     return <button type="button" key={key} className={rows.length ? pnl>=0 ? 'is-profit' : 'is-loss' : ''} aria-label={`${displayDate(key)} · ${rows.length} ${t('giao dịch')}`} onClick={() => onDay(key)}><span>{day}</span>{rows.length>0 && !compact && <small>{fmt(pnl)}</small>}</button>
   })}</div></section>
 }
-export default function LegacyJournal({ execution, symbol, cutoff, onClose, onOpenJournal }) {
+export default function LegacyJournal({ execution, assetStates, symbol, cutoff, onClose, onOpenJournal }) {
   const { t, fmt, locale } = useTestingLocale(), [tab,setTab] = useState('trades'), [mode,setMode] = useState('month'), [search,setSearch] = useState(''), [day,setDay] = useState('')
   const [date,setDate] = useState(() => new Date(Number(cutoff)*1000))
-  const closed = closedChartTrades(execution), rows = closed.filter(row => `${symbol} ${row.side} ${row.position_id}`.toLowerCase().includes(search.toLowerCase()) && (!day || new Date(row.closed_time_utc*1000).toISOString().slice(0,10) === day))
+  const closed = sessionChartTrades(execution, assetStates, symbol), rows = closed.filter(row => `${row.symbol} ${row.side} ${row.position_id}`.toLowerCase().includes(search.toLowerCase()) && (!day || new Date(row.closed_time_utc*1000).toISOString().slice(0,10) === day))
   const changeDate = delta => setDate(value => new Date(Date.UTC(value.getUTCFullYear()+(mode==='year'?delta:0),value.getUTCMonth()+(mode==='month'?delta:0),1)))
   const selectDay = value => { setDay(value); setTab('trades') }
   return <section className="legacy-journal" aria-label={t('Journal')}>
@@ -27,8 +27,8 @@ export default function LegacyJournal({ execution, symbol, cutoff, onClose, onOp
     }}>{t(label)}</button>)}</div><a href={onOpenJournal} title={t('Mở trang nhật ký')} aria-label={t('Mở trang nhật ký')}><ChartIcon name="expand" /></a></header>
     <div role="tabpanel" id="legacy-journal-panel" aria-labelledby={`journal-tab-${tab}`}>
       {tab==='trades' ? <><label className="legacy-journal-search"><ChartIcon name="search" /><input type="search" aria-label={t('Tìm giao dịch')} placeholder={t('Tìm giao dịch')} value={search} onChange={event => setSearch(event.target.value)} /></label>{day && <button type="button" className="legacy-journal-day" onClick={() => setDay('')}>{displayDate(day)} ×</button>}<div className="legacy-journal-trades">
-        {!execution || !rows.length ? <div className="legacy-journal-empty"><ChartIcon name="journal" /><h3>{t(!execution ? 'Chưa có dữ liệu lệnh tại cutoff này.' : search || day ? 'Không tìm thấy giao dịch' : 'Chưa có giao dịch đã đóng')}</h3></div> : rows.map(row => <article key={row.key}><div><strong>{symbol}</strong><span>{row.side} · {fmt(row.quantity, '', 8)} {t(execution.instrument_spec?.asset_class==='fx'?'lot':'quantity')}</span><time>{displayDate(new Date(row.closed_time_utc*1000), { timeStyle: 'short' })} UTC</time></div><strong className={Number(row.realized)>=0?'is-profit':'is-loss'}>{fmt(row.realized)} {execution.cost_model?.account_ccy || ''}</strong></article>)}
-      </div></> : <><div className="legacy-calendar-toolbar"><button type="button" aria-label={t('Khoảng trước')} onClick={() => changeDate(-1)}>‹</button><strong>{new Intl.DateTimeFormat(locale,{year:'numeric',...(mode==='month'?{month:'long'}:{}),timeZone:'UTC'}).format(date)}</strong><button type="button" aria-label={t('Khoảng sau')} onClick={() => changeDate(1)}>›</button><div>{[['month','Tháng'],['year','Năm']].map(([key,label]) => <button type="button" key={key} aria-pressed={mode===key} onClick={() => setMode(key)}>{t(label)}</button>)}</div></div>{!execution && <p role="status">{t('Chưa có dữ liệu lệnh tại cutoff này.')}</p>}<div className={mode==='year'?'legacy-calendar-year':''}>{(mode==='year'?Array.from({length:12},(_,m) => new Date(Date.UTC(date.getUTCFullYear(),m,1))):[date]).map(item => <Month key={item.toISOString()} date={item} trades={closed} compact={mode==='year'} onDay={selectDay} locale={locale} t={t} fmt={fmt} />)}</div></>}
+        {(!execution && !assetStates) || !rows.length ? <div className="legacy-journal-empty"><ChartIcon name="journal" /><h3>{t(!execution && !assetStates ? 'Chưa có dữ liệu lệnh tại cutoff này.' : search || day ? 'Không tìm thấy giao dịch' : 'Chưa có giao dịch đã đóng')}</h3></div> : rows.map(row => <article key={row.key}><div><strong>{row.symbol}</strong><span>{row.side} · {fmt(row.quantity, '', 8)} {t(row.assetClass==='fx'?'lot':'quantity')}</span><time>{displayDate(new Date(row.closed_time_utc*1000), { timeStyle: 'short' })} UTC</time></div><strong className={Number(row.realized)>=0?'is-profit':'is-loss'}>{fmt(row.realized)} {row.currency || ''}</strong></article>)}
+      </div></> : <><div className="legacy-calendar-toolbar"><button type="button" aria-label={t('Khoảng trước')} onClick={() => changeDate(-1)}>‹</button><strong>{new Intl.DateTimeFormat(locale,{year:'numeric',...(mode==='month'?{month:'long'}:{}),timeZone:'UTC'}).format(date)}</strong><button type="button" aria-label={t('Khoảng sau')} onClick={() => changeDate(1)}>›</button><div>{[['month','Tháng'],['year','Năm']].map(([key,label]) => <button type="button" key={key} aria-pressed={mode===key} onClick={() => setMode(key)}>{t(label)}</button>)}</div></div>{!execution && !assetStates && <p role="status">{t('Chưa có dữ liệu lệnh tại cutoff này.')}</p>}<div className={mode==='year'?'legacy-calendar-year':''}>{(mode==='year'?Array.from({length:12},(_,m) => new Date(Date.UTC(date.getUTCFullYear(),m,1))):[date]).map(item => <Month key={item.toISOString()} date={item} trades={closed} compact={mode==='year'} onDay={selectDay} locale={locale} t={t} fmt={fmt} />)}</div></>}
     </div>
   </section>
 }

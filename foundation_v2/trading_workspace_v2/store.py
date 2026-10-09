@@ -922,7 +922,7 @@ class PostgresStore:
             row = conn.execute('SELECT manifest_json FROM datasets WHERE workspace_id=%s AND dataset_id=%s FOR UPDATE', (workspace_id, dataset_id)).fetchone()
             if row:
                 research = conn.execute('SELECT 1 FROM research_jobs WHERE workspace_id=%s AND dataset_id=%s LIMIT 1', (workspace_id, dataset_id)).fetchone()
-                replay = conn.execute("SELECT 1 FROM workspace_record_revisions WHERE workspace_id=%s AND kind='replay' AND payload_json->>'dataset_id'=%s LIMIT 1", (workspace_id, dataset_id)).fetchone()
+                replay = conn.execute("SELECT 1 FROM workspace_record_revisions WHERE workspace_id=%s AND kind='replay' AND (payload_json->>'dataset_id'=%s OR payload_json->'dataset_ids' ? %s) LIMIT 1", (workspace_id, dataset_id, dataset_id)).fetchone()
                 prop = conn.execute("SELECT 1 FROM prop_attempt_revisions WHERE workspace_id=%s AND jsonb_path_exists(resume_json, '$.**.dataset_id ? (@ == $id)', %s::jsonb) LIMIT 1", (workspace_id, json.dumps({'id': dataset_id}))).fetchone()
                 if research or replay or prop:
                     raise DatasetInUse('dataset_in_use')
@@ -934,9 +934,10 @@ class PostgresStore:
     @staticmethod
     def _lock_replay_dataset(conn, workspace_id, kind, payload):
         if kind == 'replay' and payload.get('dataset_id'):
-            row = conn.execute('SELECT 1 FROM datasets WHERE workspace_id=%s AND dataset_id=%s FOR KEY SHARE', (workspace_id, payload['dataset_id'])).fetchone()
-            if not row:
-                raise LookupError('dataset_not_found')
+            for dataset_id in sorted(set(payload.get('dataset_ids') or [payload['dataset_id']])):
+                row = conn.execute('SELECT 1 FROM datasets WHERE workspace_id=%s AND dataset_id=%s FOR KEY SHARE', (workspace_id, dataset_id)).fetchone()
+                if not row:
+                    raise LookupError('dataset_not_found')
 
     @staticmethod
     def _lock_resume_datasets(conn, workspace_id, resume):
@@ -1617,17 +1618,22 @@ class PostgresStore:
             self._lock_replay_dataset(conn, workspace_id, kind, payload)
             current = conn.execute(
                 """
-                SELECT r.current_revision,r.source_key,r.created_at_utc,v.deleted FROM workspace_records r
-                JOIN workspace_record_revisions v
-                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
-                 AND v.revision=r.current_revision
+                SELECT r.current_revision,r.source_key,r.created_at_utc FROM workspace_records r
                 WHERE r.workspace_id=%s AND r.kind=%s AND r.record_id=%s
                 FOR UPDATE OF r
                 """,
                 (workspace_id, kind, record_id),
             ).fetchone()
-            if not current or current["deleted"]:
+            if not current:
                 raise LookupError("record not found")
+            # Read the revision after acquiring the parent lock. A joined query
+            # can lose its row when PostgreSQL rechecks a concurrently updated parent.
+            version = conn.execute(
+                'SELECT deleted FROM workspace_record_revisions WHERE workspace_id=%s AND kind=%s AND record_id=%s AND revision=%s',
+                (workspace_id, kind, record_id, current['current_revision']),
+            ).fetchone()
+            if not version or version['deleted']:
+                raise LookupError('record not found')
             if int(current["current_revision"]) != int(expected_revision):
                 raise RuntimeError("record revision conflict")
             revision = int(expected_revision) + 1
@@ -2396,7 +2402,7 @@ class PostgresStore:
         # All binding writers lock replay before Prop so deletion and a new
         # dependency cannot commit concurrently or leave a dangling binding.
         row = conn.execute(
-            """SELECT v.deleted FROM workspace_records r
+            """SELECT v.deleted, v.payload_json FROM workspace_records r
                JOIN workspace_record_revisions v
                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
                 AND v.revision=r.current_revision
@@ -2406,6 +2412,8 @@ class PostgresStore:
         ).fetchone()
         if row is None or row["deleted"]:
             raise LookupError("replay session not found")
+        if row['payload_json'].get('asset_states'):
+            raise ValueError('multi-asset replay is not supported by Prop lifecycle')
 
     def create_prop_attempt(
         self,

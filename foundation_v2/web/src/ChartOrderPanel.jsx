@@ -6,6 +6,8 @@ import { useReplayTickOptions } from './useReplayTickOptions.js'
 
 export function useChartOrder({ workspace, replay, dataset, ready, blocked, submit }) {
   const execution = replayAtCutoff(replay)?.payload?.execution
+  const account = replay?.portfolio_account || execution
+  const assetStates = replay?.payload?.asset_states
   const instrument = execution?.instrument_spec || dataset?.instrument_spec
   const [draft, setDraft] = useState(() => orderDraft(replay, instrument))
   const [notice, setNotice] = useState(null)
@@ -61,7 +63,7 @@ export function useChartOrder({ workspace, replay, dataset, ready, blocked, subm
     return run('execution', { instrument_spec: instrument, cost_model: costs, spread_price: String(spreadValue), timeframe_seconds: Number(dataset.timeframe_seconds), starting_balance: String(balance),
       ...(tick.useTicks ? { tick_snapshot_id: tick.options.snapshot_id, research_margin: { version: 'fixed-starting-balance-leverage-v1', leverage: String(leverage) } } : {}) })
   }
-  return { draft, setDraft, execution, instrument, costs, active, reference, disabled, pending, notice, startingBalance, configuredBalance: replay?.payload?.starting_balance, configuredCurrency: replay?.payload?.starting_balance_ccy, setStartingBalance, spread, setSpread, tick, canInitialize, initialize, save, changePrice, chooseSide }
+  return { draft, setDraft, execution, account, assetStates, instrument, costs, active, reference, disabled, pending, notice, startingBalance, configuredBalance: replay?.payload?.starting_balance, configuredCurrency: replay?.payload?.starting_balance_ccy, setStartingBalance, spread, setSpread, tick, canInitialize, initialize, save, changePrice, chooseSide }
 }
 
 function LegacyOrderForm({ order, blockedReason, onClose, onJournal }) {
@@ -94,7 +96,7 @@ export default function ChartOrderPanel({ order, blockedReason, legacy = false, 
     {blockedReason && <p role="status">{t(blockedReason)}</p>}
     {!execution ? <form onSubmit={event => { event.preventDefault(); order.initialize() }}>
       <h2>{t("Khởi tạo tài khoản")}</h2><p>{t("Chi phí mô phỏng, không phải báo giá broker.")}</p>
-      <label>{t("Vốn ban đầu (")}{costs?.account_ccy || t("Chưa rõ tiền tệ")})<input type="number" min="1" step="0.01" value={order.startingBalance} onChange={event => order.setStartingBalance(event.target.value)} disabled={disabled} /></label>
+      <label>{t("Vốn ban đầu (")}{costs?.account_ccy || t("Chưa rõ tiền tệ")})<input type="number" min="1" step="0.01" value={order.startingBalance} onChange={event => order.setStartingBalance(event.target.value)} disabled={disabled || Boolean(order.assetStates)} /></label>
       <label className="replay-tick-toggle"><input type="checkbox" checked={order.tick.useTicks} disabled={disabled || !order.tick.options?.available} onChange={event => order.tick.setMode(event.target.checked ? 'tick' : 'bar')} />{t("Khớp lệnh bằng tick Bid/Ask")}</label>
       <p role="status">{t(order.tick.options?.reason || 'Đang kiểm tra lịch sử tick…')}</p>
       {order.tick.useTicks ? <label>{t("Đòn bẩy mô phỏng")}<input type="number" min="1" max="1000" step="1" value={order.tick.leverage} onChange={event => order.tick.setLeverage(event.target.value)} disabled={disabled} /></label> : <label>{t("Spread (đơn vị giá)")}<input type="number" min="0" step={instrument?.tick_size || 'any'} value={order.spread} onChange={event => order.setSpread(event.target.value)} disabled={disabled} /></label>}

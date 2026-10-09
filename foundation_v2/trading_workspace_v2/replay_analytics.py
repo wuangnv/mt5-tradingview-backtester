@@ -31,6 +31,8 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
     events. Keep them unknown instead of reverse-engineering financial inputs.
     """
     payload = view["payload"]
+    if payload.get('asset_states'):
+        return _build_portfolio_analytics(view, filters)
     session_id = view["record_id"]
     base = {
         "session_id": session_id,
@@ -217,4 +219,52 @@ def build_replay_analytics_view(view: dict, filters: dict | None = None) -> dict
             result["scope"]["balance_curve_scope"] += "; phase balance resets excluded"
     result["provenance"].update(base)
     result.update(base)
+    return result
+
+
+def _build_portfolio_analytics(view, filters):
+    from .replay_portfolio import account
+    payload = view['payload']
+    trades, event_keys, instruments = [], [], []
+    initialized = False
+    hashes = {}
+    for dataset_id, state in payload['asset_states'].items():
+        if not state.get('execution'):
+            continue
+        initialized = True
+        snapshot = parse_replay_execution_snapshot(state['execution'])
+        instruments.append(snapshot.instrument_spec['instrument_id'])
+        hashes[dataset_id] = snapshot.dataset_sha256
+        if (snapshot.instrument_spec.get('account_ccy') != payload['starting_balance_ccy']
+                or snapshot.starting_balance != Decimal(payload['starting_balance'])):
+            raise AnalyticsValidationError('portfolio account currency/capital is inconsistent')
+        child = {key: value for key, value in payload.items() if key not in {'asset_states', 'dataset_ids'}}
+        child.update(dataset_id=dataset_id, cursor_index=state['cursor_index'], execution=state['execution'])
+        validated = build_replay_analytics_view({**view, 'payload': child, 'dataset_sha256': snapshot.dataset_sha256,
+                                               'canonical_cursor_index': state['cursor_index']})
+        event_keys.extend((event['virtual_time_utc'], dataset_id, event['sequence']) for event in snapshot.ledger)
+        for trade in validated['ledger']:
+            trades.append({**trade, 'trade_id': f"{dataset_id}:{trade['trade_id']}",
+                           'source_position_id': f"{dataset_id}:{trade['source_position_id']}", 'dataset_id': dataset_id,
+                           'asset_close_event_sequence': trade['close_event_sequence'],
+                           'asset_close_cursor_index': trade['close_cursor_index'], 'close_cursor_index': view.get('portfolio_trade_cursors', {}).get(f"{dataset_id}:{trade['close_event_sequence']}")})
+    ordinals = {(key[1], key[2]): index for index, key in enumerate(sorted(event_keys), 1)}
+    for trade in trades:
+        trade['close_event_sequence'] = ordinals[(trade['dataset_id'], trade['close_event_sequence'])]
+    trades.sort(key=lambda item: (item['close_time_utc'], item['close_event_sequence']))
+    wallet = account(payload)
+    base = {'session_id': view['record_id'], 'workspace_id': view.get('workspace_id'), 'revision': view['revision'],
+            'dataset_id': payload['dataset_id'], 'dataset_ids': payload['dataset_ids'], 'dataset_hashes': hashes, 'branch_id': payload['branch_id'],
+            'parent_session_id': payload.get('parent_session_id'), 'cursor_index': payload['cursor_index'],
+            'canonical_cursor_index': view.get('canonical_cursor_index', payload['cursor_index']),
+            'historical_view': view.get('historical_view', False), 'cutoff_timestamp': view.get('cutoff_timestamp'),
+            'mode': 'replay', 'timezone': 'UTC', 'account_currency': payload['starting_balance_ccy'],
+            'instrument_id': ' · '.join(instruments), 'instrument_ids': instruments,
+            'open_position_count': wallet['open_position_count'], 'pending_order_count': wallet['pending_order_count'],
+            'execution_event_sequence': len(event_keys), 'data_quality': 'full_for_declared_model' if initialized else 'insufficient'}
+    result = build_analytics_view({**base, 'protocol': {'starting_balance': float(payload['starting_balance'])}, 'ledger': trades}, filters)
+    if not initialized:
+        result.update(analytics_available=False, blocked_by_data=['replay_execution_not_initialized'])
+    result['provenance'].update(base)
+    result.update(base, portfolio_account=wallet)
     return result

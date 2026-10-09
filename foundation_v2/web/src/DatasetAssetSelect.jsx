@@ -8,12 +8,26 @@ import './dataset-asset-select.css'
 export default function DatasetAssetSelect({ datasets, instruments, sessions, value, onChange, disabled }) {
   const { t } = useTestingLocale()
   const [category, setCategory] = useState('all')
-  const options = datasetAssetOptions(datasets, instruments, sessions)
-  const selected = options.find(option => option.value === value)
+  const rawOptions = datasetAssetOptions(datasets, instruments, sessions)
+  const currency = datasets.find(item => item.dataset_id === value[0])?.instrument_spec?.account_ccy || 'USD'
+  const selectedSymbols = new Set(datasets.filter(item => value.includes(item.dataset_id)).map(item => item.instrument_id))
+  const options = rawOptions.map(option => {
+    const dataset = datasets.find(item => item.dataset_id === option.value)
+    return { ...option, disabled:!value.includes(option.value) && (
+      value.length >= 12 && !selectedSymbols.has(dataset?.instrument_id)
+      || value.length > 0 && (dataset?.instrument_spec?.account_ccy || 'USD') !== currency) }
+  })
+  const choose = next => {
+    const added = next.find(key => !value.includes(key))
+    if (!added) { onChange(next); return }
+    const symbol = datasets.find(item => item.dataset_id === added)?.instrument_id
+    onChange(next.filter(key => key === added || datasets.find(item => item.dataset_id === key)?.instrument_id !== symbol))
+  }
+  const selected = options.filter(option => value.includes(option.value))
   const categories = [...CATEGORIES, ...(options.some(option => !option.category) ? [['', 'Chưa phân loại']] : [])]
-  return <FxSelect searchable label="Chọn tài sản" value={value} onChange={onChange} disabled={disabled}
-    className={`dataset-asset-select${selected ? '' : ' is-placeholder'}`} localizeOptions={false}
-    triggerContent={selected ? `${selected.label} · ${selected.summary}` : t('Chọn tài sản')}
+  return <FxSelect searchable multiple multipleStyle="check" selectedTags={selected} label="Chọn tài sản" value={value} onChange={choose} disabled={disabled}
+    className={`dataset-asset-select${selected.length ? '' : ' is-placeholder'}`} localizeOptions={false}
+    triggerContent={selected.length ? '' : t('Chọn tài sản')}
     placeholder="Tìm mã hoặc tên tài sản…" emptyLabel="Không có dữ liệu đã tải phù hợp."
     options={options} filterOption={option => category === 'all' || option.category === category}
     menuHeader={<div className="dataset-asset-categories" role="group" aria-label={t('Nhóm tài sản')}>
@@ -21,7 +35,6 @@ export default function DatasetAssetSelect({ datasets, instruments, sessions, va
         aria-pressed={category === key} onClick={() => setCategory(key)}>{t(label)}</button>)}
     </div>}
     renderOption={option => <>
-      <span className="dataset-asset-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19h16M5 15l4-5 4 3 6-8M15 5h4v4" /></svg></span>
       <span className="dataset-asset-identity"><strong>{option.label}</strong><span>{option.name || option.summary}</span>{option.name && <small>{option.summary}</small>}</span>
       <span className="dataset-asset-category">{t(categoryLabel(option.category))}</span>
     </>} />

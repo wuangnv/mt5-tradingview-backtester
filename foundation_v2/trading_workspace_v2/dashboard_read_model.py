@@ -37,9 +37,10 @@ def _counts(trades: list[dict]) -> dict:
     }
 
 
-def _trade_origin(record: dict, records: dict[str, dict], close_sequence: int) -> str:
+def _trade_origin(record: dict, records: dict[str, dict], close_sequence: int, dataset_id=None) -> str:
     while record["payload"].get("parent_session_id"):
-        inherited_sequence = record["payload"].get("parent_checkpoint_event_sequence")
+        inherited_sequence = (record['payload'].get('parent_asset_checkpoint_sequences', {}).get(dataset_id)
+                              if dataset_id else record["payload"].get("parent_checkpoint_event_sequence"))
         if (isinstance(inherited_sequence, bool) or not isinstance(inherited_sequence, int)
                 or inherited_sequence < 0):
             raise AnalyticsValidationError("replay branch checkpoint is unavailable")
@@ -121,13 +122,15 @@ def build_dashboard_performance(
                 net = Decimal(str(trade["net_pnl"]))
                 if not net.is_finite():
                     raise AnalyticsValidationError("trade net pnl is invalid")
-                origin_id = source_id if session_id else _trade_origin(record, record_map, trade["close_event_sequence"])
+                origin_id = source_id if session_id else _trade_origin(record, record_map,
+                    trade.get('asset_close_event_sequence', trade['close_event_sequence']),
+                    trade.get('dataset_id') if record['payload'].get('asset_states') else None)
                 key = (
                     origin_id,
-                    trade["close_event_sequence"],
+                    trade.get('asset_close_event_sequence', trade['close_event_sequence']),
                     trade.get("source_operation_id"),
                     trade.get("source_position_id") or trade["trade_id"],
-                    trade.get("close_cursor_index"),
+                    trade.get('asset_close_cursor_index', trade.get("close_cursor_index")),
                     str(trade.get("close_time_utc")),
                     str(trade.get("price_close")),
                     net,
