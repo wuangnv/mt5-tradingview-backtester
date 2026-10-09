@@ -71,6 +71,33 @@ try {
       assert.ok(hover.chips.every(chip => chip.background !== hover.background), 'chips stay distinct from hovered field')
       assert.ok(hover.chips.every(chip => chip.border === '1px' && chip.height <= 28), 'compact bounded chips')
       assert.ok(hover.scrollWidth <= hover.width + 1, 'selected assets fit field')
+      const remove = field.getByRole('button', { name: /^Bỏ tài sản/ }).first()
+      const removeStyle = () => remove.evaluate(async element => {
+        await Promise.all(element.getAnimations().map(a => a.finished.catch(() => {})))
+        const css = getComputedStyle(element), chip = getComputedStyle(element.parentElement)
+        const rgb = token => `rgb(${chip.getPropertyValue(token).trim().slice(1).match(/.{2}/g).map(n => parseInt(n, 16)).join(', ')})`
+        return { background: css.backgroundColor, border: css.borderTopWidth, opacity: Number(css.opacity), outline: css.outlineStyle, outlineWidth: css.outlineWidth, outlineColor: css.outlineColor, chipBackground: chip.backgroundColor, chipColor: chip.color, orange: rgb('--project-action'), onOrange: rgb('--project-on-action') }
+      })
+      await dialog.locator('input[maxlength="160"]').first().focus()
+      await page.mouse.move(10, 10)
+      const removeRest = await removeStyle()
+      await remove.hover()
+      const removeHover = await removeStyle()
+      assert.equal(removeHover.chipBackground, removeHover.orange)
+      assert.equal(removeHover.chipColor, removeHover.onOrange)
+      assert.equal(removeHover.background, 'rgba(0, 0, 0, 0)')
+      assert.equal(removeHover.border, '0px')
+      assert.ok(removeHover.opacity > removeRest.opacity, 'remove icon brightens without a hover surface')
+      row.remove = { rest: removeRest, hover: removeHover }
+      await field.screenshot({ path: `${out}/${theme}-${width}-remove-hover.png` })
+      await page.keyboard.press('Tab')
+      await remove.focus()
+      const removeFocus = await removeStyle()
+      assert.equal(removeFocus.opacity, 1)
+      assert.equal(removeFocus.outline, 'solid')
+      assert.equal(removeFocus.outlineWidth, '2px')
+      assert.equal(removeFocus.outlineColor, removeFocus.onOrange, 'keyboard ring contrasts with orange chip')
+      row.remove.focus = removeFocus
       await trigger.click()
       await menu.locator('input').fill('does-not-exist')
       assert.equal(await menu.locator('[role=option]').count(), 0)
