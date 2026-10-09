@@ -33,12 +33,17 @@ try {
   await dialog.locator('.quick-session-submit').click()
   await page.waitForURL(url => url.searchParams.get('session') && url.searchParams.get('view') === 'replay')
   report.createdSession = new URL(page.url()).searchParams.get('session')
+  const destination = new URL(page.url()).searchParams
+  assert.equal(destination.get('surface'), 'workspace', 'successful create opens the chart surface')
+  assert.equal(destination.has('select'), false, 'successful create skips the session picker')
+  assert.equal(await dialog.count(), 0, 'create dialog unmounts after navigation')
   const server = await page.evaluate(async id => {
     const response = await fetch(`/api/v2/replay/sessions/${id}`, { headers: { 'X-Workspace-Id': 'tenant-a' } })
     return { status: response.status, body: await response.json() }
   }, report.createdSession)
   assert.equal(server.status, 200)
   assert.equal(server.body.payload.dataset_ids.length, 2)
+  assert.equal(destination.get('dataset'), server.body.payload.dataset_id, 'chart uses the created session primary asset')
   await page.locator('[data-testid="replay-chart"][data-chart-engine="advanced"][data-chart-status="ready"]').waitFor({ timeout: 20000 })
   const history = await (await firstChartWindow).json()
   assert.equal(history.session_id, report.createdSession)
