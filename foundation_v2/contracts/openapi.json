@@ -8073,6 +8073,30 @@
             "title": "Start Index",
             "default": 0
           },
+          "start_timestamp": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Timestamp"
+          },
+          "end_timestamp": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Timestamp"
+          },
           "name": {
             "anyOf": [
               {

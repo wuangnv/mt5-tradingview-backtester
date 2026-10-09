@@ -81,3 +81,27 @@
 @media(pointer:coarse) {
   .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button { height:44px; min-height:44px; }
 }
+
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-body { display:grid; gap:16px; min-width:0; padding:16px; border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-field { display:grid; grid-template-rows:auto auto; gap:8px; min-width:0; align-content:start; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-field label { min-height:20px; line-height:20px; font-size:var(--wm-text-control); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-start { display:flex; gap:8px; min-width:0; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period .project-date-input > input[type=text] { padding-right:36px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period .project-date-input > .project-date-native { width:1px; height:1px; min-height:0; padding:0; border:0; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-random { display:grid; place-items:center; flex:0 0 var(--wm-control-height); width:var(--wm-control-height); height:var(--wm-control-height); padding:0; border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); background:transparent; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-random:hover:not(:disabled) { background:var(--wm-hover); border-color:var(--wm-control-hover-border); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-end-label { display:flex; align-items:center; gap:8px; min-height:20px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-shortcuts { display:flex; gap:4px; margin-left:auto; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-shortcuts button { min-height:20px; padding:0 6px; border:0; border-radius:999px; background:var(--wm-hover); color:var(--wm-content-muted); font-size:11px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-shortcuts button:hover:not(:disabled) { color:var(--wm-content); background:var(--wm-control-hover-bg,var(--wm-hover)); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-hint { display:grid; gap:4px; margin:0; padding-top:12px; border-top:1px solid var(--wm-border); font-size:12px; line-height:1.5; color:var(--wm-content-muted); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-modes { display:flex; justify-self:start; padding:3px; border:1px solid var(--wm-control-border); border-radius:999px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-modes button { min-height:var(--ds-tab); padding:4px 12px; border:0; border-radius:999px; background:transparent; color:var(--wm-content-muted); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-modes button:is([aria-pressed=true],:hover:not(:disabled)) { background:var(--wm-hover); color:var(--wm-content); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-error { color:var(--wm-negative); font-size:12px; line-height:1.5; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-body > .quick-session-period-error { color:var(--wm-negative); }
+@media(max-width:700px) {
+  .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-grid { grid-template-columns:minmax(0,1fr); }
+  .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-period-body { padding:12px; }
+}

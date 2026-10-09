@@ -19,6 +19,5 @@ export function datasetAssetOptions(datasets, instruments = [], sessions = []) {
       category, summary, detail: summary, searchText: `${name} ${category} ${categoryLabel(category)}`, localize: false, recent }
   }).sort((a, b) => (a.recent < 0 ? 5 : a.recent) - (b.recent < 0 ? 5 : b.recent)
     || a.label.localeCompare(b.label, 'en', { numeric: true }) || a.value.localeCompare(b.value))
-  const hasRecent = options.some(option => option.recent >= 0)
-  return options.map(option => ({ ...option, group: hasRecent ? option.recent >= 0 ? 'Dùng gần đây' : 'Dữ liệu đã tải' : '' }))
+  return options
 }

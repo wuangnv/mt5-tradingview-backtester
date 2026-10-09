@@ -333,6 +333,8 @@ class ReplayCreate(BaseModel):
     dataset_id: str = Field(min_length=1)
     dataset_ids: list[str] | None = Field(default=None, min_length=1, max_length=12)
     start_index: int = Field(default=0, ge=0)
+    start_timestamp: int | None = Field(default=None, ge=0, strict=True)
+    end_timestamp: int | None = Field(default=None, ge=0, strict=True)
     name: str | None = Field(default=None, min_length=1, max_length=160)
     description: str = Field(default="", max_length=2000)
     starting_balance: Decimal | None = Field(default=None, gt=0)
@@ -351,6 +353,10 @@ class ReplayCreate(BaseModel):
     def paired_playbook(self):
         if (self.playbook_id is None) != (self.playbook_revision is None):
             raise ValueError("playbook id and revision must be supplied together")
+        if self.start_timestamp is not None and self.start_index != 0:
+            raise ValueError('choose start_timestamp or a nonzero start_index')
+        if self.start_timestamp is not None and self.end_timestamp is not None and self.end_timestamp <= self.start_timestamp:
+            raise ValueError('end_timestamp must be after start_timestamp')
         return self
 
 

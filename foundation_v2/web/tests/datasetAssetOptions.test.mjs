@@ -25,9 +25,9 @@ test('recent history prioritizes exact saved versions without duplicating them',
     { dataset_id:'missing', updated_at_utc:'2026-10-08' },
   ])
   assert.deepEqual(options.map(item => item.value), ['new', 'old'])
-  assert.ok(options.every(item => item.group === 'Dùng gần đây'))
+  assert.ok(options.every(item => !item.group))
 })
 test('archived or unavailable history does not create a recent section', () => {
   const options = datasetAssetOptions([dataset('saved')], [], [{ dataset_id:'saved', archived:true }, { dataset_id:'missing' }])
-  assert.equal(options[0].group, '')
+  assert.equal(options[0].group, undefined)
 })

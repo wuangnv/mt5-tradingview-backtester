@@ -19,7 +19,7 @@ def cursor_at(manifest, rows, clock):
     return bisect_right(rows, clock, key=lambda row: closed_time(manifest, row)) - 1
 
 
-def initialize_portfolio(service, workspace, payload, dataset_ids, *, primary=None):
+def initialize_portfolio(service, workspace, payload, dataset_ids, *, primary=None, start_timestamp=None, end_timestamp=None):
     if (not isinstance(dataset_ids, list) or not 1 <= len(dataset_ids) <= 12
             or any(not isinstance(key, str) or not key.strip() for key in dataset_ids)
             or len(set(dataset_ids)) != len(dataset_ids) or payload['dataset_id'] != dataset_ids[0]):
@@ -35,6 +35,8 @@ def initialize_portfolio(service, workspace, payload, dataset_ids, *, primary=No
     currencies = {(manifest.instrument_spec or {}).get('account_ccy', 'USD') for manifest, _ in assets.values()}
     if len(currencies) != 1:
         raise ValueError('all replay assets must use the same account currency')
+    if start_timestamp is not None or end_timestamp is not None:
+        return initialize_period_portfolio(service, workspace, payload, dataset_ids, assets, start_timestamp, end_timestamp)
     manifest, timing = assets[payload['dataset_id']]
     begin = max(closed_time(m, {'timestamp': t['first_utc']}) for m, t in assets.values())
     clock = max(begin, closed_time(manifest, {'timestamp': timing['index_utc']}))
@@ -47,6 +49,57 @@ def initialize_portfolio(service, workspace, payload, dataset_ids, *, primary=No
     return {**payload, 'dataset_ids': dataset_ids, 'asset_states': states,
             'cursor_index': states[payload['dataset_id']]['cursor_index'],
             'replay_clock_utc': clock, 'replay_start_utc': clock, 'replay_end_utc': end}
+
+
+def initialize_period_portfolio(service, workspace, payload, dataset_ids, assets, requested_start, requested_end):
+    common_first = max(timing['first_utc'] for _, timing in assets.values())
+    common_last = min(timing['last_utc'] for _, timing in assets.values())
+    if any(value is not None and not common_first <= value <= common_last for value in (requested_start, requested_end)):
+        raise ValueError('requested replay period is outside common dataset range')
+    end_cutoff = common_last if requested_end is None else min(common_last, requested_end)
+    manifest, primary = assets[payload['dataset_id']]
+    start_cutoff = max(common_first, requested_start if requested_start is not None else primary['index_utc'])
+    if start_cutoff >= end_cutoff:
+        raise ValueError('assets have no common replay period with future bars')
+    selected = service._dataset_timing(workspace, payload['dataset_id'], at_or_before=start_cutoff - 1)[1]['cursor_index'] + 1
+    if selected >= primary['row_count']:
+        raise ValueError('start_timestamp is outside the common dataset period')
+    selected_time = service._dataset_timing(workspace, payload['dataset_id'], index=selected)[1]['index_utc']
+    if selected_time > end_cutoff:
+        raise ValueError('start_timestamp is outside the common dataset period')
+    begin = max(closed_time(m, {'timestamp': timing['first_utc']}) for m, timing in assets.values())
+    clock = max(begin, closed_time(manifest, {'timestamp': selected_time}))
+    terminal = {}
+    for key, (m, timing) in assets.items():
+        index = service._dataset_timing(workspace, key, at_or_before=end_cutoff)[1]['cursor_index']
+        if index < 0:
+            raise ValueError('end_timestamp is outside the common dataset period')
+        timestamp = service._dataset_timing(workspace, key, index=index)[1]['index_utc']
+        terminal[key] = closed_time(m, {'timestamp': timestamp})
+    end_clock = min(terminal.values())
+    if clock >= end_clock:
+        raise ValueError('selected replay period has no future closed bars')
+    states, bounds = {}, {}
+    for key, (m, _) in assets.items():
+        results = service._dataset_timings(workspace, key, [
+            {'at_or_before': clock - m.timeframe_seconds}, {'at_or_before': end_clock - m.timeframe_seconds}])
+        start, end = (value['cursor_index'] for value in results)
+        if start < 0 or end < start:
+            raise ValueError('assets have no common closed-bar replay period')
+        times = service._dataset_timings(workspace, key, [{'index': start}, {'index': end}])
+        bounds[key] = {'start_cursor_index': start, 'end_cursor_index': end,
+                      'start_timestamp': times[0]['index_utc'], 'end_timestamp': times[1]['index_utc']}
+        states[key] = {'cursor_index': start, 'execution': None}
+    active = bounds[payload['dataset_id']]
+    if not common_first <= active['start_timestamp'] <= common_last:
+        raise ValueError('start_timestamp is outside the common dataset period')
+    period = {'schema_version': 'replay-period-v1', 'requested_start_timestamp': requested_start,
+              'requested_end_timestamp': requested_end, 'start_timestamp': active['start_timestamp'],
+              'end_timestamp': end_cutoff, 'start_clock_utc': clock, 'end_clock_utc': end_clock,
+              'asset_bounds': bounds}
+    return {**payload, 'dataset_ids': dataset_ids, 'asset_states': states,
+            'cursor_index': active['start_cursor_index'], 'replay_clock_utc': clock,
+            'replay_start_utc': clock, 'replay_end_utc': end_clock, 'session_period': period}
 
 
 def sync_active_state(payload):
@@ -85,6 +138,10 @@ def select_asset(service, workspace, session_id, revision, dataset_id):
         raise ValueError('asset is not part of this replay session')
     service._dataset_timing(workspace, dataset_id, index=payload['asset_states'][dataset_id]['cursor_index'])
     state = payload['asset_states'][dataset_id]
+    if payload.get('session_period'):
+        bounds = service._period_bounds({**payload, 'dataset_id': dataset_id})
+        if not bounds['start_cursor_index'] <= state['cursor_index'] <= bounds['end_cursor_index']:
+            raise RuntimeError('stored replay cursor exceeds its session period')
     payload.update(dataset_id=dataset_id, cursor_index=state['cursor_index'], execution=state.get('execution'))
     service._update_payload(workspace, session_id, revision, payload)
     return service.view(workspace, session_id)
@@ -95,8 +152,18 @@ def step_portfolio(service, workspace, record, steps, interval):
     if isinstance(steps, bool) or not isinstance(steps, int) or not 1 <= steps <= 1000:
         raise ValueError('replay steps must be an integer between 1 and 1000')
     current = payload['cursor_index']
-    manifest, rows, _, _ = service._step_window(workspace, payload['dataset_id'], current, steps, interval)
-    clock = min(closed_time(manifest, rows[-1]), payload['replay_end_utc'])
+    bounds = service._period_bounds(payload)
+    if bounds and not bounds['start_cursor_index'] <= current <= bounds['end_cursor_index']:
+        raise RuntimeError('stored replay cursor exceeds its session period')
+    if bounds and payload['replay_clock_utc'] >= payload['replay_end_utc']:
+        raise ValueError('selected replay period is completed')
+    manifest, rows, cursor, _ = service._step_window(workspace, payload['dataset_id'], current, steps, interval,
+        limit=bounds['end_cursor_index'] if bounds else None)
+    period_exhausted = bounds and (current >= bounds['end_cursor_index'] or
+        (interval is None and current + steps > bounds['end_cursor_index']) or
+        (interval is not None and int(rows[-1]['timestamp']) < (int(rows[0]['timestamp']) // interval + 1) * interval))
+    clock = (payload['replay_end_utc'] if period_exhausted else
+             min(closed_time(manifest, rows[-1]), payload['replay_end_utc']))
     events = []
     for key in payload['dataset_ids']:
         state = payload['asset_states'][key]
@@ -104,6 +171,10 @@ def step_portfolio(service, workspace, record, steps, interval):
         if manifest is None:
             raise LookupError('dataset not found')
         target = service._dataset_timing(workspace, key, at_or_before=clock - manifest.timeframe_seconds)[1]['cursor_index']
+        if bounds:
+            limit = service._period_bounds({**payload, 'dataset_id': key})['end_cursor_index']
+            if target > limit:
+                raise RuntimeError('portfolio replay clock exceeds its session period')
         execution = parse_replay_execution_snapshot(state['execution']) if state.get('execution') else None
         if execution and execution.cursor_index != state['cursor_index']:
             raise RuntimeError('portfolio execution cursor is inconsistent')
@@ -199,12 +270,17 @@ def checkpoint_portfolio(service, workspace, record, cursor=None, cutoff=None, e
 
 
 def branch_portfolio(service, workspace, record, cursor):
+    bounds = service._period_bounds(record['payload'])
+    if bounds and cursor < bounds['start_cursor_index']:
+        raise ValueError('branch cursor is before the selected replay period')
     checkpoint = checkpoint_portfolio(service, workspace, record, cursor)
     payload = deepcopy(checkpoint['payload'])
     if payload['replay_clock_utc'] < payload['replay_start_utc']:
         raise ValueError('portfolio branch must remain within the common replay period')
     child, branch = uuid4().hex, uuid4().hex
     payload.update(branch_id=branch, parent_session_id=record['record_id'], parent_revision=record['revision'], status='paused')
+    if bounds and payload['replay_clock_utc'] >= payload['replay_end_utc']:
+        payload['status'] = 'completed'
     payload['parent_asset_checkpoint_sequences'] = {
         key: state['execution']['event_sequence'] if state.get('execution') else 0
         for key, state in payload['asset_states'].items()}

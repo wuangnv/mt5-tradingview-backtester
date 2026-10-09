@@ -4876,6 +4876,32 @@
                 "title": "Start Index",
                 "type": "integer"
               },
+              "start_timestamp": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Start Timestamp"
+              },
+              "end_timestamp": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "End Timestamp"
+              },
               "name": {
                 "anyOf": [
                   {

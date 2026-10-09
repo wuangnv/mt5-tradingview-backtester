@@ -43,9 +43,16 @@ class MemoryStore:
 
 class MemoryReplay(ReplayService):
     def _dataset_rows(self, workspace, dataset_id):
-        if dataset_id != "dataset":
+        if workspace != 'tenant-a' or dataset_id != "dataset":
             raise LookupError("dataset not found")
         return SimpleNamespace(instrument_spec={"account_ccy": "EUR"}), [{}] * 100
+
+    def _dataset_timing(self, workspace, dataset_id, *, index=0, at_or_before=None):
+        manifest, rows = self._dataset_rows(workspace, dataset_id)
+        if not 0 <= index < len(rows):
+            raise ValueError('start_index exceeds dataset')
+        return manifest, {'row_count': len(rows), 'first_utc': 0, 'last_utc': 5940,
+                          'index_utc': index * 60, 'cursor_index': index if at_or_before is None else min(99, at_or_before // 60)}
 
     def view(self, workspace, record_id):
         return deepcopy(self.store.records[record_id])

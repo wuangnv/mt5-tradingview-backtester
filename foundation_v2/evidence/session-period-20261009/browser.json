@@ -1,0 +1,158 @@
+{
+  "scope": "Actual local GET APIs; dialog interactions only; all writes blocked",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "layout": {
+        "fields": [
+          {
+            "x": 615,
+            "y": 610.5,
+            "height": 36,
+            "right": 890.5
+          },
+          {
+            "x": 950.5,
+            "y": 610.5,
+            "height": 36,
+            "right": 1270
+          }
+        ],
+        "width": 689,
+        "scrollWidth": 689,
+        "dialogWidth": 958,
+        "dialogScrollWidth": 958
+      },
+      "randomStart": "10/05/2022 19:46"
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "layout": {
+        "fields": [
+          {
+            "x": 615,
+            "y": 610.5,
+            "height": 36,
+            "right": 890.5
+          },
+          {
+            "x": 950.5,
+            "y": 610.5,
+            "height": 36,
+            "right": 1270
+          }
+        ],
+        "width": 689,
+        "scrollWidth": 689,
+        "dialogWidth": 958,
+        "dialogScrollWidth": 958
+      },
+      "randomStart": "26/03/2015 19:25"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "layout": {
+        "fields": [
+          {
+            "x": 480,
+            "y": 610.5,
+            "height": 36,
+            "right": 755.5
+          },
+          {
+            "x": 815.5,
+            "y": 610.5,
+            "height": 36,
+            "right": 1135
+          }
+        ],
+        "width": 689,
+        "scrollWidth": 689,
+        "dialogWidth": 958,
+        "dialogScrollWidth": 958
+      },
+      "randomStart": "19/03/2024 18:32"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "layout": {
+        "fields": [
+          {
+            "x": 480,
+            "y": 610.5,
+            "height": 36,
+            "right": 755.5
+          },
+          {
+            "x": 815.5,
+            "y": 610.5,
+            "height": 36,
+            "right": 1135
+          }
+        ],
+        "width": 689,
+        "scrollWidth": 689,
+        "dialogWidth": 958,
+        "dialogScrollWidth": 958
+      },
+      "randomStart": "24/06/2024 22:57"
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "layout": {
+        "fields": [
+          {
+            "x": 38,
+            "y": 341,
+            "height": 44,
+            "right": 255
+          },
+          {
+            "x": 38,
+            "y": 429,
+            "height": 44,
+            "right": 307
+          }
+        ],
+        "width": 295,
+        "scrollWidth": 295,
+        "dialogWidth": 342,
+        "dialogScrollWidth": 342
+      },
+      "randomStart": "14/05/2009 06:06"
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "layout": {
+        "fields": [
+          {
+            "x": 38,
+            "y": 341,
+            "height": 44,
+            "right": 255
+          },
+          {
+            "x": 38,
+            "y": 429,
+            "height": 44,
+            "right": 307
+          }
+        ],
+        "width": 295,
+        "scrollWidth": 295,
+        "dialogWidth": 342,
+        "dialogScrollWidth": 342
+      },
+      "randomStart": "27/08/2016 04:02"
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "result": "PASS"
+}

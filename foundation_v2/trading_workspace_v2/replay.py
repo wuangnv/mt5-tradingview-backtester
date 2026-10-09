@@ -109,9 +109,49 @@ class ReplayService:
             cursor = current + local
         return manifest, rows[:cursor - current + 1], cursor, timing['row_count']
 
+    @staticmethod
+    def _period_bounds(payload):
+        period = payload.get('session_period')
+        if period is None:
+            return None
+        try:
+            bounds = period['asset_bounds'][payload['dataset_id']]
+            start, end = bounds['start_cursor_index'], bounds['end_cursor_index']
+            if isinstance(start, bool) or isinstance(end, bool) or not isinstance(start, int) or not isinstance(end, int) or not 0 <= start <= end:
+                raise ValueError()
+            return bounds
+        except (KeyError, TypeError, ValueError):
+            raise RuntimeError('stored replay period is invalid') from None
+
+    def _single_period(self, workspace, dataset, timing, cursor, start_timestamp, end_timestamp):
+        if any(value is not None and not timing['first_utc'] <= value <= timing['last_utc']
+               for value in (start_timestamp, end_timestamp)):
+            raise ValueError('requested replay period is outside available dataset range')
+        if start_timestamp is not None:
+            cursor = self._dataset_timing(workspace, dataset, at_or_before=start_timestamp - 1)[1]['cursor_index'] + 1
+        if cursor >= timing['row_count']:
+            raise ValueError('start_timestamp is outside available dataset')
+        end = (timing['row_count'] - 1 if end_timestamp is None else
+               self._dataset_timing(workspace, dataset, at_or_before=end_timestamp)[1]['cursor_index'])
+        if end <= cursor:
+            raise ValueError('selected replay period has no future bars')
+        resolved = self._dataset_timings(workspace, dataset, [{'index': cursor}, {'index': end}])
+        bounds = {'start_cursor_index': cursor, 'end_cursor_index': end,
+                  'start_timestamp': resolved[0]['index_utc'], 'end_timestamp': resolved[1]['index_utc']}
+        return cursor, {'schema_version': 'replay-period-v1', 'requested_start_timestamp': start_timestamp,
+            'requested_end_timestamp': end_timestamp, 'start_timestamp': bounds['start_timestamp'],
+            'end_timestamp': bounds['end_timestamp'], 'asset_bounds': {dataset: bounds}}
+
     def create(self, workspace_id: str, dataset_id: str, start_index: int = 0, *, name=None,
                description="", starting_balance=None, playbook_id=None, playbook_revision=None,
-               chart_engine="legacy", dataset_ids=None) -> dict:
+               chart_engine="legacy", dataset_ids=None, start_timestamp=None, end_timestamp=None) -> dict:
+        for value in (start_timestamp, end_timestamp):
+            if value is not None and (isinstance(value, bool) or not isinstance(value, int) or value < 0):
+                raise ValueError('replay period requires nonnegative integer UTC timestamps')
+        if start_timestamp is not None and start_index != 0:
+            raise ValueError('choose start_timestamp or a nonzero start_index')
+        if start_timestamp is not None and end_timestamp is not None and end_timestamp <= start_timestamp:
+            raise ValueError('end_timestamp must be after start_timestamp')
         manifest, timing = self._dataset_timing(workspace_id, dataset_id, index=start_index)
         if chart_engine != "legacy":
             raise ValueError("chart engine is unavailable")
@@ -139,9 +179,14 @@ class ReplayService:
             "timing": new_timing(),
             "chart_engine": chart_engine,
         }
+        period_requested = start_timestamp is not None or end_timestamp is not None
+        if period_requested and (dataset_ids is None or len(dataset_ids) <= 1):
+            cursor, period = self._single_period(workspace_id, dataset_id, timing, start_index, start_timestamp, end_timestamp)
+            payload.update(cursor_index=cursor, session_period=period)
         if dataset_ids is not None:
             from .replay_portfolio import initialize_portfolio
-            payload = initialize_portfolio(self, workspace_id, payload, dataset_ids, primary=(manifest, timing))
+            payload = initialize_portfolio(self, workspace_id, payload, dataset_ids, primary=(manifest, timing),
+                start_timestamp=start_timestamp, end_timestamp=end_timestamp)
         if name is not None:
             if not name.strip() or len(name.strip()) > 160:
                 raise ValueError("name is invalid")
@@ -415,7 +460,9 @@ class ReplayService:
         if snapshot.cursor_index != int(payload["cursor_index"]):
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
         _, timing = self._dataset_timing(workspace_id, payload["dataset_id"], index=snapshot.cursor_index)
-        if payload.get("status") == "completed" or snapshot.cursor_index >= timing['row_count'] - 1:
+        bounds = self._period_bounds(payload)
+        limit = bounds['end_cursor_index'] if bounds else timing['row_count'] - 1
+        if payload.get("status") == "completed" or snapshot.cursor_index >= limit:
             raise ValueError("market order requires a future replay bar")
         queued = queue_market_order(
             snapshot,
@@ -444,7 +491,9 @@ class ReplayService:
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
         manifest, rows = self._dataset_slice(workspace_id, payload["dataset_id"], snapshot.cursor_index, snapshot.cursor_index + 1)
         _, timing = self._dataset_timing(workspace_id, payload['dataset_id'], index=snapshot.cursor_index)
-        if payload.get("status") == "completed" or snapshot.cursor_index >= timing['row_count'] - 1:
+        bounds = self._period_bounds(payload)
+        limit = bounds['end_cursor_index'] if bounds else timing['row_count'] - 1
+        if payload.get("status") == "completed" or snapshot.cursor_index >= limit:
             raise ValueError("protection changes require a future replay bar")
         bar = rows[0]
         if payload.get('asset_states'):
@@ -489,6 +538,9 @@ class ReplayService:
         total = manifest.row_count if indexed else len(rows)
         if canonical_cursor >= total:
             raise RuntimeError("replay cursor exceeds immutable dataset")
+        bounds = self._period_bounds(payload)
+        if bounds and (bounds['end_cursor_index'] >= total or not bounds['start_cursor_index'] <= canonical_cursor <= bounds['end_cursor_index']):
+            raise RuntimeError('stored replay cursor exceeds its session period')
         view_cursor = canonical_cursor if cursor_index is None else int(cursor_index)
         if view_cursor < 0:
             raise ValueError("view cursor must be nonnegative")
@@ -523,11 +575,14 @@ class ReplayService:
             "visible_row_count": len(visible),
             "visible_row_start": visible_start,
             "total_row_count": total,
-            "has_future_rows": (payload['replay_clock_utc'] < payload['replay_end_utc']) if payload.get('asset_states') else view_cursor + 1 < total,
+            "has_future_rows": (payload['replay_clock_utc'] < payload['replay_end_utc']) if payload.get('asset_states') else view_cursor < (bounds['end_cursor_index'] if bounds else total - 1),
             "view_cursor_index": view_cursor,
             "canonical_cursor_index": canonical_cursor,
             "historical_view": view_cursor != canonical_cursor,
             "execution_view_status": execution_view_status,
+            **({'session_period': {key: value for key, value in payload['session_period'].items() if key != 'asset_bounds'}
+                 | {'start_cursor_index': bounds['start_cursor_index'], 'end_cursor_index': bounds['end_cursor_index'],
+                    'asset_start_timestamp': bounds['start_timestamp'], 'asset_end_timestamp': bounds['end_timestamp']}} if bounds else {}),
             **portfolio,
         }
 
@@ -546,6 +601,9 @@ class ReplayService:
         if dataset_sha256 != manifest.artifact_sha256:
             raise ValueError('chart dataset checksum conflicts with replay')
         canonical = int(payload['cursor_index'])
+        bounds = self._period_bounds(payload)
+        if bounds and canonical > bounds['end_cursor_index']:
+            raise RuntimeError('stored replay cursor exceeds its session period')
         cursor = canonical if cursor_index is None else cursor_index
         if isinstance(cursor, bool) or not isinstance(cursor, int) or not 0 <= cursor <= canonical:
             raise ValueError('chart cursor is outside the visible replay range')
@@ -591,7 +649,13 @@ class ReplayService:
             return step_portfolio(self, workspace_id, record, steps, replay_interval_seconds)
         payload = dict(record["payload"])
         current_cursor = int(payload["cursor_index"])
-        manifest, rows, cursor, total = self._step_window(workspace_id, payload['dataset_id'], current_cursor, steps, replay_interval_seconds)
+        bounds = self._period_bounds(payload)
+        if bounds and not bounds['start_cursor_index'] <= current_cursor <= bounds['end_cursor_index']:
+            raise RuntimeError('stored replay cursor exceeds its session period')
+        if bounds and current_cursor >= bounds['end_cursor_index']:
+            raise ValueError('selected replay period is completed')
+        manifest, rows, cursor, total = self._step_window(workspace_id, payload['dataset_id'], current_cursor, steps, replay_interval_seconds,
+            limit=bounds['end_cursor_index'] if bounds else None)
         timing = dict(payload.get("timing") or new_timing(legacy_baseline=True))
         timing["historical_time_replayed_seconds"] += max(0, int(rows[-1]["timestamp"]) - int(rows[0]["timestamp"]))
         payload["timing"] = timing
@@ -614,7 +678,7 @@ class ReplayService:
                 execution_events.extend(event.model_dump(mode="json") for event in advanced.events)
             payload["execution"] = execution.model_dump(mode="json")
         payload["cursor_index"] = cursor
-        payload["status"] = "completed" if cursor == total - 1 else "paused"
+        payload["status"] = "completed" if cursor == (bounds['end_cursor_index'] if bounds else total - 1) else "paused"
         self._update_payload(workspace_id, session_id, expected_revision, payload)
         result = self.view(workspace_id, session_id)
         result["execution_events"] = execution_events
@@ -714,9 +778,12 @@ class ReplayService:
             raise ValueError("branch cursor must be nonnegative")
         if cursor_index > current_cursor:
             raise ValueError("branch cursor cannot exceed current replay cursor")
+        bounds = self._period_bounds(record['payload'])
+        if bounds and cursor_index < bounds['start_cursor_index']:
+            raise ValueError('branch cursor is before the selected replay period')
         child_session_id = uuid4().hex
         child_branch_id = uuid4().hex
-        configuration = {key: record["payload"][key] for key in ("name", "description", "starting_balance", "starting_balance_ccy", "playbook_id", "playbook_revision", "chart_engine") if key in record["payload"]}
+        configuration = {key: record["payload"][key] for key in ("name", "description", "starting_balance", "starting_balance_ccy", "playbook_id", "playbook_revision", "chart_engine", "session_period") if key in record["payload"]}
         payload = {
             **configuration,
             "dataset_id": record["payload"]["dataset_id"],
@@ -727,6 +794,8 @@ class ReplayService:
             "status": "paused",
             "timing": new_timing(),
         }
+        if bounds and cursor_index == bounds['end_cursor_index']:
+            payload['status'] = 'completed'
         current_execution = self._execution_snapshot(record["payload"])
         if current_execution is not None:
             checkpoint = None

@@ -1,0 +1,28 @@
+{
+  "scope": "Owned disposable PostgreSQL + real Axum/domain/research/supervisor HTTP processes; synthetic data; no user DB/provider/broker",
+  "cases": [
+    "actual HTTP header isolation, HEAD/error/validation, protected metrics and OpenAPI",
+    "queued CSV preview/import hashes, immutable Parquet and catalog",
+    "multiasset shared session, idempotent creates/orders, conflict and exact Decimal fill/balance/revision/cutoff",
+    "queued Prop financial snapshot + native validation; playbook CAS revision",
+    "separate supervised research worker completed job and immutable result read through HTTP",
+    "genuine blocked write 504 receipt, scope isolation, reconciliation and same-key retry without duplicate",
+    "real React UI created multiasset session through public Axum; shell navigation and workspace SSE",
+    "supervisor startup readiness, marker drain, exact owned child teardown"
+  ],
+  "frontend_build": "production",
+  "mixed_load": {
+    "requests": 80,
+    "concurrency": 8,
+    "fixture_datasets": 2,
+    "rows_per_dataset": 40,
+    "p50_ms": 80.63,
+    "p95_ms": 175.3,
+    "p99_ms": 200.16,
+    "errors": 0,
+    "not_human_user_capacity": true
+  },
+  "result": "PASS",
+  "fixture_postgres_stopped": true,
+  "elapsed_seconds": 28.28
+}

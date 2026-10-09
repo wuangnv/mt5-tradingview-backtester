@@ -1,0 +1,205 @@
+{
+  "scope": "Real React, Axum and workers; isolated synthetic data; API requests are not mocked",
+  "errors": [],
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/chart-window"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/step"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/b231a7e14efd4882a79fc2f711396319/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/chart-window"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/step"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/chart-window"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/step"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/70a0ab5e75c9401293f5968cb32a1bfe/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/downloads"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    }
+  ],
+  "createdSession": "b231a7e14efd4882a79fc2f711396319",
+  "nativeChart": {
+    "ready": true,
+    "boundedBars": 11,
+    "cutoff": 1767226200
+  },
+  "replayStep": {
+    "cursor": 11,
+    "revision": 2
+  },
+  "customPeriod": {
+    "session": "70a0ab5e75c9401293f5968cb32a1bfe",
+    "startCursor": 10,
+    "endCursor": 12,
+    "completed": true,
+    "disabledStep": true
+  },
+  "documentNavigations": 1,
+  "result": "PASS"
+}

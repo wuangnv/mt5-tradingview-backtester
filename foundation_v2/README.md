@@ -187,6 +187,18 @@ Quick Session can create one OHLC backtest session with up to 12 instruments.
 the same account currency, and an overlapping historical period. Existing
 single-dataset sessions keep their original behavior.
 
+Quick Session shows its UTC period fields after asset selection. The create API
+accepts optional strict integer `start_timestamp` and `end_timestamp` in UTC
+seconds; an omitted/null end uses the remaining common data range. Explicit
+dates outside that range are rejected. Dates in market gaps resolve to the
+next start bar and preceding end bar, requiring future eligible bars. Earlier
+history remains chart context; stepping, orders and branches obey the persisted
+period, including after reload or asset switch. Nonzero `start_index` remains
+supported for older clients but cannot accompany `start_timestamp`. Mixed
+timeframes use a shared closed-bar clock and per-asset bounds; the actual first
+bar can therefore differ from the requested date. See the
+[period acceptance](evidence/session-period-20261009/README.md).
+
 Multi-asset sessions persist one replay clock and starting balance, plus
 per-instrument cursors/execution snapshots. Stepping advances every instrument
 to its last closed bar at that clock, including protection on inactive charts;
