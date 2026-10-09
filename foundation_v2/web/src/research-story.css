@@ -101,7 +101,7 @@
 .rs-progress-label { display: flex; justify-content: space-between; gap: 10px; color: var(--wm-content-muted); font-size: 12px; }
 .rs-progress-label strong { color: var(--wm-primary); font-variant-numeric: tabular-nums; }
 .rs-progress { height: 6px; overflow: hidden; background: var(--wm-border); }
-.rs-progress span { display: block; height: 100%; background: var(--wm-primary); transition: width .2s ease; }
+.rs-progress span { display: block; height: 100%; background: var(--wm-primary); transition: width var(--ds-motion-progress) var(--ds-ease-standard); }
 .rs-checkpoint-note { margin-top: 12px; border-left: 2px solid var(--wm-border); background: var(--wm-surface); padding: 10px 12px; color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }
 .rs-checkpoint-note strong { color: var(--wm-content); }
 .rs-result-section { margin-top: 0; }

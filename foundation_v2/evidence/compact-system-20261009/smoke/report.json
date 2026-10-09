@@ -1,0 +1,65 @@
+{
+  "pass": true,
+  "results": [
+    {
+      "name": "dashboard",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "name": "sessions",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "name": "trades",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "name": "analytics",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "name": "prop",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "name": "market",
+      "language": "vi",
+      "pass": true
+    },
+    {
+      "name": "dashboard",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "name": "sessions",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "name": "trades",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "name": "analytics",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "name": "prop",
+      "language": "en",
+      "pass": true
+    },
+    {
+      "name": "market",
+      "language": "en",
+      "pass": true
+    }
+  ]
+}

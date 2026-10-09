@@ -463,7 +463,7 @@ button.chart-order-level { cursor: ns-resize; touch-action: none; }
 .legacy-native-menu button:disabled { opacity:.5; cursor:default; }
 .legacy-native-menu button:hover:not(:disabled) { background:var(--project-hover); }
 .legacy-native-menu button:disabled:hover { background:transparent; }
-.legacy-native-menu button, .legacy-order-modal :is(button,input,select), .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select) { transition:background-color 140ms,border-color 140ms,color 140ms; }
+.legacy-native-menu button, .legacy-order-modal :is(button,input,select), .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select) { transition:background-color var(--ds-motion-hover),border-color var(--ds-motion-hover),color var(--ds-motion-hover); }
 .is-legacy-chart :is(.chart-floating-toolbar,.chart-utility-rail,.chart-trading-bar,.replay-side) :is(button,a,input,select):focus-visible { outline:2px solid var(--project-primary); outline-offset:-2px; }
 .legacy-order-modal :is(input,select):hover:not(:disabled) { background:var(--project-hover); border-color:var(--project-border-strong); }
 .legacy-order-modal :is(input,select):disabled { opacity:.5; cursor:default; }

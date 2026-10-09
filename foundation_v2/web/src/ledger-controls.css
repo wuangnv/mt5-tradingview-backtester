@@ -10,9 +10,9 @@
 .fxl-tabs button[aria-selected=true]{background:var(--fx-shell-nav-selected)}
 .fxl-tabs button:hover,.fxl-close:hover,.fxl-tag-heading button:hover{background:var(--fx-shell-nav-hover)}
 .fxl-drawer-body{flex:1;min-height:0;overflow:auto;padding:12px 18px;overscroll-behavior:contain}
-.fxl-filter-drawer input:not([type=checkbox]){background:transparent;color:var(--wm-content);border:1px solid var(--wm-border);border-radius:10px;padding:10px 12px;font:inherit;width:100%;box-sizing:border-box;min-width:0}
+.fxl-filter-drawer input:not([type=checkbox]){background:transparent;color:var(--wm-content);border:1px solid var(--wm-border);border-radius:var(--ds-radius-field);padding:7px 12px;min-height:var(--wm-control-height);line-height:var(--ds-line-control);font:inherit;width:100%;box-sizing:border-box;min-width:0}
 .fxl-filter-drawer input:not([type=checkbox]):hover{border-color:var(--wm-border-strong)}
-.fxl-filter-drawer :is(input,button,summary):focus-visible{outline:1px solid var(--wm-content);outline-offset:-2px}
+.fxl-filter-drawer :is(input,button,summary):focus-visible{outline:2px solid var(--wm-focus);outline-offset:-2px}
 .fxl-filter-search{display:block;margin-bottom:16px}
 .fxl-filter-drawer details{padding:8px 0}
 .fxl-filter-drawer summary{cursor:pointer;list-style:none;min-height:40px;display:flex;align-items:center;color:var(--wm-content-muted);gap:10px}
@@ -21,7 +21,7 @@
 .fxl-filter-drawer summary:hover{color:var(--wm-content)}
 .fxl-choices{display:grid;gap:12px;padding:12px 4px}
 .fxl-choices label{display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer}
-.fxl-choices input{accent-color:var(--wm-content);width:16px;height:16px}
+.fxl-choices input{accent-color:var(--wm-action-bg);width:16px;height:16px}
 .fxl-fields{display:grid;gap:12px}
 .fxl-field{display:grid;gap:8px;font-size:13px;padding-block:10px}
 .fxl-field small,.fxl-choices p,.fxl-timezone{font-size:12px;line-height:1.5;color:var(--wm-content-muted)}
@@ -31,7 +31,7 @@
 .fxl-tag-separator{display:flex;align-items:center;gap:12px;margin:24px 0;font-size:13px;font-weight:600}
 .fxl-tag-separator::before,.fxl-tag-separator::after{content:'';height:1px;background:var(--wm-border);flex:1}
 .fxl-filter-drawer .fx-select,.fxl-filter-drawer .fx-select-trigger{width:100%}
-.fxl-filter-drawer .fx-select-trigger{border-radius:10px;min-height:42px}
+.fxl-filter-drawer .fx-select-trigger{border-radius:var(--ds-radius-field);min-height:var(--wm-control-height)}
 .fxl-filter-drawer .fx-select-menu{position:relative;inset:auto!important;transform:none!important;margin-top:8px;box-shadow:none;max-width:100%!important;min-width:0}
 .fxl-filter-drawer footer{display:flex;gap:16px;align-items:center;padding:16px 18px;border-top:1px solid var(--wm-border);flex:none}
 .fxl-filter-drawer footer .is-primary{flex:1;border-radius:24px}

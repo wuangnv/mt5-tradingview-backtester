@@ -1,24 +1,24 @@
 .fx-select { position: relative; min-width: 0; color: var(--wm-control-text); font-size: 13px; }
-.fx-app .fx-select .fx-select-trigger { display: flex; align-items: center; gap: 8px; width: 100%; min-height: var(--wm-control-height); padding: 8px 12px; box-sizing: border-box; border: 1px solid var(--wm-control-border); border-radius: var(--wm-control-radius); background: transparent; color: var(--wm-control-text); font: inherit; line-height: 20px; text-align: left; cursor: pointer; transition: background-color 140ms, border-color 140ms; }
+.fx-app .fx-select .fx-select-trigger { display: flex; align-items: center; gap: 8px; width: 100%; min-height: var(--wm-control-height); padding: 7px 12px; box-sizing: border-box; border: 1px solid var(--wm-control-border); border-radius: var(--wm-control-radius); background: transparent; color: var(--wm-control-text); font: inherit; line-height: 20px; text-align: left; cursor: pointer; transition: background-color var(--ds-motion-hover) var(--ds-ease-standard), border-color var(--ds-motion-hover) var(--ds-ease-standard); }
 .fx-app .fx-select .fx-select-trigger:hover:not(:disabled) { background: var(--wm-hover); border-color: var(--wm-control-hover-border); }
 .fx-app .fx-select .fx-select-trigger[aria-expanded='true'] { background: var(--wm-control-open); border-color: var(--wm-control-hover-border); }
 .fx-select-trigger > svg { width: 16px; height: 16px; flex: 0 0 16px; }
 .fx-select-value { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .fx-select:not(.is-rich) .fx-select-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fx-select-chevron { margin-left: 6px; color: var(--wm-control-muted); transition: rotate 140ms; }
+.fx-select-chevron { margin-left: 6px; color: var(--wm-control-muted); transition: rotate var(--ds-motion-hover) var(--ds-ease-standard); }
 [aria-expanded='true'] > .fx-select-chevron { rotate: 180deg; }
 .fx-select-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; width: max-content; min-width: 100%; max-width: min(360px, calc(100vw - 90px)); padding: 6px; background: var(--wm-popup); border: 1px solid var(--wm-control-border); border-radius: 10px; box-shadow: 0 8px 24px #0003; }
 .fx-select-menu [role='listbox'] { max-height: 300px; overflow-y: auto; padding: 2px; box-sizing: border-box; }
 .fx-app .fx-select-menu [role='listbox'], .fx-app .fxa-session-options { scrollbar-width: auto; scrollbar-gutter: auto; scrollbar-color: var(--wm-control-muted) transparent; }
-.fx-app .fx-select-menu [role='option'] { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 40px; padding: 9px 10px; box-sizing: border-box; border: 0; border-radius: 6px; background: transparent; color: var(--wm-control-text); font: inherit; text-align: left; white-space: normal; cursor: pointer; }
+.fx-app .fx-select-menu [role='option'] { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: var(--wm-control-height); padding: 8px 10px; box-sizing: border-box; border: 0; border-radius: 6px; background: transparent; color: var(--wm-control-text); font: inherit; text-align: left; white-space: normal; cursor: pointer; }
 .fx-app .fx-select-menu [role='option']:hover:not(:disabled), .fx-app .fx-select-menu [role='option']:focus-visible { background: var(--wm-hover); }
 .fx-app .fx-select-menu [role='option'][aria-selected='true']:not(:hover) { background: transparent; }
 .fx-app .fx-select-menu [role='option']:disabled { opacity: .5; cursor: default; }
 .fx-select-menu small { display: block; margin-top: 4px; color: var(--wm-content-muted); font-size: 12px; line-height: 1.5; }
-.fx-select-menu > input { box-sizing: border-box; width: 100%; min-height: 40px; margin-bottom: 6px; padding: 8px 10px; border: 0; border-bottom: 1px solid var(--wm-control-border); border-radius: 0; background: transparent; color: var(--wm-control-text); font: inherit; }
+.fx-select-menu > input { box-sizing: border-box; width: 100%; min-height: var(--wm-control-height); margin-bottom: 6px; padding: 8px 10px; border: 0; border-bottom: 1px solid var(--wm-control-border); border-radius: 0; background: transparent; color: var(--wm-control-text); font: inherit; }
 .fx-select-menu > p { margin: 12px; color: var(--wm-content-muted); font-size: 13px; }
 .fx-select .fx-select-trigger:focus-visible, .fx-select-menu input:focus-visible, .fx-select-menu [role='option']:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: 2px; }
-.fx-select-check { color: var(--wm-content); }
+.fx-select-check { color: var(--project-highlight); }
 .fx-select.is-rich .fx-select-trigger { min-height: 100px; border-radius: 12px; padding: 14px 18px; }
 .fx-select.is-rich strong { display: block; margin-bottom: 6px; font-size: 17px; }
 .fx-select.is-rich small { display: block; margin-top: 3px; color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }

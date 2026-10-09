@@ -1,5 +1,5 @@
 /* One content gutter; outer page wrappers never add a second inset. */
-.fx-app.fx-shell-story { --wm-page-gutter: 32px; }
+.fx-app.fx-shell-story { --wm-page-gutter: var(--ds-page-gutter); }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-content { padding: 0 var(--wm-page-gutter) 40px; }
 .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-content > :is(.wm-page, .as-page, .pb-page, .ja-page, .rs-shell, .dd-shell, .learn-shell, .prop-shell, .trade-workspace, .risk-workspace, .replay-shell, .fx-dashboard) {
   box-sizing: border-box; width: 100%; max-width: none; margin-inline: 0; padding-inline: 0;
@@ -12,7 +12,7 @@
 .fx-subnav-primary > a { flex-shrink: 0; }
 .fx-subnav-action { flex: 0 0 auto; margin-left: auto; }
 .fx-app .fx-subsubnav { position: relative; flex: 0 0 auto; align-self: center; margin-inline: 0 12px; padding-inline: 0; border: 0; width: auto; }
-.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a { height: 52px; min-height: 52px; border-radius: 6px 6px 0 0; }
+.fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subsubnav a { height: var(--ds-nav); min-height: var(--ds-nav); border-radius: 6px 6px 0 0; }
 .wm-demo-action { display: flex; align-items: center; gap: 8px; }
 .wm-demo-action .fxa-button { border-radius: 999px; white-space: nowrap; }
 .wm-demo-label { color: var(--wm-content-muted); font-size: 12px; }
@@ -72,7 +72,8 @@ button.fxa-filter-chip:hover { background: var(--fx-shell-nav-selected); color: 
 .fxs-demo-summary span { color: var(--wm-content-muted); }
 .fx-dashboard-quick-action:disabled { opacity: .7; cursor: not-allowed; text-align: left; font: inherit; }
 .pb-workspace-grid, .ja-workspace-grid { display: grid; grid-template-columns: minmax(250px, 1fr) minmax(0, 2fr); gap: 32px; }
-@media (max-width: 760px) { .fx-app.fx-shell-story { --wm-page-gutter: 16px; } }
+@media (max-width: 1024px) { .fx-app.fx-shell-story { --wm-page-gutter: var(--ds-space-6); } }
+@media (max-width: 760px) { .fx-app.fx-shell-story { --wm-page-gutter: var(--ds-space-4); } }
 @media (max-width: 600px) { .wm-demo-label { display: none; } .wm-demo-action .fxa-button { font-size: 11px; padding-inline: 10px; } .fx-app.fx-shell-story:not(.is-chart-workspace) .fx-subnav { gap: 8px; } .fx-filter-popover { left: 0; right: auto; } }
 @media (max-width: 600px) { .pb-workspace-grid, .ja-workspace-grid { grid-template-columns: minmax(0, 1fr); } .fxa-filter-toolbar.is-ledger .fxa-filter-actions { margin-left: 0; flex-wrap: wrap; } .fxa-filter-toolbar.is-ledger .fxa-session-filter { flex-basis: 100%; } }
 

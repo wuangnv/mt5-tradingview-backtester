@@ -11,139 +11,19 @@ controls and report charts retain their project roles.
 
 ## Presentation
 
-`foundation_v2/web/src/testing-standard.css` owns Testing semantic tokens, scoped by
-`data-ui-area="testing"`. Live explicitly opts into the same rules through
-`data-ui-area="live"`; its layout and data semantics are defined in
-`live-market-standard.md`. Reuse existing components before adding another control.
+The current compact size/color/state/motion/layout rules are owned by
+[compact-system.md](compact-system.md) and the pinned
+[Compact contract](../../../UI-Systems/core/tokens/compact/0.1.0/CONTRACT.md).
+These supersede the previous 40px control / 32px metric / neutral-only scope.
+`component-interactions.css` maps the generated semantic roles; `testing-standard.css`
+now applies action roles across the app; `compact-system.css` owns project adapters.
+Route CSS owns composition and documented rich/vendor exceptions, not a new palette.
 
-| Role | Size |
-| --- | --- |
-| Metric value | 32px |
-| Page title | 22px |
-| Dialog title | 20px |
-| Section title | 16px |
-| Body | 14px |
-| Controls and table | 13px |
-| Metadata and help | 12px |
-
-Icons use 16px for chevrons and compact actions, 18px for standard actions, 20px for navigation and 24px for
-larger illustrative controls. Standard controls are 40px on desktop, 44px below
-480px or with coarse pointers. Circular actions share the duplicate-session
-reference: 32px desktop, 44px mobile/coarse, with 16px icons.
-Summary uses the same compact height beside session icon actions, with 13px/500
-text. Dashboard remaining-days track and text form a centered group beside the
-action row and use sea blue. Empty session expansion uses one text line plus
-bottom padding, without a minimum chart height. Chart controls retain their
-recorded compact arrangement and vendor controls keep vendor sizing. The compact
-mobile page pager shows previous/current/next; desktop also exposes first/last
-and up to five nearby page numbers with ellipses. `PaginationFooter` keeps navigation
-and the row-count text pill in one centered group. Page buttons are 36px desktop,
-44px mobile/coarse; ordinary pages are transparent and the current page uses the
-selected surface. Library and full-page trade tables keep a full-width top divider
-and the pager at the viewport bottom while rows scroll. Remote page-size changes
-reset to page one in a single request; pending or unknown totals disable navigation.
-
-Spacing uses 4/8/12/16/24/32px. Buttons and ordinary select triggers use pill
-radii, one transparent 1px border and a muted control surface; primary actions use the
-Go-to-chart peach surface with a contrasting foreground. Open and keyboard-focus states remain visible.
-Destructive actions use a filled red surface with white text in resting and hover
-states. Remaining-days badges use the softer peach surface/text pair. Dashboard keeps a compact Delete icon; the Sessions toolbar uses the text
-Delete session pill. The Recent Sessions filter toggle shares compact icon sizing.
-Trades toolbar icons and text controls align around one vertical center.
-Text buttons and select triggers use a 20px line box. Text buttons use
-500 weight and 8px/12px padding; compact circles override padding to zero.
-Pagination flex layout belongs to the shared standard, so a standalone Market
-Data or Live route never depends on lazily loaded Analytics styles. Action SVGs have a fixed,
-non-shrinking box (18px standard, 16px compact) and no inline baseline gap.
-Metric icons align with the label's first 18px line when the label wraps; search
-icons track the input's vertical center. Market Data fields follow the shared
-40/44px control height, including date fields.
-
-Market Data keeps category, source and download-status filters visible beside the
-sort control. Download status limits the rows to all, saved, downloading or unsaved assets;
-sort changes only their order (name ascending/descending or recently updated).
-Search stays on the left; controls wrap on narrow screens. Data-library dialog
-actions use the shared button treatment, with `.is-danger` for delete confirmation
-and compact circular close buttons. Their busy/disabled states retain native
-button semantics and cannot submit an action.
-Library history uses two fixed-width columns, From date (UTC) and To date (UTC),
-with dd/mm/yyyy on one line. Saved rows use observed dataset boundaries; unsaved
-Dukascopy rows use downloadable metadata and retain the coverage disclaimer.
-Unknown dates stay “—”. Exact saved timestamps remain in Details and date tooltips.
-Active, paused and failed transfers show their state on its own line, followed
-by a progress track with percentage and stacked transferred bytes/speed in Status.
-Speed appears only during downloading; long state/metadata values wrap normally.
-The existing progress dialog remains available by activating this status control.
-Actions align to their column's left content edge, like the other headers/cells.
-Status and Actions use fixed 112px/196px columns so ordinary status text does not
-leave a wide reserved progress area before the actions. Asset absorbs remaining
-width. Action buttons align to the column start while each icon/text group is
-centered inside its button. Progress uses height rather than extra column width
-and retains the shared typography.
-Download and Pause/Resume share a fixed text-button slot; More/Cancel use the
-adjacent circular icon slot, keeping alignment stable across transfer states.
-Sticky header cells own their bottom divider with an inset line, so it remains
-visible during scrolling without a duplicate border on the first body row.
-The table scroll viewport has no bottom border: PaginationFooter owns the single
-full-width divider, regardless of scroll position.
-Body row separators are quieter than the structural header/footer divider, so a
-partially clipped row near the footer does not look like a second frame boundary.
-Rich session selectors, input fields and popups retain their field/panel geometry;
-popups use 12px radii. Inline Settings retains its underline interaction.
-
-Dashboard KPI values use 32px/600 numerals; duration units use 14px text aligned
-on the numeral baseline. Durations come from typed seconds, shown as elapsed
-days/hours/minutes, never inferred calendar months. Unknown durations remain
-“—”; demo durations remain explicitly sample data. There are no information
-icons. Overall win rate shows only its percentage. The closed-trade card uses a
-green/red Buy/Sell split from the same deduplicated, filtered closure aggregate;
-percentages appear only for a positive total with complete side counts. Monthly counts
-stay labeled as trades until measured activity time is available. Report bars
-use solid peach/blue/violet and aligned dashed grids; zero values have zero area.
-
-Replay timing follows the public [FX Replay definitions](https://support.fxreplay.com/faqs):
-practice time is active interaction; historical time is market time moved through.
-Exact FX Replay idle/multi-tab/skip algorithms are not public. Our replay workspace
-counts visible, focused interaction (including chart iframe input and paused
-analysis), with a 120-second idle cutoff. Ten-second flushes submit immutable
-segments of at most 30 seconds; the server unions overlaps across selected
-sessions to avoid counting simultaneous tabs twice. Heartbeats do not change
-execution revisions. Failed saves retry the same event ID, with a per-tab browser
-queue capped at 120 events; unsupported storage retains only in-memory retries.
-Crash/close before a successful flush can lose a short unsaved tail.
-
-Historical time adds real timestamp differences only on successful canonical
-forward steps. Read-only seek/reload does not add time; a new branch starts at
-zero and does not inherit the parent's counters. Legacy sessions are measured
-from activation, never backfilled from creation dates or old cursor positions.
-Dashboard timing totals are for the selected sessions, independently of trade
-date/side/outcome filters; since-tracking and partially measured scopes remain
-visible. Practice/replay metrics can be measured even without closed trades.
-
-Shell chrome and generic actions use neutral white/black/gray in both themes.
-Primary actions use peach; financial positive/negative colors and the separate
-report chart palette retain their meaning. The sidebar shows the current raw workspace
-ID with a Settings link above the separated primary group. It does not imply a
-signed-in profile, tier, or workspace-switching capability.
-Icon actions are circles, filter pills retain the established rounded shape.
-Use alignment and spacing before surfaces; avoid nested cards. Dividers extend
-to the content edges; the table scroll region, header and footer remain separate.
-
-Hover uses the shared neutral surface and ivory/dark text in each theme. Semantic positive/negative financial
-values retain their colors. Selected dropdown options show a check; selection
-does not permanently apply hover background. Focus remains visible without a
-second overlapping border. Respect reduced-motion preferences.
-
-Workspace tabs use 52px height and 18px navigation icons. Hover brightens text and
-icons without a background or border; selected tabs use contrast text and a 2px underline
-(ivory in dark theme, dark in light theme), with no persistent fill. Analytics
-source tabs stay beside Analytics on the same horizontally scrolling row, with
-no vertical separator. On Analytics, the underline runs continuously from the
-Analytics parent through both source tabs in peach. The parent text/icon is
-peach. Source labels are muted at rest and brighten on hover; only the selected
-source uses full-contrast text. Hover never adds a fill. Other selected tabs retain the
-ivory/dark underline. The rail toggle has a transparent background and brightens its icon
-on hover. Keyboard focus retains its visible outline.
+Market Data history keeps two UTC date columns, dd/mm/yyyy; exact timestamps are
+available in details. Unsupported download bytes/speed/ETA stay hidden; a known
+zero is not unknown. Row progress omits redundant state prose as requested; errors
+and controls remain discoverable. Action placement does not move between states.
+Financial colors, chart cutoffs, navigation context and dataset source are unchanged.
 
 ## Components and language boundaries
 

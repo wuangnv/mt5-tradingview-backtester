@@ -87,7 +87,7 @@
 .rd-job-strip strong.is-good { color: var(--wm-positive); }
 .rd-job-strip strong.is-warn { color: var(--wm-warning); }
 .rd-progress { margin: 13px 0; height: 6px; background: var(--wm-border); overflow: hidden; }
-.rd-progress span { display: block; height: 100%; background: var(--wm-primary); transition: width .2s ease; }
+.rd-progress span { display: block; height: 100%; background: var(--wm-primary); transition: width var(--ds-motion-progress) var(--ds-ease-standard); }
 .rd-checkpoint { padding: 10px 12px; border-left: 2px solid var(--wm-border); background: var(--wm-surface); color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }
 .rd-checkpoint strong { color: var(--wm-content); }
 .rd-result { margin-top: 22px; border-top: 1px solid var(--wm-border); }

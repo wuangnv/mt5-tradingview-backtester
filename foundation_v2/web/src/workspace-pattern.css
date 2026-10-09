@@ -15,9 +15,9 @@
   --wm-negative: var(--project-negative);
   --wm-warning: var(--project-warning);
   --wm-focus: var(--fx-focus-ring, #f0b65f);
-  --wm-space-section: 32px;
-  --wm-space-group: 24px;
-  --wm-space-control: 12px;
+  --wm-space-section: var(--ds-space-8);
+  --wm-space-group: var(--ds-space-6);
+  --wm-space-control: var(--ds-space-3);
 }
 .fx-app[data-theme='light'] {
   --wm-primary: var(--project-primary);
@@ -53,8 +53,8 @@
 .fx-app .wm-page h3 { font-size: 14px; font-weight: 600; line-height: 1.5; letter-spacing: normal; }
 .fx-app .wm-page :where(input:not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea) {
   min-width: 0;
-  min-height: 44px;
-  border-radius: 4px;
+  min-height: var(--wm-control-height);
+  border-radius: var(--ds-radius-field);
   font-family: inherit;
   font-size: 13px;
 }

@@ -3,7 +3,7 @@
 **Status:** candidate under implementation (project scope only)
 **Version:** `0.2.0-dev`
 **Owner:** `projects/mt5-tradingview-backtester/ui/`
-**Updated:** 2026-09-29
+**Updated:** 2026-10-09
 
 This is the agent-facing UI contract for the MT5 TradingView Backtester. It
 translates the useful interaction grammar observed in the historical
@@ -11,6 +11,10 @@ translates the useful interaction grammar observed in the historical
 not a release of the shared UI layers and not an approval of every current
 screen. The runnable React/Vite implementation in
 `foundation_v2/web/` remains the code authority.
+
+Visual foundations now follow [compact-system.md](compact-system.md) and the
+pinned `annam-compact@0.1.0` contract. They supersede historical sizes, generic
+hover colors and motion values below; domain/data behavior remains authoritative.
 
 ## 1. Source of truth and boundaries
 

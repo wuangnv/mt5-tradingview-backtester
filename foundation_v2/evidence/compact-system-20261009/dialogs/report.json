@@ -1,0 +1,85 @@
+{
+  "results": [
+    {
+      "name": "Quick Session",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "Help",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "Asset catalog drawer",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "CSV import",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "Ledger filters",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "Session settings",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "Session delete confirmation",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "name": "Quick Session",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "Help",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "Asset catalog drawer",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "CSV import",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "Ledger filters",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "Session settings",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "Session delete confirmation",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "name": "Mobile dimensions and type switch",
+      "hasTouch": false,
+      "pass": true
+    },
+    {
+      "name": "Mobile dimensions and type switch",
+      "hasTouch": true,
+      "pass": true
+    }
+  ],
+  "errors": []
+}

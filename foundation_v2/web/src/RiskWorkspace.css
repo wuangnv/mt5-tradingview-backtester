@@ -26,8 +26,8 @@
 .trade-init-section p { margin: 8px 0 0; color: var(--wm-content-muted); font-size: 13px; line-height: 1.5; }
 .trade-init-form { display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 12px; }
 .trade-init-form label, .trade-draft-form label, .risk-form label { display: grid; gap: 6px; color: var(--wm-content-muted); font-size: 12px; text-transform: none; letter-spacing: 0; }
-.trade-init-form input, .trade-draft-form input, .risk-form input, .risk-form select { width: 100%; min-height: 44px; border: 1px solid var(--wm-border); border-radius: 3px; background: var(--wm-surface); color: var(--wm-content); padding: 0 9px; font: inherit; font-size: 12px; letter-spacing: 0; }
-.trade-primary, .risk-primary { min-height: 44px; border: 1px solid var(--wm-action-bg); border-radius: 3px; background: var(--wm-action-bg); color: var(--wm-on-primary, #fff); padding: 0 13px; font-size: 13px; font-weight: 800; white-space: nowrap; cursor: pointer; }
+.trade-init-form input, .trade-draft-form input, .risk-form input, .risk-form select { width: 100%; min-height: var(--wm-control-height); border: 1px solid var(--wm-border); border-radius: 3px; background: var(--wm-surface); color: var(--wm-content); padding: 0 9px; font: inherit; font-size: 12px; letter-spacing: 0; }
+.trade-primary, .risk-primary { min-height: var(--wm-control-height); border: 1px solid var(--wm-action-bg); border-radius: 3px; background: var(--wm-action-bg); color: var(--wm-on-primary, #fff); padding: 0 13px; font-size: 13px; font-weight: 800; white-space: nowrap; cursor: pointer; }
 .trade-primary:hover, .risk-primary:hover { background: var(--wm-action-hover); }
 .trade-primary:disabled, .risk-primary:disabled { cursor: wait; opacity: .55; }
 .trade-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 28px; padding-top: 22px; }
@@ -42,7 +42,7 @@
 .trade-cutoff-label { color: var(--wm-content-muted); font-size: 12px; }
 .trade-draft-form { display: grid; grid-template-columns: 100px repeat(3, minmax(100px, 1fr)); align-items: end; gap: 12px; border-top: 1px solid var(--wm-border); margin-top: 15px; padding-top: 16px; }
 .trade-side-toggle { display: grid; grid-template-columns: 1fr; gap: 4px; }
-.trade-side-toggle button { min-height: 44px; border: 1px solid var(--wm-border); border-radius: 3px; background: var(--wm-surface); color: var(--wm-content-muted); font-size: 12px; font-weight: 800; cursor: pointer; }
+.trade-side-toggle button { min-height: var(--wm-control-height); border: 1px solid var(--wm-border); border-radius: 3px; background: var(--wm-surface); color: var(--wm-content-muted); font-size: 12px; font-weight: 800; cursor: pointer; }
 .trade-side-toggle button.is-buy { border-color: var(--wm-positive); background: color-mix(in srgb, var(--wm-positive) 12%, var(--wm-surface)); color: var(--wm-positive); }
 .trade-side-toggle button.is-sell { border-color: var(--wm-negative); background: color-mix(in srgb, var(--wm-negative) 12%, var(--wm-surface)); color: var(--wm-negative); }
 .trade-risk-preview { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--wm-border); border-bottom: 1px solid var(--wm-border); }

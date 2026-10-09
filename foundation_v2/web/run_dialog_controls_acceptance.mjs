@@ -3,13 +3,14 @@ import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
 
 const base = process.env.TW_UI_BASE || 'http://127.0.0.1:5180'
-const out = '../evidence/dialog-controls-20261009'
+const out = process.env.TW_DIALOG_EVIDENCE || '../evidence/dialog-controls-20261009'
 await mkdir(out, { recursive:true })
 const browser = await chromium.launch({ headless:true })
 const results = [], errors = []
 const url = (view, section, extra = '') => `${base}/?workspace=tenant-a&view=${view}&area=testing&section=${section}${extra}`
 async function checkClose(page, name, close) {
   await close.waitFor()
+  await close.evaluate(async el => { await Promise.all(el.closest('dialog, [role=dialog]').getAnimations({subtree:true}).map(animation => animation.finished.catch(() => {}))) })
   await page.mouse.move(0, 0)
   const initial = await close.evaluate(el => ({ color:getComputedStyle(el).color, box:el.getBoundingClientRect().toJSON() }))
   await close.hover()

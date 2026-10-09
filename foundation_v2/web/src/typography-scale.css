@@ -7,12 +7,12 @@
  * UI-system snapshot or browser defaults.
  */
 .fx-app {
-  --fx-type-label: 11px;
-  --fx-type-meta: 12px;
-  --fx-type-support: 13px;
-  --fx-type-body: 14px;
-  --fx-type-control: 13px;
-  --fx-type-code: 12px;
+  --fx-type-label: var(--ds-font-meta);
+  --fx-type-meta: var(--ds-font-meta);
+  --fx-type-support: var(--ds-font-control);
+  --fx-type-body: var(--ds-font-body);
+  --fx-type-control: var(--ds-font-control);
+  --fx-type-code: var(--ds-font-meta);
 }
 
 /* Stable shell and overview. */

@@ -83,7 +83,7 @@
 .ja-story-page .ja-journal-row {
   grid-template-columns: minmax(0, 1fr) minmax(130px, .42fr);
   padding: 17px;
-  transition: background-color 140ms ease, box-shadow 140ms ease;
+  transition: background-color var(--ds-motion-hover) var(--ds-ease-standard), box-shadow var(--ds-motion-hover) var(--ds-ease-standard);
 }
 
 .ja-story-page .ja-journal-row:hover {

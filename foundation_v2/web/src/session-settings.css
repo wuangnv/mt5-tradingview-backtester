@@ -6,22 +6,22 @@
 .fxs-settings-tabs { display: flex; border-bottom: 1px solid var(--wm-border); overflow-x: auto; }
 .fxs-settings-drawer .fxs-settings-tabs button { min-height: 48px; flex: 0 0 auto; padding: 0 14px; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: var(--wm-content-muted); font: inherit; font-size: 14px; cursor: pointer; }
 .fxs-settings-drawer .fxs-settings-tabs button[aria-selected='true'] { color: var(--wm-content); border-bottom-color: var(--wm-content); }
-.fxs-settings-drawer .fxs-settings-tabs button:hover { color: var(--wm-content); background: var(--wm-hover); }
+.fxs-settings-drawer .fxs-settings-tabs button:hover { color: var(--wm-content); background: transparent; }
 .fxs-settings-panel { padding-top: 24px; }
-.fxs-settings-panel form, .fxs-settings-fields { display: grid; gap: 18px; }
-.fxs-settings-panel label { display: grid; gap: 8px; color: var(--wm-content); font-size: 14px; }
-.fxs-settings-panel :is(input, textarea) { width: 100%; min-width: 0; min-height: 42px; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--wm-control-border); border-radius: 12px; background: transparent; color: var(--wm-content); font: inherit; }
+.fxs-settings-panel form, .fxs-settings-fields { display: grid; gap: var(--ds-space-6); }
+.fxs-settings-panel label { display: grid; gap: 8px; color: var(--wm-content); font-size: var(--wm-text-control); }
+.fxs-settings-panel :is(input, textarea) { width: 100%; min-width: 0; min-height: var(--wm-control-height); box-sizing: border-box; padding: 7px 12px; border: 1px solid var(--wm-control-border); border-radius: var(--ds-radius-field); background: transparent; color: var(--wm-content); font: inherit; }
 .fxs-settings-panel textarea { min-height: 100px; resize: vertical; }
 .fxs-settings-panel input[readonly] { color: var(--wm-content-muted); background: var(--wm-surface); }
 .fxs-settings-panel :is(input, textarea):hover { border-color: var(--wm-control-hover-border); }
-.fxs-settings-panel :is(input, textarea):focus { outline: 0; border-color: var(--wm-content); box-shadow: none; }
+.fxs-settings-panel :is(input, textarea):focus { outline: 0; border-color: var(--wm-focus); box-shadow: none; }
 .fxs-settings-panel :is(small, .fxs-settings-note) { color: var(--wm-content-muted); font-size: 12px; line-height: 1.6; margin: 0; }
-.fxs-settings-drawer .fxs-settings-save { width: fit-content; min-height: 42px; padding: 0 20px; border: 1px solid var(--wm-control-border); border-radius: 999px; background: var(--wm-action-bg); color: var(--wm-on-primary); font: inherit; font-weight: 600; cursor: pointer; }
+.fxs-settings-drawer .fxs-settings-save { width: fit-content; min-height: var(--wm-control-height); padding: 0 20px; border: 1px solid var(--wm-control-border); border-radius: 999px; background: var(--wm-action-bg); color: var(--wm-on-primary); font: inherit; font-size:var(--wm-text-control); font-weight: var(--ds-weight-control); cursor: pointer; }
 .fxs-settings-drawer .fxs-settings-save:hover:not(:disabled) { background: var(--wm-action-hover); }
 .fxs-settings-drawer button:disabled { cursor: default; opacity: .45; }
 .fxs-settings-drawer button:focus-visible { outline: 2px solid var(--wm-focus); outline-offset: -2px; }
 .fxs-settings-asset { width: fit-content; padding: 9px 14px; border: 1px solid var(--wm-control-border); border-radius: 999px; }
-.fx-app.fx-shell-story[data-theme] .fx-content .fxs-settings-drawer :is(input, textarea) { min-height: 42px; border-radius: 12px; font-size: 14px; }
-.fx-app.fx-shell-story[data-theme] .fx-content .fxs-settings-drawer :is(input, textarea):focus-visible { outline: none; border-color: var(--wm-content); box-shadow: none; }
+.fx-app.fx-shell-story[data-theme] .fx-content .fxs-settings-drawer :is(input, textarea) { min-height: var(--wm-control-height); border-radius: var(--ds-radius-field); font-size: var(--wm-text-control); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fxs-settings-drawer :is(input, textarea):focus-visible { outline: none; border-color: var(--wm-focus); box-shadow: none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .fxs-settings-drawer .fxs-settings-tabs button { border-radius: 0; }
 @media (max-width: 600px) { .fxs-settings-drawer { padding: 20px 16px; } .fxs-settings-drawer h2 { font-size: 24px; } .fxs-settings-drawer .fxs-settings-tabs button { padding-inline: 10px; font-size: 12px; } }

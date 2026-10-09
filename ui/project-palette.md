@@ -6,58 +6,13 @@ controls. The trading chart uses the Legacy black palette selected on
 existing flat layout, sizes and navigation.
 This is a project contract, not a change to the pinned shared UI foundation.
 
-`foundation_v2/web/public/project-palette.css` owns both theme values. The HTML
-loads it before the application. `component-interactions.css` maps project colors
-to existing shell, WM, FX and UI roles. Trading chart engines use
-`nativeChartPalette.js`; `chart-legacy.css` adapts toolbar chrome using documented CSS roles without editing vendor sources.
-Theme changes repaint series, volume and overlays. Saved trading layouts cannot
-restore the earlier pastel chart palette.
-
-| Role | Dark | Light | Usage |
-| --- | --- | --- | --- |
-| Canvas | `#080808` | `#FFFFFF` | Main page |
-| Chrome | `#0C0C0C` | `#FFFFFF` | Rail |
-| Surface | `#141414` | `#FFFFFF` | Data groups |
-| Raised | `#1D1D1D` | `#FAFAFA` | Menus and overlays |
-| Control | `#232323` | `#F4F4F4` | Secondary actions |
-| Hover | `#2A2A2A` | `#EBEBEB` | Interactive surface |
-| Text | `#FFFFFF` | `#111111` | Content and selected navigation |
-| Muted | `#B8B8B8` | `#525252` | Metadata |
-| Sea blue | `#7ABBE6` | `#24658B` | Progress, secondary accents and keyboard focus |
-| On primary | `#080808` | `#FFFFFF` | Text on filled actions |
-| Highlight | `#FFAD7C` | `#A44715` | Parent tab with source tabs, quick-action icons, session counts, draft drawings |
-| Positive | `#72CFA1` | `#24724B` | Gains, success, target |
-| Negative | `#FF828B` | `#B5373C` | Loss, errors, stop |
-| Warning | `#EAC369` | `#845D0D` | Caution and unavailable state |
-
-Use colors by role rather than by page. Keep accents sparse: controls and labels
-remain neutral unless an action or data meaning needs emphasis. Header navigation
-hover only brightens text/icons; no hover fill or pointer border. Selected tabs
-retain the white/dark underline. A selected parent with source tabs uses peach
-text/icon and a continuous peach underline across the parent and source tabs;
-source-tab text stays neutral. Dropdown selection uses a checkmark,
-not a persistent hover fill. Financial colors retain their distinct meanings.
-
-Never recolor user-defined drawings, change financial data, or substitute demo
-data for a failed actual read. Demo, empty, unavailable and loading keep their
-existing data/state ownership. Contrast checks cover content/metadata against
-surfaces and primary/semantic action foregrounds in both themes.
-
-## Primary actions and related badges
-
-| Role | Dark | Light |
-| --- | --- | --- |
-| Action / hover | `#FFAD7C` / `#FFC49F` | `#B85018` / `#993E10` |
-| On action | `#080808` | `#FFFFFF` |
-| Peach soft / text | `#3B2418` / `#FFC49F` | `#FFE5D5` / `#9A3E15` |
-| Delete / hover | `#C53E48` / `#CC414B` | `#B5373C` / `#98292F` |
-| On delete | `#FFFFFF` | `#FFFFFF` |
-
-`--project-action` maps to `--wm-action-bg`, with matching hover and foreground.
-Use filled peach for New session, Go to chart, Apply, and primary submit actions.
-Secondary actions remain neutral. Remaining-days badges use soft peach. Dashboard
-remaining-days progress uses sea blue for contrast with peach actions. Destructive session controls use filled red with
-white text; reset filters is a neutral text action with a trash icon and hover.
+`foundation_v2/web/public/project-palette.css` is now a deterministic snapshot
+of pinned `annam-compact@0.1.0`; edit the token source and regenerate, not this
+snapshot. [compact-system.md](compact-system.md) owns the current color tables
+and state treatment, superseding the historical values here. General controls
+use neutral hover (owner rejected a muddy blue fill on 09/10/2026). Orange is the
+primary action, blue is focus/information/progress, green success, red destructive
+or loss, gold warning. Keep names and accessible state alongside color.
 
 ## Report charts (outside the trading chart)
 

@@ -27,6 +27,7 @@ import './workspace-pattern.css'
 import './page-layout.css'
 import './component-interactions.css'
 import './testing-standard.css'
+import './compact-system.css'
 import { useTestingLocale } from './testingLocale.jsx'
 import { TestingSkeleton, TestingRouteBoundary } from './TestingReadState.jsx'
 

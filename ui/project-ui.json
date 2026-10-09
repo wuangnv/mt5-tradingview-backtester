@@ -51,6 +51,19 @@
       "scope": [
         "prop.report.controls"
       ]
+    },
+    {
+      "system": "annam-compact",
+      "version": "0.1.0",
+      "sourceSha256": "6b931fbbccb5edcb69703551493ece5a70585b69cd49b7369aed8b09ffa4697f",
+      "snapshot": "foundation_v2/web/public/project-palette.css",
+      "scope": [
+        "application.palette",
+        "application.control-geometry",
+        "application.typography",
+        "application.motion",
+        "application.interaction-states"
+      ]
     }
   ],
   "approvedForProductionPropagation": false,

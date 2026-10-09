@@ -8,6 +8,12 @@ This layer sits below:
 - [`../../../UI-Systems/`](../../../UI-Systems/README.md) — product-agnostic foundations;
 - [`../../../UI/`](../../../UI/README.md) — reusable trading-domain contracts.
 
+## Current visual standard
+
+[Compact system](compact-system.md) explains sizes, colors, hover, motion and
+layout in Vietnamese. The living catalog is `?area=testing&ui_reference=1`.
+The app pins `annam-compact@0.1.0`; other products are not migrated implicitly.
+
 ## Current state
 
 Status: **implementation in progress; partial local validation**.

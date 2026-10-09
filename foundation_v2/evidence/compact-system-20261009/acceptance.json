@@ -1,0 +1,119 @@
+{
+  "results": [
+    {
+      "case": "states, motion, no layout shift, keyboard, contrast, theme switch",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "states, motion, no layout shift, keyboard, contrast, theme switch",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "overview",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "overview",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "analytics",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "market-data",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "settings",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "overview",
+      "width": 768,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "overview",
+      "width": 768,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "analytics",
+      "width": 768,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "market-data",
+      "width": 768,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "settings",
+      "width": 768,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "overview",
+      "width": 1440,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "overview",
+      "width": 1440,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "analytics",
+      "width": 1440,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "market-data",
+      "width": 1440,
+      "pass": true
+    },
+    {
+      "case": "reflow and geometry",
+      "view": "settings",
+      "width": 1440,
+      "pass": true
+    },
+    {
+      "case": "reduced motion",
+      "pass": true
+    },
+    {
+      "case": "session settings fields geometry and keyboard focus",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "session settings fields geometry and keyboard focus",
+      "theme": "light",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

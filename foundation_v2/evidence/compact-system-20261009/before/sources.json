@@ -1,0 +1,2045 @@
+[
+  {
+    "file": "src/analytics-filter-controls.css",
+    "lines": 26,
+    "values": {
+      "font-size": [
+        "14px",
+        "12px",
+        "13px"
+      ],
+      "font-weight": [
+        "600"
+      ],
+      "border-radius": [
+        "12px",
+        "8px",
+        "50%",
+        "6px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#0003"
+    ]
+  },
+  {
+    "file": "src/analytics-story.css",
+    "lines": 523,
+    "values": {
+      "font-size": [
+        "clamp(28px, 3vw, 38px)",
+        "13px",
+        "10px",
+        "12px",
+        "11px",
+        "clamp(20px, 2.1vw, 28px)",
+        "clamp(22px, 2.5vw, 30px)",
+        "15px",
+        "14px",
+        "17px",
+        "18px",
+        "20px",
+        "16px",
+        "28px",
+        "22px"
+      ],
+      "font-weight": [
+        "800",
+        "650",
+        "700",
+        "600"
+      ],
+      "border-radius": [
+        "50%",
+        "3px",
+        "4px",
+        "var(--wm-radius-control)",
+        "6px",
+        "0"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#e5ebef",
+      "#2b353b",
+      "#222a2f",
+      "#89959e",
+      "#68757d",
+      "#111619",
+      "#151b1f",
+      "#d5aa51",
+      "#7fca95",
+      "#ec9696",
+      "#f0f3f5",
+      "#a0abb2",
+      "#7f8b94",
+      "#abb6bd",
+      "#d6a64b",
+      "#d8e0e5",
+      "#dfb967",
+      "#c8d3da",
+      "#efc269",
+      "#dbe3e7",
+      "#76848c",
+      "#7d8a92",
+      "#344047",
+      "#0e1417",
+      "#d7e0e4",
+      "#b4873d",
+      "#39464d",
+      "#c5d0d5",
+      "#796032",
+      "#d6b56e",
+      "#bfcbd0",
+      "#6f5a2f",
+      "#19150c",
+      "#d7bf82",
+      "#f1f4f5",
+      "#9ca8af",
+      "#4c4331",
+      "#dcb564",
+      "#9ba7af",
+      "#edf2f4",
+      "#77858e",
+      "#617079",
+      "#ebf0f2",
+      "#73818a",
+      "#323b41",
+      "#101518",
+      "#2a343a",
+      "#f5dfa3",
+      "#74828a",
+      "#303a40",
+      "#805d46",
+      "#66747d",
+      "#87949c",
+      "#65727a",
+      "#849099",
+      "#77858d",
+      "#dce3e6",
+      "#c7d0d5",
+      "#849199",
+      "#d8e0e4",
+      "#818b91",
+      "#74818a",
+      "#cbd4d9",
+      "#b6c2c9",
+      "#0c1113",
+      "#9ba8af",
+      "#87939b",
+      "#c9d2d7",
+      "#78858d",
+      "#192126",
+      "#9eabb1",
+      "#dfbc6e",
+      "#e3eaed",
+      "#45515a",
+      "#e2e9ec",
+      "#ba8d40",
+      "#17130d",
+      "#d2a450",
+      "#727e86",
+      "#1a2226",
+      "#364149",
+      "#929ea5",
+      "#bac5cb",
+      "#ef9c9c",
+      "#68474a",
+      "#251719",
+      "#f3b4b4",
+      "#3b82f6"
+    ]
+  },
+  {
+    "file": "src/ChartWorkbench.css",
+    "lines": 476,
+    "values": {
+      "font-size": [
+        "13px",
+        "12px",
+        "11px",
+        "10px",
+        "14px",
+        "15px",
+        "9px",
+        "0",
+        "18px",
+        "20px"
+      ],
+      "font-weight": [
+        "500",
+        "400"
+      ],
+      "border-radius": [
+        "4px",
+        "6px",
+        "0",
+        "5px",
+        "3px",
+        "20px",
+        "10px",
+        "18px",
+        "12px",
+        "50%",
+        "8px",
+        "14px",
+        "11px",
+        "7px",
+        "22px"
+      ],
+      "transition": [
+        "background-color 140ms,border-color 140ms,color 140ms",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#2962ff",
+      "#0002",
+      "#000000",
+      "#0F0F0F",
+      "#303030",
+      "#FFFFFF",
+      "#BDBDBD",
+      "#292929",
+      "#DADADA",
+      "#111111",
+      "#525252",
+      "#EBEBEB",
+      "#26A69A",
+      "#000",
+      "#EF5350",
+      "#383C45",
+      "#EFEFEF",
+      "#5695FE",
+      "#080808",
+      "#26a69a",
+      "#ef5350",
+      "#087f74",
+      "#c52a2a",
+      "#efefef",
+      "#aaa",
+      "#3a3a3a",
+      "#0f0f0f",
+      "#fff",
+      "#222",
+      "#666",
+      "#d6d6d6",
+      "#eee",
+      "#fafafa",
+      "#606774",
+      "#5695fe",
+      "#76abff"
+    ]
+  },
+  {
+    "file": "src/component-interactions.css",
+    "lines": 327,
+    "values": {
+      "font-size": [
+        "22px",
+        "13px"
+      ],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "6px",
+        "var(--wm-control-radius)",
+        "50%",
+        "4px",
+        "10px"
+      ],
+      "transition": [
+        "background-color 140ms ease, border-color 140ms ease, color 140ms ease, box-shadow 140ms ease",
+        "background-color 140ms ease, box-shadow 140ms ease",
+        "background-color 140ms ease",
+        "rotate 140ms ease",
+        "opacity 140ms ease, display 140ms allow-discrete, overlay 140ms allow-discrete",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/dashboard-session.css",
+    "lines": 74,
+    "values": {
+      "font-size": [
+        "12px",
+        "16px",
+        "11px",
+        "13px",
+        "18px",
+        "22px",
+        "14px"
+      ],
+      "font-weight": [
+        "600",
+        "400",
+        "500"
+      ],
+      "border-radius": [
+        "16px",
+        "999px",
+        "50%",
+        "12px"
+      ],
+      "transition": [
+        "background-color 140ms ease",
+        "rotate 140ms",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#0009"
+    ]
+  },
+  {
+    "file": "src/dashboard.css",
+    "lines": 216,
+    "values": {
+      "font-size": [
+        "22px",
+        "14px",
+        "12px",
+        "16px",
+        "13px",
+        "32px",
+        "11px",
+        "24px",
+        "26px"
+      ],
+      "font-weight": [
+        "650",
+        "600",
+        "500",
+        "400"
+      ],
+      "border-radius": [
+        "6px",
+        "10px",
+        "var(--wm-control-radius)",
+        "999px",
+        "3px 3px 0 0",
+        "3px",
+        "50%",
+        "8px",
+        "4px",
+        "24px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#0a0d10",
+      "#0f1317",
+      "#e8edf0",
+      "#a6afb8",
+      "#252d33",
+      "#34404a",
+      "#0003"
+    ]
+  },
+  {
+    "file": "src/data-library.css",
+    "lines": 121,
+    "values": {
+      "font-size": [
+        "13px",
+        "14px",
+        "12px",
+        "20px",
+        "24px"
+      ],
+      "font-weight": [
+        "600"
+      ],
+      "border-radius": [
+        "var(--wm-control-radius)",
+        "0",
+        "6px",
+        "2px",
+        "50%",
+        "10px",
+        "18px"
+      ],
+      "transition": [
+        "width 200ms linear"
+      ],
+      "animation": [
+        "data-library-indeterminate 1.6s ease-in-out infinite",
+        "none"
+      ]
+    },
+    "literals": [
+      "#0003",
+      "#0008"
+    ]
+  },
+  {
+    "file": "src/dataset-asset-select.css",
+    "lines": 28,
+    "values": {
+      "font-size": [
+        "12px",
+        "14px",
+        "11px",
+        "15px"
+      ],
+      "font-weight": [
+        "600",
+        "500"
+      ],
+      "border-radius": [
+        "12px",
+        "8px",
+        "6px",
+        "999px",
+        "50%",
+        "0"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/fx-analytics.css",
+    "lines": 115,
+    "values": {
+      "font-size": [
+        "14px",
+        "12px",
+        "13px",
+        "16px",
+        "19px",
+        "23px",
+        "11px",
+        "10px",
+        "17px"
+      ],
+      "font-weight": [
+        "600",
+        "500"
+      ],
+      "border-radius": [
+        "var(--wm-control-radius)",
+        "6px",
+        "8px",
+        "50%",
+        "2px",
+        "4px"
+      ],
+      "transition": [
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/fx-select.css",
+    "lines": 31,
+    "values": {
+      "font-size": [
+        "13px",
+        "12px",
+        "17px"
+      ],
+      "font-weight": [],
+      "border-radius": [
+        "var(--wm-control-radius)",
+        "10px",
+        "6px",
+        "0",
+        "12px"
+      ],
+      "transition": [
+        "background-color 140ms, border-color 140ms",
+        "rotate 140ms"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#0003"
+    ]
+  },
+  {
+    "file": "src/fx-shell-preferences.css",
+    "lines": 852,
+    "values": {
+      "font-size": [
+        "12px",
+        "9px"
+      ],
+      "font-weight": [
+        "750"
+      ],
+      "border-radius": [
+        "4px"
+      ],
+      "transition": [
+        "background-color .18s ease, color .18s ease",
+        "border-color .14s ease, background-color .14s ease, color .14s ease"
+      ],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/fx-shell-story.css",
+    "lines": 1431,
+    "values": {
+      "font-size": [
+        "9px",
+        "11px",
+        "10px",
+        "20px",
+        "12px",
+        "15px !important",
+        "15px",
+        "36px",
+        "14px",
+        "30px",
+        "13px",
+        "18px",
+        "19px"
+      ],
+      "font-weight": [
+        "650",
+        "900",
+        "750",
+        "800",
+        "700",
+        "600",
+        "760"
+      ],
+      "border-radius": [
+        "4px",
+        "5px",
+        "12px",
+        "6px",
+        "8px",
+        "6px 6px 0 0",
+        "0"
+      ],
+      "transition": [
+        "background-color .14s ease, border-color .14s ease, color .14s ease",
+        "color .14s ease, border-color .14s ease",
+        "background-color .14s ease, border-color .14s ease",
+        "background-color .14s ease, color .14s ease",
+        "background-color 140ms ease, color 140ms ease, border-color 140ms ease",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#0d1114",
+      "#0a0d10",
+      "#11171b",
+      "#252d33",
+      "#3b4851",
+      "#e8edf0",
+      "#8c979f",
+      "#68747c",
+      "#e1ad54",
+      "#6dc18b",
+      "#d5a45a",
+      "#dc7777",
+      "#65717a",
+      "#9aa5ad",
+      "#151c20",
+      "#eef2f4",
+      "#1a1b1a",
+      "#f1d8a7",
+      "#74818a",
+      "#77848c",
+      "#e9eef1",
+      "#1d160a",
+      "#efc26b",
+      "#030303",
+      "#131415",
+      "#414347",
+      "#fff",
+      "#b0b1b4",
+      "#2c7bfd",
+      "#e7e8ea",
+      "#73767b",
+      "#202124",
+      "#05080e",
+      "#051b4b",
+      "#8f9297",
+      "#9ea2a8",
+      "#f5f7f8",
+      "#eef3f6",
+      "#dceaff",
+      "#e0e7ea",
+      "#f0e6d1",
+      "#704609",
+      "#202226",
+      "#d8dce3",
+      "#f7f8fa",
+      "#e7ebf2",
+      "#b9bec8",
+      "#17191d",
+      "#858b96",
+      "#151a1e",
+      "#202225"
+    ]
+  },
+  {
+    "file": "src/journal-analytics.css",
+    "lines": 212,
+    "values": {
+      "font-size": [
+        "clamp(26px, 3vw, 36px)",
+        "13px",
+        "10px",
+        "12px",
+        "14px",
+        "11px",
+        "clamp(18px, 2.2vw, 25px)",
+        "22px"
+      ],
+      "font-weight": [
+        "800",
+        "600"
+      ],
+      "border-radius": [
+        "50%",
+        "4px",
+        "3px",
+        "var(--wm-radius-control)"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#e5ebef",
+      "#293036",
+      "#9ba4ac",
+      "#7f8b94",
+      "#aeb7be",
+      "#d6a64b",
+      "#e7edf1",
+      "#9ca7af",
+      "#e6c170",
+      "#cbd5dc",
+      "#efc269",
+      "#d5a347",
+      "#c0c8ce",
+      "#ef9797",
+      "#68474a",
+      "#251719",
+      "#f3b4b4",
+      "#3e474d",
+      "#171c20",
+      "#e4eaee",
+      "#65717a",
+      "#222a2f",
+      "#b4873d",
+      "#ba8d40",
+      "#17130d",
+      "#e0b861",
+      "#d2a450",
+      "#2b343a",
+      "#111619",
+      "#edf1f3",
+      "#7e8b93",
+      "#232b30",
+      "#182126",
+      "#d6ae5a",
+      "#89959e",
+      "#dbe2e6",
+      "#364149",
+      "#101518",
+      "#748089",
+      "#3a454c",
+      "#0c1113",
+      "#e8edf0",
+      "#c49c4d",
+      "#9ca4aa",
+      "#8e6c31",
+      "#171714",
+      "#938e78",
+      "#9aa5ad",
+      "#79868e",
+      "#66737b",
+      "#313a40",
+      "#75828a",
+      "#849099",
+      "#7d8991",
+      "#d6dde1",
+      "#8b969d",
+      "#c9d1d6",
+      "#7f8c94",
+      "#d8b364",
+      "#78ca91",
+      "#ec8c8c",
+      "#0a0d10",
+      "#0f1317",
+      "#13191e",
+      "#8c979f",
+      "#69747c",
+      "#252d33",
+      "#34404a",
+      "#e1ad54",
+      "#6dc18b",
+      "#dc7777"
+    ]
+  },
+  {
+    "file": "src/journal-story.css",
+    "lines": 557,
+    "values": {
+      "font-size": [
+        "13px",
+        "11px",
+        "10px",
+        "14px"
+      ],
+      "font-weight": [
+        "700"
+      ],
+      "border-radius": [
+        "999px",
+        "50%",
+        "0"
+      ],
+      "transition": [
+        "background-color 140ms ease, box-shadow 140ms ease",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#293036",
+      "#e8edf0",
+      "#8f9ba3",
+      "#2b343a",
+      "#111619",
+      "#77848d",
+      "#151e23",
+      "#18252b",
+      "#263136",
+      "#0e1315",
+      "#d6a64b",
+      "#e7edf0",
+      "#68522d",
+      "#e4bd69",
+      "#263036",
+      "#68757e",
+      "#e5bd68",
+      "#9cabb3",
+      "#46525a",
+      "#8e9aa2",
+      "#63747c",
+      "#a8c6b0",
+      "#72808a",
+      "#78858d",
+      "#c6d0d5",
+      "#d9b96d",
+      "#83c595",
+      "#e0e7ea",
+      "#232c31",
+      "#cbd4d9",
+      "#deb866",
+      "#849199",
+      "#39464e",
+      "#dbe3e7",
+      "#dce4e8",
+      "#fff"
+    ]
+  },
+  {
+    "file": "src/learnIntegration.css",
+    "lines": 68,
+    "values": {
+      "font-size": [
+        "12px",
+        "13px",
+        "16px",
+        "14px"
+      ],
+      "font-weight": [],
+      "border-radius": [
+        "4px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/ledger-controls.css",
+    "lines": 40,
+    "values": {
+      "font-size": [
+        "18px",
+        "24px",
+        "13px",
+        "12px",
+        "14px"
+      ],
+      "font-weight": [
+        "600"
+      ],
+      "border-radius": [
+        "8px",
+        "10px",
+        "7px",
+        "24px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/LegacyReplayToolbar.css",
+    "lines": 26,
+    "values": {
+      "font-size": [
+        "13px",
+        "12px"
+      ],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "4px",
+        "3px"
+      ],
+      "transition": [
+        "transform 140ms ease",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#5695fe",
+      "#fff",
+      "#3c3f48"
+    ]
+  },
+  {
+    "file": "src/LegacyTradingBar.css",
+    "lines": 82,
+    "values": {
+      "font-size": [
+        "12px",
+        "16px",
+        "11px"
+      ],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "16px",
+        "0",
+        "6px",
+        "3px",
+        "18px",
+        "10px",
+        "50%"
+      ],
+      "transition": [
+        "background-color 140ms,border-color 140ms",
+        "transform 140ms ease",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#fff",
+      "#2962ff",
+      "#444",
+      "#eee",
+      "#ef5350"
+    ]
+  },
+  {
+    "file": "src/live-workspace.css",
+    "lines": 165,
+    "values": {
+      "font-size": [
+        "12px",
+        "13px",
+        "var(--wm-text-value)",
+        "20px",
+        "16px",
+        "15px",
+        "22px",
+        "14px",
+        "10px",
+        "11px"
+      ],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "6px",
+        "50%",
+        "999px",
+        "var(--wm-control-radius)",
+        "12px",
+        "16px",
+        "8px"
+      ],
+      "transition": [
+        "none !important"
+      ],
+      "animation": [
+        "none !important"
+      ]
+    },
+    "literals": [
+      "#0008"
+    ]
+  },
+  {
+    "file": "src/market-sync.css",
+    "lines": 50,
+    "values": {
+      "font-size": [
+        "18px",
+        "13px",
+        "12px"
+      ],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "6px",
+        "var(--wm-control-radius)",
+        "999px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/page-layout.css",
+    "lines": 85,
+    "values": {
+      "font-size": [
+        "12px",
+        "13px",
+        "24px",
+        "11px"
+      ],
+      "font-weight": [],
+      "border-radius": [
+        "6px 6px 0 0",
+        "999px",
+        "var(--wm-control-radius)",
+        "6px",
+        "4px",
+        "50%"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#0008"
+    ]
+  },
+  {
+    "file": "src/pagination-footer.css",
+    "lines": 25,
+    "values": {
+      "font-size": [
+        "13px"
+      ],
+      "font-weight": [],
+      "border-radius": [
+        "50%",
+        "var(--wm-control-radius)"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/playbook-story.css",
+    "lines": 73,
+    "values": {
+      "font-size": [
+        "clamp(26px, 3vw, 38px)",
+        "15px",
+        "11px",
+        "12px",
+        "20px",
+        "13px",
+        "22px",
+        "16px"
+      ],
+      "font-weight": [
+        "800",
+        "700",
+        "650",
+        "750"
+      ],
+      "border-radius": [
+        "999px",
+        "5px",
+        "4px"
+      ],
+      "transition": [
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/project-date-input.css",
+    "lines": 7,
+    "values": {
+      "font-size": [],
+      "font-weight": [],
+      "border-radius": [
+        "var(--wm-control-radius)"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/PropWorkspace.css",
+    "lines": 72,
+    "values": {
+      "font-size": [
+        "12px"
+      ],
+      "font-weight": [],
+      "border-radius": [],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#fff",
+      "#1d2930",
+      "#cdd6dd",
+      "#9ba4ac",
+      "#e0e5e9",
+      "#f0c878",
+      "#ef9c9c"
+    ]
+  },
+  {
+    "file": "src/quick-session.css",
+    "lines": 84,
+    "values": {
+      "font-size": [
+        "20px",
+        "14px",
+        "12px",
+        "13px"
+      ],
+      "font-weight": [
+        "600",
+        "500"
+      ],
+      "border-radius": [
+        "12px",
+        "10px",
+        "999px",
+        "0",
+        "9px",
+        "var(--wm-control-radius)"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#0008"
+    ]
+  },
+  {
+    "file": "src/ReplayWorkspace.css",
+    "lines": 907,
+    "values": {
+      "font-size": [
+        "22px",
+        "12px",
+        "10px",
+        "9px",
+        "14px",
+        "11px",
+        "9px !important",
+        "19px",
+        "15px",
+        "18px",
+        "16px",
+        "17px",
+        "8px",
+        "20px"
+      ],
+      "font-weight": [
+        "680",
+        "750",
+        "650",
+        "700"
+      ],
+      "border-radius": [
+        "3px",
+        "2px",
+        "50%",
+        "0"
+      ],
+      "transition": [
+        "border-color 160ms ease, color 160ms ease, background-color 160ms ease, opacity 160ms ease",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#0b0e10",
+      "#242b30",
+      "#919da5",
+      "#d4a554",
+      "#0d1113",
+      "#8c989f",
+      "#e2e8eb",
+      "#89959d",
+      "#e4c77f",
+      "#cbd4d9",
+      "#707c84",
+      "#bec8ce",
+      "#aebbc2",
+      "#384249",
+      "#12171a",
+      "#e8edf0",
+      "#d5a858",
+      "#909ba3",
+      "#dc9090",
+      "#d8b773",
+      "#d6b56f",
+      "#f0d18a",
+      "#1e2529",
+      "#d8a64e",
+      "#1c1509",
+      "#e9b75e",
+      "#7f8b94",
+      "#dce3e7",
+      "#6f7b83",
+      "#252e34",
+      "#29363c",
+      "#a7b2ba",
+      "#7f8b93",
+      "#d6dee2",
+      "#68757d",
+      "#c4a35e",
+      "#b8c1c7",
+      "#75818a",
+      "#89959e",
+      "#cdd5da",
+      "#242c31",
+      "#2e3539",
+      "#765e2c",
+      "#222a2e",
+      "#7e8a93",
+      "#e4eaed",
+      "#79858d",
+      "#626e75",
+      "#3d474e",
+      "#aeb8be",
+      "#4a555c",
+      "#8d999f",
+      "#d7e1e5",
+      "#c9d2d7",
+      "#13191b",
+      "#aeb9bf",
+      "#8b989f",
+      "#20272b",
+      "#b0b1b4",
+      "#000000",
+      "#050607",
+      "#07090a",
+      "#c7d0d7",
+      "#071018"
+    ]
+  },
+  {
+    "file": "src/research-data.css",
+    "lines": 255,
+    "values": {
+      "font-size": [
+        "26px",
+        "12px",
+        "13px",
+        "14px",
+        "16px",
+        "23px",
+        "22px"
+      ],
+      "font-weight": [
+        "600",
+        "500"
+      ],
+      "border-radius": [
+        "3px",
+        "4px",
+        "var(--wm-radius-control)"
+      ],
+      "transition": [
+        "width .2s ease"
+      ],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/research-story.css",
+    "lines": 213,
+    "values": {
+      "font-size": [
+        "28px",
+        "12px",
+        "13px",
+        "15px",
+        "14px",
+        "17px",
+        "23px",
+        "22px",
+        "16px"
+      ],
+      "font-weight": [
+        "600"
+      ],
+      "border-radius": [
+        "50%",
+        "3px",
+        "4px"
+      ],
+      "transition": [
+        "width .2s ease",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/RiskWorkspace.css",
+    "lines": 144,
+    "values": {
+      "font-size": [
+        "12px",
+        "25px",
+        "13px",
+        "14px",
+        "15px"
+      ],
+      "font-weight": [
+        "800",
+        "700"
+      ],
+      "border-radius": [
+        "3px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#fff",
+      "#9ba4ac"
+    ]
+  },
+  {
+    "file": "src/session-actions.css",
+    "lines": 18,
+    "values": {
+      "font-size": [],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "50%",
+        "8px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/session-filter.css",
+    "lines": 23,
+    "values": {
+      "font-size": [
+        "13px",
+        "11px"
+      ],
+      "font-weight": [],
+      "border-radius": [
+        "var(--wm-control-radius)",
+        "10px",
+        "0",
+        "6px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#0003"
+    ]
+  },
+  {
+    "file": "src/session-performance.css",
+    "lines": 94,
+    "values": {
+      "font-size": [
+        "12px",
+        "26px",
+        "24px",
+        "14px",
+        "11px",
+        "13px",
+        "10px",
+        "20px",
+        "16px",
+        "18px",
+        "clamp(26px, 2.5vw, 34px)",
+        "clamp(24px, 2.4vw, 34px)"
+      ],
+      "font-weight": [
+        "600",
+        "500"
+      ],
+      "border-radius": [
+        "999px",
+        "10px",
+        "4px",
+        "3px",
+        "50%",
+        "6px",
+        "12px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/session-picker.css",
+    "lines": 320,
+    "values": {
+      "font-size": [
+        "12px",
+        "18px",
+        "22px",
+        "15px",
+        "23px",
+        "14px",
+        "32px",
+        "13px",
+        "36px",
+        "21px",
+        "28px",
+        "10px",
+        "20px",
+        "30px",
+        "16px",
+        "17px",
+        "11px",
+        "9px",
+        "8px",
+        "19px",
+        "29px",
+        "25px",
+        "24px"
+      ],
+      "font-weight": [
+        "600",
+        "700",
+        "500",
+        "800"
+      ],
+      "border-radius": [
+        "14px",
+        "50%",
+        "21px",
+        "22px",
+        "15px",
+        "5px",
+        "9px",
+        "8px",
+        "18px",
+        "13px",
+        "4px 4px 0 0",
+        "17px",
+        "12px",
+        "7px",
+        "0",
+        "6px",
+        "999px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#fff",
+      "#888",
+      "#b0b1b4",
+      "#ff9a91",
+      "#414347",
+      "#d1d1d1",
+      "#030303",
+      "#f6f6f6",
+      "#0260fd",
+      "#2c7bfd",
+      "#131415",
+      "#6a6d73",
+      "#fb6a5f",
+      "#ff8075",
+      "#6fa6ff",
+      "#5695fe",
+      "#e5e5e5",
+      "#243858",
+      "#9fc1ff",
+      "#61646a",
+      "#a8a9ad",
+      "#26272a",
+      "#71747b",
+      "#e7e8ea",
+      "#1d1e20",
+      "#073c59",
+      "#38a7e8",
+      "#073d1d",
+      "#3ad376",
+      "#4d211e",
+      "#ff8c82",
+      "#292c31",
+      "#38d57a",
+      "#ff8a80",
+      "#252629",
+      "#6a6c74",
+      "#28292d",
+      "#30343b",
+      "#090a0c",
+      "#8f959f",
+      "#1a1d22",
+      "#4a505a",
+      "#2f343d",
+      "#101216",
+      "#f5f7fb",
+      "#252a34",
+      "#c5cbd5",
+      "#858c98",
+      "#31c58b",
+      "#282d35",
+      "#737b88",
+      "#1e79f8",
+      "#77808e",
+      "#aab2bf",
+      "#116cf2",
+      "#2ec78a",
+      "#f4f6fa",
+      "#8c95a2",
+      "#0cbf86",
+      "#126df5",
+      "#a0a8b5",
+      "#7f8896",
+      "#1d385f",
+      "#6a83a5",
+      "#12213b",
+      "#f1f5fb",
+      "#9aa9bf",
+      "#5b95ff",
+      "#e6edf0",
+      "#b3bdc4",
+      "#11171b",
+      "#ffb4ac",
+      "#73a6ff",
+      "#3b82f6",
+      "#91baff",
+      "#235ebc",
+      "#9a2b22"
+    ]
+  },
+  {
+    "file": "src/session-settings.css",
+    "lines": 28,
+    "values": {
+      "font-size": [
+        "24px",
+        "28px",
+        "13px",
+        "14px",
+        "12px"
+      ],
+      "font-weight": [
+        "600"
+      ],
+      "border-radius": [
+        "0",
+        "50%",
+        "12px",
+        "999px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#030303",
+      "#0008"
+    ]
+  },
+  {
+    "file": "src/settings.css",
+    "lines": 45,
+    "values": {
+      "font-size": [
+        "13px",
+        "12px"
+      ],
+      "font-weight": [],
+      "border-radius": [
+        "50%"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/styles.css",
+    "lines": 641,
+    "values": {
+      "font-size": [
+        "12px",
+        "11px",
+        "24px",
+        "22px",
+        "13px",
+        "14px",
+        "26px",
+        "16px",
+        "10px",
+        "23px",
+        ".82em",
+        "9px",
+        "8px",
+        "15px",
+        "17px"
+      ],
+      "font-weight": [
+        "700",
+        "800",
+        "650",
+        "900",
+        "600",
+        "720",
+        "400",
+        "500"
+      ],
+      "border-radius": [
+        "4px",
+        "5px",
+        "3px",
+        "50%",
+        "14px"
+      ],
+      "transition": [
+        "border-color .16s ease, background-color .16s ease, transform .16s ease"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#c7d0d7",
+      "#f2c46d",
+      "#252a2f",
+      "#8d969f",
+      "#d7dce2",
+      "#656d76",
+      "#9fa7b0",
+      "#cbd1d8",
+      "#88c999",
+      "#e28a8a",
+      "#aeb4bc",
+      "#7f8892",
+      "#202429",
+      "#293036",
+      "#9ba4ac",
+      "#d7a64c",
+      "#f0c878",
+      "#c3c9cf",
+      "#aab2b9",
+      "#3a4248",
+      "#101416",
+      "#f0f2f4",
+      "#dfac50",
+      "#18130b",
+      "#efbd62",
+      "#1c2225",
+      "#b7bec5",
+      "#ef9797",
+      "#242a2f",
+      "#7f8992",
+      "#dce1e5",
+      "#78ca91",
+      "#623d3d",
+      "#f1c1c1",
+      "#cda6a6",
+      "#5a4b2d",
+      "#f0d69c",
+      "#cbb98f",
+      "#cbd2d8",
+      "#0d1012",
+      "#20262a",
+      "#8f99a2",
+      "#d8dde1",
+      "#89939b",
+      "#d8a74f",
+      "#0a0d10",
+      "#0f1317",
+      "#13191e",
+      "#252d33",
+      "#34404a",
+      "#e8edf0",
+      "#8c979f",
+      "#69747c",
+      "#e1ad54",
+      "#79b9d1",
+      "#6dc18b",
+      "#dc7777",
+      "#0d1114",
+      "#806435",
+      "#151b1f",
+      "#e5e9eb",
+      "#58636b",
+      "#929da5",
+      "#dbe1e5",
+      "#1a1b1a",
+      "#f1d8a7",
+      "#6e7a83",
+      "#59656d",
+      "#bfc8cd",
+      "#6e7981",
+      "#6c7880",
+      "#b7c0c6",
+      "#4d5961",
+      "#d7dde1",
+      "#526069",
+      "#aeb8be",
+      "#67502a",
+      "#e2bb70",
+      "#553c3c",
+      "#db9b9b",
+      "#727d85",
+      "#3a464f",
+      "#182026",
+      "#cbd2d7",
+      "#1d252d",
+      "#080b0e",
+      "#f0f3f5",
+      "#1764d2",
+      "#3889f5",
+      "#0d131a",
+      "#52616d",
+      "#2d82f4",
+      "#f3f5f7",
+      "#7d8992",
+      "#6e7a82",
+      "#1d160a",
+      "#efc26b",
+      "#c6d0d5",
+      "#68757e",
+      "#edf1f3",
+      "#e6ecef",
+      "#77838c",
+      "#68747c",
+      "#bcc7cc",
+      "#dce3e7",
+      "#c0c9ce",
+      "#10161a",
+      "#d6dde1",
+      "#77828a",
+      "#66727a",
+      "#b7c1c6",
+      "#aab8c1",
+      "#3e4a53",
+      "#69522d",
+      "#e2ba6c",
+      "#593d3d",
+      "#db9a9a",
+      "#65502d",
+      "#c9d2d7",
+      "#7b878f",
+      "#aeb9bf",
+      "#d6a866",
+      "#75818a",
+      "#39454d",
+      "#e7edf0",
+      "#6bbdc2",
+      "#8ed3d7",
+      "#aeb7be",
+      "#b7c4cc",
+      "#8f9aa3",
+      "#d7b56d",
+      "#ef9c9c",
+      "#e0e5e9",
+      "#96a0a8",
+      "#68b584",
+      "#a4e0e3",
+      "#172123",
+      "#6a5734",
+      "#d4dbe0",
+      "#aab3ba",
+      "#c8d0d6",
+      "#87919a",
+      "#eff2f4",
+      "#d8dee3",
+      "#98a2aa",
+      "#b9c1c7",
+      "#5f686f",
+      "#5f3b3b",
+      "#111518",
+      "#d5dbe0",
+      "#707a82",
+      "#545e65",
+      "#d6dce0",
+      "#d9dfe3",
+      "#7dcb91",
+      "#e2e7ea",
+      "#bfc7cd",
+      "#8e999f",
+      "#434c53"
+    ]
+  },
+  {
+    "file": "src/testing-standard.css",
+    "lines": 102,
+    "values": {
+      "font-size": [
+        "var(--wm-text-body)",
+        "var(--wm-text-page)",
+        "var(--wm-text-section)",
+        "var(--wm-text-dialog)",
+        "var(--wm-text-value)",
+        "var(--wm-text-meta)",
+        "var(--wm-text-control)",
+        "14px"
+      ],
+      "font-weight": [
+        "500"
+      ],
+      "border-radius": [
+        "var(--wm-popup-radius)",
+        "var(--wm-control-radius)",
+        "50%",
+        "0",
+        "8px"
+      ],
+      "transition": [
+        "none !important"
+      ],
+      "animation": [
+        "wm-load-pulse 1.4s ease-in-out infinite alternate",
+        "none !important"
+      ]
+    },
+    "literals": []
+  },
+  {
+    "file": "src/TradeWorkspace.css",
+    "lines": 147,
+    "values": {
+      "font-size": [
+        "12px",
+        "25px",
+        "13px",
+        "14px",
+        "15px"
+      ],
+      "font-weight": [
+        "800",
+        "700"
+      ],
+      "border-radius": [
+        "3px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#719bea",
+      "#fff"
+    ]
+  },
+  {
+    "file": "src/typography-scale.css",
+    "lines": 398,
+    "values": {
+      "font-size": [
+        "13px",
+        "var(--fx-type-label)",
+        "var(--fx-type-control)",
+        "10px",
+        "var(--fx-type-meta)",
+        "9px",
+        "var(--fx-type-body)",
+        "16px",
+        "var(--fx-type-code)",
+        "var(--fx-type-support)",
+        "15px",
+        "var(--fx-type-meta) !important",
+        "18px",
+        "14px",
+        "17px",
+        "clamp(24px, 7vw, 30px)",
+        "clamp(26px, 8vw, 34px)",
+        "11px",
+        "12px"
+      ],
+      "font-weight": [],
+      "border-radius": [],
+      "transition": [],
+      "animation": []
+    },
+    "literals": []
+  },
+  {
+    "file": "src/ui-system.snapshot.css",
+    "lines": 84,
+    "values": {
+      "font-size": [],
+      "font-weight": [],
+      "border-radius": [
+        "4px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#f6f7f9",
+      "#ffffff",
+      "#f1f5f9",
+      "#eef2f7",
+      "#0f172a",
+      "#334155",
+      "#64748b",
+      "#e2e8f0",
+      "#cbd5e1",
+      "#2563eb",
+      "#eff6ff",
+      "#16a34a",
+      "#d97706",
+      "#92400e",
+      "#dc2626",
+      "#15803d",
+      "#0a0e17",
+      "#111725",
+      "#161d2d",
+      "#1b2334",
+      "#e8edf5",
+      "#c3ccdb",
+      "#8b98ad",
+      "#232c3e",
+      "#33405a",
+      "#3b82f6",
+      "#16233d",
+      "#60a5fa",
+      "#22c55e",
+      "#f59e0b",
+      "#fcd34d",
+      "#f87171"
+    ]
+  },
+  {
+    "file": "src/visual-polish.css",
+    "lines": 81,
+    "values": {
+      "font-size": [],
+      "font-weight": [],
+      "border-radius": [],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#f0c878",
+      "#704609",
+      "#34404a",
+      "#ffffff",
+      "#1d2930"
+    ]
+  },
+  {
+    "file": "src/workspace-pattern.css",
+    "lines": 72,
+    "values": {
+      "font-size": [
+        "14px",
+        "22px",
+        "13px",
+        "16px",
+        "12px"
+      ],
+      "font-weight": [
+        "650",
+        "600"
+      ],
+      "border-radius": [
+        "4px"
+      ],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#0a0d10",
+      "#0f1317",
+      "#e8edf0",
+      "#a6afb8",
+      "#252d33",
+      "#34404a",
+      "#f0b65f"
+    ]
+  },
+  {
+    "file": "public/chart-controls.css",
+    "lines": 33,
+    "values": {
+      "font-size": [
+        "13px",
+        "11px"
+      ],
+      "font-weight": [
+        "400"
+      ],
+      "border-radius": [
+        "10px",
+        "6px",
+        "3px",
+        "50%",
+        "4px"
+      ],
+      "transition": [
+        "background-color 140ms,border-color 140ms,color 140ms",
+        "background-color 140ms,border-color 140ms",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#0003",
+      "#2962ff",
+      "#fff",
+      "#444",
+      "#ddd"
+    ]
+  },
+  {
+    "file": "public/chart-legacy.css",
+    "lines": 94,
+    "values": {
+      "font-size": [
+        "13px",
+        "12px",
+        "10px"
+      ],
+      "font-weight": [
+        "600"
+      ],
+      "border-radius": [
+        "6px"
+      ],
+      "transition": [
+        "background-color 140ms,color 140ms",
+        "none"
+      ],
+      "animation": []
+    },
+    "literals": [
+      "#DADADA",
+      "#FFFFFF",
+      "#EBEBEB",
+      "#E0E0E0",
+      "#333333",
+      "#000000",
+      "#303030",
+      "#0F0F0F",
+      "#292929",
+      "#343434",
+      "#DBDBDB",
+      "#76ABFF",
+      "#ef5350",
+      "#205BBC"
+    ]
+  },
+  {
+    "file": "public/project-palette.css",
+    "lines": 75,
+    "values": {
+      "font-size": [],
+      "font-weight": [],
+      "border-radius": [],
+      "transition": [],
+      "animation": []
+    },
+    "literals": [
+      "#FFFFFF",
+      "#FAFAFA",
+      "#F4F4F4",
+      "#EBEBEB",
+      "#D2D2D2",
+      "#888888",
+      "#111111",
+      "#525252",
+      "#626262",
+      "#24658B",
+      "#195573",
+      "#A44715",
+      "#24724B",
+      "#B5373C",
+      "#845D0D",
+      "#E8E8E8",
+      "#B85018",
+      "#993E10",
+      "#FFE5D5",
+      "#9A3E15",
+      "#98292F",
+      "#2D7195",
+      "#A85A27",
+      "#367552",
+      "#AF494A",
+      "#7154A3",
+      "#876A1E",
+      "#080808",
+      "#0C0C0C",
+      "#141414",
+      "#1D1D1D",
+      "#232323",
+      "#2A2A2A",
+      "#3A3A3A",
+      "#737373",
+      "#B8B8B8",
+      "#999999",
+      "#7ABBE6",
+      "#A0D2F5",
+      "#FFAD7C",
+      "#72CFA1",
+      "#FF828B",
+      "#EAC369",
+      "#FFC49F",
+      "#3B2418",
+      "#C53E48",
+      "#CC414B",
+      "#5FBEFF",
+      "#51D6A0",
+      "#FF7587",
+      "#B49AFF",
+      "#F3CE59"
+    ]
+  }
+]

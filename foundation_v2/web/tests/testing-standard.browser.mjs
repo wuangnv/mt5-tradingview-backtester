@@ -42,9 +42,9 @@ try {
       assert.equal(await content.evaluate(element => element.scrollWidth > element.clientWidth + 1), false, `${name}: page overflow`)
       assert.equal(await content.locator('h1.sr-only').evaluateAll(elements => elements.some(element => element.getBoundingClientRect().width > 1 || getComputedStyle(element).clip === 'auto')), false, `${name}: duplicated page title`)
       if (name === 'trades') {
-        const current = content.locator('.fxa-pagination [aria-current=page]')
+        const current = content.getByTestId('analytics-ledger-pagination').locator('[aria-current=page]')
         assert.equal(await current.innerText(), '1')
-        await content.locator('.fxa-pagination button').filter({ hasText: /^2$/ }).click()
+        await content.getByTestId('analytics-ledger-pagination').getByRole('button').filter({ hasText: /^2$/ }).click()
         await assertEventually(() => current.innerText(), '2')
       }
       results.push({ name, language, pass: true })
