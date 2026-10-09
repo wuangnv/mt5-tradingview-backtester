@@ -37,7 +37,12 @@ export function navigate(href, { replace = false } = {}) {
   }
   const next = new URL(href, window.location.href)
   if (next.href === window.location.href) return
-  window.history[replace ? 'replaceState' : 'pushState']({}, '', next)
+  // Hash-only navigation belongs to the browser so anchors still scroll.
+  if (next.search === window.location.search) {
+    window.location[replace ? 'replace' : 'assign'](next.href)
+    return
+  }
+  window.history[replace ? 'replaceState' : 'pushState'](replace ? window.history.state : {}, '', next)
   notifyNavigation()
 }
 
@@ -72,4 +77,23 @@ function onDocumentClick(event) {
   if (!shouldHandleLink(event, anchor, window.location.href)) return
   event.preventDefault()
   navigate(anchor.href)
+}
+
+// Reader lifetimes follow data identity, not every query edit. Filters, chart
+// cursor and report tabs update the existing page; a new resource resets it.
+export function navigationScope(query, activeView) {
+  const workspace = query.get('workspace') || 'tenant-a'
+  const picker = query.get('surface') !== 'workspace' && (query.get('select') === '1' || query.get('mode') === 'Practice')
+  const analytics = query.get('analytics_source') === 'prop' ? 'prop'
+    : query.get('surface') !== 'workspace' && !query.get('job') && !query.get('job_id') ? 'reports' : 'result'
+  const surface = query.get('ui_reference') === '1' ? 'reference'
+    : activeView === 'replay' ? picker ? 'picker' : 'chart'
+      : activeView === 'analytics' ? analytics
+        : activeView === 'trade' ? query.get('intent') === 'order' ? 'order' : 'ledger' : 'page'
+  const resources = ['dataset', 'prop_session', 'attempt', 'playbook', 'playbook_revision'].map(key => query.get(key) || '')
+  return JSON.stringify([
+    workspace, activeView, query.get('area') || '', query.get('section') || '', surface,
+    query.get('demo') === '1', query.get('session') || query.get('replay_session') || '',
+    [...query.getAll('sessions')].sort(), query.get('job') || query.get('job_id') || '', ...resources,
+  ])
 }

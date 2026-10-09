@@ -46,19 +46,22 @@ export function replayBars(rows, cutoff, period) {
   return [...buckets.values()].sort((a, b) => a.time - b.time)
 }
 
-// The API-visible prefix is the only history source. No provider/CDN requests.
-export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, cutoff, assetClass = 'fx' }) {
+// Native windows and scoped backend history are the only sources. No provider/CDN requests.
+export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, cutoff, assetClass = 'fx', readHistory }) {
   const interval = replayResolution(seconds)
   const calendar = seconds <= 86400 && 86400 % seconds === 0 ? ['1D', '1W', '1M'] : []
   const supported = [...new Set([interval, ...[1, 3, 5, 15, 30, 60, 120, 240].filter(minutes => minutes * 60 >= seconds && minutes * 60 % seconds === 0).map(String), ...calendar])]
   const precision = tickSize > 0 ? Math.min(8, String(Number(tickSize).toFixed(8)).replace(/0+$/, '').split('.')[1]?.length || 0) : 5
   const pricescale = 10 ** precision
   const type = { fx: 'forex', crypto: 'crypto', equity: 'stock', futures: 'futures' }[assetClass] || 'spread'
-  let visible = rows, limit = cutoff, alive = true, generation = 0
+  let visible = rows, limit = cutoff, alive = true, generation = 0, updateGeneration = 0
   const subscriptions = new Map()
+  const historyCache = new Map()
   const history = resolution => {
     if (!supported.includes(resolution)) throw new Error('Resolution không thuộc dataset hiện tại.')
-    return replayBars(visible, limit, resolution.endsWith('S') || /^\d+$/.test(resolution) ? resolutionSeconds(resolution) : resolution)
+    if (!historyCache.has(resolution)) historyCache.set(resolution,
+      replayBars(visible, limit, resolution.endsWith('S') || /^\d+$/.test(resolution) ? resolutionSeconds(resolution) : resolution))
+    return historyCache.get(resolution)
   }
   const defer = callback => setTimeout(callback, 0)
   const datafeed = {
@@ -75,6 +78,16 @@ export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, 
     }) },
     getBars(info, resolution, period, callback, error) {
       const requestedGeneration = generation
+      if (readHistory) {
+        if (info.ticker !== symbol || !supported.includes(resolution)) {
+          defer(() => alive && requestedGeneration === generation && error('Symbol hoặc resolution khác dataset.')); return
+        }
+        Promise.resolve().then(() => readHistory(resolution, period)).then(bars => {
+          if (!alive || requestedGeneration !== generation) return
+          defer(() => alive && requestedGeneration === generation && callback(bars.map(bar => ({ ...bar })), { noData: bars.length === 0 }))
+        }).catch(cause => defer(() => alive && requestedGeneration === generation && error(cause.message)))
+        return
+      }
       let bars
       try {
         if (info.ticker !== symbol) throw new Error('Symbol khác dataset.')
@@ -88,15 +101,51 @@ export function createAdvancedReplayDatafeed({ symbol, seconds, tickSize, rows, 
     subscribeBars(info, resolution, callback, id, reset) {
       if (info.ticker !== symbol || !supported.includes(resolution)) return
       subscriptions.set(id, { resolution, callback, reset, last: history(resolution).at(-1) })
+      if (readHistory) {
+        const item = subscriptions.get(id), requestedGeneration = generation, requestedUpdate = updateGeneration
+        Promise.resolve().then(() => readHistory(resolution, { countBack: 1 })).then(bars => {
+          if (alive && requestedGeneration === generation && requestedUpdate === updateGeneration && subscriptions.get(id) === item) item.last = bars.at(-1)
+        }).catch(() => { if (alive && subscriptions.get(id) === item) reset() })
+      }
     },
     unsubscribeBars(id) { subscriptions.delete(id) },
   }
   return {
     datafeed, interval, supported,
     update(nextRows, nextCutoff) {
+      if (nextRows === visible && Number(nextCutoff) === Number(limit)) return true
       const rewind = Number(nextCutoff) < Number(limit) || nextRows.length < visible.length
+      const previousCutoff = Number(limit)
       visible = nextRows; limit = nextCutoff
+      historyCache.clear()
       if (rewind) { generation += 1; subscriptions.forEach(item => { item.last = history(item.resolution).at(-1); item.reset() }); return false }
+      if (readHistory) {
+        updateGeneration += 1
+        const requestedGeneration = generation, requestedUpdate = updateGeneration
+        const pending = new Map()
+        subscriptions.forEach(item => {
+          const period = item.resolution.endsWith('S') || /^\d+$/.test(item.resolution) ? resolutionSeconds(item.resolution) : item.resolution
+          const oldBucket = bucketTime(previousCutoff, period), newBucket = bucketTime(Number(nextCutoff), period)
+          let countBack = 1
+          if (newBucket > oldBucket) {
+            if (period === '1M') {
+              const from = new Date(oldBucket), to = new Date(newBucket)
+              countBack += (to.getUTCFullYear() - from.getUTCFullYear()) * 12 + to.getUTCMonth() - from.getUTCMonth()
+            } else countBack += Math.ceil((newBucket - oldBucket) / (resolutionSeconds(item.resolution) * 1000))
+          }
+          if (countBack > 2000) { item.last = history(item.resolution).at(-1); item.reset(); return }
+          if (!pending.has(item.resolution)) pending.set(item.resolution, Promise.resolve().then(() => readHistory(item.resolution, { countBack })))
+          pending.get(item.resolution).then(bars => {
+            if (!alive || requestedGeneration !== generation || requestedUpdate !== updateGeneration || ![...subscriptions.values()].includes(item)) return
+            for (const bar of bars) {
+              if (!item.last || bar.time > item.last.time || (bar.time === item.last.time && JSON.stringify(bar) !== JSON.stringify(item.last))) {
+                item.last = { ...bar }; item.callback({ ...bar })
+              }
+            }
+          }).catch(() => { if (alive && requestedGeneration === generation) item.reset() })
+        })
+        return true
+      }
       subscriptions.forEach(item => {
         const bars = history(item.resolution)
         for (const bar of bars) {

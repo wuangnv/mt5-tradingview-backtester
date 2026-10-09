@@ -10,6 +10,9 @@ import FxSelect from './FxSelect.jsx'
 import PaginationFooter from './PaginationFooter.jsx'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import TestingIcon from './TestingIcon.jsx'
+import { useWorkspaceMetadataQuery } from './WorkspaceQueryProvider.jsx'
+import { catalogEventRevision, invalidateScopeMetadata, metadataOptions } from './workspaceQuery.js'
+import { subscribeWorkspaceEvents } from './workspaceEvents.js'
 
 
 export default function MarketAssetCatalog({ workspace, query, showHeading = true, preview }) {
@@ -17,35 +20,49 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
 
   const { t, locale, fmt, statusLabel } = useTestingLocale()
 
-  const [catalog, setState] = useState({ workspace, status: 'loading', items: [] })
-  const state = catalog.workspace === workspace ? catalog : { status: 'loading', items: [] }
+  const [visibleTab, setVisibleTab] = useState(() => document.visibilityState !== 'hidden')
+  const [streamReady, setStreamReady] = useState(false)
+  const catalogRead = useWorkspaceMetadataQuery('market-assets', { workspace, enabled: !preview && visibleTab })
+  const state = preview || (catalogRead.denied ? { status: 'denied', items: [] }
+    : catalogRead.data ? { ...catalogRead.data, stale: Boolean(catalogRead.error) }
+      : { status: catalogRead.error ? 'error' : 'loading', items: [] })
   const [search, setSearch] = useState(''), [group, setGroup] = useState('all')
   const [all, setAll] = useState(false), [pending, setPending] = useState(false), [error, setError] = useState('')
-  const [fromDate, setFromDate] = useState(''), [reload, setReload] = useState(0)
+  const [fromDate, setFromDate] = useState('')
   const [page, setPage] = useState(1), [pageSize, setPageSize] = useState(25)
   useEffect(() => {
-    if (preview) { setState({ ...preview, workspace }); return }
+    if (preview || catalogRead.denied) return
     const controller = new AbortController()
-    setState({ workspace, status: 'loading', items: [] }); setError('')
-    let refreshing = false
-    const refresh = async () => {
-      if (refreshing) return
-      refreshing = true
-      try {
-        const response = await fetch('/api/v2/data/market-assets', { headers: workspaceHeaders(workspace), signal: controller.signal })
-        const payload = await readJson(response)
-        if (!controller.signal.aborted) { setState({ ...payload, workspace }); setError('') }
-      } catch (error) {
-        if (!controller.signal.aborted) {
-          setError('Không đọc được kho assets; trạng thái tải có thể đã cũ.')
-          setState(current => current.items.length && error.status !== 403 ? { ...current, stale: true } : { workspace, status: error.status === 403 ? 'unavailable' : 'error', items: [] })
-        }
-      } finally { refreshing = false }
+    let revision = null
+    setStreamReady(false)
+    const unsubscribe = subscribeWorkspaceEvents(workspace, ({ event, data }) => {
+      if (event === 'snapshot') {
+        setStreamReady(true)
+        const next = catalogEventRevision(data)
+        if (next !== revision) { revision = next; void invalidateScopeMetadata(catalogRead.scope, ['market-assets']) }
+      } else if (event === 'connection') {
+        setStreamReady(data.state === 'connected')
+        if (data.state === 'denied') catalogRead.scope.deny()
+      } else if (event === 'error' || event === 'resync') {
+        setStreamReady(false)
+        if ([401, 403].includes(data.status)) catalogRead.scope.deny()
+      }
+    }, { signal: controller.signal })
+    const visibility = () => {
+      const visible = document.visibilityState !== 'hidden'
+      setVisibleTab(visible)
+      if (visible) void invalidateScopeMetadata(catalogRead.scope, ['market-assets'])
     }
-    refresh()
-    const timer = setInterval(refresh, 5000)
-    return () => { controller.abort(); clearInterval(timer) }
-  }, [workspace, preview, reload])
+    document.addEventListener('visibilitychange', visibility)
+    return () => { unsubscribe(); controller.abort(); document.removeEventListener('visibilitychange', visibility) }
+  }, [workspace, preview, catalogRead.scope, catalogRead.denied])
+  useEffect(() => {
+    if (preview || catalogRead.denied || !visibleTab) return
+    // MT5 catalog work is not included in the SSE download projection yet.
+    if (streamReady && !state.running && !state.queued) return
+    const timer = setInterval(() => void invalidateScopeMetadata(catalogRead.scope, ['market-assets']), 15000)
+    return () => clearInterval(timer)
+  }, [preview, catalogRead.denied, catalogRead.scope, visibleTab, streamReady, state.running, state.queued])
   const update = async symbol => {
     if (preview) return
     setPending(true); setError('')
@@ -54,8 +71,13 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
         method: 'POST', headers: workspaceHeaders(workspace, { 'Content-Type': 'application/json' }),
         body: JSON.stringify({ symbol, from_date: fromDate || null }),
       })
-      setState({ ...await readJson(response), workspace })
-    } catch (error) { setError(t("Không cập nhật được: {error}", { error: error.message })) }
+      const payload = await readJson(response)
+      catalogRead.scope.client.setQueryData(metadataOptions(catalogRead.scope, 'market-assets').queryKey, payload)
+      await invalidateScopeMetadata(catalogRead.scope, ['market-assets'])
+    } catch (error) {
+      if ([401, 403].includes(error.status)) catalogRead.scope.deny()
+      setError(t("Không cập nhật được: {error}", { error: error.message }))
+    }
     finally { setPending(false) }
   }
   const items = state.items || []
@@ -73,7 +95,8 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
     {state.tick_sync_error && <TestingReadState message={t('Tick đang chờ tải bù: {error}.', { error: state.tick_sync_error })} />}
     {state.status === 'loading' && <TestingSkeleton label={t("Đang đọc kho Testing…")} />}
     {state.status === 'unavailable' && <p>{t("Chưa cấu hình nguồn lịch sử tự cập nhật.")}</p>}
-    {error && <TestingReadState error message={t(error)} onRetry={() => setReload(value => value + 1)} />}
+    {state.status === 'denied' && <TestingReadState error message={t('Không có quyền đọc kho dữ liệu trong workspace này.')} />}
+    {!catalogRead.denied && (error || catalogRead.error) && <TestingReadState error message={t(error || 'Không đọc được kho assets; trạng thái tải có thể đã cũ.')} onRetry={() => { setError(''); void catalogRead.refetch() }} />}
     <div className="market-sync-filters">
       <label className="market-sync-search"><TestingIcon kind="search" /><input type="search" aria-label={t("Tìm asset")} placeholder={t("Tìm asset…")} value={search} onChange={event => setSearch(event.target.value)} /></label>
       <FxSelect label={t("Nhóm asset")} value={group} onChange={setGroup} options={[{ value: 'all', label: 'Tất cả nhóm' }, ...groups.map(value => ({ value, label: value, localize: false }))]} />

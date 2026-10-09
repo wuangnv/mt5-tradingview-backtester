@@ -123,7 +123,7 @@ export default function SessionPicker({ kind = 'replay', workspace = 'tenant-a',
     const url = new URL(window.location.href)
     url.searchParams.set('session', item.record_id)
     if (item.dataset_id) url.searchParams.set('dataset', item.dataset_id)
-    window.history.replaceState({}, '', url)
+    navigate(url, { replace: true })
   }, [workspace, item])
 
   useEffect(() => {

@@ -1,3 +1,5 @@
+import { frontendPerformance } from './frontendPerformance.js'
+
 // Share only requests that are currently in flight. Persisting responses would
 // require a server revision/invalidation contract and could expose stale data.
 const pending = new Map()
@@ -8,10 +10,16 @@ export function scopedRead(path, workspace, signal) {
   let entry = pending.get(key)
   if (!entry) {
     const controller = new AbortController()
+    const measured = frontendPerformance().beginDomain('api-read')
     entry = { controller, consumers: 0 }
-    entry.promise = fetch(path, { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal }).then(async response => ({
-      body: await response.arrayBuffer(), status: response.status, statusText: response.statusText, headers: response.headers,
-    })).finally(() => {
+    entry.promise = fetch(path, { headers: { 'X-Workspace-Id': workspace }, signal: controller.signal }).then(async response => {
+      const body = await response.arrayBuffer()
+      measured(response.ok ? 'ready' : 'error', body.byteLength)
+      return { body, status: response.status, statusText: response.statusText, headers: response.headers }
+    }).catch(error => {
+      measured(controller.signal.aborted || error?.name === 'AbortError' ? 'aborted' : 'error')
+      throw error
+    }).finally(() => {
       if (pending.get(key) === entry) pending.delete(key)
     })
     pending.set(key, entry)

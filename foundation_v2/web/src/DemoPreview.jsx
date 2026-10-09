@@ -1,6 +1,6 @@
 import { navigate } from './clientNavigation.js'
 import { useTestingLocale } from './testingLocale.jsx'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
 import { FxAnalyticsFilters, FxAnalyticsReport, Metric } from './FxAnalytics.jsx'
 import FxTradeLedger, { TradeInspector } from './FxTradeLedger.jsx'
@@ -67,6 +67,7 @@ function DemoSessions({ workspace, query }) {
 
   const [items, setItems] = useState(DEMO_SESSIONS)
   const [id, setId] = useState(DEMO_SESSIONS.find(item => item.record_id === query.get('demo_session'))?.record_id || DEMO_SESSIONS[0].record_id)
+  useEffect(() => { setId(items.find(item => item.record_id === query.get('demo_session'))?.record_id || items[0]?.record_id || '') }, [query, items])
   const [editing, setEditing] = useState(false), [actionDialog, setActionDialog] = useState(null)
   const item = items.find(item => item.record_id === id)
   const payload = useMemo(() => item ? demoDashboardAnalytics(item, workspace) : null, [item, workspace])
@@ -74,7 +75,7 @@ function DemoSessions({ workspace, query }) {
   const dataset = DEMO_DATASETS.find(entry => entry.dataset_id === item?.dataset_id), replayRecord = item ? demoReplayContext(item) : null
   const href = (view, overrides = {}) => buildWorkspaceHref(view, workspace, query, { demo_session: id, select: '1', analytics_source: 'sessions', ...overrides })
   const save = draft => { setItems(current => current.map(entry => entry.record_id === id ? { ...entry, ...draft, revision: entry.revision + 1 } : entry)); setEditing(false); return true }
-  const select = value => { setId(value); const url = new URL(window.location.href); if (value) url.searchParams.set('demo_session', value); else url.searchParams.delete('demo_session'); window.history.replaceState(null, '', url) }
+  const select = value => { setId(value); const url = new URL(window.location.href); if (value) url.searchParams.set('demo_session', value); else url.searchParams.delete('demo_session'); navigate(url, { replace: true }) }
   const mutate = action => {
     if (action !== 'delete') return
     const next = items.filter(entry => entry.record_id !== id)

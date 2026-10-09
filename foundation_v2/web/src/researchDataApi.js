@@ -1,6 +1,7 @@
 import { scopedMutation } from './scopedMutation.js'
 import { displayDate } from './dateFormat.js'
 import { scopedRead } from './scopedRead.js'
+import { readWorkspaceMetadata } from './workspaceQuery.js'
 export async function readJson(response) {
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) {
@@ -18,14 +19,12 @@ export function workspaceHeaders(workspace, extra = {}) {
 }
 
 export async function fetchDatasets(workspace, signal) {
-  const response = await scopedRead('/api/v2/data/datasets', workspace, signal)
-  const payload = await readJson(response)
+  const payload = await readWorkspaceMetadata('datasets', workspace, signal)
   return Array.isArray(payload?.items) ? payload.items : []
 }
 
 export async function fetchProviders(workspace, signal) {
-  const response = await scopedRead('/api/v2/data/providers', workspace, signal)
-  const payload = await readJson(response)
+  const payload = await readWorkspaceMetadata('providers', workspace, signal)
   return Array.isArray(payload?.items) ? payload.items : []
 }
 

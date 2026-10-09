@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useMemo, useState } from 'react'
@@ -34,7 +35,7 @@ export default function PropAnalytics({ workspace, query, embedded = false }) {
   }, [workspace, reload])
   const report = selected === null ? state.items[0] : state.items.find(item => reportKey(item) === selected)
   const boundQuery = useMemo(() => propReplayQuery(report, new URLSearchParams(window.location.search)), [report, query])
-  const choose = value => { setSelected(value); const report = state.items.find(item => reportKey(item) === value); const url = new URL(window.location.href); if (report) { url.searchParams.set('prop_session', report.session.session_id); url.searchParams.set('attempt', report.attempt.attempt_id) } else { url.searchParams.delete('prop_session'); url.searchParams.delete('attempt') } url.searchParams.delete('trade'); window.history.replaceState({}, '', url) }
+  const choose = value => { setSelected(value); const report = state.items.find(item => reportKey(item) === value); const url = new URL(window.location.href); if (report) { url.searchParams.set('prop_session', report.session.session_id); url.searchParams.set('attempt', report.attempt.attempt_id) } else { url.searchParams.delete('prop_session'); url.searchParams.delete('attempt') } url.searchParams.delete('trade'); navigate(url, { replace: true }) }
   const money = report?.objectives?.money, calendar = report?.objectives?.calendar
   return <section className={`${embedded ? 'fx-dashboard-prop' : 'wm-page'} fxa-prop-page`} aria-label={t("Prop firm Analytics")} data-testid="prop-analytics" data-state={state.status} aria-busy={state.status === 'loading' || Boolean(state.refreshing)}>{!embedded && <h1 className="sr-only">{t("Analytics")}</h1>}
     {state.status === 'loading' && <TestingSkeleton label="Đang đọc báo cáo challenge…" />}{state.loaded && state.refreshing ? <p role="status">{t('Đang cập nhật…')}</p> : ['error', 'stale'].includes(state.status) && <TestingReadState error={state.status === 'error'} message={state.status === 'stale' ? t('Dữ liệu chưa cập nhật.') : t('Không đọc được báo cáo:') + ' ' + t(state.error)} onRetry={() => setReload(value => value + 1)} />}

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { isApplicationUrl, navigate, navigationSearch, navigationSnapshot, shouldHandleLink, subscribeNavigation } from '../src/clientNavigation.js'
+import { isApplicationUrl, navigate, navigationScope, navigationSearch, navigationSnapshot, shouldHandleLink, subscribeNavigation } from '../src/clientNavigation.js'
 
 const base = 'http://127.0.0.1:5180/?workspace=a&view=overview'
 const anchor = (href, attrs = {}) => ({ href: new URL(href, base).href, target: attrs.target, hasAttribute: key => Object.hasOwn(attrs, key) })
@@ -35,4 +35,47 @@ test('navigation preserves URL/context, replace semantics, history events and su
   navigate('/?workspace=a&view=overview&demo=1', { replace: true })
   assert.equal(notifications, 3)
   unsubscribe(); assert.equal(events.size, 0); assert.equal(clicks.size, 0)
+})
+
+
+test('reader identity ignores filters/tab/cursor while isolating workspace, page and resources', () => {
+  const query = new URLSearchParams('workspace=a&view=analytics&area=testing&section=analytics&session=s')
+  const identity = navigationScope(query, 'analytics')
+  for (const [key, value] of [['side', 'buy'], ['analytics_tab', 'simulation'], ['analytics_tag', 'news'], ['cursor', '12'], ['select', '1']]) {
+    const next = new URLSearchParams(query); next.set(key, value)
+    assert.equal(navigationScope(next, 'analytics'), identity, key)
+  }
+  for (const [key, value] of [['workspace', 'b'], ['session', 'other'], ['dataset', 'other'], ['demo', '1'], ['analytics_source', 'prop'], ['surface', 'workspace'], ['job', 'j'], ['section', 'other']]) {
+    const next = new URLSearchParams(query); next.set(key, value)
+    assert.notEqual(navigationScope(next, 'analytics'), identity, key)
+  }
+  assert.notEqual(navigationScope(query, 'trade'), identity)
+  const aggregate = new URLSearchParams('sessions=a&sessions=b')
+  assert.equal(navigationScope(aggregate, 'trade'), navigationScope(new URLSearchParams('sessions=b&sessions=a'), 'trade'))
+  assert.notEqual(navigationScope(aggregate, 'trade'), navigationScope(new URLSearchParams('sessions=a'), 'trade'))
+  const picker = new URLSearchParams('view=replay&select=1&session=s')
+  const chart = new URLSearchParams(picker); chart.set('surface', 'workspace')
+  assert.notEqual(navigationScope(picker, 'replay'), navigationScope(chart, 'replay'))
+})
+
+test('replace preserves existing history state; native hash movement neither remounts nor notifies', t => {
+  const events = new Map(), state = { owner: 'existing-state' }, writes = [], native = []
+  const location = new URL(base)
+  location.assign = href => { native.push(href); location.href = href }
+  location.replace = location.assign
+  const update = (value, unused, href) => { writes.push(value); location.href = new URL(href, location).href }
+  globalThis.window = { location, history: { state, replaceState: update, pushState: update }, addEventListener: (type, fn) => events.set(type, fn), removeEventListener: type => events.delete(type) }
+  globalThis.document = { addEventListener() {}, removeEventListener() {} }
+  t.after(() => { delete globalThis.window; delete globalThis.document })
+  let notifications = 0
+  const stop = subscribeNavigation(() => notifications++)
+  navigate('/?workspace=a&view=overview&side=buy', { replace: true })
+  assert.equal(writes[0], state)
+  navigate(`${location.href}#audit`)
+  assert.equal(native.length, 1)
+  assert.equal(notifications, 1)
+  events.get('popstate')(); assert.equal(notifications, 1)
+  location.href = base; events.get('popstate')(); assert.equal(notifications, 2)
+  assert.equal(navigationSearch(), new URL(base).search)
+  stop()
 })

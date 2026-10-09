@@ -1,5 +1,6 @@
+import { navigate, navigationSnapshot, subscribeNavigation } from './clientNavigation.js'
 import { useTestingLocale } from './testingLocale.jsx'
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useState, useSyncExternalStore } from 'react'
 import { advancedAnalytics, known, number, outcomeOf } from './tradingAnalyticsModel.js'
 import './fx-analytics.css'
 import AnalyticsFilterBar from './AnalyticsFilterBar.jsx'
@@ -179,7 +180,11 @@ export function FxAnalyticsReport({ model, extra, experiments, experimentStatus,
   const { t } = useTestingLocale()
 
   const data = useMemo(() => advancedAnalytics(model, extra), [model, extra])
-  const [tab, setTab] = useState(() => { const tab = new URLSearchParams(window.location.search).get('analytics_tab'); return ['performance', 'drawdown', 'simulation'].includes(tab) ? tab : 'performance' })
-  const choose = value => { setTab(value); onTabChange?.(value); if (model.result?.preview) return; const url = new URL(window.location.href); url.searchParams.set('analytics_tab', value); window.history.replaceState({}, '', url) }
+  useSyncExternalStore(subscribeNavigation, navigationSnapshot)
+  const requestedTab = new URLSearchParams(window.location.search).get('analytics_tab')
+  const [previewTab, setPreviewTab] = useState('performance')
+  const tab = model.result?.preview ? previewTab : ['performance', 'drawdown', 'simulation'].includes(requestedTab) ? requestedTab : 'performance'
+  useEffect(() => { onTabChange?.(tab) }, [tab, onTabChange])
+  const choose = value => { setPreviewTab(value); onTabChange?.(value); if (model.result?.preview) return; const url = new URL(window.location.href); url.searchParams.set('analytics_tab', value); navigate(url, { replace: true }) }
   return <><div className="fxa-report-tabs" role="tablist" aria-label={t("Phân tích")}><>{[['performance', 'Performance'], ['drawdown', 'Drawdown'], ['simulation', 'Simulation']].map(([value, label]) => <button className="fxa-tab" id={`fxa-tab-${value}`} role="tab" key={value} aria-selected={tab === value} aria-controls="fxa-report-panel" tabIndex={tab === value ? 0 : -1} onKeyDown={event => { const tabs = ['performance', 'drawdown', 'simulation']; if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const index = event.key === 'Home' ? 0 : event.key === 'End' ? 2 : (tabs.indexOf(tab) + (event.key === 'ArrowRight' ? 1 : 2)) % 3; choose(tabs[index]); document.getElementById(`fxa-tab-${tabs[index]}`)?.focus() } }} onClick={() => choose(value)}>{t(label)}</button>)}</></div><div id="fxa-report-panel" role="tabpanel" aria-labelledby={`fxa-tab-${tab}`} tabIndex={0}>{tab === 'performance' ? <AnalyticsPerformance model={model} data={data} extra={extra} onSelect={onSelect} selected={selected} /> : tab === 'drawdown' ? <AnalyticsDrawdown model={model} data={data} experiments={experiments} experimentStatus={experimentStatus} /> : <AnalyticsSimulation key={JSON.stringify([model.result?.session_id, model.result?.revision, model.result?.cursor_index, model.result?.execution_event_sequence, model.result?.filters, extra])} model={model} data={data} experiments={experiments} experimentStatus={experimentStatus} experimentError={experimentError} config={config} onConfig={onConfig} />}</div></>
 }

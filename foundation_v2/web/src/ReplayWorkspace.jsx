@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import { scopedMutation } from './scopedMutation.js'
 import ProjectDateInput from './ProjectDateInput.jsx'
 import { displayDate } from './dateFormat.js'
@@ -7,6 +8,7 @@ import { nativeChartPalette } from './nativeChartPalette.js'
 import FxSelect from './FxSelect.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useContentReadyMetric } from './useContentReadyMetric.js'
 import { createPortal } from 'react-dom'
 import {
   AreaSeries,
@@ -301,7 +303,7 @@ function replaceSessionInUrl(sessionId, preserveCursor = false, cursor = null, d
   // authority; these values are navigation context only.
   if (Number.isInteger(Number(cursor)) && Number(cursor) >= 0) url.searchParams.set('cursor', String(Number(cursor)))
   else if (!preserveCursor) url.searchParams.delete('cursor')
-  window.history.replaceState(null, '', url)
+  navigate(url, { replace: true })
 }
 
 function isEditableTarget(target) {
@@ -329,6 +331,8 @@ export default function ReplayWorkspace({ workspace, query }) {
   const requestedCursorValid = requestedCursor === null || (Number.isInteger(requestedCursor) && requestedCursor >= 0)
   const [sessionId, setSessionId] = useState(requestedSession)
   const [state, setState] = useState({ status: 'idle', payload: null, error: null })
+  const replayScopeResolved = state.payload?.record_id === requestedSession && (requestedCursor === null || Number(state.payload?.view_cursor_index) === requestedCursor)
+  useContentReadyMetric('replay', replayScopeResolved || !requestedSession ? state.status : 'loading', `${workspace}:${requestedSession}:${requestedCursorParam ?? ''}`)
   const advancedChart = state.payload?.payload?.chart_engine ? state.payload.payload.chart_engine === 'legacy' : query.get('chart_engine') !== 'lightweight'
   const [datasetState, setDatasetState] = useState({ status: 'loading', items: [], error: null })
   const [pendingAction, setPendingAction] = useState('')
@@ -367,6 +371,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const settingsSaveLock = useRef(false)
   const actionLock = useRef(false)
   const sessionRequest = useRef(null)
+  const lastResolvedLocation = useRef(`${requestedSession}:${requestedCursorParam ?? ''}`)
   const datasetRequest = useRef(null)
   const sideToggleRef = useRef(null)
   const sideRef = useRef(null)
@@ -395,6 +400,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const fullscreenChart = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.querySelector('.fx-app').requestFullscreen() } catch { setChartNotice('Không mở được chế độ toàn màn hình.') } }
 
   const rememberSession = useCallback((nextSessionId, preserveCursor = false, cursor = null, dataset = null) => {
+    lastResolvedLocation.current = `${nextSessionId}:${cursor ?? ''}`
     setSessionId(nextSessionId)
     window.localStorage.setItem(storageKey, nextSessionId)
     replaceSessionInUrl(nextSessionId, preserveCursor, cursor, dataset)
@@ -412,6 +418,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       const params = new URLSearchParams()
       if (targetCursor !== null) params.set('cursor_index', String(targetCursor))
       if (options.advanceIntervalSeconds) params.set('advance_interval_seconds', String(options.advanceIntervalSeconds))
+      if (options.cutoffTimestamp !== undefined) params.set('cutoff_timestamp', String(options.cutoffTimestamp))
       const suffix = params.size ? `?${params}` : ''
       const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(targetSessionId)}${suffix}`, {
         signal: controller.signal,
@@ -519,11 +526,25 @@ export default function ReplayWorkspace({ workspace, query }) {
     if (requestedDataset) createSession()
   }, []) // Resolve the initial resume once from URL -> persisted session -> dataset.
 
+  useEffect(() => {
+    const location = `${requestedSession}:${requestedCursorParam ?? ''}`
+    if (!requestedSession || location === lastResolvedLocation.current) return
+    if (actionLock.current || pendingAction) return
+    if (!requestedCursorValid) {
+      lastResolvedLocation.current = location
+      sessionRequest.current?.abort()
+      setState({ status: 'error', payload: null, error: 'Cursor replay trong URL không hợp lệ.' })
+      return
+    }
+    loadSession(requestedSession, requestedCursor)
+  }, [requestedSession, requestedCursorParam, requestedCursorValid, requestedCursor, loadSession, pendingAction])
+
   useEffect(() => () => { sessionRequest.current?.abort(); datasetRequest.current?.abort() }, [])
 
   const mutate = useCallback(async (kind, body) => {
     if (!sessionId || !state.payload || state.status !== 'ready' || actionLock.current || sessionRequest.current) return
     actionLock.current = true
+    const commandLocation = window.location.search
     setPendingAction(kind)
     setConflict(false)
     const suffix = kind === 'branch' ? 'branch' : kind === 'asset' ? 'asset' : 'step'
@@ -536,8 +557,7 @@ export default function ReplayWorkspace({ workspace, query }) {
       const payload = await readJson(response)
       const nextCursor = Number(payload.view_cursor_index ?? payload.payload.cursor_index)
       const payloadDataset = payload.payload?.dataset_id || state.payload?.payload?.dataset_id
-      if (kind === 'branch') rememberSession(payload.record_id, false, nextCursor, payloadDataset)
-      else replaceSessionInUrl(payload.record_id, false, nextCursor, payloadDataset)
+      if (window.location.search === commandLocation) rememberSession(payload.record_id, false, nextCursor, payloadDataset)
       setBranchCursor(Math.max(0, nextCursor - 1))
       setJumpDraft(Math.max(0, nextCursor))
       setState({ status: 'ready', payload, error: null })
@@ -763,10 +783,10 @@ export default function ReplayWorkspace({ workspace, query }) {
   const selectReplayBar = useCallback(timestamp => {
     if (!selectingReplayBar || state.status !== 'ready' || conflict || pendingAction || actionLock.current) return
     const target = replaySelectionCursor(visibleRows, Number(timestamp), cursor)
-    if (target === null) return
+    if (target === null && (!Number.isSafeInteger(Number(timestamp)) || Number(timestamp) >= Number(state.payload?.cutoff_timestamp))) return
     setSelectingReplayBar(false)
     setChartNotice('')
-    loadSession(sessionId, target)
+    loadSession(sessionId, target, target === null ? { cutoffTimestamp: Number(timestamp) } : {})
   }, [conflict, cursor, loadSession, pendingAction, selectingReplayBar, sessionId, state.status, visibleRows])
   const toggleReplay = () => {
     if (!isPlaying) { lastReplayDispatch.current = performance.now(); setSelectingReplayBar(false); setChartNotice('') }
@@ -819,10 +839,8 @@ export default function ReplayWorkspace({ workspace, query }) {
       setChartNotice('Chọn thời điểm UTC không vượt quá cutoff đang xem.')
       return
     }
-    const index = visibleRows.findIndex((row) => Number(row.timestamp) >= timestamp)
-    if (index < 0) { setChartNotice('Không có nến ở thời điểm này trong phần dữ liệu đã mở.'); return }
     setChartNotice('')
-    loadSession(sessionId, index + (replay?.visible_row_start || 0))
+    loadSession(sessionId, null, { cutoffTimestamp: Math.floor(timestamp) })
   }
   const routeContext = useMemo(() => ({
     session: sessionId || undefined,
@@ -993,7 +1011,7 @@ export default function ReplayWorkspace({ workspace, query }) {
                     <FxSelect label={t("Tốc độ replay")} value={speed} onChange={setSpeed} disabled={Boolean(pendingAction)} localizeOptions={false} options={['0.5', '1', '2', '4'].map(value => ({ value, label: value + '×', localize: false }))} /><span className="chart-float-cutoff" title={formatTimestamp(replay.cutoff_timestamp) + ' UTC'}>#{cursor}</span>
                   </ChartFloatingToolbar>}
                   {advancedChart ? <TradingViewReplayChart key={`${sessionId}:${replay.payload.dataset_id}:${historicalView ? cursor : 'canonical'}`}
-                    workspace={workspace} datasetId={replay.payload.dataset_id} symbol={replayContext.instrument} assetClass={order.instrument?.asset_class} seconds={activeDataset?.timeframe_seconds || replay.payload.execution?.timeframe_seconds}
+                    workspace={workspace} datasetId={replay.payload.dataset_id} datasetSha256={replay.dataset_sha256} viewCursorIndex={replay.view_cursor_index} symbol={replayContext.instrument} assetClass={order.instrument?.asset_class} seconds={activeDataset?.timeframe_seconds || replay.payload.execution?.timeframe_seconds}
                     cutoff={Number(replay.cutoff_timestamp)} theme={theme} levels={priceLevels} orderEditable={!order.disabled} orderGeneration={`${sessionId}:${revision}:${cursor}`}
                     onOrderDragStart={() => setIsPlaying(false)} tickSize={order.instrument?.tick_size} onOrderPriceChange={order.changePrice} rows={visibleRows} sessionId={sessionId}
                     viewportRequest={viewportRequest} drawings={drawings.objects} onCrosshair={setCrosshair} preferredInterval={nativeIntervalRef.current?.sessionId === sessionId ? nativeIntervalRef.current.interval : undefined} onHeaderSlots={slots => { if (slots?.interval) nativeIntervalRef.current = { sessionId, interval: slots.interval }; setNativeHeaderSlots(slots) }} selectingReplayBar={selectingReplayBar} onReplayBarSelect={selectReplayBar} />

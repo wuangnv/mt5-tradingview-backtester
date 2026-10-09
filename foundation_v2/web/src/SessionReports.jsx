@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useEffect, useMemo, useState } from 'react'
@@ -12,8 +13,8 @@ import useReadRefresh from './useReadRefresh.js'
 function AggregateTrades({ workspace, ids, query, sessionControl, onClearSessions }) {
   const { t } = useTestingLocale()
 
-  const [filters, setFilters] = useState(() => readAnalyticsFilters(query))
-  const [extra, setExtra] = useState(() => readAnalyticsExtraFilters(query))
+  const filters = useMemo(() => readAnalyticsFilters(query), [query])
+  const extra = useMemo(() => readAnalyticsExtraFilters(query), [query])
   const [readState, setState] = useState({ status: 'loading', payload: null })
   const [reload, setReload] = useState(0), [selected, setSelected] = useState(''), [paging, setPaging] = useState({ page: 1, pageSize: 10, sort: { key: 'close_time_utc', direction: 'desc' } })
   const params = useMemo(() => {
@@ -41,16 +42,24 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     return () => controller.abort()
   }, [workspace, params, reload])
   useEffect(() => { setSelected('') }, [workspace, params])
-  useEffect(() => {
+  const changeFilters = patch => {
     const url = new URL(window.location.href)
+    const next = { ...readAnalyticsFilters(url.searchParams), ...patch }
     for (const key of ['from_close_utc', 'to_close_utc']) url.searchParams.delete(key)
-    for (const [key, value] of Object.entries(filters)) value && value !== 'all' ? url.searchParams.set(key, value) : url.searchParams.delete(key)
-    for (const [key, value] of Object.entries(extra)) {
+    for (const [key, value] of Object.entries(next)) value && value !== 'all' ? url.searchParams.set(key, value) : url.searchParams.delete(key)
+    setPaging(current => ({ ...current, page: 1 }))
+    navigate(url, { replace: true })
+  }
+  const changeExtra = patch => {
+    const url = new URL(window.location.href)
+    const next = { ...readAnalyticsExtraFilters(url.searchParams), ...patch }
+    for (const [key, value] of Object.entries(next)) {
       const param = key === 'source' ? 'analytics_trade_source' : `analytics_${key}`
       value !== DEFAULT_EXTRA_FILTERS[key] ? url.searchParams.set(param, value) : url.searchParams.delete(param)
     }
-    window.history.replaceState({}, '', url)
-  }, [filters, extra])
+    setPaging(current => ({ ...current, page: 1 }))
+    navigate(url, { replace: true })
+  }
   const model = useMemo(() => {
     const base = buildAnalyticsModel({ ledger: state.payload?.ledger || [], metrics: {}, scope: state.payload?.scope, multi_session: true, account_currency: t('Đơn vị từng phiên'), paged: true })
     return { ...base, ledger: base.ledger.map(row => ({ ...row, tradeId: JSON.stringify([row.session_id, row.trade_id]) })) }
@@ -64,7 +73,7 @@ function AggregateTrades({ workspace, ids, query, sessionControl, onClearSession
     return `/?${params}`
   }
   return <section className="as-page fxa-page wm-page" aria-label={t("Trades")} data-testid="aggregate-trades">
-    <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} remotePage={{ page: state.payload?.pagination.page || paging.page, pageSize: paging.pageSize, sort: paging.sort, totalCount: state.payload?.pagination.filtered_count ?? null, pending: state.status === 'loading', onChange: patch => setPaging(current => ({ ...current, ...patch })) }} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={patch => { setPaging(current => ({ ...current, page: 1 })); setFilters(current => ({ ...current, ...patch })) }} extra={extra} onExtra={patch => { setPaging(current => ({ ...current, page: 1 })); setExtra(current => ({ ...current, ...patch })) }} rows={model.ledger} facets={state.payload?.facets || state.facets} sessionControl={sessionControl} onClearSessions={onClearSessions} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
+    <FxTradeLedger model={model} extra={extra} selected={selected} onSelect={setSelected} remotePage={{ page: state.payload?.pagination.page || paging.page, pageSize: paging.pageSize, sort: paging.sort, totalCount: state.payload?.pagination.filtered_count ?? null, pending: state.status === 'loading', onChange: patch => setPaging(current => ({ ...current, ...patch })) }} renderFilters={columnControl => <FxAnalyticsFilters filters={filters} onChange={changeFilters} extra={extra} onExtra={changeExtra} rows={model.ledger} facets={state.payload?.facets || state.facets} sessionControl={sessionControl} onClearSessions={onClearSessions} pending={!state.payload} columnControl={columnControl} ledgerOnly />} />
     {state.status === 'error' && <TestingReadState error message={t('Không đọc được giao dịch: {error}', { error: state.error })} onRetry={() => setReload(value => value + 1)} />}
     {state.payload?.status === 'partial' && <TestingReadState message={t('Một số phiên chưa đủ dữ liệu; bảng chỉ gồm các giao dịch đã đọc được.')} />}
     {state.payload && <>
@@ -90,7 +99,7 @@ export default function SessionReports({ workspace, query, ledgerOnly = false })
     for (const key of ['session', 'replay_session', 'sessions', 'dataset', 'cursor', 'cutoff', 'cursor_index', 'decision_cutoff', 'event_sequence', 'trade', 'trade_id']) url.searchParams.delete(key)
     if (ledgerOnly) { if (next === null) url.searchParams.set('sessions', 'all'); else if (!next.length) url.searchParams.set('sessions', 'none'); else next.forEach(id => url.searchParams.append('sessions', id)) }
     else url.searchParams.set('session', next)
-    window.history.replaceState({}, '', url); setScope(next)
+    navigate(url, { replace: true }); setScope(next)
   }
   const control = <SessionFilter items={catalog.items} multiple={ledgerOnly} value={scope} onChange={change} disabled={catalog.status !== 'ready'} />
   const sessionId = ledgerOnly ? scope?.length === 1 ? scope[0] : '' : scope
@@ -98,7 +107,7 @@ export default function SessionReports({ workspace, query, ledgerOnly = false })
   const scopedQuery = item ? sessionAnalyticsQuery(new URLSearchParams(window.location.search), item) : query
   useEffect(() => {
     if (ledgerOnly || !scope || query.get('session') || query.get('replay_session')) return
-    const url = new URL(window.location.href); url.searchParams.set('session', scope); window.history.replaceState({}, '', url)
+    const url = new URL(window.location.href); url.searchParams.set('session', scope); navigate(url, { replace: true })
   }, [scope, ledgerOnly])
   return <>
     {catalog.status === 'loading' && <TestingSkeleton label="Đang tải danh mục phiên…" />}

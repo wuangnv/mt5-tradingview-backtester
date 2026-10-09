@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import { displayDate } from './dateFormat.js'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
@@ -174,7 +175,7 @@ export default function PlaybookWorkspace({ workspace = 'tenant-a', query = new 
     setSelectedId(recordId)
     const record = catalog.items.find((item) => item.record_id === recordId)
     const href = buildWorkspaceHref('playbook', workspace, query, { playbook: recordId, playbook_revision: record?.revision || null })
-    window.history.replaceState({}, '', href)
+    navigate(href, { replace: true })
   }
 
   const journalHref = selected

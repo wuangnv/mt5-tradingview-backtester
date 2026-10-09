@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { dashboardDurationParts, dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, readDashboardReplayContext, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions } from '../src/dashboardModel.js'
+import { dashboardDurationParts, dashboardFilters, dashboardFilterError, dashboardNumber, dashboardMoney, dashboardRequestUrl, readDashboardOverview, readDashboardAnalytics, readDashboardReplayContext, dashboardCurve, dashboardPeriod, dashboardPeriodRange, dashboardRecentSessions, dashboardListUrl, dashboardSummaryDetail, dashboardSampledCurve, readDashboardSessionList } from '../src/dashboardModel.js'
 
 test('duration retains unknown, measured zero and whole elapsed days without calendar-month guesses', () => {
   for (const value of [null, undefined, '', false, '60', NaN, Infinity, -1]) assert.equal(dashboardDurationParts(value), null)
@@ -142,10 +142,10 @@ test('profit sorting keeps unknown last and refuses mixed or missing currencies'
   assert.deepEqual(ids({ sort: 'last' }), ['a', 'b', 'c'])
 })
 
-test('replay context verifies the catalog revision and drops candle arrays before retaining metadata', async context => {
+test('replay context uses metadata-only route and verifies catalog revision', async context => {
   const payload = { record_id: 's/a', revision: 2, cutoff_timestamp: 1783315500, payload: { execution: null }, visible_rows: [{ time: 1 }] }
   context.mock.method(globalThis, 'fetch', async (url, options) => {
-    assert.equal(url, '/api/v2/replay/sessions/s%2Fa')
+    assert.equal(url, '/api/v2/replay/sessions/s%2Fa/metadata')
     assert.equal(options.headers['X-Workspace-Id'], 'w')
     return new Response(JSON.stringify(payload))
   })
@@ -155,4 +155,38 @@ test('replay context verifies the catalog revision and drops candle arrays befor
   await assert.rejects(readDashboardReplayContext('w', item), /revision_mismatch/)
   payload.revision = 2; payload.record_id = 'foreign'
   await assert.rejects(readDashboardReplayContext('w', item), /revision_mismatch/)
+})
+
+
+test('bounded dashboard list validates workspace, revision, summary and request page', async context => {
+  const item = { record_id: 'session-a', revision: 2, detail: { status: 'ready', revision: 2, analytics_available: true,
+    metadata: { schema_version: 'replay-metadata-v1', workspace_id: 'tenant-a', record_id: 'session-a', revision: 2, payload: {} },
+    provenance: { workspace_id: 'tenant-a', session_id: 'session-a', revision: 2 }, metrics: { starting_balance: 100, ending_closed_trade_balance: 105 },
+    periods: { months: [] }, curve: { points: [] }, currency: 'USD' } }
+  const payload = { schema_version: 'dashboard-session-list-v1', workspace_id: 'tenant-a', revision: 'snapshot', items: [item], facets: { assets: [], strategies: [] }, total: 1000, matching_count: 1000, page: 2, pages: 167 }
+  context.mock.method(globalThis, 'fetch', async (url, options) => {
+    assert.equal(url, '/api/v2/dashboard/sessions?page=2&page_size=6&sort=profit&strategy=breakout')
+    assert.equal(options.headers['X-Workspace-Id'], 'tenant-a')
+    return new Response(JSON.stringify(payload))
+  })
+  const filters = { page: 2, sort: 'profit', strategy: 'breakout' }
+  assert.deepEqual(await readDashboardSessionList('tenant-a', filters), payload)
+  assert.equal(dashboardSummaryDetail(item.detail).model.endingBalance, 105)
+  item.detail.metadata.workspace_id = 'other'
+  await assert.rejects(readDashboardSessionList('tenant-a', filters), /dashboard_session_list_invalid/)
+  item.detail.metadata.workspace_id = 'tenant-a'; item.detail.curve.points = Array(129).fill({})
+  await assert.rejects(readDashboardSessionList('tenant-a', filters), /dashboard_session_list_invalid/)
+  assert.equal(dashboardListUrl(), '/api/v2/dashboard/sessions?page=1&page_size=6&sort=newest')
+})
+
+test('sampled card curve keeps original sequences and rejects incorrect endpoint or coverage', () => {
+  const metrics = { closed_trade_count: 1000, starting_balance: 100, net_pnl: 20 }
+  const summary = { total_points: 1001, sampled: true, minimum_balance: 80, maximum_balance: 120,
+    points: [{ sequence: 0, closed_trade_balance: 100 }, { sequence: 500, closed_trade_balance: 90 }, { sequence: 1000, closed_trade_balance: 120 }] }
+  const curve = dashboardSampledCurve(metrics, summary)
+  assert.equal(curve.count, 1000); assert.equal(curve.sampled, true); assert.equal(curve.last, 20)
+  assert.match(curve.path, /L527.00,/)
+  assert.equal(dashboardSampledCurve(metrics, { ...summary, total_points: 10 }), null)
+  assert.equal(dashboardSampledCurve({ ...metrics, net_pnl: 30 }, summary), null)
+  assert.equal(dashboardSampledCurve(metrics, { ...summary, points: [...summary.points].reverse() }), null)
 })

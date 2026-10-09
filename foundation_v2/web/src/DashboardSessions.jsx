@@ -5,8 +5,8 @@ import { useTestingLocale } from './testingLocale.jsx'
 import PaginationFooter from './PaginationFooter.jsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { deleteSession, readLastSession, sessionMutationError, duplicateSession, fetchReplaySessions, rememberSession, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
-import { dashboardFilters, dashboardRecentSessions, dashboardPeriod, dashboardPeriodRange, dashboardNumber, readDashboardAnalytics, readDashboardDatasets, readDashboardReplayContext, updateDashboardQuery } from './dashboardModel.js'
+import { deleteSession, readLastSession, sessionMutationError, duplicateSession, rememberSession, sessionNavigationHref, updateSessionMetadata } from './sessionCatalog.js'
+import { dashboardFilters, dashboardRecentSessions, dashboardPeriod, dashboardPeriodRange, dashboardNumber, readDashboardAnalytics, readDashboardReplayContext, readDashboardSessionList, dashboardSummaryDetail, updateDashboardQuery } from './dashboardModel.js'
 import { analyticsViewResult, buildAnalyticsModel } from './AnalyticsWorkspace.jsx'
 import DashboardPerformance from './DashboardPerformance.jsx'
 import DashboardSessionCard from './DashboardSessionCard.jsx'
@@ -26,10 +26,10 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   const { t } = useTestingLocale()
 
   const initialQuery = preview ? new URLSearchParams() : query
-  const [catalog, setCatalog] = useState({ status: preview ? 'ready' : 'loading', loaded: Boolean(preview), items: preview?.items || [], error: null })
+  const [catalogState, setCatalog] = useState({ status: preview ? 'ready' : 'loading', loaded: Boolean(preview), items: preview?.items || [], error: null })
   const [datasetState, setDatasetState] = useState({ status: preview ? 'ready' : 'loading', loaded: Boolean(preview), items: preview?.datasets || [], error: '' })
-  const datasets = datasetState.items
-  const [datasetReload, setDatasetReload] = useState(0), [detailReload, setDetailReload] = useState(0)
+  const datasets = preview ? datasetState.items : catalogState.items.map(item => item.dataset).filter(Boolean)
+  const [detailReload, setDetailReload] = useState(0)
   const [reload, setReload] = useState(0)
   const [filters, setFilters] = useState(() => dashboardFilters(initialQuery))
   const [period, setPeriod] = useState(() => dashboardPeriod(dashboardFilters(initialQuery)))
@@ -53,17 +53,32 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
       navigate(url.href)
       return
     }
-    window.history.replaceState({}, '', url)
+    navigate(url.href, { replace: true })
     setFilters(current => current.session === item.record_id ? { ...current, session: '' } : current)
   }
-  const details = detailState.workspace === workspace ? detailState.items : {}
-  const needsAllDetails = Boolean(filtersOpen || sort === 'profit' || strategy)
-  const matching = dashboardRecentSessions(catalog.items, { search, sort, asset, strategy, details })
-  const pages = Math.max(1, Math.ceil(matching.length / 6)), currentPage = Math.min(page, pages)
-  const visible = matching.slice((currentPage - 1) * 6, currentPage * 6)
+  const listKey = JSON.stringify([workspace, page, search, sort, asset, strategy])
+  const catalog = preview || catalogState.key === listKey ? catalogState : { status: 'loading', loaded: false, items: [], error: null }
+  const details = preview ? (detailState.workspace === workspace ? detailState.items : {}) : Object.fromEntries(catalog.items.map(item => [item.record_id, dashboardSummaryDetail(item.detail)]))
+  const needsAllDetails = Boolean(preview && (filtersOpen || sort === 'profit' || strategy))
+  const matching = preview ? dashboardRecentSessions(catalog.items, { search, sort, asset, strategy, details }) : catalog.items
+  const pages = preview ? Math.max(1, Math.ceil(matching.length / 6)) : catalog.pages || 1, currentPage = preview ? Math.min(page, pages) : catalog.page || page
+  const visible = preview ? matching.slice((currentPage - 1) * 6, currentPage * 6) : matching
   const readItems = needsAllDetails ? catalog.items : visible
   const readKey = JSON.stringify(readItems.map(item => [item.record_id, item.revision]))
   const updateQuery = values => { if (!preview) updateDashboardQuery(values) }
+
+  const queryKey = query.toString()
+  useEffect(() => {
+    if (preview) return
+    const current = new URLSearchParams(queryKey)
+    const next = dashboardFilters(current)
+    setFilters(next); setPeriod(dashboardPeriod(next))
+    setSearch(current.get('dashboard_search') || '')
+    setSort(['oldest', 'last', 'profit'].includes(current.get('dashboard_sort')) ? current.get('dashboard_sort') : 'newest')
+    setSource(['prop', 'all'].includes(current.get('dashboard_source')) ? current.get('dashboard_source') : 'backtest')
+    setAsset(current.get('dashboard_asset') || ''); setStrategy(current.get('dashboard_strategy') || '')
+    setPage(Math.max(1, Number.parseInt(current.get('dashboard_page'), 10) || 1))
+  }, [queryKey, preview])
 
   useEffect(() => {
     if (preview) return
@@ -75,39 +90,35 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
   useEffect(() => {
     if (preview) return
     const controller = new AbortController()
-    setCatalog(current => current.loaded ? { ...current, refreshing: true, error: null } : { status: 'loading', loaded: false, items: [], refreshing: true, error: null })
-    fetchReplaySessions(workspace, controller.signal).then(items => {
+    setCatalog(current => current.key === listKey && current.loaded ? { ...current, refreshing: true, error: null } : { status: 'loading', loaded: false, items: [], refreshing: true, error: null, key: listKey })
+    // Search is delayed briefly; all other controls start their bounded page read immediately.
+    const timer = setTimeout(() => readDashboardSessionList(workspace, { page, search, sort, asset, strategy, revision: page > 1 && catalogState.workspace_id === workspace ? catalogState.revision : '' }, controller.signal).then(async payload => {
       if (!controller.signal.aborted) {
-        setCatalog({ status: 'ready', loaded: true, items, error: null }); setNeedsRefresh(false)
-        setDetailState(current => ({ ...current, items: Object.fromEntries(Object.entries(current.items).filter(([id]) => items.some(item => item.record_id === id))) }))
-        if (uncertainDelete.current && !items.some(item => item.record_id === uncertainDelete.current.record_id)) {
-          cleanDeletedScope(uncertainDelete.current); setDialog(null); setNotice('Đã đối chiếu: phiên không còn trong danh mục.')
+        setCatalog({ ...payload, status: 'ready', loaded: true, error: null, key: listKey }); setNeedsRefresh(false)
+        const uncertain = uncertainDelete.current
+        if (uncertain) {
+          // Absence from a filtered page does not prove deletion.
+          try { await readDashboardReplayContext(workspace, uncertain, controller.signal) }
+          catch (problem) {
+            if (!controller.signal.aborted && problem.status === 404) {
+              cleanDeletedScope(uncertain); setDialog(null); setNotice('Đã đối chiếu: phiên không còn trong danh mục.')
+            }
+          }
+          if (!controller.signal.aborted) uncertainDelete.current = null
         }
-        uncertainDelete.current = null
       }
     }).catch(error => {
       if (controller.signal.aborted) return
       const denied = [401, 403].includes(error.status)
       if (denied) { setDialog(null); setCreating(false); setDetailState({ workspace, items: {} }) }
-      setCatalog(current => denied ? { status: 'error', loaded: false, items: [], refreshing: false, error: error.message } : { ...current, status: current.loaded ? 'stale' : 'error', refreshing: false, error: error.message })
-    })
-    return () => controller.abort()
-  }, [workspace, reload, preview])
+      setCatalog(current => denied || current.key !== listKey ? { status: 'error', loaded: false, items: [], refreshing: false, error: error.message, key: listKey } : { ...current, status: current.loaded ? 'stale' : 'error', refreshing: false, error: error.message })
+    }), search ? 150 : 0)
+    return () => { clearTimeout(timer); controller.abort() }
+  }, [workspace, reload, listKey, preview])
+
 
   useEffect(() => {
-    if (preview) return
-    const controller = new AbortController()
-    setDatasetState(current => current.loaded ? { ...current, refreshing: true, error: '' } : { status: 'loading', loaded: false, items: [], error: '' })
-    readDashboardDatasets(workspace, controller.signal).then(items => {
-      if (!controller.signal.aborted) setDatasetState({ status: 'ready', loaded: true, items, error: '' })
-    }).catch(error => {
-      if (!controller.signal.aborted) setDatasetState(current => [401, 403].includes(error.status) ? { status: 'error', loaded: false, items: [], error: error.message } : { ...current, status: current.loaded ? 'stale' : 'error', refreshing: false, error: error.message })
-    })
-    return () => controller.abort()
-  }, [workspace, reload, datasetReload, preview])
-
-  useEffect(() => {
-    if (catalog.status !== 'ready') return
+    if (!preview || catalog.status !== 'ready') return
     const missing = readItems.filter(item => details[item.record_id]?.revision !== item.revision || !['ready', 'error'].includes(details[item.record_id]?.status))
     if (!missing.length) return
     const controller = new AbortController()
@@ -125,6 +136,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
 
   const retryDetails = id => {
     if (catalogBlocked) return
+    if (!preview) { setReload(value => value + 1); return }
     setDetailState(current => ({ ...current, items: Object.fromEntries(Object.entries(current.items).filter(([key, entry]) => entry.status !== 'error' || id && key !== id)) }))
     setDetailReload(value => value + 1)
   }
@@ -168,8 +180,8 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
     {source !== 'prop' && <FxSelect label={t("Thời gian Performance")} value={period} icon="calendar" onChange={changePeriod} triggerContent={source === 'all' ? t('Backtesting') + ' · ' + t(periodLabels[period]) : null} options={['last-week', 'last-month', 'lifetime', 'custom', ...(['7d', '30d', '90d'].includes(period) ? [period] : [])].map(value => ({ value, label: periodLabels[value] }))} />}
   </>
   const currencies = new Set(matching.map(item => details[item.record_id]).filter(value => value?.pnl != null).map(value => value.currency))
-  const detailsLoading = catalog.items.some(item => !details[item.record_id] || details[item.record_id].status === 'loading')
-  const detailFailed = catalog.items.some(item => details[item.record_id]?.unavailable)
+  const detailsLoading = preview && catalog.items.some(item => !details[item.record_id] || details[item.record_id].status === 'loading')
+  const detailFailed = catalog.summary_unavailable_count > 0 || catalog.items.some(item => details[item.record_id]?.unavailable)
   const propReport = preview ? preview.propReport : <PropAnalytics workspace={workspace} query={query} embedded />
 
   return <>
@@ -184,20 +196,20 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
       <div className="fx-dashboard-section-head"><h2>{t("Recent Sessions")}</h2></div>
       <div className="fx-dashboard-recent-toolbar"><label className="fx-dashboard-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg><input type="search" aria-label={t("Tìm phiên gần đây")} placeholder={t("Tìm tên phiên, symbol…")} value={search} onChange={event => changeRecent('search', event.target.value, setSearch)} /></label><div className="fx-dashboard-list-filters">
         <button className="fx-dashboard-filter-toggle" type="button" aria-label={filtersOpen ? t("Ẩn bộ lọc phiên") : t("Hiện bộ lọc phiên")} aria-expanded={filtersOpen} onClick={() => { if (filtersOpen) clearFilters(); setFiltersOpen(!filtersOpen) }}>{filtersOpen ? '×' : <FilterIcon kind="filter" />}</button>
-        {filtersOpen && <><FxSelect label={t("Assets")} triggerContent={t("Assets")} value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder={t("Tìm asset…")} options={[{ value: '', label: 'Tất cả assets' }, ...[...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort().map(value => ({ value, label: value, localize: false }))]} /><FxSelect label={t("Strategy")} triggerContent={t("Strategy")} value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder={t("Tìm strategy…")} disabled={detailsLoading} options={[{ value: '', label: 'Tất cả strategies' }, ...[...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))].map(value => ({ value, label: value, localize: false })), ...(catalog.items.some(item => details[item.record_id]?.strategy === null) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /></>}
+        {filtersOpen && <><FxSelect label={t("Assets")} triggerContent={t("Assets")} value={asset} onChange={value => changeRecent('asset', value, setAsset)} searchable placeholder={t("Tìm asset…")} options={[{ value: '', label: 'Tất cả assets' }, ...(preview ? [...new Set(catalog.items.map(item => item.instrument_id).filter(Boolean))].sort() : catalog.facets?.assets || []).map(value => ({ value, label: value, localize: false }))]} /><FxSelect label={t("Strategy")} triggerContent={t("Strategy")} value={strategy} onChange={value => changeRecent('strategy', value, setStrategy)} searchable placeholder={t("Tìm strategy…")} disabled={detailsLoading} options={[{ value: '', label: 'Tất cả strategies' }, ...(preview ? [...new Set(catalog.items.map(item => details[item.record_id]).filter(Boolean).map(value => value.strategy).filter(Boolean))] : catalog.facets?.strategies || []).map(value => ({ value, label: value, localize: false })), ...((preview ? catalog.items.some(item => details[item.record_id]?.strategy === null) : catalog.facets?.unassigned) ? [{ value: 'unassigned', label: 'Chưa gắn strategy' }] : [])]} /></>}
         <FxSelect label={t("Sắp xếp phiên")} value={sort} icon="sort" onChange={value => changeRecent('sort', value, setSort)} options={[{ value: 'newest', label: 'Newest to oldest' }, { value: 'oldest', label: 'Oldest to newest' }, { value: 'last', label: 'Last updated' }, { value: 'profit', label: 'Most profit' }]} />
       </div></div>
-      {catalog.loaded && <div className="fx-dashboard-session-count" role="status"><span>{t("{count} of {total} sessions", { count: matching.length, total: catalog.items.length })}</span><progress aria-label={t("Phiên khớp bộ lọc")} value={matching.length} max={Math.max(1, catalog.items.length)} /></div>}
+      {catalog.loaded && <div className="fx-dashboard-session-count" role="status"><span>{t("{count} of {total} sessions", { count: preview ? matching.length : catalog.matching_count, total: preview ? catalog.items.length : catalog.total })}</span><progress aria-label={t("Phiên khớp bộ lọc")} value={preview ? matching.length : catalog.matching_count} max={Math.max(1, preview ? catalog.items.length : catalog.total)} /></div>}
       {catalog.loaded && catalog.refreshing ? <p role="status">{t('Đang cập nhật danh mục…')}</p> : catalog.status === 'stale' && <TestingReadState message="Dữ liệu chưa cập nhật." onRetry={() => setReload(value => value + 1)} />}
       {notice && <p className="fx-dashboard-action-notice" role="status">{t(notice)}</p>}
       {sort === 'profit' && detailsLoading && <p role="status">{t("Đang đọc lợi nhuận phiên…")}</p>}
-      <div data-testid="dashboard-dataset-state" data-state={datasetState.status} aria-busy={datasetState.status === 'loading' || Boolean(datasetState.refreshing)}>
-        {datasetState.loaded && datasetState.refreshing ? <p role="status">{t('Đang cập nhật…')}</p> : datasetState.status === 'stale' && <TestingReadState message="Thông tin dữ liệu chưa cập nhật." onRetry={() => setDatasetReload(value => value + 1)} />}
-        {datasetState.status === 'error' && <TestingReadState error message={t('Chưa đọc được thông tin dữ liệu:') + ' ' + t(datasetState.error)} onRetry={() => setDatasetReload(value => value + 1)} />}
-      </div>
-      {(filtersOpen || sort === 'profit') && detailFailed && <TestingReadState message="Một số phiên chưa đọc được kết quả; bộ lọc Strategy và lợi nhuận chưa đầy đủ." onRetry={catalogBlocked ? undefined : () => retryDetails()} />}
-      {sort === 'profit' && (currencies.size > 1 || currencies.has(null)) && <p role="status">{t("Tiền tệ khác nhau hoặc chưa rõ; giữ thứ tự tạo phiên để tránh so sánh lợi nhuận sai.")}</p>}
-      {catalog.loaded && visible.length ? <><div className="fx-dashboard-session-list">{visible.map(item => <DashboardSessionCard key={item.record_id} item={item} detail={details[item.record_id]?.revision === item.revision ? details[item.record_id] : null} dataset={datasets.find(dataset => dataset.dataset_id === item.dataset_id)} preview={Boolean(preview)} href={(view, overrides) => href(item, view, overrides)} onManage={openDialog} onRetryDetail={catalogBlocked ? undefined : () => retryDetails(item.record_id)} actionsDisabled={pending || needsRefresh || catalogBlocked} onRemember={() => rememberSession(workspace, item.record_id)} />)}</div>{pages > 1 && <PaginationFooter label="Phân trang phiên gần đây" page={currentPage} pages={pages} onPageChange={value => { setPage(value); updateQuery({ dashboard_page: String(value) }) }} />}</> : <div className="fx-dashboard-catalog-status">{catalog.status === 'loading' ? <TestingSkeleton label="Đang tải danh sách phiên…" /> : detailsLoading && strategy ? t("Đang đọc Strategy của các phiên…") : catalog.status === 'error' ? <TestingReadState error message={t('Chưa tải được danh sách:') + ' ' + t(catalog.error)} onRetry={() => setReload(value => value + 1)} /> : catalog.items.length ? <div role="status">{t("Không có phiên khớp bộ lọc.")}<button type="button" onClick={clearFilters}>{t("Xóa bộ lọc danh sách")}</button></div> : <p role="status">{t("Chưa có phiên. Tạo backtest đầu tiên ở phía trên.")}</p>}</div>}
+      {preview && <div data-testid="dashboard-dataset-state" data-state={datasetState.status} aria-busy={datasetState.status === 'loading' || Boolean(datasetState.refreshing)}>
+        {datasetState.loaded && datasetState.refreshing ? <p role="status">{t('Đang cập nhật…')}</p> : datasetState.status === 'stale' && <TestingReadState message="Thông tin dữ liệu chưa cập nhật." onRetry={() => setReload(value => value + 1)} />}
+        {datasetState.status === 'error' && <TestingReadState error message={t('Chưa đọc được thông tin dữ liệu:') + ' ' + t(datasetState.error)} onRetry={() => setReload(value => value + 1)} />}
+      </div>}
+      {(filtersOpen || sort === 'profit') && detailFailed && <TestingReadState message={preview ? "Một số phiên chưa đọc được kết quả; bộ lọc Strategy và lợi nhuận chưa đầy đủ." : "Một số phiên chưa đọc được kết quả; lợi nhuận chưa đầy đủ."} onRetry={catalogBlocked ? undefined : () => retryDetails()} />}
+      {sort === 'profit' && (preview ? currencies.size > 1 || currencies.has(null) : catalog.profit_comparable === false) && <p role="status">{t("Tiền tệ khác nhau hoặc chưa rõ; giữ thứ tự tạo phiên để tránh so sánh lợi nhuận sai.")}</p>}
+      {catalog.loaded && visible.length ? <><div className="fx-dashboard-session-list">{visible.map(item => <DashboardSessionCard key={item.record_id} item={item} detail={details[item.record_id]?.revision === item.revision ? details[item.record_id] : null} dataset={datasets.find(dataset => dataset.dataset_id === item.dataset_id)} preview={Boolean(preview)} href={(view, overrides) => href(item, view, overrides)} onManage={openDialog} onRetryDetail={catalogBlocked ? undefined : () => retryDetails(item.record_id)} actionsDisabled={pending || needsRefresh || catalogBlocked} onRemember={() => rememberSession(workspace, item.record_id)} />)}</div>{pages > 1 && <PaginationFooter label="Phân trang phiên gần đây" page={currentPage} pages={pages} onPageChange={value => { setPage(value); updateQuery({ dashboard_page: String(value) }) }} />}</> : <div className="fx-dashboard-catalog-status">{catalog.status === 'loading' ? <TestingSkeleton label="Đang tải danh sách phiên…" /> : detailsLoading && strategy ? t("Đang đọc Strategy của các phiên…") : catalog.status === 'error' ? <TestingReadState error message={t('Chưa tải được danh sách:') + ' ' + t(catalog.error)} onRetry={() => setReload(value => value + 1)} /> : (preview ? catalog.items.length : catalog.total) ? <div role="status">{t("Không có phiên khớp bộ lọc.")}<button type="button" onClick={clearFilters}>{t("Xóa bộ lọc danh sách")}</button></div> : <p role="status">{t("Chưa có phiên. Tạo backtest đầu tiên ở phía trên.")}</p>}</div>}
     </section>
     {selectedDialog && (dialog.mode === 'rename' ? <SessionSettingsDrawer key={dialog.id} item={selectedDialog} dataset={datasets.find(entry => entry.dataset_id === selectedDialog.dataset_id)} payload={details[selectedDialog.record_id]?.payload} model={details[selectedDialog.record_id]?.model} replayRecord={details[selectedDialog.record_id]?.replayRecord} workspace={workspace} preview={Boolean(preview)} pending={pending} blocked={needsRefresh || catalogBlocked} error={mutationError} onClose={() => setDialog(null)} onSubmit={draft => mutate('rename', selectedDialog, draft)} /> : <SessionActionDialog key={dialog.mode + ':' + dialog.id} mode={dialog.mode} item={selectedDialog} preview={Boolean(preview)} pending={pending} blocked={needsRefresh || catalogBlocked} error={mutationError} onClose={() => setDialog(null)} onSubmit={mutate} />)}
     {creating && !preview && <QuickSessionDialog workspace={workspace} query={query} sessions={catalog.items} onClose={() => setCreating(false)} />}

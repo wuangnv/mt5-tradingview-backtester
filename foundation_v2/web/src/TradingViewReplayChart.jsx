@@ -3,6 +3,7 @@ import { nativeChartPalette } from './nativeChartPalette.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useEffect, useRef, useState } from 'react'
 import { createAdvancedReplayDatafeed } from './advancedReplayDatafeed.js'
+import { createReplayChartWindowReader } from './replayChartWindow.js'
 import { readChartSnapshot, writeChartSnapshot } from './advancedChartStorage.js'
 import { createChartSave } from './advancedChartSave.js'
 
@@ -49,14 +50,14 @@ function loadLibrary() {
 export default function TradingViewReplayChart(props) {
   const { t, locale } = useTestingLocale()
 
-  const { workspace, sessionId, datasetId, symbol, assetClass, seconds, tickSize, rows, cutoff, theme, drawings, levels, orderEditable, orderGeneration, viewportRequest } = props
+  const { workspace, sessionId, datasetId, datasetSha256, symbol, assetClass, seconds, tickSize, rows, cutoff, theme, drawings, levels, orderEditable, orderGeneration, viewportRequest } = props
   const host = useRef(null), instance = useRef(null), latest = useRef(props)
   latest.current = props
   const [status, setStatus] = useState('loading'), [message, setMessage] = useState('')
   const storageKey = `tw:advanced-chart:v1:${workspace}:${sessionId}:${datasetId}`
 
   useEffect(() => {
-    let cancelled = false, layoutSave, saveState = 'saved', restoringImports = false, importedShapes = [], lines = []
+    let cancelled = false, layoutSave, historyReader, saveState = 'saved', restoringImports = false, importedShapes = [], lines = []
     let widget, adapter, chart, headerSlots, headerObserver, nativeHeader, chartReady = false, fittedLevels = '', reservedWidth = -1
     const resizeChrome = () => {
       const frame = host.current?.querySelector('iframe'), canvas = host.current?.closest('.chart-canvas')
@@ -87,7 +88,12 @@ export default function TradingViewReplayChart(props) {
     loadLibrary().then(() => {
       if (cancelled) return
       const current = latest.current
-      adapter = createAdvancedReplayDatafeed({ symbol, assetClass, seconds, tickSize, rows: current.rows, cutoff: current.cutoff })
+      historyReader = datasetSha256 ? createReplayChartWindowReader({ workspace, sessionId, datasetId, datasetSha256 }) : null
+      const readHistory = historyReader ? (resolution, period) => {
+        const state = latest.current
+        return historyReader.read({ resolution, ...period, cursorIndex: state.viewCursorIndex, cutoff: state.cutoff })
+      } : undefined
+      adapter = createAdvancedReplayDatafeed({ symbol, assetClass, seconds, tickSize, rows: current.rows, cutoff: current.cutoff, readHistory })
       let saved
       try { saved = readChartSnapshot(localStorage, storageKey, Number(current.cutoff)) }
       catch { setMessage('Không đọc được chart đã lưu trên trình duyệt này.') }
@@ -204,16 +210,16 @@ export default function TradingViewReplayChart(props) {
             if (!saved) scheduleSave()
           }).catch(error => { if (!cancelled) { setStatus('error'); setMessage(String(error.message || error)) } })
         }
-        instance.current = { widget, adapter, chart, refresh, importAnnotations, save, scheduleSave }
-        if (!adapter.update(latest.current.rows, latest.current.cutoff)) chart.resetData()
+        instance.current = { widget, adapter, historyReader, chart, refresh, importAnnotations, save, scheduleSave }
+        if (!adapter.update(latest.current.rows, latest.current.cutoff)) { historyReader?.reset(); chart.resetData() }
         // Pause before native drawing/pan/order gestures, not after a drag ends.
-        let replayHoverRow = null
+        let replayHoverTimestamp = null
         widget.subscribe('mouse_down', () => {
           latest.current.onOrderDragStart()
           if (!latest.current.selectingReplayBar) return
           // Crosshair updates from the same native pointer event may arrive
           // after mouse_down. Read that event before selecting a known candle.
-          requestAnimationFrame(() => { if (!cancelled && latest.current.selectingReplayBar && replayHoverRow) latest.current.onReplayBarSelect?.(Number(replayHoverRow.timestamp)) })
+          requestAnimationFrame(() => { if (!cancelled && latest.current.selectingReplayBar && replayHoverTimestamp != null) latest.current.onReplayBarSelect?.(replayHoverTimestamp) })
         })
         widget.subscribe('onAutoSaveNeeded', scheduleSave)
         widget.subscribe('study_event', scheduleSave)
@@ -223,8 +229,9 @@ export default function TradingViewReplayChart(props) {
           if (['create', 'move', 'remove', 'hide', 'show', 'properties_changed', 'points_changed'].includes(event)) scheduleSave()
         })
         chart.crossHairMoved().subscribe(null, event => {
-          const row = latest.current.rows.find(row => Number(row.timestamp) === Number(event.time))
-          replayHoverRow = row || null
+          const time = Number(event.time)
+          replayHoverTimestamp = Number.isFinite(time) && time <= Number(latest.current.cutoff) ? time : null
+          const row = latest.current.rows.find(row => Number(row.timestamp) === time) || historyReader?.nativeRow(time, adapter.interval)
           latest.current.onCrosshair?.(row ? { row } : null)
         })
         headerSlots = { save, fitOrder, intervals: adapter.supported,
@@ -307,14 +314,14 @@ export default function TradingViewReplayChart(props) {
     return () => {
       cancelled = true; layoutSave?.dispose(); clearTimeout(loadingTimer); headerObserver?.disconnect(); nativeHeader?.removeEventListener('pointerdown', pauseNative, true); nativeHeader?.removeEventListener('keydown', pauseNative, true); nativeHeader?.ownerDocument.removeEventListener('keydown', saveShortcut, true); document.removeEventListener('keydown', saveShortcut, true); instance.current = null
       latest.current.onHeaderSlots?.(null)
-      adapter?.dispose(); widget?.remove()
+      adapter?.dispose(); historyReader?.dispose(); widget?.remove()
     }
-  }, [workspace, sessionId, datasetId, symbol, assetClass, seconds, tickSize, storageKey, locale])
+  }, [workspace, sessionId, datasetId, datasetSha256, symbol, assetClass, seconds, tickSize, storageKey, locale])
 
   useEffect(() => {
     const item = instance.current
     if (!item) return
-    if (!item.adapter.update(rows, cutoff)) item.chart.resetData()
+    if (!item.adapter.update(rows, cutoff)) { item.historyReader?.reset(); item.chart.resetData() }
     const refresh = () => item === instance.current && item.refresh()
     item.chart.dataReady(refresh)
   }, [rows, cutoff, levels, orderEditable, orderGeneration])

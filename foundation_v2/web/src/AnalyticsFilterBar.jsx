@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import { displayDate } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import React, { useEffect, useState } from 'react'
@@ -31,7 +32,7 @@ export default function AnalyticsFilterBar({ filters, onChange, extra, onExtra, 
         const param = key === 'source' ? 'analytics_trade_source' : `analytics_${key}`
         value !== DEFAULT_EXTRA_FILTERS[key] ? url.searchParams.set(param, value) : url.searchParams.delete(param)
       }
-      window.history.replaceState({}, '', url)
+      navigate(url, { replace: true })
     }
     onChange(next); onExtra(nextExtra)
     if (sessionProps && nextSession !== sessionProps.value) sessionProps.onChange(nextSession)

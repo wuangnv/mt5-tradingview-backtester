@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useFxReplayContext } from './FxReplayShell.jsx'
 import {
@@ -31,7 +32,7 @@ function setQuery(params) {
     if (value === null || value === undefined || value === '') url.searchParams.delete(key)
     else url.searchParams.set(key, String(value))
   })
-  window.history.replaceState(null, '', url)
+  navigate(url, { replace: true })
 }
 
 function statusLabel(status) {

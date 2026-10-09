@@ -1,3 +1,5 @@
+import { invalidateWorkspaceMetadata } from './workspaceQuery.js'
+
 const unresolved = new Map()
 const METHODS = new Set(['POST', 'PATCH', 'PUT', 'DELETE'])
 const PENDING = new Set(['command_pending', 'command_commit_outcome_unknown'])
@@ -152,7 +154,11 @@ export async function scopedMutation(path, workspace, options = {}, { timeoutMs 
   }
   if (!entry.promise) {
     entry.promise = execute(path, workspace, { ...options, method }, entry, timeoutMs, pollMs, fetchImpl)
-      .then(response => { unresolved.delete(key); persistReceipt(entry, true); return response })
+      .then(response => {
+        unresolved.delete(key); persistReceipt(entry, true)
+        if (response.ok && /^\/api\/v2\/(?:data|market-data)(?:\/|\?|$)/.test(String(path))) invalidateWorkspaceMetadata(workspace)
+        return response
+      })
       .finally(() => { entry.promise = null })
   }
   if (!options.signal) return (await entry.promise).clone()

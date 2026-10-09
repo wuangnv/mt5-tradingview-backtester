@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useSyncExternalStore } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useSyncExternalStore } from 'react'
 import { createRoot } from 'react-dom/client'
 const LearnWorkspace = lazy(() => import('./LearnWorkspace.jsx'))
 const PropWorkspace = lazy(() => import('./PropWorkspace.jsx'))
@@ -21,7 +21,7 @@ const DemoPreview = lazy(() => import('./DemoPreview.jsx'))
 const TestingComponentReference = lazy(() => import('./TestingComponentReference.jsx'))
 import { canPreviewDemo, demoToggleHref } from './demoMode.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
-import { navigate, navigationSearch, navigationSnapshot, subscribeNavigation } from './clientNavigation.js'
+import { navigate, navigationScope, navigationSearch, navigationSnapshot, subscribeNavigation } from './clientNavigation.js'
 import './styles.css'
 import './dashboard.css'
 import './workspace-pattern.css'
@@ -30,6 +30,8 @@ import './component-interactions.css'
 import './testing-standard.css'
 import './compact-system.css'
 import { useTestingLocale } from './testingLocale.jsx'
+import WorkspaceQueryProvider from './WorkspaceQueryProvider.jsx'
+import { startFrontendPerformance } from './frontendPerformance.js'
 import { TestingSkeleton, TestingRouteBoundary } from './TestingReadState.jsx'
 
 function WorkspaceOverview({ workspace, query }) {
@@ -58,10 +60,12 @@ function App() {
   const route = useSyncExternalStore(subscribeNavigation, navigationSnapshot)
   const query = useMemo(() => new URLSearchParams(navigationSearch()), [route])
   const demo = query.get('demo') === '1'
-  useEffect(() => {
-    const content = document.querySelector('.fx-content')
-    if (content) { content.scrollTop = 0; content.scrollLeft = 0 }
-  }, [route])
+  const performanceEnabled = query.get('perf') === '1'
+  useLayoutEffect(() => {
+    if (!performanceEnabled) return
+    const collector = startFrontendPerformance({ enabled: true })
+    return () => collector.stop()
+  }, [performanceEnabled])
   const workspace = query.get('workspace') || 'tenant-a'
   const requestedView = query.get('view')
   // Preserve deep links emitted by the research/learn flows while keeping a bare root on the overview.
@@ -70,6 +74,11 @@ function App() {
     query.set('area', 'testing')
     query.set('section', 'market-data')
   }
+  const scope = navigationScope(query, activeView)
+  useEffect(() => {
+    const content = document.querySelector('.fx-content')
+    if (content) { content.scrollTop = 0; content.scrollLeft = 0 }
+  }, [scope])
   // Trading tabs open persisted reports. Order entry is an explicit chart action.
   const showSessionPicker = query.get('surface') !== 'workspace' && (query.get('select') === '1' || query.get('mode') === 'Practice')
   const showTradeLedger = query.get('intent') !== 'order'
@@ -132,7 +141,7 @@ function App() {
   if (demo && demoAvailable) content = <DemoPreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}`} view={activeView} workspace={workspace} query={query} />
   if (query.get('ui_reference') === '1') content = <TestingComponentReference />
   const subnavAction = demoAvailable && <DemoToggle demo={demo} onToggle={toggleDemo} />
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><TestingRouteBoundary key={`${workspace}:${route}`}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></FxReplayShell>
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><WorkspaceQueryProvider key={workspace} workspace={workspace} eventsEnabled={!(demo && demoAvailable) && query.get('ui_reference') !== '1'}><TestingRouteBoundary key={scope}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></WorkspaceQueryProvider></FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')
