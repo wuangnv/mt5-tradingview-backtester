@@ -6,7 +6,6 @@ from decimal import Decimal
 from uuid import uuid4
 
 from .replay_execution import advance_replay_execution, parse_replay_execution_snapshot, fork_replay_execution_checkpoint
-from .replay_interval import next_interval_cursor
 
 
 def closed_time(manifest, row):
@@ -84,7 +83,7 @@ def select_asset(service, workspace, session_id, revision, dataset_id):
     payload = deepcopy(record['payload'])
     if dataset_id not in payload.get('asset_states', {}):
         raise ValueError('asset is not part of this replay session')
-    service._dataset_rows(workspace, dataset_id)
+    service._dataset_timing(workspace, dataset_id, index=payload['asset_states'][dataset_id]['cursor_index'])
     state = payload['asset_states'][dataset_id]
     payload.update(dataset_id=dataset_id, cursor_index=state['cursor_index'], execution=state.get('execution'))
     service._update_payload(workspace, session_id, revision, payload)
@@ -95,28 +94,28 @@ def step_portfolio(service, workspace, record, steps, interval):
     payload = deepcopy(record['payload'])
     if isinstance(steps, bool) or not isinstance(steps, int) or not 1 <= steps <= 1000:
         raise ValueError('replay steps must be an integer between 1 and 1000')
-    assets = {key: service._dataset_rows(workspace, key) for key in payload['dataset_ids']}
-    manifest, rows = assets[payload['dataset_id']]
     current = payload['cursor_index']
-    if interval is not None:
-        if steps != 1:
-            raise ValueError('choose either replay interval or a bar count')
-        next_cursor = next_interval_cursor(rows, current, len(rows) - 1, interval, manifest.timeframe_seconds)
-    else:
-        next_cursor = min(current + steps, len(rows) - 1)
-    clock = min(closed_time(manifest, rows[next_cursor]), payload['replay_end_utc'])
+    manifest, rows, _, _ = service._step_window(workspace, payload['dataset_id'], current, steps, interval)
+    clock = min(closed_time(manifest, rows[-1]), payload['replay_end_utc'])
     events = []
-    for key, (manifest, rows) in assets.items():
+    for key in payload['dataset_ids']:
         state = payload['asset_states'][key]
-        target = cursor_at(manifest, rows, clock)
+        manifest = service.store.get_dataset(workspace, key)
+        if manifest is None:
+            raise LookupError('dataset not found')
+        target = service._dataset_timing(workspace, key, at_or_before=clock - manifest.timeframe_seconds)[1]['cursor_index']
         execution = parse_replay_execution_snapshot(state['execution']) if state.get('execution') else None
         if execution and execution.cursor_index != state['cursor_index']:
             raise RuntimeError('portfolio execution cursor is inconsistent')
-        for cursor in range(state['cursor_index'] + 1, target + 1):
-            if execution:
-                advanced = advance_replay_execution(execution, bar=rows[cursor], cursor_index=cursor)
-                execution = advanced.snapshot
-                events.extend(event.model_dump(mode='json') for event in advanced.events)
+        if execution:
+            # Inactive assets can cross many bars in one active-asset step. Keep
+            # every execution event while bounding the decoded window.
+            for begin in range(state['cursor_index'] + 1, target + 1, 1000):
+                _, window = service._dataset_slice(workspace, key, begin, min(begin + 1000, target + 1))
+                for cursor, bar in enumerate(window, begin):
+                    advanced = advance_replay_execution(execution, bar=bar, cursor_index=cursor)
+                    execution = advanced.snapshot
+                    events.extend(event.model_dump(mode='json') for event in advanced.events)
         state.update(cursor_index=target, execution=execution.model_dump(mode='json') if execution else None)
     elapsed = max(0, clock - payload['replay_clock_utc'])
     payload['timing']['historical_time_replayed_seconds'] += elapsed
@@ -134,24 +133,25 @@ def checkpoint_portfolio(service, workspace, record, cursor=None, cutoff=None, e
         raise ValueError('multi-asset checkpoints use the shared replay time, not a local event sequence')
     payload = deepcopy(record['payload'])
     canonical = payload['cursor_index']
-    manifest, rows = service._dataset_rows(workspace, payload['dataset_id'])
+    manifest, timing = service._dataset_timing(workspace, payload['dataset_id'], index=canonical)
     if cutoff is not None:
         if isinstance(cutoff, bool) or not isinstance(cutoff, int):
             raise ValueError('analytics cutoff must be an integer bar timestamp')
-        if not int(rows[0]['timestamp']) <= cutoff <= int(rows[canonical]['timestamp']):
+        if not timing['first_utc'] <= cutoff <= timing['index_utc']:
             raise ValueError('analytics cutoff is outside the visible replay range')
-        index = bisect_right(rows, cutoff, key=lambda row: int(row['timestamp'])) - 1
+        index = service._dataset_timing(workspace, payload['dataset_id'], at_or_before=cutoff)[1]['cursor_index']
         if cursor is not None and cursor != index:
             raise ValueError('analytics cursor and cutoff disagree')
         cursor = index
     cursor = canonical if cursor is None else cursor
     if isinstance(cursor, bool) or not isinstance(cursor, int) or not 0 <= cursor <= canonical:
         raise ValueError('analytics cursor is outside the visible replay range')
-    clock = payload['replay_clock_utc'] if cursor == canonical else closed_time(manifest, rows[cursor])
+    clock = payload['replay_clock_utc'] if cursor == canonical else closed_time(manifest,
+        {'timestamp': service._dataset_timing(workspace, payload['dataset_id'], index=cursor)[1]['index_utc']})
     if cursor < canonical:
         for key, state in payload['asset_states'].items():
-            m, bars = service._dataset_rows(workspace, key)
-            target = cursor_at(m, bars, clock)
+            m = service.store.get_dataset(workspace, key)
+            target = service._dataset_timing(workspace, key, at_or_before=clock - m.timeframe_seconds)[1]['cursor_index']
             snapshot = parse_replay_execution_snapshot(state['execution']) if state.get('execution') else None
             if target < 0:
                 snapshot = None
@@ -180,12 +180,19 @@ def checkpoint_portfolio(service, workspace, record, cursor=None, cutoff=None, e
     active = payload['asset_states'][payload['dataset_id']]
     payload.update(cursor_index=cursor, execution=active.get('execution'))
     trade_cursors = {}
+    trade_events, cutoffs = [], []
     for key, state in payload['asset_states'].items():
         if state.get('execution'):
-            m, bars = service._dataset_rows(workspace, key)
-            for event in state['execution']['ledger']:
-                if event['kind'] == 'protective_fill':
-                    trade_cursors[f"{key}:{event['sequence']}"] = cursor_at(manifest, rows, closed_time(m, bars[event['cursor_index']]))
+            m = service.store.get_dataset(workspace, key)
+            events = [event for event in state['execution']['ledger'] if event['kind'] == 'protective_fill']
+            if events:
+                timings = service._dataset_timings(workspace, key, [{'index': event['cursor_index']} for event in events])
+                for event, timing in zip(events, timings):
+                    trade_events.append(f"{key}:{event['sequence']}")
+                    cutoffs.append({'at_or_before': timing['index_utc'] + m.timeframe_seconds - manifest.timeframe_seconds})
+    if cutoffs:
+        trade_cursors = {event: timing['cursor_index'] for event, timing in zip(trade_events,
+            service._dataset_timings(workspace, payload['dataset_id'], cutoffs))}
     return {**record, 'payload': payload, 'portfolio_trade_cursors': trade_cursors, 'view_cursor_index': cursor,
             'canonical_cursor_index': canonical, 'historical_view': cursor < canonical,
             'canonical_execution_event_sequence': None}

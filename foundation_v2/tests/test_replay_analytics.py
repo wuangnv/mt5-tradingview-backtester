@@ -90,9 +90,11 @@ def test_invalid_historical_cursor_is_rejected(cursor):
 
 def test_cutoff_and_cursor_must_select_the_same_visible_bar(monkeypatch):
     service = ReplayService(AnalyticsStore(), None)
-    monkeypatch.setattr(service, "_dataset_rows", lambda *_: (None, [
-        {"timestamp": 1699999940}, {"timestamp": 1700000000}, {"timestamp": 1700000060},
-    ]))
+    monkeypatch.setattr(service, '_dataset_timing', lambda *_, **query: (None, {
+        'first_utc': 1699999940, 'index_utc': 1700000060,
+        'cursor_index': sum(timestamp <= query['at_or_before'] for timestamp in
+                            [1699999940, 1700000000, 1700000060]) - 1,
+    }))
     for cursor in (None, 1):
         result = service.analytics_record("tenant-a", "replay-fixture", cursor, 1700000000)
         assert result["payload"]["cursor_index"] == 1

@@ -65,6 +65,50 @@ class ReplayService:
                       'cursor_index': index if at_or_before is None else bisect_right(rows, at_or_before, key=lambda row: int(row['timestamp'])) - 1}
         return manifest, timing
 
+    def _dataset_slice(self, workspace_id, dataset_id, start, stop):
+        manifest = self.store.get_dataset(workspace_id, dataset_id)
+        if manifest is None:
+            raise LookupError('dataset not found')
+        if hasattr(self.artifacts, 'read_dataset_indices'):
+            rows = self.artifacts.read_dataset_indices(manifest.artifact_path, manifest.artifact_sha256,
+                        start_index=start, end_index=stop)
+        else:
+            rows = self._dataset_rows(workspace_id, dataset_id)[1][start:stop]
+        if len(rows) != stop - start:
+            raise RuntimeError('dataset row count differs from immutable manifest')
+        return manifest, rows
+
+    def _dataset_timings(self, workspace_id, dataset_id, queries):
+        manifest = self.store.get_dataset(workspace_id, dataset_id)
+        if manifest is None:
+            raise LookupError('dataset not found')
+        if hasattr(self.artifacts, 'read_dataset_replay_timings'):
+            timings = self.artifacts.read_dataset_replay_timings(manifest.artifact_path,
+                manifest.artifact_sha256, queries=queries)
+            if any(timing['row_count'] != manifest.row_count for timing in timings):
+                raise RuntimeError('dataset row count differs from immutable manifest')
+            return timings
+        return [self._dataset_timing(workspace_id, dataset_id, **query)[1] for query in queries]
+
+    def _step_window(self, workspace_id, dataset_id, current, steps, interval, *, limit=None):
+        if isinstance(steps, bool) or not isinstance(steps, int) or not 1 <= steps <= 1000:
+            raise ValueError('replay steps must be an integer between 1 and 1000')
+        manifest, timing = self._dataset_timing(workspace_id, dataset_id, index=current)
+        limit = timing['row_count'] - 1 if limit is None else limit
+        stop = min(current + (1000 if interval is not None else steps), limit)
+        _, rows = self._dataset_slice(workspace_id, dataset_id, current, stop + 1)
+        if interval is None:
+            cursor = stop
+        else:
+            if steps != 1:
+                raise ValueError('choose either replay interval or a bar count')
+            local = next_interval_cursor(rows, 0, len(rows) - 1, interval, manifest.timeframe_seconds)
+            boundary = (int(rows[0]['timestamp']) // interval + 1) * interval
+            if int(rows[local]['timestamp']) < boundary and stop < limit:
+                raise ValueError('replay interval exceeds the 1000-bar execution limit')
+            cursor = current + local
+        return manifest, rows[:cursor - current + 1], cursor, timing['row_count']
+
     def create(self, workspace_id: str, dataset_id: str, start_index: int = 0, *, name=None,
                description="", starting_balance=None, playbook_id=None, playbook_revision=None,
                chart_engine="legacy", dataset_ids=None) -> dict:
@@ -222,7 +266,7 @@ class ReplayService:
         payload = dict(record["payload"])
         if payload.get("execution") is not None:
             raise RuntimeError("replay execution is already initialized")
-        manifest, _ = self._dataset_rows(workspace_id, payload["dataset_id"])
+        manifest, _ = self._dataset_timing(workspace_id, payload["dataset_id"], index=payload['cursor_index'])
         if payload.get('asset_states'):
             if tick_snapshot_id or research_margin is not None:
                 raise ValueError('multi-asset replay supports bar execution without a broker margin model')
@@ -273,8 +317,8 @@ class ReplayService:
                 raise ValueError('tick source does not match the replay dataset')
             if research_margin is None:
                 raise ValueError('tick execution requires an explicit research leverage assumption')
-            _, rows = self._dataset_rows(workspace_id, payload['dataset_id'])
-            bar = rows[int(payload['cursor_index'])]
+            _, rows = self._dataset_slice(workspace_id, payload['dataset_id'], payload['cursor_index'], payload['cursor_index'] + 1)
+            bar = rows[0]
             begin, end = int(bar['timestamp']) * 1000, (int(bar['timestamp']) + timeframe_seconds) * 1000
             self.ticks.assert_interval(workspace_id, tick_snapshot_id, begin, end)
             quotes = self.ticks.iter_ticks(workspace_id, tick_snapshot_id, begin, end)
@@ -314,7 +358,7 @@ class ReplayService:
             raise LookupError('replay session not found')
         if record['payload'].get('asset_states'):
             return {'available': False, 'execution_capability': False, 'reason': 'Phiên nhiều tài sản sử dụng nến OHLC.'}
-        manifest, rows = self._dataset_rows(workspace_id, record['payload']['dataset_id'])
+        manifest, timing = self._dataset_timing(workspace_id, record['payload']['dataset_id'], index=record['payload']['cursor_index'])
         result = {'available': False, 'execution_capability': False, 'reason': 'Tick chưa được tải cho asset này.'}
         if self.ticks is None:
             return result
@@ -325,8 +369,7 @@ class ReplayService:
             first_tick_msc=ticks['first_tick_msc'], last_tick_msc=ticks['last_tick_msc'], quality=ticks['quality'])
         if manifest.source.provider != f"{ticks['source']['server']} / MT5":
             return {**result, 'reason': 'Nguồn tick không khớp nguồn dataset.'}
-        bar = rows[record['payload']['cursor_index']]
-        start = int(bar['timestamp']) * 1000
+        start = timing['index_utc'] * 1000
         try:
             self.ticks.assert_interval(workspace_id, ticks['snapshot_id'], start, start + 1000 * manifest.timeframe_seconds)
             first = next(self.ticks.iter_ticks(workspace_id, ticks['snapshot_id'], start, start + 1000 * manifest.timeframe_seconds), None)
@@ -365,14 +408,14 @@ class ReplayService:
         if snapshot is None:
             raise ValueError("replay execution is not initialized")
         if payload.get('asset_states'):
-            manifest, rows = self._dataset_rows(workspace_id, payload['dataset_id'])
+            manifest, rows = self._dataset_slice(workspace_id, payload['dataset_id'], payload['cursor_index'], payload['cursor_index'] + 1)
             from .replay_portfolio import closed_time
-            if closed_time(manifest, rows[payload['cursor_index']]) < payload['replay_clock_utc']:
+            if closed_time(manifest, rows[0]) < payload['replay_clock_utc']:
                 raise ValueError('asset has no newly closed bar at the shared replay clock')
         if snapshot.cursor_index != int(payload["cursor_index"]):
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
-        _, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
-        if payload.get("status") == "completed" or snapshot.cursor_index >= len(rows) - 1:
+        _, timing = self._dataset_timing(workspace_id, payload["dataset_id"], index=snapshot.cursor_index)
+        if payload.get("status") == "completed" or snapshot.cursor_index >= timing['row_count'] - 1:
             raise ValueError("market order requires a future replay bar")
         queued = queue_market_order(
             snapshot,
@@ -399,10 +442,11 @@ class ReplayService:
             raise ValueError("replay execution is not initialized")
         if snapshot.cursor_index != int(payload["cursor_index"]):
             raise RuntimeError("replay execution cursor is inconsistent with replay state")
-        manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
-        if payload.get("status") == "completed" or snapshot.cursor_index >= len(rows) - 1:
+        manifest, rows = self._dataset_slice(workspace_id, payload["dataset_id"], snapshot.cursor_index, snapshot.cursor_index + 1)
+        _, timing = self._dataset_timing(workspace_id, payload['dataset_id'], index=snapshot.cursor_index)
+        if payload.get("status") == "completed" or snapshot.cursor_index >= timing['row_count'] - 1:
             raise ValueError("protection changes require a future replay bar")
-        bar = rows[snapshot.cursor_index]
+        bar = rows[0]
         if payload.get('asset_states'):
             from .replay_portfolio import closed_time
             if closed_time(manifest, bar) < payload['replay_clock_utc']:
@@ -440,7 +484,7 @@ class ReplayService:
                     raise ValueError('view cutoff cannot exceed current replay cutoff')
                 cursor_index = next(index for index, row in enumerate(native[:canonical_cursor + 1])
                                     if row['timestamp'] >= cutoff_timestamp)
-        indexed = hasattr(self.artifacts, 'read_dataset_indices') and advance_interval_seconds is None
+        indexed = hasattr(self.artifacts, 'read_dataset_indices')
         rows = None if indexed else self._dataset_rows(workspace_id, payload['dataset_id'])[1]
         total = manifest.row_count if indexed else len(rows)
         if canonical_cursor >= total:
@@ -451,8 +495,8 @@ class ReplayService:
         if view_cursor > canonical_cursor:
             raise ValueError("view cursor cannot exceed current replay cursor")
         if advance_interval_seconds is not None:
-            view_cursor = next_interval_cursor(rows, view_cursor, canonical_cursor,
-                advance_interval_seconds, getattr(manifest, "timeframe_seconds", None))
+            _, _, view_cursor, _ = self._step_window(workspace_id, payload['dataset_id'], view_cursor,
+                1, advance_interval_seconds, limit=canonical_cursor)
         visible_start = max(0, view_cursor - 1999)
         visible = (self.artifacts.read_dataset_indices(manifest.artifact_path, manifest.artifact_sha256,
                    start_index=visible_start, end_index=view_cursor + 1) if indexed
@@ -546,19 +590,10 @@ class ReplayService:
             from .replay_portfolio import step_portfolio
             return step_portfolio(self, workspace_id, record, steps, replay_interval_seconds)
         payload = dict(record["payload"])
-        manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
         current_cursor = int(payload["cursor_index"])
-        if isinstance(steps, bool) or not isinstance(steps, int) or not 1 <= steps <= 1000:
-            raise ValueError("replay steps must be an integer between 1 and 1000")
-        if replay_interval_seconds is not None:
-            if steps != 1:
-                raise ValueError("choose either replay interval or a bar count")
-            cursor = next_interval_cursor(rows, current_cursor, len(rows) - 1,
-                replay_interval_seconds, getattr(manifest, "timeframe_seconds", None))
-        else:
-            cursor = min(len(rows) - 1, current_cursor + steps)
+        manifest, rows, cursor, total = self._step_window(workspace_id, payload['dataset_id'], current_cursor, steps, replay_interval_seconds)
         timing = dict(payload.get("timing") or new_timing(legacy_baseline=True))
-        timing["historical_time_replayed_seconds"] += max(0, int(rows[cursor]["timestamp"]) - int(rows[current_cursor]["timestamp"]))
+        timing["historical_time_replayed_seconds"] += max(0, int(rows[-1]["timestamp"]) - int(rows[0]["timestamp"]))
         payload["timing"] = timing
         execution = self._execution_snapshot(payload)
         execution_events: list[dict] = []
@@ -568,18 +603,18 @@ class ReplayService:
             for next_cursor in range(current_cursor + 1, cursor + 1):
                 if execution.schema_version == 'replay-execution-tick-v1':
                     from .replay_tick_execution import advance_tick_execution
-                    bar = rows[next_cursor]
+                    bar = rows[next_cursor - current_cursor]
                     start, end = int(bar['timestamp']) * 1000, (int(bar['timestamp']) + execution.timeframe_seconds) * 1000
                     self.ticks.assert_interval(workspace_id, execution.tick_snapshot_id, start, end)
                     advanced = advance_tick_execution(execution, ticks=self.ticks.iter_ticks(workspace_id, execution.tick_snapshot_id, start, end),
                         bar=bar, cursor_index=next_cursor)
                 else:
-                    advanced = advance_replay_execution(execution, bar=rows[next_cursor], cursor_index=next_cursor)
+                    advanced = advance_replay_execution(execution, bar=rows[next_cursor - current_cursor], cursor_index=next_cursor)
                 execution = advanced.snapshot
                 execution_events.extend(event.model_dump(mode="json") for event in advanced.events)
             payload["execution"] = execution.model_dump(mode="json")
         payload["cursor_index"] = cursor
-        payload["status"] = "completed" if cursor == len(rows) - 1 else "paused"
+        payload["status"] = "completed" if cursor == total - 1 else "paused"
         self._update_payload(workspace_id, session_id, expected_revision, payload)
         result = self.view(workspace_id, session_id)
         result["execution_events"] = execution_events
@@ -602,11 +637,11 @@ class ReplayService:
         if cutoff_timestamp is not None:
             if isinstance(cutoff_timestamp, bool) or not isinstance(cutoff_timestamp, int):
                 raise ValueError("analytics cutoff must be an integer bar timestamp")
-            _, rows = self._dataset_rows(workspace_id, record["payload"]["dataset_id"])
-            visible = rows[:canonical_cursor + 1]
-            if not visible or not int(visible[0]["timestamp"]) <= cutoff_timestamp <= int(visible[-1]["timestamp"]):
+            _, timing = self._dataset_timing(workspace_id, record['payload']['dataset_id'], index=canonical_cursor,
+                at_or_before=cutoff_timestamp)
+            if not timing['first_utc'] <= cutoff_timestamp <= timing['index_utc']:
                 raise ValueError("analytics cutoff is outside the visible replay range")
-            cutoff_cursor = max(index for index, row in enumerate(visible) if int(row["timestamp"]) <= cutoff_timestamp)
+            cutoff_cursor = timing['cursor_index']
             if cursor_index is not None and cursor_index != cutoff_cursor:
                 raise ValueError("analytics cursor and cutoff disagree")
             cursor_index = cutoff_cursor

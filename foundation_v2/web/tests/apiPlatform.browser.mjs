@@ -50,6 +50,15 @@ try {
   assert.ok(history.bars.length > 0 && history.bars.length <= 2000)
   assert.ok(history.bars.every(bar => bar.time <= server.body.cutoff_timestamp * 1000))
   report.nativeChart = { ready: true, boundedBars: history.bars.length, cutoff: history.cutoff_timestamp }
+  const stepResponse = page.waitForResponse(response => new URL(response.url()).pathname.endsWith('/step')
+    && response.request().method() === 'POST' && response.status() === 200)
+  await page.getByTestId('step-1').click()
+  const advanced = await (await stepResponse).json()
+  assert.equal(advanced.record_id, report.createdSession)
+  assert.equal(advanced.revision, server.body.revision + 1)
+  assert.ok(advanced.payload.replay_clock_utc > server.body.payload.replay_clock_utc)
+  await page.waitForURL(url => Number(url.searchParams.get('cursor')) === advanced.view_cursor_index)
+  report.replayStep = { cursor: advanced.view_cursor_index, revision: advanced.revision }
   const navigate = async view => {
     await page.evaluate(view => { const link = document.createElement('a'); link.href = `/?workspace=tenant-a&view=${view}&area=testing&section=${view === 'overview' ? 'dashboard' : view}`; document.body.append(link); link.click(); link.remove() }, view)
     await page.waitForURL(url => url.searchParams.get('view') === view)

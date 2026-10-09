@@ -1,0 +1,118 @@
+{
+  "scope": "Real React, Axum and workers; isolated synthetic data; API requests are not mocked",
+  "errors": [],
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/chart-window"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/step"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/chart-window"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/d2bae5e5b07f41d69f9bbcc3b67aba31/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/downloads"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    }
+  ],
+  "createdSession": "d2bae5e5b07f41d69f9bbcc3b67aba31",
+  "nativeChart": {
+    "ready": true,
+    "boundedBars": 1,
+    "cutoff": 1767225600
+  },
+  "replayStep": {
+    "cursor": 1,
+    "revision": 2
+  },
+  "documentNavigations": 1,
+  "result": "PASS"
+}

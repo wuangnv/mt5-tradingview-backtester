@@ -1,0 +1,36 @@
+{
+  "scope": "Actual downloaded artifacts, in-memory sessions only; GET API, no user DB mutation",
+  "datasets": [
+    {
+      "symbol": "EUR/USD",
+      "rows": 8755235
+    },
+    {
+      "symbol": "XAU/USD",
+      "rows": 7966491
+    }
+  ],
+  "samples_ms": {
+    "step": [
+      1783.7,
+      1946.35,
+      1762.6
+    ],
+    "switch": [
+      728.25,
+      848.36,
+      727.75
+    ],
+    "analytics": [
+      364.43,
+      338.12,
+      363.25
+    ],
+    "historical_interval": [
+      1084.48,
+      2441.83,
+      2607.74
+    ]
+  },
+  "full_history_reads": 0
+}

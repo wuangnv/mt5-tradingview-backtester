@@ -1,0 +1,73 @@
+{
+  "scope": "Actual local browser and existing user session; all writes blocked",
+  "calls": [
+    {
+      "path": "/api/v2/events",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/overview",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/dashboard/sessions",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/events",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/chart/annotations",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/data/datasets",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e/tick-data",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e/chart-window",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e/chart-window",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e/chart-window",
+      "status": 200
+    },
+    {
+      "path": "/api/v2/replay/sessions/6428cf18b3f54a36b2e90207ef12392e/analytics",
+      "status": 200
+    }
+  ],
+  "blocked": [],
+  "errors": [],
+  "visibleRows": 2,
+  "analytics": {
+    "status": 200,
+    "elapsed_ms": 486
+  },
+  "result": "PASS"
+}
