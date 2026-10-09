@@ -1,10 +1,10 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog { width:min(960px,calc(100vw - 48px)); max-width:960px; height:min(850px,calc(100dvh - 64px)); max-height:calc(100dvh - 64px); margin:auto; padding:0; border:1px solid var(--wm-border); border-radius:12px; background:var(--wm-canvas); color:var(--wm-content); font-family:var(--fx-font-sans,Inter,ui-sans-serif,system-ui,sans-serif); overflow:hidden; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog::backdrop { background:#0008; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog[open] { display:flex; flex-direction:column; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-header { display:flex; align-items:center; gap:20px; padding:18px 24px; border-bottom:1px solid var(--wm-border); flex-shrink:0; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-header { display:flex; align-items:center; gap:20px; padding:14px 24px; border-bottom:1px solid var(--wm-border); flex-shrink:0; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-header h2 { margin:0; white-space:nowrap; font-size:20px; font-weight:600; line-height:1.3; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog button, .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-footer a { font:inherit; cursor:pointer; color:inherit; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-close { margin-left:auto; flex:0 0 auto; display:grid; place-items:center; height:32px; width:32px; padding:0; border:0; background:transparent; border-radius:6px; font-size:26px !important; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog button:where(:not(.wm-dialog-close)), .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-footer a { font:inherit; cursor:pointer; color:inherit; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-close { margin-left:auto; flex:0 0 auto; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-form { display:flex; flex:1; flex-direction:column; min-height:0; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-layout { display:grid; grid-template-columns:190px minmax(0,1fr); flex:1; min-height:0; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-body { overflow-y:auto; min-height:0; padding:28px 32px; scrollbar-gutter:stable; }
@@ -14,7 +14,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-sections button span { font-size:12px; line-height:1.5; color:var(--wm-content-muted); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-sections button:is([aria-pressed=true],:hover:not(:disabled)) { background:var(--wm-hover); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs { display:flex; padding:3px; gap:3px; border:1px solid var(--wm-border); border-radius:999px; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button { padding:7px 14px; white-space:nowrap; border:0; border-radius:999px; background:transparent; font-size:13px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button { height:28px; min-height:28px; box-sizing:border-box; padding:4px 12px; line-height:20px; white-space:nowrap; border:0; border-radius:999px; background:transparent; font-size:13px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button[aria-selected=true] { background:var(--wm-hover); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-fields { display:grid; gap:24px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-fields label, .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-field { display:grid; gap:8px; font-size:14px; }
@@ -51,14 +51,14 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-header { padding:14px 12px; gap:8px; flex-wrap:wrap; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-header h2 { font-size:20px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs { order:3; width:100%; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button { flex:1; padding:7px 8px; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button { flex:1; padding:4px 8px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-layout { grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-sections { flex-direction:row; padding:8px 12px; border-right:0; border-bottom:1px solid var(--wm-border); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-sections button { flex:1; padding:10px 12px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-sections button span { display:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-body { padding:20px 16px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-footer { padding:12px; } }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog :is(.quick-session-close,.quick-session-footer button):hover:not(:disabled) { background:var(--wm-hover); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-footer button:hover:not(:disabled) { background:var(--wm-hover); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-submit:hover:not(:disabled) { background:var(--wm-action-hover); }
 
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog { --wm-focus:var(--wm-content); }
@@ -78,3 +78,6 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create { display:grid; gap:8px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create > div { display:flex; gap:8px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy-create > div button { padding:8px 14px; border:1px solid var(--wm-control-border); border-radius:var(--wm-control-radius); background:transparent; }
+@media(pointer:coarse) {
+  .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-tabs button { height:44px; min-height:44px; }
+}

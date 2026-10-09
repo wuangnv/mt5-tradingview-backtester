@@ -66,6 +66,25 @@
   --fx-shell-danger: var(--project-negative);
   --fx-focus-ring: var(--wm-focus);
 }
+/* Dialog dismissal is a quiet icon action; retain a separate keyboard focus cue. */
+.fx-app.fx-shell-story[data-theme] :is(dialog, [role='dialog']) button.wm-dialog-close,
+.legacy-order-modal button.wm-dialog-close {
+  display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box;
+  width:32px; min-width:32px; height:32px; min-height:32px; padding:0;
+  border:0; border-radius:6px; background:transparent; box-shadow:none;
+  color:var(--wm-content-muted, var(--chart-muted)); font:inherit; font-size:22px; line-height:1; cursor:pointer;
+}
+.fx-app.fx-shell-story[data-theme] :is(dialog, [role='dialog']) button.wm-dialog-close:is(:hover, :active):not(:disabled),
+.legacy-order-modal button.wm-dialog-close:is(:hover, :active):not(:disabled) {
+  background:transparent; border:0; box-shadow:none; color:var(--wm-content, var(--chart-text));
+}
+.fx-app.fx-shell-story[data-theme] :is(dialog, [role='dialog']) button.wm-dialog-close:focus-visible {
+  outline:2px solid var(--wm-focus); outline-offset:2px;
+}
+@media(pointer:coarse) {
+  .fx-app.fx-shell-story[data-theme] :is(dialog, [role='dialog']) button.wm-dialog-close,
+  .legacy-order-modal button.wm-dialog-close { width:44px; min-width:44px; height:44px; min-height:44px; }
+}
 /* Shell chrome uses the same project palette as route controls. */
 .fx-app.fx-shell-story[data-theme] .fx-topbar { background: var(--fx-shell-bg); border-color: var(--fx-shell-line); }
 .fx-app.fx-shell-story[data-theme] .wm-demo-action .fxa-button { min-height: var(--wm-control-height); border: 1px solid transparent; border-radius: var(--wm-control-radius); background: var(--wm-control-open); color: var(--wm-control-text); }

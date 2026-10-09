@@ -31,7 +31,7 @@ export function SessionActionDialog({ mode, item, onClose, onSubmit, pending, bl
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
   }} onClick={event => { if (event.target !== event.currentTarget || pending) return; const bounds = event.currentTarget.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose() }}>
-    <header><h2>{t(title)}</h2><button type="button" aria-label={t("Đóng hộp thoại phiên")} disabled={pending} onClick={onClose}>×</button></header>
+    <header><h2>{t(title)}</h2><button type="button" className="wm-dialog-close" aria-label={t("Đóng hộp thoại phiên")} disabled={pending} onClick={onClose}>×</button></header>
     {preview && <small className="fx-dashboard-dialog-preview">{t("Bản xem thử · thay đổi chỉ ở chế độ demo")}</small>}
     <form onSubmit={event => { event.preventDefault(); if (!pending && !blocked && (!deleting || confirmation === name)) onSubmit(mode, item, confirmation) }}>
       <p id={messageId}>{deleting ? t('Xóa “{name}” khỏi workspace cùng kết quả của phiên. Không thể khôi phục bằng giao diện. Dataset trong Market Data và các phiên khác vẫn được giữ.', { name }) : t("Tạo bản sao “{name}” ở vị trí replay hiện tại.", { name })}</p>

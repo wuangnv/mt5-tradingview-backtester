@@ -100,7 +100,7 @@ export default function QuickSessionDialog({ workspace, query, onClose, initialD
           if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return
           event.preventDefault(); const next = event.key === 'Home' ? 'backtest' : event.key === 'End' ? 'prop' : mode === 'backtest' ? 'prop' : 'backtest'; setMode(next); document.getElementById(`${id}-${next}`).focus()
         }}>{t(label)}</button>)}</div>
-      <button type="button" className="quick-session-close" aria-label={t('Đóng tạo phiên')} disabled={busy} onClick={close}>×</button>
+      <button type="button" className="quick-session-close wm-dialog-close" aria-label={t('Đóng tạo phiên')} disabled={busy} onClick={close}>×</button>
     </header>
     <form onSubmit={create} className="quick-session-form">
       <div className="quick-session-layout">

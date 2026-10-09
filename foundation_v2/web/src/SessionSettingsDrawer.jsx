@@ -49,7 +49,7 @@ export default function SessionSettingsDrawer({ item, dataset, payload, model, w
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
     if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
   }}>
-    <button className="fxs-drawer-close" aria-label={t("Đóng cài đặt phiên")} type="button" disabled={pending} onClick={close}>×</button>
+    <button className="fxs-drawer-close wm-dialog-close" aria-label={t("Đóng cài đặt phiên")} type="button" disabled={pending} onClick={close}>×</button>
     <header><h2>{t("Session Settings")}</h2><p>{item.name || item.record_id} · {item.record_id}</p></header>
     <div className="fxs-settings-tabs" role="tablist" aria-label={t("Cài đặt phiên")}>{tabs.map((entry, index) => <button type="button" key={entry.key} role="tab" id={`${id}-${entry.key}`} aria-selected={tab === entry.key} aria-controls={`${id}-panel`} tabIndex={tab === entry.key ? 0 : -1} onClick={() => setTab(entry.key)} onKeyDown={event => {
       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return

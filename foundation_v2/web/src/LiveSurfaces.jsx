@@ -26,7 +26,7 @@ function PreviewDialog({ action, onClose }) {
   }, [])
   const form = ['New note', 'Add trade', 'Manual account'].includes(action)
   return <dialog ref={ref} className="live-preview-dialog" aria-labelledby="live-preview-title" onCancel={onClose} onClose={onClose}>
-    <div className="live-section-heading"><h2 id="live-preview-title">{t(action)}</h2><Action compact label="Đóng" onClick={onClose}>×</Action></div>
+    <div className="live-section-heading"><h2 id="live-preview-title">{t(action)}</h2><button type="button" className="wm-dialog-close" aria-label={t('Đóng')} onClick={onClose}>×</button></div>
     <span className="live-preview-badge">{t('Interface preview')}</span>
     <p>{t('This layout is a preview. Changes are not saved and no connection is made.')}</p>
     {form && <div className="live-preview-fields"><label>{t(action === 'Add trade' ? 'Asset' : 'Name')}<input autoComplete="off" /></label>{action === 'Add trade' ? <label>{t('Quantity')}<input type="number" min="0" /></label> : <label>{t('Description')}<textarea rows="4" /></label>}</div>}

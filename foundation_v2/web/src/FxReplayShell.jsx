@@ -408,7 +408,7 @@ function ShellHelp({ copy, helpCloseRef, onClose }) {
       <section className="fx-shell-help" id="fx-shell-help" role="dialog" aria-modal="true" aria-labelledby="fx-shell-help-title" aria-describedby="fx-shell-help-hint" onMouseDown={(event) => event.stopPropagation()}>
         <div className="fx-shell-help-header">
           <h2 id="fx-shell-help-title">{copy.shortcutsTitle}</h2>
-          <button className="fx-shell-help-close" type="button" onClick={onClose} aria-label={copy.closeHelp} title={copy.closeHelp} data-testid="help-close" ref={helpCloseRef}>×</button>
+          <button className="fx-shell-help-close wm-dialog-close" type="button" onClick={onClose} aria-label={copy.closeHelp} title={copy.closeHelp} data-testid="help-close" ref={helpCloseRef}>×</button>
         </div>
         <dl className="fx-shell-shortcuts">
           <div><dt><kbd>?</kbd></dt><dd>{copy.shortcutHelp}</dd></div>
