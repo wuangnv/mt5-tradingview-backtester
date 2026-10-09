@@ -26,7 +26,7 @@ export default function DatasetAssetSelect({ datasets, instruments, sessions, va
   const selected = options.filter(option => value.includes(option.value))
   const categories = [...CATEGORIES, ...(options.some(option => !option.category) ? [['', 'Chưa phân loại']] : [])]
   return <FxSelect searchable multiple multipleStyle="check" selectedTags={selected} label="Chọn tài sản" value={value} onChange={choose} disabled={disabled}
-    className={`dataset-asset-select${selected.length ? '' : ' is-placeholder'}`} localizeOptions={false}
+    className={`is-field dataset-asset-select${selected.length ? '' : ' is-placeholder'}`} localizeOptions={false}
     triggerContent={selected.length ? '' : t('Chọn tài sản')}
     placeholder="Tìm mã hoặc tên tài sản…" emptyLabel="Không có dữ liệu đã tải phù hợp."
     options={options} filterOption={option => category === 'all' || option.category === category}

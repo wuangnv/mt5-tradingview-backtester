@@ -9,7 +9,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-button.is-success) {
   --wm-action-bg:var(--project-positive); --wm-action-hover:color-mix(in srgb, var(--project-positive) 85%, var(--project-text)); --wm-on-primary:var(--project-on-primary);
 }
-.fx-app.fx-shell-story[data-theme] .fx-content :is(.rs-field, .rd-field, .prop-field, .risk-form, .trade-init-form, .trade-draft-form, .settings-appearance-form, .quick-session-fields) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea):not(:where(.fx-select-menu > input, .fxa-session-menu > input)),
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.rs-field, .rd-field, .prop-field, .risk-form, .trade-init-form, .trade-draft-form, .settings-appearance-form, .quick-session-fields) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea):not(:where(.fx-select-menu > input, .fxa-session-menu > input, .quick-session-balance > input)),
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-field {
   min-height:var(--wm-control-height); box-sizing:border-box; border-radius:var(--ds-radius-field);
   font-size:var(--wm-text-control); line-height:var(--ds-line-control);
@@ -17,6 +17,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-field {
   padding:7px 12px; border:1px solid var(--wm-control-border); background:transparent; color:var(--wm-content); font-family:inherit;
 }
+.fx-app.fx-shell-story[data-theme] .fx-content .wm-field:hover:not(:disabled):not(:focus) { border-color:var(--wm-control-hover-border); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance input { border-radius:0; }
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-page :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea):focus-visible,
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-field,.fx-select-trigger):focus-visible { outline:none; box-shadow:none; border-color:var(--wm-focus); }

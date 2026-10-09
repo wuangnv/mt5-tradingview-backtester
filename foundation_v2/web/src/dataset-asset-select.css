@@ -14,8 +14,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-check { width:14px; flex:0 0 14px; font-size:15px; color:var(--project-highlight); text-align:center; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-group-title { padding:10px; font-size:var(--wm-text-meta); font-weight:500; color:var(--wm-content-muted); }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select [role=group] + [role=group] { margin-top:6px; border-top:1px solid var(--wm-border); }
-.fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag-field { display:flex; align-items:center; gap:6px; min-height:var(--wm-control-height); padding:4px 10px; box-sizing:border-box; border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); }
-.fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag-field:focus-within { border-color:var(--wm-focus); }
+.fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag-field { display:flex; align-items:center; gap:6px; min-height:var(--wm-control-height); padding:1px 10px; box-sizing:border-box; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tags { display:flex; flex:1; flex-wrap:wrap; gap:6px; min-width:0; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag { display:inline-flex; align-items:center; gap:6px; min-width:0; padding:2px 6px 2px 10px; background:var(--wm-hover); border-radius:999px; font-size:12px; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag > span { overflow-wrap:anywhere; }

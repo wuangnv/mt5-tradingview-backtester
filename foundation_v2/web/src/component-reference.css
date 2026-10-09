@@ -11,6 +11,7 @@
 .wm-component-reference .wm-reference-controls { gap:8px; margin-block:16px; }
 .wm-reference-form-grid, .wm-reference-layout-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; margin-top:24px; }
 .wm-reference-form-grid > label { display:flex; flex-wrap:wrap; align-content:start; gap:8px; font-size:13px; }
+.wm-reference-form-field { display:grid; align-content:start; gap:8px; font-size:13px; }
 .wm-reference-form-grid > label > :is(input,textarea) { flex:0 0 100%; width:100%; min-width:0; }
 .wm-reference-form-grid b { color:var(--wm-negative); font-weight:500; }
 .wm-reference-choices { display:grid; gap:8px; align-content:start; }

@@ -76,6 +76,13 @@ Owner đã bỏ phương án hover xanh đục; hover chung dùng hai độ sán
 | Ô nhập | Viền1px | Viền rõ hơn | Viền/focus xanh; lỗi đỏ bên cạnh ô |
 | Nút không khả dụng | Giữ chỗ, giảm nhấn mạnh | Không hiện hover enabled | Không bấm/submit được |
 
+Dropdown nằm trong form dùng `FxSelect` với `className="is-field"`: cùng viền
+1px, góc 8px và chiều cao một dòng 36px như textbox. Bình thường viền nhẹ,
+hover viền đậm hơn, focus bằng chuột/Tab hoặc đang mở dùng xanh biển. Ô ghép
+số dư/tài sản chỉ đổi viền ngoài; không thêm viền cho input/nút bên trong.
+Search trong menu dùng gạch dưới. Dropdown bộ lọc dạng pill vẫn là kiểu riêng.
+UI Reference có cả mẫu dropdown form dùng được và không khả dụng.
+
 Chữ nhỏ bình thường cần tương phản ít nhất **4,5:1**; chữ lớn và dấu điều khiển
 thiết yếu ít nhất **3:1**. Màu hover dòng cố ý nhẹ để không lấn dữ liệu; selected,
 focus và lỗi vẫn cần tích/gạch/viền/chữ đi kèm. Không coi màu là dấu duy nhất.

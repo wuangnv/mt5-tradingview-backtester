@@ -34,3 +34,8 @@
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select .fx-select-menu, .fxa-session-menu) > input:focus-visible { border-bottom: 2px solid var(--wm-focus); outline: none; box-shadow: none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .fx-select .fx-select-trigger:focus-visible,
 .fx-app.fx-shell-story[data-theme] .fx-content .fxa-session-trigger:focus-visible { border-color: var(--wm-focus); outline: none; box-shadow: none; }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field :is(.fx-select-trigger, .fx-select-tag-field) { min-height:var(--wm-control-height); border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); background:transparent; transition:border-color var(--ds-motion-hover) var(--ds-ease-standard); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field :is(.fx-select-trigger, .fx-select-tag-field):hover:not(:has(:disabled)) { border-color:var(--wm-control-hover-border); }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field:not(:has(.fx-select-trigger:disabled)) :is(.fx-select-trigger, .fx-select-tag-field):is(:focus-within, :has(.fx-select-trigger[aria-expanded=true])),
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field .fx-select-trigger[aria-expanded=true]:not(:disabled) { border-color:var(--wm-focus); outline:none; box-shadow:none; }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-select.is-field .fx-select-trigger:disabled:hover { border-color:var(--wm-control-border); background:transparent; }
