@@ -23,7 +23,7 @@ của sản phẩm. Thông số chuẩn và các ngoại lệ bên dưới đư�
 | Số KPI | 28px | 28px | Số và đơn vị cùng hàng; chữ số không đổi độ rộng |
 | Bo góc ô nhập / menu-dialog | 8 / 12px | Như desktop | Nút vẫn pill, icon button vẫn tròn |
 | Viền cấu trúc | 1px | 1px | Không mọc thêm viền khi hover |
-| Dấu focus bàn phím | 2px xanh | 2px xanh | Hoặc viền ô đổi xanh; không chồng hai dấu |
+| Dấu focus bàn phím | Ring2px cho nút; viền1px xanh cho field | Như desktop | Một dấu; không chồng viền/outline/shadow |
 | Khoảng icon–chữ / các nút cùng nhóm | 8px | 8px | Chung đường căn giữa |
 | Khoảng các ô / nhóm | 24px | 16–24px | Khoảng trống phân nhóm trước card/viền |
 | Khoảng khu vực lớn | 32px | 24px | Không thêm wrapper để lấp chỗ trống |
@@ -50,7 +50,7 @@ Owner đã bỏ phương án hover xanh đục; hover chung dùng hai độ sán
 | Nút phụ | `#23262A` | `#F3F4F6` |
 | Hover control | `#3D4148` | `#DDE1E7` |
 | Hover dòng | `#17191D` | `#F3F5F7` |
-| Dòng đã chọn | `#25282E` | `#E9EDF2` |
+| Dòng đã chọn | `#1C1C1C` | `#F0F0F0` |
 | Chữ chính | `#FFFFFF` | `#15181C` |
 | Chữ phụ | `#B8C0C9` | `#505965` |
 | Cam nút chính | `#FFAD7C` | `#B85018` |
@@ -71,6 +71,7 @@ Owner đã bỏ phương án hover xanh đục; hover chung dùng hai độ sán
 | Text link / nút text | Trong suốt | Sáng chữ hoặc gạch dưới | Không biến thành pill |
 | X đóng dialog | Trong suốt | Chỉ đổi màu icon | Focus bàn phím vẫn có dấu |
 | Dòng dữ liệu | Nền trang | Nền nhẹ | Nền chọn riêng, không giống hover nút |
+| Switch | Xám khi tắt | Không đổi vai trò | Xanh biển khi bật; xanh lá dành cho kết quả thành công |
 | Option dropdown | Không tô nền lâu dài | Nền hover control | Tích cam phía phải; không phủ màu chỉ vì selected |
 | Ô nhập | Viền1px | Viền rõ hơn | Viền/focus xanh; lỗi đỏ bên cạnh ô |
 | Nút không khả dụng | Giữ chỗ, giảm nhấn mạnh | Không hiện hover enabled | Không bấm/submit được |
@@ -122,6 +123,90 @@ lớp nội dung; chưa có cơ sở hứa mọi máy chạy60fps hay giống t�
 - **Thông báo:** cạnh nội dung nó nói tới, phân biệt chưa có dữ liệu, filter trống,
   lỗi, stale và partial. Toast không thay lỗi cần sửa tại field.
 
+## Trạng thái dữ liệu và phạm vi hiển thị
+
+Có **6 trạng thái nền**: loading, ready, empty, unavailable, error, denied.
+Độ mới/đầy đủ là thông tin bổ sung: current, stale, partial, unknown. Vì thế
+“có dữ liệu nhưng đang cũ” khác “không có dữ liệu”. Refreshing là đang đọc lại;
+filtered-empty là query hợp lệ không khớp bộ lọc, không phải nguồn hoàn toàn trống.
+
+| Tình huống | Cách hiển thị |
+| --- | --- |
+| Đọc lần đầu | Skeleton của cụm đang đọc; không hiện số0 trước khi có kết quả |
+| Nguồn chung trống | Một empty state cho toàn cụm phụ thuộc; gợi ý bước đầu tiên |
+| Có dữ liệu, filter không khớp | Giữ filter và cho xoá/sửa; không mời tạo dữ liệu mới |
+| Đọc lại cùng phạm vi | Giữ kết quả cũ, chỉ báo đang cập nhật ở tiêu đề cụm |
+| Đổi tài sản/phiên/phạm vi | Không giữ số cũ của phạm vi trước như thể của phạm vi mới |
+| Nguồn chung lỗi hoặc thiếu quyền | Một lỗi ở cụm cha; con không lặp lỗi/empty |
+| Một nguồn độc lập lỗi | Lỗi và retry tại cụm đó; giữ phần còn dùng được |
+| Dữ liệu một phần/cũ | Giữ dữ liệu có thật; ghi phần thiếu, cutoff/thời điểm nếu có |
+| Chỉ số chưa tính được | Hiện —; số0 chỉ dùng khi đã biết thật sự bằng0 |
+
+**Quy tắc:** trạng thái do cụm nhỏ nhất sở hữu toàn bộ dữ liệu bị ảnh hưởng quản lý.
+Không gom cả trang chỉ vì chúng nằm cạnh nhau, cũng không lặp thông báo ở mỗi card.
+Skeleton có thể gồm nhiều ô để giữ layout, nhưng chỉ một thông báo đang tải cho cụm.
+
+Ví dụ Tổng quan: nguồn backtest chưa có phiên thì các KPI/chart phụ thuộc backtest
+cùng dùng một empty state. Có phiên nhưng chưa đóng giao dịch thì tên/tài sản/thời
+gian luyện tập vẫn có thể dùng được; cụm kết quả giao dịch hiện một empty state,
+không hiện win rate0%. Không suy rằng Prop Firm trống chỉ vì backtest chưa có phiên.
+Nếu KPI và chart cùng response/API thì chung loading/error; chart lỗi riêng chỉ hợp
+lý khi nó thật sự có nguồn hoặc bước tính độc lập.
+
+Trang mẫu có lựa chọn **Luồng Tổng quan minh hoạ** để thử các tình huống. Đây là
+contract và minh hoạ, chưa phải migration luồng Dashboard. Audit source hiện tại:
+DashboardPerformance đã gom loading/error và giữ dữ liệu khi refresh cùng phạm vi,
+nhưng các chart vẫn có thông báo empty riêng; DashboardSessions và PropAnalytics
+đọc nguồn riêng. Cần migration có test dữ liệu thực trước khi thay toàn bộ ownership.
+
+## KPI, card và biểu đồ báo cáo
+
+Áp dụng cho Dashboard/Analytics/Prop/report, **không phải chart giao dịch**.
+
+| Thành phần | Quy chuẩn |
+| --- | --- |
+| KPI | Label13px, giá trị28px/đậm600/dòng1,2; ghi chú12px; icon18px nếu giúp hiểu |
+| Số và đơn vị | Cùng đường chân chữ; chữ số cố định độ rộng; nêu gross/net, tiền tệ, phạm vi |
+| KPI card | Padding24px desktop/16px mobile; bo12px; viền1px; cùng chiều cao trong cùng hàng |
+| KPI strip | Không card con; gap24px hoặc divider có lý do; giữ cùng đường căn giá trị |
+| Card thường | Header16px/đậm600; nội dung14px; ghi chú12px; padding24/16px; gap16/24px |
+| Card tĩnh | Không hover, không cursor bàn tay; không shadow mặc định |
+| Card hành động | Có nút/link thật, focus và tên truy cập; vùng bấm rõ; không nested link/button |
+| Card chọn được | Dấu chọn có ý nghĩa và aria-state; nền nhẹ; không thêm vạch dọc đầu trái |
+| Chart báo cáo | Header16px; trục/legend12px; đường2px, grid1px; nền chung; không hiệu ứng phát sáng |
+| Màu chuỗi | Xanh biển chính; cam so sánh; tím/vàng khi cần; xanh/đỏ chỉ theo nghĩa lãi/lỗ |
+| Tooltip chart | Ngày dd/mm/yyyy, giờ khi độ chính xác cần; giá trị/đơn vị rõ, cùng rounding với KPI |
+| Trục | Nêu đơn vị; bar số lượng bắt đầu0; line có miền trục rõ; không che/đánh lừa độ biến động |
+| Nhiều chuỗi | Giữ màu/label ổn định giữa trang; legend/text ngoài màu; thiếu dữ liệu là gap, không0 |
+| Responsive | KPI4→2→1 hoặc grid phù hợp số lượng; chart có vùng riêng, trục không thu nhỏ dưới12px |
+| Loading/empty/error | Theo cụm và nguồn dữ liệu đã quy định; không lặp3 empty message cho3 chart cùng nguồn |
+
+Trang mẫu có card tĩnh, KPI và chart minh hoạ. Adapter đã gom giá trị KPI thật
+Dashboard/Analytics về28px, title/axis của chart Dashboard về16/12px. Chưa migration
+toàn bộ renderer báo cáo, không coi contract này là mọi chart đã đồng bộ.
+
+## Kiểm kê tổng thể và phần còn cần áp dụng
+
+| Nhóm | Tình trạng |
+| --- | --- |
+| Màu/chữ/spacing/motion/control cơ bản | Có token và adapter; đã test các trang đại diện |
+| Checkbox/radio/switch | Checkbox thật và mark menu dùng một hình/timing; switch bật xanh; radio giữ hình tròn riêng |
+| Focus/hover/disabled/selected | Một dấu focus cho field, nút có ring; selected nền trung tính, không vạch trái |
+| Form validation | Có quy tắc label/required/help/error; cần audit flow submit, pending, success và server conflict từng form |
+| KPI/card/report chart | Có chuẩn và mẫu; migration typography một phần; cần audit chart/tooltip/legend từng renderer |
+| Trạng thái page/cụm | Có contract và mẫu; migration ownership Dashboard thật chưa thực hiện |
+| Search/filter/sort/pagination | Có control và pattern; cần kiểm tra thống nhất debounce, reset/default và URL qua từng trang |
+| Table/grid | Có chuẩn alignment/sticky/empty; cần kiểm kê selection, resize, virtualisation khi workflow cần |
+| Dialog/drawer/menu/tooltip | Có anatomy và motion; một số composite/vùng chạm có ngoại lệ đã ghi |
+| Toast/banner/inline error | Có contract vị trí/role; cần audit nơi dùng toast thay lỗi có thể sửa tại field |
+| Upload/export/download | Có pattern tiến độ và unknown; cần contract huỷ/lỗi/retry riêng theo capability thật |
+| Slider/accordion/badge/chip | Có design contract; reuse implementation khi có workflow; chưa claim đều có component reusable |
+| Accessibility/zoom/performance | Focus/reflow/reduced motion đã kiểm tra có phạm vi; axe/native zoom/frame pacing vẫn là gate riêng |
+
+“Có bộ chuẩn” khác “mọi trang đã dùng hết”. Ưu tiên lần lượt: control/focus →
+state ownership → KPI/card/chart → edge cases/khả năng truy cập; mỗi migration
+cần state fixtures và kiểm chứng thật, không dùng một CSS override để che logic lỗi.
+
 ## Cái đã sửa và ngoại lệ còn giữ
 
 | Phát hiện | Xử lý |
@@ -149,7 +234,8 @@ drag/drop, modal/drawer, loading/empty/error. Đây là **chuẩn thiết kế**
 một đống component giả trước khi cần. Lấy control đã có, dùng đúng role; chỉ tạo
 component/ngoại lệ mới khi workflow thật yêu cầu.
 
-Nguồn chung: [Compact contract](../../../UI-Systems/core/tokens/compact/0.1.0/CONTRACT.md),
+Nguồn chung: [Compact contract](../../../UI-Systems/core/tokens/compact/0.1.1/CONTRACT.md),
 token JSON có version, CSS được xuất tự động. Quy tắc gắn dữ liệu trading nằm ở
 project/domain; không đổi dữ liệu, model, quyền broker hay logic tải vì refactor UI.
-Kết quả kiểm chứng: [receipt](../foundation_v2/evidence/compact-system-20261009/RECEIPT.md).
+Kết quả kiểm chứng: [follow-up receipt](../foundation_v2/evidence/compact-states-20261009/RECEIPT.md),
+[baseline receipt](../foundation_v2/evidence/compact-system-20261009/RECEIPT.md).

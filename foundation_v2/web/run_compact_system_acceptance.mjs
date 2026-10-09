@@ -2,7 +2,7 @@ import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
 import { mkdir, writeFile } from 'node:fs/promises'
 
-const out='../evidence/compact-system-20261009', base='http://127.0.0.1:5180'
+const out=process.env.TW_COMPACT_EVIDENCE || '../evidence/compact-system-20261009', base='http://127.0.0.1:5180'
 await mkdir(out,{recursive:true})
 const browser=await chromium.launch({headless:true,ignoreDefaultArgs:['--hide-scrollbars']})
 const results=[], errors=[]
@@ -37,6 +37,28 @@ try {
     await action.hover()
     await page.waitForFunction(e=>!e.getAnimations().some(a=>a.playState==='running'),await action.elementHandle())
     assert.notEqual(await css(row,'backgroundColor'),await css(action,'backgroundColor'))
+    assert.equal(await css(row,'backgroundColor'),theme==='dark'?'rgb(28, 28, 28)':'rgb(240, 240, 240)')
+    assert.equal(await css(row.locator('td').first(),'boxShadow'),'none')
+    const toggle=page.getByRole('switch')
+    const blue=theme==='dark'?'rgb(112, 181, 255)':'rgb(36, 102, 172)'
+    assert.equal(await css(toggle,'backgroundColor'),blue)
+    const nativeCheck=page.locator('.wm-reference-choices input[type=checkbox]:not([role=switch])')
+    await page.locator('#controls .fx-select-trigger').nth(1).click()
+    const menuCheck=page.locator('.fx-select-all .fx-select-checkbox')
+    assert.equal(await menuCheck.evaluate(e=>e.classList.contains('is-mixed')),true)
+    await page.getByRole('checkbox',{name:'Chọn tất cả',exact:true}).click()
+    await page.waitForFunction(e=>!e.getAnimations().some(a=>a.playState==='running'),await menuCheck.elementHandle())
+    for(const key of ['width','height','borderRadius','backgroundColor','transitionDuration']) assert.equal(await css(nativeCheck,key),await css(menuCheck,key),`checkbox ${key}`)
+    const mark=locator=>locator.evaluate(e=>getComputedStyle(e,'::after').maskImage)
+    assert.equal(await mark(nativeCheck),await mark(menuCheck))
+    await page.keyboard.press('Escape')
+    await nativeCheck.focus();await page.keyboard.press('Space');assert.equal(await nativeCheck.isChecked(),false);await page.keyboard.press('Space');assert.equal(await nativeCheck.isChecked(),true)
+    const referenceField=page.locator('.wm-reference-form-grid .wm-field').first()
+    await referenceField.focus()
+    assert.equal(await css(referenceField,'outlineStyle'),'none');assert.equal(await css(referenceField,'boxShadow'),'none')
+    await page.waitForFunction(({element,color})=>getComputedStyle(element).borderColor===color,{element:await referenceField.elementHandle(),color:blue})
+    await toggle.uncheck(); await page.waitForFunction(({element,color})=>getComputedStyle(element).backgroundColor!==color,{element:await toggle.elementHandle(),color:blue})
+    await toggle.check(); await page.waitForFunction(({element,color})=>getComputedStyle(element).backgroundColor===color,{element:await toggle.elementHandle(),color:blue})
     await page.keyboard.press('Tab');await action.focus()
     assert.equal(await css(action,'outlineWidth'),'2px')
     const disabled=page.getByRole('button',{name:'Không khả dụng',exact:true})
@@ -61,6 +83,18 @@ try {
     assert.equal(await css(page.locator('.fx-select-menu'),'animationDuration'),'0.16s')
     await page.keyboard.press('ArrowDown');await page.keyboard.press('Escape')
     await page.screenshot({path:`${out}/reference-${theme}.png`,animations:'disabled'})
+    const flow=page.getByTestId('reference-data-flow')
+    const selectFlow=async name=>{await page.getByRole('button',{name:'Luồng Tổng quan minh hoạ',exact:true}).click();await page.getByRole('option',{name,exact:true}).click()}
+    assert.equal(await flow.getByRole('status').count(),1)
+    assert.equal(await flow.locator('h3').count(),0)
+    await selectFlow('Đang đọc phiên');assert.equal(await flow.getAttribute('aria-busy'),'true');assert.equal(await flow.getByRole('status').count(),1)
+    await selectFlow('Có phiên, chưa giao dịch');assert.ok((await flow.innerText()).includes('Phiên mẫu'));assert.equal(await flow.getByRole('status').count(),1)
+    await selectFlow('Một biểu đồ lỗi riêng');assert.ok((await flow.innerText()).includes('Kết quả chung'));assert.equal(await flow.getByRole('alert').count(),1)
+    await flow.getByRole('button',{name:'Thử lại'}).click();assert.equal(await flow.getByRole('alert').count(),0)
+    await selectFlow('Nguồn phiên lỗi');assert.equal(await flow.getByRole('alert').count(),1);assert.equal(await flow.locator('h3').count(),0)
+    await page.screenshot({path:`${out}/flow-${theme}.png`,animations:'disabled'})
+    await page.locator('#report-patterns').screenshot({path:`${out}/report-patterns-${theme}.png`,animations:'disabled'})
+    results.push({case:'labeled shared-source and independent-source state journeys',theme,pass:true})
     // A theme switch updates the displayed hex values as well as surfaces.
     const before=await page.locator('.wm-reference-colors code').nth(1).innerText()
     await page.getByTestId('theme-toggle').click()
@@ -87,7 +121,9 @@ try {
         const strategy=page.locator('.quick-session-strategy .fx-select-trigger')
         await page.waitForFunction(e=>!e.disabled,await strategy.elementHandle())
         await page.keyboard.press('Tab'); await strategy.focus()
-        assert.equal(await css(strategy,'outlineWidth'),'2px')
+        assert.equal(await css(strategy,'outlineStyle'),'none')
+        const strategyBlue=await strategy.evaluate(e=>{const p=document.createElement('i');p.style.color='var(--wm-focus)';e.parentNode.appendChild(p);const c=getComputedStyle(p).color;p.remove();return c})
+        await page.waitForFunction(({element,color})=>getComputedStyle(element).borderColor===color,{element:await strategy.elementHandle(),color:strategyBlue})
         const focus=await strategy.evaluate(e=>getComputedStyle(e).getPropertyValue('--wm-focus').trim())
         assert.ok(focus)
         assert.equal(await strategy.evaluate(e=>e.matches(':focus-visible')),true)

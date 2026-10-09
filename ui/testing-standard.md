@@ -13,7 +13,7 @@ controls and report charts retain their project roles.
 
 The current compact size/color/state/motion/layout rules are owned by
 [compact-system.md](compact-system.md) and the pinned
-[Compact contract](../../../UI-Systems/core/tokens/compact/0.1.0/CONTRACT.md).
+[Compact contract](../../../UI-Systems/core/tokens/compact/0.1.1/CONTRACT.md).
 These supersede the previous 40px control / 32px metric / neutral-only scope.
 `component-interactions.css` maps the generated semantic roles; `testing-standard.css`
 now applies action roles across the app; `compact-system.css` owns project adapters.

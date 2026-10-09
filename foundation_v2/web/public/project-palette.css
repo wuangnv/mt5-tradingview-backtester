@@ -1,4 +1,4 @@
-/* annam-ui: annam-compact@0.1.0; source-sha256: 6b931fbbccb5edcb69703551493ece5a70585b69cd49b7369aed8b09ffa4697f; generated: deterministic */
+/* annam-ui: annam-compact@0.1.1; source-sha256: efbdc8301a23e6c32b93feb461f5126911665db00721a6d2249c8011c3a33c43; generated: deterministic */
 
 :root, .fx-app[data-theme='light'] {
   --project-canvas: #FFFFFF;
@@ -8,7 +8,7 @@
   --project-control: #F3F4F6;
   --project-hover: #DDE1E7;
   --project-row-hover: #F3F5F7;
-  --project-row-selected: #E9EDF2;
+  --project-row-selected: #F0F0F0;
   --project-border: #D2D5DA;
   --project-border-strong: #748495;
   --project-text: #15181C;
@@ -114,7 +114,7 @@
   --project-control: #23262A;
   --project-hover: #3D4148;
   --project-row-hover: #17191D;
-  --project-row-selected: #25282E;
+  --project-row-selected: #1C1C1C;
   --project-border: #3D444C;
   --project-border-strong: #8090A0;
   --project-text: #FFFFFF;

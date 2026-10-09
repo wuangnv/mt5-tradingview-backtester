@@ -66,7 +66,7 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-balance input:is(:focus,:focus-visible) { border:0; outline:none; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select .fx-select-trigger { background:transparent; border:1px solid var(--wm-control-border); border-radius:var(--ds-radius-field); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select:where(:not(.is-rich)) .fx-select-trigger:is(:hover,[aria-expanded=true]) { background:transparent; border-color:var(--wm-control-hover-border); outline:none; box-shadow:none; }
-.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select .fx-select-trigger:focus-visible { border-color:var(--wm-focus); outline:2px solid var(--wm-focus); outline-offset:2px; box-shadow:none; }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select .fx-select-trigger:focus-visible { border-color:var(--wm-focus); outline:none; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select.dataset-asset-select .fx-select-tag-field .fx-select-trigger:focus-visible { outline:none; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .fx-select.is-placeholder .fx-select-value { color:var(--wm-content-muted); }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-strategy .fx-select-menu { width:100%; }

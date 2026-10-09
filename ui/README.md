@@ -12,7 +12,7 @@ This layer sits below:
 
 [Compact system](compact-system.md) explains sizes, colors, hover, motion and
 layout in Vietnamese. The living catalog is `?area=testing&ui_reference=1`.
-The app pins `annam-compact@0.1.0`; other products are not migrated implicitly.
+The app pins `annam-compact@0.1.1`; other products are not migrated implicitly.
 
 ## Current state
 

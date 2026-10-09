@@ -18,6 +18,28 @@
   padding:7px 12px; border:1px solid var(--wm-control-border); background:transparent; color:var(--wm-content); font-family:inherit;
 }
 .fx-app.fx-shell-story[data-theme] .fx-content .quick-session-balance input { border-radius:0; }
+.fx-app.fx-shell-story[data-theme] .fx-content .wm-page :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea):focus-visible,
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.wm-field,.fx-select-trigger):focus-visible { outline:none; box-shadow:none; border-color:var(--wm-focus); }
+.fx-app.fx-shell-story[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select .fx-select-trigger:focus-visible { outline:none; box-shadow:none; border-color:var(--wm-focus); }
+/* Native fields and menu marks share one drawing; their original input/ARIA behavior remains. */
+.fx-app.fx-shell-story[data-theme] .fx-content :is(input[type=checkbox]:not([role=switch]),.fx-select-checkbox) {
+  appearance:none; position:relative; display:inline-block; box-sizing:border-box;
+  width:16px; height:16px; min-width:16px; min-height:16px; flex:0 0 16px;
+  padding:0; border:1px solid var(--wm-control-hover-border); border-radius:2px;
+  background:var(--wm-canvas); font-size:0; vertical-align:middle;
+  transition:background-color var(--ds-motion-hover) var(--ds-ease-standard),border-color var(--ds-motion-hover) var(--ds-ease-standard);
+}
+.fx-app.fx-shell-story[data-theme] .fx-content :is(input[type=checkbox]:not([role=switch]):checked,input[type=checkbox]:not([role=switch]):indeterminate,.fx-select-checkbox.is-checked,.fx-select-checkbox.is-mixed) {
+  background:var(--project-highlight); border-color:var(--project-highlight);
+}
+.fx-app.fx-shell-story[data-theme] .fx-content :is(input[type=checkbox]:not([role=switch]):checked,.fx-select-checkbox.is-checked)::after {
+  content:''; position:absolute; inset:2px; background:var(--project-on-action);
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2 6 2.5 2.5L10 3' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.fx-app.fx-shell-story[data-theme] .fx-content :is(input[type=checkbox]:not([role=switch]):indeterminate,.fx-select-checkbox.is-mixed)::after { content:''; position:absolute; inset:6px 3px; background:var(--project-on-action); border-radius:1px; }
+.fx-app.fx-shell-story[data-theme] .fx-content input[type=checkbox]:not([role=switch]):disabled,
+.fx-app.fx-shell-story[data-theme] .fx-content button:disabled .fx-select-checkbox { opacity:var(--ds-disabled-opacity); }
+.fx-app.fx-shell-story[data-theme] .fx-content input[type=checkbox]:not([role=switch]):focus-visible { outline:2px solid var(--wm-focus); outline-offset:2px; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .prop-tabs { min-height:var(--ds-nav); }
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select-check, .dataset-asset-check) { color:var(--project-highlight); }
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.fxa-tab, .prop-tabs button) { min-height:var(--wm-control-height); padding:7px 12px; line-height:20px; font-weight:500; }
@@ -33,6 +55,10 @@
 }
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-button > svg { display:block; width:var(--ds-icon); height:var(--ds-icon); flex:0 0 var(--ds-icon); }
 .fx-app.fx-shell-story[data-theme] .fx-content .wm-button.is-icon > svg { width:var(--ds-icon-small); height:var(--ds-icon-small); flex-basis:var(--ds-icon-small); }
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.fxa-metric,.fx-dashboard-metric) > strong { font-size:var(--ds-font-value); line-height:1.2; font-weight:var(--ds-weight-heading); }
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.fxa-metric,.fx-dashboard-metric) > small { font-size:var(--ds-font-meta); line-height:1.5; }
+.fx-app.fx-shell-story[data-theme] .fx-content .fx-dashboard-chart-panel h3 { font-size:var(--ds-font-section); margin-bottom:var(--ds-space-6); }
+.fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-dashboard-chart-axis,.fx-dashboard-month-label,.fx-dashboard-symbol-axis,.fxa-curve-axis) { font-size:var(--ds-font-meta); color:var(--wm-content-muted); }
 .fx-app.fx-shell-story[data-theme] :is(.fx-select-menu, .fxa-session-menu, .fx-filter-popover, .data-library-action-menu) {
   border-radius:var(--ds-radius-menu); animation:wm-menu-enter var(--ds-motion-menu) var(--ds-ease-enter);
 }

@@ -13,7 +13,7 @@ screen. The runnable React/Vite implementation in
 `foundation_v2/web/` remains the code authority.
 
 Visual foundations now follow [compact-system.md](compact-system.md) and the
-pinned `annam-compact@0.1.0` contract. They supersede historical sizes, generic
+pinned `annam-compact@0.1.1` contract. They supersede historical sizes, generic
 hover colors and motion values below; domain/data behavior remains authoritative.
 
 ## 1. Source of truth and boundaries

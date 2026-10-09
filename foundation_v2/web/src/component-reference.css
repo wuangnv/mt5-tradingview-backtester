@@ -18,13 +18,27 @@
 .wm-reference-choices input { width:16px; height:16px; min-height:0; margin:0; }
 .wm-reference-choices .wm-reference-switch { appearance:none; width:var(--ds-switch-width); height:var(--ds-switch-height); border:0; border-radius:999px; background:var(--wm-control-muted); position:relative; }
 .wm-reference-switch::before { content:''; display:block; width:12px; height:12px; margin:2px; border-radius:50%; background:var(--project-canvas); transition:transform var(--ds-motion-hover) var(--ds-ease-standard); }
-.wm-reference-switch:checked { background:var(--project-positive); }
+.wm-reference-switch:checked { background:var(--project-primary); }
 .wm-reference-switch:checked::before { transform:translateX(12px); }
 .wm-reference-table-scroll { width:100%; min-width:0; overflow:auto; }
 .wm-reference-table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-size:13px; text-align:left; margin-top:16px; }
 .wm-reference-table :is(th,td) { padding:12px; vertical-align:middle; border-bottom:1px solid var(--wm-border); }
 .wm-reference-table th { color:var(--wm-content-muted); font-weight:500; }
 .wm-reference-table td:nth-child(2) { white-space:nowrap; color:var(--project-primary); }
+.wm-reference-flow { padding-block:24px; }
+.wm-reference-flow h3 { margin:0; }
+.wm-reference-report-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr)); gap:24px; margin-top:24px; }
+.wm-reference-report-card { padding:24px; border:1px solid var(--wm-border); border-radius:12px; background:var(--wm-surface); min-width:0; }
+.wm-reference-report-card h3 { margin:0 0 16px; font-size:16px; font-weight:600; }
+.wm-reference-report-card small,.wm-reference-report-caption { color:var(--wm-content-muted); font-size:12px; line-height:1.5; }
+.wm-reference-report-card .fxa-metric { gap:8px; }
+.wm-reference-report-chart { display:block; width:100%; height:auto; }
+.wm-reference-report-chart text { fill:var(--wm-content-muted); font:12px sans-serif; }
+.wm-reference-report-chart .is-grid { stroke:var(--project-grid); stroke-width:1; }
+.wm-reference-report-chart .is-series { fill:none; stroke:var(--report-blue); stroke-width:2; vector-effect:non-scaling-stroke; }
+.wm-reference-report-chart .is-point { fill:var(--report-blue); }
+.wm-reference-report-labels { display:none; }
+#data-flow .wm-reference-table td:nth-child(2) { white-space:normal; color:var(--wm-content-muted); }
 .wm-reference-row-sample tbody tr { background:var(--wm-canvas); }
 .wm-reference-row-sample tbody tr:hover { background:var(--wm-row-hover); }
 .wm-reference-row-sample tbody tr.is-selected { background:var(--wm-row-selected); }
@@ -49,6 +63,10 @@
 .wm-reference-dialog h2 { margin:0; }
 .wm-reference-dialog footer { display:flex; justify-content:flex-end; gap:8px; margin-top:24px; }
 @media(max-width:760px) {
+  .wm-reference-report-chart text { display:none; }
+  .wm-reference-report-labels { display:flex; justify-content:space-between; gap:8px; color:var(--wm-content-muted); font-size:12px; margin-bottom:8px; }
+  .wm-reference-report-grid { grid-template-columns:minmax(0,1fr); }
+  .wm-reference-report-card { padding:16px; }
   .wm-reference-colors, .wm-reference-form-grid, .wm-reference-layout-grid { grid-template-columns:minmax(0,1fr); }
   .wm-reference-table td { min-width:90px; }
 }

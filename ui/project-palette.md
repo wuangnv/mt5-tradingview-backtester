@@ -7,7 +7,7 @@ existing flat layout, sizes and navigation.
 This is a project contract, not a change to the pinned shared UI foundation.
 
 `foundation_v2/web/public/project-palette.css` is now a deterministic snapshot
-of pinned `annam-compact@0.1.0`; edit the token source and regenerate, not this
+of pinned `annam-compact@0.1.1`; edit the token source and regenerate, not this
 snapshot. [compact-system.md](compact-system.md) owns the current color tables
 and state treatment, superseding the historical values here. General controls
 use neutral hover (owner rejected a muddy blue fill on 09/10/2026). Orange is the
