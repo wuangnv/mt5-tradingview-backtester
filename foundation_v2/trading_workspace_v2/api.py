@@ -14,7 +14,7 @@ from psycopg.errors import UniqueViolation
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .auth import LocalWorkspaceAuthorization, MissingTrustedIdentity, WorkspaceMembershipDenied
-from .artifacts import ArtifactStore
+from .artifacts import ArtifactStore, ArtifactConflict
 from .contracts import (
     AIRequest,
     CONTRACT_VERSION,
@@ -51,6 +51,9 @@ from .local_datasets import LocalDatasetService, DatasetInUse
 from .learn import LearnCatalog, LearnCatalogError, LearnResourceNotFound, LearnWorkspaceNotConfigured
 from .product import JournalSourceImmutableError, PlaybookFrozenError, PlaybookLineageError, ProductService
 from .dashboard_read_model import build_dashboard_performance
+from .dashboard_sessions import DashboardRevisionConflict, read_dashboard_sessions, read_replay_metadata
+from .replay_read_projection import ReplayReadProjectionService
+from .journal_context import build_journal_context
 from .prop_session import (
     AttemptStatus,
     PropAttemptCreateRequest,
@@ -217,6 +220,7 @@ def create_app(
     service = ResearchService(store, artifacts)
     ingest = DataIngestService(store, artifacts)
     replay = ReplayService(store, artifacts)
+    replay_reads = ReplayReadProjectionService(store)
     product = ProductService(store, ai_service=ai_service)
     data_registry = data_registry or DataProviderRegistry([LocalCatalogProvider(store, artifacts), *([instrument_catalog] if instrument_catalog else [])])
     if learn_roots is None:
@@ -258,6 +262,7 @@ def create_app(
 
     @app.exception_handler(StoredContractUntrusted)
     @app.exception_handler(ValidationError)
+    @app.exception_handler(ArtifactConflict)
     async def reject_untrusted_stored_contract(request: Request, exc: ValidationError):
         from fastapi.responses import JSONResponse
         return JSONResponse(status_code=503, content={"detail": "stored_contract_untrusted"})
@@ -368,6 +373,47 @@ def create_app(
             raise HTTPException(status_code=503, detail="dashboard_source_invalid") from exc
         return {**product.overview(workspace), "performance": performance}
 
+    @app.get("/api/v2/dashboard/sessions")
+    def get_dashboard_sessions(page: int = Query(default=1, ge=1),
+                               page_size: int = Query(default=6, ge=1, le=25),
+                               search: str = Query(default="", max_length=200),
+                               sort: str = "newest", asset: str = "", strategy: str = "",
+                               revision: str | None = None,
+                               workspace: str = Depends(workspace_id)):
+        try:
+            return read_dashboard_sessions(store, workspace, page=page, page_size=page_size,
+                                           search=search, sort=sort, asset=asset,
+                                           strategy=strategy, revision=revision)
+        except DashboardRevisionConflict as exc:
+            raise HTTPException(status_code=409, detail="dashboard_revision_changed") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get("/api/v2/replay/sessions/{session_id}/metadata")
+    def get_replay_metadata(session_id: str, workspace: str = Depends(workspace_id)):
+        try:
+            return read_replay_metadata(store, workspace, session_id)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+
+    @app.get("/api/v2/replay/sessions/{session_id}/chart-window")
+    def get_replay_chart_window(session_id: str, dataset_id: str,
+                               dataset_sha256: str = Query(min_length=64, max_length=64),
+                               cursor_index: int | None = Query(default=None, ge=0),
+                               resolution: str = "1", from_utc: int | None = None,
+                               to_utc: int | None = None,
+                               count_back: int = Query(default=300, ge=1, le=2000),
+                               workspace: str = Depends(workspace_id)):
+        try:
+            return replay.chart_window(workspace, session_id, dataset_id=dataset_id,
+                                       dataset_sha256=dataset_sha256, cursor_index=cursor_index,
+                                       resolution=resolution, from_utc=from_utc,
+                                       to_utc=to_utc, count_back=count_back)
+        except LookupError as exc:
+            raise HTTPException(status_code=404, detail="replay_not_found") from exc
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
     @app.get("/api/v2/replay/trades")
     def get_replay_trades(
         sessions: str | None = None, side: str = "all", outcome: str = "all",
@@ -379,18 +425,13 @@ def create_app(
     ):
         try:
             selected = None if sessions is None else [value for value in sessions.split(",") if value]
-            report = build_dashboard_performance(
-                store.list_records(workspace, "replay"), workspace,
-                session_ids=selected, include_ledger=True, side=side, outcome=outcome,
+            return replay_reads.trades(
+                workspace,
+                session_ids=selected, side=side, outcome=outcome,
                 from_close_utc=from_close_utc, to_close_utc=to_close_utc,
-                activity_intervals=store.list_replay_activity(workspace),
+                page=page, page_size=page_size, sort_key=sort_key,
+                sort_direction=sort_direction, extra_filters=extra_filters,
             )
-            if page is None:
-                return report
-            from .trades_page import build_trades_page
-            return build_trades_page(report, store.list_records(workspace, "journal"),
-                                     page=page, page_size=page_size, sort_key=sort_key,
-                                     sort_direction=sort_direction, extra_filters=extra_filters)
         except LookupError as exc:
             raise HTTPException(status_code=404, detail="replay_not_found") from exc
         except AnalyticsValidationError as exc:
@@ -1166,11 +1207,12 @@ def create_app(
         session_id: str,
         cursor_index: int | None = None,
         advance_interval_seconds: int | None = Query(default=None, ge=1, le=86400),
+        cutoff_timestamp: int | None = None,
         workspace: str = Depends(workspace_id),
     ):
         try:
             return replay.view(workspace, session_id, cursor_index=cursor_index,
-                               advance_interval_seconds=advance_interval_seconds)
+                               advance_interval_seconds=advance_interval_seconds, cutoff_timestamp=cutoff_timestamp)
         except LookupError:
             raise HTTPException(status_code=404, detail="replay_not_found")
         except ValueError as exc:
@@ -1225,7 +1267,7 @@ def create_app(
                               cursor_index=None, cutoff_timestamp=None, event_sequence=None):
         try:
             record = replay.analytics_record(workspace, session_id, cursor_index, cutoff_timestamp, event_sequence)
-            return build_replay_analytics_view({**record, "workspace_id": workspace}, {
+            return replay_reads.analytics({**record, "workspace_id": workspace}, {
                 "side": side, "outcome": outcome,
                 "from_close_utc": from_close_utc, "to_close_utc": to_close_utc,
             })
@@ -1512,6 +1554,14 @@ def create_app(
     @app.get("/api/v2/journal")
     def list_journal(workspace: str = Depends(workspace_id)):
         return {"items": store.list_records(workspace, "journal")}
+
+    @app.get("/api/v2/journal/context")
+    def get_journal_context(session_id: str = Query(min_length=1, max_length=128),
+                            workspace: str = Depends(workspace_id)):
+        if store.get_record(workspace, "replay", session_id) is None:
+            raise HTTPException(status_code=404, detail="replay_not_found")
+        records = store.list_journal_records(workspace, session_ids=[session_id])
+        return build_journal_context(records, workspace, session_id)
 
     @app.get("/api/v2/journal/{record_id}")
     def get_journal(record_id: str, workspace: str = Depends(workspace_id)):

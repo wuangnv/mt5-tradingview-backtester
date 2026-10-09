@@ -186,7 +186,7 @@ class ApiCommandPostgresTests(unittest.TestCase):
         self.queue.advertise("fixture", self.dispatcher.manifest())
         self.queue.touch("fixture")
         with self.store.connect() as conn:
-            self.assertEqual(len(conn.execute("SELECT route_manifest FROM api_command_workers WHERE worker_id='fixture'").fetchone()["route_manifest"]), 98)
+            self.assertEqual(len(conn.execute("SELECT route_manifest FROM api_command_workers WHERE worker_id='fixture'").fetchone()["route_manifest"]), len(self.dispatcher.manifest()))
         identifier = self.insert()
         command = self.queue.claim("fixture")
         self.queue.finish(command, CommandResult(200, {}))

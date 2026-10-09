@@ -190,6 +190,9 @@ class FakeArtifacts:
 
 
 class FakeStore:
+    def close(self):
+        pass
+
     def __init__(self, rows):
         self.rows = rows
         self.records = {}

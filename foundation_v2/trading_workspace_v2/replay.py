@@ -402,14 +402,31 @@ class ReplayService:
         return self.view(workspace_id, session_id)
 
     def view(self, workspace_id: str, session_id: str, cursor_index: int | None = None,
-             advance_interval_seconds: int | None = None) -> dict:
+             advance_interval_seconds: int | None = None, cutoff_timestamp: int | None = None) -> dict:
         record = self.store.get_record(workspace_id, "replay", session_id)
         if record is None:
             raise LookupError("replay session not found")
         payload = record["payload"]
-        manifest, rows = self._dataset_rows(workspace_id, payload["dataset_id"])
+        manifest = self.store.get_dataset(workspace_id, payload['dataset_id'])
+        if manifest is None:
+            raise LookupError('dataset not found')
         canonical_cursor = int(payload["cursor_index"])
-        if canonical_cursor >= len(rows):
+        if cutoff_timestamp is not None:
+            if isinstance(cutoff_timestamp, bool) or not isinstance(cutoff_timestamp, int) or cursor_index is not None or advance_interval_seconds is not None:
+                raise ValueError('choose a UTC cutoff or a cursor/interval')
+            if hasattr(self.artifacts, 'find_dataset_cursor'):
+                cursor_index = self.artifacts.find_dataset_cursor(manifest.artifact_path, manifest.artifact_sha256,
+                    canonical_cursor=canonical_cursor, timestamp=cutoff_timestamp)
+            else:
+                _, native = self._dataset_rows(workspace_id, payload['dataset_id'])
+                if cutoff_timestamp > int(native[canonical_cursor]['timestamp']):
+                    raise ValueError('view cutoff cannot exceed current replay cutoff')
+                cursor_index = next(index for index, row in enumerate(native[:canonical_cursor + 1])
+                                    if row['timestamp'] >= cutoff_timestamp)
+        indexed = hasattr(self.artifacts, 'read_dataset_indices') and advance_interval_seconds is None
+        rows = None if indexed else self._dataset_rows(workspace_id, payload['dataset_id'])[1]
+        total = manifest.row_count if indexed else len(rows)
+        if canonical_cursor >= total:
             raise RuntimeError("replay cursor exceeds immutable dataset")
         view_cursor = canonical_cursor if cursor_index is None else int(cursor_index)
         if view_cursor < 0:
@@ -419,8 +436,10 @@ class ReplayService:
         if advance_interval_seconds is not None:
             view_cursor = next_interval_cursor(rows, view_cursor, canonical_cursor,
                 advance_interval_seconds, getattr(manifest, "timeframe_seconds", None))
-        visible_start = max(0, view_cursor - 1999) if payload.get('asset_states') else 0
-        visible = rows[visible_start: view_cursor + 1]
+        visible_start = max(0, view_cursor - 1999)
+        visible = (self.artifacts.read_dataset_indices(manifest.artifact_path, manifest.artifact_sha256,
+                   start_index=visible_start, end_index=view_cursor + 1) if indexed
+                   else rows[visible_start: view_cursor + 1])
         execution_view_status = "current" if payload.get("execution") else "not_initialized"
         if view_cursor != canonical_cursor and (payload.get("execution") or payload.get("asset_states")):
             try:
@@ -442,14 +461,58 @@ class ReplayService:
             "visible_rows": visible,
             "visible_row_count": len(visible),
             "visible_row_start": visible_start,
-            "total_row_count": len(rows),
-            "has_future_rows": (payload['replay_clock_utc'] < payload['replay_end_utc']) if payload.get('asset_states') else view_cursor + 1 < len(rows),
+            "total_row_count": total,
+            "has_future_rows": (payload['replay_clock_utc'] < payload['replay_end_utc']) if payload.get('asset_states') else view_cursor + 1 < total,
             "view_cursor_index": view_cursor,
             "canonical_cursor_index": canonical_cursor,
             "historical_view": view_cursor != canonical_cursor,
             "execution_view_status": execution_view_status,
             **portfolio,
         }
+
+    def chart_window(self, workspace_id, session_id, *, dataset_id, dataset_sha256,
+                     cursor_index=None, resolution='1', from_utc=None, to_utc=None, count_back=300):
+        from .replay_chart_history import MAX_CHART_BARS, chart_period, chart_bucket, prepend_chart_row
+        record = self.store.get_record(workspace_id, 'replay', session_id)
+        if record is None:
+            raise LookupError('replay session not found')
+        payload = record['payload']
+        if dataset_id != payload['dataset_id']:
+            raise ValueError('chart dataset is not the active replay asset')
+        manifest = self.store.get_dataset(workspace_id, dataset_id)
+        if manifest is None:
+            raise LookupError('dataset not found')
+        if dataset_sha256 != manifest.artifact_sha256:
+            raise ValueError('chart dataset checksum conflicts with replay')
+        canonical = int(payload['cursor_index'])
+        cursor = canonical if cursor_index is None else cursor_index
+        if isinstance(cursor, bool) or not isinstance(cursor, int) or not 0 <= cursor <= canonical:
+            raise ValueError('chart cursor is outside the visible replay range')
+        if isinstance(count_back, bool) or not isinstance(count_back, int) or not 1 <= count_back <= MAX_CHART_BARS:
+            raise ValueError('chart count_back must be between 1 and 2000')
+        if any(isinstance(value, bool) or not isinstance(value, int) for value in (from_utc, to_utc) if value is not None):
+            raise ValueError('chart times must be integer UTC timestamps')
+        if from_utc is not None and to_utc is not None and from_utc > to_utc:
+            raise ValueError('invalid chart time range')
+        period = chart_period(resolution, manifest.timeframe_seconds)
+        if hasattr(self.artifacts, 'read_dataset_chart_window'):
+            window = self.artifacts.read_dataset_chart_window(manifest.artifact_path, manifest.artifact_sha256,
+                cursor_index=cursor, period=period, to_utc=to_utc, count_back=count_back)
+        else:
+            # In-memory/test artifact implementations retain the same bounded output contract.
+            _, rows = self._dataset_rows(workspace_id, dataset_id)
+            buckets = {}
+            for row in reversed(rows[:cursor + 1]):
+                time = chart_bucket(row['timestamp'], period)
+                if to_utc is None or time < to_utc * 1000:
+                    prepend_chart_row(buckets, row, period)
+            bars = sorted(buckets.values(), key=lambda bar: bar['time'])
+            window = {'bars': bars[-count_back:], 'has_more': len(bars) > count_back,
+                      'cutoff_timestamp': int(rows[cursor]['timestamp']), 'total_row_count': len(rows)}
+        return {'schema_version': 'replay-chart-window-v1', 'workspace_id': workspace_id,
+                'session_id': session_id, 'dataset_id': dataset_id, 'dataset_sha256': dataset_sha256,
+                'revision': record['revision'], 'cursor_index': cursor, 'canonical_cursor_index': canonical,
+                'resolution': str(resolution), **window}
 
     def record_activity(self, workspace_id, session_id, body):
         start, end = validate_activity(body)

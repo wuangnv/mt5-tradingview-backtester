@@ -36,9 +36,9 @@ class DirectDomainCommandTests(unittest.TestCase):
         return {"contract_version": CONTRACT_VERSION, "workspace_id": "tenant-a", "identity_id": "local-owner",
                 "method": method, "path": path, "query": [], **kwargs}
 
-    def test_manifest_freezes_all_98_routes_and_actual_validation_schema(self):
+    def test_manifest_freezes_all_reviewed_routes_and_actual_validation_schema(self):
         manifest = self.dispatcher.manifest()
-        self.assertEqual(len(manifest), 98)
+        self.assertEqual(len(manifest), 102)
         current = json.loads((ROOT / "foundation_v2/trading_workspace_v2/command_contracts.json").read_text(encoding="utf-8"))
         self.assertEqual(current, manifest)
         replay = next(item for item in manifest if item["path"] == "/api/v2/replay/sessions/{session_id}" and item["method"] == "GET")
@@ -103,7 +103,7 @@ class DirectDomainCommandTests(unittest.TestCase):
         result = self.dispatcher.dispatch(self.command("GET", "/api/v2/replay/sessions/test",
                                                      query=[["cursor_index", "3"], ["cursor_index", "7"]]))
         self.assertEqual(result.body, {"id": "fixture"})
-        self.app.state.replay.view.assert_called_once_with("tenant-a", "test", cursor_index=7, advance_interval_seconds=None)
+        self.app.state.replay.view.assert_called_once_with("tenant-a", "test", cursor_index=7, advance_interval_seconds=None, cutoff_timestamp=None)
 
     def test_typed_financial_input_and_created_status_match_reference(self):
         from decimal import Decimal

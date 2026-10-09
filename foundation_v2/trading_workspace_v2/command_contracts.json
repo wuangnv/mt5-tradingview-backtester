@@ -83,6 +83,207 @@
   },
   {
     "method": "GET",
+    "path": "/api/v2/dashboard/sessions",
+    "handler": "get_dashboard_sessions",
+    "status_code": 200,
+    "safe_retry": true,
+    "parameters": {
+      "path": [],
+      "query": [
+        {
+          "name": "page",
+          "required": false,
+          "schema": {
+            "default": 1,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "required": false,
+          "schema": {
+            "default": 6,
+            "maximum": 25,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        {
+          "name": "search",
+          "required": false,
+          "schema": {
+            "default": "",
+            "maxLength": 200,
+            "type": "string"
+          }
+        },
+        {
+          "name": "sort",
+          "required": false,
+          "schema": {
+            "default": "newest",
+            "type": "string"
+          }
+        },
+        {
+          "name": "asset",
+          "required": false,
+          "schema": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        {
+          "name": "strategy",
+          "required": false,
+          "schema": {
+            "default": "",
+            "type": "string"
+          }
+        },
+        {
+          "name": "revision",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        }
+      ],
+      "body": []
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/metadata",
+    "handler": "get_replay_metadata",
+    "status_code": 200,
+    "safe_retry": true,
+    "parameters": {
+      "path": [
+        {
+          "name": "session_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "query": [],
+      "body": []
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/chart-window",
+    "handler": "get_replay_chart_window",
+    "status_code": 200,
+    "safe_retry": true,
+    "parameters": {
+      "path": [
+        {
+          "name": "session_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "query": [
+        {
+          "name": "dataset_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "dataset_sha256",
+          "required": true,
+          "schema": {
+            "maxLength": 64,
+            "minLength": 64,
+            "type": "string"
+          }
+        },
+        {
+          "name": "cursor_index",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        {
+          "name": "resolution",
+          "required": false,
+          "schema": {
+            "default": "1",
+            "type": "string"
+          }
+        },
+        {
+          "name": "from_utc",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        {
+          "name": "to_utc",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        {
+          "name": "count_back",
+          "required": false,
+          "schema": {
+            "default": 300,
+            "maximum": 2000,
+            "minimum": 1,
+            "type": "integer"
+          }
+        }
+      ],
+      "body": []
+    }
+  },
+  {
+    "method": "GET",
     "path": "/api/v2/replay/trades",
     "handler": "get_replay_trades",
     "status_code": 200,
@@ -4816,6 +5017,21 @@
             ],
             "default": null
           }
+        },
+        {
+          "name": "cutoff_timestamp",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
         }
       ],
       "body": []
@@ -6817,6 +7033,28 @@
     "parameters": {
       "path": [],
       "query": [],
+      "body": []
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal/context",
+    "handler": "get_journal_context",
+    "status_code": 200,
+    "safe_retry": true,
+    "parameters": {
+      "path": [],
+      "query": [
+        {
+          "name": "session_id",
+          "required": true,
+          "schema": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      ],
       "body": []
     }
   },

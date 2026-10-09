@@ -54,7 +54,7 @@ def main():
     generated = export_contracts()
     if args.check or args.output is None:
         check_contracts(generated)
-        print("PASS: 98 frozen domain commands and reference OpenAPI data contracts")
+        print(f"PASS: {len(generated['command_contracts.json'])} frozen domain commands and reference OpenAPI data contracts")
     if args.output:
         args.output.mkdir(parents=True, exist_ok=True)
         for name, data in generated.items():

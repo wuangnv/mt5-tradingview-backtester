@@ -66,8 +66,8 @@ def parse_filters(raw):
         raise AnalyticsValidationError('trade_page_filters_invalid') from exc
 
 
-def build_trades_page(report, journals, *, page, page_size, sort_key, sort_direction, extra_filters='{}'):
-    if page < 1 or not 1 <= page_size <= 100 or sort_key not in SORT_KEYS or sort_direction not in ('asc', 'desc'):
+def prepare_trades_projection(report, journals, *, sort_key, sort_direction, extra_filters='{}'):
+    if sort_key not in SORT_KEYS or sort_direction not in ('asc', 'desc'):
         raise AnalyticsValidationError('trade_page_parameters_invalid')
     filters, zone = parse_filters(extra_filters)
     journal_tags = {}
@@ -165,12 +165,28 @@ def build_trades_page(report, journals, *, page, page_size, sort_key, sort_direc
         return result * (1 if sort_direction == 'asc' else -1) or a['_index'] - b['_index']
     filtered.sort(key=cmp_to_key(compare))
     count = None if report['metrics']['closed_trade_count'] is None else len(filtered)
-    pages = math.ceil(count / page_size) if count is not None else None
-    page = min(page, max(1, pages or 1))
-    visible = [{key: value for key, value in row.items() if key != '_index'} for row in filtered[(page - 1) * page_size:page * page_size]]
+    ordered = [{key: value for key, value in row.items() if key != '_index'} for row in filtered]
     snapshot = {key: report.get(key) for key in ('scope', 'sources', 'excluded')}
     snapshot['journals'] = [(record['record_id'], record['revision']) for record in journals]
     snapshot['filters'] = filters
-    return {'schema_version': 'replay-trades-page-v1', 'status': report['status'], 'scope': {**report['scope'], 'extra_filters': filters}, 'sources': report['sources'], 'excluded': report['excluded'], 'sessions': report['sessions'], 'ledger': visible, 'facets': facets,
-            'pagination': {'page': page, 'page_size': page_size, 'returned_count': len(visible), 'filtered_count': count, 'page_count': pages, 'has_next': pages is not None and page < pages},
+    return {'schema_version': 'replay-trades-page-v1', 'status': report['status'], 'scope': {**report['scope'], 'extra_filters': filters}, 'sources': report['sources'], 'excluded': report['excluded'], 'sessions': report['sessions'], 'ledger': ordered, 'facets': facets, 'filtered_count': count,
             'sort': {'key': sort_key, 'direction': sort_direction}, 'snapshot_key': hashlib.sha256(json.dumps(snapshot, sort_keys=True, default=str).encode()).hexdigest()}
+
+
+def slice_trades_projection(projection, *, page, page_size):
+    if isinstance(page, bool) or not isinstance(page, int) or page < 1 or isinstance(page_size, bool) or not isinstance(page_size, int) or not 1 <= page_size <= 100:
+        raise AnalyticsValidationError('trade_page_parameters_invalid')
+    count = projection['filtered_count']
+    pages = math.ceil(count / page_size) if count is not None else None
+    page = min(page, max(1, pages or 1))
+    visible = projection['ledger'][(page - 1) * page_size:page * page_size]
+    return {**{key: value for key, value in projection.items() if key not in {'ledger', 'filtered_count'}},
+            'ledger': visible,
+            'pagination': {'page': page, 'page_size': page_size, 'returned_count': len(visible), 'filtered_count': count, 'page_count': pages, 'has_next': pages is not None and page < pages}}
+
+
+def build_trades_page(report, journals, *, page, page_size, sort_key, sort_direction, extra_filters='{}'):
+    if isinstance(page, bool) or not isinstance(page, int) or page < 1 or isinstance(page_size, bool) or not isinstance(page_size, int) or not 1 <= page_size <= 100:
+        raise AnalyticsValidationError('trade_page_parameters_invalid')
+    projection = prepare_trades_projection(report, journals, sort_key=sort_key, sort_direction=sort_direction, extra_filters=extra_filters)
+    return slice_trades_projection(projection, page=page, page_size=page_size)

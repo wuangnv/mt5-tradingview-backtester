@@ -305,6 +305,127 @@ class ArtifactStore:
             self._verify_unchanged(path, handle, identity)
         return rows
 
+    def read_dataset_indices(self, relative_path, expected_sha256, *, start_index, end_index):
+        """Half-open native bar window, preserving every stored column and full integrity."""
+        if not 0 <= start_index <= end_index:
+            raise ValueError('invalid dataset index range')
+        path = self._path(relative_path)
+        rows = []
+        with path.open('rb') as handle:
+            identity = self._verify_dataset(handle, expected_sha256)
+            parquet = pq.ParquetFile(handle)
+            if end_index > parquet.metadata.num_rows:
+                raise ValueError('dataset index exceeds immutable dataset')
+            offset = 0
+            for index in range(parquet.num_row_groups):
+                size = parquet.metadata.row_group(index).num_rows
+                if offset < end_index and offset + size > start_index:
+                    table = parquet.read_row_group(index)
+                    left, right = max(0, start_index - offset), min(size, end_index - offset)
+                    rows.extend(table.slice(left, right - left).to_pylist())
+                offset += size
+                if offset >= end_index:
+                    break
+            self._verify_unchanged(path, handle, identity)
+        return rows
+
+    def read_dataset_chart_window(self, relative_path, expected_sha256, *, cursor_index,
+                                  period, to_utc, count_back):
+        """Read older row groups until countBack buckets are complete, never past cursor.
+
+        Parquet buffers a current checkpoint and history row group; Python materializes at most 4096
+        native rows per batch. Full-file hashing deliberately remains on every read.
+        """
+        from .replay_chart_history import MAX_CHART_BARS, chart_bucket, prepend_chart_row
+        if not 1 <= count_back <= MAX_CHART_BARS or cursor_index < 0:
+            raise ValueError('invalid chart window budget')
+        path = self._path(relative_path)
+        buckets = {}
+        cutoff = None
+        exhausted = True
+        with path.open('rb') as handle:
+            identity = self._verify_dataset(handle, expected_sha256)
+            parquet = pq.ParquetFile(handle)
+            if cursor_index >= parquet.metadata.num_rows:
+                raise ValueError('chart cursor exceeds immutable dataset')
+            offsets, offset = [], 0
+            for index in range(parquet.num_row_groups):
+                offsets.append(offset)
+                offset += parquet.metadata.row_group(index).num_rows
+            columns = [key for key in ('timestamp', 'open', 'high', 'low', 'close', 'volume', 'tick_volume')
+                       if key in parquet.schema_arrow.names]
+            timestamp_column = parquet.schema_arrow.get_field_index('timestamp')
+            canonical_group = max(index for index, start in enumerate(offsets) if start <= cursor_index)
+            current_table = parquet.read_row_group(canonical_group, columns=columns)
+            cutoff = int(current_table.column('timestamp')[cursor_index - offsets[canonical_group]].as_py())
+            stop = False
+            for index in range(parquet.num_row_groups - 1, -1, -1):
+                if offsets[index] > cursor_index:
+                    continue
+                statistics = parquet.metadata.row_group(index).column(timestamp_column).statistics
+                if to_utc is not None and statistics is not None and statistics.has_min_max and chart_bucket(statistics.min, period) >= to_utc * 1000:
+                    continue
+                table = current_table if index == canonical_group else parquet.read_row_group(index, columns=columns)
+                length = min(len(table), cursor_index + 1 - offsets[index])
+                for end in range(length, 0, -4096):
+                    start = max(0, end - 4096)
+                    for row in reversed(table.slice(start, end - start).to_pylist()):
+                        time = chart_bucket(row['timestamp'], period)
+                        if to_utc is not None and time >= to_utc * 1000:
+                            continue
+                        if len(buckets) >= count_back and time not in buckets:
+                            exhausted = False
+                            stop = True
+                            break
+                        prepend_chart_row(buckets, row, period)
+                    if stop:
+                        break
+                if stop:
+                    break
+            self._verify_unchanged(path, handle, identity)
+        return {'bars': sorted(buckets.values(), key=lambda bar: bar['time']),
+                'cutoff_timestamp': cutoff, 'has_more': not exhausted,
+                'total_row_count': parquet.metadata.num_rows}
+
+    def find_dataset_cursor(self, relative_path, expected_sha256, *, canonical_cursor, timestamp):
+        """First native bar at/after UTC time, never beyond the persisted replay cursor."""
+        path = self._path(relative_path)
+        target = None
+        with path.open('rb') as handle:
+            identity = self._verify_dataset(handle, expected_sha256)
+            parquet = pq.ParquetFile(handle)
+            if not 0 <= canonical_cursor < parquet.metadata.num_rows:
+                raise ValueError('replay cursor exceeds immutable dataset')
+            column = parquet.schema_arrow.get_field_index('timestamp')
+            offset, offsets = 0, []
+            for index in range(parquet.num_row_groups):
+                offsets.append(offset)
+                offset += parquet.metadata.row_group(index).num_rows
+            canonical_group = max(index for index, start in enumerate(offsets) if start <= canonical_cursor)
+            current = parquet.read_row_group(canonical_group, columns=['timestamp']).column('timestamp')
+            if timestamp > current[canonical_cursor - offsets[canonical_group]].as_py():
+                raise ValueError('view cutoff cannot exceed current replay cutoff')
+            for index, start in enumerate(offsets[:canonical_group + 1]):
+                statistics = parquet.metadata.row_group(index).column(column).statistics
+                if statistics is not None and statistics.has_min_max and statistics.max < timestamp:
+                    continue
+                times = current if index == canonical_group else parquet.read_row_group(index, columns=['timestamp']).column('timestamp')
+                # Arrow scalars avoid decoding OHLCV, and binary search handles market gaps.
+                left, right = 0, min(len(times), canonical_cursor - start + 1)
+                while left < right:
+                    middle = (left + right) // 2
+                    if times[middle].as_py() < timestamp:
+                        left = middle + 1
+                    else:
+                        right = middle
+                if left < min(len(times), canonical_cursor - start + 1):
+                    target = start + left
+                    break
+            self._verify_unchanged(path, handle, identity)
+        if target is None:
+            raise ValueError('view cutoff is outside replay dataset')
+        return target
+
     def write_result(self, workspace_id: str, job_id: str, payload: dict) -> tuple[str, str]:
         safe_job = _safe_component(job_id, "job_id")
         results = self._workspace_dir(workspace_id, "results")

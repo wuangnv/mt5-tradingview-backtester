@@ -1471,6 +1471,59 @@ class PostgresStore:
                  "deleted": bool(row["deleted"]), "created_at_utc": row["created_at_utc"],
                  "updated_at_utc": row["updated_at_utc"]} for row in rows]
 
+    def list_record_heads(self, workspace_id: str, kind: str) -> list[dict]:
+        """Revision identity without reading/de-TOASTing execution or journal JSON."""
+        with self.connect() as conn:
+            rows = conn.execute("""
+                SELECT r.record_id,r.current_revision
+                FROM workspace_records r JOIN workspace_record_revisions v
+                  ON v.workspace_id=r.workspace_id AND v.kind=r.kind AND v.record_id=r.record_id
+                 AND v.revision=r.current_revision
+                WHERE r.workspace_id=%s AND r.kind=%s AND v.deleted=false
+                ORDER BY r.updated_at_utc DESC,r.record_id
+            """, (workspace_id, kind)).fetchall()
+        return [{"record_id": row["record_id"], "revision": int(row["current_revision"]),
+                 "payload": {}} for row in rows]
+
+    def records_at_heads(self, workspace_id: str, kind: str, heads: list[dict], *, session_ids=None, trade_ids=None, metadata_only=False) -> list[dict]:
+        """Read immutable revisions selected by the caller, preserving head order.
+
+        Current revision can advance between reads. Fetching the captured version
+        avoids caching a newer payload under an older revision identity.
+        """
+        if not heads:
+            return []
+        clauses, params = [], [workspace_id, kind, [head['record_id'] for head in heads],
+                                [head['revision'] for head in heads]]
+        for ids, aliases in ((session_ids, ('session_id', 'replay_session_id')),
+                             (trade_ids, ('trade_id', 'id'))):
+            if ids is not None:
+                clauses.append("(" + " OR ".join(
+                    "v.payload_json->'source'->>%s = ANY(%s)" for _ in aliases) + ")")
+                for alias in aliases:
+                    params.extend([alias, list(ids)])
+        extra = " AND " + " AND ".join(clauses) if clauses else ""
+        with self.connect() as conn:
+            payload = "jsonb_build_object('timing',v.payload_json->'timing')" if metadata_only else "v.payload_json"
+            rows = conn.execute(f"""
+                SELECT v.record_id,v.revision,{payload} AS payload_json,v.deleted,v.created_at_utc,
+                       r.source_key,r.created_at_utc AS record_created_at_utc,
+                       v.created_at_utc AS updated_at_utc
+                FROM unnest(%s::text[],%s::integer[]) WITH ORDINALITY AS h(record_id,revision,position)
+                JOIN workspace_record_revisions v ON v.record_id=h.record_id AND v.revision=h.revision
+                JOIN workspace_records r ON r.workspace_id=v.workspace_id AND r.kind=v.kind AND r.record_id=v.record_id
+                WHERE v.workspace_id=%s AND v.kind=%s AND v.deleted=false
+            """ + extra + " ORDER BY h.position", params[2:4] + params[:2] + params[4:]).fetchall()
+        return [{"record_id": row['record_id'], "revision": int(row['revision']),
+                 "source_key": row['source_key'], "payload": row['payload_json'], "deleted": False,
+                 "created_at_utc": row['record_created_at_utc'], "updated_at_utc": row['updated_at_utc']} for row in rows]
+
+    def list_journal_records(self, workspace_id: str, *, session_ids=None, trade_ids=None) -> list[dict]:
+        if session_ids is None and trade_ids is None:
+            return self.list_records(workspace_id, "journal")
+        return self.records_at_heads(workspace_id, "journal", self.list_record_heads(workspace_id, "journal"),
+                                     session_ids=session_ids, trade_ids=trade_ids)
+
     def list_record_revisions(self, workspace_id: str, kind: str, record_id: str) -> list[dict]:
         with self.connect() as conn:
             exists = conn.execute(

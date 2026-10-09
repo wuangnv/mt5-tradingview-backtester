@@ -21,6 +21,7 @@ from pydantic import ValidationError
 
 from .auth import MissingTrustedIdentity, WorkspaceMembershipDenied
 from .store import StoredContractUntrusted
+from .artifacts import ArtifactConflict
 
 CONTRACT_VERSION = "api-command-v1"
 ALLOWLIST_PATH = Path(__file__).with_name("command_routes.json")
@@ -151,7 +152,7 @@ class DomainCommandDispatcher:
         except HTTPException as exc:
             headers.update(exc.headers or {})
             return CommandResult(exc.status_code, jsonable_encoder({"detail": exc.detail}), headers=headers)
-        except (ValidationError, StoredContractUntrusted):
+        except (ValidationError, StoredContractUntrusted, ArtifactConflict):
             detail = "stored_contract_untrusted" if method == "GET" and "/oauth/" not in path else "command_outcome_unknown"
             return CommandResult(503, {"detail": detail}, headers=headers)
         if isinstance(result, Response):

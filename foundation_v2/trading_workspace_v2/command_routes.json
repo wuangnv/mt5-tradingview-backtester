@@ -16,6 +16,21 @@
   },
   {
     "method": "GET",
+    "path": "/api/v2/dashboard/sessions",
+    "handler": "get_dashboard_sessions"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/metadata",
+    "handler": "get_replay_metadata"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/chart-window",
+    "handler": "get_replay_chart_window"
+  },
+  {
+    "method": "GET",
     "path": "/api/v2/replay/trades",
     "handler": "get_replay_trades"
   },
@@ -433,6 +448,11 @@
     "method": "GET",
     "path": "/api/v2/journal",
     "handler": "list_journal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal/context",
+    "handler": "get_journal_context"
   },
   {
     "method": "GET",
