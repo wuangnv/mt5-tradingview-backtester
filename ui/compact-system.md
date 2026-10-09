@@ -85,6 +85,9 @@ Nhãn tài sản cao 26px, nền cam `--project-action`, chữ `--project-on-act
 giữ màu khi hover cả ô. Nút bỏ mã cao 22px, hover chỉ tăng độ rõ của icon,
 không thêm nền hoặc viền; không kế thừa chiều cao của control form.
 Focus bàn phím của nút bỏ mã dùng màu chữ trên cam để giữ tương phản.
+Ô tài sản và nhãn có thể bấm dùng con trỏ bàn tay; khi vô hiệu hóa dùng con
+trỏ thường. Icon bỏ mã dùng SVG 14px, căn giữa vùng bấm 22px và cùng trục
+tâm với chữ; không dùng ký tự × phụ thuộc font.
 Search trong menu dùng gạch dưới. Dropdown bộ lọc dạng pill vẫn là kiểu riêng.
 UI Reference có cả mẫu dropdown form dùng được và không khả dụng.
 

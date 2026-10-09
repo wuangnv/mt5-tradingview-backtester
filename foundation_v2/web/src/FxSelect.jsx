@@ -1,6 +1,7 @@
 import { useTestingLocale } from './testingLocale.jsx'
 import { Fragment, useEffect, useId, useRef, useState } from 'react'
 import './fx-select.css'
+import TestingIcon from './TestingIcon.jsx'
 
 export function FilterIcon({ kind }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'calendar' ? <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4m8-4v4M4 10h16" /></> : kind === 'sort' ? <><path d="M7 4v16m-3-3 3 3 3-3M17 20V4m-3 3 3-3 3 3" /></> : kind === 'filter' ? <path d="M3 4h18l-7 8v7l-4 2v-9Z" /> : kind === 'edit' ? <><path d="m16 3 5 5-12 12H4v-5ZM13 6l5 5" /></> : <><path d="M4 20h16M7 16v-5m5 5V5m5 11V9" /></>}</svg>
@@ -80,7 +81,7 @@ export default function FxSelect({ label, value, options: inputOptions, onChange
       // Keep menu focus until the field click toggles it; otherwise dialog blur closes it first.
       if (!disabled && !event.target.closest('button')) event.preventDefault()
     }, onClick:event => { if (!disabled && !event.target.closest('button')) { trigger.current?.focus(); trigger.current?.click() } } } : {})}>
-    {selectedTags?.length > 0 && <div className="fx-select-tags">{selectedTags.map(tag => <span className="fx-select-tag" key={tag.value} title={tag.detail}><span>{tag.label}</span><button type="button" disabled={disabled} aria-label={t('Bỏ tài sản {asset}',{asset:tag.label})} onClick={() => { trigger.current?.focus(); onChange(value.filter(item => item !== tag.value)) }}>×</button></span>)}</div>}
+    {selectedTags?.length > 0 && <div className="fx-select-tags">{selectedTags.map(tag => <span className="fx-select-tag" key={tag.value} title={tag.detail}><span>{tag.label}</span><button type="button" disabled={disabled} aria-label={t('Bỏ tài sản {asset}',{asset:tag.label})} onClick={() => { trigger.current?.focus(); onChange(value.filter(item => item !== tag.value)) }}><TestingIcon kind="close" size={14} /></button></span>)}</div>}
     <button {...triggerProps} type="button" className="fx-select-trigger" aria-label={t(label)} aria-haspopup={searchable ? 'dialog' : 'listbox'} aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled} ref={trigger} onClick={() => { setSearch(''); setOpen(!open) }}>
       {icon && <FilterIcon kind={icon} />}{!iconOnly && <>{!selectedTags?.length && <span className="fx-select-value">{(localizeOptions ? t(triggerContent) : triggerContent) || selected?.label || t("Chọn…")}</span>}<SelectChevron /></>}
     </button>

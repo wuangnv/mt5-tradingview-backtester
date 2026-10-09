@@ -1,0 +1,860 @@
+{
+  "cases": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(61, 65, 72)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ],
+      "alignment": [
+        {
+          "chip": {
+            "x": 654.1015625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 642.6015625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 684.203125,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 684.203125,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        },
+        {
+          "chip": {
+            "x": 750.9765625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 739.4765625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 781.75,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 781.75,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        }
+      ],
+      "remove": {
+        "rest": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 0.72,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        },
+        "focus": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        }
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(221, 225, 231)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 609,
+            "right": 699.203125
+          },
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 705.203125,
+            "right": 796.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ],
+      "alignment": [
+        {
+          "chip": {
+            "x": 654.1015625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 642.6015625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 684.203125,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 684.203125,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        },
+        {
+          "chip": {
+            "x": 750.9765625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 739.4765625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 781.75,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 781.75,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        }
+      ],
+      "remove": {
+        "rest": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 0.72,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        },
+        "focus": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        }
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(61, 65, 72)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ],
+      "alignment": [
+        {
+          "chip": {
+            "x": 519.1015625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 507.6015625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 549.203125,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 549.203125,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        },
+        {
+          "chip": {
+            "x": 615.9765625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 604.4765625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 646.75,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 646.75,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        }
+      ],
+      "remove": {
+        "rest": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 0.72,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        },
+        "focus": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        }
+      }
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(221, 225, 231)",
+        "height": 36,
+        "width": 689,
+        "scrollWidth": 687,
+        "chips": [
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 474,
+            "right": 564.203125
+          },
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 570.203125,
+            "right": 661.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ],
+      "alignment": [
+        {
+          "chip": {
+            "x": 519.1015625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 507.6015625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 549.203125,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 549.203125,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        },
+        {
+          "chip": {
+            "x": 615.9765625,
+            "y": 496.5
+          },
+          "label": {
+            "x": 604.4765625,
+            "y": 496.5
+          },
+          "button": {
+            "x": 646.75,
+            "y": 496.5
+          },
+          "icon": {
+            "x": 646.75,
+            "y": 496.5
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        }
+      ],
+      "remove": {
+        "rest": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 0.72,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        },
+        "focus": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        }
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(61, 65, 72)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(255, 173, 124)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ],
+      "alignment": [
+        {
+          "chip": {
+            "x": 81.1015625,
+            "y": 561
+          },
+          "label": {
+            "x": 69.6015625,
+            "y": 561
+          },
+          "button": {
+            "x": 111.203125,
+            "y": 561
+          },
+          "icon": {
+            "x": 111.203125,
+            "y": 561
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        },
+        {
+          "chip": {
+            "x": 177.9765625,
+            "y": 561
+          },
+          "label": {
+            "x": 166.4765625,
+            "y": 561
+          },
+          "button": {
+            "x": 208.75,
+            "y": 561
+          },
+          "icon": {
+            "x": 208.75,
+            "y": 561
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        }
+      ],
+      "remove": {
+        "rest": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 0.72,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        },
+        "focus": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "rgb(8, 8, 8)",
+          "chipBackground": "rgb(255, 173, 124)",
+          "chipColor": "rgb(8, 8, 8)",
+          "orange": "rgb(255, 173, 124)",
+          "onOrange": "rgb(8, 8, 8)"
+        }
+      }
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "rest": {
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "hover": {
+        "background": "rgb(221, 225, 231)",
+        "height": 44,
+        "width": 295,
+        "scrollWidth": 293,
+        "chips": [
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 36,
+            "right": 126.203125
+          },
+          {
+            "background": "rgb(184, 80, 24)",
+            "border": "1px",
+            "height": 26,
+            "x": 132.203125,
+            "right": 223.75
+          }
+        ]
+      },
+      "toggles": [
+        {
+          "target": "wrapper",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "arrow",
+          "secondClickExpanded": "false"
+        },
+        {
+          "target": "tag",
+          "secondClickExpanded": "false"
+        }
+      ],
+      "alignment": [
+        {
+          "chip": {
+            "x": 81.1015625,
+            "y": 561
+          },
+          "label": {
+            "x": 69.6015625,
+            "y": 561
+          },
+          "button": {
+            "x": 111.203125,
+            "y": 561
+          },
+          "icon": {
+            "x": 111.203125,
+            "y": 561
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        },
+        {
+          "chip": {
+            "x": 177.9765625,
+            "y": 561
+          },
+          "label": {
+            "x": 166.4765625,
+            "y": 561
+          },
+          "button": {
+            "x": 208.75,
+            "y": 561
+          },
+          "icon": {
+            "x": 208.75,
+            "y": 561
+          },
+          "labelCursor": "pointer",
+          "buttonCursor": "pointer"
+        }
+      ],
+      "remove": {
+        "rest": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 0.72,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        },
+        "hover": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "none",
+          "outlineWidth": "3px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        },
+        "focus": {
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "opacity": 1,
+          "outline": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "rgb(255, 255, 255)",
+          "chipBackground": "rgb(184, 80, 24)",
+          "chipColor": "rgb(255, 255, 255)",
+          "orange": "rgb(184, 80, 24)",
+          "onOrange": "rgb(255, 255, 255)"
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "baseline": false,
+  "pass": true
+}

@@ -22,5 +22,6 @@
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag button:not(:disabled) { opacity:.72; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag button:hover:not(:disabled) { background:transparent; border:0; opacity:1; }
 .fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag button:focus-visible { outline-color:var(--project-on-action); opacity:1; }
+.fx-app.fx-shell-story[data-theme] .fx-content .dataset-asset-select .fx-select-tag button > svg { display:block; flex:0 0 14px; width:14px; height:14px; }
 .fx-app.fx-shell-story:is([data-ui-area="testing"],[data-ui-area="live"])[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select.dataset-asset-select .fx-select-tag-field .fx-select-trigger { flex:0 0 32px; justify-content:flex-end; width:auto; min-width:32px; min-height:32px; padding:0; border:0; border-radius:0; background:transparent; }
 .fx-app.fx-shell-story:is([data-ui-area="testing"],[data-ui-area="live"])[data-theme] .fx-content .quick-session-dialog .quick-session-field .fx-select.dataset-asset-select.is-placeholder .fx-select-tag-field .fx-select-trigger { flex:1; }

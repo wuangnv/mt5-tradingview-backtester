@@ -71,6 +71,26 @@ try {
       assert.ok(hover.chips.every(chip => chip.background !== hover.background), 'chips stay distinct from hovered field')
       assert.ok(hover.chips.every(chip => chip.border === '1px' && chip.height <= 28), 'compact bounded chips')
       assert.ok(hover.scrollWidth <= hover.width + 1, 'selected assets fit field')
+      const alignment = await field.locator('.fx-select-tag').evaluateAll(tags => tags.map(tag => {
+        const center = element => { const rect = element.getBoundingClientRect(); return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 } }
+        const label = tag.querySelector('span'), button = tag.querySelector('button'), icon = button.querySelector('svg')
+        return { chip: center(tag), label: center(label), button: center(button), icon: center(icon), labelCursor: getComputedStyle(label).cursor, buttonCursor: getComputedStyle(button).cursor }
+      }))
+      for (const item of alignment) {
+        assert.ok(Math.abs(item.chip.y - item.label.y) < 1, 'asset label centered in chip')
+        assert.ok(Math.abs(item.chip.y - item.icon.y) < 1, 'remove icon centered in chip')
+        assert.ok(Math.abs(item.button.x - item.icon.x) < 1, 'remove icon centered in its hit area')
+        assert.equal(item.labelCursor, 'pointer')
+        assert.equal(item.buttonCursor, 'pointer')
+      }
+      row.alignment = alignment
+      const cursor = locator => locator.evaluate(e => getComputedStyle(e).cursor)
+      assert.equal(await cursor(field), 'pointer')
+      assert.equal(await cursor(trigger), 'pointer')
+      assert.equal(await cursor(dialog.locator('input[maxlength="160"]').first()), 'text')
+      assert.equal(await cursor(dialog.locator('.quick-session-balance')), 'text')
+      assert.equal(await cursor(dialog.locator('.quick-session-field .fx-select-trigger:disabled')), 'default')
+      assert.equal(await cursor(dialog.locator('.quick-session-submit')), 'default')
       const remove = field.getByRole('button', { name: /^Bỏ tài sản/ }).first()
       const removeStyle = () => remove.evaluate(async element => {
         await Promise.all(element.getAnimations().map(a => a.finished.catch(() => {})))
@@ -120,6 +140,7 @@ try {
       assert.equal(await trigger.getAttribute('aria-expanded'), 'true', 'empty field opens')
       await clickField()
       assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'empty field closes on repeat click')
+      assert.equal(await cursor(field), 'pointer', 'empty field remains clickable')
     }
     report.cases.push(row)
     await context.close()

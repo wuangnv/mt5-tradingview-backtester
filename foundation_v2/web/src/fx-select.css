@@ -1,4 +1,6 @@
 .fx-select { position: relative; min-width: 0; color: var(--wm-control-text); font-size: 13px; }
+.fx-select-tag-field { cursor:pointer; }
+.fx-select-tag-field:has(.fx-select-trigger:disabled) { cursor:default; }
 .fx-app .fx-select .fx-select-trigger { display: flex; align-items: center; gap: 8px; width: 100%; min-height: var(--wm-control-height); padding: 7px 12px; box-sizing: border-box; border: 1px solid var(--wm-control-border); border-radius: var(--wm-control-radius); background: transparent; color: var(--wm-control-text); font: inherit; line-height: 20px; text-align: left; cursor: pointer; transition: background-color var(--ds-motion-hover) var(--ds-ease-standard), border-color var(--ds-motion-hover) var(--ds-ease-standard); }
 .fx-app .fx-select .fx-select-trigger:hover:not(:disabled) { background: var(--wm-hover); border-color: var(--wm-control-hover-border); }
 .fx-app .fx-select .fx-select-trigger[aria-expanded='true'] { background: var(--wm-control-open); border-color: var(--wm-control-hover-border); }
