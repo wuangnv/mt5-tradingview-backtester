@@ -1,6 +1,6 @@
 # API platform direction — 09/10/2026
 
-Status: **selected target architecture; product migration not executed**.
+Status: **owner-approved target architecture; product migration not executed**.
 
 The owner explicitly prefers choosing a durable API platform during development
 and authorizes replacing the incumbent, rather than keeping FastAPI by default.
@@ -8,6 +8,12 @@ The bounded comparison lives in `../experiments/api-stack/`; source, raw timings
 failed attempts and confirmation are in `../evidence/api-stack-comparison-20261009/`.
 This document owns the architecture decision, not product progress or acceptance;
 the canonical Product Completion Plan remains the scope/status entrypoint.
+
+On 09/10/2026 the owner confirmed this selection and requested an audit of queue,
+storage, observability and remaining scale-related gaps. The source audit is in
+[the platform gap receipt](../evidence/api-platform-gap-audit-20261009/RECEIPT.md).
+It adds operational requirements; it does not establish runtime migration or
+production acceptance.
 
 ## Selected platform
 
@@ -64,6 +70,110 @@ to cover another replica. Redis/brokers/orchestration are not installed by this
 decision; add a specific infrastructure dependency only when the cross-process
 contract and deployment require it.
 
+## Operational requirements of the approved platform
+
+The baseline is a modular application API with separate bounded workers, not a
+mandatory fleet of microservices. More API replicas may share PostgreSQL and
+artifact storage without changing browser contracts. Replica count alone does
+not establish capacity: database, storage and provider budgets still apply.
+
+| Responsibility | Decision | Current source and remaining work |
+| --- | --- | --- |
+| PostgreSQL access | Bounded async pool; reuse the measured `deadpool-postgres` / `tokio-postgres` pairing as the initial Rust implementation | Current Python `PostgresStore.connect()` opens a new connection. Batch scoped reads, remove N+1 queries, page at the source and preserve transaction/revision behavior. SQLx is an alternative, not a second required driver or a measured upgrade |
+| Durable jobs | Reuse PostgreSQL job authority and `FOR UPDATE SKIP LOCKED` | Research jobs already have short claims, lease token/attempt checks, heartbeat, cancellation, expired-lease recovery and candidate publication. QDM/download jobs use filesystem state and advisory locks. Extend the durable contract to these adapters without discarding checkpoints or provider constraints |
+| Retries and admission | At-least-once attempts with idempotent effects, bounded retries and fair resource admission | Add scheduled retry/backoff with jitter, maximum attempts and explicit terminal failure/manual retry. Expired research leases currently requeue without a visible retry limit. Existing global active-job cap is useful but does not establish workspace fairness |
+| Artifact storage | Server disk for local/single-host operation; private S3/object storage when API/workers span hosts | Existing local `ArtifactStore` has relative paths, hashes, temporary writes and attempt candidates. Define storage-neutral artifact IDs/manifest references; do not expose arbitrary paths. Browser `localStorage` is not the historical dataset store |
+| Historical reads | Parquet/Arrow with bounded DuckDB or Arrow queries | `read_dataset_range()` currently hashes the full file and iterates all batches before filtering rows. Evaluate time/symbol partitions, row-group pruning and projection/filter pushdown. Preserve integrity and causal cutoff; merely changing the API language does not avoid these reads |
+| Logging and measurement | Rust `tracing` + JSON logs, correlated Python logs, Prometheus-compatible metrics; selective trace export | Add request/job/attempt correlation, HTTP latency/errors, pool wait/query timing, queue age, lease failures, worker CPU/RAM, disk and SSE pressure. Research PnL metrics and a health response are not operational monitoring |
+| Live progress | One scoped SSE stream per relevant view, backed by committed state | Implement snapshot/revision resync, bounded subscriptions and slow-consumer handling. PostgreSQL `LISTEN/NOTIFY` can wake listeners; durable state/events remain the truth. Do not assume missed notifications can be replayed |
+| Frontend data lifecycle | Preserve the React shell during client-side navigation; scope requests and bounded caches | Lazy workspace imports already exist. Main navigation uses document links. Keep header/sidebar mounted, cancel obsolete reads and key caches by identity/workspace/filter/revision. Exact counts/facets cannot be computed only from the visible page |
+| Contracts | HTTP JSON/OpenAPI, typed client, equivalent route-family tests | Freeze existing errors, units, nulls, dates, IDs and revisions. Preserve current idempotency receipts and optimistic writes. No exact-money conversion through an unchecked binary float or incompatible JSON number change during porting |
+| Resource protection | Tower request/body/concurrency limits, timeouts and separately bounded worker CPU/RAM | Budget the whole deployment: API pools + worker/heartbeat/lock connections + SSE listeners + administrative reserve. A timeout must release/cancel underlying work where supported; it is not proof the task stopped |
+| Database evolution | One versioned SQL migration authority shared by Rust and Python | Current initialization executes embedded CREATE/ALTER SQL. Move schema evolution into controlled migrations; preserve compatibility while both runtimes operate. Avoid two automatic migration owners |
+| Recovery and lifecycle | Readiness distinct from liveness, graceful drain, consistent DB/artifact backup and restore | API lifespan cleanup and synthetic restore scripts/receipts already exist. Rehearse current schema, concurrent writes/deletes, failed upload/publication and restart. Define acceptable data loss/recovery time before hosted operation |
+| Hosted security and delivery | Trusted login/session, workspace authorization on every route/stream/artifact, TLS, secrets, CI checks and reproducible builds | Current auth is explicitly local-only. Add hosted identity before multi-user exposure; a caller-selected workspace header alone is insufficient. CI must cover Rust/Python/browser contract parity and dependency/license review |
+
+### Queue, publication and provider constraints
+
+Commit command validation and job creation in one PostgreSQL transaction. Claim
+and commit a lease before doing expensive work; do not hold a transaction during
+a download/backtest. Fence progress/checkpoint/result writes with the current
+attempt and lease token. A crashed process can cause another attempt, so effects
+must tolerate duplicate execution; this is not an exactly-once promise.
+
+Publish a checked immutable result candidate before recording its reference in
+the database. Database rows and filesystem/S3 writes have no shared atomic
+transaction. Preserve the existing lease-fenced result publication and add
+reconciliation/retention for orphan candidates and interrupted uploads. Protect
+objects still referenced by current manifests, revisions and backups; a local
+atomic rename does not prove power-loss durability or concurrent no-overwrite
+safety for every artifact writer.
+
+Job payloads need a version and supported worker capabilities during mixed
+deployments. Use job-kind/provider admission budgets rather than allowing a slow
+provider or one workspace to occupy every worker. Reusing the queue does not mean
+forcing every provider into identical controls: the current QDM adapter reports
+no pause/cancel and unknown transferred bytes. Preserve those semantics, its
+single-instance ownership and its Windows/runtime/license requirements. More
+Axum replicas cannot remove provider throttling or the QDM instance constraint.
+
+Advisory session locks require explicit connection ownership. Do not return a
+locked session to a general request pool. Give listeners and long-lived locks
+their own budget, and ensure lease heartbeats remain possible under foreground
+load. Use PostgreSQL notifications only for small non-sensitive invalidations;
+listeners authorize and reread scoped committed state.
+
+For local immutable artifacts, verification caching is safe only when file
+identity and invalidation make mutation detectable; a digest in the manifest
+alone does not prove the file has remained unchanged. Before changing the read
+path, compare exact output/cutoff/hash semantics and measure bytes scanned, RAM
+and first/warm-read latency. For object storage, test range reads, multipart
+failure cleanup, checksums and scoped short-lived access. AWS S3 consistency does
+not imply identical semantics for every S3-compatible service, or atomicity with
+PostgreSQL. Select a hosted provider and region only when deployment is defined.
+
+### Observability, overload and acceptance
+
+Use structured logs with redacted fields and bounded metric labels; never use
+individual user/job IDs as Prometheus labels. Correlation IDs belong in logs and
+sampled traces. Standard Rust `tracing` logging is the initial choice; the official
+OpenTelemetry Rust page currently labels traces, metrics and logs Beta. Pin and
+verify exporter compatibility separately rather than assuming all signals are
+stable. Monitoring must not make telemetry failure block ordinary requests.
+
+Bound CPU work separately from Tokio's async I/O. `spawn_blocking` alone is not
+a CPU concurrency or cancellation policy; started tasks cannot simply be aborted.
+Heavy computations need worker budgets/cooperative cancellation, and provider
+process shutdown must preserve resumable state where supported. Reject excess
+work explicitly with the existing error contract and retry guidance rather than
+letting request/job queues grow without limit.
+
+Reuse the original source findings while porting: pooling, scoped batching,
+indexed journal joins, source pagination, historical read pruning and shell
+preservation remain necessary. The prior fixture percentages are not new runtime
+results from this audit. Measure real mixed journeys (catalog, filters/pages,
+replay/history, download/import, research and SSE) at the declared dataset size,
+cache state and concurrency, including p50/p95/p99, errors, queue time, CPU/RAM,
+query count, scanned bytes and payload. Test disconnect, worker crash, expired
+lease, database outage/recovery, disk-full and a noisy workspace, plus a longer
+soak on the deployment OS. Define latency/availability/recovery targets with the
+deployment profile; do not derive a human-user capacity from fixture req/s.
+
+At hosted deployment, verify reverse-proxy TLS/HTTP settings, maximum payloads,
+SSE buffering/idle timeouts and graceful reload. Compress suitable large ordinary
+responses only after measuring CPU and bytes; do not buffer progress streams.
+An API replica should stop taking new work during drain and release listeners,
+pools and worker ownership safely. Freeze versioned contracts and reproducible
+builds in CI before cutover; use an explicit rollback path compatible with the
+database/artifact version rather than reverting binaries blindly.
+
+Redis, a separate message broker, PgBouncer, Kubernetes and mandatory gRPC are
+not baseline dependencies. Promote them for a measured need: cross-replica cache
+coordination, queue contention/routing pressure, aggregate connection pressure,
+operational replica management or a real network-service contract. This keeps
+the selected public/storage/job boundaries usable without preinstalling every
+scaling tool.
+
 ## Migration boundary and verification
 
 There are 98 decorated routes in the current `trading_workspace_v2/api.py`
@@ -113,3 +223,14 @@ Primary references: [Axum](https://docs.rs/axum/latest/axum/),
 [GraphQL performance](https://graphql.org/learn/performance/),
 [gRPC-Web](https://grpc.io/docs/platforms/web/basics/),
 [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events).
+
+Operational references: [PostgreSQL queue locking](https://www.postgresql.org/docs/current/sql-select.html),
+[NOTIFY semantics](https://www.postgresql.org/docs/current/sql-notify.html),
+[Deadpool PostgreSQL](https://docs.rs/deadpool-postgres/latest/deadpool_postgres/),
+[Tower limits](https://docs.rs/tower/latest/tower/limit/index.html),
+[Tokio blocking work](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html),
+[DuckDB Parquet pruning](https://duckdb.org/docs/current/data/parquet/overview),
+[S3 storage semantics](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html),
+[Rust structured logging](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/index.html),
+[OpenTelemetry Rust status](https://opentelemetry.io/docs/languages/rust/),
+[PostgreSQL recovery](https://www.postgresql.org/docs/current/backup.html).
