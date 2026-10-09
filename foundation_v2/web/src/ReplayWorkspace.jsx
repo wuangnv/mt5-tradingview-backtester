@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import ProjectDateInput from './ProjectDateInput.jsx'
 import { displayDate } from './dateFormat.js'
 import { displayTimeframe } from './dataDisplay.js'
@@ -366,6 +367,7 @@ export default function ReplayWorkspace({ workspace, query }) {
   const settingsSaveLock = useRef(false)
   const actionLock = useRef(false)
   const sessionRequest = useRef(null)
+  const datasetRequest = useRef(null)
   const sideToggleRef = useRef(null)
   const sideRef = useRef(null)
   const sideTriggerRef = useRef(null)
@@ -438,7 +440,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     setPendingAction('create')
     setConflict(false)
     try {
-      const response = await fetch('/api/v2/replay/sessions', {
+      const response = await scopedMutation('/api/v2/replay/sessions', workspace, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify({ dataset_id: datasetId, start_index: Number(startDraft) }),
@@ -458,12 +460,17 @@ export default function ReplayWorkspace({ workspace, query }) {
   }, [datasetDraft, rememberSession, startDraft, workspace])
 
   const loadDatasets = useCallback(async () => {
+    datasetRequest.current?.abort()
+    const controller = new AbortController()
+    datasetRequest.current = controller
     setDatasetState(current => ({ ...current, status: 'loading', error: null }))
     try {
       const response = await fetch('/api/v2/data/datasets', {
         headers: { 'X-Workspace-Id': workspace },
+        signal: controller.signal,
       })
       const payload = await readJson(response)
+      if (controller.signal.aborted) return
       const items = Array.isArray(payload.items) ? payload.items : []
       setDatasetState({ status: 'ready', items, error: null })
       if (!datasetDraft && !requestedDataset && items.length) {
@@ -471,7 +478,9 @@ export default function ReplayWorkspace({ workspace, query }) {
         setDatasetDraft(String(preferred.dataset_id))
       }
     } catch (error) {
-      setDatasetState(current => ({ ...current, status: 'error', error: String(error.message || error) }))
+      if (!controller.signal.aborted) setDatasetState(current => ({ ...current, status: 'error', error: String(error.message || error) }))
+    } finally {
+      if (datasetRequest.current === controller) datasetRequest.current = null
     }
   }, [datasetDraft, requestedDataset, workspace])
 
@@ -510,7 +519,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     if (requestedDataset) createSession()
   }, []) // Resolve the initial resume once from URL -> persisted session -> dataset.
 
-  useEffect(() => () => sessionRequest.current?.abort(), [])
+  useEffect(() => () => { sessionRequest.current?.abort(); datasetRequest.current?.abort() }, [])
 
   const mutate = useCallback(async (kind, body) => {
     if (!sessionId || !state.payload || state.status !== 'ready' || actionLock.current || sessionRequest.current) return
@@ -519,7 +528,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     setConflict(false)
     const suffix = kind === 'branch' ? 'branch' : kind === 'asset' ? 'asset' : 'step'
     try {
-      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(sessionId)}/${suffix}`, {
+      const response = await scopedMutation(`/api/v2/replay/sessions/${encodeURIComponent(sessionId)}/${suffix}`, workspace, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify(body),
@@ -705,7 +714,7 @@ export default function ReplayWorkspace({ workspace, query }) {
     setPendingAction('order')
     setIsPlaying(false)
     try {
-      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(sessionId)}/${endpoint}`, {
+      const response = await scopedMutation(`/api/v2/replay/sessions/${encodeURIComponent(sessionId)}/${endpoint}`, workspace, {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify({ ...body, expected_revision: revision }),
       })

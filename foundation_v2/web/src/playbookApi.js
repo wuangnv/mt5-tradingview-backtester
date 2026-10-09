@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 /**
  * Playbook catalog and manual draft helpers.
  *
@@ -30,7 +31,7 @@ export async function fetchPlaybooks(workspace, signal) {
 }
 
 export async function createPlaybookDraft(workspace, name) {
-  return readJson(await fetch('/api/v2/playbooks', {
+  return readJson(await scopedMutation('/api/v2/playbooks', workspace, {
     method: 'POST', headers: { ...requestHeaders(workspace), 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, status: 'draft', execution_capability: 'needs-definition', rules: {} }),
   }))

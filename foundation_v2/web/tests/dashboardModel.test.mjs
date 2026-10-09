@@ -78,14 +78,14 @@ test('overview request sends workspace and abort signal; rejects old inventory-o
   context.mock.method(globalThis, 'fetch', async (url, options) => {
     assert.equal(url, '/api/v2/overview')
     assert.equal(options.headers['X-Workspace-Id'], 'tenant-test')
-    assert.equal(options.signal, controller.signal)
-    return { ok: true, json: async () => ({ counts: { datasets: 2 } }) }
+    assert.equal(options.signal instanceof AbortSignal, true)
+    return new Response(JSON.stringify({ counts: { datasets: 2 } }))
   })
   await assert.rejects(readDashboardOverview('tenant-test', {}, controller.signal), /dashboard_performance_unavailable/)
 })
 
 test('malformed performance payload becomes a recoverable load error', async (context) => {
-  context.mock.method(globalThis, 'fetch', async () => ({ ok: true, json: async () => ({ performance: { schema_version: 'dashboard-replay-performance-v1' } }) }))
+  context.mock.method(globalThis, 'fetch', async () => new Response(JSON.stringify({ performance: { schema_version: 'dashboard-replay-performance-v1' } })))
   await assert.rejects(readDashboardOverview('tenant-test', {}), /dashboard_performance_unavailable/)
 })
 
@@ -114,10 +114,10 @@ test('session result API fences workspace, provenance and ledger count', async c
   context.mock.method(globalThis, 'fetch', async (url, options) => {
     assert.equal(url, '/api/v2/replay/sessions/s%2Fa/analytics')
     assert.equal(options.headers['X-Workspace-Id'], 'w')
-    assert.equal(options.signal, controller.signal)
-    return { ok: true, json: async () => payload }
+    assert.equal(options.signal instanceof AbortSignal, true)
+    return new Response(JSON.stringify(payload))
   })
-  assert.equal(await readDashboardAnalytics('w', 's/a', controller.signal), payload)
+  assert.deepEqual(await readDashboardAnalytics('w', 's/a', controller.signal), payload)
   payload.provenance.session_id = 'foreign'
   await assert.rejects(readDashboardAnalytics('w', 's/a', controller.signal), /analytics_read_model_invalid/)
   payload.provenance.session_id = 's/a'; payload.scope.selected_trade_count = 2
@@ -147,7 +147,7 @@ test('replay context verifies the catalog revision and drops candle arrays befor
   context.mock.method(globalThis, 'fetch', async (url, options) => {
     assert.equal(url, '/api/v2/replay/sessions/s%2Fa')
     assert.equal(options.headers['X-Workspace-Id'], 'w')
-    return { ok: true, json: async () => payload }
+    return new Response(JSON.stringify(payload))
   })
   const item = { record_id: 's/a', revision: 2 }
   assert.deepEqual(await readDashboardReplayContext('w', item), { record_id: 's/a', revision: 2, cutoff_timestamp: 1783315500, payload: { execution: null } })

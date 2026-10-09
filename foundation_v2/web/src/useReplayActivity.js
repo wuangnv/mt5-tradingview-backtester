@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import { useEffect, useState } from 'react'
 import { ReplayActivityClock, appendActivitySegment, REPLAY_ACTIVITY_FLUSH_MS } from './replayActivityClock.js'
 
@@ -47,7 +48,7 @@ export default function useReplayActivity({ workspace, sessionId, enabled }) {
       try {
         while (queue.length && !disposed) {
           const event = queue[0]
-          const response = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(event), keepalive: true, signal: AbortSignal.timeout(8000) })
+          const response = await scopedMutation(endpoint, workspace, { method: 'POST', headers: { ...headers, 'Idempotency-Key': event.event_id }, body: JSON.stringify(event), keepalive: true, signal: AbortSignal.timeout(8000) })
           if (!response.ok) throw new Error('activity_not_saved')
           const receipt = await response.json()
           if (receipt.schema_version !== 'replay-activity-v1' || receipt.event_id !== event.event_id || receipt.session_id !== sessionId

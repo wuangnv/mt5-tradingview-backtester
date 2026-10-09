@@ -72,7 +72,7 @@ test('catalog and mutations use workspace scope and exact revision/cursor withou
   await updateSessionMetadata('tenant-a', item, { name: 'Phiên mới', description: 'Mô tả', archived: true })
   await duplicateSession('tenant-a', item)
   assert.equal(calls.length, 3)
-  assert.equal(calls[0].options.signal, controller.signal)
+  assert.equal(calls[0].options.signal instanceof AbortSignal, true)
   for (const call of calls) assert.equal(call.options.headers['X-Workspace-Id'], 'tenant-a')
   assert.equal(calls[1].options.method, 'PATCH')
   assert.deepEqual(JSON.parse(calls[1].options.body), { name: 'Phiên mới', description: 'Mô tả', archived: true, expected_revision: 7 })

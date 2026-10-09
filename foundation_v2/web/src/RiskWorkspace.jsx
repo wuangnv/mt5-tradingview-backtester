@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import ProjectDateInput from './ProjectDateInput.jsx'
 import React, { useMemo, useState } from 'react'
 import './RiskWorkspace.css'
@@ -104,7 +105,7 @@ export default function RiskWorkspace({ workspace, initialSnapshot = null }) {
     }
     setState({ status: 'loading', error: null })
     try {
-      const response = await fetch('/api/v2/analytics/prop/evaluate', {
+      const response = await scopedMutation('/api/v2/analytics/prop/evaluate', workspace, {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify({ profile, snapshot }),
       })

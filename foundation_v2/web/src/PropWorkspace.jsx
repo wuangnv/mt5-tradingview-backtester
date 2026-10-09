@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import ProjectDateInput from './ProjectDateInput.jsx'
 import { displayDate } from './dateFormat.js'
 import FxSelect from './FxSelect.jsx'
@@ -69,7 +70,8 @@ async function propJson(url, workspace, options = {}) {
   if (method !== 'GET' && !url.startsWith('/api/v2/prop/')) {
     throw new Error('unsafe_prop_mutation_target')
   }
-  const response = await fetch(url, {
+  const transport = !options.method || options.method === 'GET' ? fetch : (target, init) => scopedMutation(target, workspace, init)
+  const response = await transport(url, {
     ...options,
     headers: {
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),

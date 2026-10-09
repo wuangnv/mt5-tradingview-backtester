@@ -7,6 +7,8 @@
  * broker, or write an annotation whose anchor is after the visible cutoff.
  */
 
+import { scopedMutation } from './scopedMutation.js'
+
 export const ANNOTATION_TYPES = Object.freeze([
   'horizontal-line',
   'zone',
@@ -173,11 +175,11 @@ function fetcher(fetchImpl) {
 
 /** Create a persisted annotation through the local, broker-free API. */
 export async function createChartAnnotation(workspace, draft, { fetchImpl } = {}) {
-  const response = await fetcher(fetchImpl)('/api/v2/chart/annotations', {
+  const response = await scopedMutation('/api/v2/chart/annotations', workspace, {
     method: 'POST',
     headers: workspaceHeader(workspace, { 'Content-Type': 'application/json' }),
     body: JSON.stringify(normalizeAnnotationDraft(draft)),
-  })
+  }, { fetchImpl: fetcher(fetchImpl) })
   return readResponse(response)
 }
 
@@ -195,11 +197,11 @@ export async function listChartAnnotations(workspace, { fetchImpl, signal } = {}
 export async function reviseChartAnnotation(workspace, recordId, expectedRevision, draft, { fetchImpl } = {}) {
   const id = boundedText(recordId, 'record_id')
   const revision = safeInteger(expectedRevision, 'expected_revision', { minimum: 1 })
-  const response = await fetcher(fetchImpl)(`/api/v2/chart/annotations/${encodeURIComponent(id)}/revisions`, {
+  const response = await scopedMutation(`/api/v2/chart/annotations/${encodeURIComponent(id)}/revisions`, workspace, {
     method: 'POST',
     headers: workspaceHeader(workspace, { 'Content-Type': 'application/json' }),
     body: JSON.stringify({ expected_revision: revision, payload: normalizeAnnotationDraft(draft) }),
-  })
+  }, { fetchImpl: fetcher(fetchImpl) })
   return readResponse(response)
 }
 
@@ -207,11 +209,11 @@ export async function reviseChartAnnotation(workspace, recordId, expectedRevisio
 export async function deleteChartAnnotation(workspace, recordId, expectedRevision, { fetchImpl } = {}) {
   const id = boundedText(recordId, 'record_id')
   const revision = safeInteger(expectedRevision, 'expected_revision', { minimum: 1 })
-  const response = await fetcher(fetchImpl)(`/api/v2/chart/annotations/${encodeURIComponent(id)}/delete`, {
+  const response = await scopedMutation(`/api/v2/chart/annotations/${encodeURIComponent(id)}/delete`, workspace, {
     method: 'POST',
     headers: workspaceHeader(workspace, { 'Content-Type': 'application/json' }),
     body: JSON.stringify({ expected_revision: revision }),
-  })
+  }, { fetchImpl: fetcher(fetchImpl) })
   return readResponse(response)
 }
 

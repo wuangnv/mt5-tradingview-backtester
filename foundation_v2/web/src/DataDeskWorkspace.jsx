@@ -10,7 +10,8 @@ import {
   qualityLabel,
   datasetWarnings,
 } from './researchDataApi.js'
-import { fetchOfflineLibrary, refreshInstrumentCatalog, importLocalCsv, previewLocalCsv, fetchDownloads, startDownload, updateDownload, deleteLocalDataset } from './dataDeskApi.js'
+import { fetchOfflineLibrary, refreshInstrumentCatalog, importLocalCsv, previewLocalCsv, fetchDownloads, startDownload, updateDownload, deleteLocalDataset, mergeDownloadEvent } from './dataDeskApi.js'
+import { subscribeWorkspaceEvents } from './workspaceEvents.js'
 import './research-data.css'
 import { useTestingLocale } from './testingLocale.jsx'
 import { buildWorkspaceHref } from './workspaceContext.js'
@@ -397,37 +398,60 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
   useEffect(() => {
     if (preview) return
     const controller = new AbortController(), scopeSignal = downloadController.signal
-    let timer, disposed = false, failures = 0
+    let timer, disposed = false, failures = 0, streamReady = false, polling = false, streamRevision = 0
+    const sampleItems = (jobs, now) => jobs.map(job => {
+      const { state: sample, metrics } = sampleDownloadMetrics(downloadSamples.current.get(job.job_id),job,now)
+      downloadSamples.current.set(job.job_id,sample)
+      return {...job,...metrics,
+        bytes_per_second:Number.isFinite(job.bytes_per_second) ? job.bytes_per_second : metrics.bytes_per_second,
+        estimated_seconds_remaining:Number.isFinite(job.estimated_seconds_remaining) ? job.estimated_seconds_remaining : metrics.estimated_seconds_remaining}
+    })
+    const completed = jobs => {
+      const newlyCompleted = jobs.filter(job => job.status === 'completed' && !completedJobs.current.has(job.job_id))
+      if (newlyCompleted.length) {
+        newlyCompleted.forEach(job => completedJobs.current.add(job.job_id))
+        setCatalogRevision(current => current + 1)
+      }
+    }
     const poll = async () => {
+      if (disposed || scopeSignal.aborted || polling) return
+      polling = true
+      const startedRevision = streamRevision
       try {
         const payload = await fetchDownloads(workspace, controller.signal)
         if (disposed || scopeSignal.aborted) return
         const now = Date.now()
-        const items = payload.items.map(job => {
-          const { state: sample, metrics } = sampleDownloadMetrics(downloadSamples.current.get(job.job_id),job,now)
-          downloadSamples.current.set(job.job_id,sample)
-          return {...job,...metrics,
-            bytes_per_second:Number.isFinite(job.bytes_per_second) ? job.bytes_per_second : metrics.bytes_per_second,
-            estimated_seconds_remaining:Number.isFinite(job.estimated_seconds_remaining) ? job.estimated_seconds_remaining : metrics.estimated_seconds_remaining}
-        })
+        const superseded = startedRevision !== streamRevision
+        const items = superseded ? null : sampleItems(payload.items, now)
         failures = 0
-        setDownloads({...payload,items,receivedAt:now}); setClockNow(now); setPollError('')
-        const newlyCompleted = payload.items.filter(job => job.status === 'completed' && !completedJobs.current.has(job.job_id))
-        if (newlyCompleted.length) {
-          newlyCompleted.forEach(job => completedJobs.current.add(job.job_id))
-          setCatalogRevision(current => current + 1)
-        }
-        // Keep observing paused jobs and changes from other tabs/API restarts without retrying downloads.
-        timer = setTimeout(poll,payload.items.some(job => ['queued','running','pausing'].includes(job.status)) ? 2000 : 15000)
+        setDownloads(current => ({...payload,items:items || current.items,receivedAt:superseded ? current.receivedAt : now})); setClockNow(now); setPollError('')
+        if (!superseded) completed(payload.items)
+        // GET remains recovery for services without SSE; a healthy stream owns progress.
+        if (!streamReady) timer = setTimeout(poll,payload.items.some(job => ['queued','running','pausing'].includes(job.status)) ? 2000 : 15000)
       } catch (error) {
         if (!disposed && !scopeSignal.aborted && error.name !== 'AbortError') {
           setPollError('Không đọc được tiến độ tải. Thử lại để xem trạng thái hiện tại.')
-          timer = setTimeout(poll,Math.min(30000,5000 * 2 ** failures++))
+          if (!streamReady) timer = setTimeout(poll,Math.min(30000,5000 * 2 ** failures++))
         }
-      }
+      } finally { polling = false }
     }
     poll()
-    return () => { disposed = true; controller.abort(); clearTimeout(timer) }
+    const unsubscribe = subscribeWorkspaceEvents(workspace, event => {
+      if (disposed || scopeSignal.aborted) return
+      if (event.event === 'snapshot') {
+        const incoming = mergeDownloadEvent([], event.data, workspace)
+        if (!incoming) return
+        streamRevision += 1
+        streamReady = true; clearTimeout(timer)
+        const now = Date.now(), sampled = sampleItems(incoming, now)
+        setDownloads(current => ({ ...current, items: [...new Map([...current.items, ...sampled].map(job => [job.job_id, job])).values()], receivedAt: now }))
+        setClockNow(now); setPollError(''); completed(incoming)
+      } else if (event.event === 'error' || event.event === 'resync') {
+        streamReady = false; clearTimeout(timer)
+        if (!polling) poll()
+      }
+    }, { signal: controller.signal })
+    return () => { disposed = true; unsubscribe(); controller.abort(); clearTimeout(timer) }
   }, [workspace,preview,downloadRevision,downloadController])
 
   useEffect(() => {

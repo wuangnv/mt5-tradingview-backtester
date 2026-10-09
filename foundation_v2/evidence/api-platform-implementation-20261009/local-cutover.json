@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "runtime": "Axum public HTTP + supervised Python domain/research workers",
+  "port": 8010,
+  "worker_ready": "ready",
+  "migration_count": 4,
+  "schema_current": true,
+  "dataset_count": 2,
+  "instrument_catalog_count": 725,
+  "completed_qdm_downloads": 2,
+  "no_new_download_started": true,
+  "session_count": 0,
+  "listener_exact_executable": true,
+  "backup_snapshot": "20261009T094328Z-88a74ba36505",
+  "backup_manifest_sha256": "02fc1f425a21abe17b30ba76793848d304fc2790462c00d938ffd340abf5dce3",
+  "backup_artifact_files": 4135,
+  "backup_bytes": 3255646482,
+  "backup_retained_canceled_download_partials": true,
+  "broker_execution_enabled": false,
+  "cloud_deployment": false
+}

@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import ProjectDateInput from './ProjectDateInput.jsx'
 import { formatDataSize } from './dataDisplay.js'
 import { useTestingLocale } from './testingLocale.jsx'
@@ -49,7 +50,7 @@ export default function MarketAssetCatalog({ workspace, query, showHeading = tru
     if (preview) return
     setPending(true); setError('')
     try {
-      const response = await fetch('/api/v2/data/market-assets/update', {
+      const response = await scopedMutation('/api/v2/data/market-assets/update', workspace, {
         method: 'POST', headers: workspaceHeaders(workspace, { 'Content-Type': 'application/json' }),
         body: JSON.stringify({ symbol, from_date: fromDate || null }),
       })

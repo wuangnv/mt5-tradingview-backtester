@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import { displayDate } from './dateFormat.js'
 import { useTestingLocale } from './testingLocale.jsx'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -280,7 +281,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
     setPending('initialize')
     setNotice(null)
     try {
-      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(replay.record_id)}/execution`, {
+      const response = await scopedMutation(`/api/v2/replay/sessions/${encodeURIComponent(replay.record_id)}/execution`, workspace, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify({
@@ -312,7 +313,7 @@ export default function TradeWorkspace({ workspace, query, replay: controlledRep
     setNotice(null)
     const operationId = `draft-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
     try {
-      const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(replay.record_id)}/orders/market`, {
+      const response = await scopedMutation(`/api/v2/replay/sessions/${encodeURIComponent(replay.record_id)}/orders/market`, workspace, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify({

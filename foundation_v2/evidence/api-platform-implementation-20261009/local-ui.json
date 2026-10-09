@@ -1,0 +1,11 @@
+{
+  "scope": "Actual local post-cutover UI; read-only user data; no provider refresh/download or new session",
+  "errors": [],
+  "mutations": [],
+  "views": [
+    "market-data",
+    "settings",
+    "overview"
+  ],
+  "result": "PASS"
+}

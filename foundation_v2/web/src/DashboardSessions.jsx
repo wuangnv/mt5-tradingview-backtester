@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import ProjectDateInput from './ProjectDateInput.jsx'
 import TestingReadState, { TestingSkeleton } from './TestingReadState.jsx'
 import { useTestingLocale } from './testingLocale.jsx'
@@ -49,7 +50,7 @@ export default function DashboardSessions({ workspace, query, preview = null }) 
     if (url.searchParams.get('dashboard_session') === item.record_id) url.searchParams.delete('dashboard_session')
     if ((url.searchParams.get('session') || url.searchParams.get('replay_session')) === item.record_id) {
       for (const key of ['session', 'replay_session', 'dataset', 'cursor', 'cutoff', 'trade', 'trade_id', 'manage']) url.searchParams.delete(key)
-      window.location.assign(url.href)
+      navigate(url.href)
       return
     }
     window.history.replaceState({}, '', url)

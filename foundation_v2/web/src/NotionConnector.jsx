@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   buildNotionExportIntent,
@@ -21,7 +22,8 @@ function connectorApiError(response, payload) {
 
 async function connectorJson(path, workspace, options = {}) {
   if (!path.startsWith(NOTION_LEDGER_BASE)) throw new Error('unsafe_connector_target')
-  const response = await fetch(path, {
+  const transport = !options.method || options.method === 'GET' ? fetch : (target, init) => scopedMutation(target, workspace, init)
+  const response = await transport(path, {
     ...options,
     headers: {
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),

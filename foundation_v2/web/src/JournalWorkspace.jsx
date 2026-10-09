@@ -1,3 +1,4 @@
+import { scopedMutation } from './scopedMutation.js'
 import { displayDate } from './dateFormat.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import './journal-analytics.css'
@@ -380,7 +381,7 @@ export default function JournalWorkspace({ workspace = 'tenant-a', query = new U
       const endpoint = selected && editing
         ? `/api/v2/journal/${encodeURIComponent(selected.record_id)}/revisions`
         : '/api/v2/journal'
-      const response = await fetch(endpoint, {
+      const response = await scopedMutation(endpoint, workspace, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Workspace-Id': workspace },
         body: JSON.stringify(selected && editing ? { expected_revision: selected.revision, payload } : payload),

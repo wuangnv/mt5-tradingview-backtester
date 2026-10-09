@@ -1,4 +1,6 @@
+import { scopedMutation } from './scopedMutation.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
+import { scopedRead } from './scopedRead.js'
 
 export function readLastSession(workspace) {
   try { return window.localStorage.getItem(`tw:replay:last:${workspace}`) || '' } catch { return '' }
@@ -48,7 +50,9 @@ export function normalizeSessionCatalog(payload) {
 }
 
 async function request(path, workspace, options = {}) {
-  const response = await fetch(path, { ...options, headers: { 'X-Workspace-Id': workspace, ...(options.body ? { 'Content-Type': 'application/json' } : {}) } })
+  const response = !options.method || options.method === 'GET'
+    ? await scopedRead(path, workspace, options.signal)
+    : await scopedMutation(path, workspace, { ...options, headers: { 'X-Workspace-Id': workspace, ...(options.body ? { 'Content-Type': 'application/json' } : {}) } })
   const payload = await response.json().catch(() => null)
   if (!response.ok) {
     const error = new Error(typeof payload?.detail === 'string' ? payload.detail : `HTTP ${response.status}`)

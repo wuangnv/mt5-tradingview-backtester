@@ -1,4 +1,6 @@
+import { scopedMutation } from './scopedMutation.js'
 import { displayDate } from './dateFormat.js'
+import { scopedRead } from './scopedRead.js'
 export async function readJson(response) {
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) {
@@ -16,33 +18,24 @@ export function workspaceHeaders(workspace, extra = {}) {
 }
 
 export async function fetchDatasets(workspace, signal) {
-  const response = await fetch('/api/v2/data/datasets', {
-    headers: workspaceHeaders(workspace),
-    signal,
-  })
+  const response = await scopedRead('/api/v2/data/datasets', workspace, signal)
   const payload = await readJson(response)
   return Array.isArray(payload?.items) ? payload.items : []
 }
 
 export async function fetchProviders(workspace, signal) {
-  const response = await fetch('/api/v2/data/providers', {
-    headers: workspaceHeaders(workspace),
-    signal,
-  })
+  const response = await scopedRead('/api/v2/data/providers', workspace, signal)
   const payload = await readJson(response)
   return Array.isArray(payload?.items) ? payload.items : []
 }
 
 export async function fetchResearchEngines(workspace, signal) {
-  const response = await fetch('/api/v2/research/engines', {
-    headers: workspaceHeaders(workspace),
-    signal,
-  })
+  const response = await scopedRead('/api/v2/research/engines', workspace, signal)
   return readJson(response)
 }
 
 export async function createResearchJob(workspace, body) {
-  const response = await fetch('/api/v2/research/jobs', {
+  const response = await scopedMutation('/api/v2/research/jobs', workspace, {
     method: 'POST',
     headers: workspaceHeaders(workspace, { 'Content-Type': 'application/json' }),
     body: JSON.stringify(body),
@@ -51,24 +44,18 @@ export async function createResearchJob(workspace, body) {
 }
 
 export async function getResearchJob(workspace, jobId, signal) {
-  const response = await fetch(`/api/v2/research/jobs/${encodeURIComponent(jobId)}`, {
-    headers: workspaceHeaders(workspace),
-    signal,
-  })
+  const response = await scopedRead(`/api/v2/research/jobs/${encodeURIComponent(jobId)}`, workspace, signal)
   return readJson(response)
 }
 
 export async function getResearchCheckpoint(workspace, jobId, signal) {
-  const response = await fetch(`/api/v2/research/jobs/${encodeURIComponent(jobId)}/checkpoint`, {
-    headers: workspaceHeaders(workspace),
-    signal,
-  })
+  const response = await scopedRead(`/api/v2/research/jobs/${encodeURIComponent(jobId)}/checkpoint`, workspace, signal)
   if (response.status === 404) return null
   return readJson(response)
 }
 
 export async function cancelResearchJob(workspace, jobId) {
-  const response = await fetch(`/api/v2/research/jobs/${encodeURIComponent(jobId)}/cancel`, {
+  const response = await scopedMutation(`/api/v2/research/jobs/${encodeURIComponent(jobId)}/cancel`, workspace, {
     method: 'POST',
     headers: workspaceHeaders(workspace),
   })

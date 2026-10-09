@@ -1,4 +1,5 @@
 import { recentSessions } from './sessionCatalog.js'
+import { scopedRead } from './scopedRead.js'
 
 const numberFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 })
 const moneyFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 })
@@ -94,7 +95,7 @@ export function updateDashboardQuery(values) {
 }
 
 export async function readDashboardOverview(workspace, filters, signal) {
-  const response = await fetch(dashboardRequestUrl(filters), { headers: { 'X-Workspace-Id': workspace }, signal })
+  const response = await scopedRead(dashboardRequestUrl(filters), workspace, signal)
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) throw Object.assign(new Error(String(payload?.detail || `HTTP ${response.status}`)), { status: response.status })
   const performance = payload?.performance
@@ -107,7 +108,7 @@ export async function readDashboardOverview(workspace, filters, signal) {
 }
 
 export async function readDashboardAnalytics(workspace, session, signal) {
-  const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(session)}/analytics`, { headers: { 'X-Workspace-Id': workspace }, signal })
+  const response = await scopedRead(`/api/v2/replay/sessions/${encodeURIComponent(session)}/analytics`, workspace, signal)
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) throw new Error(typeof payload.detail === 'string' ? payload.detail : `HTTP ${response.status}`)
   const count = payload.scope?.selected_trade_count
@@ -120,7 +121,7 @@ export async function readDashboardAnalytics(workspace, session, signal) {
 }
 
 export async function readDashboardDatasets(workspace, signal) {
-  const response = await fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace }, signal })
+  const response = await scopedRead('/api/v2/data/datasets', workspace, signal)
   const payload = await response.json().catch(() => ({}))
   if (!response.ok) throw Object.assign(new Error('dashboard_dataset_catalog_unavailable'), { status: response.status })
   if (!Array.isArray(payload.items) || payload.items.some(item => !item || typeof item !== 'object' || Array.isArray(item) || typeof item.dataset_id !== 'string' || !item.dataset_id.trim())) throw new Error('dashboard_dataset_catalog_unavailable')
@@ -128,7 +129,7 @@ export async function readDashboardDatasets(workspace, signal) {
 }
 
 export async function readDashboardReplayContext(workspace, item, signal) {
-  const response = await fetch(`/api/v2/replay/sessions/${encodeURIComponent(item.record_id)}`, { headers: { 'X-Workspace-Id': workspace }, signal })
+  const response = await scopedRead(`/api/v2/replay/sessions/${encodeURIComponent(item.record_id)}`, workspace, signal)
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
   const record = await response.json()
   if (record.record_id !== item.record_id || record.revision !== item.revision) throw new Error('replay_context_revision_mismatch')

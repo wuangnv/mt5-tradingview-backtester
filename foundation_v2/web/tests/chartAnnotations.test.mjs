@@ -83,14 +83,9 @@ test('create/list/revise use workspace-scoped annotation endpoints and revision 
   const calls = []
   const fetchImpl = async (url, options = {}) => {
     calls.push({ url, options })
-    return {
-      ok: true,
-      status: 200,
-      async json() {
-        if (url === '/api/v2/chart/annotations') return options.method === 'POST' ? { record_id: 'ann-1', revision: 1 } : { items: [{ record_id: 'ann-1' }] }
-        return { record_id: 'ann-1', revision: 2 }
-      },
-    }
+    return Response.json(url === '/api/v2/chart/annotations'
+      ? options.method === 'POST' ? { record_id: 'ann-1', revision: 1 } : { items: [{ record_id: 'ann-1' }] }
+      : { record_id: 'ann-1', revision: 2 })
   }
 
   await createChartAnnotation('tenant-a', draft(), { fetchImpl })
@@ -106,11 +101,7 @@ test('create/list/revise use workspace-scoped annotation endpoints and revision 
 })
 
 test('surfaces API errors without turning them into successful drafts', async () => {
-  const fetchImpl = async () => ({
-    ok: false,
-    status: 409,
-    async json() { return { detail: 'revision_conflict' } },
-  })
+  const fetchImpl = async () => Response.json({ detail: 'revision_conflict' }, { status: 409 })
   await assert.rejects(
     createChartAnnotation('tenant-a', draft(), { fetchImpl }),
     (error) => error.message === 'revision_conflict' && error.status === 409,
@@ -131,10 +122,10 @@ test('drawing visibility requires matching replay scope, known candle anchors an
 
 test('annotation delete preserves workspace and revision and exposes conflict or missing record errors', async () => {
   let request
-  const fetchImpl = async (url, options) => { request = { url, options }; return { ok: true, json: async () => ({ deleted: true, revision: 3 }) } }
+  const fetchImpl = async (url, options) => { request = { url, options }; return Response.json({ deleted: true, revision: 3 }) }
   assert.deepEqual(await deleteChartAnnotation('tenant-a', 'a b', 2, { fetchImpl }), { deleted: true, revision: 3 })
   assert.equal(request.url, '/api/v2/chart/annotations/a%20b/delete')
   assert.equal(request.options.headers['X-Workspace-Id'], 'tenant-a')
   assert.deepEqual(JSON.parse(request.options.body), { expected_revision: 2 })
-  for (const status of [404, 409]) await assert.rejects(deleteChartAnnotation('tenant-a', 'ann', 2, { fetchImpl: async () => ({ ok: false, status, json: async () => ({ detail: 'annotation failure' }) }) }), error => error.status === status)
+  for (const status of [404, 409]) await assert.rejects(deleteChartAnnotation('tenant-a', 'ann', 2, { fetchImpl: async () => Response.json({ detail: 'annotation failure' }, { status }) }), error => error.status === status)
 })

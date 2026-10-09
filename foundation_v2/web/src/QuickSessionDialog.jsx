@@ -1,3 +1,4 @@
+import { navigate } from './clientNavigation.js'
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useTestingLocale } from './testingLocale.jsx'
 import DatasetAssetSelect from './DatasetAssetSelect.jsx'
@@ -83,7 +84,7 @@ export default function QuickSessionDialog({ workspace, query, onClose, initialD
       })
       if (!record.record_id || !record.payload || record.payload.dataset_id !== selected.dataset_id || JSON.stringify(record.payload.dataset_ids || [record.payload.dataset_id]) !== JSON.stringify(draft.datasets) || !Number.isInteger(record.revision)) throw new Error('Phản hồi tạo phiên không đúng định dạng.')
       rememberSession(workspace, record.record_id)
-      window.location.assign(sessionNavigationHref('replay', workspace, query, { record_id: record.record_id, dataset_id: selected.dataset_id }, { select: null, surface: 'workspace', chart_iframe: query.get('chart_iframe') || 'srcdoc', chart_engine: null, fresh: null }))
+      navigate(sessionNavigationHref('replay', workspace, query, { record_id: record.record_id, dataset_id: selected.dataset_id }, { select: null, surface: 'workspace', chart_iframe: query.get('chart_iframe') || 'srcdoc', chart_engine: null, fresh: null }))
     } catch (error) {
       setProblem({ text: error.message, uncertain: !error.status || error.status >= 500 })
       submitLock.current = false; setPending(false)

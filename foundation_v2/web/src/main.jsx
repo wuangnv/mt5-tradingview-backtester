@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useSyncExternalStore } from 'react'
 import { createRoot } from 'react-dom/client'
 const LearnWorkspace = lazy(() => import('./LearnWorkspace.jsx'))
 const PropWorkspace = lazy(() => import('./PropWorkspace.jsx'))
@@ -21,6 +21,7 @@ const DemoPreview = lazy(() => import('./DemoPreview.jsx'))
 const TestingComponentReference = lazy(() => import('./TestingComponentReference.jsx'))
 import { canPreviewDemo, demoToggleHref } from './demoMode.js'
 import { buildWorkspaceHref } from './workspaceContext.js'
+import { navigate, navigationSearch, navigationSnapshot, subscribeNavigation } from './clientNavigation.js'
 import './styles.css'
 import './dashboard.css'
 import './workspace-pattern.css'
@@ -54,8 +55,13 @@ function DemoToggle({ demo, onToggle }) {
 }
 
 function App() {
-  const query = new URLSearchParams(window.location.search)
-  const [demo, setDemo] = useState(query.get('demo') === '1')
+  const route = useSyncExternalStore(subscribeNavigation, navigationSnapshot)
+  const query = useMemo(() => new URLSearchParams(navigationSearch()), [route])
+  const demo = query.get('demo') === '1'
+  useEffect(() => {
+    const content = document.querySelector('.fx-content')
+    if (content) { content.scrollTop = 0; content.scrollLeft = 0 }
+  }, [route])
   const workspace = query.get('workspace') || 'tenant-a'
   const requestedView = query.get('view')
   // Preserve deep links emitted by the research/learn flows while keeping a bare root on the overview.
@@ -120,14 +126,13 @@ function App() {
 
   const demoAvailable = canPreviewDemo(activeView, query)
   const toggleDemo = () => {
-    window.history.replaceState({}, '', demoToggleHref(window.location.href, !demo))
-    setDemo(!demo)
+    navigate(demoToggleHref(window.location.href, !demo), { replace: true })
   }
   // Unmount real data readers during preview; fixtures never reach mutation handlers.
   if (demo && demoAvailable) content = <DemoPreview key={`${activeView}:${query.get('analytics_source')}:${query.get('section')}`} view={activeView} workspace={workspace} query={query} />
   if (query.get('ui_reference') === '1') content = <TestingComponentReference />
   const subnavAction = demoAvailable && <DemoToggle demo={demo} onToggle={toggleDemo} />
-  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><TestingRouteBoundary key={`${activeView}:${demo}`}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></FxReplayShell>
+  return <FxReplayShell workspace={workspace} query={query} activeView={activeView} mode={mode} subnavAction={subnavAction}><TestingRouteBoundary key={`${workspace}:${route}`}><Suspense fallback={<TestingSkeleton />}>{content}</Suspense></TestingRouteBoundary></FxReplayShell>
 }
 
 const rootElement = document.getElementById('root')

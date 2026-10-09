@@ -1,0 +1,101 @@
+{
+  "scope": "Real React, Axum and workers; isolated synthetic data; API requests are not mocked",
+  "errors": [],
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/81103c75227949538fb40472e7553261"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/81103c75227949538fb40472e7553261/analytics"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b7c9ffb70c494585881876e23727cae8"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/downloads"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b7c9ffb70c494585881876e23727cae8"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/b7c9ffb70c494585881876e23727cae8/analytics"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/81103c75227949538fb40472e7553261"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/81103c75227949538fb40472e7553261/analytics"
+    }
+  ],
+  "createdSession": "b7c9ffb70c494585881876e23727cae8",
+  "documentNavigations": 1,
+  "result": "PASS"
+}

@@ -15,6 +15,7 @@ import {
   qualityLabel,
 } from './researchDataApi.js'
 import './research-story.css'
+import { subscribeWorkspaceEvents } from './workspaceEvents.js'
 
 const FLOW_STEPS = [
   { id: 'context', label: 'Context', note: 'Dataset và phạm vi' },
@@ -205,19 +206,41 @@ export default function ResearchWorkspace({ workspace = 'tenant-a', query = new 
     const requestSeq = ++jobRequestSeq.current
     if (!pollJobId) return undefined
     const controller = new AbortController(); let timer
+    let healthy = false; let busy = false; let invalidated = false; let revision = ''
     const poll = async () => {
+      if (busy) { invalidated = true; return }
+      busy = true
+      window.clearTimeout(timer)
+      timer = undefined
       try {
         const job = await refreshJob(pollJobId, controller.signal, requestSeq)
         if (!job || !['queued', 'running'].includes(job.status)) return
-        timer = window.setTimeout(poll, 1500)
+        if (!healthy) timer = window.setTimeout(poll, 1500)
       } catch (error) {
         if (error.name !== 'AbortError' && requestSeq === jobRequestSeq.current) {
           setJobState((current) => ({ ...current, status: 'error', error: String(error.message || error) }))
+          if (!healthy) timer = window.setTimeout(poll, 3000)
         }
+      } finally {
+        busy = false
+        if (invalidated && !controller.signal.aborted) { invalidated = false; void poll() }
       }
     }
-    poll(); return () => { controller.abort(); if (timer) window.clearTimeout(timer) }
-  }, [jobRetryToken, refreshJob, pollJobId])
+    const unsubscribe = subscribeWorkspaceEvents(workspace, ({ event, data }) => {
+      if (controller.signal.aborted) return
+      const summary = event === 'snapshot' ? data?.research?.recent_jobs?.find((job) => job.job_id === pollJobId) : null
+      healthy = Boolean(summary)
+      if (!healthy) {
+        if (!timer && !busy) timer = window.setTimeout(poll, 1500)
+        return
+      }
+      window.clearTimeout(timer); timer = undefined
+      const nextRevision = `${summary.status}:${summary.updated_at_utc}`
+      if (nextRevision !== revision) { revision = nextRevision; void poll() }
+    }, { signal: controller.signal })
+    void poll()
+    return () => { unsubscribe(); controller.abort(); if (timer) window.clearTimeout(timer) }
+  }, [jobRetryToken, refreshJob, pollJobId, workspace])
 
   const runResearch = async (event) => {
     event.preventDefault()
