@@ -1,0 +1,145 @@
+{
+  "measured_at_utc": "2026-10-09T08:51:16.854210+00:00",
+  "git_head": "395b18c612bc42765fd7f75f84cadb8452568031",
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+  "logical_cpus": 6,
+  "script_sha256": "e488a13b65d97e82915f80984d1a89175e05a61df2ad824ba82ff824794119c7",
+  "source_sha256": {
+    "api.py": "1a9c8a768b270478df6b4b2c2bace16287ccd8c2aad1b9d90845440e4cee48a6",
+    "store.py": "3a7cd6d96dde5ca5ace5d676f9387bf45756bc325711b700d15f0a1e211b18d3",
+    "dashboard_read_model.py": "938813c18e5fd2def4ceadf4f02720fdcd6ae4e03d8607bb0d873ebdd18d7e17",
+    "trades_page.py": "4841932621c5c21c99875d5e25286989f139096edde1f502f1680fbbffc34c81"
+  },
+  "cache_note": "One untimed fixture warmup per candidate; live first request separate; DB first connections warmed. Source hashes identify disk, not the running API process.",
+  "repeats": 5,
+  "experiment": {
+    "scope": "Synthetic valid string identifiers; frozen pre-optimization source versus installed full projection function, no DB/HTTP; not DB-source pagination.",
+    "baseline_source_sha256_lf": "426761d47c4e50d5ed51d1c0eacb16ab9ff199c424fe23d730f8f38f5b60f900",
+    "current_source_sha256": "4841932621c5c21c99875d5e25286989f139096edde1f502f1680fbbffc34c81",
+    "parity_cases": 24,
+    "results": [
+      {
+        "trades": 100,
+        "journals": 10,
+        "baseline": {
+          "samples_ms": [
+            2.28889999925741,
+            2.060500002698973,
+            3.655399999843212,
+            2.152699998987373,
+            1.7716000002110377
+          ],
+          "p50_ms": 2.152699998987373,
+          "sample_p95_ms": 3.655399999843212
+        },
+        "optimized_current": {
+          "samples_ms": [
+            1.1604999999690335,
+            1.1178999993717298,
+            1.7879000006360002,
+            1.379500001348788,
+            1.1837999991257675
+          ],
+          "p50_ms": 1.1837999991257675,
+          "sample_p95_ms": 1.7879000006360002
+        },
+        "latency_reduction_pct": 45.008593873618,
+        "speedup_x": 1.8184659575748734,
+        "full_report_json_bytes": 43036,
+        "page_json_bytes": 5379
+      },
+      {
+        "trades": 1000,
+        "journals": 0,
+        "baseline": {
+          "samples_ms": [
+            18.168300000979798,
+            19.209499998396495,
+            22.14050000111456,
+            22.931100000278093,
+            29.37970000130008
+          ],
+          "p50_ms": 22.14050000111456,
+          "sample_p95_ms": 29.37970000130008
+        },
+        "optimized_current": {
+          "samples_ms": [
+            26.30019999924116,
+            22.99930000299355,
+            15.875200002483325,
+            15.717999998742016,
+            13.623099999676924
+          ],
+          "p50_ms": 15.875200002483325,
+          "sample_p95_ms": 26.30019999924116
+        },
+        "latency_reduction_pct": 28.297915576955525,
+        "speedup_x": 1.394659594691794,
+        "full_report_json_bytes": 428238,
+        "page_json_bytes": 5319
+      },
+      {
+        "trades": 1000,
+        "journals": 100,
+        "baseline": {
+          "samples_ms": [
+            66.80820000110543,
+            68.59199999962584,
+            96.7774000018835,
+            77.69759999791859,
+            75.26739999957499
+          ],
+          "p50_ms": 75.26739999957499,
+          "sample_p95_ms": 96.7774000018835
+        },
+        "optimized_current": {
+          "samples_ms": [
+            14.95710000017425,
+            14.631899997766595,
+            18.400999997538747,
+            18.250699999043718,
+            16.971699998975964
+          ],
+          "p50_ms": 16.971699998975964,
+          "sample_p95_ms": 18.400999997538747
+        },
+        "latency_reduction_pct": 77.45145973014638,
+        "speedup_x": 4.434876883524718,
+        "full_report_json_bytes": 428238,
+        "page_json_bytes": 5391
+      },
+      {
+        "trades": 5000,
+        "journals": 1000,
+        "baseline": {
+          "samples_ms": [
+            3434.492099997442,
+            3002.5692000017443,
+            2377.9663999994227,
+            2264.439200000197,
+            1976.86750000139
+          ],
+          "p50_ms": 2377.9663999994227,
+          "sample_p95_ms": 3434.492099997442
+        },
+        "optimized_current": {
+          "samples_ms": [
+            114.4851999997627,
+            153.31339999829652,
+            66.60600000031991,
+            67.97430000005988,
+            89.29169999828446
+          ],
+          "p50_ms": 89.29169999828446,
+          "sample_p95_ms": 153.31339999829652
+        },
+        "latency_reduction_pct": 96.24503945899714,
+        "speedup_x": 26.631438308881005,
+        "full_report_json_bytes": 2148238,
+        "page_json_bytes": 5410
+      }
+    ]
+  }
+}

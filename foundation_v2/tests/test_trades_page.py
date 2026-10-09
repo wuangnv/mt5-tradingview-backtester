@@ -189,6 +189,8 @@ def test_http_opt_in_unpaged_compatibility_auth_and_date_boundaries(monkeypatch,
             pass
         def initialize(self):
             pass
+        def close(self):
+            pass
         def list_records(self, workspace, kind):
             assert workspace == 'tenant-a'
             return [source] if kind == 'replay' else []

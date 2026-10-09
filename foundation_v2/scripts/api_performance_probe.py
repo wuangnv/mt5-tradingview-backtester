@@ -1,4 +1,4 @@
-"""Bounded read-only baseline and isolated journal-join experiment; no app mutation."""
+"""Bounded read-only baseline versus installed projection; no app mutation."""
 from __future__ import annotations
 
 import argparse
@@ -27,31 +27,16 @@ def stats(samples):
             'sample_p95_ms': ordered[math.ceil(len(ordered) * .95) - 1]}
 
 
-def indexed_candidate():
-    path = Path(trades_page.__file__)
+def projection_baseline():
+    path = ROOT / 'scripts' / 'fixtures' / 'trades_page_baseline_20261009.py'
+    # Frozen pre-optimization source, not a reverse-generated slow candidate.
+    # Normalize checkout line endings so this evidence runs on Windows/Linux.
     source = path.read_text(encoding='utf-8')
-    old = """        for record in journals:
-            payload = record.get('payload') or {}
-            source = payload.get('source') or {}
-            if row['session_id'] in (source.get('session_id'), source.get('replay_session_id')) and row['trade_id'] in (source.get('trade_id'), source.get('id')):
-                tags.extend(payload.get('tags') or [])"""
-    assert source.count(old) == 1, 'Source drift: review experiment before rerunning'
-    marker = '    rows = []\n    for index, raw in enumerate(report[\'ledger\']):'
-    assert source.count(marker) == 1
-    setup = """    journal_tags = {}
-    for record in journals:
-        payload = record.get('payload') or {}
-        source = payload.get('source') or {}
-        sessions = {value for value in (source.get('session_id'), source.get('replay_session_id')) if isinstance(value, str)}
-        trades = {value for value in (source.get('trade_id'), source.get('id')) if isinstance(value, str)}
-        for session in sessions:
-            for trade in trades:
-                journal_tags.setdefault((session, trade), []).extend(payload.get('tags') or [])
-"""
-    candidate = source.replace(marker, setup + marker).replace(old, "        tags.extend(journal_tags.get((row['session_id'], row['trade_id']), []))")
-    namespace = {'__name__': 'trading_workspace_v2._benchmark_candidate', '__package__': 'trading_workspace_v2'}
-    exec(compile(candidate, str(path) + ':isolated-prototype', 'exec'), namespace)
-    return namespace['build_trades_page'], hashlib.sha256(source.encode()).hexdigest()
+    digest = hashlib.sha256(source.encode()).hexdigest()
+    assert digest == '426761d47c4e50d5ed51d1c0eacb16ab9ff199c424fe23d730f8f38f5b60f900', 'Baseline drift: review frozen source before rerunning'
+    namespace = {'__name__': 'trading_workspace_v2._benchmark_baseline', '__package__': 'trading_workspace_v2'}
+    exec(compile(source, str(path), 'exec'), namespace)
+    return namespace['build_trades_page'], digest
 
 
 def call(fn, payload, journals, filters=None, sort='close_time_utc'):
@@ -60,7 +45,8 @@ def call(fn, payload, journals, filters=None, sort='close_time_utc'):
 
 
 def experiment(repeats):
-    candidate, digest = indexed_candidate()
+    baseline_fn, digest = projection_baseline()
+    candidate = trades_page.build_trades_page
     # Both source aliases may be present; preserve journal order and deduplicate tags.
     payload = report([row(i) for i in range(12)])
     notes = [journal(i, ['planned', 'same']) for i in range(12)]
@@ -73,36 +59,36 @@ def experiment(repeats):
                     {'timezone': 'Asia/Ho_Chi_Minh', 'hours': '["5"]'},
                     {'reportKinds': '[]'}]:
         for sort in ['close_time_utc', 'net_pnl', 'rating', 'tags']:
-            assert call(candidate, payload, notes, filters, sort) == call(trades_page.build_trades_page, payload, notes, filters, sort)
+            assert call(candidate, payload, notes, filters, sort) == call(baseline_fn, payload, notes, filters, sort)
             parity += 1
     results = []
     for count, journal_count in [(100, 10), (1000, 0), (1000, 100), (5000, 1000)]:
         payload = report([row(i) for i in range(count)])
         notes = [journal(i, ['planned', f'tag-{i % 7}']) for i in range(journal_count)]
-        expected = call(trades_page.build_trades_page, payload, notes)
+        expected = call(baseline_fn, payload, notes)
         assert call(candidate, payload, notes) == expected
         before_digest = hashlib.sha256(json.dumps([payload, notes], sort_keys=True).encode()).hexdigest()
-        for fn in [trades_page.build_trades_page, candidate]:
+        for fn in [baseline_fn, candidate]:
             call(fn, payload, notes)
-        timings = {'baseline': [], 'indexed_prototype': []}
+        timings = {'baseline': [], 'optimized_current': []}
         for i in range(repeats):
-            names = ['baseline', 'indexed_prototype'] if i % 2 == 0 else ['indexed_prototype', 'baseline']
+            names = ['baseline', 'optimized_current'] if i % 2 == 0 else ['optimized_current', 'baseline']
             for name in names:
-                fn = trades_page.build_trades_page if name == 'baseline' else candidate
+                fn = baseline_fn if name == 'baseline' else candidate
                 start = time.perf_counter()
                 value = call(fn, payload, notes)
                 timings[name].append((time.perf_counter() - start) * 1000)
                 assert value == expected
         assert before_digest == hashlib.sha256(json.dumps([payload, notes], sort_keys=True).encode()).hexdigest()
         timings = {name: stats(samples) for name, samples in timings.items()}
-        baseline = timings['baseline']['p50_ms']; indexed = timings['indexed_prototype']['p50_ms']
+        baseline = timings['baseline']['p50_ms']; indexed = timings['optimized_current']['p50_ms']
         results.append({'trades': count, 'journals': journal_count, **timings,
                         'latency_reduction_pct': (1 - indexed / baseline) * 100,
                         'speedup_x': baseline / indexed,
                         'full_report_json_bytes': len(json.dumps(payload).encode()),
                         'page_json_bytes': len(json.dumps(expected).encode())})
-    return {'scope': 'Synthetic valid string identifiers; full projection function, no DB/HTTP. Prototype is not installed.',
-            'source_sha256': digest, 'parity_cases': parity, 'results': results}
+    return {'scope': 'Synthetic valid string identifiers; frozen pre-optimization source versus installed full projection function, no DB/HTTP; not DB-source pagination.',
+            'baseline_source_sha256_lf': digest, 'current_source_sha256': hashlib.sha256(Path(trades_page.__file__).read_bytes()).hexdigest(), 'parity_cases': parity, 'results': results}
 
 
 def live_baseline(base, workspace, repeats):
@@ -199,7 +185,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(data, indent=2), encoding='utf-8')
     for case in data['experiment']['results']:
-        print(f"{case['trades']} trades/{case['journals']} journals: {case['baseline']['p50_ms']:.2f} -> {case['indexed_prototype']['p50_ms']:.2f} ms; latency reduction {case['latency_reduction_pct']:.1f}%; {case['speedup_x']:.2f}x (fixture only)")
+        print(f"{case['trades']} trades/{case['journals']} journals: {case['baseline']['p50_ms']:.2f} -> {case['optimized_current']['p50_ms']:.2f} ms; latency reduction {case['latency_reduction_pct']:.1f}%; {case['speedup_x']:.2f}x (fixture only)")
     print('Saved:', args.output)
 
 

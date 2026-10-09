@@ -70,46 +70,37 @@ def build_trades_page(report, journals, *, page, page_size, sort_key, sort_direc
     if page < 1 or not 1 <= page_size <= 100 or sort_key not in SORT_KEYS or sort_direction not in ('asc', 'desc'):
         raise AnalyticsValidationError('trade_page_parameters_invalid')
     filters, zone = parse_filters(extra_filters)
-    journal_tags = {}
-    wanted = {(row['session_id'], row['trade_id']) for row in report['ledger']}
-    for record in journals:
-        payload = record.get('payload') or {}
-        source = payload.get('source') or {}
-        sessions = {value for value in (source.get('session_id'), source.get('replay_session_id')) if isinstance(value, str)}
-        trades = {value for value in (source.get('trade_id'), source.get('id')) if isinstance(value, str)}
-        # Alias combinations match the original OR predicates; a journal is
-        # appended once per matching trade, in journal order, even with aliases.
-        for session in sessions:
-            for trade in trades:
-                if (session, trade) in wanted:
-                    journal_tags.setdefault((session, trade), []).extend(payload.get('tags') or [])
     rows = []
     for index, raw in enumerate(report['ledger']):
         row = {**raw, 'report_kind': 'app', '_index': index}
         tags = list(row.get('tags') or [])
-        tags.extend(journal_tags.get((row['session_id'], row['trade_id']), []))
+        for record in journals:
+            payload = record.get('payload') or {}
+            source = payload.get('source') or {}
+            if row['session_id'] in (source.get('session_id'), source.get('replay_session_id')) and row['trade_id'] in (source.get('trade_id'), source.get('id')):
+                tags.extend(payload.get('tags') or [])
         row['tags'] = list(dict.fromkeys(tags))
         rows.append(row)
 
-    close_dates = {row['_index']: timestamp(row.get('close_time_utc')) for row in rows}
-    local_dates = {index: date.astimezone(zone) if date else None for index, date in close_dates.items()}
-    start, end = [int(filters[key][:2]) * 60 + int(filters[key][3:]) if filters.get(key) else None for key in ('timeStart', 'timeEnd')]
-    explicit_no_kinds = 'reportKinds' in filters and not filters['reportKinds'] and json.loads(extra_filters).get('reportKinds') != ''
     facets = {'assets': sorted({row['symbol'] for row in rows if row.get('symbol')}),
               'tags': sorted({tag for row in rows for tag in row['tags']}),
               'strategies': sorted({row['playbook_id'] for row in rows if row.get('playbook_id')}),
-              'years': sorted({str(date.year) for date in local_dates.values() if date}),
+              'years': sorted({str(timestamp(row.get('close_time_utc')).astimezone(zone).year) for row in rows if timestamp(row.get('close_time_utc'))}),
               'types': sorted({row['entry_type'] for row in rows if row.get('entry_type')}),
               'has_notes': any(row.get('notes') or row.get('note') for row in rows)}
     def matches(row):
-        local = local_dates[row['_index']]
+        date = timestamp(row.get('close_time_utc'))
+        local = date.astimezone(zone) if date else None
         weekday = (local.weekday() + 1) % 7 if local else None
         minute = local.hour * 60 + local.minute if local else None
+        boundaries = [int(filters[key][:2]) * 60 + int(filters[key][3:]) if filters.get(key) else None for key in ('timeStart', 'timeEnd')]
+        start, end = boundaries
         if start is not None or end is not None:
             if minute is None or not (minute >= start or minute <= end if start is not None and end is not None and start > end else (start is None or minute >= start) and (end is None or minute <= end)):
                 return False
         net = float(row['net_pnl'])
         values = {'reportKinds': 'app', 'assets': row.get('symbol'), 'sides': str(row.get('side', '')).lower(), 'outcomes': 'win' if net > 1e-12 else 'loss' if net < -1e-12 else 'breakeven', 'types': row.get('entry_type'), 'years': local.year if local else None, 'months': local.month if local else None, 'days': weekday, 'hours': local.hour if local else None}
+        explicit_no_kinds = 'reportKinds' in filters and not filters['reportKinds'] and json.loads(extra_filters).get('reportKinds') != ''
         if explicit_no_kinds:
             return False
         for key, value in values.items():
@@ -142,7 +133,7 @@ def build_trades_page(report, journals, *, page, page_size, sort_key, sort_direc
         if sort_key == 'return_pct': return float(row['net_pnl']) / float(row['starting_balance']) * 100 if row.get('starting_balance') and float(row['starting_balance']) > 0 else None
         if sort_key == 'tags': return ', '.join(row['tags'])
         if sort_key.endswith('_time_utc') or sort_key == 'recorded_at_utc':
-            date = close_dates[row['_index']] if sort_key == 'close_time_utc' else timestamp(row.get(sort_key))
+            date = timestamp(row.get(sort_key))
             return date.timestamp() if date else None
         if sort_key in {'net_pnl', 'realized_r', 'rating', 'price_open', 'quantity', 'stop_loss', 'take_profit', 'price_close', 'gross_pnl', 'fees'}:
             raw = row.get(sort_key)
@@ -153,9 +144,8 @@ def build_trades_page(report, journals, *, page, page_size, sort_key, sort_direc
             except (TypeError, ValueError):
                 return None
         return row.get(sort_key)
-    sort_values = {row['_index']: value(row) for row in filtered}
     def compare(a, b):
-        left, right = sort_values[a['_index']], sort_values[b['_index']]
+        left, right = value(a), value(b)
         if left is None or right is None:
             return 0 if left is None and right is None else 1 if left is None else -1
         if isinstance(left, (int, float)) and isinstance(right, (int, float)):
