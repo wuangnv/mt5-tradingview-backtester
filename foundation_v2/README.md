@@ -7,6 +7,12 @@ reference for capability and semantic comparison, not the development entrypoint
 See the [root README](../README.md) for setup, current UI gates and the canonical
 workspace plans. The capability notes below do not claim full product acceptance.
 
+Following the owner's authorization to choose and replace the API platform,
+the selected target is Rust/Axum (09/10/2026); see
+[the API platform decision](docs/API-STACK-DECISION-20261009.md)
+and [the experiment](experiments/api-stack/README.md). The running product still
+uses FastAPI: the benchmark is not an implemented or accepted product migration.
+
 The first slice proves one complete local workflow:
 
 `workspace -> immutable dataset manifest -> durable research job -> bounded worker -> immutable result -> typed API -> web client`

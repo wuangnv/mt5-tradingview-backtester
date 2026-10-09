@@ -1,0 +1,8 @@
+.runtime/
+node_modules/
+rust/target/
+dotnet/bin/
+dotnet/obj/
+java/target/
+go/server.exe
+__pycache__/

@@ -1,0 +1,590 @@
+[
+  {
+    "method": "GET",
+    "path": "/health",
+    "handler": "health",
+    "line": 315
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/session/status",
+    "handler": "get_project_session_status",
+    "line": 324
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/overview",
+    "handler": "get_overview",
+    "line": 341
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/trades",
+    "handler": "get_replay_trades",
+    "line": 365
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/oauth/status",
+    "handler": "notion_oauth_status",
+    "line": 397
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/oauth/start",
+    "handler": "notion_oauth_start",
+    "line": 403
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/oauth/callback",
+    "handler": "notion_oauth_callback",
+    "line": 412
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/oauth/disconnect",
+    "handler": "notion_oauth_disconnect",
+    "line": 425
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/connections",
+    "handler": "create_notion_connection",
+    "line": 434
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/connections",
+    "handler": "list_notion_connections",
+    "line": 455
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/connections/{connection_id}",
+    "handler": "get_notion_connection",
+    "line": 459
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v2/connectors/notion/connections/{connection_id}",
+    "handler": "update_notion_connection",
+    "line": 466
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/connectors/notion/intents",
+    "handler": "create_notion_intent",
+    "line": 484
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/intents",
+    "handler": "list_notion_intents",
+    "line": 504
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/intents/{intent_id}",
+    "handler": "get_notion_intent",
+    "line": 508
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/connectors/notion/intents/{intent_id}/receipt",
+    "handler": "get_notion_receipt",
+    "line": 515
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v2/connectors/notion/intents/{intent_id}/receipt",
+    "handler": "update_notion_receipt",
+    "line": 522
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/learn/overview",
+    "handler": "get_learn_overview",
+    "line": 543
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/learn/glossary",
+    "handler": "get_learn_glossary",
+    "line": 552
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/learn/resources/{resource_id}",
+    "handler": "get_learn_resource",
+    "line": 561
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/datasets",
+    "handler": "list_datasets",
+    "line": 572
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v2/data/datasets/{dataset_id}",
+    "handler": "delete_local_dataset",
+    "line": 586
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/catalog/refresh",
+    "handler": "refresh_instrument_catalog",
+    "line": 602
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/downloads",
+    "handler": "list_offline_downloads",
+    "line": 611
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads",
+    "handler": "request_offline_download",
+    "line": 625
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/full",
+    "handler": "request_full_offline_download",
+    "line": 629
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/{job_id}/resume",
+    "handler": "resume_offline_download",
+    "line": 633
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/{job_id}/pause",
+    "handler": "pause_offline_download",
+    "line": 637
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/downloads/{job_id}/cancel",
+    "handler": "cancel_offline_download",
+    "line": 641
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/market-assets",
+    "handler": "market_assets",
+    "line": 645
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/market-assets/update",
+    "handler": "update_market_assets",
+    "line": 654
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/live/status",
+    "handler": "live_read_status",
+    "line": 667
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/data/providers",
+    "handler": "list_data_providers",
+    "line": 676
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/csv/preview",
+    "handler": "preview_csv_payload",
+    "line": 680
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/csv/import",
+    "handler": "import_csv_payload",
+    "line": 708
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/instruments/validate",
+    "handler": "validate_instrument",
+    "line": 734
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/cost-preview",
+    "handler": "preview_cost",
+    "line": 742
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/data/news/visible",
+    "handler": "get_visible_news",
+    "line": 750
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/analytics/prop/evaluate",
+    "handler": "evaluate_prop",
+    "line": 758
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/sessions",
+    "handler": "create_prop_session",
+    "line": 773
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/session-bundles",
+    "handler": "create_prop_session_bundle",
+    "line": 781
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions",
+    "handler": "list_prop_sessions",
+    "line": 803
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}",
+    "handler": "get_prop_session",
+    "line": 807
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v2/prop/sessions/{session_id}",
+    "handler": "update_prop_session",
+    "line": 814
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts",
+    "handler": "create_prop_attempt",
+    "line": 834
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts",
+    "handler": "list_prop_attempts",
+    "line": 851
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}",
+    "handler": "get_prop_attempt",
+    "line": 862
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/report",
+    "handler": "get_prop_attempt_report",
+    "line": 885
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/report.csv",
+    "handler": "export_prop_attempt_report",
+    "line": 889
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/prop/reports",
+    "handler": "list_prop_reports",
+    "line": 898
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/transitions",
+    "handler": "transition_prop_attempt",
+    "line": 920
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v2/prop/sessions/{session_id}/attempts/{attempt_id}/resume",
+    "handler": "save_prop_resume",
+    "line": 946
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/research/jobs",
+    "handler": "create_research_job",
+    "line": 977
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/engines",
+    "handler": "research_engines",
+    "line": 990
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/research/engine-jobs",
+    "handler": "create_engine_research_job",
+    "line": 999
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}",
+    "handler": "get_research_job",
+    "line": 1017
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}/analytics",
+    "handler": "get_research_analytics",
+    "line": 1061
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}/analytics.csv",
+    "handler": "export_research_analytics",
+    "line": 1079
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/research/jobs/{job_id}/checkpoint",
+    "handler": "get_research_checkpoint",
+    "line": 1102
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/research/jobs/{job_id}/cancel",
+    "handler": "cancel_research_job",
+    "line": 1131
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions",
+    "handler": "create_replay",
+    "line": 1138
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions",
+    "handler": "list_replay_sessions",
+    "line": 1147
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}",
+    "handler": "get_replay",
+    "line": 1158
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/activity",
+    "handler": "record_replay_activity",
+    "line": 1173
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/asset",
+    "handler": "select_replay_asset",
+    "line": 1184
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v2/replay/sessions/{session_id}",
+    "handler": "update_replay_metadata",
+    "line": 1195
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/delete",
+    "handler": "delete_replay_session",
+    "line": 1207
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/analytics",
+    "handler": "get_replay_analytics",
+    "line": 1231
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/analytics.csv",
+    "handler": "export_replay_analytics",
+    "line": 1240
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/analytics/experiments",
+    "handler": "get_replay_analytics_experiments",
+    "line": 1251
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/execution",
+    "handler": "initialize_replay_execution",
+    "line": 1271
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/replay/sessions/{session_id}/tick-data",
+    "handler": "replay_tick_options",
+    "line": 1297
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/orders/market",
+    "handler": "queue_replay_market_order",
+    "line": 1306
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/orders/protection",
+    "handler": "change_replay_protection_route",
+    "line": 1330
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/step",
+    "handler": "step_replay",
+    "line": 1344
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{session_id}/branch",
+    "handler": "branch_replay",
+    "line": 1356
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{replay_session_id}/prop/sessions/{prop_session_id}/attempts/{parent_attempt_id}/branch",
+    "handler": "branch_replay_prop_attempt",
+    "line": 1370
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/replay/sessions/{replay_session_id}/prop/sessions/{prop_session_id}/attempts/{attempt_id}/feed",
+    "handler": "feed_replay_prop_lifecycle",
+    "line": 1402
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks",
+    "handler": "create_playbook",
+    "line": 1429
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/playbooks",
+    "handler": "list_playbooks",
+    "line": 1438
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/playbooks/{record_id}",
+    "handler": "get_playbook",
+    "line": 1442
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks/{record_id}/revisions",
+    "handler": "revise_playbook",
+    "line": 1449
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/playbooks/{record_id}/revisions",
+    "handler": "list_playbook_revisions",
+    "line": 1464
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks/{record_id}/freeze",
+    "handler": "freeze_playbook",
+    "line": 1471
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/playbooks/{record_id}/fork",
+    "handler": "fork_playbook",
+    "line": 1480
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/journal",
+    "handler": "create_journal",
+    "line": 1499
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal",
+    "handler": "list_journal",
+    "line": 1506
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal/{record_id}",
+    "handler": "get_journal",
+    "line": 1510
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/journal/{record_id}/revisions",
+    "handler": "list_journal_revisions",
+    "line": 1517
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/journal/{record_id}/revisions",
+    "handler": "revise_journal",
+    "line": 1524
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/chart/annotations",
+    "handler": "create_annotation",
+    "line": 1537
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/chart/annotations",
+    "handler": "list_annotations",
+    "line": 1541
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/chart/annotations/{record_id}/revisions",
+    "handler": "revise_annotation",
+    "line": 1545
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/chart/annotations/{record_id}/delete",
+    "handler": "delete_annotation",
+    "line": 1556
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/ai/status",
+    "handler": "ai_status",
+    "line": 1565
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/ai/request",
+    "handler": "ai_request",
+    "line": 1570
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/execution/capabilities",
+    "handler": "execution_capabilities",
+    "line": 1578
+  },
+  {
+    "method": "POST",
+    "path": "/api/v2/execution/intents",
+    "handler": "execution_intent",
+    "line": 1583
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "sha256": {
+    "run.py": "23fb5ecf4eec8ee6ec8fc416646493b490f8d56e2b2ffb0b4c50e6f29dcffa1f",
+    "load.mjs": "01720905d326c5a7ea0635e8afa2ac3701608794cf97f451bf361425971612b2",
+    "python_server.py": "6cc3fb882ded0ccb1b939f56c73b77e44f0f1cc18f4309356f743c2bcc567813",
+    "node_server.mjs": "611f5900df6db386e7703f82769502e81cc5236ac81901331bbbf6c8bda7e615",
+    "query.sql": "c45df48761b04d3a5283166ff82a07005c42f4d5c6d9afdc3239a502c66afda2",
+    "requirements.lock": "caafddd4db8b7c03ac81c65c7def450001bebac14a09e458fd24f95ed1a55938",
+    "package-lock.json": "e734c1cd796056c3c09498beb4e435d22026daa2a4f2ba587d27c825c9bc89b5",
+    "rust/Cargo.lock": "3f23347b5262d2fe65fb0a80cea4dd8a8bcc22fc045bb87b6abefa6d976b028a",
+    "rust/src/main.rs": "a84dd96b83ee696f3d6eb46eb5cd66f4919a9f685f7d103e90e026d418ab2291",
+    "rust/target/release/api-stack-axum.exe": "d27d984d928fd1eea955c0552edfd652039924a9b5c4ad8d7e870cea16622d57",
+    "go/go.mod": "472e725fc2921ac9c4112ad31dfcc1ff3e393aa68c9bb18d7718c15113bbf708",
+    "go/go.sum": "1539da990594c6cd99998472c7e7f974ebae38b42130cf4be6dd458bda530d18",
+    "go/main.go": "bc77279e6c677a1dab239ffe6529694038303e4557671daa856afdf9fdb141a4",
+    "go/server.exe": "27dedb865156002c8ab5319893752dc4728da9bd338f7b34cb7a093dc9d1c423",
+    "dotnet/Program.cs": "3db4bce049ceff67781352592d3eb8ebb2b7bcbf2728faf3172d9a82313bad33",
+    ".runtime/dotnet-server/Benchmark.dll": "40c82d8949b4122cc29d257f198403c881ac3c4efbcfe11d2e27cf014640127a",
+    "java/pom.xml": "2b53b5a945cf2aadef7424f6b6d00df4ec8d9c1ae4d529ea394f84ad9564f7b5",
+    "java/src/main/java/local/benchmark/Application.java": "1192e52a42f491ea80d514cacf87945d3936b5e18510c59258912cdd0fa3d087",
+    "java/target/api-stack-spring-1.0.0.jar": "f5fc8a0437b7aebdf5f7f8677d574c3daf22e40e0093e864a7c31d6e366321fc"
+  },
+  "python": {
+    "fastapi": "0.143.0",
+    "uvicorn": "0.54.0",
+    "psycopg": "3.3.6",
+    "psycopg-pool": "3.3.3",
+    "psutil": "7.2.2",
+    "httpx": "0.28.1"
+  },
+  "downloads": {
+    "go": {
+      "url": "https://go.dev/dl/go1.27.2.windows-amd64.zip",
+      "sha256": "1314008898bd40df77af4b014f777f08873dbdfbcd3d92308728ee03304fe04f"
+    },
+    "java": {
+      "url": "https://aka.ms/download-jdk/microsoft-jdk-21.0.12.1-windows-x64.zip",
+      "sha256": "192441a9d27da813bada974bb88b4cf64d37a9589ed37f204374d411ca5ce07f"
+    },
+    "maven": {
+      "url": "https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.zip",
+      "sha512": "ed41650d42485cfc243fad22158caf9cbb5dc408ce7a09ddb94dd42a019de929ca43065bfa450612cf12bf78b5cafa3884b96c090de326ff590448c933454af3"
+    }
+  }
+}

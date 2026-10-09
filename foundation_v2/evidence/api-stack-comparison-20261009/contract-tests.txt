@@ -1,0 +1,9 @@
+test_commands_do_not_accept_existing_database_or_public_host (test_contract.BenchmarkContract.test_commands_do_not_accept_existing_database_or_public_host) ... ok
+test_data_scope_and_tie_order (test_contract.BenchmarkContract.test_data_scope_and_tie_order) ... ok
+test_empty_page_retains_scope_total (test_contract.BenchmarkContract.test_empty_page_retains_scope_total) ... ok
+test_pages_are_disjoint_and_do_not_modify_fixture (test_contract.BenchmarkContract.test_pages_are_disjoint_and_do_not_modify_fixture) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.226s
+
+OK
