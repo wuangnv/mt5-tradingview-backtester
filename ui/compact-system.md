@@ -120,6 +120,13 @@ lớp nội dung; chưa có cơ sở hứa mọi máy chạy60fps hay giống t�
   miễn cùng đường căn và ý nghĩa dữ liệu.
 - **Menu/tooltip:** bám nút mở, tránh mép màn hình, Escape đóng và trả focus.
   Tooltip không giữ thông tin duy nhất để hoàn thành tác vụ.
+  Menu chọn checkbox có một lề hàng10px và gap8px; “Chọn tất cả” và lựa chọn
+  dùng cùng bố cục36px desktop/44px touch. Nhãn cùng điểm bắt đầu; mô tả nằm dưới
+  nhãn, không bị space-between đẩy ra mép phải. Số đã chọn chỉ đếm mục có thể chọn;
+  chọn tất cả không sửa mục đang bị khóa. Viền bàn phím nằm trong dòng để không
+  bị vùng cuộn cắt. Animation dùng translate riêng, không ghi đè transform căn mép.
+  Menu phiên giữ chiều rộng300px theo không gian cho phép, không co theo nút mở;
+  khi thiếu chiều cao chỉ danh sách cuộn và có thể mở phía trên.
 - **Thông báo:** cạnh nội dung nó nói tới, phân biệt chưa có dữ liệu, filter trống,
   lỗi, stale và partial. Toast không thay lỗi cần sửa tại field.
 - **Căn thị giác:** trong cùng danh sách có checkbox/radio/switch, dùng vùng dấu
@@ -167,7 +174,11 @@ Khoảng ngày không có giao dịch có lời nhắc đổi bộ lọc; partia
 hiển thị rõ. Refresh cùng phạm vi giữ dữ liệu, lỗi refresh báo stale; đổi phạm vi
 ẩn số cũ ngay.401/403 khi đọc lại xóa dữ liệu cache, không giữ như stale.
 DashboardSessions và PropAnalytics tiếp tục đọc nguồn riêng; không suy trạng thái
-của chúng từ overview. Chưa migration ownership/cache toàn bộ các nguồn Dashboard.
+của chúng từ overview. Catalog và Prop đã giữ kết quả đã xác minh (kể cả empty)
+qua refresh/retry, hiện stale khi đọc lại lỗi;401/403 xóa cache. Catalog chưa xác minh
+thì khóa sửa/xóa/nhân bản và submit dialog. Prop trả cấu trúc sai được xử lý tại
+nguồn, không làm sập phần Dashboard khác. Các nguồn chi tiết/metadata có retry
+riêng; không coi lỗi metadata là danh sách phiên trống.
 
 ## KPI, card và biểu đồ báo cáo
 
@@ -204,7 +215,7 @@ toàn bộ renderer báo cáo, không coi contract này là mọi chart đã đ�
 | Focus/hover/disabled/selected | Một dấu focus cho field, nút có ring; selected nền trung tính, không vạch trái |
 | Form validation | Có quy tắc label/required/help/error; cần audit flow submit, pending, success và server conflict từng form |
 | KPI/card/report chart | Có chuẩn và mẫu; migration typography một phần; cần audit chart/tooltip/legend từng renderer |
-| Trạng thái page/cụm | Có contract/mẫu; Performance Dashboard thật đã gom theo overview; cần audit các nguồn khác riêng |
+| Trạng thái page/cụm | Có contract/mẫu; Dashboard áp theo nguồn Performance/catalog/Prop/detail/metadata; các trang khác vẫn cần audit riêng |
 | Search/filter/sort/pagination | Có control và pattern; cần kiểm tra thống nhất debounce, reset/default và URL qua từng trang |
 | Table/grid | Có chuẩn alignment/sticky/empty; cần kiểm kê selection, resize, virtualisation khi workflow cần |
 | Dialog/drawer/menu/tooltip | Có anatomy và motion; một số composite/vùng chạm có ngoại lệ đã ghi |
@@ -250,3 +261,6 @@ project/domain; không đổi dữ liệu, model, quyền broker hay logic tải
 Kết quả kiểm chứng: [follow-up receipt](../foundation_v2/evidence/compact-states-20261009/RECEIPT.md),
 [baseline receipt](../foundation_v2/evidence/compact-system-20261009/RECEIPT.md),
 [Dashboard states/alignment receipt](../foundation_v2/evidence/dashboard-states-20261009/RECEIPT.md).
+
+Rà soát tiếp theo: [menu/source audit và giới hạn](../foundation_v2/evidence/menu-audit-20261009/RECEIPT.md),
+[review độc lập](../foundation_v2/evidence/menu-audit-20261009/INDEPENDENT-REVIEW.md).

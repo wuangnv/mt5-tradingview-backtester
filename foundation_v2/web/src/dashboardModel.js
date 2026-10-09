@@ -122,7 +122,8 @@ export async function readDashboardAnalytics(workspace, session, signal) {
 export async function readDashboardDatasets(workspace, signal) {
   const response = await fetch('/api/v2/data/datasets', { headers: { 'X-Workspace-Id': workspace }, signal })
   const payload = await response.json().catch(() => ({}))
-  if (!response.ok || !Array.isArray(payload.items)) throw new Error('dashboard_dataset_catalog_unavailable')
+  if (!response.ok) throw Object.assign(new Error('dashboard_dataset_catalog_unavailable'), { status: response.status })
+  if (!Array.isArray(payload.items) || payload.items.some(item => !item || typeof item !== 'object' || Array.isArray(item) || typeof item.dataset_id !== 'string' || !item.dataset_id.trim())) throw new Error('dashboard_dataset_catalog_unavailable')
   return payload.items
 }
 

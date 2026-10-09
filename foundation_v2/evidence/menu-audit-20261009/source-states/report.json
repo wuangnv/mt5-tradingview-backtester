@@ -1,0 +1,138 @@
+{
+  "pass": true,
+  "fixtureOnly": true,
+  "checks": [
+    {
+      "case": "same-scope refresh retains values and blocks catalog dialog/card mutations",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "retry preserves catalog and Prop values until success",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "403 clears catalog dialogs/cards and Prop cached report",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "initial catalog error and malformed Prop have source-local single alerts",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "invalid scalar report identifiers stay source-local",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "nonprimitive rendered report fields stay source-local",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "successful empty catalog/report remain known empty on refresh failure",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "stale empty sources fit mobile viewport",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "failed detail retry recovers only failed entry and preserves ready cache",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "dataset refresh failure preserves metadata and local retry avoids other reads",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "dataset initial errors and permission revocation never hide sessions",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "malformed dataset entries stay source-local without crashing catalog",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "aggregate detail retry stays blocked on stale catalog and recovers after verification",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "same-scope refresh retains values and blocks catalog dialog/card mutations",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "retry preserves catalog and Prop values until success",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "403 clears catalog dialogs/cards and Prop cached report",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "initial catalog error and malformed Prop have source-local single alerts",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "invalid scalar report identifiers stay source-local",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "nonprimitive rendered report fields stay source-local",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "successful empty catalog/report remain known empty on refresh failure",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "stale empty sources fit mobile viewport",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "failed detail retry recovers only failed entry and preserves ready cache",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "dataset refresh failure preserves metadata and local retry avoids other reads",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "dataset initial errors and permission revocation never hide sessions",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "malformed dataset entries stay source-local without crashing catalog",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "aggregate detail retry stays blocked on stale catalog and recovers after verification",
+      "theme": "light",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

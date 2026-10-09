@@ -37,8 +37,7 @@
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2 6 2.5 2.5L10 3' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
 }
 .fx-app.fx-shell-story[data-theme] .fx-content :is(input[type=checkbox]:not([role=switch]):indeterminate,.fx-select-checkbox.is-mixed)::after { content:''; position:absolute; inset:6px 3px; background:var(--project-on-action); border-radius:1px; }
-.fx-app.fx-shell-story[data-theme] .fx-content input[type=checkbox]:not([role=switch]):disabled,
-.fx-app.fx-shell-story[data-theme] .fx-content button:disabled .fx-select-checkbox { opacity:var(--ds-disabled-opacity); }
+.fx-app.fx-shell-story[data-theme] .fx-content input[type=checkbox]:not([role=switch]):disabled { opacity:var(--ds-disabled-opacity); }
 .fx-app.fx-shell-story[data-theme] .fx-content input[type=checkbox]:not([role=switch]):focus-visible { outline:2px solid var(--wm-focus); outline-offset:2px; box-shadow:none; }
 .fx-app.fx-shell-story[data-theme] .fx-content .prop-tabs { min-height:var(--ds-nav); }
 .fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select-check, .dataset-asset-check) { color:var(--project-highlight); }
@@ -69,7 +68,8 @@
   animation:wm-drawer-enter var(--ds-motion-drawer) var(--ds-ease-enter);
 }
 .fx-app.fx-shell-story[data-theme] :is(dialog, [role=dialog])::backdrop { animation:wm-backdrop-enter var(--ds-motion-dialog) var(--ds-ease-standard); }
-@keyframes wm-menu-enter { from { opacity:0; transform:translateY(var(--ds-motion-offset)); } to { opacity:1; transform:translateY(0); } }
+/* Menu positioning owns transform; entrance motion must not override its edge clamp. */
+@keyframes wm-menu-enter { from { opacity:0; translate:0 var(--ds-motion-offset); } to { opacity:1; translate:0 0; } }
 @keyframes wm-overlay-enter { from { opacity:0; transform:translateY(var(--ds-motion-offset)); } to { opacity:1; transform:translateY(0); } }
 @keyframes wm-drawer-enter { from { opacity:0; transform:translateX(var(--ds-motion-offset)); } to { opacity:1; transform:translateX(0); } }
 @keyframes wm-backdrop-enter { from { opacity:0; } to { opacity:1; } }
@@ -77,7 +77,7 @@
 .fx-app.fx-shell-story[data-theme] :is(.wm-button, .fxa-button, .fxr-button, .rd-button, .ja-button, .rs-button):active:not(:disabled) { transition-duration:var(--ds-motion-press); }
 @media (max-width:480px), (pointer:coarse) {
   .fx-app.fx-shell-story[data-theme] { --wm-control-height:var(--ds-touch); --wm-icon-action-size:var(--ds-touch); }
-  .fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select-menu [role=option], .data-library-action-menu button) { min-height:var(--ds-touch); }
+  .fx-app.fx-shell-story[data-theme] .fx-content :is(.fx-select-menu [role=option], .fx-select-all, .fxa-session-all, .data-library-action-menu button) { min-height:var(--ds-touch); }
 }
 @media (prefers-reduced-motion:reduce) {
   .fx-app.fx-shell-story[data-theme] *, .fx-app.fx-shell-story[data-theme] *::before, .fx-app.fx-shell-story[data-theme] *::after, .fx-app.fx-shell-story[data-theme] dialog::backdrop {

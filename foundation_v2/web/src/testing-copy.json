@@ -5667,5 +5667,7 @@
   "Chưa có phiên backtest trong phạm vi này. Tạo phiên đầu tiên để xem kết quả.": {"vi":"Chưa có phiên backtest trong phạm vi này. Tạo phiên đầu tiên để xem kết quả.","en":"No backtest sessions in this scope. Create your first session to see results."},
   "Đang cập nhật Performance…": {"vi":"Đang cập nhật Performance…","en":"Refreshing Performance…"},
   "Không có giao dịch đóng trong khoảng ngày đã chọn. Đổi khoảng ngày để xem kết quả.": {"vi":"Không có giao dịch đóng trong khoảng ngày đã chọn. Đổi khoảng ngày để xem kết quả.","en":"No closed trades in the selected date range. Change the date range to see results."},
-  "Chưa có giao dịch đóng. Biểu đồ sẽ xuất hiện sau giao dịch đầu tiên.": {"vi":"Chưa có giao dịch đóng. Biểu đồ sẽ xuất hiện sau giao dịch đầu tiên.","en":"No closed trades yet. Charts will appear after the first closed trade."}
+  "Chưa có giao dịch đóng. Biểu đồ sẽ xuất hiện sau giao dịch đầu tiên.": {"vi":"Chưa có giao dịch đóng. Biểu đồ sẽ xuất hiện sau giao dịch đầu tiên.","en":"No closed trades yet. Charts will appear after the first closed trade."},
+  "Thông tin dữ liệu chưa cập nhật.": {"vi":"Thông tin dữ liệu chưa cập nhật.","en":"Dataset information has not been refreshed."},
+  "Chưa đọc được thông tin dữ liệu:": {"vi":"Chưa đọc được thông tin dữ liệu:","en":"Could not read dataset information:"}
 }

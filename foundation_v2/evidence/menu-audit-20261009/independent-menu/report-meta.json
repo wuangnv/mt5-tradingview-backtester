@@ -1,0 +1,150 @@
+{
+  "pass": true,
+  "scope": "Bounded visible text and reflow in VI demo overview/trade/analytics/market-data, dark+light,1710+360; excludes trading chart and unloaded features",
+  "results": [
+    {
+      "theme": "dark",
+      "width": 1710,
+      "view": "overview",
+      "textLength": 847,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "view": "trade",
+      "textLength": 2085,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "view": "analytics",
+      "textLength": 2490,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 1710,
+      "view": "market-data",
+      "textLength": 329,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "overview",
+      "textLength": 847,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "trade",
+      "textLength": 2075,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "analytics",
+      "textLength": 2490,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "dark",
+      "width": 360,
+      "view": "market-data",
+      "textLength": 329,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "view": "overview",
+      "textLength": 847,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "view": "trade",
+      "textLength": 2085,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "view": "analytics",
+      "textLength": 2490,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 1710,
+      "view": "market-data",
+      "textLength": 329,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "overview",
+      "textLength": 847,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "trade",
+      "textLength": 2075,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "analytics",
+      "textLength": 2490,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    },
+    {
+      "theme": "light",
+      "width": 360,
+      "view": "market-data",
+      "textLength": 329,
+      "sub12": [],
+      "pageOverflow": false,
+      "contentOverflow": false
+    }
+  ]
+}

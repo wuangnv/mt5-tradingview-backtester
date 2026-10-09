@@ -41,12 +41,6 @@ dialog.fxa-trade-inspector::backdrop { background: #0008; }
 .market-sync-update { margin-left: auto; }
 .fxa-columns-control .fx-select-trigger { width: 40px; height: var(--wm-control-height); min-height: var(--wm-control-height); padding: 11px; border-radius: var(--wm-control-radius); }
 .fxa-columns-control .fx-select-menu { width: 270px; }
-.fx-select-count { display: block; padding: 8px 12px; color: var(--wm-content-muted); font-size: 12px; }
-.fx-app .fx-select-menu .fx-select-all { display: flex; align-items: center; gap: 12px; width: calc(100% - 4px); margin-inline: 2px; padding: 9px 10px; min-height: 40px; box-sizing: border-box; border: 0; border-radius: 6px; background: transparent; color: var(--wm-control-text); font: inherit; text-align: left; cursor: pointer; }
-.fx-app .fx-select-menu .fx-select-all:hover { background: var(--wm-hover); }
-.fx-select-checkbox { flex: 0 0 16px; width: 16px; height: 16px; border: 1px solid var(--wm-border-strong); border-radius: 4px; display: inline-grid; place-items: center; font-size: 12px; }
-.fx-select-checkbox.is-checked { background: var(--wm-action-bg); border-color: var(--wm-action-bg); color: var(--wm-on-primary); }
-.fx-select-menu [aria-multiselectable=true] [role=option] { justify-content: flex-start; gap: 12px; }
 .fxa-analytics-filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .fxa-analytics-filter-row > .fx-select { flex: 0 0 auto; font-size: 13px; }
 .fxa-analytics-filter-row .fx-select-trigger { gap: 6px; padding-inline: 12px; }
@@ -81,5 +75,3 @@ button.fxa-filter-chip:hover { background: var(--fx-shell-nav-selected); color: 
 .fx-app .fxa-filter-actions .fxa-icon-button,
 .fx-app .fxa-columns-control .fx-select-trigger { width: 40px; height: 40px; min-height: 40px; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; flex-shrink: 0; }
 .fx-app .fxa-trades .fxa-detail-button { width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; vertical-align: middle; }
-.fx-app .fxa-session-options > button[role='checkbox'] { justify-content: flex-start; }
-.fxa-session-options .fx-select-checkbox { min-width: 16px; flex: 0 0 16px; }

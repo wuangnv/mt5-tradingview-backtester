@@ -20,17 +20,29 @@ export default function SessionFilter({ items, value, onChange, multiple = false
       const container = root.current.closest('.fx-content')
       const clip = container?.getBoundingClientRect()
       const left = Math.max(12, (clip?.left || 0) + 12), right = Math.min(window.innerWidth - 12, (clip ? clip.left + container.clientWidth : window.innerWidth) - 12)
+      const list = menu.querySelector('.fxa-session-options')
+      list.style.maxHeight = ''
+      menu.style.top = 'calc(100% + 8px)'; menu.style.bottom = 'auto'
       menu.style.maxWidth = `${right - left}px`; menu.style.transform = ''
       const bounds = menu.getBoundingClientRect()
       menu.style.transform = `translateX(${bounds.left < left ? left - bounds.left : bounds.right > right ? right - bounds.right : 0}px)`
+      const anchor = trigger.current.getBoundingClientRect()
+      const below = Math.max(0, Math.min(window.innerHeight - 12, clip?.bottom || window.innerHeight - 12) - anchor.bottom - 8)
+      const above = Math.max(0, anchor.top - Math.max(12, clip?.top || 12) - 8)
+      const upwards = bounds.height > below && above > below
+      if (upwards) { menu.style.top = 'auto'; menu.style.bottom = 'calc(100% + 8px)' }
+      const chromeHeight = bounds.height - list.getBoundingClientRect().height
+      list.style.maxHeight = `${Math.max(44, Math.min(320, (upwards ? above : below) - chromeHeight))}px`
     }
     position()
     input.current?.focus()
     const outside = event => { if (!root.current?.contains(event.target)) setOpen(false) }
     document.addEventListener('pointerdown', outside)
     window.addEventListener('resize', position)
-    return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', position) }
-  }, [open])
+    const scroller = root.current.closest('.fx-content')
+    scroller?.addEventListener('scroll', position)
+    return () => { document.removeEventListener('pointerdown', outside); window.removeEventListener('resize', position); scroller?.removeEventListener('scroll', position) }
+  }, [open, visible.length])
   const toggle = item => {
     if (!multiple) { onChange(item.record_id); setOpen(false); trigger.current?.focus(); return }
     const next = new Set(all ? items.map(item => item.record_id) : selected)

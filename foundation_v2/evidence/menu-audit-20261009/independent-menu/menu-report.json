@@ -1,0 +1,241 @@
+{
+  "pass": true,
+  "results": [
+    {
+      "case": "reference geometry/search/count/keyboard/disabled",
+      "theme": "dark",
+      "width": 1710,
+      "geometry": [
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 36,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 36,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 36,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 58,
+          "gap": "8px",
+          "lineHeight": "20px"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "alignment independent of route CSS loading",
+      "theme": "dark",
+      "width": 1710,
+      "pass": true
+    },
+    {
+      "case": "sibling session menu",
+      "theme": "dark",
+      "width": 1710,
+      "pass": true
+    },
+    {
+      "case": "reference geometry/search/count/keyboard/disabled",
+      "theme": "dark",
+      "width": 360,
+      "geometry": [
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 44,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 44.000030517578125,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 44,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 58,
+          "gap": "8px",
+          "lineHeight": "20px"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "alignment independent of route CSS loading",
+      "theme": "dark",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "short viewport and compact session popup",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "sibling session menu",
+      "theme": "dark",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "reference geometry/search/count/keyboard/disabled",
+      "theme": "light",
+      "width": 1710,
+      "geometry": [
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 36,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 36,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 36,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 484,
+          "textX": 508,
+          "right": 641,
+          "textRight": 631,
+          "height": 58,
+          "gap": "8px",
+          "lineHeight": "20px"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "alignment independent of route CSS loading",
+      "theme": "light",
+      "width": 1710,
+      "pass": true
+    },
+    {
+      "case": "sibling session menu",
+      "theme": "light",
+      "width": 1710,
+      "pass": true
+    },
+    {
+      "case": "reference geometry/search/count/keyboard/disabled",
+      "theme": "light",
+      "width": 360,
+      "geometry": [
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 44,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 44,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 44,
+          "gap": "8px",
+          "lineHeight": "20px"
+        },
+        {
+          "checkboxX": 90,
+          "textX": 114,
+          "right": 247,
+          "textRight": 237,
+          "height": 58,
+          "gap": "8px",
+          "lineHeight": "20px"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "alignment independent of route CSS loading",
+      "theme": "light",
+      "width": 360,
+      "pass": true
+    },
+    {
+      "case": "short viewport and compact session popup",
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "case": "sibling session menu",
+      "theme": "light",
+      "width": 360,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

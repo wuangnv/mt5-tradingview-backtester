@@ -15,7 +15,7 @@ function SessionIcon({ kind }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'edit' ? <path d="m16 3 5 5-12 12H4v-5ZM13 6l5 5" /> : kind === 'analytics' ? <path d="M5 20V11m7 9V4m7 16V8" /> : kind === 'duplicate' ? <><rect x="8" y="8" width="12" height="13" rx="1" /><path d="M16 8V3H4v13h4" /></> : kind === 'summary' ? <><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></> : kind === 'calendar' ? <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4m8-4v4M4 10h16" /></> : kind === 'balance' ? <><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /></> : kind === 'play' ? <path d="m9 6 9 6-9 6Z" fill="currentColor" stroke="none" /> : <path d="m5 9 7 7 7-7" />}</svg>
 }
 
-export default function DashboardSessionCard({ item, detail, dataset, href, onManage, onRemember, preview = false, actionsDisabled = false }) {
+export default function DashboardSessionCard({ item, detail, dataset, href, onManage, onRemember, onRetryDetail, preview = false, actionsDisabled = false }) {
   const dashboardMoney = (value, currency) => fmt(value, ` ${currency || t('Đơn vị tài khoản')}`)
   const date = value => closeTime(value) ? displayDate(closeTime(value)) : '—'
 
@@ -46,6 +46,6 @@ export default function DashboardSessionCard({ item, detail, dataset, href, onMa
         <button type="button" className="fx-dashboard-card-icon fx-dashboard-card-expand" aria-label={t(expanded ? 'Thu gọn {name}' : 'Mở rộng {name}', { name })} aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(!expanded)}><SessionIcon /></button>
       </div>
     </div>
-    {expanded && <div className="fx-dashboard-card-charts" id={panelId}>{detail?.status === 'loading' || !detail ? <p role="status">{t("Đang tải kết quả phiên…")}</p> : detail.status === 'error' ? <p role="alert">{t("Chưa đọc được kết quả phiên.")}</p> : <SessionPerformance chartsOnly model={model} payload={payload} item={item} href={href} />}</div>}
+    {expanded && <div className="fx-dashboard-card-charts" id={panelId}>{detail?.status === 'loading' || !detail ? <p role="status">{t("Đang tải kết quả phiên…")}</p> : detail.status === 'error' ? <div role="alert"><p>{t("Chưa đọc được kết quả phiên.")}</p>{onRetryDetail && <button type="button" className="fxa-button" onClick={onRetryDetail}>{t('Thử lại')}</button>}</div> : <SessionPerformance chartsOnly model={model} payload={payload} item={item} href={href} />}</div>}
   </article>
 }

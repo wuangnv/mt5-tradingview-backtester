@@ -56,7 +56,7 @@
 .fxa-side-table>div{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px}
 .fxa-side-table span{color:var(--wm-content-muted)}
 .fxa-bars{display:flex;gap:6px;align-items:stretch;min-height:230px;overflow:auto;padding-top:12px}
-.fxa-bar-item{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;min-width:26px;color:var(--wm-content-muted);font-size:11px}
+.fxa-bar-item{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;min-width:26px;color:var(--wm-content-muted);font-size:var(--ds-font-meta)}
 .fxa-bar-item>strong{font-weight:500;font-variant-numeric:tabular-nums}
 .fxa-bar-track{height:170px;width:100%;max-width:32px;position:relative;background:var(--wm-surface)}
 .fxa-bar-zero{position:absolute;height:1px;background:var(--wm-border-strong);width:100%}
@@ -75,7 +75,7 @@
 .fxa-calendar-day.is-positive{background:color-mix(in srgb,var(--report-positive) 18%,var(--wm-canvas))}
 .fxa-calendar-day.is-negative{background:color-mix(in srgb,var(--report-negative) 18%,var(--wm-canvas))}
 .fxa-calendar-day strong{font-size:14px}
-.fxa-calendar-day small{font-size:11px}
+.fxa-calendar-day small{font-size:var(--ds-font-meta)}
 .fxa-simulator-config,.fxa-monte-form{display:flex;gap:14px;align-items:end;flex-wrap:wrap}
 .fxa-simulator-config>small{flex-basis:100%;color:var(--wm-content-muted);font-size:12px}
 .fxa-simulator-config input,.fxa-monte-form input{width:150px}
@@ -92,7 +92,7 @@
 .fxa-table-scroll tbody tr:hover{background:var(--wm-row-hover)}
 .fxa-table-scroll tbody tr.is-selected{background:var(--wm-row-selected)}
 .fxa-detail-button{width:30px;height:30px;border:1px solid var(--wm-border);border-radius:50%;background:transparent;color:var(--wm-content);cursor:pointer}
-.fxa-badge{font-size:11px;padding:4px 7px;border-radius:4px;background:var(--wm-surface);color:var(--wm-content)}
+.fxa-badge{font-size:var(--ds-font-meta);padding:4px 7px;border-radius:4px;background:var(--wm-surface);color:var(--wm-content)}
 .fxa-badge.is-buy{background:color-mix(in srgb,var(--wm-positive) 12%,var(--wm-canvas));color:var(--wm-positive)}
 .fxa-badge.is-sell{background:color-mix(in srgb,var(--wm-negative) 12%,var(--wm-canvas));color:var(--wm-negative)}
 .fxa-badge.is-closed{background:color-mix(in srgb,var(--wm-primary) 12%,var(--wm-canvas));color:var(--wm-primary)}
@@ -108,7 +108,7 @@
 .fxa-prop-selector{display:flex;gap:14px;flex-wrap:wrap;align-items:end}
 .fxa-trade-inspector{max-width:1100px;margin:24px auto;background:var(--wm-surface);border-radius:8px;padding:20px;min-width:0}
 .fxa-trade-inspector .as-inspector{background:transparent;border:0;padding:0}
-@media(max-width:760px){.fxa-two-columns{grid-template-columns:1fr}.fxa-report{gap:24px}.fxa-field{flex:1;min-width:140px}.fxa-side-grid{gap:24px}.fxa-side-table{min-width:0;width:100%;flex-basis:100%}.fxa-bars{min-height:220px}.fxa-bar-item{min-width:35px}.fxa-curve svg{min-height:150px}.fxa-calendar-day{min-height:75px;padding:5px;font-size:11px;gap:5px}.fxa-calendar-day strong{font-size:11px}.fxa-calendar-day small{font-size:10px}.fxa-calendar{gap:2px}.fxa-metric{min-width:120px}.fxa-metric strong{font-size:17px}.fxa-filter-grid{gap:12px}.fxa-filter-actions{margin-left:0}.fxa-prop-objectives{overflow:auto}.fxa-tab{padding:10px 6px}.fxa-chart-drilldown select{width:100%}.fxa-simulator-config input,.fxa-monte-form input{width:100%}}
+@media(max-width:760px){.fxa-two-columns{grid-template-columns:1fr}.fxa-report{gap:24px}.fxa-field{flex:1;min-width:140px}.fxa-side-grid{gap:24px}.fxa-side-table{min-width:0;width:100%;flex-basis:100%}.fxa-bars{min-height:220px}.fxa-bar-item{min-width:35px}.fxa-curve svg{min-height:150px}.fxa-calendar-day{min-height:75px;padding:5px;font-size:var(--ds-font-meta);gap:5px}.fxa-calendar-day strong{font-size:var(--ds-font-meta)}.fxa-calendar-day small{font-size:var(--ds-font-meta)}.fxa-calendar{gap:2px}.fxa-metric{min-width:120px}.fxa-metric strong{font-size:17px}.fxa-filter-grid{gap:12px}.fxa-filter-actions{margin-left:0}.fxa-prop-objectives{overflow:auto}.fxa-tab{padding:10px 6px}.fxa-chart-drilldown select{width:100%}.fxa-simulator-config input,.fxa-monte-form input{width:100%}}
 @media(prefers-reduced-motion:reduce){.fxa-curve *{transition:none}}
 
 @media(max-width:900px){.fxa-curve svg text{display:none}.fxa-chart-mobile-scale{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;font-size:12px;color:var(--wm-content-muted);line-height:1.6}.fxa-chart-mobile-scale span:nth-child(even){text-align:right}}

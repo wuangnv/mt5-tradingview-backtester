@@ -1,0 +1,67 @@
+{
+  "error": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('dashboard-recent').locator('.wm-read-state').filter({ hasText: 'Một số phiên chưa đọc được kết quả' }) to be visible\u001b[22m\n",
+  "checks": [
+    {
+      "case": "same-scope refresh retains values and blocks catalog dialog/card mutations",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "retry preserves catalog and Prop values until success",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "403 clears catalog dialogs/cards and Prop cached report",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "initial catalog error and malformed Prop have source-local single alerts",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "invalid scalar report identifiers stay source-local",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "nonprimitive rendered report fields stay source-local",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "successful empty catalog/report remain known empty on refresh failure",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "stale empty sources fit mobile viewport",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "failed detail retry recovers only failed entry and preserves ready cache",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "dataset refresh failure preserves metadata and local retry avoids other reads",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "dataset initial errors and permission revocation never hide sessions",
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "case": "malformed dataset entries stay source-local without crashing catalog",
+      "theme": "dark",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "writes": []
+}

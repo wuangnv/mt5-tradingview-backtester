@@ -84,8 +84,8 @@
 .fx-dashboard-bar-track { display: flex; align-items: flex-end; flex: 1; min-height: 0; }
 .fx-dashboard-bar { position: relative; width: 100%; background: var(--chart-accent); border-radius: 3px 3px 0 0; }
 .fx-dashboard-bar.is-zero { height: 0; }
-.fx-dashboard-bar > span { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); white-space: nowrap; color: var(--wm-content); font-size: 11px; font-weight: 600; }
-.fx-dashboard-month-label { display: block; height: 30px; padding-top: 12px; color: var(--wm-content-muted); font-size: 11px; text-align: center; white-space: nowrap; }
+.fx-dashboard-bar > span { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); white-space: nowrap; color: var(--wm-content); font-size: var(--ds-font-meta); font-weight: 600; }
+.fx-dashboard-month-label { display: block; height: 30px; padding-top: 12px; color: var(--wm-content-muted); font-size: var(--ds-font-meta); text-align: center; white-space: nowrap; }
 .fx-dashboard-secondary-charts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-space-6); margin-top: 20px; }
 .fx-dashboard-symbol-chart { display: flex; flex-direction: column; justify-content: center; flex: 1; gap: var(--ds-space-6); min-height: 190px; }
 .fx-dashboard-symbol-row { display: grid; grid-template-columns: minmax(56px, 90px) minmax(0, 1fr) 34px; align-items: center; gap: 12px; font-size: 12px; }
