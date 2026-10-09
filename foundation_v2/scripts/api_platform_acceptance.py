@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
+import argparse
 import json
 import os
 from pathlib import Path
@@ -46,6 +47,14 @@ def wait_until(check, seconds=50):
 
 
 def main():
+    global OUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--rust-binary', type=Path)
+    parser.add_argument('--production-dist', type=Path)
+    parser.add_argument('--frontend-reads', action='store_true')
+    args = parser.parse_args()
+    if args.output: OUT = args.output.resolve()
     OUT.mkdir(parents=True, exist_ok=True)
     report = {"scope": "Owned disposable PostgreSQL + real Axum/domain/research/supervisor HTTP processes; synthetic data; no user DB/provider/broker", "cases": []}
     started = time.monotonic()
@@ -65,6 +74,7 @@ def main():
         base = [sys.executable, "-B", str(V2 / "scripts/run_api_platform.py"), "--database-name", "postgres",
                 "--port", str(apiport), "--artifact-root", str(artifacts), "--download-engine", "none",
                 "--manifest", str(work / "runtime/owner.json")]
+        if args.rust_binary: base.extend(['--rust-binary', str(args.rust_binary.resolve())])
         processes, logs = [], []
         try:
             # Only this fresh fixture database is initialized explicitly.
@@ -72,7 +82,11 @@ def main():
             store = PostgresStore(dsn)
             store.ensure_workspace("tenant-a")
             store.close()
-            for name, command, cwd in [("supervisor", base, V2), ("vite", ["node", "node_modules/vite/bin/vite.js", "--port", str(uiport), "--strictPort"], V2 / "web")]:
+            ui_command = ["node", "node_modules/vite/bin/vite.js"]
+            if args.production_dist: ui_command.extend(['preview', '--outDir', str(args.production_dist.resolve())])
+            ui_command.extend(['--port', str(uiport), '--strictPort'])
+            report['frontend_build'] = 'production' if args.production_dist else 'development'
+            for name, command, cwd in [("supervisor", base, V2), ("vite", ui_command, V2 / "web")]:
                 handle = (OUT / f"{name}.log").open("wb"); logs.append(handle)
                 processes.append(subprocess.Popen(command, env={**env, "TW_V2_API_TARGET": f"http://127.0.0.1:{apiport}"}, cwd=cwd,
                     stdout=handle, stderr=handle, creationflags=subprocess.CREATE_NO_WINDOW))
@@ -121,6 +135,41 @@ def main():
             assert stepped["revision"] == 4 and stepped["payload"]["execution"]["position"]["entry_fill"] == "1.1001"
             assert stepped["payload"]["execution"]["balance"] == "100000.00"
             report["cases"].append("multiasset shared session, idempotent creates/orders, conflict and exact Decimal fill/balance/revision/cutoff")
+            if args.frontend_reads:
+                dashboard = request('GET', '/api/v2/dashboard/sessions')
+                assert dashboard['schema_version'] == 'dashboard-session-list-v1'
+                assert dashboard['items'][0]['record_id'] == identifier
+                metadata = request('GET', f'/api/v2/replay/sessions/{identifier}/metadata')
+                assert metadata['schema_version'] == 'replay-metadata-v1' and metadata['revision'] == 4
+                assert not {'ledger', 'visible_rows', 'positions', 'position'} & metadata['payload'].keys()
+                request('GET', '/api/v2/dashboard/sessions?revision=' + '0'*64, expected=409)
+                context = request('GET', f'/api/v2/journal/context?session_id={identifier}')
+                assert context['record_count'] == 0 and context['trades'] == []
+                request('GET', '/api/v2/journal/context?session_id=not-found', expected=404)
+                view = request('GET', f'/api/v2/replay/sessions/{identifier}')
+                query = f'dataset_id={datasets[0]}&dataset_sha256={view["dataset_sha256"]}&resolution=1&count_back=2'
+                window = request('GET', f'/api/v2/replay/sessions/{identifier}/chart-window?{query}')
+                assert window['schema_version'] == 'replay-chart-window-v1' and len(window['bars']) <= 2
+                assert all(bar['time'] <= view['cutoff_timestamp']*1000 for bar in window['bars'])
+                request('GET', f'/api/v2/replay/sessions/{identifier}/chart-window?{query}&cursor_index=1000', expected=422)
+                request('GET', f'/api/v2/replay/sessions/{identifier}/chart-window?{query}&count_back=2001', expected=422)
+                request('GET', f'/api/v2/replay/sessions/{identifier}/chart-window?{query.replace(view["dataset_sha256"], "0"*64)}', expected=422)
+                timestamp = view['visible_rows'][0]['timestamp']
+                rewind = request('GET', f'/api/v2/replay/sessions/{identifier}?cutoff_timestamp={timestamp}')
+                assert rewind['view_cursor_index'] == 0 and rewind['historical_view']
+                request('GET', f'/api/v2/replay/sessions/{identifier}?cutoff_timestamp={view["cutoff_timestamp"]+1}', expected=422)
+                pages = [request('GET', '/api/v2/replay/trades?page=1&page_size=10') for _ in range(2)]
+                assert pages[0] == pages[1]
+                samples, sizes = [], []
+                for _ in range(30):
+                    begin = time.perf_counter()
+                    response = client.get('/api/v2/dashboard/sessions')
+                    assert response.status_code == 200
+                    samples.append((time.perf_counter()-begin)*1000); sizes.append(len(response.content))
+                report['frontend_reads'] = {'samples': 30, 'dashboard_warm_median_ms': round(statistics.median(samples), 2),
+                    'dashboard_sample_p95_ms': round(sorted(samples)[28], 2), 'dashboard_payload_bytes': max(sizes),
+                    'scope': 'real Axum/domain/PG HTTP; one small multiasset fixture; not capacity or before/after'}
+                report['cases'].append('bounded metadata/dashboard/journal/chart routes, revision/hash/cutoff denial and repeat-page parity through real Axum')
             prop = PropSessionSnapshot(workspace_id="tenant-a", session_id="http-prop-fixture", profile=profile(), status="running")
             request("POST", "/api/v2/prop/sessions", prop.model_dump(mode="json"), 201)
             assert request("GET", "/api/v2/prop/sessions/http-prop-fixture")["profile"]["phases"][0]["initial_capital"] == "100000"

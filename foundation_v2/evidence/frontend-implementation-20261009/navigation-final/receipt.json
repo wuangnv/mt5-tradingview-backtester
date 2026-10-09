@@ -1,0 +1,775 @@
+{
+  "scope": "Actual local React UI with labeled API empty/error fixtures; no user DB/provider/broker requests",
+  "cases": [
+    {
+      "width": 1710,
+      "theme": "dark",
+      "geometry": {
+        "parentBottom": 116,
+        "nestedBottom": 116,
+        "parentLine": "2px",
+        "nestedLine": "2px"
+      },
+      "filterPagePreserved": true,
+      "resourceReset": true,
+      "clientDocuments": 1,
+      "shellPreserved": true,
+      "history": "back-forward",
+      "chartFullBleed": "error route and return",
+      "deepLinkReload": true,
+      "workspaces": [
+        "nav-fixture-a",
+        "nav-fixture-b"
+      ],
+      "apiCalls": [
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?side=buy&page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22news%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/session/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/connectors/notion/oauth/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/execution/capabilities",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        }
+      ]
+    },
+    {
+      "width": 1710,
+      "theme": "light",
+      "geometry": {
+        "parentBottom": 116,
+        "nestedBottom": 116,
+        "parentLine": "2px",
+        "nestedLine": "2px"
+      },
+      "filterPagePreserved": true,
+      "resourceReset": true,
+      "clientDocuments": 1,
+      "shellPreserved": true,
+      "history": "back-forward",
+      "chartFullBleed": "error route and return",
+      "deepLinkReload": true,
+      "workspaces": [
+        "nav-fixture-a",
+        "nav-fixture-b"
+      ],
+      "apiCalls": [
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?side=buy&page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22news%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/session/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/connectors/notion/oauth/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/execution/capabilities",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "geometry": {
+        "parentBottom": 116,
+        "nestedBottom": 116,
+        "parentLine": "2px",
+        "nestedLine": "2px"
+      },
+      "filterPagePreserved": true,
+      "resourceReset": true,
+      "clientDocuments": 1,
+      "shellPreserved": true,
+      "history": "back-forward",
+      "chartFullBleed": "error route and return",
+      "deepLinkReload": true,
+      "workspaces": [
+        "nav-fixture-a",
+        "nav-fixture-b"
+      ],
+      "apiCalls": [
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?side=buy&page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22news%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/session/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/connectors/notion/oauth/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/execution/capabilities",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "geometry": {
+        "parentBottom": 116,
+        "nestedBottom": 116,
+        "parentLine": "2px",
+        "nestedLine": "2px"
+      },
+      "filterPagePreserved": true,
+      "resourceReset": true,
+      "clientDocuments": 1,
+      "shellPreserved": true,
+      "history": "back-forward",
+      "chartFullBleed": "error route and return",
+      "deepLinkReload": true,
+      "workspaces": [
+        "nav-fixture-a",
+        "nav-fixture-b"
+      ],
+      "apiCalls": [
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?side=buy&page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22news%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/session/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/connectors/notion/oauth/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/execution/capabilities",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "geometry": {
+        "parentBottom": 116,
+        "nestedBottom": 116,
+        "parentLine": "2px",
+        "nestedLine": "2px"
+      },
+      "filterPagePreserved": true,
+      "resourceReset": true,
+      "clientDocuments": 1,
+      "shellPreserved": true,
+      "history": "back-forward",
+      "chartFullBleed": "error route and return",
+      "deepLinkReload": true,
+      "workspaces": [
+        "nav-fixture-a",
+        "nav-fixture-b"
+      ],
+      "apiCalls": [
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?side=buy&page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22news%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/session/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/connectors/notion/oauth/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/execution/capabilities",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "geometry": {
+        "parentBottom": 116,
+        "nestedBottom": 116,
+        "parentLine": "2px",
+        "nestedLine": "2px"
+      },
+      "filterPagePreserved": true,
+      "resourceReset": true,
+      "clientDocuments": 1,
+      "shellPreserved": true,
+      "history": "back-forward",
+      "chartFullBleed": "error route and return",
+      "deepLinkReload": true,
+      "workspaces": [
+        "nav-fixture-a",
+        "nav-fixture-b"
+      ],
+      "apiCalls": [
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/downloads",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/data/datasets",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/sessions",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?side=buy&page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22news%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/replay/trades",
+          "query": "?page=1&page_size=10&sort_key=close_time_utc&sort_direction=desc&extra_filters=%7B%22asset%22%3A%22all%22%2C%22tag%22%3A%22all%22%2C%22strategy%22%3A%22all%22%2C%22source%22%3A%22all%22%2C%22weekday%22%3A%22all%22%2C%22hour%22%3A%22all%22%2C%22timeStart%22%3A%22%22%2C%22timeEnd%22%3A%22%22%2C%22reportKinds%22%3A%22%22%2C%22timezone%22%3A%22UTC%22%2C%22search%22%3A%22%22%2C%22notes%22%3A%22%22%2C%22assets%22%3A%22%22%2C%22sides%22%3A%22%22%2C%22outcomes%22%3A%22%22%2C%22types%22%3A%22%22%2C%22years%22%3A%22%22%2C%22months%22%3A%22%22%2C%22days%22%3A%22%22%2C%22hours%22%3A%22%22%2C%22tagInclude%22%3A%22%22%2C%22tagExclude%22%3A%22%22%2C%22tagIncludeMode%22%3A%22AND%22%2C%22tagExcludeMode%22%3A%22AND%22%7D",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/session/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/connectors/notion/oauth/status",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/execution/capabilities",
+          "query": "",
+          "workspace": "nav-fixture-a"
+        },
+        {
+          "path": "/api/v2/overview",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/dashboard/sessions",
+          "query": "?page=1&page_size=6&sort=newest",
+          "workspace": "nav-fixture-b"
+        },
+        {
+          "path": "/api/v2/events",
+          "query": "",
+          "workspace": "nav-fixture-b"
+        }
+      ]
+    }
+  ],
+  "pageErrors": [],
+  "status": "pass"
+}

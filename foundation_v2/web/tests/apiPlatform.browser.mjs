@@ -29,6 +29,7 @@ try {
   await page.getByRole('option').filter({ hasText: 'EURUSD' }).first().click()
   await page.getByRole('option').filter({ hasText: 'XAUUSD' }).first().click()
   await page.keyboard.press('Escape')
+  const firstChartWindow = page.waitForResponse(response => new URL(response.url()).pathname.endsWith('/chart-window') && response.status() === 200, { timeout: 20000 })
   await dialog.locator('.quick-session-submit').click()
   await page.waitForURL(url => url.searchParams.get('session') && url.searchParams.get('view') === 'replay')
   report.createdSession = new URL(page.url()).searchParams.get('session')
@@ -38,6 +39,12 @@ try {
   }, report.createdSession)
   assert.equal(server.status, 200)
   assert.equal(server.body.payload.dataset_ids.length, 2)
+  await page.locator('[data-testid="replay-chart"][data-chart-engine="advanced"][data-chart-status="ready"]').waitFor({ timeout: 20000 })
+  const history = await (await firstChartWindow).json()
+  assert.equal(history.session_id, report.createdSession)
+  assert.ok(history.bars.length > 0 && history.bars.length <= 2000)
+  assert.ok(history.bars.every(bar => bar.time <= server.body.cutoff_timestamp * 1000))
+  report.nativeChart = { ready: true, boundedBars: history.bars.length, cutoff: history.cutoff_timestamp }
   const navigate = async view => {
     await page.evaluate(view => { const link = document.createElement('a'); link.href = `/?workspace=tenant-a&view=${view}&area=testing&section=${view === 'overview' ? 'dashboard' : view}`; document.body.append(link); link.click(); link.remove() }, view)
     await page.waitForURL(url => url.searchParams.get('view') === view)

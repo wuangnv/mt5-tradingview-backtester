@@ -262,3 +262,5 @@ Những điều nên giữ: React/Vite CSR; shell persistent; chart engine hiệ
 Phần bổ sung ngoài 10 mục video gồm read-model pagination, bounded requests, cutoff-aware chart windows, generated API types/runtime validation, CSS ownership, observability và deployment retention. Có thể sinh client types từ OpenAPI để giảm drift, nhưng trước hết giữ validation runtime quan trọng; types không kiểm tra được payload thật. Không mặc định thêm microservices, SSR, GraphQL, WebSocket, global state library, PWA hoặc WebAssembly để làm stack trông đầy đủ.
 
 **Đề xuất triển khai kế tiếp:** P0 và P1-a/P1-b trước; sau đó P1-c/P1-d theo số đo. Cache pilot theo sau contract đúng. CDN, offline và worker browser chỉ thêm khi nhu cầu hoặc profiling chứng minh giá trị.
+
+Owner đã duyệt implementation. Kết quả, số đo và giới hạn cold/scale được ghi tại [FRONTEND-IMPLEMENTATION-20261009.md](FRONTEND-IMPLEMENTATION-20261009.md); research này giữ vai trò nguồn quyết định, không thay receipt runtime.

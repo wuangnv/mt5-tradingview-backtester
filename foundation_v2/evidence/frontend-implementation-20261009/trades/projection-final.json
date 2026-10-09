@@ -1,0 +1,152 @@
+{
+  "machine": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "candidate_source_sha256": "113d7da88c81bbf8a3c94ee0ff2b91c76063e40ef6d511a1272e135e3b3e25c9",
+  "postgres": {
+    "status": "passed",
+    "cases": [
+      "journal aliases/session+trade intersection/empty selection",
+      "workspace isolation",
+      "captured immutable revision survives concurrent head advance",
+      "current finance/page/provenance parity",
+      "foreign journal revision identity preserved"
+    ],
+    "cache": {
+      "entries": 4,
+      "retained_bytes": 38805,
+      "max_entries": 24,
+      "max_bytes": 67108864
+    },
+    "scope": "owned disposable loopback PostgreSQL initialized here; no inherited DSN/user data/provider"
+  },
+  "projection_phase": null,
+  "finance_service": {
+    "scope": "full valid synthetic replay financial oracle + page service; memory store, no DB/HTTP, same immutable source and output, alternating order; large bypass diagnostic has only 3 samples",
+    "results": [
+      {
+        "trades": 10000,
+        "execution_events": 30000,
+        "first_candidate_cold_ms": 1456.829499999003,
+        "default_warm_cache_eligible": true,
+        "candidate_phase": "warm",
+        "baseline_full_finance_and_page": {
+          "sample_count": 30,
+          "samples_ms": [
+            987.8861000033794,
+            984.5025000031455,
+            994.5803999944474,
+            1002.8533000004245,
+            1058.8885999968625,
+            992.1543000018573,
+            995.6969999984722,
+            1069.4664000038756,
+            995.7442000013543,
+            1008.8490999987698,
+            1014.0098999982001,
+            998.9925999980187,
+            1065.9004999979516,
+            1058.3786999995937,
+            1086.6876000000047,
+            1357.4417000054382,
+            1087.9420999990543,
+            1028.274500000407,
+            1063.7138000020059,
+            1013.9116999998805,
+            1211.2806999939494,
+            1133.1138000023202,
+            1090.1225999987219,
+            1110.1687000045786,
+            1029.239499999676,
+            1059.739600001194,
+            1111.922299998696,
+            1031.7629999990459,
+            1032.3738000006415,
+            1042.309299999033
+          ],
+          "median_ms": 1037.3415499998373,
+          "sample_p95_ms": 1211.2806999939494
+        },
+        "candidate_service": {
+          "sample_count": 30,
+          "samples_ms": [
+            0.34899999445769936,
+            0.3469000002951361,
+            0.4105000043637119,
+            0.38380000478355214,
+            0.3304999991087243,
+            0.3679000001284294,
+            0.34360000427113846,
+            0.3763999993680045,
+            0.505900003190618,
+            0.3608999977586791,
+            0.3295999995316379,
+            0.48160000005736947,
+            0.37629999860655516,
+            0.3361999988555908,
+            0.33650000113993883,
+            0.36579999868990853,
+            0.3721999964909628,
+            0.37850000080652535,
+            0.35030000435654074,
+            0.35709999792743474,
+            0.39290000131586567,
+            0.39229999674716964,
+            0.357000004441943,
+            0.35349999961908907,
+            0.3364000003784895,
+            0.35740000021178275,
+            0.43559999903663993,
+            0.4528999998001382,
+            0.3403000009711832,
+            0.3599999981815927
+          ],
+          "median_ms": 0.3604499979701359,
+          "sample_p95_ms": 0.48160000005736947
+        },
+        "latency_reduction_pct": 99.96525252478605,
+        "cache": {
+          "entries": 2,
+          "retained_bytes": 28009091,
+          "max_entries": 24,
+          "max_bytes": 67108864
+        },
+        "payload_reads": 2
+      },
+      {
+        "trades": 100000,
+        "execution_events": 300000,
+        "first_candidate_cold_ms": 10863.73750000348,
+        "default_warm_cache_eligible": false,
+        "candidate_phase": "oversize cache bypass; cold every request",
+        "baseline_full_finance_and_page": {
+          "sample_count": 3,
+          "samples_ms": [
+            16341.4180999971,
+            19302.94789999607,
+            20808.338700000604
+          ],
+          "median_ms": 19302.94789999607,
+          "sample_p95_ms": 20808.338700000604
+        },
+        "candidate_service": {
+          "sample_count": 3,
+          "samples_ms": [
+            1.5614000003552064,
+            0.3758000020752661,
+            12860.099999998056
+          ],
+          "median_ms": 1.5614000003552064,
+          "sample_p95_ms": 12860.099999998056
+        },
+        "latency_reduction_pct": 99.99191108006691,
+        "cache": {
+          "entries": 3,
+          "retained_bytes": 76925,
+          "max_entries": 24,
+          "max_bytes": 67108864
+        },
+        "payload_reads": 6
+      }
+    ]
+  }
+}

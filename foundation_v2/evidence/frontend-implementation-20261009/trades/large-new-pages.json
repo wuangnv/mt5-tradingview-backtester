@@ -1,0 +1,100 @@
+{
+  "machine": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "candidate_source_sha256": "113d7da88c81bbf8a3c94ee0ff2b91c76063e40ef6d511a1272e135e3b3e25c9",
+  "postgres": {
+    "status": "passed",
+    "cases": [
+      "journal aliases/session+trade intersection/empty selection",
+      "workspace isolation",
+      "captured immutable revision survives concurrent head advance",
+      "current finance/page/provenance parity",
+      "foreign journal revision identity preserved"
+    ],
+    "cache": {
+      "entries": 4,
+      "retained_bytes": 38805,
+      "max_entries": 24,
+      "max_bytes": 67108864
+    },
+    "scope": "owned disposable loopback PostgreSQL initialized here; no inherited DSN/user data/provider"
+  },
+  "projection_phase": null,
+  "finance_service": {
+    "scope": "full valid synthetic replay financial oracle + page service; memory store, no DB/HTTP, same immutable source and output, alternating order; large bypass diagnostic has only 3 samples",
+    "results": [
+      {
+        "trades": 100000,
+        "execution_events": 300000,
+        "first_candidate_cold_ms": 13762.238499999512,
+        "default_warm_cache_eligible": false,
+        "candidate_phase": "new uncached page; full oracle cold",
+        "repeat_same_page": {
+          "sample_count": 30,
+          "samples_ms": [
+            0.3626000034273602,
+            0.27469999622553587,
+            0.26419999630888924,
+            0.25829999503912404,
+            0.25969999842345715,
+            0.25859999732347205,
+            0.26899999647866935,
+            0.26619999698596075,
+            0.26310000248486176,
+            0.26020000223070383,
+            0.25690000620670617,
+            0.26149999757763,
+            0.2593000026536174,
+            0.2593000026536174,
+            0.26790000265464187,
+            0.2618999933474697,
+            0.2598999999463558,
+            0.27270000282442197,
+            0.9883999955491163,
+            0.603299995418638,
+            0.3293000045232475,
+            0.5690999969374388,
+            0.3423000016482547,
+            0.3026999984285794,
+            0.415000002249144,
+            0.30419999529840425,
+            0.27209999825572595,
+            0.2651000031619333,
+            0.2728000035858713,
+            0.2961999998660758
+          ],
+          "median_ms": 0.2684499995666556,
+          "sample_p95_ms": 0.603299995418638
+        },
+        "baseline_full_finance_and_page": {
+          "sample_count": 3,
+          "samples_ms": [
+            24263.14590000402,
+            15203.411300004518,
+            14467.153999998118
+          ],
+          "median_ms": 15203.411300004518,
+          "sample_p95_ms": 24263.14590000402
+        },
+        "candidate_service": {
+          "sample_count": 3,
+          "samples_ms": [
+            15118.827199999942,
+            15355.287300000782,
+            15355.92120000365
+          ],
+          "median_ms": 15355.287300000782,
+          "sample_p95_ms": 15355.92120000365
+        },
+        "latency_reduction_pct": -0.9989600162709462,
+        "cache": {
+          "entries": 5,
+          "retained_bytes": 128267,
+          "max_entries": 24,
+          "max_bytes": 67108864
+        },
+        "payload_reads": 10
+      }
+    ]
+  }
+}

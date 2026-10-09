@@ -1,0 +1,102 @@
+{
+  "scope": "Real React, Axum and workers; isolated synthetic data; API requests are not mocked",
+  "errors": [],
+  "calls": [
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/playbooks"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52/tick-data"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52/chart-window"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/f55ad385c7ad448fa551daf725aedb52/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/downloads"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/overview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/dashboard/sessions"
+    }
+  ],
+  "createdSession": "f55ad385c7ad448fa551daf725aedb52",
+  "nativeChart": {
+    "ready": true,
+    "boundedBars": 1,
+    "cutoff": 1767225600
+  },
+  "documentNavigations": 1,
+  "result": "PASS"
+}

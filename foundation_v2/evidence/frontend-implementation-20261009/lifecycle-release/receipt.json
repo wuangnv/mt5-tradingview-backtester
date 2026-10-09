@@ -1,0 +1,183 @@
+{
+  "scope": "Production React build, explicit synthetic intercepted APIs; no database/provider/broker calls",
+  "cases": [
+    "Journal independent error and explicit retry recover without replacing analytics",
+    "Filter changes hide wrong-scope result; Back/Forward restores correct metrics with mounted page retained",
+    "Superseded analytics transport cancels and cannot overwrite replacement scope",
+    "Focus reconciliation reloads journal annotations; new tag filters retain the matching trade",
+    "Background analytics 401 removes retained financial result instead of rendering stale data",
+    "Successful replay step persists cursor without reloading the session",
+    "External same-session cursor navigation and Back resolve historical/canonical window",
+    "Cursor change while command pending is deferred then reconciled; command result preserves newer URL",
+    "Unsupported demo flag keeps real replay readers and progress stream enabled"
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v2/events",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal/context",
+      "query": "?session_id=lifecycle-session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal/context",
+      "query": "?session_id=lifecycle-session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": "?side=buy"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": "?side=buy"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": "?side=sell"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal/context",
+      "query": "?session_id=lifecycle-session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": "?side=buy"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/analytics",
+      "query": "?side=buy"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/journal/context",
+      "query": "?session_id=lifecycle-session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session",
+      "query": "?cursor_index=4"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/tick-data",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/lifecycle-session/step",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/tick-data",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session",
+      "query": "?cursor_index=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session",
+      "query": "?cursor_index=5"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/replay/sessions/lifecycle-session/step",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session",
+      "query": "?cursor_index=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session/tick-data",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/data/datasets",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/replay/sessions/lifecycle-session",
+      "query": "?cursor_index=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/chart/annotations",
+      "query": ""
+    }
+  ],
+  "status": "pass"
+}

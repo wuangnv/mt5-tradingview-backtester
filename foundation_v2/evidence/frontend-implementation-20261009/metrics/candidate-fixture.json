@@ -1,0 +1,1356 @@
+{
+  "schema": "production-frontend-fixture-probe-v1",
+  "generatedUtc": "2026-10-09T11:03:48.029Z",
+  "scope": "populated built-in demo dashboard, production bundle, loopback gzip HTTP, no backend/provider reads",
+  "machine": {
+    "platform": "win32",
+    "arch": "x64",
+    "cpu": "Intel(R) Core(TM) i5-9400F CPU @ 2.90GHz",
+    "logicalCpus": 6,
+    "totalMemoryBytes": 34302349312
+  },
+  "browser": "153.0.8010.12",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "cacheMethod": "fresh context cold; retained context after priming warm; alternating samples; one browser process",
+  "samplesPerCacheState": 30,
+  "summaries": {
+    "cold": {
+      "contentReadyMs": {
+        "count": 30,
+        "median": 429.70000000298023,
+        "sampleP95": 441.19999999552965
+      },
+      "domContentLoadedMs": {
+        "count": 30,
+        "median": 77.05000000074506,
+        "sampleP95": 79.29999999701977
+      },
+      "ttfbMs": {
+        "count": 30,
+        "median": 2.149999998509884,
+        "sampleP95": 3.7999999970197678
+      },
+      "resourceCount": {
+        "count": 30,
+        "median": 43,
+        "sampleP95": 43
+      },
+      "transferBytes": {
+        "count": 30,
+        "median": 349717,
+        "sampleP95": 349717
+      },
+      "encodedBodyBytes": {
+        "count": 30,
+        "median": 336817,
+        "sampleP95": 336817
+      },
+      "decodedBodyBytes": {
+        "count": 30,
+        "median": 1232878,
+        "sampleP95": 1232878
+      },
+      "longTasks": {
+        "count": 30,
+        "median": 1,
+        "sampleP95": 1
+      },
+      "longTaskMs": {
+        "count": 30,
+        "median": 64,
+        "sampleP95": 67
+      }
+    },
+    "warm": {
+      "contentReadyMs": {
+        "count": 30,
+        "median": 371.1499999985099,
+        "sampleP95": 380.79999999701977
+      },
+      "domContentLoadedMs": {
+        "count": 30,
+        "median": 26.5,
+        "sampleP95": 30.899999998509884
+      },
+      "ttfbMs": {
+        "count": 30,
+        "median": 2,
+        "sampleP95": 4.100000001490116
+      },
+      "resourceCount": {
+        "count": 30,
+        "median": 43,
+        "sampleP95": 43
+      },
+      "transferBytes": {
+        "count": 30,
+        "median": 1694,
+        "sampleP95": 1694
+      },
+      "encodedBodyBytes": {
+        "count": 30,
+        "median": 336817,
+        "sampleP95": 336817
+      },
+      "decodedBodyBytes": {
+        "count": 30,
+        "median": 1232878,
+        "sampleP95": 1232878
+      },
+      "longTasks": {
+        "count": 30,
+        "median": 0,
+        "sampleP95": 1
+      },
+      "longTaskMs": {
+        "count": 30,
+        "median": 0,
+        "sampleP95": 50
+      }
+    }
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "cacheState": "cold",
+      "contentReadyMs": 434.79999999701977,
+      "domContentLoadedMs": 77,
+      "ttfbMs": 3.7999999970197678,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 67,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 1,
+      "cacheState": "warm",
+      "contentReadyMs": 376.30000000447035,
+      "domContentLoadedMs": 29.399999998509884,
+      "ttfbMs": 2.7000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 2,
+      "cacheState": "cold",
+      "contentReadyMs": 432.8999999985099,
+      "domContentLoadedMs": 73.80000000447035,
+      "ttfbMs": 2.8000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 2,
+      "cacheState": "warm",
+      "contentReadyMs": 366.19999999552965,
+      "domContentLoadedMs": 26.399999998509884,
+      "ttfbMs": 1.8999999985098839,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 52,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 3,
+      "cacheState": "cold",
+      "contentReadyMs": 424.30000000447035,
+      "domContentLoadedMs": 77.60000000149012,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 3,
+      "cacheState": "warm",
+      "contentReadyMs": 380.20000000298023,
+      "domContentLoadedMs": 28.899999998509884,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 4,
+      "cacheState": "cold",
+      "contentReadyMs": 429,
+      "domContentLoadedMs": 76.5,
+      "ttfbMs": 2.4000000059604645,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 4,
+      "cacheState": "warm",
+      "contentReadyMs": 345.5,
+      "domContentLoadedMs": 20,
+      "ttfbMs": 2.2000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 5,
+      "cacheState": "cold",
+      "contentReadyMs": 425.6000000014901,
+      "domContentLoadedMs": 77.5,
+      "ttfbMs": 2.399999998509884,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 5,
+      "cacheState": "warm",
+      "contentReadyMs": 379.80000000447035,
+      "domContentLoadedMs": 28,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 50,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 6,
+      "cacheState": "cold",
+      "contentReadyMs": 426,
+      "domContentLoadedMs": 76.80000000447035,
+      "ttfbMs": 2.3000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 6,
+      "cacheState": "warm",
+      "contentReadyMs": 379,
+      "domContentLoadedMs": 28.100000001490116,
+      "ttfbMs": 1.6000000014901161,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 7,
+      "cacheState": "cold",
+      "contentReadyMs": 421.8999999985099,
+      "domContentLoadedMs": 77.70000000298023,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 7,
+      "cacheState": "warm",
+      "contentReadyMs": 362.20000000298023,
+      "domContentLoadedMs": 29.30000000447035,
+      "ttfbMs": 4.399999998509884,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 8,
+      "cacheState": "cold",
+      "contentReadyMs": 422.1000000014901,
+      "domContentLoadedMs": 77.10000000149012,
+      "ttfbMs": 2.3000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 65,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 8,
+      "cacheState": "warm",
+      "contentReadyMs": 389.59999999403954,
+      "domContentLoadedMs": 35.69999999552965,
+      "ttfbMs": 2.399999998509884,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 9,
+      "cacheState": "cold",
+      "contentReadyMs": 435.30000000447035,
+      "domContentLoadedMs": 78.90000000596046,
+      "ttfbMs": 2.5,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 63,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 9,
+      "cacheState": "warm",
+      "contentReadyMs": 371.29999999701977,
+      "domContentLoadedMs": 29.799999997019768,
+      "ttfbMs": 3.2000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 50,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 10,
+      "cacheState": "cold",
+      "contentReadyMs": 427.1000000014901,
+      "domContentLoadedMs": 76.29999999701977,
+      "ttfbMs": 2.1999999955296516,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 62,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 10,
+      "cacheState": "warm",
+      "contentReadyMs": 380.79999999701977,
+      "domContentLoadedMs": 30.899999998509884,
+      "ttfbMs": 4.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 11,
+      "cacheState": "cold",
+      "contentReadyMs": 441.19999999552965,
+      "domContentLoadedMs": 77.5,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 62,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 11,
+      "cacheState": "warm",
+      "contentReadyMs": 364.70000000298023,
+      "domContentLoadedMs": 29.899999998509884,
+      "ttfbMs": 2.7000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 12,
+      "cacheState": "cold",
+      "contentReadyMs": 429.80000000447035,
+      "domContentLoadedMs": 76.30000000447035,
+      "ttfbMs": 1.8999999985098839,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 63,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 12,
+      "cacheState": "warm",
+      "contentReadyMs": 375.59999999403954,
+      "domContentLoadedMs": 26.5,
+      "ttfbMs": 2.0999999940395355,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 13,
+      "cacheState": "cold",
+      "contentReadyMs": 428.79999999701977,
+      "domContentLoadedMs": 76.60000000149012,
+      "ttfbMs": 3.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 13,
+      "cacheState": "warm",
+      "contentReadyMs": 378.3999999985099,
+      "domContentLoadedMs": 25.899999998509884,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 50,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 14,
+      "cacheState": "cold",
+      "contentReadyMs": 429.6000000014901,
+      "domContentLoadedMs": 75.80000000447035,
+      "ttfbMs": 2.899999998509884,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 14,
+      "cacheState": "warm",
+      "contentReadyMs": 377.30000000447035,
+      "domContentLoadedMs": 25.600000001490116,
+      "ttfbMs": 1.7000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 15,
+      "cacheState": "cold",
+      "contentReadyMs": 427.79999999701977,
+      "domContentLoadedMs": 75.5,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 65,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 15,
+      "cacheState": "warm",
+      "contentReadyMs": 362.5,
+      "domContentLoadedMs": 25.600000001490116,
+      "ttfbMs": 1.7999999970197678,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 16,
+      "cacheState": "cold",
+      "contentReadyMs": 436.69999999552965,
+      "domContentLoadedMs": 78.10000000149012,
+      "ttfbMs": 2.1999999955296516,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 63,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 16,
+      "cacheState": "warm",
+      "contentReadyMs": 377.20000000298023,
+      "domContentLoadedMs": 27.30000000447035,
+      "ttfbMs": 3.9000000059604645,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 17,
+      "cacheState": "cold",
+      "contentReadyMs": 431.79999999701977,
+      "domContentLoadedMs": 74,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 17,
+      "cacheState": "warm",
+      "contentReadyMs": 370.6000000014901,
+      "domContentLoadedMs": 26.30000000447035,
+      "ttfbMs": 2.3000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 18,
+      "cacheState": "cold",
+      "contentReadyMs": 436,
+      "domContentLoadedMs": 76.30000000447035,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 65,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 18,
+      "cacheState": "warm",
+      "contentReadyMs": 378,
+      "domContentLoadedMs": 26.399999998509884,
+      "ttfbMs": 1.8000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 19,
+      "cacheState": "cold",
+      "contentReadyMs": 427,
+      "domContentLoadedMs": 78.29999999701977,
+      "ttfbMs": 2.2999999970197678,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 19,
+      "cacheState": "warm",
+      "contentReadyMs": 360.70000000298023,
+      "domContentLoadedMs": 26.5,
+      "ttfbMs": 1.8999999985098839,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 20,
+      "cacheState": "cold",
+      "contentReadyMs": 421.79999999701977,
+      "domContentLoadedMs": 77.60000000149012,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 20,
+      "cacheState": "warm",
+      "contentReadyMs": 359.80000000447035,
+      "domContentLoadedMs": 25.900000005960464,
+      "ttfbMs": 1.6000000014901161,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 21,
+      "cacheState": "cold",
+      "contentReadyMs": 430.69999999552965,
+      "domContentLoadedMs": 76.89999999850988,
+      "ttfbMs": 2.2999999970197678,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 63,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 21,
+      "cacheState": "warm",
+      "contentReadyMs": 377.20000000298023,
+      "domContentLoadedMs": 25.80000000447035,
+      "ttfbMs": 1.7000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 22,
+      "cacheState": "cold",
+      "contentReadyMs": 437.8999999985099,
+      "domContentLoadedMs": 79.29999999701977,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 22,
+      "cacheState": "warm",
+      "contentReadyMs": 361.6000000014901,
+      "domContentLoadedMs": 27.69999999552965,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 23,
+      "cacheState": "cold",
+      "contentReadyMs": 428.80000000447035,
+      "domContentLoadedMs": 77.20000000298023,
+      "ttfbMs": 3.8000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 23,
+      "cacheState": "warm",
+      "contentReadyMs": 361.3999999985099,
+      "domContentLoadedMs": 26,
+      "ttfbMs": 1.7999999970197678,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 24,
+      "cacheState": "cold",
+      "contentReadyMs": 426.20000000298023,
+      "domContentLoadedMs": 76,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 24,
+      "cacheState": "warm",
+      "contentReadyMs": 377.5,
+      "domContentLoadedMs": 26,
+      "ttfbMs": 2.399999998509884,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 50,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 25,
+      "cacheState": "cold",
+      "contentReadyMs": 437.1000000014901,
+      "domContentLoadedMs": 75.70000000298023,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 25,
+      "cacheState": "warm",
+      "contentReadyMs": 361.1000000014901,
+      "domContentLoadedMs": 25.299999997019768,
+      "ttfbMs": 1.7000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 26,
+      "cacheState": "cold",
+      "contentReadyMs": 425.5,
+      "domContentLoadedMs": 76.5,
+      "ttfbMs": 2.100000001490116,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 26,
+      "cacheState": "warm",
+      "contentReadyMs": 361,
+      "domContentLoadedMs": 28.5,
+      "ttfbMs": 1.7999999970197678,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 27,
+      "cacheState": "cold",
+      "contentReadyMs": 435.90000000596046,
+      "domContentLoadedMs": 78.60000000149012,
+      "ttfbMs": 1.9000000059604645,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 64,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 27,
+      "cacheState": "warm",
+      "contentReadyMs": 363.8999999985099,
+      "domContentLoadedMs": 19.100000001490116,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 28,
+      "cacheState": "cold",
+      "contentReadyMs": 435.30000000447035,
+      "domContentLoadedMs": 77.89999999850988,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 28,
+      "cacheState": "warm",
+      "contentReadyMs": 378.80000000447035,
+      "domContentLoadedMs": 28.600000001490116,
+      "ttfbMs": 3.8000000044703484,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 29,
+      "cacheState": "cold",
+      "contentReadyMs": 442.1000000014901,
+      "domContentLoadedMs": 79.80000000447035,
+      "ttfbMs": 2.399999998509884,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 66,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 29,
+      "cacheState": "warm",
+      "contentReadyMs": 371,
+      "domContentLoadedMs": 30.600000001490116,
+      "ttfbMs": 2.600000001490116,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 30,
+      "cacheState": "cold",
+      "contentReadyMs": 430.3999999985099,
+      "domContentLoadedMs": 78.89999999850988,
+      "ttfbMs": 2,
+      "resourceCount": 43,
+      "transferBytes": 349717,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 1,
+      "longTaskMs": 67,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    },
+    {
+      "sample": 30,
+      "cacheState": "warm",
+      "contentReadyMs": 360.1000000014901,
+      "domContentLoadedMs": 25.700000002980232,
+      "ttfbMs": 1.7000000029802322,
+      "resourceCount": 43,
+      "transferBytes": 1694,
+      "encodedBodyBytes": 336817,
+      "decodedBodyBytes": 1232878,
+      "resourceTypes": {
+        "link": 17,
+        "script": 26
+      },
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "sessionCards": 3,
+      "replayOrVendorRequested": false,
+      "backendRequested": false
+    }
+  ],
+  "bundleAudit": {
+    "schema": "production-critical-bundle-v1",
+    "initialAssets": [
+      "assets/index-D7pBqqyG.js",
+      "assets/index-D6_yJdYW.css"
+    ],
+    "staticCriticalGraph": {
+      "assets/index-D7pBqqyG.js": {
+        "bytes": 490063,
+        "gzipBytes": 144925,
+        "sha256": "75f61339a4788e4d437340d28aeefed06daf91578daa1d3f30868728aa0fb6e7",
+        "staticImports": []
+      },
+      "assets/index-D6_yJdYW.css": {
+        "bytes": 186757,
+        "gzipBytes": 28252,
+        "sha256": "61eca831e5b07786fdf6f7a134ee3d4a5c6821d0cd25b8144be75902a78dc166",
+        "staticImports": []
+      }
+    },
+    "criticalRawBytes": 676820,
+    "criticalGzipBytes": 173177,
+    "replayInCriticalGraph": false,
+    "replayLazyAssets": [
+      "ReplayWorkspace-BowyVOAm.js",
+      "ReplayWorkspace-DLvGRbBw.js",
+      "ReplayWorkspace-TerrmIt7.css"
+    ],
+    "limits": [
+      "Static graph covers emitted local module imports; actual dashboard requests are checked separately.",
+      "Gzip values are estimates, not transferred bytes unless the server negotiates gzip. Vendor chart assets live outside this Vite build."
+    ]
+  },
+  "limitations": [
+    "No financial/API/worker correctness or capacity measured.",
+    "This is controlled UI fixture latency, not whole-app speedup; no baseline/candidate A/B claim.",
+    "Long tasks ending after the content-ready checkpoint are outside this sample.",
+    "No CPU/network throttling. Headless loopback timings do not establish user field Core Web Vitals."
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "browser": "153.0.8010.12",
+  "scope": "native PerformanceObserver smoke on disposable blank page; no API/telemetry",
+  "snapshot": {
+    "schema": "frontend-performance-v1",
+    "enabled": true,
+    "supportedEntryTypes": [
+      "resource",
+      "longtask",
+      "event",
+      "layout-shift",
+      "largest-contentful-paint"
+    ],
+    "capacity": 2,
+    "dropped": 0,
+    "pending": 0,
+    "records": [
+      {
+        "kind": "navigation-content-ready",
+        "label": "overview",
+        "status": "ready",
+        "durationMs": 148.8
+      },
+      {
+        "kind": "domain",
+        "label": "analytics-project",
+        "status": "ready",
+        "durationMs": 0,
+        "payloadBytes": 128
+      }
+    ],
+    "totals": {
+      "resources": 0,
+      "transferBytes": 0,
+      "encodedBytes": 0,
+      "decodedBytes": 0,
+      "longTasks": 0,
+      "longTaskMs": 0,
+      "maxInteractionMs": 0,
+      "layoutShiftSum": 0,
+      "largestContentfulPaintMs": 0,
+      "resourceTypes": {}
+    },
+    "navigation": {
+      "responseMs": 69.5,
+      "domContentLoadedMs": 69.6,
+      "loadMs": 70.4
+    }
+  },
+  "afterStop": false
+}
