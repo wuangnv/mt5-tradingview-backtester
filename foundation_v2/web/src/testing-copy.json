@@ -5639,6 +5639,7 @@
   "Chọn ngày": { "vi": "Chọn ngày", "en": "Choose date" },
   "M1: mỗi nến tổng hợp giá trong 1 phút.": {"vi":"M1: mỗi nến tổng hợp giá trong 1 phút.","en":"M1: each candle summarizes prices within one minute."},
   "Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.": {"vi":"Bid: giá bên mua chào, chưa bao gồm giá Ask và spread thực tế.","en":"Bid: the buyer's quoted price; excludes Ask prices and actual spreads."},
+  "Tiến độ của bước hiện tại trong QDM; chưa phải tổng tiến độ.": {"vi":"Tiến độ của bước hiện tại trong QDM; chưa phải tổng tiến độ.","en":"Progress of the current QDM phase, not the overall download."},
   "Dữ liệu đã tải": {"vi":"Dữ liệu đã tải","en":"Downloaded data"},
   "Dùng gần đây": {"vi":"Dùng gần đây","en":"Recently used"},
   "Nhóm tài sản": {"vi":"Nhóm tài sản","en":"Asset categories"},

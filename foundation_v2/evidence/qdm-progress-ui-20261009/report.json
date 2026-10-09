@@ -1,0 +1,36 @@
+[
+  {
+    "width": 1710,
+    "scenario": "qdm-known",
+    "pass": true
+  },
+  {
+    "width": 1710,
+    "scenario": "qdm-unknown",
+    "pass": true
+  },
+  {
+    "width": 1710,
+    "scenario": "native",
+    "pass": true
+  },
+  {
+    "width": 360,
+    "scenario": "qdm-known",
+    "pass": true
+  },
+  {
+    "width": 360,
+    "scenario": "qdm-unknown",
+    "pass": true
+  },
+  {
+    "width": 360,
+    "scenario": "native",
+    "pass": true
+  },
+  {
+    "scope": "live saved dataset size",
+    "pass": true
+  }
+]

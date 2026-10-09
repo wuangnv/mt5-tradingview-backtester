@@ -614,10 +614,10 @@ export default function DataDeskWorkspace({ workspace = 'tenant-a', query = new 
           const retrySeconds = downloadRetrySeconds(job,downloads.receivedAt,clockNow)
           const active = ['queued','running','pausing'].includes(job.status)
           return <div key={job.job_id} className="data-library-download-job" data-testid={`download-job-${job.job_id}`}>
-            <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{displayDate(job.from_date)} → {displayDate(job.to_date)}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')} · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</span></div>
+            <div className="data-library-job-heading"><strong>{job.instrument_id}</strong><span>{displayDate(job.from_date)} → {displayDate(job.to_date)}</span><span role="status">{t(DOWNLOAD_STATUS[job.status] || 'Chưa xác định')}{job.progress_scope !== 'phase' && <> · {fmt(job.completed_days,'',0)} / {fmt(job.total_days,'',0)} {t('ngày')}</>}</span></div>
             {active && <progress aria-label={t('Tiến độ tải {asset}',{asset:job.instrument_id})} value={job.progress_scope === 'phase' ? job.progress_percent ?? undefined : job.completed_days || 0} max={job.progress_scope === 'phase' ? 100 : Math.max(1,job.total_days || 1)} />}
             {job.error && <p className="data-library-job-error">{t(downloadErrorMessage(job.error))}</p>}
-            <p className="data-library-muted">{t('Dung lượng đã tải')}: {formatDatasetSize(job.transferred_bytes,fmt)} · {t('Tổng dung lượng chưa xác định.')}</p>
+            {job.progress_scope !== 'phase' && <p className="data-library-muted">{t('Dung lượng đã tải')}: {formatDatasetSize(job.transferred_bytes,fmt)} · {t('Tổng dung lượng chưa xác định.')}</p>}
             {job.stage === 'processing' && <p role="status">{t('Đang lưu dữ liệu…')}</p>}
             <div className="data-library-job-actions">{retrySeconds > 0 && <span>{t('Thử lại sau {seconds} giây',{seconds:retrySeconds})}</span>}
               {['paused','failed'].includes(job.status) && <button type="button" className="rd-button" disabled={!downloads.available || activeDownload || Boolean(jobAction) || retrySeconds > 0} onClick={() => changeDownload(job,'resume')}>{t('Tiếp tục tải')}</button>}
